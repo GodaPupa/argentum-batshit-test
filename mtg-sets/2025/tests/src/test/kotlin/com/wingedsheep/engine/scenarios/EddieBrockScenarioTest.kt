@@ -2,6 +2,7 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.DecisionPhase
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.SelectManaSourcesDecision
 import com.wingedsheep.engine.core.YesNoDecision
@@ -12,6 +13,9 @@ import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.collections.shouldContain
+import io.kotest.matchers.collections.shouldNotContain
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
  * Scenario tests for Eddie Brock // Venom, Lethal Protector (SPM #55) —
@@ -98,6 +102,7 @@ class EddieBrockScenarioTest : ScenarioTestBase() {
                     .withPlayers("You", "Opponent")
                     .withCardOnBattlefield(1, "Venom, Lethal Protector", summoningSickness = false)
                     .withCardOnBattlefield(1, "Grizzly Bears")  // {1}{G}, mana value 2 → X = 2
+                    .withCardOnBattlefield(1, "Nimble Mongoose") // shroud does not prevent sacrifice selection
                     .withCardInHand(1, "Savannah Lions")         // {W}, mana value 1 (≤ X) → puttable
                     .withCardInLibrary(1, "Forest")
                     .withCardInLibrary(1, "Forest")              // two cards so drawing X=2 succeeds
@@ -106,9 +111,16 @@ class EddieBrockScenarioTest : ScenarioTestBase() {
                     .build()
 
                 val handBefore = game.handSize(1) // 1 (Savannah Lions)
+                val venom = game.findPermanent("Venom, Lethal Protector")!!
+                val mongoose = game.findPermanent("Nimble Mongoose")!!
+                val attack = EddieBrock.backFace!!.script.triggeredAbilities.single()
+                attack.targetRequirement shouldBe null
+                attack.additionalTargetRequirements shouldBe emptyList()
 
                 game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
                 game.declareAttackers(mapOf("Venom, Lethal Protector" to 2)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
                 game.resolveStack()
 
                 // "you may sacrifice another creature" — yes.
@@ -117,12 +129,18 @@ class EddieBrockScenarioTest : ScenarioTestBase() {
                 }
                 game.answerYesNo(true)
 
-                // The sacrifice is a resolution-time choice; Grizzly Bears is the only other creature.
+                // This is a nontargeting resolution choice, so shroud does not remove Mongoose.
                 val grizzly = game.findPermanent("Grizzly Bears")!!
+                val sacrifice = game.getPendingDecision().shouldBeInstanceOf<SelectCardsDecision>()
                 withClue("choosing the creature to sacrifice") {
-                    (game.getPendingDecision() is ChooseTargetsDecision) shouldBe true
+                    sacrifice.context.phase shouldBe DecisionPhase.RESOLUTION
+                    sacrifice.options shouldContain grizzly
+                    sacrifice.options shouldContain mongoose
+                    sacrifice.options shouldNotContain venom
+                    sacrifice.minSelections shouldBe 1
+                    sacrifice.maxSelections shouldBe 1
                 }
-                game.selectTargets(listOf(grizzly))
+                game.selectCards(listOf(grizzly)).error shouldBe null
                 if (game.getPendingDecision() == null) game.resolveStack()
 
                 // "draw X cards, then you may put a permanent card with mana value X or less ...".
@@ -142,6 +160,56 @@ class EddieBrockScenarioTest : ScenarioTestBase() {
                 withClue("Savannah Lions entered the battlefield from hand") {
                     game.isOnBattlefield("Savannah Lions") shouldBe true
                 }
+            }
+
+            test("declining Venom's nontargeting sacrifice keeps the creature and gives no payoff") {
+                val game = scenario()
+                    .withPlayers("You", "Opponent")
+                    .withCardOnBattlefield(1, "Venom, Lethal Protector", summoningSickness = false)
+                    .withCardOnBattlefield(1, "Nimble Mongoose")
+                    .withCardInHand(1, "Savannah Lions")
+                    .withCardInLibrary(1, "Forest")
+                    .withActivePlayer(1)
+                    .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                    .build()
+                val handBefore = game.handSize(1)
+                game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
+                game.declareAttackers(mapOf("Venom, Lethal Protector" to 2)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.resolveStack()
+                game.getPendingDecision().shouldBeInstanceOf<YesNoDecision>()
+                game.answerYesNo(false).error shouldBe null
+                game.resolveStack()
+                game.isOnBattlefield("Nimble Mongoose") shouldBe true
+                game.handSize(1) shouldBe handBefore
+                game.isInHand(1, "Savannah Lions") shouldBe true
+                game.isOnBattlefield("Savannah Lions") shouldBe false
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 0
+            }
+
+            test("Venom alone has no payable other-creature sacrifice and cannot take the payoff") {
+                val game = scenario()
+                    .withPlayers("You", "Opponent")
+                    .withCardOnBattlefield(1, "Venom, Lethal Protector", summoningSickness = false)
+                    .withCardInHand(1, "Forest") // even a zero-mana-value permanent is not a free payoff
+                    .withCardInLibrary(1, "Swamp")
+                    .withActivePlayer(1)
+                    .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                    .build()
+                val handBefore = game.handSize(1)
+                game.passUntilPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
+                game.declareAttackers(mapOf("Venom, Lethal Protector" to 2)).error shouldBe null
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 1
+                game.resolveStack()
+                game.getPendingDecision() shouldBe null
+                game.state.stack.size shouldBe 0
+                game.handSize(1) shouldBe handBefore
+                game.isInHand(1, "Forest") shouldBe true
+                game.isOnBattlefield("Forest") shouldBe false
+                game.isOnBattlefield("Venom, Lethal Protector") shouldBe true
             }
         }
     }

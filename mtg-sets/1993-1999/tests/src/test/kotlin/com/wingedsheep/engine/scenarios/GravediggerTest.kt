@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.por.cards.Gravedigger
@@ -64,23 +65,37 @@ class GravediggerTest : FunSpec({
         castResult.isSuccess shouldBe true
 
         // Let the creature spell resolve (both players pass priority)
-        driver.bothPass()
+        driver.bothPass().error shouldBe null
 
         // Gravedigger should be on the battlefield
         driver.findPermanent(activePlayer, "Gravedigger") shouldNotBe null
 
-        // The ETB trigger fires and asks the "you may" first; accepting leads to target selection.
+        // Target selection belongs to putting the trigger on the stack.
         driver.isPaused shouldBe true
-        driver.pendingDecision.shouldNotBeNull()
-        driver.submitYesNo(activePlayer, true)
-        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
-
-        val targetDecision = driver.pendingDecision as ChooseTargetsDecision
+        val targetDecision = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
         targetDecision.playerId shouldBe activePlayer
+        targetDecision.targetRequirements.single().minTargets shouldBe 1
 
         // Legal targets should include Grizzly Bears in graveyard
         val legalTargets = targetDecision.legalTargets[0] ?: emptyList()
         legalTargets shouldContain grizzlyBears
+
+        driver.submitTargetSelection(activePlayer, listOf(grizzlyBears)).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 1
+        driver.passPriority(driver.priorityPlayer!!).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 1
+        driver.passPriority(driver.priorityPlayer!!).error shouldBe null
+
+        // The optional return is chosen only when the targeted ability resolves.
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>().playerId shouldBe activePlayer
+        driver.getGraveyard(activePlayer) shouldContain grizzlyBears
+        driver.submitYesNo(activePlayer, true).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 0
+        driver.getHand(activePlayer) shouldContain grizzlyBears
+        driver.getGraveyard(activePlayer).contains(grizzlyBears) shouldBe false
     }
 
     test("Gravedigger ETB trigger fizzles with no creatures in graveyard") {

@@ -1,0 +1,84 @@
+{
+  "schema": "ferocity-compact-evidence-review-v1",
+  "created_utc": "2026-09-26T12:43:29.560525+00:00",
+  "attempts": [
+    {
+      "attempt": "integrated-v5-ordinary-content-17",
+      "status": "PASS",
+      "receipt_sha256": "d1079c2d60ce78ce49ba679de98fbb93ce88366bb3670c060fcb76624d696105",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 342,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "integrated-v5-full-sdk-18",
+      "status": "PASS",
+      "receipt_sha256": "901fe25696c28b5db34f78e9a30c6e73662029e87cbaa4199da0677dfa2eb7db",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 531,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "scope": "Fresh ordinary post-rebless content342 PASS and whole-SDK531 PASS on held v5 source; the content342 includes338 ordinary golden/roundtrip cases,2 lint assertions,1 diagnostic warning-list case and1 facade assertion. Route-only helper successor retained separately, runtime/card/test code and184 authored/golden inputs unchanged. Read-only JAR/loose-class consistency scan adds no tests. These are deterministic build/content checks, not an accepted complete engine/pilot gate and not research game evidence.",
+  "repeated_fixed_case_executions_across_versions": 873,
+  "failures_across_versions": 0,
+  "not_independent_samples": true,
+  "research_development_games": 0,
+  "evaluation_games": 0,
+  "confirmation_games": 0,
+  "scan": {
+    "text_members_checked": 240,
+    "recursive_zip_members_checked": 147,
+    "high_confidence_findings": [],
+    "future_keyword_occurrences": [
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-ordinary-content-17/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-ordinary-content-17/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-ordinary-content-17/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-full-sdk-18/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-full-sdk-18/validate_build.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-full-sdk-18/validator-attempt.py",
+        "line": "        \"interactive_development_games\": 0, \"evaluation_games\": 0, \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/support-audits/isolated-public-route-adoption-16/public-peer/validate_build.py.after",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/support-audits/isolated-public-route-adoption-16/public-peer/validate_build.py.common13-before",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/support-audits/isolated-public-route-adoption-16/public-peer/validate_build.py.public-before",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/support-audits/isolated-public-route-adoption-16/validate_build.py.before",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      }
+    ]
+  }
+}

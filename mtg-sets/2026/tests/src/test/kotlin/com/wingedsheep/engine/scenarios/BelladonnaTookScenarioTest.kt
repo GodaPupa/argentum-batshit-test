@@ -2,6 +2,7 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.mtg.sets.definitions.hob.cards.BelladonnaTook
 import com.wingedsheep.mtg.sets.definitions.mrd.cards.RaiseTheAlarm
 import com.wingedsheep.sdk.core.CounterType
@@ -56,6 +57,8 @@ class BelladonnaTookScenarioTest : ScenarioTestBase() {
                 // Two tokens enter → resolutions #1 (gain 1 life) and #2 (draw a card).
                 game.castSpell(1, "Raise the Alarm").error shouldBe null
                 game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
+                game.resolveStack()
 
                 withClue("resolution #1 gained 1 life") {
                     game.getLifeTotal(1) shouldBe lifeBefore + 1
@@ -69,6 +72,8 @@ class BelladonnaTookScenarioTest : ScenarioTestBase() {
 
                 // Two more tokens → resolutions #3 (counter on each creature) and #4 (nothing).
                 game.castSpell(1, "Raise the Alarm").error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 val tokens = game.findAllPermanents("Soldier Token")

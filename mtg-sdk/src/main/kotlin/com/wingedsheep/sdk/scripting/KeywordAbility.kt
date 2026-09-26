@@ -924,9 +924,9 @@ sealed interface KeywordAbility {
      * whose effect [kind] defines.
      *
      * Attach via the `gift(kind)` DSL helper on [com.wingedsheep.sdk.dsl.CardBuilder], which adds
-     * this keyword *and* the derived enters-the-battlefield ability. Instants and sorceries fold
-     * their gift-paid branch into the spell's own effect instead — see
-     * [com.wingedsheep.sdk.dsl.MechanicPatterns.giftSpell].
+     * this keyword and, for permanents, the derived enters-the-battlefield ability. Instants and
+     * sorceries resolve the keyword's gift before their other effects; conditional spell shapes
+     * use [com.wingedsheep.sdk.model.CardScript.giftSpellEffect] and its paired target requirements.
      */
     @SerialName("Gift")
     @Serializable

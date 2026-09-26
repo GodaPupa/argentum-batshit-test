@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.mechanics.layers.StateProjector
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
@@ -125,6 +127,8 @@ class CrimeNovelistScenarioTest : ScenarioTestBase() {
                 val novelist = game.findPermanent("Crime Novelist")!!
 
                 game.castSpell(1, "Sacrifice Two Test").error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("both artifacts are gone") {

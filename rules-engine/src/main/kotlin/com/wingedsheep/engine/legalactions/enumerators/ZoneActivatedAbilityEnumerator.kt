@@ -212,9 +212,11 @@ class ZoneActivatedAbilityEnumerator(private val zone: Zone) : ActionEnumerator 
                 val zoneManaCostString = abilityManaCost?.toString()
                 val abilityHasXCost = abilityManaCost?.hasX == true
                 val abilityMaxAffordableX: Int? = if (abilityHasXCost) {
-                    val availableSources = context.manaSolver.getAvailableManaCount(state, playerId, precomputedSources = context.availableManaSources)
-                    val fixedCost = abilityManaCost.cmc
-                    (availableSources - fixedCost).coerceAtLeast(0)
+                    context.costUtils.calculateMaxAffordableX(
+                        state, playerId, effectiveCost, abilityManaCost,
+                        precomputedSources = context.availableManaSources, sourceId = entityId,
+                        xManaRestriction = ability.xManaRestriction, spellContext = abilityContext
+                    )
                 } else null
 
                 // Compute auto-tap preview for UI highlighting (skipped in ACTIONS_ONLY mode)
@@ -246,6 +248,8 @@ class ZoneActivatedAbilityEnumerator(private val zone: Zone) : ActionEnumerator 
                                 additionalCostInfo = costInfo,
                                 hasXCost = abilityHasXCost,
                                 maxAffordableX = abilityMaxAffordableX,
+                                minX = if (abilityHasXCost) ability.minimumXValue else 0,
+                                affordable = abilityMaxAffordableX == null || abilityMaxAffordableX >= ability.minimumXValue,
                                 autoTapPreview = abilityAutoTapPreview,
                                 manaCostString = zoneManaCostString
                             )
@@ -265,6 +269,8 @@ class ZoneActivatedAbilityEnumerator(private val zone: Zone) : ActionEnumerator 
                                 additionalCostInfo = costInfo,
                                 hasXCost = abilityHasXCost,
                                 maxAffordableX = abilityMaxAffordableX,
+                                minX = if (abilityHasXCost) ability.minimumXValue else 0,
+                                affordable = abilityMaxAffordableX == null || abilityMaxAffordableX >= ability.minimumXValue,
                                 autoTapPreview = abilityAutoTapPreview,
                                 manaCostString = zoneManaCostString
                             )
@@ -279,6 +285,8 @@ class ZoneActivatedAbilityEnumerator(private val zone: Zone) : ActionEnumerator 
                             additionalCostInfo = costInfo,
                             hasXCost = abilityHasXCost,
                             maxAffordableX = abilityMaxAffordableX,
+                            minX = if (abilityHasXCost) ability.minimumXValue else 0,
+                            affordable = abilityMaxAffordableX == null || abilityMaxAffordableX >= ability.minimumXValue,
                             autoTapPreview = abilityAutoTapPreview,
                             manaCostString = zoneManaCostString
                         )

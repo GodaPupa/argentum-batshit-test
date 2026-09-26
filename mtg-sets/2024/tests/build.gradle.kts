@@ -21,6 +21,9 @@ dependencies {
     // The whole card corpus — scenario tests import the definitions they exercise.
     testImplementation(project(":mtg-sets"))
 
+    // The Brew action/state replay fixture directly consumes the existing JSON API.
+    testImplementation(libs.kotlinxSerialization)
+
     testImplementation(libs.kotestRunner)
     testImplementation(libs.kotestAssertions)
 }

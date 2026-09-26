@@ -707,6 +707,29 @@ object ZoneMovementUtils {
         }
 
     /**
+     * Flashback and harmonize replace any non-exile stack departure only when that cost was
+     * actually paid (CR 702.34a / 702.180a). This is scoped to the current spell component;
+     * neither a graveyard origin nor a printed/currently granted keyword proves payment.
+     * Returning null means this specific replacement does not apply, not that no other one can.
+     */
+    fun paidStackExitRedirect(
+        state: GameState,
+        entityId: EntityId,
+        fromZone: Zone?,
+        toZone: Zone
+    ): ZoneChangeRedirectResult? {
+        if (fromZone != Zone.STACK || toZone == Zone.STACK || toZone == Zone.EXILE) return null
+        val paid = state.getEntity(entityId)
+            ?.get<com.wingedsheep.engine.state.components.stack.SpellOnStackComponent>()
+            ?.alternativeCost
+        return when (paid) {
+            com.wingedsheep.engine.core.AlternativeCostType.FLASHBACK,
+            com.wingedsheep.engine.core.AlternativeCostType.HARMONIZE -> ZoneChangeRedirectResult(Zone.EXILE)
+            else -> null
+        }
+    }
+
+    /**
      * Resolve the destination of a zone change after replacement effects.
      *
      * @param battlefieldSourceState The state whose battlefield is scanned for permanents that
@@ -729,6 +752,8 @@ object ZoneMovementUtils {
         battlefieldSourceState: GameState = state
     ): ZoneChangeRedirectResult {
         val container = state.getEntity(entityId) ?: return ZoneChangeRedirectResult(toZone)
+
+        paidStackExitRedirect(state, entityId, fromZone, toZone)?.let { return it }
 
         // Card-intrinsic "would be put into [zone] from anywhere → redirect instead" self-replacement
         // (Darksteel Colossus, Progenitus). It says "from anywhere", so it functions from every

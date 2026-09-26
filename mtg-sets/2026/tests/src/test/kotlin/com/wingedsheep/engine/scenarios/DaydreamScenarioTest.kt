@@ -1,6 +1,11 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.AlternativeCostType
+import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Phase
@@ -57,7 +62,20 @@ class DaydreamScenarioTest : ScenarioTestBase() {
                     .build()
 
                 val bears = game.findPermanent("Grizzly Bears")!!
-                game.castSpellFromGraveyard(1, "Daydream", targetId = bears).error shouldBe null
+                val spell = game.findCardsInGraveyard(1, "Daydream").single()
+                val cast = game.execute(CastSpell(
+                    playerId = game.player1Id,
+                    cardId = spell,
+                    targets = listOf(ChosenTarget.Permanent(bears)),
+                    useAlternativeCost = true,
+                    alternativeCostType = AlternativeCostType.FLASHBACK
+                ))
+                cast.error shouldBe null
+                game.state.getEntity(spell)!!.get<SpellOnStackComponent>()!!.alternativeCost shouldBe
+                    AlternativeCostType.FLASHBACK
+                game.findAllPermanents("Plains").count {
+                    game.state.getEntity(it)!!.has<TappedComponent>()
+                } shouldBe 3
                 game.resolveStack()
 
                 val returned = game.findPermanent("Grizzly Bears")!!

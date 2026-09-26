@@ -33,29 +33,25 @@ internal object CombatDamageUtils {
     enum class CombatSide { ATTACKER, BLOCKER }
 
     /**
-     * Who divides a source's combat damage, and whether CR 510.1c assignment order applies.
+     * Who divides a source's combat damage, with the retained legacy presentation marker.
      *
      * @property playerId The player who chooses this source's damage division.
-     * @property orderConstrained False only when banding (CR 702.22j/k) lets the chooser ignore
-     *   the damage-assignment order. Note this is the *only* thing banding relaxes about order:
-     *   a banded attacker's own [ATTACKER][CombatSide.ATTACKER]-side edges stay order-constrained
-     *   unless one of its blockers has banding — band cooperation falls out of CR 510.1c's
-     *   cross-source lethal counting in the validator, not from lifting the attacker's order.
+     * @property orderConstrained Historical marker: false for a banding-inverted chooser. Current
+     *   CR 510.1c/d allow free division for every source; this field never restricts legality.
      */
     data class DamageChooser(val playerId: EntityId, val orderConstrained: Boolean)
 
     /**
-     * Resolve who assigns [sourceId]'s combat damage and whether its assignment order is
-     * constrained, applying the banding inversions (CR 702.22j/k) on top of the normal
-     * CR 510.1c defaults. This single entry point replaces the older split of
+     * Resolve who assigns [sourceId]'s combat damage, applying the banding inversions
+     * (CR 702.22j/k) on top of the normal CR 510.1c/d defaults. This entry point replaces the split of
      * `damageAssignmentChooser` / `blockerDamageAssignmentChooser` / `attackerBandHasBanding`.
      *
      * - [ATTACKER][CombatSide.ATTACKER]: default is the attacking player. If any creature
      *   blocking [sourceId] has banding, CR 702.22j hands the division to the defending player
-     *   and lifts the order constraint.
+     *   instead.
      * - [BLOCKER][CombatSide.BLOCKER]: default is the blocker's controller ([defaultChooser]).
      *   If any attacker [sourceId] is blocking has banding, CR 702.22k hands the division to the
-     *   active player and lifts the order constraint.
+     *   active player instead.
      */
     fun combatDamageChooser(
         state: GameState,

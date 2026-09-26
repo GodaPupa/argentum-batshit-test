@@ -210,12 +210,15 @@ data class TriggerContext(
      * [com.wingedsheep.sdk.scripting.targets.EffectTarget.AttachedToTriggeringPermanent] in that
      * case, and leaves the attach case on its live read (CR 611.2b). `null` otherwise.
      */
-    val unattachedFromEntityId: EntityId? = null
+    val unattachedFromEntityId: EntityId? = null,
+    /** Full departure information, including for a token already removed by state-based actions. */
+    val triggeringSnapshot: com.wingedsheep.engine.state.components.stack.EntitySnapshot? = null,
 ) {
     companion object {
         fun fromEvent(event: com.wingedsheep.engine.core.GameEvent): TriggerContext {
             return when (event) {
                 is ZoneChangeEvent -> TriggerContext(
+                    triggeringSnapshot = event.lastKnown,
                     triggeringEntityId = event.entityId,
                     triggeringOrigin = if (event.toZone == Zone.BATTLEFIELD) event.newObject else event.oldObject,
                     triggeringObject = if (event.toZone in setOf(Zone.BATTLEFIELD, Zone.GRAVEYARD, Zone.EXILE, Zone.STACK, Zone.COMMAND)) event.newObject else event.oldObject,

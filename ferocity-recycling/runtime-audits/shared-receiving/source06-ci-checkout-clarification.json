@@ -1,0 +1,26 @@
+{
+  "schema": "ferocity-source06-exact-ci-checkout-clarification-v1",
+  "source06_event_head": "667fd916f04dab372a482ffa7d4697e2f42d18e4",
+  "exact_deterministic_run": 36256652860,
+  "exact_deterministic_head": "667fd916f04dab372a482ffa7d4697e2f42d18e4",
+  "exact_deterministic_tree": "71a7b22f467021ce58d41b055dfbc1c433619cfe",
+  "exact_deterministic_actual_cases": 508,
+  "broad_ci_run": 36256652864,
+  "broad_ci_checkout_ref": "refs/pull/174/merge",
+  "broad_ci_actual_checkout": "da073706d44ef6e7f83088cd11726d17ca825b7a",
+  "broad_ci_actual_tree": "8f987465ac7d3abefed2d6a8b6d5462adbd21399",
+  "receiving_base": "7052de0b64d5d01c3a31465d19157d95089b7d40",
+  "merge_delta_from_event_head": [
+    ".github/workflows/ferocity-fra-snapshot-capture.yml",
+    "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/RealityFractureSet.kt",
+    "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/cards/FerocityOfTheHunt.kt"
+  ],
+  "clarification": "The source property in the retained original failure-name report identifies the PR event head, not the broad CI checkout. The 508 targeted artifact is bound to exact667; broad CI ran the actual PR merge with the three listed FRA additions. No engine or server source delta exists between those checkouts. Original reports and failures stay preserved; matched failure names alone do not prove common causes. Missing FRA snapshot is received from its original generation artifact and still requires actual receiving verification.",
+  "original_reports": {
+    "source06-original-observed-failures.json": "6da5e5342cba71c17d7c56873a6dbb0fca6fce9f968c811163cd191bbb872790",
+    "source06-author-508-artifact-audit.json": "9d35dbf3e36ffd72fa270b1608cce7c68f602275e76be43a18150b9e50bb398c"
+  },
+  "gameplay_admitted": false,
+  "official_games": 0,
+  "outcomes_exposed": 0
+}

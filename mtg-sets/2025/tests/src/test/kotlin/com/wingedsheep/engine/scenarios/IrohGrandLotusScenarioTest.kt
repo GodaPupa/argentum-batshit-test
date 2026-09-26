@@ -1,5 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.AlternativeCostType
+import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -49,7 +53,15 @@ class IrohGrandLotusScenarioTest : ScenarioTestBase() {
                 fb!!.manaCostString shouldBe "{2}{U}"
 
                 val handBefore = game.handSize(1)
-                game.castSpellFromGraveyard(1, "Divination").error shouldBe null
+                val flashback = fb.action as CastSpell
+                flashback.useAlternativeCost shouldBe true
+                flashback.alternativeCostType shouldBe AlternativeCostType.FLASHBACK
+                game.execute(flashback).error shouldBe null
+                game.state.getEntity(flashback.cardId)!!.get<SpellOnStackComponent>()!!.alternativeCost shouldBe
+                    AlternativeCostType.FLASHBACK
+                game.findAllPermanents("Island").count {
+                    game.state.getEntity(it)!!.has<TappedComponent>()
+                } shouldBe 3
                 game.resolveStack()
 
                 withClue("Divination drew two cards") {

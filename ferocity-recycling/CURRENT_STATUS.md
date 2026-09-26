@@ -1,44 +1,73 @@
-# Current status — Ferocity Recycling
+# Ferocity Recycling — current status
 
-Checkpoint advanced, 2026-09-26 UTC. Source base: `d0c78bb4cca79b7402ba65bd62b5cb621230a054`. Branch: `ferocity-recycling/archetype-research`.
+Record cut: **2026-09-26 15:16 UTC**. Research continues; no research stopping rule has been reached. This **M1 reviewed-source and fixed-evidence checkpoint** descends from public `d50e66dc12a58e1276b56bdf9ce78daecda51e1a`. It is an isolated review-branch publication. Gameplay admission and shared-engine acceptance remain pending.
 
-## What is established
+## Research answers and actual game counts
 
-- Initial live GitHub reconstruction found no existing independent Ferocity project. A concurrent three-file initialization subsequently appeared on the requested branch; its history and protocol are preserved and integrated as described below. Industrial Waste's separate challenger remains separate.
-- Three families are selected before outcomes: artifact/Shaman control (two Rakdos and one Grixis configuration), black/Golgari Rats, and Orzhov Aura recovery/evasive value.
-- Initial allocation frozen: nine Ferocity 60s and nine no-Ferocity 60s with equal development budgets. The reviewed input manifest SHA-256 is `ef75f5cec859dcc9f765de0feacb7cb7696037f4c7035d4b68b6bdfccee1c87d`.
-- Ferocity's exact card record and image have been obtained; card/common-printing admission and platform/date legality are recorded separately in the rules audit.
-- Deadly Dispute is excluded by the current Pauper banned list.
-- Six exact tournament-source 60/15 benchmarks are archived, with official event versus mirror deck-payload provenance identified. Five form the prospective pressure gauntlet.
-- Eight Python tests passed (three exact-inventory arithmetic and five evidence-guard regressions); eighteen lists passed structural/hash/import checks and six malformed-input probes were rejected. The frozen exact opening-inventory screen has executed for all eighteen lists with zero RNG use. These are calculation/integrity checks, not card-mechanics tests.
+**A, strongest Ferocity configuration: unresolved. B, Ferocity improvement: unresolved. C, competitiveness: unresolved.** No configuration has advanced and no supported final 60/15 exists. The first operational cell remains A3-F4/A3-N0 versus MisterTwin Red; this scheduling choice does not rank the families.
 
-## Counts
+| Stage | Actual randomized games or matches | Frozen ceiling |
+|---|---:|---:|
+| Initial development D2 | 0 games | 720 games |
+| One refinement D3 | 0 games | 240 games |
+| Frozen evaluation E | 0 games | 3,000 games |
+| Independent confirmation C | 0 games | 3,000 games |
+| Sideboard development | 0 best-of-three matches | 300 matches |
+| Gated postboard evaluation | 0 best-of-three matches | 1,500 matches |
 
-| Evidence class | Actual count |
-|---|---:|
-| Randomized functional/goldfish trials | 0 |
-| Interactive development games | 0 |
-| Frozen evaluation games | 0 |
-| Independent confirmation games | 0 |
-| Postboard matches | 0 |
-| Gameplay outcomes exposed | 0 |
-| Distinct stable-source mechanical scenarios | 41 |
-| Stable-source scenarios passed / failed | 38 / 3 |
+No production admission manifest or research allocation exists. All nine Ferocity and nine no-Ferocity prototype sixties remain unchanged at manifest `ef75f5cec859dcc9f765de0feacb7cb7696037f4c7035d4b68b6bdfccee1c87d`. Families, comparative budgets, thresholds and stopping rules remain frozen.
 
-No deck is promoted, eliminated on performance, or identified as strongest by gameplay evidence.
+Ferocity remains verified-text **prerelease research**, with archived release date 2026-10-02 and separately recorded platform status. No simulation is sanctioned tournament evidence. Deadly Dispute is excluded. Baleful Strix eligibility uses its actual common Zeta Set #88 printing and separate official platform admission. See [rules audit](RULES_LEGALITY_AUDIT.md), [benchmark audit](BENCHMARK_AUDIT.md), [synergy map](SYNERGY_MAP.md) and [complete prototype construction](DECK_DEVELOPMENT.md).
 
-## Current work
+## Exact M1 qualification and remaining gates
 
-Initial construction and exact arithmetic are complete. Java 21, just 1.58.0 and Gradle 9.6.1 were provisioned with verified archives; SDK, core rules engine, complete canonical card corpus and scenario sources compiled successfully. Stable-source real-engine runs executed Ferocity 24 (22 passed, 2 failed), Rats 8 (8 passed), and Toxin 9 (8 passed, 1 failed), all with zero errors/skips. The three failures confirm lost departed-source deathtouch/lifelink on queued Shaman damage. An earlier 24-case Ferocity attempt failed its source-drift guard and remains debugging evidence; it is not an additional independent sample.
+M1 source freeze is `41283f68392d7792131eff26877a67a5905ca254dbdeee5529da7f8c17094199`: 214 owned source/tool/protocol inputs and 24,161 compiled consumer inputs. Complete source map `72c33adeb5015e6ad0cdf1da43785f89c3953a5cfb1d8c066936fd715e6e4a84` includes the separately pinned tool/protocol closure. The build checkout is dirty by design; its old Git HEAD is not asserted to identify these source bytes. Before/after source guards and actual runtime-classpath observations are retained for every completed JVM batch.
 
-The stable baseline was published at `901729f259d044dfa157f745b8d764cb454922ef`. Remote CI reproduced exactly the three departed-source deathtouch/lifelink failures. The project workflow itself failed earlier at Java setup because the selector `21.0.12.1+1` did not exist on the hosted runner; that selector is corrected to `21` without changing the repository's Java-21 requirement. A narrow shared-engine repair is now published on this branch: `ZoneTransitionService` stamps the source's last-known projected snapshot onto an already-pending activated ability when the source actually leaves the battlefield, and `DealDamageExecutor`/`DamageUtils` thread that snapshot into deathtouch/lifelink and controller resolution. This intentionally does not snapshot at activation, preserving the already-passing cases where the live source gains or loses the keyword before its ability resolves. The validation workflow now watches the three repaired source files. Current repair checkpoint: `230bc4cfd756165564009bb1921d70547790b135`; CI run `36225413909` is in progress and deterministic qualification runs `36225413890` / `36225412160` are queued. Full receipts are under `evidence/build/`; exact scope is in `BUILD_AND_ENGINE_AUDIT.md` and `MECHANICAL_QUALIFICATION.md`. Only new project files and uniquely named test/workflow files are in scope. Other projects' frozen inputs and ledgers are unchanged.
+| Fresh exact-source batch | Actual cases | Passed | Failed / error / skipped | Scope |
+|---|---:|---:|---|---|
+| Gym36 | 213 | 213 | 0 / 0 / 0 | 182 primary project cases plus 31 existing observation/submission regressions |
+| Engine37 | 234 | 234 | 0 / 0 / 0 | Selected rules, priority, LKI, Aura, damage, trigger and multiplayer cases |
+| Card eras38 | 80 | 80 | 0 / 0 / 0 | 21 selected card classes across seven era modules |
+| **Executed JVM total** | **527** | **527** | **0 / 0 / 0** | **496 of the 508 primary cases, plus 31 separate regressions** |
+| Server on M1 | 0 | 0 | — | Twelve original cases remain pending |
+| Browser on M1 | 0 | 0 | — | Four unchanged actual-UI cases remain pending |
 
-## Admission still required
+The complete [closed JVM evidence manifest](evidence/build/m1-local527-publication-02/publication-manifest.json) retains all raw XML, logs, classpath observations, maps and source histories. Root independently verified all three unchanged before/after maps as exact subsets of the frozen full map.
 
-Passing exact-source mechanical qualification for the published repair, then full candidate/opponent card support, competent bounded pilot development with hidden-information invariance, replay/outcome/seed guard qualification and the pre-outcome stage manifest. The lowest-support artifact cell remains A3-F4/A3-N0 versus the already source-complete Grixis benchmark; it may become the first interactive development cell only after the repair and pilot/admission gates pass. No gameplay allocation has been consumed. The program has not reached its stopping rule.
+Receipt SHA-256 identities: gym36 `f60f5cc45c27e2c7bb7a8a14cedebdd6a7317417da401ae116f730b6928d956f`; engine37 `0de8cb4b184f77303ee2d49a32684dfe5251b2fb331b4587ddf86865930911b2`; eras38 `0cfa30995d555da85ac13eac5dc09bfacc7436037df07004a96484a755efcbf7`.
 
-This file is updated at publication with the actual validated source and external job identifiers. It is not evidence of execution between chat turns.
+Separately, watchdog35 passed **13/13 process assertions**: the nine retained controls and four new resource cases. Its exact [closed archive and manifest](evidence/build/m1-watchdog35-publication/publication-manifest.json) preserve the hard-limit prefix and failure fixtures. Ten Python inventory/validator synthetic guards also passed. These are not extra JVM cases or research games. The finite near-limit codec calibration remains unexecuted and is required before production use.
 
-## Concurrent initialization preserved
+The exact-head CI selection now contains **63 classes / 508 cases** in ten independent module jobs. It adds only the resource2 and priority4 classes, and updates the two explicitly revised test-source hashes. The validator's code outside its class-routing table is unchanged. The separate browser source04 changes only an invalid workflow environment placement; all four browser cases, zero-retry rule, caps and checkout identity remain unchanged.
 
-At publication, the requested remote branch and existing PR #173 were found at `3afd83c8741c5b3d89f231543e951c5f204ca4ef`, created during this local work. Its three initialization files and history are preserved. `protocols/ACTIVE_CONTRACT.json` governs the reconciled search: nine candidates, 720 D2 games maximum, 240 D3 games maximum with no incumbent resampling, and sideboard freeze before E. All randomized counts remain zero. This is continued work on that existing project.
+## Changes and version boundaries
+
+**Red policy v0.2 consumes its first of two permitted D1 revisions.** Red case10 now states the intended used-land-drop precondition while retaining the original mana and post-cast assertions. Case18 identifies the actual canonical `token:Fish` / `Fish Token`, checks its owner, controller, color, type, tapped state and size, and continues through an actual Red pass to a legal Artifact-pilot proposal. The production guard accepts only that exact qualified token. Original failures and source are retained; all 24 successor cases now pass. Artifact policy v0.1, all tactical tails and all decklists remain unchanged.
+
+The gym's public `hasPriority` now uses the engine's actual priority query, rather than equating it with the declaration baton. Four actual fixed scenarios and 31 existing regressions pass. The shared-team fixture retains the intermediate teammate pass before opposing-team priority. Engine routing and broader legacy client semantics are not claimed changed.
+
+Resource source05/06 enforces a hard inherited **128 MiB per-file limit**, **768 MiB free-space preflight**, strict replay and explicit unresolved outcomes for the original 16-game cell. Existing 300-second, 6,000-action and 150-complete-turn caps remain. No capped or unsupported result becomes a draw, gets rerolled or is removed from its allocation. The retained 865,291-byte journal observation covered only one action; it is not a full-game bound. [Prospective resource amendment](protocols/FIRST_CELL_RESOURCE_AMENDMENT.md).
+
+The offline card exporter, exact getter table, wrapper and admission assembler are now published as a complete closure. Current helper pins incorporate the resource boundary. They have not yet generated a production bundle, admission document or seed reservation. The six effective protocol files remain separately pinned; no template or historical source freeze substitutes for current executable identities.
+
+## Previous failures and actual remote CI
+
+The complete original Q3 local selection remains preserved: 502 fresh cases, 488 passes, two Red assertion failures and twelve local MockK instrumentation failures. Successor passes do not erase them. The original server failure occurred before behavioral assertions. A separately reviewed invocation-only startup-agent proposal uses the exact already-resolved Byte Buddy dependency; its twelve-case execution is still pending. It does not change tests, dependencies, global Java configuration or gameplay JVMs.
+
+Q3 [scoped CI](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36249219082) completed on exact head `d50e66dc`: nine module jobs succeeded and the old-source gym job failed. Those older passes are not accepted as M1 qualification because the complete compiled map includes the changed observation source.
+
+Q3 [general CI](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36249219090) failed all eight backend test groups; frontend succeeded. Its actual checkout was PR merge `7589ef8436442c8e765e60dce50c498ed7d633ff`, incorporating base `7052de0b64d5d01c3a31465d19157d95089b7d40`. The recorded exact comparison adds only a FRA workflow and two canonical FRA source files to Q3; engine and server sources are unchanged. Broad engine, server and card failures still require source-level classification and applicable repair or qualification. This checkpoint does not call the shared repository green or dismiss those failures as unrelated.
+
+The first Q3 [browser run](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36249215930) was rejected with **zero jobs and zero browser initializations**. Its published job-level environment used `runner.temp`, which GitHub's context table does not allow there. Source04 writes the same isolated paths into `GITHUB_ENV` from a step. The unavailable original validator annotation is not invented; the observed failure and independently verified schema defect are distinguished in the retained audit.
+
+Earlier E2 failures, unrepaired baseline25 failures, Assay26 results, all source before-images and canceled-before-build33 are preserved in history and evidence. No failed run is silently replaced. Old whole-era passes remain tied to their exact source; they are not whole-M1 acceptance.
+
+## Publication and next authorized execution
+
+Draft [PR174](https://github.com/GodaPupa/argentum-batshit-test/pull/174) remains the isolated review surface, on `ferocity-recycling/qualification-review`. The parent checkpoint is public `d50e66dc`; this publication's exact commit/tree receipt is recorded after the non-force update. Source publication does not imply approval, merge or gameplay admission.
+
+This checkpoint publishes only reviewed project source, narrow shared changes, exact source/audit archives, closed evidence and current records. Credentials, private data, unrelated experiment files and concealed future evaluation material are checked before publication. No future evaluation or confirmation seeds exist. Pest Control, Izzet Science, Manual Transmission, Industrial Waste and Sphinx's Approach remain untouched; none of their gameplay allocations is used.
+
+**Next authorized actions:** publish M1 and collect its exact server/browser/CI results; classify the broad shared-gate failures; finish finite resource calibration; satisfy all applicable admission requirements; export and verify the exact offline bundle and source/dependency/policy/protocol closure; then allocate and execute the original 16 D2 games with complete journals and independent replay. Continue the other declared families and exact benchmark packages within the frozen budget. Whole-pool support remains incomplete, including initiative, cycling/ninjutsu, relevant tokens, Troll's blocking restriction, DFC/Craft and Gardens' ordered Spinning Darkness cost. Opponent lists are not weakened to bypass missing support.
+
+A technical blocker gives no deck verdict. `FINAL_CONCLUSION.md`, a strongest supported 60/15 and competitive claims remain unjustified. Prior complete records are preserved in [history/checkpoint-d50e66dc](history/checkpoint-d50e66dc/).

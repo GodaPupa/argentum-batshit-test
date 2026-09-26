@@ -1,0 +1,24 @@
+{
+  "schema": "ferocity-combat-browser-source06-diagnosis-v1",
+  "status": "SOURCE05_NOT_ACCEPTED_INCOMPLETE_ARTIFACT",
+  "prior_source": "d52eb6a08ed62067b29af231415a6e23334c2b3e",
+  "run_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36254739575",
+  "artifact_id": 10910228273,
+  "artifact_sha256": "89a081ebc010b4359a8f1553002df3a07c9e6a5a212e7e9c614c0b2786d3a00b",
+  "observed_browser_cases": 4,
+  "actual_passed": 4,
+  "actual_failed": 0,
+  "actual_retries": 0,
+  "missing_receipt_member": {
+    "path": "test-results/.last-run.json",
+    "bytes": 45,
+    "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903"
+  },
+  "cause": "Artifact upload omitted hidden files while the receipt correctly recorded the generated Playwright last-run metadata. All other receipt-listed members are present with matching digests.",
+  "source_runtime_guards": "25,741 source-file hashes matched Git and before/after. Runtime manifests identical; browser and tee exits zero.",
+  "preservation": "Original source05 ZIP remains the canonical GitHub artifact; XML, original receipt, member manifest and author audit preserved here. Missing original bytes are not recreated or represented as observed.",
+  "repair": "Enable include-hidden-files only for the existing explicit generated evidence directory. A separately reviewed single source06 attempt preserves the same four case bodies, 0 retries, 1 worker and 45-minute total bound.",
+  "full_runtime_accepted": false,
+  "gameplay_authorized": false,
+  "research_games": 0
+}

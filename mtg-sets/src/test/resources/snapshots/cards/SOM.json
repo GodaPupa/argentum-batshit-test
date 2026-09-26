@@ -1835,6 +1835,94 @@
     ]
 }
 
+// Glint Hawk
+{
+    "name": "Glint Hawk",
+    "manaCost": "{W}",
+    "typeLine": "Creature — Bird",
+    "oracleText": "Flying\nWhen this creature enters, sacrifice it unless you return an artifact you control to its owner's hand.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "keywords": [
+        "FLYING"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "BattlefieldMatching",
+                                "filter": "artifact ctrl:you"
+                            },
+                            "storeAs": "gathered0"
+                        },
+                        {
+                            "type": "SelectFromCollection",
+                            "from": "gathered0",
+                            "selection": {
+                                "type": "ChooseUpTo",
+                                "count": {
+                                    "type": "Fixed",
+                                    "amount": 1
+                                }
+                            },
+                            "storeSelected": "selected1",
+                            "prompt": "Return an artifact you control to its owner's hand, or sacrifice Glint Hawk",
+                            "useTargetingUI": true
+                        },
+                        {
+                            "type": "ConditionalOnCollection",
+                            "collection": "selected1",
+                            "ifNotEmpty": {
+                                "type": "MoveCollection",
+                                "from": "selected1",
+                                "destination": {
+                                    "type": "ToZone",
+                                    "zone": "Hand"
+                                }
+                            },
+                            "ifEmpty": {
+                                "type": "SacrificeTarget",
+                                "target": "Self"
+                            }
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "10",
+        "artist": "Dave Allsop",
+        "flavorText": "Its eyes burned nearly blind by the Whitesun, it hunts by metallic gleam.",
+        "imageUri": "https://cards.scryfall.io/normal/front/2/8/284c4710-4183-4743-9c8b-515cc98cbbb8.jpg?1783941745",
+        "rulings": [
+            {
+                "date": "2011-01-01",
+                "text": "You may choose to sacrifice Glint Hawk as its triggered ability resolves even if you control an artifact."
+            },
+            {
+                "date": "2011-01-01",
+                "text": "You choose which artifact to return to its owner’s hand as the triggered ability resolves. If you control no artifacts at that time, you must sacrifice Glint Hawk. Although players can respond to the ability, once it starts to resolve and you choose an artifact you control to return to its owner’s hand, it’s too late for players to respond."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
 // Golem's Heart
 {
     "name": "Golem's Heart",

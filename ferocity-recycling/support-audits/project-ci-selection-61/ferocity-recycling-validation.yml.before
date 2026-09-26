@@ -1,0 +1,145 @@
+name: Ferocity Recycling deterministic qualification
+
+on:
+  pull_request:
+    paths:
+      - ferocity-recycling/**
+      - .github/workflows/ferocity-recycling-validation.yml
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FerocityOfTheHuntScenarioTest.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CryptRatsScenarioTest.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RatsSweeperInteractionTest.kt
+      - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ToxinAnalysisScenarioTest.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt
+      - mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/vis/cards/CryptRats.kt
+      - mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CryptRatsScenarioTest.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmd/cards/JourneyToNowhereReprint.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ddf/cards/JourneyToNowhereReprint.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ddf/cards/KorSkyfisherReprint.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/Dispatch.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GlintHawk.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/JourneyToNowhere.kt
+      - mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/KorSkyfisher.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DispatchScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GlintHawkScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/JourneyToNowhereScenarioTest.kt
+      - mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KorSkyfisherScenarioTest.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/akh/cards/BonePicker.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dmu/cards/CutDown.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/eld/cards/WitchsCottage.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j22/cards/BonePickerReprint.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j22/cards/CryptRatsReprint.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jmp/cards/BonePickerReprint.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/CryptRatsReprint.kt
+      - mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/Defile.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BonePickerScenarioTest.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CutDownScenarioTest.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DefileScenarioTest.kt
+      - mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WitchsCottageScenarioTest.kt
+      - mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/EvisceratorsInsight.kt
+      - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EvisceratorsInsightScenarioTest.kt
+      - mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/msc/cards/DispatchReprint.kt
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ferocity-recycling-validation-${{ github.event.pull_request.head.ref || github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deterministic:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - suite: engine-and-existing-support
+            classes: "FerocityOfTheHuntScenarioTest RatsSweeperInteractionTest ToxinAnalysisScenarioTest KrarkClanShamanScenarioTest NotDeadAfterAllScenarioTest RefurbishedFamiliarScenarioTest MalevolentRumbleScenarioTest FanaticalOfferingScenarioTest IchorWellspringScenarioTest ShamblingGhastScenarioTest BloodFountainScenarioTest MakeshiftMunitionsScenarioTest GrixisAffinityAgentDecisionTest"
+          - suite: canonical-support
+            classes: "CryptRatsScenarioTest GlintHawkScenarioTest KorSkyfisherScenarioTest JourneyToNowhereScenarioTest WitchsCottageScenarioTest BonePickerScenarioTest CutDownScenarioTest DefileScenarioTest EvisceratorsInsightScenarioTest DispatchScenarioTest"
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Preserve setup provenance before provisioning
+        run: |
+          python - <<'PY'
+          import datetime, json, os, pathlib, subprocess
+          out = pathlib.Path('build/reports/ferocity-recycling')
+          out.mkdir(parents=True)
+          record = {
+              'schema': 'ferocity-recycling-ci-setup-v1',
+              'source_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'run_id': os.environ['GITHUB_RUN_ID'],
+              'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'event': os.environ['GITHUB_EVENT_NAME'],
+              'runner_image_os': os.environ.get('ImageOS'),
+              'runner_image_version': os.environ.get('ImageVersion'),
+              'runner_arch': os.environ.get('RUNNER_ARCH'),
+              'started_at_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+              'scope': 'DETERMINISTIC_QUALIFICATION_ONLY',
+              'suite': '${{ matrix.suite }}',
+              'interactive_development_games': 0, 'evaluation_games': 0, 'confirmation_games': 0,
+          }
+          (out / 'setup-provenance.json').write_text(json.dumps(record, indent=2) + '\n')
+          PY
+      - name: Install exact verified Temurin JDK archive
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ferocity-tools"
+          curl --fail --location --max-time 180 \
+            --output "$RUNNER_TEMP/ferocity-tools/temurin-jdk.tar.gz" \
+            https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz
+          echo 'ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94  '"$RUNNER_TEMP/ferocity-tools/temurin-jdk.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/ferocity-tools/temurin-jdk.tar.gz" -C "$RUNNER_TEMP/ferocity-tools"
+          echo "JAVA_HOME=$RUNNER_TEMP/ferocity-tools/jdk-21.0.12.1+1" >> "$GITHUB_ENV"
+          echo "$RUNNER_TEMP/ferocity-tools/jdk-21.0.12.1+1/bin" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/ferocity-tools/jdk-21.0.12.1+1/bin/java" -version
+          python - <<'PY'
+          import json, pathlib
+          pathlib.Path('build/reports/ferocity-recycling/jdk-provenance.json').write_text(json.dumps({
+              'distribution': 'Eclipse Temurin', 'version': '21.0.12.1+1',
+              'archive_url': 'https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz',
+              'verified_archive_sha256': 'ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94',
+              'installation_status': 'VERIFIED_AND_EXECUTED',
+          }, indent=2) + '\n')
+          PY
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Validate project arithmetic and frozen inputs without generating evidence
+        run: |
+          set -euo pipefail
+          python -m unittest discover -s ferocity-recycling/tests -v
+          python ferocity-recycling/tools/project.py validate
+          if [ -f ferocity-recycling/protocols/initial-search-manifest.json ]; then
+            python ferocity-recycling/tools/project.py verify
+          fi
+      - name: Install exact verified just release
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ferocity-tools"
+          curl --fail --location --max-time 120 \
+            --output "$RUNNER_TEMP/ferocity-tools/just.tar.gz" \
+            https://github.com/casey/just/releases/download/1.58.0/just-1.58.0-x86_64-unknown-linux-musl.tar.gz
+          echo '4a5cc2f53e6f0f8c59092a6cc38291eb729d46a7dd95d3ae582008881b84931d  '"$RUNNER_TEMP/ferocity-tools/just.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/ferocity-tools/just.tar.gz" -C "$RUNNER_TEMP/ferocity-tools" just
+          echo "$RUNNER_TEMP/ferocity-tools" >> "$GITHUB_PATH"
+      - name: Qualify real engine with exact source and retained failures
+        env:
+          EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python ferocity-recycling/tools/validate_build.py \
+            --expected-head "$EXPECTED_HEAD" \
+            --classes ${{ matrix.classes }} \
+            --out build/reports/ferocity-recycling/qualification
+      - name: Preserve qualification evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-recycling-${{ matrix.suite }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-recycling/
+          if-no-files-found: error
+          retention-days: 90

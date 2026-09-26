@@ -228,6 +228,20 @@ data class CardScript(
     val kickerSpellEffect: Effect? = null,
 
     /**
+     * Complete target shape when the spell's Gift cost was promised (CR 702.174m).
+     * Used with [giftSpellEffect]; an empty list then means the promised shape has no targets.
+     * These are cast-time targets, never a mode or a resolution-time choice.
+     */
+    val giftTargetRequirements: List<TargetRequirement> = emptyList(),
+
+    /**
+     * The spell's other effects when Gift was promised. Replaces [spellEffect] for that cast.
+     * Do not include the gift itself: the engine resolves the keyword's gift first (CR 702.174j).
+     * Null keeps the printed effect/targets, useful for a gift with no conditional rider.
+     */
+    val giftSpellEffect: Effect? = null,
+
+    /**
      * Alternate target requirements used when this spell is cast for its cleave cost
      * (CR 702.148, Innistrad: Crimson Vow). When non-empty and the spell was cleaved, these replace
      * [targetRequirements]. This is how the cleave text-change (removing all text in square

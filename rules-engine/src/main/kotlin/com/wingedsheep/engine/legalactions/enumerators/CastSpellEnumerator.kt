@@ -38,6 +38,7 @@ import com.wingedsheep.sdk.scripting.KeywordAbility
 import com.wingedsheep.sdk.scripting.ModifySpellCost
 import com.wingedsheep.sdk.scripting.SpellCostTarget
 import com.wingedsheep.sdk.dsl.giftKeyword
+import com.wingedsheep.sdk.dsl.giftShapeError
 import com.wingedsheep.sdk.scripting.effects.DividedDamageEffect
 import com.wingedsheep.sdk.scripting.effects.Mode
 import com.wingedsheep.sdk.scripting.effects.ModalEffect
@@ -72,6 +73,7 @@ class CastSpellEnumerator : ActionEnumerator {
             "CastWithKicker",
             "CastWithCasualty",
             "CastWithConspire",
+            "CastWithSplice",
         )
     }
 
@@ -1677,9 +1679,8 @@ class CastSpellEnumerator : ActionEnumerator {
      * Post-process: offer the **gift** additional cost (CR 702.174a, Bloomburrow) as its own cast
      * variant — "as an additional cost to cast this spell, you may choose an opponent".
      *
-     * The promise costs nothing and changes neither the mana cost nor the targets, so each cast is
-     * simply cloned into a `CastWithGift` twin carrying the promised opponent (one per opponent, so
-     * multiplayer picks the recipient as part of the cost). Keeping it a *cast* choice is the whole
+     * The promise costs no mana. A conditional spell rider can add targets, so rebuild its target
+     * domain before offering a `CastWithGift` twin carrying the promised opponent. Keeping it a *cast* choice is the whole
      * point: a gift permanent's gift is a "when this enters, if its gift cost was paid" trigger
      * (CR 702.174b), so asking at resolution would ask after the permanent already entered.
      *
@@ -1705,7 +1706,28 @@ class CastSpellEnumerator : ActionEnumerator {
                 cs.giftRecipient != null
             ) continue
             val name = state.getEntity(cs.cardId)?.get<CardComponent>()?.name
-            val gift = name?.let { context.cardRegistry.getCard(it) }?.giftKeyword() ?: continue
+            val definition = name?.let { context.cardRegistry.getCard(it) } ?: continue
+            val gift = definition.giftKeyword() ?: continue
+            check(definition.giftShapeError() == null) {
+                "Unsupported Gift shape for ${definition.name}: ${definition.giftShapeError()}"
+            }
+
+            val promisedAction = if (definition.script.giftSpellEffect != null) {
+                val requirements = definition.script.giftTargetRequirements +
+                    SpliceCasts.targetRequirementsFor(state, cs.splicedCardIds, context.cardRegistry)
+                val infos = context.targetUtils.buildTargetInfos(state, cs.playerId, requirements, cs.cardId)
+                if (!context.targetUtils.allRequirementsSatisfied(infos)) continue
+                val first = infos.firstOrNull()
+                la.copy(
+                    action = cs.copy(targets = emptyList()),
+                    requiresTargets = requirements.isNotEmpty(),
+                    validTargets = first?.validTargets ?: emptyList(),
+                    targetCount = first?.maxTargets ?: 0,
+                    minTargets = requirements.firstOrNull()?.effectiveMinCount ?: 0,
+                    targetDescription = requirements.firstOrNull()?.description,
+                    targetRequirements = infos.takeIf { it.isNotEmpty() }
+                )
+            } else la
 
             val opponents = state.getOpponents(cs.playerId)
             for (opponentId in opponents) {
@@ -1716,10 +1738,10 @@ class CastSpellEnumerator : ActionEnumerator {
                         ?.get<com.wingedsheep.engine.state.components.identity.PlayerComponent>()?.name
                     "Gift ${gift.kind.label} to ${opponentName ?: "opponent"}"
                 }
-                out.add(la.copy(
+                out.add(promisedAction.copy(
                     actionType = "CastWithGift",
                     description = "${la.description} ($suffix)",
-                    action = cs.copy(giftRecipient = opponentId)
+                    action = (promisedAction.action as CastSpell).copy(giftRecipient = opponentId)
                 ))
             }
         }

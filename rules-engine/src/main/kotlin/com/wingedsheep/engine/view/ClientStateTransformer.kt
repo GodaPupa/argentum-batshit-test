@@ -1052,9 +1052,9 @@ class ClientStateTransformer(
         val wasBlightPaid = spellOnStack?.wasBlightPaid ?: false
 
         // Detect whether this spell promised a gift (Bloomburrow gift mechanic).
-        // Permanent spells carry the promise as the gift additional cost elected while casting
-        // (CR 702.174a — `giftRecipient`); instants and sorceries model it as a modal choice whose
-        // "promise" mode's effect tree contains GiftGivenEffect. Surface either to opponents so
+        // Real Gift spells carry the additional cost elected while casting (CR 702.174a —
+        // `giftRecipient`). Retain display compatibility for unmigrated legacy modal Gift cards
+        // whose chosen effect tree contains GiftGivenEffect. Surface either to opponents so
         // they can see at a glance that a gift is coming on resolution, rather than having to parse
         // the mode description.
         val giftPromised = spellOnStack?.let { comp ->

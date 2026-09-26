@@ -193,6 +193,9 @@ class GogoMasterOfMimicryScenarioTest : FunSpec({
         val me = driver.player1
         val opponent = driver.getOpponent(me)
 
+        // This repeated-effect fixture needs an explicit legend exemption before priority.
+        driver.registerCard(RepeatedLegendEffectsFixture)
+        driver.putPermanentOnBattlefield(me, RepeatedLegendEffectsFixture.name)
         val gogoA = driver.putPermanentOnBattlefield(me, "Gogo, Master of Mimicry")
         val gogoB = driver.putPermanentOnBattlefield(me, "Gogo, Master of Mimicry")
         val pyromancer = driver.putPermanentOnBattlefield(me, "Prodigal Pyromancer")

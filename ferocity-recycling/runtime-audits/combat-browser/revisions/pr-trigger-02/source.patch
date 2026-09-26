@@ -1,0 +1,79 @@
+--- .github/workflows/ferocity-recycling-combat-browser.yml.before
++++ .github/workflows/ferocity-recycling-combat-browser.yml
+@@ -2,6 +2,9 @@
+ 
+ on:
+   workflow_dispatch:
++  pull_request:
++    branches: [ferocity-recycling/archetype-research]
++    types: [opened, synchronize, reopened]
+ 
+ permissions:
+   contents: read
+@@ -16,6 +19,7 @@
+     timeout-minutes: 90
+     env:
+       CI: 'true'
++      EXPECTED_HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+       GAME_DEV_ENDPOINTS_ENABLED: 'true'
+       E2E_SERVER_URL: http://localhost:8080
+       E2E_BASE_URL: http://localhost:5173
+@@ -24,7 +28,7 @@
+     steps:
+       - uses: actions/checkout@v6
+         with:
+-          ref: ${{ github.sha }}
++          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+           persist-credentials: false
+       - name: Record exact source and frozen browser inputs
+         run: python3 ferocity-recycling/tools/record_combat_browser.py before
+--- ferocity-recycling/tools/record_combat_browser.py.before
++++ ferocity-recycling/tools/record_combat_browser.py
+@@ -142,8 +142,8 @@
+         source = snapshot()
+         if source['tracked_status']:
+             raise RuntimeError('Initial tracked worktree is not clean')
+-        if source['head'] != os.environ['GITHUB_SHA']:
+-            raise RuntimeError('Checkout is not the dispatched exact source')
++        if source['head'] != os.environ['EXPECTED_HEAD']:
++            raise RuntimeError('Checkout is not the exact expected PR head or dispatched source')
+         bank = json.loads(BANK.read_text())
+         # The current engine may have an independently reviewed source successor before dispatch;
+         # capture that exact whole-source commit above. These UI/harness/lock bytes are fixed here.
+@@ -152,6 +152,8 @@
+                 raise RuntimeError('Frozen browser input differs: ' + path)
+         write('source-before.json', {'source': source, 'bank_sha256': sha(BANK),
+               'run_id': os.environ.get('GITHUB_RUN_ID'), 'run_attempt': os.environ.get('GITHUB_RUN_ATTEMPT'),
++              'expected_head': os.environ['EXPECTED_HEAD'], 'trigger_event': os.environ.get('GITHUB_EVENT_NAME'),
++              'trigger_sha': os.environ.get('GITHUB_SHA'),
+               'started_utc': datetime.datetime.now(datetime.timezone.utc).isoformat(),
+               'runner_image': {key: os.environ.get(key) for key in ('ImageOS', 'ImageVersion', 'RUNNER_ARCH')}})
+     elif args.phase == 'runtime':
+--- ferocity-recycling/runtime-audits/combat-browser/README.md.before
++++ ferocity-recycling/runtime-audits/combat-browser/README.md
+@@ -14,9 +14,13 @@
+ ## Invocation and admission
+ 
+ The owner publishes the reviewed project spec, config, recorder, workflow and audit together with
+-the reviewed current engine/UI source. Dispatch **Ferocity Recycling combat browser qualification**
+-on that exact published ref. The job checks out `${{ github.sha }}` and verifies it matches the
+-dispatched commit. It must not attach to an existing server or run against another worker's tree.
++the reviewed current engine/UI source. Opening or updating a project pull request targeting
++`ferocity-recycling/archetype-research` starts **Ferocity Recycling combat browser qualification**
++automatically. Manual `workflow_dispatch` remains available where the operator has that API.
++The job checks out `${{ github.event.pull_request.head.sha || github.sha }}` and verifies it against
++explicit `EXPECTED_HEAD`. It records the triggering event and `GITHUB_SHA` separately, so a pull
++request merge-preview SHA is never mistaken for the actual checked-out head. It must not attach
++to an existing server or run against another worker's tree.
+ 
+ The actual test command, after committed-lockfile provisioning, is:
+ 
+@@ -39,7 +43,7 @@
+ artifacts, including missing or incomplete reports, determine acceptance; merely configuring a
+ reporter is not evidence that its artifact exists.
+ 
+-`record_combat_browser.py before` pins the dispatched commit, a scoped source/config hash map,
++`record_combat_browser.py before` pins the exact expected published head, a scoped source/config hash map,
+ the frozen UI/harness/lock inputs, and a clean tracked worktree. Engine sources may have a reviewed
+ successor before dispatch; the observed engine hashes in the prospective plan are not permission
+ to substitute an unreviewed source. The exact executed commit and newly captured hashes identify

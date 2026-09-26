@@ -2,6 +2,7 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Phase
@@ -56,6 +57,8 @@ class RavenhillFlockScenarioTest : ScenarioTestBase() {
 
                 val flock = g.findPermanent("Ravenhill Flock")!!
                 g.castSpell(1, "Divination").error shouldBe null
+                g.resolveStack()
+                g.chooseTriggerOrderInListedOrder()
                 g.resolveStack()
 
                 withClue("the trigger fires once per card drawn, not once per draw effect") {

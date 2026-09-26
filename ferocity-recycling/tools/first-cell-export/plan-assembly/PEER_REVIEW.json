@@ -1,0 +1,36 @@
+{
+  "schema": "ferocity-static-peer-review-v1",
+  "reviewer": "toxin_and_review",
+  "reviewed_utc": "2026-09-26T11:56:26.172967+00:00",
+  "source_freeze_sha256": "63bc160594ad65d94f99ab7cf80dcca0cc9bc1a67475af0ae12c5c8f3e8ff6a2",
+  "disposition": "CLEAR_FOR_REVIEWED_MATERIAL_ASSEMBLY",
+  "files_verified": [
+    {
+      "path": "ferocity-recycling/tools/first-cell-export/plan-assembly/assemble_export_plan.py",
+      "sha256": "4ef5e3b02c4ad8a2caec0c649627c64005072f664ab76c8677e9538173adbb4d"
+    },
+    {
+      "path": "ferocity-recycling/tools/first-cell-export/plan-assembly/MATERIAL.template.json",
+      "sha256": "75382f19ff7c344f3454544d68d8deeb4c2d86c6d9150caa57d844816e76f9a1"
+    },
+    {
+      "path": "ferocity-recycling/tools/first-cell-export/plan-assembly/README.md",
+      "sha256": "800ee723524d5d1516d5f594bd204135839bc3c931c99ab7453cc7673629990e"
+    }
+  ],
+  "findings": [],
+  "reviewed_claims": [
+    "All three source hashes match and Python syntax parses. No plan/export/game or seed operation was executed.",
+    "Policy canonical object contains exactly version and files, with nonempty actual compiled source bindings; this matches FerocityDevelopmentPolicy.serializer() in manifest.toPins. Protocol is the same canonical path-to-SHA string map used by toPins. Current exact source paths and keys use ordinary ASCII, and all SHA values are strings.",
+    "The helper imports only the exact reviewed exporter source and invokes its read-only validation. It reuses source, Java, classpath and finite-getter checks; no duplicate initializer or gate-selection logic is introduced.",
+    "Outputs must be new canonical absolute directories, outside the repository and every pinned classpath directory, disjoint from each other. Source material and resolved plan hashes are durably recorded with exclusive creation.",
+    "The material template has null placeholders, so it cannot silently create an executable plan. Final source commit, complete compiled map, both policy maps, protocol files, exact runtime classpath and Java identity must be supplied."
+  ],
+  "limitations": [
+    "The supplied compiled map completeness and scientific gate sufficiency remain obligations of final admission review; this helper does not select receipts or authorize gameplay.",
+    "Reviewed exporter checks current source bytes and ancestry; every-intervening-commit publication proof is still performed by final admission.",
+    "No actual plan material, JVM source-launcher compilation, bundle export, admission14 or randomized gameplay was executed during this static review."
+  ],
+  "games": 0,
+  "allocated_seeds": 0
+}

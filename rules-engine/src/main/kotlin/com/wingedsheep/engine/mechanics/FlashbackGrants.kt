@@ -12,8 +12,8 @@ import com.wingedsheep.sdk.scripting.KeywordAbility
 
 /**
  * Single source of truth for "does this card have flashback, and at what cost?" — used by every
- * flashback read site (the cast-from-graveyard enumerator, the cast handler / zone resolver, and
- * the stack resolver's exile-on-resolution clause).
+ * flashback permission/cost read site (the cast-from-graveyard enumerator and the cast handler /
+ * zone resolver). Stack departure reads the selected paid cost on the spell instead.
  *
  * Flashback (CR 702.34) can come from three sources, checked in priority order:
  *  1. **Printed** on the card ([KeywordAbility.Flashback] in the card's keyword abilities).
@@ -24,15 +24,9 @@ import com.wingedsheep.sdk.scripting.KeywordAbility
  *     graveyard has flashback …"). This source is only consulted when the optional
  *     [controllerId] / [cardRegistry] / [predicateEvaluator] are supplied.
  *
- * Routing all call sites through here keeps the sources consistent so a granted flashback behaves
- * identically to a printed one (cost, exile on resolution). Mirrors [HarmonizeGrants].
- *
- * The group grant matches on the card's characteristics (type/subtype), which are zone-independent,
- * so it resolves the same whether the card is still in the graveyard (enumeration / cast) or has
- * moved to the stack (exile-on-resolution). It is gated to the controller's turn via
- * [GraveyardCardsHaveFlashback.duringYourTurnOnly]; the card must be cast from the graveyard for
- * the exile-on-resolution clause to fire, so a normal hand cast while the granter is in play is
- * unaffected.
+ * Routing permission/cost reads through here keeps printed and granted flashback consistent.
+ * The cast handler binds the selected cost before payment; losing a granting source afterward
+ * must not undo the stack-exit replacement. Mirrors [HarmonizeGrants].
  */
 object FlashbackGrants {
 

@@ -1,0 +1,86 @@
+{
+  "schema": "ferocity-source05-author-artifact-audit-v1",
+  "source": "d52eb6a08ed62067b29af231415a6e23334c2b3e",
+  "source_tree": "c3e75ceaadcb4431ab9c8e095da1fa9f2490e0d9",
+  "run_id": 36254739575,
+  "artifact_id": 10910228273,
+  "artifact_bytes": 90415961,
+  "artifact_sha256": "89a081ebc010b4359a8f1553002df3a07c9e6a5a212e7e9c614c0b2786d3a00b",
+  "source_file_count": 25741,
+  "source_before_after_identical": true,
+  "all_source_pins_match_git_source": true,
+  "artifact_member_count": 72,
+  "all_present_member_digests_valid": true,
+  "missing_receipt_members": [
+    {
+      "path": "test-results/.last-run.json",
+      "sha256": "91d1c43004802cd49950d78eb11c8fa7d05da8ffffe219a8b13b2f561bc00903",
+      "bytes": 45
+    }
+  ],
+  "runtime_before_after_identical": true,
+  "browser_exit": 0,
+  "tee_exit": 0,
+  "bank_sha256": "1cd56cb29da48d14566a78edff529f711f8d22a22066b96146d9701d15d9d531",
+  "raw_xml_cases": 4,
+  "cases": [
+    {
+      "file": "ferocity-recycling/combat-current-rules.spec.ts",
+      "title": "ordinary damage can split one and one without making either blocker lethal",
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 7234
+    },
+    {
+      "file": "general/trample-damage-assignment.spec.ts",
+      "title": "accept default damage assignment \u2014 lethal to blocker, excess to player",
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 4417
+    },
+    {
+      "file": "general/trample-damage-assignment.spec.ts",
+      "title": "custom damage assignment \u2014 put extra damage on blocker",
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 4890
+    },
+    {
+      "file": "general/trample-damage-assignment.spec.ts",
+      "title": "no damage assignment for non-trample creature blocked by single blocker",
+      "status": "passed",
+      "retry": 0,
+      "duration_ms": 4635
+    }
+  ],
+  "traces": [
+    {
+      "path": "test-results/ferocity-recycling-combat--109ed-aking-either-blocker-lethal/trace.zip",
+      "sha256": "229fd085a42060ec14408a4668ae8f0fc615b2d7ece4ff22f8f8a1dfbc8f14f1",
+      "events": 1018,
+      "action_errors": 0
+    },
+    {
+      "path": "test-results/general-trample-damage-ass-17848-e-blocked-by-single-blocker/trace.zip",
+      "sha256": "ab750b6ab741139b5acce0035e66f35378a6415b9e68dd842aa6026fa309c3e1",
+      "events": 669,
+      "action_errors": 0
+    },
+    {
+      "path": "test-results/general-trample-damage-ass-26f93-to-blocker-excess-to-player/trace.zip",
+      "sha256": "472af89099817f1408bcbecaaeefbbd8615d4035e292e2371b03f9f42154ba3d",
+      "events": 735,
+      "action_errors": 0
+    },
+    {
+      "path": "test-results/general-trample-damage-ass-404f9-put-extra-damage-on-blocker/trace.zip",
+      "sha256": "ac1cccc263be7fcc853000c9dd7c7efddc3bac5d7665f5f57825c6dc768b52c4",
+      "events": 856,
+      "action_errors": 0
+    }
+  ],
+  "status": "NOT_ACCEPTED_INCOMPLETE_ARCHIVE_DESPITE_FOUR_BROWSER_CASE_PASSES",
+  "new_server_dto_cases": "PENDING_FULL_CI",
+  "full_runtime_admitted": false,
+  "research_games": 0
+}

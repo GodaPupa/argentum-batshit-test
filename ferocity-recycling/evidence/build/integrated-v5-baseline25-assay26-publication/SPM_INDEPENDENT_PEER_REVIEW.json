@@ -1,0 +1,66 @@
+{
+  "schema_version": 1,
+  "reviewer": "/root/benchmark_audit",
+  "review_kind": "independent static classification peer",
+  "assessment_sha256": "b3c26352c0714414e58a43cdf76c621ade0c57218ac4483ef1334ac68f8f2633",
+  "raw_differential_sha256": "a5b62f750e608eafbedb877048276bfc55437c40e95a45cf9a53529434dc6009",
+  "verified_source_hashes": [
+    {
+      "path": "mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/spm/cards/GrowExtraArms.kt",
+      "sha256": "8793b004cc47f4953310f1f9f6917e4ee3be7e5c03898dcd337c081dd06934a2"
+    },
+    {
+      "path": "mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/spm/cards/UrbanRetreat.kt",
+      "sha256": "9851b242a4db484dd3846823492db542a16da70770a82f04ab22a98053594d29"
+    },
+    {
+      "path": "mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/spm/cards/VenomsHunger.kt",
+      "sha256": "22b0e9ea472a29d48a419c648df0f19a4a99fbc6783a446d0b8550d559ce4557"
+    },
+    {
+      "path": "oracle-assay/src/main/kotlin/com/wingedsheep/assay/grammar/Filters.kt",
+      "sha256": "9876f32d14b2ca79493d4043ef35c614c23bc7deef8373f964887474af7e8c20"
+    },
+    {
+      "path": "oracle-assay/src/main/kotlin/com/wingedsheep/assay/grammar/Mana.kt",
+      "sha256": "603e249872eabb570d25598e9b18e926a002ffa885424b26bcd9deead18018fa"
+    },
+    {
+      "path": "oracle-assay/src/main/kotlin/com/wingedsheep/assay/grammar/SpellCosts.kt",
+      "sha256": "42fa21d7a90178a93d2e185bf1aa450814aa6b2e27aed9d7d9d4c53f7afe9355"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+      "sha256": "2929dbddd0ff597cce4683df8cc4bd9aaeeb54658533107f836a2a72cabc5562"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/mana/AddManaOfChoiceExecutor.kt",
+      "sha256": "68b6b050e7368dcfa4b35e4918280894757fa78690f3f2f0a5153cd4d14d8f34"
+    },
+    {
+      "path": "oracle-assay/src/main/kotlin/com/wingedsheep/assay/gate/Differential.kt",
+      "sha256": "1bd4d9ca0f18b7ef8e849fbec9eb5c3b8a2d5144b1f8c1fc7145ffb2cd4d4b56"
+    }
+  ],
+  "scope_read": "All three complete canonical definitions, all three raw differential AST pairs, relevant CostCalculator target/control methods, Mana grammar representation contract, AddManaOfChoice executor dispatch and the assessment. No engine behavior execution.",
+  "conclusions": [
+    {
+      "card": "Grow Extra Arms",
+      "verdict": "Agree with bounded legal-chosen-target fold only. A legal chosen target is a creature, so Permanent+Spider and Creature+Spider coincide there. calculateMinPossibleCost/findAnyBattlefieldMatch do not intersect the actual target requirement; retain the noncreature-Spider provisional-menu divergence. No unconditional AST/runtime/menu fold."
+    },
+    {
+      "card": "Urban Retreat",
+      "verdict": "Agree with intended unrestricted one-mana-per-tap representation fold for this no-rider line. Costs, mana choices G/W/U, hand activation timing/return cost/from-zone move and enters-tapped agree. Ability identities/counts, menu/decision traces and exact serialized states differ. No generic fold for once-per-turn, riders or ability-count-sensitive contexts is proved."
+    },
+    {
+      "card": "Venom's Hunger",
+      "verdict": "Agree: the handwritten Creature+Villain condition is narrower than controlling a Villain permanent in Oracle/parser. FixedIfControlFilter also routes through the previously noted legacy control-filter helper. This is a source counterexample class, not a new executed fixture. Off first-cell pool; no repair or waiver."
+    }
+  ],
+  "blocking_classification_findings": [],
+  "new_builds": 0,
+  "new_test_initializations": 0,
+  "new_research_games": 0,
+  "source_edits": 0,
+  "tmp_mutations": 0
+}

@@ -44,6 +44,8 @@ data class EffectContinuation(
 data class TriggeredAbilityContinuation(
     val sourceId: EntityId,
     val sourceName: String,
+    /** Exact departure data survives the target choice even after a token ceases to exist. */
+    val lastKnownSourceSnapshot: com.wingedsheep.engine.state.components.stack.EntitySnapshot? = null,
     val sourceBattlefieldTimestamp: Long? = null,
     val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment =
         com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
@@ -147,6 +149,8 @@ data class TriggeredAbilityContinuation(
 data class TriggerDamageDistributionContinuation(
     val sourceId: EntityId,
     val sourceName: String,
+    /** Carried from the target continuation; never reconstructed from a returned incarnation. */
+    val lastKnownSourceSnapshot: com.wingedsheep.engine.state.components.stack.EntitySnapshot? = null,
     val sourceBattlefieldTimestamp: Long? = null,
     val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment =
         com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
@@ -193,7 +197,13 @@ data class TriggerDamageDistributionContinuation(
  */
 @Serializable
 data class PendingTriggersContinuation(
-    val remainingTriggers: List<PendingTrigger>
+    val remainingTriggers: List<PendingTrigger>,
+    /**
+     * A mana ability inside a payment captured these triggers before the enclosing action
+     * finished. This bottom frame must enter the ordinary SBA boundary before placement.
+     * Untagged target/ordering and other mid-resolution queues retain their existing behavior.
+     */
+    val settleAfterManaPayment: Boolean = false,
 ) : AutomaticContinuation
 
 /**

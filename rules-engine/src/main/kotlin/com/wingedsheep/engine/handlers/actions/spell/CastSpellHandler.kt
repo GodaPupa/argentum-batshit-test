@@ -2,6 +2,7 @@ package com.wingedsheep.engine.handlers.actions.spell
 import com.wingedsheep.engine.handlers.TargetingSourceType
 import com.wingedsheep.sdk.dsl.Patterns
 import com.wingedsheep.sdk.dsl.giftKeyword
+import com.wingedsheep.sdk.dsl.giftShapeError
 
 import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
@@ -316,6 +317,7 @@ class CastSpellHandler(
             if (recipient !in state.getOpponents(action.playerId)) {
                 return "A gift can only be promised to an opponent"
             }
+            giftCard?.giftShapeError()?.let { return "Unsupported Gift shape: $it" }
         }
 
         // Memory Vessel: "they can't play cards from their hand" — hand-scoped, so casts from
@@ -799,7 +801,9 @@ class CastSpellHandler(
             val bestowCast = action.useAlternativeCost &&
                 action.alternativeCostType == AlternativeCostType.BESTOW &&
                 cardDef.keywordAbilities.any { it is KeywordAbility.Bestow }
-            val baseTargetReqs = if (bestowCast) {
+            val baseTargetReqs = if (action.giftRecipient != null && effectiveScript.giftSpellEffect != null) {
+                effectiveScript.giftTargetRequirements
+            } else if (bestowCast) {
                 listOf(com.wingedsheep.sdk.dsl.Targets.Creature)
             } else if (modalTargetsDeferred) {
                 emptyList()
@@ -865,7 +869,9 @@ class CastSpellHandler(
 
         // Validate damage distribution for DividedDamageEffect spells
         // Use kickerSpellEffect when kicked, cleaveSpellEffect when cleaved, else the printed effect.
-        val spellEffect = if (action.declaredCostSlot != null && cardDef?.script?.kickerSpellEffect != null) {
+        val spellEffect = if (action.giftRecipient != null && cardDef?.script?.giftSpellEffect != null) {
+            cardDef.script.giftSpellEffect
+        } else if (action.declaredCostSlot != null && cardDef?.script?.kickerSpellEffect != null) {
             cardDef.script.kickerSpellEffect
         } else if (cardDef != null && isCleaveCast(action, cardDef) && cardDef.script.cleaveSpellEffect != null) {
             cardDef.script.cleaveSpellEffect
@@ -2514,6 +2520,10 @@ class CastSpellHandler(
         val faceManaCostOverrideExecute: ManaCost? = action.faceIndex?.let { idx ->
             cardDef?.cardFaces?.getOrNull(idx)?.manaCost
         }
+        // CR 702.34a / 702.180a: the stack-exit replacement follows the alternative cost
+        // actually selected, including legacy actions without an explicit cost discriminator.
+        // Capture that branch before paying additional costs can remove its granting source.
+        var paidStackExitAlternativeCost: AlternativeCostType? = null
         var effectiveCost = if (playForFreeInExecute) {
             ManaCost.ZERO
         } else if (faceManaCostOverrideExecute != null && cardDef != null) {
@@ -2537,8 +2547,10 @@ class CastSpellHandler(
             // Branches gated by [CastSpell.altAllows] — mirrors validate(); honors the player's
             // explicit alternative-cost choice instead of a fixed priority order.
             if (action.altAllows(AlternativeCostType.FLASHBACK) && flashbackAbility != null && zoneResolver.hasFlashbackPermission(currentState, action.playerId, action.cardId)) {
+                paidStackExitAlternativeCost = AlternativeCostType.FLASHBACK
                 costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, flashbackAbility.cost, action.playerId)
             } else if (action.altAllows(AlternativeCostType.HARMONIZE) && harmonizeAbility != null && zoneResolver.hasHarmonizePermission(currentState, action.playerId, action.cardId)) {
+                paidStackExitAlternativeCost = AlternativeCostType.HARMONIZE
                 costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, harmonizeAbility.cost, action.playerId)
             } else if (action.altAllows(AlternativeCostType.MAYHEM) &&
                 MayhemGrants.effectiveMayhem(currentState, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator) != null &&
@@ -3638,7 +3650,9 @@ class CastSpellHandler(
             val bestowCast = action.useAlternativeCost &&
                 action.alternativeCostType == AlternativeCostType.BESTOW &&
                 cardDef.keywordAbilities.any { it is KeywordAbility.Bestow }
-            val baseTargetReqs = if (bestowCast) {
+            val baseTargetReqs = if (action.giftRecipient != null && cardDef.script.giftSpellEffect != null) {
+                cardDef.script.giftTargetRequirements
+            } else if (bestowCast) {
                 listOf(com.wingedsheep.sdk.dsl.Targets.Creature)
             } else if (action.chosenModes.isNotEmpty() && modalEffectForTargets != null) {
                 // Modal spell with modes chosen at cast time — union per-mode requirements
@@ -3988,7 +4002,9 @@ class CastSpellHandler(
             // Every enumerated alternative-cost offer names its mechanic explicitly, so this is the
             // declared choice rather than a guess. Descriptive only — the rules consequences of each
             // mechanic ride the `was*` flags above.
-            alternativeCost = action.alternativeCostType?.takeIf { action.useAlternativeCost },
+            alternativeCost = paidStackExitAlternativeCost ?: action.alternativeCostType?.takeIf {
+                action.useAlternativeCost && it != AlternativeCostType.FLASHBACK && it != AlternativeCostType.HARMONIZE
+            },
             castOriginState = state
         )
 

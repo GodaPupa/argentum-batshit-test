@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -21,6 +22,8 @@ class VirtueOfKnowledgeScenarioTest : ScenarioTestBase() {
 
                 game.castSpell(1, "Vampire Spawn").error shouldBe null
                 game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
+                game.resolveStack()
 
                 game.getLifeTotal(1) shouldBe 24
                 game.getLifeTotal(2) shouldBe 16
@@ -38,6 +41,8 @@ class VirtueOfKnowledgeScenarioTest : ScenarioTestBase() {
                     .build()
 
                 game.castSpell(2, "Grizzly Bears").error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 game.getLifeTotal(1) shouldBe 22

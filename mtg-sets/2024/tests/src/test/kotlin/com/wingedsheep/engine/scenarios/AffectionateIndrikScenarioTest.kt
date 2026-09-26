@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.sdk.core.Color
@@ -40,14 +41,17 @@ class AffectionateIndrikScenarioTest : FunSpec({
         val indrik = driver.putCardInHand(driver.player1, "Affectionate Indrik")
         driver.giveMana(driver.player1, Color.GREEN, 6)
         driver.castSpell(driver.player1, indrik).isSuccess shouldBe true
-        driver.bothPass() // resolve the Indrik; its enters trigger asks its "you may", then a target
-
-        driver.submitYesNo(driver.player1, true)
+        driver.bothPass() // resolve the Indrik; choose the trigger target before priority
         val decision = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
         // The Indrik itself is a creature you control, and so is Grizzly Bears — neither may be
         // offered. Only the opponent's Minotaur Warrior is a legal fight target.
         decision.legalTargets.getValue(0) shouldContainExactly listOf(theirs)
         decision.legalTargets.getValue(0).contains(yours) shouldBe false
+        driver.submitTargetSelection(driver.player1, listOf(theirs)).error shouldBe null
+        driver.stackSize shouldBe 1
+        driver.bothPass()
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        driver.submitYesNo(driver.player1, true).error shouldBe null
     }
 
     test("the fight trades damage: the 4/4 Indrik kills the 2/3, and takes 2 back") {
@@ -59,9 +63,12 @@ class AffectionateIndrikScenarioTest : FunSpec({
         driver.castSpell(driver.player1, indrik).isSuccess shouldBe true
         driver.bothPass()
 
-        driver.submitYesNo(driver.player1, true)
-        driver.submitTargetSelection(driver.player1, listOf(theirs))
-        driver.bothPass() // resolve the triggered ability
+        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        driver.submitTargetSelection(driver.player1, listOf(theirs)).error shouldBe null
+        driver.stackSize shouldBe 1
+        driver.bothPass() // resolution asks whether to fight (CR 603.5)
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        driver.submitYesNo(driver.player1, true).error shouldBe null
 
         // 4 damage to a toughness-3 creature is lethal; the Indrik survives the 2 back.
         driver.findPermanent(driver.player2, "Minotaur Warrior") shouldBe null

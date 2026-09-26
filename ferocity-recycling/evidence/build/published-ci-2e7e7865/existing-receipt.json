@@ -1,0 +1,521 @@
+{
+  "schema": "ferocity-recycling-real-engine-qualification-v1",
+  "started_at_utc": "2026-09-26T07:57:12.674226+00:00",
+  "scope": "DETERMINISTIC_BUILD_CARD_AND_FIXED_POLICY_FIXTURES_ONLY",
+  "interactive_development_games": 0,
+  "evaluation_games": 0,
+  "confirmation_games": 0,
+  "randomized_experimental_seeds": 0,
+  "status": "PASS",
+  "stages": [
+    {
+      "test_class": "FerocityOfTheHuntScenarioTest",
+      "module": "rules-engine",
+      "started_at_utc": "2026-09-26T07:57:19.237606+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "FerocityOfTheHuntScenarioTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FerocityOfTheHuntScenarioTest.kt",
+      "source_sha256": "02bc21147686d223836d6a4a311c7778b354af0c96652322673c26d2dba0fcd1",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:02:48.268214+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.FerocityOfTheHuntScenarioTest.xml",
+          "sha256": "2884338d8512ea0b6a3567668ba2b7afe6470a00d220fb0111d333239cb2d1bf"
+        }
+      ],
+      "totals": {
+        "tests": 24,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "e2b6ae349e721f01f79001f59569dcf544f825db2ebe8b0ca7b17d13a6fac025",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "RatsSweeperInteractionTest",
+      "module": "rules-engine",
+      "started_at_utc": "2026-09-26T08:02:48.272127+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "RatsSweeperInteractionTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RatsSweeperInteractionTest.kt",
+      "source_sha256": "4dfb19acc4cc7cbb8810a8d74c61f1d5216fc9f5dc1ff866c2c3219958e89548",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:03:26.218426+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.RatsSweeperInteractionTest.xml",
+          "sha256": "f616ac558588052366e58581b45a7c76498f8a8d795674ab9f4213ac93138b83"
+        }
+      ],
+      "totals": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "0cf1bccb467cdc3419a5c8fb7d2612c25d026d3e6ff06df9eb7d2cbcd86ef2ce",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "ToxinAnalysisScenarioTest",
+      "module": "mtg-sets/2024/tests",
+      "started_at_utc": "2026-09-26T08:03:26.221295+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "ToxinAnalysisScenarioTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ToxinAnalysisScenarioTest.kt",
+      "source_sha256": "09e8b63a812ea49be0b8f090b0bb40765be425aa1e1bb47e3e2bd4d9492e35b0",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:04:15.372580+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.ToxinAnalysisScenarioTest.xml",
+          "sha256": "e5b485bdc41c525cb951f3bc29b5606a558fce96474bdd2e8a5c5fb803d0de6a"
+        }
+      ],
+      "totals": {
+        "tests": 9,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "785ba80ed7a1c3d7467b917ba7a6beab4f4deea87a3e69bb65b5ab2f925d3651",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "KrarkClanShamanScenarioTest",
+      "module": "mtg-sets/2003-2007/tests",
+      "started_at_utc": "2026-09-26T08:04:15.375039+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "KrarkClanShamanScenarioTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KrarkClanShamanScenarioTest.kt",
+      "source_sha256": "6a068d88370192a1937ee6f7c87c3f9371543db4fdd3bedbfe3ef4b5e06930ac",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:04:53.242634+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.KrarkClanShamanScenarioTest.xml",
+          "sha256": "ec51a1e09772a14a760557892fe0fed0c1ffdf2b4adb24c896977b594ceeb72b"
+        }
+      ],
+      "totals": {
+        "tests": 1,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "907e52a12df0336e8bc305d6476cebf2ad39fe6b54e05b2e7652e98212dce50d",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "NotDeadAfterAllScenarioTest",
+      "module": "mtg-sets/2023/tests",
+      "started_at_utc": "2026-09-26T08:04:53.245075+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "NotDeadAfterAllScenarioTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NotDeadAfterAllScenarioTest.kt",
+      "source_sha256": "83c6e1a76350ff6efa2f9c579611b717bff3ecf7a60c1784b3cb3e95926c8b46",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:05:30.055821+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.NotDeadAfterAllScenarioTest.xml",
+          "sha256": "fa107d89fadd28445ce82be2fc23a2dc9ec22930be173e2ffa5ec77fa36d5d3c"
+        }
+      ],
+      "totals": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "aa4e72b9b2a87d709d1e5bd3f64e21533553576bdfe73886a16bd5cde561586b",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "RefurbishedFamiliarScenarioTest",
+      "module": "mtg-sets/2024/tests",
+      "started_at_utc": "2026-09-26T08:05:30.058841+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "RefurbishedFamiliarScenarioTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RefurbishedFamiliarScenarioTest.kt",
+      "source_sha256": "00685a0a4c46d8265cee0fdf6e39272eab902b4b3a50fac7cafe720e6bb63c0f",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:05:50.673869+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.RefurbishedFamiliarScenarioTest.xml",
+          "sha256": "f7c0c31ee44cef69f9be19619b1ad7f9617000998ae8e5a67e06ae24f9e85b59"
+        }
+      ],
+      "totals": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "23e752cac516f5cbb7f70ebe8578617016c2a841b34cc69c4783445d07147ff9",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "MalevolentRumbleScenarioTest",
+      "module": "mtg-sets/2024/tests",
+      "started_at_utc": "2026-09-26T08:05:50.676931+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "MalevolentRumbleScenarioTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MalevolentRumbleScenarioTest.kt",
+      "source_sha256": "2dee0e46ec420ee4813c32dce0f40433b12f78acd3675b0c02071e423b01f996",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:06:12.096452+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.MalevolentRumbleScenarioTest.xml",
+          "sha256": "4f6d96bd5e8630fbc8ec884130adb755bc4ef1dd855036a160f64810fba52ab7"
+        }
+      ],
+      "totals": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "dd93e2bb57fd1cdad30be4705f0c3fe0959c7f35281d75e996fd8a224c47084e",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "FanaticalOfferingScenarioTest",
+      "module": "mtg-sets/2023/tests",
+      "started_at_utc": "2026-09-26T08:06:12.098926+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "FanaticalOfferingScenarioTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FanaticalOfferingScenarioTest.kt",
+      "source_sha256": "b689a387af86ec3727cdc7a7038cf8ff948ab5609a588c909a742b644ee3f335",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:06:33.029793+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest.xml",
+          "sha256": "54b76386a351f25a181023f62dbbd5892bbfcac3a0866b5587d02c424fdecf2c"
+        }
+      ],
+      "totals": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "e55fba48b88b6722824d3efdc89e2583914aaa03a9a16e6dcdb3057175dd5294",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "IchorWellspringScenarioTest",
+      "module": "mtg-sets/2008-2016/tests",
+      "started_at_utc": "2026-09-26T08:06:33.031993+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "IchorWellspringScenarioTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IchorWellspringScenarioTest.kt",
+      "source_sha256": "b57e17a4ab839b5810fd9582d354d9a765aacf6aadf3545229826b1a3578fab8",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:07:01.599692+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.IchorWellspringScenarioTest.xml",
+          "sha256": "6e5613750fa0613d7811d68b9e080c817799587c0f01cb322cef1622c1d4faf3"
+        }
+      ],
+      "totals": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "b170b1330ffa64a27bd91a679b27b1fb9da222ca584b869bee17163f686eb03b",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "ShamblingGhastScenarioTest",
+      "module": "mtg-sets/2017-2022/tests",
+      "started_at_utc": "2026-09-26T08:07:01.602320+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "ShamblingGhastScenarioTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ShamblingGhastScenarioTest.kt",
+      "source_sha256": "fd4d6cce5bafcbf3065ee88a2213dccdbc1ab802f2a2185753a61fd28e2d01c4",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:07:37.039210+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.ShamblingGhastScenarioTest.xml",
+          "sha256": "154d0031a5f96ca7f7a64ed2020d268571f230477f7c3c04ee0c3a52453d0f8e"
+        }
+      ],
+      "totals": {
+        "tests": 4,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "550639992b6e36b23b67b9a844c185a6652aafa459dd3309c199ce18f2ce0786",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "BloodFountainScenarioTest",
+      "module": "mtg-sets/2017-2022/tests",
+      "started_at_utc": "2026-09-26T08:07:37.041775+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "BloodFountainScenarioTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BloodFountainScenarioTest.kt",
+      "source_sha256": "e6e74fcf32d793f72b25c3bb7ea5b861b5ea546c6432aa114e466805582a0503",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:07:57.343986+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.BloodFountainScenarioTest.xml",
+          "sha256": "2f973ba571078099143ac332bb763ef1f1a6f33e3a1346af6a0b1ddb7efbf1e7"
+        }
+      ],
+      "totals": {
+        "tests": 2,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "e437c1553cf3b1a2fd5a0e033b2ed757827a4a77c20d8cb72a423001d6e11597",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "MakeshiftMunitionsScenarioTest",
+      "module": "mtg-sets/2017-2022/tests",
+      "started_at_utc": "2026-09-26T08:07:57.346472+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "MakeshiftMunitionsScenarioTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MakeshiftMunitionsScenarioTest.kt",
+      "source_sha256": "dbcaa839b35deb588073084708a1fa20632a7e61b5e12fd2804ab7d397f18111",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:08:17.926564+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.engine.scenarios.MakeshiftMunitionsScenarioTest.xml",
+          "sha256": "17fa9ac5803b980e41c1a00faff706e6fbfef05ce7276e313ef25eaba5142e74"
+        }
+      ],
+      "totals": {
+        "tests": 3,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "b1fd112a01cad3172c1c8c18e538665f25210126323ca60d64009c36f7fe2bdb",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    },
+    {
+      "test_class": "GrixisAffinityAgentDecisionTest",
+      "module": "ai",
+      "started_at_utc": "2026-09-26T08:08:17.929821+00:00",
+      "command": [
+        "just",
+        "test-class",
+        "GrixisAffinityAgentDecisionTest",
+        "--rerun",
+        "--console=plain",
+        "--stacktrace",
+        "--max-workers=2",
+        "-PkotlinCompileParallelism=1"
+      ],
+      "source_path": "ai/src/test/kotlin/com/wingedsheep/ai/engine/GrixisAffinityAgentDecisionTest.kt",
+      "source_sha256": "00115a3e4330d807009f3da7d3a83fc04edc2b455a558ed732a5a40bb436f9f6",
+      "status": "PASS",
+      "exit_status": 0,
+      "finished_at_utc": "2026-09-26T08:08:57.654202+00:00",
+      "test_xml": [
+        {
+          "name": "TEST-com.wingedsheep.ai.engine.GrixisAffinityAgentDecisionTest.xml",
+          "sha256": "dcccd91efc7d77cc01dbf44e704bb70d776dc4f804e46bd5abcac44671b65318"
+        }
+      ],
+      "totals": {
+        "tests": 8,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "log_sha256": "5aa14dd2c1d98c67ea5b44072bd68dee64d80165c46a58138a13e98182dfd364",
+      "observed_test_task_statuses": [
+        ""
+      ],
+      "test_task_executed": true
+    }
+  ],
+  "source_head": "2e7e78653ed1c7e56fc609b993a79b68ecca33c6",
+  "source_tree": "61672841c47ae521358b552e8d0955e88f9075c4",
+  "tracked_compiled_input_changes": [],
+  "untracked_compiled_inputs_sha256": {},
+  "source_is_dirty": false,
+  "compiled_inputs_before_sha256": "41af604243ca213ea6802298c55ad42968b677b6f340083e57af184e89848387",
+  "base_commit": "d0c78bb4cca79b7402ba65bd62b5cb621230a054",
+  "java_version": "openjdk version \"21.0.12.1\" 2026-08-18 LTS\nOpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)\nOpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)",
+  "just_version": "just 1.58.0",
+  "build_file_sha256": {
+    "gradle/libs.versions.toml": "c60de8fc02e2c4d3ff92ef418e3b0bbe9fada040a1c7f6c0656b152d89aa7cad",
+    "gradle/wrapper/gradle-wrapper.properties": "c94d41b634a5e0ff8a2f812023697b1337eebac18e9962610356a1793f72896d",
+    "gradle/wrapper/gradle-wrapper.jar": "497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7",
+    "build.gradle.kts": "986599d2c2ff91066e01a660a0f95e6c982ddef029171350f944be549730e40c",
+    "settings.gradle.kts": "20bb45f9e99f9cd82df3e8aee01f06bbd116915ae99c4acc0b69a47f4a6a789b",
+    "gradle.properties": "da160ada37e0e77101de57807c5c89091c92a6e5c530f970aeb5d26080aac62f",
+    "buildSrc/src/main/kotlin/kotlin-jvm.gradle.kts": "73887c87ed1cb3c9cfaf3a1e1866099ad9b1e9d5d1b883f505e2ed4e452be864",
+    "gradlew": "a5a5c199ba02189ae8c46a334223371a20599d9c298ef65e7540ede4a3f72d59",
+    "gradlew.bat": "d539676c48b596afda64c963ec8f7ee56c7b3fe7e3b81d1dbe2d1a1e3dd9e9f8",
+    "justfile": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
+    "scripts/test-class": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81",
+    "scripts/gradle-locked": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1"
+  },
+  "runner_sha256": "165e21b36f967506117b387e33fb2064534afdafee598ea58bd06244cf43177f",
+  "qualification_limit": "Only the recorded deterministic assertions passed. This is not production card admission, complete selected-pool coverage, pilot totality, or matchup evidence.",
+  "compiled_inputs_after_sha256": "41af604243ca213ea6802298c55ad42968b677b6f340083e57af184e89848387",
+  "compiled_inputs_unchanged": true,
+  "finished_at_utc": "2026-09-26T08:09:03.898790+00:00"
+}

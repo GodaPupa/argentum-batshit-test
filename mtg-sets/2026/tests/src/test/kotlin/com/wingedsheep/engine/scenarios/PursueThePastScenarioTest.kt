@@ -1,5 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.AlternativeCostType
+import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -102,7 +106,22 @@ class PursueThePastScenarioTest : ScenarioTestBase() {
                     .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                     .build()
 
-                game.castSpellFromGraveyard(1, "Pursue the Past").error shouldBe null
+                val spell = game.findCardsInGraveyard(1, "Pursue the Past").single()
+                val cast = game.execute(CastSpell(
+                    playerId = game.player1Id,
+                    cardId = spell,
+                    useAlternativeCost = true,
+                    alternativeCostType = AlternativeCostType.FLASHBACK
+                ))
+                cast.error shouldBe null
+                game.state.getEntity(spell)!!.get<SpellOnStackComponent>()!!.alternativeCost shouldBe
+                    AlternativeCostType.FLASHBACK
+                game.findAllPermanents("Mountain").count {
+                    game.state.getEntity(it)!!.has<TappedComponent>()
+                } shouldBe 2
+                game.findAllPermanents("Plains").count {
+                    game.state.getEntity(it)!!.has<TappedComponent>()
+                } shouldBe 2
                 game.resolveStack()
                 game.answerYesNo(false)
                 game.resolveStack()

@@ -1,0 +1,46 @@
+{
+  "schema": "ferocity-observer-qualification-publication-v1",
+  "attempts": [
+    {
+      "attempt": "observer-v2-first-01",
+      "status": "FAIL",
+      "compiled_inputs_unchanged": true,
+      "tests": 0,
+      "failures": 0,
+      "receipt_sha256": "5cd9fb3523e819de80bbb23f4bb9d6ae044af1f9a16918426c1730f539f1c254"
+    },
+    {
+      "attempt": "observer-v2-archive-path-02",
+      "status": "FAIL",
+      "compiled_inputs_unchanged": true,
+      "tests": 0,
+      "failures": 0,
+      "receipt_sha256": "0a0870c8b5c16ded79ec9708935f70ab78f474ea39a1014b106e6beeccc3a031"
+    },
+    {
+      "attempt": "observer-v2-compiler-03",
+      "status": "FAIL",
+      "compiled_inputs_unchanged": true,
+      "tests": 27,
+      "failures": 10,
+      "receipt_sha256": "add4842efafaf93c47a64359cfdb15de3d507a0438e23882356d33c44e1591c1"
+    },
+    {
+      "attempt": "observer-v2-nullable-inline-04",
+      "status": "PASS",
+      "compiled_inputs_unchanged": true,
+      "tests": 28,
+      "failures": 0,
+      "receipt_sha256": "c9b6eb864f30c293334aa123b48707396ad1a8ff1a18948e6286d7b22e4b602c"
+    }
+  ],
+  "latest_supported_scope": "28 fixed actor-observation boundary assertions pass on exact v2.2 source. No LKI projection, full pilot, runner, deck, or gameplay qualification is claimed.",
+  "latest_cases": 28,
+  "fresh_case_executions_across_revisions": 55,
+  "failed_case_executions": 10,
+  "counts_are_independent_games": false,
+  "development_games": 0,
+  "evaluation_games": 0,
+  "confirmation_games": 0,
+  "archives": "Every ZIP extracts to original relative evidence/source-audit paths. Exact changed source ZIP and original runner are retained within each attempt; checkout its source_head to reconstruct unchanged source."
+}

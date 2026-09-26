@@ -1,0 +1,54 @@
+{
+  "schema": "ferocity-recycling-publication-v1",
+  "date_utc": "2026-09-26",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "branch": "ferocity-recycling/archetype-research",
+  "pr": 173,
+  "published_commit": "901729f259d044dfa157f745b8d764cb454922ef",
+  "published_tree": "8551c4f68e4d997265448160bdd3a5861755725c",
+  "verified_parent": "3afd83c8741c5b3d89f231543e951c5f204ca4ef",
+  "reviewed_local_commits": [
+    "c91c088ac045274d320630269d78f668ecd0836b",
+    "3b25dc37012380311c473eed8a5b2f2a80f3be5d"
+  ],
+  "identical_reviewed_tree_verified": true,
+  "native_push": {
+    "exit": 128,
+    "failure": "fatal: could not read Username for 'https://github.com': terminal prompts disabled"
+  },
+  "publication_method": "GitHub connector git-blob/tree/commit API; non-force update_ref",
+  "publication_checks": {
+    "original_history_retained": true,
+    "original_three_files_byte_exact": true,
+    "scope_project_only_plus_unique_tests_workflow": true,
+    "credentials_found": false,
+    "future_evaluation_seeds_present": false,
+    "initial_search_manifest_unchanged": true
+  },
+  "external_runs_launched": [
+    {
+      "id": 36224992267,
+      "event": "push",
+      "scope": "deterministic qualification",
+      "observed_result": "SETUP_FAILURE_BEFORE_TESTS"
+    },
+    {
+      "id": 36224994898,
+      "event": "pull_request",
+      "scope": "deterministic qualification",
+      "observed_result": "SETUP_FAILURE_BEFORE_TESTS"
+    },
+    {
+      "id": 36224994826,
+      "event": "pull_request",
+      "scope": "repository CI",
+      "observed_result": "IN_PROGRESS_AT_FIRST_READ"
+    }
+  ],
+  "game_counts": {
+    "development": 0,
+    "evaluation": 0,
+    "confirmation": 0,
+    "postboard_matches": 0
+  }
+}

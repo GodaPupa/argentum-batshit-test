@@ -141,10 +141,10 @@ class MultiDefenderCombatTest : FunSpec({
         // … so C — who sits between them and isn't being attacked — has no window to act in.
         processor.process(afterB, PassPriority(players[2])).result.isSuccess.shouldBeFalse()
 
-        // Once D has declared too, the round is a normal priority round again.
+        // Once D has declared too, the active player receives the first real priority window.
         val afterD = processor.process(afterB, DeclareBlockers(players[3], emptyMap())).result.newState
-        afterD.priorityPlayerId shouldBe players[3]
-        processor.process(afterD, PassPriority(players[3])).result.isSuccess.shouldBeTrue()
+        afterD.priorityPlayerId shouldBe players[0]
+        processor.process(afterD, PassPriority(players[0])).result.isSuccess.shouldBeTrue()
     }
 
     test("both defenders declare blockers (APNAP) and damage lands on the right players") {

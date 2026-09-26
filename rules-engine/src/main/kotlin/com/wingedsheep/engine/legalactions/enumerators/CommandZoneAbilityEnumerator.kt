@@ -120,7 +120,8 @@ class CommandZoneAbilityEnumerator : ActionEnumerator {
                         precomputedSources = context.availableManaSources,
                         // Same source scoping the battlefield enumerator passes: cost filters
                         // routinely resolve against the ability's own permanent.
-                        sourceId = entityId
+                        sourceId = entityId,
+                        xManaRestriction = ability.xManaRestriction, spellContext = abilityContext
                     )
                 } else null
 
@@ -132,6 +133,8 @@ class CommandZoneAbilityEnumerator : ActionEnumerator {
                         additionalCostInfo = costInfo,
                         hasXCost = hasXCost,
                         maxAffordableX = maxAffordableX,
+                        minX = if (hasXCost) ability.minimumXValue else 0,
+                        affordable = maxAffordableX == null || maxAffordableX >= ability.minimumXValue,
                         manaCostString = abilityManaCost?.toString()
                     )
                 )

@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.ControllerComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
@@ -82,6 +84,7 @@ class StormsplitterTest : FunSpec({
         )
         cast.error shouldBe null
 
+        driver.chooseTriggerOrderInListedOrder()
         // Drain the 3 Stormsplitter triggers + the bolt itself.
         driver.drainStack()
 
@@ -109,12 +112,14 @@ class StormsplitterTest : FunSpec({
         driver.castSpellWithTargets(
             activePlayer, bolt1, listOf(ChosenTarget.Player(opponent))
         ).error shouldBe null
+        driver.chooseTriggerOrderInListedOrder()
         driver.drainStack()
         driver.countStormsplitters(activePlayer) shouldBe 6
 
         driver.castSpellWithTargets(
             activePlayer, bolt2, listOf(ChosenTarget.Player(opponent))
         ).error shouldBe null
+        driver.chooseTriggerOrderInListedOrder()
         driver.drainStack()
 
         // 6 Stormsplitters each triggered, each creating one token copy → 12 total.

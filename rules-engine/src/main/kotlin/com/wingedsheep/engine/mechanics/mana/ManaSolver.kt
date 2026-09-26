@@ -2160,6 +2160,7 @@ class ManaSolver(
         //  3. Cost shapes findAvailableManaSources doesn't model at all (Ashnod's Altar's
         //     "Sacrifice a creature: Add {C}{C}" — no {T} anywhere in the cost).
         val sacrificeManaBySource = sacrificeSelfManaBySource(state, playerId)
+            .filterKeys { it !in excludeSources }
         val bonus = calculateTapPermanentsBonusMana(state, playerId)
             .plus(sacrificeManaBySource.values.fold(TapPermanentsBonusMana()) { acc, p -> acc + p })
             .plus(calculateCompositeTapPermanentsBonusMana(state, playerId))
@@ -2168,7 +2169,7 @@ class ManaSolver(
 
         // Allocate any-color bonus mana to the pool based on what the cost needs,
         // then re-check. This correctly handles color requirements.
-        val augmentedPool = allocateAnyColorManaToPool(pool, bonus.anyColorMana, cost)
+        val augmentedPool = allocateAnyColorManaToPool(pool, bonus.anyColorMana, cost, xManaRestriction)
             .let { p ->
                 // Also add specific-color bonus mana
                 bonus.specificMana.entries.fold(p) { acc, (color, amount) -> acc.add(color, amount) }
@@ -2197,7 +2198,8 @@ class ManaSolver(
             augmentedXRemaining,
             excludeSources + sacrificeConsumedIds,
             spellContext,
-            precomputedSources
+            precomputedSources,
+            xManaRestriction
         ) != null
     }
 
@@ -2752,9 +2754,16 @@ class ManaSolver(
     /**
      * Allocates any-color bonus mana to the pool based on what the cost needs.
      * Adds mana to colors where there's a deficit relative to the cost's colored requirements,
-     * then adds the rest as colorless (usable for generic costs).
+     * then allocates the rest to an allowed X color when X is restricted, or to the generic
+     * accounting bucket otherwise. This is affordability only; destructive sources still
+     * require explicit activation by the player.
      */
-    private fun allocateAnyColorManaToPool(pool: ManaPool, anyColorCount: Int, cost: ManaCost): ManaPool {
+    private fun allocateAnyColorManaToPool(
+        pool: ManaPool,
+        anyColorCount: Int,
+        cost: ManaCost,
+        xManaRestriction: Set<Color> = emptySet()
+    ): ManaPool {
         if (anyColorCount == 0) return pool
 
         // Determine colored mana needed from the cost
@@ -2789,9 +2798,10 @@ class ManaSolver(
             }
         }
 
-        // Remaining any-color mana goes to colorless (usable for generic costs)
+        // Do not lose Treasure's ability to produce an allowed color for a restricted X.
         if (remaining > 0) {
-            result = result.addColorless(remaining)
+            val xColor = Color.entries.firstOrNull { it in xManaRestriction }
+            result = if (xColor != null) result.add(xColor, remaining) else result.addColorless(remaining)
         }
 
         return result

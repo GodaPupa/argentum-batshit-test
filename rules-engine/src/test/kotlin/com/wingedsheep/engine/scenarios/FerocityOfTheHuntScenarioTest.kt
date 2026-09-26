@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.research.ferocity.FerocityOfTheHuntPrerelease
 import com.wingedsheep.engine.state.components.battlefield.AttachedToComponent
 import com.wingedsheep.engine.state.components.battlefield.SummoningSicknessComponent
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
@@ -14,13 +15,9 @@ import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.Targets
-import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.GameRng
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
-import com.wingedsheep.sdk.scripting.GrantKeyword
-import com.wingedsheep.sdk.scripting.ModifyStats
-import com.wingedsheep.sdk.scripting.TriggerBinding
 import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import io.kotest.assertions.withClue
 import io.kotest.matchers.nulls.shouldNotBeNull
@@ -33,22 +30,7 @@ import io.kotest.matchers.shouldNotBe
  * Source record says FRA #134, common, release 2026-10-02, Pauper not_legal at retrieval.
  * The triggered ability belongs to the Aura; it is not granted to the creature.
  */
-internal val ferocityResearchFixture = card("Ferocity of the Hunt") {
-    manaCost = "{1}{B/G}"
-    colorIdentity = "BG"
-    typeLine = "Enchantment — Aura"
-    oracleText = "Flash\nEnchant creature\n" +
-        "Enchanted creature gets +1/+0 and has deathtouch.\n" +
-        "When enchanted creature dies, return that card to the battlefield tapped under its owner's control."
-    keywords(Keyword.FLASH)
-    auraTarget = Targets.Creature
-    staticAbility { ability = ModifyStats(1, 0) }
-    staticAbility { ability = GrantKeyword(Keyword.DEATHTOUCH) }
-    triggeredAbility {
-        trigger = Triggers.leavesBattlefield(to = Zone.GRAVEYARD, binding = TriggerBinding.ATTACHED)
-        effect = Effects.PutOntoBattlefieldFromGraveyard(EffectTarget.TriggeringEntity, tapped = true)
-    }
-}
+internal val ferocityResearchFixture = FerocityOfTheHuntPrerelease
 
 class FerocityOfTheHuntScenarioTest : ScenarioTestBase() {
     private val slay = card("Ferocity Fixture Slay") {

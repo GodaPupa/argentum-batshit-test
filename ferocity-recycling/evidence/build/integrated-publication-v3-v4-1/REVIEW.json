@@ -1,0 +1,144 @@
+{
+  "schema": "ferocity-compact-evidence-review-v1",
+  "created_utc": "2026-09-26T10:42:20.662667+00:00",
+  "attempts": [
+    {
+      "attempt": "integrated-v3-policy-observer-02",
+      "status": "FAIL",
+      "receipt_sha256": "2642e38f0a5cde78cf4434d4ac44c40a2d41085981cde946282e4707ed57edc7",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 36,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "integrated-v4-1-policy-bundle-diagnostics-03",
+      "status": "FAIL",
+      "receipt_sha256": "6568304a7d31786ace930307ca4be67c5ba7b17956829c7086a7e046632ada3f",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 52,
+        "failures": 16,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "scope": "Fixed policy, observation and diagnostic qualification only. v3:36executed34pass2Artifact fixture failures, StackSourceObservation12pass. v4.1:52executed36pass16Bundle failures before fresh-process replay; Artifact24 and Diagnostics12pass. Pre-build v4 token-lookup correction had0executions. No gameplay admission, independently confirmed policies, valid raw-bundle replay, or competitive outcomes are implied.",
+  "repeated_fixed_case_executions_across_versions": 88,
+  "failures_across_versions": 18,
+  "not_independent_samples": true,
+  "research_development_games": 0,
+  "evaluation_games": 0,
+  "confirmation_games": 0,
+  "scan": {
+    "text_members_checked": 942,
+    "recursive_zip_members_checked": 898,
+    "high_confidence_findings": [],
+    "future_keyword_occurrences": [
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v3-policy-observer-02/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v3-policy-observer-02/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v3-policy-observer-02/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v4-1-policy-bundle-diagnostics-03/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v4-1-policy-bundle-diagnostics-03/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v4-1-policy-bundle-diagnostics-03/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integrated-v3-first-authored-source/SOURCE_FREEZE.json",
+        "line": "    \"confirmation_games\": 0"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integrated-v3-first-validator/validate_build.py.before",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integrated-v4-1-authored-source/SOURCE_FREEZE.json",
+        "line": "    \"confirmation_games\": 0"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integrated-v4-1-validator/validate_build.py.before",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v3/before-v3/exact-v2-sources-and-result.zip!ferocity-recycling/evidence/build/integrated-v2-first-01/failure-inventory.json",
+        "line": "  \"confirmation_games\": 0"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v3/before-v3/exact-v2-sources-and-result.zip!ferocity-recycling/evidence/build/integrated-v2-first-01/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v3/before-v3/exact-v2-sources-and-result.zip!ferocity-recycling/evidence/build/integrated-v2-first-01/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v3/before-v3/exact-v2-sources-and-result.zip!ferocity-recycling/support-audits/integrated-engine-v2/SOURCE_FREEZE.json",
+        "line": "    \"confirmation_games\": 0"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v3/before-v3/observer-v3-1-audit.zip!ferocity-recycling/runtime-audits/observation-lki/AUTHOR_REVIEW.json",
+        "line": "    \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v3/before-v3/observer-v3-1-audit.zip!ferocity-recycling/runtime-audits/observation-lki/BASE_OBSERVER_AUTHOR_REVIEW.json",
+        "line": "    \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v3/before-v3/observer-v3-1-audit.zip!ferocity-recycling/runtime-audits/observation-lki/revisions/v3-before-private-origin-review/AUTHOR_REVIEW.json.before",
+        "line": "    \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v4/before-v4/exact-v3-sources-and-result.zip!ferocity-recycling/support-audits/integrated-engine-v3/SOURCE_FREEZE.json",
+        "line": "    \"confirmation_games\": 0"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v4/before-v4/exact-v3-sources-and-result.zip!ferocity-recycling/evidence/build/integrated-v3-policy-observer-02/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v4/before-v4/exact-v3-sources-and-result.zip!ferocity-recycling/evidence/build/integrated-v3-policy-observer-02/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v4/before-v4/exact-v3-sources-and-result.zip!ferocity-recycling/evidence/build/integrated-v3-policy-observer-02/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/integration-v4-1/exact-v4-unexecuted-before.zip!ferocity-recycling/support-audits/integrated-engine-v4/SOURCE_FREEZE.json",
+        "line": "    \"confirmation_games\": 0"
+      },
+      {
+        "member": "ferocity-recycling/support-audits/integrated-engine-v3/SOURCE_FREEZE.json",
+        "line": "    \"confirmation_games\": 0"
+      },
+      {
+        "member": "ferocity-recycling/support-audits/integrated-engine-v4/SOURCE_FREEZE.json",
+        "line": "    \"confirmation_games\": 0"
+      },
+      {
+        "member": "ferocity-recycling/support-audits/integrated-engine-v4-1/SOURCE_FREEZE.json",
+        "line": "    \"confirmation_games\": 0"
+      }
+    ]
+  }
+}

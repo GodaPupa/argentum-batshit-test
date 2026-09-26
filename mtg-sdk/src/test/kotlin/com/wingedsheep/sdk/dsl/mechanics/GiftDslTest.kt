@@ -17,6 +17,7 @@ import com.wingedsheep.sdk.scripting.references.Player
 import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import com.wingedsheep.sdk.serialization.CardValidationError
 import com.wingedsheep.sdk.serialization.CardValidator
+import com.wingedsheep.sdk.serialization.CardSerialization
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.collections.shouldHaveSize
 import io.kotest.matchers.shouldBe
@@ -28,7 +29,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
  *
  * The rules enumerate the whole `[something]` list (CR 702.174d–i) but only two kinds have a card
  * today, so the four unused mappings are pinned here rather than left to the first card that needs
- * one. Also covers the derived enters-ability's shape (CR 702.174b) and the permanent-only guard.
+ * one. Also covers the derived enters-ability and the spell's cast-time target/effect shape.
  */
 class GiftDslTest : DescribeSpec({
 
@@ -135,17 +136,16 @@ class GiftDslTest : DescribeSpec({
         }
     }
 
-    describe("the keyword is permanent-only") {
+    describe("instant and sorcery Gift") {
 
-        it("is rejected on an instant, which has no enters trigger to fire (CR 702.174b)") {
+        it("accepts an instant without manufacturing an enters trigger (CR 702.174b)") {
             val instant = card("Test Gift Instant") {
                 typeLine = "Instant"
                 gift(GiftKind.CARD)
             }
-            val errors = CardValidator.validate(instant)
-                .filterIsInstance<CardValidationError.GiftKeywordOnNonPermanent>()
-            errors shouldHaveSize 1
-            errors.single().message shouldContain "giftSpell"
+            instant.script.triggeredAbilities shouldHaveSize 0
+            instant.giftKeyword() shouldBe KeywordAbility.Gift(GiftKind.CARD)
+            CardValidator.validate(instant) shouldHaveSize 0
         }
 
         it("accepts a permanent") {
@@ -155,6 +155,59 @@ class GiftDslTest : DescribeSpec({
                     gift(GiftKind.FOOD)
                 }
             ).filterIsInstance<CardValidationError.GiftKeywordOnNonPermanent>() shouldHaveSize 0
+        }
+
+        it("round trips complete promised targets and effect with named bindings") {
+            val spell = card("Gift Shape Fixture") {
+                typeLine = "Instant"
+                gift(GiftKind.TAPPED_FISH)
+                spell {
+                    val player = target("player", Targets.Player)
+                    effect = Effects.DrawCards(2, player)
+                    val giftedPlayer = giftTarget("player", Targets.Player)
+                    val creature = giftTarget("creature", Targets.CreatureYouControl)
+                    giftEffect = Effects.Composite(Effects.DrawCards(2, giftedPlayer), Effects.ModifyStats(2, 0, creature))
+                }
+            }
+            val encoded = CardSerialization.json.encodeToString(CardDefinition.serializer(), spell)
+            CardSerialization.json.decodeFromString(CardDefinition.serializer(), encoded) shouldBe spell
+            spell.script.giftTargetRequirements shouldHaveSize 2
+            CardValidator.validate(spell) shouldHaveSize 0
+        }
+
+        it("rejects a promised shape without the Gift keyword") {
+            val spell = card("No Gift Keyword Fixture") {
+                typeLine = "Instant"
+                spell { effect = Effects.DrawCards(1); giftEffect = Effects.DrawCards(2) }
+            }
+            CardValidator.validate(spell).filterIsInstance<CardValidationError.InvalidGiftShape>() shouldHaveSize 1
+        }
+
+        it("rejects a replacement target shape that the menu cannot yet enumerate") {
+            val spell = card("Replacement Gift Target Fixture") {
+                typeLine = "Instant"
+                gift(GiftKind.FOOD)
+                spell {
+                    val target = target("player", Targets.Player)
+                    effect = Effects.DrawCards(1, target)
+                    val creature = giftTarget("creature", Targets.Creature)
+                    giftEffect = Effects.ModifyStats(1, 1, creature)
+                }
+            }
+            CardValidator.validate(spell).filterIsInstance<CardValidationError.InvalidGiftShape>() shouldHaveSize 1
+        }
+
+        it("rejects ambiguous simultaneous Gift and kicker effect shapes") {
+            val spell = card("Combined Gift Shape Fixture") {
+                typeLine = "Sorcery"
+                gift(GiftKind.FOOD)
+                spell {
+                    effect = Effects.DrawCards(1)
+                    giftEffect = Effects.DrawCards(2)
+                    kickerEffect = Effects.DrawCards(3)
+                }
+            }
+            CardValidator.validate(spell).filterIsInstance<CardValidationError.InvalidGiftShape>() shouldHaveSize 1
         }
     }
 })

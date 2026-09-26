@@ -572,10 +572,10 @@ export class GamePage {
   async decreaseCombatDamage(name: string, times: number = 1) {
     const section = this.page
       .locator('div')
-      .filter({ hasText: name })
-      .filter({ has: this.page.locator('button', { hasText: '+' }) })
+      .filter({ has: this.page.getByText(name, { exact: true }) })
+      .filter({ has: this.page.getByRole('button', { name: '+', exact: true }) })
       .last()
-    const minusBtn = section.locator('button').filter({ hasText: '-' })
+    const minusBtn = section.getByRole('button', { name: '-', exact: true })
     for (let i = 0; i < times; i++) {
       await minusBtn.click()
     }
@@ -590,10 +590,10 @@ export class GamePage {
   async increaseCombatDamage(name: string, times: number = 1) {
     const section = this.page
       .locator('div')
-      .filter({ hasText: name })
-      .filter({ has: this.page.locator('button', { hasText: '+' }) })
+      .filter({ has: this.page.getByText(name, { exact: true }) })
+      .filter({ has: this.page.getByRole('button', { name: '+', exact: true }) })
       .last()
-    const plusBtn = section.locator('button').filter({ hasText: '+' })
+    const plusBtn = section.getByRole('button', { name: '+', exact: true })
     for (let i = 0; i < times; i++) {
       await plusBtn.click()
     }

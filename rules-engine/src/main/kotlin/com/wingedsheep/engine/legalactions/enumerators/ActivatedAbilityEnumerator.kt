@@ -901,7 +901,11 @@ class ActivatedAbilityEnumerator : ActionEnumerator {
                 val abilityHasXCost = abilityHasXInManaCost || hasNonManaXCost || hasTapXPermanentsCost
 
                 val abilityMaxAffordableX: Int? = if (abilityHasXCost) {
-                    context.costUtils.calculateMaxAffordableX(state, playerId, ability.cost, abilityManaCost, precomputedSources = context.availableManaSources, sourceId = entityId)
+                    context.costUtils.calculateMaxAffordableX(
+                        state, playerId, effectiveCost, abilityManaCost,
+                        precomputedSources = context.availableManaSources, sourceId = entityId,
+                        xManaRestriction = ability.xManaRestriction, spellContext = abilityContext
+                    )
                 } else null
                 // "X can't be 0" abilities (Gogo, Master of Mimicry) surface a minimum X so the
                 // client's X picker never offers 0. Enforced authoritatively by the X-choice
@@ -1009,6 +1013,7 @@ class ActivatedAbilityEnumerator : ActionEnumerator {
                             hasXCost = abilityHasXCost,
                             maxAffordableX = abilityMaxAffordableX,
                             minX = abilityMinX,
+                            affordable = abilityMaxAffordableX == null || abilityMaxAffordableX >= abilityMinX,
                             autoTapPreview = abilityAutoTapPreview,
                             manaCostString = abilityManaCostString,
                             hasConvoke = ability.hasConvoke,
@@ -1032,6 +1037,7 @@ class ActivatedAbilityEnumerator : ActionEnumerator {
                             hasXCost = abilityHasXCost,
                             maxAffordableX = abilityMaxAffordableX,
                             minX = abilityMinX,
+                            affordable = abilityMaxAffordableX == null || abilityMaxAffordableX >= abilityMinX,
                             autoTapPreview = abilityAutoTapPreview,
                             maxRepeatableActivations = maxRepeatableActivations,
                             manaCostString = abilityManaCostString,
@@ -1070,6 +1076,7 @@ class ActivatedAbilityEnumerator : ActionEnumerator {
                             hasXCost = abilityHasXCost,
                             maxAffordableX = abilityMaxAffordableX,
                             minX = abilityMinX,
+                            affordable = abilityMaxAffordableX == null || abilityMaxAffordableX >= abilityMinX,
                             autoTapPreview = abilityAutoTapPreview,
                             manaCostString = abilityManaCostString,
                             hasConvoke = ability.hasConvoke,
@@ -1092,6 +1099,7 @@ class ActivatedAbilityEnumerator : ActionEnumerator {
                         hasXCost = abilityHasXCost,
                         maxAffordableX = abilityMaxAffordableX,
                         minX = abilityMinX,
+                        affordable = abilityMaxAffordableX == null || abilityMaxAffordableX >= abilityMinX,
                         autoTapPreview = abilityAutoTapPreview,
                         maxRepeatableActivations = maxRepeatableActivations,
                         manaCostString = abilityManaCostString,

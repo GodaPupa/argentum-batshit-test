@@ -1,0 +1,72 @@
+{
+  "schema": "ferocity-compact-evidence-review-v1",
+  "created_utc": "2026-09-26T13:20:47.837337+00:00",
+  "attempts": [
+    {
+      "attempt": "integrated-v5-post-block-baseline-19",
+      "status": "FAIL",
+      "receipt_sha256": "e9c4f4382daa15555bf667e27d55c2aa4c0da32ce75e2a207193da144e6fd54d",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "integrated-v5-post-block-baseline-24",
+      "status": "FAIL",
+      "receipt_sha256": "a279e4bf49455e9d8ca5a6648dcc471547a805d790a61e4200aeef2e15ae9fcd",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 13,
+        "failures": 13,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "scope": "Attempt19 is a zero-case external Gradle journal lock failure; only minimal owner PID/timing diagnosis retained. Attempt24 executes thirteen fixed baseline cases, all failed: eleven early priority/trigger assertions and two fixture serializer exceptions, not thirteen independently established engine defects. Exact unchanged source, owner-approved reproducible-output cleanup, restored-output observation, and private dependency/distribution cache provenance retained. No foreign worker command/log/input copied. Zero research gameplay.",
+  "repeated_fixed_case_executions_across_versions": 13,
+  "failures_across_versions": 13,
+  "not_independent_samples": true,
+  "research_development_games": 0,
+  "evaluation_games": 0,
+  "confirmation_games": 0,
+  "scan": {
+    "text_members_checked": 222,
+    "recursive_zip_members_checked": 186,
+    "high_confidence_findings": [],
+    "future_keyword_occurrences": [
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-post-block-baseline-19/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-post-block-baseline-19/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-post-block-baseline-19/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-post-block-baseline-24/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-post-block-baseline-24/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/integrated-v5-post-block-baseline-24/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/support-audits/isolated-post-block-baseline-import-19/validate_build.py.before",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      }
+    ]
+  }
+}

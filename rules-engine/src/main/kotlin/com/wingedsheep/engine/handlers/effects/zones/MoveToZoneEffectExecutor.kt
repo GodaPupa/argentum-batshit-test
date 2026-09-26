@@ -372,6 +372,8 @@ class MoveToZoneEffectExecutor(
                 return zoneKey
             }
         }
-        return null
+        // The shared stack is stored outside state.zones. A spell-targeted generic move must
+        // still reach ZoneTransitionService (including any paid flashback exit replacement).
+        return state.logicalZone(entityId)?.takeIf { it.zoneType == Zone.STACK }
     }
 }

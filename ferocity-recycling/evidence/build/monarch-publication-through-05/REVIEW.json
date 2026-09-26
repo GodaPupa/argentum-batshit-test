@@ -1,0 +1,156 @@
+{
+  "schema": "ferocity-compact-evidence-review-v1",
+  "created_utc": "2026-09-26T10:41:19.269774+00:00",
+  "attempts": [
+    {
+      "attempt": "monarch-initiative-first-01",
+      "status": "FAIL",
+      "receipt_sha256": "ed93fc69bbe9d139772b7a9ee8ae20c8d1d7f9c96ac6e1d8adb7ee14b250ef1e",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "monarch-initiative-import-02",
+      "status": "FAIL",
+      "receipt_sha256": "eb3fb38ea641aa621f6ca1259d05f58be5f8d08cc56356d16acc33dc5ce337eb",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 0,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "monarch-client-field-03",
+      "status": "FAIL",
+      "receipt_sha256": "635853c52b7cb93008b52f9af115561d7ff93d6ca9280754b9d9fbf41f157cb3",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 60,
+        "failures": 3,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "monarch-card-scope-04",
+      "status": "FAIL",
+      "receipt_sha256": "c49b12d4f1d0889db5f3f289671a39c975de255e6ae9ab3f709f591a10056b2e",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 12,
+        "failures": 2,
+        "errors": 0,
+        "skipped": 0
+      }
+    },
+    {
+      "attempt": "monarch-fixed-fixture-successor-05",
+      "status": "PASS",
+      "receipt_sha256": "959c5e3a3c02ff4ffafa6b53254c6475bc4ff136e37ac50684be5b1fc3f4fa89",
+      "compiled_inputs_unchanged": true,
+      "fresh_fixed_case_executions": {
+        "tests": 72,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      }
+    }
+  ],
+  "scope": "Isolated real-engine monarch and initiative fixtures only. First two attempts failed compilation before executing cases; separate initial engine60 and card12 scope attempts exposed five preserved fixture defects; successor05 freshly passes72 unchanged assertions after setup/serialization corrections. This does not qualify server/client type checks, visual experience, all-engine regression, future integrated engine, pilots, or competitive gameplay.",
+  "repeated_fixed_case_executions_across_versions": 144,
+  "failures_across_versions": 5,
+  "not_independent_samples": true,
+  "research_development_games": 0,
+  "evaluation_games": 0,
+  "confirmation_games": 0,
+  "scan": {
+    "text_members_checked": 888,
+    "recursive_zip_members_checked": 612,
+    "high_confidence_findings": [],
+    "future_keyword_occurrences": [
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-initiative-first-01/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-initiative-first-01/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-initiative-first-01/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-initiative-import-02/failure-review.json",
+        "line": "  \"confirmation_games\": 0"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-initiative-import-02/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-initiative-import-02/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-initiative-import-02/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-client-field-03/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-client-field-03/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-client-field-03/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-card-scope-04/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-card-scope-04/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-card-scope-04/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-fixed-fixture-successor-05/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-fixed-fixture-successor-05/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/build/monarch-fixed-fixture-successor-05/validator-attempt.py",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/lki-priority-routing-targeted-05-import/receipt.json",
+        "line": "  \"confirmation_games\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/lki-priority-routing-targeted-05-import/receipt.json",
+        "line": "  \"randomized_experimental_seeds\": 0,"
+      },
+      {
+        "member": "ferocity-recycling/evidence/source-boundaries/monarch-fixture-successor-04-validator/validate_build.py.before",
+        "line": "        \"confirmation_games\": 0, \"randomized_experimental_seeds\": 0,"
+      }
+    ]
+  }
+}

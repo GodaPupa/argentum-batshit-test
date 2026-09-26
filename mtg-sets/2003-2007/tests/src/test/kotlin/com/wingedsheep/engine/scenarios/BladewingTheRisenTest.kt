@@ -1,6 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.ChooseTargetsDecision
+import com.wingedsheep.engine.core.DecisionPhase
+import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.mechanics.layers.StateProjector
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
@@ -13,8 +16,10 @@ import com.wingedsheep.sdk.core.Subtype
 import com.wingedsheep.sdk.model.CardDefinition
 import com.wingedsheep.sdk.model.Deck
 import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
  * Tests for Bladewing the Risen:
@@ -63,15 +68,24 @@ class BladewingTheRisenTest : FunSpec({
         driver.giveMana(activePlayer, Color.BLACK, 2)
         driver.giveMana(activePlayer, Color.RED, 2)
         driver.giveColorlessMana(activePlayer, 3)
-        driver.castSpell(activePlayer, bladewing)
-        driver.bothPass() // resolve Bladewing
+        driver.castSpell(activePlayer, bladewing).error shouldBe null
+        driver.bothPass().error shouldBe null // resolve Bladewing
 
-        // ETB trigger fires — the "you may" is asked first, then targets
-        driver.submitYesNo(activePlayer, true)
-        driver.submitTargetSelection(activePlayer, listOf(dragonInGraveyard))
-
-        // Trigger on stack — resolve it
-        driver.bothPass()
+        // Choose the target on placement; the optional return is chosen on resolution.
+        val target = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        target.playerId shouldBe activePlayer
+        target.context.phase shouldNotBe DecisionPhase.RESOLUTION
+        target.legalTargets.getValue(0) shouldContain dragonInGraveyard
+        driver.submitTargetSelection(activePlayer, listOf(dragonInGraveyard)).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 1
+        driver.bothPass().error shouldBe null
+        val may = driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        may.playerId shouldBe activePlayer
+        may.context.phase shouldBe DecisionPhase.RESOLUTION
+        driver.submitYesNo(activePlayer, true).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 0
 
         // Dragon should now be on the battlefield
         driver.findPermanent(activePlayer, "Test Dragon") shouldNotBe null
@@ -87,21 +101,33 @@ class BladewingTheRisenTest : FunSpec({
         val activePlayer = driver.activePlayer!!
         driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
 
-        driver.putCardInGraveyard(activePlayer, "Test Dragon")
+        val dragonInGraveyard = driver.putCardInGraveyard(activePlayer, "Test Dragon")
 
         val bladewing = driver.putCardInHand(activePlayer, "Bladewing the Risen")
         driver.giveMana(activePlayer, Color.BLACK, 2)
         driver.giveMana(activePlayer, Color.RED, 2)
         driver.giveColorlessMana(activePlayer, 3)
-        driver.castSpell(activePlayer, bladewing)
-        driver.bothPass()
+        driver.castSpell(activePlayer, bladewing).error shouldBe null
+        driver.bothPass().error shouldBe null
 
-        // Decline the ETB trigger at its may-question
-        driver.submitYesNo(activePlayer, false)
-        driver.bothPass()
+        // A mandatory target is still selected even when the optional return will be declined.
+        val target = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        target.playerId shouldBe activePlayer
+        target.context.phase shouldNotBe DecisionPhase.RESOLUTION
+        target.legalTargets.getValue(0) shouldContain dragonInGraveyard
+        driver.submitTargetSelection(activePlayer, listOf(dragonInGraveyard)).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.bothPass().error shouldBe null
+        val may = driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        may.playerId shouldBe activePlayer
+        may.context.phase shouldBe DecisionPhase.RESOLUTION
+        driver.submitYesNo(activePlayer, false).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 0
 
         // Dragon should remain in graveyard
         driver.findPermanent(activePlayer, "Test Dragon") shouldBe null
+        driver.getGraveyardCardNames(activePlayer) shouldContain "Test Dragon"
     }
 
     test("activated ability gives all Dragons +1/+1") {

@@ -11,6 +11,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 /**
  * Tests for Dawning Purist.
@@ -63,16 +64,18 @@ class DawningPuristTest : FunSpec({
         // (no first strike creatures, so first strike step is skipped per CR 510.4)
         driver.currentStep shouldBe Step.COMBAT_DAMAGE
 
-        // Step 1: "May destroy?" — answer yes
-        val yesNoDecision = driver.pendingDecision as YesNoDecision
-        driver.submitYesNo(yesNoDecision.playerId, true)
+        // Choose the required enchantment target while putting the trigger on the stack.
+        val chooseTargets = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        chooseTargets.playerId shouldBe attacker
+        driver.submitTargetSelection(attacker, listOf(enchantment)).error shouldBe null
+        driver.stackSize shouldBe 1
 
-        // Step 2: Choose target enchantment
-        val chooseTargets = driver.pendingDecision as ChooseTargetsDecision
-        driver.submitTargetSelection(attacker, listOf(enchantment))
-
-        // Trigger goes on stack - resolve it
-        driver.bothPass()
+        // Passing priority begins resolution; the optional destruction is chosen now.
+        driver.bothPass().error shouldBe null
+        val yesNoDecision = driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        yesNoDecision.playerId shouldBe attacker
+        driver.findPermanent(defender, "Test Enchantment") shouldNotBe null
+        driver.submitYesNo(yesNoDecision.playerId, true).error shouldBe null
 
         // Enchantment should be destroyed
         driver.findPermanent(defender, "Test Enchantment") shouldBe null
@@ -97,7 +100,7 @@ class DawningPuristTest : FunSpec({
         driver.removeSummoningSickness(purist)
 
         // Put an enchantment on opponent's battlefield
-        driver.putPermanentOnBattlefield(defender, "Test Enchantment")
+        val enchantment = driver.putPermanentOnBattlefield(defender, "Test Enchantment")
 
         // Advance to declare attackers
         driver.passPriorityUntil(Step.DECLARE_ATTACKERS)
@@ -110,10 +113,15 @@ class DawningPuristTest : FunSpec({
         driver.declareNoBlockers(defender)
         driver.bothPass()
 
-        // Combat damage - trigger fires with MayEffect, decline
-        // (no first strike creatures, so first strike step is skipped per CR 510.4)
-        val yesNoDecision = driver.pendingDecision as YesNoDecision
-        driver.submitYesNo(yesNoDecision.playerId, false)
+        // Even when declining later, choose the required target before the trigger resolves.
+        // (No first strike creatures, so the first strike step is skipped per CR 510.4.)
+        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>().playerId shouldBe attacker
+        driver.submitTargetSelection(attacker, listOf(enchantment)).error shouldBe null
+        driver.stackSize shouldBe 1
+        driver.bothPass().error shouldBe null
+        val yesNoDecision = driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        yesNoDecision.playerId shouldBe attacker
+        driver.submitYesNo(yesNoDecision.playerId, false).error shouldBe null
 
         // Enchantment should still be on the battlefield
         driver.findPermanent(defender, "Test Enchantment") shouldNotBe null

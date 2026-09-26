@@ -1,0 +1,217 @@
+{
+  "schema": "ferocity-14ec-general-job-log-summary-v1",
+  "jobs": [
+    {
+      "job_id": 108361457632,
+      "name": "deterministic",
+      "logged_test_result_events": {
+        "passed": 0,
+        "failed": 0,
+        "skipped": 0
+      },
+      "test_task_lines": [],
+      "checked_out_source_lines": [
+        "2026-09-26T07:21:15.9022301Z 14ec21b85b5f0aec833202c1caeacafe3919de15"
+      ],
+      "signed_query_matches": 0,
+      "credential_pattern_matches": 0,
+      "test_task_names": []
+    },
+    {
+      "job_id": 108361458012,
+      "name": "test (scenarios-old)",
+      "logged_test_result_events": {
+        "passed": 4289,
+        "failed": 0,
+        "skipped": 0
+      },
+      "test_task_lines": [
+        "2026-09-26T07:26:03.8468911Z > Task :mtg-sets:2000-2002:tests:test",
+        "2026-09-26T07:26:14.3394564Z > Task :mtg-sets:1993-1999:tests:test",
+        "2026-09-26T07:26:27.4419470Z > Task :mtg-sets:2000-2002:tests:test",
+        "2026-09-26T07:26:41.1889289Z > Task :mtg-sets:2008-2016:tests:test",
+        "2026-09-26T07:26:44.3432823Z > Task :mtg-sets:1993-1999:tests:test",
+        "2026-09-26T07:26:53.9604353Z > Task :mtg-sets:2000-2002:tests:test",
+        "2026-09-26T07:26:55.9469389Z > Task :mtg-sets:1993-1999:tests:test",
+        "2026-09-26T07:26:56.6759322Z > Task :mtg-sets:2003-2007:tests:test",
+        "2026-09-26T07:27:05.0505859Z > Task :mtg-sets:1993-1999:tests:test",
+        "2026-09-26T07:27:07.4419969Z > Task :mtg-sets:2008-2016:tests:test",
+        "2026-09-26T07:27:20.5415180Z > Task :mtg-sets:2003-2007:tests:test",
+        "2026-09-26T07:27:28.3599091Z > Task :mtg-sets:2003-2007:tests:test",
+        "2026-09-26T07:27:55.7395405Z > Task :mtg-sets:2017-2022:tests:test"
+      ],
+      "checked_out_source_lines": [
+        "2026-09-26T07:21:12.7552405Z 49ad1a1bc817241be61d6c5a169f962b775b37a2"
+      ],
+      "signed_query_matches": 0,
+      "credential_pattern_matches": 0,
+      "test_task_names": [
+        ":mtg-sets:2000-2002:tests:test",
+        ":mtg-sets:1993-1999:tests:test",
+        ":mtg-sets:2008-2016:tests:test",
+        ":mtg-sets:2003-2007:tests:test",
+        ":mtg-sets:2017-2022:tests:test"
+      ]
+    },
+    {
+      "job_id": 108361458025,
+      "name": "test (server)",
+      "logged_test_result_events": {
+        "passed": 554,
+        "failed": 0,
+        "skipped": 4
+      },
+      "test_task_lines": [
+        "2026-09-26T07:27:06.2459194Z > Task :game-server:test",
+        "2026-09-26T07:27:24.1461433Z > Task :game-server:test",
+        "2026-09-26T07:28:11.4459685Z > Task :game-server:test"
+      ],
+      "checked_out_source_lines": [
+        "2026-09-26T07:21:11.3947761Z 49ad1a1bc817241be61d6c5a169f962b775b37a2"
+      ],
+      "signed_query_matches": 0,
+      "credential_pattern_matches": 0,
+      "test_task_names": [
+        ":game-server:test"
+      ]
+    },
+    {
+      "job_id": 108361458026,
+      "name": "test (scenarios-2025-26)",
+      "logged_test_result_events": {
+        "passed": 2934,
+        "failed": 0,
+        "skipped": 0
+      },
+      "test_task_lines": [
+        "2026-09-26T07:26:23.2669651Z > Task :mtg-sets:2026:tests:test",
+        "2026-09-26T07:26:30.2785895Z > Task :mtg-sets:2025:tests:test",
+        "2026-09-26T07:26:55.8749941Z > Task :mtg-sets:2026:tests:test",
+        "2026-09-26T07:26:56.5669657Z > Task :mtg-sets:2025:tests:test"
+      ],
+      "checked_out_source_lines": [
+        "2026-09-26T07:21:14.8495070Z 49ad1a1bc817241be61d6c5a169f962b775b37a2"
+      ],
+      "signed_query_matches": 0,
+      "credential_pattern_matches": 0,
+      "test_task_names": [
+        ":mtg-sets:2026:tests:test",
+        ":mtg-sets:2025:tests:test"
+      ]
+    },
+    {
+      "job_id": 108361458039,
+      "name": "test (tools)",
+      "logged_test_result_events": {
+        "passed": 627,
+        "failed": 0,
+        "skipped": 37
+      },
+      "test_task_lines": [
+        "2026-09-26T07:22:56.2087710Z > Task :mtgish-tooling:test",
+        "2026-09-26T07:25:37.6108692Z > Task :gym-trainer:test",
+        "2026-09-26T07:26:23.4168990Z > Task :gym-trainer:test",
+        "2026-09-26T07:26:25.0248742Z > Task :gym:test",
+        "2026-09-26T07:26:26.1128981Z > Task :gym-server:test",
+        "2026-09-26T07:26:27.4108664Z > Task :gym-trainer:test",
+        "2026-09-26T07:26:33.0128641Z > Task :gym:test",
+        "2026-09-26T07:26:49.3091043Z > Task :gym-server:test",
+        "2026-09-26T07:29:40.9078511Z > Task :gym:test"
+      ],
+      "checked_out_source_lines": [
+        "2026-09-26T07:21:12.5191641Z 49ad1a1bc817241be61d6c5a169f962b775b37a2"
+      ],
+      "signed_query_matches": 0,
+      "credential_pattern_matches": 0,
+      "test_task_names": [
+        ":mtgish-tooling:test",
+        ":gym-trainer:test",
+        ":gym:test",
+        ":gym-server:test"
+      ]
+    },
+    {
+      "job_id": 108361458095,
+      "name": "test (content)",
+      "logged_test_result_events": {
+        "passed": 1807,
+        "failed": 0,
+        "skipped": 11
+      },
+      "test_task_lines": [
+        "2026-09-26T07:22:20.2475517Z > Task :mtg-search:test",
+        "2026-09-26T07:23:18.8411136Z > Task :mtg-sdk:test",
+        "2026-09-26T07:23:31.0440976Z > Task :mtg-sdk:test",
+        "2026-09-26T07:25:48.9440983Z > Task :ai:test",
+        "2026-09-26T07:25:57.3451206Z > Task :mtg-sets:test",
+        "2026-09-26T07:26:18.9411226Z > Task :ai:test",
+        "2026-09-26T07:26:41.1383625Z > Task :mtg-sets:test",
+        "2026-09-26T07:26:47.2432215Z > Task :ai:test"
+      ],
+      "checked_out_source_lines": [
+        "2026-09-26T07:21:09.3378753Z 49ad1a1bc817241be61d6c5a169f962b775b37a2"
+      ],
+      "signed_query_matches": 0,
+      "credential_pattern_matches": 0,
+      "test_task_names": [
+        ":mtg-search:test",
+        ":mtg-sdk:test",
+        ":ai:test",
+        ":mtg-sets:test"
+      ]
+    },
+    {
+      "job_id": 108361458099,
+      "name": "test (scenarios-2023-24)",
+      "logged_test_result_events": {
+        "passed": 3344,
+        "failed": 0,
+        "skipped": 0
+      },
+      "test_task_lines": [
+        "2026-09-26T07:26:19.3342325Z > Task :mtg-sets:2023:tests:test",
+        "2026-09-26T07:26:34.7679796Z > Task :mtg-sets:2024:tests:test",
+        "2026-09-26T07:26:44.9412345Z > Task :mtg-sets:2023:tests:test",
+        "2026-09-26T07:26:46.9358367Z > Task :mtg-sets:2024:tests:test"
+      ],
+      "checked_out_source_lines": [
+        "2026-09-26T07:21:09.5176349Z 49ad1a1bc817241be61d6c5a169f962b775b37a2"
+      ],
+      "signed_query_matches": 0,
+      "credential_pattern_matches": 0,
+      "test_task_names": [
+        ":mtg-sets:2023:tests:test",
+        ":mtg-sets:2024:tests:test"
+      ]
+    },
+    {
+      "job_id": 108361458112,
+      "name": "test (engine)",
+      "logged_test_result_events": {
+        "passed": 3657,
+        "failed": 0,
+        "skipped": 0
+      },
+      "test_task_lines": [
+        "2026-09-26T07:26:25.9402928Z > Task :rules-engine:test"
+      ],
+      "checked_out_source_lines": [
+        "2026-09-26T07:21:11.8608568Z 49ad1a1bc817241be61d6c5a169f962b775b37a2"
+      ],
+      "signed_query_matches": 0,
+      "credential_pattern_matches": 0,
+      "test_task_names": [
+        ":rules-engine:test"
+      ]
+    }
+  ],
+  "checked_out_merge": {
+    "sha": "49ad1a1bc817241be61d6c5a169f962b775b37a2",
+    "tree": "ae1458ce9e5abb28071e58c56a9ff5affe2a464d",
+    "parents": [
+      "c771be5679cc1e9b25363c95ef50979961ac9f16",
+      "14ec21b85b5f0aec833202c1caeacafe3919de15"
+    ]
+  },
+  "scope": "Logged test-result events, not uploaded XML or research games. Task markers are retained; skipped tests are not accepted assertions."
+}

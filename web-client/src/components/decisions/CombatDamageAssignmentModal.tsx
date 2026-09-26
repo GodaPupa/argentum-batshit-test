@@ -16,7 +16,8 @@ interface TargetInfo {
 
 /**
  * Modal for assigning combat damage from an attacker to blockers (and defending player for trample).
- * Pre-filled with the default (optimal) damage distribution. Player can adjust with +/- buttons.
+ * Pre-filled with the engine's suggested distribution. Players may freely adjust creature amounts;
+ * the engine validates full assignment and the separate trample condition on submission.
  */
 export function CombatDamageAssignmentModal({ decision }: { decision: AssignDamageDecision }) {
   const submitDamageAssignment = useGameStore((s) => s.submitDamageAssignmentDecision)
@@ -101,8 +102,7 @@ export function CombatDamageAssignmentModal({ decision }: { decision: AssignDama
 
   const handleDecrease = (targetId: EntityId) => {
     const current = distribution[targetId] ?? 0
-    const minimum = decision.minimumAssignments[targetId] ?? 0
-    if (current <= minimum) return
+    if (current <= 0) return
     setDistribution((prev) => ({
       ...prev,
       [targetId]: (prev[targetId] ?? 0) - 1,
@@ -383,20 +383,20 @@ export function CombatDamageAssignmentModal({ decision }: { decision: AssignDama
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                 <button
                   onClick={() => handleDecrease(target.id)}
-                  disabled={allocated <= (decision.minimumAssignments[target.id] ?? 0)}
+                  disabled={allocated <= 0}
                   style={{
                     width: 36,
                     height: 36,
                     borderRadius: 8,
                     border: 'none',
                     backgroundColor:
-                      allocated <= (decision.minimumAssignments[target.id] ?? 0) ? '#333' : '#dc2626',
+                      allocated <= 0 ? '#333' : '#dc2626',
                     color:
-                      allocated <= (decision.minimumAssignments[target.id] ?? 0) ? '#666' : 'white',
+                      allocated <= 0 ? '#666' : 'white',
                     fontSize: 20,
                     fontWeight: 'bold',
                     cursor:
-                      allocated <= (decision.minimumAssignments[target.id] ?? 0)
+                      allocated <= 0
                         ? 'not-allowed'
                         : 'pointer',
                     display: 'flex',

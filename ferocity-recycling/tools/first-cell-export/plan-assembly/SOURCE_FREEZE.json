@@ -1,0 +1,34 @@
+{
+  "schema": "ferocity-offline-export-plan-assembly-source/v1",
+  "frozenUtc": "2026-09-26T11:55:03.027280+00:00",
+  "files": [
+    {
+      "path": "ferocity-recycling/tools/first-cell-export/plan-assembly/assemble_export_plan.py",
+      "sha256": "4ef5e3b02c4ad8a2caec0c649627c64005072f664ab76c8677e9538173adbb4d"
+    },
+    {
+      "path": "ferocity-recycling/tools/first-cell-export/plan-assembly/MATERIAL.template.json",
+      "sha256": "75382f19ff7c344f3454544d68d8deeb4c2d86c6d9150caa57d844816e76f9a1"
+    },
+    {
+      "path": "ferocity-recycling/tools/first-cell-export/plan-assembly/README.md",
+      "sha256": "800ee723524d5d1516d5f594bd204135839bc3c931c99ab7453cc7673629990e"
+    }
+  ],
+  "reviewedExporterFreezeSha256": "1b2296324aacb27110d7f9fa7e541be67d38db67b6715b64e6c2416aeb341e64",
+  "reviewedExporterFilesUnchanged": true,
+  "checksExecuted": [
+    "Python AST parse only",
+    "JSON material template parse",
+    "All four reviewed exporter source hashes unchanged"
+  ],
+  "checksNotExecuted": [
+    "Final plan assembly",
+    "Java export",
+    "Game initialization",
+    "Seed allocation"
+  ],
+  "qualificationReceiptsSelected": false,
+  "games": 0,
+  "allocatedSeeds": 0
+}

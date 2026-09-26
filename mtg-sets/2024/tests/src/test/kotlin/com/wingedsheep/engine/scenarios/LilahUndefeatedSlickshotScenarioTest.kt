@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.PlottedComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -39,6 +41,7 @@ class LilahUndefeatedSlickshotScenarioTest : ScenarioTestBase() {
             withClue("Casting Lightning Helix should succeed: ${result.error}") {
                 result.error shouldBe null
             }
+            game.chooseTriggerOrderInListedOrder()
             game.resolveStack()
 
             withClue("Lightning Helix resolved normally first (3 damage to Player2)") {
@@ -69,6 +72,7 @@ class LilahUndefeatedSlickshotScenarioTest : ScenarioTestBase() {
 
             val lilah = game.findPermanent("Lilah, Undefeated Slickshot")!!
             game.castSpellTargetingPlayer(1, "Lightning Helix", targetPlayerNumber = 2).error shouldBe null
+            game.chooseTriggerOrderInListedOrder()
             // Resolve the prowess trigger and the spell; the +1/+1 lasts until end of turn.
             game.resolveStack()
 

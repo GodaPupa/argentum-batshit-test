@@ -14,7 +14,8 @@ import com.wingedsheep.sdk.scripting.TimingRule
 import com.wingedsheep.sdk.scripting.effects.CardDestination
 import com.wingedsheep.sdk.scripting.effects.CardSource
 import com.wingedsheep.sdk.scripting.effects.GatherCardsEffect
-import com.wingedsheep.sdk.scripting.effects.MayEffect
+import com.wingedsheep.sdk.scripting.effects.OptionalCostEffect
+import com.wingedsheep.sdk.scripting.effects.SacrificeEffect
 import com.wingedsheep.sdk.scripting.effects.MoveCollectionEffect
 import com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect
 import com.wingedsheep.sdk.scripting.effects.SelectionMode
@@ -24,7 +25,6 @@ import com.wingedsheep.sdk.scripting.filters.unified.TargetFilter
 import com.wingedsheep.sdk.scripting.references.Player
 import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import com.wingedsheep.sdk.scripting.targets.TargetObject
-import com.wingedsheep.sdk.scripting.targets.TargetPermanent
 import com.wingedsheep.sdk.scripting.values.DynamicAmount
 import com.wingedsheep.sdk.scripting.values.EntityNumericProperty
 import com.wingedsheep.sdk.scripting.values.EntityReference
@@ -51,9 +51,9 @@ import com.wingedsheep.sdk.scripting.values.EntityReference
  *  - ETB (front): a mandatory [Effects.Move] `GRAVEYARD → BATTLEFIELD` reanimation of a single
  *    target creature card in your graveyard, restricted to `manaValueAtMost(1)` (the same
  *    graveyard-target idiom as Reya Dawnbringer / Daily Bugle Reporters).
- *  - Attack trigger (back): [Triggers.Attacks] + [MayEffect] wrapping the optional sacrifice of
- *    another creature ([Effects.SacrificeTarget] over a `.other()` creature you control), so "If
- *    you do" gates the payoff on actually sacrificing. The sacrificed creature's mana value is read
+ *  - Attack trigger (back): [Triggers.Attacks] + [OptionalCostEffect] with a resolution-time
+ *    [SacrificeEffect] that excludes the source. The sacrifice does not target; the existing cost
+ *    gate checks legal fodder before offering consent. The sacrificed creature's mana value is read
  *    from last-known information via [EntityReference.Sacrificed] — the same capture Memorial Vault
  *    / Eldritch Evolution rely on — and feeds two downstream reads: the draw count
  *    ([DynamicAmount.EntityProperty] `Sacrificed.ManaValue`) and the from-hand eligibility filter
@@ -128,20 +128,14 @@ private val VenomLethalProtector = card("Venom, Lethal Protector") {
     // X is the sacrificed creature's mana value.
     triggeredAbility {
         trigger = Triggers.Attacks
-        val sacrificed = target(
-            "another creature",
-            TargetPermanent(
-                filter = TargetFilter(GameObjectFilter.Creature.youControl()).other()
-            )
-        )
         // X = the sacrificed creature's mana value (last-known info via EntityReference.Sacrificed).
         val x = DynamicAmount.EntityProperty(
             EntityReference.Sacrificed(0),
             EntityNumericProperty.ManaValue
         )
-        effect = MayEffect(
-            Effects.SacrificeTarget(sacrificed) then
-                Effects.DrawCards(x) then
+        effect = OptionalCostEffect(
+            cost = SacrificeEffect(GameObjectFilter.Creature, excludeSource = true),
+            ifPaid = Effects.DrawCards(x) then
                 Effects.Composite(
                     listOf(
                         // Gather every permanent card in hand; the mana-value cap is enforced by

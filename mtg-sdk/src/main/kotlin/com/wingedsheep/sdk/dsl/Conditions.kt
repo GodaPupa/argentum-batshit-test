@@ -1065,8 +1065,8 @@ object Conditions {
      * **Permanents only.** Unlike `SneakCostWasPaid` / `WaterbendWasPaid` this has no resolution-time
      * fallback for a spell's own effect: the flag is written as the permanent enters, so a read from
      * a still-on-the-stack instant or sorcery is always false. Instants and sorceries branch on the
-     * promise through `Patterns.Mechanic.giftSpell`'s mode instead (CR 702.174b gives them
-     * "if this spell's gift cost was paid, [effect]" rather than an enters trigger).
+     * promise through `SpellBuilder.giftEffect` and its paired `giftTarget` declarations instead
+     * (CR 702.174b gives them a spell effect rather than an enters trigger).
      */
     val GiftWasPromised: ConditionInterface =
         CastChoiceMadeCondition(com.wingedsheep.sdk.scripting.ChoiceSlot.GIFT_PROMISED)

@@ -82,10 +82,12 @@ class MagitekScytheScenarioTest : FunSpec({
         driver.giveMana(me, Color.RED, 4)
         driver.castSpell(me, scythe)
         driver.bothPass()
-        if (driver.stackSize > 0) driver.bothPass()
-
-        driver.submitYesNo(me, false)
-        if (driver.isPaused) driver.bothPass()
+        (driver.pendingDecision is ChooseTargetsDecision) shouldBe true
+        driver.submitTargetSelection(me, listOf(courser)).error shouldBe null
+        driver.stackSize shouldBe 1
+        driver.bothPass()
+        (driver.pendingDecision is YesNoDecision) shouldBe true
+        driver.submitYesNo(me, false).error shouldBe null
 
         val swordId = driver.findPermanent(me, "Magitek Scythe")!!
         driver.state.getEntity(swordId)?.get<AttachedToComponent>() shouldBe null

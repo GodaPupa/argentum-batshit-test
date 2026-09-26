@@ -22,6 +22,7 @@ class ContinuationHandler(
     private val registry = ContinuationResumerRegistry().apply {
         // Core engine resumers
         registerModule(EffectAndTriggerContinuationResumer(services, effectRunner))
+        registerModule(TriggerOrderingResumer(services))
         registerModule(MiscContinuationResumer(services, effectRunner))
 
         // Core engine auto-resumers
@@ -50,7 +51,9 @@ class ContinuationHandler(
         registerModule(RoomDoorContinuationResumer(services))
         registerModule(CastModalContinuationResumer(services))
         registerModule(ModalTriggerContinuationResumer(services))
-        registerModule(TokenContinuationResumer(services))
+        val tokenResumer = TokenContinuationResumer(services)
+        registerModule(tokenResumer)
+        registerAutoResumerModule(tokenResumer)
         registerModule(RingTemptContinuationResumer(services))
         registerModule(AmassContinuationResumer(services))
         val leylineResumer = LeylineContinuationResumer(services)

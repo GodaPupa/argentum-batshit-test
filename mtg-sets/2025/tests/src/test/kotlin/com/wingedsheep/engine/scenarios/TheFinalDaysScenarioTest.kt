@@ -1,11 +1,14 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.AlternativeCostType
+import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
-import io.kotest.matchers.shouldBe
 import io.kotest.matchers.collections.shouldHaveSize
+import io.kotest.matchers.shouldBe
 
 /**
  * The Final Days ({2}{B}{B} Sorcery, Flashback {4}{B}{B}):
@@ -47,7 +50,19 @@ class TheFinalDaysScenarioTest : ScenarioTestBase() {
                 .withLandsOnBattlefield(1, "Swamp", 6)
                 .build()
 
-            game.castSpellFromGraveyard(1, "The Final Days").error shouldBe null
+            val spell = game.findCardsInGraveyard(1, "The Final Days").single()
+            val cast = game.execute(CastSpell(
+                playerId = game.player1Id,
+                cardId = spell,
+                useAlternativeCost = true,
+                alternativeCostType = AlternativeCostType.FLASHBACK
+            ))
+            cast.error shouldBe null
+            game.state.getEntity(spell)!!.get<SpellOnStackComponent>()!!.alternativeCost shouldBe
+                AlternativeCostType.FLASHBACK
+            game.findAllPermanents("Swamp").count {
+                game.state.getEntity(it)!!.has<TappedComponent>()
+            } shouldBe 6
             game.resolveStack()
 
             // Three creature cards remained in the graveyard while The Final Days was on the stack.

@@ -1,6 +1,7 @@
 package com.wingedsheep.sdk.serialization
 
 import com.wingedsheep.sdk.model.CardDefinition
+import com.wingedsheep.sdk.dsl.giftShapeError
 import com.wingedsheep.sdk.scripting.KeywordAbility
 import com.wingedsheep.sdk.scripting.effects.Effect
 import com.wingedsheep.sdk.scripting.effects.SuccessCriterion
@@ -152,23 +153,14 @@ object CardValidator {
         }
     }
 
-    /**
-     * `KeywordAbility.Gift` only works on a permanent. On a permanent, gift's second ability is a
-     * triggered ability that functions on the battlefield (CR 702.174b), which is what the
-     * `gift(kind)` DSL derives and what stamps `ChoiceSlot.GIFT_PROMISED` durably. An instant or
-     * sorcery instead has "if this spell's gift cost was paid, [effect]" as part of its own
-     * resolution — there is no permanent to trigger off and nothing to stamp, so the keyword would
-     * offer a `CastWithGift` action whose promise is silently dropped and whose
-     * `Conditions.GiftWasPromised` reads false. Those cards use `Patterns.Mechanic.giftSpell`.
-     */
+    /** Gift is a real cast-time cost on permanents and instants/sorceries (CR 702.174a–b). */
     private fun validateGiftKeyword(card: CardDefinition, errors: MutableList<CardValidationError>) {
-        val hasGift = card.keywordAbilities.any { it is KeywordAbility.Gift }
-        if (hasGift && !card.typeLine.isPermanent) {
+        val shapeError = card.giftShapeError()
+        if (shapeError != null) {
             errors.add(
-                CardValidationError.GiftKeywordOnNonPermanent(
+                CardValidationError.InvalidGiftShape(
                     cardName = card.name,
-                    message = "'${card.name}' is not a permanent, so KeywordAbility.Gift can never " +
-                        "trigger (CR 702.174b). Use Patterns.Mechanic.giftSpell for instants and sorceries."
+                    message = "'${card.name}': $shapeError"
                 )
             )
         }
@@ -286,8 +278,14 @@ sealed interface CardValidationError {
         override val message: String
     ) : CardValidationError
 
-    /** `KeywordAbility.Gift` on an instant or sorcery, where it can never trigger (CR 702.174b). */
+    /** Legacy diagnostic retained for source compatibility; instant/sorcery Gift is supported. */
     data class GiftKeywordOnNonPermanent(
+        override val cardName: String,
+        override val message: String
+    ) : CardValidationError
+
+    /** A Gift spell shape cannot be safely selected and enumerated by the current vocabulary. */
+    data class InvalidGiftShape(
         override val cardName: String,
         override val message: String
     ) : CardValidationError

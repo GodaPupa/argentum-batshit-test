@@ -345,12 +345,12 @@ class ManaAbilityEnumerator : ActionEnumerator {
                     )
                 } else null
 
-                val manaAbilityManaCostString = when (effectiveCost) {
-                    is AbilityCost.Atom -> effectiveCost.manaCostOrNull?.toString()
-                    is AbilityCost.Composite -> effectiveCost.costs
-                        .firstNotNullOfOrNull { it.manaCostOrNull }?.toString()
+                val manaAbilityManaCost = when (effectiveCost) {
+                    is AbilityCost.Atom -> effectiveCost.manaCostOrNull
+                    is AbilityCost.Composite -> effectiveCost.costs.firstNotNullOfOrNull { it.manaCostOrNull }
                     else -> null
                 }
+                val manaAbilityManaCostString = manaAbilityManaCost?.toString()
 
                 // Compute runtime description for abilities with dynamic mana amounts
                 val description = runtimeDescription(ability, state, entityId, playerId, context)
@@ -363,10 +363,12 @@ class ManaAbilityEnumerator : ActionEnumerator {
                 // to open, activates with X unset, and the cost dutifully removes zero counters for
                 // zero mana. Same helper the non-mana enumerator uses, so the two can't drift.
                 val hasNonManaX = context.costUtils.hasPlayerChosenNonManaX(effectiveCost)
-                val manaAbilityMaxX: Int? = if (hasNonManaX) {
+                val hasXCost = hasNonManaX || manaAbilityManaCost?.hasX == true
+                val manaAbilityMaxX: Int? = if (hasXCost) {
                     context.costUtils.calculateMaxAffordableX(
-                        state, playerId, effectiveCost, effectiveCost.manaCostOrNull,
-                        precomputedSources = context.availableManaSources, sourceId = entityId
+                        state, playerId, effectiveCost, manaAbilityManaCost,
+                        precomputedSources = context.availableManaSources, sourceId = entityId,
+                        xManaRestriction = ability.xManaRestriction, spellContext = manaAbilityContext
                     )
                 } else null
 
@@ -375,11 +377,11 @@ class ManaAbilityEnumerator : ActionEnumerator {
                         actionType = "ActivateAbility",
                         description = description,
                         action = ActivateAbility(playerId, entityId, ability.id),
-                        affordable = affordable,
+                        affordable = affordable && (manaAbilityMaxX == null || manaAbilityMaxX >= ability.minimumXValue),
                         isManaAbility = true,
-                        hasXCost = hasNonManaX,
+                        hasXCost = hasXCost,
                         maxAffordableX = manaAbilityMaxX,
-                        minX = if (hasNonManaX) ability.minimumXValue else 0,
+                        minX = if (hasXCost) ability.minimumXValue else 0,
                         additionalCostInfo = costInfo,
                         requiresManaColorChoice = ability.effect is AddManaOfChoiceEffect ||
                             ability.effect is AddAnyColorManaSpendOnChosenTypeEffect ||

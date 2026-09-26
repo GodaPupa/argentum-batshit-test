@@ -47,6 +47,9 @@ class HeroismScenarioTest : FunSpec({
         driver.declareAttackers(alice, listOf(attacker), bob)
         driver.passPriorityUntil(Step.DECLARE_BLOCKERS)
         driver.declareNoBlockers(bob)
+        driver.assertPriority(alice)
+        driver.passPriority(alice).error shouldBe null
+        driver.assertPriority(bob)
 
         driver.submitSuccess(
             ActivateAbility(
@@ -85,6 +88,9 @@ class HeroismScenarioTest : FunSpec({
         driver.declareAttackers(alice, listOf(attacker), bob)
         driver.passPriorityUntil(Step.DECLARE_BLOCKERS)
         driver.declareNoBlockers(bob)
+        driver.assertPriority(alice)
+        driver.passPriority(alice).error shouldBe null
+        driver.assertPriority(bob)
 
         driver.submitSuccess(
             ActivateAbility(

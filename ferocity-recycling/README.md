@@ -36,3 +36,9 @@ python3 ferocity-recycling/tools/project.py screen --output /tmp/ferocity-openin
 Use a new output path; the runner refuses to overwrite existing evidence. Compare the JSON with the archived result. Do not create another freeze to make drift pass.
 
 Real-engine qualification uses the repository's `just` recipes through `tools/validate_build.py`; its logs and XML distinguish test-source mistakes, engine failures and successful scenarios. A successful scenario suite does not authorize gameplay by itself. Follow the admission requirements in the protocol before generating a stage's trial manifest.
+
+## Current source qualification
+
+M1 publishes reviewed source and closed fixed evidence: **527/527 fresh JVM cases passed**, comprising 496 primary cases and 31 existing regressions. Thirteen process assertions and ten inventory/validator guards passed separately. Twelve final-source server cases, four browser cases, finite resource calibration and applicable shared-engine compatibility remain pending. No randomized gameplay is admitted or allocated. See [current status](CURRENT_STATUS.md) and the exact [63-class/508-case CI selection](ci/common-fixed-selection-v1.json).
+
+The project CI runs ten independent module batches. The separate [combat browser contract](runtime-audits/combat-browser/README.md) retains four current-UI cases with zero retries; source04 fixes only the launch schema. Closed manifests preserve original failures, source/dependency maps, actual classpaths, process artifacts and replay instructions. The complete [offline export tools](tools/first-cell-export/) are published with explicit current resource pins and historical reviews.

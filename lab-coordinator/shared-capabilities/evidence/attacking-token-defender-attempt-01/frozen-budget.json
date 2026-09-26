@@ -1,0 +1,70 @@
+{
+  "schema": "shared-attacking-token-defender-qualification/v1",
+  "status": "PROSPECTIVE_AWAIT_NON_AUTHOR_SOURCE_REVIEW",
+  "source_parent": "57bb4f72f97f545b621314f1356ae29b87142e38",
+  "original_failure": {
+    "source": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+    "run": 36260783776,
+    "artifact": 10912223080,
+    "sha256": "80d7d2fee0aab22dd803ba05a4d6af3d5c7ec6b65930c5477d35685fc2db21b8",
+    "actual_cases": 2,
+    "passing": 1,
+    "failure": "Both Dalkovan Warrior tokens attack their own controller before block declaration"
+  },
+  "banks": [
+    {
+      "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt",
+      "sha256": "f9a9ffe86fd085262cb3f14d2b943197e7d28b0113ace1a88bc14aa663d2a16f",
+      "cases": [
+        "TD01 land attack trigger creates two tokens attacking the sole opponent, never its controller",
+        "TD02 multiple opponents require a separate controller choice for every not-yet-created token",
+        "TD03 public planeswalkers and protected battles are nontargeting defender choices",
+        "TD04 attack-left and attack-right preserve the legal neighboring seat",
+        "TD05 recipient fanout suspends once, retains all token collections and does not make nonactive players attack",
+        "TD06 doubled plain batch freezes four defender choices and four delayed riders across serialization",
+        "TD07 target-copy batch uses the same once-only count replacement and selected defenders",
+        "TD08 noncreature target copies enter tapped without attacking or asking for a defender",
+        "TD09 wrong actor and malformed defender submissions preserve the exact pending state",
+        "TD10 serialized pending choice and identical answer replay preserve state and events exactly",
+        "TD11 copy as-enters choices retain chosen defender tail, token collection, entry events and delayed riders",
+        "TD12 declining token replacement keeps the prepared count and actual recipient across the next choice",
+        "TD13 accepting replacement preserves attacking state, actual recipient, collection and delayed riders",
+        "TD14 active teammate chooses its own legal defenders while declaration restrictions do not prevent entry"
+      ]
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt",
+      "sha256": "acb9cd9a32346e5867740305c79f42783f37e5d4202dadf1d7b8b051f60b5532",
+      "cases": [
+        "activating the ability then attacking creates two tapped, attacking Warrior tokens",
+        "the tokens are sacrificed at the next end step"
+      ]
+    }
+  ],
+  "expected_actual_cases": 16,
+  "criteria": [
+    "Both complete banks execute with no failed, errored or skipped case",
+    "Raw JUnit, command exit, source HEAD/tree and source hashes bind one immutable checkout",
+    "Non-author source review before first execution and independent raw artifact review after it",
+    "Receiving full CI and original27stage220 priority qualification remain separate required gates"
+  ],
+  "rules_source": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+  "rules": [
+    "508.4",
+    "508.4c",
+    "506.3b",
+    "802.2",
+    "803.1"
+  ],
+  "limitations": [
+    "No whole-token, whole-pilot, project receiving, gameplay, or outcome acceptance",
+    "Prepared attached-copy replacement of a plain token with initialCounters explicitly returns a technical error; no successful silent loss is accepted",
+    "Other token executors and generic replacement ordering are not admitted by this bounded repair",
+    "Source base contains independent shared work; component evidence does not substitute for complete receiving regressions"
+  ],
+  "experimental_policy_budget_consumed": 0,
+  "official_games": 0,
+  "outcomes_exposed": 0
+}

@@ -1,0 +1,102 @@
+{
+  "schema": "ferocity-token-defender-independent-receiving-source-review/v1",
+  "reviewer": "/root",
+  "author": "/root/ferocity",
+  "independent_of_receiving_author": true,
+  "github_approval_created": false,
+  "disposition": "ACCEPT_EXACT_SOURCE_COMPATIBILITY_ONLY_AWAIT_DONOR_AND_RECEIVING_QUALIFICATION",
+  "receiver": "c7931bc1e9e4204261acbc95125330b4f80ef9df",
+  "receiver_tree": "f8b0d0128cf72d757513f161227b7084a671639d",
+  "receiving_base": "83dbf428c93b4036aa81cb9a0c3f0cef1ae39f7e",
+  "donor": "a1dde857585da211f6e0743ae6a2999927c84456",
+  "exact_donor_paths": [
+    {
+      "path": "lab-coordinator/shared-capabilities/attacking-token-defender-budget.json",
+      "sha256": "829e772f41ba375b676154c374668775d1a7551e217d5c98e2d76ea58e96291f"
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt",
+      "sha256": "acb9cd9a32346e5867740305c79f42783f37e5d4202dadf1d7b8b051f60b5532"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+      "sha256": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+      "sha256": "bcc6321f1ef85416859bff716b1446498a62917208cc7f7a65b4cd39b0333b68"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TokenContinuations.kt",
+      "sha256": "c1856c5d7165cfe596b09be849faa855d9d7ec5b7bcf3deeb36c8a01bdaf4cd0"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt",
+      "sha256": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+      "sha256": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ObjectReferencePropagation.kt",
+      "sha256": "44754cc29fd5abe7b850f819811a1a26af25b845396dd3439135172cb0733393"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/PipelineCollectionPropagation.kt",
+      "sha256": "2347f1dc0bcd3c6dbdf7c8753bd5ff892eaf80e5da7041cc8c8aaee42d534278"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TokenContinuationResumer.kt",
+      "sha256": "9213e0e9e7e79c10fd49b2162d38e5b31b369ed0c398f33ff6569b3e66f0a773"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChooser.kt",
+      "sha256": "86ad9102ffaeb07333ae2cd18261430d223b945ad0206ef44f2daa8d24057a05"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt",
+      "sha256": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt",
+      "sha256": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt",
+      "sha256": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt",
+      "sha256": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+      "sha256": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt",
+      "sha256": "f9a9ffe86fd085262cb3f14d2b943197e7d28b0113ace1a88bc14aa663d2a16f"
+    }
+  ],
+  "canonical_current_combat_paths_unchanged": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CombatContinuationResumer.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageManager.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageUtils.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/DamageCalculator.kt"
+  ],
+  "other_changed_paths_are_five_receipts_only": true,
+  "own_pilot_deck_protocol_sources_unchanged": true,
+  "dalkovan_overlap": "Receives exact donor original2 cases and finals, both explicit opponent defenders, plus the same root diagnostic wrapper around the preexisting block declaration. No action or expected effect is weakened.",
+  "limitations": [
+    "This is source compatibility only. Shared fixed16 run36264019331 has failed and its technical correction/evidence must be accepted before receiving execution.",
+    "All affected combined-source original508, priority27/220, browser fixed4, fullCI, runtime provenance and independent admission remain required.",
+    "InitialCounters plus attached-copy remains unqualified; frozen acquisition-pool absence has its own source-bound audit."
+  ],
+  "official_games": 0,
+  "official_outcomes_exposed": 0,
+  "gameplay_authorized": false
+}

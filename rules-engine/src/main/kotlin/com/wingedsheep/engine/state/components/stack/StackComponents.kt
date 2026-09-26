@@ -35,6 +35,8 @@ data class SpellOnStackComponent(
      * wasn't promised. A resolving permanent carries the fact onward in its cast-choices bag
      * (ChoiceSlot.GIFT_PROMISED + ChoiceSlot.OPPONENT) so its gift trigger and
      * "if the gift was(n't) promised" riders can read it — see StackResolver.
+     * An instant/sorcery uses this same cast-time choice for its Gift-first spell resolution;
+     * spell copies preserve the recipient and promise without paying another cost.
      */
     val giftRecipient: EntityId? = null,
     /**
@@ -74,11 +76,12 @@ data class SpellOnStackComponent(
     val castFromZone: Zone? = null,  // Zone the spell was cast from (e.g., HAND for normal casting)
     /**
      * Which alternative casting cost paid for this spell (CR 118.9), or null for a normal cast.
-     * The individual `was*` flags below drive *rules* behaviour (warp exiles, evoke sacrifices,
-     * cleave swaps the effect); this records the player's declared choice as such so the client
-     * view can say how the spell was cast without a flag per mechanic — see
-     * [com.wingedsheep.engine.view.CastProvenance]. Disturb, flashback, harmonize, emerge and
-     * miracle have no `was*` flag at all, which is exactly why the stack could not describe them.
+     * Flashback and harmonize are bound to the effective cost branch before payment, including
+     * an implicit alternative selection. Their paid-mode value drives the replacement when this
+     * spell leaves the stack (CR 702.34a / 702.180a); a current keyword or graveyard origin alone
+     * cannot establish that either cost was paid. The other mechanics retain their declared
+     * choice for [com.wingedsheep.engine.view.CastProvenance] and use their individual `was*`
+     * flags below for rules behaviour (warp exiles, evoke sacrifices, cleave swaps the effect).
      */
     val alternativeCost: com.wingedsheep.engine.core.AlternativeCostType? = null,
     val wasWarped: Boolean = false,  // For warp - permanent is exiled at end step
@@ -309,6 +312,8 @@ data class TriggeredAbilityOnStackComponent(
     val sourceFaceChanges: Int? = null,
     /** Battlefield visit that created this trigger, retained across source zone changes. */
     val sourceBattlefieldTimestamp: Long? = null,
+    /** Source characteristics at its departure, retained independently of any returned object. */
+    val lastKnownSourceSnapshot: EntitySnapshot? = null,
     val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment =
         com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
     /**
@@ -356,11 +361,12 @@ data class ActivatedAbilityOnStackComponent(
      */
     val lastKnownSourceCounters: Map<String, Int> = emptyMap(),
     /**
-     * Frozen projected P/T of the source captured before a self-exile / self-sacrifice cost moved
-     * it off the battlefield (CR 113.7a). Mirrors [lastKnownSourceCounters]; read at resolution via
+     * Frozen projected characteristics captured when the source leaves the battlefield
+     * (CR 113.7a), including a self-exile / self-sacrifice cost. Read at resolution via
      * [com.wingedsheep.engine.handlers.EffectContext.lastKnownSourceSnapshot] so an
      * `EntityProperty(Source, Power)` read (Ghitu Fire-Eater / Blazing Bomb's Blow Up) sees the
-     * pre-sacrifice power. Null when the cost did not sacrifice/exile the source.
+     * pre-sacrifice power. Damage also reads departure keywords, colors and controller. Null
+     * while the original source remains on the battlefield; not an activation-time freeze.
      */
     val lastKnownSourceSnapshot: EntitySnapshot? = null,
     /**

@@ -1,0 +1,134 @@
+{
+  "reviewer": "/root/sphinx",
+  "scope": "Read-only source compatibility classification, not runtime acceptance or independent approval of own original 2025 source. Root independently reviewed those original 2025 changes.",
+  "shared_source": "a2a88ddcde856778bd75edeb499f8ad72ce5909b",
+  "receiving_parent": "4e68c9c6ec1d0312cb6b66fdf60f456491201b38",
+  "observed_overlap_files": 12,
+  "requested_note": "Map contains 12 overlaps in the requested 2023/2024/2025 eras, not 13.",
+  "rows": [
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/InvertedIcebergScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "5a9f2d7f5f103078b5d329939b525b23d7344747f779811869adf6697e3062de",
+      "shared_sha256": "17f2b8fac1efba030c85e349656b8a72d6cbbcc52a56dc2c91f9b4a9e18fd389",
+      "receiving_literal_test_declarations": 6,
+      "shared_literal_test_declarations": 6,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving already selects required target before priority, verifies one stack item, passes both players, then resolves the optional yes/no and tap/untap choice. Shared adds intermediate/error assertions only; no missing sequencing repair."
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WizardsRocketsXChoiceScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "66c17af144f09c164ee90260e9a0753b6259a13ad74d917da4ea9967192da55f",
+      "shared_sha256": "44d58808371146f8711faaa7e0e9b5c34d76429bbdd886b225947caa68f711ac",
+      "receiving_literal_test_declarations": 1,
+      "shared_literal_test_declarations": 1,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving already completes exactly two typed color choices, verifies the one draw trigger and unchanged hand, resolves exactly once, and checks paid lands/final draw. Shared adds pool/priority/step/error assertions only."
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AffectionateIndrikScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "1fee796851b88423c2410ac62f58640a8a92f12f32dda7ec05546c29f52f9d41",
+      "shared_sha256": "44050c5c7dac3167fb88eb16e72ac44095288d98f0f6736a0e31606cf1db0213",
+      "receiving_literal_test_declarations": 2,
+      "shared_literal_test_declarations": 2,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving already selects the legal opponent target, passes response window, then answers consent. Preserve receiving completion in first target-domain case; replacing with shared would remove receiving assertions/actions."
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcboundCondorScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "1614d069895a946d1abe3fe8e42dd6f852da341b4a9327e43ec8ae56edc9c014",
+      "shared_sha256": "82b2206de9d741e17c69c3779ecbbf030843363f7f87a9d50ab289983e7d97b8",
+      "receiving_literal_test_declarations": 3,
+      "shared_literal_test_declarations": 3,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving already selects modular target before response window and answers optional counter movement on resolution; final counters and power/toughness retained. Shared extra before-effect observation does not fix a missing receiving action."
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/InsidiousFungusScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "40b79d7f0f5010db172aa3469ac3f5d847791c840b77e6dcfc07fe5887a57168",
+      "shared_sha256": "ec68f81caf4b9771bd53664805c32f54578308427809640d292031c9f893cb85",
+      "receiving_literal_test_declarations": 3,
+      "shared_literal_test_declarations": 3,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving already uses a legally attached Aura; shared merely moves the existing battlefield assertion across the accepted mode choice and changes comment. No missing setup repair."
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BeatrixLoyalGeneralScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "e113ec576539a7993afa819e6355229d5ab790edb20bf61a9d92c56dc0c6e37c",
+      "shared_sha256": "c67024032e49f46bc6fb813c72219c1268ec3c042c966d3e5f83e8ebde64e8e8",
+      "receiving_literal_test_declarations": 3,
+      "shared_literal_test_declarations": 3,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving already uses target then stack resolution then yes/no and equipment selection in all three cases. Preserve existing test names/final assertions; shared adds stack/pending checks only."
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EddieBrockScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "e18bd5b6d317808e5742a3619c5dd7c3b821a87c09d0f8be05a40e4e94688942",
+      "shared_sha256": "ce9cb2c9cf72c33cc3044bd046d0f105c2b55c7d29002151f7ba1166dea6936f",
+      "receiving_literal_test_declarations": 5,
+      "shared_literal_test_declarations": 3,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving has a separately changed actual OptionalCostEffect with nontargeting SacrificeEffect(excludeSource=true), plus stronger shroud/sacrifice/no-fodder/decline tests. Shared targets the historical definition and would remove two receiving cases and correct nontargeting assertions. Preserve receiving source/tests; do not transplant shared historical compatibility."
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GogoMasterOfMimicryScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "89133c049d2d84c2bf14f6ed043d16568dd53b1c5a63f1fbc3a37f5a2dde4804",
+      "shared_sha256": "4b7eb75ce2bbb6c3ffb76ea16dc423d84b8a04677e7671c1b94778fa2ab99160",
+      "receiving_literal_test_declarations": 4,
+      "shared_literal_test_declarations": 4,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving already prevents invalid legend state using the explicit RepeatedLegendEffectsFixture and canonical LegendRuleDoesNotApplyTo primitive. Both original Gogo objects can legally coexist. Shared nonlegendary-copy setup is an alternative valid setup, not required repair. Preserve receiving fixture and assertions."
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IrohTeaMasterScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "6eaade52af77b6f84f63f3462b1c65d214218083304fb70f3ee29d20159f816f",
+      "shared_sha256": "4983ad3cadfffd4118e89f39b87c84cbaeaec5a003057fc3b5992a926a50f5be",
+      "receiving_literal_test_declarations": 3,
+      "shared_literal_test_declarations": 3,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving already chooses both targets before response window then accepts or declines at resolution. Shared adds intermediate stack/pending assertions and naming/comment changes only."
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MagitekScytheScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "9d3ddd7e478c9219a19f9ff2a01566fa5243e278f7aa7b84cea323d87a2efa2e",
+      "shared_sha256": "55e946ca63252fd13acf6c3546678a106b606ebac0685f6b770066db583b2d2a",
+      "receiving_literal_test_declarations": 2,
+      "shared_literal_test_declarations": 2,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving already resolves ETB target placement, chooses current target, verifies stack size, opens response window, and declines at resolution. Shared strengthens intermediate error/quiet assertions only."
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MaraudingMakoScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "4015121c9d1bf133267f5bfb6fa5ff97e3210b97256bded6590a34ce5f59be8b",
+      "shared_sha256": "54dc59f5df2ed260f2be3f71f1410987ad0c8b488eaddc02b3da7165d720da18",
+      "receiving_literal_test_declarations": 3,
+      "shared_literal_test_declarations": 3,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving already has stricter source-bound discard/payment events, exact paid lands, typed trigger-order continuation identity/controller/context, source-selected Mako order, optional Rex target decline, and empty final continuations/stack. Shared generic helper would remove receiving evidence; preserve entire receiving case."
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TheWaterCrystalScenarioTest.kt",
+      "disposition": "PRESERVE_RECEIVING_BYTES",
+      "receiving_sha256": "502e4c7cf3829e90176f9d66e33a58ac4ccc799621edcfdc09c5ffc2af009d89",
+      "shared_sha256": "1bcb2db6451d5244e5d3850b85aeeeda99b19f2d898b07c7d3694f03a71c791a",
+      "receiving_literal_test_declarations": 4,
+      "shared_literal_test_declarations": 4,
+      "additional_required_shared_hunks": 0,
+      "reason": "Receiving already prevents invalid legend state with explicit RepeatedLegendEffectsFixture, retaining both canonical copies and final +4/+4 mill result. Shared nonlegendary token-copy setup is an alternative valid setup, not required repair."
+    }
+  ],
+  "production_edits": false,
+  "test_edits": false,
+  "runtime_acceptance": false,
+  "gameplay_admission": false
+}

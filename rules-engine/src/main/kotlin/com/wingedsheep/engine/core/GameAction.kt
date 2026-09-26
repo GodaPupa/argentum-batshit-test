@@ -102,6 +102,8 @@ data class CastSpell(
      * [com.wingedsheep.sdk.scripting.ChoiceSlot.GIFT_PROMISED] plus the recipient in
      * `ChoiceSlot.OPPONENT` onto the permanent, where the gift trigger and the
      * "if the gift was(n't) promised" riders read it via `Conditions.GiftWasPromised`.
+     * An instant/sorcery instead carries the same recipient through resolution: the Gift effect
+     * precedes its selected spell shape, whose conditional targets are chosen now (CR 702.174m).
      */
     val giftRecipient: EntityId? = null,
     /**

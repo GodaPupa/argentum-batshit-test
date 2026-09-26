@@ -1,8 +1,10 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.CombatResolutionDecision
 import com.wingedsheep.engine.handlers.continuations.entityIdToChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import io.kotest.assertions.withClue
@@ -99,6 +101,11 @@ class OliviasAttendantsScenarioTest : ScenarioTestBase() {
                         "Hill Giant" to listOf("Olivia's Attendants"),
                     )
                 ).error shouldBe null
+                game.passUntilPhase(Phase.COMBAT, Step.COMBAT_DAMAGE)
+                while (game.getPendingDecision() is CombatResolutionDecision) {
+                    game.submitDefaultCombatDamage().error shouldBe null
+                }
+                game.chooseTriggerOrderInListedOrder() // one Blood trigger for each damaged blocker
                 game.passUntilPhase(Phase.COMBAT, Step.END_COMBAT)
                 game.resolveStack()
 

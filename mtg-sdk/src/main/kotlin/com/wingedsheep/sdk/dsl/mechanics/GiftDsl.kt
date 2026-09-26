@@ -65,8 +65,8 @@ fun giftEnterTrigger(kind: GiftKind, subject: String = "this permanent"): Trigge
     )
 
 /**
- * Add Gift a [kind] (CR 702.174, Bloomburrow) to a **permanent** card — the keyword ability plus
- * the derived enters-the-battlefield gift ability.
+ * Add Gift a [kind] (CR 702.174, Bloomburrow). Permanents also receive the derived enters ability;
+ * an instant or sorcery gives its gift first during spell resolution (CR 702.174j).
  *
  * The promise is an additional cost elected as the spell is cast (CR 702.174a): the legal-action
  * enumerator offers a "promise a gift" cast variant per opponent, the cast handler records the
@@ -77,9 +77,9 @@ fun giftEnterTrigger(kind: GiftKind, subject: String = "this permanent"): Trigge
  * (Kitnap's stun counters) — never a resolution-time choice, which would ask the player *after*
  * the permanent had already entered.
  *
- * Instants and sorceries have no permanent to trigger off, so their gift branch is folded into the
- * spell's own effect via [MechanicPatterns.giftSpell] instead — `CardValidator` rejects this keyword
- * on a non-permanent for exactly that reason.
+ * For an instant or sorcery with a conditional rider, declare the complete promised target/effect
+ * shape through [SpellBuilder.giftTarget] and [SpellBuilder.giftEffect]. The engine prepends the
+ * keyword's gift, so the authored effect must not create that gift a second time.
  *
  * Call this *after* `typeLine`: the derived ability names the permanent the way the printed card
  * does ("When this Aura enters, …"), read off the type line. Out of order it falls back to the
@@ -87,7 +87,10 @@ fun giftEnterTrigger(kind: GiftKind, subject: String = "this permanent"): Trigge
  */
 fun CardBuilder.gift(kind: GiftKind) {
     keywordAbilityList.add(KeywordAbility.Gift(kind))
-    triggeredAbilities.add(giftEnterTrigger(kind, giftSubjectFor(typeLine)))
+    val parsed = runCatching { TypeLine.parse(typeLine) }.getOrNull()
+    if (typeLine.isBlank() || parsed == null || parsed.isPermanent) {
+        triggeredAbilities.add(giftEnterTrigger(kind, giftSubjectFor(typeLine)))
+    }
 }
 
 /** How the printed card refers to itself in its gift ability, given its type line. */
@@ -111,3 +114,27 @@ private fun giftSubjectFor(typeLineString: String): String {
  */
 fun CardDefinition.giftKeyword(): KeywordAbility.Gift? =
     keywordAbilities.filterIsInstance<KeywordAbility.Gift>().firstOrNull()
+
+/**
+ * The bounded Gift-shape vocabulary supports the base targets plus conditional extra targets.
+ * Keeping the base prefix means a satisfiable promised shape always has a satisfiable base cast,
+ * so every payment path can be expanded without dropping a gift-only legal cast. Reject more
+ * complex shapes explicitly until their combined cast enumeration is implemented.
+ */
+fun CardDefinition.giftShapeError(): String? {
+    val hasShape = script.giftSpellEffect != null || script.giftTargetRequirements.isNotEmpty()
+    return when {
+        hasShape && giftKeyword() == null -> "a promised Gift shape requires KeywordAbility.Gift"
+        hasShape && typeLine.isPermanent -> "Gift spell shapes belong to instants or sorceries"
+        hasShape && script.giftSpellEffect == null -> "Gift targets require the complete giftSpellEffect"
+        hasShape && (script.spellEffect is com.wingedsheep.sdk.scripting.effects.ModalEffect ||
+            script.giftSpellEffect is com.wingedsheep.sdk.scripting.effects.ModalEffect ||
+            script.kickerSpellEffect != null || script.kickerTargetRequirements.isNotEmpty() ||
+            script.cleaveSpellEffect != null || script.cleaveTargetRequirements.isNotEmpty() ||
+            cardFaces.isNotEmpty()) ->
+            "combined Gift and modal/kicker/cleave/face shapes need explicit shared support"
+        hasShape && script.giftTargetRequirements.take(script.targetRequirements.size) != script.targetRequirements ->
+            "the supported Gift shape retains base targets and appends conditional targets"
+        else -> null
+    }
+}

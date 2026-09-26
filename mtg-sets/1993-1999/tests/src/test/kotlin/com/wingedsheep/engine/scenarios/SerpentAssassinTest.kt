@@ -9,7 +9,6 @@ import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.collections.shouldContain
-import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -59,20 +58,16 @@ class SerpentAssassinTest : FunSpec({
         castResult.isSuccess shouldBe true
 
         // Let the creature spell resolve (both players pass priority)
-        driver.bothPass()
+        driver.bothPass().error shouldBe null
 
         // Serpent Assassin should be on the battlefield
         driver.findPermanent(activePlayer, "Serpent Assassin") shouldNotBe null
 
-        // The ETB trigger fires and asks the "you may" first; accepting it leads to target selection.
+        // Choose the mandatory target as the ETB trigger is put on the stack.
         driver.isPaused shouldBe true
-        driver.pendingDecision.shouldNotBeNull()
-        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
-        driver.submitYesNo(activePlayer, true)
-        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
-
-        val targetDecision = driver.pendingDecision as ChooseTargetsDecision
+        val targetDecision = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
         targetDecision.playerId shouldBe activePlayer
+        targetDecision.targetRequirements.single().minTargets shouldBe 1
 
         // Legal targets should include Grizzly Bears (nonblack creature)
         val legalTargets = targetDecision.legalTargets[0] ?: emptyList()
@@ -80,12 +75,20 @@ class SerpentAssassinTest : FunSpec({
 
         // Submit the target selection (choose Grizzly Bears)
         val targetResult = driver.submitTargetSelection(activePlayer, listOf(grizzlyBears))
-        targetResult.isSuccess shouldBe true
+        targetResult.error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 1
 
-        // The ability should now be on the stack - resolve it
-        if (driver.stackSize > 0) {
-            driver.bothPass()
-        }
+        // Players receive priority before the optional destruction is offered on resolution.
+        driver.passPriority(driver.priorityPlayer!!).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 1
+        driver.passPriority(driver.priorityPlayer!!).error shouldBe null
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>().playerId shouldBe activePlayer
+        driver.findPermanent(opponent, "Grizzly Bears") shouldBe grizzlyBears
+        driver.submitYesNo(activePlayer, true).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 0
 
         // Grizzly Bears should now be destroyed (in graveyard)
         driver.findPermanent(opponent, "Grizzly Bears") shouldBe null
@@ -167,30 +170,37 @@ class SerpentAssassinTest : FunSpec({
         driver.giveMana(activePlayer, Color.BLACK, 5)
 
         // Cast Serpent Assassin
-        driver.castSpell(activePlayer, serpentAssassin)
-        driver.bothPass()
+        driver.castSpell(activePlayer, serpentAssassin).error shouldBe null
+        driver.bothPass().error shouldBe null
 
         // Serpent Assassin should be on the battlefield
         driver.findPermanent(activePlayer, "Serpent Assassin") shouldNotBe null
 
-        // "you may destroy" means the player can choose not to use the ability — and the decline is
-        // the yes/no, not an empty target selection. Once accepted the target is *mandatory*
-        // (CR 603.3d: "target nonblack creature", not "up to one"), which is what minTargets says.
+        // The optional action does not make the trigger's target optional. An empty target
+        // selection is rejected; the separate yes/no decision happens on resolution.
         driver.isPaused shouldBe true
-        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
-        driver.submitYesNo(activePlayer, true)
-
-        driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
-        val targetDecision = driver.pendingDecision as ChooseTargetsDecision
-        targetDecision.targetRequirements.first().minTargets shouldBe 1
+        val targetDecision = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        targetDecision.playerId shouldBe activePlayer
+        targetDecision.targetRequirements.single().minTargets shouldBe 1
+        targetDecision.legalTargets.getValue(0) shouldContain grizzlyBears
+        val beforeEmptyTargets = driver.state
+        driver.submitTargetSelection(activePlayer, emptyList()).error shouldNotBe null
+        driver.state shouldBe beforeEmptyTargets
+        driver.pendingDecision shouldBe targetDecision
 
         // Submit the target selection (choose Grizzly Bears to use the ability)
-        driver.submitTargetSelection(activePlayer, listOf(grizzlyBears))
+        driver.submitTargetSelection(activePlayer, listOf(grizzlyBears)).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 1
 
-        // Resolve the ability
-        if (driver.stackSize > 0) {
-            driver.bothPass()
-        }
+        driver.passPriority(driver.priorityPlayer!!).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 1
+        driver.passPriority(driver.priorityPlayer!!).error shouldBe null
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>().playerId shouldBe activePlayer
+        driver.submitYesNo(activePlayer, true).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 0
 
         // Grizzly Bears should be destroyed
         driver.findPermanent(opponent, "Grizzly Bears") shouldBe null
@@ -214,30 +224,41 @@ class SerpentAssassinTest : FunSpec({
         driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
 
         // Put a nonblack creature on opponent's battlefield
-        driver.putCreatureOnBattlefield(opponent, "Grizzly Bears")
+        val grizzlyBears = driver.putCreatureOnBattlefield(opponent, "Grizzly Bears")
 
         // Give active player Serpent Assassin and mana
         val serpentAssassin = driver.putCardInHand(activePlayer, "Serpent Assassin")
         driver.giveMana(activePlayer, Color.BLACK, 5)
 
         // Cast Serpent Assassin
-        driver.castSpell(activePlayer, serpentAssassin)
-        driver.bothPass()
+        driver.castSpell(activePlayer, serpentAssassin).error shouldBe null
+        driver.bothPass().error shouldBe null
 
         // Serpent Assassin should be on the battlefield
         driver.findPermanent(activePlayer, "Serpent Assassin") shouldNotBe null
 
-        // The ability fires and asks the "you may" before anything else is chosen — the player never
-        // has to pick a target they intend to spare.
+        // Choose a legal target during placement even though the player will decline on resolution.
         driver.isPaused shouldBe true
-        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>()
+        val targetDecision = driver.pendingDecision.shouldBeInstanceOf<ChooseTargetsDecision>()
+        targetDecision.playerId shouldBe activePlayer
+        targetDecision.targetRequirements.single().minTargets shouldBe 1
+        targetDecision.legalTargets.getValue(0) shouldContain grizzlyBears
+        driver.submitTargetSelection(activePlayer, listOf(grizzlyBears)).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 1
+        driver.passPriority(driver.priorityPlayer!!).error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 1
+        driver.passPriority(driver.priorityPlayer!!).error shouldBe null
+        driver.pendingDecision.shouldBeInstanceOf<YesNoDecision>().playerId shouldBe activePlayer
 
         val declineResult = driver.submitYesNo(activePlayer, false)
-        declineResult.isSuccess shouldBe true
+        declineResult.error shouldBe null
 
-        // The game should continue without the ability on the stack
-        // (ability was declined, not put on the stack)
+        // The targeted ability has resolved, with its optional action declined.
         driver.isPaused shouldBe false
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 0
 
         // Grizzly Bears should still be on the battlefield (not destroyed)
         driver.findPermanent(opponent, "Grizzly Bears") shouldNotBe null
