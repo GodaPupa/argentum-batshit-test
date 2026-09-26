@@ -4,7 +4,8 @@ Status: the 423-case targeted gate and exact generated-byte review passed at
 `4aae1f9669769649e989735b4170f9bded15bc13`; the strengthened ten-case type-fixture
 successor passed at `2bbcfe579d19510af0067ab90fc691ae0147db67`. Independent source
 and artifact reviews accepted those exact component scopes. Full receiving-source
-CI and acceptance remain pending. This gate does not admit gameplay.
+CI and its non-author audit are now accepted, as recorded below. This gate does
+not admit gameplay.
 
 The source starts from accepted bestow integration
 `4ff03a9109eece49ab871b09c21b9533f66bb726`. The new `StatePredicate.IsCommander`
@@ -90,3 +91,26 @@ the unchanged counter assertions. The [successor receipt](evidence/forge-3625197
 retains the raw artifact, exact source/golden/deck bindings and independent Pest
 actual-evidence audit. The general type-change limitation above remains in force;
 this successful successor opens the full receiving integration gate.
+
+## Accepted full receiving integration
+
+PR #185 merged at `fbfee76af64fc681706f1f18d3d45c2228bbc26b` after full CI
+`36253148202` passed all seven backend groups and frontend/backend gates. Its
+tested combined source `5eb52128e9c41c0eaee015d8cde9dcb88269f656` and reviewed
+head `b6e34bd5f5b62a20eb8c63e9f614f2703869ae2e` have identical tree
+`22c3012043df8c438bd39eda376959a55f05eb36`.
+
+The successor session's non-author receiving auditor independently reviewed the
+implementation and current remote evidence, rechecked all retained targeted ZIP
+member hashes and actual XML cases, and counted the 423 actual passing cases in
+the complete receiving engine, old-scenario, content and tools transcripts. These
+include the strengthened ten Forge scenarios, 39 commander/projection checks,
+30 bootstrap/PDH/readiness checks and 344 content checks. Generic CI uploaded no
+artifact; the complete decoded transcripts are retained losslessly with hashes
+in the [full receiving receipt](evidence/forge-36253148202-full-ci/receipt.json).
+
+Accept Forge of Heroes into this receiving source's exact-card coverage. The four
+remaining registry identities and every full-game guard remain closed. The
+synthetic type-change qualification limit remains as described above. This
+acceptance changes no deck, pilot, seed allocation, sample or outcome counter,
+and creates no gameplay permit or deck-strength conclusion.
