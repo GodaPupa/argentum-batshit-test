@@ -1,0 +1,99 @@
+// Sphinx's Approach
+{
+    "name": "Sphinx's Approach",
+    "manaCost": "{1}{U}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Draw two cards. Then you may exile this spell and four cards named Sphinx's Approach from your graveyard. If you do, search your library for a Sphinx creature card, put it onto the battlefield, then shuffle.\nA deck can have any number of cards named Sphinx's Approach.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "DrawCards",
+                    "count": {
+                        "type": "Fixed",
+                        "amount": 2
+                    }
+                },
+                {
+                    "type": "Gated",
+                    "gate": {
+                        "type": "Gate.MayDecide",
+                        "sourceRequiredZone": "Stack"
+                    },
+                    "then": {
+                        "type": "Gated",
+                        "gate": {
+                            "type": "Gate.DoAction",
+                            "action": {
+                                "type": "MoveSourceAndExactCards",
+                                "sourceRequiredZone": "Stack",
+                                "additionalSourceZone": "Graveyard",
+                                "additionalFilter": {
+                                    "cardPredicates": [
+                                        {
+                                            "type": "NameEquals",
+                                            "name": "Sphinx's Approach"
+                                        }
+                                    ]
+                                },
+                                "additionalCount": 4,
+                                "storeMovedAs": "approachExiled"
+                            },
+                            "successCriterion": {
+                                "type": "SuccessCriterion.CollectionNonEmpty",
+                                "name": "approachExiled",
+                                "min": 5
+                            }
+                        },
+                        "then": {
+                            "type": "Composite",
+                            "effects": [
+                                {
+                                    "type": "GatherCards",
+                                    "source": {
+                                        "type": "FromZone",
+                                        "zone": "Library",
+                                        "filter": "creature Sphinx"
+                                    },
+                                    "storeAs": "searchable"
+                                },
+                                {
+                                    "type": "SelectFromCollection",
+                                    "from": "searchable",
+                                    "selection": {
+                                        "type": "ChooseUpTo",
+                                        "count": {
+                                            "type": "Fixed",
+                                            "amount": 1
+                                        }
+                                    },
+                                    "storeSelected": "found"
+                                },
+                                {
+                                    "type": "MoveCollection",
+                                    "from": "found",
+                                    "destination": {
+                                        "type": "ToZone",
+                                        "zone": "Battlefield"
+                                    }
+                                },
+                                "ShuffleLibrary",
+                                "EmitLibrarySearchedEvent"
+                            ]
+                        }
+                    },
+                    "descriptionOverride": "You may exile this spell and four cards named Sphinx's Approach from your graveyard"
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "41",
+        "artist": "Nathaniel Himawan",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/4/f49be090-c745-40e5-bc1c-605b8d98acdf.jpg"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}

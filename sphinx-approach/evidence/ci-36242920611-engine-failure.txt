@@ -1,0 +1,677 @@
+﻿2026-09-26T12:49:49.4899046Z Current runner version: '2.337.0'
+2026-09-26T12:49:49.4932520Z ##[group]Runner Image Provisioner
+2026-09-26T12:49:49.4933352Z Hosted Compute Agent
+2026-09-26T12:49:49.4934332Z Version: 20260828.587
+2026-09-26T12:49:49.4935013Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-26T12:49:49.4935842Z Build Date: 2026-08-28T16:44:25Z
+2026-09-26T12:49:49.4936561Z Worker ID: {bcfa5708-e4aa-4ae4-90de-e79f1bbb55c5}
+2026-09-26T12:49:49.4937284Z Azure Region: centralus
+2026-09-26T12:49:49.4937993Z ##[endgroup]
+2026-09-26T12:49:49.4939425Z ##[group]Operating System
+2026-09-26T12:49:49.4940123Z Ubuntu
+2026-09-26T12:49:49.4940685Z 24.04.5
+2026-09-26T12:49:49.4941229Z LTS
+2026-09-26T12:49:49.4942158Z ##[endgroup]
+2026-09-26T12:49:49.4942757Z ##[group]Runner Image
+2026-09-26T12:49:49.4943421Z Image: ubuntu-24.04
+2026-09-26T12:49:49.4944032Z Version: 20260920.314.1
+2026-09-26T12:49:49.4945373Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-26T12:49:49.4947005Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+2026-09-26T12:49:49.4948036Z ##[endgroup]
+2026-09-26T12:49:49.4949264Z ##[group]GITHUB_TOKEN Permissions
+2026-09-26T12:49:49.4951363Z Contents: read
+2026-09-26T12:49:49.4952261Z Metadata: read
+2026-09-26T12:49:49.4952842Z Packages: read
+2026-09-26T12:49:49.4953501Z ##[endgroup]
+2026-09-26T12:49:49.4955649Z Secret source: Actions
+2026-09-26T12:49:49.4956764Z Cache mode: write
+2026-09-26T12:49:49.4957499Z Prepare workflow directory
+2026-09-26T12:49:49.5514592Z Prepare all required actions
+2026-09-26T12:49:49.5564083Z Getting action download info
+2026-09-26T12:49:49.8270241Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-09-26T12:49:49.9494801Z Download action repository 'actions/setup-java@v5' (SHA:b6effb05e454b25005698d916606bdc6ffcbf961)
+2026-09-26T12:49:50.5303430Z Download action repository 'gradle/actions@v6' (SHA:9c971963bec38e04b3d30dcc455b5382be2fdbfb)
+2026-09-26T12:49:51.5535804Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2026-09-26T12:49:51.6525805Z Download action repository 'actions/upload-artifact@v7' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-26T12:49:51.9024038Z Complete job name: test (engine)
+2026-09-26T12:49:51.9780062Z ##[group]Run actions/checkout@v6
+2026-09-26T12:49:51.9780671Z with:
+2026-09-26T12:49:51.9780992Z   repository: GodaPupa/argentum-batshit-test
+2026-09-26T12:49:51.9784177Z   token: ***
+2026-09-26T12:49:51.9784457Z   ssh-strict: true
+2026-09-26T12:49:51.9784729Z   ssh-user: git
+2026-09-26T12:49:51.9785008Z   persist-credentials: true
+2026-09-26T12:49:51.9785313Z   clean: true
+2026-09-26T12:49:51.9785592Z   sparse-checkout-cone-mode: true
+2026-09-26T12:49:51.9785925Z   fetch-depth: 1
+2026-09-26T12:49:51.9786195Z   fetch-tags: false
+2026-09-26T12:49:51.9786488Z   show-progress: true
+2026-09-26T12:49:51.9786760Z   lfs: false
+2026-09-26T12:49:51.9787010Z   submodules: false
+2026-09-26T12:49:51.9787293Z   set-safe-directory: true
+2026-09-26T12:49:51.9787610Z   allow-unsafe-pr-checkout: false
+2026-09-26T12:49:51.9788217Z env:
+2026-09-26T12:49:51.9788731Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T12:49:51.9789333Z ##[endgroup]
+2026-09-26T12:49:52.0794142Z Syncing repository: GodaPupa/argentum-batshit-test
+2026-09-26T12:49:52.0795792Z ##[group]Getting Git version info
+2026-09-26T12:49:52.0796334Z Working directory is '/home/runner/work/argentum-batshit-test/argentum-batshit-test'
+2026-09-26T12:49:52.0797107Z [command]/usr/bin/git version
+2026-09-26T12:49:52.0857085Z git version 2.55.0
+2026-09-26T12:49:52.0880507Z ##[endgroup]
+2026-09-26T12:49:52.0897001Z Temporarily overriding HOME='/home/runner/work/_temp/eeb84aa5-39de-4e89-9823-712c693497c4' before making global git config changes
+2026-09-26T12:49:52.0899167Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-26T12:49:52.0904333Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-26T12:49:52.0959126Z Deleting the contents of '/home/runner/work/argentum-batshit-test/argentum-batshit-test'
+2026-09-26T12:49:52.0963588Z ##[group]Determining repository object format
+2026-09-26T12:49:52.0966100Z ##[endgroup]
+2026-09-26T12:49:52.0966811Z ##[group]Initializing the repository
+2026-09-26T12:49:52.0971057Z [command]/usr/bin/git init /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-26T12:49:52.1074279Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-26T12:49:52.1078656Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-26T12:49:52.1079779Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-26T12:49:52.1080528Z hint: call:
+2026-09-26T12:49:52.1080905Z hint:
+2026-09-26T12:49:52.1081419Z hint: 	git config --global init.defaultBranch <name>
+2026-09-26T12:49:52.1082181Z hint:
+2026-09-26T12:49:52.1082722Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-26T12:49:52.1083622Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-26T12:49:52.1084346Z hint:
+2026-09-26T12:49:52.1084757Z hint: 	git branch -m <name>
+2026-09-26T12:49:52.1085230Z hint:
+2026-09-26T12:49:52.1085777Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-26T12:49:52.1086961Z Initialized empty Git repository in /home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/
+2026-09-26T12:49:52.1089117Z [command]/usr/bin/git remote add origin https://github.com/GodaPupa/argentum-batshit-test
+2026-09-26T12:49:52.1138343Z ##[endgroup]
+2026-09-26T12:49:52.1139117Z ##[group]Disabling automatic garbage collection
+2026-09-26T12:49:52.1143181Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-26T12:49:52.1175632Z ##[endgroup]
+2026-09-26T12:49:52.1176378Z ##[group]Setting up auth
+2026-09-26T12:49:52.1176949Z Removing SSH command configuration
+2026-09-26T12:49:52.1183764Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-26T12:49:52.1218821Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-26T12:49:52.1571669Z Removing HTTP extra header
+2026-09-26T12:49:52.1579957Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-26T12:49:52.1620426Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-26T12:49:52.1865948Z Removing includeIf entries pointing to credentials config files
+2026-09-26T12:49:52.1873114Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-26T12:49:52.1912962Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-26T12:49:52.2149790Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-26T12:49:52.2193473Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path /home/runner/work/_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:49:52.2231357Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:49:52.2270320Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:49:52.2313483Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:49:52.2346426Z ##[endgroup]
+2026-09-26T12:49:52.2347165Z ##[group]Fetching the repository
+2026-09-26T12:49:52.2355218Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +adc69f7c901843d0fa42e97d1d7b04b9b392c17f:refs/remotes/pull/175/merge
+2026-09-26T12:49:59.3852555Z From https://github.com/GodaPupa/argentum-batshit-test
+2026-09-26T12:49:59.3853592Z  * [new ref]           adc69f7c901843d0fa42e97d1d7b04b9b392c17f -> pull/175/merge
+2026-09-26T12:49:59.3865195Z ##[endgroup]
+2026-09-26T12:49:59.3865787Z ##[group]Determining the checkout info
+2026-09-26T12:49:59.3866253Z ##[endgroup]
+2026-09-26T12:49:59.3866577Z [command]/usr/bin/git sparse-checkout disable
+2026-09-26T12:49:59.3925863Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-26T12:49:59.3960693Z ##[group]Checking out the ref
+2026-09-26T12:49:59.3988984Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/175/merge
+2026-09-26T12:50:00.4426416Z Updating files:  65% (18155/27921)
+2026-09-26T12:50:00.4580358Z Updating files:  66% (18428/27921)
+2026-09-26T12:50:00.4710843Z Updating files:  67% (18708/27921)
+2026-09-26T12:50:00.4853632Z Updating files:  68% (18987/27921)
+2026-09-26T12:50:00.4985321Z Updating files:  69% (19266/27921)
+2026-09-26T12:50:00.5106117Z Updating files:  70% (19545/27921)
+2026-09-26T12:50:00.5272494Z Updating files:  71% (19824/27921)
+2026-09-26T12:50:00.5431086Z Updating files:  72% (20104/27921)
+2026-09-26T12:50:00.5598889Z Updating files:  73% (20383/27921)
+2026-09-26T12:50:00.5767663Z Updating files:  74% (20662/27921)
+2026-09-26T12:50:00.5924478Z Updating files:  75% (20941/27921)
+2026-09-26T12:50:00.6059812Z Updating files:  76% (21220/27921)
+2026-09-26T12:50:00.6194063Z Updating files:  77% (21500/27921)
+2026-09-26T12:50:00.6330033Z Updating files:  78% (21779/27921)
+2026-09-26T12:50:00.6438901Z Updating files:  79% (22058/27921)
+2026-09-26T12:50:00.6574182Z Updating files:  80% (22337/27921)
+2026-09-26T12:50:00.6708355Z Updating files:  81% (22617/27921)
+2026-09-26T12:50:00.6860377Z Updating files:  82% (22896/27921)
+2026-09-26T12:50:00.7025607Z Updating files:  83% (23175/27921)
+2026-09-26T12:50:00.7182909Z Updating files:  84% (23454/27921)
+2026-09-26T12:50:00.7320891Z Updating files:  85% (23733/27921)
+2026-09-26T12:50:00.7463874Z Updating files:  86% (24013/27921)
+2026-09-26T12:50:00.7603625Z Updating files:  87% (24292/27921)
+2026-09-26T12:50:00.7738260Z Updating files:  88% (24571/27921)
+2026-09-26T12:50:00.7911004Z Updating files:  89% (24850/27921)
+2026-09-26T12:50:00.8188672Z Updating files:  90% (25129/27921)
+2026-09-26T12:50:00.9396551Z Updating files:  91% (25409/27921)
+2026-09-26T12:50:00.9709372Z Updating files:  92% (25688/27921)
+2026-09-26T12:50:00.9880532Z Updating files:  93% (25967/27921)
+2026-09-26T12:50:01.0106225Z Updating files:  94% (26246/27921)
+2026-09-26T12:50:01.0319226Z Updating files:  95% (26525/27921)
+2026-09-26T12:50:01.0508867Z Updating files:  96% (26805/27921)
+2026-09-26T12:50:01.0690111Z Updating files:  97% (27084/27921)
+2026-09-26T12:50:01.1589184Z Updating files:  98% (27363/27921)
+2026-09-26T12:50:01.1804897Z Updating files:  99% (27642/27921)
+2026-09-26T12:50:01.1805382Z Updating files: 100% (27921/27921)
+2026-09-26T12:50:01.1805827Z Updating files: 100% (27921/27921), done.
+2026-09-26T12:50:01.4375973Z Note: switching to 'refs/remotes/pull/175/merge'.
+2026-09-26T12:50:01.4376263Z 
+2026-09-26T12:50:01.4376508Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-26T12:50:01.4377013Z changes and commit them, and you can discard any commits you make in this
+2026-09-26T12:50:01.4377498Z state without impacting any branches by switching back to a branch.
+2026-09-26T12:50:01.4377773Z 
+2026-09-26T12:50:01.4378304Z If you want to create a new branch to retain commits you create, you may
+2026-09-26T12:50:01.4378784Z do so (now or later) by using -c with the switch command. Example:
+2026-09-26T12:50:01.4379038Z 
+2026-09-26T12:50:01.4379163Z   git switch -c <new-branch-name>
+2026-09-26T12:50:01.4379345Z 
+2026-09-26T12:50:01.4379465Z Or undo this operation with:
+2026-09-26T12:50:01.4379634Z 
+2026-09-26T12:50:01.4379724Z   git switch -
+2026-09-26T12:50:01.4379854Z 
+2026-09-26T12:50:01.4380073Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-26T12:50:01.4380415Z 
+2026-09-26T12:50:01.4380843Z HEAD is now at adc69f7c Merge 4a97265559e989df937e8c09f9a42d58a4e9d79d into d0c78bb4cca79b7402ba65bd62b5cb621230a054
+2026-09-26T12:50:01.4455267Z ##[endgroup]
+2026-09-26T12:50:01.4507955Z [command]/usr/bin/git log -1 --format=%H
+2026-09-26T12:50:01.4541181Z adc69f7c901843d0fa42e97d1d7b04b9b392c17f
+2026-09-26T12:50:01.4841052Z ##[group]Run actions/setup-java@v5
+2026-09-26T12:50:01.4841359Z with:
+2026-09-26T12:50:01.4841769Z   distribution: temurin
+2026-09-26T12:50:01.4842006Z   java-version: 21
+2026-09-26T12:50:01.4842237Z   java-package: jdk
+2026-09-26T12:50:01.4842471Z   check-latest: false
+2026-09-26T12:50:01.4842705Z   set-default: true
+2026-09-26T12:50:01.4842931Z   verify-signature: false
+2026-09-26T12:50:01.4843177Z   server-id: github
+2026-09-26T12:50:01.4843415Z   server-username: GITHUB_ACTOR
+2026-09-26T12:50:01.4843692Z   server-password: GITHUB_TOKEN
+2026-09-26T12:50:01.4843961Z   overwrite-settings: true
+2026-09-26T12:50:01.4844222Z   job-status: success
+2026-09-26T12:50:01.4846760Z   token: ***
+2026-09-26T12:50:01.4847000Z   show-download-progress: false
+2026-09-26T12:50:01.4847264Z env:
+2026-09-26T12:50:01.4847711Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T12:50:01.4848211Z ##[endgroup]
+2026-09-26T12:50:01.6349062Z ##[group]Installed distributions
+2026-09-26T12:50:01.6659752Z Resolved Java 21.0.12+1 from tool-cache
+2026-09-26T12:50:01.6660250Z Setting Java 21.0.12+1 as the default
+2026-09-26T12:50:01.6670565Z Creating toolchains.xml for JDK version 21 from temurin
+2026-09-26T12:50:01.6740372Z Writing to /home/runner/.m2/toolchains.xml
+2026-09-26T12:50:01.6741044Z 
+2026-09-26T12:50:01.6741207Z Java configuration:
+2026-09-26T12:50:01.6741744Z   Distribution: temurin
+2026-09-26T12:50:01.6742028Z   Version: 21.0.12+1
+2026-09-26T12:50:01.6742480Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T12:50:01.6742840Z 
+2026-09-26T12:50:01.6743215Z ##[endgroup]
+2026-09-26T12:50:01.6782053Z Creating settings.xml with server-id: github
+2026-09-26T12:50:01.6782630Z Writing to /home/runner/.m2/settings.xml
+2026-09-26T12:50:01.6783915Z Configured MAVEN_ARGS to include -ntp to suppress Maven transfer progress logs. Set 'show-download-progress: true' to keep the download progress output.
+2026-09-26T12:50:01.7046695Z ##[group]Run gradle/actions/setup-gradle@v6
+2026-09-26T12:50:01.7047019Z with:
+2026-09-26T12:50:01.7047266Z   cache-provider: enhanced
+2026-09-26T12:50:01.7082841Z   cache-disabled: false
+2026-09-26T12:50:01.7083275Z   cache-read-only: true
+2026-09-26T12:50:01.7083674Z   cache-write-only: false
+2026-09-26T12:50:01.7084090Z   cache-overwrite-existing: false
+2026-09-26T12:50:01.7084527Z   cache-cleanup: on-success
+2026-09-26T12:50:01.7085008Z   gradle-home-cache-includes: caches
+notifications
+
+2026-09-26T12:50:01.7085538Z   add-job-summary: always
+2026-09-26T12:50:01.7085953Z   add-job-summary-as-pr-comment: never
+2026-09-26T12:50:01.7086433Z   dependency-graph: disabled
+2026-09-26T12:50:01.7086949Z   dependency-graph-report-dir: dependency-graph-reports
+2026-09-26T12:50:01.7087565Z   dependency-graph-continue-on-failure: true
+2026-09-26T12:50:01.7088073Z   build-scan-publish: false
+2026-09-26T12:50:01.7088478Z   validate-wrappers: true
+2026-09-26T12:50:01.7088975Z   allow-snapshot-wrappers: false
+2026-09-26T12:50:01.7089447Z   gradle-home-cache-strict-match: false
+2026-09-26T12:50:01.7090529Z   workflow-job-context: {
+  "name": "engine",
+  "tasks": ":rules-engine:test"
+}
+2026-09-26T12:50:01.7095348Z   github-token: ***
+2026-09-26T12:50:01.7095698Z env:
+2026-09-26T12:50:01.7096306Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T12:50:01.7097166Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T12:50:01.7097912Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T12:50:01.7098508Z   MAVEN_ARGS: -ntp
+2026-09-26T12:50:01.7098840Z ##[endgroup]
+2026-09-26T12:50:04.2998220Z Merged default JDK locations into /home/runner/.m2/toolchains.xml
+2026-09-26T12:50:04.3004826Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+2026-09-26T12:50:04.3823290Z ##[group]Restore Gradle state from cache
+2026-09-26T12:50:04.5089612Z Cache hit for restore-key: gradle-home-v2|Linux-X64|test[5a98b551e2391f28410e678670214291]-d0c78bb4cca79b7402ba65bd62b5cb621230a054
+2026-09-26T12:50:04.9738278Z Received 369083 of 369083 (100.0%), 1.1 MBs/sec
+2026-09-26T12:50:04.9739102Z Cache Size: ~0 MB (369083 B)
+2026-09-26T12:50:04.9796548Z [command]/usr/bin/tar -xf /home/runner/work/_temp/d2d5e873-2346-49d6-9fe0-39c9bfe05a11/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T12:50:05.0364554Z Cache restored successfully
+2026-09-26T12:50:05.0368901Z Restored cache entry with key gradle-home-v2|Linux-X64|test[5a98b551e2391f28410e678670214291]-adc69f7c901843d0fa42e97d1d7b04b9b392c17f in 653ms
+2026-09-26T12:50:05.1638921Z Cache hit for: gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-26T12:50:05.1714354Z Cache hit for: gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-26T12:50:05.1797207Z Cache hit for: gradle-dependencies-v2-af35fda4dfadde7cf22a0e8a34a72810
+2026-09-26T12:50:05.1804125Z Cache hit for: gradle-transforms-v2-d69fb141e2414659e489d74f080c146e
+2026-09-26T12:50:05.1843044Z Cache hit for: gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-26T12:50:05.1864653Z Cache hit for: gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-26T12:50:05.1872208Z Cache hit for: gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-26T12:50:05.5017740Z Received 60281 of 60281 (100.0%), 0.3 MBs/sec
+2026-09-26T12:50:05.5018433Z Cache Size: ~0 MB (60281 B)
+2026-09-26T12:50:05.5048511Z [command]/usr/bin/tar -xf /home/runner/work/_temp/a4576a30-680f-4e57-9656-4edb93c163d3/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T12:50:05.5143024Z Cache restored successfully
+2026-09-26T12:50:05.5149977Z Restored cache entry with key gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19 in 476ms
+2026-09-26T12:50:05.5690283Z Received 101824 of 101824 (100.0%), 0.4 MBs/sec
+2026-09-26T12:50:05.5691021Z Cache Size: ~0 MB (101824 B)
+2026-09-26T12:50:05.5720398Z [command]/usr/bin/tar -xf /home/runner/work/_temp/986c8e49-babb-4bee-889b-8e329d94f136/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T12:50:05.5935681Z Cache restored successfully
+2026-09-26T12:50:05.5939597Z Restored cache entry with key gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114 in 555ms
+2026-09-26T12:50:05.6889037Z Received 338388 of 338388 (100.0%), 0.9 MBs/sec
+2026-09-26T12:50:05.6889547Z Cache Size: ~0 MB (338388 B)
+2026-09-26T12:50:05.6914369Z [command]/usr/bin/tar -xf /home/runner/work/_temp/d433409c-665b-4b4a-a9e0-fe8d868adf3e/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T12:50:05.8545940Z Cache restored successfully
+2026-09-26T12:50:05.8553012Z Restored cache entry with key gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a in 817ms
+2026-09-26T12:50:06.2930622Z Received 42158673 of 42158673 (100.0%), 40.6 MBs/sec
+2026-09-26T12:50:06.2932859Z Cache Size: ~40 MB (42158673 B)
+2026-09-26T12:50:06.3199861Z Received 58720256 of 112726939 (52.1%), 55.6 MBs/sec
+2026-09-26T12:50:06.3302939Z Received 54525952 of 227369696 (24.0%), 51.6 MBs/sec
+2026-09-26T12:50:06.3405570Z Received 58720256 of 139934591 (42.0%), 56.0 MBs/sec
+2026-09-26T12:50:06.3471142Z [command]/usr/bin/tar -xf /home/runner/work/_temp/03d2543b-6966-41fc-aaf0-caca4a1dc9c3/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T12:50:06.7150830Z Cache restored successfully
+2026-09-26T12:50:06.7229968Z Restored cache entry with key gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de in 1685ms
+2026-09-26T12:50:06.8016094Z Received 112726939 of 112726939 (100.0%), 72.2 MBs/sec
+2026-09-26T12:50:06.8016880Z Cache Size: ~108 MB (112726939 B)
+2026-09-26T12:50:06.8475175Z [command]/usr/bin/tar -xf /home/runner/work/_temp/6f4cdbcc-5150-4a90-8e92-a30fe536ab93/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T12:50:07.1398621Z Received 139934591 of 139934591 (100.0%), 74.2 MBs/sec
+2026-09-26T12:50:07.1399656Z Cache Size: ~133 MB (139934591 B)
+2026-09-26T12:50:07.1440564Z [command]/usr/bin/tar -xf /home/runner/work/_temp/341cbde3-a65d-4a2e-bf93-5f369fe00b00/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T12:50:07.3413083Z Received 184549376 of 227369696 (81.2%), 87.3 MBs/sec
+2026-09-26T12:50:07.5933461Z Cache restored successfully
+2026-09-26T12:50:07.6172952Z Restored cache entry with key gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60 in 2579ms
+2026-09-26T12:50:07.8240148Z Received 227369696 of 227369696 (100.0%), 86.7 MBs/sec
+2026-09-26T12:50:07.8241213Z Cache Size: ~217 MB (227369696 B)
+2026-09-26T12:50:07.8340122Z [command]/usr/bin/tar -xf /home/runner/work/_temp/64f96a86-4f09-4da3-90a9-366e5b6bd63d/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T12:50:08.2509679Z Cache restored successfully
+2026-09-26T12:50:08.3014003Z Restored cache entry with key gradle-transforms-v2-d69fb141e2414659e489d74f080c146e in 3261ms
+2026-09-26T12:50:08.3636445Z Cache restored successfully
+2026-09-26T12:50:08.4430920Z Restored cache entry with key gradle-dependencies-v2-af35fda4dfadde7cf22a0e8a34a72810 in 3404ms
+2026-09-26T12:50:08.4456631Z ##[endgroup]
+2026-09-26T12:50:08.7503661Z ##[group]All Gradle Wrapper jars are valid
+2026-09-26T12:50:08.7532736Z ✓ Found known Gradle Wrapper JAR files:
+2026-09-26T12:50:08.7547418Z   497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7 gradle/wrapper/gradle-wrapper.jar
+2026-09-26T12:50:08.7550484Z ##[endgroup]
+2026-09-26T12:50:08.7830499Z ##[group]Run actions/cache@v4
+2026-09-26T12:50:08.7830845Z with:
+2026-09-26T12:50:08.7831304Z   path: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T12:50:08.7832291Z   key: gradle-build-cache-Linux-engine-adc69f7c901843d0fa42e97d1d7b04b9b392c17f
+2026-09-26T12:50:08.7832960Z   restore-keys: gradle-build-cache-Linux-engine-
+gradle-build-cache-Linux-
+
+2026-09-26T12:50:08.7833442Z   enableCrossOsArchive: false
+2026-09-26T12:50:08.7833765Z   fail-on-cache-miss: false
+2026-09-26T12:50:08.7834067Z   lookup-only: false
+2026-09-26T12:50:08.7834349Z   save-always: false
+2026-09-26T12:50:08.7834622Z env:
+2026-09-26T12:50:08.7835107Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T12:50:08.7835804Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T12:50:08.7836398Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T12:50:08.7836845Z   MAVEN_ARGS: -ntp
+2026-09-26T12:50:08.7837161Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-26T12:50:08.7837527Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-26T12:50:08.7838096Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-26T12:50:08.7838617Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-26T12:50:08.7839174Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-26T12:50:08.7839564Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-26T12:50:08.7839908Z ##[endgroup]
+2026-09-26T12:50:08.8924762Z (node:2357) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-09-26T12:50:08.8925587Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-26T12:50:09.0177964Z Cache hit for restore-key: gradle-build-cache-Linux-engine-73802a9321c4eef757117d8a2b66a17ed607ddf4
+2026-09-26T12:50:09.0283799Z (node:2357) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-09-26T12:50:10.1442985Z Received 109051904 of 119961745 (90.9%), 104.0 MBs/sec
+2026-09-26T12:50:10.1916360Z Received 119961745 of 119961745 (100.0%), 108.6 MBs/sec
+2026-09-26T12:50:10.1918285Z Cache Size: ~114 MB (119961745 B)
+2026-09-26T12:50:10.1958090Z [command]/usr/bin/tar -xf /home/runner/work/_temp/b1ecae71-44c7-4969-9ba6-57dbfbb27ed5/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-26T12:50:10.3569867Z Cache restored successfully
+2026-09-26T12:50:10.3706736Z Cache restored from key: gradle-build-cache-Linux-engine-73802a9321c4eef757117d8a2b66a17ed607ddf4
+2026-09-26T12:50:10.3865295Z ##[group]Run set -uo pipefail
+2026-09-26T12:50:10.3865760Z [36;1mset -uo pipefail[0m
+2026-09-26T12:50:10.3866112Z [36;1mJPS="${JAVA_HOME}/bin/jps"[0m
+2026-09-26T12:50:10.3866481Z [36;1mJSTACK="${JAVA_HOME}/bin/jstack"[0m
+2026-09-26T12:50:10.3866841Z [36;1mWATCHDOG_TIMEOUT=$((20 * 60))[0m
+2026-09-26T12:50:10.3867192Z [36;1m[0m
+2026-09-26T12:50:10.3867460Z [36;1m./gradlew :rules-engine:test &[0m
+2026-09-26T12:50:10.3867803Z [36;1mBUILD_PID=$![0m
+2026-09-26T12:50:10.3868095Z [36;1m[0m
+2026-09-26T12:50:10.3868337Z [36;1m([0m
+2026-09-26T12:50:10.3868609Z [36;1m  sleep "${WATCHDOG_TIMEOUT}"[0m
+2026-09-26T12:50:10.3869250Z [36;1m  echo "::error::Tests exceeded ${WATCHDOG_TIMEOUT}s — assuming the forked test-worker hang. Dumping JVM threads."[0m
+2026-09-26T12:50:10.3869900Z [36;1m  for pid in $("${JPS}" -q); do[0m
+2026-09-26T12:50:10.3870323Z [36;1m    echo "===================== jstack ${pid} ====================="[0m
+2026-09-26T12:50:10.3870800Z [36;1m    "${JSTACK}" -l "${pid}" 2>&1 || true[0m
+2026-09-26T12:50:10.3871149Z [36;1m  done[0m
+2026-09-26T12:50:10.3871441Z [36;1m  echo "::error::Killing hung run."[0m
+2026-09-26T12:50:10.3872122Z [36;1m  kill -9 "${BUILD_PID}" 2>/dev/null || true[0m
+2026-09-26T12:50:10.3872484Z [36;1m) &[0m
+2026-09-26T12:50:10.3872750Z [36;1mWATCHDOG_PID=$![0m
+2026-09-26T12:50:10.3873053Z [36;1m[0m
+2026-09-26T12:50:10.3873314Z [36;1mwait "${BUILD_PID}"[0m
+2026-09-26T12:50:10.3873623Z [36;1mSTATUS=$?[0m
+2026-09-26T12:50:10.3873945Z [36;1mkill "${WATCHDOG_PID}" 2>/dev/null || true[0m
+2026-09-26T12:50:10.3874303Z [36;1mexit "${STATUS}"[0m
+2026-09-26T12:50:10.4122374Z shell: /usr/bin/bash -e {0}
+2026-09-26T12:50:10.4122727Z env:
+2026-09-26T12:50:10.4123258Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-26T12:50:10.4123982Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T12:50:10.4124597Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-26T12:50:10.4125057Z   MAVEN_ARGS: -ntp
+2026-09-26T12:50:10.4125382Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-26T12:50:10.4125759Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-26T12:50:10.4126119Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-26T12:50:10.4126906Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-26T12:50:10.4127458Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-26T12:50:10.4127847Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-26T12:50:10.4128189Z ##[endgroup]
+2026-09-26T12:50:12.1834664Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-09-26T12:50:16.0831850Z Calculating task graph as no cached configuration is available for tasks: :rules-engine:test
+2026-09-26T12:50:30.0834447Z > Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:30.7836509Z > Task :buildSrc:generateExternalPluginSpecBuilders FROM-CACHE
+2026-09-26T12:50:30.7837927Z > Task :buildSrc:extractPrecompiledScriptPluginPlugins FROM-CACHE
+2026-09-26T12:50:30.8848211Z > Task :buildSrc:compilePluginsBlocks FROM-CACHE
+2026-09-26T12:50:30.9827365Z > Task :buildSrc:generatePrecompiledScriptPluginAccessors FROM-CACHE
+2026-09-26T12:50:30.9837401Z > Task :buildSrc:generateScriptPluginAdapters FROM-CACHE
+2026-09-26T12:50:31.1825143Z > Task :buildSrc:compileKotlin FROM-CACHE
+2026-09-26T12:50:31.1832958Z > Task :buildSrc:compileJava NO-SOURCE
+2026-09-26T12:50:31.1833626Z > Task :buildSrc:compileGroovy NO-SOURCE
+2026-09-26T12:50:31.1834194Z > Task :buildSrc:pluginDescriptors
+2026-09-26T12:50:31.1834692Z > Task :buildSrc:processResources
+2026-09-26T12:50:31.1835174Z > Task :buildSrc:classes
+2026-09-26T12:50:31.2831928Z > Task :buildSrc:jar
+2026-09-26T12:50:35.3838205Z > Task :mtg-sets:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.3885960Z > Task :mtg-sdk:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.3913322Z > Task :mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.3942435Z > Task :rules-engine:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.4002448Z > Task :mtg-sets:core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.4029288Z > Task :mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.4052487Z > Task :mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.4072617Z > Task :mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.4082452Z > Task :mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.4112372Z > Task :mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.4113418Z > Task :mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.4114363Z > Task :mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.4115296Z > Task :rules-engine:processTestFixturesResources NO-SOURCE
+2026-09-26T12:50:35.4116037Z > Task :mtg-sdk:processResources NO-SOURCE
+2026-09-26T12:50:35.4116840Z > Task :mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-26T12:50:35.4852893Z > Task :rules-engine:koverFindJar
+2026-09-26T12:50:35.5827001Z > Task :mtg-sets:processResources
+2026-09-26T12:50:35.5843034Z > Task :mtg-sets:1993-1999:processResources NO-SOURCE
+2026-09-26T12:50:35.5844227Z > Task :mtg-sets:2000-2002:processResources NO-SOURCE
+2026-09-26T12:50:35.5845209Z > Task :mtg-sets:2003-2007:processResources NO-SOURCE
+2026-09-26T12:50:35.5846085Z > Task :mtg-sets:2008-2016:processResources NO-SOURCE
+2026-09-26T12:50:35.5846979Z > Task :mtg-sets:2017-2022:processResources NO-SOURCE
+2026-09-26T12:50:35.5847839Z > Task :mtg-sets:2023:processResources NO-SOURCE
+2026-09-26T12:50:35.5848687Z > Task :mtg-sets:2024:processResources NO-SOURCE
+2026-09-26T12:50:35.5849617Z > Task :mtg-sets:2025:processResources NO-SOURCE
+2026-09-26T12:50:35.5850499Z > Task :mtg-sets:2026:processResources NO-SOURCE
+2026-09-26T12:50:35.5851330Z > Task :rules-engine:processResources
+2026-09-26T12:50:35.5852305Z > Task :mtg-sets:core:processResources
+2026-09-26T12:50:35.5853088Z > Task :rules-engine:processTestResources
+2026-09-26T12:50:36.3854663Z > Task :mtg-sdk:compileKotlin FROM-CACHE
+2026-09-26T12:50:36.3865109Z > Task :mtg-sdk:compileJava NO-SOURCE
+2026-09-26T12:50:36.3922316Z > Task :mtg-sdk:classes UP-TO-DATE
+2026-09-26T12:50:36.5867744Z > Task :mtg-sets:core:compileKotlin FROM-CACHE
+2026-09-26T12:50:36.5892587Z > Task :mtg-sets:core:compileJava NO-SOURCE
+2026-09-26T12:50:36.5926867Z > Task :mtg-sets:core:classes
+2026-09-26T12:50:36.7852882Z > Task :mtg-sets:core:jar
+2026-09-26T12:50:37.7829131Z > Task :mtg-sdk:jar
+2026-09-26T12:51:06.3824971Z > Task :rules-engine:compileKotlin
+2026-09-26T12:51:06.5824983Z > Task :mtg-sets:1993-1999:compileKotlin
+2026-09-26T12:51:33.9836825Z > Task :mtg-sets:1993-1999:compileJava NO-SOURCE
+2026-09-26T12:51:33.9882654Z > Task :mtg-sets:1993-1999:classes UP-TO-DATE
+2026-09-26T12:51:34.9832767Z > Task :mtg-sets:1993-1999:jar
+2026-09-26T12:51:51.6836169Z > Task :mtg-sets:2000-2002:compileKotlin
+2026-09-26T12:51:51.6842553Z > Task :mtg-sets:2000-2002:compileJava NO-SOURCE
+2026-09-26T12:51:51.6902353Z > Task :mtg-sets:2000-2002:classes UP-TO-DATE
+2026-09-26T12:51:52.1824584Z > Task :mtg-sets:2000-2002:jar
+2026-09-26T12:52:10.6829302Z > Task :mtg-sets:2003-2007:compileKotlin
+2026-09-26T12:52:10.6852382Z > Task :mtg-sets:2003-2007:compileJava NO-SOURCE
+2026-09-26T12:52:10.6912299Z > Task :mtg-sets:2003-2007:classes UP-TO-DATE
+2026-09-26T12:52:11.6862679Z > Task :mtg-sets:2003-2007:jar
+2026-09-26T12:52:34.7892741Z > Task :mtg-sets:2008-2016:compileKotlin
+2026-09-26T12:52:34.7916526Z > Task :mtg-sets:2008-2016:compileJava NO-SOURCE
+2026-09-26T12:52:34.8002461Z > Task :mtg-sets:2008-2016:classes UP-TO-DATE
+2026-09-26T12:52:35.8832878Z > Task :mtg-sets:2008-2016:jar
+2026-09-26T12:52:51.6846324Z 
+2026-09-26T12:52:51.6863270Z > Task :rules-engine:compileKotlin
+2026-09-26T12:52:51.6883232Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt:277:62 No cast needed.
+2026-09-26T12:52:51.6903218Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt:473:21 Condition is always 'true'.
+2026-09-26T12:52:51.6933512Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ExileTopCardMayPlayFreeExecutor.kt:79:60 Unnecessary non-null assertion (!!) on a non-null receiver of type 'EntityId'.
+2026-09-26T12:52:51.6936891Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt:820:49 Unnecessary safe call on a non-null receiver of type 'CardDefinition'.
+2026-09-26T12:52:51.6939899Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt:622:27 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ObjectIdentity'.
+2026-09-26T12:52:54.4823653Z 
+2026-09-26T12:52:54.4838559Z > Task :mtg-sets:2017-2022:compileKotlin
+2026-09-26T12:52:54.4843962Z > Task :mtg-sets:2017-2022:compileJava NO-SOURCE
+2026-09-26T12:52:54.4855385Z > Task :mtg-sets:2017-2022:classes UP-TO-DATE
+2026-09-26T12:52:54.7831921Z > Task :rules-engine:compileJava NO-SOURCE
+2026-09-26T12:52:54.7862289Z > Task :rules-engine:classes
+2026-09-26T12:52:55.0845606Z > Task :mtg-sets:2017-2022:jar
+2026-09-26T12:52:56.1823793Z > Task :rules-engine:jar
+2026-09-26T12:53:00.6824750Z > Task :mtg-sets:2023:compileKotlin
+2026-09-26T12:53:00.6826602Z > Task :mtg-sets:2023:compileJava NO-SOURCE
+2026-09-26T12:53:00.6828145Z > Task :mtg-sets:2023:classes UP-TO-DATE
+2026-09-26T12:53:00.9824337Z > Task :mtg-sets:2023:jar
+2026-09-26T12:53:09.7824404Z > Task :mtg-sets:2024:compileKotlin
+2026-09-26T12:53:09.7826692Z > Task :mtg-sets:2024:compileJava NO-SOURCE
+2026-09-26T12:53:09.7828218Z > Task :mtg-sets:2024:classes UP-TO-DATE
+2026-09-26T12:53:10.1825003Z > Task :mtg-sets:2024:jar
+2026-09-26T12:53:18.4830247Z > Task :mtg-sets:2025:compileKotlin
+2026-09-26T12:53:18.4840548Z > Task :mtg-sets:2025:compileJava NO-SOURCE
+2026-09-26T12:53:18.4841668Z > Task :mtg-sets:2025:classes UP-TO-DATE
+2026-09-26T12:53:18.9842749Z > Task :mtg-sets:2025:jar
+2026-09-26T12:53:22.1827155Z 
+2026-09-26T12:53:22.1876774Z e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/cards/SphinxsApproach.kt:69:9 Unresolved reference 'scryfallId'.
+2026-09-26T12:53:22.1879878Z e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/cards/SphinxsApproach.kt:71:9 Unresolved reference 'releaseDate'.
+2026-09-26T12:53:22.1922901Z > Task :mtg-sets:2026:compileKotlin FAILED
+2026-09-26T12:53:22.2825557Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1790427017091.json
+2026-09-26T12:53:22.4843942Z 
+2026-09-26T12:53:22.4853703Z Kotlin build report is written to file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/build/reports/kotlin-build/argentum-engine-build-2026-09-26-12-53-22-0.txt
+2026-09-26T12:53:22.4855242Z FAILURE: Build failed with an exception.
+2026-09-26T12:53:22.4855631Z 
+2026-09-26T12:53:22.4855816Z * What went wrong:
+2026-09-26T12:53:22.4856687Z Execution failed for task ':mtg-sets:2026:compileKotlin' (registered by plugin 'org.jetbrains.kotlin.jvm').
+2026-09-26T12:53:22.4858049Z > A failure occurred while executing org.jetbrains.kotlin.compilerRunner.btapi.BuildToolsApiCompilationWork
+2026-09-26T12:53:22.4859064Z    > Compilation error. See log for more details
+2026-09-26T12:53:22.4859446Z 
+2026-09-26T12:53:22.4859978Z * Try:
+2026-09-26T12:53:22.4860488Z 
+2026-09-26T12:53:22.4862004Z [Incubating] Problems report is available at: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/build/reports/problems/problems-report.html
+2026-09-26T12:53:22.4866224Z 
+2026-09-26T12:53:22.4867028Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-09-26T12:53:22.4867881Z 
+2026-09-26T12:53:22.4868849Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-09-26T12:53:22.4902604Z > Run with --stacktrace option to get the stack trace.
+2026-09-26T12:53:22.4918427Z > Run with --info or --debug option to get more log output.
+2026-09-26T12:53:22.4918768Z 
+2026-09-26T12:53:22.4919350Z For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-09-26T12:53:22.4920153Z 37 actionable tasks: 29 executed, 8 from cache
+2026-09-26T12:53:22.4920538Z Configuration cache entry stored.
+2026-09-26T12:53:22.4921012Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-09-26T12:53:22.4921715Z > Get more help at https://help.gradle.org.
+2026-09-26T12:53:22.4922078Z 
+2026-09-26T12:53:22.4922275Z BUILD FAILED in 3m 11s
+2026-09-26T12:53:27.9225814Z ##[error]Process completed with exit code 1.
+2026-09-26T12:53:27.9388625Z Post job cleanup.
+2026-09-26T12:53:28.1923217Z In post-action step
+2026-09-26T12:53:28.1931770Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+2026-09-26T12:53:28.2696481Z Cache is read-only: will not save state for use in subsequent builds.
+2026-09-26T12:53:28.2701342Z ##[group]Generating Job Summary
+2026-09-26T12:53:28.2708387Z 
+2026-09-26T12:53:28.2708505Z 
+2026-09-26T12:53:28.2708727Z <table>
+2026-09-26T12:53:28.2709124Z     <tr>
+2026-09-26T12:53:28.2709734Z         <th>Gradle Root Project</th>
+2026-09-26T12:53:28.2710415Z         <th>Requested Tasks</th>
+2026-09-26T12:53:28.2711027Z         <th>Gradle Version</th>
+2026-09-26T12:53:28.2711765Z         <th>Build Outcome</th>
+2026-09-26T12:53:28.2712991Z         <th>Build&nbsp;Scan®</th>
+2026-09-26T12:53:28.2715555Z     </tr>
+2026-09-26T12:53:28.2716033Z     <tr>
+2026-09-26T12:53:28.2716459Z         <td>argentum-engine</td>
+2026-09-26T12:53:28.2716919Z         <td>:rules-engine:test</td>
+2026-09-26T12:53:28.2717465Z         <td align='center'>9.6.1</td>
+2026-09-26T12:53:28.2717988Z         <td align='center'>:x:</td>
+2026-09-26T12:53:28.2719668Z         <td><a href="https://scans.gradle.com" rel="nofollow" target="_blank"><img src="https://img.shields.io/badge/Not%20published-lightgrey" alt="Build Scan not published" /></a></td>
+2026-09-26T12:53:28.2721305Z     </tr>
+2026-09-26T12:53:28.2722211Z </table>
+2026-09-26T12:53:28.2722889Z     
+2026-09-26T12:53:28.2723553Z ============================
+2026-09-26T12:53:28.2724501Z <h4>Gradle State Caching - ⚡ Enhanced (read-only)</h4>
+2026-09-26T12:53:28.2724897Z 
+2026-09-26T12:53:28.2726104Z **[Enhanced Caching](https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#enhanced-caching)** uses the proprietary `gradle-actions-caching` provider. See [DISTRIBUTION.md](https://github.com/gradle/actions/blob/main/DISTRIBUTION.md) for terms of use and opt-out instructions.
+2026-09-26T12:53:28.2727298Z 
+2026-09-26T12:53:28.2742731Z <details>
+2026-09-26T12:53:28.2743773Z <summary>Entries: 8 restored (499Mb), 0 saved (0Mb) - Expand for more details</summary>
+2026-09-26T12:53:28.2744389Z 
+2026-09-26T12:53:28.2745894Z [Cache was read-only](https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#using-the-cache-read-only) — by default, the action only writes to the cache for jobs running on the default branch.
+2026-09-26T12:53:28.2747188Z 
+2026-09-26T12:53:28.2747363Z <table>
+2026-09-26T12:53:28.2747980Z     <tr><td></td><th>Count</th><th>Total Size (Mb)</th><th>Total Time (ms)</th></tr>
+2026-09-26T12:53:28.2748735Z     <tr><td>Entries Restored</td>
+2026-09-26T12:53:28.2749245Z         <td>8</td>
+2026-09-26T12:53:28.2749666Z         <td>499</td>
+2026-09-26T12:53:28.2750109Z         <td>13430</td>
+2026-09-26T12:53:28.2750527Z     </tr>
+2026-09-26T12:53:28.2750928Z     <tr><td>Entries Saved</td>
+2026-09-26T12:53:28.2751423Z         <td>0</td>
+2026-09-26T12:53:28.2752068Z         <td>0</td>
+2026-09-26T12:53:28.2752487Z         <td>0</td>
+2026-09-26T12:53:28.2752878Z     </tr>
+2026-09-26T12:53:28.2753261Z </table>
+2026-09-26T12:53:28.2753473Z 
+2026-09-26T12:53:28.2753650Z <pre>
+2026-09-26T12:53:28.2754058Z Entry: Gradle User Home
+2026-09-26T12:53:28.2754980Z     Requested Key : gradle-home-v2|Linux-X64|test[5a98b551e2391f28410e678670214291]-adc69f7c901843d0fa42e97d1d7b04b9b392c17f
+2026-09-26T12:53:28.2756470Z     Restored  Key : gradle-home-v2|Linux-X64|test[5a98b551e2391f28410e678670214291]-d0c78bb4cca79b7402ba65bd62b5cb621230a054
+2026-09-26T12:53:28.2757442Z               Size: 0 MB (369083 B)
+2026-09-26T12:53:28.2757880Z               Time: 653 ms
+2026-09-26T12:53:28.2758256Z               (Entry restored: partial match found)
+2026-09-26T12:53:28.2758622Z     Saved     Key : 
+2026-09-26T12:53:28.2758897Z               Size: 
+2026-09-26T12:53:28.2759161Z               Time: 
+2026-09-26T12:53:28.2759730Z               (Entry not saved: cache is read-only)
+2026-09-26T12:53:28.2760075Z ---
+2026-09-26T12:53:28.2760442Z Entry: caches/9.6.1/generated-gradle-jars/gradle-api-9.6.1.jar
+2026-09-26T12:53:28.2761061Z     Requested Key : gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-26T12:53:28.2762102Z     Restored  Key : gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-26T12:53:28.2762739Z               Size: 40 MB (42158673 B)
+2026-09-26T12:53:28.2763070Z               Time: 1685 ms
+2026-09-26T12:53:28.2763398Z               (Entry restored: exact match found)
+2026-09-26T12:53:28.2763947Z     Saved     Key : 
+2026-09-26T12:53:28.2764330Z               Size: 
+2026-09-26T12:53:28.2764682Z               Time: 
+2026-09-26T12:53:28.2764987Z               (Entry not saved: cache is read-only)
+2026-09-26T12:53:28.2765373Z ---
+2026-09-26T12:53:28.2765987Z Entry: wrapper/dists/gradle-9.6.1-bin/4ticwg1pgcbps2hj28r8so764
+2026-09-26T12:53:28.2767042Z     Requested Key : gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-26T12:53:28.2767754Z     Restored  Key : gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-26T12:53:28.2768471Z               Size: 133 MB (139934591 B)
+2026-09-26T12:53:28.2769013Z               Time: 2579 ms
+2026-09-26T12:53:28.2769601Z               (Entry restored: exact match found)
+2026-09-26T12:53:28.2770248Z     Saved     Key : 
+2026-09-26T12:53:28.2770664Z               Size: 
+2026-09-26T12:53:28.2771033Z               Time: 
+2026-09-26T12:53:28.2771439Z               (Entry not saved: cache is read-only)
+2026-09-26T12:53:28.2772206Z ---
+2026-09-26T12:53:28.2772578Z Entry: dependencies
+2026-09-26T12:53:28.2773211Z     Requested Key : gradle-dependencies-v2-af35fda4dfadde7cf22a0e8a34a72810
+2026-09-26T12:53:28.2774124Z     Restored  Key : gradle-dependencies-v2-af35fda4dfadde7cf22a0e8a34a72810
+2026-09-26T12:53:28.2774968Z               Size: 217 MB (227369696 B)
+2026-09-26T12:53:28.2775591Z               Time: 3404 ms
+2026-09-26T12:53:28.2776150Z               (Entry restored: exact match found)
+2026-09-26T12:53:28.2776631Z     Saved     Key : 
+2026-09-26T12:53:28.2777009Z               Size: 
+2026-09-26T12:53:28.2777374Z               Time: 
+2026-09-26T12:53:28.2777787Z               (Entry not saved: cache is read-only)
+2026-09-26T12:53:28.2778276Z ---
+2026-09-26T12:53:28.2778620Z Entry: instrumented-jars
+2026-09-26T12:53:28.2779280Z     Requested Key : gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-26T12:53:28.2780227Z     Restored  Key : gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-26T12:53:28.2780931Z               Size: 0 MB (60281 B)
+2026-09-26T12:53:28.2781391Z               Time: 476 ms
+2026-09-26T12:53:28.2782042Z               (Entry restored: exact match found)
+2026-09-26T12:53:28.2782543Z     Saved     Key : 
+2026-09-26T12:53:28.2782919Z               Size: 
+2026-09-26T12:53:28.2783277Z               Time: 
+2026-09-26T12:53:28.2783697Z               (Entry not saved: cache is read-only)
+2026-09-26T12:53:28.2784185Z ---
+2026-09-26T12:53:28.2784530Z Entry: kotlin-dsl
+2026-09-26T12:53:28.2785135Z     Requested Key : gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-26T12:53:28.2785931Z     Restored  Key : gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-26T12:53:28.2786564Z               Size: 0 MB (338388 B)
+2026-09-26T12:53:28.2787029Z               Time: 817 ms
+2026-09-26T12:53:28.2787500Z               (Entry restored: exact match found)
+2026-09-26T12:53:28.2787986Z     Saved     Key : 
+2026-09-26T12:53:28.2788404Z               Size: 
+2026-09-26T12:53:28.2788790Z               Time: 
+2026-09-26T12:53:28.2789247Z               (Entry not saved: cache is read-only)
+2026-09-26T12:53:28.2789813Z ---
+2026-09-26T12:53:28.2790131Z Entry: groovy-dsl
+2026-09-26T12:53:28.2790727Z     Requested Key : gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-26T12:53:28.2791670Z     Restored  Key : gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-26T12:53:28.2792611Z               Size: 0 MB (101824 B)
+2026-09-26T12:53:28.2793065Z               Time: 555 ms
+2026-09-26T12:53:28.2793541Z               (Entry restored: exact match found)
+2026-09-26T12:53:28.2794113Z     Saved     Key : 
+2026-09-26T12:53:28.2794406Z               Size: 
+2026-09-26T12:53:28.2794672Z               Time: 
+2026-09-26T12:53:28.2795084Z               (Entry not saved: cache is read-only)
+2026-09-26T12:53:28.2795421Z ---
+2026-09-26T12:53:28.2795764Z Entry: transforms
+2026-09-26T12:53:28.2796160Z     Requested Key : gradle-transforms-v2-d69fb141e2414659e489d74f080c146e
+2026-09-26T12:53:28.2796820Z     Restored  Key : gradle-transforms-v2-d69fb141e2414659e489d74f080c146e
+2026-09-26T12:53:28.2797361Z               Size: 108 MB (112726939 B)
+2026-09-26T12:53:28.2797699Z               Time: 3261 ms
+2026-09-26T12:53:28.2798095Z               (Entry restored: exact match found)
+2026-09-26T12:53:28.2798471Z     Saved     Key : 
+2026-09-26T12:53:28.2799013Z               Size: 
+2026-09-26T12:53:28.2799279Z               Time: 
+2026-09-26T12:53:28.2799566Z               (Entry not saved: cache is read-only)
+2026-09-26T12:53:28.2800026Z </pre>
+2026-09-26T12:53:28.2800267Z </details>
+2026-09-26T12:53:28.2800417Z 
+2026-09-26T12:53:28.2800882Z ##[endgroup]
+2026-09-26T12:53:28.2801163Z Completed post-action step
+2026-09-26T12:53:28.3012436Z Post job cleanup.
+2026-09-26T12:53:28.4465857Z Post job cleanup.
+2026-09-26T12:53:28.5383031Z [command]/usr/bin/git version
+2026-09-26T12:53:28.5425657Z git version 2.55.0
+2026-09-26T12:53:28.5464289Z Temporarily overriding HOME='/home/runner/work/_temp/c3e9eccc-026c-49ea-a194-39ac4b7b387d' before making global git config changes
+2026-09-26T12:53:28.5465843Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-26T12:53:28.5470416Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-26T12:53:28.5503864Z Removing SSH command configuration
+2026-09-26T12:53:28.5510985Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-26T12:53:28.5548949Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-26T12:53:28.5837125Z Removing HTTP extra header
+2026-09-26T12:53:28.5859628Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-26T12:53:28.5911066Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-26T12:53:28.6338131Z Removing includeIf entries pointing to credentials config files
+2026-09-26T12:53:28.6347984Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-26T12:53:28.6394752Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path
+2026-09-26T12:53:28.6396592Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path
+2026-09-26T12:53:28.6400589Z includeif.gitdir:/github/workspace/.git.path
+2026-09-26T12:53:28.6402163Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-26T12:53:28.6408834Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path
+2026-09-26T12:53:28.6455997Z /home/runner/work/_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:53:28.6472238Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path /home/runner/work/_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:53:28.6546165Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path
+2026-09-26T12:53:28.6584766Z /home/runner/work/_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:53:28.6597509Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:53:28.6650441Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-26T12:53:28.6680548Z /github/runner_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:53:28.6690671Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:53:28.6731153Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-26T12:53:28.6759056Z /github/runner_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:53:28.6768176Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config
+2026-09-26T12:53:28.6818308Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-26T12:53:28.7081870Z Removing credentials config '/home/runner/work/_temp/git-credentials-0fd9b8b4-55f3-4d17-9fb4-5d74bd16c00d.config'
+2026-09-26T12:53:28.7238948Z Cleaning up orphan processes
+2026-09-26T12:53:28.7596738Z Terminate orphan process: pid (2377) (bash)
+2026-09-26T12:53:28.7638322Z Terminate orphan process: pid (2378) (sleep)
+2026-09-26T12:53:28.7675314Z Terminate orphan process: pid (2413) (java)
+2026-09-26T12:53:28.7718942Z Terminate orphan process: pid (2572) (java)
+2026-09-26T12:53:28.7730623Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+

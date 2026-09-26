@@ -75,6 +75,23 @@ class CardLinterTest : DescribeSpec({
 
     describe("pipeline dataflow") {
 
+        it("an atomic source-and-exact-cards action publishes its success collection") {
+            val card = instant(
+                "Atomic Collection Writer",
+                CardScript(spellEffect = CompositeEffect(listOf(
+                    com.wingedsheep.sdk.scripting.effects.MoveSourceAndExactCardsEffect(
+                        sourceRequiredZone = Zone.STACK,
+                        additionalSourceZone = Zone.GRAVEYARD,
+                        additionalFilter = GameObjectFilter.Any,
+                        additionalCount = 4,
+                        storeMovedAs = "paid",
+                    ),
+                    move("paid"),
+                ))),
+            )
+            CardLinter.lint(card).shouldBeEmpty()
+        }
+
         it("accepts a well-formed gather → select → move pipeline") {
             val card = instant(
                 "Clean Pipeline",

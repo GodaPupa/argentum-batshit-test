@@ -1997,6 +1997,71 @@
     ]
 }
 
+// Snap
+{
+    "name": "Snap",
+    "manaCost": "{1}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Return target creature to its owner's hand. Untap up to two lands.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "ContextTarget",
+                        "index": 0
+                    },
+                    "destination": "Hand"
+                },
+                {
+                    "type": "GatherCards",
+                    "source": {
+                        "type": "BattlefieldMatching",
+                        "filter": "land"
+                    },
+                    "storeAs": "snapLands"
+                },
+                {
+                    "type": "SelectFromCollection",
+                    "from": "snapLands",
+                    "selection": {
+                        "type": "ChooseUpTo",
+                        "count": {
+                            "type": "Fixed",
+                            "amount": 2
+                        }
+                    },
+                    "storeSelected": "snapUntap",
+                    "prompt": "Choose up to two lands to untap"
+                },
+                {
+                    "type": "TapUntapCollection",
+                    "collectionName": "snapUntap",
+                    "tap": false
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "creature"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "43",
+        "artist": "Mike Raabe"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Sustainer of the Realm
 {
     "name": "Sustainer of the Realm",
