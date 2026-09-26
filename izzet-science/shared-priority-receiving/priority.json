@@ -405,6 +405,7 @@
     "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/events-2.json": "7a383c5193f6462f36d0d5d27a66f7833644c6392e3fed40af523ca19d732090",
     "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/manifest.json": "0a914e60ccc5afc0808d38b7bfb4b798a4326c18dbe683259af02eb585a76a39",
     "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/state.json": "c2671964ac8cd0e904f5d87344ba0ebf95d333ee5c6bff6b97c3e30fa922474f",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/research/ferocity/FerocityOfTheHuntPrerelease.kt": "e4d4c081c89788af1fad06708a35ad447a93444b2fe4ba038131b7f7222bea8b",
     "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/GameTestDriver.kt": "34cb7972a73c3cc90dddaf43749adcc6dd1bd8495c8b3e3dae23ec78fe9c5df0",
     "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408",
     "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt": "c7aba22d7937c395075c00f8710cb072a0ec1e3932a5fe55b441c9b1a7da0f71"
@@ -608,7 +609,8 @@
     "Canonical source remains subject to its own full CI and source acceptance. This is a receiving qualification attempt, not transferred acceptance.",
     "Izzet dynamic mana and replicate, bestow lifecycle, entry snapshots, simultaneous damage grouping and Vines targeting remain receiving-specific dependencies.",
     "Frozen baseline retains Izzets own47e993c61a57ebbd hash until exact same-lineage raw-stream review.",
-    "Vines first two ETB priority failures remain preserved; all21 exact card cases still required."
+    "Vines first two ETB priority failures remain preserved; all21 exact card cases still required.",
+    "The unchanged original ActivationPriorityScenarioTest imports the exact donor FerocityOfTheHuntPrerelease test-only definition. It is received solely as the existing shared bank dependency, never registered in the production corpus or either frozen Izzet deck; no Ferocity gameplay conclusion is transferred."
   ],
   "gameplay_authorized": false,
   "official_seeds_consumed": 0,
