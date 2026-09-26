@@ -1,0 +1,52 @@
+name: Izzet Frozen Baseline Trace Diagnostic
+
+on:
+  push:
+    branches:
+      - mayhem/izzet-baseline-control-diagnostic
+      - mayhem/izzet-baseline-bestow-diagnostic
+    paths:
+      - .github/workflows/izzet-frozen-baseline-trace.yml
+
+jobs:
+  trace:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Inject trace-only logging without changing canonical hash bytes
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path("ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt")
+          s = p.read_text()
+          old = '        fun record(entry: String) = stream?.update(entry.toByteArray(Charsets.UTF_8))'
+          new = '''        fun record(entry: String) {
+              stream?.update(entry.toByteArray(Charsets.UTF_8))
+              if (recordActionStream) println("IZZET_BASELINE_TRACE " + entry.trim())
+          }'''
+          if old not in s:
+              raise SystemExit("canonical record function anchor not found")
+          p.write_text(s.replace(old, new, 1))
+          PY
+
+      - name: Run frozen baseline and preserve exact trace
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :ai:test --tests "*FrozenBaselineTest" --info 2>&1 | tee izzet-baseline-trace.log
+
+      - name: Upload trace
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-frozen-baseline-trace-${{ github.ref_name }}
+          path: izzet-baseline-trace.log
+          if-no-files-found: error
+          retention-days: 14
