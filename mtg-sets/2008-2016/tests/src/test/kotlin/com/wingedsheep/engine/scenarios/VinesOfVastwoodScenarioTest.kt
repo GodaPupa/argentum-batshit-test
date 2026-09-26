@@ -296,7 +296,9 @@ class VinesOfVastwoodScenarioTest : FunSpec({
         val restored = SerializationTestSupport.roundTrip(first)
         for (viewer in listOf(d.player1, d.player2)) {
             val shown = ClientStateTransformer(d.cardRegistry).transform(restored, viewer).cards.getValue(creature)
-            shown.activeEffects.count { it.name == "Targeting restricted" && it.description.contains("Player 2") } shouldBe 1
+            shown.activeEffects.count {
+                it.name == "Targeting restricted" && it.description?.contains("Player 2") == true
+            } shouldBe 1
         }
     }
 
