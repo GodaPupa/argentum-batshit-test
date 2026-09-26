@@ -6,6 +6,8 @@ import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.CommanderRegistryComponent
 import com.wingedsheep.engine.state.components.player.MulliganStateComponent
 import com.wingedsheep.engine.state.components.player.PlayerTurnsTakenComponent
+import com.wingedsheep.sdk.core.Phase
+import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 import kotlinx.serialization.Serializable
@@ -79,8 +81,19 @@ class PhaseTwoTelemetryAdapter(
         require(engineSourceSha.matches(Regex("[0-9a-f]{40}"))) { "Exact engine source SHA required" }
         require(playerIds.size == 4 && playerIds.distinct().size == 4 && manualSeat in 0..3)
         require(initialState.turnOrder.toSet() == playerIds.toSet()) { "Four-player roster mismatch" }
-        require(!initialState.gameOver && initialState.turnNumber == 0) { "Fresh pre-mulligan state required" }
+        // GameInitializer labels its pre-mulligan state turn 1 and seeds the active player's
+        // personal count to 1. Freshness is bound to that actual setup contract, not turn zero.
+        require(!initialState.gameOver && initialState.turnNumber == 1 &&
+            initialState.phase == Phase.BEGINNING && initialState.step == Step.UNTAP &&
+            initialState.stack.isEmpty() && initialState.continuationStack.isEmpty() &&
+            initialState.pendingDecision == null && initialState.pendingCastPriority == null &&
+            initialState.activePlayerId == initialState.turnOrder.first() &&
+            initialState.priorityPlayerId == initialState.activePlayerId) { "Fresh pre-mulligan state required" }
         commanders = playerIds.flatMap { player ->
+            require(initialState.getEntity(player)?.get<MulliganStateComponent>() ==
+                MulliganStateComponent(freeMulligan = true)) { "Mulligan decisions already started or setup is incomplete" }
+            require(initialState.getEntity(player)?.get<PlayerTurnsTakenComponent>()?.count ==
+                if (player == initialState.activePlayerId) 1 else 0) { "Initial personal-turn counter mismatch" }
             val registry = requireNotNull(initialState.getEntity(player)?.get<CommanderRegistryComponent>())
             require(registry.commanderIds.size in 1..2) { "Exact designated commanders required" }
             registry.commanderIds.map { id ->

@@ -4,6 +4,8 @@ import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.player.MulliganStateComponent
+import com.wingedsheep.engine.state.components.player.PlayerTurnsTakenComponent
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.sdk.core.Format
 import com.wingedsheep.sdk.core.Step
@@ -53,6 +55,27 @@ class PhaseTwoTelemetryAdapterTest : FunSpec({
         while (a.state.stack.isNotEmpty()) {
             check(passes++ < 20)
             a.process(PassPriority(requireNotNull(a.state.priorityPlayerId))).error shouldBe null
+        }
+    }
+
+    test("actual pre-mulligan initialization is admitted while stale or altered setup is rejected") {
+        val initial = initial()
+        initial.state.turnNumber shouldBe 1
+        val a = adapter(initial)
+        a.stop("RESOURCE_CAP", "EXCLUDED_FIXTURE_END")
+        val clock = a.finish().initialObservations.single().data
+        clock.getValue("turn").jsonPrimitive.int shouldBe 1
+        clock.getValue("personal_rounds").jsonObject[initial.playerIds[0].value]!!.jsonPrimitive.int shouldBe 1
+        val altered = listOf(
+            initial.state.copy(turnNumber = 0),
+            initial.state.copy(step = Step.PRECOMBAT_MAIN),
+            initial.state.updateEntity(initial.playerIds[0]) { it.with(PlayerTurnsTakenComponent(count = 0)) },
+            initial.state.updateEntity(initial.playerIds[1]) { it.with(MulliganStateComponent(freeMulligan = false)) },
+            ActionProcessor(registry()).process(initial.state, TakeMulligan(initial.playerIds[0])).result.state,
+            ActionProcessor(registry()).process(initial.state, KeepHand(initial.playerIds[0])).result.state,
+        )
+        altered.forEach { state ->
+            shouldThrow<IllegalArgumentException> { adapter(initial.copy(state = state)) }
         }
     }
 

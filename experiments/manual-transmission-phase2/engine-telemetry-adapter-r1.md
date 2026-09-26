@@ -48,3 +48,37 @@ Required production integration still includes exact frozen deck/mechanic covera
 lawful executable pilots, source/input qualification, durable attempts and guarded
 capability admission. The adapter cannot self-authorize those steps. Hardware
 remains v0.7. Official counters remain 0/36 capability games and 0/864 primary games.
+
+## Preserved qualification failure
+
+Focused workflow [36244747397](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36244747397)
+at source `7a7cc5958359f8b02a8869cbbc1d1ffcdfd6f957` failed during
+`:gym:compileKotlin`, before fixtures or cross-language import ran. The compiler
+rejected a smart cast of the cross-module nullable `GameEndedEvent.winnerId`.
+The successor binds that value to a stable local variable; terminal semantics and
+test expectations are unchanged. This is a source defect, not a gameplay outcome.
+The failed provenance artifact is retained as artifact `10906268922`
+(`manual-transmission-phase2-engine-telemetry`, 915 bytes), GitHub digest
+`f37507d895c81e4a486d51b50d3f0cbfd3cb2d6ea1bc5ef2ab3aef65bcfaa6b3`.
+Qualification remains pending actual successor Kotlin, import, replay and required
+combined-source CI results.
+
+The compiler repair was independently published as
+`586e4115ea58d9abe9cabfae8239ed0f41eb5b39` and is preserved. Its focused workflow
+[36244956053](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36244956053)
+compiled successfully and ran nine fixtures; all nine failed at the adapter's
+initial-state guard. The adapter incorrectly expected turn zero, while the exact
+`GameInitializer` sets turn one and the active player's personal count to one
+before mulligans. The correction validates that actual initial boundary together
+with untouched multiplayer mulligan states, initial personal counters and the
+absence of pending actions. A distinguishing fixture also rejects already-kept,
+already-mulliganed, altered-clock and incomplete setup states. Engine semantics
+and original fixture expectations remain unchanged.
+
+The nine-failure JUnit artifact is retained as `10907018050` (13,828 bytes),
+independently downloaded SHA-256
+`78ab48b58d5da710d30cc1de19c4112868cf37343dec35bbf67070085f9ee90e`.
+Its Python cross-language step was skipped because Kotlin qualification failed.
+These failed deterministic attempts do not initialize any official allocation or
+change any outcome counter. The exact post-block priority receiver blocker is
+recorded separately in `post-block-priority-receiver-blocker-r1.json`.
