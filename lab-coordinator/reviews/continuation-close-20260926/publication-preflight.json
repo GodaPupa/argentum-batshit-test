@@ -1,0 +1,39 @@
+{
+  "schema": "continuation-fast-forward-publication-preflight-v1",
+  "reviewer": "actual /root",
+  "base": "1667675b556e70c0c0da91901e3ce87b8dbd9b8e",
+  "base_tree": "67aa6450c98799d9074512d6fa907398faea4067",
+  "branch": "lab-coordinator/critical-path",
+  "expected_current_ref": "cac49a283945460b1831821048a55c57e940ffed",
+  "mutation": "non-force fast-forward to a new direct child of main1667675, reviewed coordinator-only files",
+  "scope": "CURRENT_STATUS and NEXT_CHAT_HANDOFF, retained exact22:01 history, bounded non-author reviews/read-only inventories",
+  "ancestry": {
+    "cac49_to_1667675": "ahead1, no differing files; existing critical-path is parent of1667675",
+    "old_reviewed8076_to_1667675": {
+      "ahead": 4,
+      "behind": 0,
+      "files": [
+        "lab-coordinator/CURRENT_STATUS.md",
+        "lab-coordinator/NEXT_CHAT_HANDOFF.md",
+        "lab-coordinator/history/20260926-2045-concurrent/CURRENT_STATUS.md",
+        "lab-coordinator/history/20260926-2045-concurrent/NEXT_CHAT_HANDOFF.md",
+        "lab-coordinator/reviews/continuation-20260926/nonauthor-factual-review.json",
+        "lab-coordinator/reviews/continuation-20260926/nonauthor-final-coordinator-review.json",
+        "lab-coordinator/reviews/continuation-20260926/workflow-trigger-preflight.json"
+      ]
+    }
+  },
+  "workflow_evidence": "All prior69 exact workflow definitions remain unchanged: complete8076→166 comparison contains only seven lab-coordinator files. Existing reviewed trigger inventory is retained in reviews/continuation-20260926/workflow-trigger-preflight.json. No push trigger matches lab-coordinator/critical-path. No open PR has that base/head requiring synchronization; recheck immediately before mutation.",
+  "official_side_effects": {
+    "seed_generation": false,
+    "claim_consumption": false,
+    "browser_attempt": false,
+    "official_gameplay": false
+  },
+  "limits": [
+    "No executable, deck, pilot, protocol, budget, acceptance receipt or permit changes",
+    "No main force-update; no repository approval fabricated",
+    "Check current ref again and decline overwrite if a foreign successor appears",
+    "Publication receipts and zero-job query are separate post-write verification"
+  ]
+}
