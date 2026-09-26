@@ -4,7 +4,6 @@ import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.CardLayout
 import com.wingedsheep.sdk.model.Rarity
-import com.wingedsheep.sdk.scripting.effects.CompositeEffect
 import com.wingedsheep.sdk.scripting.effects.DividedDamageEffect
 import com.wingedsheep.sdk.scripting.targets.AnyTarget
 import com.wingedsheep.sdk.scripting.targets.EffectTarget
@@ -48,7 +47,7 @@ val FireIce = card("Fire // Ice") {
 
         spell {
             val target = target("target permanent", TargetPermanent())
-            effect = CompositeEffect(
+            effect = Effects.Composite(
                 listOf(
                     Effects.Tap(target),
                     Effects.DrawCards(1)
