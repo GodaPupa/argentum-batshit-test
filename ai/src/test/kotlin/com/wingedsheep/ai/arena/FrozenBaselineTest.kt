@@ -48,6 +48,10 @@ class FrozenBaselineTest : FunSpec({
             recordActionStream = true,
         )
 
+        println(
+            "IZZET_FROZEN_BASELINE hash=${outcome.actionStreamHash} turns=${outcome.turns} " +
+                "winner=${outcome.winnerSeat} life=${outcome.seat0Life}/${outcome.seat1Life}"
+        )
         withClue(
             "LEGACY_V0's behaviour moved. Actual hash: ${outcome.actionStreamHash} " +
                 "(${outcome.turns} turns, winner seat ${outcome.winnerSeat}, " +
