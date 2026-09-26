@@ -15,6 +15,7 @@ import com.wingedsheep.engine.core.SubmitDecision
 import com.wingedsheep.engine.core.TargetsResponse
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.ControllerComponent
+import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.SerializationTestSupport
@@ -90,7 +91,7 @@ class AetherChannelerScenarioTest : FunSpec({
         submit(driver, SubmitDecision(decision.playerId, TargetsResponse(decision.id, mapOf(0 to listOf(target))))).error shouldBe null
     }
     fun birds(driver: GameTestDriver) = driver.state.projectedState.getBattlefieldControlledBy(driver.firstSeat)
-        .filter { driver.state.getEntity(it)?.get<CardComponent>()?.name == "Bird" }
+        .filter { driver.state.getEntity(it)?.has<TokenComponent>() == true && driver.state.projectedState.hasSubtype(it, "Bird") }
 
     test("Bird mode creates exactly a white flying 1-1 and does not draw") {
         val driver = game()
@@ -99,6 +100,9 @@ class AetherChannelerScenarioTest : FunSpec({
         choose(driver, birdMode)
         resolveUntilDecision(driver)
         val bird = birds(driver).single()
+        // CR 111.4: an unnamed token's name is its subtype(s) plus "Token".
+        driver.state.getEntity(bird)?.get<CardComponent>()?.name shouldBe "Bird Token"
+        driver.state.getEntity(bird)?.get<CardComponent>()?.ownerId shouldBe driver.firstSeat
         driver.state.projectedState.getPower(bird) shouldBe 1
         driver.state.projectedState.getToughness(bird) shouldBe 1
         driver.state.projectedState.getColors(bird) shouldBe setOf("WHITE")
