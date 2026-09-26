@@ -1,14 +1,15 @@
 # Sphinx's Approach — Current status
 
-Status: STAGE_E_CARD_COMPONENT_VALIDATED_INPUT_IDENTITIES_FROZEN
-Branch: `lab/sphinx-next-gate` (PR #180 into `sphinx-approach/reconstruction-stage-e`)
+Status: STAGE_E_INPUTS_ACCEPTED_PILOT_COMPONENT_56_PASSED_RECEIVING_INTEGRATION_PENDING
+Accepted Stage-E lineage: `sphinx-approach/reconstruction-stage-e` at `000f23f1bcc2b5a1b7b79f1ccc1c86c5b612e529` (normal PR #183 merge).
+Pilot component branch: `lab/sphinx-pilot-components` at `b1663751f553759f5a51fc25a7e2876328525cd7`.
 
 Reconstructed remote source: `4a97265559e989df937e8c09f9a42d58a4e9d79d`.
 Qualification changes are published on the separate `lab/sphinx-next-gate` branch;
 the qualified source with reviewed goldens is `dc5e3c7d884766aeb3195fbe6aa43f97fa9a1654` (PR #180),
 tested as combined runtime `e4594b8e1b06a3e3031d223e627a72d79940d13d`, tree
 `dd94dcb00b20b16dff98c8aec1d94e479adc8dfb`. All five triggered validation workflows passed.
-This successor prospectively freezes the four already introduced deck-row inputs without changing any row.
+PR #180 was accepted at merge `a9201dadc01b6948084d78f477895bb3e723fe76`; PR #183 accepted the unchanged four prospective row identities at `000f23f1bcc2b5a1b7b79f1ccc1c86c5b612e529`. Its full CI `36248509584` and exact426-case gate `36248509594` passed. No card row has changed.
 This record reports progress; it does not supersede frozen protocols or grant gameplay admission.
 
 ## Durable state
@@ -37,6 +38,8 @@ keeping Sphinx seeds, assignments, outcomes, and evidence in a new namespace.
 - New Stage-E outcomes exposed: 0
 - Confirmation games: 0
 - Postboard games: 0
+- Randomized pilot-development games: 0
+- Deterministic policy-component bank executions: 1; 56 actual checks passed (14 per identity), zero failed attempts
 
 ## Exact next-game blockers
 
@@ -94,3 +97,20 @@ unchanged. These input identities do not establish qualified pilots or replace t
   unrelated-drift rejection and generated-byte verification on GitHub. It creates no gameplay allocation.
 
 No new deck-performance evidence, official seed, initialized game, or outcome has been produced.
+
+## Next pilot component
+
+`STAGE_E_PILOT_FIXTURE_BUDGET.json` prospectively fixes 14 deterministic checks for each of the four
+existing identities (56 total), paired across the seven protocol pilot requirements. A source correction
+must rerun the same complete bank for every identity and preserve prior failures. This bank allocates
+no randomized development game and cannot rank decks or establish comparator improvement.
+
+The project-only `SphinxStageEPilotComponent` accepts explicit typed own/public facts and current offers;
+it has no engine-state adapter, initializer, seed access or architecture input. Its fixture bank and
+push-only qualification workflow executed the first complete bank at run `36250097974` on
+`b1663751f553759f5a51fc25a7e2876328525cd7`, tree `0bcc895d937f7e764bee367e65c238f00772d9fd`.
+The raw artifact contains **56 actual passing cases**, with all 14 frozen IDs for each identity and no
+failures, errors or skips. Exact logs, XML and bindings are preserved in
+`evidence/pilot-component-36250097974`. Independent peer audit accepted this component evidence after checking exact GitHub/archive/source/XML
+bytes. Normal receiving integration remains pending. This work does not accept a complete pilot. Canonical actor integration, all reachable choice surfaces, emergency
+combat/deployment lines, replay, the shared priority repair and final execution admission remain required.
