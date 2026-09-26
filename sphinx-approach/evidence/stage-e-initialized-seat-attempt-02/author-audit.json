@@ -1,0 +1,443 @@
+{
+  "schema": "sphinx-initialized-seat-artifact-audit-v1",
+  "auditor": "/root/sphinx successor takeover agent",
+  "disposition": "AUTHOR_AUDIT_PASS_REQUIRES_NONAUTHOR_RAW_ARTIFACT_REVIEW",
+  "source_head": "dee5b4788a6944a29c876cbc740b042d61bc7fec",
+  "source_tree": "4e8a43d0f6ff6a79282d8e3a142e58e54e6519dd",
+  "run_id": 36267250605,
+  "event": "push",
+  "run_attempt": 1,
+  "job_id": 108474172369,
+  "artifact_id": 10914193181,
+  "archive_sha256": "ebadbb9421a5ad32fd9174bbe8edc6bd4d6916da7e9b39db653501d639a184ec",
+  "archive_bytes": 233120,
+  "members": [
+    {
+      "path": "actual-case-audit.json",
+      "bytes": 2309,
+      "sha256": "e93f7b8d5dfd8deee083372dbc12e3e6927b638e377750d74f149e43aea4bf38"
+    },
+    {
+      "path": "initialized-seat-16-exit-status.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    {
+      "path": "initialized-seat-16.log",
+      "bytes": 3400746,
+      "sha256": "75b644828b68f27be973b6f57834a436a5e20b1a1b3f9b0dff5ecec67ce6ec5f"
+    },
+    {
+      "path": "source-provenance.json",
+      "bytes": 8713,
+      "sha256": "414b56632a733e910122ca41b1f39853e16e0b5d87df93bcde759a90c6cb41b4"
+    },
+    {
+      "path": "tests/initialized-seat-16/TEST-com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest.xml",
+      "bytes": 3643,
+      "sha256": "2cba1f04964c22bdd34a30cdad8206ea50fb3192b058ef6b6089fa981aa49b36"
+    },
+    {
+      "path": "tests/initialized-seat-16/exit-status.txt",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    }
+  ],
+  "source_binding": {
+    "verified_git_blob_and_sha256_count": 59,
+    "manifest_sha256": "5452f7b6d926f9c0d9be2f89cf10d64a242c91bda9f7ca38f1cc9e42d777a01c",
+    "all_59_match_exact_source_tree": true,
+    "verification": [
+      {
+        "path": "build.gradle.kts",
+        "sha256": "986599d2c2ff91066e01a660a0f95e6c982ddef029171350f944be549730e40c",
+        "git_blob": "8c5298acbab5eae78f5ee612046317889666c83e",
+        "bytes": 162
+      },
+      {
+        "path": "gym/build.gradle.kts",
+        "sha256": "2cecbe04b789a073bda42e7b12266bfaf8085280fd6e22619386b26d9d3adf44",
+        "git_blob": "bc2eac391cdc90fd231f14c5dbd3be77f81b86a0",
+        "bytes": 1118
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt",
+        "sha256": "319b92760360183d2ad082f08104aa28c95cf16c7cca3edc80bce0797573639d",
+        "git_blob": "7af655daf3e6a94333255e0c7396ff64bc652bce",
+        "bytes": 1628
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorBasicBluePayment.kt",
+        "sha256": "a930d82cde626a46c928ce5cab4095982f26a0e427a3f5e9079ff02ab7ad9619",
+        "git_blob": "c3f0a2200fc37e17ae4766fa2882fb52e82e3ff2",
+        "bytes": 7844
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorChoiceSupport.kt",
+        "sha256": "6adefd58499c0ec2610f078cd78696f4ba6b33b47c5043093a2e77f392c493a0",
+        "git_blob": "9b37061e1515e0927ddafe0906381f7281a95ef1",
+        "bytes": 18868
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorDecisionProjection.kt",
+        "sha256": "aeeac553568cdc30239d5040a2cf784d338e4d9d9f4def45c6eeccece077eb66",
+        "git_blob": "35d974020e6f377258224eccca028b97543cf627",
+        "bytes": 8178
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorInput.kt",
+        "sha256": "31bc5320ee24e8af512b3babc7908eee0d62aa6e360e4a4582a753562392f907",
+        "git_blob": "87489b2b70d2c9fc8bca31d1dbee6e9d2d297c3f",
+        "bytes": 3200
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorLegalAction.kt",
+        "sha256": "78a30347b4b1ad97a6d7260f81d6a0450fd552a812b9469875cf3b36407ec87c",
+        "git_blob": "5931e80c5c35f52b91e6143c7ba0b777be67e623",
+        "bytes": 19407
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorObservation.kt",
+        "sha256": "21b89d4699a73ac43b3dd28e0f0da1557ce364d789b4eb248dedbd49da9e26e6",
+        "git_blob": "580257de309cca15cbff236950c01d50be97a882",
+        "bytes": 3488
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPayloadSchemas.kt",
+        "sha256": "57c1112455a45abab9c90b075f32f9a0d8f7f13dab0f47dc136131b39a583a20",
+        "git_blob": "b2e63a41a60a6de372605955772a8aeee19d554f",
+        "bytes": 14722
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPublicCards.kt",
+        "sha256": "186d1f5fc2d3d8be2754ff0a029dd1fdd58348422514fb06ce45690140aea748",
+        "git_blob": "f69cedd6c6d7aa841fb1917a842febd13adbba46",
+        "bytes": 2595
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorQuestionSchemas.kt",
+        "sha256": "6c9a87f34c3c4a0dd281466556236c11f49f91fde1ab17e7a89d627f05d26a9a",
+        "git_blob": "62c19a25c06800c45ab0a4502ed700459ad4ba31",
+        "bytes": 5140
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorSpellCharacteristics.kt",
+        "sha256": "7f2a8aa8585c4c5a59e0fa0e3db9fd9eccf6505b9e5f685dd1d1673603ecad2e",
+        "git_blob": "6f45b1bd5d56190186c98d22000791806f067117",
+        "bytes": 3379
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorStackSource.kt",
+        "sha256": "554535f07b8978797153ef051ef21635d6e22f9d9e9981e2a7fc0947bf56663f",
+        "git_blob": "700e4a0192a3084f9046a80aa3a214b0bde2a27c",
+        "bytes": 6874
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderQuestion.kt",
+        "sha256": "3e9ee1f963b420af764def51e502c654bd4e92df522c97c29287c2c2e2b99da0",
+        "git_blob": "7300beb200ee92ed334dd373102c5e9713509cf6",
+        "bytes": 6743
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt",
+        "sha256": "ebe1a38edda975ad2462563bbccc0510fe8df12337652e19beff0343a4ea6839",
+        "git_blob": "53f129d162849e9fb21340400d85a6871bd976b6",
+        "bytes": 12833
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/contract/ObservationBuilder.kt",
+        "sha256": "7de2a0c1bc4f148727ced99da733cd6eec049a250148c07f26357a4b5a422a7c",
+        "git_blob": "0a8cb7c1b26cb65bd9dd5ada9bfb4812662744c7",
+        "bytes": 31763
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/contract/TrainingObservation.kt",
+        "sha256": "95feb4bd3053572ad1064a1b4e3202152b631e13fbb7b86b93ba4d8087818e84",
+        "git_blob": "b47361c73492fcb29d4e79fe70515a2085b1675b",
+        "bytes": 15510
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt",
+        "sha256": "a6e782db63721d410394010141c01023de2c0671185ae8d5fcbe05af92ae423e",
+        "git_blob": "8260f3bd7a3fd0ee403803122cd2bd1bd183a854",
+        "bytes": 14819
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt",
+        "sha256": "cab2e241e37f48c9ad16e6769f3684808cbeec676c2f2089bb8878cd81311770",
+        "git_blob": "5ecd27272a8534bbff51155a8f9cf84273d94643",
+        "bytes": 6187
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt",
+        "sha256": "e0f1fc2b51ee4271ebf56faff33c84033feae75719fad4077f36e590ac063ee1",
+        "git_blob": "2a86aed602d42a76e64820dfcbf550009a461380",
+        "bytes": 9280
+      },
+      {
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorObservationBoundaryTest.kt",
+        "sha256": "b65dfe87c9f88dca6eaa8754c46dc16a6ef76d1266f829c4e1743b3f5fb17f5d",
+        "git_blob": "5d9ebb717697fafdd166fa1c5468fb57922e4d0f",
+        "bytes": 28737
+      },
+      {
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt",
+        "sha256": "30617fec9bf58e0360622e1b6e26c36603ccaeae308819217b73f9b29875dfae",
+        "git_blob": "526b21d188ffdfe2f08e92ea7514f7ac111d6b1a",
+        "bytes": 9193
+      },
+      {
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt",
+        "sha256": "5068262f19adfb84335ec246b5da18c3644fd2c7ec94f86ac842bba6c6757108",
+        "git_blob": "c29cc8a4d38dd2704de5941ecf8a6e11cfeb3e16",
+        "bytes": 12756
+      },
+      {
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorStackSourceObservationTest.kt",
+        "sha256": "ab6962cc61d66971a39d9ec674ee2c442705c17a365671bd8b9a9b0a590cf0af",
+        "git_blob": "f100da80a5ed01dfe37a688705b9e36a42f4265f",
+        "bytes": 21380
+      },
+      {
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderObservationTest.kt",
+        "sha256": "01c84c1e963801702696b15187cb3d1c24f2f47367f54c0c9c8c77e05a26a4cb",
+        "git_blob": "d03475fd6bffc93685f80d978f17c9f0a28d39cb",
+        "bytes": 14368
+      },
+      {
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapterTest.kt",
+        "sha256": "4aa40846fe72391f23ce8d429240de09181c7f027d89cab3d5bc3adcdd07b273",
+        "git_blob": "97a86e6881a90aa5987cd14971aaa30e12d21dba",
+        "bytes": 11464
+      },
+      {
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeatTest.kt",
+        "sha256": "25b84363470a3b4421fa8b7532f29e569942febd95a1a9bfd6f24f3ebcad3967",
+        "git_blob": "0a46c7e1886ab8fa1d09fc97e23c3165e2648e27",
+        "bytes": 8083
+      },
+      {
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponentTest.kt",
+        "sha256": "e461c4defb01a4389de6aff480b317273f9f95b183bea73ea370ec3cd4490897",
+        "git_blob": "ab2e472c6d41024f7494337d3987f30882caceb3",
+        "bytes": 9571
+      },
+      {
+        "path": "justfile",
+        "sha256": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
+        "git_blob": "8e3c25afce213f719e7b9d9ac723e33b288b06a9",
+        "bytes": 32114
+      },
+      {
+        "path": "lab-coordinator/shared-capabilities/collect-priority-receiving.py",
+        "sha256": "2c158a62f1898dcc7cb3c00a3cf2497a42d87e3a4e3a2a1e37926b2a4483352f",
+        "git_blob": "ac5f0cc91072196dd79c52784924f44e5d2f8234",
+        "bytes": 5490
+      },
+      {
+        "path": "lab-coordinator/shared-capabilities/receiving-case-banks-v1.json",
+        "sha256": "fbcd17ca4beda7da01a58fed7c627c66dc154bf4955d6b5556b02de9e0a82a97",
+        "git_blob": "edf52441ebf2f89c6752cfa3887f2cdc685c570b",
+        "bytes": 15597
+      },
+      {
+        "path": "lab-coordinator/shared-capabilities/receiving-collector-independent-source-review.json",
+        "sha256": "cebe19436469e4eefad3f8165675e97dfb860c33325c7a4762f5ccd91e7ac1ea",
+        "git_blob": "a81e63bb8325794b68cb0289c77e9c0449eae70d",
+        "bytes": 2780
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt",
+        "sha256": "4b9a42f9e7de7400ef12bf6598981ca741c05644113844baa43a4e2e90ecbb71",
+        "git_blob": "4d10601e7401f58f4f5f2d31a690004ca1427519",
+        "bytes": 34203
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/CostHandler.kt",
+        "sha256": "9c778d33ff88f19ba4d46a81bb6c8941013ec170e6dc9b59945495ee5abe4590",
+        "git_blob": "d20e9f05da47b6d67147a83930472f8757ddb8dc",
+        "bytes": 104039
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/mulligan/KeepHandHandler.kt",
+        "sha256": "e9ec477f87b4eae53457b509857a8dd2a846a3bcc0990838306dcba500cad114",
+        "git_blob": "cd773e3ede6a4d600f130ea10a3d43b78c3d09d5",
+        "bytes": 1932
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastPaymentProcessor.kt",
+        "sha256": "2870b7e6c1db4ecb19d8b855848a1dbebe353e57526458d1c0bf84a5e798f2ff",
+        "git_blob": "24afa8dc691755cc010a6d03e15160f6ccffea51",
+        "bytes": 27819
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/LegalAction.kt",
+        "sha256": "32aa41fbb25295aaf779480110f23398de4dc34515286499a7bfae06a2ffb9fc",
+        "git_blob": "f9b58b4ad2ea63c4ea7de88c753fea9dea84c076",
+        "bytes": 27376
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/LegalActionEnumerator.kt",
+        "sha256": "9ee0ac7cb45e92b06780f0a70ed0077c52ef51237b4f40bf88b325c51e6b44a2",
+        "git_blob": "e09f27f3698e58b4a74016b30db859a217adc779",
+        "bytes": 5655
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+        "sha256": "a9b6ba64f35215840ab117c0a11527526f903687d0b326925fa05d7f8be540ac",
+        "git_blob": "aec22c65328baa9404eca5d500393645bb75d0a8",
+        "bytes": 99997
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaAbilitySideEffectExecutor.kt",
+        "sha256": "cd9ae45c0a4adb4a057f9ca1f01d1271b9819f8b2c458f53494a3a46559cdb06",
+        "git_blob": "6ec8eb49d5d2ac0c94c788f42d2f74493972495d",
+        "bytes": 11512
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt",
+        "sha256": "1dfb6592060244f02c9174c7a5fd26fd45002857013c6ccbf3a3dc8d042c4ee1",
+        "git_blob": "c9083468bc8576136eedbc504731a1de38e57ecd",
+        "bytes": 147549
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+        "sha256": "0937aa011d25adbe7292f544feaa424ae5a7fa951589b9775b011088a05ad2c8",
+        "git_blob": "66c9a2ef991ff632f9490a832d5450b730d049f5",
+        "bytes": 229913
+      },
+      {
+        "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt",
+        "sha256": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408",
+        "git_blob": "25c4e0fc143ad8b4d2bb5a29aeb7d67fcf023ece",
+        "bytes": 87803
+      },
+      {
+        "path": "scripts/gradle-locked",
+        "sha256": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1",
+        "git_blob": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d",
+        "bytes": 3018
+      },
+      {
+        "path": "scripts/test-class",
+        "sha256": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81",
+        "git_blob": "bbc870dc1590dddf04648efa1c0d8810eb835653",
+        "bytes": 3017
+      },
+      {
+        "path": "settings.gradle.kts",
+        "sha256": "20bb45f9e99f9cd82df3e8aee01f06bbd116915ae99c4acc0b69a47f4a6a789b",
+        "git_blob": "b3cf7d0b70c58c6c4d5b214588f48ca5660d902e",
+        "bytes": 3676
+      },
+      {
+        "path": "sphinx-approach/STAGE_E_ACTOR_COMPONENT_RECEIPT.json",
+        "sha256": "2e949dd72af8723a53dc037fc9e4ba631c639e87536ccb012757178d2e86af71",
+        "git_blob": "06e844812f03dbe136690010e54d62b1c8d2cccf",
+        "bytes": 2905
+      },
+      {
+        "path": "sphinx-approach/STAGE_E_ACTOR_FIXTURE_BUDGET.json",
+        "sha256": "e01864d8d22f228f5ea6c9a3a830cf524290297487c85970471553620af9f5ad",
+        "git_blob": "3c0d0fcfcf0d9117695818ac4e9af7972f76920f",
+        "bytes": 11634
+      },
+      {
+        "path": "sphinx-approach/STAGE_E_ACTOR_RECEIVING_SCOPE.json",
+        "sha256": "1602ca99f7be5f80e486e7353994be8e4aba95049b17ff55261beb18372a15c8",
+        "git_blob": "d1773945dca6d57927a16afb431e934a2bfda42b",
+        "bytes": 9127
+      },
+      {
+        "path": "sphinx-approach/STAGE_E_INITIALIZED_SEAT_FIXTURE_BUDGET.json",
+        "sha256": "8346efb688909227b06967ce39f703f17455de2412e0897915109d739a359b19",
+        "git_blob": "d2ff9a9e9e1761bdb9097d2a38231e4e069f9fe2",
+        "bytes": 6155
+      },
+      {
+        "path": "sphinx-approach/STAGE_E_PILOT_FIXTURE_BUDGET.json",
+        "sha256": "24f0826253411d9f97e151da3f941d58c0dafd13083e7159c0b90ac017b32c2d",
+        "git_blob": "160eda5fe3adbf35dfb770ef1fc305ee25ab48a9",
+        "bytes": 6487
+      },
+      {
+        "path": "sphinx-approach/STAGE_E_RECONSTRUCTION_PLAN.md",
+        "sha256": "066a08b74350dcf20a03b917b2c122501b9d87cbca52e3273d216bc183a8ea43",
+        "git_blob": "c62c1c96467947161e216c00d949f556ba4958e6",
+        "bytes": 2827
+      },
+      {
+        "path": "sphinx-approach/decks/closest-no-approach-v01.csv",
+        "sha256": "548998c77f5f688d793d36cdb9f21ae8b3b63963856875c4b84d82c271196a83",
+        "git_blob": "16f429ef50b2699d60be66de4a39681d9aa2d00e",
+        "bytes": 166
+      },
+      {
+        "path": "sphinx-approach/decks/reconstructed-hybrid.csv",
+        "sha256": "f4cf2c64bb07847bd013e9984480f5b0fa76ac3a40dc5a47894a3609e9cb3b2e",
+        "git_blob": "7f76c94e4fbc24acdc982039aa248a1fa9485cd4",
+        "bytes": 133
+      },
+      {
+        "path": "sphinx-approach/decks/reconstructed-v01.csv",
+        "sha256": "274521097cc731ac5f5aa9b7645a20b13d4546fd73b17dbcd14af0b0a25c4486",
+        "git_blob": "e2f0abbc9f99be97b2562a18ae248d70cbefc0e1",
+        "bytes": 115
+      },
+      {
+        "path": "sphinx-approach/decks/serpico-terror-benchmark.csv",
+        "sha256": "6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62",
+        "git_blob": "da2f0d8d1e7a6d464567f765483d0145ae3726dd",
+        "bytes": 226
+      },
+      {
+        "path": "sphinx-approach/evidence/stage-e-actor-attempt-03/independent-artifact-review.json",
+        "sha256": "64a9952f4452715fc6b8ad0b3e4931164c42e50d68bea97ea8afb26a6b4abe89",
+        "git_blob": "e46833197587bc2386a16fc1ccd6ba33d44833ed",
+        "bytes": 17821
+      },
+      {
+        "path": ".github/workflows/sphinx-initialized-seat-qualification.yml",
+        "sha256": "7796a6d6f3a97fe5cf202df4dd06efdacec983b4cf37c660b5ccab445596c1f6",
+        "git_blob": "e6c14541bdb4728983c9ac0dfc6cabe468d36543",
+        "bytes": 6843
+      }
+    ]
+  },
+  "raw_junit": {
+    "class": "com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest",
+    "actual_cases": 16,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "timestamp": "2026-09-26T19:54:02.963Z",
+    "all_frozen_case_names_present_exactly_once": true
+  },
+  "fresh_execution": {
+    "command_exit": 0,
+    "command": "just test-class SphinxStageEInitializedSeatTest --rerun --info --stacktrace --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g",
+    "actual_gradle_test_task": ":gym:test",
+    "task_up_to_date": false,
+    "task_from_cache": false,
+    "task_no_source": false,
+    "build": "BUILD SUCCESSFUL in 6m 12s"
+  },
+  "scope": [
+    "Fixed16 initialized-seat component only; four supplied frozen60s, two seats and two checks.",
+    "Original136 actor and56 policy banks are bound and unchanged, but are not re-executed by this16 bank.",
+    "No complete pilot, simultaneous-mulligan actor routing, shared receiving integration, replay, gameplay admission, or historical A-D recovery established."
+  ],
+  "prior_attempt": {
+    "run_id": 36265670603,
+    "actual_cases": 16,
+    "passing": 8,
+    "failing": 8,
+    "evidence": "sphinx-approach/evidence/stage-e-initialized-seat-attempt-01"
+  },
+  "official_seeds_generated": 0,
+  "official_seeds_consumed": 0,
+  "official_games_initialized": 0,
+  "official_actions_submitted": 0,
+  "official_outcomes_exposed": 0,
+  "gameplay_authorized": false
+}
