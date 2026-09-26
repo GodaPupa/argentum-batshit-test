@@ -1,0 +1,53 @@
+name: Pest Control Tier-1 Jack-o'-Lantern Support
+
+on:
+  push:
+    branches:
+      - pest-control/tier1-postboard-support-jack-o-lantern
+    paths:
+      - .github/workflows/pest-control-tier-one-postboard-jack-o-lantern.yml
+
+permissions:
+  contents: write
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: pest-control/tier1-postboard-support-jack-o-lantern
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Regenerate exact MID snapshot
+        run: ./gradlew :mtg-sets:test --tests "*CardDefinitionSnapshotTest" -DupdateSnapshots=true
+
+      - name: Fail closed on unrelated snapshot drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          changed="$(git diff --name-only)"
+          printf '%s\n' "$changed"
+          test "$changed" = "mtg-sets/src/test/resources/snapshots/cards/MID.json"
+          git diff --check
+
+      - name: Qualify exact Jack-o'-Lantern behavior
+        run: ./gradlew :mtg-sets:2017-2022:test --tests "*JackOLanternScenarioTest"
+
+      - name: Qualify card lint
+        run: ./gradlew :mtg-sets:test --tests "*CardLintTest"
+
+      - name: Commit exact generated MID bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add mtg-sets/src/test/resources/snapshots/cards/MID.json
+          git commit -m "Synchronize Jack-o'-Lantern snapshot"
+          git push origin HEAD:pest-control/tier1-postboard-support-jack-o-lantern
