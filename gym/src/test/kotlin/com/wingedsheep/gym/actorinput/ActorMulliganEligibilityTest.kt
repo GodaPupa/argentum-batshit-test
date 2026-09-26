@@ -1,7 +1,11 @@
 package com.wingedsheep.gym.actorinput
 
 import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.handlers.ConditionEvaluator
+import com.wingedsheep.engine.handlers.PredicateEvaluator
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
+import com.wingedsheep.engine.mechanics.mana.CostCalculator
+import com.wingedsheep.engine.mechanics.mana.ManaSolver
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ZoneKey
@@ -28,7 +32,8 @@ class ActorMulliganEligibilityTest : FunSpec({
     val leyline = plain.copy(name = "Actor Setup Opening Choice", script = plain.script.copy(mayStartOnBattlefield = true))
     val registry = CardRegistry().also { r -> listOf(plain, alternate, leyline).forEach(r::register) }
     val processor = ActionProcessor(registry)
-    val enumerator = LegalActionEnumerator(registry)
+    val enumerator = LegalActionEnumerator(registry, ManaSolver(registry),
+        CostCalculator(registry), PredicateEvaluator(), ConditionEvaluator(), TurnManager(registry))
     val adapter = ObservationAdapter(registry)
     val json = Json { serializersModule = engineSerializersModule; allowStructuredMapKeys = true; encodeDefaults = true }
     fun encoded(state: GameState) = json.encodeToString(GameState.serializer(), state)

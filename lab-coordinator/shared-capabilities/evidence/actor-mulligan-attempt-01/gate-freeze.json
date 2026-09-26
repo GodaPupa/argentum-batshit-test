@@ -1,9 +1,9 @@
 {
   "schema": "canonical-actor-mulligan-gate-freeze-v1",
-  "status": "SAME_FIXED_64_RETRY_AFTER_REVIEWED_ENUMERATOR_CONSTRUCTION_CORRECTION",
+  "status": "SOURCE_BANK_ACCEPTED_GATE_AWAITING_NON_AUTHOR_REVIEW",
   "source_bank_candidate": "9524c74d4149e4bd48f9183b7ee8745ab7576a35",
   "source_bank_tree": "61ed2181c8f50cef3cb3be14fb23deab243d434e",
-  "source_manifest_sha256": "b9fee0bc342bb4df931671f6211f8ca9fa12f8628c3cf947e63a91c53ed3b6f1",
+  "source_manifest_sha256": "70387d5ae31d829868335298994f25119f12cba14841bfac948c8a94ce887402",
   "source_sha256": {
     "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorDecisionProjection.kt": "aeeac553568cdc30239d5040a2cf784d338e4d9d9f4def45c6eeccece077eb66",
     "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorInput.kt": "31bc5320ee24e8af512b3babc7908eee0d62aa6e360e4a4582a753562392f907",
@@ -32,12 +32,12 @@
     "gym/src/main/kotlin/com/wingedsheep/gym/GameEnvironment.kt": "8101b0bc53778f9790b7c7f034ee2e0df20294b6d96e09c2b6721f8afc9be4de",
     "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt": "af78e3f08b8729f5271ee8ebe2190a89614951dc72183264f9e2987808dabf26",
     "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorInputEligibility.kt": "f5b4f27f825cf1a50c1d7e480368974aa3e7cb8f90b3dc48b61da865d6c54a99",
-    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganEligibilityTest.kt": "b055203de6f4807eeb324ed31edefa99c34637513c1d25590c79c8a69b0b9434",
-    "lab-coordinator/shared-capabilities/actor-mulligan-receiving.json": "b9fee0bc342bb4df931671f6211f8ca9fa12f8628c3cf947e63a91c53ed3b6f1",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganEligibilityTest.kt": "f735e72c1c36bce032563c3c9ef91672f64369f353bbeaeacb1f7919a82c0dd9",
+    "lab-coordinator/shared-capabilities/actor-mulligan-receiving.json": "70387d5ae31d829868335298994f25119f12cba14841bfac948c8a94ce887402",
     "lab-coordinator/shared-capabilities/actor-input-extraction.json": "9689048782254600b748bf9f135f4e62c598efa1df3f42a128b5df83c1ac16f2",
     "lab-coordinator/shared-capabilities/actor-mulligan-source-bank-review.json": "7825ef0a42f70830da9ee7d250e663704c599643151dfe84a90afdfd984c233a",
     "lab-coordinator/shared-capabilities/collect-priority-receiving.py": "2c158a62f1898dcc7cb3c00a3cf2497a42d87e3a4e3a2a1e37926b2a4483352f",
-    "lab-coordinator/shared-capabilities/collect-actor-mulligan.py": "174c5103bd44e903e4c40fef426b390efef0cd61bf330dfd4a6c64b30d2cb2af",
+    "lab-coordinator/shared-capabilities/collect-actor-mulligan.py": "65d8fe1fbf872938f9b6e74cbac00dc6cdf8b04a7f9804c11bd61228bed0a4be",
     ".github/workflows/shared-actor-mulligan-qualification.yml": "f44d6514944ebb7d5634ba453b3f1fb40454c91476c82b3e92fd2249f9b7ce02",
     "justfile": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
     "scripts/test-class": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81",
@@ -162,22 +162,10 @@
   },
   "readiness": "Only ready_for_execution may be set true after non-author gate acceptance; executable or case changes require renewed review.",
   "ready_for_execution": true,
-  "attempts_executed": 1,
+  "attempts_executed": 0,
   "pilot_qualified": false,
   "scheduler_integration_qualified": false,
   "receiving_runtime_accepted": false,
   "gameplay_authorized": false,
-  "official_games": 0,
-  "prospective_correction": {
-    "prior_executed_source": "fed5057352021d6cedc6d8e3f4357a41f074419d",
-    "fixture_only": "Supply existing required enumerator dependencies exactly as the retained ActorPriorityObservationTest. No assertion, case name, production behavior, scheduler, pilot or fixture entropy changes.",
-    "prior_attempt_evidence": "lab-coordinator/shared-capabilities/evidence/actor-mulligan-attempt-01",
-    "fresh_attempt_requires": "Renewed non-author source/gate review before execution; independent raw artifact review before acceptance."
-  },
-  "correction_review": {
-    "path": "lab-coordinator/shared-capabilities/actor-mulligan-constructor-correction-review.json",
-    "sha256": "57668ea993d840bc18a95970e5b84d6f212913313a11810dda2388b01f57085e",
-    "reviewer": "/root",
-    "scope": "Existing constructor dependencies only; same64 deterministic bank; no gameplay or receiving admission."
-  }
+  "official_games": 0
 }

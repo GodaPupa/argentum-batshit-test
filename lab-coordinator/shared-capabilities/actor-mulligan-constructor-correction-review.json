@@ -1,0 +1,22 @@
+{
+  "schema": "canonical-actor-mulligan-correction-review-v1",
+  "record_type": "Verbatim non-author peer message with checked source hashes, transcribed by the receiving author.",
+  "reviewer": "/root",
+  "reviewer_is_non_author_of_correction": true,
+  "author": "/root/sphinx",
+  "review_message": "Root review PASS: source constructor matches existing ActorPriorityObservationTest exactly; no test bodies/64 case identities or production changes; checked changed manifest+collector hashes and preserved failed archive. Approve readiness=true for corrected exact64 seed-free qualification only, commit review with changed source hashes; no gameplay/actor admission. Also independently checked seat ZIP ebadbb... raw16 zero failures/skips,0 exits,59 content+Git blob hashes; approve bounded seat component receipt/evidence publication on sibling evidence branch with previous failure preserved; not full pilots/StageE admission. Proceed both, report exact remote refs.",
+  "reviewed_sha256": {
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganEligibilityTest.kt": "b055203de6f4807eeb324ed31edefa99c34637513c1d25590c79c8a69b0b9434",
+    "lab-coordinator/shared-capabilities/actor-mulligan-receiving.json": "b9fee0bc342bb4df931671f6211f8ca9fa12f8628c3cf947e63a91c53ed3b6f1",
+    "lab-coordinator/shared-capabilities/collect-actor-mulligan.py": "174c5103bd44e903e4c40fef426b390efef0cd61bf330dfd4a6c64b30d2cb2af"
+  },
+  "reviewed_failed_archive_sha256": "90fb049f1b555b2dbb1e490171b317200f16bd1113fa949d6d62e8d58566df5f",
+  "disposition": "PASS_FOR_SAME64_SEED_FREE_QUALIFICATION_ONLY",
+  "permitted_post_review_changes": [
+    "Set gate ready_for_execution true.",
+    "Retain this review and reference it from the gate without changing executable source or case bank."
+  ],
+  "github_approval": false,
+  "runtime_admission": false,
+  "gameplay_admission": false
+}

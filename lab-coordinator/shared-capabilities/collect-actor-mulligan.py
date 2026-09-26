@@ -14,7 +14,7 @@ ROOT = Path(__file__).resolve().parents[2]
 REPORT = ROOT / 'build/reports/shared-actor-mulligan'
 FREEZE = 'lab-coordinator/shared-capabilities/actor-mulligan-gate-freeze.json'
 SOURCE = 'lab-coordinator/shared-capabilities/actor-mulligan-receiving.json'
-SOURCE_SHA = '70387d5ae31d829868335298994f25119f12cba14841bfac948c8a94ce887402'
+SOURCE_SHA = 'b9fee0bc342bb4df931671f6211f8ca9fa12f8628c3cf947e63a91c53ed3b6f1'
 
 
 def sha(raw):
