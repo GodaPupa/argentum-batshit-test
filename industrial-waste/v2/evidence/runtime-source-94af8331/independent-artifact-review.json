@@ -1,0 +1,119 @@
+{
+  "status": "PASS_BOUNDED_ARTIFACT_PUBLICATION_REVIEW_ONLY",
+  "reviewer": "Manual project agent, non-author of proposed artifact receipt and runtime implementation",
+  "reviewed_at_utc": "2026-09-26T21:24:09.545350+00:00",
+  "source": "94af8331e83c7b48cfa0cb61fd626591b4928462",
+  "tree": "686cef8ddcb2cd3291cb465cf780bd0cbd774754",
+  "artifact_sha256": "f07849de5f2d7c535017b41cccb158c506d3936266746b4f9e8545d6c6a35c34",
+  "proposed_receipt_sha256": "3acf88416f0b792f7f48236a952bb984f2c004d13b8d37a3db0d58c02d7281d1",
+  "raw_audit_sha256": "0b51b46987c523f02626bbe81a07ec72e79dc215d634bf03e29570c52edb8994",
+  "independently_fetched_live_commit_tree_and_workflow_metadata": true,
+  "git_tree_truncated": false,
+  "compiled_input_records_verified": 21065,
+  "counts": {
+    "engine": [
+      148,
+      0,
+      0,
+      0
+    ],
+    "lava": [
+      2,
+      0,
+      0,
+      0
+    ],
+    "ai": [
+      144,
+      0,
+      0,
+      1
+    ]
+  },
+  "allowed_skips": [
+    [
+      "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2R1OfficialExecutionTest",
+      "execute the frozen R1 corpus only under independently verified durable authority"
+    ]
+  ],
+  "python_cases": 80,
+  "runtime_members_verified": 2549,
+  "runtime_sha256": "c800ce56a80f93aea82ef588c18bb3b7f75215db98d07f253a45f870dbd3f49d",
+  "registry_definitions": 69,
+  "trace_byte_checks": [
+    {
+      "actions": 227,
+      "quiet": 16,
+      "replay": "EXACT_ACTION_EVENT_STATE_REPLAY",
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-allocation-trace4655905358438819864/allocation/"
+    },
+    {
+      "actions": 242,
+      "quiet": 16,
+      "replay": "EXACT_ACTION_EVENT_STATE_REPLAY",
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-quiet-baseline4071160733591087241/allocation/"
+    },
+    {
+      "actions": 428,
+      "quiet": 60,
+      "replay": "EXACT_ACTION_EVENT_STATE_REPLAY",
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-spell-trace22179804784086733/allocation/"
+    }
+  ],
+  "full_ci_decoded_logs": [
+    {
+      "job": 108484709824,
+      "sha256": "cb4b4f6a726288ee9913a7c2e304f78e0ed0901844800ca7cc5f2b9bc4cdcb00",
+      "actual_passed_lines": 267
+    },
+    {
+      "job": 108484709840,
+      "sha256": "41e0496a40938897f0b035049f293e03e59669d961466994d1fb31780e0e38c2",
+      "actual_passed_lines": 3348
+    },
+    {
+      "job": 108484709847,
+      "sha256": "b9acd050b49b41495626662c6737838433dc5743856da8ee3550a78302aa88ed",
+      "actual_passed_lines": 2930
+    },
+    {
+      "job": 108484709883,
+      "sha256": "b67510ebd2194f18e94c9a3f8120939e62663a9c3aac8809e9ea4ed5074c5d6d",
+      "actual_passed_lines": 4261
+    },
+    {
+      "job": 108484709906,
+      "sha256": "784796199d0507bb82437008f3300dfc297c80615d8a3478633a920043c6f582",
+      "actual_passed_lines": 556
+    },
+    {
+      "job": 108484709913,
+      "sha256": "46b3d04d4d66e7dbb9d7e4ea8999551e7cfa2bcba22e6c6f233b32c851485538",
+      "actual_passed_lines": 3783
+    },
+    {
+      "job": 108484709923,
+      "sha256": "bee8608ee6f93d6226541930dfe3682cd582d47a70497a8e9db42afe968d5a31",
+      "actual_passed_lines": 1844
+    }
+  ],
+  "scope": [
+    "Independently parsed original ZIP without extraction and compared all declared AI case identities, exact skip, fresh workers, raw definition hashes, source Git blob/mode bindings, and every nested runtime member size/hash.",
+    "Trace checks validate recorded journal intents/returns, every retained quiet checkpoint digest, final-state digest, first-per-turn compatibility projection, and source-bound CI replay reports. This reviewer did not locally execute JVM replay.",
+    "Existing six-file assertion/routing source correction previously reviewed separately; this is fresh artifact preservation disposition, not complete combined-source runtime acceptance."
+  ],
+  "complete_R1_runtime_admission": false,
+  "gameplay_authorized": false,
+  "official_allocations_initialized": 0,
+  "github_approval": false,
+  "complete_ordered_classpath_member_manifest_matches_observed_worker": true,
+  "archival_helper_review": {
+    "manifest_sha256": "139d9347c1f6768ab34ff73bbf266bed08b9f0bb58f19356180dc4d956146101",
+    "helper_sha256": "a563997d39390f07d99a430fe96320e29c674f488282d3d7b07aecd90132d2f7",
+    "parts": 12,
+    "all_part_offsets_lengths_sha256_and_git_blob_sha1_independently_verified_against_original_zip": true,
+    "helper_read_and_syntax_parsed": true,
+    "helper_execution_not_performed": true,
+    "scope": "Create-only output, exact ordered offsets, per-part hashes and final whole-file hash; failed reconstruction remains a partial file and is never declared verified. Only the fixed reviewed manifest is in scope."
+  }
+}

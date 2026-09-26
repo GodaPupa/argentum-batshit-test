@@ -1,0 +1,171 @@
+{
+  "schema": "industrial-runtime-composition-source-artifact-audit-v1",
+  "status": "PASS_REQUIRES_NONAUTHOR_ARTIFACT_DISPOSITION",
+  "source_author_role": "/root/industrial (narrow fixture correction; underlying runtime author differs)",
+  "source_commit": "94af8331e83c7b48cfa0cb61fd626591b4928462",
+  "source_tree": "686cef8ddcb2cd3291cb465cf780bd0cbd774754",
+  "parent_candidate": "fc9bb89144eb7a1097bf08589ea43349db24e16b",
+  "prior_accepted_runtime_source": "1fe2118348b83bc9eacb9160c55ec52af67007b3",
+  "run": {
+    "id": 36270946050,
+    "attempt": 1,
+    "event": "push",
+    "job": 108484653206,
+    "conclusion": "success"
+  },
+  "artifact": {
+    "id": 10916165660,
+    "bytes": 99452675,
+    "sha256": "f07849de5f2d7c535017b41cccb158c506d3936266746b4f9e8545d6c6a35c34"
+  },
+  "raw_audit_sha256": "0b51b46987c523f02626bbe81a07ec72e79dc215d634bf03e29570c52edb8994",
+  "counts": {
+    "python_passed": 80,
+    "engine_passed": 148,
+    "lava_dart_passed": 2,
+    "AI_declared": 144,
+    "AI_passed": 143,
+    "AI_official_execution_skipped": 1,
+    "failures": 0,
+    "errors": 0,
+    "original_accepted_AI_identities_retained": 134,
+    "prospective_equivalence_cases_passed": 10
+  },
+  "original_failure": {
+    "source": "fc9bb89144eb7a1097bf08589ea43349db24e16b",
+    "runtime_run": 36268146536,
+    "full_CI_run": 36268149908,
+    "card_qualification_run": 36268150021,
+    "disposition": "Original failed attempts remain failed; source evidence retained at94af under evidence/receiving-fc9bb-20260926."
+  },
+  "checks": [
+    "Exact corrected144 bank and all raw XML identities reconcile; the only skip is the guarded official-execution entrypoint. Original134 identities remain unchanged, plus the same10 equivalence cases with the independently reviewed corrected outer expectation.",
+    "All21065 compiled-input records match exact-source Git blob/mode identities; before/after records are byte-identical. This is complete Git-index reconciliation, not independent refetch of every21065 source file.",
+    "One real AI worker executed fresh; required engine and LavaDart task markers are fresh; all commands exit0.",
+    "Compiled registry includes all34 frozen card identities and35 registered token identities;69 raw definitions each match recorded name and SHA256.",
+    "Actual Java worker executable/argument digests agree across qualification, classpath observation and archive receipts.",
+    "Nested runtime archive91006819bytes SHA256c800ce56a80f93aea82ef588c18bb3b7f75215db98d07f253a45f870dbd3f49d: all2549 members have exact sizes and SHA256 values; complete ordered classpath matches observed worker.",
+    "Excluded fixtures retain227/242/428 actions and16/16/60 quiet observations. Every recorded intent/return pair and checkpoint digest matches raw trace; first-per-turn compatibility views derive exactly from complete streams.",
+    "Full CI36270965658 succeeded at merge825ca528, whose tree exactly equals candidate94af. All seven decoded test-job logs contain fresh required task markers and BUILD SUCCESSFUL. No full-CI XML artifact is advertised; report does not invent its raw contents."
+  ],
+  "excluded_replays": [
+    {
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-allocation-trace4655905358438819864/allocation/",
+      "actions": 227,
+      "quiet_observations": 16,
+      "journal_intents_and_returns_bound": true,
+      "every_quiet_record_digest_matches_recorded_returned_state": true,
+      "final_state_matches_final_returned_digest": true,
+      "official": false,
+      "first_per_turn_compatibility_view_matches_complete_stream": true,
+      "compatibility_view_matches_first_per_turn": true
+    },
+    {
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-quiet-baseline4071160733591087241/allocation/",
+      "actions": 242,
+      "quiet_observations": 16,
+      "journal_intents_and_returns_bound": true,
+      "every_quiet_record_digest_matches_recorded_returned_state": true,
+      "final_state_matches_final_returned_digest": true,
+      "official": false,
+      "first_per_turn_compatibility_view_matches_complete_stream": true,
+      "compatibility_view_matches_first_per_turn": true
+    },
+    {
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-spell-trace22179804784086733/allocation/",
+      "actions": 428,
+      "quiet_observations": 60,
+      "journal_intents_and_returns_bound": true,
+      "every_quiet_record_digest_matches_recorded_returned_state": true,
+      "final_state_matches_final_returned_digest": true,
+      "official": false,
+      "first_per_turn_compatibility_view_matches_complete_stream": true,
+      "compatibility_view_matches_first_per_turn": true
+    }
+  ],
+  "full_ci": {
+    "run_id": 36270965658,
+    "event": "pull_request",
+    "attempt": 1,
+    "head": "94af8331e83c7b48cfa0cb61fd626591b4928462",
+    "merge_commit": "825ca5286ed4476f4b9b990fde3a54650d4c02ee",
+    "merge_tree_equals_candidate_tree": true,
+    "raw_full_CI_XML_artifacts_available": false,
+    "seven_decoded_test_job_logs": [
+      {
+        "job_id": 108484709824,
+        "decoded_log_sha256": "cb4b4f6a726288ee9913a7c2e304f78e0ed0901844800ca7cc5f2b9bc4cdcb00",
+        "actual_fresh_test_tasks": [
+          ":gym-server:test",
+          ":gym-trainer:test",
+          ":gym:test",
+          ":mtgish-tooling:test"
+        ]
+      },
+      {
+        "job_id": 108484709840,
+        "decoded_log_sha256": "41e0496a40938897f0b035049f293e03e59669d961466994d1fb31780e0e38c2",
+        "actual_fresh_test_tasks": [
+          ":mtg-sets:2023:tests:test",
+          ":mtg-sets:2024:tests:test"
+        ]
+      },
+      {
+        "job_id": 108484709847,
+        "decoded_log_sha256": "b9acd050b49b41495626662c6737838433dc5743856da8ee3550a78302aa88ed",
+        "actual_fresh_test_tasks": [
+          ":mtg-sets:2025:tests:test",
+          ":mtg-sets:2026:tests:test"
+        ]
+      },
+      {
+        "job_id": 108484709883,
+        "decoded_log_sha256": "b67510ebd2194f18e94c9a3f8120939e62663a9c3aac8809e9ea4ed5074c5d6d",
+        "actual_fresh_test_tasks": [
+          ":mtg-sets:1993-1999:tests:test",
+          ":mtg-sets:2000-2002:tests:test",
+          ":mtg-sets:2003-2007:tests:test",
+          ":mtg-sets:2008-2016:tests:test",
+          ":mtg-sets:2017-2022:tests:test"
+        ]
+      },
+      {
+        "job_id": 108484709906,
+        "decoded_log_sha256": "784796199d0507bb82437008f3300dfc297c80615d8a3478633a920043c6f582",
+        "actual_fresh_test_tasks": [
+          ":game-server:test"
+        ]
+      },
+      {
+        "job_id": 108484709913,
+        "decoded_log_sha256": "46b3d04d4d66e7dbb9d7e4ea8999551e7cfa2bcba22e6c6f233b32c851485538",
+        "actual_fresh_test_tasks": [
+          ":rules-engine:test"
+        ]
+      },
+      {
+        "job_id": 108484709923,
+        "decoded_log_sha256": "bee8608ee6f93d6226541930dfe3682cd582d47a70497a8e9db42afe968d5a31",
+        "actual_fresh_test_tasks": [
+          ":ai:test",
+          ":mtg-sdk:test",
+          ":mtg-search:test",
+          ":mtg-sets:test"
+        ]
+      }
+    ],
+    "coverage_intentionally_skipped": true,
+    "required_jobs_success": true
+  },
+  "limits": [
+    "No local JVM replay was run; reported exact semantic replays were executed by the source-bound CI fixture bank and archived.",
+    "This receipt does not itself accept complete R1 runtime or shared combined-source qualification. Cardqualification and prospective canonical receiving disposition remain separate.",
+    "Original512-allocation corpus remains unconsumed. No new seeds, claims, allocations, official actions, outcomes, deck changes or deck-performance evidence.",
+    "Independent artifact review, complete source/runtime identity binding, separately published execution authorization, and exclusive claim/journal still precede official initialization."
+  ],
+  "complete_R1_runtime_admission": false,
+  "gameplay_authorized": false,
+  "official_allocations_initialized": 0,
+  "official_actions_submitted": 0,
+  "comparative_outcomes_exposed": 0
+}
