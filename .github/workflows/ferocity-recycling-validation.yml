@@ -10,6 +10,9 @@ on:
       - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FerocityOfTheHuntScenarioTest.kt
       - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CryptRatsScenarioTest.kt
       - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ToxinAnalysisScenarioTest.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt
   pull_request:
     paths:
       - ferocity-recycling/**
@@ -17,6 +20,9 @@ on:
       - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FerocityOfTheHuntScenarioTest.kt
       - rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CryptRatsScenarioTest.kt
       - mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ToxinAnalysisScenarioTest.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt
 
 permissions:
   contents: read
