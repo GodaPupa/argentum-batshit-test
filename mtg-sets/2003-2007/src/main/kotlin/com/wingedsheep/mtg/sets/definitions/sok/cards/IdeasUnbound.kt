@@ -4,7 +4,6 @@ import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
-import com.wingedsheep.sdk.scripting.effects.CompositeEffect
 import com.wingedsheep.sdk.scripting.effects.CreateDelayedTriggerEffect
 
 /**
@@ -21,7 +20,7 @@ val IdeasUnbound = card("Ideas Unbound") {
     oracleText = "Draw three cards. Discard three cards at the beginning of the next end step."
 
     spell {
-        effect = CompositeEffect(
+        effect = Effects.Composite(
             listOf(
                 Effects.DrawCards(3),
                 CreateDelayedTriggerEffect(
