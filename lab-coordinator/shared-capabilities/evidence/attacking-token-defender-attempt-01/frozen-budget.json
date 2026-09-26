@@ -1,6 +1,6 @@
 {
   "schema": "shared-attacking-token-defender-qualification/v1",
-  "status": "SAME_FIXED_16_RETRY_AFTER_SYNTAX_ONLY_CORRECTION",
+  "status": "PROSPECTIVE_AWAIT_NON_AUTHOR_SOURCE_REVIEW",
   "source_parent": "57bb4f72f97f545b621314f1356ae29b87142e38",
   "original_failure": {
     "source": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
@@ -15,7 +15,7 @@
     {
       "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
       "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt",
-      "sha256": "643de45bd48aed39706026d02ad92f8a5b2339269589f0976ede41c5013f2446",
+      "sha256": "f9a9ffe86fd085262cb3f14d2b943197e7d28b0113ace1a88bc14aa663d2a16f",
       "cases": [
         "TD01 land attack trigger creates two tokens attacking the sole opponent, never its controller",
         "TD02 multiple opponents require a separate controller choice for every not-yet-created token",
@@ -66,18 +66,5 @@
   ],
   "experimental_policy_budget_consumed": 0,
   "official_games": 0,
-  "outcomes_exposed": 0,
-  "prior_attempts": [
-    {
-      "source": "4a04bc43f9b72fcd734b67b4516d203189baf822",
-      "run": 36264019331,
-      "artifact": 10912484812,
-      "sha256": "1efcc68af28224fcfdfd5ca94604ea731130859a12895e12ee0fdc71f61810f4",
-      "actual_cases": 2,
-      "passing": 2,
-      "unexecuted": 14,
-      "status": "INCOMPLETE_TOKEN_BANK_TEST_COMPILATION",
-      "retained_evidence": "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-01"
-    }
-  ]
+  "outcomes_exposed": 0
 }

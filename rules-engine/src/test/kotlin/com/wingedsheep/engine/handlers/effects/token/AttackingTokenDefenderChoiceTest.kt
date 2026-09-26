@@ -217,7 +217,7 @@ class AttackingTokenDefenderChoiceTest : FunSpec({
             count = DynamicAmount.Fixed(2), attacking = true, tapped = true,
             sacrificeAtStep = Step.END, exileAtStep = Step.END), mark = true)
         var result = choose(restore(paused.state), listOf(p[2], p[1]))
-        result.error shouldBe null; result.state.pendingDecision is ChooseColorDecision shouldBe true
+        result.error shouldBe null; (result.state.pendingDecision is ChooseColorDecision) shouldBe true
         val events = result.events.toMutableList()
         for (color in listOf(Color.BLUE, Color.RED)) {
             val decoded = restore(result.state); val decision = decoded.pendingDecision as ChooseColorDecision
@@ -256,7 +256,7 @@ class AttackingTokenDefenderChoiceTest : FunSpec({
             sacrificeAtStep = Step.END, exileAtStep = Step.END), EffectContext(null, p[1]), mark = true)
         val question = paused.pendingDecision as YesNoDecision
         val accepted = processor.process(restore(paused.state), SubmitDecision(p[0], YesNoResponse(question.id, true))).result
-        accepted.error shouldBe null; accepted.state.pendingDecision is ChooseTargetsDecision shouldBe true
+        accepted.error shouldBe null; (accepted.state.pendingDecision is ChooseTargetsDecision) shouldBe true
         tokens(accepted.state).size shouldBe 0
         val result = choose(restore(accepted.state), listOf(p[2], p[1]))
         result.error shouldBe null; val ids = tokens(result.state); ids.size shouldBe 2; marked(result.state, ids)
