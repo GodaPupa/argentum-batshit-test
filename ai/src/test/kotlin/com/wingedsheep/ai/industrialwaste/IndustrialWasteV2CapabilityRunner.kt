@@ -9,6 +9,11 @@ import com.wingedsheep.engine.core.SubmitDecision
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.sdk.model.EntityId
 
+internal data class IndustrialWasteV2CapabilityTranscript(
+    val status: IndustrialWasteV2ExecutionStatus,
+    val actions: List<GameAction>,
+)
+
 /**
  * Seed-free capability composition for the frozen R1 pilot pieces.
  *
@@ -29,8 +34,18 @@ internal class IndustrialWasteV2CapabilityRunner(
         CardAdvisorRegistry().also { IndustrialWasteV2PilotAdvisorModule.register(it) },
     )
 
-    fun runOneMeasuredTurn(maxSubmittedActions: Int = 800): IndustrialWasteV2ExecutionStatus {
+    fun runOneMeasuredTurn(maxSubmittedActions: Int = 800): IndustrialWasteV2ExecutionStatus =
+        runOneMeasuredTurnWithTranscript(maxSubmittedActions).status
+
+    /**
+     * Capability-only transcript surface. The returned actions are exactly the real actions
+     * submitted to the engine, in order, including passes and decision responses. No action is
+     * synthesized or retried. A caller may replay them only against an identically initialized
+     * deterministic fixture; this does not bind or consume any official R1 ordering row.
+     */
+    fun runOneMeasuredTurnWithTranscript(maxSubmittedActions: Int = 800): IndustrialWasteV2CapabilityTranscript {
         val tracker = IndustrialWasteV2ExecutionTracker(driver.state, measuredPlayer)
+        val actions = mutableListOf<GameAction>()
         while (
             tracker.snapshot().status == IndustrialWasteV2StopStatus.RUNNING &&
             tracker.snapshot().ownTurnsCompleted < 1
@@ -57,6 +72,7 @@ internal class IndustrialWasteV2CapabilityRunner(
                     IndustrialWasteV2PublicActionPolicy.choosePassive(state, priority, legal)
                 }
             }
+            actions += action
             val result = tracker.submit(action) { before, submitted ->
                 check(before == driver.state) { "Tracker and real driver state diverged before submission" }
                 driver.submit(submitted)
@@ -64,6 +80,10 @@ internal class IndustrialWasteV2CapabilityRunner(
             if (result == null || result.error != null) break
             check(tracker.state == driver.state) { "Tracker and real driver state diverged after submission" }
         }
-        return tracker.snapshot()
+        val status = tracker.snapshot()
+        check(actions.size == status.submittedActions) {
+            "Capability transcript/action counter mismatch: ${actions.size} vs ${status.submittedActions}"
+        }
+        return IndustrialWasteV2CapabilityTranscript(status, actions.toList())
     }
 }
