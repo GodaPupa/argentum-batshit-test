@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-09-26T15:24:01.712Z" hostname="1e35be581e75" time="6.239">
+  <properties/>
+  <testcase name="snapshot replay certifies every quiet state and the first-per-turn compatibility view on the draw" classname="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" time="2.73"/>
+  <testcase name="missing the first eligible quiet state cannot pass replay" classname="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" time="0.077"/>
+  <testcase name="missing a later state from the same own turn cannot hide behind the compatibility view" classname="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" time="0.068"/>
+  <testcase name="extra quiet observations after the final eligible state are rejected" classname="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" time="0.602"/>
+  <testcase name="reordered quiet observations are rejected even when every row is intact" classname="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" time="0.019"/>
+  <testcase name="duplicate action indices cannot certify two observations of one accepted state" classname="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" time="0.014"/>
+  <testcase name="a well-formed substituted state digest is rejected against the real replayed state" classname="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" time="0.055"/>
+  <testcase name="altered checkpoint values fail semantic replay despite intact action state and event hashes" classname="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" time="0.067"/>
+  <testcase name="a valid later same-turn checkpoint cannot replace the first-per-turn compatibility row" classname="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" time="0.66"/>
+  <testcase name="a real terminal has no quiet priority even when the engine retains its prior main-step fields" classname="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" time="0.017"/>
+  <testcase name="the final real four-thousandth action preserves its eligible quiet checkpoint before the cap stops execution" classname="com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest" time="1.915"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,120 @@
+name: Industrial Waste v2 R1 Runtime Composition
+
+on:
+  push:
+    branches:
+      - industrial-waste/r1-runtime-composition
+      - industrial-waste/v2-structural-redesign
+    paths:
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/**
+      - rules-engine/src/**
+      - mtg-sets/2000-2002/tests/**
+      - industrial-waste/v2/**
+      - tools/evidence_durability.py
+      - tools/repository_claim.py
+      - .github/workflows/industrial-waste-v2-r1-runtime-composition.yml
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@v3
+      - name: Refuse official execution environment
+        run: |
+          test -z "${IW_V2_R1_PREPARED_DIRECTORY:-}"
+          mkdir -p build/reports/industrial-waste-v2/runtime-composition
+          git rev-parse HEAD > build/reports/industrial-waste-v2/runtime-composition/source-head.txt
+      - name: Qualify frozen projection and receiving-project durability composition
+        run: |
+          python3 -m unittest \
+            industrial-waste/v2/test_r1_metric_projection.py \
+            industrial-waste/v2/test_r1_execute.py \
+            industrial-waste/v2/test_r1_artifact_contract.py \
+            industrial-waste/v2/test_r1_execution_guard.py \
+            tools/tests/test_evidence_durability.py \
+            tools/tests/test_repository_claim.py -v \
+            > build/reports/industrial-waste-v2/runtime-composition/python-tests.txt 2>&1
+      - name: Qualify canonical payment and flashback receiving source
+        run: |
+          set -o pipefail
+          just test-class ManaPaymentFeasibilityTest \
+            --tests '*ManaPaymentPolicyWitnessTest' --tests '*FixedSacrificePaymentTest' \
+            --tests '*PaidFilterManaSolverTest' --tests '*RestrictedXManaReconciliationTest' \
+            --tests '*MultiManaSourceTest' --tests '*MonocolorHybridManaSolverTest' \
+            --tests '*DynamicManaAmountAutoTapTest' --tests '*ManaSpendRestrictionAnyAbilityTest' \
+            --tests '*ManaAbilityActivationTriggerScenarioTest' --tests '*ManaSourceProvenanceScenarioTest' \
+            --tests '*XSpellFloatingRestrictedManaTest' --tests '*FlashbackAdditionalCostEnumerationTest' \
+            --tests '*CastFromZoneEnumeratorTest' --tests '*CostEnumerationUtilsTest' \
+            --tests '*AlternativeCostChoiceScenarioTest' --tests '*EscapeTest' \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            2>&1 | tee build/reports/industrial-waste-v2/runtime-composition/engine.log
+      - name: Qualify received exact Lava Dart regression
+        run: |
+          set -o pipefail
+          just test-class LavaDartScenarioTest --max-workers=1 -PkotlinCompileParallelism=1 \
+            2>&1 | tee build/reports/industrial-waste-v2/runtime-composition/lava-dart.log
+      - name: Qualify combined real-engine runtime and accepted predecessor fixtures
+        run: |
+          set -o pipefail
+          just test-class IndustrialWasteV2AllocationRunnerTest \
+            --tests '*IndustrialWasteV2*Test' \
+            --tests '*IndustrialWasteAdvisorModuleTest' \
+            --tests '*FrozenBaselineTest' \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            2>&1 | tee build/reports/industrial-waste-v2/runtime-composition/runtime.log
+      - name: Preserve exact source and scope
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,subprocess,shutil,tempfile,xml.etree.ElementTree as ET
+          from pathlib import Path
+          files = sorted(Path('ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste').glob('IndustrialWasteV2*.kt'))
+          files += list(Path('rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana').glob('Mana*kt'))
+          files += [Path(p) for p in ['rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/FixedSacrificePayment.kt','rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt','rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt','industrial-waste/v2/r1_execute.py','industrial-waste/v2/r1_metric_projection.py','tools/evidence_durability.py','tools/repository_claim.py']]
+          receipt = {'status':'QUALIFICATION_OUTPUT_REQUIRES_INDEPENDENT_AUDIT',
+              'source_commit':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+              'shared_capability_source':'2ec67cd048f89a735655f24d7fa90c81e6664785',
+              'source_sha256':{str(p):hashlib.sha256(p.read_bytes()).hexdigest() for p in files},
+              'official_allocations_initialized':0,'official_actions_submitted':0,'comparative_outcomes_exposed':0,
+              'execution_authorized':False}
+          receipt['source_tree'] = subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          receipt['source_status'] = subprocess.check_output(['git','status','--porcelain'],text=True)
+          receipt['received_components'] = {'payment':'801557005300f059a95adc670b944b82a24addae','flashback':'4aa0f3ee65caa857d1017fa4e522c43cf8946b99','quiet_checkpoint_local_source':'561656acb886392c95df36b2d65f1779fcc69776'}
+          receipt['remaining_gates'] = ['independent combined-source and actual artifact review','canonical post-block receiving integration','full CI and required legacy card regressions','all original exact runtime and admission requirements']
+          root = Path('build/reports/industrial-waste-v2/runtime-composition')
+          suites=[]
+          for directory in [Path('rules-engine/build/test-results/test'),Path('mtg-sets/2000-2002/tests/build/test-results/test'),Path('ai/build/test-results/test')]:
+              for path in sorted(directory.glob('TEST-*.xml')):
+                  doc=ET.parse(path).getroot()
+                  suites.append({'path':str(path),'sha256':hashlib.sha256(path.read_bytes()).hexdigest(),'attributes':dict(doc.attrib),'cases':[{'name':c.attrib['name'],'failed':c.find('failure') is not None,'error':c.find('error') is not None,'skipped':c.find('skipped') is not None} for c in doc.findall('testcase')]})
+          (root/'actual-suites.json').write_text(json.dumps(suites,indent=2)+'\n')
+          for trace in sorted(Path(tempfile.gettempdir()).glob('iw-v2-*')):
+              if trace.is_dir() and (trace/'allocation/input.json').exists():
+                  shutil.copytree(trace,root/'excluded-traces'/trace.name)
+          (root/'provenance.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: industrial-waste-v2-r1-runtime-composition
+          path: |
+            build/reports/industrial-waste-v2/runtime-composition/
+            rules-engine/build/test-results/test/*.xml
+            mtg-sets/2000-2002/tests/build/test-results/test/*.xml
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2*.xml
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest.xml
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml
+          if-no-files-found: error
+          retention-days: 90

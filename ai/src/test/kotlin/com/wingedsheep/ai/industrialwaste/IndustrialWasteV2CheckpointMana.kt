@@ -1,23 +1,43 @@
 package com.wingedsheep.ai.industrialwaste
 
+import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.legalactions.LegalAction
+import com.wingedsheep.engine.legalactions.utils.CostEnumerationUtils
+import com.wingedsheep.engine.legalactions.utils.TargetEnumerationUtils
+import com.wingedsheep.engine.handlers.PredicateEvaluator
+import com.wingedsheep.engine.mechanics.mana.CostCalculator
+import com.wingedsheep.engine.mechanics.mana.ManaPool
 import com.wingedsheep.engine.mechanics.mana.ManaSolver
+import com.wingedsheep.engine.mechanics.mana.ManaPaymentFeasibility
+import com.wingedsheep.engine.mechanics.mana.ManaPaymentFeasibilityResult
+import com.wingedsheep.engine.mechanics.mana.ManaPaymentRequest
+import com.wingedsheep.engine.mechanics.mana.SpellPaymentContext
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
+import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.player.PlayerTurnsTakenComponent
+import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.ManaCost
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.model.CardLayout
+import com.wingedsheep.sdk.scripting.AbilityCost
+import com.wingedsheep.sdk.scripting.AdditionalCost
+import com.wingedsheep.sdk.scripting.KeywordAbility
+import com.wingedsheep.sdk.scripting.costs.CostAtom
 import com.wingedsheep.sdk.model.EntityId
 import kotlinx.serialization.Serializable
 
 /**
  * Exact quiet-precombat checkpoint classification for the frozen Industrial Waste v2 structural
- * screen. It consumes the real engine's LegalAction affordability plus the real ManaSolver's
- * generic-equivalent resource count. It never treats a filter as free and never simulates a future
- * state. Unsupported/X/additional-cost shapes remain unresolved rather than guessed.
+ * screen. Payment classifications use the shared finite resource proof for exact and all-generic costs,
+ * with the same final sacrifices and excluded activation source in both queries. The reported generic-equivalent inventory is diagnostic, never
+ * sufficient by itself to establish a metric. This collector never simulates future draws. The three frozen sacrifice spells and Insight flashback use the same cost predicate and
+ * canonical payment proof as the engine. Unqualified payment shapes remain unresolved.
  */
 @Serializable
 internal enum class IndustrialWasteV2CheckpointCardStatus {
@@ -38,6 +58,15 @@ internal data class IndustrialWasteV2CheckpointCard(
 )
 
 @Serializable
+internal data class IndustrialWasteV2CheckpointActivation(
+    val originalCopy: String,
+    val cardName: String,
+    val abilityId: String,
+    val status: IndustrialWasteV2CheckpointCardStatus,
+    val manaCost: String,
+)
+
+@Serializable
 internal data class IndustrialWasteV2CheckpointMana(
     val ownTurn: Int,
     val totalGenericEquivalentMana: Int,
@@ -45,6 +74,10 @@ internal data class IndustrialWasteV2CheckpointMana(
     val coloredManaFailure: Boolean,
     val totalManaStranded: Boolean,
     val unresolved: Boolean,
+    val relevantActivatedAbilities: List<IndustrialWasteV2CheckpointActivation> = emptyList(),
+    val activatedAbilityCoverageComplete: Boolean = false,
+    // These can cause a colored failure, but are never cards stranded in hand.
+    val relevantGraveyardSpells: List<IndustrialWasteV2CheckpointCard> = emptyList(),
 )
 
 internal object IndustrialWasteV2CheckpointManaClassifier {
@@ -87,21 +120,106 @@ internal object IndustrialWasteV2CheckpointManaClassifier {
             )
         }.sortedBy { it.originalCopy }
 
+        val graveyardSpells = state.getGraveyard(player).mapNotNull { cardId ->
+            val card = state.getEntity(cardId)?.get<CardComponent>() ?: error("Graveyard object is not a card")
+            val definition = cardRegistry.getCard(card.name)
+            val entries = legalActions.filter { (it.action as? CastSpell)?.cardId == cardId }
+            if (definition?.keywordAbilities?.any { it is KeywordAbility.Flashback } != true && entries.isEmpty()) {
+                return@mapNotNull null
+            }
+            val originalCopy = originalCopies[cardId]
+                ?: error("Graveyard spell lacks frozen original-copy identity: ${card.name}")
+            classifyFrozenSacrificeSpell(
+                state, player, card.name, originalCopy, entries, cardRegistry, manaSolver, fromGraveyard = true,
+            ) ?: IndustrialWasteV2CheckpointCard(
+                originalCopy, card.name, IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE, null,
+            )
+        }.sortedBy { it.originalCopy }
+
+        val activations = classifyRelevantActivations(
+            state, player, originalCopies, legalActions, cardRegistry, manaSolver, totalMana,
+        )
         return IndustrialWasteV2CheckpointMana(
             ownTurn = state.getEntity(player)?.get<PlayerTurnsTakenComponent>()?.count
                 ?: error("Missing acting-player turn counter"),
             totalGenericEquivalentMana = totalMana,
             cards = cards,
-            coloredManaFailure = cards.any {
+            coloredManaFailure = (cards + graveyardSpells).any {
+                it.status == IndustrialWasteV2CheckpointCardStatus.UNAVAILABLE_COLORED_PAYMENT
+            } || activations.any {
                 it.status == IndustrialWasteV2CheckpointCardStatus.UNAVAILABLE_COLORED_PAYMENT
             },
             totalManaStranded = cards.any {
                 it.status == IndustrialWasteV2CheckpointCardStatus.INSUFFICIENT_TOTAL_MANA
             },
-            unresolved = cards.any {
+            unresolved = (cards + graveyardSpells).any {
+                it.status == IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE
+            } || activations.any {
                 it.status == IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE
             },
+            relevantActivatedAbilities = activations,
+            activatedAbilityCoverageComplete = true,
+            relevantGraveyardSpells = graveyardSpells,
         )
+    }
+
+    /**
+     * The frozen lists have exactly two non-mana activated abilities with colored pips:
+     * Blood Fountain recovery and Dross Skullbomb recovery. Generic-only abilities cannot
+     * satisfy the protocol's missing-colored-payment predicate. The engine enumerator omits
+     * target metadata for unaffordable activations, so recover targets with its same target
+     * utility before attributing the shortfall. The receiving enumerator also greys out a
+     * composite ability with an unavailable tap cost, so check that non-mana cause explicitly.
+     */
+    private fun classifyRelevantActivations(
+        state: GameState,
+        player: EntityId,
+        originalCopies: Map<EntityId, String>,
+        legalActions: List<LegalAction>,
+        cardRegistry: CardRegistry,
+        manaSolver: ManaSolver,
+        totalMana: Int,
+    ): List<IndustrialWasteV2CheckpointActivation> {
+        val targetUtils = TargetEnumerationUtils(PredicateEvaluator())
+        return legalActions.mapNotNull { entry ->
+            val action = entry.action as? ActivateAbility ?: return@mapNotNull null
+            val costText = entry.manaCostString ?: return@mapNotNull null
+            val cost = ManaCost.parse(costText)
+            if (!Regex("[WUBRG]").containsMatchIn(costText)) return@mapNotNull null
+            val card = state.getEntity(action.sourceId)?.get<CardComponent>()
+                ?: error("Activation source is not a card")
+            val originalCopy = originalCopies[action.sourceId]
+                ?: error("Colored activation lacks original-copy identity: ${card.name}")
+            val ability = cardRegistry.requireCard(card.name).activatedAbilities
+                .singleOrNull { it.id == action.abilityId }
+            val admitted = (card.name == "Blood Fountain" && costText == "{3}{B}") ||
+                (card.name == "Dross Skullbomb" && costText == "{2}{B}")
+            val status = if (!admitted || ability == null || cost.hasX) {
+                IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE
+            } else {
+                val targets = targetUtils.buildTargetInfos(
+                    state, player, ability.targetRequirements, sourceId = action.sourceId,
+                )
+                when {
+                    card.name == "Blood Fountain" &&
+                        state.getEntity(action.sourceId)?.has<TappedComponent>() == true ->
+                        IndustrialWasteV2CheckpointCardStatus.TIMING_OR_OTHER_LEGALITY
+                    // This metric requires an available recovery target. Optional zero-target
+                    // activation is legal, but an empty target set does not meet that predicate.
+                    targets.any { it.validTargets.isEmpty() } ||
+                        !targetUtils.allRequirementsSatisfied(targets) ->
+                        IndustrialWasteV2CheckpointCardStatus.NO_LEGAL_TARGET
+                    else -> paymentStatus(
+                        state, player, cost,
+                        SpellPaymentContext(isAbilityActivation = true, abilitySourceCardTypes = setOf(CardType.ARTIFACT)),
+                        entry.affordable, cardRegistry, manaSolver, excludedSources = setOf(action.sourceId),
+                    )
+                }
+            }
+            IndustrialWasteV2CheckpointActivation(
+                originalCopy, card.name, action.abilityId.toString(), status, costText,
+            )
+        }.sortedWith(compareBy({ it.originalCopy }, { it.abilityId }))
     }
 
     private fun classifyCard(
@@ -115,81 +233,126 @@ internal object IndustrialWasteV2CheckpointManaClassifier {
         cardRegistry: CardRegistry,
         manaSolver: ManaSolver,
     ): IndustrialWasteV2CheckpointCard {
-        if (entries.any { it.affordable && !it.hasUnfillableTargetRequirement }) {
-            val cost = entries.firstOrNull { it.affordable && !it.hasUnfillableTargetRequirement }?.manaCostString
-            return IndustrialWasteV2CheckpointCard(
-                originalCopy, cardName, IndustrialWasteV2CheckpointCardStatus.EXECUTABLE, cost
-            )
-        }
-
+        classifyFrozenSacrificeSpell(
+            state, player, cardName, originalCopy, entries, cardRegistry, manaSolver, fromGraveyard = false,
+        )?.let { return it }
+        fun result(status: IndustrialWasteV2CheckpointCardStatus, cost: ManaCost? = null) =
+            IndustrialWasteV2CheckpointCard(originalCopy, cardName, status, cost?.toString())
+        val definition = cardRegistry.getCard(cardName)
+            ?: return result(IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE)
+        if (definition.typeLine.isLand) return result(
+            if (entries.any { it.action is PlayLand && it.affordable }) IndustrialWasteV2CheckpointCardStatus.EXECUTABLE
+            else IndustrialWasteV2CheckpointCardStatus.TIMING_OR_OTHER_LEGALITY,
+        )
         if (entries.isNotEmpty() && entries.all { it.hasUnfillableTargetRequirement }) {
-            return IndustrialWasteV2CheckpointCard(
-                originalCopy, cardName, IndustrialWasteV2CheckpointCardStatus.NO_LEGAL_TARGET,
-                entries.firstNotNullOfOrNull { it.manaCostString }
-            )
+            return result(IndustrialWasteV2CheckpointCardStatus.NO_LEGAL_TARGET)
         }
-
-        val casts = entries.filter { it.action is CastSpell && !it.hasUnfillableTargetRequirement }
-        if (casts.isEmpty()) {
-            // CastSpellEnumerator deliberately omits an ordinary primary face when no payment path
-            // is affordable. That omission must not be confused with a timing restriction. Recover
-            // only the narrow shape whose exact payment semantics are independently knowable here:
-            // a normal, fixed-cost, targetless hand spell with no additional cost or cast
-            // restriction. Everything more complex remains fail-closed.
-            val definition = cardRegistry.getCard(cardName)
-            val plainFixedPrimary = definition != null &&
-                definition.layout == com.wingedsheep.sdk.model.CardLayout.NORMAL &&
-                !definition.hasNoManaCost &&
-                !definition.typeLine.isLand &&
-                !definition.manaCost.hasX &&
-                definition.script.additionalCosts.isEmpty() &&
-                definition.script.targetRequirements.isEmpty() &&
-                definition.script.auraTarget == null &&
-                definition.script.castRestrictions.isEmpty()
-            if (!plainFixedPrimary) {
-                return IndustrialWasteV2CheckpointCard(
-                    originalCopy, cardName,
-                    IndustrialWasteV2CheckpointCardStatus.TIMING_OR_OTHER_LEGALITY, null
-                )
-            }
-
-            val definitionCost = definition!!.manaCost
-            val exactlyPayable = manaSolver.canPay(state, player, definitionCost)
-            val status = when {
-                // If the engine can pay the exact fixed cost but the enumerator emitted no cast,
-                // the missing action is caused by some legality/timing surface outside this narrow
-                // classifier; never relabel it as a mana failure.
-                exactlyPayable -> IndustrialWasteV2CheckpointCardStatus.TIMING_OR_OTHER_LEGALITY
-                totalMana >= definitionCost.cmc ->
-                    IndustrialWasteV2CheckpointCardStatus.UNAVAILABLE_COLORED_PAYMENT
-                else -> IndustrialWasteV2CheckpointCardStatus.INSUFFICIENT_TOTAL_MANA
-            }
-            return IndustrialWasteV2CheckpointCard(
-                originalCopy, cardName, status, definitionCost.toString()
-            )
-        }
-
-        // If an exact payment comparison would need X or a non-mana payment, fail closed rather
-        // than attributing the unavailable action to mana. The later runner may reject unresolved
-        // checkpoint telemetry; this seed-free component does not paper over it.
-        if (casts.any { it.hasXCost || it.additionalCostInfo != null || it.manaCostString == null }) {
-            return IndustrialWasteV2CheckpointCard(
-                originalCopy, cardName, IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE,
-                casts.firstNotNullOfOrNull { it.manaCostString }
-            )
-        }
-
-        val parsed = casts.map { it.manaCostString!! to ManaCost.parse(it.manaCostString!!) }
-        val payableByQuantity = parsed.filter { (_, cost) -> totalMana >= cost.cmc }
-        val status = if (payableByQuantity.isNotEmpty()) {
-            // These are real legal cast shapes with legal targets and enough generic-equivalent
-            // resources, but the engine marked every one unaffordable. For the admitted fixed-cost
-            // shapes this is exactly the protocol's unavailable-colored-payment condition.
-            IndustrialWasteV2CheckpointCardStatus.UNAVAILABLE_COLORED_PAYMENT
-        } else {
-            IndustrialWasteV2CheckpointCardStatus.INSUFFICIENT_TOTAL_MANA
-        }
-        val representative = (payableByQuantity.ifEmpty { parsed }).minBy { it.second.cmc }.first
-        return IndustrialWasteV2CheckpointCard(originalCopy, cardName, status, representative)
+        // The rest of the frozen hand spells have fixed, targetless primary costs. In particular,
+        // affordable=true can include the same unqualified explicit-mana aggregate as an omitted
+        // cast. Neither that flag nor getAvailableManaCount is a shared-resource payment proof.
+        if (definition.layout != CardLayout.NORMAL || definition.hasNoManaCost || definition.manaCost.hasX ||
+            definition.script.additionalCosts.isNotEmpty() || definition.script.targetRequirements.isNotEmpty() ||
+            definition.script.auraTarget != null || definition.script.castRestrictions.isNotEmpty() ||
+            entries.any { it.hasXCost || it.additionalCostInfo != null }
+        ) return result(IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE)
+        val cost = CostCalculator(cardRegistry).calculateEffectiveCost(state, definition, player, fromZone = Zone.HAND)
+        val context = SpellPaymentContext(
+            isInstantOrSorcery = definition.typeLine.isInstant || definition.typeLine.isSorcery,
+            isCreature = definition.typeLine.isCreature,
+            manaValue = definition.manaCost.cmc,
+            subtypes = definition.typeLine.subtypes.map { it.value }.toSet(),
+            isLegendary = definition.typeLine.isLegendary,
+            cardTypes = definition.typeLine.cardTypes,
+        )
+        return result(paymentStatus(
+            state, player, cost, context,
+            entries.any { it.action is CastSpell && it.affordable && !it.hasUnfillableTargetRequirement },
+            cardRegistry, manaSolver,
+        ), cost)
     }
+
+    /**
+     * The frozen screen has three targetless spells with one mandatory sacrifice. Cast enumeration
+     * omits an unaffordable hand spell, and its flashback path does not expose Insight's ordinary
+     * additional cost. Inspect that exact cost through the engine's own sacrifice predicate before
+     * attributing either omission to mana. Tapping a land before sacrificing it is legal; ordinary
+     * auto-tap never consumes the permanent and therefore cannot double-pay the sacrifice.
+     */
+    private fun classifyFrozenSacrificeSpell(
+        state: GameState,
+        player: EntityId,
+        cardName: String,
+        originalCopy: String,
+        entries: List<LegalAction>,
+        cardRegistry: CardRegistry,
+        manaSolver: ManaSolver,
+        fromGraveyard: Boolean,
+    ): IndustrialWasteV2CheckpointCard? {
+        if (cardName !in setOf("Eviscerator's Insight", "Fanatical Offering", "Crop Rotation")) return null
+        fun result(status: IndustrialWasteV2CheckpointCardStatus, cost: ManaCost? = null) =
+            IndustrialWasteV2CheckpointCard(originalCopy, cardName, status, cost?.toString())
+        val definition = cardRegistry.requireCard(cardName)
+        val sacrifice = (definition.script.additionalCosts.singleOrNull() as? AdditionalCost.Atom)
+            ?.atom as? CostAtom.Sacrifice
+        if (definition.layout != CardLayout.NORMAL || !definition.typeLine.isInstant ||
+            definition.manaCost.hasX || definition.script.targetRequirements.isNotEmpty() ||
+            definition.script.auraTarget != null || definition.script.castRestrictions.isNotEmpty() ||
+            sacrifice == null || sacrifice.count != 1 || sacrifice.excludeSelf || sacrifice.distinctNames
+        ) return result(IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE)
+        val costCalculator = CostCalculator(cardRegistry)
+        val cost = if (fromGraveyard) {
+            val flashback = definition.keywordAbilities.filterIsInstance<KeywordAbility.Flashback>().singleOrNull()
+            if (cardName != "Eviscerator's Insight" || flashback == null || flashback.additionalCost != null ||
+                flashback.cost.toString() != "{4}{B}"
+            ) return result(IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE)
+            costCalculator.calculateEffectiveCostWithAlternativeBase(state, definition, flashback.cost, player)
+        } else {
+            costCalculator.calculateEffectiveCost(state, definition, player, fromZone = Zone.HAND)
+        }
+        val sacrifices = CostEnumerationUtils(manaSolver, costCalculator, PredicateEvaluator(), cardRegistry)
+            .findSacrificeTargets(state, player, sacrifice)
+        if (sacrifices.isEmpty()) return result(IndustrialWasteV2CheckpointCardStatus.TIMING_OR_OTHER_LEGALITY, cost)
+
+        val context = SpellPaymentContext(
+            isInstantOrSorcery = true,
+            manaValue = definition.manaCost.cmc,
+            cardTypes = setOf(CardType.INSTANT),
+            isFromHand = !fromGraveyard,
+        )
+        return result(paymentStatus(
+            state, player, cost, context,
+            entries.any { it.action is CastSpell && it.affordable && !it.hasUnfillableTargetRequirement },
+            cardRegistry, manaSolver, finalSacrifice = sacrifice,
+        ), cost)
+    }
+
+    private fun paymentStatus(
+        state: GameState,
+        player: EntityId,
+        cost: ManaCost,
+        context: SpellPaymentContext,
+        offered: Boolean,
+        cardRegistry: CardRegistry,
+        manaSolver: ManaSolver,
+        finalSacrifice: CostAtom.Sacrifice? = null,
+        excludedSources: Set<EntityId> = emptySet(),
+    ): IndustrialWasteV2CheckpointCardStatus {
+        val planner = ManaPaymentFeasibility(cardRegistry)
+        val request = ManaPaymentRequest(cost, context = context,
+            finalSacrificeCost = finalSacrifice, excludedManaEntities = excludedSources)
+        return when (planner.assess(state, player, request)) {
+            is ManaPaymentFeasibilityResult.Payable -> if (offered)
+                IndustrialWasteV2CheckpointCardStatus.EXECUTABLE
+            else IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE
+            is ManaPaymentFeasibilityResult.Unsupported -> IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE
+            is ManaPaymentFeasibilityResult.Impossible -> when (planner.assess(
+                state, player, request.copy(cost = ManaCost.parse("{${cost.cmc}}")),
+            )) {
+                is ManaPaymentFeasibilityResult.Payable -> IndustrialWasteV2CheckpointCardStatus.UNAVAILABLE_COLORED_PAYMENT
+                is ManaPaymentFeasibilityResult.Impossible -> IndustrialWasteV2CheckpointCardStatus.INSUFFICIENT_TOTAL_MANA
+                is ManaPaymentFeasibilityResult.Unsupported -> IndustrialWasteV2CheckpointCardStatus.UNRESOLVED_PAYMENT_SHAPE
+            }
+        }
+    }
+
 }
