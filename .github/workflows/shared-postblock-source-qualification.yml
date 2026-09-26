@@ -47,19 +47,31 @@ jobs:
               return subprocess.check_output(['git', *args], text=True).strip()
           manifest_path = pathlib.Path('lab-coordinator/shared-capabilities/postblock-source-extraction.json')
           manifest = json.loads(manifest_path.read_text())
-          files = manifest['production_files'] + manifest['test_files']
+          fixture_manifest_path = pathlib.Path('lab-coordinator/shared-capabilities/postblock-fixture-receiving.json')
+          fixture_manifest = json.loads(fixture_manifest_path.read_text())
+          files = manifest['production_files'] + manifest['test_files'] + fixture_manifest['fixture_files']
           actual = {item['path']: hashlib.sha256(pathlib.Path(item['path']).read_bytes()).hexdigest() for item in files}
           expected = {item['path']: item.get('receiving_sha256', item.get('sha256')) for item in files}
+          original_override_hashes = {}
+          for override in fixture_manifest['test_import_overrides']:
+              original_override_hashes[override['path']] = expected[override['path']]
+              expected[override['path']] = override['receiving_sha256']
           binding = {
               'requested_head': os.environ['GITHUB_SHA'], 'actual_head': git('rev-parse', 'HEAD'),
               'tree': git('rev-parse', 'HEAD^{tree}'), 'checkout_status': git('status', '--porcelain'),
               'extraction_manifest_sha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+              'fixture_receiving_manifest_sha256': hashlib.sha256(fixture_manifest_path.read_bytes()).hexdigest(),
               'source_files_sha256': actual, 'expected_cases': manifest['expected_cases'],
           }
           pathlib.Path('build/reports/shared-postblock-source/source-binding.json').write_text(json.dumps(binding, indent=2) + '\n')
+          assert binding['extraction_manifest_sha256'] == fixture_manifest['original_manifest_sha256']
+          for override in fixture_manifest['test_import_overrides']:
+              assert original_override_hashes[override['path']] == override['original_sha256'], override
+          assert fixture_manifest['runtime_production_files_unchanged'] == len(manifest['production_files']) == 36
+          assert fixture_manifest['expected_cases'] == manifest['expected_cases']
           assert binding['actual_head'] == binding['requested_head'], binding
           assert not binding['checkout_status'], binding
-          assert len(actual) == len(files) == 53 and actual == expected, (actual, expected)
+          assert len(actual) == len(files) == 54 and actual == expected, (actual, expected)
           assert manifest['expected_cases'] == {'engine': 115, 'server': 12}, manifest['expected_cases']
           PY
 
@@ -109,12 +121,15 @@ jobs:
           current = {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in binding['source_files_sha256']}
           assert current == binding['source_files_sha256'], current
           assert hashlib.sha256(manifest_path.read_bytes()).hexdigest() == binding['extraction_manifest_sha256']
+          fixture_manifest_path = pathlib.Path('lab-coordinator/shared-capabilities/postblock-fixture-receiving.json')
+          assert hashlib.sha256(fixture_manifest_path.read_bytes()).hexdigest() == binding['fixture_receiving_manifest_sha256']
           assert not subprocess.check_output(['git', 'status', '--porcelain'], text=True).strip()
           assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() == binding['actual_head']
           result = {
               'schema': 'shared-postblock-source-qualification-v1', 'status': 'TARGETED_COMPONENT_QUALIFICATION_ONLY',
               'source_head': binding['actual_head'], 'source_tree': binding['tree'],
               'extraction_manifest_sha256': binding['extraction_manifest_sha256'],
+              'fixture_receiving_manifest_sha256': binding['fixture_receiving_manifest_sha256'],
               'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
               'suites': suites, 'total_actual_cases': sum(len(suite['cases']) for suite in suites.values()),
               'full_integration_accepted': False, 'production_actor_accepted': False,

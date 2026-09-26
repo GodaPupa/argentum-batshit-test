@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.research.ferocity.FerocityOfTheHuntPrerelease as ferocityResearchFixture
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
