@@ -1,0 +1,43 @@
+{
+  "schema": "canonical-mulligan-non-author-gate-review/v1",
+  "reviewer": "/root/sphinx",
+  "independent_non_author": true,
+  "source_author": "/root/pest",
+  "source": "caa5a661b13f18149abe71194cc72a8ff119f884",
+  "tree": "722296b7ad3ffb62f1af99f9ac1ab7346b5d1d81",
+  "disposition": "ACCEPT_FOR_FIXED_64_CASE_RECEIVING_EXECUTION",
+  "source_bank_review_sha256": "7825ef0a42f70830da9ee7d250e663704c599643151dfe84a90afdfd984c233a",
+  "gate_freeze_sha256": "50bd1185126fc62e28a19b42f0ea8f701a8124bdca0199ab27934aecfacff702",
+  "workflow_sha256": "f44d6514944ebb7d5634ba453b3f1fb40454c91476c82b3e92fd2249f9b7ce02",
+  "collector_sha256": "65d8fe1fbf872938f9b6e74cbac00dc6cdf8b04a7f9804c11bd61228bed0a4be",
+  "shared_case_collector_sha256": "2c158a62f1898dcc7cb3c00a3cf2497a42d87e3a4e3a2a1e37926b2a4483352f",
+  "verified": {
+    "immutable_git_source_pins": 39,
+    "bank_counts": [
+      28,
+      12,
+      6,
+      4,
+      14
+    ],
+    "actual_required_cases": 64,
+    "original_source_manifest_pins_unchanged": 28,
+    "original50_names_compared_to_actual_accepted_archive": "shared-actor-input-36254636333.zip",
+    "new14_names_equal_prior_source_bank": true,
+    "workflow_and_python_syntax": true
+  },
+  "findings": [
+    "Read complete workflow and collector; exact GITHUB_SHA/HEAD/tree, clean source, all manifest pins and accepted parent ancestry checked before execution and after collection.",
+    "One just test-class command executes all five fixed banks with --rerun and --no-build-cache; actual exit and start/end times retained. No later Gradle command can replace a prior bank before capture.",
+    "Collector retains fresh exact-class XML and actual shared command exit for each bank, rejects missing/stale XML and wrong names/counts/classes/duplicate cases/failure/error/skip through the unchanged shared collector.",
+    "Source and raw logs/XML are always uploaded; source/bank gate is fixed before first execution and raw success remains pending independent artifact review.",
+    "My previous source/bank review is preserved byte-identically, with its limited scope separate from this gate review."
+  ],
+  "limitations": [
+    "No qualification case or pilot fixture executed by this reviewer.",
+    "No actual64, full receiving, scheduler/pilot, replay or gameplay acceptance is implied.",
+    "Publication must retain the actual accepted 7015 parent lineage; receiving projects must integrate their own extensions and frozen schedulers separately."
+  ],
+  "github_approval_submitted": false,
+  "gameplay_authorized": false
+}

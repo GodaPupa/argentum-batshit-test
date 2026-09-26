@@ -1,0 +1,40 @@
+{
+  "schema": "canonical-mulligan-non-author-source-bank-review/v1",
+  "reviewer": "/root/sphinx",
+  "independent_non_author": true,
+  "source_author": "/root/pest",
+  "source": "9524c74d4149e4bd48f9183b7ee8745ab7576a35",
+  "tree": "61ed2181c8f50cef3cb3be14fb23deab243d434e",
+  "disposition": "ACCEPT_SOURCE_AND_FIXED_BANK_FOR_QUALIFICATION_GATE_PREPARATION",
+  "manifest_sha256": "70387d5ae31d829868335298994f25119f12cba14841bfac948c8a94ce887402",
+  "source_pins_verified": 28,
+  "reviewed_paths": [
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorInputEligibility.kt",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganEligibilityTest.kt",
+    "lab-coordinator/shared-capabilities/actor-mulligan-receiving.json"
+  ],
+  "source_findings": [
+    "One pure trusted eligibility helper is consumed by both actor input and complete menu construction. It returns eligible actors without choosing an actor or response.",
+    "Actual initializer opening is turn1 BEGINNING/UNTAP; engine KeepHand mutates only hasKept until all mulligan/bottom choices are complete. Both unkept and own kept-bottom seats are represented.",
+    "Pending typed question takes precedence; terminal state has no actor; outside incomplete opening setup only the original priority actor is eligible.",
+    "No GameEnvironment scheduler, Pest frozen operational scheduler, deck, policy or experimental seed source was edited.",
+    "All28 pinned hashes verified from immutable Git objects; original four actor test files equal accepted parent bytes."
+  ],
+  "bank_findings": [
+    "Seven named mechanical criteria run at both declared starting indices, exactly14 new cases; inherited50 remains required at same source.",
+    "Real initializer, KeepHand, TakeMulligan, BottomCards and typed leyline No use actual engine handlers; no pilot chooses those prescribed actions.",
+    "Replay uses serialized actual states and repeats exact actions. Hidden identity/library-order/engine-RNG counterfactual changes preserve only the actor-observable input; own visible identity change must differ.",
+    "Four-player cases check actual first-free-mulligan/remaining-seat behavior without selecting a scheduler order.",
+    "API signatures, initializer turn order, free mulligan state and real leyline question producer reviewed; no blocking source finding."
+  ],
+  "limitations": [
+    "This is source/bank review only. Workflow/collector gate is not yet reviewed here.",
+    "No new or inherited case executed by this reviewer; no actual64, artifact, project receiving, pilot, scheduler or gameplay acceptance.",
+    "Initial source uses actor50 lineage; Sphinx still requires receiving its spell/payment/adapter/initialized-seat extensions with these small common hunks."
+  ],
+  "tests_executed_by_reviewer": 0,
+  "gameplay_authorized": false,
+  "github_approval_submitted": false
+}

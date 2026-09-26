@@ -1,0 +1,50 @@
+name: Shared Actor Mulligan Eligibility Qualification
+
+on:
+  push:
+    branches: [lab/shared-actor-mulligan]
+    paths:
+      - .github/workflows/shared-actor-mulligan-qualification.yml
+      - lab-coordinator/shared-capabilities/actor-mulligan-*.json
+      - lab-coordinator/shared-capabilities/collect-actor-mulligan.py
+      - lab-coordinator/shared-capabilities/collect-priority-receiving.py
+      - gym/src/**
+      - gym/build.gradle.kts
+      - rules-engine/**
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact source and prospectively reviewed fixed bank
+        run: python3 lab-coordinator/shared-capabilities/collect-actor-mulligan.py bind
+      - name: Execute original fifty actor checks and fourteen setup checks once
+        run: python3 lab-coordinator/shared-capabilities/collect-actor-mulligan.py execute
+      - name: Preserve and reconcile actual cases including failures
+        if: always()
+        run: python3 lab-coordinator/shared-capabilities/collect-actor-mulligan.py collect
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: shared-actor-mulligan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/shared-actor-mulligan/
+          if-no-files-found: error
+          retention-days: 90

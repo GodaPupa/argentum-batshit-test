@@ -33,9 +33,8 @@ class ObservationAdapter(registry: CardRegistry) {
         policyRngState: Long,
     ): ActorInput {
         if (state.gameOver) fail(BoundaryFailure.TERMINAL_STATE, "Terminal states do not request pilot actions")
-        val expectedActor = state.pendingDecision?.playerId ?: state.priorityPlayerId
-        if (actor != expectedActor || actor !in state.turnOrder) {
-            fail(BoundaryFailure.WRONG_ACTOR, "Only the current decision/priority actor may observe")
+        if (actor !in actorsEligibleForInput(state)) {
+            fail(BoundaryFailure.WRONG_ACTOR, "Only a current decision, opening-setup or priority actor may observe")
         }
         val pending = state.pendingDecision
         val invalidDecisionMenu = pending != null && legalActions.isNotEmpty() &&
