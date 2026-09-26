@@ -78,9 +78,16 @@ jobs:
         run: |
           set -uo pipefail
           evidence="$GITHUB_WORKSPACE/ferocity-recycling/evidence/browser/combat"
+          # GitHub invokes bash with errexit. Retain an unsuccessful browser's exact
+          # status before returning failure to the job and the admission recorder.
+          set +e
           (cd e2e-scenarios && npx --no-install playwright test --config ferocity-combat.config.ts) 2>&1 | tee "$evidence/browser.log"
-          browser_status=${PIPESTATUS[0]}
+          pipeline_status=("${PIPESTATUS[@]}")
+          set -e
+          browser_status=${pipeline_status[0]}
           printf '%s\n' "$browser_status" > "$evidence/browser-exit-code.txt"
+          printf '%s\n' "${pipeline_status[1]}" > "$evidence/browser-tee-exit-code.txt"
+          if [[ ${pipeline_status[1]} -ne 0 ]]; then exit "${pipeline_status[1]}"; fi
           exit "$browser_status"
       - name: Verify source and runtime guards plus exact case results
         if: always()
