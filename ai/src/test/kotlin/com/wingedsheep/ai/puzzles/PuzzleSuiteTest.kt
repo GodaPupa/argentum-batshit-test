@@ -72,15 +72,22 @@ class PuzzleSuiteTest : ScenarioTestBase() {
          * Baselined 2026-07-27 against `AiProfile.PRODUCTION` at 39/48; **44/48 since Phase 6**
          * (`CardIntent`), which closed noncreature-01/03/04 and instants-01/06; **60/66 since Phase
          * 2b** added the respond / activate / keywords categories; **71/83** after Phase 2c's
-         * timing / lastchance categories and the combat trick window pair; **78/92** today, after
+         * timing / lastchance categories and the combat trick window pair; **78/92** after
          * the five ambush-window positions. Per-category rates are in
          * `docs/ai/baseline-metrics.md`.
+         *
+         * The 2026-09-26 post-block priority correction changes the unchanged reference profile
+         * from 83/98 to 85/98: only instants-05 and activate-05 become passes, with no new failure.
+         * In instants-05 the defender now receives priority after the active player passes, so
+         * its simulated pass reaches lethal damage and Fog is preferred. In activate-05 the
+         * active player now receives the first post-block priority; its simulated pass stays
+         * before damage, so pumping the Dragon is compared with that same pre-damage board.
+         * The old defender-first order gave those two one-ply pass leaves different horizons.
+         * Profiles, seeds, positions and checks are unchanged. Exact-source raw diagnostic
+         * evidence and non-author review are retained in
+         * `lab-coordinator/shared-capabilities/evidence/ai-regression-36256592910/`.
          */
         val KNOWN_FAILURES: Set<String> = setOf(
-            // A one-ply evaluator cannot see a prevention effect: the state right after Fog
-            // resolves has the same life totals as passing, so Fog is only ever "-1 card".
-            // Needs the rollout evaluator (Phase 7) to play out the damage step.
-            "instants-05",
             // `CardAdvantage.cardValue(0) = -3.0` makes emptying your hand read as a disaster, so
             // the AI holds its last land rather than playing it. sequencing-04 is the same decision
             // with one card of slack and passes.
@@ -111,11 +118,6 @@ class PuzzleSuiteTest : ScenarioTestBase() {
             // of the activation the board is unchanged and two mana are gone — the same shape as
             // instants-05's Fog, and the same fix. Phase 7.
             "respond-05",
-            // Pumping an unblocked attacker pays now for damage that lands at the combat-damage
-            // step. `evaluate1Ply` simulates to the next quiet state, which is still inside
-            // declare-blockers, so the +1/+0 shows up as `attackPotential` on a creature that is
-            // already attacking and never as life off the opponent. Phase 7.
-            "activate-05",
 
             // ── Land order ──
             // The only signal the evaluator has about which land to drop is `BoardPresence`: an
