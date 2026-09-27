@@ -55,7 +55,27 @@
       "source": "0868ea37:gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterOpposingSacrificeReceivingTest.kt",
       "test_blob": "9174cfaa5d4986c8251542267be7a8602b6a6dea",
       "run": 36337352747,
-      "scope": "prospective two Pest-seat placements for Monster's own two-creature Edict sacrifice, unexecuted/unreviewed at map update"
+      "scope": "prospective two Pest-seat placements for Monster's own two-creature Edict sacrifice, unexecuted/unreviewed at map update",
+      "original_attempt": {
+        "run": 36337352747,
+        "status": "INCOMPLETE_PRETEST",
+        "audit": "e38e5679"
+      },
+      "corrected_source": {
+        "test_blob": "9f8cc16a624d45fe81c32e6be9b4e5b84b950458",
+        "run": 36341300733,
+        "status": "PENDING_ORIGINAL_AUDIT"
+      }
+    },
+    "P03_02_P03_08": {
+      "test_blob": "b85d6c59b58b155798dcca748a3ea5bb75fe1cf9",
+      "original_attempt": {
+        "run": 36337567375,
+        "status": "INCOMPLETE_PRETEST_SIBLING_COMPILE",
+        "audit": "d6324e01"
+      },
+      "prospective_run": 36341313005,
+      "scope": "Crop-to-Weather response timing two seats; no policy equality or complete action coverage"
     }
   },
   "missing": "Complete exact reachable action and decision variants for all frozen mains, both actor seats and starts, including non-search looks, other scry/surveil, alternative costs, payment, triggers/order, attack/block/post-block priority, response/pass, random/cascade separation, raw-policy parity and complete own/public pilots. Map every accepted shared case by exact identity. Existing scoped cases cannot be summed into admission.",
