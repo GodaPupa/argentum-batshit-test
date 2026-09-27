@@ -1,0 +1,33 @@
+{
+  "schema": "sphinx-stage-e-visible-choice-diagnostic-attempts-01-02-v1",
+  "source": {
+    "head": "1f3309ebf5517ccf0055fb92e9d99e98612e54d8",
+    "tree": "2607d96b1c77804d7b9403fa698130a8fbaec5f7",
+    "test_blob": "267cd3742c8b20d60a64043cd6ca9cc4907c8765",
+    "collector_blob": "4163d6df4758aaa9bc277a1f33df774287cf10de"
+  },
+  "attempts": [
+    {
+      "number": 1,
+      "status": "INCOMPLETE_DIAGNOSTIC",
+      "cause": "Gradle JavaHomeException before compile: stale daemon registry attempted /workspace/scratch/7ef98cd0475e/ferocity-toolchain/jdk-21.0.12.1+1/bin/java",
+      "raw_path": "sphinx-approach/evidence/stage-e-visible-trace-attempts/attempt-01-raw.tgz",
+      "sha256": "07f6a3c3351115597bf7cbfa2385fe92c2f671dc2bec184f6c6a0c9f8e040f7a",
+      "cases_executed": 0
+    },
+    {
+      "number": 2,
+      "status": "INCOMPLETE_DIAGNOSTIC",
+      "cause": "Kotlin compileTestKotlin errors at SphinxStageEVisibleChoiceTraceTest.kt:52:76 and 53:84: positional PlayerConfig EntityId supplied for Int third argument; test source never compiled; main visible-choice source compiled",
+      "environment_change": "isolated Gradle user home and current restored Temurin 21 executable SHA256 2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+      "raw_path": "sphinx-approach/evidence/stage-e-visible-trace-attempts/attempt-02-raw.tgz",
+      "sha256": "284d96680aee9b4689ede3434269f64cfdd82104773c20e54cce62cf1e1539fc",
+      "cases_executed": 0
+    }
+  ],
+  "source_before_equals_after": true,
+  "official_stage_e_seeds": 0,
+  "official_stage_e_games": 0,
+  "independent_acceptance": false,
+  "correction_scope": "Name only the playerId argument in the two trace-only PlayerConfig calls; no pilot policy/deck/case/bank change."
+}
