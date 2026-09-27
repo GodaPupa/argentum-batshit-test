@@ -1,6 +1,7 @@
 package com.wingedsheep.gym.sphinx
 
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.GameAction
 import com.wingedsheep.engine.core.GameConfig
 import com.wingedsheep.engine.core.GameInitializer
@@ -177,16 +178,23 @@ class SphinxStageEVisibleContinuationTraceTest : ScenarioTestBase() {
                 seat.state.pendingDecision shouldBe null
             }
 
-            test("U4 $identity Preordain bottoms and reorders using only current look metadata") {
+            test("U4 $identity Preordain bottoms and conditionally reorders current look cards") {
                 val seat = setup(identity, "Preordain", 1)
                 seat.advance(CastSpell(seat.actor, seat.sourceId))
                 seat.resolveToQuestion()
                 val choose = seat.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
                 choose.cardInfo?.keys?.containsAll(choose.options) shouldBe true
-                seat.advance(seat.proposed())
-                val order = seat.state.pendingDecision.shouldBeInstanceOf<ReorderLibraryDecision>()
-                order.cards.isNotEmpty() shouldBe true
-                seat.advance(seat.proposed())
+                val selection = seat.proposed()
+                val bottomed = selection.response.shouldBeInstanceOf<CardsSelectedResponse>().selectedCards
+                seat.advance(selection)
+                val remaining = choose.options.filter { it !in bottomed }
+                if (remaining.isEmpty()) {
+                    seat.state.pendingDecision shouldBe null
+                } else {
+                    val order = seat.state.pendingDecision.shouldBeInstanceOf<ReorderLibraryDecision>()
+                    order.cards.toSet() shouldBe remaining.toSet()
+                    seat.advance(seat.proposed())
+                }
                 seat.state.pendingDecision shouldBe null
             }
 

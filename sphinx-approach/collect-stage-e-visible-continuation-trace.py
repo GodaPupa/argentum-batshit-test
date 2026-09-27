@@ -13,11 +13,11 @@ OUT = ROOT / "build/reports/sphinx-stage-e-visible-continuation-trace"
 EXPECTED_BLOBS = {
     "sphinx-approach/STAGE_E_VISIBLE_CHOICE_SOURCE_SCOPE.json": "41a0a63842d8989366511fee3c1d611c1ce9c78c",
     "sphinx-approach/STAGE_E_VISIBLE_CHOICE_TRACE_PROPOSAL.json": "7b6361688d2dc2b1c34b014b79182475abc3d445",
-    "sphinx-approach/STAGE_E_VISIBLE_CONTINUATION_TRACE_PROPOSAL.json": "c74bc882d38d4929044a7542bd8cf9cd7d262c6c",
+    "sphinx-approach/STAGE_E_VISIBLE_CONTINUATION_TRACE_PROPOSAL.json": "5a36ec1f68810b8e1784a5974642201a5fc0168c",
     "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoice.kt": "c769710269303809a64f01ad06aa3487d2af1182",
     "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt": "f420e5b6e144ffc2692e9b146a44dbf461679f5d",
     "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoiceTraceTest.kt": "0ee71be94915f92837cc786c1643eb6336022dea",
-    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleContinuationTraceTest.kt": "69c655a3f0c61cd48dcbcf07f39deab68200c6cc",
+    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleContinuationTraceTest.kt": "7a3861a5f8dbbdc2d87686dff930619c534570ff",
     "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorChoiceSupport.kt": "9b37061e1515e0927ddafe0906381f7281a95ef1",
     "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPublicCards.kt": "f69cedd6c6d7aa841fb1917a842febd13adbba46",
     "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "3e41a512f91358f763a194527258979755bab7b6",
@@ -42,7 +42,7 @@ CASES = [
     for identity in ("closest-no-approach-v01", "serpico-terror-benchmark")
     for number, description in (
         (3, "Brainstorm selects two then reorders current top cards"),
-        (4, "Preordain bottoms and reorders using only current look metadata"),
+        (4, "Preordain bottoms and conditionally reorders current look cards"),
         (5, "Ponder reorder exposes later unqualified shuffle May"),
         (6, "Lórien typecycling search continues into current own hand"),
     )
@@ -81,7 +81,7 @@ def snapshot():
             raise ValueError(f"Frozen deck rows changed: {path}")
         decks[path] = actual
     proposal = json.loads((ROOT / "sphinx-approach/STAGE_E_VISIBLE_CONTINUATION_TRACE_PROPOSAL.json").read_text())
-    if proposal["trace_cases"] != CASES or proposal["attempt_record"]["continuation_traces_attempted"] != 0:
+    if proposal["trace_cases"] != CASES or proposal["attempt_record"]["continuation_traces_attempted"] != 1:
         raise ValueError("Reviewed trace case inventory changed")
     return {"head": head, "tree": tree, "requested_sha": os.environ["SPHINX_TRACE_SHA"],
             "blobs": blobs, "decks_sha256": decks}
