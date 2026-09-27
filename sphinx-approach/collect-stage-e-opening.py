@@ -63,7 +63,9 @@ def snapshot():
     if (proposal["equal_budget_for_review"]["exact_case_ids_per_identity"] !=
         [f"O{i}" for i in range(1, 9)] or
         proposal["equal_budget_for_review"]["proposed_distinct_cases"] != 32 or
-        proposal["attempt_record"]["fixture_attempts"] != 0):
+        proposal["attempt_record"]["fixture_attempts"] != 0 or
+        proposal["source_head"] != "b70072b1e6dc8aa5494617c5b62788a7758e6c46" or
+        proposal["source_tree"] != "db3e94f707627fc90e4eae0ff99260f500597f85"):
         raise ValueError("Prospective O1-O8 x four proposal changed")
     return {"head": head, "tree": tree, "requested_sha": os.environ["GITHUB_SHA"],
             "blobs": blobs, "decks_sha256": decks}
@@ -76,7 +78,12 @@ def write(name, value):
 
 def collect():
     errors = []
-    before = json.loads((OUT / "source-before.json").read_text())
+    before_file = OUT / "source-before.json"
+    if before_file.exists():
+        before = json.loads(before_file.read_text())
+    else:
+        before = {"error": "Missing bound pre-attempt source"}
+        errors.append("Missing bound pre-attempt source")
     try:
         after = snapshot()
         write("source-after.json", after)
@@ -153,6 +160,10 @@ if __name__ == "__main__":
     if len(sys.argv) != 2 or sys.argv[1] not in ("bind", "collect"):
         raise SystemExit("usage: collect-stage-e-opening.py bind|collect")
     if sys.argv[1] == "bind":
-        write("source-before.json", snapshot())
+        try:
+            write("source-before.json", snapshot())
+        except Exception as failure:
+            write("bind-error.json", {"error": str(failure), "official_stage_e_games": 0})
+            raise
     else:
         collect()
