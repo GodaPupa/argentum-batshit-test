@@ -1,0 +1,60 @@
+name: Pest Monster P04 Follow look receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-c2-p04-follow-targeted.yml"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterFollowLookReceivingTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-look-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact fixture source
+        run: |
+          mkdir -p build/reports/pest-c2-p04-follow
+          {
+            git rev-parse HEAD
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterFollowLookReceivingTest.kt
+            git status --porcelain
+          } > build/reports/pest-c2-p04-follow/source.txt
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterFollowLookReceivingTest.kt)" = "9bdaad50473243e84571ed469218cdfad734e746"
+      - name: Execute four fresh Pest look fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterFollowLookReceivingTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/pest-c2-p04-follow/gradle.log
+      - name: Verify exact JUnit cases
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          paths=glob.glob("gym/build/test-results/test/TEST-*PestMonsterFollowLookReceivingTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          cases=root.findall(".//testcase")
+          assert sorted(c.get("name") for c in cases)==sorted([
+              f"P04-02 Pest seat {seat} Follow look with life gain {gain}"
+              for seat in (1, 2) for gain in ("false", "true")
+          ]), [c.get("name") for c in cases]
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-p04-follow-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-c2-p04-follow/
+            gym/build/test-results/test/TEST-*PestMonsterFollowLookReceivingTest.xml
+          if-no-files-found: error
+          retention-days: 90
