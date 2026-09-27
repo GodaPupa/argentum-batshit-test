@@ -1,0 +1,233 @@
+{
+  "artifact_bytes": 443175,
+  "artifact_id": 10926608534,
+  "artifact_redownloaded": false,
+  "artifact_sha256": "cdba8db62be51f9d591073129e53008b3c657f330503ab0b37e0397748cd5e92",
+  "attempt": 1,
+  "crc_clean": true,
+  "disposition": "ACCEPT_PROSPECTIVE_EXACT_SOURCE_SUPPLEMENTAL_COMPATIBILITY_ONLY",
+  "distinct_test_executors": 8,
+  "errors": 0,
+  "failures": 0,
+  "fresh_cases": 466,
+  "fresh_classes": 22,
+  "fresh_test_tasks": [
+    ":game-server:test",
+    ":gym:test",
+    ":mtg-sets:1993-1999:tests:test",
+    ":mtg-sets:2008-2016:tests:test",
+    ":mtg-sets:2017-2022:tests:test",
+    ":mtg-sets:2025:tests:test",
+    ":mtg-sets:test",
+    ":rules-engine:test"
+  ],
+  "gameplay_authorized": false,
+  "limits": [
+    "Original four guard-aborted workflow results remain INCOMPLETE; original frozen manifests unchanged.",
+    "Acceptance is limited to reviewed supplemental PostboardA/B, token16 plus separateprovenance4, and currentcombat32 receiving scope on source5e0 runtime208ceaa3.",
+    "This review does not independently re-audit broader CI or authorize PR merge. Conductor must reconcile complete required workflow matrix before shared acceptance.",
+    "No Pest consumed attempt reinterpretation/replacement, C2/A2, pilot, project admission, gameplay or whole-engine acceptance."
+  ],
+  "main_merge_authorized": false,
+  "official_games": 0,
+  "original_attempts_reclassified": false,
+  "project_admission_granted": false,
+  "proposal_sha256": "93d839f3dff85ca5b112ec5e026722d4c3c449743a02642724d25061e6beb0f3",
+  "raw_xml_copies_byte_identical": true,
+  "reviewed_launcher_sha256": "7798b35d70d17baa7a2e841e793e8bb039c16d9b38f283db31039b428c7fae2a",
+  "reviewer": "/root/compatibility_review",
+  "reviewer_non_author": true,
+  "rows": [
+    {
+      "cases": 14,
+      "class": "com.wingedsheep.gameserver.FreeForAllLobbyTest",
+      "groups": [
+        1
+      ],
+      "xml_sha256": "bd1b2895047dc245fbf3e8ae80d1a1a0da90ed5b061a033c0c3f6d4e06705f71"
+    },
+    {
+      "cases": 10,
+      "class": "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReadinessTest",
+      "groups": [
+        0,
+        1
+      ],
+      "xml_sha256": "d29ec6e278293681778d80271e677f67c46603a0528eb5e7773b9ce10e1ec9a1"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.gym.PestControlTierOnePostboardSupportAuditTest",
+      "groups": [
+        0,
+        1
+      ],
+      "xml_sha256": "0cbf09ae33c44fc016206f7f3376a1bef7e7b3396f01478cba735b4b22133516"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.gym.PestControlTierOnePostboardSupportBatchATest",
+      "groups": [
+        0,
+        1
+      ],
+      "xml_sha256": "b44530322551911562e16d7d579e53cbf50b6e278cbe07bdede4356e7c97b288"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.gym.PestControlTierOnePostboardSupportBatchBTest",
+      "groups": [
+        1
+      ],
+      "xml_sha256": "6767851dd0e4014deb332dd3f3b4186103a4183f8bf9d4b8082a717dd0e11a9a"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchBTest",
+      "groups": [
+        0,
+        1
+      ],
+      "xml_sha256": "a103e9e8be2d2d10479834f0b528d68761d51a471b1b1e26a61f67a0066d5d62"
+    },
+    {
+      "cases": 338,
+      "class": "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "groups": [
+        0,
+        1
+      ],
+      "xml_sha256": "9a4f72295b9d884ad055841064d01430b0a710c4c440e0c95de9de4da11b7a97"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.mtg.sets.CardLintTest",
+      "groups": [
+        0,
+        1
+      ],
+      "xml_sha256": "69b51c5048bb17582ea25ec72c0c0fec834039a49a78f38474685c29b6a88879"
+    },
+    {
+      "cases": 8,
+      "class": "com.wingedsheep.engine.scenarios.HydroblastScenarioTest",
+      "groups": [
+        1
+      ],
+      "xml_sha256": "cd3019f91eff0d5d17399fd94f9ba9bfdab981c46c624cd5b3c44b3481c6defe"
+    },
+    {
+      "cases": 8,
+      "class": "com.wingedsheep.engine.scenarios.PyroblastScenarioTest",
+      "groups": [
+        1
+      ],
+      "xml_sha256": "ab727f620521e357c8b563f667722d66104f8937c4c0bea3d6fa9caa10202334"
+    },
+    {
+      "cases": 12,
+      "class": "com.wingedsheep.engine.scenarios.GutShotScenarioTest",
+      "groups": [
+        1
+      ],
+      "xml_sha256": "48b04fc250bb67c4b8ec5a1fd72285401b9f9d7e2bb629916827fa1835a2156c"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.engine.scenarios.NyleasDiscipleScenarioTest",
+      "groups": [
+        0
+      ],
+      "xml_sha256": "a77fde9c377c06ce5e0da7f1b41de7322afa31fc6f68fd0a41357e0a879d9a79"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.scenarios.SmashToSmithereensScenarioTest",
+      "groups": [
+        0
+      ],
+      "xml_sha256": "4e7723237adc71f58956d9012538bfce52e7d0432c722dc1d8aeff9a2f1254d8"
+    },
+    {
+      "cases": 5,
+      "class": "com.wingedsheep.engine.scenarios.MurmuringMysticScenarioTest",
+      "groups": [
+        0
+      ],
+      "xml_sha256": "1768eabd73b8991479615a0afdb80b1520a86ee8ec60979e7a7cab90252e60a4"
+    },
+    {
+      "cases": 5,
+      "class": "com.wingedsheep.engine.scenarios.UnexpectedFangsScenarioTest",
+      "groups": [
+        0
+      ],
+      "xml_sha256": "f2937151bdbdff16e71b2d33b4096160e9d68893160bf314a5a9abe787aeec1b"
+    },
+    {
+      "cases": 2,
+      "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+      "groups": [
+        2
+      ],
+      "xml_sha256": "05a697562c32a1d1fef8d594ace5733ef031b75f333f7b205dda754067072ed6"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+      "groups": [
+        2
+      ],
+      "xml_sha256": "2298b3e3cfda448a9574e54d2ee98d59766c66af082ba7389fc11d14a2e0305a"
+    },
+    {
+      "cases": 14,
+      "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "groups": [
+        2
+      ],
+      "xml_sha256": "296f30a7de344dc9b48876cc9dbfeef97aca85a52eb043f34e76415e393ccfd2"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest",
+      "groups": [
+        3
+      ],
+      "xml_sha256": "c8638cc5498e52be7ed30a0e28d95db4f95d5828a7b5dcbda8e6854001c197a0"
+    },
+    {
+      "cases": 12,
+      "class": "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "groups": [
+        3
+      ],
+      "xml_sha256": "c62a4a3ed5f74dc9c05a1156cae30e50bfda2045280f5bd5394ed74b91104be0"
+    },
+    {
+      "cases": 9,
+      "class": "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "groups": [
+        3
+      ],
+      "xml_sha256": "43e37bf72cddda97708b3d09dd16862f119406e0c64817983512cbbb41a1b6e6"
+    },
+    {
+      "cases": 10,
+      "class": "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "groups": [
+        3
+      ],
+      "xml_sha256": "e7ae91ab878e6c171c288a746e089047bfde3705bd7c3caf6ecf36192da3981c"
+    }
+  ],
+  "schema": "pr210-supplement-independent-original-artifact-review-v1",
+  "skipped": 0,
+  "source": "5e0afe1f45bbbc02f2a581d483aa84f2d1c4b11c",
+  "source_before_after_identical": true,
+  "source_pin_observations_verified": 137,
+  "source_tree": "c4f4d0f883aafb41e0a67610a4b165029c1ed740",
+  "tests_rerun": false,
+  "workflow_run": 36304391327,
+  "zip_members": 50
+}

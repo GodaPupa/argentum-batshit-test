@@ -1,0 +1,90 @@
+{
+  "authority": [
+    "f0fe77c5ea676cc8c971ee30e037b51f94996bf5 prospective interface boundary",
+    "ce9bce5274e8b91d80113dac303cb3b47258e421 independently accepted40-case generic component",
+    "9e2bf49d3930e40cbd26f12c4c84d423e1932682 reviewed exact golden changes",
+    "36300082007 fresh338 snapshot gate",
+    "PR210 body requires complete CI result and exact snapshot review before mainline acceptance"
+  ],
+  "candidate": "208ceaa3dfd94f3584582274a03a24db145326d4",
+  "ci": {
+    "actual_synthetic_checkout": "0f0432970ff6e4f9aae1970b5a1084e2ea6c43bb",
+    "freshness": "Mixed fresh/cached: engine, tooling and listed scenario task caches retained explicitly; not all tests freshly executed.",
+    "reported_junit_totals": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 52,
+      "tests": 17387
+    },
+    "run": 36300398877,
+    "runtime_build_test_tree_equivalent": true,
+    "status": "SUCCESS",
+    "synthetic_vs_candidate_delta_paths": [
+      "izzet-science/evidence/receiving-20260927/independent-973-raw-review.json",
+      "izzet-science/evidence/receiving-20260927/independent-veteran-two-case-raw-review.json",
+      "lab-coordinator/CURRENT_STATUS.md",
+      "lab-coordinator/NEXT_CHAT_HANDOFF.md"
+    ]
+  },
+  "ci_base": "0c480f19bab9df0d59362bdc9032d17d51661a20",
+  "current_main": "6ff3af91a09106d3d14355185d89d67371c4ac6b",
+  "disposition": "ACCEPT_BOUNDED_SHARED_MAINLINE_INTEGRATION",
+  "four_failed_gates": {
+    "original_disposition": "INCOMPLETE_SOURCE_GUARD_ABORT",
+    "original_status_rewritten": false,
+    "prospective_supplement_run": 36304391327,
+    "runs": [
+      36300398896,
+      36300398927,
+      36300398919,
+      36300398942
+    ],
+    "supplement_cases": 466,
+    "supplement_classes": 22,
+    "supplement_independently_accepted": true
+  },
+  "gameplay_authorized": false,
+  "input_index_sha256": {
+    "pr210-flashback-log-index.json": "aacff1568e44aced07257630a3c32760a488d531f1d975cdd1e41485e5bdd7fe",
+    "pr210-matrix-facts.json": "e8065e64c8acb32d4655bbaf57c332fc6316282dd7f3ac19e09b76efb5af09cb",
+    "pr210-original-artifact-audit.json": "5b6bca6cac71336391c0c2c192b71a7039d391116a5ad4408559da516f9a6e55",
+    "pr210-remaining-matrix-artifact-index.json": "37f6b6681b8c86d0fc0449d12a40b3daf6b260a0b0b6c8169bc644859fbc7076",
+    "pr210-remaining-matrix-job-index.json": "17223cb6fc156ff0e9451b970848c4c73269144c6e818ce8391045999135567f",
+    "pr210-supplement-independent-artifact-review.json": "d3fbe4ee415ee12c35a764acba1770f4765ac00609ac8185fb091a55f26627e0"
+  },
+  "main_delta_paths": [
+    "lab-coordinator/CURRENT_STATUS.md",
+    "lab-coordinator/NEXT_CHAT_HANDOFF.md"
+  ],
+  "merge_conditions": [
+    "Keep PR head208ceaa3 unchanged; recheck live ref before merge.",
+    "Preserve latest coordinator documents while merging. Current main differs from tested CI base solely in these two documents, so no runtime integration rerun is justified by that delta.",
+    "Retain original failed gate evidence, prospective supplement evidence and this matrix disposition durably.",
+    "If platform branch protection blocks merge, do not bypass it; satisfy applicable enforcement."
+  ],
+  "new_ci_dispatch_required": false,
+  "official_games": 0,
+  "other_matrix_limits": [
+    "Monster closure result is a superseded report-only capability marker on synthetic merge0f043297; no raw XML or new Monster qualification inferred.",
+    "Flashback receipt/logs show four successful fresh tasks on208ceaa3 but no raw XML; no new XML case count or expanded Flashback acceptance inferred."
+  ],
+  "pest_consumed_attempt_disposition_changed": false,
+  "project_admission_granted": false,
+  "reason": "Complete declared integration matrix is now accounted for: broad CI succeeded with caches/skips disclosed; exact snapshot review/fresh338 exist; four receiving guard failures are preserved and their complete unchanged banks passed independently reviewed prospective source-specific466 supplement. Existing ancillary green workflow evidence is not inflated into project admission. No remaining runtime test requirement for bounded shared integration was identified.",
+  "review_method": "Review existing source-bound original audit indices and prior accepted receipts. No original ZIP redownload or duplicate raw artifact audit. Independent supplemental466 raw audit was performed separately once.",
+  "reviewer": "/root/compatibility_review",
+  "schema": "pr210-independent-workflow-matrix-decision-v1",
+  "source_proof_method": "git diff --name-only exact immutable commits; enumerated differences limited to stated evidence/status documents.",
+  "spy_receiving": [
+    {
+      "artifact": 10925357170,
+      "cases": 362,
+      "classes": 10
+    },
+    {
+      "artifact": 10925656206,
+      "cases": 435,
+      "classes": 11
+    }
+  ]
+}
