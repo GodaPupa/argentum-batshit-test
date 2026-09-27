@@ -1,5 +1,21 @@
 # Argentum six-project critical path
 
+## Latest continuation — 2026-09-27 06:04:12 UTC
+
+This update is based on actually published coordinator **42e53f59ce42151986887ccbe1015ba6ae8ae0f7**. The earlier observations below remain historical records. **No official allocation, game, outcome, deck change or deck-performance evidence changed.** Other project heads, ownership and scientific counters are carried from their last recorded checks; no new global ledger census was performed.
+
+The Izzet factory's original evidence is now accepted within a finite software scope. Published evidence **55be47237309479119e8271849bc70cc16343dc1 /a35061cb42d8b513d15574eed0db90444c18b9ef** contains fourteen added results files under `izzet-science/evidence/original-factory-artifact-readback-20260927/results/`. Issued nonauthor review **6db302b14e936a5f4074d0731250037e3d330a46** accepts **11 executions /9 distinct identities:10 passes and one preserved expected old-source failure, zero errors/skips**, plus the recorded upstream-shlock prerequisite and three banks' default-lock/owned-cleanup observations. Before-source2 includes the original FROZEN_FACTORY_LEGACY_BINDING failure; fixed-source2 and unchanged completed-branch7 pass. That original failure was not rewritten as a pass.
+
+One separately released **read-only transport** recovered the existing artifact; the factory tests were not rerun. Readback run **36298180451**, attempt1 on **7e09c6622292bafb559f7bbe04fa777815e03b8d /b56995648c9917128e09baec19823963562b5915**, completedSUCCESS. Root reconstructed the original1,945,147-byte ZIP in functions memory and matched SHA256 **a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5**. Sphinx independently rehashed and reviewed all44 selected raw records; the whole63-member inventory and root framing/digest verification have separate attribution. This is not a claim of a second complete ZIP decompression or local-disk recovery.
+
+**Complete original ZIP, relay and omitted-log public preservation remain pending** same-byte decoding and sensitivity inspection. The selected semantic component is qualified; full-runtime integration, loaded-runtime identity, general pilot equivalence, Position1 and gameplay admission are not. Earlier missing-shlock results are not retroactively repaired. The next step is to preserve the complete original safely, then obtain exact receiving acceptance for the fixed source through a fresh prescribed route; no PR, rerun or new event is authorized by this note.
+
+The first connector transfer and failed local materialization remain preserved. Root release **a57cebf24ed3dd908cba85152d5d23096a224703**, following source review **97a5bb411602224395f5d62dd16603d1d207c575**, prospectively permitted only this one additional transport. It superseded the older no-second-transport instruction only for that exact event; no general retry permission follows. Preparation was published at4fb85eeb before creation. Workspace access remains unavailable; no further probes are planned.
+
+Exact authority, public observations and attribution are retained in `reviews/continuation-20260927-0604/readback-selected-evidence-receipt.json`.
+
+## Preserved earlier checkpoint
+
 Checkpoint: **2026-09-27 04:58:35 UTC**, with later immutable-source reads distinguished in its receipts. Parent is published coordinator **e5ec05f21fab38ae7078dcd6279643dde9544914**. Its detailed history, original failures and earlier observation cuts remain unchanged. **No official gameplay allocation, outcome or deck change was produced by this continuation. No deck-performance evidence changed; all six scientific programs remain incomplete.**
 
 ## Actual new execution and ownership
