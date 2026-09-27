@@ -50,7 +50,7 @@ class OpalPalaceScenarioTest : ScenarioTestBase() {
             game.state.getEntity(commanderId)!!.get<CommanderComponent>()!!.castsFromCommandZone shouldBe 1
         }
 
-        test("a later hand cast uses only prior command-zone casts") {
+        test("scoped repair: a later hand cast uses only prior command-zone casts") {
             val game = scenario()
                 .withPlayers("Commander", "Opponent")
                 .withFormat(Format.Commander())
@@ -104,7 +104,7 @@ class OpalPalaceScenarioTest : ScenarioTestBase() {
             counters(game, game.findPermanent("Llanowar Elves")!!) shouldBe 0
         }
 
-        test("two Palace mana spent on a first command-zone cast add two counters") {
+        test("scoped repair: two Palace mana spent on a first command-zone cast add two counters") {
             val game = scenario()
                 .withPlayers("Commander", "Opponent")
                 .withFormat(Format.Commander())
@@ -256,7 +256,7 @@ class OpalPalaceScenarioTest : ScenarioTestBase() {
             game.state.getHand(game.player1Id).size shouldBe 1
         }
 
-        test("two Palace contributions are combined before an additive counter modifier") {
+        test("scoped repair: two Palace contributions are combined before an additive counter modifier") {
             val game = scenario().withPlayers("Commander", "Opponent")
                 .withFormat(Format.Commander())
                 .withCardOnBattlefield(1, "Opal Palace")

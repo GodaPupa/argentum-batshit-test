@@ -7,21 +7,21 @@
   "immutable_prior_evidence": "e4dcdc527dff20c2f4f2064aaa84808eb8b53233:izzet-science/evidence/opal-palace-prospective-20260927/attempt-02/",
   "changed_case_scope": [
     {
-      "name": "a later hand cast uses only prior command-zone casts",
+      "name": "scoped repair: a later hand cast uses only prior command-zone casts",
       "repair": "Bind and answer the actual state-based commander-zone choice to leave the already-designated commander in hand, then require returned priority before the original cast and counter expectation."
     },
     {
-      "name": "two Palace mana spent on a first command-zone cast add two counters",
+      "name": "scoped repair: two Palace mana spent on a first command-zone cast add two counters",
       "repair": "Isolated aggregation fixture stages two AnySpend mana entries carrying Opal's exact spell rider, asserts two entries before and zero after the actual cast, count two on the stack, then the original final two-counter expectation."
     },
     {
-      "name": "two Palace contributions are combined before an additive counter modifier",
+      "name": "scoped repair: two Palace contributions are combined before an additive counter modifier",
       "repair": "Same two-entry cast and on-stack assertions, with original final three-counter Hardened Scales expectation."
     }
   ],
   "unchanged_seven": "Retain original seven source-bound passes, do not call them freshly rerun.",
   "real_card_activation_coverage": "The unchanged first command-zone case exercised one actual Opal Palace activation, payment, cast and entry.",
   "explicit_limit": "The two aggregation fixtures no longer test sequential real Opal Palace activations. Engine pool-first payment spends the first Palace mana on the second {1} activation, a legal but nonrepresentative route. Explicit mana-source selection also spends pool first. Multi-Palace payment selection remains unresolved and unaccepted.",
-  "prospective_invocation": "Only the three changed cases on exact immutable changed source after independent source, bank and launcher review; no official game, allocation or seed.",
+  "prospective_invocation": "Only the three changed cases selected by the shared scoped repair: test-name prefix through Kotest filtering on exact immutable source; XML must list exactly those three. The seven unchanged cases retain their original evidence. No official game, allocation or seed.",
   "official_games": 0
 }
