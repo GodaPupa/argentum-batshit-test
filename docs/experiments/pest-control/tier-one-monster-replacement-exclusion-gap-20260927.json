@@ -1,0 +1,135 @@
+{
+  "schema": "pest-monster-replacement-live-exclusion-gap-v1",
+  "status": "PROSPECTIVE_SOURCE_BOUND_FINDING_NO_FREEZE_C2_A2_OR_GAME_AUTHORITY",
+  "governing_authority": {
+    "bounded_replacement_acceptance": "74f2f848f072df56e6b25c4bd80a98a82a6606d1",
+    "search_order_interface_amendment": "f0fe77c5ea676cc8c971ee30e037b51f94996bf5",
+    "replacement_proposal_sha256": "5d920b6216ef82f898a6032a27bd5afdce4ae402ea19091cd367b227d12840e0",
+    "stopping_rule_sha256": "eb7097c94d9c1f40e31c738ba6162351034f40a99ec6e53393cabd374eda08be",
+    "rule": "The accepted replacement permits bounded seed-free construction only. Section 3 of the original proposal requires all live accepted, rejected, quarantined, pending and claimed Pest identities and explicit deterministic fixtures to be reconciled before a separate production freeze."
+  },
+  "baseline": {
+    "ref": "d08cd906d39ad72e4214a1cafaea2b3ff0f7ee99",
+    "path": "docs/experiments/pest-control/monster-replacement-prerequisite-evidence/known-minimum-exclusion-573.txt",
+    "blob": "5ffed39d7654b0bcfd3f4bfb3e08da9a3b9625e5",
+    "sha256": "d53b37fa50bb85f9fc75fdd236bd49d49a6ebdd22ad7a984fbf237c4d676a099",
+    "count": 573,
+    "composition": "566 inherited historical identities, four original retired Monster reservations, three already-declared postboard fixture values 9250925021–9250925023; historical proof and fixture finding at d08. This is an accepted known minimum, not a complete future freeze manifest."
+  },
+  "source_bound_additional_fixture_candidates": [
+    {
+      "exclusion_class": "SYNTHETIC_MONSTER_ARCHIVE_AND_ASSIGNMENT_PARSER_VECTOR",
+      "decimal_signed_long": [
+        "101",
+        "202",
+        "303",
+        "404"
+      ],
+      "source": {
+        "ref": "8c94ba24af27d54d5857ba3690cf1bd5e39331f6",
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronOperationalStackTest.kt",
+        "blob": "98be43dbb8e244a2dd729c847dd63fb1be857908",
+        "lines": "45, 62–80, 139–142"
+      },
+      "note": "Literal synthetic ordered-seeds archive and four-cell parser/coordinator fixtures; these are not production assignments."
+    },
+    {
+      "exclusion_class": "FIXED_MONSTER_POLICY_AND_ACTOR_SCENARIO_RNG",
+      "decimal_signed_long": [
+        "1592598101"
+      ],
+      "source_hex": "0x5EED_1E55L",
+      "sources": [
+        {
+          "ref": "8c94ba24af27d54d5857ba3690cf1bd5e39331f6",
+          "path": "ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronPolicyAuditTest.kt",
+          "blob": "d7a3dfd9ca2d43d5495aea6a924893ed4bd99376",
+          "line": 33
+        },
+        {
+          "ref": "8c94ba24af27d54d5857ba3690cf1bd5e39331f6",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisionsTest.kt",
+          "blob": "fa406e2b49e4517e9956f7a99ceac73eb601b858",
+          "line": 228
+        },
+        {
+          "ref": "8c94ba24af27d54d5857ba3690cf1bd5e39331f6",
+          "path": "docs/experiments/pest-control/monster-actor-component/receiving-bank.json",
+          "blob": "0b9122fb3be8975a27306d685d3920757dbef8aa",
+          "field": "fixed_fixture_rng.decimal"
+        }
+      ],
+      "note": "The accepted 72-case diagnostic uses the declared fixed fixture, not an official seed allocation; MC10 remains non-equivalent."
+    },
+    {
+      "exclusion_class": "SYNTHETIC_MONSTER_JOURNAL_INITIALIZATION_AND_FAILURE_VECTOR",
+      "decimal_signed_long": [
+        "7887054670345076737",
+        "7887054670345076738",
+        "7887054670345076739",
+        "7887054670345076740"
+      ],
+      "source_formula": "0x6d74726f6e010000L + game, for game=1..4",
+      "source_hex": [
+        "0x6d74726f6e010001",
+        "0x6d74726f6e010002",
+        "0x6d74726f6e010003",
+        "0x6d74726f6e010004"
+      ],
+      "sources": [
+        {
+          "ref": "8c94ba24af27d54d5857ba3690cf1bd5e39331f6",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronFailureEvidenceTest.kt",
+          "blob": "90be409fa7f21e51318420909364c86680be4a7d",
+          "lines": "157–165"
+        },
+        {
+          "ref": "8c94ba24af27d54d5857ba3690cf1bd5e39331f6",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronOneShotBoundaryTest.kt",
+          "blob": "c1e0b22e24c794d2b156f15ee264ea5b0bb6d525",
+          "lines": "218–224"
+        },
+        {
+          "ref": "8c94ba24af27d54d5857ba3690cf1bd5e39331f6",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronOperationalStackTest.kt",
+          "blob": "98be43dbb8e244a2dd729c847dd63fb1be857908",
+          "lines": "109–120"
+        }
+      ],
+      "note": "Same four synthetic identities recur across tests; count each once. The first is used by the excluded synthetic initialized-game exercise."
+    }
+  ],
+  "verification": {
+    "numeric_rule": "Interpret every source literal as Kotlin signed Long and compare canonical decimal values against the signed 64-bit production seed namespace. All four 0x6d... values are below Long.MAX_VALUE=9223372036854775807 and normalize to the four positive decimals shown; 0x5EED_1E55 normalizes to 1592598101.",
+    "baseline_distinct_count": 573,
+    "candidate_distinct_count": 9,
+    "candidate_in_baseline_count": 0,
+    "intersection_with_original_retired_monster_four": 0,
+    "reason_for_retired_intersection": "The published d08 historical reconstruction includes all four retired original Monster assignments in the 573 baseline; each of the nine candidate values was checked absent from all 573.",
+    "prospective_known_minimum_if_adopted": 582,
+    "complete_live_universe_proved": false
+  },
+  "live_observation": {
+    "main_ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+    "original_claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+    "original_claim_head": "1c2e253ad7f5a7652304f7c9aaafc30e547a481e",
+    "replacement_claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-replacement-smoke-r1",
+    "replacement_claim_observed": false,
+    "scope": "Read-only snapshot of the claim namespace and cited receiving sources; not a complete current/future vector registry."
+  },
+  "precise_blocker": {
+    "production_freeze": "Prospectively classify and independently review the nine source-bound fixture candidates, extend and pin the exclusion list, then demonstrate completeness of all live accepted/rejected/quarantined/pending/claimed/explicitly excluded Pest values against the exact freeze-time refs and artifacts. Do not equate 582 with a complete live manifest or use it for entropy.",
+    "c2": "No exact immutable C2 source/tree and receiving acceptance yet. The accepted 74f2 design requires historical C plus only reviewed canonical command, post-resolution, post-cast, post-block, exact-deck AnyTarget and own/public actor/search bindings; both complete frozen pilots, policy-choice equivalence or prospective disposition, replay, durability, and final integration still need source-bound evidence.",
+    "a2": "A2 cannot be accepted until an independently accepted immutable C2 and separately frozen/audited fresh vector exist; then a distinct A2 must pin those exact identities, effective rules/legality, receipts, workflow and live claim status. This finding grants no activation."
+  },
+  "counters": {
+    "new_production_entropy_draws": 0,
+    "new_official_seeds": 0,
+    "new_claims": 0,
+    "new_game_initializations": 0,
+    "new_actions": 0,
+    "new_outcomes": 0,
+    "historical_games_quarantined": 81,
+    "original_monster_reservations_retired": 4
+  }
+}
