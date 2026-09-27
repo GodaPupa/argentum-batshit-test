@@ -11518,6 +11518,14 @@ Attach riders via the `riders` parameter of `AddMana`, `AddManaOfChoice` or
 not a set — multiplicity is load-bearing, since two rider-carrying mana spent on one spell must fire
 the rider twice (Pyromancer's Goggles: "That many copies will be created").
 
+- `ManaSpellRider.CommanderCastEntryCounters` — Opal Palace: each mana carrying this rider
+  that actually pays for its owner’s designated commander adds the number of times that card
+  has been cast from the command zone to its entry +1/+1 counters. The command-zone count is
+  incremented at cast commit, so the first such cast contributes one; casting that commander
+  from hand uses the prior count. Contributions from multiple mana are summed on the spell
+  before counter-placement modifiers, survive stack decisions, and apply before enter-the-battlefield
+  triggers. Countered spells and copies of spells gain no counters from this rider. The component
+  is cleared when the spell resolves or leaves the stack.
 - `ManaSpellRider.MakesSpellUncounterable` — Cavern of Souls: stamps `CantBeCounteredComponent`
   on the spell at cast time.
 - `ManaSpellRider.ScryOnSharedTypeWithCommander(amount)` — Path of Ancestry: if the spell is

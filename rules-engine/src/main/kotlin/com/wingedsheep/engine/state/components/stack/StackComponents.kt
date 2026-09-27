@@ -28,6 +28,11 @@ data class SpellOnStackComponent(
      * declared. Carried onto the resolving permanent's cast-choices bag by `StackResolver`.
      */
     val declaredCostSlot: ChoiceSlot? = null,
+    /**
+     * Repetition count for a repeatable declared optional cost (multikicker). Null for ordinary
+     * one-shot optional costs; positive when the declared cost may be paid multiple times.
+     */
+    val declaredCostRepeatCount: Int? = null,
     val wasBlightPaid: Boolean = false,  // For BlightOrPay additional cost — true if blight path was taken
     val wasWaterbendPaid: Boolean = false,  // For optional spell waterbend additional cost (Avatar) — true if "you may waterbend {N}" was paid; readable via WaterbendWasPaid
     /**
@@ -58,8 +63,6 @@ data class SpellOnStackComponent(
      */
     val splicedTargetsOrdered: List<List<ChosenTarget>> = emptyList(),
     val chosenModes: List<Int> = emptyList(),  // For modal spells (700.2). Ordered; same index may repeat when allowRepeat.
-    /** True once cast-time modal selection completed, including a legal choice of zero modes. */
-    val modalSelectionCompleted: Boolean = false,
     val modeTargetsOrdered: List<List<ChosenTarget>> = emptyList(),  // Per-mode chosen targets, aligned 1:1 with chosenModes
     val modeTargetRequirements: Map<Int, List<TargetRequirement>> = emptyMap(),  // Per-mode TargetRequirements for 608.2b re-validation at resolution
     val modeDamageDistribution: Map<Int, Map<EntityId, Int>> = emptyMap(),  // Per-mode DividedDamageEffect allocations (future)
@@ -601,3 +604,11 @@ data class GraveyardCastRiderComponent(
     val entersWithCounter: com.wingedsheep.sdk.core.CounterType? = null,
     val addedSubtype: String? = null
 ) : Component
+
+/**
+ * Entry counters promised by commander-color mana spent on this commander spell. Captured at
+ * cast-commit and summed once per mana actually spent; removed on resolution or zone change.
+ * A countered spell never enters and therefore never receives these counters.
+ */
+@Serializable
+data class CommanderManaEntryCountersComponent(val count: Int) : Component

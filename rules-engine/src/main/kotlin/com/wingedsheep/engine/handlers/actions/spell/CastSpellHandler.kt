@@ -5168,6 +5168,27 @@ class CastSpellHandler(
 
         is com.wingedsheep.sdk.scripting.effects.ManaSpellRider.GrantsKeywordWhenSpent ->
             applyKeywordGrantRider(state, action, rider.keyword, rider.spellFilter) to emptyList()
+
+        com.wingedsheep.sdk.scripting.effects.ManaSpellRider.CommanderCastEntryCounters ->
+            applyCommanderEntryCounterRider(state, action) to emptyList()
+    }
+
+    /** Freeze the command-zone cast count after cast-commit, once per mana actually spent. */
+    private fun applyCommanderEntryCounterRider(state: GameState, action: CastSpell): GameState {
+        val registry = state.getEntity(action.playerId)
+            ?.get<com.wingedsheep.engine.state.components.identity.CommanderRegistryComponent>()
+            ?: return state
+        if (action.cardId !in registry.commanderIds) return state
+        val commander = state.getEntity(action.cardId)
+            ?.get<com.wingedsheep.engine.state.components.identity.CommanderComponent>()
+            ?: return state
+        if (commander.ownerId != action.playerId || commander.castsFromCommandZone <= 0) return state
+        return state.updateEntity(action.cardId) { c ->
+            val prior = c.get<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()?.count ?: 0
+            c.with(com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent(
+                prior + commander.castsFromCommandZone
+            ))
+        }
     }
 
     /**

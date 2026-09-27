@@ -1,0 +1,25 @@
+{
+  "schema": "opal-palace-composed-source-proposal-v1",
+  "base": "a333dc1e6b8c2e78961bbbe052ee01105e2f1264",
+  "inert_parent": "ee1d38a4f338b49d040f07b780f7a5864650b8b9",
+  "scope": "Opal Palace mana rider completion on already reviewed Manual plus PR210 composition",
+  "official_games": 0,
+  "execution_attempts": 0,
+  "tests_executed": 0,
+  "finite_bank": {
+    "class": "com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest",
+    "cases": 10,
+    "existing_uncompiled": 6,
+    "added": 4
+  },
+  "qualifies": "engine mechanic only; not Manual capability or Izzet Position-1",
+  "guardrails": [
+    "no frozen deck/pilot/seed change",
+    "count captured after command-zone cast commit, per mana actually spent",
+    "combine mana riders before counter modifiers",
+    "entry counters before ETB observation",
+    "strip on resolution and direct stack exit; spell copy does not inherit rider",
+    "bounded test only after independent source and launcher review"
+  ],
+  "primary_rules": "Magic Comprehensive Rules 2026-09-25, CR 106.6, 614.12, 903.3/903.8; existing Opal Oracle text in source"
+}
