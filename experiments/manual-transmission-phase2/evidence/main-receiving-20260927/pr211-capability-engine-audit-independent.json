@@ -1,0 +1,20 @@
+{
+  "schema": "manual-pr211-capability-engine-audit-independent-v1",
+  "disposition": "ACCEPT_RECEIVING_ENGINE_AUDIT_ONLY",
+  "source_commit": "452faa13b460f5c998bb90ff1182ac416deb329c",
+  "source_tree": "3322a296f7c6453be10fbadc836a00f1fccb9e95",
+  "workflow_run": 36293983174,
+  "original_artifact_id": 10923621547,
+  "evidence_commit": "38e8a099ef68045f98454b07d6cf57a6c175de58",
+  "zip_sha256": "ea9e55902231bfcb41e697c9aab8f5c7d6ce9d6badcd928d54d9b300fca749db",
+  "reviewer": "/root",
+  "findings": [
+    "Original 942,861-byte ZIP CRC clean; 526 members independently enumerated.",
+    "35 JUnit XML suites hold 540 unique case/class pairs; declared and actual failures, errors and skips all zero.",
+    "Bootstrap source report binds exact source/tree and eight deck identities; execution_allowed=false and actions, attempts, initialized games, outcomes, generated seeds all zero.",
+    "World Breaker existing-card fixture routing report has two actual pass cases but remains excluded software scope."
+  ],
+  "limits": [
+    "Passing software audit is not Manual capability admission or gameplay. General CI and required inherited support gates still need disposition; policies, opponents, collector/replay and 36 capability games remain unqualified."
+  ]
+}
