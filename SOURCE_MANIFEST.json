@@ -1,0 +1,60 @@
+{
+  "schema": "parent-jvm-observer-prospective-source-manifest-v1",
+  "ready_for_qualification": false,
+  "base_source": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+  "base_tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "scope": "Two isolated tooling source files and prospective proposal. No official executor/contract/claim wiring; no gameplay admission.",
+  "files": [
+    {
+      "path": "tools/parent_jvm_observer.py",
+      "bytes": 13692,
+      "sha256": "5254c35da8870821b2bc843abec45c9f99a213a1c3add876904b1ae6a6dc98f9",
+      "git_blob_sha1": "f81988064511fa4015f593dcc169d9371136f765"
+    },
+    {
+      "path": "tools/test_parent_jvm_observer.py",
+      "bytes": 18121,
+      "sha256": "2747c340399940c902a3c83f0de965e6cffb7f9b6adf43994d5d31f986acff37",
+      "git_blob_sha1": "1b0255b72df923c543731e359cb4cc8f0e6f68b4"
+    },
+    {
+      "path": "QUALIFICATION_PROPOSAL.md",
+      "bytes": 8797,
+      "sha256": "6b260118bd2f75c9b608ec960c45bca2a6973d08375c17944fe93998af70f966",
+      "git_blob_sha1": "33e6675d1065a6ff9ce09100158043ce2e4b1a32"
+    }
+  ],
+  "unchanged_dependency": {
+    "path": "tools/observed_test_runtime.py",
+    "git_blob_sha1": "a162644f4710e95661e3ade3d928603b4226cdc5",
+    "bytes": 13696,
+    "sha256": "80f687a4707c0188ba46ad56b48af4b99b42692ae88493de9e0820af3eaaa465",
+    "used_symbol": "safe_child"
+  },
+  "unit_fixture_identities": [
+    "test_matching_two_snapshots_preserve_scope_and_observations",
+    "test_changed_class_bytes_fail",
+    "test_reordered_entries_fail_even_with_current_argument_digest",
+    "test_missing_entry_preserves_partial_parent_observation",
+    "test_duplicate_entry_fails",
+    "test_entry_outside_declared_roots_fails",
+    "test_directory_symlink_escape_fails",
+    "test_non_java_parent_fails",
+    "test_direct_parent_replacement_fails",
+    "test_same_pid_new_process_lifetime_fails",
+    "test_malformed_argument_file_fails",
+    "test_mutation_between_snapshots_fails_and_keeps_first_complete_marker",
+    "test_missing_finite_bounds_fails_before_parent_read",
+    "test_byte_budget_is_enforced",
+    "test_cooperative_clock_budget_is_enforced",
+    "test_missing_input_retains_intent_and_error",
+    "test_fifo_input_fails_without_blocking_and_retains_intent",
+    "test_existing_attempt_is_never_overwritten",
+    "test_actual_java_byte_mismatch_fails",
+    "test_parent_command_mismatch_fails",
+    "test_journal_byte_budget_fails_without_losing_result"
+  ],
+  "unit_fixture_count": 21,
+  "separate_actual_jvm_probe_count": 1,
+  "performed_so_far": "Source drafting and Python AST parsing only; no unittest, compiler, JVM or engine execution."
+}
