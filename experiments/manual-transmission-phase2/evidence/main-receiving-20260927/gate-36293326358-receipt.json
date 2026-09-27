@@ -1,0 +1,118 @@
+{
+  "all_command_logs_build_successful": true,
+  "artifact_id": 10922613354,
+  "artifact_name": "manual-main-fixture-focused-452faa1",
+  "artifact_repository_path": "experiments/manual-transmission-phase2/evidence/main-receiving-20260927/gate-36293326358-original-artifact.zip",
+  "artifact_size_bytes": 23547,
+  "artifact_zip_sha256": "eae3e6261f5fd71e912eab8334b06f7b38634a08f76c4b1a1f3e1854cc79cc61",
+  "command_logs_present": [
+    "purphoros.log",
+    "engine.log",
+    "aether-channeler.log",
+    "ai-control.log"
+  ],
+  "gameplay_authorized": false,
+  "included_artifact_file_count_excluding_manifest": 18,
+  "included_artifact_file_hashes_match_manifest": true,
+  "job_id": 108547431626,
+  "manifest_entries_not_uploaded": [
+    "ai/build/test-results/test/binary/output-events.bin",
+    "ai/build/test-results/test/binary/results-generic.bin",
+    "mtg-sets/2008-2016/tests/build/test-results/test/binary/output-events.bin",
+    "mtg-sets/2008-2016/tests/build/test-results/test/binary/results-generic.bin",
+    "mtg-sets/2017-2022/tests/build/test-results/test/binary/output-events.bin",
+    "mtg-sets/2017-2022/tests/build/test-results/test/binary/results-generic.bin",
+    "rules-engine/build/test-results/test/binary/output-events.bin",
+    "rules-engine/build/test-results/test/binary/results-generic.bin"
+  ],
+  "manifest_entry_omission_scope": "Gradle binary test result files; all named XML and command logs retained",
+  "no_command_log_reports_from_cache": true,
+  "official_initializations": 0,
+  "predecessor_failed_run_id": 36292368451,
+  "predecessor_failure": "Purphoros fixture stopped at empty stack with pending trigger order; original failure retained separately",
+  "run_attempt": 1,
+  "run_conclusion": "success",
+  "run_id": 36293326358,
+  "scope": "targeted deterministic Manual Phase 2 merged-main fixture gate; no gameplay or capability admission",
+  "source_before_after_match": true,
+  "source_commit": "452faa13b460f5c998bb90ff1182ac416deb329c",
+  "source_tree": "3322a296f7c6453be10fbadc836a00f1fccb9e95",
+  "tracked_worktree_clean_after": true,
+  "workflow_branch": "lab/manual-main-fixture-gate-20260927",
+  "workflow_trigger_commit": "bfc019fa6bc986d08db22fd727c4297db0208e4a",
+  "xml_suite_count": 11,
+  "xml_suites": {
+    "com.wingedsheep.ai.arena.FrozenBaselineTest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 1
+    },
+    "com.wingedsheep.engine.event.BattlefieldEntrySnapshotTest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 11
+    },
+    "com.wingedsheep.engine.handlers.effects.token.TokenBatchEntryHistoryTest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 4
+    },
+    "com.wingedsheep.engine.mechanics.layers.BattlefieldEntryProjectionTest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 6
+    },
+    "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 9
+    },
+    "com.wingedsheep.engine.scenarios.AetherChannelerScenarioTest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 10
+    },
+    "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 16
+    },
+    "com.wingedsheep.engine.scenarios.PurphorosGodOfTheForgeScenarioTest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 25
+    },
+    "com.wingedsheep.engine.scenarios.SelfEntersTappedOffStackEntryScenarioTest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 11
+    },
+    "com.wingedsheep.engine.scenarios.TokenCopyOfPlaneswalkerEntryScenarioTest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 1
+    },
+    "com.wingedsheep.engine.scenarios.TokenCopyOfSagaEntryScenarioTest": {
+      "errors": 0,
+      "failures": 0,
+      "skipped": 0,
+      "tests": 2
+    }
+  },
+  "xml_totals": {
+    "errors": 0,
+    "failures": 0,
+    "skipped": 0,
+    "tests": 96
+  }
+}
