@@ -1,11 +1,14 @@
 {
   "schema": "izzet-shared-receiving-fixed-bank-gate-v1",
-  "ready_for_execution": false,
+  "ready_for_execution": true,
   "source_review": {
-    "status": "PENDING_NEW_SOURCE_AND_CONTROL_REVIEW",
-    "prior_8b05_control_review_is_historical": true,
-    "new_exact_source_review": null,
-    "new_control_review": null
+    "status": "PASS_BOUNDED_ONE_PROSPECTIVE_DETERMINISTIC_RECEIVING_CONTROL",
+    "commit": "583a7d7093e1b9d734a6ce7106d803380af8a79c",
+    "path": "izzet-science/shared-receiving-20260927/root-independent-source-control-review.json",
+    "git_blob": "6e5af581498e8208d3acbcf97fdc2ffe30b62972",
+    "reviewed_inert_control": "a46060d831a4bc7fb7655364b6718b69633b71c0",
+    "reviewed_inert_tree": "58fa6a32ba2a5ee74af77cd4068274aa673a2893",
+    "scope": "single branch-creation push, attempt1, exactly87 classes/973 existing cases, no games or seeds"
   },
   "scope": "One deterministic receiving qualification of existing Vines560, shared407 and original c47 diagnostic8 identities. Dalkovan2 overlaps shared407; exact union973. No games, new pilot cases, official entropy or comparative inference.",
   "source_head": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
@@ -163,7 +166,7 @@
       "class": "com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest",
       "expected_cases": 2,
       "case_names": [
-        "deathtouch damage is cleared at cleanup despite a hand-size discard \u2014 creature survives next turn",
+        "deathtouch damage is cleared at cleanup despite a hand-size discard — creature survives next turn",
         "ordinary marked damage is removed at cleanup even when a hand-size discard interrupts the step"
       ],
       "original_archive_sha256": "c9e99a060f253cdaf93b7ae36eef92b4d3b5b00d37cdbc798d216322962413ae",
@@ -204,11 +207,11 @@
         "combat continues when the leaver's attacker is removed (its blocker stops blocking it)",
         "attackers aimed at the leaver are removed from combat; the rest of the attack stands (CR 800.4e)",
         "a player who has left the game is not a legal attack target (CR 800.4a)",
-        "a resolved spell's effect outlives its caster's departure (CR 611.2c) \u2014 only source-bound durations end (CR 800.4a)",
+        "a resolved spell's effect outlives its caster's departure (CR 611.2c) — only source-bound durations end (CR 800.4a)",
         "a departed player's 'until your next turn' effect lasts until that turn would have begun (CR 800.4m)",
         "priority held by the leaver passes to the next player still in the game (CR 800.4a)",
         "the active player conceding hands the turn forward without stalling",
-        "conceding while owning the pending decision abandons it instead of deadlocking the table (CR 800.4f\u2013h)",
+        "conceding while owning the pending decision abandons it instead of deadlocking the table (CR 800.4f–h)",
         "a pending decision addressed to another player survives the leaver's departure",
         "the abandoned decision's priority skips an active player who has also left"
       ],
@@ -341,7 +344,7 @@
         "a flying attacker deals you no combat damage",
         "a non-flying attacker still hits you for full",
         "a non-creature source is unaffected",
-        "your own creatures are not protected \u2014 only you"
+        "your own creatures are not protected — only you"
       ],
       "original_archive_sha256": "c9e99a060f253cdaf93b7ae36eef92b4d3b5b00d37cdbc798d216322962413ae",
       "original_xml_sha256": "ca225ad9e3bad1c9b75830699baa74c5e0de8b71e8b7d594354c5e7ba9bbaefc",
@@ -356,7 +359,7 @@
       "expected_cases": 2,
       "case_names": [
         "emerge cast drains the targeted opponent for 3 before the Leech resolves",
-        "the two amounts are independent \u2014 you gain 3 even if the opponent had less to lose"
+        "the two amounts are independent — you gain 3 even if the opponent had less to lose"
       ],
       "original_archive_sha256": "c9e99a060f253cdaf93b7ae36eef92b4d3b5b00d37cdbc798d216322962413ae",
       "original_xml_sha256": "dba12711a629215b88e63bd8fed0095aa3daf97b7ad48aaa89a2b55bbe1c4ec6",
@@ -505,8 +508,8 @@
         "a creature-only rider ignores a noncreature spell and pays for the next creature spell",
         "a rider-funded free cast doesn't burn a once-per-turn battlefield permission",
         "the rider belongs to its controller: the opponent is neither offered it nor spends it",
-        "the enumerated free cast has no X \u2014 a free cast pays no mana cost, so X is 0 (CR 107.3b)",
-        "a free cast still pays a mandatory additional cost (CR 118.9 \u2014 only the mana cost is replaced)"
+        "the enumerated free cast has no X — a free cast pays no mana cost, so X is 0 (CR 107.3b)",
+        "a free cast still pays a mandatory additional cost (CR 118.9 — only the mana cost is replaced)"
       ],
       "original_archive_sha256": "c9e99a060f253cdaf93b7ae36eef92b4d3b5b00d37cdbc798d216322962413ae",
       "original_xml_sha256": "f203e50ffb27b113cac437fdb633ba11dfebcf8fcbd7ea194aaf34fc3d843091",
@@ -520,14 +523,14 @@
       "class": "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
       "expected_cases": 8,
       "case_names": [
-        "H1 \u2014 picking the {1}-cost mode drains one extra colorless from the pool",
-        "H1 \u2014 mode 1 cannot be cast without the additional {1}",
-        "H2 \u2014 mode with SacrificePermanent additional cost forces the creature into the graveyard",
-        "H3 \u2014 Spree-style: choosing two modes stacks their additionalManaCosts",
-        "H3 \u2014 with stacked costs unpayable, cast fails",
-        "Escalate \u2014 the first chosen mode adds no mana cost",
-        "Escalate \u2014 its cost is paid once for each mode beyond the first",
-        "Escalate \u2014 a second mode is illegal when its one escalate payment is unaffordable"
+        "H1 — picking the {1}-cost mode drains one extra colorless from the pool",
+        "H1 — mode 1 cannot be cast without the additional {1}",
+        "H2 — mode with SacrificePermanent additional cost forces the creature into the graveyard",
+        "H3 — Spree-style: choosing two modes stacks their additionalManaCosts",
+        "H3 — with stacked costs unpayable, cast fails",
+        "Escalate — the first chosen mode adds no mana cost",
+        "Escalate — its cost is paid once for each mode beyond the first",
+        "Escalate — a second mode is illegal when its one escalate payment is unaffordable"
       ],
       "original_archive_sha256": "c9e99a060f253cdaf93b7ae36eef92b4d3b5b00d37cdbc798d216322962413ae",
       "original_xml_sha256": "e311d72238cfabe52d24469d19aa9ecd52b67fc51b733f7828f071749e8e815b",
@@ -541,8 +544,8 @@
       "class": "com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest",
       "expected_cases": 2,
       "case_names": [
-        "E3 \u2014 mode with unpayable additionalManaCost is flagged unavailable; others stay available",
-        "E3 \u2014 when enough Islands are in play, the {5}{U} mode becomes available"
+        "E3 — mode with unpayable additionalManaCost is flagged unavailable; others stay available",
+        "E3 — when enough Islands are in play, the {5}{U} mode becomes available"
       ],
       "original_archive_sha256": "c9e99a060f253cdaf93b7ae36eef92b4d3b5b00d37cdbc798d216322962413ae",
       "original_xml_sha256": "e044661ebfb0d1c6a76a5b0701ad8bc809062acc1f0b5dfa54e097685dd06bc9",
@@ -557,14 +560,14 @@
       "expected_cases": 10,
       "case_names": [
         "both the reveal path and the pay path are enumerated when the hand has an Elf and mana for either",
-        "CR 701.20b \u2014 the revealed Elf stays in hand and can still be cast afterwards",
+        "CR 701.20b — the revealed Elf stays in hand and can still be cast afterwards",
         "the pay path costs {3} more and reveals nothing",
         "with no Elf in hand only the pay path is offered, and the spell is still castable",
-        "CR 701.4a \u2014 an Elf on the battlefield is not an Elf card in hand and cannot pay the reveal",
-        "a Kindred noncreature Elf card pays it \u2014 the filter is 'an Elf card', not 'an Elf creature card'",
+        "CR 701.4a — an Elf on the battlefield is not an Elf card in hand and cannot pay the reveal",
+        "a Kindred noncreature Elf card pays it — the filter is 'an Elf card', not 'an Elf creature card'",
         "a non-Elf card in hand is rejected as the reveal",
         "the cost is offered with its own picker when the hand holds a matching card",
-        "the spell is uncastable with nothing to reveal \u2014 a mandatory cost fails closed",
+        "the spell is uncastable with nothing to reveal — a mandatory cost fails closed",
         "the spell can't pay the cost with itself"
       ],
       "original_archive_sha256": "c9e99a060f253cdaf93b7ae36eef92b4d3b5b00d37cdbc798d216322962413ae",
@@ -590,7 +593,7 @@
         "prompt text names both the commander and the source zone",
         "multiple eligible commanders only produce one prompt per SBA pass",
         "non-owner commander not asked about by this player's turn slot",
-        "commander with the asked marker is invisible to the SBA \u2014 no events, no pause",
+        "commander with the asked marker is invisible to the SBA — no events, no pause",
         "a non-commander legendary with the same name does not trigger the prompt",
         "commander already on the stack is not prompted (CR 903.9 entry zones only)",
         "commander entry is later 'forgotten' once the marker is stripped",
@@ -640,7 +643,7 @@
         "conceding eliminates only the conceding player; the teammate fights on (no 810.8a propagation)",
         "a can't-lose grant protects only its controller, not the whole team (CR 808 / normal 104)",
         "poison is per-player at threshold 10; one poisoned player loses alone",
-        "poison does NOT pool across the team \u2014 8 + 7 = 15 kills no one (each is below 10)",
+        "poison does NOT pool across the team — 8 + 7 = 15 kills no one (each is below 10)",
         "opponents exclude teammates; teammates are recognised",
         "turn ownership is individual: only the active player owns the turn; a teammate does not",
         "each player draws on their own turn; no first-turn draw skip in a 4-player game (CR 103.8c)",
@@ -723,8 +726,8 @@
       "case_names": [
         "a creature attacks the opposing team, never a teammate (CR 805.10b)",
         "the combined attack may include creatures controlled by BOTH active-team members (CR 805.10b)",
-        "one declaration is the whole team's \u2014 the teammate may pass and can't add a second wave (CR 805.10b)",
-        "the whole nonactive team defends \u2014 even an un-attacked teammate is a defending player (CR 805.10a)",
+        "one declaration is the whole team's — the teammate may pass and can't add a second wave (CR 805.10b)",
+        "the whole nonactive team defends — even an un-attacked teammate is a defending player (CR 805.10a)",
         "a defending creature may block an attacker aimed at its TEAMMATE (CR 805.10d)",
         "a member of the attacking team cannot declare blockers (CR 805.10a)",
         "the teammate's attackers survive a state-based-action pass (CR 805.10a / CR 506.4)",
@@ -951,7 +954,7 @@
         "a player sees their teammate's hand but not an opponent's (CR 810.2)",
         "the seat roster carries the shared-turn flag, which the client needs to answer \"may I act?\"",
         "a teammate is offered their OWN actions while their partner holds the baton (CR 805.5)",
-        "a Free-for-All pod stays one seat at a time \u2014 only the baton holder is offered actions",
+        "a Free-for-All pod stays one seat at a time — only the baton holder is offered actions",
         "a revealed card in an opponent's hand still reaches the viewer, count and all",
         "non-team game is unchanged: no team index, every other seat is an opponent"
       ],
@@ -1303,11 +1306,11 @@
         "ReceivedCounterThisTurn narrowed by kind does not match a bare marker",
         "HasAnyCounter matches any creature with at least one counter of any type",
         "HasCounter(LOYALTY) matches only creatures with that specific counter type",
-        "HasCounter(\"+1/+1\") matches creatures with +1/+1 counters \u2014 shorthand form",
-        "HasCounter(\"-1/-1\") matches creatures with -1/-1 counters \u2014 shorthand form",
+        "HasCounter(\"+1/+1\") matches creatures with +1/+1 counters — shorthand form",
+        "HasCounter(\"-1/-1\") matches creatures with -1/-1 counters — shorthand form",
         "HasCounter with unknown counter type string matches nothing (no accidental fallback)",
         "HasGreatestPower matches the highest-power creature the source's controller controls",
-        "HasGreatestPower allows ties \u2014 multiple creatures can share the greatest power",
+        "HasGreatestPower allows ties — multiple creatures can share the greatest power",
         "IsEquipped matches only creatures with at least one Equipment attached",
         "Or matches entities that satisfy any sub-predicate",
         "And matches entities that satisfy every sub-predicate",
@@ -1332,8 +1335,8 @@
       "expected_cases": 3,
       "case_names": [
         "both checks fail: CR 608.2a's intervening-if ends the resolution, not CR 608.2b's targets",
-        "control: condition still true, target gone \u2014 CR 608.2b fizzles on targets as before",
-        "control: condition true and target legal \u2014 the ability resolves and deals its damage"
+        "control: condition still true, target gone — CR 608.2b fizzles on targets as before",
+        "control: condition true and target legal — the ability resolves and deals its damage"
       ],
       "original_archive_sha256": "0ced407c44928b3f0403f25cd683b6ef9afd8beef7c3bc1405d40866a099b0a3",
       "original_xml_sha256": "2bf5168ea3277d4021f5a0c5d8598857c5ebdfaec74c06a96b34865c9a020875",
@@ -1350,14 +1353,14 @@
       "case_names": [
         "an empty hand is never asked to discard, and never pays out",
         "a mandatory discard on an empty hand pays out nothing either",
-        "draw-then-discard is still offered on an empty hand \u2014 the draw supplies the card",
+        "draw-then-discard is still offered on an empty hand — the draw supplies the card",
         "discard two with only one card in hand discards that one and pays out",
         "a permanent with no counters is never asked to remove a named one",
         "a permanent with no counters is never asked to remove one of any kind",
         "one -1/-1 counter is enough to be offered, and paying it earns the payoff",
         "a named removal is not offered when the permanent is short of the full count",
         "an any-kind removal takes whichever counter is there and earns the payoff",
-        "a not-yet-stored pipeline target fails open \u2014 the ability is still offered"
+        "a not-yet-stored pipeline target fails open — the ability is still offered"
       ],
       "original_archive_sha256": "0ced407c44928b3f0403f25cd683b6ef9afd8beef7c3bc1405d40866a099b0a3",
       "original_xml_sha256": "fdb54eae1fd220f8a485e9466a4fa9aa031c09cfbf06e1826c4e62b3a89e3a6b",
