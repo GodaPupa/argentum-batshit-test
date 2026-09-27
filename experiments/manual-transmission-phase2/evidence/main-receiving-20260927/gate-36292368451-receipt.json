@@ -1,0 +1,79 @@
+{
+  "schema": "manual-main-integration-gate-failure-r1",
+  "candidate": {
+    "commit": "85499f82278472ca286c8826e8266d8759ccf2ae",
+    "tree": "7b0d6d041d6b119aae678ec47135c14e7efeaf4b",
+    "parents": [
+      "4762f8d763fecb32d2f042222c5383f74eee3479",
+      "ff34ac8fa2efbd41f233e877cb2908c2cab5929a"
+    ]
+  },
+  "workflow": {
+    "run_id": 36292368451,
+    "run_attempt": 1,
+    "head_sha": "4c1210047368ed962e9c803e70a41862ec42545f",
+    "job_id": 108544780535,
+    "conclusion": "failure",
+    "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36292368451"
+  },
+  "original_artifact": {
+    "id": 10923016236,
+    "size_bytes": 19004,
+    "sha256": "bb8cdc635abc129e624a96784f7a22667edbc6dc11decf65340294df77727004",
+    "repository_path": "experiments/manual-transmission-phase2/evidence/main-receiving-20260927/gate-36292368451-original-artifact.zip",
+    "git_blob": "4ec862361e02d5197fc295a1188332c96659282e",
+    "raw_hash_manifest_verified_for_all_14_zip_entries_excluding_self": true
+  },
+  "source_binding": {
+    "checkout_commit": "85499f82278472ca286c8826e8266d8759ccf2ae",
+    "checkout_tree": "7b0d6d041d6b119aae678ec47135c14e7efeaf4b",
+    "initial_clean": true,
+    "after_commit_and_tree_unchanged": true,
+    "after_tracked_clean": true
+  },
+  "completed_groups": {
+    "engine": {
+      "suites": 8,
+      "tests": 60,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "raw_log": "build/manual-main-gate/engine.log",
+      "raw_xml_prefix": "rules-engine/build/test-results/test/TEST-",
+      "fresh_task": true
+    },
+    "purphoros": {
+      "suites": 1,
+      "tests": 25,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0,
+      "raw_log": "build/manual-main-gate/purphoros.log",
+      "raw_xml": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PurphorosGodOfTheForgeScenarioTest.xml",
+      "failure": {
+        "case": "two simultaneous creature tokens generate two independent damage triggers",
+        "source_line": 227,
+        "expected_opponent_life": 16,
+        "actual_opponent_life": 20
+      }
+    }
+  },
+  "not_reached": [
+    "Aether Channeler receiving scenario",
+    "FrozenBaseline AI control",
+    "XML verification"
+  ],
+  "prior_same_case_failure": {
+    "run_id": 36290883808,
+    "job_id": 108540603784,
+    "source_commit": "4762f8d763fecb32d2f042222c5383f74eee3479",
+    "source_line": 227,
+    "claim": "Same named Purphoros test failed on PR209 first-parent before main integration; the exact expected/actual values were not available from that job's decoded summary."
+  },
+  "interpretation": "Targeted deterministic gate failed; no full integration PR or CI is admissible from this result. The test helper resolve(d) exits when stack is empty and does not answer explicit simultaneous-trigger ordering; this is a source-based candidate explanation, not a proven engine defect. Preserve failed source and artifact, then correct fixture narrowly and obtain independent review before a new exact-source gate.",
+  "official": {
+    "seed_consumption": 0,
+    "gameplay_initializations": 0,
+    "gameplay_authorized": false
+  }
+}
