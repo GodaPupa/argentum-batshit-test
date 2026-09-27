@@ -1,0 +1,40 @@
+{
+  "schema": "sphinx-main-packet-independent-publication-review-v1",
+  "reviewer": "/root/izzet, non-author of the five Sphinx controls and this packet",
+  "reviewed_utc": "2026-09-27T03:07:35.886876+00:00",
+  "disposition": "PASS_EXACT_FOUR_FILE_PREPARATION_PRESERVATION_ONLY",
+  "files": {
+    "README.md": {
+      "bytes": 3194,
+      "sha256": "9c2210a155fc651a24dec4f50943d2f9f86a9de75935940a4530127b48cdd12c"
+    },
+    "archive-index.json": {
+      "bytes": 1268,
+      "sha256": "a3acb5b7b14823859fa72017251b9d2d3192bb848828532a207989e4922a9270"
+    },
+    "source-review-evidence.zip": {
+      "bytes": 753903,
+      "sha256": "bb767f4d81167037a764188adb5f64b804eee85c07a4e3b57f0cf77bfa38ede4"
+    },
+    "root-independent-source-review.json": {
+      "bytes": 6411,
+      "sha256": "c064c8d797dcfbfbb59c00119a97913f738a0e8af8794e450bda7d5488930dcf"
+    }
+  },
+  "checks": [
+    "All96 ZIP members are unique and CRC-valid; all95 payload member byte counts and SHA256 match the retained manifest. The remaining member is the manifest itself, whose hash matches the outer index.",
+    "Root source review c064 is byte-identical inside and outside the ZIP; its nine supporting file hashes, five exact candidate SHA256/Git blob identities, inventory and source proof are retained unchanged.",
+    "All60 exact runtime-source bodies reproduce their recorded byte counts, SHA256 and Git blob IDs. This verifies preservation and internal proof linkage; it does not reperform source semantics or ref admission.",
+    "All85 complete inherited workflow bodies reproduce their recorded Git-tree sizes/blob IDs and prospective preflight SHA256 values. The retained workflow universe equals all85 YAML entries in the archived complete GitHub subtree.",
+    "Prepared commit/tree/parent and five candidate remote blob records reconcile across checkpoint, index, source review and prospective preflight. Historical initial candidate ZIP and prior correction/failure records are retained; nested ZIP CRC passes.",
+    "README and index describe prospective preparation,50-within136 overlap, zero actual actor-bank/gameplay cases, and separate final event disposition; no present branch-absence or source-acceptance claim is added."
+  ],
+  "root_source_review_sha256": "c064c8d797dcfbfbb59c00119a97913f738a0e8af8794e450bda7d5488930dcf",
+  "independent_checks_sha256": "7a76741e3886b620244ffb2e8e9a26b91ac66d4dbd338ae1436da9568e341755",
+  "audit_script_sha256": "6c813ee28d446101e602d2a0742f1c445e9706bfc25da5e0c30e5e3315bb227f",
+  "limitations": [
+    "No archived control or54-guard program was executed, and no source test/JVM/actor bank/gameplay was run.",
+    "This is bounded preservation review, not a new semantic source review, current Git ref/trigger recheck, GitHub approval, runtime acceptance or event permission. Root owns final activation and receiving review.",
+    "The95-member manifest excludes only itself;96 is the actual ZIP member count. Source payloads are selected original files, not a complete runtime distribution."
+  ]
+}
