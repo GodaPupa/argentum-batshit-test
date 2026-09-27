@@ -3,12 +3,12 @@ package com.wingedsheep.ai.engine.advisor.modules
 import com.wingedsheep.sdk.model.EntityId
 
 /**
- * The existing frozen Pest/Monster advisor calculations over explicit facts.
+ * A prospective copy of the frozen Pest/Monster advisor calculations over explicit facts.
  *
- * This extraction preserves the original list order, first-match choices, score constants and
- * null/defer behavior. The legacy advisor and the actor adapter share these calculations; neither
- * a state callback nor an engine simulator crosses this boundary. This internal pilot component
- * adds no card, rule, player-facing choice, execution runner or gameplay authority.
+ * Copied from the reviewed actor component as a prospective equivalence candidate. The legacy
+ * advisor in this receiving branch still has its own implementation. Exact behavior, including
+ * physical-card choices and null/defer outcomes, requires source-specific comparison; copying
+ * these calculations does not itself qualify either pilot or change the frozen legacy advisor.
  */
 object PestMonsterTronPublicPolicy {
     private val tronLands = listOf("Urza's Mine", "Urza's Power Plant", "Urza's Tower")
