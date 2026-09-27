@@ -3,15 +3,18 @@ package com.wingedsheep.engine.scenarios
 import com.wingedsheep.engine.core.ActionProcessor
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.ChooseOptionDecision
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.ExecutionResult
 import com.wingedsheep.engine.core.GameAction
 import com.wingedsheep.engine.core.GameConfig
 import com.wingedsheep.engine.core.GameInitializer
+import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.core.PlayerConfig
+import com.wingedsheep.engine.core.SubmitDecision
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
 import com.wingedsheep.engine.state.components.combat.BlockedComponent
@@ -22,6 +25,7 @@ import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.SerializationTestSupport
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
 import com.wingedsheep.mtg.sets.MtgSetCatalog
 import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
 import com.wingedsheep.sdk.core.Color
@@ -81,11 +85,18 @@ class PurphorosGodOfTheForgeScenarioTest : FunSpec({
     }
     fun resolve(d: GameTestDriver) {
         var actions = 0
-        while (d.state.stack.isNotEmpty()) {
+        while (d.state.stack.isNotEmpty() || d.pendingDecision != null) {
             check(actions++ < 100) { "Fixture stack did not settle" }
+            if (d.state.hasPendingTriggerOrder()) {
+                val decision = d.pendingDecision as ChooseOptionDecision
+                submit(d, SubmitDecision(decision.playerId, OptionChosenResponse(decision.id, 0)))
+                    .error shouldBe null
+                continue
+            }
             check(d.pendingDecision == null) { "Unexpected unresolved choice: ${d.pendingDecision}" }
             submit(d, PassPriority(d.state.priorityPlayerId ?: error("Stack without priority"))).error shouldBe null
         }
+        check(d.pendingDecision == null) { "Unresolved choice after fixture stack settled: ${d.pendingDecision}" }
     }
     fun cast(d: GameTestDriver, who: EntityId, card: String, target: EntityId? = null): EntityId {
         val id = d.putCardInHand(who, card)
