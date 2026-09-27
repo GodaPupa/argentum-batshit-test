@@ -1,0 +1,517 @@
+{
+  "schema": "pest-monster-c2-exact-main-card-source-inventory-v1",
+  "status": "PROSPECTIVE_STATIC_SOURCE_MAP_INCOMPLETE_REACHABLE_CHOICE_BANK_NO_FIXTURE_OR_C2_AUTHORITY",
+  "source_parent": "b081c56fd9dfb165408ebe121a3fbabea29b0b62",
+  "frozen_main_sha256": {
+    "pest": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f"
+  },
+  "decks": [
+    {
+      "seat_policy": "pest",
+      "main_path": "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlPreboardContract.kt",
+      "main_blob": "e8a4347063d7d1424a5f90e5fdd9b0cc3b104de3",
+      "cards": [
+        {
+          "name": "Essence Warden",
+          "count": 4,
+          "definition_path": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/plc/cards/EssenceWarden.kt",
+          "git_blob": "b3d937660d6b1493e573e48a4815b76f97efc690",
+          "interactive_signals": {
+            "triggered": [
+              29
+            ]
+          }
+        },
+        {
+          "name": "Carrier Thrall",
+          "count": 4,
+          "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bfz/cards/CarrierThrall.kt",
+          "git_blob": "3539a9cd4de21556567779218b486c3dd3f01808",
+          "interactive_signals": {
+            "triggered": [
+              18
+            ]
+          }
+        },
+        {
+          "name": "Blood Researcher",
+          "count": 4,
+          "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/stx/cards/BloodResearcher.kt",
+          "git_blob": "2b97fa55fe1f489453b9c331acbd887d7e91dabc",
+          "interactive_signals": {
+            "triggered": [
+              34
+            ]
+          }
+        },
+        {
+          "name": "Pest Mascot",
+          "count": 4,
+          "definition_path": "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/sos/cards/PestMascot.kt",
+          "git_blob": "1598e5283c635c1be70011ade68dfa38fc5483aa",
+          "interactive_signals": {
+            "triggered": [
+              32
+            ]
+          }
+        },
+        {
+          "name": "Fierce Witchstalker",
+          "count": 4,
+          "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/eld/cards/FierceWitchstalker.kt",
+          "git_blob": "113b3b4c268fe592d790549288d0264efd1a8d1b",
+          "interactive_signals": {
+            "triggered": [
+              27
+            ]
+          }
+        },
+        {
+          "name": "Generous Ent",
+          "count": 3,
+          "definition_path": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/GenerousEnt.kt",
+          "git_blob": "eb2dc664f794b69442d479525537404ba4201875",
+          "interactive_signals": {
+            "triggered": [
+              33
+            ],
+            "cycle": [
+              38
+            ]
+          }
+        },
+        {
+          "name": "Follow the Lumarets",
+          "count": 4,
+          "definition_path": "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/sos/cards/FollowTheLumarets.kt",
+          "git_blob": "98fa6a2a0ae0c1ec9e331dddc560a16dd034d1a4",
+          "interactive_signals": {
+            "spell": [
+              43
+            ],
+            "random": [
+              41,
+              74
+            ]
+          }
+        },
+        {
+          "name": "Weather the Storm",
+          "count": 4,
+          "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/WeatherTheStorm.kt",
+          "git_blob": "09c20307b8c26a09ce972c42e9aa625baa4e3834",
+          "interactive_signals": {
+            "spell": [
+              28
+            ]
+          }
+        },
+        {
+          "name": "Cast Down",
+          "count": 4,
+          "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dom/cards/CastDown.kt",
+          "git_blob": "7b0346c0d417639521af3e3d37fee8ec02321ef5",
+          "interactive_signals": {
+            "spell": [
+              22
+            ],
+            "target": [
+              23
+            ]
+          }
+        },
+        {
+          "name": "Bone Shards",
+          "count": 2,
+          "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh2/cards/BoneShards.kt",
+          "git_blob": "f04a07d4c3da6c85f54e43890672c46465fa55ca",
+          "interactive_signals": {
+            "spell": [
+              21
+            ],
+            "target": [
+              24,
+              30
+            ],
+            "additional_cost": [
+              27,
+              33
+            ]
+          }
+        },
+        {
+          "name": "Chainer's Edict",
+          "count": 2,
+          "definition_path": "mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tor/cards/ChainersEdict.kt",
+          "git_blob": "95d81fa81df3dfecdc021241912fb79e3b815160",
+          "interactive_signals": {
+            "spell": [
+              26
+            ],
+            "target": [
+              27
+            ]
+          }
+        },
+        {
+          "name": "Forest",
+          "count": 10,
+          "definition_path": "basic land registry",
+          "git_blob": null,
+          "interactive_signals": {}
+        },
+        {
+          "name": "Swamp",
+          "count": 7,
+          "definition_path": "basic land registry",
+          "git_blob": null,
+          "interactive_signals": {}
+        },
+        {
+          "name": "Jungle Hollow",
+          "count": 4,
+          "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ktk/cards/JungleHollow.kt",
+          "git_blob": "d8a16afcae357070359a3d422635e5f0044f38c4",
+          "interactive_signals": {
+            "activated": [
+              32,
+              39
+            ],
+            "triggered": [
+              27
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "seat_policy": "monster",
+      "main_path": "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronAdmission.kt",
+      "main_blob": "e854685633cd7157929a59715deb289d45c1e341",
+      "cards": [
+        {
+          "name": "Rooftop Percher",
+          "count": 2,
+          "definition_path": "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ecl/cards/RooftopPercher.kt",
+          "git_blob": "c793b9938c0ce545c15daae20b90663fa766d82a",
+          "interactive_signals": {
+            "triggered": [
+              36
+            ],
+            "target": [
+              38,
+              43
+            ]
+          }
+        },
+        {
+          "name": "Generous Ent",
+          "count": 2,
+          "definition_path": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/GenerousEnt.kt",
+          "git_blob": "eb2dc664f794b69442d479525537404ba4201875",
+          "interactive_signals": {
+            "triggered": [
+              33
+            ],
+            "cycle": [
+              38
+            ]
+          }
+        },
+        {
+          "name": "Boulderbranch Golem",
+          "count": 2,
+          "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bro/cards/BoulderbranchGolem.kt",
+          "git_blob": "e95ba63a99625b880e3a897b07cdf4ed1b567161",
+          "interactive_signals": {
+            "triggered": [
+              36
+            ]
+          }
+        },
+        {
+          "name": "Bramble Wurm",
+          "count": 4,
+          "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/vow/cards/BrambleWurm.kt",
+          "git_blob": "29d677e2398389c4adb3bf2888b9d0a5f4a6f39f",
+          "interactive_signals": {
+            "activated": [
+              37
+            ],
+            "triggered": [
+              33
+            ]
+          }
+        },
+        {
+          "name": "Maelstrom Colossus",
+          "count": 4,
+          "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmr/cards/MaelstromColossus.kt",
+          "git_blob": "73edbec8e9e53c52060e13ef1cabd295f8571f8f",
+          "interactive_signals": {
+            "cascade": [
+              26
+            ],
+            "random": [
+              23
+            ]
+          }
+        },
+        {
+          "name": "Ancient Stirrings",
+          "count": 4,
+          "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/AncientStirrings.kt",
+          "git_blob": "c66d1118cb5484bdad9f09b5cbda8fa5ddefaf42",
+          "interactive_signals": {
+            "spell": [
+              17
+            ]
+          }
+        },
+        {
+          "name": "Crop Rotation",
+          "count": 3,
+          "definition_path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/CropRotation.kt",
+          "git_blob": "e687d18c2d6f00d26fe96bafd6e49d0c62651f60",
+          "interactive_signals": {
+            "spell": [
+              20
+            ],
+            "search": [
+              21
+            ],
+            "additional_cost": [
+              18
+            ]
+          }
+        },
+        {
+          "name": "Breath Weapon",
+          "count": 2,
+          "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/clb/cards/BreathWeapon.kt",
+          "git_blob": "6805dddc9b3c15b552b4650b97e37ea58cb1a28e",
+          "interactive_signals": {
+            "spell": [
+              27
+            ]
+          }
+        },
+        {
+          "name": "Unfathomable Truths",
+          "count": 2,
+          "definition_path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/UnfathomableTruths.kt",
+          "git_blob": "344a541b17ba3287316f4d5950d4cfd7b43ed651",
+          "interactive_signals": {
+            "spell": [
+              16
+            ]
+          }
+        },
+        {
+          "name": "Barrels of Blasting Jelly",
+          "count": 1,
+          "definition_path": "mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tla/cards/BarrelsOfBlastingJelly.kt",
+          "git_blob": "11e5dd06536db4998a05c6ae2dfb41c87de39f0d",
+          "interactive_signals": {
+            "activated": [
+              29,
+              36
+            ],
+            "target": [
+              42
+            ]
+          }
+        },
+        {
+          "name": "Candy Trail",
+          "count": 2,
+          "definition_path": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/woe/cards/CandyTrail.kt",
+          "git_blob": "6bc3a46de721c3dd81c3259111f8f7e81fbd9108",
+          "interactive_signals": {
+            "activated": [
+              33
+            ],
+            "triggered": [
+              29
+            ],
+            "scry": [
+              31
+            ]
+          }
+        },
+        {
+          "name": "Expedition Map",
+          "count": 4,
+          "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/ExpeditionMap.kt",
+          "git_blob": "b99c571747143aed4c89b39dede9828612cd097a",
+          "interactive_signals": {
+            "activated": [
+              26
+            ],
+            "search": [
+              28
+            ]
+          }
+        },
+        {
+          "name": "Giant's Boulder",
+          "count": 4,
+          "definition_path": "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/hob/cards/GiantsBoulder.kt",
+          "git_blob": "0ee8f0689ee5e39bf0b5c9f020eb4f0bbce98c50",
+          "interactive_signals": {
+            "activated": [
+              35,
+              41
+            ],
+            "triggered": [
+              31
+            ],
+            "target": [
+              43
+            ],
+            "scry": [
+              33
+            ]
+          }
+        },
+        {
+          "name": "Bonder's Ornament",
+          "count": 2,
+          "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c20/cards/BondersOrnament.kt",
+          "git_blob": "bdb6f98fea9ca1ff819baabab70f440cee0ab791",
+          "interactive_signals": {
+            "activated": [
+              18,
+              25
+            ]
+          }
+        },
+        {
+          "name": "Pinnacle Kill-Ship",
+          "count": 4,
+          "definition_path": "mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/eoe/cards/PinnacleKillShip.kt",
+          "git_blob": "5745e4d02147ac2d3fb3760a6b49f78361d52779",
+          "interactive_signals": {
+            "triggered": [
+              34
+            ],
+            "target": [
+              36
+            ],
+            "station": [
+              41
+            ]
+          }
+        },
+        {
+          "name": "Bojuka Bog",
+          "count": 1,
+          "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/BojukaBog.kt",
+          "git_blob": "aa9212f8c45a68f302a7529fdee75faa442338a0",
+          "interactive_signals": {
+            "activated": [
+              38
+            ],
+            "triggered": [
+              24
+            ],
+            "target": [
+              26
+            ],
+            "gather": [
+              28
+            ]
+          }
+        },
+        {
+          "name": "Conduit Pylons",
+          "count": 2,
+          "definition_path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/otj/cards/ConduitPylons.kt",
+          "git_blob": "f4e4f9ac3c0032176cc9d7bf793389e0401469de",
+          "interactive_signals": {
+            "activated": [
+              31,
+              38
+            ],
+            "triggered": [
+              26
+            ]
+          }
+        },
+        {
+          "name": "Forest",
+          "count": 2,
+          "definition_path": "basic land registry",
+          "git_blob": null,
+          "interactive_signals": {}
+        },
+        {
+          "name": "Haunted Fengraf",
+          "count": 1,
+          "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/HauntedFengraf.kt",
+          "git_blob": "6c23dceac8d9fcad932da84502e3917573bdeda5",
+          "interactive_signals": {
+            "activated": [
+              17,
+              23
+            ],
+            "gather": [
+              28
+            ],
+            "random": [
+              15,
+              26,
+              35
+            ]
+          }
+        },
+        {
+          "name": "Urza's Mine",
+          "count": 4,
+          "definition_path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasMine.kt",
+          "git_blob": "547d70da182bb8bb864ddfd5097f16550c63e1fc",
+          "interactive_signals": {
+            "activated": [
+              23
+            ]
+          }
+        },
+        {
+          "name": "Urza's Power Plant",
+          "count": 4,
+          "definition_path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasPowerPlant.kt",
+          "git_blob": "f2c4e2b0347b0c2366b9d1e5d971aca82de90ea2",
+          "interactive_signals": {
+            "activated": [
+              23
+            ]
+          }
+        },
+        {
+          "name": "Urza's Tower",
+          "count": 4,
+          "definition_path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasTower.kt",
+          "git_blob": "8f280147686880fd921acc43b49f8bb5d5234431",
+          "interactive_signals": {
+            "activated": [
+              23
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "pilot_and_projection_source": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "25a166415fe29189802940fc76f6f283da686072",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt": "7af655daf3e6a94333255e0c7396ff64bc652bce",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt": "d8dd4cb300746dbc7dc4840220e970dd180ce20d",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "090b6fb24392b06a32034030d937baca768e2201"
+  },
+  "interpretation": "Signals are literal source locations, not a complete runtime reachability proof. Generic mechanics, token abilities, alternative costs, trigger ordering, combat, mana payment and source continuations still require explicit finite cases for both seats/starts. C2P03/C2P04 remain placeholders. A printed card name or registry entry cannot qualify actor competence.",
+  "preserved": {
+    "fresh_official_games": 0,
+    "historical_quarantined": 81,
+    "consumed_ms01_ms05": "36295765465 INCOMPLETE; do not rerun"
+  }
+}
