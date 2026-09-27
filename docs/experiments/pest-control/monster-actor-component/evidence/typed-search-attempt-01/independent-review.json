@@ -1,0 +1,44 @@
+{
+  "api_job_and_log_verified": true,
+  "api_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/jobs/108599326014",
+  "artifact": 10928678097,
+  "artifact_crc_clean": true,
+  "artifact_sha256": "21c93a87e05c8573a14383e38da74fc03c9c3bac3ff1f496fb5c8457b25b0b15",
+  "artifact_size": 897,
+  "attempt_consumed": true,
+  "cases_accepted": 0,
+  "cases_executed": 0,
+  "cause": "Pretest source-bind assertion expected .github/workflows/pest-monster-actor-once.yml but actual published gate filename is .github/workflows/pest-monster-actor-typed-search-once.yml. No Gradle invocation occurred.",
+  "disposition": "INCOMPLETE_PRETEST_GATE_PATH_MISMATCH",
+  "gameplay_authorized": false,
+  "gate": "89cc35064dd305fe695312a16bf9a77b73b3cc1d",
+  "gate_files_sha256": {
+    ".github/workflows/pest-monster-actor-typed-search-once.yml": "af25f390ecd3f0cf2ed87cb37d7199912555c14146085dc67cba409805cf53bd",
+    "docs/experiments/pest-control/monster-actor-component/qualify_typed_search.py": "96b89fa40d23e2ce514e5953fcf465205f86bce13caac72162fe5b37ba8b98ee"
+  },
+  "gate_tree": "e41be9e8868383c64f811ef5fe80db86120d8b53",
+  "job": 108599326014,
+  "members_sha256": {
+    "build/reports/pest-monster-actor-once/bind.log": "ea2c5d999d51880e3372f4f8a20caf1476941bf071c9e0be36266b94a48ff728",
+    "build/reports/pest-monster-actor-once/receipt.json": "eb1e711a334ae933b7eed2812e10e54d48fdface6caaa023928a6a429d31abfb"
+  },
+  "official_games": 0,
+  "parent": "b081c56fd9dfb165408ebe121a3fbabea29b0b62",
+  "reviewer": "/root/compatibility_review",
+  "run": 36311890416,
+  "run_attempt": 1,
+  "schema": "pest-typed-search-original-independent-review-v1",
+  "scope": [
+    "Original ZIP digest matches upload-job log digest and artifact ID. Checkout log binds exact gate SHA; Git independently binds parent and two gate files.",
+    "Absence of source-before/source-after is expected because source() rejected before writing either; do not claim successful complete source bind.",
+    "Original one-shot consumed; no repair, retry, promotion or future execution authority granted by this audit.",
+    "Preserve untouched original ZIP and this disposition; any proposed changed-gate successor requires exact path/source/finite-bank review and prospective authority."
+  ],
+  "source_receipts_present": false,
+  "steps": {
+    "bind": "failure",
+    "collect": "failure",
+    "execute": "skipped",
+    "upload": "success"
+  }
+}
