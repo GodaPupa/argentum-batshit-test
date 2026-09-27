@@ -1,0 +1,130 @@
+{
+  "schema": "izzet-factory-receiving-successor-assessment/v1",
+  "author": "/root/izzet; source-author assessment, not independent gameplay or GitHub approval",
+  "at_utc": "2026-09-27T06:00:07Z",
+  "disposition": "INERT_EXACT_RUNTIME_BRANCH_APPROPRIATE_SUBJECT_TO_ROOT_FRESH_PREFLIGHT; HOLD_PR_AND_ALL_NEW_EXECUTION",
+  "source": {
+    "head": "e825589e1deff9de09f4ffe78aece41dc5ac0df9",
+    "tree": "52932b643bc05419435996655903044f798e9f3e",
+    "parent": "af16191eba3c93efa40f4ab28c2454b4b3c23d88",
+    "parent_tree": "e9aba19e87a05fd6844b536d394b143f8e8a4235",
+    "base": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+    "base_tree": "1a903dc4862d32fdd029e73a916cc9659678db4d",
+    "diff": [
+      {
+        "path": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt",
+        "added": 7,
+        "removed": 0
+      },
+      {
+        "path": "ai/src/test/kotlin/com/wingedsheep/ai/engine/AIPlayerLegacyYesNoStrategyTest.kt",
+        "added": 197,
+        "removed": 0
+      }
+    ],
+    "published_reachability": "Already reachable through consumed isolated control a0fe and its readback descendant. None of372 live branch heads is e825; no live project runtime ref points to it. Control branches contain isolated control trees and are not runtime receiving branches."
+  },
+  "component_evidence": {
+    "independent_review_git_blob": "6db302b14e936a5f4074d0731250037e3d330a46",
+    "sha256": "f78ace66457684294f7a1bbf10e4fc4a6f69f549cb4cd55a56c47faa41be7ae5",
+    "reviewer": "/root/sphinx",
+    "actual_scope": "11 software executions,9 identities: before1pass/1specificexpectedfailure; fixed2pass; unchanged7pass;0errors/skips. Root/Sphinx own actual original relay and review; no duplicate artifact/log fetch by this assessment.",
+    "exclusions": [
+      "Full AI suite",
+      "Complete receiving runtime",
+      "All pilot policies",
+      "Position1 or official gameplay"
+    ],
+    "publication_note": "Full original-log publication scan remains root-owned; this assessment does not replace it."
+  },
+  "live_owners_and_refs": {
+    "canonical_bestow": "mayhem/izzet-bestow-integration @50eca5fb955013d70ea26c3c6a09efabef4bcff4",
+    "canonical_program": "mayhem/izzet-science @25aca91fd476358d0d5b2adfb6f8d9e986a777af",
+    "shared_candidate": "lab/izzet-shared-receiving-candidate-20260926 @8b05f2cecee6e992f7eca6d77695040f32901f40",
+    "baseline_candidate": "lab/izzet-software-baseline-candidate-20260927 @60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+    "outside_veteran_source": "82b5e4660c28bfb399b09cbaaf92d4e59181bf82 / aecacb5c0e520721b8ae263e9e1f3822bb46f783; one new70-line two-case card test on60d; diverges from e825",
+    "outside_veteran_control": "c841edaa2f836e33a5f0ac881b1bf9c87e5d4df5; consumed run36292872794; preserve",
+    "outside_receiving_control": "9e9c2cb8070e20b5e81f0065027632c2e54c1ae7; consumed run36289432844; source60d; preserve",
+    "outside_raw_evidence": "d45018ad6a3700a0dabe88f07f81e1bb5831c3dc and e1de022d742d5b4caf78f549c1d385038a602ce1; implementer reports explicitly distinguish independent review",
+    "outside_opal_draft": "review/izzet-opal-palace-inert-20260927 @ee1d38a4f338b49d040f07b780f7a5864650b8b9, treecee1c817ba0d19d4fd91349c62ba2ba3a8a8e892; SDK rider/stack component/card/six proposed cases remain uncompiled/unqualified with consumer hooks deliberately absent under Manual ownership",
+    "open_izzet_prs": [
+      {
+        "number": 197,
+        "head": "c47e9dbafc1fd582f81be1db04e9f35a09f067b5",
+        "base": "50eca5fb955013d70ea26c3c6a09efabef4bcff4"
+      },
+      {
+        "number": 165,
+        "head": "50eca5fb955013d70ea26c3c6a09efabef4bcff4",
+        "base": "25aca91fd476358d0d5b2adfb6f8d9e986a777af"
+      }
+    ],
+    "ownership_limit": "Outside current Work/worker identities cannot be inferred from Git author metadata; treat these published sources/consumed controls as separately owned. Do not rewrite or adopt them by proximity."
+  },
+  "trigger_proof": {
+    "git_blob": "883a6a9e96502f7a49b298ac3c1ed6d749a850c5",
+    "sha256": "0cbd65cf995790e7885cb7f522ac1da6a01aa633578b1f78bf57a7d77ead12a0",
+    "inherited111_checked": true,
+    "matching_push_workflows": 0,
+    "matching_pr_workflows": [
+      "CI"
+    ],
+    "default80_reused_exact_tree": true
+  },
+  "ci_blocker": {
+    "source_git_blob": "99b3a3931c4cad5d914e697a748a3f8a39538064",
+    "sha256": "95d07d953e2fbd4b1ec24040f23e17368655ceab839cf62dd552a1e86c8d84a8",
+    "path": ".github/workflows/ci.yml",
+    "trigger": "Every opened/synchronize/reopened PR, including draft; no path filter.",
+    "actual_route": "Seven backend groups invoke raw ./gradlew ${{ matrix.tasks }}; no just/gradle-locked invocation or shlock prerequisite. Cached Gradle/test outputs restored; no backend artifact upload. Main-only coverage is separate/nongating.",
+    "required_route": "Repository verify instruction requires just -> scripts/gradle-locked and real prescribed semaphore. Existing successful factory prerequisite is a bounded source of reusable provision/observation; it is not automatically a CI workflow repair.",
+    "decision": "Do not open a PR merely to launch this known nonconforming route. Inert branch publication is separable; source change/qualification for a fresh locked CI route needs its own review.",
+    "preserved_failures": "No golden, pilot, fixture or old failure is weakened or reclassified."
+  },
+  "next_receiving_gates": [
+    {
+      "gate": "Full AI coverage",
+      "requirement": "Required beyond the two new and seven old focused identities; use prescribed just test-ai or equivalent full :ai:test within the separately reviewed full-CI route. Avoid a redundant standalone run if exact fresh full CI supplies it."
+    },
+    {
+      "gate": "Coherent receiving component bank",
+      "requirement": "Prospective only: original87 classes/973 identities plus the2 new factory identities yields88classes/975 unique identities. The seven completed-branch controls already occur in973; do not add11 or9 to973. Keep original names/assertions/ordering/source authority and new current source pins. No event is authorized by arithmetic; independently review one finite source-bound control and exact receiving scope first."
+    },
+    {
+      "gate": "Exact-source full CI",
+      "requirement": "The existing receiving-gate full_ci field explicitly requires separate full receiving CI. Preserve its19 backend tasks in7groups and frontend npm ci/typecheck/build, exact source/dependencies, actual shlock acquisition and fresh workers/XML/exits, complete raw retention and independent artifact review. Report cached/skipped/NO-SOURCE and markers honestly. No fixed global case count is invented."
+    },
+    {
+      "gate": "Project integration",
+      "requirement": "After actual receiving acceptance, use the governing review/protection process to advance a reviewed runtime source. Do not merge solely on green status, reuse the consumed controls, or indiscriminately merge the wider Izzet history into canonical main."
+    },
+    {
+      "gate": "Official Position1",
+      "requirement": "Still separate: remaining exact opponent mechanics, full-pair commander lifecycle/damage and Phase29 collection, qualified actor/pilots, semantic replay, durable exclusive vector/journal/runtime binding and exact conditional source permit. This component does not authorize seeds or later positions."
+    }
+  ],
+  "recommendation": {
+    "prospective_inert_branch": "lab/izzet-legacy-factory-candidate-20260927",
+    "exact_head": "e825589e1deff9de09f4ffe78aece41dc5ac0df9",
+    "root_final_preflight_required": true,
+    "preserve_all_existing_refs": true,
+    "possible_later_narrow_pr_base": "lab/izzet-software-baseline-candidate-20260927 @60d",
+    "pr_now": "HOLD",
+    "new_control_or_gate_authored": false
+  },
+  "guidance": {
+    "verify_blob": "8a5fd2711dcb202dfd1e32bd616cb85e91cb5078",
+    "receiving_gate_blob": "c2e8f36dff486c27c269c6d76fc12c0cc6af6fca",
+    "receiving_gate_full_ci": "Full receiving CI on the exact accepted source remains separate and required."
+  },
+  "actions_during_assessment": {
+    "source_or_workflow_changes": 0,
+    "refs_moved": 0,
+    "PRs_opened": 0,
+    "workflow_dispatches_or_reruns": 0,
+    "original_artifact_downloads_or_logs": 0,
+    "official_games": 0,
+    "deck_changes": 0,
+    "deck_performance_evidence_changed": false
+  }
+}
