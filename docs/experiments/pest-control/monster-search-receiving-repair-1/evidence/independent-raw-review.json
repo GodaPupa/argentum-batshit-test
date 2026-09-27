@@ -1,0 +1,41 @@
+{
+  "artifact_id": 10923833171,
+  "case_names": [
+    "MS01 Map missing-piece search chooses the identical physical offered card",
+    "MS02 Map fallback retains verified physical offer order despite reversed entity handles",
+    "MS03 paid Crop search chooses the identical missing-piece physical card",
+    "MS04 Cascade Crop public sacrifice stays separate from its later library search",
+    "MS05 pair seam requires a real actor response and validates the typed question"
+  ],
+  "cases_errored": 0,
+  "cases_failed": 0,
+  "cases_passed": 5,
+  "cases_skipped": 0,
+  "disposition": "FIVE_DETERMINISTIC_CASES_PASSED_BUT_COLLECTOR_GATE_INCOMPLETE",
+  "explanation": "Gradle --info emitted the task display line at test start and report generation for one executor. The frozen collector required exactly one display line, so it rejected this otherwise passing raw software test. The original failure remains retained.",
+  "fresh_build_task_summary": "48 actionable tasks: 48 executed",
+  "gradle_test_task_display_lines": [
+    "> Task :gym:test",
+    "> Task :gym:test"
+  ],
+  "historical_games_quarantined": 81,
+  "official_games": 0,
+  "official_seeds_drawn": 0,
+  "one_gradle_test_executor_start_and_finish": true,
+  "original_artifact_bytes": 237718,
+  "original_artifact_sha256": "87a105132639b59ca5072ba329983c06d7b328a932941d2508faadbf34a29a67",
+  "original_collector_errors": [
+    "Raw log does not prove one fresh :gym:test execution"
+  ],
+  "original_collector_status": "INCOMPLETE_RECEIVING",
+  "original_zip_members": 7,
+  "raw_xml_sha256": "40844af7c566d39c9cde60e6ab857aaf4c0527cdb440ed25f58bf16c26e60107",
+  "reviewer": "/root",
+  "run_id": 36295765465,
+  "schema": "pest-monster-ms01-ms05-repair1-independent-original-raw-review-v1",
+  "scope": "Independent raw software observation only; this does not silently override the frozen collector or grant pair pilot, C2/A2, seed, claim, allocation, game, or historical MC10 authority.",
+  "source_before_equals_after": true,
+  "source_commit": "7aac5b099c3886ac5326db83f60d143ade08422d",
+  "source_tree": "ad63f4e17907ab6976153e3f1004d9953753e839",
+  "test_exit_code": 0
+}
