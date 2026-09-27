@@ -1,0 +1,156 @@
+{
+  "schema": "manual-purphoros-independent-review-recovery-checkpoint-v1",
+  "observed_utc": "2026-09-27 04:05:59 UTC",
+  "reviewer": "/root/sphinx",
+  "status": "HELD_NO_DIAGNOSTIC_EVENT",
+  "source": {
+    "commit": "99f5611185d4338a45b60b988c9afe227bf74944",
+    "tree": "ee14faf380805b04bfcccc722eb2b0e320ac2508"
+  },
+  "live_preflight": {
+    "path": "sphinx-audit/manual-purphoros-diagnostic-review/status-recovery-live-preflight.json",
+    "bytes": 6552,
+    "sha256": "db819dd39feee65fcfaa44ee89a19df1db8f8928813bfaab5a8581e56db9a86f"
+  },
+  "live_preflight_result": {
+    "branch": "lab/manual-purphoros-one-case-diagnostic-20260927",
+    "ref_http": 404,
+    "actions_branch_total_count": 0
+  },
+  "retained_reviews_and_reproducer": [
+    {
+      "path": "sphinx-audit/manual-purphoros-diagnostic-review/independent-source-review.json",
+      "bytes": 4907,
+      "sha256": "95fb827f40c78b89c7fb75f1de2431c2e753be86508a8bc3bd63ad64cd763948"
+    },
+    {
+      "path": "sphinx-audit/manual-purphoros-diagnostic-review/independent-selector-static-check.json",
+      "bytes": 7878,
+      "sha256": "20bdcc70da5179deb0c26b61b06a453fade7c9ce321464b39a3b7e4ff77c5aa4"
+    },
+    {
+      "path": "sphinx-audit/manual-purphoros-diagnostic-review/independent-b23-control-findings.json",
+      "bytes": 6407,
+      "sha256": "7c5b12516da8cd1701477cea13a1825dbcfe2c519bc1aabdf2009939bce406ee"
+    },
+    {
+      "path": "sphinx-audit/manual-purphoros-diagnostic-review/independent-b23-exited-wrapper-check.json",
+      "bytes": 835,
+      "sha256": "c81b3347d84be1ec414df24e9d0e1510b6cecb0a57e9501414c9f52c815ed0f2"
+    },
+    {
+      "path": "sphinx-audit/manual-purphoros-diagnostic-review/check_b23_exited_wrapper.py",
+      "bytes": 1890,
+      "sha256": "111dcb8a7b0fec808469be5157aa8a2178bf4f7434d809dbeaa5374a327101b4"
+    }
+  ],
+  "preserved_original_b23_controls": [
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/control/preserved-b23-review-draft/run.py",
+      "bytes": 19164,
+      "sha256": "b23b6d0256eeccffb999c7eb2b192e55a84b795dcdf12a0a25193dcb18624d66"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/control/preserved-b23-review-draft/scope.json",
+      "bytes": 7997,
+      "sha256": "878ecc5fe30da3410b7053dda49c098a05d005c21101526f9e972965563a9f70"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/control/preserved-b23-review-draft/manual-purphoros-one-case-diagnostic.yml",
+      "bytes": 1368,
+      "sha256": "dfc365bee92fad3e170697052ecec132b269daecd4d0ce63f08660ef418e529d"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/control/preserved-b23-review-draft/control-manifest.json",
+      "bytes": 1548,
+      "sha256": "1cc69292d2453a3e555e6e52007e6474a51984630bbdffb7d6b7a41eefdc3fd0"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/control/preserved-b23-review-draft/author-control-guards.json",
+      "bytes": 4607,
+      "sha256": "cf18bc135a1c53dad11de681469ec0d8806acb267dba7e07557e645b323dd9e6"
+    }
+  ],
+  "current_unreviewed_author_draft": [
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/control/run.py",
+      "bytes": 21456,
+      "sha256": "68de84f2b82ecdfb0af96bdff25670962fcda32923f3ad54f7eb1e93b505f5b2"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/control/scope.json",
+      "bytes": 8219,
+      "sha256": "9ef9ec5d8506591aee1e27f97071e1284cbb1c72f88dd4c3dd0ae1fce3dc6e4d"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/control/manual-purphoros-one-case-diagnostic.yml",
+      "bytes": 1368,
+      "sha256": "f3ea05daa161e2257c4df17202dd3f5571051c73cca241582354c60ba859cbc0"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/control/control-manifest.json",
+      "bytes": 1548,
+      "sha256": "1cc69292d2453a3e555e6e52007e6474a51984630bbdffb7d6b7a41eefdc3fd0"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/control/author-control-guards.json",
+      "bytes": 4607,
+      "sha256": "cf18bc135a1c53dad11de681469ec0d8806acb267dba7e07557e645b323dd9e6"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/control/review-findings-b23.json",
+      "bytes": 589,
+      "sha256": "cebcac24c1c22bd68a148005b8b040a50c078b571e2b1a5047bbc527761d5e97"
+    }
+  ],
+  "fixture_source": [
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/original.kt",
+      "bytes": 19204,
+      "sha256": "5003070a3a0064691edec48e2eb6ac1f80f68746017722ffda80f2bf5450e181"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/candidate.kt",
+      "bytes": 19380,
+      "sha256": "ba5aaae63f2868ede9a4c53ee392abfff9dfd3e03ba2967b0e10fe6389d5225b"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/candidate.diff",
+      "bytes": 436,
+      "sha256": "7c1c94d09208497082eb4636bab34e09248d3dae7a171d439fcfc5608019477b"
+    },
+    {
+      "path": "manual-shared-composition/pr206-discovery/purphoros-diagnostic-proposal/proposal.json",
+      "bytes": 1249,
+      "sha256": "6fe9d9ab986d89944d1fd82e1709c0750bfc3008d6ea8ba97830b225f5ffd5ec"
+    }
+  ],
+  "current_draft_disposition": {
+    "ready_for_execution": false,
+    "source_review": null,
+    "scope_environment_prerequisite_status": "HELD_FOR_EXACT_SHARED_IZZET_PREREQUISITE_REUSE; current generic setup is not approved for activation",
+    "manifest_and_author_guards_still_bind": "Originalb23, not current68de partialsuccessor",
+    "observed_proposed_corrections": [
+      "Currentworkingdraft unconditionally attempts same-owned-group termination and records live group members; this code has not been independently accepted or executed.",
+      "Currentworkingdraft declares3000-second overallcontrol/120-second cleanupreserve and60-minute workflow; this correction is not yet finalreviewed.",
+      "Currentworkingdraft still contains generic INN2 setup and explicitly awaits exact reviewed sharedIzzet prerequisite."
+    ]
+  },
+  "ownership": {
+    "author_controls_and_test_candidate": "/root/manual; do not overwrite or activate",
+    "independent_review_records": "/root/sphinx",
+    "shared_prerequisite_and_process_fix": "/root/izzet; independent review /root/ferocity; pending root disposition",
+    "event_release": "/root only after complete exact review"
+  },
+  "next_actions": [
+    "Manual completes exact shared prerequisite reuse and correctedcollector, then refreezes script/scope/workflow/manifest and source-only guards.",
+    "Sphinx independently reviews the final complete bytes and verifies originalMPC01/MPC02 findings resolved; preserve b23 and actualsyntheticnegative evidence.",
+    "Root independently checks exactsource/controltree/event and currentownership before any one-use branch creation."
+  ],
+  "recovery_limits": [
+    "No new JVM, repositoryfixture, diagnostic, workflowevent or gameplay was executed in this recovery pass.",
+    "Earlierb23 finding was reproduced with one reviewer-owned Python child writer only; originalsource95fb and selector20bd remain valid within their narrow source scopes.",
+    "No final controlPASS or gameplayadmission exists. ExternalPR209/opening scopes are not owned or adopted by this review.",
+    "No active toolcell or shellsession is owned by this reviewer at this checkpoint."
+  ]
+}

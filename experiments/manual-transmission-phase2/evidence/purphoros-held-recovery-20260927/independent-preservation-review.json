@@ -1,0 +1,59 @@
+{
+  "schema": "manual-held-diagnostic-recovery-independent-preservation-review/v1",
+  "reviewer": "/root/ferocity; non-author of Manual diagnostic controls and Sphinx recovery package",
+  "reviewed_at_utc": "2026-09-27T04:10:13.432106+00:00",
+  "disposition": "PASS_PRESERVATION_ONLY_HELD_CONTROLS_REMAIN_UNREVIEWED",
+  "inputs": [
+    {
+      "path": "sphinx-audit/manual-purphoros-diagnostic-review/status-recovery-package.zip",
+      "bytes": 153978,
+      "sha256": "9307b2ea8a86c5e112ac9706ed87104bd4ab7b8b17d6245aa073b5f04b061461"
+    },
+    {
+      "path": "sphinx-audit/manual-purphoros-diagnostic-review/status-recovery-package-receipt.json",
+      "bytes": 859,
+      "sha256": "df263b245e9d7eda1555818f7929a7a946f2e2df3558104f9427dfa949da726a"
+    },
+    {
+      "path": "sphinx-audit/manual-purphoros-diagnostic-review/STATUS_RECOVERY.json",
+      "bytes": 7729,
+      "sha256": "e1553d8a1237ac59bd2fd722ba41ce08e739ff91c4a90f4a480774e97c85faa2"
+    }
+  ],
+  "checks": [
+    "Original153978-byte archive SHA9307b2ea verified,41unique members/allCRC checked.40manifested members match their exact original local files and declared byte lengths/SHA256; inode/size/mtime unchanged across each read.",
+    "Receiptdf263b24 and STATUSe1553d8a agree with the archive and internalmanifestb6d4132a. Internal STATUS_RECOVERY exactly matches the separate original checkpoint.",
+    "Originalb23 script and originalscope/workflow/manifest/guard snapshots are retained. Current68de script is separately preserved as an unreviewed partialsuccessor. The current manifest still points to originalb23, explicitly labelled stale for68de; it is not repinned or misrepresented as a successor acceptance.",
+    "HELD_NO_DIAGNOSTIC_EVENT, ready_for_execution=false/source_review=null, ready=false/event_created=false and historicalbranch404/zeroevents at04:05:59cut are explicit. No claim that later work cannot exist; current futureevent checks remain root responsibility.",
+    "Independent95fb source and20bd selector review records, exact7c5b blockingfindings, c81b negative orphanwriter observation and111d reproducer are losslessly retained; no reproducer was rerun.",
+    "Selector source/tag proofs retain actual Kotest6.2.1 annotatedtag and immutablecommit9ae8a1d5bcac861c03022b5fe2f2b01ec5b731aa; this review checks their preservation, not a new semantic selector acceptance.",
+    "UnresolvedMPC01 owneddescendant quiescence, MPC02 workflow/controltimeenvelope and MPC03 sharedshlockprerequisite remain explicit. Izzet owns sharedhelper authoring, Manual owns its controls, Sphinx owns independentreceivingreview, root owns finaleventrelease."
+  ],
+  "support": [
+    {
+      "path": "ferocity-takeover/manual-held-recovery-review/independent-checks.json",
+      "bytes": 18279,
+      "sha256": "3505a7b0e886ad873181a1d0bbe5216691d0cfb5f328773b04e0ecdabd385718"
+    },
+    {
+      "path": "ferocity-takeover/manual-held-recovery-review/verify_preservation.py",
+      "bytes": 4151,
+      "sha256": "50cedc024a0c20c52d65c4f9c3a2443473dd0d55ac6e18ea29b7408da22814bb"
+    }
+  ],
+  "publication_scope": "Exact three reviewed recovery package files and this attributed review/support may be preserved on the existing inert Manual evidence lineage after live expected-parent/trigger/ownership checks; this is evidence preservation only.",
+  "not_granted": [
+    "No approval ofb23 or68de runtime/control, manifest, setup dependency or future sharedhelper.",
+    "No diagnostic/fixture/JVM/syntheticprobe/workflow event, retry, repository merge or GitHub approval.",
+    "No experimental allocation, seed access, gameplay admission or deck-performance finding."
+  ],
+  "reviewer_execution": {
+    "archive_hash_XML_or_JSON_read_only": true,
+    "source_imports": 0,
+    "synthetic_process_probes": 0,
+    "JVM": 0,
+    "fixtures": 0,
+    "workflow_events": 0,
+    "gameplay": 0
+  }
+}
