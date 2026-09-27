@@ -1,10 +1,10 @@
 package com.wingedsheep.gym.pest
 
 import com.wingedsheep.engine.core.SelectCardsDecision
+import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.gym.actorinput.ActorEpoch
 import com.wingedsheep.gym.actorinput.ActorInput
-import com.wingedsheep.gym.actorinput.ActorLegalAction
 import com.wingedsheep.gym.actorinput.ObservationAdapter
 import com.wingedsheep.gym.actorinput.UnsupportedPolicyInput
 import com.wingedsheep.gym.actorinput.verifiedAuthorizedLibrarySearchOrder
@@ -32,7 +32,7 @@ internal class PestMonsterVerifiedSearch private constructor(
             adapter: ObservationAdapter,
             state: GameState,
             actor: EntityId,
-            legalActions: List<ActorLegalAction>,
+            legalActions: List<LegalAction>,
             epoch: ActorEpoch,
             policyRngState: Long,
         ): PestMonsterVerifiedSearch {

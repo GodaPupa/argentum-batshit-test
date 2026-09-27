@@ -1,0 +1,67 @@
+name: Pest Monster Search Actor Receiving Repair 1
+
+on:
+  push:
+    branches:
+      - lab/pest-monster-search-ms01-ms05-compile-repair-one-shot-20260927
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pest-monster-search-actor-receiving-repair-1-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  receive:
+    if: github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+
+      - name: Require independent source and gate acceptance
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p build/reports/pest-monster-search-actor-receiving-repair-1
+          python3 docs/experiments/pest-control/monster-search-receiving-repair-1/collect.py bind 2>&1 |
+            tee build/reports/pest-monster-search-actor-receiving-repair-1/bind.log
+
+      - name: Execute only the five frozen deterministic cases
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          just test-class PestMonsterTronAuthorizedSearchReceivingTest --rerun --no-build-cache \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --console=plain --info --stacktrace 2>&1 | tee build/reports/pest-monster-search-actor-receiving-repair-1/tests.log
+          result=${PIPESTATUS[0]}
+          printf '%s\n' "$result" > build/reports/pest-monster-search-actor-receiving-repair-1/test-exit-code.txt
+          exit "$result"
+
+      - name: Retain raw XML and exact source disposition
+        if: always()
+        run: python3 docs/experiments/pest-control/monster-search-receiving-repair-1/collect.py collect
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-search-actor-receiving-repair-1-${{ github.sha }}
+          path: |
+            build/reports/pest-monster-search-actor-receiving-repair-1/
+            gym/build/test-results/test/TEST-*.xml
+          if-no-files-found: error
+          retention-days: 90

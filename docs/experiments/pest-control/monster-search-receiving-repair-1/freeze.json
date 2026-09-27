@@ -1,0 +1,53 @@
+{
+  "bank_sha256": "d2e9681d11bb21259a73da1b3fbd00c374454cf519d2051334bfd42d2ad5aa17",
+  "fixture_runs_by_this_freeze": 0,
+  "gate_review": {
+    "accepted": false,
+    "collector_sha256": "be794fafc6f729560fba26bdd85a3e6544399d9150ad5ca4aacba3d5fe98e68e",
+    "review_ref": null,
+    "reviewer": null,
+    "workflow_sha256": "5125053f659e2ce8723f9cb924c0d489baa3267988473567881574858386f09d"
+  },
+  "official_games": 0,
+  "official_seed_draws": 0,
+  "original_attempt": {
+    "artifact_id": 10923626830,
+    "artifact_path": "docs/experiments/pest-control/monster-search-receiving-repair-1/original-36294496726.zip",
+    "artifact_sha256": "4fb022a4c377cdabc4627e615aa2b3b8c5880764e832ef8febcbd1ffa94b0ce7",
+    "disposition": "INCOMPLETE_PRETEST_COMPILE",
+    "gym_test_task_observed": false,
+    "index_path": "docs/experiments/pest-control/monster-search-receiving-repair-1/original-failure-index.json",
+    "index_sha256": "603251bd5436d4e960060d4cb514f66d7acf78d47dc67021d70cbaa3a1fe1f6d",
+    "official_games": 0,
+    "official_seed_draws": 0,
+    "run_id": 36294496726,
+    "source_commit": "9684b7ec5369a9f450c7f1cd9bddd662cf002dc5",
+    "xml_cases_observed": 0
+  },
+  "schema": "pest-monster-search-actor-receiving-repair-1-freeze-v1",
+  "scope": "Only original MS01-MS05 deterministic cases on changed source after a retained pretest compile failure. No MC10 disposition, pair pilot admission, official allocation or game.",
+  "source_review": {
+    "accepted": false,
+    "candidate_commit": null,
+    "review_ref": null,
+    "reviewer": null,
+    "source_sha256": {
+      "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "21d60a04da428312ede8aa05f29d16f0b7a3baa0a4a077fe47b9455857341912",
+      "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronPublicPolicy.kt": "7b99f88d02e287e6cd77997a04b89fa6e54500f9af3613f2b5f77c0d89a9c54d",
+      "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorAuthorizedLibrarySearch.kt": "ff11b24b7f4f7238239fb8f42a8b1d9e9b8dabd01022a345f51e1dc3f2850392",
+      "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorChoiceSupport.kt": "6adefd58499c0ec2610f078cd78696f4ba6b33b47c5043093a2e77f392c493a0",
+      "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorDecisionProjection.kt": "368c2f0fe1ac4f06942ec8b5095d94ecd6bbb0cb94273977271e9a007bf7808b",
+      "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPublicCards.kt": "186d1f5fc2d3d8be2754ff0a029dd1fdd58348422514fb06ce45690140aea748",
+      "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "8dc592010ef02fa9a2047af2ace050034af828575112c63b7d5145318091e010",
+      "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterPairDecisionBoundary.kt": "bcb91b6c0f2ab065ce4d3736ae981af1e09215f549e81764c60919fa4fa8737f",
+      "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisions.kt": "1904efaf984ce9be32846e4377204b0883387d3660fffeca8ff6a284a92e3e82",
+      "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterVerifiedSearch.kt": "28f87338302e789676da3406986ca93b4b8211ecf80d28f0061093891068252e",
+      "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterTronAuthorizedSearchReceivingTest.kt": "40026360e5f5de50308f999fc7ea881e35ac85230b0c6a04ecc245ccb6b22a1b",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt": "850125a611fd414d2aaf8dd68aaf628a3ff74a6b961ee9d074e7c10496290202",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/GatherCardsExecutor.kt": "f4c6147bf3817753967af63cf69665a5db58c91de8410ca223194c9e27395e36",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/SelectFromCollectionExecutor.kt": "16fc3b3f39990aa8d1b0a238ec3fe98a9b683cfbdf3d07820a144f118dfb97f4",
+      "scripts/test-class": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81"
+    }
+  },
+  "status": "PENDING_INDEPENDENT_CHANGED_SOURCE_AND_GATE_REVIEW"
+}

@@ -1,0 +1,36 @@
+{
+  "artifact_id": 10923626830,
+  "artifact_sha256": "4fb022a4c377cdabc4627e615aa2b3b8c5880764e832ef8febcbd1ffa94b0ce7",
+  "compile_errors": [
+    {
+      "diagnosis": "Public cardInfo property cannot be smart cast across module boundary.",
+      "line": 82,
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisions.kt"
+    },
+    {
+      "diagnosis": "ObservationAdapter.build accepts List<LegalAction>, not List<ActorLegalAction>.",
+      "line": 46,
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterVerifiedSearch.kt"
+    }
+  ],
+  "gym_test_task_lines": [],
+  "job_id": 108550717003,
+  "raw_audit_errors": [
+    "Test command exited 1",
+    "Raw log does not prove one fresh :gym:test execution",
+    "Expected exactly one gym XML; found: []",
+    "Expected raw XML missing"
+  ],
+  "run_id": 36294496726,
+  "schema": "pest-monster-search-original-pretest-failure-index-v1",
+  "scientific_scope": "No deterministic case execution, seed, claim, or game. Original failure remains retained in the ZIP.",
+  "source_after_sha256": "558520e1e0c3cac2d727682a2cdcdac05a31de0a8edcf4347584f126be688372",
+  "source_before_equals_after": true,
+  "source_before_sha256": "558520e1e0c3cac2d727682a2cdcdac05a31de0a8edcf4347584f126be688372",
+  "source_commit": "9684b7ec5369a9f450c7f1cd9bddd662cf002dc5",
+  "source_tree": "0cee526b61c89c0905ab680bf718ab8924fe8c27",
+  "status": "INCOMPLETE_PRETEST_COMPILE",
+  "test_exit_code": 1,
+  "test_log_sha256": "c773f0d0151f7b78047ac750d3186a72e4535e770ed8d2c33cd177c8e1364d99",
+  "xml_case_count": 0
+}

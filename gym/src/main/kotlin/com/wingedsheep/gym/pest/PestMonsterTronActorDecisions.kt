@@ -78,8 +78,8 @@ class PestMonsterTronActorDecisions(
 
         val response: DecisionResponse? = when {
             source in setOf("Expedition Map", "Crop Rotation") && question is SelectCardsDecision &&
-                simpleOneCardChoice(question) && question.cardInfo != null &&
-                question.cardInfo.keys == question.options.toSet() && search?.matches(input, question) == true -> {
+                simpleOneCardChoice(question) &&
+                question.cardInfo?.keys == question.options.toSet() && search?.matches(input, question) == true -> {
                 val info = requireNotNull(question.cardInfo)
                 PestMonsterTronPublicPolicy.tutorSelection(
                     accessibleNames, question.options,
