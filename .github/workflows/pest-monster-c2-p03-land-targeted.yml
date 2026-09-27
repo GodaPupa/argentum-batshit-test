@@ -1,6 +1,10 @@
 name: Pest Monster P03 land receiving
 on:
-  workflow_dispatch:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-c2-p03-land-targeted.yml"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterPriorityLandReceivingTest.kt"
 
 permissions:
   contents: read
