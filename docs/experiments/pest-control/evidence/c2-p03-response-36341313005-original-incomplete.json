@@ -1,0 +1,26 @@
+{
+  "schema": "pest-c2-receiving-original-audit-v1",
+  "status": "INCOMPLETE_FRESH_FIXTURE_ASSERTION_NO_CASE_ACCEPTANCE",
+  "run": 36341313005,
+  "source_commit": "2c3ce6b51912d3fdcef96dea50c89b6d167dc5e6",
+  "artifact": {
+    "id": 10939270518,
+    "zip_sha256": "265ea17b141324b836e81e58ce9d051e9967de9f53c5aa5262724d27b4b8d32a",
+    "bytes": 243061,
+    "crc": "PASS",
+    "source_sha256": "0aebbf202f1f3503eb32024b4c80c17035d14b194eadf01d31f470c4470417b6",
+    "junit_sha256": "aaf0cd692295da882cf20e04c8b69f61f45219afc1389f7b747792368c6a753d",
+    "log_sha256": "e2d39823acd93575a7cefc25e6cb217db4c3167a2ba5c01ae98ebffa401c119d"
+  },
+  "test_blob": "b85d6c59b58b155798dcca748a3ea5bb75fe1cf9",
+  "junit": {
+    "cases": 2,
+    "passes": 0,
+    "failures": 2,
+    "errors": 0,
+    "skips": 0
+  },
+  "failure": "Both seat fixtures reach accepted Pest Weather response, then line57 asserts stack size2 but engine has 3: Crop, Weather, and printed Storm pending triggered ability (one prior spell). Incorrect fixture expectation; no gameplay loss or accepted P03-02/P03-08 cases.",
+  "prospective_fix": "Assert physical Crop and Weather stack identities and a distinct Storm triggered stack object sourced to Weather, then require exact changed-source fresh validation.",
+  "official_games": 0
+}
