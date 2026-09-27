@@ -1,0 +1,136 @@
+{
+  "schema": "izzet-source-bound-prospective-receiving-delivery-amendment/v1",
+  "identifier": "E825_SINGLE_FULL_CI_DELIVERY_OF_CURRENT_RECEIVING_COVERAGE",
+  "adopted_by": "/root, current lab conductor",
+  "adoption_status": "ADOPTED_ENGINEERING_DELIVERY_METHOD_PENDING_EXACT_CONTROL_RELEASE",
+  "authority": "The user's standing authorization for routine software implementation, genuine defect correction, appropriate validation and reviewed publication. This method adopts the independent prospective recommendation below; it does not amend any frozen experimental program or grant gameplay permission.",
+  "independent_recommendation": {
+    "git_blob": "8d8ce2224528501e29f4c21a329fae0ec0093b9e",
+    "bytes": 11043,
+    "sha256": "cec75381558dcc65a9987d673f2f884fd0e7ce8ee3573f5901e4a7dbeba86fdd"
+  },
+  "independent_inventory_source_proof": {
+    "git_blob": "87c5ce4355c6a24abb1b9ce945889acb91efe8d8",
+    "bytes": 14654,
+    "sha256": "79597e1c0fea15adaf62bfeefc9c714079377b743332b569d7da29100af4dbde"
+  },
+  "source": {
+    "head": "e825589e1deff9de09f4ffe78aece41dc5ac0df9",
+    "tree": "52932b643bc05419435996655903044f798e9f3e"
+  },
+  "original_contract": {
+    "gate_git_blob": "c2e8f36dff486c27c269c6d76fc12c0cc6af6fca",
+    "source": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+    "tree": "1a903dc4862d32fdd029e73a916cc9659678db4d",
+    "classes": 87,
+    "cases": 973,
+    "source_control_review_git_blob": "6e5af581498e8208d3acbcf97fdc2ffe30b62972",
+    "normal_ci_git_blob": "99b3a3931c4cad5d914e697a748a3f8a39538064"
+  },
+  "new_delivery": {
+    "purpose": "Discharge the current e825 combined-source software receiving coverage and its separately required ordinary fullCI through one prospectively reviewed fullCI delivery, avoiding a redundant per-class973 rerun alongside that already required CI.",
+    "backend_groups": {
+      "engine": [
+        ":rules-engine:test"
+      ],
+      "scenarios-old": [
+        ":mtg-sets:1993-1999:tests:test",
+        ":mtg-sets:2000-2002:tests:test",
+        ":mtg-sets:2003-2007:tests:test",
+        ":mtg-sets:2008-2016:tests:test",
+        ":mtg-sets:2017-2022:tests:test"
+      ],
+      "scenarios-2023-24": [
+        ":mtg-sets:2023:tests:test",
+        ":mtg-sets:2024:tests:test"
+      ],
+      "scenarios-2025-26": [
+        ":mtg-sets:2025:tests:test",
+        ":mtg-sets:2026:tests:test"
+      ],
+      "server": [
+        ":game-server:test"
+      ],
+      "content": [
+        ":mtg-sdk:test",
+        ":mtg-sets:test",
+        ":ai:test",
+        ":mtg-search:test"
+      ],
+      "tools": [
+        ":gym:test",
+        ":gym-server:test",
+        ":gym-trainer:test",
+        ":mtgish-tooling:test"
+      ]
+    },
+    "frontend_commands": [
+      [
+        "npm",
+        "ci"
+      ],
+      [
+        "npm",
+        "run",
+        "typecheck"
+      ],
+      [
+        "npm",
+        "run",
+        "build"
+      ]
+    ],
+    "classes": 88,
+    "required_case_identities": 975,
+    "original_case_identities": 973,
+    "added_fixed_factory_identities": 2,
+    "CardDefinitionSnapshotTest_identities": 340,
+    "inventory_definition": {
+      "initial_gate_git_blob": "b897e9acfc27aa629a44a9e4e34223aeda1cbe87",
+      "initial_gate_sha256": "cc9481a3346fdfcd6950dbfed9d904cd597c5c6bd9129d2feea6676530466874",
+      "field": "required_inventory",
+      "equality_requirement": "Final control must preserve this complete field byte-for-byte in semantic JSON value, including all arrays and exact module/class/case/test-source/Git-blob identities. No name deduplication, test-body change, shortcut or snapshot substitution."
+    },
+    "delivery_context": "One ordinary full CI delivery by exact backend module groups, with all frontend commands; not the old individually isolated or class-ordered process context."
+  },
+  "adopted_conditions": [
+    "The exact source e825589e1deff9de09f4ffe78aece41dc5ac0df9/tree52932b643bc05419435996655903044f798e9f3e is frozen for this one receiving delivery, with unchanged original973test identities/bodies and the exact reviewed two-case factory fixture.",
+    "All seven original backendgroups/nineteen tasks and three original Node22 frontend commands run under the prospectively reviewed control. Actual source/dependency/authority/control identity,build semaphore,resource/process boundaries and preservation requirements must pass Manual's independent implementation review and root's final exact event review.",
+    "Required975 identities are mapped to their exact declared modules/classes/case names and appear exactly once as actually executed passing cases in fresh raw XML. No required identity may be skipped,cached,missing,duplicated or replaced. Their complete raw evidence must survive artifact expiry.",
+    "All ordinary CI tasks must satisfy the current reviewed success/freshness rules;975passing cases alone cannot excuse another actual CI failure. Legitimate existing out-of-scope skips remain skips and need exact independent disposition; reporting-only CardImageUri markers receive no pass credit. Repeated display names from distinct contexts remain honest raw records and cannot be silently collapsed.",
+    "Preserve the original340 CardDefinitionSnapshotTest identities and current source snapshots; unexpected source/golden drift or a failed required assertion is a failed/incomplete receiving gate,not permission to regenerate a baseline.",
+    "Record actual module/group delivery and sourcebound case results. Do not claim87individually isolated/classordered executions or equivalence of those contexts. Any ordering/isolation-sensitive failure is a real software finding requiring its applicable prospective disposition.",
+    "Preserve every failure/timeout/resource stop,raw log/XML/exit/cleanup/source observation and unattempted scope. No convenient partial coverage or automatic retry/extension is authorized by this method. A technical stop stays incomplete.",
+    "The original before/fixed11-execution factory control remains consumed. Do not rerun its before source or copy its three-bank control. Fixedfactory2 and the seven preexisting completed-branch tests may execute once as ordinary constituents of the new complete e825CI; describe those as current receiving checks,not a second differential experiment or new case identities.",
+    "Retain original973attempt failures,initial software/parser mistakes and the completed11case evidence unchanged. New results are new prospective software receiving evidence,never replacements for those historical outcomes.",
+    "Actual fullCI artifacts require independent audit before accepting the new receiving scope. Even a fully accepted receiving result grants no fullpilot/Position1/gameplay authority; separate exact runtime,actor,replay,durability and conditional execution gates still apply."
+  ],
+  "execution_release_preconditions": [
+    "Retain this amendment, the independent recommendation and identity proof durably before creating the new one-use event.",
+    "The final isolated control must pass independent implementation, resource, process-cleanup, semaphore, source/authority/dependency, raw-evidence-retention and event review.",
+    "Root must inspect the final exact control/tree and current default-branch trigger context, preserve the exact final review and release, and bind this amendment by immutable blob identity into the final control source_review.",
+    "No event is authorized merely by this amendment or by setting a boolean. Until the final exact release, all prepared control candidates remain unready/unreferenced.",
+    "The final control's source and complete required_inventory must match the exact source and inventory above. Any change requires a new prospective disposition before execution."
+  ],
+  "attempt_rule": "At most one creation-push event, attempt1, on the final independently reviewed isolated full-receiving control. All failures, caps, incomplete outputs and unattempted scope are retained. No automatic retry, unchanged rerun or budget extension.",
+  "history": "Original973 ordered attempts and the completed11-execution before/fixed factory differential remain consumed historical records. Their evidence is preserved at c9bd2af7aaec72d09baca96d2d795fdab1989a08. The fixed two factory cases and preexisting seven completed-branch cases may execute as ordinary constituents of this new full-CI source check; this is not another differential attempt.",
+  "acceptance": "One completely passing and independently audited new delivery may satisfy the current e825 required975 receiving coverage and its separate full-CI software requirement together. The result must report actual module delivery, all other test outcomes and legitimate skips/reporting markers. Workflow success alone is insufficient.",
+  "non_changes": [
+    "Izzet KEEP_V07 and exact Veteran Beastrider pair",
+    "official seed vector, allocation or conditional Position1 rules",
+    "frozen pilot tactics, option ordering or hidden-information boundary",
+    "other five projects, their protocols or results",
+    "current source snapshots or any expected assertion",
+    "GitHub approvals, branch protections or merge authority"
+  ],
+  "official_allocations": 0,
+  "official_seed_consumption": 0,
+  "official_games": 0,
+  "gameplay_permission": false,
+  "current_control_context": {
+    "initial_unready_proposal": "0ba50fb3b506b7bf0904cc9c4aef936d88ff330c",
+    "initial_tree": "138c273fd4e4f9fc0cf51d01b2cd9475232f905b",
+    "pending_corrections": "Retain actual generated snapshot diagnostics and reject UPDATE_SNAPSHOTS; final corrected control still requires independent review. These are collector/guard corrections, not changes to source, inventory or method.",
+    "final_control_release": "Not issued by this amendment"
+  }
+}

@@ -1,0 +1,118 @@
+{
+  "schema": "independent-izzet-prospective-ci-delivery-inventory-proof/v1",
+  "source_files": {
+    "original_gate": {
+      "git_blob": "c2e8f36dff486c27c269c6d76fc12c0cc6af6fca",
+      "bytes": 141686,
+      "sha256": "9624f21e1a336e744f1c0e76d13233c004132458a499d78e9c886c69315be96f"
+    },
+    "proposal_gate": {
+      "git_blob": "b897e9acfc27aa629a44a9e4e34223aeda1cbe87",
+      "bytes": 126724,
+      "sha256": "cc9481a3346fdfcd6950dbfed9d904cd597c5c6bd9129d2feea6676530466874"
+    },
+    "original_ci": {
+      "git_blob": "99b3a3931c4cad5d914e697a748a3f8a39538064",
+      "bytes": 10144,
+      "sha256": "95d07d953e2fbd4b1ec24040f23e17368655ceab839cf62dd552a1e86c8d84a8"
+    }
+  },
+  "original_ci_groups": {
+    "engine": [
+      ":rules-engine:test"
+    ],
+    "scenarios-old": [
+      ":mtg-sets:1993-1999:tests:test",
+      ":mtg-sets:2000-2002:tests:test",
+      ":mtg-sets:2003-2007:tests:test",
+      ":mtg-sets:2008-2016:tests:test",
+      ":mtg-sets:2017-2022:tests:test"
+    ],
+    "scenarios-2023-24": [
+      ":mtg-sets:2023:tests:test",
+      ":mtg-sets:2024:tests:test"
+    ],
+    "scenarios-2025-26": [
+      ":mtg-sets:2025:tests:test",
+      ":mtg-sets:2026:tests:test"
+    ],
+    "server": [
+      ":game-server:test"
+    ],
+    "content": [
+      ":mtg-sdk:test",
+      ":mtg-sets:test",
+      ":ai:test",
+      ":mtg-search:test"
+    ],
+    "tools": [
+      ":gym:test",
+      ":gym-server:test",
+      ":gym-trainer:test",
+      ":mtgish-tooling:test"
+    ]
+  },
+  "backend_group_count": 7,
+  "backend_test_task_count": 19,
+  "original_frontend_commands": [
+    "npm ci",
+    "npm run typecheck",
+    "npm run build"
+  ],
+  "proposed_frontend_commands": [
+    [
+      "npm",
+      "ci"
+    ],
+    [
+      "npm",
+      "run",
+      "typecheck"
+    ],
+    [
+      "npm",
+      "run",
+      "build"
+    ]
+  ],
+  "inventory": {
+    "oldclasses": 87,
+    "newclasses": 88,
+    "differences": [],
+    "added": [
+      {
+        "class": "com.wingedsheep.ai.engine.AIPlayerLegacyYesNoStrategyTest",
+        "case_names": [
+          "frozen profile and equal copies retain legacy YesNo behavior through both public factories",
+          "changed configuration retaining the v0 id keeps completed YesNo behavior"
+        ],
+        "module": "ai",
+        "test_source": "ai/src/test/kotlin/com/wingedsheep/ai/engine/AIPlayerLegacyYesNoStrategyTest.kt",
+        "test_source_git_blob": "0e111dd33416224293d127f4e48e7588830f0f8b",
+        "provenance_stage": "fixed-structural-profile-factory"
+      }
+    ]
+  },
+  "exact_source_difference": [
+    {
+      "path": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt",
+      "git_blob": "2dd90b2ba779c5ad20d9991be5421349bc0ad019",
+      "status": "modified",
+      "patch": "@@ -259,6 +259,13 @@ class AIPlayer(\n                 advisorRegistry = advisorRegistry,\n                 budgetPolicy = profile.budgetPolicy,\n                 intents = intents,\n+                // Only the complete frozen reference configuration retains its original strategy.\n+                // An id=v0 profile with changed settings is a different policy.\n+                yesNoStrategy = if (profile == AiProfile.LEGACY_V0) {\n+                    YesNoDecisionStrategy.LEGACY_SIMULATE_BOTH_V1\n+                } else {\n+                    YesNoDecisionStrategy.COMPLETED_BRANCH_V1\n+                },\n             )\n \n             // Wire up the decision resolver so simulations can resolve non-trivial"
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/engine/AIPlayerLegacyYesNoStrategyTest.kt",
+      "git_blob": "0e111dd33416224293d127f4e48e7588830f0f8b",
+      "status": "added",
+      "patch": "@@ -0,0 +1,197 @@\n+package com.wingedsheep.ai.engine\n+\n+import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry\n+import com.wingedsheep.ai.engine.evaluation.EvalWeights\n+import com.wingedsheep.ai.engine.knowledge.IntentCatalog\n+import com.wingedsheep.engine.core.DecisionResponse\n+import com.wingedsheep.engine.core.YesNoDecision\n+import com.wingedsheep.engine.core.YesNoResponse\n+import com.wingedsheep.engine.support.ScenarioTestBase\n+import com.wingedsheep.sdk.core.Zone\n+import com.wingedsheep.sdk.dsl.Effects\n+import com.wingedsheep.sdk.dsl.Triggers\n+import com.wingedsheep.sdk.dsl.card\n+import com.wingedsheep.sdk.scripting.effects.CardSource\n+import com.wingedsheep.sdk.scripting.effects.GatherCardsEffect\n+import com.wingedsheep.sdk.scripting.effects.IfYouDoEffect\n+import com.wingedsheep.sdk.scripting.effects.LoseLifeEffect\n+import com.wingedsheep.sdk.scripting.effects.MayEffect\n+import com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect\n+import com.wingedsheep.sdk.scripting.effects.SelectionMode\n+import com.wingedsheep.sdk.scripting.effects.SuccessCriterion\n+import com.wingedsheep.sdk.scripting.targets.EffectTarget\n+import com.wingedsheep.sdk.scripting.values.DynamicAmount\n+import io.kotest.assertions.withClue\n+import io.kotest.matchers.nulls.shouldBeNull\n+import io.kotest.matchers.shouldBe\n+import io.kotest.matchers.shouldNotBe\n+import io.kotest.matchers.types.shouldBeInstanceOf\n+\n+/** Strategy identity regression, separate from deck pilots and the vanilla action-stream baseline. */\n+class AIPlayerLegacyYesNoStrategyTest : ScenarioTestBase() {\n+    // Same harmful-singleton / harmless-empty shape as the existing completed-branch controls.\n+    private val optionalSelection = card(\"Legacy Factory Up To One Control\") {\n+        manaCost = \"{0}\"\n+        typeLine = \"Artifact\"\n+        triggeredAbility {\n+            trigger = Triggers.EntersBattlefield\n+            effect = MayEffect(\n+                IfYouDoEffect(\n+                    action = Effects.Composite(\n+                        listOf(\n+                            GatherCardsEffect(CardSource.FromZone(Zone.HAND), storeAs = \"candidates\"),\n+                            SelectFromCollectionEffect(\n+                                from = \"candidates\",\n+                                selection = SelectionMode.ChooseUpTo(DynamicAmount.Fixed(1)),\n+                                storeSelected = \"selected\",\n+                            ),\n+                        )\n+                    ),\n+                    ifYouDo = LoseLifeEffect(DynamicAmount.Fixed(10), EffectTarget.Controller),\n+                    successCriterion = SuccessCriterion.CollectionNonEmpty(\"selected\"),\n+                )\n+            )\n+        }\n+    }\n+\n+    private fun pausedGame(): TestGame {\n+        val game = scenario()\n+            .withPlayers(\"Chooser\", \"Opponent\")\n+            .withRngSeed(0xC0A1_0001L)\n+            .withLifeTotal(1, 5)\n+            .withCardInHand(1, optionalSelection.name)\n+            .withCardInHand(1, \"Mountain\")\n+            .build()\n+        game.castSpell(1, optionalSelection.name).error.shouldBeNull()\n+        game.resolveStack()\n+        game.state.pendingDecision.shouldBeInstanceOf<YesNoDecision>()\n+        return game\n+    }\n+\n+    /** Equal factory inputs, including the resolver wiring used for nontrivial follow-up choices. */\n+    private fun explicitResponder(strategy: YesNoDecisionStrategy): DecisionResponder {\n+        val profile = AiProfile.LEGACY_V0\n+        val advisors = CardAdvisorRegistry()\n+        profile.advisorModules.forEach { it.register(advisors) }\n+        val intents = if (profile.useCardIntent) IntentCatalog.of(cardRegistry) else IntentCatalog.NONE\n+        val evaluationIntents = if (EvalWeights.isRawProfile(profile.evalWeightsId)) {\n+            IntentCatalog.of(cardRegistry)\n+        } else {\n+            intents\n+        }\n+        val evaluator = EvalWeights.resolveEvaluator(\n+            profile.evalWeightsId,\n+            evaluationIntents,\n+            landDropIsNotCardLoss = profile.landDropIsNotCardLoss,\n+            sequenceLandsByUsableMana = profile.sequenceLandsByUsableMana,\n+            discountedRaceClock = profile.discountedRaceClock,\n+            creatureValuation = profile.creatureValuation,\n+            priceLandsInHandAsMana = profile.priceLandsInHandAsMana,\n+        )\n+        val simulator = GameSimulator(\n+            cardRegistry,\n+            resolveThroughCombatDamage = profile.resolveThroughCombatDamage,\n+        )\n+        val responder = DecisionResponder(\n+            simulator,\n+            evaluator,\n+            advisorRegistry = advisors,\n+            budgetPolicy = profile.budgetPolicy,\n+            intents = intents,\n+            yesNoStrategy = strategy,\n+        )\n+        simulator.decisionResolver = { state, decision ->\n+            responder.respond(state, decision, decision.playerId)\n+        }\n+        return responder\n+    }\n+\n+    init {\n+        cardRegistry.register(listOf(optionalSelection))\n+\n+        test(\"frozen profile and equal copies retain legacy YesNo behavior through both public factories\") {\n+            val game = pausedGame()\n+            val state = game.state\n+            val decision = state.pendingDecision.shouldBeInstanceOf<YesNoDecision>()\n+            val originalState = state.toString()\n+            val observations = linkedMapOf<String, Boolean>()\n+            fun record(label: String, response: DecisionResponse) {\n+                withClue(\"STATE_UNCHANGED_AFTER_$label\") {\n+                    game.state.toString() shouldBe originalState\n+                }\n+                observations[label] = response.shouldBeInstanceOf<YesNoResponse>().choice\n+            }\n+\n+            record(\"explicitLegacy\", explicitResponder(YesNoDecisionStrategy.LEGACY_SIMULATE_BOTH_V1)\n+                .respond(state, decision, game.player1Id))\n+            record(\"explicitCompleted\", explicitResponder(YesNoDecisionStrategy.COMPLETED_BRANCH_V1)\n+                .respond(state, decision, game.player1Id))\n+            val frozen = AiProfile.LEGACY_V0\n+            val renamed = frozen.copy(id = \"v0-completed-control\")\n+            renamed.copy(id = frozen.id) shouldBe frozen\n+            val equalCopy = frozen.copy()\n+            equalCopy shouldBe frozen\n+            val reusable = AIPlayer.Factory(cardRegistry)\n+            record(\"renamedCompanion\", AIPlayer.create(cardRegistry, game.player1Id, renamed)\n+                .respondToDecision(state, decision))\n+            record(\"renamedReusable\", reusable.create(game.player1Id, renamed)\n+                .respondToDecision(state, decision))\n+            record(\"frozenCompanion\", AIPlayer.create(cardRegistry, game.player1Id, frozen)\n+                .respondToDecision(state, decision))\n+            record(\"frozenReusable\", reusable.create(game.player1Id, frozen)\n+                .respondToDecision(state, decision))\n+            record(\"equalCopyCompanion\", AIPlayer.create(cardRegistry, game.player1Id, equalCopy)\n+                .respondToDecision(state, decision))\n+            record(\"equalCopyReusable\", reusable.create(game.player1Id, equalCopy)\n+                .respondToDecision(state, decision))\n+            println(\"IZZET_LEGACY_FACTORY_DIFFERENTIAL $observations\")\n+\n+            // Controls and all state checks precede the specific expected pre-fix regression.\n+            withClue(\"EXPLICIT_STRATEGY_DIFFERENTIAL\") {\n+                observations[\"explicitLegacy\"] shouldBe true\n+                observations[\"explicitCompleted\"] shouldBe false\n+            }\n+            observations[\"renamedCompanion\"] shouldBe false\n+            observations[\"renamedReusable\"] shouldBe false\n+            withClue(\"FROZEN_FACTORY_LEGACY_BINDING\") {\n+                observations[\"frozenCompanion\"] shouldBe true\n+            }\n+            observations[\"frozenReusable\"] shouldBe true\n+            observations[\"equalCopyCompanion\"] shouldBe true\n+            observations[\"equalCopyReusable\"] shouldBe true\n+        }\n+\n+        test(\"changed configuration retaining the v0 id keeps completed YesNo behavior\") {\n+            val game = pausedGame()\n+            val state = game.state\n+            val decision = state.pendingDecision.shouldBeInstanceOf<YesNoDecision>()\n+            val originalState = state.toString()\n+            val frozen = AiProfile.LEGACY_V0\n+            // This flag is used by action selection, not respondToDecision or its evaluator.\n+            val altered = frozen.copy(useMeaningfulFilter = true)\n+            altered.id shouldBe frozen.id\n+            altered shouldNotBe frozen\n+            altered.copy(useMeaningfulFilter = frozen.useMeaningfulFilter) shouldBe frozen\n+            val observations = linkedMapOf<String, Boolean>()\n+            fun record(label: String, response: DecisionResponse) {\n+                withClue(\"STATE_UNCHANGED_AFTER_$label\") {\n+                    game.state.toString() shouldBe originalState\n+                }\n+                observations[label] = response.shouldBeInstanceOf<YesNoResponse>().choice\n+            }\n+            record(\"explicitLegacy\", explicitResponder(YesNoDecisionStrategy.LEGACY_SIMULATE_BOTH_V1)\n+                .respond(state, decision, game.player1Id))\n+            record(\"explicitCompleted\", explicitResponder(YesNoDecisionStrategy.COMPLETED_BRANCH_V1)\n+                .respond(state, decision, game.player1Id))\n+            record(\"alteredCompanion\", AIPlayer.create(cardRegistry, game.player1Id, altered)\n+                .respondToDecision(state, decision))\n+            record(\"alteredReusable\", AIPlayer.Factory(cardRegistry).create(game.player1Id, altered)\n+                .respondToDecision(state, decision))\n+            println(\"IZZET_LEGACY_FACTORY_SAME_ID_CONTROL $observations\")\n+            observations[\"explicitLegacy\"] shouldBe true\n+            observations[\"explicitCompleted\"] shouldBe false\n+            observations[\"alteredCompanion\"] shouldBe false\n+            observations[\"alteredReusable\"] shouldBe false\n+        }\n+    }\n+}"
+    }
+  ],
+  "source_bound_scope": {
+    "head": "e825589e1deff9de09f4ffe78aece41dc5ac0df9",
+    "tree": "52932b643bc05419435996655903044f798e9f3e",
+    "control_proposal": "0ba50fb3b506b7bf0904cc9c4aef936d88ff330c",
+    "control_tree": "138c273fd4e4f9fc0cf51d01b2cd9475232f905b",
+    "unready": true
+  },
+  "interpretation": "Exact coverage identity and ordinary CI task preservation are proven by immutable text/metadata comparison. Equivalence of old ordered/per-class process delivery to full-module CI ordering/isolation is not claimed; a prospective explicit delivery amendment is needed."
+}
