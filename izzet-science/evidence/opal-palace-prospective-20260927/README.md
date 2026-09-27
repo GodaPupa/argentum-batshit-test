@@ -1,0 +1,7 @@
+# Opal Palace prospective source, inert
+
+This branch starts from exact Izzet software source `60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5`. It adds the earliest C13 #310 Opal Palace definition, a generic mana rider and stack component, and two proposed scenario cases. The missing cast and entry hook changes are deliberately absent while Manual Transmission owns `CastSpellHandler.kt` and `StackResolver.kt`; this branch is **uncompiled, unqualified, and not receiving evidence**. Do not run an official game or consume a seed from it.
+
+The hook must recognize only mana actually spent to cast the payer's designated commander, count each rider-bearing mana separately, include the current command-zone cast, retain previous command-zone casts for a cast from another zone, freeze the count on the stack, and apply the counters before entry triggers. A countered spell receives no counters. The last ability produces no mana for a colorless commander identity.
+
+The Commander 2013 earliest printing and current wording were checked against [the official card record](https://gatherer.wizards.com/C13/en-us/310/opal-palace) and [Scryfall C13 #310](https://scryfall.com/card/c13/310/opal-palace); the four pertinent current rulings are also recorded on [mtg.wtf's C13 entry](https://mtg.wtf/card/c13/310/Opal-Palace). Image metadata and generated snapshots have not been accepted. No frozen deck or authority file changed. No test was dispatched.

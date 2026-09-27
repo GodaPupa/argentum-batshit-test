@@ -604,3 +604,11 @@ data class GraveyardCastRiderComponent(
     val entersWithCounter: com.wingedsheep.sdk.core.CounterType? = null,
     val addedSubtype: String? = null
 ) : Component
+
+/**
+ * Entry counters promised by commander-color mana spent on this commander spell. Captured at
+ * cast-commit and summed once per mana actually spent; removed on resolution or zone change.
+ * A countered spell never enters and therefore never receives these counters.
+ */
+@Serializable
+data class CommanderManaEntryCountersComponent(val count: Int) : Component
