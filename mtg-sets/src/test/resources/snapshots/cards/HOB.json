@@ -2912,8 +2912,7 @@
                         {
                             "type": "GatherCards",
                             "source": {
-                                "type": "FromZone",
-                                "zone": "Library",
+                                "type": "AuthorizedLibrarySearch",
                                 "filter": "basicland"
                             },
                             "storeAs": "searchable"
@@ -2928,7 +2927,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         {
                             "type": "MoveCollection",
@@ -6609,8 +6609,7 @@
                         {
                             "type": "GatherCards",
                             "source": {
-                                "type": "FromZone",
-                                "zone": "Library",
+                                "type": "AuthorizedLibrarySearch",
                                 "filter": "basicland"
                             },
                             "storeAs": "searchable"
@@ -6625,7 +6624,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         {
                             "type": "MoveCollection",
@@ -8888,8 +8888,7 @@
                                     {
                                         "type": "GatherCards",
                                         "source": {
-                                            "type": "FromZone",
-                                            "zone": "Library",
+                                            "type": "AuthorizedLibrarySearch",
                                             "filter": "basicland"
                                         },
                                         "storeAs": "searchable"
@@ -8904,7 +8903,8 @@
                                                 "amount": 1
                                             }
                                         },
-                                        "storeSelected": "found"
+                                        "storeSelected": "found",
+                                        "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                                     },
                                     "ShuffleLibrary",
                                     {
@@ -11566,8 +11566,7 @@
                         {
                             "type": "GatherCards",
                             "source": {
-                                "type": "FromZone",
-                                "zone": "Library",
+                                "type": "AuthorizedLibrarySearch",
                                 "filter": {
                                     "cardPredicates": [
                                         "IsCreature",
@@ -11587,7 +11586,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         {
                             "type": "MoveCollection",
@@ -13525,8 +13525,7 @@
                         {
                             "type": "GatherCards",
                             "source": {
-                                "type": "FromZone",
-                                "zone": "Library",
+                                "type": "AuthorizedLibrarySearch",
                                 "filter": "basicland"
                             },
                             "storeAs": "searchable"
@@ -13541,7 +13540,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         {
                             "type": "MoveCollection",
