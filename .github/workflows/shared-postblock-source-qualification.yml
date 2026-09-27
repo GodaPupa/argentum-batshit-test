@@ -1,0 +1,150 @@
+name: Shared Post-block Source Qualification
+
+on:
+  push:
+    branches: [lab/shared-core-integration]
+    paths:
+      - .github/workflows/shared-postblock-source-qualification.yml
+      - rules-engine/src/**
+      - game-server/src/**
+      - mtg-sdk/src/main/**
+      - lab-coordinator/shared-capabilities/postblock-*.json
+      - lab-coordinator/shared-capabilities/postblock-*.md
+
+permissions:
+  contents: read
+
+concurrency:
+  group: shared-postblock-source-qualification
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+
+      - name: Bind the exact clean source and unchanged original fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/shared-postblock-source
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          manifest_path = pathlib.Path('lab-coordinator/shared-capabilities/postblock-source-extraction.json')
+          manifest = json.loads(manifest_path.read_text())
+          fixture_manifest_path = pathlib.Path('lab-coordinator/shared-capabilities/postblock-fixture-receiving.json')
+          fixture_manifest = json.loads(fixture_manifest_path.read_text())
+          files = manifest['production_files'] + manifest['test_files'] + fixture_manifest['fixture_files']
+          actual = {item['path']: hashlib.sha256(pathlib.Path(item['path']).read_bytes()).hexdigest() for item in files}
+          expected = {item['path']: item.get('receiving_sha256', item.get('sha256')) for item in files}
+          original_override_hashes = {}
+          for override in fixture_manifest['test_import_overrides']:
+              original_override_hashes[override['path']] = expected[override['path']]
+              expected[override['path']] = override['receiving_sha256']
+          binding = {
+              'requested_head': os.environ['GITHUB_SHA'], 'actual_head': git('rev-parse', 'HEAD'),
+              'tree': git('rev-parse', 'HEAD^{tree}'), 'checkout_status': git('status', '--porcelain'),
+              'extraction_manifest_sha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+              'fixture_receiving_manifest_sha256': hashlib.sha256(fixture_manifest_path.read_bytes()).hexdigest(),
+              'source_files_sha256': actual, 'expected_cases': manifest['expected_cases'],
+          }
+          pathlib.Path('build/reports/shared-postblock-source/source-binding.json').write_text(json.dumps(binding, indent=2) + '\n')
+          assert binding['extraction_manifest_sha256'] == fixture_manifest['original_manifest_sha256']
+          for override in fixture_manifest['test_import_overrides']:
+              assert original_override_hashes[override['path']] == override['original_sha256'], override
+          assert fixture_manifest['runtime_production_files_unchanged'] == len(manifest['production_files']) == 36
+          assert fixture_manifest['expected_cases'] == manifest['expected_cases']
+          assert binding['actual_head'] == binding['requested_head'], binding
+          assert not binding['checkout_status'], binding
+          assert len(actual) == len(files) == 54 and actual == expected, (actual, expected)
+          assert manifest['expected_cases'] == {'engine': 115, 'server': 12}, manifest['expected_cases']
+          PY
+
+      - name: Execute the 115 exact engine cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' 2>&1 | tee build/reports/shared-postblock-source/engine.txt
+          import json, pathlib, subprocess
+          manifest = json.loads(pathlib.Path('lab-coordinator/shared-capabilities/postblock-source-extraction.json').read_text())
+          names = [item['class_name'].split('.')[-1] for item in manifest['test_files'] if item['scope'] == 'engine']
+          args = ['just', 'test-class', names[0]]
+          for name in names[1:]:
+              args += ['--tests', '*' + name]
+          args += ['--rerun', '--max-workers=1', '-PkotlinCompileParallelism=1', '-Pkotlin.compiler.execution.strategy=in-process', '-Dorg.gradle.jvmargs=-Xmx4g', '--info', '--stacktrace']
+          subprocess.run(args, check=True)
+          PY
+
+      - name: Execute the 12 exact server cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class PostBlockDeclarationSessionTest --tests '*TwoHeadedGiantSessionTest' --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/shared-postblock-source/server.txt
+
+      - name: Require actual case completeness and retain component-only disposition
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess, xml.etree.ElementTree as ET
+          manifest_path = pathlib.Path('lab-coordinator/shared-capabilities/postblock-source-extraction.json')
+          manifest = json.loads(manifest_path.read_text())
+          report = pathlib.Path('build/reports/shared-postblock-source')
+          binding = json.loads((report / 'source-binding.json').read_text())
+          suites = {}
+          for item in manifest['test_files']:
+              module = 'rules-engine' if item['scope'] == 'engine' else 'game-server'
+              path = pathlib.Path(module + '/build/test-results/test/TEST-' + item['class_name'] + '.xml')
+              suite = ET.parse(path).getroot()
+              cases = suite.findall('testcase')
+              assert suite.attrib['name'] == item['class_name'], item['class_name']
+              assert len(cases) == int(suite.attrib['tests']) == item['expected_cases'], (item, len(cases))
+              assert all(int(suite.attrib.get(k, 0)) == 0 for k in ('failures', 'errors', 'skipped')), item
+              assert all(not any(case.find(tag) is not None for tag in ('failure', 'error', 'skipped')) for case in cases), item
+              suites[item['class_name']] = {'cases': [case.attrib['name'] for case in cases],
+                  'xml_path': str(path), 'xml_sha256': hashlib.sha256(path.read_bytes()).hexdigest()}
+          current = {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in binding['source_files_sha256']}
+          assert current == binding['source_files_sha256'], current
+          assert hashlib.sha256(manifest_path.read_bytes()).hexdigest() == binding['extraction_manifest_sha256']
+          fixture_manifest_path = pathlib.Path('lab-coordinator/shared-capabilities/postblock-fixture-receiving.json')
+          assert hashlib.sha256(fixture_manifest_path.read_bytes()).hexdigest() == binding['fixture_receiving_manifest_sha256']
+          assert not subprocess.check_output(['git', 'status', '--porcelain'], text=True).strip()
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() == binding['actual_head']
+          result = {
+              'schema': 'shared-postblock-source-qualification-v1', 'status': 'TARGETED_COMPONENT_QUALIFICATION_ONLY',
+              'source_head': binding['actual_head'], 'source_tree': binding['tree'],
+              'extraction_manifest_sha256': binding['extraction_manifest_sha256'],
+              'fixture_receiving_manifest_sha256': binding['fixture_receiving_manifest_sha256'],
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'suites': suites, 'total_actual_cases': sum(len(suite['cases']) for suite in suites.values()),
+              'full_integration_accepted': False, 'production_actor_accepted': False,
+              'gameplay_authorized': False, 'official_allocations_initialized': 0, 'official_outcomes_exposed': 0,
+          }
+          assert result['total_actual_cases'] == 127
+          (report / 'manifest.json').write_text(json.dumps(result, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: shared-postblock-source-qualification
+          if-no-files-found: error
+          path: |
+            build/reports/shared-postblock-source
+            rules-engine/build/test-results/test/*.xml
+            game-server/build/test-results/test/*.xml

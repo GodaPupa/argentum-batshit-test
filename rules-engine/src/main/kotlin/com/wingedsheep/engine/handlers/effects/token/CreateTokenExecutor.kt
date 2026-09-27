@@ -76,20 +76,42 @@ class CreateTokenExecutor(
             ?.takeIf { it.isNotEmpty() }
             ?: listOf(context.controllerId)
 
+        return createForRecipients(state, effect, context, baseCount, tokenControllerIds)
+    }
+
+    /** The recipient list and base dynamic count are evaluated once, before any suspension. */
+    internal fun createForRecipients(
+        state: GameState,
+        effect: CreateTokenEffect,
+        context: EffectContext,
+        baseCount: Int,
+        tokenControllerIds: List<EntityId>,
+        previouslyCreated: List<EntityId> = emptyList(),
+    ): EffectResult {
         var currentState = state
         val allEvents = mutableListOf<com.wingedsheep.engine.core.GameEvent>()
-        val allCreatedTokens = mutableListOf<EntityId>()
-        for (tokenControllerId in tokenControllerIds) {
-            val result = createTokensFor(currentState, effect, context, baseCount, tokenControllerId)
-            if (result.error != null) return result
-            currentState = result.state
+        val allCreatedTokens = previouslyCreated.toMutableList()
+        for ((index, tokenControllerId) in tokenControllerIds.withIndex()) {
+            // Pre-push a tail even for the final recipient: a paused result must still publish
+            // its created-token collection into the original composite consumer below it.
+            val tail = com.wingedsheep.engine.core.CreateTokenRecipientsContinuation(
+                effect, context, baseCount, tokenControllerIds.drop(index + 1), allCreatedTokens.toList(),
+            )
+            val result = createTokensFor(
+                currentState.pushContinuation(tail), effect, context, baseCount, tokenControllerId,
+            )
+            if (result.isPaused || result.error != null) {
+                return result.copy(events = allEvents + result.events)
+            }
+            check(result.state.peekContinuation() == tail) { "Token recipient tail was not preserved" }
+            currentState = result.state.popContinuation().second
             allEvents.addAll(result.events)
             allCreatedTokens.addAll(result.updatedCollections[CREATED_TOKENS].orEmpty())
         }
         return EffectResult(
             state = currentState,
             events = allEvents,
-            updatedCollections = mapOf(CREATED_TOKENS to allCreatedTokens)
+            updatedCollections = mapOf(CREATED_TOKENS to allCreatedTokens.toList()),
         )
     }
 
@@ -113,11 +135,35 @@ class CreateTokenExecutor(
         // large is already a decided game. See GameLimits.MAX_TOKENS_PER_EFFECT.
         val count = com.wingedsheep.engine.core.GameLimits.cappedTokenCount(requestedCount, "tokens")
 
-        // Check for token creation replacement effects (e.g., Mirrormind Crown)
-        val replacementResult = TokenCreationReplacementHelper.checkReplacement(
-            state, effect, context, count, tokenControllerId, cardRegistry, staticAbilityHandler
-        )
-        if (replacementResult != null) return replacementResult
+        return createPreparedTokens(state, effect, context, count, tokenControllerId)
+    }
+
+    /** Resume a batch without evaluating or multiplying its count again. */
+    internal fun createPreparedTokens(
+        state: GameState,
+        effect: CreateTokenEffect,
+        context: EffectContext,
+        count: Int,
+        tokenControllerId: EntityId,
+        attackingDefenders: List<EntityId?>? = null,
+        checkReplacements: Boolean = true,
+    ): EffectResult {
+        if (count <= 0) return EffectResult.success(state)
+        if (checkReplacements) {
+            val replacement = TokenCreationReplacementHelper.checkReplacement(
+                state, effect, context, count, tokenControllerId, cardRegistry, staticAbilityHandler,
+                preparedCount = true,
+            )
+            if (replacement != null) return replacement
+        }
+        val defenders = if (!effect.attacking) List(count) { null } else attackingDefenders ?: run {
+            val legal = AttackingTokenDefenderChooser.legalDefenders(state, tokenControllerId)
+            if (legal.size > 1) return AttackingTokenDefenderChooser.pause(
+                state, effect, context, tokenControllerId, count, legal,
+            )
+            List(count) { legal.singleOrNull() }
+        }
+        require(defenders.size == count)
 
         // Resolve the token's color / creature type from the source's cast-choices bag when the
         // effect sources them from a ChoiceSlot (Riptide Replicator "of the chosen color and type");
@@ -210,17 +256,7 @@ class CreateTokenExecutor(
                     )
                 }
             }
-            if (effect.attacking) {
-                // Token enters attacking — it joins the attack of the source creature
-                // (CR 802.2a: defender per attacking creature), falling back to the sole
-                // active opponent outside combat-derived contexts.
-                val defenderId = com.wingedsheep.engine.handlers.effects.TargetResolutionUtils
-                    .resolveDefendingPlayer(context, newState)
-                    ?: newState.getOpponents(tokenControllerId).firstOrNull()
-                if (defenderId != null) {
-                    components.add(AttackingComponent(defenderId))
-                }
-            }
+            defenders[indexInBatch]?.let { components.add(AttackingComponent(it)) }
             var container = ComponentContainer.of(*components.toTypedArray())
             if (effect.staticAbilities.isNotEmpty() && staticAbilityHandler != null) {
                 container = staticAbilityHandler.addContinuousEffectComponentFromAbilities(
@@ -275,7 +311,7 @@ class CreateTokenExecutor(
             // set tapped state, so resolve it here now the token carries its controller/type.
             newState = EnterTappedReplacements.applyCreatedTokenEntryTap(
                 newState, tokenId, tokenControllerId,
-                definedTapped = effect.tapped, attacking = effect.attacking,
+                definedTapped = effect.tapped, attacking = defenders[indexInBatch] != null,
             )
         }
 

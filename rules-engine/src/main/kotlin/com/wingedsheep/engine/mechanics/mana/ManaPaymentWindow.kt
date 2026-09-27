@@ -40,6 +40,45 @@ import com.wingedsheep.sdk.model.EntityId
  */
 object ManaPaymentWindow {
 
+    /** Internal re-entry after a nested mana-ability cost choice still belongs to its payer. */
+    fun suspendedFor(state: GameState, actorId: EntityId): Boolean =
+        state.continuationStack.filterIsInstance<ReopenManaPaymentDecisionContinuation>().any {
+            state.actorFor(it.suspension.question.playerId) == actorId
+        }
+
+    /** Includes a color/cost question above the retained outer payment window. */
+    fun paymentInProgress(state: GameState): Boolean = state.continuationStack.any {
+        it is ReopenManaPaymentDecisionContinuation ||
+            (it is Suspension && it.question is SelectManaSourcesDecision)
+    }
+
+    /**
+     * Keep one complete batch below the whole enclosing payment/resolution. Capturing a trigger
+     * does not put it on the stack: the tagged bottom frame first settles SBAs (CR 117.5/603.3).
+     * No card, target, or order choice is made here.
+     */
+    fun deferTriggers(
+        state: GameState,
+        triggers: List<com.wingedsheep.engine.event.PendingTrigger>,
+    ): GameState {
+        if (triggers.isEmpty()) return state
+        if (com.wingedsheep.engine.mechanics.combat.CombatDefenders.nextUndeclaredDefender(state) != null) {
+            // Paying one defender's block tax is still before the whole declaration round.
+            // An automatic payment continuation must not place these triggers early.
+            return state.copy(pendingBlockTriggers = state.pendingBlockTriggers + triggers)
+        }
+        val stack = state.continuationStack
+        val existing = stack.firstOrNull() as? com.wingedsheep.engine.core.PendingTriggersContinuation
+        val apnap = state.apnapOrder.withIndex().associate { it.value to it.index }
+        val combined = (existing?.remainingTriggers.orEmpty() + triggers)
+            .sortedBy { apnap[it.controllerId] ?: Int.MAX_VALUE }
+        val pending = com.wingedsheep.engine.core.PendingTriggersContinuation(
+            remainingTriggers = combined, settleAfterManaPayment = true,
+        )
+        return state.copy(continuationStack = listOf(pending) +
+            if (existing == null) stack else stack.drop(1))
+    }
+
     /**
      * The open mana-payment decision [playerId] is being asked to pay, or `null` if the game isn't
      * currently asking them for mana.

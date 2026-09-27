@@ -5,6 +5,7 @@ import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.mtg.sets.definitions.war.cards.LilianaDreadhordeGeneral
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Phase
@@ -234,6 +235,7 @@ class LilianaDreadhordeGeneralScenarioTest : ScenarioTestBase() {
                 second as SelectCardsDecision
                 second.playerId shouldBe game.player2Id
                 game.selectCards(second.options.take(2)).error shouldBe null
+                game.chooseTriggerOrderInListedOrder() // two controlled creatures died simultaneously
                 game.resolveStack()
 
                 withClue("each player is down to one creature") {

@@ -3,13 +3,15 @@ package com.wingedsheep.gameserver.session
 import com.wingedsheep.ai.ActionResponse
 import com.wingedsheep.ai.AiPlayerController
 import com.wingedsheep.engine.core.ActivateAbility
-import com.wingedsheep.engine.core.BatchYesNoDecision
-import com.wingedsheep.engine.core.BatchYesNoResponse
+import com.wingedsheep.engine.core.ChooseOptionDecision
+import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.CancelDecisionResponse
 import com.wingedsheep.engine.core.GameAction
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.SubmitDecision
+import com.wingedsheep.engine.core.Suspension
+import com.wingedsheep.engine.core.TriggerOrderingContinuation
 import com.wingedsheep.engine.core.engineSerializersModule
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
@@ -39,7 +41,7 @@ import java.util.concurrent.atomic.AtomicReference
 
 class AiUndoDecisionFreshnessTest : ScenarioTestBase() {
     init {
-        test("an actual delayed AI callback cannot answer the replacement Closet batch after undo") {
+        test("an actual delayed AI callback cannot answer the replacement Closet trigger order after undo") {
             val game = scenario().withPlayers("Human", "AI")
                 .withLandsOnBattlefield(1, "Forest", 3)
                 .withCardOnBattlefield(1, "Llanowar Elves")
@@ -71,8 +73,8 @@ class AiUndoDecisionFreshnessTest : ScenarioTestBase() {
             val controller = mockk<AiPlayerController>()
             every { controller.chooseAction(any(), any(), any(), any()) } answers {
                 val decision = thirdArg<com.wingedsheep.engine.core.PendingDecision>()
-                    .shouldBeInstanceOf<BatchYesNoDecision>()
-                when (decision.count) {
+                    .shouldBeInstanceOf<ChooseOptionDecision>()
+                when (decision.options.size) {
                     3 -> {
                         oldChoosing.countDown()
                         await(releaseOld, "release old controller response")
@@ -81,11 +83,13 @@ class AiUndoDecisionFreshnessTest : ScenarioTestBase() {
                         newChoosing.countDown()
                         await(releaseNew, "release new controller response")
                     }
-                    else -> error("Unexpected Closet batch size ${decision.count}")
+                    else -> error("Unexpected Closet trigger count ${decision.options.size}")
                 }
-                // Distinct payloads identify each callback without relying on its epoch.
-                ActionResponse.SubmitDecision(ai, BatchYesNoResponse(
-                    decision.id, choice = true, applyToAll = decision.count == 3
+                // Distinct, valid payloads identify each callback without relying on its epoch.
+                // Index zero is also legal in the replacement two-trigger question: only
+                // the obsolete interaction epoch may prevent that stale action applying.
+                ActionResponse.SubmitDecision(ai, OptionChosenResponse(
+                    decision.id, optionIndex = if (decision.options.size == 3) 0 else 1
                 ))
             }
             val aiSocket = AiWebSocketSession(
@@ -93,8 +97,8 @@ class AiUndoDecisionFreshnessTest : ScenarioTestBase() {
                 controller = controller,
                 thinkingDelayMs = 0,
                 onActionReady = { player, action, epoch ->
-                    val response = (action as SubmitDecision).response as BatchYesNoResponse
-                    val old = response.applyToAll
+                    val response = (action as SubmitDecision).response as OptionChosenResponse
+                    val old = response.optionIndex == 0
                     try {
                         if (old) {
                             oldEpoch.set(epoch)
@@ -137,30 +141,35 @@ class AiUndoDecisionFreshnessTest : ScenarioTestBase() {
                 session.executeAction(human, ActivateAbility(human, manaSource, manaAbility))
                     .shouldBeInstanceOf<GameSession.ActionResult.Success>()
                 session.isUndoAvailable(human) shouldBe true
-                val oldBatch = advanceToBatch(session)
-                oldBatch.count shouldBe 3
+                val oldOrder = advanceToTriggerOrder(session)
+                oldOrder.options.size shouldBe 3
                 session.isUndoAvailable(human) shouldBe true
                 val oldUpdate = session.createStateUpdate(ai, emptyList(), useEngineDecisionIds = true)
                     .shouldBeInstanceOf<ServerMessage.StateUpdate>()
                 oldUpdate.interactionEpoch.shouldNotBeNull()
                 aiSocket.sendMessage(TextMessage(json.encodeToString<ServerMessage>(oldUpdate)))
-                await(oldChoosing, "old AI controller to receive the three-trigger batch")
+                await(oldChoosing, "old AI controller to receive the three-trigger ordering question")
 
                 session.executeUndo(human).shouldBeInstanceOf<GameSession.ActionResult.Success>()
                 session.getStateForTesting() shouldBe checkpoint
+                // A real mana-ability resolution consumes one routing ID. Replay that action
+                // after undo so the replacement question deliberately reuses the old ID;
+                // the interaction epoch must reject the stale, otherwise-valid response.
+                session.executeAction(human, ActivateAbility(human, manaSource, manaAbility))
+                    .shouldBeInstanceOf<GameSession.ActionResult.Success>()
                 val closet = game.findPermanents("Conjurer's Closet").first()
                 val naturalize = game.findCardsInHand(1, "Naturalize").single()
                 session.executeAction(human, CastSpell(human, naturalize, listOf(ChosenTarget.Permanent(closet))))
                     .shouldBeInstanceOf<GameSession.ActionResult.Success>()
-                val replacementBatch = advanceToBatch(session)
-                replacementBatch.count shouldBe 2
-                replacementBatch.id shouldBe oldBatch.id
+                val replacementOrder = advanceToTriggerOrder(session)
+                replacementOrder.options.size shouldBe 2
+                replacementOrder.id shouldBe oldOrder.id
                 val newUpdate = session.createStateUpdate(ai, emptyList(), useEngineDecisionIds = true)
                     .shouldBeInstanceOf<ServerMessage.StateDeltaUpdate>()
                 newUpdate.interactionEpoch.shouldNotBeNull()
                 newUpdate.interactionEpoch shouldNotBe oldUpdate.interactionEpoch
                 aiSocket.sendMessage(TextMessage(json.encodeToString<ServerMessage>(newUpdate)))
-                await(newChoosing, "new AI controller to receive the two-trigger batch")
+                await(newChoosing, "new AI controller to receive the two-trigger ordering question")
 
                 val stateBefore = session.getStateForTesting()
                 val actionsBefore = session.getRecordedActions()
@@ -172,7 +181,7 @@ class AiUndoDecisionFreshnessTest : ScenarioTestBase() {
                 await(oldReturned, "obsolete callback to finish through GamePlayHandler")
                 callbackFailure.get() shouldBe null
                 oldEpoch.get() shouldBe oldUpdate.interactionEpoch
-                oldAction.get().shouldBeInstanceOf<SubmitDecision>().response.decisionId shouldBe replacementBatch.id
+                oldAction.get().shouldBeInstanceOf<SubmitDecision>().response.decisionId shouldBe replacementOrder.id
                 session.getStateForTesting() shouldBe stateBefore
                 session.getRecordedActions() shouldBe actionsBefore
                 session.getReplayCheckpoints() shouldBe checkpointsBefore
@@ -188,7 +197,7 @@ class AiUndoDecisionFreshnessTest : ScenarioTestBase() {
                 callbackFailure.get() shouldBe null
                 newEpoch.get() shouldBe newUpdate.interactionEpoch
                 val accepted = newAction.get().shouldBeInstanceOf<SubmitDecision>()
-                accepted.response.decisionId shouldBe replacementBatch.id
+                accepted.response.decisionId shouldBe replacementOrder.id
                 session.getRecordedActions() shouldBe actionsBefore + accepted
                 session.getStateForTesting() shouldNotBe stateBefore
                 val replay = actionProcessor.process(stateBefore!!, accepted).result
@@ -228,12 +237,12 @@ class AiUndoDecisionFreshnessTest : ScenarioTestBase() {
                 .single { it.isManaAbility }.id
             val activate = ActivateAbility(human, manaSource, manaAbility)
             session.executeAction(human, activate).shouldBeInstanceOf<GameSession.ActionResult.Success>()
-            val original = advanceToBatch(session)
+            val original = advanceToTriggerOrder(session)
             session.isUndoAvailable(human) shouldBe true
             val update = session.createStateUpdate(ai, emptyList(), useEngineDecisionIds = true)
                 .shouldBeInstanceOf<ServerMessage.StateUpdate>()
             val epoch = update.interactionEpoch.shouldNotBeNull()
-            val invalid = PassPriority(ai) // A priority pass cannot answer the outstanding batch.
+            val invalid = PassPriority(ai) // A priority pass cannot answer the outstanding trigger-order question.
             val sender = mockk<MessageSender>(relaxed = true)
             val handler = handler(sender)
             var replacementState: GameState? = null
@@ -249,7 +258,7 @@ class AiUndoDecisionFreshnessTest : ScenarioTestBase() {
                     // before GamePlayHandler sees Failure and begins its recovery path.
                     session.executeUndo(human).shouldBeInstanceOf<GameSession.ActionResult.Success>()
                     session.executeAction(human, activate).shouldBeInstanceOf<GameSession.ActionResult.Success>()
-                    advanceToBatch(session).id shouldBe original.id
+                    advanceToTriggerOrder(session).id shouldBe original.id
                     replacementState = session.getStateForTesting()
                     replacementActions = session.getRecordedActions()
                     replacementEpoch = session.createStateUpdate(ai, emptyList(), useEngineDecisionIds = true)
@@ -276,15 +285,24 @@ class AiUndoDecisionFreshnessTest : ScenarioTestBase() {
         }
     }
 
-    private fun advanceToBatch(session: GameSession): BatchYesNoDecision {
+    // The corrected rules ask the controller to order simultaneous Closet triggers before
+    // their targets are placed on the stack. Leave that real question unanswered for the
+    // callback/undo test; do not manufacture the old pre-stack batch-consent decision.
+    private fun advanceToTriggerOrder(session: GameSession): ChooseOptionDecision {
         repeat(12) {
             val state = session.getStateForTesting()!!
-            state.pendingDecision?.let { return it.shouldBeInstanceOf<BatchYesNoDecision>() }
+            state.pendingDecision?.let {
+                val question = it.shouldBeInstanceOf<ChooseOptionDecision>()
+                (state.peekContinuation() as? Suspension)?.answer
+                    .shouldBeInstanceOf<TriggerOrderingContinuation>()
+                question.options.all { option -> option.contains("Conjurer's Closet") } shouldBe true
+                return question
+            }
             val player = state.priorityPlayerId!!
             val result = session.executeAction(player, PassPriority(player))
             check(result !is GameSession.ActionResult.Failure) { "Priority pass failed: $result" }
         }
-        error("End-step batch was not reached within 12 priority passes")
+        error("End-step trigger-order question was not reached within 12 priority passes")
     }
 
     private fun await(latch: CountDownLatch, description: String) {

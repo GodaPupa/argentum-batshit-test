@@ -1,0 +1,141 @@
+name: Shared attacking-token defender qualification
+
+on:
+  push:
+    branches: [lab/attacking-token-defender-choice]
+  pull_request:
+    paths:
+      - '.github/workflows/attacking-token-defender-qualification.yml'
+      - 'lab-coordinator/shared-capabilities/attacking-token-defender-*'
+      - 'rules-engine/**'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact source, original sixteen cases and separate prospective four
+        env:
+          EXPECTED_SOURCE: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          path=pathlib.Path('lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json')
+          raw=path.read_bytes(); manifest=json.loads(raw)
+          import importlib.util
+          receiving_spec=importlib.util.spec_from_file_location('sphinx_receiving_binding', 'sphinx-approach/canonical_receiving_binding.py')
+          receiving_helper=importlib.util.module_from_spec(receiving_spec); receiving_spec.loader.exec_module(receiving_helper)
+          effective_pins, receiving_binding=receiving_helper.bind('token_20', manifest['source_files_sha256'], pathlib.Path('.'))
+          assert manifest['budget_sha256']==hashlib.sha256(pathlib.Path('lab-coordinator/shared-capabilities/attacking-token-defender-budget.json').read_bytes()).hexdigest()
+          extra=manifest['additional_budget']
+          assert extra['sha256']==hashlib.sha256(pathlib.Path(extra['path']).read_bytes()).hexdigest()
+          assert extra['expected_actual_cases']==4
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          assert head==os.environ['EXPECTED_SOURCE']
+          assert not subprocess.check_output(['git','status','--porcelain'],text=True).strip()
+          subprocess.run(['git','merge-base','--is-ancestor',manifest['receiving_base'],'HEAD'],check=True)
+          for filename,expected in effective_pins.items():
+              assert hashlib.sha256(pathlib.Path(filename).read_bytes()).hexdigest()==expected,filename
+          assert len(manifest['stages'])==3 and [s['expected_cases'] for s in manifest['stages']]==[14,2,4]
+          original=json.loads(pathlib.Path('lab-coordinator/shared-capabilities/attacking-token-defender-budget.json').read_bytes())
+          additional=json.loads(pathlib.Path(extra['path']).read_bytes())
+          assert original['expected_actual_cases']==16 and additional['expected_actual_cases']==4
+          assert [b['case_names'] for b in manifest['banks'][:2]]==[b['cases'] for b in original['banks']]
+          assert manifest['banks'][2]['case_names']==additional['bank']['cases']
+          assert [b['class'] for b in manifest['banks']]==[s['class'] for s in manifest['stages']]
+          workflow='.github/workflows/attacking-token-defender-qualification.yml'
+          source={**effective_pins,workflow:hashlib.sha256(pathlib.Path(workflow).read_bytes()).hexdigest()}
+          out=pathlib.Path('build/reports/attacking-token-defenders'); out.mkdir(parents=True,exist_ok=True)
+          (out/'source-provenance.json').write_text(json.dumps({'candidate_head':head,'tree':tree,
+              'manifest_sha256':hashlib.sha256(raw).hexdigest(),'source_sha256':source,'prospective_receiving_binding':receiving_binding,
+              'official_games':0,'gameplay_authorized':False},indent=2)+'\n')
+          PY
+      - name: Execute original sixteen and separate prospective four complete cases
+        shell: bash
+        run: |
+          set +e
+          set -o pipefail
+          capture_failed=0
+          for bank in 'AttackingTokenDefenderChoiceTest:token-defender-14' 'DalkovanEncampmentScenarioTest:dalkovan-2' 'EntryChoiceEventProvenanceTest:entry-event-provenance-4'; do
+            class=${bank%%:*}
+            stage=${bank#*:}
+            just test-class "$class" --rerun --info --stacktrace \
+              --max-workers=1 -PkotlinCompileParallelism=1 \
+              -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+              2>&1 | tee "build/reports/attacking-token-defenders/$stage.log"
+            status=${PIPESTATUS[0]}
+            printf '%s\n' "$status" > "build/reports/attacking-token-defenders/$stage-exit-status.txt"
+            # A later invocation of the same Gradle test task can replace its XML directory.
+            # Preserve this exact bank immediately, before any subsequent invocation starts.
+            python3 - "$stage" <<'PY'
+          import json,pathlib,shutil,sys
+          manifest=json.loads(pathlib.Path('lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json').read_bytes())
+          matches=[item for item in manifest['stages'] if item['stage']==sys.argv[1]]
+          assert len(matches)==1
+          item=matches[0]; out=pathlib.Path('build/reports/attacking-token-defenders')
+          folder=out/'tests'/item['stage']; folder.mkdir(parents=True,exist_ok=False)
+          shutil.copyfile(out/(item['stage']+'-exit-status.txt'),folder/'exit-status.txt')
+          xml=pathlib.Path(item['module'])/'build/test-results/test'/('TEST-'+item['class']+'.xml')
+          assert xml.is_file(), 'Missing actual XML immediately after bank '+item['stage']
+          shutil.copyfile(xml,folder/xml.name)
+          PY
+            if [ "$?" -ne 0 ]; then capture_failed=1; fi
+          done
+          exit "$capture_failed"
+      - name: Reconcile raw cases with the unchanged shared collector
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import hashlib,importlib.util,json,pathlib,subprocess
+          root=pathlib.Path('.'); out=root/'build/reports/attacking-token-defenders'; out.mkdir(parents=True,exist_ok=True)
+          path=root/'lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json'; raw=path.read_bytes(); manifest=json.loads(raw)
+          errors=[]
+          try:
+              source=json.loads((out/'source-provenance.json').read_text())
+              assert source['candidate_head']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+              assert source['tree']==subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+              assert source['manifest_sha256']==hashlib.sha256(raw).hexdigest()
+              for filename,expected in source['source_sha256'].items():
+                  assert hashlib.sha256((root/filename).read_bytes()).hexdigest()==expected,filename
+              assert not subprocess.check_output(['git','status','--porcelain'],text=True).strip()
+          except (OSError,ValueError,KeyError,AssertionError) as exc:
+              errors.append('Exact receiving source binding failed: '+str(exc))
+          # Read only each bank's immediately retained XML and exit status; never refill from a later task.
+          spec=importlib.util.spec_from_file_location('shared_collector','lab-coordinator/shared-capabilities/collect-priority-receiving.py')
+          collector=importlib.util.module_from_spec(spec); spec.loader.exec_module(collector)
+          rows,case_errors=collector.collect_case_rows(out,manifest['stages']); errors.extend(case_errors)
+          actual=sum(r.get('actual_cases',0) for r in rows)
+          if len(rows)!=3 or actual!=20: errors.append('Original16 plus separate prospective4 scope incomplete')
+          if sum(r.get('actual_cases',0) for r in rows[:2])!=16: errors.append('Original16 token bank incomplete')
+          if len(rows)<3 or rows[2].get('actual_cases',0)!=4: errors.append('Separate prospective4 provenance bank incomplete')
+          for bank,row in zip(manifest['banks'],rows):
+              if set(row.get('case_names',[]))!=set(bank['case_names']): errors.append('Frozen case identities differ: '+bank['class'])
+          (out/'actual-case-audit.json').write_text(json.dumps({'status':'INCOMPLETE_OR_FAILED' if errors else 'PASS_REQUIRES_INDEPENDENT_ARTIFACT_REVIEW',
+              'stages':rows,'actual_cases':actual,'scope_partition':manifest['scope_partition'],'errors':errors,'official_games':0,'gameplay_authorized':False},indent=2)+'\n')
+          print(json.dumps({'actual_cases':actual,'errors':errors}))
+          raise SystemExit(1 if errors else 0)
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: attacking-token-defenders-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/attacking-token-defenders/
+          if-no-files-found: error
+          retention-days: 90

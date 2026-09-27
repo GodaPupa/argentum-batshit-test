@@ -119,6 +119,10 @@ class BandingTrampleDrainScenarioTest : FunSpec({
         val wurmToPanther = decision.edges.single {
             it.sourceId == wurm && it.direction == DamageEdgeDirection.ATTACKER_TO_BLOCKER
         }
+        val pantherEdges = decision.edges.filter { it.sourceId == pantherId }
+        pantherEdges.map { it.direction }.toSet() shouldBe setOf(DamageEdgeDirection.BLOCKER_TO_ATTACKER)
+        pantherEdges.map { it.editableBy }.toSet() shouldBe setOf(attacker)
+        pantherEdges.sumOf { it.amount } shouldBe 6
 
         fun plan(neToBlk: Int, wurmToBlk: Int, drain: Int): List<DamageEdgeAmount> =
             decision.edges.map { edge ->
@@ -126,7 +130,8 @@ class BandingTrampleDrainScenarioTest : FunSpec({
                     neToPanther.id -> neToBlk
                     wurmToPanther.id -> wurmToBlk
                     neDrain.id -> drain
-                    else -> 0
+                    // Preserve all six damage the active player assigns for the blocker of the band.
+                    else -> edge.amount
                 }
                 DamageEdgeAmount(edge.id, amount)
             }

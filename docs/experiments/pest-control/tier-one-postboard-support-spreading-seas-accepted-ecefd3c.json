@@ -1,0 +1,51 @@
+{
+  "schema": "pest-postboard-spreading-seas-acceptance-v1",
+  "status": "ACCEPTED_SEED_FREE_CARD_AND_COVERAGE_CAPABILITY_ONLY",
+  "source_branch": "pest-control/tier1-postboard-support-spreading-seas",
+  "implementation_commit": "bcf78181ef303f98e109aa0c85f7070335ad7324",
+  "scenario_commit": "95b8b0f97114c889f6c4a440b1b51275fe794a08",
+  "workflow_source_commit": "09d10d6db44bb7dc43ecd8620bc9e5906acbcff0",
+  "generated_snapshot_commit": "ecefd3c496fac8b371ab38494d5810fac15789a9",
+  "workflow_run_id": 36212894945,
+  "workflow_job_id": 108322981017,
+  "audit": {
+    "workflow_conclusion": "success",
+    "exact_scenarios": "PASS",
+    "card_lint": "PASS",
+    "snapshot_regeneration": "PASS",
+    "unrelated_snapshot_drift_guard": "PASS",
+    "only_generated_snapshot": "mtg-sets/src/test/resources/snapshots/cards/ZEN.json"
+  },
+  "card": "Spreading Seas",
+  "qualified_behavior": [
+    "Aura targets a land",
+    "draws one card when the Aura enters",
+    "enchanted land becomes an Island under the canonical continuous type-changing layer",
+    "the original Forest intrinsic green-mana ability is unavailable while enchanted",
+    "removing the Aura restores the original Forest subtype and intrinsic green-mana ability"
+  ],
+  "queue_after_acceptance": {
+    "remaining_unique_identities": 4,
+    "remaining_sideboard_slots": 11,
+    "identities": {
+      "Relic of Progenitus": 7,
+      "Kaervek's Torch": 1,
+      "Jack-o'-Lantern": 1,
+      "Faerie Macabre": 2
+    }
+  },
+  "official": {
+    "seeds_generated": 0,
+    "games_initialized": 0,
+    "actions_submitted": 0,
+    "outcomes_exposed": 0,
+    "boarding_plans_frozen": false,
+    "postboard_gameplay_authorized": false
+  },
+  "historical_evidence": {
+    "quarantined_pest_games": 81,
+    "usable_as_clean_tier1_evidence": false
+  },
+  "deck_list_changes": false,
+  "disposition": "Accepted only for exact seed-free postboard support. Continue remaining four identities; no official gameplay authority is created."
+}

@@ -42,18 +42,34 @@ jobs:
       - name: Bind source and preserve existing definitions
         env:
           EXPECTED_HEAD: ${{ github.event.pull_request.head.sha }}
+          SOURCE_MANIFEST: docs/experiments/pest-control/tier-one-postboard-support-batch-b-shared-receiving-sources.json
         run: |
           python - <<'PY'
           import hashlib, json, os, pathlib, re, subprocess
           root = pathlib.Path('.')
           out = root / 'build/reports/pest-postboard-support-batch-b'
           out.mkdir(parents=True, exist_ok=True)
-          manifest_path = root / 'docs/experiments/pest-control/tier-one-postboard-support-batch-b-sources.json'
+          manifest_path = root / os.environ['SOURCE_MANIFEST']
           manifest = json.loads(manifest_path.read_bytes())
+          import importlib.util
+          receiving_spec=importlib.util.spec_from_file_location('sphinx_receiving_binding', 'sphinx-approach/canonical_receiving_binding.py')
+          receiving_helper=importlib.util.module_from_spec(receiving_spec); receiving_spec.loader.exec_module(receiving_helper)
+          effective_pins, receiving_binding=receiving_helper.bind('pest_postboard_b', manifest['source_files_sha256'], pathlib.Path('.'))
           head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          # Preserve the attempted exact binding even if any assertion rejects this source.
+          (out / 'card-sources.json').write_bytes(manifest_path.read_bytes())
+          (out / 'binding-attempt.json').write_text(json.dumps({
+              'schema': 'pest-postboard-support-batch-b-binding-attempt-v1',
+              'source_head': head, 'expected_head': os.environ['EXPECTED_HEAD'],
+              'source_manifest_sha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'status': 'BINDING_ATTEMPT_NOT_ACCEPTANCE',
+              'official_seeds_generated': 0, 'official_games_initialized': 0,
+              'official_actions_submitted': 0, 'outcome_exposure': 0,
+          }, indent=2) + '\n')
           assert head == os.environ['EXPECTED_HEAD']
           subprocess.check_call(['git', 'merge-base', '--is-ancestor', manifest['integrated_postboard_a_commit'], head])
-          for path, expected in manifest['source_files_sha256'].items():
+          for path, expected in effective_pins.items():
               assert hashlib.sha256((root / path).read_bytes()).hexdigest() == expected, path
           def blocks(raw):
               result = {}
@@ -84,6 +100,8 @@ jobs:
               'source_manifest_sha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest(),
               'snapshot_review_status': manifest['snapshot_review_status'],
               'snapshot_preservation': preservation,
+              'source_files_sha256': effective_pins,
+              'prospective_receiving_binding': receiving_binding,
               'scope': 'DETERMINISTIC_CARD_AND_COVERAGE_VALIDATION_ONLY',
               'official_seeds_generated': 0, 'official_games_initialized': 0,
               'official_actions_submitted': 0, 'outcome_exposure': 0,
@@ -127,6 +145,21 @@ jobs:
           # Preserve its actual result on the successor; do not waive or increase its timeout.
           run_stage premade-lobby-regression FreeForAllLobbyTest game-server || failed=1
           exit "$failed"
+      - name: Verify stable exact receiving binding after the original bank
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,pathlib,subprocess
+          root=pathlib.Path('.')
+          out=root/'build/reports/pest-postboard-support-batch-b'
+          before=json.loads((out/'source-provenance.json').read_bytes())
+          assert before['source_head']==subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          assert not subprocess.check_output(['git','status','--porcelain'],text=True).strip()
+          after={path:hashlib.sha256((root/path).read_bytes()).hexdigest() for path in before['source_files_sha256']}
+          (out/'receiving-source-after.json').write_text(json.dumps(after,indent=2)+'\n')
+          assert after==before['source_files_sha256'], 'Receiving source changed during original bank'
+          PY
+
       - name: Preserve validation evidence and any unaccepted compiled snapshot differences
         if: always()
         uses: actions/upload-artifact@v7

@@ -1,5 +1,6 @@
 package com.wingedsheep.sdk.scripting
 
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.scripting.conditions.Condition
 import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
 import com.wingedsheep.sdk.scripting.text.TextReplacer
@@ -20,6 +21,8 @@ import kotlinx.serialization.Serializable
  * @property target Which spells/costs the modifier applies to.
  * @property modification How the cost is changed (reduce/increase, generic/colored, fixed/dynamic).
  * @property gating Optional extra restriction (e.g. only the first matching spell each turn).
+ * @property sourceZones Zones in which this static ability contributes. Defaults to the battlefield;
+ *   stack-native text opts into [Zone.STACK] explicitly.
  */
 @SerialName("ModifySpellCost")
 @Serializable
@@ -27,6 +30,7 @@ data class ModifySpellCost(
     val target: SpellCostTarget,
     val modification: CostModification,
     val gating: CostGating = CostGating.None,
+    val sourceZones: Set<Zone> = setOf(Zone.BATTLEFIELD),
 ) : StaticAbility {
     override val description: String = buildDescription()
 
@@ -41,6 +45,7 @@ data class ModifySpellCost(
             SpellCostTarget.SelfCast -> "This spell"
             is SpellCostTarget.YouCast -> "${filterAdjective(target.filter)}$noun you cast"
             is SpellCostTarget.AnyCaster -> "${filterAdjective(target.filter)}$noun"
+            is SpellCostTarget.AnyCasterTargeting -> "Spells that target ${target.targetFilter.description}"
             is SpellCostTarget.OpponentsCastTargeting ->
                 "Spells your opponents cast that target ${target.targetFilter.description}"
             is SpellCostTarget.OpponentsCastFromZones ->
@@ -95,6 +100,7 @@ data class ModifySpellCost(
     private fun fromCasterPerspective(sourceDescription: String): String =
         when (target) {
             is SpellCostTarget.AnyCaster,
+            is SpellCostTarget.AnyCasterTargeting,
             is SpellCostTarget.OpponentsCastTargeting,
             is SpellCostTarget.OpponentsCastFromZones ->
                 sourceDescription
@@ -208,6 +214,16 @@ sealed interface SpellCostTarget {
         override fun applyTextReplacement(replacer: TextReplacer): SpellCostTarget {
             val newFilter = filter.applyTextReplacement(replacer)
             return if (newFilter !== filter) copy(filter = newFilter) else this
+        }
+    }
+
+    /** Spells cast by any player that target one or more objects matching [targetFilter]. */
+    @SerialName("AnyCasterTargeting")
+    @Serializable
+    data class AnyCasterTargeting(val targetFilter: GroupFilter) : SpellCostTarget {
+        override fun applyTextReplacement(replacer: TextReplacer): SpellCostTarget {
+            val newFilter = targetFilter.applyTextReplacement(replacer)
+            return if (newFilter !== targetFilter) copy(targetFilter = newFilter) else this
         }
     }
 

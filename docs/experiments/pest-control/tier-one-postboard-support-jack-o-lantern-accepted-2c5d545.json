@@ -1,0 +1,50 @@
+{
+  "schema": "pest-postboard-jack-o-lantern-acceptance-v1",
+  "status": "ACCEPTED_SEED_FREE_CARD_AND_COVERAGE_CAPABILITY_ONLY",
+  "source_branch": "pest-control/tier1-postboard-support-jack-o-lantern",
+  "predecessor_acceptance_commit": "49e1c2fc24024eb4f2b13ea306dea4993223c356",
+  "implementation_and_scenario_commit": "b3fee4c8e6ac2418827c7939794e1b53d4ce6cb4",
+  "generated_snapshot_commit": "2c5d5450948d6c5931baea722f519722ab61166e",
+  "workflow_run_id": 36225997583,
+  "workflow_job_id": 108360037567,
+  "audit": {
+    "workflow_conclusion": "success",
+    "exact_scenarios": "PASS",
+    "scenario_cases": 3,
+    "card_lint": "PASS",
+    "snapshot_regeneration": "PASS",
+    "unrelated_snapshot_drift_guard": "PASS",
+    "only_generated_snapshot": "mtg-sets/src/test/resources/snapshots/cards/MID.json"
+  },
+  "card": "Jack-o'-Lantern",
+  "printing": "MID #254",
+  "qualified_behavior": [
+    "{1}, tap, sacrifice self exiles up to one target card from a graveyard and draws a card",
+    "the battlefield ability remains legal with no target selected and still draws",
+    "sacrificing the artifact is paid before the battlefield ability resolves",
+    "{1}, exile this card from its owner's graveyard activates from the graveyard",
+    "the graveyard ability exiles Jack-o'-Lantern as a cost and adds one mana of a chosen color"
+  ],
+  "queue_after_acceptance": {
+    "remaining_unique_identities": 2,
+    "remaining_sideboard_slots": 3,
+    "identities": {
+      "Kaervek's Torch": 1,
+      "Faerie Macabre": 2
+    }
+  },
+  "official": {
+    "seeds_generated": 0,
+    "games_initialized": 0,
+    "actions_submitted": 0,
+    "outcomes_exposed": 0,
+    "boarding_plans_frozen": false,
+    "postboard_gameplay_authorized": false
+  },
+  "historical_evidence": {
+    "quarantined_pest_games": 81,
+    "usable_as_clean_tier1_evidence": false
+  },
+  "deck_list_changes": false,
+  "disposition": "Accepted only for exact seed-free postboard support. Continue Kaervek's Torch and Faerie Macabre; registry/support closure alone does not authorize postboard gameplay."
+}

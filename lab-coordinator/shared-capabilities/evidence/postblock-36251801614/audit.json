@@ -1,0 +1,32 @@
+{
+  "schema": "shared-postblock-failed-source-audit-v1",
+  "run_id": 36251801614,
+  "job_id": 108431103213,
+  "source_head": "9e05974cf1a27ef8668e880f30f492f6814e5215",
+  "source_tree": "0d6d04f00b91b8938e8a50d096452feb86410e4c",
+  "artifact_id": 10909276707,
+  "artifact_bytes": 235729,
+  "artifact_sha256": "fc25381acbf5828e9f009fae920633c53b3d570a36ec7f958e71ab7b3d98c2e5",
+  "members": {
+    "build/reports/shared-postblock-source/engine.txt": {
+      "bytes": 3437218,
+      "sha256": "c5ce30a3fc49b049ed649401a783dc0181c812b4ce3a9387e50c76b7db43dc7d"
+    },
+    "build/reports/shared-postblock-source/source-binding.json": {
+      "bytes": 9245,
+      "sha256": "5ef9ed97b10776be84f6ed344fd8328a4fc85f776927c06feab7b80da3997861"
+    }
+  },
+  "classification": "fixture dependency omitted during source extraction; compileTestKotlin failure before any test",
+  "compiler_errors": [
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt:93:13 Unresolved reference 'ferocityResearchFixture'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt:170:43 Unresolved reference 'ferocityResearchFixture'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt:171:40 Unresolved reference 'ferocityResearchFixture'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt:177:35 Unresolved reference 'ferocityResearchFixture'."
+  ],
+  "actual_test_cases": 0,
+  "server_cases": 0,
+  "scope_accepted": false,
+  "correction": "Import exact original canonical testFixture and explicitly bind it. Preserve all36 runtime production files and every original127 case body/assertion.",
+  "gameplay_authorized": false
+}

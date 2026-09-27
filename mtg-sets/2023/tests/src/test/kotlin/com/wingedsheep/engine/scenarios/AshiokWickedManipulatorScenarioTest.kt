@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.handlers.continuations.entityIdToChosenTarget
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
@@ -255,6 +257,7 @@ class AshiokWickedManipulatorScenarioTest : ScenarioTestBase() {
                 game.resolveStack()
 
                 game.passUntilPhase(Phase.COMBAT, Step.BEGIN_COMBAT)
+                game.chooseTriggerOrderInListedOrder() // Both Nightmare triggers are simultaneous.
                 game.resolveStack()
 
                 val tokens = game.findAllPermanents("Nightmare Token")

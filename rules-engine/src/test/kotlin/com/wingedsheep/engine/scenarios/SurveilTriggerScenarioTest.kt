@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.OrderedResponse
 import com.wingedsheep.engine.core.ReorderLibraryDecision
@@ -262,6 +264,8 @@ class SurveilTriggerScenarioTest : FunSpec({
 
         val before = driver.events.size
         driver.castLook(active, "Surveil Three")
+        driver.resolveStack()
+        driver.chooseTriggerOrderInListedOrder()
         driver.resolveStack()
 
         val surveiled = driver.events.drop(before).filterIsInstance<SurveiledEvent>().single()

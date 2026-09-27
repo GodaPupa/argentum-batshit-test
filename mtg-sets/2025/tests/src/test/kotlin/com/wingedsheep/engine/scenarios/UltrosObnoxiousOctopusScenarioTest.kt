@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.mechanics.layers.StateProjector
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
@@ -97,6 +99,7 @@ class UltrosObnoxiousOctopusScenarioTest : ScenarioTestBase() {
             // No opponent creature exists, so the ≥4 "tap target" ability has no legal target and
             // is not put on the stack. Only the ≥8 ability resolves.
             game.castSpell(1, "Test Eight Drop").error shouldBe null
+            game.chooseTriggerOrderInListedOrder()
             game.resolveStack()
             if (game.state.stack.isNotEmpty()) game.resolveStack()
 

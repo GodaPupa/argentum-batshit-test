@@ -1,0 +1,71 @@
+{
+  "schema": "pest-postboard-test-routing-audit-v1",
+  "status": "EXACT_SCENARIO_CLAIMS_NOT_ESTABLISHED_PENDING_REAL_TEST_EXECUTION",
+  "defect": "Scenario workflows invoked the era definition module test task; scenarios live in the era's tests child module. The selected tasks completed NO-SOURCE.",
+  "inspected_faerie_head": "878fe1f860c748782ae8c22b994e4c68141166d9",
+  "inspected_torch_head": "f24d715f5929c4f328b526de7d0551c825114db3",
+  "witnesses": [
+    {
+      "card": "Spreading Seas",
+      "run": 36212894945,
+      "job": 108322981017,
+      "task": ":mtg-sets:2008-2016:test",
+      "result": "NO-SOURCE"
+    },
+    {
+      "card": "Relic of Progenitus",
+      "run": 36219756839,
+      "job": 108342652563,
+      "task": ":mtg-sets:2008-2016:test",
+      "result": "NO-SOURCE"
+    },
+    {
+      "card": "Kaervek's Torch",
+      "run": 36225609445,
+      "job": 108358925292,
+      "task": ":mtg-sets:1993-1999:test",
+      "result": "NO-SOURCE"
+    },
+    {
+      "card": "Jack-o'-Lantern",
+      "run": 36225997583,
+      "job": 108360037567,
+      "task": ":mtg-sets:2017-2022:test",
+      "result": "NO-SOURCE"
+    },
+    {
+      "card": "Faerie Macabre",
+      "run": 36241191131,
+      "job": 108401876632,
+      "task": ":mtg-sets:2008-2016:test",
+      "result": "NO-SOURCE"
+    }
+  ],
+  "prior_receipts": "Preserved unchanged. Their snapshot, lint, source and inventory observations are separate from the unsupported exact-scenario claims. No prior sampled evidence is altered.",
+  "flashback_batch": "Its workflow uses scripts/test-class and correctly resolves the tests child module. Flaring Pain and Acorn Harvest are nevertheless included in combined-source regression because Acorn Harvest received the facade correction.",
+  "required_correction": "Use tests child modules; require fresh nonzero JUnit cases for every named class with zero failures, errors or skips before accepting combined support.",
+  "official": {
+    "new_seeds": 0,
+    "new_games": 0,
+    "new_actions": 0,
+    "new_outcomes": 0
+  },
+  "historical_quarantined_games": 81,
+  "deck_changes": false,
+  "local_scenario_failures": [
+    {
+      "evidence": "postboard-closure-evidence/attempt-01/",
+      "classification": "FIXTURE_DEFECT",
+      "card": "Spreading Seas",
+      "failure": "Post-Boomerang activation attempted by the nonactive player without receiving priority.",
+      "correction": "Assert active-player priority after resolution, pass priority, assert the land controller has priority before attempting the mana abilities."
+    },
+    {
+      "evidence": "postboard-closure-evidence/attempt-02/",
+      "classification": "FIXTURE_DEFECT",
+      "card": "Spreading Seas",
+      "failure": "Automatic Boomerang payment legitimately tapped the enchanted Forest while it was an Island, invalidating the later untapped-mana-source fixture premise.",
+      "correction": "Choose the two printed Islands explicitly for Boomerang payment, preserving the enchanted land for its restoration assertions."
+    }
+  ]
+}
