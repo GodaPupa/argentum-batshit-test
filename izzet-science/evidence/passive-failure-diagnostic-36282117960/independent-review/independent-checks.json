@@ -1,0 +1,204 @@
+{
+  "schema": "pest-independent-izzet-six-diagnostic-checks-v1",
+  "reviewer": "actual /root/pest",
+  "original_sha256": "8bfcb2881786acbc6c93ef0bb8e639baa9c86a37f187189977eea11b24c90a6b",
+  "package_files": {
+    "README.md": {
+      "bytes": 4099,
+      "sha256": "b54ef584868f23400288380ffbb0a21672409e9024082da4a7af5dbe0934b95e"
+    },
+    "accepted-base-stream.txt": {
+      "bytes": 26613,
+      "sha256": "47e993c61a57ebbd30d4a58c18aa84da119347836c0116eae053be61746014d8"
+    },
+    "audit_original.py": {
+      "bytes": 10646,
+      "sha256": "1877b1e2cad6a64235c309c7ecf3c7c3ab913e518e25c797ce156706bc6e318c"
+    },
+    "candidate-stream.txt": {
+      "bytes": 26613,
+      "sha256": "634376c1259f8db754d17c24567cb1579ecd0cc13f7aa8048186ac55d8e499e2"
+    },
+    "completed-live-metadata.json": {
+      "bytes": 32710,
+      "sha256": "6af5c5e6ffbbb7c242b439b881daef32d57219fc4f7792ddeaf211aaaeeae91a"
+    },
+    "final-audit-live-tests.json": {
+      "bytes": 17368,
+      "sha256": "79d3fab25cecb6a84dddfbce9158a30053599efcb1b1bb3cb776b8e9fae19cb0"
+    },
+    "original-artifact.zip": {
+      "bytes": 2687709,
+      "sha256": "8bfcb2881786acbc6c93ef0bb8e639baa9c86a37f187189977eea11b24c90a6b"
+    },
+    "original-author-audit.json": {
+      "bytes": 29422,
+      "sha256": "990538ec9e5a70cd93c672c8e18728bda7148a5c5ae39f4c101187c6f1e97e14"
+    }
+  },
+  "stages": [
+    {
+      "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "cases": {
+        "LEGACY_V0 plays the frozen baseline game exactly as it always has": "failure"
+      },
+      "task": "> Task :ai:test FAILED",
+      "fresh_workers": 1,
+      "command_exit": 1,
+      "xml_sha256": "43a9619ef778c6494b7f02b8d8324a621d5c49c35af23e1987217a204606bf78",
+      "log_sha256": "ef63026a161aafe8be9548f87fef9563e77bf3e3c82a6bdb74dd3a5766a0f9b4",
+      "decision_records": 0,
+      "trace_records": 413,
+      "xml_timestamp": "2026-09-27T00:30:17.963Z"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest",
+      "cases": {
+        "counter schedules two one-shot triggers for the next turn's upkeep and captures target controller": "pass",
+        "on the next turn's upkeep target controller may draw 0 to 2 and Denial caster draws one": "failure",
+        "uncounterable target still gets Arcane Denial's delayed draw abilities": "pass"
+      },
+      "task": "> Task :mtg-sets:1993-1999:tests:test FAILED",
+      "fresh_workers": 1,
+      "command_exit": 1,
+      "xml_sha256": "a0435e172d926e383e740da5cc89e1a51864435058c553121212f264dc737f48",
+      "log_sha256": "ab9559e4fe54b014aab54690a1d3a9c98f7ef7c9edf48256d98815b70defffae",
+      "decision_records": 45,
+      "trace_records": 0,
+      "xml_timestamp": "2026-09-27T00:31:23.527Z"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MnemonicWallScenarioTest",
+      "cases": {
+        "ETB may return a targeted instant from your graveyard": "failure",
+        "ETB may be declined without returning the targeted card": "failure"
+      },
+      "task": "> Task :mtg-sets:2008-2016:tests:test FAILED",
+      "fresh_workers": 1,
+      "command_exit": 1,
+      "xml_sha256": "3e2af92cdaad68cbe052b7b8f7256aa3745f8c8135dc1cf37c4a369bf5e77eea",
+      "log_sha256": "00e39daa5a9ec786b43739c134dc5d5f871c8dd2e3be57d1dcfa7745297c3ad4",
+      "decision_records": 18,
+      "trace_records": 0,
+      "xml_timestamp": "2026-09-27T00:32:38.052Z"
+    }
+  ],
+  "member_count": 87,
+  "uncompressed_bytes": 57411637,
+  "independent_source_hashes": {
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt": {
+      "sha256": "36c5348e3d59d569001c9b5d85db3f5ae89683d10eeab704ff6a8c1636835bf6",
+      "git_blob": "0871594a6f90c3ebd95272d01974ab07bcd5f2d4"
+    },
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/GameTestDriver.kt": {
+      "sha256": "34cb7972a73c3cc90dddaf43749adcc6dd1bd8495c8b3e3dae23ec78fe9c5df0",
+      "git_blob": "7738b6a9e861d4675a3785404870a0eea3daacf8"
+    },
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": {
+      "sha256": "87978d468ff109f88378607fec34b4ad825ed91671069a62c0f7eb6fb2a60b52",
+      "git_blob": "bfeb52503c604549b7625fa02a486a0f85cfdbef"
+    },
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt": {
+      "sha256": "2c898e708e6b7da9e9a322ddaecbfb7d72ecd1d5938b6729c6f14274b657f062",
+      "git_blob": "0046c1bbaef6c037be51b796c1cb9b7349e4598e"
+    },
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MnemonicWallScenarioTest.kt": {
+      "sha256": "44bda959e4227a43380c51f70b8d2fc60aa0eea89ea07e13c86881f096d68f20",
+      "git_blob": "6efb399f641a929a81bb3d771df61e82969a4feb"
+    },
+    "izzet-science/v0.7-control.md": {
+      "sha256": "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01",
+      "git_blob": "297ad4fe8f52f2cbeaaa6a17356f68f9c0f1fc1f"
+    },
+    "izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt": {
+      "sha256": "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be",
+      "git_blob": "3a3901a031652a6271763690787f6b28a68dcf6e"
+    },
+    "izzet-science/v09-position1-bootstrap-gate.md": {
+      "sha256": "8344ad7c543a42ac71ef9c999583ea65f1b44de57ed870e7480f91df46941257",
+      "git_blob": "a4a74623f3d5849071b9aeffc7237fbdf2c336c2"
+    },
+    "izzet-science/v09-phase33-position1-execution-authorization-accepted.md": {
+      "sha256": "3851d3c0405d3a7186de4f2161abf165a1ca38d12ff6a352a432d39fec0a7375",
+      "git_blob": "82770b1420f9738b2ee2cbd1e345382ee5d0f5ab"
+    },
+    "izzet-science/shared-priority-receiving/priority.json": {
+      "sha256": "e9fbb30abbc13425c1675fa2cb6ba2bd1f8275e1f9b9fa6872a49c21cfd54643",
+      "git_blob": "0f5b427e56baa83d6a11f2c13d83289e19c69822"
+    },
+    "izzet-science/shared-priority-receiving/cast-observer.json": {
+      "sha256": "81973f3fd87739d5846244174aa426ba3790e7ebdcb2bf86977e70f7f21f4e5b",
+      "git_blob": "5c7dbab3fbcdc560a0cc5bf34b10ccfed3bcc918"
+    },
+    "izzet-science/v09-position1-execution-adapter-accepted.md": {
+      "sha256": "2802ef8475394ca8f3b889289dda6be5887e6506c348dc01a449b9db4eb03c01",
+      "git_blob": "fe1fb4758cf1fa018d5457d6d9b01813fe507678"
+    }
+  },
+  "live_run": {
+    "id": 36282117960,
+    "head_sha": "42cd18ac4c573a945dcfd42e237581d86bb2f4d7",
+    "event": "push",
+    "run_attempt": 1,
+    "status": "completed",
+    "conclusion": "failure",
+    "created_at": "2026-09-27T00:18:48Z",
+    "updated_at": "2026-09-27T00:33:01Z"
+  },
+  "live_job": {
+    "id": 108515820763,
+    "started_at": "2026-09-27T00:24:06Z",
+    "completed_at": "2026-09-27T00:33:00Z",
+    "conclusion": "failure"
+  },
+  "baseline": {
+    "entries": 413,
+    "bytes": 26613,
+    "sha256": "634376c1259f8db754d17c24567cb1579ecd0cc13f7aa8048186ac55d8e499e2",
+    "changed_entries": [
+      145,
+      146,
+      254,
+      255,
+      282,
+      283,
+      327,
+      328,
+      366,
+      367,
+      389,
+      390,
+      411,
+      412
+    ],
+    "end": "END|turns=20|winner=1|life=-8/16\n"
+  },
+  "totals": {
+    "tests": 6,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0
+  },
+  "pending_decisions": [
+    {
+      "class": "com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest",
+      "record": 32,
+      "type": "afterPendingType=com.wingedsheep.engine.core.ChooseOptionDecision",
+      "sha256": "730679244883868f4a3d46d861a46e4033c1b9405de280cf7b5cd0c91eec7195"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MnemonicWallScenarioTest",
+      "record": 9,
+      "type": "afterPendingType=com.wingedsheep.engine.core.ChooseTargetsDecision",
+      "sha256": "d5e2185dbb3beebbd7d6f0c779a7f96c70df8ed4e77e20fbf2bf8e19b8afa5ff"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MnemonicWallScenarioTest",
+      "record": 18,
+      "type": "afterPendingType=com.wingedsheep.engine.core.ChooseTargetsDecision",
+      "sha256": "1cbe6a8d93f027ba031266e753dfcbf07929a031c982d97e515e3ecc9f9e8f51"
+    }
+  ],
+  "source_restoration": "Exact clean before/after maps; both original helper bytes independently fetched and exact reversible patches verified.",
+  "no_runtime_execution_by_review": true
+}
