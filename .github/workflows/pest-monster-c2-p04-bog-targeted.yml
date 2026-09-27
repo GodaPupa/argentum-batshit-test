@@ -1,0 +1,60 @@
+name: Pest Monster P04 Bog target receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-c2-p04-bog-targeted.yml"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterBogTargetReceivingTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-target-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact fixture source
+        run: |
+          mkdir -p build/reports/pest-c2-p04-bog
+          {
+            git rev-parse HEAD
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterBogTargetReceivingTest.kt
+            git status --porcelain
+          } > build/reports/pest-c2-p04-bog/source.txt
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterBogTargetReceivingTest.kt)" = "92a716bb4f9d067990f529e61f6ef9dd72010a62"
+      - name: Execute two fresh Pest Bog target fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterBogTargetReceivingTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/pest-c2-p04-bog/gradle.log
+      - name: Verify exact JUnit cases
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          paths=glob.glob("gym/build/test-results/test/TEST-*PestMonsterBogTargetReceivingTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          cases=root.findall(".//testcase")
+          assert sorted(c.get("name") for c in cases)==[
+              f"P04-04 Monster seat {seat} Bog targets Pest public graveyard"
+              for seat in (1, 2)
+          ], [c.get("name") for c in cases]
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-p04-bog-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-c2-p04-bog/
+            gym/build/test-results/test/TEST-*PestMonsterBogTargetReceivingTest.xml
+          if-no-files-found: error
+          retention-days: 90
