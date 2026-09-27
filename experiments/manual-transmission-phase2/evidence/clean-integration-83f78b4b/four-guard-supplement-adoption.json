@@ -1,0 +1,55 @@
+{
+  "schema": "manual-clean-four-guard-supplement-independent-adoption-v1",
+  "disposition": "ADOPT_EXACT_SOURCE_SCOPED_SUPPLEMENTAL_RECEIVING",
+  "reviewed_proposal": "manual/clean-guard-supplement-proposal-20260927@95918243",
+  "source": {
+    "pr_head": "83f78b4b63264346347b40cee19f0459513cf40b",
+    "runtime_parent": "a333dc1e6b8c2e78961bbbe052ee01105e2f1264",
+    "ci_synthetic_merge": "63c1d6ee53605653465abffeb1dc0de6d4caad6b",
+    "original_ci_run": 36328394171
+  },
+  "evidence": {
+    "stage_index": "e64f30db:experiments/manual-transmission-phase2/evidence/clean-integration-83f78b4b/inherited-guard-stage-index.json",
+    "causal_map": "eeb51ade:experiments/manual-transmission-phase2/evidence/clean-integration-83f78b4b/four-guard-causal-map.json",
+    "ci_original_index": "7b128677:experiments/manual-transmission-phase2/evidence/clean-integration-83f78b4b/ci-original-index.json"
+  },
+  "scopes": [
+    {
+      "domain": "attacking-token",
+      "classes": 3,
+      "fresh_cases": 20,
+      "original_guard_run": 36328394100,
+      "original_status": "INCOMPLETE_PRETEST"
+    },
+    {
+      "domain": "postboard-A",
+      "stages": 10,
+      "fresh_cases": 371,
+      "original_guard_run": 36328394029,
+      "original_status": "INCOMPLETE_PRETEST"
+    },
+    {
+      "domain": "postboard-B",
+      "stages": 11,
+      "fresh_cases": 397,
+      "original_guard_run": 36328394334,
+      "original_status": "INCOMPLETE_PRETEST"
+    },
+    {
+      "domain": "priority",
+      "classes": 27,
+      "fresh_cases": 220,
+      "original_guard_run": 36328394062,
+      "original_status": "INCOMPLETE_PRETEST"
+    }
+  ],
+  "separate_current_combat": {
+    "adoption": "59328b24",
+    "classes": 4,
+    "fresh_cases": 32,
+    "original_guard_run": 36328393984,
+    "original_status": "INCOMPLETE_PRETEST"
+  },
+  "review": "Independent reviewer adopted these four bounded receiving scopes from original clean CI after exact case/source/XML binding and causal delta review: token 11, postboard A 4, postboard B 3, priority 16 deltas. Accepted shared changes and reviewed Manual changes; THS combined source has disjoint behavior. Priority three metadata hashes and stage authority preserved. Case banks overlap and are not additive.",
+  "limits": "No reclassification of original failed guards, frozen manifest edits, automatic PR merge, capability admission, official allocation, or gameplay. No new test execution."
+}
