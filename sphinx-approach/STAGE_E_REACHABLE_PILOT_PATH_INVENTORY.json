@@ -166,8 +166,8 @@
         "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lrw/cards/Ponder.kt",
         "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m11/cards/Preordain.kt"
       ],
-      "reachable": "Brainstorm choose exactly two hand cards and order top; Ponder look/reorder top three, May shuffle, draw; Preordain scry top/bottom/order, draw",
-      "evidence_status": "definition paths; exact typed decision traces remain to be pinned before case inventory"
+      "reachable": "Brainstorm: SelectCardsDecision exactly two current hand cards, then ReorderLibraryDecision top order. Ponder: ReorderLibraryDecision top three, then YesNoDecision optional shuffle, then draw. Preordain: SelectCardsDecision choose up to two to bottom, then ReorderLibraryDecision for remaining top order, then draw.",
+      "evidence_status": "Definition plus LibraryPatterns/SelectFromCollection/MoveCollection executor path traced statically; initialized actor question trace and policy still unqualified."
     },
     {
       "id": "C07",
@@ -179,8 +179,8 @@
         "benchmark"
       ],
       "source": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/LorienRevealed.kt",
-      "reachable": "five-mana draw-three cast or Islandcycling activation with discard/payment/library search/reveal/shuffle",
-      "evidence_status": "definition path; exact actor offer and typed search trace unqualified"
+      "reachable": "Five-mana draw-three cast or TypecycleCard islandcycling offer with discard/payment; TypecycleCardHandler invokes LibraryPatterns.searchLibrary, yielding a SelectCardsDecision for matching Islands, reveal and shuffle.",
+      "evidence_status": "Definition, CyclingEnumerator, TypecycleCardHandler and SelectFromCollection executor path traced statically; initialized actor choice unqualified."
     },
     {
       "id": "C08",
@@ -214,7 +214,7 @@
   ],
   "exclusion_or_unknown": [
     "Frozen Stage-E opponent deck packages have not been selected; opponent-triggered question and target inventory is necessarily incomplete.",
-    "Card definitions establish possible paths but do not certify the exact actor projection/continuation shape; C06, C07, C09 require real typed trace before an immutable fixture bank.",
+    "Card definitions and executor traces establish possible typed paths, but do not certify the exact actor projection/continuation at an initialized Stage-E seat; C06, C07 and C09 still require such a trace before complete full-pilot case inventory.",
     "No blanket yes/first-option policy or legal action index fallback may stand in for a reachable decision.",
     "The first compiled source/fixture bank must be reviewed prospectively with exact numbered case IDs, source hashes and equal four-identity opportunity; case total is currently unset.",
     "The source-only router has not been tested against successive initialized London seat transitions or post-opening priority. The historical 16 initialized-seat fixtures bind seats and inspect one boundary action, but do not qualify this router or opening policy."
