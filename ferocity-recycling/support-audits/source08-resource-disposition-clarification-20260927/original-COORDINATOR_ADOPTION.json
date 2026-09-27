@@ -1,0 +1,33 @@
+{
+  "schema": "ferocity-source08-resource-disposition-coordinator-adoption-v1",
+  "disposition": "ADOPT_INCOMPLETE_CALIBRATION_WITH_HARD_PRODUCTION_STOPS",
+  "proposal_ref": "69c8ac4573ee89fdace8b0c0cf05f52051f1947d",
+  "independent_review_ref": "a14f30d2fbceccb1b04d8b909fe643891682fc06",
+  "controlling_sources": [
+    "ferocity-recycling/protocols/FIRST_CELL_RESOURCE_AMENDMENT.md",
+    "ferocity-recycling/support-audits/resource-boundary-root-review-05/REVIEW.json",
+    "ferocity-recycling/evidence/source08-takeover/gift-template-recovery/resource-attempt-recovery-manifest.json"
+  ],
+  "interpretation": "The finite capacity characterization was attempted and stopped after failed space preflights. Review05 does not impose a successful synthetic reader as an independent predicate; the binding amendment retains failures and imposes the real per-child 768 MiB preflight, 128 MiB file cap, strict replay and inconclusive result if coverage or resource imbalance undermines selection. Close the synthetic exercise incomplete. Carry unmeasured reader memory explicitly into future D2 admission and first-cell interpretation.",
+  "preserved_history": {
+    "supervisor_claims": 3,
+    "writer_jvms": 1,
+    "reader_jvms": 0,
+    "reader_measurement": "UNKNOWN",
+    "double_reader": "RETIRED",
+    "scope44_adoption_provenance": "UNRESOLVED",
+    "new_calibration_commands": 0,
+    "randomized_games": 0
+  },
+  "limits": [
+    "This does not retrospectively adopt scope44 or certify its writer as approved calibration.",
+    "Source08 exact runtime, offline bundle, dependencies, two policy maps, six-file protocol map, watchdog, qualification, collector, semantic replay and independent D2 admission remain separate gates.",
+    "At each actual trial, enforce current free-space/OS file-limit controls; failed trial stays unresolved in its original allocation without retry/replacement. Apply the frozen inconclusive stop when necessary.",
+    "No claim, seed, export, initialization or gameplay is authorized by this disposition."
+  ],
+  "counters": {
+    "D2_games": 0,
+    "first_cell_games": 0,
+    "seeds_consumed": 0
+  }
+}
