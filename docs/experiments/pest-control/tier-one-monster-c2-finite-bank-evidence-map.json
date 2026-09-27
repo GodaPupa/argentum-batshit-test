@@ -115,6 +115,22 @@
       "status": "AUTHOR_AUDITED_TWO_FRESH_CASES_ONLY",
       "scope": "actual Bog target/public Pest graveyard exile in both Monster seat placements; optional Rooftop Percher and Kill-Ship target domains remain open",
       "audit": "53bef57f:docs/experiments/pest-control/evidence/c2-p04-bog-36348018751-original-audit.json"
+    },
+    "P04_02_Stirrings": {
+      "original_attempt": {
+        "run": 36349063825,
+        "artifact": 10941469281,
+        "status": "INCOMPLETE_TWO_FRESH_FIXTURE_ASSERTIONS",
+        "test_blob": "22c09f4fb1dff71ae9bc598e0c327b90e076bd7b",
+        "audit": "79938e7a:docs/experiments/pest-control/evidence/c2-p04-stirrings-36349063825-original-audit.json",
+        "failure": "fixture expected all five looked cards selectable; only three colorless legal options"
+      },
+      "prospective_changed_source": {
+        "head": "309d2863e1fdf0f7e0ec4ea5a52715ea47cc7629",
+        "test_blob": "67467e726af89ee164bd277c7cb736b5a508c903",
+        "status": "UNEXECUTED_RESULT_UNKNOWN",
+        "scope": "two Monster seats, eligible colorless selection and five-look physical remainder ordering"
+      }
     }
   },
   "missing": "Complete exact reachable action and decision variants for all frozen mains, both actor seats and starts, including non-search looks, other scry/surveil, alternative costs, payment, triggers/order, attack/block/post-block priority, response/pass, random/cascade separation, raw-policy parity and complete own/public pilots. Map every accepted shared case by exact identity. Existing scoped cases cannot be summed into admission.",
