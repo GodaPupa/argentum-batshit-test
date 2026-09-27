@@ -9,8 +9,8 @@ import subprocess
 import time
 import xml.etree.ElementTree as ET
 
-SOURCE = "8b05f2cecee6e992f7eca6d77695040f32901f40"
-TREE = "4f91346617cd0d4e29e09ab8405c141883cf1820"
+SOURCE = "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5"
+TREE = "1a903dc4862d32fdd029e73a916cc9659678db4d"
 ROOT = Path(os.environ["GITHUB_WORKSPACE"])
 CHECKOUT = ROOT / "source"
 CONTROL = ROOT / "control"

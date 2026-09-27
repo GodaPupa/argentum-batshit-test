@@ -1,24 +1,15 @@
 {
   "schema": "izzet-shared-receiving-fixed-bank-gate-v1",
-  "ready_for_execution": true,
+  "ready_for_execution": false,
   "source_review": {
-    "inert_archive_commit": "996af220e570558260435d84768ac49bca1a6159",
-    "reviews": [
-      {
-        "sha256": "7627f8ed232fb42ff823484b9103f3dee2a3bacc1e457341e8edf1efad880076",
-        "path": "izzet-science/shared-receiving-20260926/control-attempt-01/manual-one-use-control-source-review.json",
-        "exact_review_json": "{\n  \"schema\": \"izzet-receiving-control-nonauthor-source-review-v1\",\n  \"reviewer\": \"actual non-author /root/manual\",\n  \"at_utc\": \"2026-09-26T22:17:00.701431+00:00\",\n  \"decision\": \"PASS_BOUNDED_ONE_PROSPECTIVE_DETERMINISTIC_RECEIVING_CONTROL\",\n  \"reviewed_files\": {\n    \"izzet-shared-receiving.yml\": {\n      \"bytes\": 1397,\n      \"sha256\": \"2a8fdd289e0257914e5eb6de1c6ef197224b6c9be70da464ed6cd09f9e998153\"\n    },\n    \"izzet-receiving-qualification.py\": {\n      \"bytes\": 9063,\n      \"sha256\": \"4472055535f616e80a048654fd2367ef70a653be9f4e49332ba4695490fffae7\"\n    },\n    \"receiving-gate.json\": {\n      \"bytes\": 141153,\n      \"sha256\": \"526b5cfd816ecdf35d6736be11fdcf6b72ebe0246c2723645dedc6afd95cadc6\"\n    }\n  },\n  \"source_head\": \"8b05f2cecee6e992f7eca6d77695040f32901f40\",\n  \"source_tree\": \"4f91346617cd0d4e29e09ab8405c141883cf1820\",\n  \"live_commit_tree_independently_verified\": true,\n  \"existing_case_union\": {\n    \"classes\": 87,\n    \"cases\": 973,\n    \"Vines\": 560,\n    \"shared\": 407,\n    \"historical_diagnostic\": 8,\n    \"Dalkovan_shared_overlap\": 2,\n    \"duplicates\": 0\n  },\n  \"independent_original_bank_check_sha256\": \"b26bf37b1349f47edf081b979f06390739890922270b9fbf1ac64873422df3f5\",\n  \"review_findings\": [\n    \"Read entire collector and workflow. Independently opened six original ZIPs, verified complete archive SHA/CRC, all87 original XML hashes and973 exact class/name identities; retained failing historical identities are explicitly included.\",\n    \"Independently fetched complete untruncated immutable candidate Git tree and source commit. All87 test-source blob pins match; all7 preserved authority content SHA256 values and Git blobs match live candidate tree. No seed vector was read.\",\n    \"One exact branch-creation push, github.event.before zero and run_attempt1. Read-only contents permission, no workflow_dispatch, no runner-side retry, no automatic unchanged rerun.\",\n    \"Immutable source checkout8b05/tree4f913; separate control checkout constrained to exactly3trackedfiles; source status/head/tree/test and authority pins checked before every bank. Dependency files hashed before/after.\",\n    \"Each original class uses prescribed just test-class --rerun --no-build-cache and updateSnapshots=false. Only owned generated XML removed. All produced XML and command logs retained before failure checks. Fresh task and worker marker required. Exact class, names, count, uniqueness, no skip/error/failure guard and overall failure if any class fails.\",\n    \"After an original class failure, remaining declared banks still execute unless source integrity fails. Original failing baseline/Arcane/Wall fixtures and existing assertions are not replaced. Dalkovan exact2 names run once with already separately reviewed stronger assertions.\",\n    \"No official entropy/claim/game/pilot budget access and no gameplay authorization;973 software cases do not allocate games. Full receiving CI and independent actual artifact review remain separate.\"\n  ],\n  \"activation_scope\": \"Approved one prospective publication after gate ready_for_execution changes to true and source_review binds this exact review; script/workflow and every other gate field must remain byte-equivalent or receive review. Archive this review in an inert evidence location; control checkout must retain exactly3files. No duplicate branch push/dispatch authorized.\",\n  \"limitations\": [\n    \"Review of the control and original-case/source/authority binding; production composition review belongs to actual Sphinx reviewer and is not impersonated here.\",\n    \"No JVM or engine test executed by this review. Expected973 remains prospective until actual raw artifact reviewed.\",\n    \"Non-author agent source review is not GitHub approval, complete runtime admission, or source-bound gameplay permit.\"\n  ],\n  \"official_games\": 0,\n  \"official_seeds_consumed\": 0,\n  \"full_runtime_accepted\": false,\n  \"gameplay_authorized\": false\n}\n"
-      },
-      {
-        "sha256": "1552c27513d13062fe46dc19e54e3c4e31bf13fdc663f60fb97a9ee55bc19528",
-        "path": "izzet-science/shared-receiving-20260926/control-attempt-01/manual-one-use-control-packaging-review.json",
-        "exact_review_json": "{\n  \"schema\": \"izzet-receiving-control-nonauthor-packaging-review-v1\",\n  \"reviewer\": \"actual nonauthor /root/manual\",\n  \"at_utc\": \"2026-09-26T22:18:27.393272+00:00\",\n  \"decision\": \"PASS_ONE_LINE_RETENTION_SUCCESSOR_BEFORE_FIRST_EXECUTION\",\n  \"parent_review_sha256\": \"7627f8ed232fb42ff823484b9103f3dee2a3bacc1e457341e8edf1efad880076\",\n  \"original_workflow_sha256\": \"2a8fdd289e0257914e5eb6de1c6ef197224b6c9be70da464ed6cd09f9e998153\",\n  \"successor_workflow_sha256\": \"a16ce49a49cf001c19553f1fbed99d6c193ab2d9f060d7a85e4588c91616fc88\",\n  \"exact_delta\": \"Only adds include-hidden-files: true under actions/upload-artifact@v7 scoped to output/. Removing that one line exactly reproduces reviewed predecessor bytes.\",\n  \"reason\": \"Ensure copied output/control/.github/workflows/izzet-shared-receiving.yml is retained in original artifact alongside other2controlfiles and hashes.\",\n  \"boundary\": \"Source checkout uses persist-credentials:false. output/ is owned by collector and contains only copied3controlfiles, explicitly written source/dependency/audit records, commandlogs andXML. This change does not widen upload to checkout or workspace.\",\n  \"unchanged_script_sha256\": \"4472055535f616e80a048654fd2367ef70a653be9f4e49332ba4695490fffae7\",\n  \"unchanged_unready_gate_sha256\": \"526b5cfd816ecdf35d6736be11fdcf6b72ebe0246c2723645dedc6afd95cadc6\",\n  \"scope\": \"Supersedes predecessor workflow binding only before same sole prospective branch-creation event. All parent restrictions and independent raw/fullCI requirements preserved. Allows ready/review-only gate activation referring to parent and this supplement.\",\n  \"new_attempts_authorized\": 1,\n  \"duplicate_attempt_authorized\": false,\n  \"gameplay_authorized\": false\n}\n"
-      }
-    ]
+    "status": "PENDING_NEW_SOURCE_AND_CONTROL_REVIEW",
+    "prior_8b05_control_review_is_historical": true,
+    "new_exact_source_review": null,
+    "new_control_review": null
   },
   "scope": "One deterministic receiving qualification of existing Vines560, shared407 and original c47 diagnostic8 identities. Dalkovan2 overlaps shared407; exact union973. No games, new pilot cases, official entropy or comparative inference.",
-  "source_head": "8b05f2cecee6e992f7eca6d77695040f32901f40",
-  "source_tree": "4f91346617cd0d4e29e09ab8405c141883cf1820",
+  "source_head": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+  "source_tree": "1a903dc4862d32fdd029e73a916cc9659678db4d",
   "expected_classes": 87,
   "expected_cases": 973,
   "preserved_authority_sha256": {
@@ -53,7 +44,7 @@
       "original_xml_path": "FrozenBaselineTest/raw-test-results/TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml",
       "original_result": "FAILED_C47_DIAGNOSTIC_RETAINED_NOT_ACCEPTED",
       "test_source": "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt",
-      "test_source_git_blob": "bfeb52503c604549b7625fa02a486a0f85cfdbef",
+      "test_source_git_blob": "928eb60e3bb8a0758d933ecf5c0ccd41caee8ea3",
       "module": "ai",
       "stage": "historical-regression-FrozenBaselineTest"
     },
@@ -71,7 +62,7 @@
       "original_xml_path": "ArcaneDenialScenarioTest/raw-test-results/TEST-com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest.xml",
       "original_result": "FAILED_C47_DIAGNOSTIC_RETAINED_NOT_ACCEPTED",
       "test_source": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt",
-      "test_source_git_blob": "0046c1bbaef6c037be51b796c1cb9b7349e4598e",
+      "test_source_git_blob": "a84b6853198d10c33fc34165bdfc69f98ea5171c",
       "module": "mtg-sets/1993-1999/tests",
       "stage": "historical-regression-ArcaneDenialScenarioTest"
     },
@@ -88,7 +79,7 @@
       "original_xml_path": "MnemonicWallScenarioTest/raw-test-results/TEST-com.wingedsheep.engine.scenarios.MnemonicWallScenarioTest.xml",
       "original_result": "FAILED_C47_DIAGNOSTIC_RETAINED_NOT_ACCEPTED",
       "test_source": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MnemonicWallScenarioTest.kt",
-      "test_source_git_blob": "6efb399f641a929a81bb3d771df61e82969a4feb",
+      "test_source_git_blob": "d4f8dc75c44334f82d5646eb15dceefbc2adde93",
       "module": "mtg-sets/2008-2016/tests",
       "stage": "historical-regression-MnemonicWallScenarioTest"
     },
@@ -2185,9 +2176,9 @@
     }
   ],
   "failure_rule": "Retain raw logs, produced XML, exit statuses and case failures. Continue all declared deterministic classes despite recorded class failure, unless source/control integrity fails. Overall gate fails if any class fails or any required identity is absent. No automatic retry or unchanged rerun.",
-  "interpretation": "Only fresh passed original case identities on this exact candidate may receive independent component review; no full-runtime or gameplay admission. Dalkovan same2 names now include explicitly reviewed stronger defender assertions.",
-  "full_ci": "Separate fresh complete receiving CI required; original FrozenBaseline expectation and unresolved Arcane Denial/Mnemonic Wall fixtures are unchanged. Targeted gate cannot waive them.",
+  "interpretation": "Original 8b05 run had four preserved failures; subsequent separate five-case scenario run and one-case vanilla baseline run passed on their respective exact sources. This bank is required for combined receiving confidence; prior results cannot be silently counted as this run.",
+  "full_ci": "Full receiving CI on the exact accepted source remains separate and required.",
   "official_seeds": 0,
   "official_games": 0,
-  "source_derivation": "Collector derived from source-reviewed Sphinx gate6c775a9e; Izzet adapts project/source identities,973/87 inventory, explicit updateSnapshots=false and evidence-preserving failure continuation so original failing regressions do not hide remaining source behavior. Independent exact Izzet source/control review required."
+  "source_derivation": "Second prospective exact-source receiving qualification after original 8b05 bank failure. It retains the original 87 class/973 case identities, the prior original archives, all shared mechanics, authority bytes and no official game allocation. Source 60d2 differs from original 8b05 only in three existing test files: five card scenario decisions and one independently dispositioned vanilla baseline. Current source and control require fresh non-author review."
 }

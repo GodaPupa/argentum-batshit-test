@@ -2,7 +2,7 @@ name: Izzet exact shared receiving original banks
 
 on:
   push:
-    branches: [lab/izzet-shared-receiving-qualification-20260926]
+    branches: [lab/izzet-shared-receiving-qualification-20260927]
 
 permissions:
   contents: read
@@ -23,7 +23,7 @@ jobs:
           persist-credentials: false
       - uses: actions/checkout@v6
         with:
-          ref: 8b05f2cecee6e992f7eca6d77695040f32901f40
+          ref: 60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5
           path: source
           persist-credentials: false
       - uses: actions/setup-java@v5
