@@ -1,0 +1,26 @@
+{
+  "schema": "manual-phase2-main-integration-focused-independent-review-v1",
+  "disposition": "ACCEPT_ONE_INITIAL_PUSH_DETERMINISTIC_INTEGRATION_GATE_ONLY",
+  "manual_fixed_hardware": "v0.7",
+  "integration_commit": "85499f82278472ca286c8826e8266d8759ccf2ae",
+  "integration_tree": "7b0d6d041d6b119aae678ec47135c14e7efeaf4b",
+  "parents": [
+    "4762f8d763fecb32d2f042222c5383f74eee3479",
+    "ff34ac8fa2efbd41f233e877cb2908c2cab5929a"
+  ],
+  "conflict_rationale_blob": "facc8f924239bdcf301cbb2cdd04485cad0d551d",
+  "source_review": [
+    "Independently compared all 121 existing Manual experiment blobs against first parent: 121 identical; all four PR209 repair blobs identical.",
+    "Five engine conflict files retain accepted main behavior plus Manual entrySnapshot/beforeEntry additions. Main engine lines were not removed except documented continuation semantic text; Pest source manifest histories are separately preserved.",
+    "The 11-class fixture inventory binds source/test blobs and covers entry snapshots, token copy/batch pause, shared priority, two receiving scenarios and accepted AI baseline. No identical run exists at integration source."
+  ],
+  "fixture_inventory_commit": "2cc0dfcb",
+  "fixture_inventory_blob": "003a80520a47caad9df03fd92e0160512dded450",
+  "gate_workflow_commit": "4c1210047368ed962e9c803e70a41862ec42545f",
+  "gate_workflow_blob": "3ad1ae9987c2b38728d18a6466130b8675af2fb4",
+  "gate_workflow_sha256": "2c681a1644573546857e7251584d3d8e7b209b4e96b5d0cecaec5323a31f5f90",
+  "gate_branch": "lab/manual-main-integration-gate-20260927",
+  "execution_limit": "Create only gate branch from exact workflow commit for initial push/run attempt1; checkout immutable integration commit, fresh Java21 filtered tests with raw logs/XML and source before/after. Independently audit original artifact before any full CI or merge. No Manual game or capability admission.",
+  "official_capability_games": 0,
+  "official_primary_games": 0
+}
