@@ -9,6 +9,7 @@ import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.mechanics.mana.CostCalculator
 import com.wingedsheep.engine.mechanics.mana.ManaSolver
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -54,8 +55,14 @@ class PestMonsterPriorityResponseReceivingTest : ScenarioTestBase() {
                     .single { it.cardId == weather }
                 game.state.getEntity(response.cardId)!!.get<CardComponent>()!!.name shouldBe "Weather the Storm"
                 game.execute(response).error shouldBe null
-                game.state.stack.size shouldBe 2
-                game.state.stack.last() shouldBe response.cardId
+                game.state.stack.size shouldBe 3
+                game.state.stack[0] shouldBe crop
+                game.state.stack[1] shouldBe response.cardId
+                val storm = game.state.getEntity(game.state.stack[2])!!
+                    .get<TriggeredAbilityOnStackComponent>()!!
+                storm.sourceId shouldBe response.cardId
+                storm.controllerId shouldBe pest
+                storm.descriptionOverride!!.startsWith("Storm") shouldBe true
             }
         }
     }
