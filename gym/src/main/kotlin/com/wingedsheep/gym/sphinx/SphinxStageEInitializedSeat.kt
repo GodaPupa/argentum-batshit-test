@@ -51,6 +51,14 @@ class SphinxStageEInitializedSeat private constructor(
         return SphinxStageEOpeningActor.decide(input, expectedEpoch, actorId)
     }
 
+    /** Current actor-visible cantrip/search choice; later Ponder shuffle remains unqualified. */
+    fun decideVisibleChoice(input: ActorInput, expectedEpoch: ActorEpoch): SphinxStageEAdapterResult {
+        require(expectedEpoch.sourceVersion == sourceVersion && expectedEpoch.trialId == trialId) {
+            "Actor epoch belongs to a different initialized source or trial"
+        }
+        return SphinxStageEVisibleChoice.decide(input, expectedEpoch, actorId, ownDeck)
+    }
+
     companion object {
         /**
          * Trusted-runner boundary, called on the actual GameInitializer result before mulligans.

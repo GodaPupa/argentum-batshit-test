@@ -1,0 +1,65 @@
+{
+  "schema": "sphinx-stage-e-visible-choice-source-scope-v1",
+  "status": "UNCOMPILED_UNTESTED_SOURCE_CANDIDATE__NO_FIXTURE_OR_GAMEPLAY_AUTHORITY",
+  "parent_source": "f7475a6a9b63d1895edea10d508324e9836d7cfb",
+  "opening_receiving_independent_acceptance": "7b8f46f4b0d0240092ce8a94e879f3c5fd19e32e",
+  "frozen_decks": [
+    "reconstructed-v01",
+    "reconstructed-hybrid",
+    "closest-no-approach-v01",
+    "serpico-terror-benchmark"
+  ],
+  "policy": "One identical visible-choice scoring and source/actor/epoch guard for all four list identities; cards absent from a list are not invented.",
+  "source": {
+    "choice_actor_path": "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoice.kt",
+    "choice_actor_blob": "2c383c67b42177aceb4f0fb397b80f73e5863adf",
+    "initialized_seat_path": "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt",
+    "initialized_seat_blob": "f420e5b6e144ffc2692e9b146a44dbf461679f5d"
+  },
+  "candidate_paths": [
+    {
+      "source": "Brainstorm",
+      "choices": [
+        "SelectCardsDecision exactly two own-hand cards after draw-three",
+        "ReorderLibraryDecision top two using current allowed metadata"
+      ],
+      "development_state": "source-only; actual initialized trace and policy quality unverified"
+    },
+    {
+      "source": "Preordain",
+      "choices": [
+        "SelectCardsDecision bottom zero to two revealed cards",
+        "ReorderLibraryDecision remaining current allowed top order"
+      ],
+      "development_state": "source-only; actual initialized trace and policy quality unverified"
+    },
+    {
+      "source": "Ponder",
+      "choices": [
+        "ReorderLibraryDecision current revealed top three"
+      ],
+      "development_state": "source-only; subsequent optional shuffle YesNo remains unqualified without replayable seen-card memory"
+    },
+    {
+      "source": "Lórien Revealed",
+      "choices": [
+        "SelectCardsDecision or SearchLibraryDecision offered Island search after typecycling"
+      ],
+      "development_state": "source-only; typecycling action/payment and actual question projection unverified"
+    }
+  ],
+  "explicit_exclusions": [
+    "Sphinx's Approach May/SelectCards/search",
+    "Snap untap selection",
+    "Deem Inferior owner choice",
+    "Ponder shuffle May",
+    "ordinary cast scheduling, pass/priority, cycling action, combat",
+    "opponent pilots, runner, collector, semantic replay, Stage-E execution"
+  ],
+  "prospective_fixture_rule": "Enumerate actual initialized reachable question shapes and exact source/choice domains before independently freezing the smallest complete numbered deterministic bank. Give each of the four frozen identities equal fixture opportunity. Retain prior 14×4 component budget and accepted 32+16 opening evidence; do not run a new fixture from this source-only proposal.",
+  "counters": {
+    "visible_choice_fixture_attempts": 0,
+    "official_stage_e_seeds": 0,
+    "official_stage_e_games": 0
+  }
+}
