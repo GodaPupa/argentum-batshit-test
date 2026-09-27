@@ -1,0 +1,116 @@
+{
+  "schema": "ARGENTUM_EXACT_ORIGINAL_ZIP_READBACK_ONLY_R0",
+  "prepared_by": "/root/ferocity",
+  "status": "SOURCE_CANDIDATE_AWAITING_INDEPENDENT_REVIEW_NO_ORIGINAL_BYTE_USE",
+  "purpose": "Read omitted original diagnostic artifact members in pure functions memory solely to complete integrity/content inspection of an already downloaded and independently Python-validated archive.",
+  "source_files": [
+    {
+      "name": "upstream-index.js",
+      "bytes": 9183,
+      "sha256": "203ccaa89e30ec4d6f9467a91758b0f55597424a817ea2107510bbadaab1b90d",
+      "git_blob": "44d1151b21f9a2a70dbc261dc7df6f2d14bc06d5"
+    },
+    {
+      "name": "LICENSE",
+      "bytes": 1077,
+      "sha256": "c0df7f551401f8f80197ff31bf69b8cd23727d127423403282514d242a3ab132",
+      "git_blob": "6291454829be6a266438f11110e7656581683f0c"
+    },
+    {
+      "name": "inflate-raw-bounded.js",
+      "bytes": 9704,
+      "sha256": "087457a5804cad163f904c7cd96b69e1dddfdd41f285447a939a9e9f0b5a8af9",
+      "git_blob": "b1024ecc8b07784049681524cc03cae45c5f3772"
+    },
+    {
+      "name": "exact-original-izzet-zip-logs.js",
+      "bytes": 10299,
+      "sha256": "593c02529821232f373f323099a4b64907dd1a7f8f57be290e0f7e65fbdd71f6",
+      "git_blob": "01357aa650ca2beac339c7fb8409a4cb753206c9"
+    },
+    {
+      "name": "source-adaptation.json",
+      "bytes": 13919,
+      "sha256": "76bdac11fc844e9d1209f344b793f000fd76bc6a210aa38ba3bff971829a7c3c",
+      "git_blob": "a71ffd3d8a00d04dd90584e5d34ee67edc438f81"
+    },
+    {
+      "name": "author-pure-checks.json",
+      "bytes": 4672,
+      "sha256": "551ee06afa99affb2fe44eda39e01a9af5fad0e2d0b8f992aa054e0d47afc1ad",
+      "git_blob": "881b8ab4df6aa88fe1474f265f39ad411b734d36"
+    }
+  ],
+  "upstream": {
+    "repository": "foliojs/tiny-inflate",
+    "commit": "f4999b9c77263a97eb3a6942be247ece85a3d457",
+    "version": "1.0.3",
+    "license": "MIT",
+    "copyright": "Copyright (c) 2015-present Devon Govett",
+    "source_url": "https://github.com/foliojs/tiny-inflate/blob/f4999b9c77263a97eb3a6942be247ece85a3d457/index.js",
+    "license_url": "https://github.com/foliojs/tiny-inflate/blob/f4999b9c77263a97eb3a6942be247ece85a3d457/LICENSE"
+  },
+  "primary_references": [
+    "https://www.rfc-editor.org/rfc/rfc1951",
+    "https://pkware.cachefly.net/webdocs/casestudies/APPNOTE.TXT"
+  ],
+  "required_hash_dependency": {
+    "git_blob": "200cb09bdaa2f5c071bd76fa4d6155f31e5d4888",
+    "bytes": 4591,
+    "sha256": "6dde05093235f601ba4c0b211d72e0b1d8e0edb385e485b88a02efa46b3f85ae",
+    "functions": [
+      "sha256Bytes",
+      "sha256Utf8"
+    ],
+    "independent_review_blob": "4a7e495e0c74bd756ed8b021034e3d7200843cc7"
+  },
+  "archive": {
+    "bytes": 1945147,
+    "sha256": "a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5",
+    "members": 63,
+    "whole_hash_required_before_any_index_parse_or_decompression": true
+  },
+  "trusted_manifest": {
+    "git_blob": "73c4935409c8579e4e783ce0718db22ac7750417",
+    "bytes": 20687,
+    "sha256": "a13b89824b25598d250fd8fd811e8cddef917cd15cf1fc07e3bb8c18c497b97f",
+    "authority": "Exact per-member records supplied by root from independently reviewed Python byte readback; this helper author inspected metadata only."
+  },
+  "usage": {
+    "only_approved_entrypoint": "extractOriginalIzzetLogs(zipUint8Array, exactManifestText, {sha256Bytes,sha256Utf8})",
+    "source_loading": "Use only the exact independently reviewed source blobs and accepted hash helper. Do not execute any archive content as source.",
+    "input": "Root's already reconstructed exact ZIP bytes; no new artifact retrieval, source checkout, shell, package action or process is required or authorized.",
+    "output": "On complete verification return 17 raw Uint8Array log members plus metadata for all 19 omitted decoded members. Two public .deb members are checked only for exact length/CRC32/SHA256 and not returned/interpreted/executed.",
+    "preallocation_limits": {
+      "compressed_input_bytes": 1945147,
+      "manifest_text_code_units": 65536,
+      "member_uncompressed_bytes": 8388608,
+      "selected_total_uncompressed_bytes": 16777216
+    },
+    "exact_selected": {
+      "members": 19,
+      "bytes": 8548021,
+      "logs": 17,
+      "log_bytes": 7145607,
+      "public_packages": 2
+    },
+    "progress_bound": "Compressed bit reads require source availability. Huffman traversal is at most15bits; dynamic lengths at most318; match copies at most258; output is bounded by supplied exact size. Each outer/data iteration consumes input bits or bounded output and malformed streams fail closed.",
+    "index_checks": "All63 central and local headers: exact trusted names/sizes/CRC; method0/8; supported version/flags; ASCII safe unique regular-file names; no encryption/ZIP64/multidisk; bounded extras; exact descriptors where used; contiguous nonoverlapping local records through central boundary; exact central count/end.",
+    "integrity_checks": "Whole original ZIP SHA before parsing; exact manifest SHA before JSON parse; all selected decoded lengths/CRC32/SHA256 before returning any logs.",
+    "failure": "Return FAILED_NO_LOGS_ADMITTED with errors and partial metadata, logs empty. Retain the failure record; do not treat any partial text as complete or patch/retry new decoder source without review.",
+    "result_limit": "Exact byte reconstruction alone is not semantic content acceptance, runtime qualification, repository-check compliance, source admission or gameplay permission."
+  },
+  "non_actions": [
+    "No ref or workflow event creation.",
+    "No original artifact bytes read by this author during preparation.",
+    "No process, filesystem, network or module access inside decoder/wrapper.",
+    "No generic extraction into paths or execution of data.",
+    "No new game, seed, calibration, engine case or fixture allocation."
+  ],
+  "independent_review": {
+    "reviewer": "/root/industrial",
+    "status": "PENDING",
+    "root_retains_final_use_disposition": true
+  },
+  "preservation": "These are unreferenced immutable source/review blobs at preparation time. Root may preserve the reviewed packet on an inert evidence lineage; no publication or event is created by this contract."
+}

@@ -1,0 +1,106 @@
+{
+  "schema": "argentum-complete-archive-preparation-publication-v1",
+  "prepared_by": "/root/ferocity",
+  "parent_commit": "c75f4e163e88e5a55eaed60eff09bb3c9463fcb7",
+  "parent_tree": "bdad0ced28837fc19ecd7250cf58003451ccdbd9",
+  "prefix": "izzet-science/evidence/original-factory-artifact-readback-20260927/complete-archive-preparation/",
+  "scope": "Preservation of exact reviewed pure-data reader source, license, author checks, independent review, root use release and original-byte recovery receipts. This preparation child contains no full ZIP, relay stream or log-content file.",
+  "files": [
+    {
+      "name": "upstream-index.js",
+      "bytes": 9183,
+      "sha256": "203ccaa89e30ec4d6f9467a91758b0f55597424a817ea2107510bbadaab1b90d",
+      "git_blob": "44d1151b21f9a2a70dbc261dc7df6f2d14bc06d5"
+    },
+    {
+      "name": "LICENSE",
+      "bytes": 1077,
+      "sha256": "c0df7f551401f8f80197ff31bf69b8cd23727d127423403282514d242a3ab132",
+      "git_blob": "6291454829be6a266438f11110e7656581683f0c"
+    },
+    {
+      "name": "inflate-raw-bounded.js",
+      "bytes": 9704,
+      "sha256": "087457a5804cad163f904c7cd96b69e1dddfdd41f285447a939a9e9f0b5a8af9",
+      "git_blob": "b1024ecc8b07784049681524cc03cae45c5f3772"
+    },
+    {
+      "name": "exact-original-izzet-zip-logs.js",
+      "bytes": 10299,
+      "sha256": "593c02529821232f373f323099a4b64907dd1a7f8f57be290e0f7e65fbdd71f6",
+      "git_blob": "01357aa650ca2beac339c7fb8409a4cb753206c9"
+    },
+    {
+      "name": "source-adaptation.json",
+      "bytes": 13919,
+      "sha256": "76bdac11fc844e9d1209f344b793f000fd76bc6a210aa38ba3bff971829a7c3c",
+      "git_blob": "a71ffd3d8a00d04dd90584e5d34ee67edc438f81"
+    },
+    {
+      "name": "author-pure-checks.json",
+      "bytes": 4672,
+      "sha256": "551ee06afa99affb2fe44eda39e01a9af5fad0e2d0b8f992aa054e0d47afc1ad",
+      "git_blob": "881b8ab4df6aa88fe1474f265f39ad411b734d36"
+    },
+    {
+      "name": "usage-contract.json",
+      "git_blob": "f1357318f89ca2e93ad862a3f02eeacd9b24f7df",
+      "sha256": "f242efce12d88167e5702889858b003a8c33e829f0212036353f2248dcf68ce1",
+      "bytes": 6191
+    },
+    {
+      "name": "remote-source-identity-receipt.json",
+      "git_blob": "e9525c0c1d737454a2371c6dc0bff4a797662d41",
+      "sha256": "7ee3ce0be214669a388e7f2b518a302b49fd6554ab992f2746dfd979d0825110",
+      "bytes": 3072
+    },
+    {
+      "name": "independent-source-review.json",
+      "git_blob": "9f61e5903963c8d8fbc323b9d78db2c28da3e5b1",
+      "bytes": 13650,
+      "sha256": "664005baa9743b87bfc64f8ab7dc3da886a4e683f99934659e2536364ddb0640"
+    },
+    {
+      "name": "root-exact-original-use-release.json",
+      "git_blob": "e11ca0ca573e8fd79bfe2b2f21965932e26c8ddc",
+      "bytes": 1647,
+      "sha256": "acc0f9d6263c8b491ff760575abdefe6cd16f3f30a37fa7397cadb99c4d0d1f6"
+    },
+    {
+      "name": "root-complete-member-recovery-report.json",
+      "git_blob": "56cf2054200298dc7374190db974ab12888bd023",
+      "bytes": 15853,
+      "sha256": "c4875d6fa8b875317b992f7173b795e69cba41c731084a11ad2c3b66d70deccd"
+    },
+    {
+      "name": "root-outer-text-publication-review.json",
+      "git_blob": "bc5adbd40662ce0888b0e6ebbbb2fe021358c3af",
+      "bytes": 1191,
+      "sha256": "f894d2120cc9b382895bb4af1e52fdc30bba31c4346130b2dd4caf5a78e46b87"
+    }
+  ],
+  "status_reconciliation": [
+    "The pending source-review labels in unchanged author checks and usage contract record their original preparation-time state. The later issued independent source review 9f61e590 and root exact-use release e11ca0ca close that source/use prerequisite for the single exact already-held archive.",
+    "Root recovery report 56cf2054 records successful bounded extraction of all 19 omitted members, 8,548,021 bytes, including 17 returned logs totaling 7,145,607 bytes and two public package members verified by size/CRC32/SHA256 only. All 17 logs have exact UTF8 round trips; errors are empty.",
+    "Successful byte recovery does not complete independent full-log sensitivity/content review. That separate review remained pending at this packet cut. Full ZIP/log/relay publication is excluded from this child.",
+    "Root outer-text review bc5adbd4 applies only to the complete decoded outer job text excluding 282 framed relay lines. It does not replace review of the original archive or complete relay.",
+    "All twelve listed blobs are reused byte-for-byte; no source, historical label, receipt, original output or failure was rewritten."
+  ],
+  "preparation_actions": {
+    "source_or_artifact_tests_repeated": 0,
+    "original_archive_reads_by_preparer": 0,
+    "new_original_transports": 0,
+    "processes": 0,
+    "jvm_commands": 0,
+    "ref_moves": 0,
+    "workflow_events": 0
+  },
+  "candidate_state": "Prepared as an unreferenced normal child of the exact parent above. Root retains review and normal publication authority; this manifest does not assert that an eventual published commit is still unreferenced.",
+  "admission_limits": [
+    "No gameplay, seed, claim, calibration or deck-performance evidence changed.",
+    "Source-only utility review and byte reconstruction do not admit the complete Izzet runtime, policies or Position 1.",
+    "No package content was interpreted or executed by this preparation operation."
+  ],
+  "inherited_tree": "Parent source, workflows and existing evidence are inherited unchanged; only the thirteen files in this preparation prefix are added, including this manifest.",
+  "prefix_preflight": "The actual parent Git tree was traversed to the original-factory-artifact-readback-20260927 subtree; complete-archive-preparation was absent."
+}

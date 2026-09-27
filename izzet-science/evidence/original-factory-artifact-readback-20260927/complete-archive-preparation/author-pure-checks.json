@@ -1,0 +1,201 @@
+{
+  "schema": "ARGENTUM_EXACT_ARCHIVE_DECODER_AUTHOR_PURE_CHECKS_R0",
+  "author": "/root/ferocity",
+  "source": {
+    "name": "inflate-raw-bounded.js",
+    "bytes": 9704,
+    "sha256": "087457a5804cad163f904c7cd96b69e1dddfdd41f285447a939a9e9f0b5a8af9",
+    "git_blob": "b1024ecc8b07784049681524cc03cae45c5f3772"
+  },
+  "wrapper": {
+    "git_blob": "01357aa650ca2beac339c7fb8409a4cb753206c9",
+    "sha256": "593c02529821232f373f323099a4b64907dd1a7f8f57be290e0f7e65fbdd71f6",
+    "bytes": 10299
+  },
+  "scope": "Eleven tiny in-memory raw-DEFLATE reference/guard checks and one standard CRC32 reference only. No project fixture, original archive access, process, network artifact transfer, JVM, qualification command, game or seed.",
+  "decoder_checks": {
+    "scope": "Tiny pure in-memory RFC1951-derived decoder references and concrete guard checks only; no artifact or project fixture",
+    "checks": [
+      {
+        "name": "Stored RFC1951 abc block",
+        "result": "PASS",
+        "compressed": [
+          1,
+          3,
+          0,
+          252,
+          255,
+          97,
+          98,
+          99
+        ],
+        "expected": [
+          97,
+          98,
+          99
+        ]
+      },
+      {
+        "name": "Fixed RFC1951 literal/backreference/end block",
+        "result": "PASS",
+        "compressed": [
+          115,
+          4,
+          2,
+          0
+        ],
+        "expected": [
+          65,
+          65,
+          65,
+          65
+        ]
+      },
+      {
+        "name": "Dynamic RFC1951 code-tree repeats and empty distance alphabet",
+        "result": "PASS",
+        "compressed": [
+          5,
+          192,
+          1,
+          5,
+          0,
+          0,
+          0,
+          0,
+          160,
+          109,
+          253,
+          63,
+          21,
+          1
+        ],
+        "expected": [
+          65
+        ]
+      },
+      {
+        "name": "Empty final fixed block",
+        "result": "PASS",
+        "compressed": [
+          3,
+          0
+        ],
+        "expected": []
+      },
+      {
+        "name": "Truncated stored payload",
+        "result": "PASS",
+        "compressed": [
+          1,
+          3,
+          0,
+          252,
+          255,
+          97
+        ],
+        "destination_bytes": 3,
+        "error": "Stored DEFLATE range overflow"
+      },
+      {
+        "name": "Declared destination is too short",
+        "result": "PASS",
+        "compressed": [
+          115,
+          4,
+          2,
+          0
+        ],
+        "destination_bytes": 3,
+        "error": "DEFLATE match output overflow"
+      },
+      {
+        "name": "Declared destination is too long",
+        "result": "PASS",
+        "compressed": [
+          115,
+          4,
+          2,
+          0
+        ],
+        "destination_bytes": 5,
+        "error": "DEFLATE output size mismatch"
+      },
+      {
+        "name": "Trailing compressed bytes",
+        "result": "PASS",
+        "compressed": [
+          115,
+          4,
+          2,
+          0,
+          0
+        ],
+        "destination_bytes": 4,
+        "error": "Trailing compressed bytes"
+      },
+      {
+        "name": "Reserved block type",
+        "result": "PASS",
+        "compressed": [
+          7
+        ],
+        "destination_bytes": 0,
+        "error": "Reserved DEFLATE block type"
+      },
+      {
+        "name": "Invalid backreference before output",
+        "result": "PASS",
+        "compressed": [
+          3,
+          2,
+          0
+        ],
+        "destination_bytes": 3,
+        "error": "Invalid DEFLATE backreference"
+      },
+      {
+        "name": "Reserved fixed length code",
+        "result": "PASS",
+        "compressed": [
+          27,
+          3
+        ],
+        "destination_bytes": 0,
+        "error": "Reserved DEFLATE length code"
+      }
+    ]
+  },
+  "crc32_check": {
+    "name": "CRC32 standard 123456789 reference",
+    "input_bytes": [
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57
+    ],
+    "expected": "cbf43926",
+    "actual": "cbf43926",
+    "result": "PASS",
+    "scope": "Pure in-memory bytes only; no ZIP/artifact fixture"
+  },
+  "manifest_only_observation": {
+    "trusted_git_blob": "73c4935409c8579e4e783ce0718db22ac7750417",
+    "members": 63,
+    "all_regular_files": true,
+    "all_raw_text_relayed_values_boolean": true,
+    "omitted_members": 19,
+    "omitted_logs": 17,
+    "omitted_public_packages": 2,
+    "omitted_bytes": 8548021,
+    "log_bytes": 7145607,
+    "crc_equal_optional_descriptor_signature": false
+  },
+  "no_original_zip_parser_run": true,
+  "independent_review_status": "PENDING_INDUSTRIAL_SOURCE_REVIEW"
+}

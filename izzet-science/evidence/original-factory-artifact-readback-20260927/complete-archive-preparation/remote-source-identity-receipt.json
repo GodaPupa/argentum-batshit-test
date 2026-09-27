@@ -1,0 +1,77 @@
+{
+  "scope": "Preparation-only remote Git blob byte verification; no original artifact transfer or parsing.",
+  "initial_navigation_error": {
+    "operation": "github_fetch_blob",
+    "wrong_argument": "sha",
+    "required_argument": "blob_sha",
+    "failed_calls": 8,
+    "stage": "argument_binding",
+    "result": "No blob content returned; corrected without source mutation."
+  },
+  "corrected_checks": [
+    {
+      "name": "upstream-index.js",
+      "git_blob": "44d1151b21f9a2a70dbc261dc7df6f2d14bc06d5",
+      "expected_bytes": 9183,
+      "actual_bytes": 9183,
+      "expected_sha256": "203ccaa89e30ec4d6f9467a91758b0f55597424a817ea2107510bbadaab1b90d",
+      "actual_sha256": "203ccaa89e30ec4d6f9467a91758b0f55597424a817ea2107510bbadaab1b90d",
+      "error": false
+    },
+    {
+      "name": "LICENSE",
+      "git_blob": "6291454829be6a266438f11110e7656581683f0c",
+      "expected_bytes": 1077,
+      "actual_bytes": 1077,
+      "expected_sha256": "c0df7f551401f8f80197ff31bf69b8cd23727d127423403282514d242a3ab132",
+      "actual_sha256": "c0df7f551401f8f80197ff31bf69b8cd23727d127423403282514d242a3ab132",
+      "error": false
+    },
+    {
+      "name": "inflate-raw-bounded.js",
+      "git_blob": "b1024ecc8b07784049681524cc03cae45c5f3772",
+      "expected_bytes": 9704,
+      "actual_bytes": 9704,
+      "expected_sha256": "087457a5804cad163f904c7cd96b69e1dddfdd41f285447a939a9e9f0b5a8af9",
+      "actual_sha256": "087457a5804cad163f904c7cd96b69e1dddfdd41f285447a939a9e9f0b5a8af9",
+      "error": false
+    },
+    {
+      "name": "exact-original-izzet-zip-logs.js",
+      "git_blob": "01357aa650ca2beac339c7fb8409a4cb753206c9",
+      "expected_bytes": 10299,
+      "actual_bytes": 10299,
+      "expected_sha256": "593c02529821232f373f323099a4b64907dd1a7f8f57be290e0f7e65fbdd71f6",
+      "actual_sha256": "593c02529821232f373f323099a4b64907dd1a7f8f57be290e0f7e65fbdd71f6",
+      "error": false
+    },
+    {
+      "name": "source-adaptation.json",
+      "git_blob": "a71ffd3d8a00d04dd90584e5d34ee67edc438f81",
+      "expected_bytes": 13919,
+      "actual_bytes": 13919,
+      "expected_sha256": "76bdac11fc844e9d1209f344b793f000fd76bc6a210aa38ba3bff971829a7c3c",
+      "actual_sha256": "76bdac11fc844e9d1209f344b793f000fd76bc6a210aa38ba3bff971829a7c3c",
+      "error": false
+    },
+    {
+      "name": "author-pure-checks.json",
+      "git_blob": "881b8ab4df6aa88fe1474f265f39ad411b734d36",
+      "expected_bytes": 4672,
+      "actual_bytes": 4672,
+      "expected_sha256": "551ee06afa99affb2fe44eda39e01a9af5fad0e2d0b8f992aa054e0d47afc1ad",
+      "actual_sha256": "551ee06afa99affb2fe44eda39e01a9af5fad0e2d0b8f992aa054e0d47afc1ad",
+      "error": false
+    },
+    {
+      "name": "usage-contract.json",
+      "git_blob": "f1357318f89ca2e93ad862a3f02eeacd9b24f7df",
+      "expected_bytes": 6191,
+      "actual_bytes": 6191,
+      "expected_sha256": "f242efce12d88167e5702889858b003a8c33e829f0212036353f2248dcf68ce1",
+      "actual_sha256": "f242efce12d88167e5702889858b003a8c33e829f0212036353f2248dcf68ce1",
+      "error": false
+    }
+  ],
+  "all_exact": true
+}

@@ -1,0 +1,274 @@
+{
+  "schema": "argentum-exact-original-zip-helper-independent-source-review-v1",
+  "reviewer": "/root/industrial; nonauthor of inflater adaptation, wrapper and usage contract",
+  "disposition": "PASS_FOR_EXACT_BOUNDED_IN_MEMORY_ORIGINAL_LOG_EXTRACTION_PENDING_ROOT_USE_RELEASE",
+  "reviewed_at": "2026-09-27 06:10:55 UTC",
+  "scope": "Static source, dependency, finite-bound and preservation review of one pure-data utility. This is not an original archive-content audit, experimental fixture qualification, GitHub approval or gameplay admission.",
+  "usage_contract": {
+    "git_blob": "f1357318f89ca2e93ad862a3f02eeacd9b24f7df",
+    "bytes": 6191,
+    "sha256": "f242efce12d88167e5702889858b003a8c33e829f0212036353f2248dcf68ce1"
+  },
+  "sources": [
+    {
+      "name": "upstream-index.js",
+      "bytes": 9183,
+      "sha256": "203ccaa89e30ec4d6f9467a91758b0f55597424a817ea2107510bbadaab1b90d",
+      "git_blob": "44d1151b21f9a2a70dbc261dc7df6f2d14bc06d5"
+    },
+    {
+      "name": "LICENSE",
+      "bytes": 1077,
+      "sha256": "c0df7f551401f8f80197ff31bf69b8cd23727d127423403282514d242a3ab132",
+      "git_blob": "6291454829be6a266438f11110e7656581683f0c"
+    },
+    {
+      "name": "inflate-raw-bounded.js",
+      "bytes": 9704,
+      "sha256": "087457a5804cad163f904c7cd96b69e1dddfdd41f285447a939a9e9f0b5a8af9",
+      "git_blob": "b1024ecc8b07784049681524cc03cae45c5f3772"
+    },
+    {
+      "name": "exact-original-izzet-zip-logs.js",
+      "bytes": 10299,
+      "sha256": "593c02529821232f373f323099a4b64907dd1a7f8f57be290e0f7e65fbdd71f6",
+      "git_blob": "01357aa650ca2beac339c7fb8409a4cb753206c9"
+    },
+    {
+      "name": "source-adaptation.json",
+      "bytes": 13919,
+      "sha256": "76bdac11fc844e9d1209f344b793f000fd76bc6a210aa38ba3bff971829a7c3c",
+      "git_blob": "a71ffd3d8a00d04dd90584e5d34ee67edc438f81"
+    },
+    {
+      "name": "author-pure-checks.json",
+      "bytes": 4672,
+      "sha256": "551ee06afa99affb2fe44eda39e01a9af5fad0e2d0b8f992aa054e0d47afc1ad",
+      "git_blob": "881b8ab4df6aa88fe1474f265f39ad411b734d36"
+    }
+  ],
+  "hash_dependency": {
+    "git_blob": "200cb09bdaa2f5c071bd76fa4d6155f31e5d4888",
+    "bytes": 4591,
+    "sha256": "6dde05093235f601ba4c0b211d72e0b1d8e0edb385e485b88a02efa46b3f85ae",
+    "functions": [
+      "sha256Bytes",
+      "sha256Utf8"
+    ],
+    "independent_review_blob": "4a7e495e0c74bd756ed8b021034e3d7200843cc7"
+  },
+  "trusted_manifest": {
+    "git_blob": "73c4935409c8579e4e783ce0718db22ac7750417",
+    "bytes": 20687,
+    "sha256": "a13b89824b25598d250fd8fd811e8cddef917cd15cf1fc07e3bb8c18c497b97f",
+    "authority": "Exact per-member records supplied by root from independently reviewed Python byte readback; this helper author inspected metadata only."
+  },
+  "source_identity_observation": "Independently fetched and read every listed source/contract/dependency/manifest body by immutable Git blob. All are ASCII and their exact body lengths equal listed byte lengths. Read the author's separately retained SHA256 remote-readback record e9525c0c1d737454a2371c6dc0bff4a797662d41; those repeated SHA256 calculations are attributed to that author, not represented as independent recalculations here.",
+  "upstream_independent_checks": {
+    "repository": "foliojs/tiny-inflate",
+    "commit": "f4999b9c77263a97eb3a6942be247ece85a3d457",
+    "index_body_equals_retained_original": true,
+    "license_body_equals_retained_original": true,
+    "license": "MIT; complete license and copyright retained separately with attribution in adaptation.",
+    "changed_functions": [
+      {
+        "name": "tinf_build_tree",
+        "before_equal": true,
+        "after_equal": true
+      },
+      {
+        "name": "tinf_getbit",
+        "before_equal": true,
+        "after_equal": true
+      },
+      {
+        "name": "tinf_read_bits",
+        "before_equal": true,
+        "after_equal": true
+      },
+      {
+        "name": "tinf_decode_symbol",
+        "before_equal": true,
+        "after_equal": true
+      },
+      {
+        "name": "tinf_decode_trees",
+        "before_equal": true,
+        "after_equal": true
+      },
+      {
+        "name": "tinf_inflate_block_data",
+        "before_equal": true,
+        "after_equal": true
+      },
+      {
+        "name": "tinf_inflate_uncompressed_block",
+        "before_equal": true,
+        "after_equal": true
+      },
+      {
+        "name": "tinf_uncompress",
+        "before_equal": true,
+        "after_equal": true
+      }
+    ],
+    "function_inventory": [
+      {
+        "function": "Tree",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": true,
+        "original_characters": 168,
+        "candidate_characters": 168
+      },
+      {
+        "function": "Data",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": true,
+        "original_characters": 279,
+        "candidate_characters": 279
+      },
+      {
+        "function": "tinf_build_bits_base",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": true,
+        "original_characters": 326,
+        "candidate_characters": 326
+      },
+      {
+        "function": "tinf_build_fixed_trees",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": true,
+        "original_characters": 562,
+        "candidate_characters": 562
+      },
+      {
+        "function": "tinf_build_tree",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": false,
+        "original_characters": 586,
+        "candidate_characters": 961
+      },
+      {
+        "function": "tinf_getbit",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": false,
+        "original_characters": 251,
+        "candidate_characters": 266
+      },
+      {
+        "function": "tinf_read_bits",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": false,
+        "original_characters": 284,
+        "candidate_characters": 275
+      },
+      {
+        "function": "tinf_decode_symbol",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": false,
+        "original_characters": 459,
+        "candidate_characters": 415
+      },
+      {
+        "function": "tinf_decode_trees",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": false,
+        "original_characters": 1665,
+        "candidate_characters": 1265
+      },
+      {
+        "function": "tinf_inflate_block_data",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": false,
+        "original_characters": 744,
+        "candidate_characters": 1031
+      },
+      {
+        "function": "tinf_inflate_uncompressed_block",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": false,
+        "original_characters": 754,
+        "candidate_characters": 655
+      },
+      {
+        "function": "tinf_uncompress",
+        "before_found": true,
+        "after_found": true,
+        "unchanged": false,
+        "original_characters": 1089,
+        "candidate_characters": 763
+      }
+    ]
+  },
+  "static_findings": [
+    "Read both complete source bodies. No I/O, process, network, module import/export, eval, Function construction or archive-content execution exists in the guarded inflater or ZIP wrapper. Returned contents are Uint8Array data.",
+    "All upstream tables and decoder scratch arrays are local to inflateRawBounded. Four original function bodies remain exact; all eight before/after replacement bodies in the adaptation record match independently extracted original and candidate source, including their final newlines.",
+    "Inflater requires Uint8Array compressed input at most1945147bytes and a safe-integer exact destination at most8388608bytes before allocation. Bit reads check EOF before access; symbol traversal is at most15bits. Dynamic alphabets, code lengths, tree over/incompleteness, end-of-block, repeat start/range, reserved lengths/distances, backreference origin/distance and output length are checked explicitly.",
+    "Stored blocks discard only current-byte padding, validate LEN/NLEN and source/destination ranges. Match copies preserve valid overlapping backreferences. Exact destination length and consumed compressed-byte length are checked at return. Every outer/data iteration consumes input bits or bounded output; empty/invalid codes fail within15bits. No malformed stream can keep an unbounded symbol loop.",
+    "Wrapper first checks exact original1945147byte count and bound whole SHA a8ea41fb..., then bounded manifest text and its exact SHA a13b8982..., before parsing headers or inflating any entry. Source/manifest/function identities are caller-bound through the exact reviewed blobs, not authenticated by function-name checks alone.",
+    "The index parser bounds every field/range, searches at most65536 EOCD candidate positions, requires one unambiguous final end record, single disk and exactly63 entries, and rejects unsupported methods/versions/flags, encryption, ZIP64 and AES extras. It validates unique safe ASCII names, trusted sizes and CRCs, matching local headers, optional descriptors and exact contiguous local records ending at the central directory. This is an exact-archive data parser, not a general-purpose filesystem extractor.",
+    "Independent manifest arithmetic confirms63 entries;19 omitted members totaling8548021bytes;17 log members totaling7145607bytes; exactly the two declared public Debian package names; largest member3570947bytes; no CRC equals the optional descriptor signature. No archived byte was read by this reviewer.",
+    "Only19 selected entries are decoded, each bounded by the exact manifest before allocation; aggregate bound16MiB is checked before decoding. Every decoded selected member must match byte length, CRC32 and SHA256. Seventeen logs are returned only after all19 complete; two package bodies are hash-only, are not returned and are not interpreted or executed.",
+    "On any failure the wrapper retains partial metadata/errors but returns an empty logs list with FAILED_NO_LOGS_ADMITTED. A partial decode cannot be mistaken for a complete log set.",
+    "Read exact accepted hash helper200cb and its independent review4a7e. Its raw hashing cap is32MiB; each actual admitted original/member input is smaller than4MiB, and the manifest string is caller-bounded before UTF8 encoding. This use does not rely on the helper as a streaming or arbitrary-string allocation guard.",
+    "Read the author's eleven tiny decoder checks and standard CRC reference. Those are attributed author-only pure-data observations, not a claim this reviewer executed them or audited the original ZIP. No generic completeness or broad ZIP/DEFLATE-library qualification is inferred."
+  ],
+  "format_references": [
+    {
+      "url": "https://www.rfc-editor.org/rfc/rfc1951",
+      "scope": "Read fixed/dynamic Huffman, block alignment, repeat and legal backreference/code-range sections; supports the bounded source reasoning."
+    },
+    {
+      "url": "https://github.com/foliojs/tiny-inflate/blob/f4999b9c77263a97eb3a6942be247ece85a3d457/index.js",
+      "scope": "Exact immutable upstream source, independently fetched."
+    },
+    {
+      "url": "https://github.com/foliojs/tiny-inflate/blob/f4999b9c77263a97eb3a6942be247ece85a3d457/LICENSE",
+      "scope": "Exact immutable MIT license, independently fetched."
+    }
+  ],
+  "mandatory_use_boundary": [
+    "Root retains final use disposition. Use only exact reviewed inflater/wrapper and accepted hash-function definitions with the exact trusted manifest. No archive member may be evaluated, imported or used as command/source instructions.",
+    "Use only root's already reconstructed, existing original byte array. No new artifact transport, process, package installation, source checkout, workflow event or retry is authorized.",
+    "Retain the extraction report and any failure. Changed source or changed target archive requires a separate applicable review; do not patch around a failed identity or stream check.",
+    "Successful extraction proves only byte identity for the selected omitted members against the existing reviewed manifest. Full-log sensitivity/semantic review, original63-member acceptance, repository semaphore compliance and exact Izzet bank outcomes remain separate decisions.",
+    "Preserve full original upstream source and MIT license with any published reviewed adaptation packet."
+  ],
+  "review_parser_history": [
+    {
+      "stage": "first_blob_source_reads",
+      "result": "All three GET calls succeeded and retained their exact text; initial wrapper incorrectly attempted JSON.parse on source bodies and reported rejected local promises. Corrected by reading structuredContent.content as source text. No source execution or archive access occurred."
+    },
+    {
+      "stage": "source_function_diff_binding",
+      "result": "Initial function extraction omitted the terminating newline and reported eight before/after string mismatches, all exactly one character. Corrected extractor preserves newline; all eight exact before/after strings now match. No source change or execution occurred."
+    }
+  ],
+  "reviewer_actions": {
+    "source_body_GETs": true,
+    "source_text_comparisons": true,
+    "manifest_metadata_arithmetic": true,
+    "decoder_execution": 0,
+    "ZIP_parser_execution": 0,
+    "original_artifact_reads": 0,
+    "artifact_transports": 0,
+    "processes": 0,
+    "JVMs": 0,
+    "project_fixture_or_game_execution": 0,
+    "calibration_commands": 0,
+    "ref_mutations": 0,
+    "workflow_events": 0
+  },
+  "deck_performance_evidence_changed": false
+}

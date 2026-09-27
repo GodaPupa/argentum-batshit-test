@@ -1,0 +1,399 @@
+{
+  "schema": "root-complete-original-log-recovery/v1",
+  "input_original": {
+    "bytes": 1945147,
+    "sha256": "a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5",
+    "source": "already reconstructed readback36298180451 bytes; no extra transport"
+  },
+  "release": "e11ca0ca573e8fd79bfe2b2f21965932e26c8ddc",
+  "independent_source_review": "9f61e5903963c8d8fbc323b9d78db2c28da3e5b1",
+  "extractor_result": {
+    "status": "COMPLETE_EXACT_19_MEMBERS_17_RAW_LOGS_REQUIRES_INDEPENDENT_AUDIT",
+    "whole_zip_sha256": "a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5",
+    "manifest_sha256": "a13b89824b25598d250fd8fd811e8cddef917cd15cf1fc07e3bb8c18c497b97f",
+    "central_members": 63,
+    "selected_members": [
+      {
+        "path": "01-before-AIPlayerLegacyYesNoStrategyTest/command.log",
+        "bytes": 3570947,
+        "compressed_bytes": 232500,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "2b4b40ce",
+        "expected_sha256": "09c4abada26a91b67c2cb615a810ee7b20e71979ae187ac2e75271983b2f1f08",
+        "actual_bytes": 3570947,
+        "actual_crc32": "2b4b40ce",
+        "actual_sha256": "09c4abada26a91b67c2cb615a810ee7b20e71979ae187ac2e75271983b2f1f08"
+      },
+      {
+        "path": "02-fixed-AIPlayerLegacyYesNoStrategyTest/command.log",
+        "bytes": 3481875,
+        "compressed_bytes": 224375,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "346f4748",
+        "expected_sha256": "0fe1ead05308cbc55d6a5e47633f79489a44e0dbf823cffceae018ca913c4582",
+        "actual_bytes": 3481875,
+        "actual_crc32": "346f4748",
+        "actual_sha256": "0fe1ead05308cbc55d6a5e47633f79489a44e0dbf823cffceae018ca913c4582"
+      },
+      {
+        "path": "03-fixed-DecisionResponderCompletedBranchTest/command.log",
+        "bytes": 82005,
+        "compressed_bytes": 8050,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "fdd8155d",
+        "expected_sha256": "a3130b6446e3a028f4dd76892380aa0c6fb3a04fdd77fa4f6f31b47bd71bd057",
+        "actual_bytes": 82005,
+        "actual_crc32": "fdd8155d",
+        "actual_sha256": "a3130b6446e3a028f4dd76892380aa0c6fb3a04fdd77fa4f6f31b47bd71bd057"
+      },
+      {
+        "path": "build-semaphore/apt-update.log",
+        "bytes": 6589,
+        "compressed_bytes": 942,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "0a11e40b",
+        "expected_sha256": "2a80107a0758474633053935a7ac1b533da349025ce1a64875686234e8ae5e78",
+        "actual_bytes": 6589,
+        "actual_crc32": "0a11e40b",
+        "actual_sha256": "2a80107a0758474633053935a7ac1b533da349025ce1a64875686234e8ae5e78"
+      },
+      {
+        "path": "build-semaphore/download-inn2-inews.log",
+        "bytes": 203,
+        "compressed_bytes": 162,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "2e5d194a",
+        "expected_sha256": "cdb77b6c4e65661f92d9fdcce0a812320648dbdb3d97eadd228e63cea5af448f",
+        "actual_bytes": 203,
+        "actual_crc32": "2e5d194a",
+        "actual_sha256": "cdb77b6c4e65661f92d9fdcce0a812320648dbdb3d97eadd228e63cea5af448f"
+      },
+      {
+        "path": "build-semaphore/download-inn2.log",
+        "bytes": 199,
+        "compressed_bytes": 158,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "e5cc55f9",
+        "expected_sha256": "9408ce62f26d799c7d68969e46401748e2150ae25408bb61a89998ed300e1d32",
+        "actual_bytes": 199,
+        "actual_crc32": "e5cc55f9",
+        "actual_sha256": "9408ce62f26d799c7d68969e46401748e2150ae25408bb61a89998ed300e1d32"
+      },
+      {
+        "path": "build-semaphore/metadata-1.log",
+        "bytes": 6,
+        "compressed_bytes": 8,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "dc952d3f",
+        "expected_sha256": "d54d20eadbec9c9cc5ac6e0e371abc96d64a0d724d1cf45297fab6098026a69d",
+        "actual_bytes": 6,
+        "actual_crc32": "dc952d3f",
+        "actual_sha256": "d54d20eadbec9c9cc5ac6e0e371abc96d64a0d724d1cf45297fab6098026a69d"
+      },
+      {
+        "path": "build-semaphore/metadata-11.log",
+        "bytes": 11,
+        "compressed_bytes": 13,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "c26b5689",
+        "expected_sha256": "7ce18d76f3aa47e8c6565beb0565f28d9c1ba92947293e5b1bec830f4b2445ea",
+        "actual_bytes": 11,
+        "actual_crc32": "c26b5689",
+        "actual_sha256": "7ce18d76f3aa47e8c6565beb0565f28d9c1ba92947293e5b1bec830f4b2445ea"
+      },
+      {
+        "path": "build-semaphore/metadata-12.log",
+        "bytes": 23,
+        "compressed_bytes": 25,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "8bdd97c9",
+        "expected_sha256": "647d1a4fb540ff06838864795adf41ecca3fbed8f3472d2aea2c92f8bd307d84",
+        "actual_bytes": 23,
+        "actual_crc32": "8bdd97c9",
+        "actual_sha256": "647d1a4fb540ff06838864795adf41ecca3fbed8f3472d2aea2c92f8bd307d84"
+      },
+      {
+        "path": "build-semaphore/metadata-14.log",
+        "bytes": 0,
+        "compressed_bytes": 2,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "00000000",
+        "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_bytes": 0,
+        "actual_crc32": "00000000",
+        "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "build-semaphore/metadata-13.log",
+        "bytes": 6,
+        "compressed_bytes": 8,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "dc952d3f",
+        "expected_sha256": "d54d20eadbec9c9cc5ac6e0e371abc96d64a0d724d1cf45297fab6098026a69d",
+        "actual_bytes": 6,
+        "actual_crc32": "dc952d3f",
+        "actual_sha256": "d54d20eadbec9c9cc5ac6e0e371abc96d64a0d724d1cf45297fab6098026a69d"
+      },
+      {
+        "path": "build-semaphore/metadata-3.log",
+        "bytes": 2478,
+        "compressed_bytes": 1395,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "48980dbd",
+        "expected_sha256": "f1ef3df059df2e49219da24a1e509e62056ea249d04df30da1406f989dd5689e",
+        "actual_bytes": 2478,
+        "actual_crc32": "48980dbd",
+        "actual_sha256": "f1ef3df059df2e49219da24a1e509e62056ea249d04df30da1406f989dd5689e"
+      },
+      {
+        "path": "build-semaphore/metadata-5.log",
+        "bytes": 5,
+        "compressed_bytes": 7,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "c6153954",
+        "expected_sha256": "cf3561760bb2dff2849b4eeaf77dbdf7482c7c26a52b047ecceb34b4819de38e",
+        "actual_bytes": 5,
+        "actual_crc32": "c6153954",
+        "actual_sha256": "cf3561760bb2dff2849b4eeaf77dbdf7482c7c26a52b047ecceb34b4819de38e"
+      },
+      {
+        "path": "build-semaphore/metadata-6.log",
+        "bytes": 23,
+        "compressed_bytes": 25,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "8bdd97c9",
+        "expected_sha256": "647d1a4fb540ff06838864795adf41ecca3fbed8f3472d2aea2c92f8bd307d84",
+        "actual_bytes": 23,
+        "actual_crc32": "8bdd97c9",
+        "actual_sha256": "647d1a4fb540ff06838864795adf41ecca3fbed8f3472d2aea2c92f8bd307d84"
+      },
+      {
+        "path": "build-semaphore/metadata-7.log",
+        "bytes": 6,
+        "compressed_bytes": 8,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "dc952d3f",
+        "expected_sha256": "d54d20eadbec9c9cc5ac6e0e371abc96d64a0d724d1cf45297fab6098026a69d",
+        "actual_bytes": 6,
+        "actual_crc32": "dc952d3f",
+        "actual_sha256": "d54d20eadbec9c9cc5ac6e0e371abc96d64a0d724d1cf45297fab6098026a69d"
+      },
+      {
+        "path": "build-semaphore/metadata-8.log",
+        "bytes": 0,
+        "compressed_bytes": 2,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "00000000",
+        "expected_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "actual_bytes": 0,
+        "actual_crc32": "00000000",
+        "actual_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "build-semaphore/metadata-9.log",
+        "bytes": 1231,
+        "compressed_bytes": 791,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "ab302d71",
+        "expected_sha256": "1f6db0517cf02bdc6d26c3429a314ca5a3b01caf3bfa3f8800de500fb2cc8757",
+        "actual_bytes": 1231,
+        "actual_crc32": "ab302d71",
+        "actual_sha256": "1f6db0517cf02bdc6d26c3429a314ca5a3b01caf3bfa3f8800de500fb2cc8757"
+      },
+      {
+        "path": "build-semaphore/packages/inn2_2.7.2~20240212-1build3_amd64.deb",
+        "bytes": 1271362,
+        "compressed_bytes": 1271300,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "89aba4f5",
+        "expected_sha256": "a5d37bb46d5328cff2bc68d1d4ae2bf8bf16ac2f01bdd9a8609df1e3667f1449",
+        "actual_bytes": 1271362,
+        "actual_crc32": "89aba4f5",
+        "actual_sha256": "a5d37bb46d5328cff2bc68d1d4ae2bf8bf16ac2f01bdd9a8609df1e3667f1449",
+        "content_use": "HASH_ONLY_NO_PACKAGE_INTERPRETATION"
+      },
+      {
+        "path": "build-semaphore/packages/inn2-inews_2.7.2~20240212-1build3_amd64.deb",
+        "bytes": 131052,
+        "compressed_bytes": 130933,
+        "status": "VERIFIED_EXACT_RAW_BYTES",
+        "expected_crc32": "49d686df",
+        "expected_sha256": "a60a54dbdf3267eb5225e2b6a4b3a53f3cbe5ee4befd358fe748e0a070cf5391",
+        "actual_bytes": 131052,
+        "actual_crc32": "49d686df",
+        "actual_sha256": "a60a54dbdf3267eb5225e2b6a4b3a53f3cbe5ee4befd358fe748e0a070cf5391",
+        "content_use": "HASH_ONLY_NO_PACKAGE_INTERPRETATION"
+      }
+    ],
+    "verified_output_bytes": 8548021,
+    "returned_log_bytes": 7145607,
+    "verified_package_members": 2,
+    "errors": []
+  },
+  "log_conversion": [
+    {
+      "path": "01-before-AIPlayerLegacyYesNoStrategyTest/command.log",
+      "bytes": 3570947,
+      "sha256": "09c4abada26a91b67c2cb615a810ee7b20e71979ae187ac2e75271983b2f1f08",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "b7133b41e1671fa5f40ea0bf3ba60dc7a4edb4b3"
+    },
+    {
+      "path": "02-fixed-AIPlayerLegacyYesNoStrategyTest/command.log",
+      "bytes": 3481875,
+      "sha256": "0fe1ead05308cbc55d6a5e47633f79489a44e0dbf823cffceae018ca913c4582",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "290c57e823c8ce29e0e98495d1751275e762ef3c"
+    },
+    {
+      "path": "03-fixed-DecisionResponderCompletedBranchTest/command.log",
+      "bytes": 82005,
+      "sha256": "a3130b6446e3a028f4dd76892380aa0c6fb3a04fdd77fa4f6f31b47bd71bd057",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "4c7e9a4bc5d24bf3a97158fe2e36f51840db8a83"
+    },
+    {
+      "path": "build-semaphore/apt-update.log",
+      "bytes": 6589,
+      "sha256": "2a80107a0758474633053935a7ac1b533da349025ce1a64875686234e8ae5e78",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "4a6b6c9ee9c4b7f2d3fb643fadcd38c29d910bc6"
+    },
+    {
+      "path": "build-semaphore/download-inn2-inews.log",
+      "bytes": 203,
+      "sha256": "cdb77b6c4e65661f92d9fdcce0a812320648dbdb3d97eadd228e63cea5af448f",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "fce6554d346597271d148f584bb9351c27bdced7"
+    },
+    {
+      "path": "build-semaphore/download-inn2.log",
+      "bytes": 199,
+      "sha256": "9408ce62f26d799c7d68969e46401748e2150ae25408bb61a89998ed300e1d32",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "2ee0d31d28b59e1d4b394e83923a91eb915d5519"
+    },
+    {
+      "path": "build-semaphore/metadata-1.log",
+      "bytes": 6,
+      "sha256": "d54d20eadbec9c9cc5ac6e0e371abc96d64a0d724d1cf45297fab6098026a69d",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "21d5bd8c7f982303b9e953e49f1b0fbc8fb7bfa0"
+    },
+    {
+      "path": "build-semaphore/metadata-11.log",
+      "bytes": 11,
+      "sha256": "7ce18d76f3aa47e8c6565beb0565f28d9c1ba92947293e5b1bec830f4b2445ea",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "1aa6183f01a12a4d7116c3ec1d8496182314d36c"
+    },
+    {
+      "path": "build-semaphore/metadata-12.log",
+      "bytes": 23,
+      "sha256": "647d1a4fb540ff06838864795adf41ecca3fbed8f3472d2aea2c92f8bd307d84",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "2c78b0a4f90d21d7667f6c7408789b2ff963cd5b"
+    },
+    {
+      "path": "build-semaphore/metadata-14.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "build-semaphore/metadata-13.log",
+      "bytes": 6,
+      "sha256": "d54d20eadbec9c9cc5ac6e0e371abc96d64a0d724d1cf45297fab6098026a69d",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "21d5bd8c7f982303b9e953e49f1b0fbc8fb7bfa0"
+    },
+    {
+      "path": "build-semaphore/metadata-3.log",
+      "bytes": 2478,
+      "sha256": "f1ef3df059df2e49219da24a1e509e62056ea249d04df30da1406f989dd5689e",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "971ac5ac38195b2df76311cc07e64881ab2b3ebf"
+    },
+    {
+      "path": "build-semaphore/metadata-5.log",
+      "bytes": 5,
+      "sha256": "cf3561760bb2dff2849b4eeaf77dbdf7482c7c26a52b047ecceb34b4819de38e",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "9778ddc74a08ab87f2ca67496e2172722ac62257"
+    },
+    {
+      "path": "build-semaphore/metadata-6.log",
+      "bytes": 23,
+      "sha256": "647d1a4fb540ff06838864795adf41ecca3fbed8f3472d2aea2c92f8bd307d84",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "2c78b0a4f90d21d7667f6c7408789b2ff963cd5b"
+    },
+    {
+      "path": "build-semaphore/metadata-7.log",
+      "bytes": 6,
+      "sha256": "d54d20eadbec9c9cc5ac6e0e371abc96d64a0d724d1cf45297fab6098026a69d",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "21d5bd8c7f982303b9e953e49f1b0fbc8fb7bfa0"
+    },
+    {
+      "path": "build-semaphore/metadata-8.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "e69de29bb2d1d6434b8b29ae775ad8c2e48c5391"
+    },
+    {
+      "path": "build-semaphore/metadata-9.log",
+      "bytes": 1231,
+      "sha256": "1f6db0517cf02bdc6d26c3429a314ca5a3b01caf3bfa3f8800de500fb2cc8757",
+      "utf8_roundtrip_exact": true,
+      "git_blob": "3d12c8b60357c80d17a70b7d8d2563faf6fd4913"
+    }
+  ],
+  "root_prepublication_scan": {
+    "scope": "All17 complete original log strings,7145607bytes; full-string pattern and URL inventory scan, with targeted content inspection. No original bytes altered.",
+    "flags": [],
+    "urls_by_host": [
+      {
+        "host": "docs.gradle.org",
+        "count": 6
+      },
+      {
+        "host": "repo.maven.apache.org",
+        "count": 19
+      },
+      {
+        "host": "azure.archive.ubuntu.com",
+        "count": 67
+      },
+      {
+        "host": "packages.microsoft.com",
+        "count": 5
+      },
+      {
+        "host": "bugs.launchpad.net",
+        "count": 2
+      },
+      {
+        "host": "www.eyrie.org",
+        "count": 2
+      }
+    ],
+    "patterns": [
+      "private_file_locator",
+      "github_credential",
+      "cloud_access_key",
+      "private_key",
+      "signed_url",
+      "authorization_value",
+      "url_userinfo",
+      "secret_assignment"
+    ]
+  },
+  "scope": "All19 omitted members decoded and checked by exact sizes/CRC/SHA;17 complete raw logs UTF8 roundtrip hashed and published as original exact blobs. Full-string safety-pattern/URL scan plus targeted content inspection; independent complete-log content review remains pending. Original2 public packages verified hash-only. No data executed.",
+  "new_artifact_transports": 0,
+  "qualification_reruns": 0,
+  "official_games": 0,
+  "deck_performance_evidence_changed": false
+}
