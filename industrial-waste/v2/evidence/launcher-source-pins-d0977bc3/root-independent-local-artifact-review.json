@@ -1,0 +1,66 @@
+{
+  "schema": "industrial-launcher-source-independent-local-artifact-review-v1",
+  "reviewer": "/root",
+  "verdict": "PASS_BOUNDED_LOCAL_LAUNCHER_SOURCE_VALIDATION_AND_PRESERVATION",
+  "source_base": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+  "candidate_source_sha256": "92fba46690dfff41fb5fd02cceb92d7d90e32861251c96d3853c532d7cd8325f",
+  "candidate_test_sha256": "660f5362cdf7c2c5dcd07d08544140fd44ca0a86bd331df5867f1f5c9f4f2f52",
+  "independent_source_review": "132d7988d298a2840e65ca387f6dfeea1a2a60d2f04875c9c7489efa93eac178",
+  "original_packet": {
+    "bytes": 260788,
+    "sha256": "d23ae278616ab4e1c4d6104eed3bf427e231b1748ab0bbebdfd4ffc0c5d06f90",
+    "members": 47
+  },
+  "author_receipt": "cdcc150a14641e8d0070ecb2fbb15707693582b586be20331f59738af0f3f5c9",
+  "raw_proof": {
+    "path": "root-independent-local-byte-audit.json",
+    "bytes": 42119,
+    "sha256": "fa69673f1427bca39c260b1e4a0509dfa70556624af7668be9e15300f3c65460"
+  },
+  "actual_results": {
+    "focused_methods": 4,
+    "regression_methods": 20,
+    "method_executions": 24,
+    "distinct_methods": 20,
+    "overlap": 4,
+    "original_methods": 16,
+    "new_methods": 4,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "command_exits": [
+      0,
+      0
+    ],
+    "timeouts": false
+  },
+  "checks": [
+    "Read the complete unchanged original ZIP, all 47 unique members, CRCs, external index sizes/SHA256 and byte-for-byte equality with retained author originals.",
+    "Independently parsed complete raw unittest stderr reports and exact method identities against the actual candidate AST and receipt. Both stdout files are empty; summaries are 4 tests/0.091s and 20 tests/2.940s, each ending OK. No cached, skipped, fabricated XML or CI result is inferred.",
+    "Both exact commands use the captured Python 3.12 executable with -I -B. Reviewed the complete bounded create-only harness, child environment allowlist without credentials or official environment, 120-second timeout, 4-MiB per-file limit and source/exit/log preservation.",
+    "All before/after source maps match within each phase: 10 files for focused, 20 for regression. Independently rehashed every retained byte; both changed files match the reviewed candidate. Fresh immutable GitHub directory reads independently bind all 18 unchanged source/fixture Git blobs at1261.",
+    "Read the existing mocked API and temporary local Git fixture paths; the Git endpoint is explicitly patched to a local temporary bare repository. The preexisting 512-request arithmetic case does not allocate entropy, create an official claim or initialize games. Some mocked prepare/admit/complete paths are exercised; no official execution is claimed.",
+    "Rehashed the currently available recorded Python executable and matched its captured digest. This is a file-hash reconciliation, not independent reconstruction of every historical loaded interpreter/library byte.",
+    "Read the full two-file source patch and prior Manual132d source review separately. This raw review confirms actual local software evidence and preservation; it does not silently transfer prior whole-runtime acceptance."
+  ],
+  "preserved_review_correction": {
+    "record": "root-audit-parser-correction.json",
+    "original_script": "root_audit_local_originals.syntax-v1.py",
+    "corrected_script": "root_audit_local_originals.py",
+    "description": "The first read-only audit script failed at parsing because one conditional expression lacked a space in else 20. The exact failed script is preserved. One-space repair changed only the reviewer parser; no project source, test command, event or artifact was rerun."
+  },
+  "limitations": [
+    "Local Python software evidence only; not GitHub CI, an engine/JVM run, full receiving qualification, loaded-runtime identity or a source-bound R1 permit.",
+    "Twenty distinct method identities include the four focused methods; do not report 24 unique cases or 512 executed allocations.",
+    "Canonical integration, exact complete-source receiving evidence, pre-reservation executing identity, finite full-corpus resources/persistence and independent R1 admission remain open.",
+    "Root authorized the two software commands and reviewed the proposal but did not author either candidate Python file or these raw results. This review is separately attributed and is not a formal GitHub approval.",
+    "No official allocation, gameplay, decklist, frozen policy or deck-performance evidence changed."
+  ],
+  "reviewer_new_execution": {
+    "project_tests": 0,
+    "engine_or_JVM": 0,
+    "workflow_events": 0,
+    "official_allocations": 0
+  }
+}
+

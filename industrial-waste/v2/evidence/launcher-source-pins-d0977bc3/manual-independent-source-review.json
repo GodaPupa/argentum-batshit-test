@@ -1,0 +1,69 @@
+{
+  "schema": "industrial-launcher-source-independent-review-v1",
+  "reviewer": "/root/manual",
+  "verdict": "PASS_BOUNDED_SOURCE_COVERAGE_CORRECTION_FOR_PROSPECTIVE_QUALIFICATION",
+  "base_source": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+  "base_tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "inputs": {
+    "PROPOSAL.md": {
+      "path": "industrial/executor-handoff/launcher-source-candidate/PROPOSAL.md",
+      "bytes": 3680,
+      "sha256": "3c1021440a2bbceadbd37d1456d2d97451e0a5eec88aa7de37c0a2d2271b7635"
+    },
+    "candidate.diff": {
+      "path": "industrial/executor-handoff/launcher-source-candidate/candidate.diff",
+      "bytes": 6916,
+      "sha256": "b114791252eff71d9a3f6f09afaf610aea0c09873fbd5a955c3c33955c30d531"
+    },
+    "candidate-manifest.json": {
+      "path": "industrial/executor-handoff/launcher-source-candidate/candidate-manifest.json",
+      "bytes": 820,
+      "sha256": "e07bee6ede526311097822876503185bd08f68fe4b8934c21dfde60824847130"
+    },
+    "manual-independent-static-proof.json": {
+      "path": "industrial/executor-handoff/launcher-source-candidate/manual-independent-static-proof.json",
+      "bytes": 3686,
+      "sha256": "f652367d34cecf95edc628eadd3cf7477e3f699ecc802d52d9e449ef60c315de"
+    }
+  },
+  "candidate_files": [
+    {
+      "path": "industrial-waste/v2/r1_execute.py",
+      "bytes": 37250,
+      "sha256": "92fba46690dfff41fb5fd02cceb92d7d90e32861251c96d3853c532d7cd8325f",
+      "git_blob_sha1": "0e7d3d727ed6e727702fe52ac67b0b9595e02b64"
+    },
+    {
+      "path": "industrial-waste/v2/test_r1_execute.py",
+      "bytes": 29111,
+      "sha256": "660f5362cdf7c2c5dcd07d08544140fd44ca0a86bd331df5867f1f5c9f4f2f52",
+      "git_blob_sha1": "ca920a815ad08ffe6df3204314b068b47bf3dc07"
+    }
+  ],
+  "observations": [
+    "Independently refetched ten immutable original source/guidance bodies at1261 and recomputed every Git blob against retained originals; the two candidate files match the exact manifest SHA256, sizes and Git blobs.",
+    "Read the full patch, extracted helper, complete validate_authority/prepare ordering and four added test methods. The original pin-comparison loop and original required set are AST-identical. Other original functions/classes and all original test AST remain unchanged; the new test class is the only test-source addition.",
+    "The mandatory launcher set closes a concrete omission for gradlew, scripts/test-class and scripts/gradle-locked. Current bytes must equal the accepted hash and that hash must equal the immutable qualified-source blob. Returning the enlarged set includes those paths in the existing subsequent Git diff and untracked-source selection.",
+    "The new validation call remains in validate_authority before it returns and before prepare can reserve the consumption claim, derive requests or initialize anything. It does not change existing initial claim verification, execution ordering or acceptance status requirements.",
+    "Read the actual prescribed route: just test-class invokes scripts/test-class, which invokes scripts/gradle-locked, which invokes ./gradlew. Independently refetched industrial-waste/v2/capture_ai_runtime.py at blobd470589efecf0ec25a37b6ef81797ab8a57e90cd; its existing INPUT_PATHS already include the same three launchers.",
+    "Four prospective local-Git test methods cover11 subcases: one exact happy path, four omitted pins including an existing source pin, three changed launchers and three attempted current-hash rebindings against original qualified bytes. Fixture text is nonexecuted; the new tests call the pure source validator and local Git operations, not prepare, a real launcher, a remote API or an initializer.",
+    "No source defect found within this two-file source-coverage correction. Its original-source identity and explicit full-runtime limitations are accurately stated."
+  ],
+  "guidance_scope": "Python orchestration source-integrity validation only; no SDK, engine/card behavior, server/client, Oracle/Assay or mtgish vocabulary changes. No corresponding catalog, card scenario or Assay gate is triggered by these two edits. Required focused Python and broader receiving validation remain prospective and root-controlled.",
+  "limitations": [
+    "No Python test method, project import, Kotlin/JVM/build, workflow or gameplay executed during this review; static Python AST/hash tooling only.",
+    "This review does not accept a complete R1 runtime, loaded JVM/classpath/agent/native identity, same-worker pre-reservation handoff,512-allocation resource/persistence envelope or execution permission.",
+    "The modified r1_execute.py changes the source closure; old complete-runtime receipts cannot be transferred by an unchanged-source claim. Exact receiving dependency/gate/source pins and fresh required evidence need separate disposition.",
+    "No branch, commit, PR, approval or workflow activation is authorized or performed by this review. Root retains final source/control/event and admission decisions."
+  ],
+  "authorship": "Reviewer did not author these candidate files or their new tests.",
+  "performed": {
+    "independent_source_reads": true,
+    "static_AST_and_hash_checks": true,
+    "repository_tests": 0,
+    "launchers": 0,
+    "claims": 0,
+    "official_allocations": 0,
+    "workflow_events": 0
+  }
+}

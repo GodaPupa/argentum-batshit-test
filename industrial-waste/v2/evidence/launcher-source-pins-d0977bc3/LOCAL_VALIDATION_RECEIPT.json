@@ -1,0 +1,94 @@
+{
+  "schema": "industrial-launcher-source-local-validation-v1",
+  "source_base": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+  "candidate_manifest_sha256": "e07bee6ede526311097822876503185bd08f68fe4b8934c21dfde60824847130",
+  "actual_tests": {
+    "focused": {
+      "case_identities": [
+        "LauncherSourceBindingTests.test_changed_launch_bytes_fail_against_accepted_pin",
+        "LauncherSourceBindingTests.test_each_missing_launcher_pin_and_existing_required_pin_is_rejected",
+        "LauncherSourceBindingTests.test_prescribed_launch_sources_match_current_and_qualified_bytes",
+        "LauncherSourceBindingTests.test_rebinding_changed_launcher_hash_cannot_substitute_for_qualification"
+      ],
+      "count": 4,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "exit": {
+        "timeout": false,
+        "returncode": 0,
+        "source_unchanged": true,
+        "finished_utc": "2026-09-27T03:42:12.267318+00:00",
+        "logs": {
+          "stdout.txt": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr.txt": {
+            "bytes": 796,
+            "sha256": "df952c37054ca4bbac48bb76ad431058c89dd39b96249b4cb4304219b9853489"
+          }
+        }
+      }
+    },
+    "regression": {
+      "case_identities": [
+        "ExecutionAdapterTests.test_admission_is_durable_before_it_returns_and_never_retries",
+        "ExecutionAdapterTests.test_all_512_requests_reproduce_every_frozen_ordering_digest",
+        "ExecutionAdapterTests.test_alternate_claim_namespace_cannot_create_another_r1_attempt",
+        "ExecutionAdapterTests.test_boolean_alias_is_not_an_exact_integer_in_a_frozen_request",
+        "ExecutionAdapterTests.test_canonical_consumption_precedes_requests_and_cannot_move_to_a_second_checkout",
+        "ExecutionAdapterTests.test_changed_request_is_rejected_without_consuming_the_allocation",
+        "ExecutionAdapterTests.test_clarification_requires_exact_reviewed_bytes_and_immutable_publication",
+        "ExecutionAdapterTests.test_completion_binds_initialized_input_to_exact_admission",
+        "ExecutionAdapterTests.test_consumption_cannot_be_reused_by_a_different_workflow_owner",
+        "ExecutionAdapterTests.test_finalized_artifact_tampering_or_journal_mislabeling_is_rejected",
+        "ExecutionAdapterTests.test_finalizer_rechecks_raw_evidence_after_artifact_was_finalized",
+        "ExecutionAdapterTests.test_immutable_git_reads_require_publication_then_recheck_live_refs_each_phase",
+        "ExecutionAdapterTests.test_missing_authority_never_creates_output_or_initializes",
+        "ExecutionAdapterTests.test_published_authority_requires_exact_immutable_bytes",
+        "ExecutionAdapterTests.test_quiet_observation_must_bind_the_exact_initial_or_returned_state",
+        "ExecutionAdapterTests.test_valid_artifact_requires_semantic_quiet_replay_and_exact_count",
+        "LauncherSourceBindingTests.test_changed_launch_bytes_fail_against_accepted_pin",
+        "LauncherSourceBindingTests.test_each_missing_launcher_pin_and_existing_required_pin_is_rejected",
+        "LauncherSourceBindingTests.test_prescribed_launch_sources_match_current_and_qualified_bytes",
+        "LauncherSourceBindingTests.test_rebinding_changed_launcher_hash_cannot_substitute_for_qualification"
+      ],
+      "count": 20,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "exit": {
+        "timeout": false,
+        "returncode": 0,
+        "source_unchanged": true,
+        "finished_utc": "2026-09-27T03:42:44.869708+00:00",
+        "logs": {
+          "stdout.txt": {
+            "bytes": 0,
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          },
+          "stderr.txt": {
+            "bytes": 3559,
+            "sha256": "7b2338981a96472e3bec56c0359d0269efd1435554f12847f0f0e1476c9ed618"
+          }
+        }
+      }
+    }
+  },
+  "unique_method_identities": 20,
+  "focused_subset_of_regression": true,
+  "old_methods_preserved": 16,
+  "new_methods": 4,
+  "new_checks_and_subcases": 11,
+  "source_validation": "10 Python sources in focused;20 total staged exact sources/fixtures in regression; full before-after hashes unchanged. Candidate bytes92fba/660f53 equal nonauthor-reviewed manifest.",
+  "import_inspection": "All8 exact original Python dependency top-level statements inspected before import; no prepare/API/claim/worker execution side effect. Focused methods use only exact byte helper and temp localGit. Existing regression uses fake/mocked APIs/temp localGit and deterministic preexisting frozen request arithmetic; no actual official attempt.",
+  "authorization": "Root message after exact two-file/Manual132d review authorizes focused once then existing affected regression once if clean.",
+  "limits": [
+    "Local Python software evidence only, not GitHubCI, compiled runtime, R1 permit or gameplay.",
+    "No canonical receiving integration or source-bound runtime acceptance inferred.",
+    "Four focused names overlap20 broad names, not24 unique cases.",
+    "No official claim, allocation, initialized game, outcome, or experimental replacement."
+  ],
+  "disposition": "AUTHOR_VERIFIED_LOCAL_SOFTWARE_RESULTS_PENDING_NONAUTHOR_RAW_REVIEW"
+}
