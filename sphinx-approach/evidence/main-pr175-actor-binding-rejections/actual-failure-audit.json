@@ -1,0 +1,474 @@
+{
+  "schema": "sphinx-pr175-two-original-actor-binding-failures-audit/v1",
+  "disposition": "PRESERVE_ACTUAL_SOURCE_BOUND_REJECTIONS_NO_QUALIFICATION_EXECUTED",
+  "rows": [
+    {
+      "original_artifact": "original-artifact-10920092743.zip",
+      "bytes": 13683,
+      "sha256": "8a73838da90862cddc0b83a02c1424749b788077ccd1076828abe4ac0b398990",
+      "members": [
+        {
+          "member": "build/reports/shared-actor-input/receiving-binding-attempts/attempt-001/attempt.json",
+          "bytes": 8153,
+          "sha256": "0a593068b8d4ccc9d3005f868b4797ba6d69dcb8a7956b8e9832e4ac65cad9fd"
+        },
+        {
+          "member": "build/reports/shared-actor-input/receiving-binding-attempts/attempt-001/source/lab-coordinator/shared-capabilities/actor-input-extraction.json",
+          "bytes": 11688,
+          "sha256": "9689048782254600b748bf9f135f4e62c598efa1df3f42a128b5df83c1ac16f2",
+          "exact_source_git_blob": "d17f61f8fa882ee221070f26c271292b86e916cf"
+        },
+        {
+          "member": "build/reports/shared-actor-input/receiving-binding-attempts/attempt-001/source/sphinx-approach/STAGE_E_CANONICAL_RECEIVING_BINDING.json",
+          "bytes": 12715,
+          "sha256": "1316e5dc9ad26db03e655d4fd5aa96427309eb04700d929e6433e64786f50682",
+          "exact_source_git_blob": "d9f9bb966c0709d4b116b7c4b137612e358ceb38"
+        },
+        {
+          "member": "build/reports/shared-actor-input/receiving-binding-attempts/attempt-001/source/sphinx-approach/canonical_receiving_binding.py",
+          "bytes": 8204,
+          "sha256": "a014e1e4ebf37db57bf3a77d5a4f1963476710ebe76692b1a213e60cb7f7f300",
+          "exact_source_git_blob": "3e8802fbb56b640066896ff0e3c80473f1d44b87"
+        }
+      ],
+      "run_id": 36284779284,
+      "job_id": 108523338837,
+      "run_attempt": 1,
+      "event": "pull_request",
+      "api_head": "8ed9787ad75b8bc6c2438a8c0b526ff822aa776e",
+      "observed_checkout": "22cf67791fda69a65d7e1eeb76c2ae369407cb01",
+      "observed_tree": "3b4e50dd7a0fe484b796bb191bd848b048bea12b",
+      "status": "REJECTED_BINDING_NO_QUALIFICATION",
+      "exception": {
+        "type": "ValueError",
+        "message": "Runtime, test, protocol or unrelated source changed: ['.github/workflows/attacking-token-defender-qualification.yml', '.github/workflows/engine-priority-after-resolution.yml', '.github/workflows/pest-control-tier-one-postboard-support-batch-b.yml', '.github/workflows/shared-actor-input-qualification.yml', '.github/workflows/shared-postblock-source-qualification.yml', '.github/workflows/sphinx-initialized-seat-qualification.yml', '.github/workflows/sphinx-stage-e-actor.yml', 'lab-coordinator/CURRENT_STATUS.md', 'lab-coordinator/NEXT_CHAT_HANDOFF.md', 'lab-coordinator/history/20260926-2045-concurrent/CURRENT_STATUS.md', 'lab-coordinator/history/20260926-2045-concurrent/NEXT_CHAT_HANDOFF.md', 'lab-coordinator/reviews/continuation-20260926/nonauthor-factual-review.json', 'lab-coordinator/reviews/continuation-20260926/nonauthor-final-coordinator-review.json', 'lab-coordinator/reviews/continuation-20260926/workflow-trigger-preflight.json', 'lab-coordinator/shared-capabilities/collect-actor-input.py', 'lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/candidate-trigger-review.json', 'lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/original-stale-bindings.json', 'lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-static-source-review.json', 'lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-trigger-review.json', 'lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/root-nonauthor-source-review.json', 'lab-coordinator/shared-capabilities/postblock-combined-receiving.json', 'sphinx-approach/STAGE_E_CANONICAL_RECEIVING_BINDING.json', 'sphinx-approach/canonical_receiving_binding.py', 'sphinx-approach/collect-stage-e-actor.py', 'sphinx-approach/evidence/canonical-receiving-binder-source-review.json']"
+      },
+      "rejected_paths": [
+        ".github/workflows/attacking-token-defender-qualification.yml",
+        ".github/workflows/engine-priority-after-resolution.yml",
+        ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml",
+        ".github/workflows/shared-actor-input-qualification.yml",
+        ".github/workflows/shared-postblock-source-qualification.yml",
+        ".github/workflows/sphinx-initialized-seat-qualification.yml",
+        ".github/workflows/sphinx-stage-e-actor.yml",
+        "lab-coordinator/CURRENT_STATUS.md",
+        "lab-coordinator/NEXT_CHAT_HANDOFF.md",
+        "lab-coordinator/history/20260926-2045-concurrent/CURRENT_STATUS.md",
+        "lab-coordinator/history/20260926-2045-concurrent/NEXT_CHAT_HANDOFF.md",
+        "lab-coordinator/reviews/continuation-20260926/nonauthor-factual-review.json",
+        "lab-coordinator/reviews/continuation-20260926/nonauthor-final-coordinator-review.json",
+        "lab-coordinator/reviews/continuation-20260926/workflow-trigger-preflight.json",
+        "lab-coordinator/shared-capabilities/collect-actor-input.py",
+        "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/candidate-trigger-review.json",
+        "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/original-stale-bindings.json",
+        "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-static-source-review.json",
+        "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-trigger-review.json",
+        "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/root-nonauthor-source-review.json",
+        "lab-coordinator/shared-capabilities/postblock-combined-receiving.json",
+        "sphinx-approach/STAGE_E_CANONICAL_RECEIVING_BINDING.json",
+        "sphinx-approach/canonical_receiving_binding.py",
+        "sphinx-approach/collect-stage-e-actor.py",
+        "sphinx-approach/evidence/canonical-receiving-binder-source-review.json"
+      ],
+      "expected_bank_cases": 50,
+      "actual_bank_executed_cases": 0,
+      "xml_members": 0,
+      "bank_step": {
+        "name": "Execute all 50 existing actor projection checks",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 7,
+        "started_at": "2026-09-27T01:12:08Z",
+        "completed_at": "2026-09-27T01:12:08Z"
+      },
+      "secondary_collector_missing_source_before": false,
+      "job_steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-27T01:11:31Z",
+          "completed_at": "2026-09-27T01:11:33Z"
+        },
+        {
+          "name": "Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-27T01:11:33Z",
+          "completed_at": "2026-09-27T01:12:02Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-27T01:12:02Z",
+          "completed_at": "2026-09-27T01:12:02Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-27T01:12:02Z",
+          "completed_at": "2026-09-27T01:12:07Z"
+        },
+        {
+          "name": "Run extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-09-27T01:12:07Z",
+          "completed_at": "2026-09-27T01:12:08Z"
+        },
+        {
+          "name": "Bind exact source and unchanged canonical extraction",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 6,
+          "started_at": "2026-09-27T01:12:08Z",
+          "completed_at": "2026-09-27T01:12:08Z"
+        },
+        {
+          "name": "Execute all 50 existing actor projection checks",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7,
+          "started_at": "2026-09-27T01:12:08Z",
+          "completed_at": "2026-09-27T01:12:08Z"
+        },
+        {
+          "name": "Audit actual complete XML banks and stable source",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 8,
+          "started_at": "2026-09-27T01:12:08Z",
+          "completed_at": "2026-09-27T01:12:08Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-09-27T01:12:08Z",
+          "completed_at": "2026-09-27T01:12:09Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-09-27T01:12:09Z",
+          "completed_at": "2026-09-27T01:12:10Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-09-27T01:12:10Z",
+          "completed_at": "2026-09-27T01:12:10Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-09-27T01:12:10Z",
+          "completed_at": "2026-09-27T01:12:10Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-09-27T01:12:10Z",
+          "completed_at": "2026-09-27T01:12:10Z"
+        }
+      ],
+      "decoded_log": {
+        "gzip": "shared-complete-decoded-job.log.gz",
+        "gzip_bytes": 16860,
+        "gzip_sha256": "a0fdf4a3a8dd67e9220e9d0beed5afcbabb9e4124882ae97fad3beabf8798a3c",
+        "decoded_bytes": 91369,
+        "decoded_sha256": "30aa5bea49a778bffd1bbbe2b3e1639d7981af87f5e45f9dbb822211c2881769",
+        "first_line": "\ufeff2026-09-27T01:11:31.5424731Z Current runner version: '2.337.0'",
+        "last_line": "2026-09-27T01:12:10.4651952Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: extractions/setup-crate@4993624604c307fbca528d28a3c8b60fa5ecc859. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/"
+      },
+      "observed_source_hash_scope": "Original emitted maps retained; this audit independently fetched and compared every archived control/authority source, not all runtime files named by those maps."
+    },
+    {
+      "original_artifact": "original-artifact-10919607933.zip",
+      "bytes": 19637,
+      "sha256": "91ecdcb68482af1acba43207fc73aeba007dab8303ca7347ad1d7500b478c788",
+      "members": [
+        {
+          "member": "build/reports/sphinx-stage-e-actor/receiving-binding-attempts/attempt-001/attempt.json",
+          "bytes": 15114,
+          "sha256": "60e98b4b31e9e65bc94733fd22d96955259dcf83088c84045d21d9e5337a02ba"
+        },
+        {
+          "member": "build/reports/sphinx-stage-e-actor/receiving-binding-attempts/attempt-001/source/sphinx-approach/STAGE_E_ACTOR_RECEIVING_SCOPE.json",
+          "bytes": 9127,
+          "sha256": "1602ca99f7be5f80e486e7353994be8e4aba95049b17ff55261beb18372a15c8",
+          "exact_source_git_blob": "d1773945dca6d57927a16afb431e934a2bfda42b"
+        },
+        {
+          "member": "build/reports/sphinx-stage-e-actor/receiving-binding-attempts/attempt-001/source/sphinx-approach/STAGE_E_ACTOR_FIXTURE_BUDGET.json",
+          "bytes": 11634,
+          "sha256": "e01864d8d22f228f5ea6c9a3a830cf524290297487c85970471553620af9f5ad",
+          "exact_source_git_blob": "3c0d0fcfcf0d9117695818ac4e9af7972f76920f"
+        },
+        {
+          "member": "build/reports/sphinx-stage-e-actor/receiving-binding-attempts/attempt-001/source/sphinx-approach/STAGE_E_CANONICAL_RECEIVING_BINDING.json",
+          "bytes": 12715,
+          "sha256": "1316e5dc9ad26db03e655d4fd5aa96427309eb04700d929e6433e64786f50682",
+          "exact_source_git_blob": "d9f9bb966c0709d4b116b7c4b137612e358ceb38"
+        },
+        {
+          "member": "build/reports/sphinx-stage-e-actor/receiving-binding-attempts/attempt-001/source/sphinx-approach/canonical_receiving_binding.py",
+          "bytes": 8204,
+          "sha256": "a014e1e4ebf37db57bf3a77d5a4f1963476710ebe76692b1a213e60cb7f7f300",
+          "exact_source_git_blob": "3e8802fbb56b640066896ff0e3c80473f1d44b87"
+        }
+      ],
+      "run_id": 36284779421,
+      "job_id": 108523339173,
+      "run_attempt": 1,
+      "event": "pull_request",
+      "api_head": "8ed9787ad75b8bc6c2438a8c0b526ff822aa776e",
+      "observed_checkout": "22cf67791fda69a65d7e1eeb76c2ae369407cb01",
+      "observed_tree": "3b4e50dd7a0fe484b796bb191bd848b048bea12b",
+      "status": "REJECTED_BINDING_NO_QUALIFICATION",
+      "exception": {
+        "type": "ValueError",
+        "message": "Runtime, test, protocol or unrelated source changed: ['.github/workflows/attacking-token-defender-qualification.yml', '.github/workflows/engine-priority-after-resolution.yml', '.github/workflows/pest-control-tier-one-postboard-support-batch-b.yml', '.github/workflows/shared-actor-input-qualification.yml', '.github/workflows/shared-postblock-source-qualification.yml', '.github/workflows/sphinx-initialized-seat-qualification.yml', '.github/workflows/sphinx-stage-e-actor.yml', 'lab-coordinator/CURRENT_STATUS.md', 'lab-coordinator/NEXT_CHAT_HANDOFF.md', 'lab-coordinator/history/20260926-2045-concurrent/CURRENT_STATUS.md', 'lab-coordinator/history/20260926-2045-concurrent/NEXT_CHAT_HANDOFF.md', 'lab-coordinator/reviews/continuation-20260926/nonauthor-factual-review.json', 'lab-coordinator/reviews/continuation-20260926/nonauthor-final-coordinator-review.json', 'lab-coordinator/reviews/continuation-20260926/workflow-trigger-preflight.json', 'lab-coordinator/shared-capabilities/collect-actor-input.py', 'lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/candidate-trigger-review.json', 'lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/original-stale-bindings.json', 'lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-static-source-review.json', 'lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-trigger-review.json', 'lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/root-nonauthor-source-review.json', 'lab-coordinator/shared-capabilities/postblock-combined-receiving.json', 'sphinx-approach/STAGE_E_CANONICAL_RECEIVING_BINDING.json', 'sphinx-approach/canonical_receiving_binding.py', 'sphinx-approach/collect-stage-e-actor.py', 'sphinx-approach/evidence/canonical-receiving-binder-source-review.json']"
+      },
+      "rejected_paths": [
+        ".github/workflows/attacking-token-defender-qualification.yml",
+        ".github/workflows/engine-priority-after-resolution.yml",
+        ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml",
+        ".github/workflows/shared-actor-input-qualification.yml",
+        ".github/workflows/shared-postblock-source-qualification.yml",
+        ".github/workflows/sphinx-initialized-seat-qualification.yml",
+        ".github/workflows/sphinx-stage-e-actor.yml",
+        "lab-coordinator/CURRENT_STATUS.md",
+        "lab-coordinator/NEXT_CHAT_HANDOFF.md",
+        "lab-coordinator/history/20260926-2045-concurrent/CURRENT_STATUS.md",
+        "lab-coordinator/history/20260926-2045-concurrent/NEXT_CHAT_HANDOFF.md",
+        "lab-coordinator/reviews/continuation-20260926/nonauthor-factual-review.json",
+        "lab-coordinator/reviews/continuation-20260926/nonauthor-final-coordinator-review.json",
+        "lab-coordinator/reviews/continuation-20260926/workflow-trigger-preflight.json",
+        "lab-coordinator/shared-capabilities/collect-actor-input.py",
+        "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/candidate-trigger-review.json",
+        "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/original-stale-bindings.json",
+        "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-static-source-review.json",
+        "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-trigger-review.json",
+        "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/root-nonauthor-source-review.json",
+        "lab-coordinator/shared-capabilities/postblock-combined-receiving.json",
+        "sphinx-approach/STAGE_E_CANONICAL_RECEIVING_BINDING.json",
+        "sphinx-approach/canonical_receiving_binding.py",
+        "sphinx-approach/collect-stage-e-actor.py",
+        "sphinx-approach/evidence/canonical-receiving-binder-source-review.json"
+      ],
+      "expected_bank_cases": 136,
+      "actual_bank_executed_cases": 0,
+      "xml_members": 0,
+      "bank_step": {
+        "name": "Run all 10 shared plus 20 equal adapter plus 106 preserved checks",
+        "status": "completed",
+        "conclusion": "skipped",
+        "number": 7,
+        "started_at": "2026-09-27T01:12:15Z",
+        "completed_at": "2026-09-27T01:12:15Z"
+      },
+      "secondary_collector_missing_source_before": true,
+      "job_steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-27T01:11:32Z",
+          "completed_at": "2026-09-27T01:11:36Z"
+        },
+        {
+          "name": "Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-27T01:11:36Z",
+          "completed_at": "2026-09-27T01:12:08Z"
+        },
+        {
+          "name": "Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-27T01:12:08Z",
+          "completed_at": "2026-09-27T01:12:08Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-09-27T01:12:08Z",
+          "completed_at": "2026-09-27T01:12:13Z"
+        },
+        {
+          "name": "Run extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-09-27T01:12:13Z",
+          "completed_at": "2026-09-27T01:12:14Z"
+        },
+        {
+          "name": "Bind exact clean source and prospective complete banks",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 6,
+          "started_at": "2026-09-27T01:12:14Z",
+          "completed_at": "2026-09-27T01:12:15Z"
+        },
+        {
+          "name": "Run all 10 shared plus 20 equal adapter plus 106 preserved checks",
+          "status": "completed",
+          "conclusion": "skipped",
+          "number": 7,
+          "started_at": "2026-09-27T01:12:15Z",
+          "completed_at": "2026-09-27T01:12:15Z"
+        },
+        {
+          "name": "Audit actual XML and source after execution",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 8,
+          "started_at": "2026-09-27T01:12:15Z",
+          "completed_at": "2026-09-27T01:12:15Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v7",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-09-27T01:12:15Z",
+          "completed_at": "2026-09-27T01:12:17Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-09-27T01:12:17Z",
+          "completed_at": "2026-09-27T01:12:17Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v5",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-09-27T01:12:17Z",
+          "completed_at": "2026-09-27T01:12:17Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v6",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-09-27T01:12:17Z",
+          "completed_at": "2026-09-27T01:12:17Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-09-27T01:12:17Z",
+          "completed_at": "2026-09-27T01:12:17Z"
+        }
+      ],
+      "decoded_log": {
+        "gzip": "sphinx-complete-decoded-job.log.gz",
+        "gzip_bytes": 17010,
+        "gzip_sha256": "c159d19a1adb23d8cdce74fcf48fe21478dd14d248f6324b83febcd7989e7893",
+        "decoded_bytes": 93073,
+        "decoded_sha256": "0aeaab29598123a96f8bf4ebc9195506416dc08ecb25514a0ccd5ef5dfebc19c",
+        "first_line": "\ufeff2026-09-27T01:11:32.2682240Z Current runner version: '2.337.0'",
+        "last_line": "2026-09-27T01:12:17.7147102Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: extractions/setup-crate@4993624604c307fbca528d28a3c8b60fa5ecc859. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/"
+      },
+      "observed_source_hash_scope": "Original emitted maps retained; this audit independently fetched and compared every archived control/authority source, not all runtime files named by those maps."
+    }
+  ],
+  "five_unique_archived_sources": [
+    {
+      "path": "sphinx-approach/STAGE_E_ACTOR_RECEIVING_SCOPE.json",
+      "git_blob_sha1": "d1773945dca6d57927a16afb431e934a2bfda42b",
+      "sha256": "1602ca99f7be5f80e486e7353994be8e4aba95049b17ff55261beb18372a15c8"
+    },
+    {
+      "path": "sphinx-approach/STAGE_E_ACTOR_FIXTURE_BUDGET.json",
+      "git_blob_sha1": "3c0d0fcfcf0d9117695818ac4e9af7972f76920f",
+      "sha256": "e01864d8d22f228f5ea6c9a3a830cf524290297487c85970471553620af9f5ad"
+    },
+    {
+      "path": "sphinx-approach/STAGE_E_CANONICAL_RECEIVING_BINDING.json",
+      "git_blob_sha1": "d9f9bb966c0709d4b116b7c4b137612e358ceb38",
+      "sha256": "1316e5dc9ad26db03e655d4fd5aa96427309eb04700d929e6433e64786f50682"
+    },
+    {
+      "path": "sphinx-approach/canonical_receiving_binding.py",
+      "git_blob_sha1": "3e8802fbb56b640066896ff0e3c80473f1d44b87",
+      "sha256": "a014e1e4ebf37db57bf3a77d5a4f1963476710ebe76692b1a213e60cb7f7f300"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/actor-input-extraction.json",
+      "git_blob_sha1": "d17f61f8fa882ee221070f26c271292b86e916cf",
+      "sha256": "9689048782254600b748bf9f135f4e62c598efa1df3f42a128b5df83c1ac16f2"
+    }
+  ],
+  "canonical_allowlist_unchanged": [
+    ".github/workflows/attacking-token-defender-qualification.yml",
+    ".github/workflows/engine-priority-after-resolution.yml",
+    ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml",
+    ".github/workflows/shared-actor-input-qualification.yml",
+    ".github/workflows/sphinx-initialized-seat-qualification.yml",
+    ".github/workflows/sphinx-stage-e-actor.yml",
+    "lab-coordinator/shared-capabilities/collect-actor-input.py",
+    "sphinx-approach/STAGE_E_CANONICAL_RECEIVING_BINDING.json",
+    "sphinx-approach/canonical_receiving_binding.py",
+    "sphinx-approach/collect-stage-e-actor.py",
+    "sphinx-approach/evidence/canonical-receiving-binder-source-review.json"
+  ],
+  "actual_main_only_paths": [
+    ".github/workflows/shared-postblock-source-qualification.yml",
+    "lab-coordinator/CURRENT_STATUS.md",
+    "lab-coordinator/NEXT_CHAT_HANDOFF.md",
+    "lab-coordinator/history/20260926-2045-concurrent/CURRENT_STATUS.md",
+    "lab-coordinator/history/20260926-2045-concurrent/NEXT_CHAT_HANDOFF.md",
+    "lab-coordinator/reviews/continuation-20260926/nonauthor-factual-review.json",
+    "lab-coordinator/reviews/continuation-20260926/nonauthor-final-coordinator-review.json",
+    "lab-coordinator/reviews/continuation-20260926/workflow-trigger-preflight.json",
+    "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/candidate-trigger-review.json",
+    "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/original-stale-bindings.json",
+    "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-static-source-review.json",
+    "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-trigger-review.json",
+    "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/root-nonauthor-source-review.json",
+    "lab-coordinator/shared-capabilities/postblock-combined-receiving.json"
+  ],
+  "findings": [
+    "Both actual attempt1 failures match the pre-merge static prediction: the exact25 rejected paths equal original11 allowed qualification paths plus14 main-only control/evidence paths.",
+    "Neither bank ran:50 and136 are expected fixture identities, not executed counts or Stage-E games.",
+    "Sphinx always-run collector then failed because source-before.json was never produced; this secondary failure is retained. Shared actor collection was skipped.",
+    "Original ZIPs include every member including helper and authority bytes; no XML exists and no pass outcome is inferred. Connector-decoded complete logs are labeled separately from original archive bytes.",
+    "This is a main test-merge receiving guard rejection, not a scientific deck result or rejection of the accepted canonical469335 source."
+  ],
+  "official_games": 0,
+  "new_outcomes": 0,
+  "source_or_policy_changes": false,
+  "rerun_or_new_test_execution": false,
+  "next_authority": "Separate prospective exact-main source-binding proposal and independent review; unchanged reruns and canonical11 allowlist expansion are not authorized by this audit."
+}

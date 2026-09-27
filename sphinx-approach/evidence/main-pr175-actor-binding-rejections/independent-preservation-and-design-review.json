@@ -1,0 +1,116 @@
+{
+  "schema": "sphinx-pr175-original-binding-failures-and-main-design-independent-review-v1",
+  "reviewer": "actual /root/pest",
+  "source_author": false,
+  "preservation_disposition": "PASS_EXACT_FAILED_ARTIFACT_PRESERVATION",
+  "design_disposition": "PASS_NARROW_PROPOSAL_DIRECTION_WITH_CONCRETE_IMPLEMENTATION_REVIEW_REQUIRED",
+  "audit_sha256": "d3989fe09689b55c967f71dcaf5e9d98221e2b07586d435dcee1ae10c1dacf26",
+  "proposal_sha256": "ba3a25f8edab4f23c5d67be91ab4300ed1426d8fd043608e627aa8a609553424",
+  "readme_sha256": "62478207d7dc078d0a17832e34bdd9b988840a42be03e157469bda2cb7fdae4f",
+  "package_sha256": "626d18ed12a50122426ae4f46df4e51c5facbfbf894cd35d405c6b747911345c",
+  "archive_index_sha256": "ff265b3baea56a6ece1a0c63e2e7bb20a228b408037fa6406a8f56a0169f60f9",
+  "actual_source": {
+    "canonical_head": "8ed9787ad75b8bc6c2438a8c0b526ff822aa776e",
+    "canonical_tree": "4693352c4a22d9f3b35eb47048c8edaabe8157f1",
+    "main_parent": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+    "failed_test_merge": "22cf67791fda69a65d7e1eeb76c2ae369407cb01",
+    "failed_test_merge_tree": "3b4e50dd7a0fe484b796bb191bd848b048bea12b",
+    "main_only_files": 14,
+    "canonical_allowed_paths": 11,
+    "observed_changed_paths": 25,
+    "pr_metadata_base_is_stale": true
+  },
+  "actual_failed_runs": [
+    {
+      "run": 36284779284,
+      "job": 108523338837,
+      "original_sha256": "8a73838da90862cddc0b83a02c1424749b788077ccd1076828abe4ac0b398990",
+      "original_members": 4,
+      "group": "shared_actor_50",
+      "original_pin_count": 18,
+      "original_pin_fingerprint": "33bec3c83e6bcc82c6934e8c21a3e7d7c0394bb6a09235f8ddd32faad1e37084",
+      "preserved_source_count": 3,
+      "observed_pin_map_matches_explicit_effective_map": true,
+      "bank_skipped": true,
+      "actual_cases": 0,
+      "decoded_log_sha256": "30aa5bea49a778bffd1bbbe2b3e1639d7981af87f5e45f9dbb822211c2881769",
+      "secondary_collector_missing_source_before": false
+    },
+    {
+      "run": 36284779421,
+      "job": 108523339173,
+      "original_sha256": "91ecdcb68482af1acba43207fc73aeba007dab8303ca7347ad1d7500b478c788",
+      "original_members": 5,
+      "group": "sphinx_actor_136",
+      "original_pin_count": 41,
+      "original_pin_fingerprint": "600deeecee7f56dea5fd7186cda37a5a97928f7c47290bc4e9cdc4efe5157dc8",
+      "preserved_source_count": 4,
+      "observed_pin_map_matches_explicit_effective_map": true,
+      "bank_skipped": true,
+      "actual_cases": 0,
+      "decoded_log_sha256": "0aeaab29598123a96f8bf4ebc9195506416dc08ecb25514a0ccd5ef5dfebc19c",
+      "secondary_collector_missing_source_before": true
+    }
+  ],
+  "preservation_checks": [
+    "Reconstructed the90,948-byte preservation ZIP from its existing local file; checked all8unique members/CRC and every external index digest/size against the existing original files. The separately published audit/proposal copies equal their reviewed original bytes.",
+    "Opened both original artifact ZIPs, checked exact sizes/SHA, all9original members/CRC and member hashes. There are no XML members. Both actual receipts retain clean22cf/tree3b4 checkouts, requested and event source identities, run/attempt, original expected/observed pin maps and original failure exception.",
+    "Independently fetched all5unique archived control/authority/helper source bodies from exact22cf and verified each archived byte string and Git blob identity. Independently read the two actual collectors and workflow bodies too.",
+    "Verified original18/41 group-pin counts and canonical compact fingerprints. Applying only the canonical explicit overrides reproduces each original emitted observed-source map exactly. This is a check of preserved observed maps and authority; no claim is made that every runtime file named by them was fetched anew.",
+    "Fresh live run/job metadata confirms each failed pull_request attempt1 at canonical8ed. Actual22cf commit object has ordered parentsff34 and8ed, proving the main composition despite stale PRbase9ca metadata. The fresh canonical-to-22cf comparison has canonical as merge base and exactly14files; every path/blob agrees with the proposal.",
+    "Both exception25-path lists equal the original canonical11 allowed paths union the disjoint14main-only paths. The original helper rejects this expanded composition before its later authority/pin acceptance path; this is not a report that all25individual paths are forbidden.",
+    "Both complete gzip logs match their published gzip and decoded hashes/byte lengths/first-last lines. Neither contains a Gradle test task or test-worker execution. Actual50/136 bank steps are skipped at workflow level; this does not mean50or136XML-skipped testcases. Zero cases executed.",
+    "The Sphinx always-run collector additionally raises FileNotFoundError for source-before.json; shared collection is skipped. Both outcomes remain in original logs/metadata. No result is converted to pass, runtime acceptance or a deck finding."
+  ],
+  "design_findings": [
+    {
+      "topic": "Separate receiving context",
+      "disposition": "SUPPORTED",
+      "requirement": "Leave the canonical descriptor/helper and its11-path allowlist byte-identical. A separate main-receiving verifier can accept an independently reviewed composition; never catch canonical rejection and continue through a permissive fallback."
+    },
+    {
+      "topic": "Exact context selection",
+      "disposition": "REQUIRED_IN_CONCRETE_SOURCE",
+      "requirement": "Select main context only with explicit reviewed repository/event/target/source conditions plus exact Git source/parent/tree checks. Main branch name, file presence, environment label or PRbodybase alone is insufficient. If main or canonical changes, fail closed until a new exact disposition; do not silently refresh expected refs."
+    },
+    {
+      "topic": "Complete composition identity",
+      "disposition": "REQUIRED_IN_CONCRETE_SOURCE",
+      "requirement": "Prove actual checkout composition against canonical8ed, the actual pinned main parent and separately reviewed successor controls. Pin exact14main-only path/blob pairs, with no directory or documentation wildcard. Reject changed/missing/extra files, runtime/build/dependency/pilot/deck changes, unexpected parents, dirty index/worktree and untracked files. Treat the modified postblock workflow among those14as a real control requiring trigger/source review, not harmless prose."
+    },
+    {
+      "topic": "Avoid self-referential source pins",
+      "disposition": "DESIGN_DETAIL_TO_RESOLVE",
+      "requirement": "The new manifest/helper/review/control hashes and eventual candidate commit must have an explicit reproducible binding/activation formula. Do not demand a commit literal inside its own tree or leave self-pins unchecked. Distinguish reviewed immutable parents/runtime tree from the prospective control delta and actual emitted run checkout."
+    },
+    {
+      "topic": "Preserve original bank authority",
+      "disposition": "REQUIRED_IN_CONCRETE_SOURCE",
+      "requirement": "Keep all original18/41 pin fingerprints, canonical exact overrides, original authority hashes and50/136 case identities unchanged. Shared50 overlaps Sphinx136; no aggregate186independent-case claim. Validate effective pins on the real current main checkout, not a temporary canonical checkout."
+    },
+    {
+      "topic": "Durable failure and after checks",
+      "disposition": "REQUIRED_IN_CONCRETE_SOURCE",
+      "requirement": "Record the selected context, actual source/tree/parents, original/effective/observed pins and all exact new controls/review files before qualification. Preserve rejected attempts, including descriptor/selection failures. Retain the original before/after source and actual XML/freshness validation. A diagnostic-only improvement for missing source-before must explicitly record no bank execution; it cannot synthesize a successful source-before record."
+    },
+    {
+      "topic": "Ownership and activation",
+      "disposition": "ROOT_AND_IMPLEMENTER_GATES_REMAIN",
+      "requirement": "Ferocity owns future implementation; root owns shared collector coordination and integration. A concrete patch requires independent review and explicit finite software controls/negative checks before any activation. Recheck all live push/PR/merge-trigger effects and external jobs. No unchanged rerun, new fixture allowance, source merge or gameplay authority follows from this proposal review."
+    }
+  ],
+  "reproduction": {
+    "script": "pest-takeover/sphinx-pr175-binding-review/check_originals.py",
+    "script_sha256": "ded091884a896c9ce2a9f28fa8e46c32fc1d564d2a9bc3aa38dd20b5b089eaa0",
+    "checks_sha256": "bec9a37f5caef8fb111bc734fdfa82feba5be7535f6ae254b05a85d83a22303e",
+    "independent_source_sha256": "d96c7340cbe6ccfedcea21487d46b02d05ff7d068eeb844ff8f222a476face28",
+    "live_metadata_sha256": "a0168dfb337d2d21e4655b0e0a4e0d35c5538be049b86f088e8931ad8db43a77",
+    "live_jobs_refs_sha256": "fa4c0a2b6519b581cba1da0ba060c123bfb11cb11eff67a2df92befa921fa78b"
+  },
+  "limits": [
+    "Independent source/design and preservation review only. No concrete successor implementation exists in the reviewed packet; none is admitted.",
+    "Canonical receiving acceptance remains unchanged; main receiving remains blocked by these actual guard failures until a valid successor completes its own gates.",
+    "No test bank, workflow, seed, claim, Stage-E allocation, gameplay or new deck-performance evidence was produced by this review.",
+    "This is not GitHub approval or main-merge permission."
+  ]
+}

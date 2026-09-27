@@ -1,0 +1,172 @@
+{
+  "schema": "sphinx-main-specific-actor-binding-successor-proposal/v1",
+  "status": "PROPOSAL_ONLY_UNADOPTED_NO_SOURCE_OR_EXECUTION_AUTHORITY",
+  "author": "/root/ferocity",
+  "problem": "PR175 uses an actual main test-merge rather than the accepted canonical source tree. Both actor collectors correctly reject fourteen unrelated main-only control/evidence changes outside the canonical eleven-path contract. Two original attempt1 failures are preserved; zero50/136 fixture cases ran.",
+  "evidence": {
+    "audit_path": "actual-failure-audit.json",
+    "audit_sha256": "d3989fe09689b55c967f71dcaf5e9d98221e2b07586d435dcee1ae10c1dacf26",
+    "original_run_ids": [
+      36284779284,
+      36284779421
+    ],
+    "original_artifact_ids": [
+      10920092743,
+      10919607933
+    ],
+    "canonical_source": "8ed9787ad75b8bc6c2438a8c0b526ff822aa776e",
+    "canonical_tree": "4693352c4a22d9f3b35eb47048c8edaabe8157f1",
+    "actual_main_source": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+    "failed_main_test_merge": "22cf67791fda69a65d7e1eeb76c2ae369407cb01",
+    "failed_main_test_merge_tree": "3b4e50dd7a0fe484b796bb191bd848b048bea12b",
+    "actual_main_only_files": [
+      {
+        "path": ".github/workflows/shared-postblock-source-qualification.yml",
+        "sha": "6421a5ce32b11aba693148c1d404ffd9bbc0effa",
+        "status": "modified",
+        "additions": 62,
+        "deletions": 3
+      },
+      {
+        "path": "lab-coordinator/CURRENT_STATUS.md",
+        "sha": "705c9181f20f998ffacabb68efa663823d3d4ddc",
+        "status": "modified",
+        "additions": 44,
+        "deletions": 31
+      },
+      {
+        "path": "lab-coordinator/NEXT_CHAT_HANDOFF.md",
+        "sha": "67aaf75ee7aa0fba3d5c63e8b7b09a652d560350",
+        "status": "added",
+        "additions": 88,
+        "deletions": 0
+      },
+      {
+        "path": "lab-coordinator/history/20260926-2045-concurrent/CURRENT_STATUS.md",
+        "sha": "675d369eef4e4a1a5f3e2e473ea9fa3a494a6ce7",
+        "status": "added",
+        "additions": 35,
+        "deletions": 0
+      },
+      {
+        "path": "lab-coordinator/history/20260926-2045-concurrent/NEXT_CHAT_HANDOFF.md",
+        "sha": "da7efb9981c091a9e302e74609c1d30fba4381c6",
+        "status": "added",
+        "additions": 34,
+        "deletions": 0
+      },
+      {
+        "path": "lab-coordinator/reviews/continuation-20260926/nonauthor-factual-review.json",
+        "sha": "d84026389af9258e7f507007f84f61a3356da6d7",
+        "status": "added",
+        "additions": 25,
+        "deletions": 0
+      },
+      {
+        "path": "lab-coordinator/reviews/continuation-20260926/nonauthor-final-coordinator-review.json",
+        "sha": "3e0584c2bbea211391206248fa6b39d6210beee1",
+        "status": "added",
+        "additions": 53,
+        "deletions": 0
+      },
+      {
+        "path": "lab-coordinator/reviews/continuation-20260926/workflow-trigger-preflight.json",
+        "sha": "3c73a778dc5a53ee202393628d5bf063c371be4a",
+        "status": "added",
+        "additions": 360,
+        "deletions": 0
+      },
+      {
+        "path": "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/candidate-trigger-review.json",
+        "sha": "5ac48f6d41c39b699e4a3c7099125f3fd7e036e9",
+        "status": "added",
+        "additions": 48,
+        "deletions": 0
+      },
+      {
+        "path": "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/original-stale-bindings.json",
+        "sha": "b5a19c8a54760bbac4a479a6d759a27d8c3c63b0",
+        "status": "added",
+        "additions": 50,
+        "deletions": 0
+      },
+      {
+        "path": "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-static-source-review.json",
+        "sha": "a68499ff27ba49e75b2e27abeeb9f633f9dcc551",
+        "status": "added",
+        "additions": 128,
+        "deletions": 0
+      },
+      {
+        "path": "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-trigger-review.json",
+        "sha": "11b4478159f3d1b134ce20a642b0641a1b4e1a62",
+        "status": "added",
+        "additions": 329,
+        "deletions": 0
+      },
+      {
+        "path": "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/root-nonauthor-source-review.json",
+        "sha": "743ca39445dd9ec2fa0fa2059f5aacf97f9df3c8",
+        "status": "added",
+        "additions": 29,
+        "deletions": 0
+      },
+      {
+        "path": "lab-coordinator/shared-capabilities/postblock-combined-receiving.json",
+        "sha": "002826be500dd4fa27576bd0f5cc10746caed85f",
+        "status": "added",
+        "additions": 87,
+        "deletions": 0
+      }
+    ]
+  },
+  "proposed_scope": {
+    "preferred_mechanism": "A separate, explicit main-receiving manifest and verifier for shared_actor_50 and sphinx_actor_136. The two collectors select this receiving context only through an independently reviewed, exact source/actual-main ancestry binding; all other contexts retain the existing canonical verifier. Do not catch canonical rejection and silently fall back.",
+    "canonical_contract_untouched": [
+      "sphinx-approach/STAGE_E_CANONICAL_RECEIVING_BINDING.json",
+      "sphinx-approach/canonical_receiving_binding.py"
+    ],
+    "prospective_owned_paths": [
+      "sphinx-approach/STAGE_E_MAIN_RECEIVING_BINDING.json (new, exact name subject to source review)",
+      "sphinx-approach/main_receiving_binding.py (new, exact name subject to source review)",
+      "sphinx-approach/collect-stage-e-actor.py (explicit context selection only)",
+      "lab-coordinator/shared-capabilities/collect-actor-input.py (explicit context selection only; root owns shared-surface disposition)"
+    ],
+    "source_changes_not_performed": true,
+    "must_not_change": [
+      "Kotlin runtime or test case behavior",
+      "Decks, frozen pilot policies or actor permitted-information boundary",
+      "Canonical11 allowlist, ancestor/tree constants, existing authority files or historical results",
+      "Original50 and136 case identities, including overlap; no invented aggregate186 independent cases",
+      "Any gameplay/seed/claim/admission contract"
+    ]
+  },
+  "mandatory_verifier_invariants": [
+    "Pin the actual current main ref and accepted canonical source/tree; independently inspect actual candidate head, parents and test-merge tree. PR body base.sha alone is insufficient because this session preserved two stale base values.",
+    "Demonstrate all runtime, tests, deck/pilot, dependency and build inputs equal the qualified canonical receiving source through complete relevant Git subtree/blob equality, not a donor pass or registry count.",
+    "Admit exactly the reviewed14 main-only files at their exact Git blob identities; forbid directory globs, arbitrary coordinator exceptions or a generic is-docs pass. Any changed, missing or additional file rejects until separately reviewed.",
+    "Freeze the successor control delta separately, with exact candidate/receiving source identity and source hashes. No candidate SHA or control receipt is invented by this proposal.",
+    "Retain the original authority/budget hashes, original group pin fingerprints and explicitly reviewed overrides from the canonical contract. Re-evaluate them against the actual current checkout; do not validate a temporary canonical worktree and treat it as validation of the main merge.",
+    "Retain clean checkout, complete group choices, source-before/source-after, semantic case identity and actual execution freshness checks. Preserve attempted source and every diagnostic before failing.",
+    "Archive complete control/manifest/review files including hidden workflow paths where applicable; retain original failed ZIPs and decoded logs.",
+    "Preserve official_games=0 and gameplay_authorized=false. A software receiving pass cannot allocate Stage-E seeds or admit runtime/pilots."
+  ],
+  "required_before_activation": [
+    "Root assigns nonoverlapping ownership, especially the shared collector path, and accepts a concrete source design after nonauthor review.",
+    "Recheck current canonical/main refs and all branch/PR push/synchronize effects. Reconcile live ownership and running jobs; do not retarget or close PR175 or cancel foreign work.",
+    "Prepare exact source and descriptor; verify negative rejection for changed runtime, unexpected main-only file, altered expected blob, invalid source/parent, dirty checkout and missing authority. Any software validation allowance must be declared independently of experiment allocations.",
+    "Independently review the concrete new control tree and source-bound qualification plan. Existing50 and136 banks supply deterministic receiving checks only; prior skipped steps are not passes and unchanged failed commands are not rerun.",
+    "Perform required full receiving CI and raw artifact/source review on the actual revised main composition. Integrate only when its own acceptance and normal repository protection process permit."
+  ],
+  "no_authority_created": {
+    "canonical_allowlist_expansion": false,
+    "fresh_fixture_allowance": false,
+    "workflow_dispatch": false,
+    "unchanged_rerun": false,
+    "main_merge": false,
+    "official_games": 0,
+    "resource_commands": 0,
+    "deck_or_policy_changes": 0
+  },
+  "separate_secondary_diagnostic": "Sphinx always-run collect failed on absent source-before.json after bind rejection. Preserve this artifact. Any collector diagnostic improvement must be separately source-reviewed; it is not necessary to relabel the failure or relax binding."
+}
