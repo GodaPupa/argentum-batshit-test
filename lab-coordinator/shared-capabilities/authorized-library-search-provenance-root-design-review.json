@@ -1,0 +1,29 @@
+{
+  "schema": "shared-authorized-search-source-design-root-review-v1",
+  "reviewed_ref": "58209ed74f8ea10a0ad3c371df4609d5964b9aca",
+  "reviewed_file": "lab-coordinator/shared-capabilities/authorized-library-search-provenance-source-design.md",
+  "authority_ref": "f0fe77c5ea676cc8c971ee30e037b51f94996bf5",
+  "disposition": "ACCEPT_NARROW_SOURCE_DESIGN_FOR_IMPLEMENTATION_ONLY",
+  "findings": [
+    "Main ff34 CropRotation and ExpeditionMap both use Patterns.Library.searchLibrary with immediately adjacent Gather then Select; their sacrifice is paid before this effect. The one-step candidate covers these exact current definitions.",
+    "Typed authorized producer, explicit matching consumer, exact eligible offered physical handles, captured owner/searcher/portion/origin/resolution and fail-closed derivation avoid inferring search from generic library access or prompt/card names.",
+    "A nonserialized one-step candidate can avoid persistent hidden-order leakage if every pre-pushed continuation strips it and all intervening/overwriting/nested paths revoke it. Overwritten keys cannot rely on storedCollections minus initial keys.",
+    "The pending decision proof must expire with that single routing ID. Pest ActorEpoch binding is a separate receiver on a coherent source; engine ID alone is insufficient.",
+    "The existing searchLibrary helper is broadly used; source review must inspect card snapshot/Assay differential impact, SDK documentation, and server/client masking before any receiving acceptance."
+  ],
+  "required_before_fixture": [
+    "Inspect exact SDK/engine source diff and test direct Map/Crop, restricted portion, duplicate handles, wrong chooser/source/zone/generation, overwrite, pause/resume/expiry, serialization, stale actor epoch and server/opponent/spectator masking.",
+    "Bind a finite complete S01–S12 case inventory to exact implementation source and collector; separately review workflow trigger/artifact retention before any new fixture run.",
+    "Run the smallest compile/deterministic case capable of rejecting source first; no broad CI after each microchange. Preserve all failures."
+  ],
+  "no_authority": {
+    "production_source_accepted": false,
+    "fixtures_admitted": false,
+    "fixture_attempts": 0,
+    "pest_C2": false,
+    "pest_A2": false,
+    "seed": false,
+    "claim": false,
+    "game": false
+  }
+}
