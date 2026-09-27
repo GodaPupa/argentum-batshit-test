@@ -1,0 +1,51 @@
+name: Pest Monster actor typed-search receiving
+on:
+  push:
+    branches: ['lab/pest-monster-typed-search-once-20260927']
+permissions:
+  contents: read
+jobs:
+  monster-actor-ten:
+    if: github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      EXPECTED_HEAD: ${{ github.sha }}
+      UPDATE_SNAPSHOTS: '0'
+      GRADLE_LOCK_SLOTS: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind ten-case source without gameplay
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-monster-actor-once
+          python docs/experiments/pest-control/monster-actor-component/qualify_typed_search.py bind 2>&1 | tee build/reports/pest-monster-actor-once/bind.log
+      - name: Execute ten deterministic cases once
+        run: |
+          set -uo pipefail
+          set +e
+          scripts/gradle-locked :gym:test --rerun --no-build-cache --tests '*PestMonsterTronActorDecisionsTest' --info --stacktrace 2>&1 | tee build/reports/pest-monster-actor-once/tests.log
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > build/reports/pest-monster-actor-once/exit.txt
+          exit "$rc"
+      - name: Reconcile source and raw ten-case evidence
+        if: always()
+        run: python docs/experiments/pest-control/monster-actor-component/qualify_typed_search.py collect
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-actor-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-monster-actor-once/
+            **/build/test-results/test/*.xml
+          if-no-files-found: error
+          retention-days: 90
