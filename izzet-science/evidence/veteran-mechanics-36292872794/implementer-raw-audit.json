@@ -1,0 +1,42 @@
+{
+  "artifact": {
+    "crc": "PASS",
+    "id": 10922269951,
+    "sha256": "b622bb261653c415218834bfde2115101fee7488b3a39783856b5e9b25658d10",
+    "zip_members": 10
+  },
+  "branch_creation_provenance": {
+    "interpretation": "422 did not authorize retry; creation actor cannot be inferred from the response; exact branch and sole observed run were audited; no second dispatch",
+    "observed_actions_run": "36292872794 push attempt 1 on exact head, created 2026-09-27T03:56:44Z, completed success 2026-09-27T04:03:07Z",
+    "observed_initial_create_branch_response": "HTTP 422 Reference already exists",
+    "subsequent_live_ref": "refs/heads/lab/izzet-veteran-mechanics-qualification-20260927 at c841edaa2f836e33a5f0ac881b1bf9c87e5d4df5"
+  },
+  "limitations": [
+    "These two deterministic cases establish only the observed untap/team-pump software behavior. They do not establish complete Veteran Beastrider compatibility, commander lifecycle/damage, pilots, replay, or Position-1 admission."
+  ],
+  "result": {
+    "cases": [
+      "end-step trigger untaps every creature you control and no opposing creature",
+      "activated ability pumps only your creatures until end of turn"
+    ],
+    "errors": [],
+    "official_games": 0,
+    "official_seeds": 0,
+    "status": "PASS_BOUNDED_TWO_CASE_RAW_DIAGNOSTIC"
+  },
+  "role": "implementer, independent audit recorded separately by conductor",
+  "run": {
+    "attempt": 1,
+    "branch": "lab/izzet-veteran-mechanics-qualification-20260927",
+    "conclusion": "success",
+    "event": "push",
+    "head": "c841edaa2f836e33a5f0ac881b1bf9c87e5d4df5",
+    "id": 36292872794
+  },
+  "schema": "izzet-veteran-mechanics-implementer-raw-audit-v1",
+  "source": {
+    "before_after_equal": true,
+    "head": "82b5e4660c28bfb399b09cbaaf92d4e59181bf82",
+    "tree": "aecacb5c0e520721b8ae263e9e1f3822bb46f783"
+  }
+}
