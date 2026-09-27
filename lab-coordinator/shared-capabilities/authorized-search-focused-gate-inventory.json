@@ -1,0 +1,107 @@
+{
+  "schema": "authorized-search-focused-source-gate-v1",
+  "status": "PROPOSED_UNDISPATCHED",
+  "sourceCommit": "b3d4d2922f92e325f57ae7491b96068f8bf6a7b4",
+  "baseAcceptedMain": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+  "governingProspectiveContract": "f0fe77c5ea676cc8c971ee30e037b51f94996bf5",
+  "scope": "Fixed deterministic engine, browser-wire, and actor-boundary tests only. No S01-S12 bank, seed allocation, gameplay, benchmark, or calibration.",
+  "sourceBlobs": {
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/PipelineEffects.kt": "24809fe47531eab30dd133c9f6629cb0c414c568",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/LibraryPatterns.kt": "5ec03c79a23e7369b76550833ca2ad524e0f07e1",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/GatherCardsExecutor.kt": "51090383993c1d315194f5b2a0ff0e3ccbc24cba",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt": "d3c80ae6077571db17292e34a447dc4329a6f62d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/SelectFromCollectionExecutor.kt": "81e07af6594f0848d2aee1360895c2bc4d249a47",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/DecisionEnricher.kt": "e3995899772b15974782bec71cb1644395206131",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/PendingDecisionRouting.kt": "081c74fd31391bc40e944ea9f0d69a8306627234",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorAuthorizedLibrarySearch.kt": "9d9eced96eccd7b1ac3ea4211d6c50728477e5f9",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorDecisionProjection.kt": "cb01d8bb8cb3c751f533c71ea29781ba6a05f397",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "17cbc1bdb65d9da597eff9811c1b4fb2f7cefee0"
+  },
+  "testClasses": [
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/library/AuthorizedLibrarySearchChoiceTest.kt",
+      "blob": "920f82e00433a6260c275a3d30b6d0d036670f14",
+      "className": "com.wingedsheep.engine.handlers.effects.library.AuthorizedLibrarySearchChoiceTest",
+      "cases": [
+        "only the current direct search carries the offered physical order",
+        "restricted portion and duplicate names expose only eligible physical handles",
+        "empty search has no order candidate or unanswered choice",
+        "noncontroller searcher fails before revealing a hidden library",
+        "ordinary library gather and overwritten direct collection never grant order"
+      ]
+    },
+    {
+      "path": "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AuthorizedSearchDecisionMaskingTest.kt",
+      "blob": "494599e337e6ca588463cd775cc428dd6b01df9f",
+      "className": "com.wingedsheep.gameserver.session.AuthorizedSearchDecisionMaskingTest",
+      "cases": [
+        "routed browser decision keeps the choice order but strips internal search history"
+      ]
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorAuthorizedLibrarySearchOrderTest.kt",
+      "blob": "628d8ab01442cb7e4488c643d463eed4b6b59d2d",
+      "className": "com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest",
+      "cases": [
+        "current source-bound top search preserves only offered order; ordinary look sorts",
+        "stale, altered, and replaced proof never preserves order"
+      ]
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorObservationBoundaryTest.kt",
+      "blob": "5d9ebb717697fafdd166fa1c5468fb57922e4d0f",
+      "className": "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "cases": [
+        "nullable inline references preserve absence and still reject inaccessible present IDs",
+        "complete actor input is invariant to unknown opponent hand identities",
+        "complete actor input is invariant to both unseen library orders and identities",
+        "hidden exile identity and unrelated entity ID do not enter actor input",
+        "authoritative RNG never changes actor payload or supplied policy stream",
+        "known opponent card remains visible while its unknown neighbor changes",
+        "known library subset is sorted independently of hidden positions",
+        "drawing a previously hidden card exposes its identity to its owner",
+        "public discard exposes the former hidden opponent card",
+        "wrong actor is rejected before current private question is projected",
+        "current own library search reveals options without library order or future draws",
+        "reorder decision preserves its authorized top group but omits unseen remainder",
+        "raw face-down selection metadata is masked while the public option survives",
+        "unauthorized opponent-library cardInfo and extra metadata keys fail visibly",
+        "complete nested target sacrifice discard and mode domains survive detached projection",
+        "inaccessible nested cost reference is rejected instead of removed",
+        "very large mandatory numeric domain is copied without enumeration or auto-answer",
+        "target constraints and nonselectable look cards are retained",
+        "pending mana payment includes actual mana ability menu and rejects ordinary spells",
+        "mulligan public counts do not expose another hand's pending pregame cards",
+        "public spell X and chosen modes are retained",
+        "epoch actor menu and policy-state tampering invalidate response binding",
+        "empty ordinary menu and terminal state fail rather than inventing a pass or winner",
+        "raw authority objects and continuations are rejected by payload graph audit",
+        "all eighteen current decision variants cross as complete typed questions",
+        "real pre-block input identifies vigilant attacker and defender with an empty blocker template",
+        "authorized nonbattlefield power survives power-constrained selection metadata",
+        "unlisted data types and enum values fail closed instead of using package fallbacks"
+      ]
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt",
+      "blob": "526b21d188ffdfe2f08e92ea7514f7ac111d6b1a",
+      "className": "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+      "cases": [
+        "HP01 ordinary priority and its actual pass agree in direct and actor observations",
+        "HP02 a real declaration baton has no priority until blockers finish",
+        "HP03 a serialized real block-tax payment retains its actor without priority",
+        "HP04 actual shared-team priority is visible on both teammates"
+      ]
+    }
+  ],
+  "totalTests": 40,
+  "workflow": {
+    "branch": "shared/authorized-search-actor-gate-20260927",
+    "path": ".github/workflows/authorized-search-provenance-focused.yml",
+    "trigger": "one push of reviewed gate file only",
+    "sourceCheckout": "immutable sourceCommit",
+    "collector": "Always retain build log and all XML results, including failed compiler/test output",
+    "maxDispatches": 1
+  },
+  "localEnvironment": "No Java 21 available; prior local Gradle failed before source compilation. Do not rerun unchanged local command."
+}
