@@ -1,0 +1,60 @@
+{
+  "schema": "manual-phase2-pilot-boundary-ambient-ci-disposition-v1",
+  "head_sha": "032fdc8f6fe4dcf29970905d0f36e39bed41f7b4",
+  "pr": 208,
+  "base_sha": "60a9e20b61f63c4d42772ca8d122aabe68aabe2f",
+  "pr_changed_files": [
+    ".github/workflows/manual-transmission-phase2-pilot-boundary.yml",
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt",
+    "gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundaryTest.kt"
+  ],
+  "full_ci": {
+    "run_id": 36289923884,
+    "attempt": 1,
+    "conclusion": "failure",
+    "failed_jobs": [
+      {
+        "name": "test (engine)",
+        "job_id": 108537948314,
+        "failure": "rules-engine compileTestKotlin: ActivationPriorityScenarioTest unresolved research/ferocityResearchFixture"
+      },
+      {
+        "name": "test (scenarios-2023-24)",
+        "job_id": 108537948270,
+        "failure": "scenario test failures"
+      },
+      {
+        "name": "test (content)",
+        "job_id": 108537948291,
+        "failure": "AI test failures"
+      },
+      {
+        "name": "test (scenarios-old)",
+        "job_id": 108537948301,
+        "failure": "scenario test failures"
+      },
+      {
+        "name": "test (scenarios-2025-26)",
+        "job_id": 108537948322,
+        "failure": "scenario test failures"
+      }
+    ],
+    "decoded_engine_job_log": {
+      "path": "experiments/manual-transmission-phase2/evidence/pilot-boundary-36289923884/decoded-engine-job-log.txt",
+      "git_blob_sha": "07ba96217080463a3d0b15ee01f28aac044d37a6",
+      "not_original_server_log_archive": true
+    }
+  },
+  "focused_component": {
+    "run_id": 36289923892,
+    "attempt": 1,
+    "conclusion": "success",
+    "junit": "3/3 pass, 0 failure/error/skip",
+    "original_artifact_receipt": "experiments/manual-transmission-phase2/evidence/pilot-boundary-36289923892/receipt.json"
+  },
+  "causal_assessment": "The pull request changes no rules-engine, mtg-sets or AI source. Their failures, including the missing Ferocity test helper in ActivationPriorityScenarioTest, cannot be introduced by the three changed Manual pilot files; base 60a9 shared composition requires separate qualification. This is an inference from the scoped source diff and exact CI diagnostics, not a newly executed same-base control.",
+  "disposition": "DRAFT_UNMERGED_COMPONENT_ONLY_FULL_INTEGRATION_BLOCKED",
+  "official_capability_games": 0,
+  "official_primary_games": 0,
+  "gameplay_authorized": false
+}
