@@ -1,0 +1,43 @@
+{
+  "schema": "readback-author-static-preparation/v1",
+  "candidate": "b0b7a431c4619b2ca1777e19eba712df200be49b",
+  "tree": "1a30da01f6f5ffa12732a19c236884c1867f016e",
+  "parent": "a0fe959d2fa345b77513e199e2db046d52cf2d0f",
+  "files": {
+    "readback.py": {
+      "bytes": 23915,
+      "sha256": "b7b8d2ada728ed205eeef610bf2aefd348d8db085d52f6697dc5dc6b28624d03",
+      "git_blob": "406442bdc7d34736b949fadc8ce0aeed28aa93fc"
+    },
+    "scope.json": {
+      "bytes": 3340,
+      "sha256": "af65285745b2842661bfb49bc6696dc963ccbdfa370bcb9c45074968a8be0e90",
+      "git_blob": "e2de61c2f9ec3052b0a32203f39f60245ac54d80"
+    },
+    ".github/workflows/izzet-factory-artifact-readback.yml": {
+      "bytes": 852,
+      "sha256": "b718c9d75eb94ae873cf1ee484e41f0f377f57621b122e19f3071e1c1f50042f",
+      "git_blob": "44f87f149fdd462ead03d63fdfd75b7439e3ecd9"
+    }
+  },
+  "source_review_pending": true,
+  "unreferenced": true,
+  "ready_for_readback": false,
+  "local_execution": 0,
+  "additional_artifact_transport": 0,
+  "python_syntax_not_executed": "workspace offline",
+  "static_observations": [
+    "No subprocess/exec/eval or ZIP extraction API in source.",
+    "Token only supplied to api.github.com; signed storage request has no token and follows no redirects.",
+    "Private transfer locator absent from sanitized source/scope/workflow.",
+    "Full original encoding is split in16384-character Base64 segments (4-aligned), to concatenate before strict decode.",
+    "Source and scope parsed by human/static reviewers; no compiled or executed Python validation claimed.",
+    "External existing /usr/bin/timeout sends SIGKILL at300seconds around the entire Python invocation, including blocked relay/error writes. Python itself launches no child."
+  ],
+  "sanitized_findings_blob": "3ba5b2e35bec19ed95f244880649981a627a8aa2",
+  "limitations": [
+    "Automated static pattern observations are not independent source acceptance.",
+    "Finite byte caps can fail before complete relay; no retry authority.",
+    "Decoded-log transport maximum remains unspecified; consumer must reject missing/mismatched frame."
+  ]
+}

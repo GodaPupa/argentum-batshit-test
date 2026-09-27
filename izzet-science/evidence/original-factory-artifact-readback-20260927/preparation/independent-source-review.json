@@ -1,0 +1,163 @@
+{
+  "schema": "argentum-independent-artifact-readback-source-review/v1",
+  "reviewer": "Sphinx lane, non-author of the Izzet readback source and workflow",
+  "review_time_utc": "2026-09-27T05:38:50Z",
+  "disposition": "PASS_BOUNDED_STATIC_SOURCE_REVIEW_SUBJECT_TO_ROOT_FINAL_RELEASE",
+  "reviewed_candidate": {
+    "commit": "b0b7a431c4619b2ca1777e19eba712df200be49b",
+    "tree": "1a30da01f6f5ffa12732a19c236884c1867f016e",
+    "sole_parent": "a0fe959d2fa345b77513e199e2db046d52cf2d0f",
+    "isolated_file_count": 3,
+    "ready_for_readback": false,
+    "source_review": null,
+    "files": [
+      {
+        "path": "readback.py",
+        "git_blob": "406442bdc7d34736b949fadc8ce0aeed28aa93fc",
+        "bytes": 23915,
+        "sha256": "b7b8d2ada728ed205eeef610bf2aefd348d8db085d52f6697dc5dc6b28624d03"
+      },
+      {
+        "path": "scope.json",
+        "git_blob": "e2de61c2f9ec3052b0a32203f39f60245ac54d80",
+        "bytes": 3340,
+        "sha256": "af65285745b2842661bfb49bc6696dc963ccbdfa370bcb9c45074968a8be0e90"
+      },
+      {
+        "path": ".github/workflows/izzet-factory-artifact-readback.yml",
+        "git_blob": "44f87f149fdd462ead03d63fdfd75b7439e3ecd9",
+        "bytes": 852,
+        "sha256": "b718c9d75eb94ae873cf1ee484e41f0f377f57621b122e19f3071e1c1f50042f"
+      }
+    ]
+  },
+  "original_artifact": {
+    "repository": "GodaPupa/argentum-batshit-test",
+    "run_id": 36295267824,
+    "run_attempt": 1,
+    "head": "a0fe959d2fa345b77513e199e2db046d52cf2d0f",
+    "artifact_id": 10923618567,
+    "bytes": 1945147,
+    "sha256": "a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5",
+    "qualification_result": "Original workflow success is metadata; original ZIP and inner software evidence remain independently unreviewed."
+  },
+  "previous_transport": {
+    "count": 1,
+    "result": "Original GitHub transport returned a reusable owner-retained file reference; its one local materialization failed because the workspace was offline. No local ZIP bytes were audited.",
+    "private_reference": "Deliberately omitted from this public review.",
+    "proposed_transport": "One additional distinct read-only artifact transport, subject to root release. It is not a rerun of qualification and does not replace or erase the earlier transport history."
+  },
+  "review_method": {
+    "full_source_read": true,
+    "exact_successor_diff_read": true,
+    "immutable_commit_tree_and_blobs_checked": true,
+    "original_qualifier_and_gate_read_for_record_paths": true,
+    "all_source_utf8_byte_sizes_and_sha256_recomputed": true,
+    "python_compile_or_execution": 0,
+    "network_or_package_probe": 0,
+    "artifact_transport": 0,
+    "fixture_or_jvm_execution": 0,
+    "source_ref_or_event_created": 0,
+    "environment_limit": "Local execution workspace is offline; this is static review, not a syntax/behavioral qualification run.",
+    "hashing": "Pure JavaScript byte helper 200cb09bdaa2f5c071bd76fa4d6155f31e5d4888, separately independently reviewed by Ferocity at 4a7e495e0c74bd756ed8b021034e3d7200843cc7; no helper bank was rerun for this review."
+  },
+  "preserved_findings": {
+    "record": {
+      "path": "sanitized-source-findings.json",
+      "git_blob": "3ba5b2e35bec19ed95f244880649981a627a8aa2",
+      "bytes": 1998,
+      "sha256": "216acac530316017d6e72f533eab8f59e864d074ca90e733281f8c2c6cd7cc48"
+    },
+    "closed_before_event": [
+      {
+        "author": "root",
+        "issue": "Initial source and scope would disclose a private first-transfer locator.",
+        "resolution": "Final source omits the locator; public finding records only old hashes. Final candidate is parented directly to consumed a0fe, not to the private-bearing rejected draft. Do not publish rejected draft contents."
+      },
+      {
+        "author": "Sphinx",
+        "issue": "json.loads accepts NaN and Infinity by default.",
+        "resolution": "Final parse_json rejects nonfinite constants through parse_constant, and retains duplicate-key rejection."
+      },
+      {
+        "author": "Izzet",
+        "issue": "An empty terminal log fragment incremented the derived line count.",
+        "resolution": "Final take_lines excludes empty EOF; selected actual log lines remain unchanged."
+      },
+      {
+        "author": "root",
+        "issue": "Caught SIGALRM plus blocking output could outlast the claimed Python deadline.",
+        "resolution": "Exact workflow now uses /usr/bin/timeout --signal=KILL 300s python3 -I readback.py. External bound includes all Python parsing and writes; eight-minute job includes setup. Missing prerequisite/kill yields a failed incomplete readback; no automatic retry."
+      }
+    ]
+  },
+  "source_checks": [
+    {
+      "area": "Commands and isolation",
+      "result": "Only pinned checkout of the exact isolated three-file control and one stdlib Python readback command. No subprocess, artifact-code execution, fixture, JVM, Gradle, package installation/download, runtime source checkout, official allocation, seed or claim access. Python -I limits import search; no additional source module is imported."
+    },
+    {
+      "area": "Read-only HTTP and credentials",
+      "result": "API token is attached only to exact api.github.com. Automatic redirects are disabled. Artifact endpoint must return one 302; separate HTTPS *.blob.core.windows.net request has no token and follows no further redirect. Fixed byte cap, whole length and SHA256 must match. No automatic retry. URL, token, exception text and traceback are excluded from output; error outputs use safe fixed codes or exception class names. Token is removed before parsing/relay."
+    },
+    {
+      "area": "Exact source and event",
+      "result": "Runtime checks require exact repository, branch, push creation before-zero/created/after-head, attempt one, exact direct a0fe parent, untruncated API tree and only the three regular mode100644 files. Local Git blob identity and script/workflow review SHA bind the control. Actual root finalization of the scope and event is still required."
+    },
+    {
+      "area": "Resource envelope",
+      "result": "External 300-second hard kill and eight-minute workflow; Python 256MiB RLIMIT_AS/300CPU seconds; ZIP <=128MiB declared and actual decompressed bytes, <=512 members; output <=4MiB before relay; metadata/JSON/XML/raw-record/log caps explicit. Conservative cap rejection is a technical incomplete readback, never a negative qualification result."
+    },
+    {
+      "area": "ZIP integrity and parsing",
+      "result": "Exact original whole SHA/size before parsing; every member length, CRC32 and SHA256 streamed; unique safe paths; no encrypted, special/symlink or unsupported codec members; no extraction. Strict UTF8/duplicate-free finite JSON under caps. XML entity/doctype declarations rejected before parser use."
+    },
+    {
+      "area": "Raw versus derived evidence",
+      "result": "Original ZIP is relayed completely. Controls, JSON, XML, exits and selected prerequisite records are separate exact-byte frames within caps; only oversized source-map raw text may be omitted from that duplicate textual view, explicitly labeled while complete bytes remain in ZIP. Task/executor/fallback excerpts are explicitly subsets. Derived source comparisons and case summaries are observations, never independent admission."
+    },
+    {
+      "area": "Required original records",
+      "result": "Required paths were checked against immutable original qualify.py/gate, including command.log.process-cleanup.json, all three bank commands/logs/exits/XML and before/after source maps. Missing paths emit a complete relay with all_required_records_present=false and exit2, not an acceptance. A schema error or byte cap can stop before relay; no replacement or retry follows automatically."
+    },
+    {
+      "area": "Framing and detectable truncation",
+      "result": "Whole ZIP encoded once then split at16384 base64 characters; expected 2593532 characters in159 chunks. BEGIN binds original identity and current controls. Every member, raw record and derived record carries count/hash framing. END binds complete body byte count, line count, SHA256 and original size/hash/counts. Readback builds and bounds the entire payload before writing. Unknown decoded-log capacity remains a receiving risk, not assumed capacity."
+    },
+    {
+      "area": "Publication boundary",
+      "result": "Final controls and this review contain no private uploaded-file locator, signed storage URL, token or full environment dump. Original qualification source collects fixed public software fixtures and selected prerequisite/source records; actual ZIP contents still require sensitivity inspection before a durable public original-blob publication. This source review does not certify uninspected artifact contents."
+    }
+  ],
+  "final_release_constraints": {
+    "authority": "Root owns final source publication, actual event/trigger/ownership audit, and release. This review does not itself create a branch, approve a PR, dispatch anything, or admit software/gameplay results.",
+    "permitted_normalization_only": [
+      "scope.json ready_for_readback: false to true",
+      "scope.json source_review: null to a public exact reference to this review, including its actual SHA256 and Git blob or durable repository path"
+    ],
+    "immutable_other_bytes": "readback.py, workflow and every other scope value must remain exact; any other change requires renewed source review.",
+    "final_tree": "Root must reproduce normalized scope bytes and resulting exact three-file tree, sole parent a0fe959d2fa345b77513e199e2db046d52cf2d0f, before event.",
+    "one_event": "At most one new creation push of lab/izzet-factory-artifact-readback-20260927, attempt1, after final root release and fresh absence/ownership/watcher checks. No manual rerun, automatic retry or additional transport is admitted here.",
+    "consumer": "Independently enforce <=4MiB decoded framing before helper accumulation; reject incomplete/duplicate/out-of-order/conflicting chunks, absent END, wrong IDs/counts/lengths/body hash or ZIP hash. Hash decoded Uint8Array binary bytes, not their UTF8 interpretation. A successful readback process does not establish expected bank behavior or source/policy/gameplay admission."
+  },
+  "live_preflight": {
+    "observed_utc": "2026-09-27T05:38:50Z",
+    "branch": "lab/izzet-factory-artifact-readback-20260927",
+    "branch_lookup": "404",
+    "all_event_branch_runs": 0,
+    "open_head_pull_requests": 0,
+    "current_main": "8bb5aad17f0f360fd35f3066085525dbb460ef0a",
+    "main_tree": "46867d2d088aeff12e39397719fd2d502cac6f9a",
+    "main_dotgithub_tree": "35cfd2ad7a79fe94f65259a2db90a781083fd2e7",
+    "scope": "Exact proposed single workflow was read. The default .github object matches the previously retained root watcher inventory; this review does not claim a fresh reread of every default workflow. Root must apply its existing watcher/event review to the final actual creation."
+  },
+  "outcome_limits": {
+    "expected_original_bank_geometry": "2 before (one expected specific failure) +2 fixed +7 unchanged =11 executions/9 distinct identities; still to be checked from original raw bytes.",
+    "raw_artifact_admitted": false,
+    "whole_runtime_admitted": false,
+    "pilot_admitted": false,
+    "gameplay_admitted": false,
+    "official_allocations_or_games_executed": 0,
+    "deck_performance_evidence_changed": false
+  }
+}

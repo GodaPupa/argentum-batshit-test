@@ -1,0 +1,37 @@
+{
+  "schema": "readback-source-review-findings/v1",
+  "original_source_sha256": "af4503097bf9bbc28552ab860c956070eede57b736811af22d2bc2bf4e1a2875",
+  "original_scope_sha256": "8c0a6b7b4eac40c993bf174107475887021252b0eb1bcfe3a5fad999d214f758",
+  "findings": [
+    {
+      "by": "root",
+      "disposition": "BLOCKED BEFORE REF/EVENT",
+      "finding": "Original draft exposed an owner-retained private first-transfer locator in the proposed BEGIN and scope; successor omits the value entirely. The original private-bearing content is not included in this public recovery record."
+    },
+    {
+      "by": "sphinx",
+      "finding": "Python json.loads accepts nonfinite constants unless parse_constant rejects them; successor adds rejection."
+    },
+    {
+      "by": "izzet author",
+      "finding": "Derived log line counter counted an empty EOF as an extra line; successor skips that empty terminal item, without changing selected real lines."
+    },
+    {
+      "by": "root",
+      "source_sha256": "b7b8d2ada728ed205eeef610bf2aefd348d8db085d52f6697dc5dc6b28624d03",
+      "workflow_sha256": "362a17b87dd330b0de3a5a86e29cddcad09a491c6f52360244ab7509aa882bb9",
+      "finding": "Python SIGALRM is caught by the outer BaseException handler; an error or relay write could then block beyond300seconds. Corrected workflow wraps the complete Python command in existing /usr/bin/timeout --signal=KILL 300s. No package installation or code execution occurred during preparation."
+    }
+  ],
+  "prior_candidate_contents_to_publish": false,
+  "successor_parent_must_equal": "a0fe959d2fa345b77513e199e2db046d52cf2d0f",
+  "execution_or_artifact_transport_during_preparation": 0,
+  "preparation_error": [
+    {
+      "operation": "assemble three source strings",
+      "outcome": "JS parse failed before evaluation; no source object/write/event",
+      "error": "SyntaxError: Unexpected token '.'",
+      "cause": "GitHub expression inside JS template literal; corrected by ordinary quoted lines"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "schema": "izzet-original-factory-artifact-readback/v1",
+  "ready_for_readback": true,
+  "source_review": {
+    "reviewer": "/root/sphinx",
+    "git_blob": "97a5bb411602224395f5d62dd16603d1d207c575",
+    "sha256": "5a2c14fe9c39e28f27424fd80c2a2fe2118ff4137ac37460bcc48819e1faf04c",
+    "bytes": 11437,
+    "scope": "Independent static source review only; no original-byte result or event admission."
+  },
+  "artifact": {
+    "id": 10923618567,
+    "run_id": 36295267824,
+    "run_attempt": 1,
+    "head": "a0fe959d2fa345b77513e199e2db046d52cf2d0f",
+    "bytes": 1945147,
+    "sha256": "a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5"
+  },
+  "limits": {
+    "seconds": 300,
+    "memory": 268435456,
+    "uncompressed": 134217728,
+    "members": 512,
+    "stdout": 4194304,
+    "metadata": 262144,
+    "json_parse_each": 4194304,
+    "json_parse_total": 16777216,
+    "raw_record_each": 524288,
+    "raw_record_total": 1048576,
+    "xml_each": 524288,
+    "line_each": 1048576,
+    "log_selected_each": 65536,
+    "log_selected_total": 262144
+  },
+  "reviewed_file_sha256": {
+    "readback.py": "b7b8d2ada728ed205eeef610bf2aefd348d8db085d52f6697dc5dc6b28624d03",
+    ".github/workflows/izzet-factory-artifact-readback.yml": "b718c9d75eb94ae873cf1ee484e41f0f377f57621b122e19f3071e1c1f50042f"
+  },
+  "one_event": {
+    "branch": "lab/izzet-factory-artifact-readback-20260927",
+    "event": "push",
+    "created": true,
+    "before": "0000000000000000000000000000000000000000",
+    "attempt": 1,
+    "isolated_tree_files": 3,
+    "sole_parent": "a0fe959d2fa345b77513e199e2db046d52cf2d0f"
+  },
+  "prior_transport": {
+    "local_materialization": "failed environment_offline; no local original audit",
+    "this_proposal": "additional separately authorized original transport, not a rerun",
+    "first_transfer": "retained by owner; private locator deliberately omitted"
+  },
+  "scope": [
+    "Inspect exact existing original artifact only. No artifact code or binaries are executed.",
+    "No fixtures, JVM, Gradle, package installation/download, source runtime checkout, probes, official seed or claim access.",
+    "One authenticated API ZIP redirect to HTTPS *.blob.core.windows.net, then unauthenticated request; no further redirects or retries; no signed URL/token output.",
+    "Complete original ZIP base64 is framed in contiguous 16384-character chunks; CRC/SHA manifest includes every member. Raw selected JSON/XML/controls/exit/prerequisite metadata are separately base64 framed; log excerpts explicitly remain subsets.",
+    "All JSON is strictly parsed within byte/memory limits. Only oversized source-map JSON may be digest/comparison-only text, while its full bytes remain in relayed original ZIP. Other required text over cap stops before relay.",
+    "Independent reviewer must reconstruct original bytes and validate all frames/hashes; decoded job-log tool maximum is unknown. Incomplete/truncated relay grants no acceptance.",
+    "Derived observations and original workflow success do not constitute full runtime, policy, experiment or gameplay admission. Original raw expected failure remains failure.",
+    "Workflow invokes existing /usr/bin/timeout with SIGKILL at300seconds, enclosing Python relay and error writes; missing prerequisite or timeout is a failed readback, with no automatic retry."
+  ],
+  "validation": {
+    "local_python_or_network_execution": 0,
+    "reason": "workspace offline; source static review only",
+    "hash_method": "Pure in-memory ASCII SHA256 helper verified empty/abc/exact original qualifier vectors; immutable Git blobs additionally bind exact source."
+  }
+}

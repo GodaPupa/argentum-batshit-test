@@ -1,0 +1,102 @@
+{
+  "schema": "independent-pure-byte-helper-source-review/v1",
+  "reviewer": "/root/ferocity; nonauthor of the helper",
+  "disposition": "PASS_FOR_EXACT_BOUNDED_DATA_ONLY_RELAY_USE",
+  "source": {
+    "git_blob": "200cb09bdaa2f5c071bd76fa4d6155f31e5d4888",
+    "bytes": 4591,
+    "sha256": "6dde05093235f601ba4c0b211d72e0b1d8e0edb385e485b88a02efa46b3f85ae"
+  },
+  "author_report": {
+    "git_blob": "d2929e51ea5529b6d7fd5cf2e630a5c1be67cf36",
+    "reported_checks": 31,
+    "reviewed_not_reexecuted_as_a_bank": true
+  },
+  "scope": "Only the exact pure-data helper for the already bounded Base64 relay with at most4MiB framing and an independently fixed expected byte count. This is not a relay runner, artifact authenticity or gameplay review.",
+  "static_findings": [
+    "Read the complete source. It defines only constants and functions for UTF-8 encoding, strict Base64 decoding and SHA-256. No tool, network, file, process or engine operation exists in the helper.",
+    "Base64 requires a string and nonnegative safe-integer expected length no greater than32MiB. It compares exact padded encoded length before allocating output; accepts only the standard ASCII alphabet; permits padding only in the exact final remainder; checks zero unused trailing bits; and asserts the final decoded count. Whitespace, URL-safe substitutions, internal/extra padding and length mismatch cannot silently normalize into accepted bytes.",
+    "UTF-8 iterates Unicode code points, encodes paired supplementary characters as four bytes and rejects isolated UTF-16 surrogates. It preserves actual BOM/code points rather than stripping or replacing them.",
+    "SHA-256 requires Uint8Array, copies its exact view into a separate padded buffer, uses standard64-byte blocks and big-endian64-bit bit length, and applies32-bit modular schedule/compression. At the admitted input ceiling the length and arithmetic remain within exact JavaScript integer range. It does not hash bytes outside a subarray or mutate input.",
+    "The cap is an input ceiling, not a universal heap guarantee. UTF-8 checks its final byte count after accumulating its array; this is acceptable only within the stated caller-bounded text scope and must not be advertised as streaming or as preallocation protection against arbitrary unbounded strings.",
+    "Read the retained31-check report including the56-byte padding boundary and2MiB synthetic capacity observation. Those are attributed author checks, not a claim this reviewer reran all31 or inspected actual artifact bytes."
+  ],
+  "independent_checks": {
+    "scope": "INDEPENDENT_PURE_DATA_BOUNDARIES_NO_ARTIFACT_IO_PROCESS_OR_ENGINE",
+    "source_git_blob": "200cb09bdaa2f5c071bd76fa4d6155f31e5d4888",
+    "source_sha256": "6dde05093235f601ba4c0b211d72e0b1d8e0edb385e485b88a02efa46b3f85ae",
+    "checks": [
+      {
+        "name": "Exact UTF-8 supplementary pair between ASCII boundaries",
+        "result": "PASS",
+        "actual": [
+          65,
+          240,
+          159,
+          152,
+          128,
+          90
+        ]
+      },
+      {
+        "name": "Unpaired low surrogate is not replacement-encoded",
+        "result": "PASS",
+        "rejected_as": "Error"
+      },
+      {
+        "name": "SHA256 respects nonzero-offset Uint8Array view and its exact length",
+        "result": "PASS",
+        "actual": "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad"
+      },
+      {
+        "name": "Array view storage remains unchanged after hashing",
+        "result": "PASS",
+        "actual": [
+          0,
+          97,
+          98,
+          99,
+          255
+        ]
+      },
+      {
+        "name": "String framing count is not coerced",
+        "result": "PASS",
+        "rejected_as": "Error"
+      },
+      {
+        "name": "Base64 encoded length rejects complete extra quartet before output use",
+        "result": "PASS",
+        "rejected_as": "Error"
+      },
+      {
+        "name": "Base64 full-width non-ASCII alphabet rejected",
+        "result": "PASS",
+        "rejected_as": "Error"
+      },
+      {
+        "name": "Hash rejects raw ArrayBuffer type rather than guessing view",
+        "result": "PASS",
+        "rejected_as": "TypeError"
+      }
+    ],
+    "actual_artifact_inspected": false
+  },
+  "mandatory_caller_boundary": [
+    "Enforce the at-most4MiB framing limit before helper processing and supply the independently bound exact expected byte count.",
+    "Validate original run/artifact identity, start/end framing, exact sequence and chunk count, absence of duplicates/truncation, and final independently sourced expected SHA-256. This helper does not parse or validate those facts.",
+    "Decode Base64 to Uint8Array and hash those raw bytes; do not pass arbitrary binary through UTF-8 conversion.",
+    "Do not treat a decoded-byte/hash match alone as evidence of original ZIP CRC, internal members, source acceptance or runtime/gameplay admission.",
+    "Any larger input, changed helper source, framing procedure or execution scope needs its own applicable review; this review authorizes no download, process, workflow event or ref mutation."
+  ],
+  "reviewer_activity": {
+    "pure_in_memory_assertions": 8,
+    "live_processes": 0,
+    "JVMs": 0,
+    "actual_artifact_downloads": 0,
+    "actual_originals_inspected": 0,
+    "official_games": 0
+  },
+  "publication_scope": "Review and supporting pure-data observations may be preserved as Git blobs; no source branch or workflow event is authorized.",
+  "deck_performance_evidence_changed": false
+}
