@@ -109,15 +109,21 @@ class FrozenBaselineTest : FunSpec({
          * action text, this branch reproduces the previous golden `6ff9ded1403d59ac` exactly. The
          * outcome is untouched: seat 1 still wins on turn 20 at life -8 / 16.
          *
-         * The canonical post-block receiving source now changes the first priority handoff.
-         * This Izzet lineage retains its own golden until the exact old/new raw action streams
-         * have been independently compared. A donor lineage's accepted hash is not substituted.
+         * Prospective 2026-09-27 software expectation: receiving source 8b05f2c uses the
+         * active player's first post-block priority required by CR 509.2. Independent review
+         * compared this fixture's complete 413-entry stream with the passed 50eca5fb baseline:
+         * only seven adjacent PassPriority pairs swap; every other action and END are identical.
+         * Original failures and both streams remain in evidence commit 6b7aa881, under
+         * izzet-science/evidence/passive-failure-diagnostic-36282117960/; the separate governance
+         * review is 9fb5f18e76b93646. This is an exact-fixture engine regression expectation,
+         * not general LEGACY_V0 equivalence: the unresolved default Yes/No strategy change
+         * is not exercised by this vanilla fixture and still blocks affected pilot admission.
          *
          * Note for whoever hits this next: hashing `GameAction.toString()` means *any* new field on
          * a cast/action data class moves this hash without the AI having changed. Check the outcome
          * line in the failure clue first — if turns/winner/life match the values above, you are
          * almost certainly in this benign case rather than a real behavioural drift.
          */
-        private const val GOLDEN_HASH = "47e993c61a57ebbd"
+        private const val GOLDEN_HASH = "634376c1259f8db7"
     }
 }
