@@ -126,10 +126,24 @@
         "failure": "fixture expected all five looked cards selectable; only three colorless legal options"
       },
       "prospective_changed_source": {
-        "head": "309d2863e1fdf0f7e0ec4ea5a52715ea47cc7629",
-        "test_blob": "67467e726af89ee164bd277c7cb736b5a508c903",
-        "status": "UNEXECUTED_RESULT_UNKNOWN",
+        "head": "b0660d1b3c594fe22407903c3e6faf21e935d6a2",
+        "test_blob": "96fd5354dcf8eab052f37eb72ba45f6c7f91fb7b",
+        "workflow_blob": "e03aafc79c261904d373ccacc464aa435b7f07ab",
+        "status": "RESULT_UNKNOWN",
         "scope": "two Monster seats, eligible colorless selection and five-look physical remainder ordering"
+      },
+      "intermediate": {
+        "run": 36350700091,
+        "artifact": 10941977711,
+        "status": "INCOMPLETE_PRETEST_STALE_SOURCE_PIN",
+        "audit": "45c0d11f:docs/experiments/pest-control/evidence/c2-p04-stirrings-36350700091-original-audit.json"
+      },
+      "exact_failed_successor": {
+        "run": 36350707483,
+        "artifact": 10941754246,
+        "status": "INCOMPLETE_PRETEST_KOTLIN_COMPILE",
+        "audit": "09110aa2:docs/experiments/pest-control/evidence/c2-p04-stirrings-36350707483-original-audit.json",
+        "failure": "literal backslash-n in line42 fixture"
       }
     }
   },
