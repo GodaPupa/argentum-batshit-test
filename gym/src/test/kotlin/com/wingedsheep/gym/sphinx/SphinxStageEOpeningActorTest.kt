@@ -214,7 +214,7 @@ class SphinxStageEOpeningActorTest : ScenarioTestBase() {
                 val land = proposed(bound.decideOpening(main, epoch.copy(step = 3))).action
                     .shouldBeInstanceOf<PlayLand>()
                 land.playerId shouldBe actor
-                cardName(state, land.cardId) in setOf("Island", "Snow-Covered Island") shouldBe true
+                (cardName(state, land.cardId) in setOf("Island", "Snow-Covered Island")) shouldBe true
                 advance(state, land).getBattlefield(actor).contains(land.cardId) shouldBe true
             }
 

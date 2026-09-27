@@ -1,0 +1,38 @@
+{
+  "schema": "sphinx-stage-e-opening-attempt-01-failure-v1",
+  "scope": "excluded deterministic opening receiving only; no gameplay or pilot qualification",
+  "source": {
+    "head": "8906fa84bbd07747085d9c79cc8a5d543e188c6f",
+    "tree": "8da51e9086f77001e376fe8c6fdce8431a742a22",
+    "opening_fixture_blob": "a5c93ad4bf19ea310ea53d5d42e618eb7ea54125",
+    "collector_blob": "f631dfa1dc053a6d4d360c496a74d5da5b15fc45"
+  },
+  "independent_review": "fba3a636d22ef7f1032cdb1e04b1f627e91e0d74",
+  "workflow": {
+    "run_id": 36291027173,
+    "job_id": 108541013658,
+    "conclusion": "failure",
+    "artifact_id": 10922690579,
+    "artifact_zip_sha256": "23838abdeea3b29781def271836fc6fc47f18d34ada81f7da0b1bc7b6805ab3f",
+    "artifact_zip_bytes": 229153,
+    "raw_artifact_path": "sphinx-approach/evidence/stage-e-opening-attempt-01/raw-artifact.zip",
+    "raw_test_log_sha256": "5ce64839ca86a7d90e4d2652ec630d0c5143a5e2f8b65052c172c5b10245a6f5"
+  },
+  "observed": {
+    "source_binding": "before and after match expected source; decks bound",
+    "test_command_exit_code": 1,
+    "compile_failure": "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEOpeningActorTest.kt:217:46 Kotlin receiver mismatch at `cardName(state, land.cardId) in setOf(\"Island\", \"Snow-Covered Island\") shouldBe true`",
+    "xml_files": 0,
+    "opening_cases_executed": 0,
+    "preserved_seat_cases_executed": 0,
+    "collector_disposition": "INCOMPLETE_QUALIFICATION",
+    "stage_e_seeds_consumed": 0,
+    "stage_e_games": 0
+  },
+  "proposed_correction": {
+    "fixture_blob": "1dab04171c5666844e1c64ac232d8f32a2333541",
+    "edit": "Parenthesize the Boolean membership expression before `shouldBe true`; no assertion, actor, router, deck, bank, workflow, or gameplay change.",
+    "status": "uncompiled source candidate pending independent review and fresh excluded receiving attempt on corrected source"
+  },
+  "acceptance": "No opening bank acceptance, whole-pilot acceptance, Stage-E admission, or gameplay evidence follows from this failed first attempt."
+}

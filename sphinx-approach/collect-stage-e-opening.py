@@ -17,7 +17,7 @@ EXPECTED_BLOBS = {
     "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEOpeningActor.kt": "8be1831af807c77e0e45807eb248c1b99b172d28",
     "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEOpeningRouter.kt": "753595605db51df86ebf18c605b6ebab19b451ac",
     "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt": "67d65a5d3d7ca7bea2f585b372481358336e99db",
-    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEOpeningActorTest.kt": "a5c93ad4bf19ea310ea53d5d42e618eb7ea54125",
+    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEOpeningActorTest.kt": "1dab04171c5666844e1c64ac232d8f32a2333541",
     "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeatTest.kt": "0a46c7e1886ab8fa1d09fc97e23c3165e2648e27",
     "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorInputEligibility.kt": "7c0aa20561c5ac90c244106fad790e6ae22cc64e",
     "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt": "91d25d450c60124bc6db6e9a9fbeba0a5f15ca58",
