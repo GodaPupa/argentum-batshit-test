@@ -1,0 +1,43 @@
+{
+  "schema": "manual-clean-pr208-boundary-independent-adoption-v1",
+  "status": "INDEPENDENT_SCOPED_RECEIVING_ADOPTED_NO_CAPABILITY_AUTHORITY",
+  "reviewed_from": "Original author audit 86e1f81b independently checked against original ZIP and exact Git blobs in a later conductor turn",
+  "run": 36334558460,
+  "head": "03910f055d38ec7952cee6bf02b5aae227ee5845",
+  "artifact": {
+    "id": 10936103503,
+    "zip_sha256": "9e6fb6540034237d3959cfe84f0d0a17b6d0c56aec60e05322256bc1a1c1ae8a",
+    "crc": "PASS",
+    "source_sha256": "74a45ed9d16d67d6606ad02681915b30ebca3c47b06f9dcb48f6e0cba69d3777",
+    "junit_sha256": "af5ed3956cc92cbef3d67a38abcf71d567a9f925cebc2d2af49f080f15d58a6e",
+    "log_sha256": "d763cfb9345e732162691b526569f01a8beccc885187568653b421c065aa3a3c"
+  },
+  "source": {
+    "donor": "032fdc8f",
+    "receiver": "03910f05",
+    "pilot_blob": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "test_blob": "b747ad5a1bcf6780b5c31d8b4244f364b4f4acd3",
+    "telemetry_unchanged_blob": "44608301d535a2114073d80c06d5ca0480c40043",
+    "observation_change": "hasPriority playerId == priorityPlayerId to state.hasPriority(playerId), reviewed exact one-line diff"
+  },
+  "result": {
+    "cases": 3,
+    "passes": 3,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "task": "EXECUTED --rerun-tasks; BUILD SUCCESSFUL",
+    "names": [
+      "four masked mulligan seats and a priority action pass only through traced boundary",
+      "London free mulligan and later bottom cards are selected from only the actor's hand",
+      "invalid policy choice records integrity failure without silently passing or retrying"
+    ]
+  },
+  "scope": "Excluded invented-card fixed four-seat fixtures for masked boundary, mulligan/bottom, accepted pass/replay and fail-closed invalid choice. No exact v0.7 or opponent strategic policy, complete action parameterization, guard disposition, capability admission or game outcome.",
+  "original_frozen_guards": "Five original pretest failures remain INCOMPLETE and unmodified",
+  "pr211": "DRAFT_HOLD_UNMERGED",
+  "official": {
+    "capability": 0,
+    "primary": 0
+  }
+}
