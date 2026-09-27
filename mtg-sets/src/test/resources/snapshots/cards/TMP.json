@@ -2428,8 +2428,7 @@
                 {
                     "type": "GatherCards",
                     "source": {
-                        "type": "FromZone",
-                        "zone": "Library",
+                        "type": "AuthorizedLibrarySearch",
                         "filter": "basicland"
                     },
                     "storeAs": "searchable"
@@ -2444,7 +2443,8 @@
                             "amount": 2
                         }
                     },
-                    "storeSelected": "found"
+                    "storeSelected": "found",
+                    "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                 },
                 {
                     "type": "MoveCollection",

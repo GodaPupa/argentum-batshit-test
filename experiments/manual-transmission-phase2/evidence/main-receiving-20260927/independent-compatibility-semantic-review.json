@@ -1,0 +1,122 @@
+{
+  "additional_original_xml_index": [
+    {
+      "artifact": 10923855139,
+      "case_names": [
+        "cast records distinguish fixed card type CREATURE from all other types",
+        "cast records distinguish fixed card type SORCERY from all other types",
+        "cast records distinguish fixed card type INSTANT from all other types",
+        "cast records distinguish fixed card type ENCHANTMENT from all other types",
+        "cast records distinguish fixed card type ARTIFACT from all other types",
+        "cast records distinguish fixed card type LAND from all other types",
+        "cast records distinguish fixed card type PLANESWALKER from all other types",
+        "cast records distinguish fixed card type KINDRED from all other types",
+        "cast records distinguish fixed card type VANGUARD from all other types",
+        "cast records distinguish fixed card type BATTLE from all other types",
+        "live matching uses projected added types rather than stale printed types",
+        "snapshot type matching preserves unknown rather than negating it into a match"
+      ],
+      "cases": 12,
+      "class": "com.wingedsheep.engine.predicates.FixedCardTypePredicateTest",
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.predicates.FixedCardTypePredicateTest.xml",
+      "sha256": "71bf685d57b3268f67905e8350402558f275b5ada7348b40546a32a7fe55c895"
+    },
+    {
+      "artifact": 10923855139,
+      "case_names": [
+        "EP01 a real as-enters token publishes its entry and resolves exactly one self ETB trigger",
+        "EP02 entry-time observer survives its automatic-tail removal and the distinct leave trigger is not suppressed",
+        "EP03 serialized pending token tail and repeated answers preserve exact entry records, state and two ETB effects",
+        "EP04 serialized provenance skips only the marked occurrence and preserves identical unmarked occurrences"
+      ],
+      "cases": 4,
+      "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest.xml",
+      "sha256": "69c6cb848e176ff8dd4a8eae71eba66b98d2fa84c9414fce11fea5b7970498d5"
+    },
+    {
+      "artifact": 10923855139,
+      "case_names": [
+        "TD01 land attack trigger creates two tokens attacking the sole opponent, never its controller",
+        "TD02 multiple opponents require a separate controller choice for every not-yet-created token",
+        "TD03 public planeswalkers and protected battles are nontargeting defender choices",
+        "TD04 attack-left and attack-right preserve the legal neighboring seat",
+        "TD05 recipient fanout suspends once, retains all token collections and does not make nonactive players attack",
+        "TD06 doubled plain batch freezes four defender choices and four delayed riders across serialization",
+        "TD07 target-copy batch uses the same once-only count replacement and selected defenders",
+        "TD08 noncreature target copies enter tapped without attacking or asking for a defender",
+        "TD09 wrong actor and malformed defender submissions preserve the exact pending state",
+        "TD10 serialized pending choice and identical answer replay preserve state and events exactly",
+        "TD11 copy as-enters choices retain chosen defender tail, token collection, entry events and delayed riders",
+        "TD12 declining token replacement keeps the prepared count and actual recipient across the next choice",
+        "TD13 accepting replacement preserves attacking state, actual recipient, collection and delayed riders",
+        "TD14 active teammate chooses its own legal defenders while declaration restrictions do not prevent entry"
+      ],
+      "cases": 14,
+      "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest.xml",
+      "sha256": "f56b4490b45ecdb9a3b6ce35ec530ed681c93380a0972de4eb46ebb58a421800"
+    }
+  ],
+  "comparison_source": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+  "component_acceptance_granted": false,
+  "disposition": "ACCEPT_BOUNDED_SUPPLEMENT_DESIGN_WITH_EVIDENCE_CLOSURE_PENDING",
+  "existing_reviews_used": [
+    "d9c5d9984b44f78542da6bde9425d6a7e507dbea",
+    "598c96be31a91b5229c96fa85eda15854daa487f"
+  ],
+  "gameplay_authorized": false,
+  "invariants": [
+    {
+      "existing_causal_bank": "BattlefieldEntrySnapshotTest11 in independently accepted exact452 receiving96.",
+      "files": "GameEvent, TriggerMatcher",
+      "finding": "Optional entrySnapshot preserves captured entry characteristics and controller against later state; departing objects continue LKI handling. Unknown predicates are not converted into positive matches by negation."
+    },
+    {
+      "existing_causal_bank": "TokenBatchEntryHistoryTest4 in accepted96: target/source/Aura serialized siblings and rejected absent checkpoint.",
+      "files": "ModalAndCloneContinuations, CoreAutoResumerModule, ModalAndCloneContinuationResumer, AuraTokenHostChooser, CreateTokenCopyOfTargetExecutor",
+      "finding": "Original beforeEntry checkpoint threads through copy/Aura continuation siblings; stripped executable frames are observation-only, live state remains execution state."
+    },
+    {
+      "existing_causal_bank": "BattlefieldEntryProjectionTest6, SelfEntersTappedOffStackEntryScenarioTest11, Purphoros25 and token-copy fixtures in accepted96; unchanged token20 required on composed receiver.",
+      "files": "ZoneTransitionService, StackResolver, CreateTokenExecutor, TokenCreationReplacementHelper",
+      "finding": "Pre-placement state now feeds entry tap/untap evaluation instead of eventual entered-state aggregates; attacking/tapped choices otherwise retained."
+    },
+    {
+      "existing_causal_bank": "ManualTransmissionLandSpellGuardScenarioTest and TownLandSpellAdventureScenarioTest in accepted540.",
+      "files": "CastSpellHandler",
+      "finding": "Land rejection follows effective selected spell-face resolution; earlier morph/disguise branch remains separate."
+    },
+    {
+      "files": "TriggerDetector, TriggerMatcher, PredicateEvaluator, CostCalculator",
+      "finding": "HasCardType and IsSnow leaf support added without replacing existing leaves; live predicates use projected types, LKI/cast records use captured type lines.",
+      "remaining_evidence": "Original fullCI FixedCardTypePredicateTest12 XML independently indexed; no universal predicate or snow/cost support inferred from bounded receiving."
+    },
+    {
+      "files": "THS.json",
+      "finding": "Diff consists solely of one added Purphoros definition block; preexisting card blocks unchanged. Purphoros25 and prior snapshot evidence apply only with explicit source-equivalence binding."
+    }
+  ],
+  "main_merge_authorized": false,
+  "minimal_next_gate": "Complete Dalkovan2 exact original XML index, then prepare independently reviewed source-equivalence supplement reusing original636 + token20 + fixed-type12 + accepted96/540. No new runtime execution identified as necessary for bounded receiving if explicit equivalence authority is adopted. Full CI or unchanged test reruns are not justified by this review.",
+  "minimal_supplement_requirements": [
+    "Keep historical manifests and original failed guard dispositions unchanged.",
+    "Declare exact runtime source and restored candidate source equivalence; separately bind all changed receiving pins and unchanged case banks.",
+    "Retain original636 selected-class CI evidence; retain accepted96 and540 causal evidence without describing them as newly executed.",
+    "Finish Dalkovan2 original2025/26 artifact10923097716 index; original engine token14 and provenance4 XML are now indexed here. Retain distinct16+4 authority.",
+    "FixedCardTypePredicateTest12 original XML is indexed here. Do not infer universal predicate support; no new snow/cost fixture is required solely for unchanged inherited-bank receiving.",
+    "Adopt explicit source-equivalence/receipt authority for reused evidence because canonical integration text requires resulting exact HEAD. Do not silently weaken that clause.",
+    "Independent original-artifact review remains required for any new supplemental execution."
+  ],
+  "new_causal_fixtures_now_required": false,
+  "new_causal_fixtures_reason": "No concrete uncovered entry/land defect identified after checking existing96/540 banks. Predicate evidence closure remains pending; missing evidence must first be checked in already retained original fullCI before adding tests.",
+  "original_xml_index_scope": "Read only three selected original XML members for exact hashes/names; no duplicate whole artifact audit. Original task freshness remains source-bound9f5 review.",
+  "raw_artifacts_reaudited": false,
+  "restored_candidate": "2e112cd8526fa89bf80c6de30172a5cc3f77f48a",
+  "review_scope": "Fourteen named priority source deltas plus StackResolver and THS snapshot delta; not whole-engine or project admission.",
+  "reviewer": "/root/compatibility_review",
+  "runtime_source": "452faa13b460f5c998bb90ff1182ac416deb329c",
+  "schema": "manual-compatibility-independent-semantic-review-v1",
+  "tests_executed": 0,
+  "workflow_dispatched": false
+}

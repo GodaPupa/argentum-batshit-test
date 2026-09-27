@@ -68,7 +68,10 @@ class DecisionEnricher(private val cardRegistry: CardRegistry) {
             is SelectCardsDecision -> decision.copy(
                 cardInfo = decision.cardInfo?.mapValues { (entityId, cardInfo) ->
                     cardInfo.copy(imageUri = imageUriFor(state, entityId))
-                }
+                },
+                // Search origin and object generations are trusted engine/actor metadata.
+                // The chooser already receives the exact eligible options in this decision.
+                authorizedLibrarySearch = null,
             )
             is OrderObjectsDecision -> decision.copy(
                 cardInfo = decision.cardInfo?.mapValues { (entityId, cardInfo) ->

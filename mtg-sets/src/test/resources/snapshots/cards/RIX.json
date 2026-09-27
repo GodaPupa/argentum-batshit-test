@@ -952,8 +952,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "Pirate"
                                 },
                                 "storeAs": "searchable"
@@ -968,7 +967,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {
@@ -1056,8 +1056,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "Merfolk"
                                 },
                                 "storeAs": "searchable"
@@ -1072,7 +1071,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {
@@ -1151,8 +1151,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "Vampire"
                                 },
                                 "storeAs": "searchable"
@@ -1167,7 +1166,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {

@@ -144,8 +144,7 @@
                 {
                     "type": "GatherCards",
                     "source": {
-                        "type": "FromZone",
-                        "zone": "Library",
+                        "type": "AuthorizedLibrarySearch",
                         "filter": "creature"
                     },
                     "storeAs": "searchable"
@@ -160,7 +159,8 @@
                             "amount": 1
                         }
                     },
-                    "storeSelected": "found"
+                    "storeSelected": "found",
+                    "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                 },
                 {
                     "type": "MoveCollection",
@@ -2426,8 +2426,7 @@
                 {
                     "type": "GatherCards",
                     "source": {
-                        "type": "FromZone",
-                        "zone": "Library",
+                        "type": "AuthorizedLibrarySearch",
                         "filter": "land Forest"
                     },
                     "storeAs": "searchable"
@@ -2442,7 +2441,8 @@
                             "amount": 1
                         }
                     },
-                    "storeSelected": "found"
+                    "storeSelected": "found",
+                    "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                 },
                 {
                     "type": "MoveCollection",

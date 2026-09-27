@@ -3068,6 +3068,9 @@ one-off pipeline belongs inline in the card file via `Effects.Pipeline { }` (§5
 **Library search & reveal**
 
 - `searchLibrary(filter, destination?, tapped?, shuffle?)` — search library, pick matching, move, shuffle.
+  This pattern now declares an actual authorized whole-library Gather and its immediately adjacent
+  Select. Only that current choice can carry the exact eligible offered physical-handle order;
+  ordinary library looks and `searchMultipleZones` do not inherit this declaration.
 - `searchMultipleZones(zones, filter, count?, destination?, tapped?, reveal?)` — search several zones (e.g. library and/or graveyard) in one effect; shuffles automatically if `LIBRARY` is among the zones. Pass `reveal = true` for "reveal it" tutors (Delivery Moogle).
 
 **Sideboard / wish (`Patterns.Sideboard.*`)**
@@ -12825,6 +12828,10 @@ Counter effects live in §4 (`AddCounters`, `RemoveCounters`, `Proliferate`, `Mo
   `Player.EachOpponent`) and fan out across every relevant player's copy of the zone in a single gather —
   e.g. "all creature cards in each player's graveyard" (Bringer of the Last Gift). Pair with
   `MoveCollectionEffect(underOwnersControl = true)` to return each card to its owner.
+  `CardSource.AuthorizedLibrarySearch(libraryOwner, searcher, filter, portion)` is a distinct
+  rules-authorized search source with a single resolved owner and searcher. Its `LibrarySearchPortion`
+  is `Whole` or `Top(count)`; the latter restricts the searched prefix before filtering. A top-N
+  look, generic `FromZone(LIBRARY)`, or multi-zone gather is not an authorized search declaration.
   `revealed = true` makes a public reveal (every player sees the cards while they stay in a hidden
   zone, persisted via `RevealedToComponent` and emitting a reveal event). For a non-public library
   *look* (`revealed = false`), `lookAudience` chooses who privately sees the cards:
@@ -12861,6 +12868,10 @@ Counter effects live in §4 (`AddCounters`, `RemoveCounters`, `Proliferate`, `Mo
   `ForEachInCollection(nonChosenPile, Effects.CantAttack(EffectTarget.Self))` gives each creature in a chosen pile
   its own snapshot can't-attack floating effect (Fight or Flight / Stand or Fall; creatures entering after the
   split are unaffected).
+- `SelectFromCollectionEffect.librarySearchChoiceOrder = LibrarySearchChoiceOrder.CurrentAuthorizedSearch`
+  explicitly requests one search-order proof. The engine grants it only to an immediately adjacent
+  direct authorized Gather/Select pair with the same collection, captured source resolution,
+  chooser, permitted library portion and exact eligible physical handles. The default is `None`.
 - `SelectFromCollectionEffect(from, into, selectCount?, allowZero?, alwaysPrompt?, restrictions?)` — let a player pick
   from a collection. `restrictions` (`List<SelectionRestriction>`) cap and trim the picks server-side: `OnePerCardType`,
   `OnePerColor(matchControllerPermanentColors?)`, `OnePerCardName`, `OnePerPower`, `TotalManaValueAtMost(max)` /

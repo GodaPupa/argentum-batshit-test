@@ -3,10 +3,13 @@ package com.wingedsheep.engine.handlers.effects.composite
 import com.wingedsheep.engine.core.EffectContinuation
 import com.wingedsheep.engine.core.EffectResult
 import com.wingedsheep.engine.handlers.EffectContext
+import com.wingedsheep.engine.handlers.AuthorizedLibrarySearchCandidate
 import com.wingedsheep.engine.handlers.effects.EffectExecutor
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.sdk.scripting.effects.CompositeEffect
 import com.wingedsheep.sdk.scripting.effects.Effect
+import com.wingedsheep.sdk.scripting.effects.GatherCardsEffect
+import com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect
 import kotlin.reflect.KClass
 
 /**
@@ -30,10 +33,17 @@ class CompositeEffectExecutor(
         context: EffectContext
     ): EffectResult {
         var currentState = state
-        var currentContext = context
+        var currentContext = context.copy(authorizedLibrarySearchCandidate = null)
+        var nextSearchCandidate: AuthorizedLibrarySearchCandidate? = null
         val allEvents = mutableListOf<com.wingedsheep.engine.core.GameEvent>()
 
         for ((index, subEffect) in effect.effects.withIndex()) {
+            val executionContext = currentContext.copy(
+                authorizedLibrarySearchCandidate = if (subEffect is SelectFromCollectionEffect) nextSearchCandidate else null
+            )
+            // Any step consumes or revokes the preceding candidate; only a fresh direct Gather
+            // may authorize the next sibling. The pre-pushed frame uses candidate-free context.
+            nextSearchCandidate = null
             // Calculate remaining effects (everything after current one)
             val remainingEffects = effect.effects.drop(index + 1)
 
@@ -52,7 +62,7 @@ class CompositeEffectExecutor(
                 currentState
             }
 
-            val result = effectExecutor(stateForExecution, subEffect, currentContext)
+            val result = effectExecutor(stateForExecution, subEffect, executionContext)
 
             if (!result.isSuccess && !result.isPaused) {
                 if (effect.stopOnError) {
@@ -101,6 +111,7 @@ class CompositeEffectExecutor(
             }
             allEvents.addAll(result.events)
             currentContext = currentContext.authorizeObjectMoves(result.events)
+            if (subEffect is GatherCardsEffect) nextSearchCandidate = result.authorizedLibrarySearchCandidate
 
             // Merge any updated collections / subtype groups / stored numbers / chosen values from the sub-effect into the context
             if (result.updatedCollections.isNotEmpty() ||

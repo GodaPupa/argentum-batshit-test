@@ -3664,8 +3664,7 @@
                                     {
                                         "type": "GatherCards",
                                         "source": {
-                                            "type": "FromZone",
-                                            "zone": "Library",
+                                            "type": "AuthorizedLibrarySearch",
                                             "filter": "land Plains"
                                         },
                                         "storeAs": "searchable"
@@ -3680,7 +3679,8 @@
                                                 "amount": 1
                                             }
                                         },
-                                        "storeSelected": "found"
+                                        "storeSelected": "found",
+                                        "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                                     },
                                     {
                                         "type": "MoveCollection",
@@ -3724,8 +3724,7 @@
                                         {
                                             "type": "GatherCards",
                                             "source": {
-                                                "type": "FromZone",
-                                                "zone": "Library",
+                                                "type": "AuthorizedLibrarySearch",
                                                 "filter": "land Plains"
                                             },
                                             "storeAs": "searchable"
@@ -3740,7 +3739,8 @@
                                                     "amount": 1
                                                 }
                                             },
-                                            "storeSelected": "found"
+                                            "storeSelected": "found",
+                                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                                         },
                                         {
                                             "type": "MoveCollection",
@@ -3834,8 +3834,7 @@
                         {
                             "type": "GatherCards",
                             "source": {
-                                "type": "FromZone",
-                                "zone": "Library",
+                                "type": "AuthorizedLibrarySearch",
                                 "filter": "land Desert"
                             },
                             "storeAs": "searchable"
@@ -3850,7 +3849,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         {
                             "type": "MoveCollection",
@@ -4252,8 +4252,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": {
                                         "cardPredicates": [
                                             {
@@ -4287,7 +4286,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             {
                                 "type": "MoveCollection",
@@ -8594,10 +8594,7 @@
                         "effects": [
                             {
                                 "type": "GatherCards",
-                                "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library"
-                                },
+                                "source": "AuthorizedLibrarySearch",
                                 "storeAs": "searchable"
                             },
                             {
@@ -8610,7 +8607,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {
@@ -10590,10 +10588,7 @@
                         "effects": [
                             {
                                 "type": "GatherCards",
-                                "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library"
-                                },
+                                "source": "AuthorizedLibrarySearch",
                                 "storeAs": "searchable"
                             },
                             {
@@ -10606,7 +10601,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             {
                                 "type": "MoveCollection",
@@ -11273,8 +11269,7 @@
                 {
                     "type": "GatherCards",
                     "source": {
-                        "type": "FromZone",
-                        "zone": "Library",
+                        "type": "AuthorizedLibrarySearch",
                         "filter": {
                             "cardPredicates": [
                                 {
@@ -11308,7 +11303,8 @@
                             "amount": 2
                         }
                     },
-                    "storeSelected": "found"
+                    "storeSelected": "found",
+                    "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                 },
                 {
                     "type": "MoveCollection",
@@ -12869,8 +12865,7 @@
                         {
                             "type": "GatherCards",
                             "source": {
-                                "type": "FromZone",
-                                "zone": "Library",
+                                "type": "AuthorizedLibrarySearch",
                                 "filter": {
                                     "cardPredicates": [
                                         {
@@ -12904,7 +12899,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         {
                             "type": "MoveCollection",
@@ -16572,10 +16568,7 @@
                         "effects": [
                             {
                                 "type": "GatherCards",
-                                "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library"
-                                },
+                                "source": "AuthorizedLibrarySearch",
                                 "storeAs": "searchable"
                             },
                             {
@@ -16588,7 +16581,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             {
                                 "type": "MoveCollection",
@@ -17013,8 +17007,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": {
                                         "cardPredicates": [
                                             {
@@ -17048,7 +17041,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {
@@ -17603,8 +17597,7 @@
                                 {
                                     "type": "GatherCards",
                                     "source": {
-                                        "type": "FromZone",
-                                        "zone": "Library",
+                                        "type": "AuthorizedLibrarySearch",
                                         "filter": {
                                             "cardPredicates": [
                                                 {
@@ -17638,7 +17631,8 @@
                                             "amount": 1
                                         }
                                     },
-                                    "storeSelected": "found"
+                                    "storeSelected": "found",
+                                    "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                                 },
                                 {
                                     "type": "MoveCollection",

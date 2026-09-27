@@ -1,0 +1,28 @@
+{
+  "schema": "izzet-veteran-two-case-independent-raw-review-v1",
+  "reviewer": "single active conductor /root, nonauthor of source/control",
+  "disposition": "ACCEPT_PROSPECTIVE_TWO_CASE_CARD_MECHANICS_ONLY",
+  "source_review": "106cc8938643f052dcca8eb31b77927617671e09",
+  "run": {
+    "id": 36292872794,
+    "attempt": 1,
+    "event": "push",
+    "control_head": "c841edaa2f836e33a5f0ac881b1bf9c87e5d4df5",
+    "artifact_id": 10922269951,
+    "artifact_bytes": 248052,
+    "artifact_sha256": "b622bb261653c415218834bfde2115101fee7488b3a39783856b5e9b25658d10"
+  },
+  "tested_source": {
+    "commit": "82b5e4660c28bfb399b09cbaaf92d4e59181bf82",
+    "tree": "aecacb5c0e520721b8ae263e9e1f3822bb46f783"
+  },
+  "independent_checks": [
+    "Downloaded original artifact; exact ZIP digest/length, CRC and ten unique members valid.",
+    "Source before equals source after; one test XML with exactly two names equal to prospective gate, zero failure/error/skip, source and control heads match.",
+    "Test task freshly executed and worker started/finished; Gradle exit0 and BUILD SUCCESSFUL.",
+    "Observed one push attempt1 run on exact final branch after a create_branch API 422 'Reference already exists' response; no second branch creation or duplicate run. The remote origin of the 422 is unresolved, but sole run/source/event are separately bound."
+  ],
+  "scope": "Existing Veteran Beastrider trigger/activation mechanics only; not opponent deck/pilot, commander lifecycle/damage, combined receiving or gameplay admission.",
+  "official_seeds_consumed": 0,
+  "official_games": 0
+}

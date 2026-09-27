@@ -2,8 +2,10 @@ package com.wingedsheep.engine.handlers.effects.library
 
 import com.wingedsheep.engine.core.CardsRevealedEvent
 import com.wingedsheep.engine.core.EffectResult
+import com.wingedsheep.engine.core.ResolvedLibrarySearchPortion
 import com.wingedsheep.engine.handlers.DynamicAmountEvaluator
 import com.wingedsheep.engine.handlers.EffectContext
+import com.wingedsheep.engine.handlers.AuthorizedLibrarySearchCandidate
 import com.wingedsheep.engine.handlers.PredicateContext
 import com.wingedsheep.engine.handlers.PredicateEvaluator
 import com.wingedsheep.engine.handlers.effects.EffectExecutor
@@ -19,6 +21,7 @@ import com.wingedsheep.sdk.scripting.effects.CardSource
 import com.wingedsheep.sdk.scripting.GameObjectFilter
 import com.wingedsheep.sdk.scripting.effects.GatherCardsEffect
 import com.wingedsheep.sdk.scripting.effects.LookAudience
+import com.wingedsheep.sdk.scripting.effects.LibrarySearchPortion
 import com.wingedsheep.sdk.scripting.references.Player
 import com.wingedsheep.engine.state.components.battlefield.AttachmentsComponent
 import com.wingedsheep.engine.state.components.battlefield.CrewSaddleContributorsComponent
@@ -60,6 +63,32 @@ class GatherCardsExecutor : EffectExecutor<GatherCardsEffect> {
                         count
                     }
                     state.getZone(ZoneKey(playerId, Zone.LIBRARY)).take(effectiveCount)
+                }
+            }
+
+            is CardSource.AuthorizedLibrarySearch -> {
+                val owner = resolvePlayers(source.libraryOwner, context, state)?.singleOrNull()
+                    ?: return EffectResult.error(state, "Authorized search needs one library owner")
+                val searcher = resolvePlayers(source.searcher, context, state)?.singleOrNull()
+                    ?: return EffectResult.error(state, "Authorized search needs one searcher")
+                if (searcher !in state.turnOrder || searcher != context.controllerId) {
+                    // The current typed producer/consumer pair supports controller choices only.
+                    // A mismatched authoring declaration must not show the hidden pool to a
+                    // different chooser through a later generic SelectCards decision.
+                    return EffectResult.error(state, "Authorized search needs the controller as searcher")
+                }
+                val library = state.getZone(ZoneKey(owner, Zone.LIBRARY))
+                val permitted = when (val portion = source.portion) {
+                    LibrarySearchPortion.Whole -> library
+                    is LibrarySearchPortion.Top -> library.take(
+                        amountEvaluator.evaluate(state, portion.count, context).coerceAtLeast(0)
+                    )
+                }
+                if (source.filter == GameObjectFilter.Any) permitted else {
+                    val predicateContext = PredicateContext.fromEffectContext(context)
+                    permitted.filter { cardId ->
+                        predicateEvaluator.matches(state, state.projectedState, cardId, source.filter, predicateContext)
+                    }
                 }
             }
 
@@ -332,6 +361,33 @@ class GatherCardsExecutor : EffectExecutor<GatherCardsEffect> {
 
         val cards = gathered
 
+        // Capture only the direct, actual search result. This is a one-step value in EffectResult,
+        // never a stored pipeline collection or a GameState field.
+        val searchCandidate = (effect.source as? CardSource.AuthorizedLibrarySearch)?.let { source ->
+            val owner = resolvePlayers(source.libraryOwner, context, state)?.singleOrNull()
+            val searcher = resolvePlayers(source.searcher, context, state)?.singleOrNull()
+            val origin = context.objectReferences.origin
+            val resolutionKey = context.objectReferences.resolutionKey
+            val objects = cards.map { state.objectRef(it) }
+            if (owner == null || searcher == null || origin == null || resolutionKey == null ||
+                !context.objectReferences.captured || objects.any { it == null } ||
+                objects.distinct().size != objects.size
+            ) null else AuthorizedLibrarySearchCandidate(
+                collectionName = effect.storeAs,
+                gatheredObjects = objects.filterNotNull(),
+                libraryOwner = owner,
+                searcher = searcher,
+                portion = when (val portion = source.portion) {
+                    LibrarySearchPortion.Whole -> ResolvedLibrarySearchPortion.Whole
+                    is LibrarySearchPortion.Top -> ResolvedLibrarySearchPortion.Top(
+                        amountEvaluator.evaluate(state, portion.count, context).coerceAtLeast(0)
+                    )
+                },
+                sourceOrigin = origin,
+                resolutionKey = resolutionKey,
+            )
+        }
+
         if (cards.isEmpty()) {
             return EffectResult.success(state).copy(
                 updatedCollections = mapOf(effect.storeAs to emptyList())
@@ -380,7 +436,14 @@ class GatherCardsExecutor : EffectExecutor<GatherCardsEffect> {
         val revealAudience: Set<EntityId> = when {
             effect.revealed -> state.turnOrder.toSet()
             isLibrarySource(effect.source) -> when (effect.lookAudience) {
-                LookAudience.Controller -> setOf(context.controllerId)
+                LookAudience.Controller -> {
+                    // In a search, "controller" of the look is the declared searcher. A card
+                    // searching another player's library must not reveal its pool to the spell's
+                    // controller merely because GatherCards' default audience is Controller.
+                    val search = effect.source as? CardSource.AuthorizedLibrarySearch
+                    if (search == null) setOf(context.controllerId)
+                    else resolvePlayers(search.searcher, context, state)?.singleOrNull()?.let { setOf(it) } ?: emptySet()
+                }
                 LookAudience.Opponent -> state.getOpponents(context.controllerId).toSet()
                 LookAudience.None -> emptySet()
             }
@@ -393,13 +456,15 @@ class GatherCardsExecutor : EffectExecutor<GatherCardsEffect> {
         }
 
         return EffectResult.success(newState, events).copy(
-            updatedCollections = mapOf(effect.storeAs to cards)
+            updatedCollections = mapOf(effect.storeAs to cards),
+            authorizedLibrarySearchCandidate = searchCandidate,
         )
     }
 
     private fun isLibrarySource(source: CardSource): Boolean = when (source) {
         is CardSource.TopOfLibrary -> true
         is CardSource.FromZone -> source.zone == Zone.LIBRARY
+        is CardSource.AuthorizedLibrarySearch -> true
         is CardSource.FromMultipleZones -> source.zones.any { it == Zone.LIBRARY }
         else -> false
     }

@@ -5486,10 +5486,7 @@
                     "effects": [
                         {
                             "type": "GatherCards",
-                            "source": {
-                                "type": "FromZone",
-                                "zone": "Library"
-                            },
+                            "source": "AuthorizedLibrarySearch",
                             "storeAs": "searchable"
                         },
                         {
@@ -5502,7 +5499,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         {
                             "type": "MoveCollection",
@@ -5617,8 +5615,7 @@
                 {
                     "type": "GatherCards",
                     "source": {
-                        "type": "FromZone",
-                        "zone": "Library",
+                        "type": "AuthorizedLibrarySearch",
                         "filter": "basicland"
                     },
                     "storeAs": "searchable"
@@ -5633,7 +5630,8 @@
                             "amount": 1
                         }
                     },
-                    "storeSelected": "found"
+                    "storeSelected": "found",
+                    "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                 },
                 {
                     "type": "MoveCollection",
@@ -5653,10 +5651,7 @@
             "effects": [
                 {
                     "type": "GatherCards",
-                    "source": {
-                        "type": "FromZone",
-                        "zone": "Library"
-                    },
+                    "source": "AuthorizedLibrarySearch",
                     "storeAs": "searchable"
                 },
                 {
@@ -5669,7 +5664,8 @@
                             "amount": 1
                         }
                     },
-                    "storeSelected": "found"
+                    "storeSelected": "found",
+                    "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                 },
                 {
                     "type": "MoveCollection",
@@ -9873,8 +9869,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": {
                                         "cardPredicates": [
                                             "IsBasicLand",
@@ -9897,7 +9892,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             {
                                 "type": "MoveCollection",
@@ -21844,8 +21840,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "name:Wretched Throng"
                                 },
                                 "storeAs": "searchable"
@@ -21860,7 +21855,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             {
                                 "type": "MoveCollection",

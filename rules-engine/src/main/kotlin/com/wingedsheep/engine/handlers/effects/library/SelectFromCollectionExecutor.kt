@@ -11,15 +11,18 @@ import com.wingedsheep.engine.handlers.effects.TargetResolutionUtils
 import com.wingedsheep.engine.mechanics.mana.ManaSolver
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.ControllerComponent
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.core.Keyword
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.core.Subtype
 import com.wingedsheep.sdk.scripting.effects.Chooser
 import com.wingedsheep.sdk.scripting.GameObjectFilter
 import com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect
 import com.wingedsheep.sdk.scripting.effects.SelectionMode
+import com.wingedsheep.sdk.scripting.effects.LibrarySearchChoiceOrder
 import com.wingedsheep.sdk.scripting.effects.SelectionRestriction
 import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import kotlin.reflect.KClass
@@ -416,6 +419,30 @@ class SelectFromCollectionExecutor(
         conditionalMinimums: List<ConditionalSelectionMinimum> = emptyList()
     ): EffectResult {
         val playerId = decidingPlayerId ?: context.controllerId
+        // A declaration is only a request. The one-step Gather value must still match the
+        // actual current chooser, source resolution, direct collection and exact offered handles.
+        val searchCandidate = context.authorizedLibrarySearchCandidate?.takeIf { candidate ->
+            if (effect.librarySearchChoiceOrder != LibrarySearchChoiceOrder.CurrentAuthorizedSearch ||
+                effect.filter != GameObjectFilter.Any || effect.matchChosenCreatureType ||
+                effect.showAllCards || nonSelectableCards.isNotEmpty() || cards.isEmpty() ||
+                cards != allCards || candidate.collectionName != effect.from ||
+                candidate.searcher != playerId || candidate.sourceOrigin.entityId != context.sourceId ||
+                !context.objectReferences.captured ||
+                candidate.sourceOrigin != context.objectReferences.origin ||
+                candidate.resolutionKey != context.objectReferences.resolutionKey ||
+                candidate.gatheredObjects.map { it.entityId } != cards ||
+                candidate.gatheredObjects.any { state.objectRef(it.entityId) != it } ||
+                cards.distinct().size != cards.size ||
+                context.pipeline.storedCollections[effect.from] != cards
+            ) return@takeIf false
+            val library = state.getZone(ZoneKey(candidate.libraryOwner, Zone.LIBRARY))
+            val permitted = when (val portion = candidate.portion) {
+                ResolvedLibrarySearchPortion.Whole -> library
+                is ResolvedLibrarySearchPortion.Top -> library.take(portion.count)
+            }
+            val offeredSet = cards.toSet()
+            permitted.filter { it in offeredSet } == cards
+        }
         val sourceName = context.sourceId?.let { sourceId ->
             state.getEntity(sourceId)?.get<CardComponent>()?.name
         }
@@ -483,7 +510,20 @@ class SelectFromCollectionExecutor(
                     }
                 }
                 .singleOrNull()?.max,
-            conditionalMinimums = conditionalMinimums
+            conditionalMinimums = conditionalMinimums,
+            authorizedLibrarySearch = searchCandidate?.let { candidate ->
+                AuthorizedLibrarySearchChoice(
+                    decisionId = decisionId,
+                    chooserId = playerId,
+                    actorId = state.actorFor(playerId),
+                    libraryOwner = candidate.libraryOwner,
+                    portion = candidate.portion,
+                    sourceOrigin = candidate.sourceOrigin,
+                    resolutionKey = candidate.resolutionKey,
+                    offeredHandles = cards,
+                    offeredObjects = candidate.gatheredObjects,
+                )
+            },
         ) }
 
         val continuation = SelectFromCollectionContinuation(
