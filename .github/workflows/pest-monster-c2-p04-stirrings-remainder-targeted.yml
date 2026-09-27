@@ -28,7 +28,7 @@ jobs:
             git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterStirringsRemainderReceivingTest.kt
             git status --porcelain
           } > build/reports/pest-c2-p04-stirrings/source.txt
-          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterStirringsRemainderReceivingTest.kt)" = "22c09f4fb1dff71ae9bc598e0c327b90e076bd7b"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterStirringsRemainderReceivingTest.kt)" = "67467e726af89ee164bd277c7cb736b5a508c903"
       - name: Execute two fresh Stirrings remainder fixtures
         shell: bash
         run: |
