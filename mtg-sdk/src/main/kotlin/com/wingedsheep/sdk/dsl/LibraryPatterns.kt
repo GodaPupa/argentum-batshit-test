@@ -28,6 +28,7 @@ import com.wingedsheep.sdk.scripting.effects.SearchDestination
 import com.wingedsheep.sdk.scripting.effects.ScryEffect
 import com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect
 import com.wingedsheep.sdk.scripting.effects.SelectionMode
+import com.wingedsheep.sdk.scripting.effects.LibrarySearchChoiceOrder
 import com.wingedsheep.sdk.scripting.effects.ShuffleLibraryEffect
 import com.wingedsheep.sdk.scripting.effects.SurveilEffect
 import com.wingedsheep.sdk.scripting.effects.ZonePlacement
@@ -547,7 +548,7 @@ object LibraryPatterns {
 
         effects.add(
             GatherCardsEffect(
-                source = CardSource.FromZone(Zone.LIBRARY, Player.You, filter),
+                source = CardSource.AuthorizedLibrarySearch(filter = filter),
                 storeAs = "searchable"
             )
         )
@@ -556,7 +557,8 @@ object LibraryPatterns {
             SelectFromCollectionEffect(
                 from = "searchable",
                 selection = SelectionMode.ChooseUpTo(count),
-                storeSelected = "found"
+                storeSelected = "found",
+                librarySearchChoiceOrder = LibrarySearchChoiceOrder.CurrentAuthorizedSearch
             )
         )
 

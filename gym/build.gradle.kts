@@ -21,5 +21,5 @@ dependencies {
     testImplementation(libs.kotestRunner)
     testImplementation(libs.kotestAssertions)
     testImplementation(libs.kotestProperty)
-    testImplementation(kotlin("reflect"))
+    implementation(kotlin("reflect"))
 }

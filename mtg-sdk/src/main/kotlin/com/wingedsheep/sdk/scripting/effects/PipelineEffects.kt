@@ -46,6 +46,19 @@ sealed interface CardSource {
         override val description: String = "the top ${count.description} cards of ${player.possessive} library"
     }
 
+    /** Scope within one library that a rules-authorized search is allowed to examine. */
+    // See LibrarySearchPortion below for the only supported scopes.
+    @SerialName("AuthorizedLibrarySearch")
+    @Serializable
+    data class AuthorizedLibrarySearch(
+        val libraryOwner: Player = Player.You,
+        val searcher: Player = Player.You,
+        val filter: GameObjectFilter = GameObjectFilter.Any,
+        val portion: LibrarySearchPortion = LibrarySearchPortion.Whole,
+    ) : CardSource {
+        override val description: String = "${filter.description} cards in the authorized portion of ${libraryOwner.possessive} library"
+    }
+
     /**
      * Cards from a specific zone matching an optional filter.
      *
@@ -823,6 +836,22 @@ enum class CardOrder {
 // Pipeline Effect Types
 // =============================================================================
 
+/** An actual search's permitted library portion; an ordinary top-N look is not a search. */
+@Serializable
+sealed interface LibrarySearchPortion {
+    @Serializable
+    @SerialName("Whole")
+    data object Whole : LibrarySearchPortion
+
+    @Serializable
+    @SerialName("Top")
+    data class Top(val count: DynamicAmount) : LibrarySearchPortion
+}
+
+/** Explicit consumer request; the engine still verifies the adjacent trusted Gather. */
+@Serializable
+enum class LibrarySearchChoiceOrder { None, CurrentAuthorizedSearch }
+
 /**
  * Gather cards from a source and store them in a named collection.
  *
@@ -1076,7 +1105,9 @@ data class SelectFromCollectionEffect(
      * another player's zone — auto-selecting the one eligible card feels abrupt
      * and players want to see and confirm the pick.
      */
-    val alwaysPrompt: Boolean = false
+    val alwaysPrompt: Boolean = false,
+    /** Requires an immediately preceding authorized search Gather of this exact collection. */
+    val librarySearchChoiceOrder: LibrarySearchChoiceOrder = LibrarySearchChoiceOrder.None,
 ) : Effect {
     override val description: String = buildString {
         if (chooser == Chooser.Opponent) append("An opponent ")

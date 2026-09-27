@@ -1186,8 +1186,7 @@
                         {
                             "type": "GatherCards",
                             "source": {
-                                "type": "FromZone",
-                                "zone": "Library",
+                                "type": "AuthorizedLibrarySearch",
                                 "filter": "Zombie"
                             },
                             "storeAs": "searchable"
@@ -1202,7 +1201,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         {
                             "type": "MoveCollection",
@@ -1220,8 +1220,7 @@
                                 {
                                     "type": "GatherCards",
                                     "source": {
-                                        "type": "FromZone",
-                                        "zone": "Library",
+                                        "type": "AuthorizedLibrarySearch",
                                         "filter": "land Swamp"
                                     },
                                     "storeAs": "searchable"
@@ -1236,7 +1235,8 @@
                                             "amount": 1
                                         }
                                     },
-                                    "storeSelected": "found"
+                                    "storeSelected": "found",
+                                    "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                                 },
                                 {
                                     "type": "MoveCollection",
@@ -3933,8 +3933,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "Dragon"
                                 },
                                 "storeAs": "searchable"
@@ -3949,7 +3948,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             {
                                 "type": "MoveCollection",

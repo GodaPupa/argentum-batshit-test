@@ -2417,8 +2417,7 @@
                 {
                     "type": "GatherCards",
                     "source": {
-                        "type": "FromZone",
-                        "zone": "Library",
+                        "type": "AuthorizedLibrarySearch",
                         "filter": "creature Dragon"
                     },
                     "storeAs": "searchable"
@@ -2433,7 +2432,8 @@
                             "amount": 1
                         }
                     },
-                    "storeSelected": "found"
+                    "storeSelected": "found",
+                    "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                 },
                 {
                     "type": "MoveCollection",

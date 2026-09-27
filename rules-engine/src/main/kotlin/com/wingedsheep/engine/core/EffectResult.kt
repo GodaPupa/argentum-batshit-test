@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.core
 
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.handlers.AuthorizedLibrarySearchCandidate
 import com.wingedsheep.engine.state.components.stack.EntitySnapshot
 import com.wingedsheep.sdk.model.EntityId
 
@@ -41,7 +42,9 @@ data class EffectResult(
      * "whenever you cast a spell" trigger fires twice (Vaan, Street Thief casting an opponent's card).
      * Mirrors [ExecutionResult.triggersAlreadyProcessed].
      */
-    val triggersAlreadyProcessed: Boolean = false
+    val triggersAlreadyProcessed: Boolean = false,
+    /** Nonserialized one-step authorization from a direct search Gather. */
+    val authorizedLibrarySearchCandidate: AuthorizedLibrarySearchCandidate? = null,
 ) {
     val isSuccess: Boolean get() = error == null && pendingDecision == null
     val isPaused: Boolean get() = pendingDecision != null

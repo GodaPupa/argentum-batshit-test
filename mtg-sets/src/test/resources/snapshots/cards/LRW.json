@@ -1567,8 +1567,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "Goblin"
                                 },
                                 "storeAs": "searchable"
@@ -1583,7 +1582,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {
@@ -4631,8 +4631,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "Elf"
                                 },
                                 "storeAs": "searchable"
@@ -4647,7 +4646,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {
@@ -5138,8 +5138,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "Faerie"
                                 },
                                 "storeAs": "searchable"
@@ -5154,7 +5153,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {
@@ -5935,8 +5935,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "Elemental"
                                 },
                                 "storeAs": "searchable"
@@ -5951,7 +5950,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {
@@ -6552,8 +6552,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "Giant"
                                 },
                                 "storeAs": "searchable"
@@ -6568,7 +6567,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {
@@ -9589,8 +9589,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "Kithkin"
                                 },
                                 "storeAs": "searchable"
@@ -9605,7 +9604,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {
@@ -10246,10 +10246,7 @@
                     "effects": [
                         {
                             "type": "GatherCards",
-                            "source": {
-                                "type": "FromZone",
-                                "zone": "Library"
-                            },
+                            "source": "AuthorizedLibrarySearch",
                             "storeAs": "searchable"
                         },
                         {
@@ -10262,7 +10259,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         "ShuffleLibrary",
                         {
@@ -10920,8 +10918,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "Merfolk"
                                 },
                                 "storeAs": "searchable"
@@ -10936,7 +10933,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             "ShuffleLibrary",
                             {
@@ -13073,8 +13071,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "creature"
                                 },
                                 "storeAs": "searchable"
@@ -13089,7 +13086,8 @@
                                         "amount": 1
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             {
                                 "type": "MoveCollection",
@@ -14020,8 +14018,7 @@
                             {
                                 "type": "GatherCards",
                                 "source": {
-                                    "type": "FromZone",
-                                    "zone": "Library",
+                                    "type": "AuthorizedLibrarySearch",
                                     "filter": "land Forest"
                                 },
                                 "storeAs": "searchable"
@@ -14036,7 +14033,8 @@
                                         "amount": 3
                                     }
                                 },
-                                "storeSelected": "found"
+                                "storeSelected": "found",
+                                "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                             },
                             {
                                 "type": "MoveCollection",
@@ -16960,8 +16958,7 @@
                         {
                             "type": "GatherCards",
                             "source": {
-                                "type": "FromZone",
-                                "zone": "Library",
+                                "type": "AuthorizedLibrarySearch",
                                 "filter": "Treefolk|Forest"
                             },
                             "storeAs": "searchable"
@@ -16976,7 +16973,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         "ShuffleLibrary",
                         {
@@ -17513,8 +17511,7 @@
                         {
                             "type": "GatherCards",
                             "source": {
-                                "type": "FromZone",
-                                "zone": "Library",
+                                "type": "AuthorizedLibrarySearch",
                                 "filter": "basicland"
                             },
                             "storeAs": "searchable"
@@ -17529,7 +17526,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         {
                             "type": "MoveCollection",

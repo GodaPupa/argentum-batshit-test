@@ -1302,10 +1302,7 @@
                     "effects": [
                         {
                             "type": "GatherCards",
-                            "source": {
-                                "type": "FromZone",
-                                "zone": "Library"
-                            },
+                            "source": "AuthorizedLibrarySearch",
                             "storeAs": "searchable"
                         },
                         {
@@ -1318,7 +1315,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         "ShuffleLibrary",
                         {
@@ -2425,8 +2423,7 @@
                     {
                         "type": "GatherCards",
                         "source": {
-                            "type": "FromZone",
-                            "zone": "Library",
+                            "type": "AuthorizedLibrarySearch",
                             "filter": "land Plains"
                         },
                         "storeAs": "searchable"
@@ -2441,7 +2438,8 @@
                                 "amount": 3
                             }
                         },
-                        "storeSelected": "found"
+                        "storeSelected": "found",
+                        "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                     },
                     {
                         "type": "MoveCollection",
@@ -3805,8 +3803,7 @@
                 {
                     "type": "GatherCards",
                     "source": {
-                        "type": "FromZone",
-                        "zone": "Library",
+                        "type": "AuthorizedLibrarySearch",
                         "filter": "sorcery"
                     },
                     "storeAs": "searchable"
@@ -3821,7 +3818,8 @@
                             "amount": 1
                         }
                     },
-                    "storeSelected": "found"
+                    "storeSelected": "found",
+                    "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                 },
                 "ShuffleLibrary",
                 {
@@ -4982,8 +4980,7 @@
                 {
                     "type": "GatherCards",
                     "source": {
-                        "type": "FromZone",
-                        "zone": "Library",
+                        "type": "AuthorizedLibrarySearch",
                         "filter": "creature"
                     },
                     "storeAs": "searchable"
@@ -4998,7 +4995,8 @@
                             "amount": 1
                         }
                     },
-                    "storeSelected": "found"
+                    "storeSelected": "found",
+                    "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                 },
                 "ShuffleLibrary",
                 {
@@ -6134,8 +6132,7 @@
                         {
                             "type": "GatherCards",
                             "source": {
-                                "type": "FromZone",
-                                "zone": "Library",
+                                "type": "AuthorizedLibrarySearch",
                                 "filter": "land Forest"
                             },
                             "storeAs": "searchable"
@@ -6150,7 +6147,8 @@
                                     "amount": 1
                                 }
                             },
-                            "storeSelected": "found"
+                            "storeSelected": "found",
+                            "librarySearchChoiceOrder": "CurrentAuthorizedSearch"
                         },
                         {
                             "type": "MoveCollection",

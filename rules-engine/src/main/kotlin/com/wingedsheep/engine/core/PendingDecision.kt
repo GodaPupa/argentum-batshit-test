@@ -161,6 +161,36 @@ data class TargetRequirementInfo(
     val differentControllers: Boolean = false
 )
 
+/** A resolved scope; it describes permitted search access, never absolute library positions. */
+@Serializable
+sealed interface ResolvedLibrarySearchPortion {
+    @Serializable
+    @SerialName("Whole")
+    data object Whole : ResolvedLibrarySearchPortion
+
+    @Serializable
+    @SerialName("Top")
+    data class Top(val count: Int) : ResolvedLibrarySearchPortion
+}
+
+/**
+ * Proof for exactly one pending SelectCards question from a direct authorized library search.
+ * Only the chooser's current decision may expose these same offered physical handles in order.
+ */
+@Serializable
+data class AuthorizedLibrarySearchChoice(
+    val decisionId: String,
+    val chooserId: EntityId,
+    val actorId: EntityId,
+    val libraryOwner: EntityId,
+    val portion: ResolvedLibrarySearchPortion,
+    val sourceOrigin: com.wingedsheep.engine.state.ObjectRef,
+    val resolutionKey: String,
+    val offeredHandles: List<EntityId>,
+    /** Card object generations at the current offer; a leave/reenter invalidates this question. */
+    val offeredObjects: List<com.wingedsheep.engine.state.ObjectRef>,
+)
+
 /**
  * Player must select cards from a set (e.g., discard, sacrifice, search library).
  *
@@ -247,7 +277,9 @@ data class SelectCardsDecision(
      */
     val maxTotalPower: Int? = null,
     /** Conditional lower minimums for decisions like "discard two unless one is a creature". */
-    val conditionalMinimums: List<ConditionalSelectionMinimum> = emptyList()
+    val conditionalMinimums: List<ConditionalSelectionMinimum> = emptyList(),
+    /** One-question search-order proof; absent from ordinary and derived collection choices. */
+    val authorizedLibrarySearch: AuthorizedLibrarySearchChoice? = null,
 ) : PendingDecision
 
 @Serializable

@@ -14,6 +14,7 @@ import com.wingedsheep.sdk.scripting.ChoiceSlot
 import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import com.wingedsheep.sdk.scripting.targets.TargetRequirement
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * Context for effect execution.
@@ -416,6 +417,8 @@ data class EffectContext(
     val affectedEntityId: EntityId? = null,
     // --- Pipeline state ---
     val pipeline: PipelineState = PipelineState.EMPTY,
+    /** One immediate Gather-to-Select handoff; never serialized into a continuation. */
+    @Transient val authorizedLibrarySearchCandidate: AuthorizedLibrarySearchCandidate? = null,
     // --- Safety ---
     /**
      * How many effect-executions deep this context is within a single resolution. Bumped by one
