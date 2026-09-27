@@ -1,0 +1,650 @@
+{
+  "artifact": {
+    "crc": "PASS",
+    "id": 10922204523,
+    "name": "izzet-shared-receiving-36289432844-1",
+    "zip_members": 354,
+    "zip_sha256": "a133c89bc208b60bb77cc50c6aaa43ca0ab72300d415d8ea45e56a89f9e66c87"
+  },
+  "checks": [
+    "ZIP CRC and exact 354-member manifest",
+    "control digests, exact source/tree and before/after source snapshots",
+    "seven authority digests, dependency and test source bindings",
+    "87 command sidecars and raw exits/logs",
+    "each raw JUnit XML class/name/result counter, 973 unique case identities",
+    "no official games, seeds, or gameplay admission"
+  ],
+  "errors": [],
+  "result": {
+    "actual_unique_cases": 973,
+    "all_command_exits_zero": true,
+    "case_total": 973,
+    "classes": 87,
+    "fresh_target_test_task_markers": 87,
+    "status": "PASS_RAW_INTEGRITY_PENDING_INDEPENDENT_REVIEW",
+    "xml_errors": 0,
+    "xml_failures": 0,
+    "xml_skips": 0
+  },
+  "role": "implementer audit; independent source/control author review remains separate; independent raw acceptance pending",
+  "run": {
+    "attempt": 1,
+    "control_head": "9e9c2cb8070e20b5e81f0065027632c2e54c1ae7",
+    "event": "push",
+    "id": 36289432844,
+    "source_head": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+    "source_tree": "1a903dc4862d32fdd029e73a916cc9659678db4d"
+  },
+  "schema": "izzet-973-implementer-raw-artifact-audit-v1",
+  "stages": [
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "stage": "historical-regression-FrozenBaselineTest",
+      "test_task_lines": 2,
+      "xml_sha256": "3f58fc478aeea7fe038ba417a420737309507786b902107200cfbaed743c88d3"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest",
+      "stage": "historical-regression-ArcaneDenialScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "08883d825f8aac2f19f7d2cec01b0419a633d6772167a50ea8c8c89b119e14a3"
+    },
+    {
+      "cases": 2,
+      "class": "com.wingedsheep.engine.scenarios.MnemonicWallScenarioTest",
+      "stage": "historical-regression-MnemonicWallScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "d61d694e5a8b66795f242f8bbd869611223d1b79d0e834b40b7d09fe0c0507ff"
+    },
+    {
+      "cases": 17,
+      "class": "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+      "stage": "priority-priority",
+      "test_task_lines": 2,
+      "xml_sha256": "54489b96ec06a8802ce92992cd82e3cbfeb4cf578bdd22743bd9f0c4d2a63795"
+    },
+    {
+      "cases": 15,
+      "class": "com.wingedsheep.engine.scenarios.StackWarTest",
+      "stage": "priority-stack-war",
+      "test_task_lines": 2,
+      "xml_sha256": "9fd1fcd7a40166ade21751eeb2ade58e6c2a4e6d6e520cf676cfc21ed537b541"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.scenarios.ContinuationSystemTest",
+      "stage": "priority-continuations",
+      "test_task_lines": 2,
+      "xml_sha256": "1b330df3ffd952de7e20ee6d1dc6bfed5d8ccc60bd2980b8739f8b72515f7e92"
+    },
+    {
+      "cases": 2,
+      "class": "com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest",
+      "stage": "priority-ordinary-cleanup",
+      "test_task_lines": 2,
+      "xml_sha256": "d166003baed2f8c2f004aa34a5eccaba02520d2d510d00608d00c936294980f9"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.scenarios.LegendRuleTest",
+      "stage": "priority-legend-rule",
+      "test_task_lines": 2,
+      "xml_sha256": "8e5d7bce7faa731a52ef6f1feb32efd508d21b853426f66cc17a8c3d27c9d932"
+    },
+    {
+      "cases": 16,
+      "class": "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+      "stage": "priority-leave-game",
+      "test_task_lines": 2,
+      "xml_sha256": "1ff3ab4cfaa305fcf59d5476ac24b91c89cbb8465531c514c35298337cc7f963"
+    },
+    {
+      "cases": 12,
+      "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+      "stage": "priority-team-priority",
+      "test_task_lines": 2,
+      "xml_sha256": "cb278f6d5926e8ed2df273331b74ba18ffc84a03264dd4dee682d8a19a9b4b36"
+    },
+    {
+      "cases": 9,
+      "class": "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+      "stage": "priority-flash-permission",
+      "test_task_lines": 2,
+      "xml_sha256": "ba414ee8d92437a2af9a099c2cd4d5bff8b34c7a26e743cdc073580e53be1dce"
+    },
+    {
+      "cases": 5,
+      "class": "com.wingedsheep.engine.state.SuspensionTraceTest",
+      "stage": "priority-legacy-traces",
+      "test_task_lines": 2,
+      "xml_sha256": "f7be66083b5b15e100c63ac887620bab1f2a94a7edf346124568d3f382e994c0"
+    },
+    {
+      "cases": 19,
+      "class": "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "stage": "priority-legacy-serialization",
+      "test_task_lines": 2,
+      "xml_sha256": "5c0f7e8a9b8f1b86af14c12d9da43ba62037c35cadacc0ca244ef335d2412be7"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.scenarios.CircleOfSolaceTest",
+      "stage": "priority-circle-solace",
+      "test_task_lines": 2,
+      "xml_sha256": "a53c564519c97447c09197d4ba867f848fd71e186a59095d2acc00af366c4ad3"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.scenarios.ScarecrowScenarioTest",
+      "stage": "priority-scarecrow",
+      "test_task_lines": 2,
+      "xml_sha256": "aa6eaef70f735aa171cd1f033a50fedbb0c8aa04b40619e884cfbe811c78f788"
+    },
+    {
+      "cases": 2,
+      "class": "com.wingedsheep.engine.scenarios.AbundantMawScenarioTest",
+      "stage": "priority-abundant-maw",
+      "test_task_lines": 2,
+      "xml_sha256": "366539869f3ae6a6c64ba06711e0e2d0be72c0d6063b536f53deb24cef57e153"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest",
+      "stage": "priority-spell-queller",
+      "test_task_lines": 2,
+      "xml_sha256": "7952d5f851036b1f56eff255e464b850fe74447358d1bccfa085d5dd72380fc0"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest",
+      "stage": "priority-mauler",
+      "test_task_lines": 2,
+      "xml_sha256": "72793c60ebf23b95e04056ba6f95ec18f72fe7b6a0de866f98dbae4e8df068b3"
+    },
+    {
+      "cases": 7,
+      "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+      "stage": "priority-ai-decision-trace",
+      "test_task_lines": 2,
+      "xml_sha256": "f026896df886f2cb5f3f79a46c787bec41925efd46e8241168687e30e293df31"
+    },
+    {
+      "cases": 12,
+      "class": "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+      "stage": "priority-cast-sba",
+      "test_task_lines": 2,
+      "xml_sha256": "bdd16cb927b97fc11a1fcc6bc31e5aadae005af0726cb8f2848b5b7830b3b1b4"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.scenarios.DeathTriggerTest",
+      "stage": "priority-death-trigger",
+      "test_task_lines": 2,
+      "xml_sha256": "f7848b6e6e9bc4d269bba985dbba0a14a12bb7207ebaf57cbe1cdc518c93fa9b"
+    },
+    {
+      "cases": 5,
+      "class": "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
+      "stage": "priority-krarks-thumb",
+      "test_task_lines": 2,
+      "xml_sha256": "b4f02ceeeb184ca2e4113eeeef1e8a17baef06ff6f0389cce991e9f9898cd153"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest",
+      "stage": "priority-prismari",
+      "test_task_lines": 2,
+      "xml_sha256": "ae6219e767524f29f4cec3b489c2d711e90b4b8297628514368f4cc4d0de19bb"
+    },
+    {
+      "cases": 8,
+      "class": "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+      "stage": "priority-free-cast",
+      "test_task_lines": 2,
+      "xml_sha256": "d6a1cf4e2def85463f0783674bc259b9a3f405a7c5abfc8504b7a4b0b564c19d"
+    },
+    {
+      "cases": 8,
+      "class": "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+      "stage": "priority-modal-cost",
+      "test_task_lines": 2,
+      "xml_sha256": "f0633e03d5fb1683f209373f17397b22338a1c79df36fccc5ed64ace5651a769"
+    },
+    {
+      "cases": 2,
+      "class": "com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest",
+      "stage": "priority-modal-cost-enumeration",
+      "test_task_lines": 2,
+      "xml_sha256": "2ee732f09715fce3a36cf3081515f58543ea572ca57d85aacc70c536c299f5dd"
+    },
+    {
+      "cases": 10,
+      "class": "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+      "stage": "priority-reveal-cost",
+      "test_task_lines": 2,
+      "xml_sha256": "3305746210e686c7d0ddac3d13d54720de3faa5cdcf23d1f809be105833c8b41"
+    },
+    {
+      "cases": 17,
+      "class": "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+      "stage": "priority-commander-choice",
+      "test_task_lines": 2,
+      "xml_sha256": "c9d612273fa16de8558d3c46cb0879e497f14daf4e24f00a5f58dc0bd5e0b898"
+    },
+    {
+      "cases": 10,
+      "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+      "stage": "priority-team-loss",
+      "test_task_lines": 2,
+      "xml_sha256": "bf30ccfcba45fd35bc8a580b52a8fc6d224642edc46e1dd4d40e3a82094adb18"
+    },
+    {
+      "cases": 14,
+      "class": "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+      "stage": "priority-team-versus-team",
+      "test_task_lines": 2,
+      "xml_sha256": "8ad6b373fba9e1b184237cfc3c58a2642d30bad42c93b6b593b9b65a797addfe"
+    },
+    {
+      "cases": 16,
+      "class": "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "stage": "cast-observer-PostBlockDeclarationPriorityScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "edf9271f957f13e4d9743c5136490f6957672cf17a267463801ddda7c6c30012"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest",
+      "stage": "cast-observer-DeclareBlockersPriorityWindowTest",
+      "test_task_lines": 2,
+      "xml_sha256": "0c7191783705b02475de93ab3c83719876483de78b418fbcb3336fea3eb1f6eb"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+      "stage": "cast-observer-MultiDefenderCombatTest",
+      "test_task_lines": 2,
+      "xml_sha256": "b32e8893bdba56b117aedbed211443803bae693e4899057305d7c05d8f6bd312"
+    },
+    {
+      "cases": 9,
+      "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+      "stage": "cast-observer-TwoHeadedGiantCombatTest",
+      "test_task_lines": 2,
+      "xml_sha256": "7a91006f63c3bbc8c0b104d95d6e225fde03e89f401688c744045ffd23f27c94"
+    },
+    {
+      "cases": 9,
+      "class": "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "stage": "cast-observer-ActivationPriorityScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "6f981a4cf2ac1298b81adce24fc9a1b7c179d9663e667262d4692dd3db4967be"
+    },
+    {
+      "cases": 12,
+      "class": "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+      "stage": "cast-observer-NestedManaPaymentBoundaryScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "6a68c85f9f4ebedbf274be4ed350704a08433c908037de770a07bee7115bbe89"
+    },
+    {
+      "cases": 7,
+      "class": "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+      "stage": "cast-observer-BatchMayQuestionTest",
+      "test_task_lines": 2,
+      "xml_sha256": "bd386c5a58be22f06424c116d989f7c4a08c4e6266bcf3d007de58417bd42b70"
+    },
+    {
+      "cases": 6,
+      "class": "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+      "stage": "cast-observer-TriggerOrderingScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "31956547bbd1420816e33625c3a0985b7e57c514fdffa5935355a9fe3f04dca4"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest",
+      "stage": "cast-observer-TriggerOrderingConcessionScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "19c14a1868282b774e31593a45d879b69006ca18de17f2e92479222c1044b882"
+    },
+    {
+      "cases": 5,
+      "class": "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+      "stage": "cast-observer-DamageSourceIdentityScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "1ef475da02a10aa569b48be23a55b7caf58795a8607cbe1c638aafb52aaa8eca"
+    },
+    {
+      "cases": 6,
+      "class": "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+      "stage": "cast-observer-DamageSourceTriggerScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "0a5c0502c66c4979248843357ca81bb6cd94b65a8e7386add1e8a78f033248ca"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+      "stage": "cast-observer-TargetedDepartedSourceLkiTest",
+      "test_task_lines": 2,
+      "xml_sha256": "c95a5899b82104b18373cd4a3f8f4fe3441eac7fa2b8d17b749bba34c599b851"
+    },
+    {
+      "cases": 19,
+      "class": "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+      "stage": "cast-observer-PredicateEvaluatorRecordTest",
+      "test_task_lines": 2,
+      "xml_sha256": "07e63c9670c953b80b890a3b425ea9c64475fe803b73c9d20f862c9a5e6d81ba"
+    },
+    {
+      "cases": 2,
+      "class": "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest",
+      "stage": "cast-observer-PostBlockDeclarationSessionTest",
+      "test_task_lines": 2,
+      "xml_sha256": "8bcdcd29b6ed6172ffab7d27f352dd496b82cee3cba8921136354de705cde999"
+    },
+    {
+      "cases": 10,
+      "class": "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+      "stage": "cast-observer-TwoHeadedGiantSessionTest",
+      "test_task_lines": 3,
+      "xml_sha256": "ccf6db598abe554e264a781337c57da315ed13c72e998a066eb66efe52fbb7a8"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+      "stage": "cast-observer-ManaAbilityColorChoicePipelineTest",
+      "test_task_lines": 2,
+      "xml_sha256": "571e33b92b4f16f06f1a484de8480d11378c42b7275861eacd7232560914a8db"
+    },
+    {
+      "cases": 10,
+      "class": "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+      "stage": "cast-observer-MoveToZoneEffectExecutorTest",
+      "test_task_lines": 2,
+      "xml_sha256": "176e695eb7d663fb56a620dc920eacdefc05a97e3fe0ee3d9f7f5f511bead632"
+    },
+    {
+      "cases": 8,
+      "class": "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+      "stage": "cast-observer-CastObserverSourceLkiTest",
+      "test_task_lines": 2,
+      "xml_sha256": "42e3878c311aa027bc185a202f806cd7466ea6f99ffead489272625d0248a57e"
+    },
+    {
+      "cases": 12,
+      "class": "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "stage": "combat-CombatAssignmentCurrentRulesTest",
+      "test_task_lines": 2,
+      "xml_sha256": "d12a3313f8162ab4bab174ee37539a191c1af146cd0e4da7c2206eb143850ebc"
+    },
+    {
+      "cases": 10,
+      "class": "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "stage": "combat-CombatResolutionBoardTest",
+      "test_task_lines": 2,
+      "xml_sha256": "2f5e44a8d9ce1e3e752b87b0f24da9fa7f2ee41ccc741e46914eb405357897f2"
+    },
+    {
+      "cases": 9,
+      "class": "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "stage": "combat-CombatDamageAssignmentTest",
+      "test_task_lines": 2,
+      "xml_sha256": "8d99f3bbf0ecce7c55af1abf24ff8a26001df1eecd76ba3dc50789597d8c6289"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest",
+      "stage": "combat-BandingTrampleDrainScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "6c146f250870c1dd2c67c211ce0f941e0a35a3590453d453abc830c6a301fd9a"
+    },
+    {
+      "cases": 14,
+      "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "stage": "token-token-defender-14",
+      "test_task_lines": 2,
+      "xml_sha256": "8ee73ef8494bfdfbfdeb7185a0705692cea83192919480eb699ab91c22acf8b7"
+    },
+    {
+      "cases": 2,
+      "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+      "stage": "token-dalkovan-2",
+      "test_task_lines": 2,
+      "xml_sha256": "2a44bab2f2f5b523537c4d3b4fe6bb60ed7890406672742ba63af61f41d02a3c"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+      "stage": "token-entry-event-provenance-4",
+      "test_task_lines": 2,
+      "xml_sha256": "152d040ab7f0e679352a821be0b43c219a2987c49153e336a0eab52ca982ec94"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.sdk.serialization.PreventTargetingSerializationTest",
+      "stage": "vines-sdk-PreventTargetingSerializationTest",
+      "test_task_lines": 2,
+      "xml_sha256": "b0719383f783f88854bff043696f0a61a16bb5c701f6f586750f5ab38e51d327"
+    },
+    {
+      "cases": 8,
+      "class": "com.wingedsheep.engine.scenarios.PreventTargetingScenarioTest",
+      "stage": "vines-engine-PreventTargetingScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "92528b864ed6d0cd27a7f07e6929092dd71d791b75fe8925f7d6dcfc8001d321"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.engine.hygiene.FloatingEffectSerializationRoundTripTest",
+      "stage": "vines-engine-FloatingEffectSerializationRoundTripTest",
+      "test_task_lines": 2,
+      "xml_sha256": "1a70399a5870889ad04701b82e188d636c62bfdf230061f2af1e123aae0d6fd2"
+    },
+    {
+      "cases": 8,
+      "class": "com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest",
+      "stage": "vines-engine-SerializationPolymorphicRegistrationTest",
+      "test_task_lines": 2,
+      "xml_sha256": "e5bcee031def6f1fe89b2c3946c31070d6fea6578d5e159814512f08f7fe92df"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.engine.legalactions.CastSpellSourceHexproofEnumerationTest",
+      "stage": "vines-engine-CastSpellSourceHexproofEnumerationTest",
+      "test_task_lines": 2,
+      "xml_sha256": "0dce48393f6ac37ce5039e6fe00eabd8f9ffc4a5dd0efd25b3ad56b989d1dea0"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.engine.predicates.CommanderStatePredicateTest",
+      "stage": "vines-engine-CommanderStatePredicateTest",
+      "test_task_lines": 2,
+      "xml_sha256": "738f1620af4d6b44393ec1e14343b4b9ba72a3ae6289c3edb1e83c257c692bb0"
+    },
+    {
+      "cases": 36,
+      "class": "com.wingedsheep.engine.mechanics.layers.AffectsFilterResolverStatePredicateTest",
+      "stage": "vines-engine-AffectsFilterResolverStatePredicateTest",
+      "test_task_lines": 2,
+      "xml_sha256": "6fa6305dcdd565d3ff3911a81ba473806373d98d3e2947c0cd78ca3ee41e8d85"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.engine.triggers.InterveningIfBeforeTargetLegalityTest",
+      "stage": "vines-engine-InterveningIfBeforeTargetLegalityTest",
+      "test_task_lines": 2,
+      "xml_sha256": "f9115aae54b60323f1ab2b1eb8f9624daa739a6da361982cd0dbfff042639d11"
+    },
+    {
+      "cases": 10,
+      "class": "com.wingedsheep.engine.scenarios.ReflexiveTriggerFeasibilityTest",
+      "stage": "vines-engine-ReflexiveTriggerFeasibilityTest",
+      "test_task_lines": 2,
+      "xml_sha256": "843ddcabd507a6503b7463a672d8bbae5eeb197dc6b2b74443f50e6ed2e3a621"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.engine.scenarios.ModalTriggeredAbilityOnStackTest",
+      "stage": "vines-engine-ModalTriggeredAbilityOnStackTest",
+      "test_task_lines": 2,
+      "xml_sha256": "daed92b98f2179132cca1a142b8d62a5120e84ea804ca7ca4cbf4c3fd5c555f0"
+    },
+    {
+      "cases": 11,
+      "class": "com.wingedsheep.engine.event.BattlefieldEntrySnapshotTest",
+      "stage": "vines-engine-BattlefieldEntrySnapshotTest",
+      "test_task_lines": 2,
+      "xml_sha256": "30be685c166268596a784f040d60e07b6e23022991b235e0de14cb2f7d3f4794"
+    },
+    {
+      "cases": 6,
+      "class": "com.wingedsheep.engine.handlers.effects.AttachEquipmentObjectIdentityTest",
+      "stage": "vines-engine-AttachEquipmentObjectIdentityTest",
+      "test_task_lines": 2,
+      "xml_sha256": "16a590753ac59d67b0de6cedada2375b3e6baf12e8b7f8b9d931f2980a55b9d3"
+    },
+    {
+      "cases": 8,
+      "class": "com.wingedsheep.engine.handlers.effects.ExcessDamageSelfReplacementTest",
+      "stage": "vines-engine-ExcessDamageSelfReplacementTest",
+      "test_task_lines": 2,
+      "xml_sha256": "dcfd81c98f2986e05959d98dcfe7d48e59976a8eb5e66dd35f5cf4367ef101ad"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.scenarios.DamageDealtThisTurnTest",
+      "stage": "vines-engine-DamageDealtThisTurnTest",
+      "test_task_lines": 2,
+      "xml_sha256": "a32a3b3ee5eb86755250b0f1531127c780ba530a6512dddedb2804bc09161bc1"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.engine.scenarios.LifelinkTest",
+      "stage": "vines-engine-LifelinkTest",
+      "test_task_lines": 2,
+      "xml_sha256": "18309583c5636b2afc85a6ba6d4b9d773f82510ec83cd3a860e68fc88aa04de3"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.engine.scenarios.WitherLifelinkDeathtouchTest",
+      "stage": "vines-engine-WitherLifelinkDeathtouchTest",
+      "test_task_lines": 2,
+      "xml_sha256": "4c46ec33102fd7a3203dc5f513cc427d19ec749d5c97fa6f7faeecedc5e07369"
+    },
+    {
+      "cases": 21,
+      "class": "com.wingedsheep.engine.scenarios.VinesOfVastwoodScenarioTest",
+      "stage": "vines-exact-vines-VinesOfVastwoodScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "b6eae0f02c426ac0b375ee4715fb29b1e03791d65e76d0ee3dbaae8f759a5b0d"
+    },
+    {
+      "cases": 2,
+      "class": "com.wingedsheep.engine.scenarios.IntoTheRoilScenarioTest",
+      "stage": "vines-exact-vines-IntoTheRoilScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "7f915b995d8826f1390a8cb31b4d5ecaec80b6b8cc2f159074138a30d44ce5f7"
+    },
+    {
+      "cases": 7,
+      "class": "com.wingedsheep.gym.IzzetSciencePosition1BootstrapTest",
+      "stage": "vines-receiving-pdh-IzzetSciencePosition1BootstrapTest",
+      "test_task_lines": 2,
+      "xml_sha256": "2f61c73b563188fe61876ed38afe9dfd244c4b7ecfa9ecbadf6e13493146a75a"
+    },
+    {
+      "cases": 7,
+      "class": "com.wingedsheep.gym.IzzetSciencePdhMechanicsQualificationTest",
+      "stage": "vines-receiving-pdh-IzzetSciencePdhMechanicsQualificationTest",
+      "test_task_lines": 2,
+      "xml_sha256": "fe2f21657f0ac95703d588d09ff41a7393631f4792d7d2f3292b4ad019b5540b"
+    },
+    {
+      "cases": 16,
+      "class": "com.wingedsheep.gym.IzzetScienceVeteranBeastriderEngineReadinessTest",
+      "stage": "vines-receiving-pdh-IzzetScienceVeteranBeastriderEngineReadinessTest",
+      "test_task_lines": 2,
+      "xml_sha256": "e13b44a5902ceea5056686a09b695a611b2a7c9fa8e3005adfc52fd3d90b0b09"
+    },
+    {
+      "cases": 10,
+      "class": "com.wingedsheep.engine.scenarios.ForgeOfHeroesScenarioTest",
+      "stage": "vines-receiving-forge-ForgeOfHeroesScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "a0914e375aee823c2a5be7360ccae660ff2b24f7f082d0aeb1e4565528600900"
+    },
+    {
+      "cases": 8,
+      "class": "com.wingedsheep.engine.scenarios.RamThroughScenarioTest",
+      "stage": "vines-receiving-forge-RamThroughScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "1e8be4e054050930f0a55fc7205a956f7bbf659d7f3cef539c5a1e20ba91c695"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.engine.scenarios.SpiritLinkBatchAJScenarioTest",
+      "stage": "vines-receiving-spirit-link-SpiritLinkBatchAJScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "3f94be4ec4b0713bd20a593b285b664dcaaed98bff833d5eb3065197b2e4bf3a"
+    },
+    {
+      "cases": 8,
+      "class": "com.wingedsheep.engine.scenarios.PrismaticStrandsScenarioTest",
+      "stage": "vines-receiving-strands-PrismaticStrandsScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "587250fc5290e2b3e288acc953ac3a2617dd4fe19d405dab861c9a596ce14a38"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.engine.scenarios.GandalfsSanctionScenarioTest",
+      "stage": "vines-receiving-excess-damage-GandalfsSanctionScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "3afec6b492156d24a7819cc11d0f25f1a7a766528f1c577cdf38df6ed9890836"
+    },
+    {
+      "cases": 5,
+      "class": "com.wingedsheep.engine.scenarios.ColossalDreadmaskScenarioTest",
+      "stage": "vines-receiving-entry-bestow-ColossalDreadmaskScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "58211ebfb6e23cc2ed87d3814cd17cbec52e6e57bb8816dece807c90c58d2ca3"
+    },
+    {
+      "cases": 15,
+      "class": "com.wingedsheep.engine.scenarios.NyxbornHydraScenarioTest",
+      "stage": "vines-receiving-entry-bestow-NyxbornHydraScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "ddb0720807ae355d8f15d3658558782b3b6b35d1d04c73e79c65df33371c2b62"
+    },
+    {
+      "cases": 2,
+      "class": "com.wingedsheep.engine.scenarios.ChoMannosBlessingScenarioTest",
+      "stage": "vines-receiving-aura-protection-ChoMannosBlessingScenarioTest",
+      "test_task_lines": 2,
+      "xml_sha256": "76fd0c24d77fa828989506ef020d6b03a5d11424d6fb8e1a06b70886281cd42b"
+    },
+    {
+      "cases": 340,
+      "class": "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+      "stage": "vines-content-CardDefinitionSnapshotTest",
+      "test_task_lines": 2,
+      "xml_sha256": "33a9afa4a8faf2d6a3f1fd9529b22907c6e0db4c9af74619854d9c456c437901"
+    },
+    {
+      "cases": 3,
+      "class": "com.wingedsheep.mtg.sets.CardLintTest",
+      "stage": "vines-content-CardLintTest",
+      "test_task_lines": 2,
+      "xml_sha256": "47b19bc3404f1c446b4671d01034b83f990b4e3815f41510af6c48d6c57b15c0"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.mtg.sets.FacadeBoundaryTest",
+      "stage": "vines-content-FacadeBoundaryTest",
+      "test_task_lines": 2,
+      "xml_sha256": "834fcb7846254c53c1cff42e431733305eafc901f763ed77e44b6d77f8ac82d2"
+    }
+  ]
+}
