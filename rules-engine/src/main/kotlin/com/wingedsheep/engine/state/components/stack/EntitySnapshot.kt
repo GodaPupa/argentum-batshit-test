@@ -3,14 +3,18 @@ package com.wingedsheep.engine.state.components.stack
 import com.wingedsheep.engine.handlers.effects.permanent.counters.counterTypeToString
 import com.wingedsheep.engine.mechanics.layers.ProjectedState
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.ObjectRef
+import com.wingedsheep.engine.state.nameVisibleToAll
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.battlefield.DamageSourceLki
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.FaceDownComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.Subtype
 import com.wingedsheep.sdk.core.TypeLine
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.StaticAbility
 import kotlinx.serialization.Serializable
 
 /**
@@ -83,12 +87,7 @@ data class EntitySnapshot(
     override val subtypes: Set<String> = emptySet(),
     /** Projected supertypes at capture time (e.g. "LEGENDARY", "BASIC", "SNOW", "WORLD"). */
     override val supertypes: Set<String> = emptySet(),
-    /**
-     * Controller frozen at capture time, NOT at the eventual zone-leave. If control shifts after the
-     * snapshot is taken (e.g. Threaten resolves while the ability is on the stack) and the permanent
-     * then leaves, this reports the older controller — acceptable for current callers; revisit if a
-     * card needs control-at-zone-leave fidelity.
-     */
+    /** Controller at capture time. Pending damage abilities capture at departure, not activation. */
     override val controllerId: EntityId? = null,
     override val counters: Map<String, Int> = emptyMap(),
     override val keywords: Set<String> = emptySet(),
@@ -194,6 +193,14 @@ data class EntitySnapshot(
      * way [wasSuspected] does for the suspected designation.
      */
     val wasFaceDown: Boolean = false,
+    /** Exact object captured; an EntityId alone can identify a later, unrelated battlefield visit. */
+    val objectRef: ObjectRef? = null,
+    /** Projected colors. Null denotes an older/partial snapshot; an empty set means colorless. */
+    val colors: Set<String>? = null,
+    /** Owner is the life recipient when a lifelink source has no controller (CR 702.15b). */
+    val ownerId: EntityId? = null,
+    /** Granted source abilities that must remain available for a departed damage source. */
+    val grantedStaticAbilities: List<StaticAbility> = emptyList(),
 ) : EntityView {
     companion object {
         /**
@@ -217,7 +224,15 @@ data class EntitySnapshot(
                 keywords = projected.getKeywords(entityId),
                 lostAllAbilities = projected.hasLostAllAbilities(entityId),
                 wasSuspected = projected.isSuspected(entityId),
-                name = state.getEntity(entityId)?.get<CardComponent>()?.name,
+                name = state.getEntity(entityId)?.get<CardComponent>()?.name?.let { nameVisibleToAll(state, entityId, it) },
+                wasFaceDown = state.getEntity(entityId)?.has<FaceDownComponent>() == true,
+                wasToken = state.getEntity(entityId)?.has<TokenComponent>() == true,
+                objectRef = state.objectRef(entityId),
+                colors = projected.getColors(entityId),
+                ownerId = state.getEntity(entityId)?.get<CardComponent>()?.ownerId,
+                typeLine = projectedTypeLine(state, entityId),
+                grantedStaticAbilities = state.grantedStaticAbilities
+                    .filter { it.entityId == entityId }.map { it.ability },
             )
         }
     }
@@ -247,6 +262,9 @@ fun captureEntitySnapshots(
         supertypes = projected.getSupertypes(id),
         controllerId = projected.getController(id),
         wasSuspected = projected.isSuspected(id),
+        keywords = projected.getKeywords(id),
+        lostAllAbilities = projected.hasLostAllAbilities(id),
+        colors = projected.getColors(id),
     )
 }
 
@@ -268,7 +286,13 @@ fun captureEntitySnapshots(
         battlefieldEntryTimestamp = container
             ?.get<com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent>()?.timestamp,
         wasToken = container?.has<TokenComponent>() ?: false,
-        name = container?.get<CardComponent>()?.name,
+        name = container?.get<CardComponent>()?.name?.let { nameVisibleToAll(state, snapshot.entityId, it) },
+        wasFaceDown = container?.has<FaceDownComponent>() == true,
+        objectRef = state.objectRef(snapshot.entityId),
+        ownerId = container?.get<CardComponent>()?.ownerId,
+        typeLine = projectedTypeLine(state, snapshot.entityId),
+        grantedStaticAbilities = state.grantedStaticAbilities
+            .filter { it.entityId == snapshot.entityId }.map { it.ability },
     )
 }
 

@@ -764,7 +764,18 @@ class TargetValidator {
                 else null
             }
             is ChosenTarget.Permanent -> {
-                if (target.entityId !in state.getBattlefield()) "Target not on battlefield" else null
+                if (target.entityId !in state.getBattlefield()) {
+                    "Target not on battlefield"
+                } else {
+                    // CR 115.4: "any target" includes creatures, planeswalkers, battles and
+                    // players. Battlefield presence alone is insufficient; read current
+                    // projected types to respect animation and other type-changing effects.
+                    val projected = state.projectedState
+                    if (projected.isCreature(target.entityId) ||
+                        projected.isPlaneswalker(target.entityId) ||
+                        projected.isBattle(target.entityId)
+                    ) null else "Target must be a creature, planeswalker, battle, or player"
+                }
             }
             else -> "Invalid target type"
         }

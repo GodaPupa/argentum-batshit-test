@@ -1703,6 +1703,12 @@ class TriggerMatcher(
             controllerId = controllerId ?: EntityId(""),
             sourceId = null
         )
+        val sourceSnapshot = event.sourceSnapshot
+        if (sourceSnapshot != null &&
+            (event.sourceWasOnBattlefield == false || sourceSnapshot.objectRef?.let { !state.isCurrentObject(it) } == true)
+        ) {
+            return predicateEvaluator.matchesSnapshot(state, sourceSnapshot, sourceFilter, predicateContext, requireComplete = true)
+        }
         return predicateEvaluator.matches(
             state, state.projectedState, event.sourceId, sourceFilter, predicateContext
         )

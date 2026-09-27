@@ -244,7 +244,7 @@ fun TargetPermanent(
 // =============================================================================
 
 /**
- * "Any target" - can target any creature, player, or planeswalker.
+ * "Any target" - can target a creature, player, planeswalker, or battle (CR 115.4).
  */
 @SerialName("AnyTarget")
 @Serializable
