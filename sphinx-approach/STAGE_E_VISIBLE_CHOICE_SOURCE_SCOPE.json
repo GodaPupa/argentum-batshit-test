@@ -1,7 +1,7 @@
 {
   "schema": "sphinx-stage-e-visible-choice-source-scope-v1",
   "status": "UNCOMPILED_UNTESTED_SOURCE_CANDIDATE__NO_FIXTURE_OR_GAMEPLAY_AUTHORITY",
-  "parent_source": "f7475a6a9b63d1895edea10d508324e9836d7cfb",
+  "parent_source": "3f0cc77c214e48beb02afb90c45460c2f31d3fdd",
   "opening_receiving_independent_acceptance": "7b8f46f4b0d0240092ce8a94e879f3c5fd19e32e",
   "frozen_decks": [
     "reconstructed-v01",
@@ -12,7 +12,7 @@
   "policy": "One identical visible-choice scoring and source/actor/epoch guard for all four list identities; cards absent from a list are not invented.",
   "source": {
     "choice_actor_path": "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoice.kt",
-    "choice_actor_blob": "2c383c67b42177aceb4f0fb397b80f73e5863adf",
+    "choice_actor_blob": "af617d955f7e1dbe885a8f6e0aefd1c28178ed67",
     "initialized_seat_path": "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt",
     "initialized_seat_blob": "f420e5b6e144ffc2692e9b146a44dbf461679f5d"
   },
@@ -46,11 +46,25 @@
         "SelectCardsDecision or SearchLibraryDecision offered Island search after typecycling"
       ],
       "development_state": "source-only; typecycling action/payment and actual question projection unverified"
+    },
+    {
+      "source": "Sphinx's Approach",
+      "choices": [
+        "YesNoDecision optional exile/search only with four current graveyard copies and known unseen frozen-list Sphinx",
+        "SelectCardsDecision exact four current graveyard Approach IDs when choice is needed",
+        "SelectCardsDecision or SearchLibraryDecision offered Goliath Sphinx"
+      ],
+      "development_state": "source-only; actual initialized question trace/known library count and policy quality unverified"
+    },
+    {
+      "source": "Snap",
+      "choices": [
+        "SelectCardsDecision up to two currently tapped own lands from complete public offered domain after bounce"
+      ],
+      "development_state": "source-only; actual initialized trace and target timing unverified"
     }
   ],
   "explicit_exclusions": [
-    "Sphinx's Approach May/SelectCards/search",
-    "Snap untap selection",
     "Deem Inferior owner choice",
     "Ponder shuffle May",
     "ordinary cast scheduling, pass/priority, cycling action, combat",

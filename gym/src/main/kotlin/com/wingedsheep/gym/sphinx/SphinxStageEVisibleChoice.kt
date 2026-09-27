@@ -7,14 +7,17 @@ import com.wingedsheep.engine.core.OrderedResponse
 import com.wingedsheep.engine.core.ReorderLibraryDecision
 import com.wingedsheep.engine.core.SearchLibraryDecision
 import com.wingedsheep.engine.core.SelectCardsDecision
+import com.wingedsheep.engine.core.YesNoDecision
+import com.wingedsheep.engine.core.YesNoResponse
 import com.wingedsheep.gym.actorinput.ActorChoiceSupport
 import com.wingedsheep.gym.actorinput.ActorEpoch
 import com.wingedsheep.gym.actorinput.ActorInput
 import com.wingedsheep.gym.actorinput.ActorPublicCards
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.core.Zone
 
 /**
- * Seedless candidate for currently visible cantrip and Island-search choices. The same scoring
+ * Seedless candidate for currently visible cantrip, Approach, Snap and Island-search choices. The same scoring
  * rule is applied to all four frozen 60s. This does not handle Ponder's later shuffle question:
  * its earlier look information needs a replayable actor-memory contract before that choice.
  * Every other typed decision remains unqualified until a separately reviewed finite bank.
@@ -38,9 +41,10 @@ internal object SphinxStageEVisibleChoice {
             }
             val cards = ActorPublicCards(input)
             val response: DecisionResponse = when (question) {
-                is SelectCardsDecision -> select(question, source, cards)
+                is SelectCardsDecision -> select(question, source, cards, ownDeck)
                 is SearchLibraryDecision -> search(question, source)
                 is ReorderLibraryDecision -> reorder(question, source, cards)
+                is YesNoDecision -> may(question, source, cards, ownDeck)
                 else -> unsupported("This typed choice is outside the visible-choice candidate")
             }
             SphinxStageEAdapterResult.Proposed(
@@ -63,7 +67,7 @@ internal object SphinxStageEVisibleChoice {
     }
 
     private fun select(q: SelectCardsDecision, source: String,
-                       cards: ActorPublicCards): CardsSelectedResponse {
+                       cards: ActorPublicCards, ownDeck: SphinxStageEOwnDeck): CardsSelectedResponse {
         plainSelection(q.minSelections, q.maxSelections, q.options, q.nonSelectableOptions)
         if (q.ordered || q.onePerCardType || q.onePerColor || q.onePerCardName ||
             q.onePerBasicLandType || q.onePerPower || q.maxTotalManaValue != null ||
@@ -91,17 +95,78 @@ internal object SphinxStageEVisibleChoice {
                 q.options.filter { score(names.getValue(it), cards) < 30 }
             }
             "Lórien Revealed" -> islandSearch(q.options, names, q.minSelections, q.maxSelections)
+            "Sphinx's Approach" -> {
+                val graveyardIds = cards.graveyard.map { it.entityId }.toSet()
+                if (q.minSelections == 4 && q.maxSelections == 4 &&
+                    q.options.all { it in graveyardIds && names[it] == "Sphinx's Approach" }) {
+                    if (q.options.size < 4 || unseenSphinx(cards, ownDeck) == 0) {
+                        unsupported("Approach payment has no four current graveyard copies or unseen Sphinx")
+                    }
+                    q.options.sortedBy { it.value }.take(4)
+                } else if (q.minSelections in 0..1 && q.maxSelections == 1 &&
+                    q.options.none { it in graveyardIds } &&
+                    q.options.all { names[it] == "Goliath Sphinx" }) {
+                    q.options.sortedBy { it.value }.take(1).also {
+                        if (it.isEmpty() && q.minSelections == 1) unsupported("Required Sphinx is not offered")
+                    }
+                } else unsupported("Approach choice is neither exact payment nor Sphinx search")
+            }
+            "Snap" -> {
+                val board = cards.allBoard.associateBy { it.entityId }
+                if (q.minSelections != 0 || q.maxSelections !in 1..2 ||
+                    q.options.any { board[it]?.types?.contains("LAND") != true }) {
+                    unsupported("Snap's current public land untap domain changed")
+                }
+                q.options.filter { board.getValue(it).controllerId == cards.actorId &&
+                    board.getValue(it).tapped }.sortedBy { it.value }.take(2)
+            }
             else -> unsupported("This source has no qualified selection policy")
         }
         return CardsSelectedResponse(q.id, chosen)
     }
 
     private fun search(q: SearchLibraryDecision, source: String): CardsSelectedResponse {
-        if (source != "Lórien Revealed") unsupported("This library search source is unqualified")
+        if (source != "Lórien Revealed" && source != "Sphinx's Approach") {
+            unsupported("This library search source is unqualified")
+        }
         val names = q.options.associateWith { id ->
             q.cards[id]?.name ?: unsupported("Island-search metadata is absent")
         }
-        return CardsSelectedResponse(q.id, islandSearch(q.options, names, q.minSelections, q.maxSelections))
+        val selected = if (source == "Lórien Revealed") {
+            islandSearch(q.options, names, q.minSelections, q.maxSelections)
+        } else {
+            if (q.minSelections !in 0..1 || q.maxSelections != 1 ||
+                q.options.any { names[it] != "Goliath Sphinx" }) {
+                unsupported("Approach's Sphinx search domain changed")
+            }
+            q.options.sortedBy { it.value }.take(1).also {
+                if (it.isEmpty() && q.minSelections == 1) unsupported("Required Sphinx is not offered")
+            }
+        }
+        return CardsSelectedResponse(q.id, selected)
+    }
+
+    private fun may(q: YesNoDecision, source: String, cards: ActorPublicCards,
+                    ownDeck: SphinxStageEOwnDeck): YesNoResponse {
+        if (source != "Sphinx's Approach" ||
+            !q.prompt.contains("exile", ignoreCase = true)) {
+            unsupported("This May question is not the Approach exile/search choice")
+        }
+        val currentCopies = cards.graveyard.count { it.name == "Sphinx's Approach" }
+        return YesNoResponse(q.id, currentCopies >= 4 && unseenSphinx(cards, ownDeck) > 0)
+    }
+
+    private fun unseenSphinx(cards: ActorPublicCards, ownDeck: SphinxStageEOwnDeck): Int {
+        val initial = ownDeck.cards["Goliath Sphinx"] ?: 0
+        val outsideIds = (cards.hand + cards.graveyard + cards.zone(cards.actorId, Zone.EXILE) +
+            cards.allBoard.filter { it.ownerId == cards.actorId })
+            .filter { it.name == "Goliath Sphinx" }.map { it.entityId }
+        val stackIds = cards.input.observation.stack.filter {
+            it.spell?.ownerId == cards.actorId && it.view.name == "Goliath Sphinx"
+        }.map { it.view.entityId }
+        val outside = (outsideIds + stackIds).distinct().size
+        if (outside > initial) unsupported("Known own Sphinx count exceeds the frozen list")
+        return initial - outside
     }
 
     private fun islandSearch(options: List<EntityId>, names: Map<EntityId, String>,
