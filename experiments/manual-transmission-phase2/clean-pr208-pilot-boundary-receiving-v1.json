@@ -1,0 +1,30 @@
+{
+  "schema": "manual-clean-pr208-pilot-boundary-composition-receiving-v1",
+  "status": "PROSPECTIVE_EXCLUDED_SOFTWARE_COMPONENT_ONLY_NO_CAPABILITY_OR_GAME_AUTHORITY",
+  "clean_base": "83f78b4b63264346347b40cee19f0459513cf40b",
+  "pr208_original": {
+    "head": "032fdc8f6fe4dcf29970905d0f36e39bed41f7b4",
+    "run": 36289923892,
+    "artifact": 10921938825,
+    "zip_sha256": "d5114d229d1df81b4e0dfc2f07330e954a38206f01212f04f78891dff1272c7e",
+    "junit_sha256": "3f8e3f576e3db76921ac4daa5c783baafa4337949dacdc1fac36801437e8cb7a",
+    "original_fresh_cases": 3
+  },
+  "composed_unchanged_blobs": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundaryTest.kt": "b747ad5a1bcf6780b5c31d8b4244f364b4f4acd3"
+  },
+  "expected_named_cases": [
+    "four masked mulligan seats and a priority action pass only through traced boundary",
+    "London free mulligan and later bottom cards are selected from only the actor's hand",
+    "invalid policy choice records integrity failure without silently passing or retrying"
+  ],
+  "expected_count": 3,
+  "fixture": "Fixed excluded invented cards and seed 0x50494c4f54424f; no exact deck or official allocation.",
+  "scope": "Check unchanged PR208 masked boundary compiles and its three fixtures execute fresh on clean PR211 parent. No broad CI yet; no strategic Cruise/Sport/Race, opponent policy, complete parameterization, project admission or PR211 merge.",
+  "original_frozen_guards": "Five clean PR211 originals remain INCOMPLETE, separate supplemental receiving ed2058c9/59328b24 only.",
+  "official_counters": {
+    "capability_games": 0,
+    "primary_games": 0
+  }
+}
