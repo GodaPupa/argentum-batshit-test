@@ -1,0 +1,34 @@
+{
+  "schema": "pr210-content-failure-evidence-v1",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "pullRequest": 210,
+  "runId": 36292832407,
+  "runAttempt": 1,
+  "source": "d9e496c976a4e5c65728a9a557fdba79b44a7e00",
+  "jobId": 108546062957,
+  "jobName": "test (content)",
+  "artifactId": 10923385439,
+  "artifactName": "ci-junit-content",
+  "originalZip": {
+    "path": "original-ci-junit-content.zip",
+    "bytes": 46364,
+    "sha256": "a38cb0fe6b2036a6f6de5ba9d5cdcf55a4a6ee9622714e230d320fbd31810b52",
+    "gitBlob": "60602dbc054bf7927b227c9e8bd999c69f7a6526",
+    "crc": "clean"
+  },
+  "originalLog": {
+    "path": "original-content-job.log",
+    "gitBlob": "a44d339b721b41a65ad1a54c1630fe0b0440be61"
+  },
+  "failingXml": {
+    "member": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.CardLinterTest.xml",
+    "sha256": "f5156f516d553725400fe94a225f5d246628fc976f876f1cc746317338e2c2be",
+    "tests": 43,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "failedCase": "It: flags a mana ability that searches its library"
+  },
+  "diagnosis": "Typed AuthorizedLibrarySearch was absent from CardLinter.crossesLibraryBoundary source recognition; the existing test expected one violation and observed zero.",
+  "status": "original failed job and unmodified raw evidence; no rerun is represented"
+}

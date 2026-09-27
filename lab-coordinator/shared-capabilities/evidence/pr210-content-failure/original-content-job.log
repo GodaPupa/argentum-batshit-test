@@ -1,0 +1,1754 @@
+﻿2026-09-27T03:55:56.8530496Z Current runner version: '2.337.0'
+2026-09-27T03:55:56.8551992Z ##[group]Runner Image Provisioner
+2026-09-27T03:55:56.8552740Z Hosted Compute Agent
+2026-09-27T03:55:56.8553224Z Version: 20260828.587
+2026-09-27T03:55:56.8554114Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-27T03:55:56.8554715Z Build Date: 2026-08-28T16:44:25Z
+2026-09-27T03:55:56.8555259Z Worker ID: {afbb09a3-37e1-46c7-aa16-96e1f4b52ec6}
+2026-09-27T03:55:56.8555920Z Azure Region: westus3
+2026-09-27T03:55:56.8556389Z ##[endgroup]
+2026-09-27T03:55:56.8557559Z ##[group]Operating System
+2026-09-27T03:55:56.8558100Z Ubuntu
+2026-09-27T03:55:56.8558553Z 24.04.5
+2026-09-27T03:55:56.8559060Z LTS
+2026-09-27T03:55:56.8559487Z ##[endgroup]
+2026-09-27T03:55:56.8559995Z ##[group]Runner Image
+2026-09-27T03:55:56.8560507Z Image: ubuntu-24.04
+2026-09-27T03:55:56.8560976Z Version: 20260920.314.1
+2026-09-27T03:55:56.8562063Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-27T03:55:56.8563298Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+2026-09-27T03:55:56.8564388Z ##[endgroup]
+2026-09-27T03:55:56.8565503Z ##[group]GITHUB_TOKEN Permissions
+2026-09-27T03:55:56.8567047Z Contents: read
+2026-09-27T03:55:56.8567535Z Metadata: read
+2026-09-27T03:55:56.8568073Z Packages: read
+2026-09-27T03:55:56.8568537Z ##[endgroup]
+2026-09-27T03:55:56.8570334Z Secret source: Actions
+2026-09-27T03:55:56.8571102Z Cache mode: write
+2026-09-27T03:55:56.8571653Z Prepare workflow directory
+2026-09-27T03:55:56.9034413Z Prepare all required actions
+2026-09-27T03:55:56.9073995Z Getting action download info
+2026-09-27T03:55:57.2005900Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-09-27T03:55:57.4811884Z Download action repository 'actions/setup-java@v5' (SHA:b6effb05e454b25005698d916606bdc6ffcbf961)
+2026-09-27T03:55:58.5710252Z Download action repository 'gradle/actions@v6' (SHA:9c971963bec38e04b3d30dcc455b5382be2fdbfb)
+2026-09-27T03:56:00.4048767Z Download action repository 'actions/cache@v4' (SHA:0057852bfaa89a56745cba8c7296529d2fc39830)
+2026-09-27T03:56:00.6333758Z Download action repository 'actions/upload-artifact@v7' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-27T03:56:01.0140128Z Complete job name: test (content)
+2026-09-27T03:56:01.0754953Z ##[group]Run actions/checkout@v6
+2026-09-27T03:56:01.0755398Z with:
+2026-09-27T03:56:01.0755604Z   repository: GodaPupa/argentum-batshit-test
+2026-09-27T03:56:01.0758070Z   token: ***
+2026-09-27T03:56:01.0758249Z   ssh-strict: true
+2026-09-27T03:56:01.0758428Z   ssh-user: git
+2026-09-27T03:56:01.0758613Z   persist-credentials: true
+2026-09-27T03:56:01.0758821Z   clean: true
+2026-09-27T03:56:01.0759010Z   sparse-checkout-cone-mode: true
+2026-09-27T03:56:01.0759233Z   fetch-depth: 1
+2026-09-27T03:56:01.0759416Z   fetch-tags: false
+2026-09-27T03:56:01.0759604Z   show-progress: true
+2026-09-27T03:56:01.0759774Z   lfs: false
+2026-09-27T03:56:01.0759934Z   submodules: false
+2026-09-27T03:56:01.0760127Z   set-safe-directory: true
+2026-09-27T03:56:01.0760338Z   allow-unsafe-pr-checkout: false
+2026-09-27T03:56:01.0760672Z env:
+2026-09-27T03:56:01.0761024Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-27T03:56:01.0761468Z ##[endgroup]
+2026-09-27T03:56:01.1568103Z Syncing repository: GodaPupa/argentum-batshit-test
+2026-09-27T03:56:01.1569440Z ##[group]Getting Git version info
+2026-09-27T03:56:01.1569813Z Working directory is '/home/runner/work/argentum-batshit-test/argentum-batshit-test'
+2026-09-27T03:56:01.1570328Z [command]/usr/bin/git version
+2026-09-27T03:56:01.1640015Z git version 2.55.0
+2026-09-27T03:56:01.1665687Z ##[endgroup]
+2026-09-27T03:56:01.1675532Z Temporarily overriding HOME='/home/runner/work/_temp/fa1e9f25-26a7-48cc-87ea-78a3317ec721' before making global git config changes
+2026-09-27T03:56:01.1676559Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T03:56:01.1681189Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-27T03:56:01.2000237Z Deleting the contents of '/home/runner/work/argentum-batshit-test/argentum-batshit-test'
+2026-09-27T03:56:01.2003628Z ##[group]Determining repository object format
+2026-09-27T03:56:01.2005842Z ##[endgroup]
+2026-09-27T03:56:01.2006365Z ##[group]Initializing the repository
+2026-09-27T03:56:01.2010646Z [command]/usr/bin/git init /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-27T03:56:01.3987349Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-27T03:56:01.3988374Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-27T03:56:01.3990744Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-27T03:56:01.3991479Z hint: call:
+2026-09-27T03:56:01.3991946Z hint:
+2026-09-27T03:56:01.3992354Z hint: 	git config --global init.defaultBranch <name>
+2026-09-27T03:56:01.3992787Z hint:
+2026-09-27T03:56:01.3993155Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-27T03:56:01.3993933Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-27T03:56:01.3994405Z hint:
+2026-09-27T03:56:01.3994671Z hint: 	git branch -m <name>
+2026-09-27T03:56:01.3994956Z hint:
+2026-09-27T03:56:01.3995356Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-27T03:56:01.3996168Z Initialized empty Git repository in /home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/
+2026-09-27T03:56:01.4000405Z [command]/usr/bin/git remote add origin https://github.com/GodaPupa/argentum-batshit-test
+2026-09-27T03:56:01.4235584Z ##[endgroup]
+2026-09-27T03:56:01.4236090Z ##[group]Disabling automatic garbage collection
+2026-09-27T03:56:01.4239994Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-27T03:56:01.4274097Z ##[endgroup]
+2026-09-27T03:56:01.4274634Z ##[group]Setting up auth
+2026-09-27T03:56:01.4292842Z Removing SSH command configuration
+2026-09-27T03:56:01.4293881Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T03:56:01.4319735Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T03:56:01.5634893Z Removing HTTP extra header
+2026-09-27T03:56:01.5644927Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T03:56:01.5670927Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T03:56:01.5875066Z Removing includeIf entries pointing to credentials config files
+2026-09-27T03:56:01.5880818Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T03:56:01.5911763Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T03:56:01.6108296Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-27T03:56:01.6143965Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path /home/runner/work/_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:56:01.6176896Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:56:01.6209792Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:56:01.6238636Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:56:01.6264668Z ##[endgroup]
+2026-09-27T03:56:01.6265053Z ##[group]Fetching the repository
+2026-09-27T03:56:01.6271252Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +091cae25acc3c986c5a98d917c667428482f88c7:refs/remotes/pull/210/merge
+2026-09-27T03:56:08.9847482Z From https://github.com/GodaPupa/argentum-batshit-test
+2026-09-27T03:56:08.9847970Z  * [new ref]           091cae25acc3c986c5a98d917c667428482f88c7 -> pull/210/merge
+2026-09-27T03:56:08.9852842Z ##[endgroup]
+2026-09-27T03:56:08.9853619Z ##[group]Determining the checkout info
+2026-09-27T03:56:08.9861836Z ##[endgroup]
+2026-09-27T03:56:08.9862172Z [command]/usr/bin/git sparse-checkout disable
+2026-09-27T03:56:08.9924135Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-27T03:56:08.9952861Z ##[group]Checking out the ref
+2026-09-27T03:56:08.9956176Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/210/merge
+2026-09-27T03:56:10.0228193Z Updating files:  87% (24642/28152)
+2026-09-27T03:56:10.0333870Z Updating files:  88% (24774/28152)
+2026-09-27T03:56:10.0468963Z Updating files:  89% (25056/28152)
+2026-09-27T03:56:10.0692281Z Updating files:  90% (25337/28152)
+2026-09-27T03:56:10.1643192Z Updating files:  91% (25619/28152)
+2026-09-27T03:56:10.1886722Z Updating files:  92% (25900/28152)
+2026-09-27T03:56:10.2036157Z Updating files:  93% (26182/28152)
+2026-09-27T03:56:10.2206161Z Updating files:  94% (26463/28152)
+2026-09-27T03:56:10.2370866Z Updating files:  95% (26745/28152)
+2026-09-27T03:56:10.2520199Z Updating files:  96% (27026/28152)
+2026-09-27T03:56:10.2659451Z Updating files:  97% (27308/28152)
+2026-09-27T03:56:10.3343983Z Updating files:  98% (27589/28152)
+2026-09-27T03:56:10.3510820Z Updating files:  99% (27871/28152)
+2026-09-27T03:56:10.3511204Z Updating files: 100% (28152/28152)
+2026-09-27T03:56:10.3511529Z Updating files: 100% (28152/28152), done.
+2026-09-27T03:56:10.3729221Z Note: switching to 'refs/remotes/pull/210/merge'.
+2026-09-27T03:56:10.3729559Z 
+2026-09-27T03:56:10.3730095Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-27T03:56:10.3730504Z changes and commit them, and you can discard any commits you make in this
+2026-09-27T03:56:10.3730884Z state without impacting any branches by switching back to a branch.
+2026-09-27T03:56:10.3731140Z 
+2026-09-27T03:56:10.3731302Z If you want to create a new branch to retain commits you create, you may
+2026-09-27T03:56:10.3731643Z do so (now or later) by using -c with the switch command. Example:
+2026-09-27T03:56:10.3731881Z 
+2026-09-27T03:56:10.3732049Z   git switch -c <new-branch-name>
+2026-09-27T03:56:10.3732203Z 
+2026-09-27T03:56:10.3732290Z Or undo this operation with:
+2026-09-27T03:56:10.3732432Z 
+2026-09-27T03:56:10.3732504Z   git switch -
+2026-09-27T03:56:10.3732617Z 
+2026-09-27T03:56:10.3732785Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-27T03:56:10.3733025Z 
+2026-09-27T03:56:10.3733304Z HEAD is now at 091cae25 Merge d9e496c976a4e5c65728a9a557fdba79b44a7e00 into 75f8e8f436999bad35436e99a153f7766079cbd9
+2026-09-27T03:56:10.3779658Z ##[endgroup]
+2026-09-27T03:56:10.3821012Z [command]/usr/bin/git log -1 --format=%H
+2026-09-27T03:56:10.3844550Z 091cae25acc3c986c5a98d917c667428482f88c7
+2026-09-27T03:56:10.4087815Z ##[group]Run actions/setup-java@v5
+2026-09-27T03:56:10.4088054Z with:
+2026-09-27T03:56:10.4088225Z   distribution: temurin
+2026-09-27T03:56:10.4088406Z   java-version: 21
+2026-09-27T03:56:10.4088575Z   java-package: jdk
+2026-09-27T03:56:10.4088750Z   check-latest: false
+2026-09-27T03:56:10.4088926Z   set-default: true
+2026-09-27T03:56:10.4089097Z   verify-signature: false
+2026-09-27T03:56:10.4089285Z   server-id: github
+2026-09-27T03:56:10.4089626Z   server-username: GITHUB_ACTOR
+2026-09-27T03:56:10.4089836Z   server-password: GITHUB_TOKEN
+2026-09-27T03:56:10.4090044Z   overwrite-settings: true
+2026-09-27T03:56:10.4090238Z   job-status: success
+2026-09-27T03:56:10.4092606Z   token: ***
+2026-09-27T03:56:10.4092790Z   show-download-progress: false
+2026-09-27T03:56:10.4092992Z env:
+2026-09-27T03:56:10.4093333Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-27T03:56:10.4093845Z ##[endgroup]
+2026-09-27T03:56:10.5296789Z ##[group]Installed distributions
+2026-09-27T03:56:10.5347184Z Resolved Java 21.0.12+1 from tool-cache
+2026-09-27T03:56:10.5347754Z Setting Java 21.0.12+1 as the default
+2026-09-27T03:56:10.5355965Z Creating toolchains.xml for JDK version 21 from temurin
+2026-09-27T03:56:10.5413167Z Writing to /home/runner/.m2/toolchains.xml
+2026-09-27T03:56:10.5413779Z 
+2026-09-27T03:56:10.5413958Z Java configuration:
+2026-09-27T03:56:10.5414289Z   Distribution: temurin
+2026-09-27T03:56:10.5414633Z   Version: 21.0.12+1
+2026-09-27T03:56:10.5415059Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T03:56:10.5415423Z 
+2026-09-27T03:56:10.5415791Z ##[endgroup]
+2026-09-27T03:56:10.5446940Z Creating settings.xml with server-id: github
+2026-09-27T03:56:10.5447419Z Writing to /home/runner/.m2/settings.xml
+2026-09-27T03:56:10.5448450Z Configured MAVEN_ARGS to include -ntp to suppress Maven transfer progress logs. Set 'show-download-progress: true' to keep the download progress output.
+2026-09-27T03:56:10.5713598Z ##[group]Run gradle/actions/setup-gradle@v6
+2026-09-27T03:56:10.5714029Z with:
+2026-09-27T03:56:10.5714308Z   cache-provider: enhanced
+2026-09-27T03:56:10.5714661Z   cache-disabled: false
+2026-09-27T03:56:10.5715007Z   cache-read-only: true
+2026-09-27T03:56:10.5715314Z   cache-write-only: false
+2026-09-27T03:56:10.5715545Z   cache-overwrite-existing: false
+2026-09-27T03:56:10.5715782Z   cache-cleanup: on-success
+2026-09-27T03:56:10.5716045Z   gradle-home-cache-includes: caches
+notifications
+
+2026-09-27T03:56:10.5716409Z   add-job-summary: always
+2026-09-27T03:56:10.5716638Z   add-job-summary-as-pr-comment: never
+2026-09-27T03:56:10.5716886Z   dependency-graph: disabled
+2026-09-27T03:56:10.5717151Z   dependency-graph-report-dir: dependency-graph-reports
+2026-09-27T03:56:10.5717463Z   dependency-graph-continue-on-failure: true
+2026-09-27T03:56:10.5717722Z   build-scan-publish: false
+2026-09-27T03:56:10.5717941Z   validate-wrappers: true
+2026-09-27T03:56:10.5718212Z   allow-snapshot-wrappers: false
+2026-09-27T03:56:10.5718457Z   gradle-home-cache-strict-match: false
+2026-09-27T03:56:10.5718871Z   workflow-job-context: {
+  "name": "content",
+  "tasks": ":mtg-sdk:test :mtg-sets:test :ai:test :mtg-search:test"
+}
+2026-09-27T03:56:10.5721474Z   github-token: ***
+2026-09-27T03:56:10.5721661Z env:
+2026-09-27T03:56:10.5722017Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-27T03:56:10.5722495Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T03:56:10.5722890Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T03:56:10.5723215Z   MAVEN_ARGS: -ntp
+2026-09-27T03:56:10.5723563Z ##[endgroup]
+2026-09-27T03:56:10.9629913Z Merged default JDK locations into /home/runner/.m2/toolchains.xml
+2026-09-27T03:56:10.9634776Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+2026-09-27T03:56:11.0345061Z ##[group]Restore Gradle state from cache
+2026-09-27T03:56:11.2337946Z Cache hit for restore-key: gradle-home-v2|Linux-X64|test[9b0888009268d7265f5c250b64ebe140]-75f8e8f436999bad35436e99a153f7766079cbd9
+2026-09-27T03:56:11.9451274Z Received 625262 of 625262 (100.0%), 1.2 MBs/sec
+2026-09-27T03:56:11.9451927Z Cache Size: ~1 MB (625262 B)
+2026-09-27T03:56:11.9510542Z [command]/usr/bin/tar -xf /home/runner/work/_temp/7797c54a-0d3f-4e1a-9307-6a29ff07aabb/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T03:56:12.0201117Z Cache restored successfully
+2026-09-27T03:56:12.0204771Z Restored cache entry with key gradle-home-v2|Linux-X64|test[9b0888009268d7265f5c250b64ebe140]-091cae25acc3c986c5a98d917c667428482f88c7 in 985ms
+2026-09-27T03:56:12.2267476Z Cache hit for: gradle-dependencies-v2-e373f0a6a02c3c8dfd9c3595bff49b55
+2026-09-27T03:56:12.2276853Z Cache hit for: gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-27T03:56:12.2278973Z Cache hit for: gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-27T03:56:12.2286187Z Cache hit for: gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-27T03:56:12.2291072Z Cache hit for: gradle-transforms-v2-a77182a4ed742d0b841c59266ec6e307
+2026-09-27T03:56:12.2296380Z Cache hit for: gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-27T03:56:12.2403165Z Cache hit for: gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-27T03:56:12.7382784Z Received 60281 of 60281 (100.0%), 0.2 MBs/sec
+2026-09-27T03:56:12.7383229Z Cache Size: ~0 MB (60281 B)
+2026-09-27T03:56:12.7395486Z Received 101824 of 101824 (100.0%), 0.3 MBs/sec
+2026-09-27T03:56:12.7395855Z Cache Size: ~0 MB (101824 B)
+2026-09-27T03:56:12.7405629Z [command]/usr/bin/tar -xf /home/runner/work/_temp/81a85d42-f4b5-46bd-894a-933096c59a2d/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T03:56:12.7443182Z [command]/usr/bin/tar -xf /home/runner/work/_temp/a32d65ce-41e7-43fb-be70-0c12df681948/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T03:56:12.7489127Z Cache restored successfully
+2026-09-27T03:56:12.7491198Z Restored cache entry with key gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19 in 728ms
+2026-09-27T03:56:12.8600210Z Cache restored successfully
+2026-09-27T03:56:12.8601634Z Restored cache entry with key gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114 in 838ms
+2026-09-27T03:56:12.8937293Z Received 338388 of 338388 (100.0%), 0.7 MBs/sec
+2026-09-27T03:56:12.8937821Z Cache Size: ~0 MB (338388 B)
+2026-09-27T03:56:12.8959375Z [command]/usr/bin/tar -xf /home/runner/work/_temp/1364a9fe-c2e9-482c-941e-70b6cd5af67a/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T03:56:13.0085765Z Cache restored successfully
+2026-09-27T03:56:13.0092078Z Restored cache entry with key gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a in 988ms
+2026-09-27T03:56:13.4281434Z Received 29575761 of 42158673 (70.2%), 28.2 MBs/sec
+2026-09-27T03:56:13.4401525Z Received 37748736 of 235371942 (16.0%), 36.0 MBs/sec
+2026-09-27T03:56:13.4510241Z Received 37748736 of 139934591 (27.0%), 36.0 MBs/sec
+2026-09-27T03:56:13.4585212Z Received 4194304 of 50868830 (8.2%), 4.0 MBs/sec
+2026-09-27T03:56:13.5719926Z Received 42158673 of 42158673 (100.0%), 35.1 MBs/sec
+2026-09-27T03:56:13.5721347Z Cache Size: ~40 MB (42158673 B)
+2026-09-27T03:56:13.5997749Z [command]/usr/bin/tar -xf /home/runner/work/_temp/9e94cf0b-f085-4d7b-b76f-ba42a05d6aa4/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T03:56:13.8612253Z Received 50868830 of 50868830 (100.0%), 34.6 MBs/sec
+2026-09-27T03:56:13.8613155Z Cache Size: ~49 MB (50868830 B)
+2026-09-27T03:56:13.8980370Z Cache restored successfully
+2026-09-27T03:56:13.8981252Z [command]/usr/bin/tar -xf /home/runner/work/_temp/c04a1dcc-d292-4ebd-a0df-3cf7783d1b1c/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T03:56:13.9027001Z Restored cache entry with key gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de in 1882ms
+2026-09-27T03:56:14.2979732Z Received 139934591 of 139934591 (100.0%), 72.3 MBs/sec
+2026-09-27T03:56:14.2980712Z Cache Size: ~133 MB (139934591 B)
+2026-09-27T03:56:14.3068733Z Cache restored successfully
+2026-09-27T03:56:14.3122854Z Restored cache entry with key gradle-transforms-v2-a77182a4ed742d0b841c59266ec6e307 in 2287ms
+2026-09-27T03:56:14.3130422Z [command]/usr/bin/tar -xf /home/runner/work/_temp/4e058969-b832-43bf-9068-33350a3d4abc/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T03:56:14.4396759Z Received 134217728 of 235371942 (57.0%), 64.0 MBs/sec
+2026-09-27T03:56:14.5082195Z Cache restored successfully
+2026-09-27T03:56:14.5159878Z Restored cache entry with key gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60 in 2494ms
+2026-09-27T03:56:15.0705386Z Received 235371942 of 235371942 (100.0%), 85.3 MBs/sec
+2026-09-27T03:56:15.0705969Z Cache Size: ~224 MB (235371942 B)
+2026-09-27T03:56:15.0770742Z [command]/usr/bin/tar -xf /home/runner/work/_temp/9bb3f43f-851e-4e27-9b61-30c1adbcdc96/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T03:56:15.3235924Z Cache restored successfully
+2026-09-27T03:56:15.3330845Z Restored cache entry with key gradle-dependencies-v2-e373f0a6a02c3c8dfd9c3595bff49b55 in 3311ms
+2026-09-27T03:56:15.3338032Z ##[endgroup]
+2026-09-27T03:56:15.5845580Z ##[group]All Gradle Wrapper jars are valid
+2026-09-27T03:56:15.5871391Z ✓ Found known Gradle Wrapper JAR files:
+2026-09-27T03:56:15.5872921Z   497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7 gradle/wrapper/gradle-wrapper.jar
+2026-09-27T03:56:15.5873978Z ##[endgroup]
+2026-09-27T03:56:15.6075627Z ##[group]Run actions/cache@v4
+2026-09-27T03:56:15.6075908Z with:
+2026-09-27T03:56:15.6076282Z   path: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-27T03:56:15.6076829Z   key: gradle-build-cache-Linux-content-091cae25acc3c986c5a98d917c667428482f88c7
+2026-09-27T03:56:15.6077336Z   restore-keys: gradle-build-cache-Linux-content-
+gradle-build-cache-Linux-
+
+2026-09-27T03:56:15.6077739Z   enableCrossOsArchive: false
+2026-09-27T03:56:15.6078003Z   fail-on-cache-miss: false
+2026-09-27T03:56:15.6078244Z   lookup-only: false
+2026-09-27T03:56:15.6078471Z   save-always: false
+2026-09-27T03:56:15.6078675Z env:
+2026-09-27T03:56:15.6079065Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-27T03:56:15.6079595Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T03:56:15.6080058Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T03:56:15.6080406Z   MAVEN_ARGS: -ntp
+2026-09-27T03:56:15.6080656Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-27T03:56:15.6080943Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-27T03:56:15.6081230Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-27T03:56:15.6081645Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-27T03:56:15.6082075Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-27T03:56:15.6082387Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-27T03:56:15.6082654Z ##[endgroup]
+2026-09-27T03:56:15.6923652Z (node:2164) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-09-27T03:56:15.6924383Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-09-27T03:56:15.9185933Z Cache hit for restore-key: gradle-build-cache-Linux-content-75f8e8f436999bad35436e99a153f7766079cbd9
+2026-09-27T03:56:15.9298261Z (node:2164) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-09-27T03:56:17.1249339Z Received 37748736 of 109403011 (34.5%), 36.0 MBs/sec
+2026-09-27T03:56:17.5491336Z Received 109403011 of 109403011 (100.0%), 73.3 MBs/sec
+2026-09-27T03:56:17.5492054Z Cache Size: ~104 MB (109403011 B)
+2026-09-27T03:56:17.5581277Z [command]/usr/bin/tar -xf /home/runner/work/_temp/7db436c4-02bd-4ad2-af65-1d4f5b95e456/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T03:56:17.6737082Z Cache restored successfully
+2026-09-27T03:56:17.6844009Z Cache restored from key: gradle-build-cache-Linux-content-75f8e8f436999bad35436e99a153f7766079cbd9
+2026-09-27T03:56:17.6954761Z ##[group]Run set -uo pipefail
+2026-09-27T03:56:17.6955140Z [36;1mset -uo pipefail[0m
+2026-09-27T03:56:17.6955407Z [36;1mJPS="${JAVA_HOME}/bin/jps"[0m
+2026-09-27T03:56:17.6955684Z [36;1mJSTACK="${JAVA_HOME}/bin/jstack"[0m
+2026-09-27T03:56:17.6955964Z [36;1mWATCHDOG_TIMEOUT=$((20 * 60))[0m
+2026-09-27T03:56:17.6956228Z [36;1m[0m
+2026-09-27T03:56:17.6956531Z [36;1m./gradlew :mtg-sdk:test :mtg-sets:test :ai:test :mtg-search:test &[0m
+2026-09-27T03:56:17.6956881Z [36;1mBUILD_PID=$![0m
+2026-09-27T03:56:17.6957108Z [36;1m[0m
+2026-09-27T03:56:17.6957306Z [36;1m([0m
+2026-09-27T03:56:17.6957532Z [36;1m  sleep "${WATCHDOG_TIMEOUT}"[0m
+2026-09-27T03:56:17.6958017Z [36;1m  echo "::error::Tests exceeded ${WATCHDOG_TIMEOUT}s — assuming the forked test-worker hang. Dumping JVM threads."[0m
+2026-09-27T03:56:17.6958510Z [36;1m  for pid in $("${JPS}" -q); do[0m
+2026-09-27T03:56:17.6958837Z [36;1m    echo "===================== jstack ${pid} ====================="[0m
+2026-09-27T03:56:17.6959233Z [36;1m    "${JSTACK}" -l "${pid}" 2>&1 || true[0m
+2026-09-27T03:56:17.6959523Z [36;1m  done[0m
+2026-09-27T03:56:17.6959751Z [36;1m  echo "::error::Killing hung run."[0m
+2026-09-27T03:56:17.6960060Z [36;1m  kill -9 "${BUILD_PID}" 2>/dev/null || true[0m
+2026-09-27T03:56:17.6960347Z [36;1m) &[0m
+2026-09-27T03:56:17.6971252Z [36;1mWATCHDOG_PID=$![0m
+2026-09-27T03:56:17.6971510Z [36;1m[0m
+2026-09-27T03:56:17.6971720Z [36;1mwait "${BUILD_PID}"[0m
+2026-09-27T03:56:17.6971968Z [36;1mSTATUS=$?[0m
+2026-09-27T03:56:17.6972225Z [36;1mkill "${WATCHDOG_PID}" 2>/dev/null || true[0m
+2026-09-27T03:56:17.6972532Z [36;1mexit "${STATUS}"[0m
+2026-09-27T03:56:17.7450126Z shell: /usr/bin/bash -e {0}
+2026-09-27T03:56:17.7450407Z env:
+2026-09-27T03:56:17.7450827Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-27T03:56:17.7451364Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T03:56:17.7451824Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T03:56:17.7452170Z   MAVEN_ARGS: -ntp
+2026-09-27T03:56:17.7452416Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-27T03:56:17.7452719Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-27T03:56:17.7453001Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-27T03:56:17.7453546Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-27T03:56:17.7453979Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-27T03:56:17.7454277Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-27T03:56:17.7454551Z ##[endgroup]
+2026-09-27T03:56:18.6314782Z Starting a Gradle Daemon (subsequent builds will be faster)
+2026-09-27T03:56:21.5289501Z Calculating task graph as no cached configuration is available for tasks: :mtg-sdk:test :mtg-sets:test :ai:test :mtg-search:test
+2026-09-27T03:56:28.2318602Z > Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:28.7301949Z > Task :buildSrc:generateExternalPluginSpecBuilders FROM-CACHE
+2026-09-27T03:56:28.7322118Z > Task :buildSrc:extractPrecompiledScriptPluginPlugins FROM-CACHE
+2026-09-27T03:56:28.9302179Z > Task :buildSrc:compilePluginsBlocks FROM-CACHE
+2026-09-27T03:56:28.9319604Z > Task :buildSrc:generatePrecompiledScriptPluginAccessors FROM-CACHE
+2026-09-27T03:56:28.9320565Z > Task :buildSrc:generateScriptPluginAdapters FROM-CACHE
+2026-09-27T03:56:29.1289008Z > Task :buildSrc:compileKotlin FROM-CACHE
+2026-09-27T03:56:29.1295349Z > Task :buildSrc:compileJava NO-SOURCE
+2026-09-27T03:56:29.1296055Z > Task :buildSrc:compileGroovy NO-SOURCE
+2026-09-27T03:56:29.1296958Z > Task :buildSrc:pluginDescriptors
+2026-09-27T03:56:29.1297392Z > Task :buildSrc:processResources
+2026-09-27T03:56:29.1297831Z > Task :buildSrc:classes
+2026-09-27T03:56:29.2294618Z > Task :buildSrc:jar
+2026-09-27T03:56:37.4289045Z > Task :mtg-sdk:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4290164Z > Task :mtg-sdk:processTestResources NO-SOURCE
+2026-09-27T03:56:37.4290700Z > Task :mtg-sdk:processResources NO-SOURCE
+2026-09-27T03:56:37.4292373Z > Task :mtg-sets:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4293531Z > Task :mtg-sets:core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4294591Z > Task :mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4295570Z > Task :mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4296443Z > Task :mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4297421Z > Task :mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4298342Z > Task :mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4299281Z > Task :mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4301245Z > Task :mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4306630Z > Task :mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4313682Z > Task :mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.4314595Z > Task :mtg-sdk:koverFindJar
+2026-09-27T03:56:37.4315080Z > Task :mtg-sets:1993-1999:processResources NO-SOURCE
+2026-09-27T03:56:37.4315623Z > Task :mtg-sets:2000-2002:processResources NO-SOURCE
+2026-09-27T03:56:37.4316123Z > Task :mtg-sets:2003-2007:processResources NO-SOURCE
+2026-09-27T03:56:37.4316641Z > Task :mtg-sets:2008-2016:processResources NO-SOURCE
+2026-09-27T03:56:37.4317191Z > Task :mtg-sets:2017-2022:processResources NO-SOURCE
+2026-09-27T03:56:37.4317691Z > Task :mtg-sets:2023:processResources NO-SOURCE
+2026-09-27T03:56:37.5304812Z > Task :mtg-sets:2024:processResources NO-SOURCE
+2026-09-27T03:56:37.5334677Z > Task :mtg-sets:processResources
+2026-09-27T03:56:37.5335341Z > Task :mtg-sets:2025:processResources NO-SOURCE
+2026-09-27T03:56:37.5335862Z > Task :mtg-sets:2026:processResources NO-SOURCE
+2026-09-27T03:56:37.5336403Z > Task :ai:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.5337100Z > Task :rules-engine:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.5337613Z > Task :mtg-sets:core:processResources
+2026-09-27T03:56:37.6294573Z > Task :rules-engine:processResources
+2026-09-27T03:56:37.6295115Z > Task :ai:processTestResources
+2026-09-27T03:56:37.6347927Z > Task :rules-engine:processTestFixturesResources NO-SOURCE
+2026-09-27T03:56:37.6374234Z > Task :mtg-search:checkKotlinGradlePluginConfigurationErrors SKIPPED
+2026-09-27T03:56:37.7324527Z > Task :mtg-search:compileKotlin FROM-CACHE
+2026-09-27T03:56:37.7354167Z > Task :mtg-search:compileJava NO-SOURCE
+2026-09-27T03:56:37.7355101Z > Task :ai:processResources
+2026-09-27T03:56:37.7386877Z > Task :mtg-search:processResources NO-SOURCE
+2026-09-27T03:56:37.7414016Z > Task :mtg-search:classes UP-TO-DATE
+2026-09-27T03:56:37.7443917Z > Task :mtg-search:processTestResources NO-SOURCE
+2026-09-27T03:56:37.7444585Z > Task :mtg-search:jar
+2026-09-27T03:56:37.8304823Z > Task :mtg-search:compileTestKotlin FROM-CACHE
+2026-09-27T03:56:37.8311787Z > Task :mtg-search:compileTestJava NO-SOURCE
+2026-09-27T03:56:37.8339820Z > Task :mtg-search:testClasses UP-TO-DATE
+2026-09-27T03:56:37.8340755Z > Task :mtg-sets:processTestResources
+2026-09-27T03:56:37.9287323Z > Task :mtg-search:test FROM-CACHE
+2026-09-27T03:57:07.4287569Z > Task :mtg-sdk:compileKotlin
+2026-09-27T03:57:19.7339372Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt:341:9 'when' is exhaustive so 'else' is redundant here.
+2026-09-27T03:57:22.0293995Z 
+2026-09-27T03:57:22.0324535Z > Task :mtg-sdk:compileJava NO-SOURCE
+2026-09-27T03:57:22.0344083Z > Task :mtg-sdk:classes UP-TO-DATE
+2026-09-27T03:57:23.2288023Z > Task :mtg-sdk:jar
+2026-09-27T03:57:26.0321113Z > Task :mtg-sets:core:compileKotlin
+2026-09-27T03:57:26.0344410Z > Task :mtg-sets:core:compileJava NO-SOURCE
+2026-09-27T03:57:26.0344962Z > Task :mtg-sets:core:classes
+2026-09-27T03:57:26.1286849Z > Task :mtg-sets:core:jar
+2026-09-27T03:57:35.6304974Z > Task :mtg-sdk:compileTestKotlin
+2026-09-27T03:57:35.7346314Z > Task :mtg-sdk:compileTestJava NO-SOURCE
+2026-09-27T03:57:35.7374397Z > Task :mtg-sdk:testClasses UP-TO-DATE
+2026-09-27T03:57:42.7294396Z 
+2026-09-27T03:57:42.7324465Z > Task :mtg-sdk:test
+2026-09-27T03:57:42.7376294Z 
+2026-09-27T03:57:42.7414870Z CounterTypeClientMirrorTest > the web client's CounterType mirror > It: parses a plausible enum out of enums.ts PASSED
+2026-09-27T03:57:42.7455385Z 
+2026-09-27T03:57:42.7504890Z CounterTypeClientMirrorTest > the web client's CounterType mirror > It: declares every engine counter type PASSED
+2026-09-27T03:57:42.7533774Z 
+2026-09-27T03:57:42.7586191Z CounterTypeClientMirrorTest > the web client's CounterType mirror > It: declares no counter type the engine does not have PASSED
+2026-09-27T03:57:42.8303917Z 
+2026-09-27T03:57:42.8328549Z CounterTypeClientMirrorTest > the web client's CounterType mirror > It: gives every counter type a display name PASSED
+2026-09-27T03:57:42.8363801Z 
+2026-09-27T03:57:42.8424877Z CounterTypeClientMirrorTest > the web client's CounterType mirror > It: names the counters that were invisible before PASSED
+2026-09-27T03:57:42.9318069Z 
+2026-09-27T03:57:42.9377204Z CounterTypeStatCoverageTest > CounterType.fromName over the stat counters > It: finds a plausible set of stat-named constants in Counters PASSED
+2026-09-27T03:57:42.9403937Z 
+2026-09-27T03:57:42.9475070Z CounterTypeStatCoverageTest > CounterType.fromName over the stat counters > It: resolves every stat counter name declared in Counters PASSED
+2026-09-27T03:57:42.9483716Z 
+2026-09-27T03:57:42.9575187Z CounterTypeStatCoverageTest > CounterType.fromName over the stat counters > It: resolves the asymmetric kinds that regressed PASSED
+2026-09-27T03:57:42.9633889Z 
+2026-09-27T03:57:42.9654968Z KeywordTest > Keyword.fromString > It: recognises the Fateful Bite ability word case-insensitively PASSED
+2026-09-27T03:57:43.0294051Z 
+2026-09-27T03:57:43.0364823Z KeywordTest > Keyword.fromString > It: returns null for unknown text PASSED
+2026-09-27T03:57:43.0373924Z 
+2026-09-27T03:57:43.0504399Z KeywordTest > Keyword.parseFromOracleText — ability-word prefix on an em-dash line > It: surfaces the new Fateful Bite ability word PASSED
+2026-09-27T03:57:43.0505282Z 
+2026-09-27T03:57:43.0545433Z KeywordTest > Keyword.parseFromOracleText — ability-word prefix on an em-dash line > It: surfaces the pre-existing Eerie ability word (regression guard for the em-dash branch) PASSED
+2026-09-27T03:57:43.0573744Z 
+2026-09-27T03:57:43.0635340Z KeywordTest > Keyword.parseFromOracleText — ability-word prefix on an em-dash line > It: does not invent a keyword when the em-dash prefix is not a known ability word PASSED
+2026-09-27T03:57:43.1333963Z 
+2026-09-27T03:57:43.1365625Z KeywordTest > Keyword.parseFromOracleText — ability-word prefix on an em-dash line > It: still parses comma-separated keyword lines alongside an ability-word prefix PASSED
+2026-09-27T03:57:43.2333932Z 
+2026-09-27T03:57:43.2334823Z ManaCostColoredSymbolCountTest > a mono-blue cost counts its one blue pip PASSED
+2026-09-27T03:57:43.2335416Z 
+2026-09-27T03:57:43.2336152Z ManaCostColoredSymbolCountTest > several blue pips are counted separately PASSED
+2026-09-27T03:57:43.2413911Z 
+2026-09-27T03:57:43.2444973Z ManaCostColoredSymbolCountTest > off-colour pips are not counted PASSED
+2026-09-27T03:57:43.2472161Z 
+2026-09-27T03:57:43.2530453Z ManaCostColoredSymbolCountTest > a generic-only cost counts nothing PASSED
+2026-09-27T03:57:43.2565962Z 
+2026-09-27T03:57:43.2619516Z ManaCostColoredSymbolCountTest > colorless {C} is not a colour and counts nothing PASSED
+2026-09-27T03:57:43.2646561Z 
+2026-09-27T03:57:43.2674788Z ManaCostColoredSymbolCountTest > {X} is generic (CR 107.4b) and counts nothing, whatever X was announced PASSED
+2026-09-27T03:57:43.2675416Z 
+2026-09-27T03:57:43.2677472Z ManaCostColoredSymbolCountTest > a spell with no mana cost at all counts nothing PASSED
+2026-09-27T03:57:43.3320753Z 
+2026-09-27T03:57:43.3375071Z ManaCostColoredSymbolCountTest > a hybrid {U/R} is a blue mana symbol PASSED
+2026-09-27T03:57:43.3396651Z 
+2026-09-27T03:57:43.3434896Z ManaCostColoredSymbolCountTest > the same hybrid {U/R} is also a red mana symbol PASSED
+2026-09-27T03:57:43.3491202Z 
+2026-09-27T03:57:43.3544936Z ManaCostColoredSymbolCountTest > a hybrid of two other colours is neither PASSED
+2026-09-27T03:57:43.3574012Z 
+2026-09-27T03:57:43.3621286Z ManaCostColoredSymbolCountTest > hybrids mix with plain pips PASSED
+2026-09-27T03:57:43.3653819Z 
+2026-09-27T03:57:43.3699936Z ManaCostColoredSymbolCountTest > a monocolored hybrid {2/U} is a blue mana symbol (CR 107.4e) PASSED
+2026-09-27T03:57:43.3743971Z 
+2026-09-27T03:57:43.3774766Z ManaCostColoredSymbolCountTest > a Phyrexian {U/P} is a blue mana symbol PASSED
+2026-09-27T03:57:43.3823868Z 
+2026-09-27T03:57:43.3884837Z ManaCostColoredSymbolCountTest > a Phyrexian pip of another colour is not blue PASSED
+2026-09-27T03:57:43.3908165Z 
+2026-09-27T03:57:43.3962596Z ManaCostColoredSymbolCountTest > asking for two colours counts a pip of either PASSED
+2026-09-27T03:57:43.3996280Z 
+2026-09-27T03:57:43.4064825Z ManaCostColoredSymbolCountTest > a hybrid that is both requested colours is still one symbol PASSED
+2026-09-27T03:57:43.4093020Z 
+2026-09-27T03:57:43.4124790Z ManaCostColoredSymbolCountTest > an empty colour set counts nothing PASSED
+2026-09-27T03:57:43.4153721Z 
+2026-09-27T03:57:43.4214809Z ManaCostColoredSymbolCountTest > ManaSymbol.colors: a hybrid is all of its component colours (CR 107.4e) PASSED
+2026-09-27T03:57:43.4227433Z 
+2026-09-27T03:57:43.4284604Z ManaCostColoredSymbolCountTest > ManaSymbol.colors: a Phyrexian pip is its colour (CR 107.4f) PASSED
+2026-09-27T03:57:43.4343666Z 
+2026-09-27T03:57:43.4398435Z ManaCostColoredSymbolCountTest > ManaSymbol.colors: a twobrid is its colour, not colourless PASSED
+2026-09-27T03:57:43.4423627Z 
+2026-09-27T03:57:43.4424230Z ManaCostColoredSymbolCountTest > ManaSymbol.colors: generic, colorless and X are no colour PASSED
+2026-09-27T03:57:43.4424776Z 
+2026-09-27T03:57:43.4515168Z ManaCostColoredSymbolCountTest > ManaCost.colors reads the same symbol rule — hybrids and Phyrexians colour the object PASSED
+2026-09-27T03:57:43.4543859Z 
+2026-09-27T03:57:43.4574480Z ManaCostReduceFloorTest > {2} reduced by {2} floored at 1 stays {1}, never {0} PASSED
+2026-09-27T03:57:43.4603773Z 
+2026-09-27T03:57:43.4604737Z ManaCostReduceFloorTest > {1} reduced by {2} floored at 1 is unchanged PASSED
+2026-09-27T03:57:43.4627823Z 
+2026-09-27T03:57:43.4654364Z ManaCostReduceFloorTest > {6} reduced by {2} floored at 1 lands well above the floor at {4} PASSED
+2026-09-27T03:57:43.4683688Z 
+2026-09-27T03:57:43.4714445Z ManaCostReduceFloorTest > {3}{U} reduced by {2} floored at 1 becomes {1}{U} (colored pip untouched) PASSED
+2026-09-27T03:57:43.4715298Z 
+2026-09-27T03:57:43.4744928Z ManaCostReduceFloorTest > {2}{U} reduced by {2} floored at 1 becomes {U} — the floor is already met by the colored pip PASSED
+2026-09-27T03:57:43.4773684Z 
+2026-09-27T03:57:43.4774333Z ManaCostReduceFloorTest > {1}{U} reduced by {2} floored at 1 becomes {U} (never drops the colored pip) PASSED
+2026-09-27T03:57:43.4774922Z 
+2026-09-27T03:57:43.4775536Z ManaCostReduceFloorTest > {U} reduced by {2} floored at 1 is unchanged — no generic to remove PASSED
+2026-09-27T03:57:43.4776058Z 
+2026-09-27T03:57:43.4776517Z ManaCostReduceFloorTest > {3}{U} reduced by {5} floored at 2 keeps {1}{U} (colored covers 1, generic floored at 1) PASSED
+2026-09-27T03:57:43.4777092Z 
+2026-09-27T03:57:43.4777500Z ManaCostReduceFloorTest > {2}{U} reduced by {2} floored at 0 becomes {U}, matching reduceGeneric PASSED
+2026-09-27T03:57:43.5322540Z 
+2026-09-27T03:57:43.5329120Z ManaCostSubtractTest > Brave Brawler {4}{W} reduced by {1}{W} is {3} PASSED
+2026-09-27T03:57:43.5353918Z 
+2026-09-27T03:57:43.5384511Z ManaCostSubtractTest > Captain Marvel {5}{W}{W} reduced by {3}{W}{W} is {2} PASSED
+2026-09-27T03:57:43.5413703Z 
+2026-09-27T03:57:43.5434359Z ManaCostSubtractTest > Nick Fury {W}{U}{B}{R}{G} reduced by {W} is {U}{B}{R}{G} PASSED
+2026-09-27T03:57:43.5443734Z 
+2026-09-27T03:57:43.5474159Z ManaCostSubtractTest > Aerial Doombot {5}{U} reduced by {U} is {5} PASSED
+2026-09-27T03:57:43.5493908Z 
+2026-09-27T03:57:43.5524205Z ManaCostSubtractTest > Bold Biochemist {5}{U} reduced by {1}{U} is {4} PASSED
+2026-09-27T03:57:43.5533706Z 
+2026-09-27T03:57:43.5564318Z ManaCostSubtractTest > Kang {5}{U}{U}{U} reduced by {2}{U}{U} is {3}{U} PASSED
+2026-09-27T03:57:43.5593833Z 
+2026-09-27T03:57:43.5608805Z ManaCostSubtractTest > Ninja of the Hand {4}{B} reduced by {2}{B} is {2} PASSED
+2026-09-27T03:57:43.5623882Z 
+2026-09-27T03:57:43.5654415Z ManaCostSubtractTest > Unliving Legionnaire {5}{B}{B} reduced by {3}{B} is {2}{B} PASSED
+2026-09-27T03:57:43.5655946Z 
+2026-09-27T03:57:43.5684346Z ManaCostSubtractTest > Human Torch {6}{R} reduced by {2}{R} is {4} PASSED
+2026-09-27T03:57:43.5713599Z 
+2026-09-27T03:57:43.5744384Z ManaCostSubtractTest > Loki Laufeyson {4}{R} reduced by {1}{R} is {3} PASSED
+2026-09-27T03:57:43.5749117Z 
+2026-09-27T03:57:43.5774330Z ManaCostSubtractTest > Quicksilver {4}{R} reduced by {R} is {4} PASSED
+2026-09-27T03:57:43.5803645Z 
+2026-09-27T03:57:43.5819360Z ManaCostSubtractTest > Volcanic Villain {5}{R} reduced by {2}{R} is {3} PASSED
+2026-09-27T03:57:43.5833780Z 
+2026-09-27T03:57:43.5864282Z ManaCostSubtractTest > Wonder Man {5}{R}{R} reduced by {3}{R}{R} is {2} PASSED
+2026-09-27T03:57:43.5893874Z 
+2026-09-27T03:57:43.5924398Z ManaCostSubtractTest > Hercules {4}{G} reduced by {2}{G} is {2} PASSED
+2026-09-27T03:57:43.6317621Z 
+2026-09-27T03:57:43.6325812Z ManaCostSubtractTest > Pet Avengers {6}{G} reduced by {3}{G} is {3} PASSED
+2026-09-27T03:57:43.6363214Z 
+2026-09-27T03:57:43.6364196Z ManaCostSubtractTest > Serpent Specialist {3}{G} reduced by {G} is {3} PASSED
+2026-09-27T03:57:43.6364791Z 
+2026-09-27T03:57:43.6365215Z ManaCostSubtractTest > She-Hulk {4}{G}{G} reduced by {3}{G} is {1}{G} PASSED
+2026-09-27T03:57:43.6366085Z 
+2026-09-27T03:57:43.6366525Z ManaCostSubtractTest > White Tiger {5}{G} reduced by {1}{G} is {4} PASSED
+2026-09-27T03:57:43.6367023Z 
+2026-09-27T03:57:43.6367413Z ManaCostSubtractTest > Hulk {6}{R}{G} reduced by {3}{R}{G} is {3} PASSED
+2026-09-27T03:57:43.6367927Z 
+2026-09-27T03:57:43.6368307Z ManaCostSubtractTest > Ultron Drone {6} reduced by {3} is {3} PASSED
+2026-09-27T03:57:43.6368809Z 
+2026-09-27T03:57:43.6369186Z ManaCostSubtractTest > Viv Vision {7} reduced by {3} is {4} PASSED
+2026-09-27T03:57:43.6369693Z 
+2026-09-27T03:57:43.6370128Z ManaCostSubtractTest > Stature {X}{U}{U} reduced by {U} keeps the X: {X}{U} PASSED
+2026-09-27T03:57:43.6396955Z 
+2026-09-27T03:57:43.6420505Z ManaCostSubtractTest > Abomination {5}{R/G}{R/G} reduced by {3}{R/G} is {2}{R/G} — hybrid cancels hybrid PASSED
+2026-09-27T03:57:43.6436200Z 
+2026-09-27T03:57:43.6457588Z ManaCostSubtractTest > Thanos {C}{W}{U}{B}{R}{G} reduced by {R}{W}{B} is {C}{U}{G} — colorless pip survives PASSED
+2026-09-27T03:57:43.6483972Z 
+2026-09-27T03:57:43.6514350Z ManaCostSubtractTest > generic reduction never touches a colored pip PASSED
+2026-09-27T03:57:43.6518836Z 
+2026-09-27T03:57:43.6544246Z ManaCostSubtractTest > generic reduction never touches a colorless pip PASSED
+2026-09-27T03:57:43.6579097Z 
+2026-09-27T03:57:43.6604264Z ManaCostSubtractTest > a cost reduced to nothing is {0}, never negative (CR 118.7) PASSED
+2026-09-27T03:57:43.6627194Z 
+2026-09-27T03:57:43.6650117Z ManaCostSubtractTest > colored reduction with no matching pip reduces one generic instead PASSED
+2026-09-27T03:57:43.6666358Z 
+2026-09-27T03:57:43.6700246Z ManaCostSubtractTest > excess colored reduction spills the difference into generic (CR 118.7c) PASSED
+2026-09-27T03:57:43.6725534Z 
+2026-09-27T03:57:43.6754393Z ManaCostSubtractTest > colored spill is floored at zero rather than eating colored pips PASSED
+2026-09-27T03:57:43.6763831Z 
+2026-09-27T03:57:43.6794236Z ManaCostSubtractTest > colorless reduction cancels a colorless pip PASSED
+2026-09-27T03:57:43.6820480Z 
+2026-09-27T03:57:43.6824635Z ManaCostSubtractTest > excess colorless reduction spills into generic (CR 118.7d) PASSED
+2026-09-27T03:57:43.6843602Z 
+2026-09-27T03:57:43.6874308Z ManaCostSubtractTest > a colorless reduction does not pay a colored pip PASSED
+2026-09-27T03:57:43.6903771Z 
+2026-09-27T03:57:43.6934422Z ManaCostSubtractTest > an unmatched hybrid pays one of its colored halves PASSED
+2026-09-27T03:57:43.6935093Z 
+2026-09-27T03:57:43.6964290Z ManaCostSubtractTest > a hybrid prefers an identical hybrid over a colored half PASSED
+2026-09-27T03:57:43.6991057Z 
+2026-09-27T03:57:43.7028268Z ManaCostSubtractTest > hybrids are assigned to cancel as many pips as possible, not first-fit PASSED
+2026-09-27T03:57:43.7054561Z 
+2026-09-27T03:57:43.7070640Z ManaCostSubtractTest > a hybrid with neither half present spills one generic PASSED
+2026-09-27T03:57:43.7094530Z 
+2026-09-27T03:57:43.7096535Z ManaCostSubtractTest > a Phyrexian reduction pays a pip of its color (CR 118.7f) PASSED
+2026-09-27T03:57:43.7123749Z 
+2026-09-27T03:57:43.7154443Z ManaCostSubtractTest > a colored reduction pays a Phyrexian pip of the same color PASSED
+2026-09-27T03:57:43.7183688Z 
+2026-09-27T03:57:43.7184471Z ManaCostSubtractTest > a monocolored hybrid with no pip of its color spills its generic half PASSED
+2026-09-27T03:57:43.7185079Z 
+2026-09-27T03:57:43.7185598Z ManaCostSubtractTest > a monocolored hybrid takes its generic half when that half reduces more (CR 118.7e) PASSED
+2026-09-27T03:57:43.7186253Z 
+2026-09-27T03:57:43.7186767Z ManaCostSubtractTest > a monocolored hybrid takes its colored half when the generic half can't be spent in full PASSED
+2026-09-27T03:57:43.7218482Z 
+2026-09-27T03:57:43.7248361Z ManaCostSubtractTest > a monocolored hybrid takes its colored half when the cost has no generic at all PASSED
+2026-09-27T03:57:43.7263739Z 
+2026-09-27T03:57:43.7294916Z ManaCostSubtractTest > an X in the reduction contributes nothing — a permanent's printed X is 0 (CR 202.3b) PASSED
+2026-09-27T03:57:43.7323975Z 
+2026-09-27T03:57:43.7348840Z ManaCostSubtractTest > an X in the cost is never consumed by a colored reduction PASSED
+2026-09-27T03:57:43.7373880Z 
+2026-09-27T03:57:43.7390005Z ManaCostSubtractTest > subtracting nothing is identity PASSED
+2026-09-27T03:57:43.7413730Z 
+2026-09-27T03:57:43.7444336Z ManaCostSubtractTest > subtracting from nothing is nothing PASSED
+2026-09-27T03:57:43.7473740Z 
+2026-09-27T03:57:43.7474431Z ManaCostSubtractTest > subtracting a cost from itself is {0} PASSED
+2026-09-27T03:57:43.7496599Z 
+2026-09-27T03:57:43.7519105Z ManaCostWithXAsTest > {X}{G}{G} with X=2 becomes {2}{G}{G} PASSED
+2026-09-27T03:57:43.7522053Z 
+2026-09-27T03:57:43.7525108Z ManaCostWithXAsTest > {X}{2}{W} with X=3 folds into the printed generic as {5}{W} PASSED
+2026-09-27T03:57:43.7528109Z 
+2026-09-27T03:57:43.7530927Z ManaCostWithXAsTest > X=0 drops the symbol entirely rather than leaving {0} PASSED
+2026-09-27T03:57:43.7534112Z 
+2026-09-27T03:57:43.7534559Z ManaCostWithXAsTest > a bare {X} with X=0 is the empty cost PASSED
+2026-09-27T03:57:43.7535034Z 
+2026-09-27T03:57:43.7535915Z ManaCostWithXAsTest > each X symbol is charged separately — {X}{X}{R} with X=3 is {6}{R} PASSED
+2026-09-27T03:57:43.7537377Z 
+2026-09-27T03:57:43.7537861Z ManaCostWithXAsTest > a cost with no X is returned unchanged PASSED
+2026-09-27T03:57:43.7538438Z 
+2026-09-27T03:57:43.7538980Z ManaCostWithXAsTest > a negative X is clamped to 0 rather than underflowing the generic PASSED
+2026-09-27T03:57:43.7539641Z 
+2026-09-27T03:57:43.7540186Z ManaCostWithXAsTest > the substituted cost carries no X left for downstream payment PASSED
+2026-09-27T03:57:43.7540880Z 
+2026-09-27T03:57:43.7541320Z ManaCostWithXAsTest > mana value reflects the announced X PASSED
+2026-09-27T03:57:43.7542385Z 
+2026-09-27T03:57:43.7542895Z MonocolorHybridManaTest > parses a monocolored hybrid pip into MonocolorHybrid PASSED
+2026-09-27T03:57:43.7543735Z 
+2026-09-27T03:57:43.7544196Z MonocolorHybridManaTest > parses Gurmag Nightwatch's full cost PASSED
+2026-09-27T03:57:43.7544762Z 
+2026-09-27T03:57:43.7545611Z MonocolorHybridManaTest > does not confuse a monocolored hybrid with a two-color hybrid or phyrexian pip PASSED
+2026-09-27T03:57:43.7546369Z 
+2026-09-27T03:57:43.7546900Z MonocolorHybridManaTest > mana value of a monocolored hybrid is its generic component PASSED
+2026-09-27T03:57:43.7547565Z 
+2026-09-27T03:57:43.7548142Z MonocolorHybridManaTest > round-trips through toString and parse PASSED
+2026-09-27T03:57:43.7548921Z 
+2026-09-27T03:57:43.7549349Z MonocolorHybridManaTest > reports the colored side in the cost's colors PASSED
+2026-09-27T03:57:43.7609359Z 
+2026-09-27T03:57:43.7634753Z MonocolorHybridManaTest > relaxing colors treats the colored side as one generic mana PASSED
+2026-09-27T03:57:43.8332820Z 
+2026-09-27T03:57:43.8414778Z TypeLineTest > TypeLine.parse > It: preserves hyphens inside subtype names PASSED
+2026-09-27T03:57:43.8444557Z 
+2026-09-27T03:57:43.8495077Z TypeLineTest > TypeLine.parse > It: splits Urza's Power-Plant into two land types, keeping the hyphen PASSED
+2026-09-27T03:57:43.8539882Z 
+2026-09-27T03:57:43.8576097Z TypeLineTest > TypeLine.parse > It: still accepts an ASCII hyphen as a spaced type-subtype separator PASSED
+2026-09-27T03:57:43.9289377Z 
+2026-09-27T03:57:43.9318410Z CardDslTest > Basic Lands > It: should define Forest with implicit mana ability PASSED
+2026-09-27T03:57:43.9374013Z 
+2026-09-27T03:57:43.9424685Z CardDslTest > Vanilla Creatures > It: should define Grizzly Bears PASSED
+2026-09-27T03:57:43.9453785Z 
+2026-09-27T03:57:43.9454841Z CardDslTest > Creatures with Keywords > It: should define Serra Angel with flying and vigilance PASSED
+2026-09-27T03:57:44.0343704Z 
+2026-09-27T03:57:44.0351010Z CardDslTest > Creatures with Parameterized Keywords > It: should define a creature with Ward mana cost PASSED
+2026-09-27T03:57:44.0373867Z 
+2026-09-27T03:57:44.0404719Z CardDslTest > Creatures with Parameterized Keywords > It: should define a creature with Protection from color PASSED
+2026-09-27T03:57:44.0436635Z 
+2026-09-27T03:57:44.0462780Z CardDslTest > Creatures with Parameterized Keywords > It: should define a creature with Protection from multiple colors PASSED
+2026-09-27T03:57:44.0473802Z 
+2026-09-27T03:57:44.0498337Z CardDslTest > Creatures with Parameterized Keywords > It: should define a creature with Ward discard PASSED
+2026-09-27T03:57:44.1303956Z 
+2026-09-27T03:57:44.1327417Z CardDslTest > Creatures with Parameterized Keywords > It: should define a creature with Annihilator PASSED
+2026-09-27T03:57:44.1353750Z 
+2026-09-27T03:57:44.1378242Z CardDslTest > Creatures with Parameterized Keywords > It: should define a creature with multiple parameterized keywords PASSED
+2026-09-27T03:57:44.1413871Z 
+2026-09-27T03:57:44.1444609Z CardDslTest > Creatures with Parameterized Keywords > It: should define a creature with Bushido PASSED
+2026-09-27T03:57:44.1473680Z 
+2026-09-27T03:57:44.1496336Z CardDslTest > Creatures with Parameterized Keywords > It: should define an artifact creature with Modular PASSED
+2026-09-27T03:57:44.1555433Z 
+2026-09-27T03:57:44.1594873Z CardDslTest > Creatures with Parameterized Keywords > It: should define a creature with Afflict PASSED
+2026-09-27T03:57:44.1603711Z 
+2026-09-27T03:57:44.1604302Z CardDslTest > Creatures with Parameterized Keywords > It: should define a vehicle with Crew PASSED
+2026-09-27T03:57:44.1604892Z 
+2026-09-27T03:57:44.1605319Z CardDslTest > Creatures with Parameterized Keywords > It: should define a card with Cycling PASSED
+2026-09-27T03:57:44.7303951Z 
+2026-09-27T03:57:44.7364908Z CardDslTest > Creatures with Triggered Abilities > It: should define Flametongue Kavu with ETB trigger PASSED
+2026-09-27T03:57:44.8294128Z 
+2026-09-27T03:57:44.8334816Z CardDslTest > Creatures with Triggered Abilities > It: should define Thragtusk with multiple triggers PASSED
+2026-09-27T03:57:44.8393809Z 
+2026-09-27T03:57:44.8454713Z CardDslTest > Instants and Sorceries > It: should define Lightning Bolt with targeted damage PASSED
+2026-09-27T03:57:44.8513756Z 
+2026-09-27T03:57:44.8544470Z CardDslTest > Instants and Sorceries > It: should define Divination drawing cards PASSED
+2026-09-27T03:57:44.9324339Z 
+2026-09-27T03:57:44.9325168Z CardDslTest > Artifacts > It: should define Sol Ring with mana ability PASSED
+2026-09-27T03:57:44.9325673Z 
+2026-09-27T03:57:44.9326058Z CardDslTest > Enchantments > It: should define Glorious Anthem with static ability PASSED
+2026-09-27T03:57:44.9326561Z 
+2026-09-27T03:57:44.9326903Z CardDslTest > Enchantments > It: should define Rancor as an Aura with recursion PASSED
+2026-09-27T03:57:45.0313947Z 
+2026-09-27T03:57:45.0364861Z CardDslTest > Equipment > It: should define Loxodon Warhammer with equip ability PASSED
+2026-09-27T03:57:45.1353939Z 
+2026-09-27T03:57:45.1384746Z CardDslTest > Planeswalkers > It: should define Liliana of the Veil with loyalty abilities PASSED
+2026-09-27T03:57:45.1413777Z 
+2026-09-27T03:57:45.1444816Z CardDslTest > Advanced Sequencing > It: should define Compulsive Research with composite effect PASSED
+2026-09-27T03:57:45.3288012Z 
+2026-09-27T03:57:45.3354783Z CardDslTest > Conditional Spells > It: should define Gift of Estates with condition PASSED
+2026-09-27T03:57:45.4286292Z 
+2026-09-27T03:57:45.4332733Z CardDslTest > Named Target Binding > It: should define Electrolyze with two named targets PASSED
+2026-09-27T03:57:45.4371923Z 
+2026-09-27T03:57:45.4404688Z CardDslTest > Modal Spells with Per-Mode Targeting > It: should define Cryptic Command with mode-specific targets PASSED
+2026-09-27T03:57:45.5329236Z 
+2026-09-27T03:57:45.5368179Z CardDslTest > Modal Spells with Per-Mode Targeting > It: should define Charm with simple mode choices PASSED
+2026-09-27T03:57:45.5393991Z 
+2026-09-27T03:57:45.5414795Z CardDslTest > Dynamic Creature Stats > It: should define Tarmogoyf with dynamic power and toughness PASSED
+2026-09-27T03:57:45.5435416Z 
+2026-09-27T03:57:45.5454681Z CardDslTest > Dynamic Creature Stats > It: should define Lhurgoyf with creature-count based stats PASSED
+2026-09-27T03:57:45.5484003Z 
+2026-09-27T03:57:45.5485404Z CardDslTest > Dynamic Creature Stats > It: should define a power-only CDA, leaving toughness printed PASSED
+2026-09-27T03:57:46.2303960Z 
+2026-09-27T03:57:46.2353155Z CardDslTest > Dynamic Creature Stats > It: should define power and toughness from two different dynamic sources PASSED
+2026-09-27T03:57:46.2389075Z 
+2026-09-27T03:57:46.2430959Z CardDslTest > Dynamic Creature Stats > It: dynamicStats composes dynamicPower and dynamicToughness over one source PASSED
+2026-09-27T03:57:46.2475018Z 
+2026-09-27T03:57:46.2524774Z CardDslTest > Replacement Effects > It: should define Doubling Season with token doubling PASSED
+2026-09-27T03:57:46.2547352Z 
+2026-09-27T03:57:46.2601521Z CardDslTest > Replacement Effects > It: should have compositional ReplacementEffect types available PASSED
+2026-09-27T03:57:46.2673929Z 
+2026-09-27T03:57:46.2685862Z CardDslTest > Replacement Effects > It: should support CardScript with replacement effects PASSED
+2026-09-27T03:57:46.3330902Z 
+2026-09-27T03:57:46.3368719Z CardDslTest > Optional Cost Effects > It: should support may-pay pattern PASSED
+2026-09-27T03:57:46.3395362Z 
+2026-09-27T03:57:46.3452344Z CardDslTest > Optional Cost Effects > It: should support may-pay-or-else pattern PASSED
+2026-09-27T03:57:46.3515881Z 
+2026-09-27T03:57:46.3537832Z CardDslTest > Optional Cost Effects > It: should support reflexive triggers PASSED
+2026-09-27T03:57:46.3575869Z 
+2026-09-27T03:57:46.3637853Z CardDslTest > Conditional Static Abilities > It: should define Karakyk Guardian with conditional hexproof PASSED
+2026-09-27T03:57:46.3683844Z 
+2026-09-27T03:57:46.3725080Z CardDslTest > Conditional Static Abilities > It: should support conditional stat bonuses PASSED
+2026-09-27T03:57:46.3773852Z 
+2026-09-27T03:57:46.3815707Z CardDslTest > Conditional Static Abilities > It: should support conditional blocking restrictions PASSED
+2026-09-27T03:57:46.4303921Z 
+2026-09-27T03:57:46.4400533Z CardDslTest > Conditional Static Abilities > It: should describe conditional abilities correctly PASSED
+2026-09-27T03:57:46.4469287Z 
+2026-09-27T03:57:46.4515329Z CardDslTest > Split-layout cards (Rooms) > It: should default to NORMAL layout with no faces for ordinary cards PASSED
+2026-09-27T03:57:46.4603921Z 
+2026-09-27T03:57:46.4653523Z CardDslTest > Split-layout cards (Rooms) > It: should define a SPLIT card with two faces and per-face abilities PASSED
+2026-09-27T03:57:46.4736834Z 
+2026-09-27T03:57:46.4774777Z CardDslTest > Split-layout cards (Rooms) > It: should reject SPLIT layout with fewer than two faces PASSED
+2026-09-27T03:57:46.4863851Z 
+2026-09-27T03:57:46.4923881Z CardDslTest > Split-layout cards (Rooms) > It: should reject blocks(attackerFilter) with a non-SELF binding PASSED
+2026-09-27T03:57:46.5293915Z 
+2026-09-27T03:57:46.5354833Z CreateEldraziScionTest > fixed count delegates to the authoritative predefined token PASSED
+2026-09-27T03:57:46.5387373Z 
+2026-09-27T03:57:46.5414809Z CreateEldraziScionTest > dynamic count delegates to the authoritative predefined token PASSED
+2026-09-27T03:57:46.5474145Z 
+2026-09-27T03:57:46.5528955Z CreateEldraziSpawnTest > dynamic count delegates to the predefined-token effect PASSED
+2026-09-27T03:57:46.5553863Z 
+2026-09-27T03:57:46.5590665Z DifferentCounterKindsConditionTest > AggregateBattlefield with DISTINCT_COUNTER_TYPES > It: renders an Oracle-style description PASSED
+2026-09-27T03:57:46.5613712Z 
+2026-09-27T03:57:46.5675242Z DifferentCounterKindsConditionTest > Conditions.DifferentCounterKindsAtLeast > It: defaults to creatures you control and compares against a fixed threshold with GTE PASSED
+2026-09-27T03:57:46.6317845Z 
+2026-09-27T03:57:46.6385213Z DifferentCounterKindsConditionTest > Conditions.DifferentCounterKindsAtLeast > It: is parameterized over the group filter PASSED
+2026-09-27T03:57:46.6423848Z 
+2026-09-27T03:57:46.6465148Z DomainDslTest > DynamicAmounts.domain > It: builds an AggregateBattlefield over lands you control with the basic-subtype aggregation PASSED
+2026-09-27T03:57:46.6527156Z 
+2026-09-27T03:57:46.6564213Z DomainDslTest > DynamicAmounts.domain > It: renders Oracle-style description PASSED
+2026-09-27T03:57:46.6603838Z 
+2026-09-27T03:57:46.6640299Z DomainDslTest > DynamicAmounts.domain > It: supports counting domain for an opponent PASSED
+2026-09-27T03:57:46.6694020Z 
+2026-09-27T03:57:46.6735183Z DomainDslTest > Conditions.BasicLandTypesAtLeast > It: compares domain against a fixed threshold with GTE PASSED
+2026-09-27T03:57:46.6784029Z 
+2026-09-27T03:57:46.6815305Z GiftDslTest > giftEffect maps each GiftKind to its CR-defined effect > It: CARD — the chosen player draws a card (CR 702.174e) PASSED
+2026-09-27T03:57:46.6858590Z 
+2026-09-27T03:57:46.6905405Z GiftDslTest > giftEffect maps each GiftKind to its CR-defined effect > It: FOOD — the chosen player creates a Food token (CR 702.174d) PASSED
+2026-09-27T03:57:46.6953866Z 
+2026-09-27T03:57:46.7015515Z GiftDslTest > giftEffect maps each GiftKind to its CR-defined effect > It: TREASURE — the chosen player creates a Treasure token (CR 702.174h) PASSED
+2026-09-27T03:57:46.7043525Z 
+2026-09-27T03:57:46.7045697Z GiftDslTest > giftEffect maps each GiftKind to its CR-defined effect > It: TAPPED_FISH — a tapped 1/1 blue Fish for the chosen player (CR 702.174f) PASSED
+2026-09-27T03:57:46.7049331Z 
+2026-09-27T03:57:46.7088984Z GiftDslTest > giftEffect maps each GiftKind to its CR-defined effect > It: OCTOPUS — an 8/8 blue Octopus for the chosen player (CR 702.174i) PASSED
+2026-09-27T03:57:46.7318120Z 
+2026-09-27T03:57:46.7389075Z GiftDslTest > giftEffect maps each GiftKind to its CR-defined effect > It: EXTRA_TURN — the chosen player takes an extra turn (CR 702.174g) PASSED
+2026-09-27T03:57:46.7454104Z 
+2026-09-27T03:57:46.7475073Z GiftDslTest > giftEffect maps each GiftKind to its CR-defined effect > It: covers every kind the rules list, so a new one can't ship unmapped PASSED
+2026-09-27T03:57:46.7534105Z 
+2026-09-27T03:57:46.7585562Z GiftDslTest > gift(kind) on a permanent > It: adds the keyword and exactly one derived enters ability (CR 702.174a–b) PASSED
+2026-09-27T03:57:46.7613754Z 
+2026-09-27T03:57:46.7674835Z GiftDslTest > gift(kind) on a permanent > It: gates the enters ability on the promise as an intervening if (CR 603.4) PASSED
+2026-09-27T03:57:46.7696011Z 
+2026-09-27T03:57:46.7744768Z GiftDslTest > gift(kind) on a permanent > It: closes with the GiftGiven marker so "whenever you give a gift" fires (CR 702.174c) PASSED
+2026-09-27T03:57:46.7745522Z 
+2026-09-27T03:57:46.7746002Z GiftDslTest > gift(kind) on a permanent > It: names the permanent the way the printed card does PASSED
+2026-09-27T03:57:46.7773850Z 
+2026-09-27T03:57:46.7804895Z GiftDslTest > gift(kind) on a permanent > It: falls back to the rule's own wording when the type line isn't set yet PASSED
+2026-09-27T03:57:48.6304156Z 
+2026-09-27T03:57:48.6325171Z GiftDslTest > the keyword is permanent-only > It: is rejected on an instant, which has no enters trigger to fire (CR 702.174b) PASSED
+2026-09-27T03:57:48.6344067Z 
+2026-09-27T03:57:48.6345014Z GiftDslTest > the keyword is permanent-only > It: accepts a permanent PASSED
+2026-09-27T03:57:48.6345682Z 
+2026-09-27T03:57:48.6346658Z PipelineBuilderTest > byte-identical serialization against hand-built trees > It: reproduces Lobotomy's hand-built pipeline exactly via name= overrides PASSED
+2026-09-27T03:57:48.6347709Z 
+2026-09-27T03:57:48.6348649Z PipelineBuilderTest > byte-identical serialization against hand-built trees > It: reproduces the Ancestral Memories shape (look at 7, keep 2, rest to graveyard) PASSED
+2026-09-27T03:57:48.7316955Z 
+2026-09-27T03:57:48.7352380Z PipelineBuilderTest > byte-identical serialization against hand-built trees > It: reproduces the branch-on-gathered idiom (draw-reveal, creature to hand, else graveyard) PASSED
+2026-09-27T03:57:48.7394014Z 
+2026-09-27T03:57:48.7457898Z PipelineBuilderTest > deterministic auto-generated keys > It: keys are verb-prefixed and positional per builder instance PASSED
+2026-09-27T03:57:48.7469147Z 
+2026-09-27T03:57:48.7494879Z PipelineBuilderTest > deterministic auto-generated keys > It: renaming the Kotlin val does not change the serialized tree PASSED
+2026-09-27T03:57:48.7554100Z 
+2026-09-27T03:57:48.7615210Z PipelineBuilderTest > deterministic auto-generated keys > It: nested branch scopes share the key counter, so keys never collide PASSED
+2026-09-27T03:57:48.7643983Z 
+2026-09-27T03:57:48.7674892Z PipelineBuilderTest > authoring-error prevention > It: rejects duplicate explicit slot names PASSED
+2026-09-27T03:57:48.7733873Z 
+2026-09-27T03:57:48.7785101Z PipelineBuilderTest > authoring-error prevention > It: rejects an empty pipeline PASSED
+2026-09-27T03:57:48.7823861Z 
+2026-09-27T03:57:48.7874813Z PipelineBuilderTest > authoring-error prevention > It: rejects an empty branch block PASSED
+2026-09-27T03:57:48.7933982Z 
+2026-09-27T03:57:48.7994803Z PipelineBuilderTest > authoring-error prevention > It: rejects chaining orElse twice PASSED
+2026-09-27T03:57:48.8043837Z 
+2026-09-27T03:57:48.8075072Z PipelineBuilderTest > secondary outputs are only serialized when requested > It: chooseExactly leaves storeRemainder null; chooseExactlySplit sets it PASSED
+2026-09-27T03:57:48.8075911Z 
+2026-09-27T03:57:48.8076491Z PipelineBuilderTest > cross-namespace handles and conditions > It: NumberSlot.amount reads back as a VariableReference PASSED
+2026-09-27T03:57:48.8290913Z 
+2026-09-27T03:57:48.8372166Z PipelineBuilderTest > cross-namespace handles and conditions > It: whenMatches builds a CollectionContainsMatch over the slot's key PASSED
+2026-09-27T03:57:48.8434217Z 
+2026-09-27T03:57:48.8525270Z PipelineBuilderTest > cross-namespace handles and conditions > It: forEachCaptured wires the three collections and exposes the per-controller tally PASSED
+2026-09-27T03:57:48.8526197Z 
+2026-09-27T03:57:48.8592520Z StationDslTest > station() builder > It: emits exactly one activated ability with the CR 702.184a cost and effect PASSED
+2026-09-27T03:57:48.9309789Z 
+2026-09-27T03:57:48.9346728Z StationDslTest > station() builder > It: round-trips through JSON PASSED
+2026-09-27T03:57:48.9381992Z 
+2026-09-27T03:57:48.9407237Z StationDslTest > Conditions.SourceCounterCountAtLeast > It: is the {N+} charge-counter threshold gate (CR 721.2a) PASSED
+2026-09-27T03:57:49.0297700Z 
+2026-09-27T03:57:49.0325632Z SwitchPowerToughnessTest > target and duration survive effect serialization PASSED
+2026-09-27T03:57:49.1296417Z 
+2026-09-27T03:57:49.1324998Z CommanderDraftBoosterTest > CommanderDraftBooster > It: produces packs of exactly 20 cards with a well-stocked pool PASSED
+2026-09-27T03:57:49.1353940Z 
+2026-09-27T03:57:49.1364788Z CommanderDraftBoosterTest > CommanderDraftBooster > It: ships exactly 2 legendary cards (creature or planeswalker) per pack PASSED
+2026-09-27T03:57:49.1405728Z 
+2026-09-27T03:57:49.1411245Z CommanderDraftBoosterTest > CommanderDraftBooster > It: ships 13 commons, 3 uncommons, and 1 non-legendary R/M slot when the pool has them PASSED
+2026-09-27T03:57:49.1434071Z 
+2026-09-27T03:57:49.1460595Z CommanderDraftBoosterTest > CommanderDraftBooster > It: falls back to Piper when the pool has no legendaries PASSED
+2026-09-27T03:57:49.1483992Z 
+2026-09-27T03:57:49.1507614Z CommanderDraftBoosterTest > CommanderDraftBooster > It: backfills with non-legendary uncommons when no legendaries and no Piper are available PASSED
+2026-09-27T03:57:49.1533825Z 
+2026-09-27T03:57:49.1544844Z CommanderDraftBoosterTest > CommanderDraftBooster > It: never duplicates a card name within a single pack PASSED
+2026-09-27T03:57:49.1574174Z 
+2026-09-27T03:57:49.1581348Z CommanderDraftBoosterTest > CommanderDraftBooster > It: accepts legendary planeswalkers in the legendary slots PASSED
+2026-09-27T03:57:49.2285773Z 
+2026-09-27T03:57:49.2287106Z CommanderDraftBoosterTest > CommanderDraftBooster > It: does not pull legendary creatures into the non-legendary rare-or-mythic slot PASSED
+2026-09-27T03:57:49.2313997Z 
+2026-09-27T03:57:49.2344950Z PlayBoosterTest > PlayBooster > It: produces packs of exactly 13 cards with a well-stocked pool PASSED
+2026-09-27T03:57:49.3293866Z 
+2026-09-27T03:57:49.3314874Z PlayBoosterTest > PlayBooster > It: ships 7 commons, 3 uncommons, 1 rare/mythic, and 2 wildcards PASSED
+2026-09-27T03:57:49.3367098Z 
+2026-09-27T03:57:49.3405421Z PlayBoosterTest > PlayBooster > It: never duplicates a card name within a single pack PASSED
+2026-09-27T03:57:49.4293940Z 
+2026-09-27T03:57:49.4325081Z PlayBoosterTest > PlayBooster > It: rolls roughly 20% of wildcards as rare or mythic, so some packs carry extra rares PASSED
+2026-09-27T03:57:49.4333830Z 
+2026-09-27T03:57:49.4364501Z PlayBoosterTest > PlayBooster > It: falls back gracefully when the pool has no mythics PASSED
+2026-09-27T03:57:49.4373869Z 
+2026-09-27T03:57:49.4404619Z PlayBoosterTest > PlayBooster > It: fills wildcard slots from other rarities when commons run dry PASSED
+2026-09-27T03:57:49.4423886Z 
+2026-09-27T03:57:49.4432412Z ColorIdentityTest > color identity from mana cost > It: vanilla colorless artifact has empty identity PASSED
+2026-09-27T03:57:49.4463766Z 
+2026-09-27T03:57:49.4484675Z ColorIdentityTest > color identity from mana cost > It: mono-coloured spell picks up its mana cost colour PASSED
+2026-09-27T03:57:49.4504777Z 
+2026-09-27T03:57:49.4536798Z ColorIdentityTest > color identity from mana cost > It: multi-coloured legendary picks up every mana-cost colour PASSED
+2026-09-27T03:57:49.4553734Z 
+2026-09-27T03:57:49.4578152Z ColorIdentityTest > color identity from oracle text > It: hybrid mana symbol contributes both colours PASSED
+2026-09-27T03:57:49.4583832Z 
+2026-09-27T03:57:49.4606399Z ColorIdentityTest > color identity from oracle text > It: Phyrexian mana symbol contributes its colour PASSED
+2026-09-27T03:57:49.4633806Z 
+2026-09-27T03:57:49.4664885Z ColorIdentityTest > color identity from oracle text > It: activated ability with colored cost adds that colour to identity PASSED
+2026-09-27T03:57:49.4693942Z 
+2026-09-27T03:57:49.4708509Z ColorIdentityTest > color identity from oracle text > It: multiple distinct colored symbols accumulate PASSED
+2026-09-27T03:57:49.4723784Z 
+2026-09-27T03:57:49.4750554Z ColorIdentityTest > color identity from oracle text > It: generic / X / colourless symbols do not contribute identity PASSED
+2026-09-27T03:57:49.4773788Z 
+2026-09-27T03:57:49.4805258Z ColorIdentityTest > color identity from basic land subtypes > It: basic Mountain has red identity from its Mountain subtype PASSED
+2026-09-27T03:57:49.4813667Z 
+2026-09-27T03:57:49.4834520Z ColorIdentityTest > color identity from basic land subtypes > It: basic Forest has green identity PASSED
+2026-09-27T03:57:49.4863814Z 
+2026-09-27T03:57:49.4894749Z ColorIdentityTest > color identity from basic land subtypes > It: dual land with two basic land subtypes contributes both colours PASSED
+2026-09-27T03:57:49.4913683Z 
+2026-09-27T03:57:49.4925401Z ColorIdentityTest > color identity from basic land subtypes > It: non-basic-land subtypes (e.g. Forest creature subtypes) — only land-subtype names match by string PASSED
+2026-09-27T03:57:49.4951426Z 
+2026-09-27T03:57:49.4974629Z ColorIdentityTest > identity combines all sources > It: Wastes-style colourless basic still has empty identity PASSED
+2026-09-27T03:57:49.5003944Z 
+2026-09-27T03:57:49.5034791Z ColorIdentityTest > identity combines all sources > It: card with cost and oracle in different colours unions them PASSED
+2026-09-27T03:57:49.5308070Z 
+2026-09-27T03:57:49.5328394Z CommanderEligibilityTest > legendary creature is a legal commander PASSED
+2026-09-27T03:57:49.5354050Z 
+2026-09-27T03:57:49.5364575Z CommanderEligibilityTest > non-legendary creature is not a legal commander by default PASSED
+2026-09-27T03:57:49.5393895Z 
+2026-09-27T03:57:49.5424719Z CommanderEligibilityTest > planeswalker without override clause is not a legal commander PASSED
+2026-09-27T03:57:49.5425501Z 
+2026-09-27T03:57:49.5454612Z CommanderEligibilityTest > planeswalker with 'can be your commander' clause is a legal commander PASSED
+2026-09-27T03:57:49.5484124Z 
+2026-09-27T03:57:49.5514714Z CommanderEligibilityTest > non-creature non-planeswalker with override clause is a legal commander PASSED
+2026-09-27T03:57:49.5515617Z 
+2026-09-27T03:57:49.5544429Z CommanderEligibilityTest > oracle text is matched case-insensitively PASSED
+2026-09-27T03:57:49.5573902Z 
+2026-09-27T03:57:49.5584495Z DevoidColorsTest > colors > It: a devoid card is colorless despite its coloured pips (CR 702.114a) PASSED
+2026-09-27T03:57:49.5603859Z 
+2026-09-27T03:57:49.5627343Z DevoidColorsTest > colors > It: the same card without devoid is its mana cost's colours PASSED
+2026-09-27T03:57:49.5653768Z 
+2026-09-27T03:57:49.5684931Z DevoidColorsTest > colors > It: reads devoid in either SDK spelling — the keyword set or a keyword ability PASSED
+2026-09-27T03:57:49.5686249Z 
+2026-09-27T03:57:49.5714595Z DevoidColorsTest > colors > It: overrides an explicit colour indicator too — the CDA says colorless, full stop PASSED
+2026-09-27T03:57:49.5743828Z 
+2026-09-27T03:57:49.5764267Z DevoidColorsTest > colors > It: leaves an already-colorless card alone PASSED
+2026-09-27T03:57:49.5773795Z 
+2026-09-27T03:57:49.5805146Z DevoidColorsTest > color identity (CR 903.4) > It: is untouched by devoid — a colorless card can still be blue-identity PASSED
+2026-09-27T03:57:49.5833936Z 
+2026-09-27T03:57:49.5854538Z DevoidColorsTest > color identity (CR 903.4) > It: still picks up colours from the rules text of a devoid card PASSED
+2026-09-27T03:57:49.5863909Z 
+2026-09-27T03:57:49.5888521Z GameRngTest > determinism > It: produces the same sequence from the same seed PASSED
+2026-09-27T03:57:49.5913850Z 
+2026-09-27T03:57:49.5944445Z GameRngTest > determinism > It: produces different sequences from different seeds PASSED
+2026-09-27T03:57:49.6286233Z 
+2026-09-27T03:57:49.6294969Z GameRngTest > determinism > It: never mutates the receiver — re-drawing yields the same value PASSED
+2026-09-27T03:57:49.6326983Z 
+2026-09-27T03:57:49.6344543Z GameRngTest > nextInt > It: stays within [0, bound) PASSED
+2026-09-27T03:57:49.6373861Z 
+2026-09-27T03:57:49.6404574Z GameRngTest > nextInt > It: rejects a non-positive bound PASSED
+2026-09-27T03:57:49.7296568Z 
+2026-09-27T03:57:49.7325595Z GameRngTest > nextInt > It: is roughly uniform across buckets PASSED
+2026-09-27T03:57:49.7333684Z 
+2026-09-27T03:57:49.7384507Z GameRngTest > nextDouble > It: stays within [0, 1) PASSED
+2026-09-27T03:57:49.7385128Z 
+2026-09-27T03:57:49.7415265Z GameRngTest > shuffle > It: is a permutation — preserves the multiset of elements PASSED
+2026-09-27T03:57:49.7443787Z 
+2026-09-27T03:57:49.7444333Z GameRngTest > shuffle > It: does not mutate the input list PASSED
+2026-09-27T03:57:49.7444781Z 
+2026-09-27T03:57:49.7445080Z GameRngTest > shuffle > It: is deterministic for a given seed PASSED
+2026-09-27T03:57:49.7473892Z 
+2026-09-27T03:57:49.7504464Z GameRngTest > shuffle > It: handles empty and singleton lists PASSED
+2026-09-27T03:57:49.7504926Z 
+2026-09-27T03:57:49.7505202Z GameRngTest > pick > It: returns an element of the list PASSED
+2026-09-27T03:57:49.7505581Z 
+2026-09-27T03:57:49.7505944Z GameRngTest > split > It: yields a child stream that diverges from the parent PASSED
+2026-09-27T03:57:49.7506464Z 
+2026-09-27T03:57:49.7507107Z GameRngTest > split > It: is deterministic — same seed splits the same way PASSED
+2026-09-27T03:57:49.8286719Z 
+2026-09-27T03:57:49.8304730Z GameRngTest > serialization > It: round-trips through JSON preserving stream position PASSED
+2026-09-27T03:57:49.8305292Z 
+2026-09-27T03:57:49.8305849Z MtgSetBoosterEraTest > MtgSet.boosterStrategy era default > It: uses the classic 11-common booster for pre-mythic sets PASSED
+2026-09-27T03:57:49.8306478Z 
+2026-09-27T03:57:49.8307004Z MtgSetBoosterEraTest > MtgSet.boosterStrategy era default > It: uses the 10-common booster from Shards of Alara through 2023 PASSED
+2026-09-27T03:57:49.8307630Z 
+2026-09-27T03:57:49.8308128Z MtgSetBoosterEraTest > MtgSet.boosterStrategy era default > It: uses the Play Booster from Murders at Karlov Manor onward PASSED
+2026-09-27T03:57:49.8308736Z 
+2026-09-27T03:57:49.8309311Z MtgSetBoosterEraTest > MtgSet.boosterStrategy era default > It: falls back to the classic booster when the release date is unknown PASSED
+2026-09-27T03:57:49.8310017Z 
+2026-09-27T03:57:49.8310303Z PrintingTest > PrintingRef > It: formats identifier as SET-CN PASSED
+2026-09-27T03:57:49.8310701Z 
+2026-09-27T03:57:49.8310981Z PrintingTest > PrintingRef > It: round-trips through JSON PASSED
+2026-09-27T03:57:49.8311368Z 
+2026-09-27T03:57:49.8311637Z PrintingTest > Printing > It: exposes a PrintingRef view PASSED
+2026-09-27T03:57:49.8312010Z 
+2026-09-27T03:57:49.8312344Z PrintingTest > Printing > It: round-trips through JSON with optional metadata PASSED
+2026-09-27T03:57:49.8312827Z 
+2026-09-27T03:57:49.8313120Z PrintingTest > Printing > It: treats showcase frame as alternate PASSED
+2026-09-27T03:57:49.9304122Z 
+2026-09-27T03:57:49.9308265Z PrintingTest > Printing > It: treats borderless border as alternate even without a showcase frame PASSED
+2026-09-27T03:57:49.9333941Z 
+2026-09-27T03:57:49.9356362Z PrintingTest > Printing > It: treats plain black-border / full-art printings as not alternate PASSED
+2026-09-27T03:57:49.9383867Z 
+2026-09-27T03:57:49.9384725Z PrintingTest > CardDefinition.withPrinting > It: overlays the printing's presentation onto the card PASSED
+2026-09-27T03:57:49.9413867Z 
+2026-09-27T03:57:49.9444750Z PrintingTest > CardDefinition.withPrinting > It: leaves oracle identity untouched PASSED
+2026-09-27T03:57:49.9473738Z 
+2026-09-27T03:57:49.9474785Z PrintingTest > CardDefinition.withPrinting > It: ignores a printing's back-face image on a single-faced card PASSED
+2026-09-27T03:57:49.9503863Z 
+2026-09-27T03:57:49.9534639Z PrintingTest > CardDefinition.withPrinting > It: overlays the back-face art on a genuine double-faced card PASSED
+2026-09-27T03:57:49.9557178Z 
+2026-09-27T03:57:49.9579536Z PrintingTest > CardDefinition.defaultPrintingRef > It: derives from setCode + metadata.collectorNumber PASSED
+2026-09-27T03:57:49.9600292Z 
+2026-09-27T03:57:49.9614515Z PrintingTest > CardDefinition.defaultPrintingRef > It: is null when setCode missing PASSED
+2026-09-27T03:57:49.9643651Z 
+2026-09-27T03:57:49.9658887Z PrintingTest > CardDefinition.defaultPrintingRef > It: is null when collector number missing PASSED
+2026-09-27T03:57:49.9673804Z 
+2026-09-27T03:57:49.9704781Z TokenPrintingTest > every row printed for one token identity is returned, in declaration order PASSED
+2026-09-27T03:57:49.9733850Z 
+2026-09-27T03:57:49.9760263Z TokenPrintingTest > bestMatch stays the first of those, for callers that only need one PASSED
+2026-09-27T03:57:49.9761127Z 
+2026-09-27T03:57:49.9785182Z TokenPrintingTest > a pinned identity wins outright — a same-name row for another token is not in the run PASSED
+2026-09-27T03:57:49.9813879Z 
+2026-09-27T03:57:49.9844783Z TokenPrintingTest > name-only rows stand in when nothing pins the identity PASSED
+2026-09-27T03:57:49.9873762Z 
+2026-09-27T03:57:49.9874972Z TokenPrintingTest > a token the set never printed matches nothing PASSED
+2026-09-27T03:57:49.9903869Z 
+2026-09-27T03:57:49.9934753Z TokenPrintingTest > a bare row matches every token of that name the set mints PASSED
+2026-09-27T03:57:49.9961371Z 
+2026-09-27T03:57:49.9962108Z TokenPrintingTest > names match across word order, since a token name is joined from an unordered set PASSED
+2026-09-27T03:57:50.0293908Z 
+2026-09-27T03:57:50.0325107Z CompareDescriptionTest > ComparisonOperator.phrase > It: renders every operator as an English comparative that follows an 'is' PASSED
+2026-09-27T03:57:50.0353897Z 
+2026-09-27T03:57:50.0354828Z CompareDescriptionTest > ComparisonOperator.phrase > It: keeps the mathematical symbols available for diagnostics PASSED
+2026-09-27T03:57:50.0378321Z 
+2026-09-27T03:57:50.0404656Z CompareDescriptionTest > Compare.description > It: reads as a sentence rather than an operator dump PASSED
+2026-09-27T03:57:50.0433852Z 
+2026-09-27T03:57:50.0465046Z CompareDescriptionTest > Compare.description > It: compares two dynamic amounts without leaking a symbol (Goblin Goon) PASSED
+2026-09-27T03:57:50.0465994Z 
+2026-09-27T03:57:50.0494727Z CompareDescriptionTest > Compare.description > It: renders the whole CantAttackUnless message for Chief Warg's Company PASSED
+2026-09-27T03:57:50.0523850Z 
+2026-09-27T03:57:50.0554904Z CompareDescriptionTest > filter descriptions feeding those comparisons > It: templates the subtype ahead of the card type, as Magic does PASSED
+2026-09-27T03:57:50.0555859Z 
+2026-09-27T03:57:50.0578112Z CompareDescriptionTest > filter descriptions feeding those comparisons > It: keeps the controller qualifier in front of the type words PASSED
+2026-09-27T03:57:50.0604059Z 
+2026-09-27T03:57:50.0634677Z CompareDescriptionTest > filter descriptions feeding those comparisons > It: agrees the indefinite article with the word the description now leads on PASSED
+2026-09-27T03:57:50.0639123Z 
+2026-09-27T03:57:50.0639920Z CompareDescriptionTest > pluralization of counted filters > It: uses -ves for the f-ending creature types Magic actually prints PASSED
+2026-09-27T03:57:50.0640763Z 
+2026-09-27T03:57:50.0641297Z CompareDescriptionTest > pluralization of counted filters > It: uses -es after a sibilant PASSED
+2026-09-27T03:57:50.0642021Z 
+2026-09-27T03:57:50.0642574Z CompareDescriptionTest > pluralization of counted filters > It: still handles the plain and -y cases PASSED
+2026-09-27T03:57:50.0643290Z 
+2026-09-27T03:57:50.0643979Z DescribeObjectsForEventTest > pluralizeHeadNoun > It: applies the regular English rules PASSED
+2026-09-27T03:57:50.0644582Z 
+2026-09-27T03:57:50.0645082Z DescribeObjectsForEventTest > pluralizeHeadNoun > It: adds -es after a sibilant PASSED
+2026-09-27T03:57:50.0645700Z 
+2026-09-27T03:57:50.0646333Z DescribeObjectsForEventTest > pluralizeHeadNoun > It: leaves a noun that is already plural, or invariant in -s, alone PASSED
+2026-09-27T03:57:50.0647045Z 
+2026-09-27T03:57:50.0647708Z DescribeObjectsForEventTest > pluralizeHeadNoun > It: uses the curated table for -f/-fe subtypes the regular rules get wrong PASSED
+2026-09-27T03:57:50.0674079Z 
+2026-09-27T03:57:50.0704974Z DescribeObjectsForEventTest > pluralizeHeadNoun > It: uses the curated table for the genuinely irregular subtypes PASSED
+2026-09-27T03:57:50.1309702Z 
+2026-09-27T03:57:50.1324803Z DescribeObjectsForEventTest > pluralizeHeadNoun > It: keeps WotC's invariant plurals invariant PASSED
+2026-09-27T03:57:50.1383886Z 
+2026-09-27T03:57:50.1424781Z DescribeObjectsForEventTest > describeObjectsForEvent > It: renders the KDoc's documented examples PASSED
+2026-09-27T03:57:50.1501420Z 
+2026-09-27T03:57:50.1515211Z DescribeObjectsForEventTest > describeObjectsForEvent > It: pluralizes only the head noun, leaving the qualifiers singular PASSED
+2026-09-27T03:57:50.1516006Z 
+2026-09-27T03:57:50.1564741Z DescribeObjectsForEventTest > describeObjectsForEvent > It: keeps the controller as a suffix, never a prefix PASSED
+2026-09-27T03:57:50.1635454Z 
+2026-09-27T03:57:50.1654726Z DescribeObjectsForEventTest > describeObjectsForEvent > It: falls back to the generic wording for an unconstrained filter PASSED
+2026-09-27T03:57:50.1703917Z 
+2026-09-27T03:57:50.1774918Z DescribeObjectsForEventTest > CountersPlacedEvent(batch = true).description > It: reads as English for the shipped batch filter PASSED
+2026-09-27T03:57:50.1823876Z 
+2026-09-27T03:57:50.1858846Z DescribeObjectsForEventTest > CountersPlacedEvent(batch = true).description > It: differs from the per-permanent template only in the recipient's multiplicity PASSED
+2026-09-27T03:57:50.1883764Z 
+2026-09-27T03:57:50.1945041Z GameObjectFilterCompositionTest > GameObjectFilter.and controller predicates > It: keeps the predicate when only one side has one PASSED
+2026-09-27T03:57:50.1993877Z 
+2026-09-27T03:57:50.2016352Z GameObjectFilterCompositionTest > GameObjectFilter.and controller predicates > It: keeps a predicate both sides share PASSED
+2026-09-27T03:57:50.2083937Z 
+2026-09-27T03:57:50.2165897Z GameObjectFilterCompositionTest > GameObjectFilter.and controller predicates > It: rejects two different controller predicates instead of silently discarding one PASSED
+2026-09-27T03:57:50.2243886Z 
+2026-09-27T03:57:50.2275026Z GameObjectFilterCompositionTest > GameObjectFilter.and controller predicates > It: rejects a right-hand side whose anyOf union would be silently dropped PASSED
+2026-09-27T03:57:50.2296696Z 
+2026-09-27T03:57:50.2349868Z GameObjectFilterCompositionTest > ControllerPredicate combinators > It: And requires every branch PASSED
+2026-09-27T03:57:50.2413890Z 
+2026-09-27T03:57:50.2417029Z GameObjectFilterCompositionTest > ControllerPredicate combinators > It: Or requires any branch PASSED
+2026-09-27T03:57:50.2463863Z 
+2026-09-27T03:57:50.2524929Z GameObjectFilterCompositionTest > ControllerPredicate combinators > It: Not inverts, including when nested PASSED
+2026-09-27T03:57:50.2563821Z 
+2026-09-27T03:57:50.2585268Z GameObjectFilterCompositionTest > ControllerPredicate combinators > It: unsupported leaves (null) don't constrain — even under Not PASSED
+2026-09-27T03:57:50.2649974Z 
+2026-09-27T03:57:50.2674888Z GameObjectFilterCompositionTest > ControllerPredicate combinators > It: survives a JSON round-trip inside a filter PASSED
+2026-09-27T03:57:50.2729302Z 
+2026-09-27T03:57:50.2785104Z GameObjectFilterCompositionTest > ControllerPredicate combinators > It: describes composed predicates readably PASSED
+2026-09-27T03:57:50.2813749Z 
+2026-09-27T03:57:50.2844918Z ManaStaticDescriptionTest > ReplaceLandManaColor.description > It: keeps the controller clause after the noun (Deep Water) PASSED
+2026-09-27T03:57:50.2873895Z 
+2026-09-27T03:57:50.2904826Z ManaStaticDescriptionTest > ReplaceLandManaColor.description > It: renders the free-choice form the same way (Pulse of Llanowar) PASSED
+2026-09-27T03:57:50.2905636Z 
+2026-09-27T03:57:50.2934467Z ManaStaticDescriptionTest > ReplaceLandManaColor.description > It: still reads correctly with no controller clause at all PASSED
+2026-09-27T03:57:50.2956581Z 
+2026-09-27T03:57:50.2964536Z ManaStaticDescriptionTest > MultiplyManaOnSourceTap.description > It: keeps the controller clause after the noun PASSED
+2026-09-27T03:57:50.2965210Z 
+2026-09-27T03:57:50.2965894Z ManaStaticDescriptionTest > MultiplyManaOnSourceTap.description > It: picks the article from the noun, not from the controller clause PASSED
+2026-09-27T03:57:50.3286542Z 
+2026-09-27T03:57:50.3295096Z ModifySpellCostDescriptionTest > ModifySpellCost.description with NthOfTypePerTurn gating > It: renders the unconstrained Any filter without a leaked 'card' adjective (Uthros Psionicist) PASSED
+2026-09-27T03:57:50.3323697Z 
+2026-09-27T03:57:50.3345417Z ModifySpellCostDescriptionTest > ModifySpellCost.description with NthOfTypePerTurn gating > It: keeps the filter adjective for a typed filter (Eluge, the Shoreless Sea) PASSED
+2026-09-27T03:57:50.3373980Z 
+2026-09-27T03:57:50.3384666Z ModifySpellCostDescriptionTest > ModifySpellCost.description with NthOfTypePerTurn gating > It: keeps the plural form when ungated PASSED
+2026-09-27T03:57:50.3413708Z 
+2026-09-27T03:57:50.3437991Z ReplaceDrawWithEffectDescriptionTest > ReplaceDrawWithEffect.description > It: reads naturally when there are no restrictions PASSED
+2026-09-27T03:57:50.3453902Z 
+2026-09-27T03:57:50.3484904Z ReplaceDrawWithEffectDescriptionTest > ReplaceDrawWithEffect.description > It: reads naturally when the replacement is optional and unrestricted PASSED
+2026-09-27T03:57:50.3503762Z 
+2026-09-27T03:57:50.3528080Z ReplaceDrawWithEffectDescriptionTest > ReplaceDrawWithEffect.description > It: keeps the 'while <condition>' clause when restrictions are present PASSED
+2026-09-27T03:57:50.3543778Z 
+2026-09-27T03:57:50.3575099Z TriggeredAbilityDescriptionTest > TriggeredAbility.description and the 'Do this only once each turn' rider > It: appends the printed rider when effectOncePerTurn is set and no override is given PASSED
+2026-09-27T03:57:50.3583669Z 
+2026-09-27T03:57:50.3617146Z TriggeredAbilityDescriptionTest > TriggeredAbility.description and the 'Do this only once each turn' rider > It: does not append it for the trigger cap (oncePerTurn), which prints different text PASSED
+2026-09-27T03:57:50.3627897Z 
+2026-09-27T03:57:50.3654888Z TriggeredAbilityDescriptionTest > TriggeredAbility.description and the 'Do this only once each turn' rider > It: lets descriptionOverride win, as both shipped cards rely on PASSED
+2026-09-27T03:57:50.4304104Z 
+2026-09-27T03:57:50.4307472Z CostAtomRepeatedTest > repeating a sum-gated exile multiplies the threshold, not a card count PASSED
+2026-09-27T03:57:50.4333860Z 
+2026-09-27T03:57:50.4364697Z CostAtomRepeatedTest > collecting evidence N twice is collecting evidence 2N PASSED
+2026-09-27T03:57:50.4365546Z 
+2026-09-27T03:57:50.4394942Z CostAtomRepeatedTest > a derived collect-evidence threshold can't be repeated — there is no number to double PASSED
+2026-09-27T03:57:50.4422222Z 
+2026-09-27T03:57:50.4444516Z CostAtomRepeatedTest > the atom rejects an amount no cost-time evaluator could price PASSED
+2026-09-27T03:57:50.4453830Z 
+2026-09-27T03:57:50.4479711Z CostAtomRepeatedTest > a literal threshold prints its number; a derived one prints X, as both cards are worded PASSED
+2026-09-27T03:57:50.4503869Z 
+2026-09-27T03:57:50.4530238Z CostAtomRepeatedTest > repeating once returns the atom unchanged PASSED
+2026-09-27T03:57:50.4554024Z 
+2026-09-27T03:57:50.4584703Z CreateTokenCopyOfSourceEffectTest > default addCardTypes is empty and omitted from the description PASSED
+2026-09-27T03:57:50.4601850Z 
+2026-09-27T03:57:50.4610963Z CreateTokenCopyOfSourceEffectTest > addCardTypes renders the 'except it's a TYPE in addition to its other types' clause PASSED
+2026-09-27T03:57:50.4633804Z 
+2026-09-27T03:57:50.4664725Z CreateTokenCopyOfSourceEffectTest > addCardTypes combines cleanly with P/T overrides PASSED
+2026-09-27T03:57:50.4682070Z 
+2026-09-27T03:57:50.4683741Z PipelineDescriptionLeakTest > pipeline-collection keys never leak into effect descriptions > It: Wash Out's gather→bounce pipeline reads naturally (issue #710) PASSED
+2026-09-27T03:57:50.4713872Z 
+2026-09-27T03:57:50.4755092Z PipelineDescriptionLeakTest > pipeline-collection keys never leak into effect descriptions > It: MoveCollection picks the right preposition per destination PASSED
+2026-09-27T03:57:50.4756261Z 
+2026-09-27T03:57:50.4784649Z PipelineDescriptionLeakTest > pipeline-collection keys never leak into effect descriptions > It: a return under its owner's control says so (Safe Haven) PASSED
+2026-09-27T03:57:50.5367331Z 
+2026-09-27T03:57:50.5415408Z PipelineDescriptionLeakTest > pipeline-collection keys never leak into effect descriptions > It: collection-referencing effects don't echo their key PASSED
+2026-09-27T03:57:50.5443901Z 
+2026-09-27T03:57:50.5467323Z SelfReferentialDescriptionTest > a Self-targeting effect emits the placeholder token in its template PASSED
+2026-09-27T03:57:50.5496627Z 
+2026-09-27T03:57:50.5534853Z SelfReferentialDescriptionTest > description default-resolves the token to the type-neutral default; no token leaks PASSED
+2026-09-27T03:57:50.5563783Z 
+2026-09-27T03:57:50.5585642Z SelfReferentialDescriptionTest > resolveSelfNoun substitutes the requested noun for the placeholder PASSED
+2026-09-27T03:57:50.5613759Z 
+2026-09-27T03:57:50.5635827Z SelfReferentialDescriptionTest > a non-Self target carries no token and keeps its own noun PASSED
+2026-09-27T03:57:50.5673787Z 
+2026-09-27T03:57:50.5714822Z SelfReferentialDescriptionTest > ExileAndReturnTransformed carries the token per return face PASSED
+2026-09-27T03:57:50.5715470Z 
+2026-09-27T03:57:50.5764787Z SelfReferentialDescriptionTest > a self-sacrifice adapts its noun instead of calling a land a creature PASSED
+2026-09-27T03:57:50.5834035Z 
+2026-09-27T03:57:50.5873016Z SelfReferentialDescriptionTest > sacrificing a chosen target keeps that target's own wording PASSED
+2026-09-27T03:57:50.5873823Z 
+2026-09-27T03:57:50.5874370Z SelfReferentialDescriptionTest > serialization round-trips the effect; description recomputes (template is not serialized) PASSED
+2026-09-27T03:57:50.5875040Z 
+2026-09-27T03:57:50.5875456Z RequiresExactlyOneTargetTest > a plain single target is settled once one legal object exists PASSED
+2026-09-27T03:57:50.5875972Z 
+2026-09-27T03:57:50.5876373Z RequiresExactlyOneTargetTest > up to one leaves the empty selection, so it is never settled PASSED
+2026-09-27T03:57:50.5876859Z 
+2026-09-27T03:57:50.5877324Z RequiresExactlyOneTargetTest > any number is never settled even though count stays at its default of one PASSED
+2026-09-27T03:57:50.5877915Z 
+2026-09-27T03:57:50.5878332Z RequiresExactlyOneTargetTest > a multi-target requirement is not settled by one legal object PASSED
+2026-09-27T03:57:50.5878875Z 
+2026-09-27T03:57:50.5879345Z RequiresExactlyOneTargetTest > narrowing an optional slot to one target does not make it mandatory PASSED
+2026-09-27T03:57:50.5879882Z 
+2026-09-27T03:57:50.5880325Z TargetRequirementWithCountTest > narrows the max count and clamps the minCount field down with it PASSED
+2026-09-27T03:57:50.5880896Z 
+2026-09-27T03:57:50.5881332Z TargetRequirementWithCountTest > clamps a non-optional minCount that would exceed the new count PASSED
+2026-09-27T03:57:50.5881878Z 
+2026-09-27T03:57:50.5882213Z TargetRequirementWithCountTest > is a no-op when the count is unchanged PASSED
+2026-09-27T03:57:50.6313984Z 
+2026-09-27T03:57:50.6374917Z TargetRequirementWithCountTest > recurses through TargetOther into its base requirement PASSED
+2026-09-27T03:57:50.6423974Z 
+2026-09-27T03:57:50.6425301Z CardLinterTest > pipeline dataflow > It: accepts a well-formed gather → select → move pipeline PASSED
+2026-09-27T03:57:50.6444006Z 
+2026-09-27T03:57:50.6444824Z CardLinterTest > pipeline dataflow > It: flags a typo'd collection read as an error with a suggestion PASSED
+2026-09-27T03:57:50.6445666Z 
+2026-09-27T03:57:50.6446411Z CardLinterTest > pipeline dataflow > It: flags a read whose writer lives in a different ability as a warning PASSED
+2026-09-27T03:57:50.7285714Z 
+2026-09-27T03:57:50.7294588Z CardLinterTest > pipeline dataflow > It: flags a store nothing reads as a warning PASSED
+2026-09-27T03:57:50.7327110Z 
+2026-09-27T03:57:50.7354605Z CardLinterTest > pipeline dataflow > It: connects cast-time additional-cost stores to the spell effect PASSED
+2026-09-27T03:57:50.7383709Z 
+2026-09-27T03:57:50.7414610Z CardLinterTest > pipeline dataflow > It: bridges a collection write to its _count numeric read PASSED
+2026-09-27T03:57:50.7448044Z 
+2026-09-27T03:57:50.7474829Z CardLinterTest > target bindings per owning scope > It: scopes a granted ability's ContextTarget to the granted ability PASSED
+2026-09-27T03:57:50.7503879Z 
+2026-09-27T03:57:50.7504689Z CardLinterTest > target bindings per owning scope > It: flags a BoundVariable that matches no requirement id PASSED
+2026-09-27T03:57:50.7505822Z 
+2026-09-27T03:57:50.7506351Z CardLinterTest > target bindings per owning scope > It: accepts indexed BoundVariable names against the base id PASSED
+2026-09-27T03:57:50.8323928Z 
+2026-09-27T03:57:50.8356386Z CardLinterTest > target bindings per owning scope > It: flags a bare BoundVariable on a multi-slot requirement PASSED
+2026-09-27T03:57:50.8390776Z 
+2026-09-27T03:57:50.8444853Z CardLinterTest > target bindings per owning scope > It: accepts a per-slot BoundVariable on a multi-slot requirement PASSED
+2026-09-27T03:57:50.8523845Z 
+2026-09-27T03:57:50.8537182Z CardLinterTest > choice slots > It: flags a slot read with no declaration PASSED
+2026-09-27T03:57:50.8573835Z 
+2026-09-27T03:57:50.8638450Z CardLinterTest > choice slots > It: accepts a KICKED read when a kicker effect is declared PASSED
+2026-09-27T03:57:50.8663765Z 
+2026-09-27T03:57:50.8686938Z CardLinterTest > opponent-chosen targets > It: flags a TargetChooser.Opponent target on a spell — the controller would pick it PASSED
+2026-09-27T03:57:50.8738302Z 
+2026-09-27T03:57:50.8791825Z CardLinterTest > opponent-chosen targets > It: accepts a TargetChooser.Opponent target on a triggered ability (Mausoleum Turnkey) PASSED
+2026-09-27T03:57:50.9304117Z 
+2026-09-27T03:57:50.9364994Z CardLinterTest > opponent-chosen targets > It: accepts a TargetChooser.Opponent target on an activated ability (Cuombajj Witches) PASSED
+2026-09-27T03:57:50.9423865Z 
+2026-09-27T03:57:50.9493807Z CardLinterTest > opponent-chosen targets > It: accepts the trigger-side choosers on a triggered ability (Quicksilver Fountain) PASSED
+2026-09-27T03:57:50.9503697Z 
+2026-09-27T03:57:50.9504798Z CardLinterTest > opponent-chosen targets > It: flags a trigger-side chooser on a spell — nothing would route it PASSED
+2026-09-27T03:57:50.9505417Z 
+2026-09-27T03:57:50.9506178Z CardLinterTest > EntityMatches entity roles > It: flags an entity role the ConditionEvaluator doesn't dispatch — a silent constant false PASSED
+2026-09-27T03:57:50.9506908Z 
+2026-09-27T03:57:50.9507521Z CardLinterTest > EntityMatches entity roles > It: accepts the dispatched roles, including EquippedCreature (no facade names it) PASSED
+2026-09-27T03:57:50.9558520Z 
+2026-09-27T03:57:50.9600511Z CardLinterTest > mana-ability classification (CR 605.1a) > It: accepts a plain tap-for-mana ability flagged as one PASSED
+2026-09-27T03:57:51.0303911Z 
+2026-09-27T03:57:51.0352575Z CardLinterTest > mana-ability classification (CR 605.1a) > It: flags a mana ability whose effect draws a card PASSED
+2026-09-27T03:57:51.0358647Z 
+2026-09-27T03:57:51.0394585Z CardLinterTest > mana-ability classification (CR 605.1a) > It: flags a mana ability whose cost mills PASSED
+2026-09-27T03:57:51.0413895Z 
+2026-09-27T03:57:51.0430572Z CardLinterTest > mana-ability classification (CR 605.1a) > It: flags a mana ability whose cost exiles from a library PASSED
+2026-09-27T03:57:51.0435673Z 
+2026-09-27T03:57:51.0436386Z CardLinterTest > mana-ability classification (CR 605.1a) > It: accepts a mana ability whose cost exiles from a graveyard PASSED
+2026-09-27T03:57:51.0437292Z 
+2026-09-27T03:57:51.0438039Z CardLinterTest > mana-ability classification (CR 605.1a) > It: flags a mana ability that mills as part of its effect PASSED
+2026-09-27T03:57:51.2324126Z 
+2026-09-27T03:57:51.2334794Z CardLinterTest > mana-ability classification (CR 605.1a) > It: flags a mana ability that searches its library FAILED
+2026-09-27T03:57:51.2371094Z     org.opentest4j.AssertionFailedError at CardLinterTest.kt:609
+2026-09-27T03:57:51.2413705Z 
+2026-09-27T03:57:51.2444759Z CardLinterTest > mana-ability classification (CR 605.1a) > It: accepts a mana ability with a scry rider PASSED
+2026-09-27T03:57:51.2473747Z 
+2026-09-27T03:57:51.2498244Z CardLinterTest > mana-ability classification (CR 605.1a) > It: accepts a mana ability that looks at the top of the library and puts it back PASSED
+2026-09-27T03:57:51.2533794Z 
+2026-09-27T03:57:51.2555152Z CardLinterTest > mana-ability classification (CR 605.1a) > It: flags a mana ability that looks at the top of the library and keeps a card PASSED
+2026-09-27T03:57:51.2583737Z 
+2026-09-27T03:57:51.2614712Z CardLinterTest > mana-ability classification (CR 605.1a) > It: flags a mana ability that puts a card from hand on top of the library PASSED
+2026-09-27T03:57:51.2636568Z 
+2026-09-27T03:57:51.2674671Z CardLinterTest > mana-ability classification (CR 605.1a) > It: flags a mana ability that gathers from a library and casts what it found PASSED
+2026-09-27T03:57:51.2743820Z 
+2026-09-27T03:57:51.2802978Z CardLinterTest > mana-ability classification (CR 605.1a) > It: flags a mana ability that is also a loyalty ability PASSED
+2026-09-27T03:57:51.2843795Z 
+2026-09-27T03:57:51.2894721Z CardLinterTest > mana-ability classification (CR 605.1a) > It: flags a mana ability that requires a target PASSED
+2026-09-27T03:57:51.2953808Z 
+2026-09-27T03:57:51.3002646Z CardLinterTest > mana-ability classification (CR 605.1a) > It: does not ask an ability disqualified by its cost to be flagged PASSED
+2026-09-27T03:57:51.3093877Z 
+2026-09-27T03:57:51.3178394Z CardLinterTest > mana-ability classification (CR 605.1a) > It: still asks a plain unflagged tap-for-mana ability to be flagged PASSED
+2026-09-27T03:57:51.3273890Z 
+2026-09-27T03:57:51.3365160Z CardLinterTest > attach-scope filters on cards that can't be attached > It: flags a creature whose ward grant kept the default attached-creature filter PASSED
+2026-09-27T03:57:51.3393737Z 
+2026-09-27T03:57:51.3404813Z CardLinterTest > attach-scope filters on cards that can't be attached > It: accepts the same grant on an Aura, where attach scope is the point PASSED
+2026-09-27T03:57:51.3423682Z 
+2026-09-27T03:57:51.3454613Z CardLinterTest > attach-scope filters on cards that can't be attached > It: accepts the same grant on an Equipment PASSED
+2026-09-27T03:57:51.3483709Z 
+2026-09-27T03:57:51.3524673Z CardLinterTest > attach-scope filters on cards that can't be attached > It: accepts a creature's own printed ward, which is the correct fix PASSED
+2026-09-27T03:57:51.3553765Z 
+2026-09-27T03:57:51.3574841Z CardLinterTest > attach-scope filters on cards that can't be attached > It: accepts a lord-style grant with an explicit battlefield-scoped filter PASSED
+2026-09-27T03:57:51.3603717Z 
+2026-09-27T03:57:51.3665161Z CardLinterTest > attach-scope filters on cards that can't be attached > It: does not flag attach scope nested inside an effect that first makes it an Equipment PASSED
+2026-09-27T03:57:51.3666044Z 
+2026-09-27T03:57:51.3666661Z CardLinterTest > attach-scope filters on cards that can't be attached > It: does not flag a creature that transforms into an Aura on its back face PASSED
+2026-09-27T03:57:51.3667455Z 
+2026-09-27T03:57:51.3694702Z CardSerializationRoundTripTest > Effect round-trip serialization > It: should round-trip player-iteration collection reducers PASSED
+2026-09-27T03:57:51.3753821Z 
+2026-09-27T03:57:51.3810918Z CardSerializationRoundTripTest > Effect round-trip serialization > It: should round-trip a simple damage spell PASSED
+2026-09-27T03:57:51.3833662Z 
+2026-09-27T03:57:51.3864953Z CardSerializationRoundTripTest > Effect round-trip serialization > It: should round-trip the unified SetBaseStats effect, preserving a null stat PASSED
+2026-09-27T03:57:51.4304154Z 
+2026-09-27T03:57:51.4324733Z CardSerializationRoundTripTest > Effect round-trip serialization > It: should round-trip a tracked battlefield-object move PASSED
+2026-09-27T03:57:51.4391219Z 
+2026-09-27T03:57:51.4435276Z CardSerializationRoundTripTest > Effect round-trip serialization > It: should round-trip a creature with triggered ability PASSED
+2026-09-27T03:57:51.4493787Z 
+2026-09-27T03:57:51.4524917Z CardSerializationRoundTripTest > Effect round-trip serialization > It: should round-trip a GrantHarmonize effect (Songcrafter Mage) PASSED
+2026-09-27T03:57:51.5303882Z 
+2026-09-27T03:57:51.5358403Z CardSerializationRoundTripTest > Effect round-trip serialization > It: should round-trip a composite effect PASSED
+2026-09-27T03:57:51.5413861Z 
+2026-09-27T03:57:51.5447797Z CardSerializationRoundTripTest > Effect round-trip serialization > It: should round-trip a creature with upkeep trigger PASSED
+2026-09-27T03:57:51.5503971Z 
+2026-09-27T03:57:51.5504871Z CardSerializationRoundTripTest > Predicate round-trip serialization > It: should round-trip card predicates PASSED
+2026-09-27T03:57:51.5505580Z 
+2026-09-27T03:57:51.5506137Z CardSerializationRoundTripTest > KeywordAbility round-trip serialization > It: should round-trip keyword abilities PASSED
+2026-09-27T03:57:51.5506804Z 
+2026-09-27T03:57:51.5507327Z CardSerializationRoundTripTest > KeywordAbility round-trip serialization > It: should round-trip morph keyword PASSED
+2026-09-27T03:57:51.6313984Z 
+2026-09-27T03:57:51.6344680Z CardSerializationRoundTripTest > Duration round-trip serialization > It: should round-trip duration types PASSED
+2026-09-27T03:57:51.6373856Z 
+2026-09-27T03:57:51.6390601Z CardSerializationRoundTripTest > Static ability round-trip serialization > It: should round-trip static abilities PASSED
+2026-09-27T03:57:51.6433783Z 
+2026-09-27T03:57:51.6464894Z CardSerializationRoundTripTest > Replacement effect round-trip serialization > It: should round-trip replacement effects PASSED
+2026-09-27T03:57:51.6493773Z 
+2026-09-27T03:57:51.6524883Z CardSerializationRoundTripTest > Condition round-trip serialization > It: should round-trip ModalEffect with minChooseCount and allowRepeat PASSED
+2026-09-27T03:57:51.6551474Z 
+2026-09-27T03:57:51.6604961Z CardSerializationRoundTripTest > Condition round-trip serialization > It: should default minChooseCount = chooseCount and allowRepeat = false for older payloads PASSED
+2026-09-27T03:57:51.7304917Z 
+2026-09-27T03:57:51.7335083Z CardSerializationRoundTripTest > Condition round-trip serialization > It: should round-trip a card built with the vividEtb DSL helper PASSED
+2026-09-27T03:57:51.8294478Z 
+2026-09-27T03:57:51.8355303Z CardSerializationRoundTripTest > Condition round-trip serialization > It: should round-trip a card built with the vividCostReduction DSL helper PASSED
+2026-09-27T03:57:51.8414211Z 
+2026-09-27T03:57:51.8415642Z CardSerializationRoundTripTest > Condition round-trip serialization > It: should round-trip a source-relative cost reduction PASSED
+2026-09-27T03:57:51.8466484Z 
+2026-09-27T03:57:51.8486214Z CardSerializationRoundTripTest > Condition round-trip serialization > It: should round-trip activated ability costs PASSED
+2026-09-27T03:57:51.8514511Z 
+2026-09-27T03:57:51.8515916Z CardSerializationRoundTripTest > Split-card round-trip > It: should round-trip a SPLIT card with two faces PASSED
+2026-09-27T03:57:51.8567177Z 
+2026-09-27T03:57:51.8568190Z CardValidatorTest > valid cards > It: returns no errors for a simple creature PASSED
+2026-09-27T03:57:51.8596960Z 
+2026-09-27T03:57:51.8625061Z CardValidatorTest > valid cards > It: returns no errors for an instant with a target PASSED
+2026-09-27T03:57:51.8653727Z 
+2026-09-27T03:57:51.8668620Z CardValidatorTest > valid cards > It: returns no errors for an Aura with auraTarget PASSED
+2026-09-27T03:57:51.9303939Z 
+2026-09-27T03:57:51.9315029Z CardValidatorTest > valid cards > It: returns no errors for Equipment with equipCost PASSED
+2026-09-27T03:57:51.9342651Z 
+2026-09-27T03:57:51.9344387Z CardValidatorTest > valid cards > It: returns no errors for a planeswalker with loyalty PASSED
+2026-09-27T03:57:51.9410912Z 
+2026-09-27T03:57:51.9445048Z CardValidatorTest > InvalidTargetIndex > It: flags a spell effect that references a non-existent target index PASSED
+2026-09-27T03:57:51.9474045Z 
+2026-09-27T03:57:51.9564871Z CardValidatorTest > InvalidTargetIndex > It: flags a spell with targets referenced inside a CompositeEffect PASSED
+2026-09-27T03:57:51.9622475Z 
+2026-09-27T03:57:51.9655197Z CardValidatorTest > InvalidTargetIndex > It: flags nested MayEffect inside ConditionalEffect + elseEffect PASSED
+2026-09-27T03:57:51.9698497Z 
+2026-09-27T03:57:51.9765923Z CardValidatorTest > InvalidTargetIndex > It: flags targeted triggered abilities with a bad target index PASSED
+2026-09-27T03:57:51.9794055Z 
+2026-09-27T03:57:51.9825132Z CardValidatorTest > InvalidTargetIndex > It: flags triggered abilities that reference any ContextTarget when no target is declared PASSED
+2026-09-27T03:57:51.9903842Z 
+2026-09-27T03:57:51.9964678Z CardValidatorTest > InvalidTargetIndex > It: collects indices inside ModalEffect modes PASSED
+2026-09-27T03:57:52.0014047Z 
+2026-09-27T03:57:52.0024753Z CardValidatorTest > InvalidTargetIndex > It: accepts ContextTarget(0) with exactly one target declared PASSED
+2026-09-27T03:57:52.0053914Z 
+2026-09-27T03:57:52.0084470Z CardValidatorTest > Aura consistency > It: flags an Aura subtype without an auraTarget in the script PASSED
+2026-09-27T03:57:52.0103703Z 
+2026-09-27T03:57:52.0115234Z CardValidatorTest > Aura consistency > It: flags an auraTarget on a card that isn't an Aura PASSED
+2026-09-27T03:57:52.0143866Z 
+2026-09-27T03:57:52.0174869Z CardValidatorTest > Equipment consistency > It: flags an equipCost on a card that isn't Equipment PASSED
+2026-09-27T03:57:52.0203693Z 
+2026-09-27T03:57:52.0204592Z CardValidatorTest > Planeswalker loyalty > It: flags a planeswalker without startingLoyalty PASSED
+2026-09-27T03:57:52.0324689Z 
+2026-09-27T03:57:52.0325918Z CardValidatorTest > Battle defense > It: flags a battle without startingDefense PASSED
+2026-09-27T03:57:52.0353915Z 
+2026-09-27T03:57:52.0377490Z CardValidatorTest > Battle defense > It: accepts a battle that declares its printed defense PASSED
+2026-09-27T03:57:52.0397703Z 
+2026-09-27T03:57:52.0429989Z CardValidatorTest > MoveToZoneEffect target indexing > It: validates effects with MoveToZone (destroy) PASSED
+2026-09-27T03:57:52.0454043Z 
+2026-09-27T03:57:52.0482233Z CardValidatorTest > UninferableSuccessCriterion > It: flags a Gate.DoAction whose Auto criterion can't infer from the action shape PASSED
+2026-09-27T03:57:52.0483721Z 
+2026-09-27T03:57:52.0514781Z CardValidatorTest > UninferableSuccessCriterion > It: finds the gate in nested containers (mode inside a triggered ability) PASSED
+2026-09-27T03:57:52.0543963Z 
+2026-09-27T03:57:52.0581856Z CardValidatorTest > UninferableSuccessCriterion > It: accepts Auto on a terminal collection move to a zone PASSED
+2026-09-27T03:57:52.0603958Z 
+2026-09-27T03:57:52.0634679Z CardValidatorTest > UninferableSuccessCriterion > It: accepts Auto on a terminal single move of Self PASSED
+2026-09-27T03:57:52.0635354Z 
+2026-09-27T03:57:52.0635967Z CardValidatorTest > UninferableSuccessCriterion > It: accepts an uninferable action shape when the criterion is explicit PASSED
+2026-09-27T03:57:52.0636689Z 
+2026-09-27T03:57:52.0637151Z CardValidatorTest > multiple independent errors > It: collects errors from several issues at once PASSED
+2026-09-27T03:57:52.0637743Z 
+2026-09-27T03:57:52.0638191Z CharacteristicValueSerializerTest > serialize > It: encodes Fixed as a bare JSON number PASSED
+2026-09-27T03:57:52.0638813Z 
+2026-09-27T03:57:52.0639380Z CharacteristicValueSerializerTest > serialize > It: encodes Dynamic as an object with type=Dynamic and nested source PASSED
+2026-09-27T03:57:52.0640079Z 
+2026-09-27T03:57:52.0640568Z CharacteristicValueSerializerTest > serialize > It: encodes DynamicWithOffset including the offset PASSED
+2026-09-27T03:57:52.0641198Z 
+2026-09-27T03:57:52.0641615Z CharacteristicValueSerializerTest > deserialize > It: reads bare integers as Fixed PASSED
+2026-09-27T03:57:52.0642161Z 
+2026-09-27T03:57:52.0642338Z > Task :rules-engine:compileKotlin
+2026-09-27T03:57:53.7297976Z 
+2026-09-27T03:57:53.7314674Z 
+2026-09-27T03:57:53.7344392Z 527 tests completed, 1 failed
+2026-09-27T03:57:53.7366571Z > Task :mtg-sdk:test FAILED
+2026-09-27T03:57:53.7403812Z 
+2026-09-27T03:57:53.7464661Z CharacteristicValueSerializerTest > deserialize > It: reads Dynamic objects PASSED
+2026-09-27T03:57:53.7493993Z 
+2026-09-27T03:57:53.7524603Z CharacteristicValueSerializerTest > deserialize > It: reads DynamicWithOffset objects PASSED
+2026-09-27T03:57:53.7553794Z 
+2026-09-27T03:57:53.7584647Z CharacteristicValueSerializerTest > deserialize > It: throws for unknown type discriminator PASSED
+2026-09-27T03:57:53.7585315Z 
+2026-09-27T03:57:53.7614457Z CharacteristicValueSerializerTest > deserialize > It: throws for unexpected JSON shapes PASSED
+2026-09-27T03:57:53.7644270Z 
+2026-09-27T03:57:53.7644837Z CharacteristicValueSerializerTest > round-trip > It: round-trips Fixed(value=0) PASSED
+2026-09-27T03:57:53.7645374Z 
+2026-09-27T03:57:53.7645797Z CharacteristicValueSerializerTest > round-trip > It: round-trips Fixed(value=-5) PASSED
+2026-09-27T03:57:53.7646335Z 
+2026-09-27T03:57:53.7646735Z CharacteristicValueSerializerTest > round-trip > It: round-trips Fixed(value=99) PASSED
+2026-09-27T03:57:53.7647232Z 
+2026-09-27T03:57:53.7647638Z CharacteristicValueSerializerTest > round-trip > It: round-trips Dynamic(source=XValue) PASSED
+2026-09-27T03:57:53.7648348Z 
+2026-09-27T03:57:53.7674619Z CharacteristicValueSerializerTest > round-trip > It: round-trips DynamicWithOffset(source=XValue, offset=1) PASSED
+2026-09-27T03:57:53.7675340Z 
+2026-09-27T03:57:53.7675859Z CharacteristicValueSerializerTest > round-trip > It: round-trips DynamicWithOffset(source=XValue, offset=-3) PASSED
+2026-09-27T03:57:53.7676486Z 
+2026-09-27T03:57:53.7676960Z CostAtomSerializationTest > every concrete CostAtom subtype has a representative in this test PASSED
+2026-09-27T03:57:53.7677540Z 
+2026-09-27T03:57:53.7677974Z CostAtomSerializationTest > each CostAtom round-trips through the polymorphic serializer PASSED
+2026-09-27T03:57:53.7678545Z 
+2026-09-27T03:57:53.7678950Z CostAtomSerializationTest > each CostAtom round-trips inside a PayCost.Atom wrapper PASSED
+2026-09-27T03:57:53.7679482Z 
+2026-09-27T03:57:53.7679941Z CostAtomSerializationTest > each CostAtom round-trips inside an AdditionalCost.Atom wrapper PASSED
+2026-09-27T03:57:53.7680581Z 
+2026-09-27T03:57:53.7681074Z CostAtomSerializationTest > selectionCount is the per-atom selection size and 0 for non-selection atoms PASSED
+2026-09-27T03:57:53.7681698Z 
+2026-09-27T03:57:53.7682162Z DredgeSerializationTest > dredge retains its number and display keyword through serialization PASSED
+2026-09-27T03:57:53.7682730Z 
+2026-09-27T03:57:53.7683020Z DredgeSerializationTest > negative dredge is rejected PASSED
+2026-09-27T03:57:53.7683598Z 
+2026-09-27T03:57:53.7684009Z FilterQueryLanguageTest > parseFilter > It: parses a single type predicate PASSED
+2026-09-27T03:57:53.7684513Z 
+2026-09-27T03:57:53.7684907Z FilterQueryLanguageTest > parseFilter > It: parses combined terms as a conjunction PASSED
+2026-09-27T03:57:53.7685430Z 
+2026-09-27T03:57:53.7685888Z FilterQueryLanguageTest > parseFilter > It: parses OR expressions into a single CardPredicate.Or PASSED
+2026-09-27T03:57:53.7686472Z 
+2026-09-27T03:57:53.7686877Z FilterQueryLanguageTest > parseFilter > It: parses mana value comparisons (>=, <=, =) PASSED
+2026-09-27T03:57:53.7687394Z 
+2026-09-27T03:57:53.7687742Z FilterQueryLanguageTest > parseFilter > It: parses power comparisons PASSED
+2026-09-27T03:57:53.7688229Z 
+2026-09-27T03:57:53.7688593Z FilterQueryLanguageTest > parseFilter > It: parses toughness comparisons PASSED
+2026-09-27T03:57:53.7689079Z 
+2026-09-27T03:57:53.7689543Z FilterQueryLanguageTest > parseFilter > It: parses keyword predicates as HasKeyword with uppercased keyword PASSED
+2026-09-27T03:57:53.7690180Z 
+2026-09-27T03:57:53.7690508Z FilterQueryLanguageTest > parseFilter > It: parses color predicates PASSED
+2026-09-27T03:57:53.7690959Z 
+2026-09-27T03:57:53.7691511Z FilterQueryLanguageTest > parseFilter > It: parses colorless, multicolored, and monocolored PASSED
+2026-09-27T03:57:53.7703798Z 
+2026-09-27T03:57:53.7738384Z FilterQueryLanguageTest > parseFilter > It: parses name predicate PASSED
+2026-09-27T03:57:53.7783749Z 
+2026-09-27T03:57:53.7824705Z FilterQueryLanguageTest > parseFilter > It: parses subtype predicates (capitalized tokens) PASSED
+2026-09-27T03:57:53.7853731Z 
+2026-09-27T03:57:53.7884482Z FilterQueryLanguageTest > parseFilter > It: parses all state predicates PASSED
+2026-09-27T03:57:53.7913722Z 
+2026-09-27T03:57:53.7944431Z FilterQueryLanguageTest > parseFilter > It: parses all controller predicates PASSED
+2026-09-27T03:57:53.7962113Z 
+2026-09-27T03:57:53.7999012Z FilterQueryLanguageTest > parseFilter > It: parses every type keyword PASSED
+2026-09-27T03:57:53.8023756Z 
+2026-09-27T03:57:53.8064755Z FilterQueryLanguageTest > parseFilter > It: parses OR with comparisons, keywords, colors, and subtypes PASSED
+2026-09-27T03:57:53.8083765Z 
+2026-09-27T03:57:53.8084377Z FilterQueryLanguageTest > parseFilter > It: tokenizes with extra whitespace PASSED
+2026-09-27T03:57:53.8084921Z 
+2026-09-27T03:57:53.8085301Z FilterQueryLanguageTest > parseFilter > It: throws on an unrecognized term PASSED
+2026-09-27T03:57:53.8085772Z 
+2026-09-27T03:57:53.8086201Z FilterQueryLanguageTest > parseFilter > It: throws on OR children containing unknown terms PASSED
+2026-09-27T03:57:53.8086757Z 
+2026-09-27T03:57:53.8087139Z FilterQueryLanguageTest > formatFilter > It: formats a minimal creature filter PASSED
+2026-09-27T03:57:53.8087665Z 
+2026-09-27T03:57:53.8088059Z FilterQueryLanguageTest > formatFilter > It: formats a singleton string predicate PASSED
+2026-09-27T03:57:53.8088577Z 
+2026-09-27T03:57:53.8089000Z FilterQueryLanguageTest > formatFilter > It: formats a filter with state and controller PASSED
+2026-09-27T03:57:53.8089604Z 
+2026-09-27T03:57:53.8089955Z FilterQueryLanguageTest > formatFilter > It: formats an Or expression PASSED
+2026-09-27T03:57:53.8090417Z 
+2026-09-27T03:57:53.8090878Z FilterQueryLanguageTest > formatFilter > It: formats mana value / power / toughness comparisons PASSED
+2026-09-27T03:57:53.8091445Z 
+2026-09-27T03:57:53.8091874Z FilterQueryLanguageTest > formatFilter > It: formats HasSubtype, HasColor, and HasKeyword PASSED
+2026-09-27T03:57:53.8092420Z 
+2026-09-27T03:57:53.8092884Z FilterQueryLanguageTest > formatFilter > It: formats IsColorless / IsMulticolored / IsMonocolored PASSED
+2026-09-27T03:57:53.8093622Z 
+2026-09-27T03:57:53.8093923Z FilterQueryLanguageTest > formatFilter > It: formats NameEquals PASSED
+2026-09-27T03:57:53.8094345Z 
+2026-09-27T03:57:53.8094833Z FilterQueryLanguageTest > formatFilter > It: formats state predicates from singleton strings and objects PASSED
+2026-09-27T03:57:53.8123670Z 
+2026-09-27T03:57:53.8154467Z FilterQueryLanguageTest > formatFilter > It: formats controller predicates from singleton strings and objects PASSED
+2026-09-27T03:57:53.8200047Z 
+2026-09-27T03:57:53.8239489Z FilterQueryLanguageTest > formatFilter > It: returns null for an empty filter PASSED
+2026-09-27T03:57:53.8264907Z 
+2026-09-27T03:57:53.8301777Z FilterQueryLanguageTest > formatFilter > It: returns null for card predicates the language cannot express PASSED
+2026-09-27T03:57:53.8323791Z 
+2026-09-27T03:57:53.8354753Z FilterQueryLanguageTest > formatFilter > It: returns null for singleton-string predicates that aren't type names PASSED
+2026-09-27T03:57:53.8383720Z 
+2026-09-27T03:57:53.8414590Z FilterQueryLanguageTest > formatFilter > It: returns null when Or contains an unformattable sub-predicate PASSED
+2026-09-27T03:57:53.8423705Z 
+2026-09-27T03:57:53.8454499Z FilterQueryLanguageTest > formatFilter > It: returns null for array predicates (non-object, non-string) PASSED
+2026-09-27T03:57:53.8483691Z 
+2026-09-27T03:57:53.8484275Z FilterQueryLanguageTest > round-trip > It: round-trips 'creature' PASSED
+2026-09-27T03:57:53.8484806Z 
+2026-09-27T03:57:53.8485189Z FilterQueryLanguageTest > round-trip > It: round-trips 'creature tapped' PASSED
+2026-09-27T03:57:53.8485677Z 
+2026-09-27T03:57:53.8486074Z FilterQueryLanguageTest > round-trip > It: round-trips 'creature tapped ctrl:you' PASSED
+2026-09-27T03:57:53.8486556Z 
+2026-09-27T03:57:53.8486933Z FilterQueryLanguageTest > round-trip > It: round-trips 'artifact|enchantment' PASSED
+2026-09-27T03:57:53.8487418Z 
+2026-09-27T03:57:53.8487745Z FilterQueryLanguageTest > round-trip > It: round-trips 'mv>=6' PASSED
+2026-09-27T03:57:53.8488190Z 
+2026-09-27T03:57:53.8488556Z FilterQueryLanguageTest > round-trip > It: round-trips 'pow<=2 tou>=4' PASSED
+2026-09-27T03:57:53.8489534Z 
+2026-09-27T03:57:53.8489876Z FilterQueryLanguageTest > round-trip > It: round-trips 'kw:flying' PASSED
+2026-09-27T03:57:53.8490337Z 
+2026-09-27T03:57:53.8490651Z FilterQueryLanguageTest > round-trip > It: round-trips 'red' PASSED
+2026-09-27T03:57:53.8491079Z 
+2026-09-27T03:57:53.8491596Z FilterQueryLanguageTest > round-trip > It: round-trips 'colorless' PASSED
+2026-09-27T03:57:53.8492060Z 
+2026-09-27T03:57:53.8492408Z FilterQueryLanguageTest > round-trip > It: round-trips 'name:Sol Ring' PASSED
+2026-09-27T03:57:53.8492880Z 
+2026-09-27T03:57:53.8493226Z FilterQueryLanguageTest > round-trip > It: round-trips 'creature Goblin' PASSED
+2026-09-27T03:57:53.8493820Z 
+2026-09-27T03:57:53.8494220Z FilterQueryLanguageTest > round-trip > It: round-trips 'creature Dragon ctrl:opponent' PASSED
+2026-09-27T03:57:53.8494738Z 
+2026-09-27T03:57:53.8495152Z FilterQueryLanguageTest > round-trip > It: round-trips 'permanent untapped own:you' PASSED
+2026-09-27T03:57:53.8495689Z 
+2026-09-27T03:57:53.8496139Z FilterQueryLanguageTest > isGameObjectFilter > It: returns true for objects with any filter key PASSED
+2026-09-27T03:57:53.8496705Z 
+2026-09-27T03:57:53.8497142Z FilterQueryLanguageTest > isGameObjectFilter > It: returns false for unrelated objects PASSED
+2026-09-27T03:57:53.8497689Z 
+2026-09-27T03:57:53.8498212Z LibraryMacroEffectTest > Patterns.Library.scry/surveil and the Effects facade return the compact macro node PASSED
+2026-09-27T03:57:53.8498855Z 
+2026-09-27T03:57:53.8499306Z LibraryMacroEffectTest > the macro nodes serialize compactly and round-trip to the same object PASSED
+2026-09-27T03:57:53.8499890Z 
+2026-09-27T03:57:53.8500380Z LibraryMacroEffectTest > expandMacro produces the scry pipeline, tail-terminated by the scried event PASSED
+2026-09-27T03:57:53.8500970Z 
+2026-09-27T03:57:53.8501561Z LibraryMacroEffectTest > a literal scry/surveil 0 expands without an emit-event tail (CR 701.22b / 701.25c) PASSED
+2026-09-27T03:57:53.8523682Z 
+2026-09-27T03:57:53.8554389Z LibraryMacroEffectTest > expandMacro returns null for a non-macro effect PASSED
+2026-09-27T03:57:53.8583718Z 
+2026-09-27T03:57:53.8614476Z MoveUntilSourceLeavesSerializationTest > zone-return effect round trips with a named target PASSED
+2026-09-27T03:57:53.8643682Z 
+2026-09-27T03:57:53.8669589Z PlayerTargetRestrictionSerializationTest > TargetPlayer / TargetOpponent restriction > It: round-trips a TargetPlayer carrying a Player.Candidate restriction PASSED
+2026-09-27T03:57:53.8693776Z 
+2026-09-27T03:57:53.8725054Z PlayerTargetRestrictionSerializationTest > TargetPlayer / TargetOpponent restriction > It: round-trips a TargetOpponent carrying a LIFE_LOST tracker restriction PASSED
+2026-09-27T03:57:53.8726030Z 
+2026-09-27T03:57:53.8726777Z PlayerTargetRestrictionSerializationTest > TargetPlayer / TargetOpponent restriction > It: renders the descriptionOverride for a restricted target PASSED
+2026-09-27T03:57:53.8727597Z 
+2026-09-27T03:57:53.8728299Z PlayerTargetRestrictionSerializationTest > TargetPlayer / TargetOpponent restriction > It: preserves the restriction when an id is stamped via withId PASSED
+2026-09-27T03:58:00.3285763Z 
+2026-09-27T03:58:33.6288329Z > Task :mtg-sets:1993-1999:compileKotlin
+2026-09-27T03:58:33.6288691Z 
+2026-09-27T03:58:33.6288969Z > Task :rules-engine:compileKotlin
+2026-09-27T03:58:33.6290180Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt:292:62 No cast needed.
+2026-09-27T03:58:33.6292127Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt:176:37 Unnecessary safe call on a non-null receiver of type 'EntityId'.
+2026-09-27T03:58:33.6294329Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt:536:40 Unnecessary safe call on a non-null receiver of type 'EntityId'.
+2026-09-27T03:58:33.6296475Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt:541:21 Condition is always 'true'.
+2026-09-27T03:58:33.6298523Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ExileTopCardMayPlayFreeExecutor.kt:79:60 Unnecessary non-null assertion (!!) on a non-null receiver of type 'EntityId'.
+2026-09-27T03:58:33.6300641Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt:820:49 Unnecessary safe call on a non-null receiver of type 'CardDefinition'.
+2026-09-27T03:58:33.6302570Z w: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt:626:27 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ObjectIdentity'.
+2026-09-27T03:58:35.9295282Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1790481382321.json
+2026-09-27T03:58:36.0285297Z 
+2026-09-27T03:58:36.0286656Z Kotlin build report is written to file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/build/reports/kotlin-build/argentum-engine-build-2026-09-27-03-58-35-0.txt
+2026-09-27T03:58:36.0287932Z 
+2026-09-27T03:58:36.0289058Z [Incubating] Problems report is available at: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/build/reports/problems/problems-report.html
+2026-09-27T03:58:36.0294393Z 
+2026-09-27T03:58:36.0294996Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+2026-09-27T03:58:36.0295684Z 
+2026-09-27T03:58:36.0296449Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+2026-09-27T03:58:36.0297366Z 
+2026-09-27T03:58:36.0298239Z For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+2026-09-27T03:58:36.0299477Z 28 actionable tasks: 19 executed, 9 from cache
+2026-09-27T03:58:36.0324533Z FAILURE: Build failed with an exception.
+2026-09-27T03:58:36.0334153Z 
+2026-09-27T03:58:36.0334440Z * What went wrong:
+2026-09-27T03:58:36.0334773Z Execution failed for task ':mtg-sdk:test'.
+2026-09-27T03:58:36.0335709Z > There were failing tests. See the report at: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sdk/build/reports/tests/test/index.html
+2026-09-27T03:58:36.0336445Z 
+2026-09-27T03:58:36.0336575Z * Try:
+2026-09-27T03:58:36.0337063Z > Run with --scan to get full insights from a Build Scan (powered by Develocity).
+2026-09-27T03:58:36.0337504Z 
+2026-09-27T03:58:36.0337652Z BUILD FAILED in 2m 18s
+2026-09-27T03:58:36.1293637Z Configuration cache entry stored.
+2026-09-27T03:58:41.4700484Z ##[error]Process completed with exit code 1.
+2026-09-27T03:58:41.4760011Z ##[group]Run actions/upload-artifact@v7
+2026-09-27T03:58:41.4760285Z with:
+2026-09-27T03:58:41.4760485Z   name: ci-junit-content
+2026-09-27T03:58:41.4760740Z   path: **/build/test-results/test/TEST-*.xml
+2026-09-27T03:58:41.4761015Z   if-no-files-found: error
+2026-09-27T03:58:41.4761248Z   retention-days: 30
+2026-09-27T03:58:41.4761461Z   compression-level: 6
+2026-09-27T03:58:41.4761673Z   overwrite: false
+2026-09-27T03:58:41.4761885Z   include-hidden-files: false
+2026-09-27T03:58:41.4762119Z   archive: true
+2026-09-27T03:58:41.4762313Z env:
+2026-09-27T03:58:41.4762696Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-27T03:58:41.4763212Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T03:58:41.4763759Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T03:58:41.4764102Z   MAVEN_ARGS: -ntp
+2026-09-27T03:58:41.4764532Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-27T03:58:41.4764817Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-27T03:58:41.4765091Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-27T03:58:41.4765492Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-27T03:58:41.4765905Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-27T03:58:41.4766204Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-27T03:58:41.4766456Z ##[endgroup]
+2026-09-27T03:58:43.4394595Z With the provided path, there will be 52 files uploaded
+2026-09-27T03:58:43.4399081Z Artifact name is valid!
+2026-09-27T03:58:43.4399459Z Root directory input is valid!
+2026-09-27T03:58:43.7747088Z Uploading artifact: ci-junit-content.zip
+2026-09-27T03:58:43.7778618Z Beginning upload of artifact content to blob storage
+2026-09-27T03:58:44.1440633Z Uploaded bytes 46364
+2026-09-27T03:58:44.2039205Z Finished uploading artifact content to blob storage!
+2026-09-27T03:58:44.2040113Z SHA256 digest of uploaded artifact is a38cb0fe6b2036a6f6de5ba9d5cdcf55a4a6ee9622714e230d320fbd31810b52
+2026-09-27T03:58:44.2040741Z Finalizing artifact upload
+2026-09-27T03:58:44.5543837Z Artifact ci-junit-content successfully finalized. Artifact ID 10923385439
+2026-09-27T03:58:44.5544696Z Artifact ci-junit-content has been successfully uploaded! Final size is 46364 bytes. Artifact ID is 10923385439
+2026-09-27T03:58:44.5546155Z Artifact download URL: https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36292832407/artifacts/10923385439
+2026-09-27T03:58:44.5740634Z ##[group]Run actions/upload-artifact@v7
+2026-09-27T03:58:44.5740923Z with:
+2026-09-27T03:58:44.5741172Z   name: pest-control-v2-deterministic-diagnostic
+2026-09-27T03:58:44.5741502Z   path: build/reports/pest-control-v2-diagnostic/
+2026-09-27T03:58:44.5741801Z   if-no-files-found: ignore
+2026-09-27T03:58:44.5742040Z   retention-days: 14
+2026-09-27T03:58:44.5742296Z   compression-level: 6
+2026-09-27T03:58:44.5742522Z   overwrite: false
+2026-09-27T03:58:44.5742772Z   include-hidden-files: false
+2026-09-27T03:58:44.5743027Z   archive: true
+2026-09-27T03:58:44.5743235Z env:
+2026-09-27T03:58:44.5743851Z   GRADLE_BUILD_CACHE_DIR: /home/runner/work/argentum-batshit-test/argentum-batshit-test/.gradle/build-cache
+2026-09-27T03:58:44.5744394Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T03:58:44.5744827Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T03:58:44.5745178Z   MAVEN_ARGS: -ntp
+2026-09-27T03:58:44.5745461Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-27T03:58:44.5745753Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-27T03:58:44.5746038Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-27T03:58:44.5746443Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-27T03:58:44.5746897Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-27T03:58:44.5747200Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-27T03:58:44.5747470Z ##[endgroup]
+2026-09-27T03:58:44.6859165Z No files were found with the provided path: build/reports/pest-control-v2-diagnostic/. No artifacts will be uploaded.
+2026-09-27T03:58:44.7041790Z Post job cleanup.
+2026-09-27T03:58:44.9133227Z In post-action step
+2026-09-27T03:58:44.9141022Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+2026-09-27T03:58:44.9784370Z Cache is read-only: will not save state for use in subsequent builds.
+2026-09-27T03:58:44.9787272Z ##[group]Generating Job Summary
+2026-09-27T03:58:44.9791247Z 
+2026-09-27T03:58:44.9791255Z 
+2026-09-27T03:58:44.9791414Z <table>
+2026-09-27T03:58:44.9791734Z     <tr>
+2026-09-27T03:58:44.9792053Z         <th>Gradle Root Project</th>
+2026-09-27T03:58:44.9792458Z         <th>Requested Tasks</th>
+2026-09-27T03:58:44.9792838Z         <th>Gradle Version</th>
+2026-09-27T03:58:44.9793822Z         <th>Build Outcome</th>
+2026-09-27T03:58:44.9794521Z         <th>Build&nbsp;Scan®</th>
+2026-09-27T03:58:44.9794890Z     </tr>
+2026-09-27T03:58:44.9795157Z     <tr>
+2026-09-27T03:58:44.9795367Z         <td>argentum-engine</td>
+2026-09-27T03:58:44.9795707Z         <td>:mtg-sdk:test :mtg-sets:test :ai:test :mtg-search:test</td>
+2026-09-27T03:58:44.9796040Z         <td align='center'>9.6.1</td>
+2026-09-27T03:58:44.9796309Z         <td align='center'>:x:</td>
+2026-09-27T03:58:44.9796953Z         <td><a href="https://scans.gradle.com" rel="nofollow" target="_blank"><img src="https://img.shields.io/badge/Not%20published-lightgrey" alt="Build Scan not published" /></a></td>
+2026-09-27T03:58:44.9797572Z     </tr>
+2026-09-27T03:58:44.9797764Z </table>
+2026-09-27T03:58:44.9797954Z     
+2026-09-27T03:58:44.9798148Z ============================
+2026-09-27T03:58:44.9798511Z <h4>Gradle State Caching - ⚡ Enhanced (read-only)</h4>
+2026-09-27T03:58:44.9798721Z 
+2026-09-27T03:58:44.9799512Z **[Enhanced Caching](https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#enhanced-caching)** uses the proprietary `gradle-actions-caching` provider. See [DISTRIBUTION.md](https://github.com/gradle/actions/blob/main/DISTRIBUTION.md) for terms of use and opt-out instructions.
+2026-09-27T03:58:44.9800366Z 
+2026-09-27T03:58:44.9800457Z <details>
+2026-09-27T03:58:44.9800864Z <summary>Entries: 8 restored (448Mb), 0 saved (0Mb) - Expand for more details</summary>
+2026-09-27T03:58:44.9801269Z 
+2026-09-27T03:58:44.9802306Z [Cache was read-only](https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#using-the-cache-read-only) — by default, the action only writes to the cache for jobs running on the default branch.
+2026-09-27T03:58:44.9803163Z 
+2026-09-27T03:58:44.9803278Z <table>
+2026-09-27T03:58:44.9804310Z     <tr><td></td><th>Count</th><th>Total Size (Mb)</th><th>Total Time (ms)</th></tr>
+2026-09-27T03:58:44.9804849Z     <tr><td>Entries Restored</td>
+2026-09-27T03:58:44.9805246Z         <td>8</td>
+2026-09-27T03:58:44.9805563Z         <td>448</td>
+2026-09-27T03:58:44.9805894Z         <td>13513</td>
+2026-09-27T03:58:44.9806208Z     </tr>
+2026-09-27T03:58:44.9806530Z     <tr><td>Entries Saved</td>
+2026-09-27T03:58:44.9806867Z         <td>0</td>
+2026-09-27T03:58:44.9807233Z         <td>0</td>
+2026-09-27T03:58:44.9807574Z         <td>0</td>
+2026-09-27T03:58:44.9807931Z     </tr>
+2026-09-27T03:58:44.9808262Z </table>
+2026-09-27T03:58:44.9808454Z 
+2026-09-27T03:58:44.9808915Z <pre>
+2026-09-27T03:58:44.9809262Z Entry: Gradle User Home
+2026-09-27T03:58:44.9810016Z     Requested Key : gradle-home-v2|Linux-X64|test[9b0888009268d7265f5c250b64ebe140]-091cae25acc3c986c5a98d917c667428482f88c7
+2026-09-27T03:58:44.9811143Z     Restored  Key : gradle-home-v2|Linux-X64|test[9b0888009268d7265f5c250b64ebe140]-75f8e8f436999bad35436e99a153f7766079cbd9
+2026-09-27T03:58:44.9811878Z               Size: 1 MB (625262 B)
+2026-09-27T03:58:44.9812267Z               Time: 985 ms
+2026-09-27T03:58:44.9812670Z               (Entry restored: partial match found)
+2026-09-27T03:58:44.9813113Z     Saved     Key : 
+2026-09-27T03:58:44.9813583Z               Size: 
+2026-09-27T03:58:44.9813895Z               Time: 
+2026-09-27T03:58:44.9814513Z               (Entry not saved: cache is read-only)
+2026-09-27T03:58:44.9814938Z ---
+2026-09-27T03:58:44.9815355Z Entry: caches/9.6.1/generated-gradle-jars/gradle-api-9.6.1.jar
+2026-09-27T03:58:44.9816090Z     Requested Key : gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-27T03:58:44.9816941Z     Restored  Key : gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-27T03:58:44.9817567Z               Size: 40 MB (42158673 B)
+2026-09-27T03:58:44.9817968Z               Time: 1882 ms
+2026-09-27T03:58:44.9818353Z               (Entry restored: exact match found)
+2026-09-27T03:58:44.9818782Z     Saved     Key : 
+2026-09-27T03:58:44.9819101Z               Size: 
+2026-09-27T03:58:44.9819418Z               Time: 
+2026-09-27T03:58:44.9819770Z               (Entry not saved: cache is read-only)
+2026-09-27T03:58:44.9820366Z ---
+2026-09-27T03:58:44.9820819Z Entry: wrapper/dists/gradle-9.6.1-bin/4ticwg1pgcbps2hj28r8so764
+2026-09-27T03:58:44.9821514Z     Requested Key : gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-27T03:58:44.9822269Z     Restored  Key : gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-27T03:58:44.9822847Z               Size: 133 MB (139934591 B)
+2026-09-27T03:58:44.9823260Z               Time: 2494 ms
+2026-09-27T03:58:44.9823865Z               (Entry restored: exact match found)
+2026-09-27T03:58:44.9824389Z     Saved     Key : 
+2026-09-27T03:58:44.9824735Z               Size: 
+2026-09-27T03:58:44.9825070Z               Time: 
+2026-09-27T03:58:44.9825569Z               (Entry not saved: cache is read-only)
+2026-09-27T03:58:44.9826168Z ---
+2026-09-27T03:58:44.9826548Z Entry: dependencies
+2026-09-27T03:58:44.9827090Z     Requested Key : gradle-dependencies-v2-e373f0a6a02c3c8dfd9c3595bff49b55
+2026-09-27T03:58:44.9827722Z     Restored  Key : gradle-dependencies-v2-e373f0a6a02c3c8dfd9c3595bff49b55
+2026-09-27T03:58:44.9828279Z               Size: 224 MB (235371942 B)
+2026-09-27T03:58:44.9828684Z               Time: 3311 ms
+2026-09-27T03:58:44.9829164Z               (Entry restored: exact match found)
+2026-09-27T03:58:44.9842774Z     Saved     Key : 
+2026-09-27T03:58:44.9843141Z               Size: 
+2026-09-27T03:58:44.9843558Z               Time: 
+2026-09-27T03:58:44.9843894Z               (Entry not saved: cache is read-only)
+2026-09-27T03:58:44.9844313Z ---
+2026-09-27T03:58:44.9844588Z Entry: instrumented-jars
+2026-09-27T03:58:44.9845111Z     Requested Key : gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-27T03:58:44.9845836Z     Restored  Key : gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-27T03:58:44.9846368Z               Size: 0 MB (60281 B)
+2026-09-27T03:58:44.9846748Z               Time: 728 ms
+2026-09-27T03:58:44.9847022Z               (Entry restored: exact match found)
+2026-09-27T03:58:44.9847311Z     Saved     Key : 
+2026-09-27T03:58:44.9847534Z               Size: 
+2026-09-27T03:58:44.9847739Z               Time: 
+2026-09-27T03:58:44.9847983Z               (Entry not saved: cache is read-only)
+2026-09-27T03:58:44.9848254Z ---
+2026-09-27T03:58:44.9848457Z Entry: kotlin-dsl
+2026-09-27T03:58:44.9848805Z     Requested Key : gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-27T03:58:44.9849249Z     Restored  Key : gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-27T03:58:44.9849599Z               Size: 0 MB (338388 B)
+2026-09-27T03:58:44.9849855Z               Time: 988 ms
+2026-09-27T03:58:44.9850117Z               (Entry restored: exact match found)
+2026-09-27T03:58:44.9850389Z     Saved     Key : 
+2026-09-27T03:58:44.9850605Z               Size: 
+2026-09-27T03:58:44.9850801Z               Time: 
+2026-09-27T03:58:44.9851027Z               (Entry not saved: cache is read-only)
+2026-09-27T03:58:44.9851305Z ---
+2026-09-27T03:58:44.9851501Z Entry: groovy-dsl
+2026-09-27T03:58:44.9851821Z     Requested Key : gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-27T03:58:44.9852432Z     Restored  Key : gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-27T03:58:44.9852790Z               Size: 0 MB (101824 B)
+2026-09-27T03:58:44.9853044Z               Time: 838 ms
+2026-09-27T03:58:44.9853303Z               (Entry restored: exact match found)
+2026-09-27T03:58:44.9853943Z     Saved     Key : 
+2026-09-27T03:58:44.9854284Z               Size: 
+2026-09-27T03:58:44.9854604Z               Time: 
+2026-09-27T03:58:44.9854970Z               (Entry not saved: cache is read-only)
+2026-09-27T03:58:44.9855418Z ---
+2026-09-27T03:58:44.9855713Z Entry: transforms
+2026-09-27T03:58:44.9856260Z     Requested Key : gradle-transforms-v2-a77182a4ed742d0b841c59266ec6e307
+2026-09-27T03:58:44.9856971Z     Restored  Key : gradle-transforms-v2-a77182a4ed742d0b841c59266ec6e307
+2026-09-27T03:58:44.9857524Z               Size: 49 MB (50868830 B)
+2026-09-27T03:58:44.9857925Z               Time: 2287 ms
+2026-09-27T03:58:44.9858525Z               (Entry restored: exact match found)
+2026-09-27T03:58:44.9858942Z     Saved     Key : 
+2026-09-27T03:58:44.9859247Z               Size: 
+2026-09-27T03:58:44.9859533Z               Time: 
+2026-09-27T03:58:44.9859900Z               (Entry not saved: cache is read-only)
+2026-09-27T03:58:44.9860298Z </pre>
+2026-09-27T03:58:44.9860560Z </details>
+2026-09-27T03:58:44.9860712Z 
+2026-09-27T03:58:44.9861145Z ##[endgroup]
+2026-09-27T03:58:44.9861452Z Completed post-action step
+2026-09-27T03:58:45.0045464Z Post job cleanup.
+2026-09-27T03:58:45.1235665Z Post job cleanup.
+2026-09-27T03:58:45.1932222Z [command]/usr/bin/git version
+2026-09-27T03:58:45.1973545Z git version 2.55.0
+2026-09-27T03:58:45.2016049Z Temporarily overriding HOME='/home/runner/work/_temp/08371d02-f914-4a15-9503-b7ccd74ff1e8' before making global git config changes
+2026-09-27T03:58:45.2018553Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T03:58:45.2021755Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test
+2026-09-27T03:58:45.2056549Z Removing SSH command configuration
+2026-09-27T03:58:45.2063278Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T03:58:45.2101989Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T03:58:45.2366579Z Removing HTTP extra header
+2026-09-27T03:58:45.2371020Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T03:58:45.2402681Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T03:58:45.2636474Z Removing includeIf entries pointing to credentials config files
+2026-09-27T03:58:45.2664202Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T03:58:45.2674266Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path
+2026-09-27T03:58:45.2675539Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path
+2026-09-27T03:58:45.2676599Z includeif.gitdir:/github/workspace/.git.path
+2026-09-27T03:58:45.2677389Z includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-27T03:58:45.2682960Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path
+2026-09-27T03:58:45.2708758Z /home/runner/work/_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:58:45.2719256Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git.path /home/runner/work/_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:58:45.2756960Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path
+2026-09-27T03:58:45.2791283Z /home/runner/work/_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:58:45.2802184Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:58:45.2828252Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git.path
+2026-09-27T03:58:45.2852563Z /github/runner_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:58:45.2859574Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git.path /github/runner_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:58:45.2891108Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/.git/worktrees/*.path
+2026-09-27T03:58:45.2912814Z /github/runner_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:58:45.2928715Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/.git/worktrees/*.path /github/runner_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config
+2026-09-27T03:58:45.3844698Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T03:58:45.4060467Z Removing credentials config '/home/runner/work/_temp/git-credentials-10750dc5-0a2c-40a2-acaa-b552a172e6bb.config'
+2026-09-27T03:58:45.4210125Z Cleaning up orphan processes
+2026-09-27T03:58:45.4485020Z Terminate orphan process: pid (2184) (bash)
+2026-09-27T03:58:45.4506377Z Terminate orphan process: pid (2185) (sleep)
+2026-09-27T03:58:45.4526770Z Terminate orphan process: pid (2219) (java)
+2026-09-27T03:58:45.4559444Z Terminate orphan process: pid (2389) (java)
+2026-09-27T03:58:45.4579243Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
