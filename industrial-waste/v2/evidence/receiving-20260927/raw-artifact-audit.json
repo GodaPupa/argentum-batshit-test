@@ -5,7 +5,11 @@
   "frozen_protocol": {
     "path": "industrial-waste/v2/protocol-v2-r1.json",
     "sha256": "fd697b6d56b5a5451f4dc6f9ee4bd20584a705570c6f99861dd64f0086ed95bc",
-    "candidate_families": ["COMPACT_LOOP", "RECURSIVE_EGGS", "LEAN_TRON_HYBRID"],
+    "candidate_families": [
+      "COMPACT_LOOP",
+      "RECURSIVE_EGGS",
+      "LEAN_TRON_HYBRID"
+    ],
     "comparator": "IMMUTABLE_SUBMITTED_V1_0",
     "required_official_allocations": 512
   },
@@ -57,9 +61,24 @@
     "observed_runtime_tar_sha256": "5df821485ad721d04143b5e8c480b123a503035f5ff26d59c9e296528d2483ae",
     "runtime_tar_members_individually_hashed": 2549,
     "excluded_replay_traces": [
-      {"trace": "iw-v2-allocation-trace3809331926157908601", "actions": 227, "quiet_observations": 16, "status": "TURN_CAP"},
-      {"trace": "iw-v2-quiet-baseline10899706883413925625", "actions": 242, "quiet_observations": 16, "status": "TURN_CAP"},
-      {"trace": "iw-v2-spell-trace4625816360394807951", "actions": 428, "quiet_observations": 60, "status": "REAL_TERMINAL"}
+      {
+        "trace": "iw-v2-allocation-trace3809331926157908601",
+        "actions": 227,
+        "quiet_observations": 16,
+        "status": "TURN_CAP"
+      },
+      {
+        "trace": "iw-v2-quiet-baseline10899706883413925625",
+        "actions": 242,
+        "quiet_observations": 16,
+        "status": "TURN_CAP"
+      },
+      {
+        "trace": "iw-v2-spell-trace4625816360394807951",
+        "actions": 428,
+        "quiet_observations": 60,
+        "status": "REAL_TERMINAL"
+      }
     ],
     "official_allocations_initialized": 0,
     "retention_limit": "Original 99,455,244-byte archive remains GitHub Actions artifact 10916259653, expiring 2026-12-25. This audit stores its exact digest and nested hash verification, not a duplicate archive. Do not imply permanent raw-byte preservation from this receipt alone."
@@ -83,7 +102,11 @@
     "errors": 0,
     "skips": 0,
     "compiled_snapshot_diff_empty": true,
-    "bounded_assay_command_exits_zero": ["LCI", "VOW", "corpus"],
+    "bounded_assay_command_exits_zero": [
+      "LCI",
+      "VOW",
+      "corpus"
+    ],
     "assay_scope_limit": "The artifact records source-input equivalence and unchanged golden reference. It does not establish engine behavior equivalence or automatically adopt differential findings.",
     "official_allocations_initialized": 0,
     "retention_limit": "Raw card ZIP remains its original GitHub Actions artifact. This receipt records its digest and source checks but does not archive the original bytes in this repository."
@@ -113,5 +136,59 @@
     "separate_r1_permit": false,
     "complete_current_source_runtime_admission": false,
     "next_gate": "Exact current-source combined receiving/metric/replay/journal qualification, independently accepted runtime identity, separately published R1 authorization, then exclusive claim before any initialization"
+  },
+  "current_1261_combined_receiving": {
+    "status": "COMPLETED_SUCCESS_PENDING_RAW_ARTIFACT_AUDIT_AND_FORMAL_ACCEPTANCE",
+    "source_commit": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+    "runtime_composition": {
+      "run_id": 36283941502,
+      "run_attempt": 1,
+      "job_id": 108520988304,
+      "conclusion": "success",
+      "artifact_id": 10920296265,
+      "artifact_bytes": 99456585,
+      "artifact_sha256": "b2e1dc8140c2cde707c55cc5e47a5c156b9e84ccb8bb543a7af859082e867677",
+      "raw_review": "PENDING"
+    },
+    "priority_receiving": {
+      "run_id": 36283941456,
+      "run_attempt": 1,
+      "priority": {
+        "job_id": 108520988225,
+        "actual_cases_logged": 220,
+        "artifact_id": 10919767602,
+        "artifact_sha256": "c19b8a69ca49bcfea141a0d38ed33e55ffd0f6226b4fee19dca2b0c8c082f6e2"
+      },
+      "cast_observer": {
+        "job_id": 108520988368,
+        "actual_cases_logged": 135,
+        "artifact_id": 10920615076,
+        "artifact_sha256": "a23b306188b74a7067f02ecc7bbc9898128057ae57842f81832114b465500c70"
+      },
+      "raw_review": "PENDING"
+    },
+    "current_combat": {
+      "run_id": 36283941451,
+      "run_attempt": 1,
+      "job_id": 108520988144,
+      "actual_cases_logged": 32,
+      "artifact_id": 10919593751,
+      "artifact_sha256": "30c03e8050e0d811ed71c1dccacf0604ca047a47c02d753566edbdcb293bff8e",
+      "raw_review": "PENDING"
+    },
+    "attacking_token": {
+      "run_id": 36283941475,
+      "run_attempt": 1,
+      "job_id": 108520988252,
+      "actual_cases_logged": 20,
+      "original_cases_logged": 16,
+      "prospective_cases_logged": 4,
+      "artifact_id": 10919887433,
+      "artifact_sha256": "52907ab1c91f7728366dd8e29900d827f44165d10138fcad78283700574400c4",
+      "raw_review": "PENDING"
+    },
+    "official_initializations": 0,
+    "complete_runtime_admission": false,
+    "permit": false
   }
 }
