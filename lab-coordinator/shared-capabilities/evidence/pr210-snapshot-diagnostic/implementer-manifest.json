@@ -1,0 +1,40 @@
+{
+  "schema": "pr210-snapshot-diagnostic-original-v1",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "pullRequest": 210,
+  "run": {
+    "id": 36294512807,
+    "attempt": 1,
+    "event": "push",
+    "head": "700e7f192dfa8e5b3a9e8c32a176ec9688d56145",
+    "conclusion": "failure",
+    "reason": "diagnostic classifier did not recognize 25 compact scalar library source representations"
+  },
+  "source": {
+    "commit": "197f95e858638de2fd215073b0b876378fc4c92d",
+    "tree": "e22c55bdf80896760bb8009c67ddcb91f254e27d",
+    "trackedWorktreeClean": true,
+    "snapshotUpdateMode": false
+  },
+  "artifact": {
+    "id": 10923068459,
+    "name": "authorized-search-snapshot-diagnostic-evidence",
+    "path": "original-artifact.zip",
+    "bytes": 7016135,
+    "sha256": "939f3abecc318cf05e278cf8fa5c47fc88abb3b931294fbea43002a69fde6510",
+    "crc": "clean",
+    "members": 197
+  },
+  "raw": {
+    "xmlCases": 338,
+    "goldenFailures": 96,
+    "errors": 0,
+    "skipped": 0,
+    "freshActualSnapshots": 96,
+    "committedBaselines": 96,
+    "perCardLeafChanges": 1061,
+    "initiallyClassifiedExpected": 1036,
+    "initiallyUnclassifiedCompactScalar": 25
+  },
+  "status": "Original diagnostic result retained unchanged. The 25 compact scalar representations and all other raw differences require offline independent classification. No golden was updated or PR source changed."
+}
