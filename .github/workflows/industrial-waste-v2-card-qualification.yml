@@ -17,6 +17,9 @@ on:
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/library/LibraryOrderingService.kt
       - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/player/LibraryOrderingComponent.kt
       - rules-engine/src/test/kotlin/com/wingedsheep/engine/library/LibraryOrderingServiceTest.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/CostHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/ExploreEffectExecutor.kt
+      - rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/CostHandlerDiscardChoiceTest.kt
       - mtg-sets/**/ChromaticStar*.kt
       - mtg-sets/**/AncientStirrings*.kt
       - mtg-sets/**/DrossSkullbomb*.kt
@@ -121,7 +124,7 @@ jobs:
           manifest = json.loads(path.read_text())
           assert manifest['scope'] == 'DETERMINISTIC_PRODUCED_TOKEN_FIXTURES_NO_R1_AUTHORITY'
           assert manifest['official_execution_authorized'] is False
-          assert manifest['expected_cases'] == {'BloodFountainScenarioTest': 7, 'FanaticalOfferingScenarioTest': 11}
+          assert manifest['expected_cases'] == {'BloodFountainScenarioTest': 7, 'FanaticalOfferingScenarioTest': 11, 'CostHandlerDiscardChoiceTest': 2}
           for name, digest in manifest['source_sha256'].items():
               assert hashlib.sha256(pathlib.Path(name).read_bytes()).hexdigest() == digest, name
           pathlib.Path('/tmp/iw-v2-produced-token-provenance.json').write_text(json.dumps({
@@ -132,18 +135,19 @@ jobs:
               'official_execution_authorized': False,
           }, indent=2) + '\n')
           PY
-      - name: Qualify produced Blood and Map transactions first
+      - name: Qualify discard choices and produced Blood and Map transactions first
         run: |
           set -o pipefail
-          just test-class BloodFountainScenarioTest \
+          just test-class CostHandlerDiscardChoiceTest \
+            :mtg-sets:2017-2022:tests:test --tests '*BloodFountainScenarioTest' \
             :mtg-sets:2023:tests:test --tests '*FanaticalOfferingScenarioTest' \
             --rerun-tasks --no-build-cache --no-daemon 2>&1 | tee /tmp/iw-v2-produced-token-focused.log
           python3 - <<'PY'
           import pathlib, shutil, xml.etree.ElementTree as ET
           out = pathlib.Path('/tmp/iw-v2-produced-token-focused-xml')
           out.mkdir()
-          for era, name, count in [('2017-2022', 'BloodFountainScenarioTest', 7), ('2023', 'FanaticalOfferingScenarioTest', 11)]:
-              paths = list(pathlib.Path('mtg-sets/' + era + '/tests/build/test-results/test').glob('TEST-*.' + name + '.xml'))
+          for directory, name, count in [('mtg-sets/2017-2022/tests', 'BloodFountainScenarioTest', 7), ('mtg-sets/2023/tests', 'FanaticalOfferingScenarioTest', 11), ('rules-engine', 'CostHandlerDiscardChoiceTest', 2)]:
+              paths = list(pathlib.Path(directory + '/build/test-results/test').glob('TEST-*.' + name + '.xml'))
               assert len(paths) == 1, (name, paths)
               suite = ET.parse(paths[0]).getroot()
               cases = suite.findall('testcase')
@@ -156,7 +160,7 @@ jobs:
       - name: Qualify cards, public-information selections and unchanged legacy golden
         run: |
           set -o pipefail
-          just test-class LibraryOrderingServiceTest \
+          just test-class LibraryOrderingServiceTest --tests '*CostHandlerDiscardChoiceTest' \
             :mtg-sets:2003-2007:tests:test --tests '*ChromaticStarScenarioTest' --tests '*TreeOfTalesScenarioTest' --tests '*VaultOfWhispersScenarioTest' --tests '*KurgadonTest' \
             :mtg-sets:2008-2016:tests:test --tests '*AncientStirringsScenarioTest' --tests '*GolemFoundryScenarioTest' \
             :mtg-sets:2017-2022:tests:test --tests '*DarkmossBridgeScenarioTest' --tests '*BloodFountainScenarioTest' \
@@ -187,6 +191,92 @@ jobs:
               raise SystemExit('Unexpected snapshot or source drift: ' + repr(sorted(changed - expected)))
           PY
           git diff -- mtg-sets/src/test/resources/snapshots/cards/TSP.json mtg-sets/src/test/resources/snapshots/cards/ROE.json > /tmp/iw-v2-card-snapshot.diff
+      - name: Run bounded VOW and LCI Assay differential without adopting results
+        run: |
+          set -o pipefail
+          mkdir -p /tmp/iw-v2-assay
+          git fetch --no-tags --depth=1 origin 8f8ec082343b0fedcbb6956aeb875cbe29b6ae62
+          python3 - <<'PYASSAY'
+          import hashlib, json, pathlib, subprocess
+          base = '8f8ec082343b0fedcbb6956aeb875cbe29b6ae62'
+          paths = ['oracle-assay', 'mtg-sdk', 'gradle', 'buildSrc', 'build-logic',
+              'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'justfile',
+              'scripts/gradle-locked', 'mtg-sets/src/test/resources/snapshots/cards/VOW.json',
+              'mtg-sets/src/test/resources/snapshots/cards/LCI.json']
+          subprocess.run(['git', 'diff', '--exit-code', base, '--', *paths], check=True)
+          entries = subprocess.check_output(['git', 'ls-tree', '-r', 'HEAD', '--', *paths], text=True)
+          assert entries == subprocess.check_output(['git', 'ls-tree', '-r', base, '--', *paths], text=True)
+          pins = {line.split('\t', 1)[1]: hashlib.sha256(pathlib.Path(line.split('\t', 1)[1]).read_bytes()).hexdigest()
+              for line in entries.splitlines()}
+          pathlib.Path('/tmp/iw-v2-assay/input-equivalence.json').write_text(json.dumps({
+              'base': base, 'candidate': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'same_tracked_assay_sdk_build_and_two_golden_inputs': True, 'git_tree_entries': entries,
+              'actual_source_sha256': pins, 'engine_behavior_is_not_compared_by_assay': True,
+              'divergences_require_independent_classification_not_automatic_adoption': True}, indent=2) + '\n')
+          PYASSAY
+          prepare_status=0
+          just assay corpus > /tmp/iw-v2-assay/corpus.log 2>&1 || prepare_status=$?
+          printf '%s\n' "$prepare_status" > /tmp/iw-v2-assay/corpus-exit.txt
+          if [ "$prepare_status" -ne 0 ]; then exit "$prepare_status"; fi
+          python3 - <<'PYASSAY'
+          import gzip, hashlib, json, pathlib
+          out = pathlib.Path('/tmp/iw-v2-assay')
+          bulk = pathlib.Path.home() / '.cache/scryfall/_bulk-oracle-cards.jsonl.gz'
+          names, ids, goldens = set(), set(), []
+          for code in ['VOW', 'LCI']:
+              path = pathlib.Path('mtg-sets/src/test/resources/snapshots/cards') / (code + '.json')
+              current, body = None, []
+              def retain():
+                  if current is None: return
+                  definition = json.loads('\n'.join(body))
+                  names.add(current.lower())
+                  if definition.get('oracleId'): ids.add(definition['oracleId'])
+                  goldens.append({'set': code, 'name': current, 'oracle_id': definition.get('oracleId')})
+              for line in path.read_text().splitlines():
+                  if line.startswith('// '):
+                      retain(); current, body = line[3:].strip(), []
+                  elif current is not None: body.append(line)
+              retain()
+          excluded = {'art_series', 'token', 'double_faced_token', 'emblem', 'vanguard', 'scheme', 'planar'}
+          selected, records = [], []
+          with gzip.open(bulk, 'rb') as stream:
+              for ordinal, raw in enumerate(stream, 1):
+                  text = raw.strip().rstrip(b',')
+                  if text in [b'', b'[', b']']: continue
+                  card = json.loads(text)
+                  name = card.get('name')
+                  if not name or card.get('lang', 'en') != 'en' or card.get('layout', 'normal') in excluded: continue
+                  if card.get('oracle_id') not in ids and name.lower() not in names and name.split(' // ')[0].lower() not in names: continue
+                  selected.append(raw)
+                  records.append({'bulk_line': ordinal, 'name': name, 'oracle_id': card.get('oracle_id'),
+                      'raw_line_sha256': hashlib.sha256(raw).hexdigest()})
+          assert len(goldens) > 0 and len(selected) > 0
+          assert all(0 < sum(g['set'] == code for g in goldens) <= 1000 for code in ['VOW', 'LCI'])
+          (out / 'relevant-oracle-inputs.jsonl.gz').write_bytes(gzip.compress(b''.join(selected), mtime=0))
+          metadata = {'whole_bulk_bytes': bulk.stat().st_size, 'whole_bulk_sha256': hashlib.sha256(bulk.read_bytes()).hexdigest(),
+              'bulk_cache_mtime_ns': bulk.stat().st_mtime_ns, 'goldens': goldens, 'selected_rows': records,
+              'selection': 'All eligible full-name/front-name/oracle-id matches, retained in original bulk order; duplicates preserved so first-wins lookup matches Assay. Differential set filter is golden filename. Unmatched golden names remain visible in raw differential output.',
+              'subset_sha256': hashlib.sha256((out / 'relevant-oracle-inputs.jsonl.gz').read_bytes()).hexdigest(),
+              'no_engine_or_gameplay_execution': True}
+          (out / 'reference-inputs.json').write_text(json.dumps(metadata, indent=2) + '\n')
+          PYASSAY
+          final_status=0
+          for set_code in VOW LCI; do
+            status=0
+            just assay-differential --set "$set_code" --top 1000 > "/tmp/iw-v2-assay/${set_code}.log" 2>&1 || status=$?
+            printf '%s\n' "$status" > "/tmp/iw-v2-assay/${set_code}-exit.txt"
+            if [ "$status" -ne 0 ]; then final_status=1; fi
+          done
+          python3 - <<'PYASSAY'
+          import hashlib, json, pathlib
+          out = pathlib.Path('/tmp/iw-v2-assay')
+          bulk = pathlib.Path.home() / '.cache/scryfall/_bulk-oracle-cards.jsonl.gz'
+          expected = json.loads((out / 'reference-inputs.json').read_text())['whole_bulk_sha256']
+          actual = hashlib.sha256(bulk.read_bytes()).hexdigest()
+          (out / 'reference-after.json').write_text(json.dumps({'whole_bulk_sha256': actual, 'unchanged': actual == expected}) + '\n')
+          assert actual == expected, 'Oracle reference changed during bounded differential'
+          PYASSAY
+          exit "$final_status"
       - name: Preserve exact validation and snapshot evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -203,6 +293,7 @@ jobs:
             mtg-sets/2025/tests/build/test-results/test/TEST-*.xml
             industrial-waste/v2/runtime-evidence/registry-audit.txt
             /tmp/iw-v2-card-snapshot.diff
+            /tmp/iw-v2-assay/
             /tmp/iw-v2-status-provenance.json
             /tmp/iw-v2-produced-token-provenance.json
             /tmp/iw-v2-produced-token-focused.log

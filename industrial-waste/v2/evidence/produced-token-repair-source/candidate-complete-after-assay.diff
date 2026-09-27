@@ -1,0 +1,347 @@
+--- a/industrial-waste/v2/execution-status-receiving-source.json
++++ b/industrial-waste/v2/execution-status-receiving-source.json
+@@ -10,7 +10,7 @@
+   },
+   "source_sha256": {
+     "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatus.kt": "1fd22f8539dd089ef1e10d7b140a6cbc3653b97120df4b61e27a49e1def0a263",
+-    ".github/workflows/industrial-waste-v2-card-qualification.yml": "ef1cc172365a703154804b11f373d127401f1cd5c121d0916150913141babeb6",
++    ".github/workflows/industrial-waste-v2-card-qualification.yml": "9d54261205feea9cedb3655987c8e3fdf0ec989a68d21b09e5ccca38959b602d",
+     "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatusTest.kt": "bac85c6c8ed33dab7564a177b8e7990e7519cdeb387f847191ffc9654d083d4f"
+   },
+   "receiving_delta": "Add a typed exception marker for policy/observer failures without submitting an action; preserve existing caps, action counters, stopped-state refusal, first-fault precedence and all10 original status fixtures. Workflow separately binds this prospective source and requires the4 receiving runtime failure fixtures.",
+--- a/industrial-waste/v2/produced-token-qualification-source.json
++++ b/industrial-waste/v2/produced-token-qualification-source.json
+@@ -5,18 +5,22 @@
+   "receiving_base_tree": "6ce05ad36bb6cfaf322a7df66fb5bbc4590b292f",
+   "source_sha256": {
+     "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BloodFountainScenarioTest.kt": "ac02eadc8c26ce440449dbf4977619344d7f0a24d2cf542866182650cd0f602c",
+-    "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FanaticalOfferingScenarioTest.kt": "4747a2fa89b2960b531abb9399af42c55f4feda109742ba023c8f16df00adaba",
+-    ".github/workflows/industrial-waste-v2-card-qualification.yml": "ef1cc172365a703154804b11f373d127401f1cd5c121d0916150913141babeb6",
++    "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FanaticalOfferingScenarioTest.kt": "6dada12cfa244249a708d35fb8fb5cb0ad325f82584673040e1c00f81e93422c",
++    ".github/workflows/industrial-waste-v2-card-qualification.yml": "9d54261205feea9cedb3655987c8e3fdf0ec989a68d21b09e5ccca38959b602d",
+     "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/GameTestDriver.kt": "4a807b64736b0f01d8e03617bad8bade7ad257c52e860b12923474ec2bcd9a49",
+     "mtg-sets/src/main/kotlin/com/wingedsheep/mtg/sets/tokens/PredefinedTokens.kt": "07770051b56e98f07f1a0e4056a5e4974084c9737b44497ddac1093a3ac2069a",
+     "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/AdditionalCost.kt": "9e02a1b25bbfc2f0ae2950b3695f93e196afcd0a64f363c70b9bd83d1248b437",
+     "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt": "7d74a133cc57fc585d4df21266e0c6402196403843ca2351b235909e926c58c6",
+     "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/vow/cards/BloodFountain.kt": "c02d04205df42181fb92c9d957547f5ec45c00b8639fe2fc14dc404267edc974",
+-    "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lci/cards/FanaticalOffering.kt": "780f36102cff180e44f9f0262ec47fa6ddc89503e5b53e52342f7d805744b6e9"
++    "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lci/cards/FanaticalOffering.kt": "780f36102cff180e44f9f0262ec47fa6ddc89503e5b53e52342f7d805744b6e9",
++    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/CostHandler.kt": "c83919c773aea1b851455220e439844467f184aff5fa4441858911f54a31eaa9",
++    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/ExploreEffectExecutor.kt": "93d8582429feb80664ca3b119a02ccd4feba09b8ceccdf24646b7183f7002be1",
++    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/CostHandlerDiscardChoiceTest.kt": "3acd11ee18374199ac8dee777f37c117a47f1ffa8408060e146f9e52ffcfac12"
+   },
+   "expected_cases": {
+     "BloodFountainScenarioTest": 7,
+-    "FanaticalOfferingScenarioTest": 11
++    "FanaticalOfferingScenarioTest": 11,
++    "CostHandlerDiscardChoiceTest": 2
+   },
+   "existing_cases_preserved": {
+     "BloodFountainScenarioTest": 2,
+@@ -24,9 +28,8 @@
+   },
+   "new_fixture_cases": 14,
+   "prior_card_gate_cases": 136,
+-  "prospective_card_gate_cases": 152,
++  "prospective_card_gate_cases": 154,
+   "prior_card_gate_reuse_is_not_new_execution": true,
+-  "production_or_pilot_changes": false,
+   "official_execution_authorized": false,
+   "official_allocations_initialized": 0,
+   "performance_outcomes": 0,
+@@ -45,5 +48,29 @@
+     "pull_request_base": "industrial-waste/v2-structural-redesign",
+     "manual_dispatch": false,
+     "root_review_required_before_branch_or_pr_activation": true
++  },
++  "additional_software_regression_cases": 2,
++  "production_changes": "Only canonical nonrandom discard eligibility validation and empty-library explore counter application",
++  "pilot_changes": false,
++  "prospective_correction_of_source": "8f8ec082343b0fedcbb6956aeb875cbe29b6ae62",
++  "preserved_attempt": {
++    "run_id": 36278796607,
++    "artifact_id": 10918640760,
++    "original_sha256": "f83ef1fcdce0dc823f16efb3be93b50e2d153c7332da1176a76f832cda2c6049",
++    "cases": 18,
++    "passed": 14,
++    "failed": 4,
++    "broad_receiving_executed": false
++  },
++  "assay_differential": {
++    "required_by": ".agents/skills/add-feature/SKILL.md Step8a",
++    "sets": [
++      "VOW",
++      "LCI"
++    ],
++    "commands": "just assay-differential --set <SET> --top 1000",
++    "comparison_base": "8f8ec082343b0fedcbb6956aeb875cbe29b6ae62",
++    "scope": "SDK/parser versus unchanged committed card snapshots, not engine behavior or gameplay",
++    "acceptance": "Retain exact inputs, full rows/exits and classify divergences before acceptance; no automatic adoption or snapshot rewrite"
+   }
+ }
+--- a/mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FanaticalOfferingScenarioTest.kt
++++ b/mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FanaticalOfferingScenarioTest.kt
+@@ -185,7 +185,7 @@
+             driver.bothPass()
+             driver.state.pendingDecision shouldNotBe null
+             counters(driver, creature) shouldBe 1
+-            driver.submitCardSelection(me, if (mill) listOf(revealed) else emptyList()).isSuccess shouldBe true
++            driver.submitYesNo(me, !mill).isSuccess shouldBe true
+             driver.state.pendingDecision shouldBe null
+             driver.state.stack.isEmpty() shouldBe true
+             driver.getHand(me).toSet() shouldBe handBefore
+--- a/rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/CostHandlerDiscardChoiceTest.kt
++++ b/rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/CostHandlerDiscardChoiceTest.kt
+@@ -0,0 +1,67 @@
++package com.wingedsheep.engine.handlers
++
++import com.wingedsheep.engine.core.CardsDiscardedEvent
++import com.wingedsheep.engine.mechanics.mana.ManaPool
++import com.wingedsheep.engine.state.ZoneKey
++import com.wingedsheep.engine.support.GameTestDriver
++import com.wingedsheep.engine.support.TestCards
++import com.wingedsheep.sdk.core.Step
++import com.wingedsheep.sdk.core.Zone
++import com.wingedsheep.sdk.model.Deck
++import com.wingedsheep.sdk.scripting.AbilityCost
++import com.wingedsheep.sdk.scripting.GameObjectFilter
++import com.wingedsheep.sdk.scripting.costs.CostAtom
++import io.kotest.core.spec.style.FunSpec
++import io.kotest.matchers.shouldBe
++
++/** Selected discard costs must spend distinct, eligible cards from the payer's current hand. */
++class CostHandlerDiscardChoiceTest : FunSpec({
++    fun driver(): GameTestDriver = GameTestDriver().also {
++        it.registerCards(TestCards.all)
++        it.initMirrorMatch(deck = Deck.of("Forest" to 20))
++        it.passPriorityUntil(Step.PRECOMBAT_MAIN)
++    }
++
++    test("discard two rejects one card repeated and accepts two distinct hand cards") {
++        val driver = driver()
++        val me = driver.activePlayer!!
++        val first = driver.putCardInHand(me, "Grizzly Bears")
++        val second = driver.putCardInHand(me, "Grizzly Bears")
++        val before = driver.state
++        val cost = AbilityCost.Atom(CostAtom.Discard(count = 2))
++        val handler = CostHandler()
++        val rejected = handler.payAbilityCost(before, cost, first, me, ManaPool(),
++            CostPaymentChoices(discardChoices = listOf(first, first)))
++        rejected.success shouldBe false
++        rejected.events.isEmpty() shouldBe true
++        driver.state shouldBe before
++
++        val paid = handler.payAbilityCost(before, cost, first, me, ManaPool(),
++            CostPaymentChoices(discardChoices = listOf(first, second)))
++        paid.success shouldBe true
++        paid.newState!!.getZone(ZoneKey(me, Zone.GRAVEYARD)).toSet() shouldBe setOf(first, second)
++        paid.events.filterIsInstance<CardsDiscardedEvent>().flatMap { it.cardIds }.toSet() shouldBe setOf(first, second)
++    }
++
++    test("discard land rejects an owned nonland and accepts an eligible owned land") {
++        val driver = driver()
++        val me = driver.activePlayer!!
++        val nonland = driver.putCardInHand(me, "Grizzly Bears")
++        val land = driver.putCardInHand(me, "Forest")
++        val before = driver.state
++        val cost = AbilityCost.Atom(CostAtom.Discard(filter = GameObjectFilter.Land))
++        val handler = CostHandler()
++        handler.canPayAbilityCost(before, cost, nonland, me, ManaPool()) shouldBe true
++        val rejected = handler.payAbilityCost(before, cost, nonland, me, ManaPool(),
++            CostPaymentChoices(discardChoices = listOf(nonland)))
++        rejected.success shouldBe false
++        rejected.events.isEmpty() shouldBe true
++        driver.state shouldBe before
++
++        val paid = handler.payAbilityCost(before, cost, nonland, me, ManaPool(),
++            CostPaymentChoices(discardChoices = listOf(land)))
++        paid.success shouldBe true
++        paid.newState!!.getZone(ZoneKey(me, Zone.GRAVEYARD)) shouldBe listOf(land)
++        (nonland in paid.newState!!.getZone(ZoneKey(me, Zone.HAND))) shouldBe true
++    }
++})
+--- a/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/CostHandler.kt
++++ b/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/CostHandler.kt
+@@ -793,7 +793,14 @@
+                 if (choices.discardChoices.size < atom.count) {
+                     return CostPaymentResult.failure("Must choose ${atom.count} card(s) to discard")
+                 }
+-                choices.discardChoices.take(atom.count)
++                val selected = choices.discardChoices.take(atom.count)
++                val eligible = findMatchingCardsUnified(
++                    state, state.getZone(ZoneKey(controllerId, Zone.HAND)), atom.filter, controllerId
++                ).toSet()
++                if (selected.toSet().size != atom.count || selected.any { it !in eligible }) {
++                    return CostPaymentResult.failure("Discard choices must be distinct eligible cards in your hand")
++                }
++                selected
+             }
+             val result = ZoneTransitionService
+                 .discardCards(workState, controllerId, toDiscard)
+--- a/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/ExploreEffectExecutor.kt
++++ b/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/ExploreEffectExecutor.kt
+@@ -91,7 +91,8 @@
+ 
+         val library = state.getLibrary(explorerId)
+         if (library.isEmpty()) {
+-            return EffectResult.success(state, listOf(exploredEvent(null)))
++            val (stateAfterCounter, counterEvents) = addPlusOneCounter(state, exploringCreatureId, context)
++            return EffectResult.success(stateAfterCounter, counterEvents + exploredEvent(null))
+         }
+ 
+         val topCardId = library.first()
+--- a/.github/workflows/industrial-waste-v2-card-qualification.yml
++++ b/.github/workflows/industrial-waste-v2-card-qualification.yml
+@@ -17,6 +17,9 @@
+       - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/library/LibraryOrderingService.kt
+       - rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/player/LibraryOrderingComponent.kt
+       - rules-engine/src/test/kotlin/com/wingedsheep/engine/library/LibraryOrderingServiceTest.kt
++      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/CostHandler.kt
++      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/ExploreEffectExecutor.kt
++      - rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/CostHandlerDiscardChoiceTest.kt
+       - mtg-sets/**/ChromaticStar*.kt
+       - mtg-sets/**/AncientStirrings*.kt
+       - mtg-sets/**/DrossSkullbomb*.kt
+@@ -121,7 +124,7 @@
+           manifest = json.loads(path.read_text())
+           assert manifest['scope'] == 'DETERMINISTIC_PRODUCED_TOKEN_FIXTURES_NO_R1_AUTHORITY'
+           assert manifest['official_execution_authorized'] is False
+-          assert manifest['expected_cases'] == {'BloodFountainScenarioTest': 7, 'FanaticalOfferingScenarioTest': 11}
++          assert manifest['expected_cases'] == {'BloodFountainScenarioTest': 7, 'FanaticalOfferingScenarioTest': 11, 'CostHandlerDiscardChoiceTest': 2}
+           for name, digest in manifest['source_sha256'].items():
+               assert hashlib.sha256(pathlib.Path(name).read_bytes()).hexdigest() == digest, name
+           pathlib.Path('/tmp/iw-v2-produced-token-provenance.json').write_text(json.dumps({
+@@ -132,18 +135,19 @@
+               'official_execution_authorized': False,
+           }, indent=2) + '\n')
+           PY
+-      - name: Qualify produced Blood and Map transactions first
++      - name: Qualify discard choices and produced Blood and Map transactions first
+         run: |
+           set -o pipefail
+-          just test-class BloodFountainScenarioTest \
++          just test-class CostHandlerDiscardChoiceTest \
++            :mtg-sets:2017-2022:tests:test --tests '*BloodFountainScenarioTest' \
+             :mtg-sets:2023:tests:test --tests '*FanaticalOfferingScenarioTest' \
+             --rerun-tasks --no-build-cache --no-daemon 2>&1 | tee /tmp/iw-v2-produced-token-focused.log
+           python3 - <<'PY'
+           import pathlib, shutil, xml.etree.ElementTree as ET
+           out = pathlib.Path('/tmp/iw-v2-produced-token-focused-xml')
+           out.mkdir()
+-          for era, name, count in [('2017-2022', 'BloodFountainScenarioTest', 7), ('2023', 'FanaticalOfferingScenarioTest', 11)]:
+-              paths = list(pathlib.Path('mtg-sets/' + era + '/tests/build/test-results/test').glob('TEST-*.' + name + '.xml'))
++          for directory, name, count in [('mtg-sets/2017-2022/tests', 'BloodFountainScenarioTest', 7), ('mtg-sets/2023/tests', 'FanaticalOfferingScenarioTest', 11), ('rules-engine', 'CostHandlerDiscardChoiceTest', 2)]:
++              paths = list(pathlib.Path(directory + '/build/test-results/test').glob('TEST-*.' + name + '.xml'))
+               assert len(paths) == 1, (name, paths)
+               suite = ET.parse(paths[0]).getroot()
+               cases = suite.findall('testcase')
+@@ -156,7 +160,7 @@
+       - name: Qualify cards, public-information selections and unchanged legacy golden
+         run: |
+           set -o pipefail
+-          just test-class LibraryOrderingServiceTest \
++          just test-class LibraryOrderingServiceTest --tests '*CostHandlerDiscardChoiceTest' \
+             :mtg-sets:2003-2007:tests:test --tests '*ChromaticStarScenarioTest' --tests '*TreeOfTalesScenarioTest' --tests '*VaultOfWhispersScenarioTest' --tests '*KurgadonTest' \
+             :mtg-sets:2008-2016:tests:test --tests '*AncientStirringsScenarioTest' --tests '*GolemFoundryScenarioTest' \
+             :mtg-sets:2017-2022:tests:test --tests '*DarkmossBridgeScenarioTest' --tests '*BloodFountainScenarioTest' \
+@@ -187,6 +191,92 @@
+               raise SystemExit('Unexpected snapshot or source drift: ' + repr(sorted(changed - expected)))
+           PY
+           git diff -- mtg-sets/src/test/resources/snapshots/cards/TSP.json mtg-sets/src/test/resources/snapshots/cards/ROE.json > /tmp/iw-v2-card-snapshot.diff
++      - name: Run bounded VOW and LCI Assay differential without adopting results
++        run: |
++          set -o pipefail
++          mkdir -p /tmp/iw-v2-assay
++          git fetch --no-tags --depth=1 origin 8f8ec082343b0fedcbb6956aeb875cbe29b6ae62
++          python3 - <<'PYASSAY'
++          import hashlib, json, pathlib, subprocess
++          base = '8f8ec082343b0fedcbb6956aeb875cbe29b6ae62'
++          paths = ['oracle-assay', 'mtg-sdk', 'gradle', 'buildSrc', 'build-logic',
++              'build.gradle.kts', 'settings.gradle.kts', 'gradle.properties', 'justfile',
++              'scripts/gradle-locked', 'mtg-sets/src/test/resources/snapshots/cards/VOW.json',
++              'mtg-sets/src/test/resources/snapshots/cards/LCI.json']
++          subprocess.run(['git', 'diff', '--exit-code', base, '--', *paths], check=True)
++          entries = subprocess.check_output(['git', 'ls-tree', '-r', 'HEAD', '--', *paths], text=True)
++          assert entries == subprocess.check_output(['git', 'ls-tree', '-r', base, '--', *paths], text=True)
++          pins = {line.split('\t', 1)[1]: hashlib.sha256(pathlib.Path(line.split('\t', 1)[1]).read_bytes()).hexdigest()
++              for line in entries.splitlines()}
++          pathlib.Path('/tmp/iw-v2-assay/input-equivalence.json').write_text(json.dumps({
++              'base': base, 'candidate': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
++              'same_tracked_assay_sdk_build_and_two_golden_inputs': True, 'git_tree_entries': entries,
++              'actual_source_sha256': pins, 'engine_behavior_is_not_compared_by_assay': True,
++              'divergences_require_independent_classification_not_automatic_adoption': True}, indent=2) + '\n')
++          PYASSAY
++          prepare_status=0
++          just assay corpus > /tmp/iw-v2-assay/corpus.log 2>&1 || prepare_status=$?
++          printf '%s\n' "$prepare_status" > /tmp/iw-v2-assay/corpus-exit.txt
++          if [ "$prepare_status" -ne 0 ]; then exit "$prepare_status"; fi
++          python3 - <<'PYASSAY'
++          import gzip, hashlib, json, pathlib
++          out = pathlib.Path('/tmp/iw-v2-assay')
++          bulk = pathlib.Path.home() / '.cache/scryfall/_bulk-oracle-cards.jsonl.gz'
++          names, ids, goldens = set(), set(), []
++          for code in ['VOW', 'LCI']:
++              path = pathlib.Path('mtg-sets/src/test/resources/snapshots/cards') / (code + '.json')
++              current, body = None, []
++              def retain():
++                  if current is None: return
++                  definition = json.loads('\n'.join(body))
++                  names.add(current.lower())
++                  if definition.get('oracleId'): ids.add(definition['oracleId'])
++                  goldens.append({'set': code, 'name': current, 'oracle_id': definition.get('oracleId')})
++              for line in path.read_text().splitlines():
++                  if line.startswith('// '):
++                      retain(); current, body = line[3:].strip(), []
++                  elif current is not None: body.append(line)
++              retain()
++          excluded = {'art_series', 'token', 'double_faced_token', 'emblem', 'vanguard', 'scheme', 'planar'}
++          selected, records = [], []
++          with gzip.open(bulk, 'rb') as stream:
++              for ordinal, raw in enumerate(stream, 1):
++                  text = raw.strip().rstrip(b',')
++                  if text in [b'', b'[', b']']: continue
++                  card = json.loads(text)
++                  name = card.get('name')
++                  if not name or card.get('lang', 'en') != 'en' or card.get('layout', 'normal') in excluded: continue
++                  if card.get('oracle_id') not in ids and name.lower() not in names and name.split(' // ')[0].lower() not in names: continue
++                  selected.append(raw)
++                  records.append({'bulk_line': ordinal, 'name': name, 'oracle_id': card.get('oracle_id'),
++                      'raw_line_sha256': hashlib.sha256(raw).hexdigest()})
++          assert len(goldens) > 0 and len(selected) > 0
++          assert all(0 < sum(g['set'] == code for g in goldens) <= 1000 for code in ['VOW', 'LCI'])
++          (out / 'relevant-oracle-inputs.jsonl.gz').write_bytes(gzip.compress(b''.join(selected), mtime=0))
++          metadata = {'whole_bulk_bytes': bulk.stat().st_size, 'whole_bulk_sha256': hashlib.sha256(bulk.read_bytes()).hexdigest(),
++              'bulk_cache_mtime_ns': bulk.stat().st_mtime_ns, 'goldens': goldens, 'selected_rows': records,
++              'selection': 'All eligible full-name/front-name/oracle-id matches, retained in original bulk order; duplicates preserved so first-wins lookup matches Assay. Differential set filter is golden filename. Unmatched golden names remain visible in raw differential output.',
++              'subset_sha256': hashlib.sha256((out / 'relevant-oracle-inputs.jsonl.gz').read_bytes()).hexdigest(),
++              'no_engine_or_gameplay_execution': True}
++          (out / 'reference-inputs.json').write_text(json.dumps(metadata, indent=2) + '\n')
++          PYASSAY
++          final_status=0
++          for set_code in VOW LCI; do
++            status=0
++            just assay-differential --set "$set_code" --top 1000 > "/tmp/iw-v2-assay/${set_code}.log" 2>&1 || status=$?
++            printf '%s\n' "$status" > "/tmp/iw-v2-assay/${set_code}-exit.txt"
++            if [ "$status" -ne 0 ]; then final_status=1; fi
++          done
++          python3 - <<'PYASSAY'
++          import hashlib, json, pathlib
++          out = pathlib.Path('/tmp/iw-v2-assay')
++          bulk = pathlib.Path.home() / '.cache/scryfall/_bulk-oracle-cards.jsonl.gz'
++          expected = json.loads((out / 'reference-inputs.json').read_text())['whole_bulk_sha256']
++          actual = hashlib.sha256(bulk.read_bytes()).hexdigest()
++          (out / 'reference-after.json').write_text(json.dumps({'whole_bulk_sha256': actual, 'unchanged': actual == expected}) + '\n')
++          assert actual == expected, 'Oracle reference changed during bounded differential'
++          PYASSAY
++          exit "$final_status"
+       - name: Preserve exact validation and snapshot evidence
+         if: always()
+         uses: actions/upload-artifact@v4
+@@ -203,6 +293,7 @@
+             mtg-sets/2025/tests/build/test-results/test/TEST-*.xml
+             industrial-waste/v2/runtime-evidence/registry-audit.txt
+             /tmp/iw-v2-card-snapshot.diff
++            /tmp/iw-v2-assay/
+             /tmp/iw-v2-status-provenance.json
+             /tmp/iw-v2-produced-token-provenance.json
+             /tmp/iw-v2-produced-token-focused.log

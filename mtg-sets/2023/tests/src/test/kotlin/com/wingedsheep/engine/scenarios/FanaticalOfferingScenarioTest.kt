@@ -185,7 +185,7 @@ class FanaticalOfferingScenarioTest : FunSpec({
             driver.bothPass()
             driver.state.pendingDecision shouldNotBe null
             counters(driver, creature) shouldBe 1
-            driver.submitCardSelection(me, if (mill) listOf(revealed) else emptyList()).isSuccess shouldBe true
+            driver.submitYesNo(me, !mill).isSuccess shouldBe true
             driver.state.pendingDecision shouldBe null
             driver.state.stack.isEmpty() shouldBe true
             driver.getHand(me).toSet() shouldBe handBefore
