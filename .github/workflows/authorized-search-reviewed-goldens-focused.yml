@@ -1,0 +1,123 @@
+name: Authorized Search Reviewed Goldens Focused
+
+on:
+  push:
+    branches:
+      - shared/authorized-search-reviewed-goldens-gate-20260927
+    paths:
+      - .github/workflows/authorized-search-reviewed-goldens-focused.yml
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot:
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/shared/authorized-search-reviewed-goldens-gate-20260927' &&
+      github.event.before == '0000000000000000000000000000000000000000' &&
+      github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      UPDATE_SNAPSHOTS: '0'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 12cceed6d003da843fbcfccd8326adecb124ebf5
+          persist-credentials: false
+      - name: Bind reviewed source and exact golden bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 <<'PY' | tee focused-source.json
+          import hashlib, json, subprocess
+          from pathlib import Path
+          source = '12cceed6d003da843fbcfccd8326adecb124ebf5'
+          tree = '211e9dc9f5d7b7007e60710c40bb46f8c5f13d1e'
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          assert git('rev-parse', 'HEAD') == source
+          assert git('rev-parse', 'HEAD^{tree}') == tree
+          assert not git('status', '--porcelain', '--untracked-files=no')
+          assert Path('.github/workflows/authorized-search-reviewed-goldens-focused.yml').exists() is False
+          data = json.loads(Path('lab-coordinator/shared-capabilities/evidence/pr210-reviewed-goldens/candidate-audit.json').read_text())
+          assert data['source_parent'] == '197f95e858638de2fd215073b0b876378fc4c92d'
+          assert data['independent_structural_review'] == '9e2bf49d3930e40cbd26f12c4c84d423e1932682'
+          assert data['files_changed'] == len(data['files']) == 96
+          assert data['leaf_changes'] == {'type': 337, 'zone': 337, 'order': 362, 'scalar': 25}
+          assert len({x['path'] for x in data['files']}) == 96
+          for row in data['files']:
+              path = Path(row['path'])
+              assert str(path).startswith('mtg-sets/src/test/resources/snapshots/cards/')
+              assert hashlib.sha256(path.read_bytes()).hexdigest() == row['new_sha256']
+          print(json.dumps({'source': source, 'tree': tree, 'goldens': 96,
+                            'audit_sha256': hashlib.sha256(Path('lab-coordinator/shared-capabilities/evidence/pr210-reviewed-goldens/candidate-audit.json').read_bytes()).hexdigest(),
+                            'review': data['independent_structural_review']}))
+          PY
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run only the snapshot and round-trip class fresh
+        shell: bash
+        run: |
+          set -o pipefail
+          set +e
+          scripts/gradle-locked :mtg-sets:test \
+            --tests com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest \
+            -DupdateSnapshots=false --rerun-tasks --console=plain --info --stacktrace 2>&1 | tee focused-build.log
+          result=${PIPESTATUS[0]}
+          printf '%s\n' "$result" > focused-exit.txt
+          exit "$result"
+      - name: Audit original XML, fresh task and unchanged source
+        if: always()
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json, re, subprocess
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          source = '12cceed6d003da843fbcfccd8326adecb124ebf5'
+          tree = '211e9dc9f5d7b7007e60710c40bb46f8c5f13d1e'
+          xml = Path('mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml')
+          log = Path('focused-build.log').read_text(errors='replace') if Path('focused-build.log').exists() else ''
+          code = Path('focused-exit.txt').read_text().strip() if Path('focused-exit.txt').exists() else 'MISSING'
+          actual = {}
+          if xml.exists():
+              root = ET.parse(xml).getroot()
+              cases = root.findall('.//testcase')
+              actual = {'declared': {key: int(root.get(key, '-1')) for key in ('tests','failures','errors','skipped')},
+                        'count': len(cases), 'distinct': len({c.get('name') for c in cases}) == len(cases),
+                        'bad': sum(len(c.findall(k)) for c in cases for k in ('failure','error','skipped')),
+                        'classes': sorted({c.get('classname') for c in cases})}
+          git = lambda *args: subprocess.check_output(['git', *args], text=True).strip()
+          task = [line for line in log.splitlines() if re.match(r'^> Task :mtg-sets:test(?:\s|$)', line)]
+          report = {'source_after': git('rev-parse','HEAD'), 'tree_after': git('rev-parse','HEAD^{tree}'),
+                    'tracked_clean': not git('status','--porcelain','--untracked-files=no'),
+                    'exit': code, 'xml': actual, 'test_task_lines': task,
+                    'build_successful': 'BUILD SUCCESSFUL' in log}
+          report['accepted'] = (report['source_after'] == source and report['tree_after'] == tree and
+                                report['tracked_clean'] and code == '0' and
+                                actual.get('declared') == {'tests':338,'failures':0,'errors':0,'skipped':0} and
+                                actual.get('count') == 338 and actual.get('distinct') and actual.get('bad') == 0 and
+                                actual.get('classes') == ['com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest'] and
+                                bool(task) and not any(x.endswith(('FROM-CACHE','UP-TO-DATE','SKIPPED','NO-SOURCE')) for x in task) and
+                                report['build_successful'])
+          Path('focused-audit.json').write_text(json.dumps(report, indent=2, sort_keys=True) + '\n')
+          print(json.dumps({'accepted': report['accepted'], 'cases': actual.get('count'), 'exit': code, 'task_lines': len(task)}))
+          raise SystemExit(0 if report['accepted'] else 1)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: authorized-search-reviewed-goldens-focused-original
+          path: |
+            focused-source.json
+            focused-build.log
+            focused-exit.txt
+            focused-audit.json
+            mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml
+          if-no-files-found: error
+          retention-days: 30
