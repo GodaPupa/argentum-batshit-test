@@ -1,0 +1,19 @@
+# Pest MC10 search-order proposal preservation
+
+This archive preserves source analysis and prospective proposals only. It adopts no actor boundary, changes no pilot, and authorizes no fixture or gameplay attempt.
+
+The current actor component is edfde68ae2005b5e480aca194051b982069d8439. Its original 71/72 failure and corrected 72-case diagnostic pass remain preserved in their existing evidence; neither supplies full raw/canonical pilot equivalence. The frozen raw advisor may choose a different first eligible physical card from the sorted actor question. A proposed exception is restricted to the relative order of currently offered eligible options in an actually authorized active library search.
+
+The original analysis/proposal/actor review are unchanged. Independent review 332e850f permits preservation and further design only. The separate e625481c scope clarification excludes nonselectable option order, Stirrings look/bottom ordering and public sacrifice choices; addendum d25e2896 closes that wording finding at proposal level only. All other governance, provenance and receiving requirements remain open.
+
+The new typed-search-provenance-prerequisites.json is explicitly SOURCE-AUTHOR DESIGN ANALYSIS, not independently accepted implementation. It identifies missing internal search provenance in the current generic Gather/Select pipeline and existing captured source-origin/resolution identity suitable for an ability whose Map source has been sacrificed. Independent review18ae6b90 supports these factual source-bound prerequisites for preservation only; it adopts no API/design or implementation and does not establish exhaustive propagation closure. No Kotlin source or actor ordering was changed. Eleven inspected main ff34ac8f source bodies are retained losslessly in two gzip containers and verified against Git blob identities; the independent reviewer separately retained twenty-two actor-source bodies. Main and the actor receiver are separate source lineages, not an implicitly admitted combined runtime.
+
+The prospective twelve-case bank remains unimplemented, unadmitted and unrun. The old actor50/Monster72 banks do not grant new attempt allowance. A finite source-bound software freeze, independent protocol/boundary disposition, shared ownership and receiving qualification are still required. C2, A2, complete pilots, boarding plans, replay/durable execution, exclusion reconciliation and source-bound gameplay permission remain separate.
+
+The live-ledger recheck at 2026-09-27 00:27 UTC preserves current official claim and audit bodies. The sole current official-attempt ref remains1c2e253a; its four reservations and one consumed block are retired, with zero per-game attempts/initializations/actions/outcomes. Main's current quarantine remains81 historical games across five blocks. No fresh accepted game, new allocation, deck change or deck-performance evidence was created. The check did not re-audit every historical game ZIP.
+
+current-proposal-recovery.json is the exact earlier f1ce recovery checkpoint; the archive manifest is the later complete member inventory including clarification review and ledger/trigger supplements. The earlier checkpoint is preserved rather than silently rewritten. All raw source JSON members remain bytes as read; gzip contents can be recovered with Python gzip.decompress.
+
+Publication is proposed only on the existing inert lab/pest-actor-retry-evidence-20260926 branch, current parent98377f06, under docs/experiments/pest-control/monster-actor-component/evidence/search-provenance-proposal-20260927/. Its79 workflow headers do not match this branch's push; the evidence branch must receive no PR, dispatch or source change. Recheck its parent immediately before a normal FF. Root review is required before publication; no publication is performed by this package builder.
+
+Archive SHA-256: `d84bfc2bc47a186db99842c0518862741f737d50f84e6335d3e8c34ebf886e70`; 332693 bytes, 27 members.
