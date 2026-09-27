@@ -13,6 +13,8 @@ import com.wingedsheep.gym.actorinput.ActorChoiceSupport
 import com.wingedsheep.gym.actorinput.ActorEpoch
 import com.wingedsheep.gym.actorinput.ActorInput
 import com.wingedsheep.gym.actorinput.ActorPublicCards
+import com.wingedsheep.gym.contract.EntityFeatures
+import com.wingedsheep.gym.contract.StackItemKind
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.core.Zone
 
@@ -158,15 +160,39 @@ internal object SphinxStageEVisibleChoice {
 
     private fun unseenSphinx(cards: ActorPublicCards, ownDeck: SphinxStageEOwnDeck): Int {
         val initial = ownDeck.cards["Goliath Sphinx"] ?: 0
-        val outsideIds = (cards.hand + cards.graveyard + cards.zone(cards.actorId, Zone.EXILE) +
-            cards.allBoard.filter { it.ownerId == cards.actorId })
-            .filter { it.name == "Goliath Sphinx" }.map { it.entityId }
-        val stackIds = cards.input.observation.stack.filter {
-            it.spell?.ownerId == cards.actorId && it.view.name == "Goliath Sphinx"
-        }.map { it.view.entityId }
-        val outside = (outsideIds + stackIds).distinct().size
+        val ownZones = listOf(Zone.HAND, Zone.GRAVEYARD, Zone.EXILE, Zone.COMMAND, Zone.SIDEBOARD)
+            .flatMap { zone -> completeOwnZone(cards, zone) }
+        val ownBoard = cards.input.observation.zones.filter { it.zoneType == Zone.BATTLEFIELD }
+            .flatMap { view ->
+                if (view.size != view.cards.size) unsupported("Public battlefield is incomplete")
+                view.cards.filter { it.ownerId == cards.actorId }
+            }
+        val outsideCards = (ownZones + ownBoard).distinctBy { it.entityId }
+        if (outsideCards.any { it.cardDefinitionId == null || it.faceDown }) {
+            unsupported("An unidentified owned object prevents Sphinx accounting")
+        }
+        val known = outsideCards.filter { it.name == "Goliath Sphinx" }
+            .map { it.entityId }.toMutableSet()
+        cards.input.observation.stack.filter { it.view.kind == StackItemKind.SPELL }.forEach { item ->
+            val spell = item.spell ?: unsupported("Stack spell ownership is not projected")
+            if (spell.ownerId == cards.actorId) {
+                if (spell.faceDown) unsupported("An owned face-down spell prevents Sphinx accounting")
+                if (item.view.name == "Goliath Sphinx") known.add(item.view.entityId)
+            }
+        }
+        val outside = known.size
         if (outside > initial) unsupported("Known own Sphinx count exceeds the frozen list")
         return initial - outside
+    }
+
+    private fun completeOwnZone(cards: ActorPublicCards, zone: Zone): List<EntityFeatures> {
+        val view = cards.input.observation.zones.singleOrNull {
+            it.ownerId == cards.actorId && it.zoneType == zone
+        } ?: unsupported("Own $zone zone is missing")
+        if (view.size != view.cards.size || view.cards.map { it.entityId }.distinct().size != view.cards.size) {
+            unsupported("Own $zone zone is incomplete or duplicated")
+        }
+        return view.cards
     }
 
     private fun islandSearch(options: List<EntityId>, names: Map<EntityId, String>,
