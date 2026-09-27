@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "build/reports/sphinx-stage-e-visible-trace"
 EXPECTED_BLOBS = {
     "sphinx-approach/STAGE_E_VISIBLE_CHOICE_SOURCE_SCOPE.json": "41a0a63842d8989366511fee3c1d611c1ce9c78c",
-    "sphinx-approach/STAGE_E_VISIBLE_CHOICE_TRACE_PROPOSAL.json": "95b8289d213eeb3090b8ffa5a6d5f26ec059c411",
+    "sphinx-approach/STAGE_E_VISIBLE_CHOICE_TRACE_PROPOSAL.json": "d4ec11e0e6ea961648837d4332567d25da90934d",
     "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoice.kt": "c769710269303809a64f01ad06aa3487d2af1182",
     "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt": "f420e5b6e144ffc2692e9b146a44dbf461679f5d",
     "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoiceTraceTest.kt": "267cd3742c8b20d60a64043cd6ca9cc4907c8765",
