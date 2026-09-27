@@ -13,6 +13,7 @@ concurrency:
 
 jobs:
   deterministic:
+    if: ${{ github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == '1' }}
     runs-on: ubuntu-latest
     timeout-minutes: 70
     steps:
@@ -139,6 +140,32 @@ jobs:
               result[clazz] = {"tests": len(cases), "failures": failures, "skipped": skipped}
           pathlib.Path("build/manual-main-gate/xml-verification.json").write_text(
               json.dumps(result, indent=2, sort_keys=True) + "\n")
+          PY
+      - name: Bind source and tracked worktree after execution
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p build/manual-main-gate
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          def capture(*args):
+              result = subprocess.run(args, text=True, capture_output=True)
+              return {"exit": result.returncode, "stdout": result.stdout.strip(), "stderr": result.stderr.strip()}
+          head = capture("git", "rev-parse", "HEAD")
+          tree = capture("git", "rev-parse", "HEAD^{tree}")
+          tracked = capture("git", "status", "--porcelain", "--untracked-files=no")
+          result = {
+              "head": head,
+              "tree": tree,
+              "tracked_status": tracked,
+              "expected_head": "85499f82278472ca286c8826e8266d8759ccf2ae",
+              "expected_tree": "7b0d6d041d6b119aae678ec47135c14e7efeaf4b",
+          }
+          pathlib.Path("build/manual-main-gate/source-after.json").write_text(
+              json.dumps(result, indent=2) + "\n")
+          assert head["exit"] == 0 and head["stdout"] == result["expected_head"]
+          assert tree["exit"] == 0 and tree["stdout"] == result["expected_tree"]
+          assert tracked["exit"] == 0 and tracked["stdout"] == "", tracked
           PY
       - name: Hash raw logs and XML for retained artifact
         if: always()
