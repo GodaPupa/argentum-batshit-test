@@ -1,0 +1,28 @@
+{
+  "schema": "manual-main-fixture-11-class-independent-raw-review-v1",
+  "reviewer": "single active conductor /root, nonauthor of fixture/gate",
+  "disposition": "ACCEPT_TARGETED_DETERMINISTIC_SOFTWARE_GATE_ONLY",
+  "source": {
+    "candidate": "452faa13b460f5c998bb90ff1182ac416deb329c",
+    "tree": "3322a296f7c6453be10fbadc836a00f1fccb9e95",
+    "gate_head": "bfc019fa6bc986d08db22fd727c4297db0208e4a"
+  },
+  "run": {
+    "id": 36293326358,
+    "attempt": 1,
+    "event": "push",
+    "artifact_id": 10922613354,
+    "artifact_bytes": 23547,
+    "artifact_sha256": "eae3e6261f5fd71e912eab8334b06f7b38634a08f76c4b1a1f3e1854cc79cc61",
+    "implementer_evidence_commit": "701a7121d11d020ba92897af3c4955f958efb3c7"
+  },
+  "independent_checks": [
+    "Original ZIP digest/length/CRC and 19 unique retained members verified.",
+    "Eleven raw XML suites include 96 testcases: Purphoros25, eight engine60, Aether10, AI1; zero failures/errors/skips. Four selected test task logs show their exact tasks executed and BUILD SUCCESSFUL; other build tasks may be up-to-date, not counted as fresh tests.",
+    "Before/after source HEAD and tree are exact, tracked worktree clean. Previous failed source85499 original artifact10923016236 remains preserved; one-file test helper correction used canonical trigger-order response through serialized event replay."
+  ],
+  "evidence_limit": "The gate's raw-hashes.json lists eight Gradle binary/test-result files omitted from the uploaded ZIP. This review verifies only retained logs, XML, source bindings and hashes; it does not claim those eight bytes were archived.",
+  "scope": "Targeted deterministic receiving only, permits one broader coherent integration CI at acceptance boundary. It does not admit capability games, primary gear clusters, whole pilots or replay.",
+  "official_capability_games": 0,
+  "official_primary_games": 0
+}
