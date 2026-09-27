@@ -65,10 +65,12 @@ class PestMonsterTronAuthorizedSearchReceivingTest : ScenarioTestBase() {
             activateMap(game)
             val raw = game.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
             raw.options shouldNotBe raw.options.sortedBy { it.value }
-            val visible = input(game.state)
+            val search = verifiedSearch(game.state)
+            val visible = search.input
             visible.decision.shouldBeInstanceOf<SelectCardsDecision>().options shouldBe raw.options
             val legacy = legacy(game.state, "Expedition Map", raw).shouldBeInstanceOf<CardsSelectedResponse>()
-            proposed(visible).response shouldBe legacy
+            component.respond(visible) shouldBe PestMonsterTronActorDecision.NoOverride
+            proposed(search).response shouldBe legacy
             legacy.selectedCards shouldBe listOf(raw.options.first())
             // Archived MC10 remains a failure of the older sorted projection. This is a new
             // source-specific receiving assertion; it does not retroactively accept MC10.
@@ -113,19 +115,22 @@ class PestMonsterTronAuthorizedSearchReceivingTest : ScenarioTestBase() {
                 .withLandsOnBattlefield(1, "Forest", 2)
                 .withCardInLibrary(1, "Urza's Tower").build()
             activateMap(game)
-            val visible = input(game.state)
+            val search = verifiedSearch(game.state)
+            val visible = search.input
             val pair = PestMonsterPairDecisionBoundary(epoch, p2, p1,
                 pestPilot = PestMonsterPairDecisionPilot { null },
-                monsterPilot = PestMonsterPairDecisionPilot { input ->
-                    (component.respond(input) as? PestMonsterTronActorDecision.Proposed)?.proposal
+                monsterPilot = PestMonsterPairDecisionPilot { incoming ->
+                    require(incoming.bindingHash == search.input.bindingHash)
+                    (component.respond(search) as? PestMonsterTronActorDecision.Proposed)?.proposal
                 })
-            pair.respond(visible).action shouldBe proposed(visible)
+            pair.respond(visible).action shouldBe proposed(search)
             shouldThrow<UnsupportedPolicyInput> {
                 PestMonsterPairDecisionBoundary(epoch, p2, p1,
                     PestMonsterPairDecisionPilot { null }, PestMonsterPairDecisionPilot { null })
                     .respond(visible)
             }
         }
+
     }
 
     private fun seeded() = scenario().withPlayers("Monster Tron", "Pest Control")
@@ -141,15 +146,24 @@ class PestMonsterTronAuthorizedSearchReceivingTest : ScenarioTestBase() {
     private fun input(state: GameState): ActorInput =
         projection.build(state, p1, emptyList(), epoch, 991L)
 
+    private fun verifiedSearch(state: GameState): PestMonsterVerifiedSearch =
+        PestMonsterVerifiedSearch.project(projection, state, p1, emptyList(), epoch, 991L)
+
     private fun proposed(input: ActorInput): SubmitDecision =
         (component.respond(input) as PestMonsterTronActorDecision.Proposed).proposal.action
             .shouldBeInstanceOf<SubmitDecision>()
 
+    private fun proposed(search: PestMonsterVerifiedSearch): SubmitDecision =
+        (component.respond(search) as PestMonsterTronActorDecision.Proposed).proposal.action
+            .shouldBeInstanceOf<SubmitDecision>()
+
     private fun assertPhysicalResponse(state: GameState, source: String, selectedName: String) {
         val raw = state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
-        val visible = input(state)
+        val search = verifiedSearch(state)
+        val visible = search.input
         visible.decision.shouldBeInstanceOf<SelectCardsDecision>().options shouldBe raw.options
-        val answer = proposed(visible)
+        component.respond(visible) shouldBe PestMonsterTronActorDecision.NoOverride
+        val answer = proposed(search)
         answer.response shouldBe legacy(state, source, raw)
         name(state, answer.response.shouldBeInstanceOf<CardsSelectedResponse>().selectedCards.single()) shouldBe selectedName
     }
