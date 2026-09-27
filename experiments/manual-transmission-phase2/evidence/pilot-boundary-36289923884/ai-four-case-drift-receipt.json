@@ -1,0 +1,81 @@
+{
+  "schema": "manual-phase2-pr208-ai-four-case-drift-v1",
+  "status": "SOURCE_BACKED_INHERITED_BASE_TEST_DRIFT_NOT_PILOT_DIFF",
+  "pr": 208,
+  "pr_head": "032fdc8f6fe4dcf29970905d0f36e39bed41f7b4",
+  "pr_base": "60a9e20b61f63c4d42772ca8d122aabe68aabe2f",
+  "main_baseline": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+  "pr_changed_files": [
+    ".github/workflows/manual-transmission-phase2-pilot-boundary.yml",
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt",
+    "gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundaryTest.kt"
+  ],
+  "pr_ai_run": {
+    "workflow": 36289923884,
+    "attempt": 1,
+    "job": 108537948291,
+    "task": ":ai:test",
+    "result": "752 tests; 4 failed; 11 skipped",
+    "decoded_job_log_path": "experiments/manual-transmission-phase2/evidence/pilot-boundary-36289923884/decoded-ai-job-log.txt",
+    "decoded_job_log_git_blob": "64b65407a537be0123f72cf95fff97c3df7b65ac"
+  },
+  "main_ai_run": {
+    "workflow": 36279987737,
+    "job": 108509861505,
+    "task": ":ai:test",
+    "result": "successful, fresh task (not FROM-CACHE)",
+    "four_case_excerpt_path": "experiments/manual-transmission-phase2/evidence/pilot-boundary-36289923884/main-ff34-four-case-excerpt.txt",
+    "excerpt_git_blob": "a665ef627d9608eb9160f329469d8ca024d9e8b4"
+  },
+  "source_identity": {
+    "ai_player_blob_all_refs": "7d78e440dad02de8a855fc016bdfb75d3fbd109e",
+    "ai_build_gradle_blob_all_refs": "17a38cd1b2cf29542eec327e71d324df00fbeff4",
+    "tests_base_equal_pr": true,
+    "tests_main_differs_from_base": true,
+    "test_blob_sha_by_path": {
+      "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": {
+        "main": "f5ebdd18148cddcb3a5d0cc6b4ae2bfc5aba2ef4",
+        "base_and_pr": "7dd4efb35da5b8ede1833a25549cd9346e7c172b"
+      },
+      "ai/src/test/kotlin/com/wingedsheep/ai/engine/PestControlAgentDecisionTest.kt": {
+        "main": "e4cd250e5a639beaf46ef1842c2cd89aca6345e0",
+        "base_and_pr": "890902d112f794baea9c29e877113e344af37119"
+      },
+      "ai/src/test/kotlin/com/wingedsheep/ai/puzzles/PuzzleSuiteTest.kt": {
+        "main": "62727f675cd5dfba876a1cf447715bfefe5c0129",
+        "base_and_pr": "1b3db88502a08b146cb2fad3a52ea5a8b87c4cc8"
+      }
+    }
+  },
+  "cases": [
+    {
+      "name": "FrozenBaselineTest: LEGACY_V0",
+      "pr_failure": "AssertionFailedError at FrozenBaselineTest.kt:56",
+      "main_result": "PASS",
+      "source_explanation": "Base pins old golden 5e699f864486526a; main pins 2dfcfc67eb3eaab0 and its KDoc binds seven postblock priority-pass swaps with unchanged other 399 actions/outcome. Main fresh AI gate passes."
+    },
+    {
+      "name": "PestControlAgentDecisionTest: Game 18 land-unlocked payoff",
+      "pr_failure": "AssertionFailedError at PestControlAgentDecisionTest.kt:1711",
+      "main_result": "PASS",
+      "source_explanation": "Base uses game.resolveStack() after Blood Researcher; main uses game.resolveStackWith(player) at main file line317, accounting for corrected priority flow. Setup and requested tactical assertion otherwise remain."
+    },
+    {
+      "name": "PestControlAgentDecisionTest: Bone Shards Carrier Thrall",
+      "pr_failure": "AssertionFailedError at PestControlAgentDecisionTest.kt:929",
+      "main_result": "PASS",
+      "source_explanation": "Base uses game.resolveStack() and fresh ai(game) for first choice; main retains player and uses game.resolveStackWith(player) at line928. Main fresh AI gate passes."
+    },
+    {
+      "name": "PuzzleSuiteTest: all outside KNOWN_FAILURES",
+      "pr_failure": "AssertionFailedError at PuzzleSuiteTest.kt:49",
+      "main_result": "PASS",
+      "source_explanation": "Base still lists instants-05 and activate-05 in KNOWN_FAILURES; main removes them. Main KDoc records corrected postblock priority yielding 85/98 instead of old 83/98 on unchanged profile, with those two now passing."
+    }
+  ],
+  "inference_boundary": "The three PR files are under gym/manual and its workflow; AI test files and AIPlayer are byte-identical between base and PR head. Main is a different source with corrected test expectations and passed its own fresh AI task. No unchanged-base control run was dispatched, and this receipt does not imply the entire Manual composed runtime passes CI.",
+  "disposition": "PR208_DRAFT_UNMERGED_MANUAL_PILOT_COMPONENT_ONLY",
+  "gameplay_authorized": false,
+  "official_capability_games": 0,
+  "official_primary_games": 0
+}
