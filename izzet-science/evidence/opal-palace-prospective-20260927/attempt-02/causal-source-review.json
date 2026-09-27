@@ -1,0 +1,47 @@
+{
+  "disposition": "DIAGNOSED_FIXTURE_PRECONDITIONS_AND_PAYMENT_SELECTION_LIMIT",
+  "findings": [
+    {
+      "case": "a later hand cast uses only prior command-zone casts",
+      "limitation": "This diagnoses existing engine behavior; it does not endorse the existing CommanderZoneChoiceCheck hand/library treatment as rules-correct or qualify full commander lifecycle.",
+      "mechanism": "Fixture manually attaches CommanderComponent to card already in hand with no CommanderZoneChoiceAskedComponent. Standalone Palace mana activation settles at activation priority; CommanderZoneChoiceCheck includes HAND and pauses with leave-in-hand/command-zone decision. Cast while this decision is pending is rejected for no priority.",
+      "minimal_repair": "After activation, assert exact pending commander-zone yes/no decision belongs to this commander/owner, submit false through real decision API, assert success/no pending decision/actor priority/card still hand, then perform unchanged cast and expected two counters. Do not overwrite priority or silently swallow arbitrary decisions.",
+      "source_refs": [
+        "OpalPalaceScenarioTest.kt:47-61,designateCommander",
+        "ActivateAbilityHandler.kt:1919-1924",
+        "CommanderZoneChoiceCheck.kt:check/CHOICE_ZONES"
+      ]
+    },
+    {
+      "cases": [
+        "two Palace mana spent on a first command-zone cast add two counters",
+        "two Palace contributions are combined before an additive counter modifier"
+      ],
+      "mechanism": "AddManaOfChoiceExecutor stores rider-bearing Palace mana as restrictedMana with AnySpend, so it is eligible for all costs. Second Palace activation costs {1}; autoTapForManaCost first calls pool.payPartial and finds the first Palace unit covers the cost, so no extra Plains is tapped. payAbilityCost consumes that unit; second activation replaces it with one new rider unit. Commander therefore legitimately receives one Palace contribution; with Hardened Scales it receives two counters. These observations do not demonstrate broken aggregation.",
+      "minimal_repair_requirement": "Make both Palace units demonstrably remain in pool and actually be spent on commander. Add pre-cast assertion of exactly two CommanderCastEntryCounters units and on-stack aggregate2, retaining original final2/final3 assertions. Merely adding more Plains, pre-floating ordinary mana, or choosing PaymentStrategy.Explicit does not solve current restricted-first policy: Explicit also calls payPartial before source selection.",
+      "options": [
+        "For the same real two-activation trace, expose/receive a bounded legitimate mana-spend selection that pays second activation with ordinary mana while retaining first rider. This is a separate shared payment capability/source change requiring its own targeted authority.",
+        "A source-reviewed prospective mechanic fixture may initialize a documented two-unit Palace-rider pool to isolate aggregation, preserving both contribution assertions and final endpoints; this changes setup scope and requires explicit prospective bank amendment. It cannot be represented as proof of two actual Palace activations or complete payment behavior."
+      ],
+      "source_refs": [
+        "OpalPalace.kt second activatedAbility",
+        "AddManaOfChoiceExecutor.kt:128-137",
+        "ActivateAbilityHandler.kt:1280-1319,1482-1508,2407-2427",
+        "ManaPool.kt:481-492,622 onward"
+      ]
+    }
+  ],
+  "gameplay_authorized": false,
+  "no_weakenings": [
+    "Do not lower expected counters to1/2 or drop cases.",
+    "Do not rerun seven successful cases on unchanged source.",
+    "Do not infer production aggregation defect solely from wrong fixture payment precondition.",
+    "Preserve original7pass/3fail raw outcomes and consumed attempt."
+  ],
+  "original_run": 36311784226,
+  "reviewer": "/root/compatibility_review",
+  "schema": "opal-three-failure-causal-source-review-v1",
+  "source": "2992a354ff15ce9d376da3b22c2da89f6984fa0a",
+  "source_edits": 0,
+  "tests_executed": 0
+}

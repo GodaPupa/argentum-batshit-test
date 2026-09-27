@@ -1,0 +1,32 @@
+{
+  "basis": "Exact diff adds scoped repair: prefix to only adopted three names and records selector scope; case bodies and assertions unchanged. Seven unselected names/bodies unchanged.",
+  "case_names": [
+    "scoped repair: a later hand cast uses only prior command-zone casts",
+    "scoped repair: two Palace mana spent on a first command-zone cast add two counters",
+    "scoped repair: two Palace contributions are combined before an additive counter modifier"
+  ],
+  "disposition": "ACCEPT_NAME_PREFIX_AMENDMENT_WITHIN_EXISTING_THREE_CASE_SCOPE",
+  "execution_budget_unchanged": {
+    "cases": 3,
+    "invocations": 1
+  },
+  "files_sha256": {
+    "OpalPalaceScenarioTest.prospective.kt": "55820e9843618ae78f075e3aa195d018fd6a5f9e19596da20f668b5d36f73bde",
+    "attempt-03-scope-amendment.json": "761107509f5d3ef3e1a1d30c2acdd80b97f92e5cb17a50f387a103d87b1338f1"
+  },
+  "gameplay_authorized": false,
+  "name_mapping": {
+    "a later hand cast uses only prior command-zone casts": "scoped repair: a later hand cast uses only prior command-zone casts",
+    "two Palace contributions are combined before an additive counter modifier": "scoped repair: two Palace contributions are combined before an additive counter modifier",
+    "two Palace mana spent on a first command-zone cast add two counters": "scoped repair: two Palace mana spent on a first command-zone cast add two counters"
+  },
+  "remaining_preconditions": [
+    "Publish immutable replacement source and verify exact two-file tree diff.",
+    "Launcher must convey Kotest filter to actual forked test JVM and class-filter this test; independent review must verify relevant version/build forwarding rather than assume Gradle system property reaches worker.",
+    "Original XML must have exactly three named executed cases, zero failures/errors/skips; no implicit whole-ten rerun fallback on filter failure."
+  ],
+  "reviewer": "/root/compatibility_review",
+  "schema": "opal-three-case-selector-amendment-independent-review-v1",
+  "superseded_unexecuted_source": "5152b2b54cff5628b52d687a047350fcc5fd6245",
+  "tests_executed": 0
+}
