@@ -1,0 +1,32 @@
+name: Authorized Search Provenance Focused
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-bound-gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout immutable source candidate
+        uses: actions/checkout@v6
+        with:
+          ref: 050a3156181eaab2069d4be2ba82502204d1e44d
+      - name: Verify source identity
+        run: test "$(git rev-parse HEAD)" = "050a3156181eaab2069d4be2ba82502204d1e44d"
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Engine, routing, and sealed actor receiver
+        run: >-
+          scripts/gradle-locked
+          :rules-engine:test --tests com.wingedsheep.engine.handlers.effects.library.AuthorizedLibrarySearchChoiceTest
+          :game-server:test --tests com.wingedsheep.gameserver.session.AuthorizedSearchDecisionMaskingTest
+          :gym:test --tests com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest
+          --tests com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest
+          --tests com.wingedsheep.gym.actorinput.ActorPriorityObservationTest
