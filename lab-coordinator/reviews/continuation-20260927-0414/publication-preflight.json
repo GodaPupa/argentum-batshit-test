@@ -1,0 +1,30 @@
+{
+  "schema": "coordinator0414-source-and-trigger-proof-v1",
+  "run_status_cut": "2026-09-27 04:14:46 UTC",
+  "base": "62644a2db482c872ffb076ba4d106efa3f0f1e95",
+  "base_tree": "6933dc7a2a586e71397e2fbada5b971d791ee2cd",
+  "branch": "lab-coordinator/critical-path",
+  "live_main": "04c3cd58de904f62f509e633298c38ce7bc49ec9",
+  "main_tree": "82ab494e114218a4e5ab6d7af0edb8eee3209ab1",
+  "actual_main_delta_from_ff34": [
+    "izzet-science/evidence/receiving-20260927/independent-973-raw-review.json",
+    "izzet-science/evidence/receiving-20260927/independent-veteran-two-case-raw-review.json",
+    "lab-coordinator/CURRENT_STATUS.md",
+    "lab-coordinator/NEXT_CHAT_HANDOFF.md"
+  ],
+  "github_tree_in_both_parent_and_current_main": "35cfd2ad7a79fe94f65259a2db90a781083fd2e7",
+  "open_head_PRs": 0,
+  "open_base_PRs": 0,
+  "checked_public_API_records": "public-observations.json.gz",
+  "scope": "Unreferenced six-file coordinator candidate only. Prospective normal FF on coordinator branch; no PR, main write, dispatch, workflow or executable change.",
+  "inherited_trigger_review": {
+    "prior_record_path": "lab-coordinator/reviews/continuation-20260927-0240/publication-preflight.json",
+    "sha256": "b2bbe0cba7384f50a85ea97f881154e472473ef726b37545321e04c5ddd07340",
+    "exact_body": "{\n  \"schema\": \"coordinator0240-preservation-publication-preflight-v1\",\n  \"at_utc\": \"2026-09-27T02:47:29.972820+00:00\",\n  \"branch\": \"lab-coordinator/critical-path\",\n  \"base\": \"7f6b38eba0ad22d9a5e799a4346d98cda8d38795\",\n  \"base_tree\": \"e8726fc1c7737b7f8db4d3da6026d25a532a5fdd\",\n  \"open_head_PRs\": 0,\n  \"open_base_PRs\": 0,\n  \"github_tree\": \"35cfd2ad7a79fe94f65259a2db90a781083fd2e7\",\n  \"workflows\": {\n    \"count\": 80,\n    \"unchanged_entire_github_tree_from_previously_reviewed_publication\": true,\n    \"prior_preflight\": \"lab-coordinator/reviews/continuation-20260927-0132/publication-preflight.json\",\n    \"prior_local_preflight_sha256\": \"55560a8800fe4ca5ce7fc153758b5b704509803422825ce6b9aea2056c410413\",\n    \"matching_push\": [],\n    \"event_scope\": \"No PR, dispatch or workflow change; normal evidence-only branch FF\"\n  },\n  \"preserved_prior_source\": \"7f6b38eba0ad22d9a5e799a4346d98cda8d38795\",\n  \"local_execution_incident\": {\n    \"time_window\": \"Pending local commands around02:38 to02:42:41; all three root sessions eventually returned0\",\n    \"root_sessions\": [\n      83667,\n      19053,\n      88589\n    ],\n    \"mutations\": \"Only authorized local coordinator text corrections; two pwd commands read-only\",\n    \"cleanup_or_foreign_cancellation\": false,\n    \"scope\": \"Transient local execution slowdown, not an experiment or deck result\"\n  },\n  \"scope\": \"Only CURRENT/NEXT, exact prior originals, captured read-only API metadata/index and independent review; all noncoordinator root entries must remain byte-identical\",\n  \"new_official_games\": 0,\n  \"new_allocations\": 0,\n  \"new_outcomes\": 0\n}\n",
+    "workflows": 80,
+    "matching_push": [],
+    "basis": "Reuse accepted trigger review only because entire .github Git tree is byte-identical; no claim to have freshly executed/reviewed every unchanged workflow body. Same coordinator branch, only coordinator documentation/observation paths, and0openhead/basePR."
+  },
+  "publication_guard": "Root must independently review exact candidate/tree and fresh expected coordinator head before normal FF. This preparation moves no ref.",
+  "unrelated_jobs": "Six in-progress and one queued at04:14:46 are outside ownership and untouched; root owns any later disposition."
+}
