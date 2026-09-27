@@ -1,0 +1,11 @@
+# Bounded historical Sphinx object lookup, September 27, 2026
+
+The newly supplied old project worktree leads did not recover the original A–D commit `a1805a7875b37c60c6929a70d0505851dd991def`. Fifty-four readable/discoverable worktree markers in the supplied inventory resolved to seven distinct Git common directories. The seven final local object lookups returned unavailable-object results, and the exact local/origin `sphinx-approach/density-research` ref prefixes returned no entries.
+
+The archive retains the original supplied inventory and actual lookup outputs, with an exact member manifest. The four initially checked Sphinx worktrees share two of those seven object stores. One other store refers to `/workspace/scratch/7ef98cd0475e/argentum/.git/objects`, an unavailable alternate whose exact path was checked directly. That missing alternate was not searched for elsewhere.
+
+The first object lookup timed out after 20 seconds before explicit lazy-fetch suppression was added. Its output did not establish whether the target object was present. No matching process remained under that exact worktree when inspected. The timeout is preserved; it must not be described as a successful lookup or as proof that an implicit Git fetch could not have been attempted. All final seven-store checks used `GIT_NO_LAZY_FETCH=1`, `GIT_NO_REPLACE_OBJECTS=1`, `GIT_OPTIONAL_LOCKS=0`, and `git --no-replace-objects --no-optional-locks` with only `cat-file -t` and the two exact known ref prefixes. No fetch, checkout, source edit, index refresh, experiment or ownership takeover was requested.
+
+This is a bounded local recovery result. It does not prove that the historical bytes never existed or are absent from every possible location. No A–D traces or historical performance results were recovered or certified, and no replacement density campaign was run. Preserve `sphinx-approach/RECONSTRUCTION_PROVENANCE.md` and the accepted prospective Stage-E plan; this packet supplies neither gameplay authority nor new deck-performance evidence.
+
+Packaging copied the existing lookup records without running another lookup. Publication belongs on the existing inert evidence lineage after separate preservation review and a live expected-parent/trigger check. It changes no source, workflow, deck, pilot, protocol or experimental ledger.

@@ -1,0 +1,35 @@
+{
+  "schema": "sphinx-history-preservation-root-independent-review-v1",
+  "at_utc": "2026-09-27T02:11:33.703868+00:00",
+  "reviewer": "/root, non-author of original lookup or packaging",
+  "disposition": "PASS_PRESERVATION_ONLY",
+  "reviewed_files": {
+    "README.md": {
+      "bytes": 2334,
+      "sha256": "363506ffa9c0c8186a2754f6ed5ec167d5b70a3655c6a56a2153ad8a22b8ec44"
+    },
+    "inventory.json": {
+      "bytes": 747,
+      "sha256": "a256e2f18da0e03b302ecaf95226b4996fb157d0b52b5ab7e180d57da91d19e4"
+    },
+    "original-lookup-records.zip": {
+      "bytes": 4284,
+      "sha256": "f85903af362e2bbef52aabf7395d81977b5d08622d38e85721e80e1e2dce550e"
+    }
+  },
+  "checks": [
+    "Read complete README, index, member manifest and original four-worktree/seven-store outputs. Parsed original supplied54-marker inventory.",
+    "All four ZIP member names unique, CRC valid, exact three original records matched byte-for-byte with local originals and manifest SHA/length.",
+    "Seven distinct disclosed stores return unavailable-object results and empty exact-ref output; four initial project worktrees and unavailable recorded alternate are preserved.",
+    "README accurately limits the lookup to disclosed stores, retains the initial20s timeout before explicit lazy-fetch suppression, and does not claim absence everywhere, recovered data or certified performance.",
+    "Packaging invokes no additional search, engine or tests; public files contain only project recovery/provenance records."
+  ],
+  "publication_scope": "Exactly these three preservation files plus this independent review under sphinx-approach/evidence/historical-object-recovery-20260927 on the existing evidence lineage, after owner verifies live expected parent and inert workflow/PR consequences. Do not change the original index review_pending historical-cut field.",
+  "limits": [
+    "This reviews preservation, not a repetition or independent execution of the historical lookup.",
+    "No A-D evidence recovered, no historical result independently certified, no gameplay or prospective StageE authority supplied.",
+    "No source/workflow/deck/pilot/protocol/ledger changes or GitHub approval."
+  ],
+  "official_games": 0,
+  "deck_performance_evidence_changed": false
+}
