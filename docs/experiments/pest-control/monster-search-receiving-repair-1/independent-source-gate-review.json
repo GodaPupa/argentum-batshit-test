@@ -1,0 +1,29 @@
+{
+  "schema": "pest-monster-search-ms01-ms05-compile-repair-independent-review-v1",
+  "disposition": "ACCEPT_ONE_CHANGED_SOURCE_FIVE_CASE_RECEIVING_ATTEMPT_ONLY",
+  "candidate_commit": "83b9592f39a1063207c3f9642faedbd441ce16d6",
+  "candidate_tree": "6f936bcaa21b5062605810474387bf4ac961e16d",
+  "prior_source_commit": "9684b7ec5369a9f450c7f1cd9bddd662cf002dc5",
+  "prior_run": 36294496726,
+  "prior_original_artifact_id": 10923626830,
+  "prior_original_artifact_sha256": "4fb022a4c377cdabc4627e615aa2b3b8c5880764e832ef8febcbd1ffa94b0ce7",
+  "prior_disposition": "INCOMPLETE_PRETEST_COMPILE_NO_XML_OR_GAME",
+  "prior_independent_source_review": "043c98fece6d61528232fd1653d39c97b8dd4a0f",
+  "bank_sha256": "d2e9681d11bb21259a73da1b3fbd00c374454cf519d2051334bfd42d2ad5aa17",
+  "workflow_sha256": "5125053f659e2ce8723f9cb924c0d489baa3267988473567881574858386f09d",
+  "collector_sha256": "be794fafc6f729560fba26bdd85a3e6544399d9150ad5ca4aacba3d5fe98e68e",
+  "source_sha256": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisions.kt": "1904efaf984ce9be32846e4377204b0883387d3660fffeca8ff6a284a92e3e82",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterVerifiedSearch.kt": "28f87338302e789676da3406986ca93b4b8211ecf80d28f0061093891068252e"
+  },
+  "reviewer": "/root",
+  "findings": [
+    "Independently audited original 36,775-byte CRC-clean artifact: source before/after stable, no XML or :gym:test task, exactly two Kotlin compile errors; zero case execution. Raw ZIP and failure index are retained on candidate source.",
+    "Changed source has exactly two targeted fixes: nullable cardInfo keys check avoids invalid cross-module smart cast; trusted projection accepts engine List<LegalAction> required by ObservationAdapter.build. The prospective five test names and existing search proof/pair semantics are unchanged.",
+    "New bank binds original failed run/artifact/index and both repaired source hashes; new collector refuses a dirty source, changed pins, nonfresh target test, missing/extra XML, failed/skipped cases. Workflow only listens to one dedicated branch creation at attempt 1."
+  ],
+  "limits": [
+    "Source/gate review precedes compilation; no claim the changed source compiles or passes. Original failure is not a deck loss or a spent official seed.",
+    "Historical MC10 quarantine, C2/A2, full pair pilots, replay, official allocation and gameplay remain unqualified. One guarded changed-source five-case attempt is authorized."
+  ]
+}
