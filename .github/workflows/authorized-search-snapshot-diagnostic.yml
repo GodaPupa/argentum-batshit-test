@@ -1,0 +1,208 @@
+name: Authorized Search Snapshot Structural Diagnostic
+
+on:
+  push:
+    branches:
+      - shared/authorized-search-snapshot-diagnostic-20260927
+    paths:
+      - .github/workflows/authorized-search-snapshot-diagnostic.yml
+
+permissions:
+  contents: read
+
+jobs:
+  snapshot-diff:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/shared/authorized-search-snapshot-diagnostic-20260927' &&
+      github.event.before == '0000000000000000000000000000000000000000' &&
+      github.run_attempt == 1
+    env:
+      UPDATE_SNAPSHOTS: '0'
+    steps:
+      - name: Checkout immutable source without reblessing
+        uses: actions/checkout@v6
+        with:
+          ref: 197f95e858638de2fd215073b0b876378fc4c92d
+          persist-credentials: false
+      - name: Verify exact source and no snapshot update mode
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            printf 'workflow_event=%s\nsource_checkout=%s\n' "$GITHUB_SHA" "$(git rev-parse HEAD)"
+            test "$(git rev-parse HEAD)" = "197f95e858638de2fd215073b0b876378fc4c92d"
+            test "$(git rev-parse HEAD^{tree})" = "e22c55bdf80896760bb8009c67ddcb91f254e27d"
+            test "$UPDATE_SNAPSHOTS" = "0"
+            printf 'verified source=%s tree=%s snapshot_update=%s\n' "197f95e858638de2fd215073b0b876378fc4c92d" "e22c55bdf80896760bb8009c67ddcb91f254e27d" "$UPDATE_SNAPSHOTS"
+          } 2>&1 | tee diagnostic-source.txt
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Produce fresh mismatch files from only CardDefinitionSnapshotTest
+        shell: bash
+        run: |
+          set -o pipefail
+          set +e
+          scripts/gradle-locked :mtg-sets:test \
+            --tests com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest \
+            -DupdateSnapshots=false --rerun-tasks --stacktrace 2>&1 | tee diagnostic-build.log
+          gradle_status=$?
+          python3 - "$gradle_status" "$GITHUB_SHA" "$(git rev-parse HEAD)" <<'PY'
+          import json, subprocess, sys
+          status, event, after = sys.argv[1:]
+          changes = subprocess.check_output(
+              ['git', 'status', '--porcelain', '--untracked-files=no'], text=True).splitlines()
+          with open('diagnostic-exit.json', 'w') as evidence:
+              json.dump({'gradleExit': int(status), 'workflowEvent': event,
+                         'sourceBefore': '197f95e858638de2fd215073b0b876378fc4c92d', 'sourceAfter': after,
+                         'trackedWorktreeClean': not changes, 'trackedChanges': changes,
+                         'rerunTasks': True, 'updateSnapshots': False}, evidence, indent=2)
+              evidence.write('\n')
+          PY
+          test "$(git rev-parse HEAD)" = "197f95e858638de2fd215073b0b876378fc4c92d" || exit 1
+          test -z "$(git status --porcelain --untracked-files=no)" || exit 1
+          # A mismatch is the expected diagnostic input; the next step audits exact raw outputs.
+          exit 0
+      - name: Classify exact per-card JSON changes without modifying goldens
+        if: always()
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import hashlib, json, re, shutil
+          from collections import Counter
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          MISSING = object()
+          source = '197f95e858638de2fd215073b0b876378fc4c92d'
+          xml = Path('mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml')
+          actual_dir = Path('mtg-sets/build/snapshots-actual/snapshots/cards')
+          golden_dir = Path('mtg-sets/src/test/resources/snapshots/cards')
+          copy_dir = Path('diagnostic-baseline')
+          copy_dir.mkdir(exist_ok=True)
+          report = {'source': source, 'xml': str(xml), 'files': [], 'unexpected': []}
+          if xml.is_file():
+              root = ET.parse(xml).getroot()
+              cases = root.findall('.//testcase')
+              failed = [(c.get('name'), c.find('failure')) for c in cases
+                        if c.find('failure') is not None]
+              messages = [node.get('message', '') for _, node in failed]
+              expected_files = [re.search(r'snapshots/cards/([^/\\]+\.json)', m)
+                                for m in messages]
+              report.update(tests=len(cases), failures=len(failed),
+                            errors=sum(len(c.findall('error')) for c in cases),
+                            skipped=sum(len(c.findall('skipped')) for c in cases),
+                            suiteDeclared={k: int(root.get(k, '-1'))
+                                           for k in ('tests', 'failures', 'errors', 'skipped')},
+                            failedCaseNames=[name for name, _ in failed],
+                            expectedActualFiles=sorted(m.group(1) for m in expected_files if m),
+                            failedNamesParsed=all(expected_files),
+                            onlyGoldenFailures=all('card trees match golden' in name
+                                                   for name, _ in failed))
+          else:
+              report.update(tests=0, failures=0, errors=0, skipped=0,
+                            suiteDeclared={}, failedCaseNames=[],
+                            expectedActualFiles=[], failedNamesParsed=False,
+                            onlyGoldenFailures=False)
+          def parse_cards(path):
+              parts = re.split(r'(?m)^// ([^\n]+)\n', path.read_text())
+              if parts[0].strip() or len(parts) % 2 != 1:
+                  raise ValueError(f'bad card block structure: {path}')
+              names = parts[1::2]
+              if len(names) != len(set(names)):
+                  raise ValueError(f'duplicate card names: {path}')
+              return names, {name: json.loads(parts[i + 1])
+                             for i, name in zip(range(1, len(parts), 2), names)}
+          def changes(old, new, path=()):
+              if old is MISSING or new is MISSING or type(old) is not type(new):
+                  yield (path, old, new)
+              elif isinstance(old, dict):
+                  for key in sorted(old.keys() | new.keys()):
+                      yield from changes(old.get(key, MISSING), new.get(key, MISSING), path + (key,))
+              elif isinstance(old, list):
+                  if len(old) != len(new):
+                      yield (path + ('length',), len(old), len(new))
+                  for index, (a, b) in enumerate(zip(old, new)):
+                      yield from changes(a, b, path + (index,))
+              elif old != new:
+                  yield (path, old, new)
+          def value(v):
+              return {'missing': True} if v is MISSING else {'value': v}
+          def expected_shape(path, old, new):
+              return ((path[-2:] == ('source', 'type') and
+                       old == 'FromZone' and new == 'AuthorizedLibrarySearch') or
+                      (path[-2:] == ('source', 'zone') and
+                       old == 'Library' and new is MISSING) or
+                      (path[-1:] == ('librarySearchChoiceOrder',) and
+                       old is MISSING and new == 'CurrentAuthorizedSearch'))
+          actual_files = sorted(actual_dir.glob('*.json'))
+          report['actualFiles'] = [p.name for p in actual_files]
+          change_kinds = Counter()
+          for actual in actual_files:
+              golden = golden_dir / actual.name
+              if not golden.is_file():
+                  report['unexpected'].append({'file': actual.name, 'reason': 'missing golden'})
+                  continue
+              shutil.copy2(golden, copy_dir / actual.name)
+              before_names, before = parse_cards(golden)
+              after_names, after = parse_cards(actual)
+              entry = {'name': actual.name,
+                       'goldenSha256': hashlib.sha256(golden.read_bytes()).hexdigest(),
+                       'actualSha256': hashlib.sha256(actual.read_bytes()).hexdigest(),
+                       'cardNamesUnchanged': before_names == after_names,
+                       'changes': []}
+              if before_names != after_names:
+                  report['unexpected'].append({'file': actual.name, 'reason': 'card identity/order changed'})
+              for card in sorted(before.keys() | after.keys()):
+                  for path, old, new in changes(before.get(card, MISSING), after.get(card, MISSING)):
+                      permitted = expected_shape(path, old, new)
+                      kind = str(path[-2:] if len(path) >= 2 else path)
+                      change_kinds[kind] += 1
+                      change = {'card': card, 'path': list(path), 'old': value(old),
+                                'new': value(new), 'sourceShapeExpected': permitted}
+                      entry['changes'].append(change)
+                      if not permitted:
+                          report['unexpected'].append({'file': actual.name, **change})
+              report['files'].append(entry)
+          report['changeKinds'] = dict(sorted(change_kinds.items()))
+          log = Path('diagnostic-build.log').read_text() if Path('diagnostic-build.log').is_file() else ''
+          status = json.loads(Path('diagnostic-exit.json').read_text()) if Path('diagnostic-exit.json').is_file() else {}
+          report['diagnosticAccepted'] = (
+              report['tests'] == 338 and report['failures'] == 96 and
+              report['errors'] == 0 and report['skipped'] == 0 and
+              report['suiteDeclared'] == {'tests': 338, 'failures': 96, 'errors': 0, 'skipped': 0} and
+              report['onlyGoldenFailures'] and report['failedNamesParsed'] and
+              len(set(report['expectedActualFiles'])) == 96 and
+              report['expectedActualFiles'] == report['actualFiles'] and
+              len(report['files']) == 96 and not report['unexpected'] and
+              bool(re.search(r'^> Task :mtg-sets:test FAILED\s*$', log, re.M)) and
+              status.get('gradleExit', 0) != 0 and
+              status.get('sourceBefore') == source and status.get('sourceAfter') == source and
+              status.get('trackedWorktreeClean') is True and
+              status.get('updateSnapshots') is False)
+          Path('diagnostic-diff.json').write_text(json.dumps(report, indent=2) + '\n')
+          print(json.dumps({'accepted': report['diagnosticAccepted'], 'tests': report['tests'],
+                            'failures': report['failures'], 'actualFiles': len(actual_files),
+                            'unexpected': len(report['unexpected']), 'changeKinds': report['changeKinds']}))
+          raise SystemExit(0 if report['diagnosticAccepted'] else 1)
+          PY
+      - name: Retain original actual snapshots, baselines and raw XML
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: authorized-search-snapshot-diagnostic-evidence
+          path: |
+            diagnostic-source.txt
+            diagnostic-build.log
+            diagnostic-exit.json
+            diagnostic-diff.json
+            diagnostic-baseline/**
+            mtg-sets/build/snapshots-actual/snapshots/cards/**
+            mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml
+          if-no-files-found: error
+          retention-days: 30
