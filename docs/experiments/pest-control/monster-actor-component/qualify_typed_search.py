@@ -11,6 +11,7 @@ import xml.etree.ElementTree as ET
 ROOT = Path(__file__).resolve().parents[4]
 PREFIX = 'docs/experiments/pest-control/monster-actor-component'
 SOURCE = 'b081c56fd9dfb165408ebe121a3fbabea29b0b62'
+PARENT = '89cc35064dd305fe695312a16bf9a77b73b3cc1d'
 TREE = '186c15e7'  # Source review binds full parent commit; tree prefix is a second guard.
 TEST = 'gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisionsTest.kt'
 MODULE = 'gym'
@@ -38,10 +39,10 @@ def source():
     head = git('rev-parse', 'HEAD')
     assert head == os.environ['EXPECTED_HEAD'], (head, os.environ['EXPECTED_HEAD'])
     assert not git('status', '--porcelain', '--untracked-files=all')
-    assert git('rev-parse', 'HEAD^') == SOURCE
+    assert git('rev-parse', 'HEAD^') == PARENT
     assert git('rev-parse', SOURCE + '^{tree}').startswith(TREE)
     changed = git('diff', '--name-only', SOURCE, head).splitlines()
-    assert changed == ['.github/workflows/pest-monster-actor-once.yml', PREFIX + '/qualify_typed_search.py'], changed
+    assert changed == ['.github/workflows/pest-monster-actor-typed-search-once.yml', PREFIX + '/qualify_typed_search.py'], changed
     assert git('rev-parse', head + ':' + TEST) == git('rev-parse', SOURCE + ':' + TEST)
     names = re.findall(r'\btest\("([^"]+)"\)', (ROOT / TEST).read_text())
     assert names == BANK and len(set(names)) == 10, names

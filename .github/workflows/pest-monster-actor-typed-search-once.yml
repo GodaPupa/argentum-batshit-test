@@ -1,7 +1,7 @@
 name: Pest Monster actor typed-search receiving
 on:
   push:
-    branches: ['lab/pest-monster-typed-search-once-20260927']
+    branches: ['lab/pest-monster-typed-search-once-2-20260927']
 permissions:
   contents: read
 jobs:
@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           ref: ${{ github.sha }}
-          fetch-depth: 2
+          fetch-depth: 3
           persist-credentials: false
       - uses: actions/setup-java@v5
         with:
