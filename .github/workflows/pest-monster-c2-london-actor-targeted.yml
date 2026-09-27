@@ -6,7 +6,7 @@ on:
       - ".github/workflows/pest-monster-c2-london-actor-targeted.yml"
       - "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt"
       - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganObservationTest.kt"
-      - "docs/experiments/pest-control/tier-one-monster-c2-london-seam-receiving.json"
+      - "docs/experiments/pest-control/tier-one-monster-c2-london-seam-receiving-v2.json"
 
 permissions:
   contents: read
@@ -31,7 +31,7 @@ jobs:
             git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganObservationTest.kt
             git status --porcelain
           } > build/reports/pest-c2-london/source.txt
-          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt)" = "25a166415fe29189802940fc76f6f283da686072"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt)" = "e4554db18f4bae14c30612677f5bf7f57e4c868f"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganObservationTest.kt)" = "4a55adc2174995906876bc04f836f77eb05ce6f1"
       - name: Execute two fresh deterministic actor cases
         shell: bash
@@ -62,6 +62,6 @@ jobs:
           path: |
             build/reports/pest-c2-london/
             gym/build/test-results/test/TEST-*ActorMulliganObservationTest.xml
-            docs/experiments/pest-control/tier-one-monster-c2-london-seam-receiving.json
+            docs/experiments/pest-control/tier-one-monster-c2-london-seam-receiving-v2.json
           if-no-files-found: error
           retention-days: 90
