@@ -1,0 +1,126 @@
+{
+  "schema": "authorized-search-focused-gate-raw-audit-v1",
+  "status": "IMPLEMENTER_RAW_AUDIT_PASS_PENDING_INDEPENDENT_REVIEW",
+  "run": {
+    "id": 36292196895,
+    "attempt": 1,
+    "event": "push",
+    "workflowHead": "463e5b01e99a2af9979625f45e822d552ec94095",
+    "jobId": 108544299057,
+    "conclusion": "success",
+    "jobCompletedAtUtc": "2026-09-27T03:49:52Z",
+    "runUpdatedAtUtc": "2026-09-27T03:49:53Z"
+  },
+  "testedSource": {
+    "commit": "b3d4d2922f92e325f57ae7491b96068f8bf6a7b4",
+    "initialAndFinalSame": true,
+    "trackedWorktreeClean": true,
+    "verifiedSourceAndTestBlobs": 15,
+    "inventoryCommit": "198d197953d68fd97fadd0b8f13e315cf29bcaa8"
+  },
+  "artifact": {
+    "id": 10923105808,
+    "name": "authorized-search-focused-evidence",
+    "zipSha256": "ae1c76b7a82351e9f118187d9c36bcc14c8131b18df2f878fd6913391f264c0d",
+    "bytes": 39399,
+    "members": {
+      "focused-build.log": {
+        "bytes": 18216,
+        "sha256": "c5202db0baeba61d8180227f894a3f09ba6c455a77f0d3ebfc7e5f4a68e3bcaa"
+      },
+      "focused-exit.json": {
+        "bytes": 286,
+        "sha256": "f78211940b43b33e4d1043c49eb07788c47b5ba034b8b2b6f3a4198a2e642393"
+      },
+      "focused-source.txt": {
+        "bytes": 2176,
+        "sha256": "a851e8339b2ef7bc1cb83f0ceb7eaa0b4d08d592de7798f1ea95aab7a3037d4d"
+      },
+      "focused-xml-audit.json": {
+        "bytes": 6310,
+        "sha256": "3fca9fb07a939b442e7c06abb6cdf34c59f3e915b5e0e266b18e640073d1f4ce"
+      },
+      "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.AuthorizedSearchDecisionMaskingTest.xml": {
+        "bytes": 4487,
+        "sha256": "827756ffc05abddff14c6debdf588281af837324a84cf31cd88fe68efb3d5605"
+      },
+      "gym/build/test-results/test/TEST-com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest.xml": {
+        "bytes": 727,
+        "sha256": "5263f09e5922464f1ca9c9a94eb3228856587e584b7b2202d8412b6f01309c8a"
+      },
+      "gym/build/test-results/test/TEST-com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest.xml": {
+        "bytes": 5387,
+        "sha256": "defe7a2f68a16192c65e8e8cf05c20c6bee337f6a4ebbce5f5bb63df5ffedd91"
+      },
+      "gym/build/test-results/test/TEST-com.wingedsheep.gym.actorinput.ActorPriorityObservationTest.xml": {
+        "bytes": 1060,
+        "sha256": "ec9a9a6ed584657478dcbf1ab6d4aa12ea5fbc6a7e07c0bed3f9566c299dd1a0"
+      },
+      "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.effects.library.AuthorizedLibrarySearchChoiceTest.xml": {
+        "bytes": 1349,
+        "sha256": "cdf57d8724ed43ec4b472ebcf4ee2f46819b73f002790945a83f6ac31d6b59c6"
+      }
+    }
+  },
+  "testResult": {
+    "gradleExit": 0,
+    "rerunTasks": true,
+    "actionableTasks": "63 executed",
+    "classes": [
+      {
+        "className": "com.wingedsheep.engine.handlers.effects.library.AuthorizedLibrarySearchChoiceTest",
+        "actual": 5,
+        "passed": 5,
+        "skipped": 0,
+        "failed": 0,
+        "errored": 0,
+        "exactCaseNamesMatchFrozenInventory": true
+      },
+      {
+        "className": "com.wingedsheep.gameserver.session.AuthorizedSearchDecisionMaskingTest",
+        "actual": 1,
+        "passed": 1,
+        "skipped": 0,
+        "failed": 0,
+        "errored": 0,
+        "exactCaseNamesMatchFrozenInventory": true
+      },
+      {
+        "className": "com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest",
+        "actual": 2,
+        "passed": 2,
+        "skipped": 0,
+        "failed": 0,
+        "errored": 0,
+        "exactCaseNamesMatchFrozenInventory": true
+      },
+      {
+        "className": "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+        "actual": 28,
+        "passed": 28,
+        "skipped": 0,
+        "failed": 0,
+        "errored": 0,
+        "exactCaseNamesMatchFrozenInventory": true
+      },
+      {
+        "className": "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+        "actual": 4,
+        "passed": 4,
+        "skipped": 0,
+        "failed": 0,
+        "errored": 0,
+        "exactCaseNamesMatchFrozenInventory": true
+      }
+    ],
+    "totalCases": 40,
+    "passed": 40,
+    "skipped": 0,
+    "failed": 0,
+    "errored": 0,
+    "declaredSuiteCountsMatch": true,
+    "distinctCaseNames": true
+  },
+  "scope": "Fixed deterministic generic engine, server wire, and sealed actor projection tests only. No S01–S12 fixture bank, source-search card scenario qualification, game/allocation, or scientific admission.",
+  "review": "The implementer decoded original ZIP and independently compared all 40 XML case names with frozen inventory; a separate reviewer must verify before adopting shared source."
+}
