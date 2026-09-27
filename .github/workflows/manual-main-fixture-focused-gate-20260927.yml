@@ -1,0 +1,200 @@
+name: Manual Phase 2 Main Fixture Focused Gate
+
+on:
+  push:
+    branches: [lab/manual-main-fixture-gate-20260927]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-main-fixture-focused-20260927
+  cancel-in-progress: false
+
+jobs:
+  deterministic:
+    if: ${{ github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == '1' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    steps:
+      - name: Check out immutable candidate
+        uses: actions/checkout@v6
+        with:
+          ref: 452faa13b460f5c998bb90ff1182ac416deb329c
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+      - name: Bind immutable source and tree
+        shell: bash
+        run: |
+          mkdir -p build/manual-main-gate
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          report = pathlib.Path("build/manual-main-gate/source-binding.json")
+          actual = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+          tree = subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], text=True).strip()
+          clean = not subprocess.check_output(["git", "status", "--porcelain"], text=True).strip()
+          result = {
+              "source": actual,
+              "tree": tree,
+              "workflow_trigger_commit": "${{ github.sha }}",
+              "clean_at_checkout": clean,
+              "scope": "deterministic_source_integration_only",
+              "official_initializations": 0,
+              "gameplay_authorized": False,
+          }
+          report.write_text(json.dumps(result, indent=2) + "\n")
+          assert actual == "452faa13b460f5c998bb90ff1182ac416deb329c"
+          assert tree == "3322a296f7c6453be10fbadc836a00f1fccb9e95"
+          assert clean
+          PY
+      - name: Purphoros receiving scenario
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./gradlew --no-daemon --no-build-cache --console=plain \
+            :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
+            --tests com.wingedsheep.engine.scenarios.PurphorosGodOfTheForgeScenarioTest \
+            2>&1 | tee build/manual-main-gate/purphoros.log
+      - name: Engine token-entry, checkpoint, and priority fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./gradlew --no-daemon --no-build-cache --console=plain \
+            :rules-engine:cleanTest :rules-engine:test \
+            --tests com.wingedsheep.engine.event.BattlefieldEntrySnapshotTest \
+            --tests com.wingedsheep.engine.handlers.effects.token.TokenBatchEntryHistoryTest \
+            --tests com.wingedsheep.engine.mechanics.layers.BattlefieldEntryProjectionTest \
+            --tests com.wingedsheep.engine.scenarios.SelfEntersTappedOffStackEntryScenarioTest \
+            --tests com.wingedsheep.engine.scenarios.TokenCopyOfPlaneswalkerEntryScenarioTest \
+            --tests com.wingedsheep.engine.scenarios.TokenCopyOfSagaEntryScenarioTest \
+            --tests com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest \
+            --tests com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest \
+            2>&1 | tee build/manual-main-gate/engine.log
+      - name: Aether Channeler receiving scenario
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./gradlew --no-daemon --no-build-cache --console=plain \
+            :mtg-sets:2017-2022:tests:cleanTest :mtg-sets:2017-2022:tests:test \
+            --tests com.wingedsheep.engine.scenarios.AetherChannelerScenarioTest \
+            2>&1 | tee build/manual-main-gate/aether-channeler.log
+      - name: Accepted AI control
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./gradlew --no-daemon --no-build-cache --console=plain \
+            :ai:cleanTest :ai:test \
+            --tests com.wingedsheep.ai.arena.FrozenBaselineTest \
+            2>&1 | tee build/manual-main-gate/ai-control.log
+      - name: Verify full fixture classes and raw XML
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, re, xml.etree.ElementTree as ET
+          groups = {
+            "engine": (
+              pathlib.Path("rules-engine/build/test-results/test"),
+              [
+                "com.wingedsheep.engine.event.BattlefieldEntrySnapshotTest",
+                "com.wingedsheep.engine.handlers.effects.token.TokenBatchEntryHistoryTest",
+                "com.wingedsheep.engine.mechanics.layers.BattlefieldEntryProjectionTest",
+                "com.wingedsheep.engine.scenarios.SelfEntersTappedOffStackEntryScenarioTest",
+                "com.wingedsheep.engine.scenarios.TokenCopyOfPlaneswalkerEntryScenarioTest",
+                "com.wingedsheep.engine.scenarios.TokenCopyOfSagaEntryScenarioTest",
+                "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+                "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+              ], ":rules-engine:test"),
+            "purphoros": (
+              pathlib.Path("mtg-sets/2008-2016/tests/build/test-results/test"),
+              ["com.wingedsheep.engine.scenarios.PurphorosGodOfTheForgeScenarioTest"],
+              ":mtg-sets:2008-2016:tests:test"),
+            "aether-channeler": (
+              pathlib.Path("mtg-sets/2017-2022/tests/build/test-results/test"),
+              ["com.wingedsheep.engine.scenarios.AetherChannelerScenarioTest"],
+              ":mtg-sets:2017-2022:tests:test"),
+            "ai-control": (
+              pathlib.Path("ai/build/test-results/test"),
+              ["com.wingedsheep.ai.arena.FrozenBaselineTest"],
+              ":ai:test"),
+          }
+          result = {}
+          for group, (directory, classes, task) in groups.items():
+            log = pathlib.Path("build/manual-main-gate") / (group + ".log")
+            output = log.read_text()
+            assert re.search(r"(?m)^> Task " + re.escape(task) + r"$", output), (group, "test did not freshly execute")
+            for clazz in classes:
+              xml = directory / ("TEST-" + clazz + ".xml")
+              suite = ET.parse(xml).getroot()
+              cases = suite.findall(".//testcase")
+              assert cases, (clazz, "zero test cases")
+              failures = sum(bool(case.findall("failure") or case.findall("error")) for case in cases)
+              skipped = sum(bool(case.findall("skipped")) for case in cases)
+              assert failures == 0 and skipped == 0, (clazz, failures, skipped)
+              result[clazz] = {"tests": len(cases), "failures": failures, "skipped": skipped}
+          pathlib.Path("build/manual-main-gate/xml-verification.json").write_text(
+              json.dumps(result, indent=2, sort_keys=True) + "\n")
+          PY
+      - name: Bind source and tracked worktree after execution
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p build/manual-main-gate
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          def capture(*args):
+              result = subprocess.run(args, text=True, capture_output=True)
+              return {"exit": result.returncode, "stdout": result.stdout.strip(), "stderr": result.stderr.strip()}
+          head = capture("git", "rev-parse", "HEAD")
+          tree = capture("git", "rev-parse", "HEAD^{tree}")
+          tracked = capture("git", "status", "--porcelain", "--untracked-files=no")
+          result = {
+              "head": head,
+              "tree": tree,
+              "tracked_status": tracked,
+              "expected_head": "452faa13b460f5c998bb90ff1182ac416deb329c",
+              "expected_tree": "3322a296f7c6453be10fbadc836a00f1fccb9e95",
+          }
+          pathlib.Path("build/manual-main-gate/source-after.json").write_text(
+              json.dumps(result, indent=2) + "\n")
+          assert head["exit"] == 0 and head["stdout"] == result["expected_head"]
+          assert tree["exit"] == 0 and tree["stdout"] == result["expected_tree"]
+          assert tracked["exit"] == 0 and tracked["stdout"] == "", tracked
+          PY
+      - name: Hash raw logs and XML for retained artifact
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib
+          paths = [pathlib.Path("build/manual-main-gate")]
+          paths += [pathlib.Path(p) for p in (
+            "rules-engine/build/test-results/test",
+            "mtg-sets/2008-2016/tests/build/test-results/test",
+            "mtg-sets/2017-2022/tests/build/test-results/test",
+            "ai/build/test-results/test")]
+          files = sorted(p for root in paths if root.exists() for p in root.rglob("*")
+                         if p.is_file() and p.name != "raw-hashes.json")
+          out = {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in files}
+          pathlib.Path("build/manual-main-gate/raw-hashes.json").write_text(
+              json.dumps(out, indent=2, sort_keys=True) + "\n")
+          PY
+      - name: Retain raw evidence even on compile or fixture failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-main-fixture-focused-452faa1
+          if-no-files-found: error
+          retention-days: 90
+          path: |
+            build/manual-main-gate/**
+            rules-engine/build/test-results/test/*.xml
+            mtg-sets/2008-2016/tests/build/test-results/test/*.xml
+            mtg-sets/2017-2022/tests/build/test-results/test/*.xml
+            ai/build/test-results/test/*.xml
