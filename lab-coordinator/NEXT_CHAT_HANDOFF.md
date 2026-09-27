@@ -84,3 +84,18 @@ Publish completed source/evidence incrementally and update this record at meanin
 - **Pest/Ferocity:** no official gameplay or calibration was consumed in this advance. Pest MC10 option-order/provenance and Ferocity exhausted calibration/scope44/offline-export admission remain their next gates.
 
 **Global counters at this cut:** zero new official games, zero newly consumed official gameplay allocations, zero exposed official outcomes; no deck-performance evidence changed.
+
+
+## Conductor closeout — 2026-09-27 01:55 UTC
+
+User is moving execution to a Work chat. This conductor intentionally stopped opening new work after the closeout request. Do not assume background execution beyond GitHub jobs already dispatched.
+
+Live deltas verified during closeout:
+- **Industrial:** canonical remains `1261a25494d93f588efbcd1c1e5798b212a058c9` / tree `7e635c7ff700094d840bb64fdba7699f724cf594`. All ten receiving/synchronization workflows on that source completed SUCCESS: execution guard 36283945457, R0 36283945485, Gate10 36283945545, Gate9 36283945581, CI 36283945557, card qualification 36283945576, attacking-token 36283941475, combat 36283941451, runtime 36283941502, priority 36283941456. This is not R1 execution authority; official R1 remains 0/512.
+- **Manual:** new PR #206, `lab/manual-shared-composition-20260927` at `60a9e20b61f63c4d42772ca8d122aabe68aabe2f`, targets `lab/manual-etb-receiving-20260926`. It is a draft and MUST NOT be merged as green: all seven observed PR workflows completed FAILURE (priority 36286644804, Pest prototype 36286644787, Pest cascade 36286644794, Spy B 36286644778, Spy C 36286644788, Manual capability 36286644783, CI 36286644786). Diagnose preserved failures before any successor/rerun; no official capability/primary games were opened.
+- **Sphinx:** canonical PR175 head `8ed9787ad75b8bc6c2438a8c0b526ff822aa776e`. At closeout its run set includes two preserved receiving failures (Shared Actor Input 36284779284 and Sphinx Stage E Actor Receiving 36284779421) while CI, initialized-seat, combat, attacking-token, exact-card, priority and inherited Pest support checks observed here are green. Do not rerun unchanged failures; fix binding prospectively. Stage-E gameplay remains zero.
+- **Izzet:** PR197 remains draft at `c47e9dbafc1fd582f81be1db04e9f35a09f067b5`; newer diagnostic/sequence branches exist and the preceding checkpoint describes the consumed diagnostic and five-case qualification. Preserve the separate LEGACY_V0 Yes/No policy-boundary question; do not infer general policy equivalence from the vanilla trace. Official Position-1 completed games remain zero unless newer durable ledger evidence proves otherwise.
+- **Pest:** PR190 remains open/non-draft at `7015d243df250bcb1660d4a7b76c937c3c0a4ada`; PR189 remains draft. Actor option-order/information-contract and MC10/replacement authority remain the next scientific gate. Historical quarantined games remain quarantined; no fresh official Pest game was consumed by this conductor.
+- **Ferocity:** PR174 remains draft at source08 `3a4f99a7653839506e96d19e6639f58d9e8c5ced`. Deterministic qualification 36268324461 and one-use browser 36268319777 are successful historical attempts. Do not rerun calibration: recovered records show its finite calibration allowance exhausted. Resolve resource/scope authority prospectively before first-cell entropy. D3 governing budget is 240 games under the adopted amendment, not the stale 480 report.
+
+No new deck-performance evidence was produced during this closeout. No protected official seed/allocation was intentionally consumed. Work chat should reconstruct live refs/jobs again before writing because GitHub may have advanced after this timestamp.
