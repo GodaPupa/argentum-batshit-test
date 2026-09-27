@@ -40,6 +40,17 @@ class SphinxStageEInitializedSeat private constructor(
         )
     }
 
+    /**
+     * The opening seam remains a source candidate. A trusted runner must provide the current
+     * canonical actor epoch; this method cannot read initialization state or advance the game.
+     */
+    fun decideOpening(input: ActorInput, expectedEpoch: ActorEpoch): SphinxStageEAdapterResult {
+        require(expectedEpoch.sourceVersion == sourceVersion && expectedEpoch.trialId == trialId) {
+            "Actor epoch belongs to a different initialized source or trial"
+        }
+        return SphinxStageEOpeningActor.decide(input, expectedEpoch, actorId)
+    }
+
     companion object {
         /**
          * Trusted-runner boundary, called on the actual GameInitializer result before mulligans.
