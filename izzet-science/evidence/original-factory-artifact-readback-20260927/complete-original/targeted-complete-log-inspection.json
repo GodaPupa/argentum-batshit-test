@@ -1,0 +1,498 @@
+{
+  "scope": "Complete small prerequisite logs plus targeted original bank heads/tails, exact failure/maps and test-execution lines. Display truncations in the targeted view are labeled; full original log strings were separately scanned and hashed without modification.",
+  "logs": [
+    {
+      "path": "01-before-AIPlayerLegacyYesNoStrategyTest/command.log",
+      "bytes": 3570947,
+      "line_count": 2188,
+      "head": [
+        "scripts/test-class \"AIPlayerLegacyYesNoStrategyTest\" --rerun --no-build-cache --no-daemon -DupdateSnapshots=false --info --stacktrace --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g",
+        "test-class: AIPlayerLegacyYesNoStrategyTest -> :ai",
+        "Picked up JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m",
+        "Initialized native services in: /home/runner/.gradle/native",
+        "Initialized jansi services in: /home/runner/.gradle/native",
+        "The current JVM process isn't compatible with build requirement. The maximum heap size is insufficient.",
+        "",
+        "To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.",
+        "Starting process 'Gradle build daemon'. Working directory: /home/runner/.gradle/daemon/9.6.1 Command: /usr/lib/jvm/temurin-21-jdk-amd64/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=A [DISPLAY TRUNCATED]",
+        "Successfully started process 'Gradle build daemon'",
+        "An attempt to start the daemon took 1.155 secs.",
+        "The client will now receive all logging from the daemon (pid: 3079). The daemon log file: /home/runner/.gradle/daemon/9.6.1/daemon-3079.out.log"
+      ],
+      "tail": [
+        "\tat org.gradle.internal.execution.steps.IdentifyStep.execute(IdentifyStep.java:38)",
+        "\tat org.gradle.internal.execution.impl.DefaultExecutionEngine$1.execute(DefaultExecutionEngine.java:68)",
+        "\tat org.gradle.api.internal.tasks.execution.ExecuteActionsTaskExecuter.executeIfValid(ExecuteActionsTaskExecuter.java:132)",
+        "\t... 61 more",
+        "",
+        "",
+        "Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.",
+        "",
+        "You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.",
+        "",
+        "For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.",
+        "",
+        "BUILD FAILED in 5m 29s",
+        "46 actionable tasks: 46 executed",
+        "Configuration cache entry stored.",
+        "error: recipe `test-class` failed on line 58 with exit code 1"
+      ],
+      "selected": [
+        {
+          "line": 1958,
+          "text": "Gradle Test Executor 1 started executing tests."
+        },
+        {
+          "line": 1960,
+          "text": "> Task :ai:test"
+        },
+        {
+          "line": 1971,
+          "text": "    IZZET_LEGACY_FACTORY_DIFFERENTIAL {explicitLegacy=true, explicitCompleted=false, renamedCompanion=false, renamedReusable=false, frozenCompanion=false, frozenReusable=false, equalCopyCompanion=false, equalCopyReusable=false}"
+        },
+        {
+          "line": 1974,
+          "text": "    org.opentest4j.AssertionFailedError: FROZEN_FACTORY_LEGACY_BINDING"
+        },
+        {
+          "line": 1981,
+          "text": "    IZZET_LEGACY_FACTORY_SAME_ID_CONTROL {explicitLegacy=true, explicitCompleted=false, alteredCompanion=false, alteredReusable=false}"
+        },
+        {
+          "line": 1983,
+          "text": "Gradle Test Executor 1 finished executing tests."
+        },
+        {
+          "line": 1985,
+          "text": "> Task :ai:test FAILED"
+        },
+        {
+          "line": 2185,
+          "text": "BUILD FAILED in 5m 29s"
+        },
+        {
+          "line": 2186,
+          "text": "46 actionable tasks: 46 executed"
+        }
+      ]
+    },
+    {
+      "path": "02-fixed-AIPlayerLegacyYesNoStrategyTest/command.log",
+      "bytes": 3481875,
+      "line_count": 1436,
+      "head": [
+        "scripts/test-class \"AIPlayerLegacyYesNoStrategyTest\" --rerun --no-build-cache --no-daemon -DupdateSnapshots=false --info --stacktrace --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g",
+        "test-class: AIPlayerLegacyYesNoStrategyTest -> :ai",
+        "Picked up JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m",
+        "Initialized native services in: /home/runner/.gradle/native",
+        "Initialized jansi services in: /home/runner/.gradle/native",
+        "The current JVM process isn't compatible with build requirement. The maximum heap size is insufficient.",
+        "",
+        "To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.",
+        "Starting process 'Gradle build daemon'. Working directory: /home/runner/.gradle/daemon/9.6.1 Command: /usr/lib/jvm/temurin-21-jdk-amd64/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=A [DISPLAY TRUNCATED]",
+        "Successfully started process 'Gradle build daemon'",
+        "An attempt to start the daemon took 0.796 secs.",
+        "The client will now receive all logging from the daemon (pid: 4897). The daemon log file: /home/runner/.gradle/daemon/9.6.1/daemon-4897.out.log"
+      ],
+      "tail": [
+        "gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1790484750964.json",
+        "Kotlin build report is written to file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/build/reports/kotlin-build/argentum-engine-build-2026-09-27-04-57-20-0.txt",
+        "",
+        "See the complete report at file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/build/reports/configuration-cache/dbkhk7y2btj3r27xft0t86mrk/29xwx78jlitcfsa6gttdlcai9/configuration-cache-report.html",
+        "",
+        "[Incubating] Problems report is available at: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/build/reports/problems/problems-report.html",
+        "",
+        "Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.",
+        "",
+        "You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.",
+        "",
+        "For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.",
+        "",
+        "BUILD SUCCESSFUL in 4m 52s",
+        "46 actionable tasks: 46 executed",
+        "Configuration cache entry stored."
+      ],
+      "selected": [
+        {
+          "line": 1397,
+          "text": "Gradle Test Executor 1 started executing tests."
+        },
+        {
+          "line": 1399,
+          "text": "> Task :ai:test"
+        },
+        {
+          "line": 1410,
+          "text": "    IZZET_LEGACY_FACTORY_DIFFERENTIAL {explicitLegacy=true, explicitCompleted=false, renamedCompanion=false, renamedReusable=false, frozenCompanion=true, frozenReusable=true, equalCopyCompanion=true, equalCopyReusable=true}"
+        },
+        {
+          "line": 1413,
+          "text": "    IZZET_LEGACY_FACTORY_SAME_ID_CONTROL {explicitLegacy=true, explicitCompleted=false, alteredCompanion=false, alteredReusable=false}"
+        },
+        {
+          "line": 1415,
+          "text": "Gradle Test Executor 1 finished executing tests."
+        },
+        {
+          "line": 1417,
+          "text": "> Task :ai:test"
+        },
+        {
+          "line": 1434,
+          "text": "BUILD SUCCESSFUL in 4m 52s"
+        },
+        {
+          "line": 1435,
+          "text": "46 actionable tasks: 46 executed"
+        }
+      ]
+    },
+    {
+      "path": "03-fixed-DecisionResponderCompletedBranchTest/command.log",
+      "bytes": 82005,
+      "line_count": 1107,
+      "head": [
+        "scripts/test-class \"DecisionResponderCompletedBranchTest\" --rerun --no-build-cache --no-daemon -DupdateSnapshots=false --info --stacktrace --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g",
+        "test-class: DecisionResponderCompletedBranchTest -> :ai",
+        "Picked up JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m",
+        "Initialized native services in: /home/runner/.gradle/native",
+        "Initialized jansi services in: /home/runner/.gradle/native",
+        "The current JVM process isn't compatible with build requirement. The maximum heap size is insufficient.",
+        "",
+        "To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.",
+        "Starting process 'Gradle build daemon'. Working directory: /home/runner/.gradle/daemon/9.6.1 Command: /usr/lib/jvm/temurin-21-jdk-amd64/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=A [DISPLAY TRUNCATED]",
+        "Successfully started process 'Gradle build daemon'",
+        "An attempt to start the daemon took 0.789 secs.",
+        "The client will now receive all logging from the daemon (pid: 6652). The daemon log file: /home/runner/.gradle/daemon/9.6.1/daemon-6652.out.log"
+      ],
+      "tail": [
+        "gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1790485044619.json",
+        "Kotlin build report is written to file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/build/reports/kotlin-build/argentum-engine-build-2026-09-27-04-57-54-0.txt",
+        "",
+        "See the complete report at file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/build/reports/configuration-cache/eefi6xjo9wvzn54avouihdxhv/a7660wrsqgap0sc6nvnui7vvj/configuration-cache-report.html",
+        "",
+        "[Incubating] Problems report is available at: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/build/reports/problems/problems-report.html",
+        "",
+        "Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.",
+        "",
+        "You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.",
+        "",
+        "For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.",
+        "",
+        "BUILD SUCCESSFUL in 33s",
+        "46 actionable tasks: 1 executed, 45 up-to-date",
+        "Configuration cache entry stored."
+      ],
+      "selected": [
+        {
+          "line": 1074,
+          "text": "Gradle Test Executor 1 started executing tests."
+        },
+        {
+          "line": 1076,
+          "text": "> Task :ai:test"
+        },
+        {
+          "line": 1086,
+          "text": "Gradle Test Executor 1 finished executing tests."
+        },
+        {
+          "line": 1088,
+          "text": "> Task :ai:test"
+        },
+        {
+          "line": 1105,
+          "text": "BUILD SUCCESSFUL in 33s"
+        },
+        {
+          "line": 1106,
+          "text": "46 actionable tasks: 1 executed, 45 up-to-date"
+        }
+      ]
+    },
+    {
+      "path": "build-semaphore/apt-update.log",
+      "bytes": 6589,
+      "line_count": 73,
+      "head": [
+        "Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]",
+        "Get:2 http://azure.archive.ubuntu.com/ubuntu noble InRelease [256 kB]",
+        "Get:3 http://azure.archive.ubuntu.com/ubuntu noble-updates InRelease [126 kB]",
+        "Get:4 http://azure.archive.ubuntu.com/ubuntu noble-backports InRelease [126 kB]",
+        "Get:6 https://packages.microsoft.com/ubuntu/24.04/prod noble InRelease [3600 B]",
+        "Get:5 http://azure.archive.ubuntu.com/ubuntu noble-security InRelease [126 kB]",
+        "Get:7 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 Packages [1401 kB]",
+        "Get:8 http://azure.archive.ubuntu.com/ubuntu noble/main Translation-en [513 kB]",
+        "Get:9 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 Components [464 kB]",
+        "Get:10 http://azure.archive.ubuntu.com/ubuntu noble/main amd64 c-n-f Metadata [30.5 kB]",
+        "Get:11 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 Packages [15.0 MB]",
+        "Get:38 https://packages.microsoft.com/ubuntu/24.04/prod noble/main arm64 Packages [446 kB]",
+        "Get:12 http://azure.archive.ubuntu.com/ubuntu noble/universe Translation-en [5982 kB]",
+        "Get:39 https://packages.microsoft.com/ubuntu/24.04/prod noble/main amd64 Packages [498 kB]",
+        "Get:40 https://packages.microsoft.com/ubuntu/24.04/prod noble/main all Packages [643 B]",
+        "Get:55 https://packages.microsoft.com/ubuntu/24.04/prod noble/main armhf Packages [12.5 kB]",
+        "Get:13 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 Components [3871 kB]",
+        "Get:14 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 c-n-f Metadata [301 kB]",
+        "Get:15 http://azure.archive.ubuntu.com/ubuntu noble/restricted amd64 Packages [93.9 kB]",
+        "Get:16 http://azure.archive.ubuntu.com/ubuntu noble/restricted Translation-en [18.7 kB]",
+        "Get:17 http://azure.archive.ubuntu.com/ubuntu noble/restricted amd64 c-n-f Metadata [416 B]",
+        "Get:18 http://azure.archive.ubuntu.com/ubuntu noble/multiverse amd64 Packages [269 kB]",
+        "Get:19 http://azure.archive.ubuntu.com/ubuntu noble/multiverse Translation-en [118 kB]",
+        "Get:20 http://azure.archive.ubuntu.com/ubuntu noble/multiverse amd64 Components [35.0 kB]",
+        "Get:21 http://azure.archive.ubuntu.com/ubuntu noble/multiverse amd64 c-n-f Metadata [8328 B]",
+        "Get:22 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Packages [1319 kB]",
+        "Get:23 http://azure.archive.ubuntu.com/ubuntu noble-updates/main Translation-en [299 kB]",
+        "Get:24 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 Components [181 kB]",
+        "Get:25 http://azure.archive.ubuntu.com/ubuntu noble-updates/main amd64 c-n-f Metadata [17.7 kB]",
+        "Get:26 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Packages [1697 kB]",
+        "Get:27 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe Translation-en [340 kB]",
+        "Get:28 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 Components [388 kB]",
+        "Get:29 http://azure.archive.ubuntu.com/ubuntu noble-updates/universe amd64 c-n-f Metadata [34.9 kB]",
+        "Get:30 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Packages [1654 kB]",
+        "Get:31 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted Translation-en [377 kB]",
+        "Get:32 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 Components [212 B]",
+        "Get:33 http://azure.archive.ubuntu.com/ubuntu noble-updates/restricted amd64 c-n-f Metadata [456 B]",
+        "Get:34 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Packages [45.7 kB]",
+        "Get:35 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse Translation-en [13.1 kB]",
+        "Get:36 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 Components [940 B]",
+        "Get:37 http://azure.archive.ubuntu.com/ubuntu noble-updates/multiverse amd64 c-n-f Metadata [656 B]",
+        "Get:41 http://azure.archive.ubuntu.com/ubuntu noble-backports/main amd64 Packages [40.6 kB]",
+        "Get:42 http://azure.archive.ubuntu.com/ubuntu noble-backports/main Translation-en [9172 B]",
+        "Get:43 http://azure.archive.ubuntu.com/ubuntu noble-backports/main amd64 Components [5760 B]",
+        "Get:44 http://azure.archive.ubuntu.com/ubuntu noble-backports/main amd64 c-n-f Metadata [368 B]",
+        "Get:45 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Packages [31.0 kB]",
+        "Get:46 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe Translation-en [18.6 kB]",
+        "Get:47 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 Components [12.6 kB]",
+        "Get:48 http://azure.archive.ubuntu.com/ubuntu noble-backports/universe amd64 c-n-f Metadata [1588 B]",
+        "Get:49 http://azure.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 Components [212 B]",
+        "Get:50 http://azure.archive.ubuntu.com/ubuntu noble-backports/restricted amd64 c-n-f Metadata [116 B]",
+        "Get:51 http://azure.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Packages [748 B]",
+        "Get:52 http://azure.archive.ubuntu.com/ubuntu noble-backports/multiverse Translation-en [340 B]",
+        "Get:53 http://azure.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 Components [212 B]",
+        "Get:54 http://azure.archive.ubuntu.com/ubuntu noble-backports/multiverse amd64 c-n-f Metadata [116 B]",
+        "Get:56 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Packages [1053 kB]",
+        "Get:57 http://azure.archive.ubuntu.com/ubuntu noble-security/main Translation-en [219 kB]",
+        "Get:58 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 Components [46.5 kB]",
+        "Get:59 http://azure.archive.ubuntu.com/ubuntu noble-security/main amd64 c-n-f Metadata [11.9 kB]",
+        "Get:60 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Packages [1220 kB]",
+        "Get:61 http://azure.archive.ubuntu.com/ubuntu noble-security/universe Translation-en [245 kB]",
+        "Get:62 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 Components [76.3 kB]",
+        "Get:63 http://azure.archive.ubuntu.com/ubuntu noble-security/universe amd64 c-n-f Metadata [24.2 kB]",
+        "Get:64 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Packages [1535 kB]",
+        "Get:65 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted Translation-en [353 kB]",
+        "Get:66 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 Components [212 B]",
+        "Get:67 http://azure.archive.ubuntu.com/ubuntu noble-security/restricted amd64 c-n-f Metadata [444 B]",
+        "Get:68 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse amd64 Packages [40.3 kB]",
+        "Get:69 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse Translation-en [11.3 kB]",
+        "Get:70 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse amd64 Components [208 B]",
+        "Get:71 http://azure.archive.ubuntu.com/ubuntu noble-security/multiverse amd64 c-n-f Metadata [468 B]",
+        "Fetched 41.1 MB in 5s (9070 kB/s)",
+        "Reading package lists..."
+      ],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/download-inn2-inews.log",
+      "bytes": 203,
+      "line_count": 3,
+      "head": [
+        "Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]",
+        "Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 inn2-inews amd64 2.7.2~20240212-1build3 [131 kB]",
+        "Fetched 131 kB in 0s (1154 kB/s)"
+      ],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/download-inn2.log",
+      "bytes": 199,
+      "line_count": 3,
+      "head": [
+        "Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]",
+        "Get:2 http://azure.archive.ubuntu.com/ubuntu noble/universe amd64 inn2 amd64 2.7.2~20240212-1build3 [1271 kB]",
+        "Fetched 1271 kB in 0s (12.5 MB/s)"
+      ],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/metadata-1.log",
+      "bytes": 6,
+      "line_count": 1,
+      "head": [
+        "amd64"
+      ],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/metadata-11.log",
+      "bytes": 11,
+      "line_count": 1,
+      "head": [
+        "inn2-inews"
+      ],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/metadata-12.log",
+      "bytes": 23,
+      "line_count": 1,
+      "head": [
+        "2.7.2~20240212-1build3"
+      ],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/metadata-14.log",
+      "bytes": 0,
+      "line_count": 0,
+      "head": [],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/metadata-13.log",
+      "bytes": 6,
+      "line_count": 1,
+      "head": [
+        "amd64"
+      ],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/metadata-3.log",
+      "bytes": 2478,
+      "line_count": 45,
+      "head": [
+        "Package: inn2",
+        "Architecture: amd64",
+        "Version: 2.7.2~20240212-1build3",
+        "Priority: extra",
+        "Section: universe/news",
+        "Origin: Ubuntu",
+        "Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+        "Original-Maintainer: Marco d'Itri <md@linux.it>",
+        "Bugs: https://bugs.launchpad.net/ubuntu/+filebug",
+        "Installed-Size: 3600",
+        "Provides: news-transport-system",
+        "Pre-Depends: inn2-inews (= 2.7.2~20240212-1build3)",
+        "Depends: libc6 (>= 2.38), libcanlock3 (>= 3.3.0), libcrypt1 (>= 1:4.1.0), libdb5.3t64, libpam0g (>= 0.99.7.1), libperl5.38t64 (>= 5.38.2), libpython3.12t64 (>= 3.12.1), libsasl2-2 (>= 2.1.28+dfsg1), libsqlite3-0 (>= 3.20.0), libssl3t64 (>= 3.0.0), libsystemd0, zlib1g (>= 1:1.1.4), perl:any, perlapi-5.38.2, cron | cron-daemon, default-mta | mail-transport-agent, time, procps, libencode-perl, libmime-tools-perl",
+        "Suggests: gnupg1, wget, libgd-perl, libkrb5-3 (>= 1.6.dfsg.2)",
+        "Conflicts: inn, innfeed",
+        "Replaces: inn, inn2-dev, inn2-lfs, innfeed",
+        "Filename: pool/universe/i/inn2/inn2_2.7.2~20240212-1build3_amd64.deb",
+        "Size: 1271362",
+        "MD5sum: dea6933f2bab1fe05b47b390132f6209",
+        "SHA1: 6c959e0302d4d60fe3e13325d928df9016620f40",
+        "SHA256: a5d37bb46d5328cff2bc68d1d4ae2bf8bf16ac2f01bdd9a8609df1e3667f1449",
+        "SHA512: 974120492b5c0ec3fc033b92c54940dafc5bfacd6437ec081996dd06b69883d59ff5369b33e936ea9f350d084ff40294fe2f04e4ecf1be475e66f4da3bff4b7c",
+        "Homepage: https://www.eyrie.org/~eagle/software/inn/",
+        "Description-en: 'InterNetNews' news server",
+        " This package provides INN 2.x, which is a very complex news server",
+        " daemon useful for big sites. The 'inn' package still exists for smaller",
+        " sites which do not need the complexity of INN 2.x.",
+        " .",
+        " The news transport is the part of the system that stores the articles",
+        " and the lists of which groups are available and so on, and provides",
+        " those articles on request to users. It receives news (either posted",
+        " locally or from a newsfeed site), files it, and passes it on to any",
+        " downstream sites. Each article is kept for a period of time and then",
+        " deleted (this is known as 'expiry').",
+        " .",
+        " By default Debian's INN will install in a fairly simple 'local-only'",
+        " configuration.",
+        " .",
+        " In order to make use of the services provided by INN you'll have to",
+        " use a user-level newsreader program such as pan. The newsreader is",
+        " the program that fetches articles from the server and shows them to",
+        " the user, remembering which the user has seen so that they don't get",
+        " shown again. It also provides the posting interface for the user.",
+        "Description-md5: 63e9cfa94e4a7e41032459586c02d0fb",
+        ""
+      ],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/metadata-5.log",
+      "bytes": 5,
+      "line_count": 1,
+      "head": [
+        "inn2"
+      ],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/metadata-6.log",
+      "bytes": 23,
+      "line_count": 1,
+      "head": [
+        "2.7.2~20240212-1build3"
+      ],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/metadata-7.log",
+      "bytes": 6,
+      "line_count": 1,
+      "head": [
+        "amd64"
+      ],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/metadata-8.log",
+      "bytes": 0,
+      "line_count": 0,
+      "head": [],
+      "tail": [],
+      "selected": []
+    },
+    {
+      "path": "build-semaphore/metadata-9.log",
+      "bytes": 1231,
+      "line_count": 29,
+      "head": [
+        "Package: inn2-inews",
+        "Architecture: amd64",
+        "Version: 2.7.2~20240212-1build3",
+        "Priority: extra",
+        "Section: universe/news",
+        "Source: inn2",
+        "Origin: Ubuntu",
+        "Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>",
+        "Original-Maintainer: Marco d'Itri <md@linux.it>",
+        "Bugs: https://bugs.launchpad.net/ubuntu/+filebug",
+        "Installed-Size: 336",
+        "Provides: inews",
+        "Depends: libc6 (>= 2.38)",
+        "Filename: pool/universe/i/inn2/inn2-inews_2.7.2~20240212-1build3_amd64.deb",
+        "Size: 131052",
+        "MD5sum: e09abbc444dec6fb82d718bb3b4eeb21",
+        "SHA1: d6c834ad5a17159d3aa783c301004b3b125462c5",
+        "SHA256: a60a54dbdf3267eb5225e2b6a4b3a53f3cbe5ee4befd358fe748e0a070cf5391",
+        "SHA512: 59e6d99655ef95d230101b25c2ff7d6e86fe8f8e174c8d9f91df810a25e91540079b4a07342c51c470b412b8e1984dd598eb89d97da9c4704759272b4873b66a",
+        "Homepage: https://www.eyrie.org/~eagle/software/inn/",
+        "Description-en: NNTP client news injector, from InterNetNews (INN)",
+        " 'inews' is the program that newsreaders call when the user wishes to",
+        " post an article; it does a few elementary checks and passes the article",
+        " on to the news server for posting.",
+        " .",
+        " This version is the one from Rich Salz's InterNetNews news transport",
+        " system (which is also available as a Debian package).",
+        "Description-md5: a5db9d905d5a55d55a233c52b39dad00",
+        ""
+      ],
+      "tail": [],
+      "selected": []
+    }
+  ]
+}

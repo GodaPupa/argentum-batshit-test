@@ -1,0 +1,45 @@
+Package: inn2
+Architecture: amd64
+Version: 2.7.2~20240212-1build3
+Priority: extra
+Section: universe/news
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Marco d'Itri <md@linux.it>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 3600
+Provides: news-transport-system
+Pre-Depends: inn2-inews (= 2.7.2~20240212-1build3)
+Depends: libc6 (>= 2.38), libcanlock3 (>= 3.3.0), libcrypt1 (>= 1:4.1.0), libdb5.3t64, libpam0g (>= 0.99.7.1), libperl5.38t64 (>= 5.38.2), libpython3.12t64 (>= 3.12.1), libsasl2-2 (>= 2.1.28+dfsg1), libsqlite3-0 (>= 3.20.0), libssl3t64 (>= 3.0.0), libsystemd0, zlib1g (>= 1:1.1.4), perl:any, perlapi-5.38.2, cron | cron-daemon, default-mta | mail-transport-agent, time, procps, libencode-perl, libmime-tools-perl
+Suggests: gnupg1, wget, libgd-perl, libkrb5-3 (>= 1.6.dfsg.2)
+Conflicts: inn, innfeed
+Replaces: inn, inn2-dev, inn2-lfs, innfeed
+Filename: pool/universe/i/inn2/inn2_2.7.2~20240212-1build3_amd64.deb
+Size: 1271362
+MD5sum: dea6933f2bab1fe05b47b390132f6209
+SHA1: 6c959e0302d4d60fe3e13325d928df9016620f40
+SHA256: a5d37bb46d5328cff2bc68d1d4ae2bf8bf16ac2f01bdd9a8609df1e3667f1449
+SHA512: 974120492b5c0ec3fc033b92c54940dafc5bfacd6437ec081996dd06b69883d59ff5369b33e936ea9f350d084ff40294fe2f04e4ecf1be475e66f4da3bff4b7c
+Homepage: https://www.eyrie.org/~eagle/software/inn/
+Description-en: 'InterNetNews' news server
+ This package provides INN 2.x, which is a very complex news server
+ daemon useful for big sites. The 'inn' package still exists for smaller
+ sites which do not need the complexity of INN 2.x.
+ .
+ The news transport is the part of the system that stores the articles
+ and the lists of which groups are available and so on, and provides
+ those articles on request to users. It receives news (either posted
+ locally or from a newsfeed site), files it, and passes it on to any
+ downstream sites. Each article is kept for a period of time and then
+ deleted (this is known as 'expiry').
+ .
+ By default Debian's INN will install in a fairly simple 'local-only'
+ configuration.
+ .
+ In order to make use of the services provided by INN you'll have to
+ use a user-level newsreader program such as pan. The newsreader is
+ the program that fetches articles from the server and shows them to
+ the user, remembering which the user has seen so that they don't get
+ shown again. It also provides the posting interface for the user.
+Description-md5: 63e9cfa94e4a7e41032459586c02d0fb
+

@@ -1,0 +1,239 @@
+{
+  "schema": "izzet-factory-complete-original-publication-review/v1",
+  "reviewer": "/root/sphinx; independent of original production patch, fixtures, qualification collector and the later ZIP-reader author",
+  "reviewed_at_utc": "2026-09-27T06:16:51Z",
+  "disposition": "PASS_EXACT_FULL_ORIGINAL_ARTIFACT_PUBLICATION_AND_COMPLETE_LOG_EVIDENCE_ADDENDUM",
+  "original_artifact": {
+    "id": 10923618567,
+    "run_id": 36295267824,
+    "attempt": 1,
+    "head": "a0fe959d2fa345b77513e199e2db046d52cf2d0f",
+    "bytes": 1945147,
+    "sha256": "a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5",
+    "members": 63,
+    "member_uncompressed_bytes": 8780061
+  },
+  "prior_bounded_semantic_review": {
+    "git_blob": "6db302b14e936a5f4074d0731250037e3d330a46",
+    "bytes": 17750,
+    "sha256": "f78ace66457684294f7a1bbf10e4fc4a6f69f549cb4cd55a56c47faa41be7ae5",
+    "already_published_selected_evidence": "55be47237309479119e8271849bc70cc16343dc1",
+    "preserve_unchanged": true
+  },
+  "recovery": {
+    "report": {
+      "git_blob": "56cf2054200298dc7374190db974ab12888bd023",
+      "bytes": 15853,
+      "sha256": "c4875d6fa8b875317b992f7173b795e69cba41c731084a11ad2c3b66d70deccd"
+    },
+    "independent_reader_source_review": {
+      "git_blob": "9f61e5903963c8d8fbc323b9d78db2c28da3e5b1",
+      "sha256": "664005baa9743b87bfc64f8ab7dc3da886a4e683f99934659e2536364ddb0640"
+    },
+    "root_exact_use_release": {
+      "git_blob": "e11ca0ca573e8fd79bfe2b2f21965932e26c8ddc",
+      "sha256": "acc0f9d6263c8b491ff760575abdefe6cd16f3f30a37fa7397cadb99c4d0d1f6"
+    },
+    "scope": "Root applied the independently source-reviewed bounded reader to the same already reconstructed original byte array. All19 previously omitted members were checked for exact length/CRC/SHA;17 complete log byte strings were returned and two package bodies were hash-only. This reviewer did not rerun the decoder or claim independent extraction of the complete ZIP."
+  },
+  "evidence_coverage": {
+    "prior_selected_records": {
+      "count": 44,
+      "bytes": 232040,
+      "method": "Previously independently hashed exact UTF8 bytes, SHA256 and CRC32 and inspected raw XML/source/command/prerequisite/control records."
+    },
+    "complete_logs": {
+      "count": 17,
+      "unique_git_blobs": 13,
+      "bytes": 7145607,
+      "method": "Fetched all17 exact log bodies by their13 immutable content-addressed Git blobs. Independently recomputed UTF8 byte length,SHA256 andCRC32 for every path against both original manifest and recovery report; all matched. Full-string sensitivity/URL/pattern scans and targeted content inspection were performed on these complete strings."
+    },
+    "public_packages": {
+      "count": 2,
+      "bytes": 1402414,
+      "method": "Root's accepted reader verified exact uncompressed size,CRC32,SHA256 against the original manifest. Both digests/sizes match the prior independently read authenticated public Ubuntu APT package records. No package contents were interpreted, installed or executed by this reviewer.",
+      "members": [
+        {
+          "path": "build-semaphore/packages/inn2_2.7.2~20240212-1build3_amd64.deb",
+          "bytes": 1271362,
+          "sha256": "a5d37bb46d5328cff2bc68d1d4ae2bf8bf16ac2f01bdd9a8609df1e3667f1449"
+        },
+        {
+          "path": "build-semaphore/packages/inn2-inews_2.7.2~20240212-1build3_amd64.deb",
+          "bytes": 131052,
+          "sha256": "a60a54dbdf3267eb5225e2b6a4b3a53f3cbe5ee4befd358fe748e0a070cf5391"
+        }
+      ]
+    },
+    "accounting": "44 selected original text records +17 complete logs +2 exact public package files =63 original members. Complete original ZIP integrity remains bound to root's verified binary SHA and relay receipt.",
+    "no_human_line_by_line_claim": "The7,145,607 log bytes were programmatically scanned in full. Human-readable inspection covered complete small prerequisite logs and targeted bank headers,tails,failure/maps,executor/task/JVM lines. This is not a claim of reading every large compilation/classpath line individually."
+  },
+  "complete_log_findings": {
+    "full_text_sensitive_pattern_hits": 0,
+    "tested_patterns": [
+      "private_file_locator",
+      "github_credential",
+      "cloud_access_key",
+      "private_key",
+      "signed_url",
+      "authorization_value",
+      "url_userinfo",
+      "secret_assignment",
+      "official_future_vector"
+    ],
+    "urls_by_host": [
+      {
+        "host": "docs.gradle.org",
+        "count": 6,
+        "examples": [
+          "https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon",
+          "https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings"
+        ]
+      },
+      {
+        "host": "repo.maven.apache.org",
+        "count": 19,
+        "examples": [
+          "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/2.0.18/slf4j-api-2.0.18.pom",
+          "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-parent/2.0.18/slf4j-parent-2.0.18.pom",
+          "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-bom/2.0.18/slf4j-bom-2.0.18.pom",
+          "https://repo.maven.apache.org/maven2/org/slf4j/slf4j-api/2.0.18/slf4j-api-2.0.18.jar"
+        ]
+      },
+      {
+        "host": "azure.archive.ubuntu.com",
+        "count": 67,
+        "examples": [
+          "http://azure.archive.ubuntu.com/ubuntu"
+        ]
+      },
+      {
+        "host": "packages.microsoft.com",
+        "count": 5,
+        "examples": [
+          "https://packages.microsoft.com/ubuntu/24.04/prod"
+        ]
+      },
+      {
+        "host": "bugs.launchpad.net",
+        "count": 2,
+        "examples": [
+          "https://bugs.launchpad.net/ubuntu/+filebug"
+        ]
+      },
+      {
+        "host": "www.eyrie.org",
+        "count": 2,
+        "examples": [
+          "https://www.eyrie.org/~eagle/software/inn/"
+        ]
+      }
+    ],
+    "literal_auth_values": "No unmasked authorization/token/secret assignment, signed URL, URL userinfo, private uploaded-file locator, cloud access-key or private-key pattern was found in the17 complete logs.",
+    "scope_content": "Observed content is repository software compilation/test output, public dependency resolution, exact original diagnostic maps/assertion stack, public Ubuntu prerequisite package metadata/download output and ephemeral runner paths. No future official evaluation/confirmation vector, unrelated private data or additional gameplay outcome was observed.",
+    "exact_subset_reconciliation": "Independently reconstructed every task/executor/fallback excerpt and line count from all17 complete logs; each is exactly equal to the previously relayed subset. This closes the earlier complete-log review limit without rewriting the earlier review.",
+    "actual_bank_execution": [
+      {
+        "path": "01-before-AIPlayerLegacyYesNoStrategyTest/command.log",
+        "executor_pairs": 1,
+        "fresh_ai_test_lines": [
+          "> Task :ai:test",
+          "> Task :ai:test FAILED"
+        ],
+        "cached_test_lines": [],
+        "terminal": "BUILD FAILED in 5m 29s",
+        "task_summary": [
+          "46 actionable tasks: 46 executed"
+        ],
+        "unlocked_fallback_occurrences": 0,
+        "actual_executor_java21_path": true,
+        "executor_line_number": 1966,
+        "executor_line_bytes": 658
+      },
+      {
+        "path": "02-fixed-AIPlayerLegacyYesNoStrategyTest/command.log",
+        "executor_pairs": 1,
+        "fresh_ai_test_lines": [
+          "> Task :ai:test",
+          "> Task :ai:test"
+        ],
+        "cached_test_lines": [],
+        "terminal": "BUILD SUCCESSFUL in 4m 52s",
+        "task_summary": [
+          "46 actionable tasks: 46 executed"
+        ],
+        "unlocked_fallback_occurrences": 0,
+        "actual_executor_java21_path": true,
+        "executor_line_number": 1405,
+        "executor_line_bytes": 656
+      },
+      {
+        "path": "03-fixed-DecisionResponderCompletedBranchTest/command.log",
+        "executor_pairs": 1,
+        "fresh_ai_test_lines": [
+          "> Task :ai:test",
+          "> Task :ai:test"
+        ],
+        "cached_test_lines": [],
+        "terminal": "BUILD SUCCESSFUL in 33s",
+        "task_summary": [
+          "46 actionable tasks: 1 executed, 45 up-to-date"
+        ],
+        "unlocked_fallback_occurrences": 0,
+        "actual_executor_java21_path": true,
+        "executor_line_number": 1082,
+        "executor_line_bytes": 657
+      }
+    ],
+    "original_failure": "The before bank ends BUILD FAILED in5m29s,46actions executed, recipe exit1 and the exact FROZEN_FACTORY_LEGACY_BINDING failure. This remains preserved as one actual expected failure. Fixed ends BUILD SUCCESSFUL in4m52s and46actions executed.",
+    "supporting_task_cache": "Unchanged7 bank ends BUILD SUCCESSFUL in33s with46 actionable tasks:1executed/45up-to-date. Its :ai:test task and executor ran freshly; up-to-date supporting compilation tasks are not counted as new executed tests.",
+    "semaphore": "All three full bank logs lack the original scripts/gradle-locked unlocked-fallback/shlock-missing text. This supplements, rather than replaces, the previously accepted exact upstream-package/utility/default-lock-holder/cleanup receipts.",
+    "java": "Each actual Gradle Test Executor launch line names /usr/lib/jvm/temurin-21-jdk-amd64/bin/java. This is command-line evidence, not loaded-class/memory/whole-runtime identity admission.",
+    "prerequisite": "Complete14 prerequisite logs agree with the retained metadata: public Ubuntu24.04 amd64 inn2/inn2-inews exact2.7.2~20240212-1build3 downloads and owned extraction metadata. Their blank extraction-output logs remain exact zero-byte originals."
+  },
+  "publication_disposition": {
+    "full_original_zip": "Approved for preservation as the unchanged exact original1945147-byte/a8ea41fb... ZIP with all63 members and original failed-case material.",
+    "complete_log_blobs": "Approved for exact original-log preservation with their path/byte/SHA/CRC index. Do not relabel targeted inspection excerpts as complete originals.",
+    "complete_readback_decoded_log": {
+      "scope": "Also supported for exact preservation together with root's separate complete outer nonframe review. The full relay contains the now-reviewed original ZIP and exact records; no new redaction/substitution is introduced.",
+      "bytes": 3014746,
+      "sha256": "ce68b153c98a655e234dac42800c9f0da9fedec627683c5359a23771deed6f92",
+      "outer_review": {
+        "git_blob": "bc5adbd40662ce0888b0e6ebbbb2fe021358c3af",
+        "scope": "Root read/scanned all16541 nonframed characters; Actions-masked authorization/token values remain masked in unchanged original log. This reviewer read that receipt and attributes outer-log inspection to root."
+      }
+    },
+    "archived_old_pending_labels": "Retain previous selected packet/event/semantic review unchanged as historical records. This separate addendum closes only their pending complete-log/public-archive inspection item.",
+    "final_ref_authority": "Root retains exact publication-tree/ref/event review. This review creates no ref, approval or workflow."
+  },
+  "support": {
+    "independent-complete-log-checks.json": {
+      "git_blob": "cc4c68f1f47fc69d6925a5338c23ad2264738fa5",
+      "bytes": 11960,
+      "sha256": "33aaafc0b6e715f0304275236846b9c422e22f24768bab02e4cbcf12d29b027b"
+    },
+    "targeted-complete-log-inspection.json": {
+      "git_blob": "f96107432dfe5ceed3b48c621ab22b824503d12a",
+      "bytes": 27876,
+      "sha256": "9592b7b3aedf0409205bea83ecb4d590f82a79317c52244455b501254ff7a122"
+    }
+  },
+  "boundaries": [
+    "The actual finite result remains11 software executions/9 distinct identities:10 passes and1 preserved expected failure,0errors/skips. Complete-log review adds evidence integrity and publication support; it adds no new software execution.",
+    "No full-runtime,full-AI,full-pilot,global strategy equivalence,Position1,official gameplay or repository merge admission is inferred.",
+    "No original artifact download, log transport from Actions, qualification rerun, helper-check bank, source checkout, package/JVM/process/codec command or workflow was performed by this reviewer for this addendum. Immutable Git blob reads and pure in-memory hashing/scanning only.",
+    "Original uninspected binary package implementation is not qualified by its content-address identity; it is preserved as the exact public prerequisite binary evidence.",
+    "Zero official seeds/games,deck changes or deck-performance evidence changed."
+  ],
+  "review_actions": {
+    "immutable_git_blob_reads": true,
+    "complete_log_hash_crc_scans": 17,
+    "pure_text_pattern_scans": 17,
+    "decoder_execution": 0,
+    "artifact_transports": 0,
+    "qualification_executions": 0,
+    "processes": 0,
+    "ref_changes": 0,
+    "workflow_events": 0
+  }
+}

@@ -1,0 +1,1107 @@
+scripts/test-class "DecisionResponderCompletedBranchTest" --rerun --no-build-cache --no-daemon -DupdateSnapshots=false --info --stacktrace --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g
+test-class: DecisionResponderCompletedBranchTest -> :ai
+Picked up JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+Initialized native services in: /home/runner/.gradle/native
+Initialized jansi services in: /home/runner/.gradle/native
+The current JVM process isn't compatible with build requirement. The maximum heap size is insufficient.
+
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Starting process 'Gradle build daemon'. Working directory: /home/runner/.gradle/daemon/9.6.1 Command: /usr/lib/jvm/temurin-21-jdk-amd64/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED --add-opens=java.base/java.lang.invoke=ALL-UNNAMED --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.prefs/java.util.prefs=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED --add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED --add-opens=java.base/java.nio.charset=ALL-UNNAMED --add-opens=java.base/java.net=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.util.concurrent.atomic=ALL-UNNAMED --add-opens=java.xml/javax.xml.namespace=ALL-UNNAMED --add-opens=java.base/java.time=ALL-UNNAMED -Xmx4g -Dfile.encoding=UTF-8 -Duser.country -Duser.language=en -Duser.variant -cp /home/runner/.gradle/wrapper/dists/gradle-9.6.1-bin/4ticwg1pgcbps2hj28r8so764/gradle-9.6.1/lib/gradle-daemon-main-9.6.1.jar -javaagent:/home/runner/.gradle/wrapper/dists/gradle-9.6.1-bin/4ticwg1pgcbps2hj28r8so764/gradle-9.6.1/lib/agents/gradle-instrumentation-agent-9.6.1.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 9.6.1
+Successfully started process 'Gradle build daemon'
+An attempt to start the daemon took 0.789 secs.
+The client will now receive all logging from the daemon (pid: 6652). The daemon log file: /home/runner/.gradle/daemon/9.6.1/daemon-6652.out.log
+Daemon will be stopped at the end of the build 
+Using 1 worker leases.
+Operational build model parameters: {cachingModelBuilding=false, configurationCache=true, configurationCacheDisabledReason=null, configurationCacheParallelLoad=true, configurationCacheParallelStore=false, configureOnDemand=false, invalidateCoupledProjects=false, isolatedProjects=false, isolatedProjectsDiagnostics=false, modelAsProjectDependency=false, modelBuilding=false, parallelModelBuilding=false, parallelProjectConfiguration=false, parallelProjectExecution=false, resilientModelBuilding=false, vintage=false}
+Received JVM installation metadata from '/usr/lib/jvm/temurin-21-jdk-amd64': {JAVA_HOME=/usr/lib/jvm/temurin-21-jdk-amd64, JAVA_VERSION=21.0.12.1, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=21.0.12.1+1-LTS, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=21.0.12.1+1-LTS, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+Encryption key source: default Gradle keystore (pkcs12)
+Calculating task graph as no cached configuration is available for tasks: :ai:test --tests DecisionResponderCompletedBranchTest --rerun
+Watching the file system is configured to be enabled if available
+Now considering [/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed] as hierarchies to watch
+Now considering [/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/buildSrc, /home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed] as hierarchies to watch
+File system watching is active
+Starting Build
+Resolved plugin [id: 'org.gradle.toolchains.foojay-resolver-convention', version: '1.0.0']
+Settings evaluated using settings file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/settings.gradle.kts'.
+Projects loaded. Root project using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/build.gradle.kts'.
+Included projects: [root project 'argentum-engine', project ':ai', project ':game-server', project ':gym', project ':gym-server', project ':gym-trainer', project ':mtg-sdk', project ':mtg-search', project ':mtg-sets', project ':mtgish-tooling', project ':oracle-assay', project ':rules-engine', project ':mtg-sets:1993-1999', project ':mtg-sets:2000-2002', project ':mtg-sets:2003-2007', project ':mtg-sets:2008-2016', project ':mtg-sets:2017-2022', project ':mtg-sets:2023', project ':mtg-sets:2024', project ':mtg-sets:2025', project ':mtg-sets:2026', project ':mtg-sets:core', project ':mtg-sets:1993-1999:tests', project ':mtg-sets:2000-2002:tests', project ':mtg-sets:2003-2007:tests', project ':mtg-sets:2008-2016:tests', project ':mtg-sets:2017-2022:tests', project ':mtg-sets:2023:tests', project ':mtg-sets:2024:tests', project ':mtg-sets:2025:tests', project ':mtg-sets:2026:tests']
+
+> Configure project :buildSrc
+Evaluating project ':buildSrc' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/buildSrc/build.gradle.kts'.
+Resolved plugin [id: 'org.gradle.kotlin.kotlin-dsl', version: '6.6.4']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+file or directory '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/buildSrc/src/main/java', not found
+Starting process 'command '/usr/lib/jvm/temurin-8-jdk-amd64/bin/java''. Working directory: /home/runner/.gradle/.tmp/tmp-jvm13415698053251225499probe Command: /usr/lib/jvm/temurin-8-jdk-amd64/bin/java -Xmx32m -Xms32m -cp . JavaProbe
+Successfully started process 'command '/usr/lib/jvm/temurin-8-jdk-amd64/bin/java''
+Received JVM installation metadata from '/usr/lib/jvm/temurin-8-jdk-amd64': {JAVA_HOME=/usr/lib/jvm/temurin-8-jdk-amd64/jre, JAVA_VERSION=1.8.0_504, JAVA_VENDOR=Temurin, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=1.8.0_504-b01, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=25.504-b01, VM_VENDOR=Temurin, OS_ARCH=amd64}
+Starting process 'command '/usr/lib/jvm/temurin-25-jdk-amd64/bin/java''. Working directory: /home/runner/.gradle/.tmp/tmp-jvm7071602425721998695probe Command: /usr/lib/jvm/temurin-25-jdk-amd64/bin/java -Xmx32m -Xms32m -cp . JavaProbe
+Successfully started process 'command '/usr/lib/jvm/temurin-25-jdk-amd64/bin/java''
+Received JVM installation metadata from '/usr/lib/jvm/temurin-25-jdk-amd64': {JAVA_HOME=/usr/lib/jvm/temurin-25-jdk-amd64, JAVA_VERSION=25.0.4.1, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=25.0.4.1+1-LTS, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=25.0.4.1+1-LTS, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+Starting process 'command '/usr/lib/jvm/temurin-17-jdk-amd64/bin/java''. Working directory: /home/runner/.gradle/.tmp/tmp-jvm13514287144531055816probe Command: /usr/lib/jvm/temurin-17-jdk-amd64/bin/java -Xmx32m -Xms32m -cp . JavaProbe
+Successfully started process 'command '/usr/lib/jvm/temurin-17-jdk-amd64/bin/java''
+Received JVM installation metadata from '/usr/lib/jvm/temurin-17-jdk-amd64': {JAVA_HOME=/usr/lib/jvm/temurin-17-jdk-amd64, JAVA_VERSION=17.0.20.1, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=17.0.20.1+1, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=17.0.20.1+1, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+Starting process 'command '/usr/lib/jvm/temurin-11-jdk-amd64/bin/java''. Working directory: /home/runner/.gradle/.tmp/tmp-jvm4244064527059788835probe Command: /usr/lib/jvm/temurin-11-jdk-amd64/bin/java -Xmx32m -Xms32m -cp . JavaProbe
+Successfully started process 'command '/usr/lib/jvm/temurin-11-jdk-amd64/bin/java''
+Received JVM installation metadata from '/usr/lib/jvm/temurin-11-jdk-amd64': {JAVA_HOME=/usr/lib/jvm/temurin-11-jdk-amd64, JAVA_VERSION=11.0.32.1, JAVA_VENDOR=Eclipse Adoptium, RUNTIME_NAME=OpenJDK Runtime Environment, RUNTIME_VERSION=11.0.32.1+1, VM_NAME=OpenJDK 64-Bit Server VM, VM_VERSION=11.0.32.1+1, VM_VENDOR=Eclipse Adoptium, OS_ARCH=amd64}
+Resolve mutations for :buildSrc:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:buildSrc:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':buildSrc:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :buildSrc:generateExternalPluginSpecBuilders (Thread[#67,included builds,5,main]) started.
+:buildSrc:generateExternalPluginSpecBuilders (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+Caching disabled for task ':buildSrc:generateExternalPluginSpecBuilders' because:
+  Build cache is disabled
+Skipping task ':buildSrc:generateExternalPluginSpecBuilders' as it is up-to-date.
+Resolve mutations for :buildSrc:extractPrecompiledScriptPluginPlugins (Thread[#67,included builds,5,main]) started.
+:buildSrc:extractPrecompiledScriptPluginPlugins (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+Caching disabled for task ':buildSrc:extractPrecompiledScriptPluginPlugins' because:
+  Build cache is disabled
+Skipping task ':buildSrc:extractPrecompiledScriptPluginPlugins' as it is up-to-date.
+Resolve mutations for :buildSrc:compilePluginsBlocks (Thread[#67,included builds,5,main]) started.
+:buildSrc:compilePluginsBlocks (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+Custom actions are attached to task ':buildSrc:compilePluginsBlocks'.
+Caching disabled for task ':buildSrc:compilePluginsBlocks' because:
+  Build cache is disabled
+Skipping task ':buildSrc:compilePluginsBlocks' as it is up-to-date.
+Resolve mutations for :buildSrc:generatePrecompiledScriptPluginAccessors (Thread[#67,included builds,5,main]) started.
+:buildSrc:generatePrecompiledScriptPluginAccessors (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+Caching disabled for task ':buildSrc:generatePrecompiledScriptPluginAccessors' because:
+  Build cache is disabled
+Skipping task ':buildSrc:generatePrecompiledScriptPluginAccessors' as it is up-to-date.
+Resolve mutations for :buildSrc:generateScriptPluginAdapters (Thread[#67,included builds,5,main]) started.
+:buildSrc:generateScriptPluginAdapters (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+Caching disabled for task ':buildSrc:generateScriptPluginAdapters' because:
+  Build cache is disabled
+Skipping task ':buildSrc:generateScriptPluginAdapters' as it is up-to-date.
+Resolve mutations for :buildSrc:compileKotlin (Thread[#67,included builds,5,main]) started.
+:buildSrc:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:compileKotlin UP-TO-DATE
+Custom actions are attached to task ':buildSrc:compileKotlin'.
+Caching disabled for task ':buildSrc:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':buildSrc:compileKotlin' as it is up-to-date.
+Resolve mutations for :buildSrc:compileJava (Thread[#67,included builds,5,main]) started.
+:buildSrc:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:compileJava NO-SOURCE
+Skipping task ':buildSrc:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :buildSrc:compileGroovy (Thread[#67,included builds,5,main]) started.
+:buildSrc:compileGroovy (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:compileGroovy NO-SOURCE
+Skipping task ':buildSrc:compileGroovy' as it has no source files and no previous output files.
+Resolve mutations for :buildSrc:pluginDescriptors (Thread[#67,included builds,5,main]) started.
+:buildSrc:pluginDescriptors (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+Caching disabled for task ':buildSrc:pluginDescriptors' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':buildSrc:pluginDescriptors' as it is up-to-date.
+Resolve mutations for :buildSrc:processResources (Thread[#67,included builds,5,main]) started.
+:buildSrc:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:processResources UP-TO-DATE
+Caching disabled for task ':buildSrc:processResources' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':buildSrc:processResources' as it is up-to-date.
+Resolve mutations for :buildSrc:classes (Thread[#67,included builds,5,main]) started.
+:buildSrc:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:classes UP-TO-DATE
+Skipping task ':buildSrc:classes' as it has no actions.
+Resolve mutations for :buildSrc:jar (Thread[#67,included builds,5,main]) started.
+:buildSrc:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :buildSrc:jar UP-TO-DATE
+Caching disabled for task ':buildSrc:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':buildSrc:jar' as it is up-to-date.
+
+> Configure project :
+Evaluating root project 'argentum-engine' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/build.gradle.kts'.
+Resolved plugin [id: 'org.jetbrains.kotlinx.kover', version: '0.9.8']
+
+> Configure project :ai
+Evaluating project ':ai' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/ai/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.0']
+Build report service is registered. Unique build id: 0cf9859b-18af-498a-95c5-1cda4e50f902
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :game-server
+Evaluating project ':game-server' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/game-server/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.0']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.spring', version: '2.4.0']
+Resolved plugin [id: 'org.springframework.boot', version: '4.1.0']
+Resolved plugin [id: 'io.spring.dependency-management', version: '1.1.7']
+Resolved plugin [id: 'org.jetbrains.kotlinx.kover', version: '0.9.8']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+Applying dependency management to configuration 'annotationProcessor' in project 'game-server'
+Applying dependency management to configuration 'api' in project 'game-server'
+Applying dependency management to configuration 'apiElements' in project 'game-server'
+Applying dependency management to configuration 'archives' in project 'game-server'
+Applying dependency management to configuration 'bootArchives' in project 'game-server'
+Applying dependency management to configuration 'compileClasspath' in project 'game-server'
+Applying dependency management to configuration 'compileOnly' in project 'game-server'
+Applying dependency management to configuration 'compileOnlyApi' in project 'game-server'
+Applying dependency management to configuration 'default' in project 'game-server'
+Applying dependency management to configuration 'developmentOnly' in project 'game-server'
+Applying dependency management to configuration 'implementation' in project 'game-server'
+Applying dependency management to configuration 'implementationDependenciesMetadata' in project 'game-server'
+Applying dependency management to configuration 'kotlinAbiValidationCompatClasspath' in project 'game-server'
+Applying dependency management to configuration 'kotlinBuildToolsApiClasspath' in project 'game-server'
+Applying dependency management to configuration 'kotlinCompilerClasspath' in project 'game-server'
+Applying dependency management to configuration 'kotlinCompilerPluginClasspath' in project 'game-server'
+Applying dependency management to configuration 'kotlinCompilerPluginClasspathMain' in project 'game-server'
+Applying dependency management to configuration 'kotlinCompilerPluginClasspathTest' in project 'game-server'
+Applying dependency management to configuration 'kotlinKlibCommonizerClasspath' in project 'game-server'
+Applying dependency management to configuration 'kotlinNativeCompilerPluginClasspath' in project 'game-server'
+Applying dependency management to configuration 'kotlinScriptDef' in project 'game-server'
+Applying dependency management to configuration 'kotlinScriptDefExtensions' in project 'game-server'
+Applying dependency management to configuration 'mainSourceElements' in project 'game-server'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'game-server'
+Applying dependency management to configuration 'runtimeClasspath' in project 'game-server'
+Applying dependency management to configuration 'runtimeElements' in project 'game-server'
+Applying dependency management to configuration 'runtimeOnly' in project 'game-server'
+Applying dependency management to configuration 'testAndDevelopmentOnly' in project 'game-server'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'game-server'
+Applying dependency management to configuration 'testApi' in project 'game-server'
+Applying dependency management to configuration 'testCompileClasspath' in project 'game-server'
+Applying dependency management to configuration 'testCompileOnly' in project 'game-server'
+Applying dependency management to configuration 'testImplementation' in project 'game-server'
+Applying dependency management to configuration 'testImplementationDependenciesMetadata' in project 'game-server'
+Applying dependency management to configuration 'testKotlinScriptDef' in project 'game-server'
+Applying dependency management to configuration 'testKotlinScriptDefExtensions' in project 'game-server'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'game-server'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'game-server'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'game-server'
+Applying dependency management to configuration 'kover' in project 'game-server'
+Applying dependency management to configuration 'koverJvmAgent' in project 'game-server'
+Applying dependency management to configuration 'koverEmptyArtifact' in project 'game-server'
+Applying dependency management to configuration 'koverJvmReporter' in project 'game-server'
+Applying dependency management to configuration 'koverArtifactJvm' in project 'game-server'
+Applying dependency management to configuration 'koverExternalArtifactsJvm' in project 'game-server'
+Applying dependency management to configuration 'koverArtifact' in project 'game-server'
+Applying dependency management to configuration 'koverExternalArtifacts' in project 'game-server'
+Applying dependency management to configuration 'apiElements-published' in project 'game-server'
+Applying dependency management to configuration 'runtimeElements-published' in project 'game-server'
+
+> Configure project :gym
+Evaluating project ':gym' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/gym/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.0']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :gym-server
+Evaluating project ':gym-server' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/gym-server/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.0']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.spring', version: '2.4.0']
+Resolved plugin [id: 'org.springframework.boot', version: '4.1.0']
+Resolved plugin [id: 'io.spring.dependency-management', version: '1.1.7']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+Applying dependency management to configuration 'annotationProcessor' in project 'gym-server'
+Applying dependency management to configuration 'api' in project 'gym-server'
+Applying dependency management to configuration 'apiElements' in project 'gym-server'
+Applying dependency management to configuration 'archives' in project 'gym-server'
+Applying dependency management to configuration 'bootArchives' in project 'gym-server'
+Applying dependency management to configuration 'compileClasspath' in project 'gym-server'
+Applying dependency management to configuration 'compileOnly' in project 'gym-server'
+Applying dependency management to configuration 'compileOnlyApi' in project 'gym-server'
+Applying dependency management to configuration 'default' in project 'gym-server'
+Applying dependency management to configuration 'developmentOnly' in project 'gym-server'
+Applying dependency management to configuration 'implementation' in project 'gym-server'
+Applying dependency management to configuration 'implementationDependenciesMetadata' in project 'gym-server'
+Applying dependency management to configuration 'kotlinAbiValidationCompatClasspath' in project 'gym-server'
+Applying dependency management to configuration 'kotlinBuildToolsApiClasspath' in project 'gym-server'
+Applying dependency management to configuration 'kotlinCompilerClasspath' in project 'gym-server'
+Applying dependency management to configuration 'kotlinCompilerPluginClasspath' in project 'gym-server'
+Applying dependency management to configuration 'kotlinCompilerPluginClasspathMain' in project 'gym-server'
+Applying dependency management to configuration 'kotlinCompilerPluginClasspathTest' in project 'gym-server'
+Applying dependency management to configuration 'kotlinKlibCommonizerClasspath' in project 'gym-server'
+Applying dependency management to configuration 'kotlinNativeCompilerPluginClasspath' in project 'gym-server'
+Applying dependency management to configuration 'kotlinScriptDef' in project 'gym-server'
+Applying dependency management to configuration 'kotlinScriptDefExtensions' in project 'gym-server'
+Applying dependency management to configuration 'mainSourceElements' in project 'gym-server'
+Applying dependency management to configuration 'productionRuntimeClasspath' in project 'gym-server'
+Applying dependency management to configuration 'runtimeClasspath' in project 'gym-server'
+Applying dependency management to configuration 'runtimeElements' in project 'gym-server'
+Applying dependency management to configuration 'runtimeOnly' in project 'gym-server'
+Applying dependency management to configuration 'testAndDevelopmentOnly' in project 'gym-server'
+Applying dependency management to configuration 'testAnnotationProcessor' in project 'gym-server'
+Applying dependency management to configuration 'testApi' in project 'gym-server'
+Applying dependency management to configuration 'testCompileClasspath' in project 'gym-server'
+Applying dependency management to configuration 'testCompileOnly' in project 'gym-server'
+Applying dependency management to configuration 'testImplementation' in project 'gym-server'
+Applying dependency management to configuration 'testImplementationDependenciesMetadata' in project 'gym-server'
+Applying dependency management to configuration 'testKotlinScriptDef' in project 'gym-server'
+Applying dependency management to configuration 'testKotlinScriptDefExtensions' in project 'gym-server'
+Applying dependency management to configuration 'testResultsElementsForTest' in project 'gym-server'
+Applying dependency management to configuration 'testRuntimeClasspath' in project 'gym-server'
+Applying dependency management to configuration 'testRuntimeOnly' in project 'gym-server'
+Applying dependency management to configuration 'apiElements-published' in project 'gym-server'
+Applying dependency management to configuration 'runtimeElements-published' in project 'gym-server'
+
+> Configure project :gym-trainer
+Evaluating project ':gym-trainer' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/gym-trainer/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.0']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sdk
+Evaluating project ':mtg-sdk' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sdk/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.0']
+Resolved plugin [id: 'org.jetbrains.kotlinx.kover', version: '0.9.8']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-search
+Evaluating project ':mtg-search' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-search/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets
+Evaluating project ':mtg-sets' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.0']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: generatedCardsKotlinScriptDef
+
+> Configure project :mtgish-tooling
+Evaluating project ':mtgish-tooling' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtgish-tooling/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Resolved plugin [id: 'org.gradle.application']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.0']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :oracle-assay
+Evaluating project ':oracle-assay' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/oracle-assay/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Resolved plugin [id: 'org.gradle.application']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.0']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :rules-engine
+Evaluating project ':rules-engine' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/rules-engine/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.0']
+Resolved plugin [id: 'org.jetbrains.kotlinx.kover', version: '0.9.8']
+Resolved plugin [id: 'org.gradle.java-test-fixtures']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testFixturesKotlinScriptDef
+
+> Configure project :mtg-sets:1993-1999
+Evaluating project ':mtg-sets:1993-1999' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/1993-1999/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2000-2002
+Evaluating project ':mtg-sets:2000-2002' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2000-2002/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2003-2007
+Evaluating project ':mtg-sets:2003-2007' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2003-2007/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2008-2016
+Evaluating project ':mtg-sets:2008-2016' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2008-2016/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2017-2022
+Evaluating project ':mtg-sets:2017-2022' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2017-2022/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2023
+Evaluating project ':mtg-sets:2023' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2023/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2024
+Evaluating project ':mtg-sets:2024' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2024/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2025
+Evaluating project ':mtg-sets:2025' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2025/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2026
+Evaluating project ':mtg-sets:2026' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2026/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:core
+Evaluating project ':mtg-sets:core' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/core/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Resolved plugin [id: 'org.jetbrains.kotlin.plugin.serialization', version: '2.4.0']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:1993-1999:tests
+Evaluating project ':mtg-sets:1993-1999:tests' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/1993-1999/tests/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2000-2002:tests
+Evaluating project ':mtg-sets:2000-2002:tests' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2000-2002/tests/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2003-2007:tests
+Evaluating project ':mtg-sets:2003-2007:tests' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2003-2007/tests/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2008-2016:tests
+Evaluating project ':mtg-sets:2008-2016:tests' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2008-2016/tests/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2017-2022:tests
+Evaluating project ':mtg-sets:2017-2022:tests' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2017-2022/tests/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2023:tests
+Evaluating project ':mtg-sets:2023:tests' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2023/tests/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2024:tests
+Evaluating project ':mtg-sets:2024:tests' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2024/tests/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2025:tests
+Evaluating project ':mtg-sets:2025:tests' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2025/tests/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+
+> Configure project :mtg-sets:2026:tests
+Evaluating project ':mtg-sets:2026:tests' using build file '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/mtg-sets/2026/tests/build.gradle.kts'.
+Resolved plugin [id: 'buildsrc.convention.kotlin-jvm']
+Using Kotlin Gradle Plugin gradle813 variant
+kotlin scripting plugin: created the scripting discovery configuration: kotlinScriptDef
+kotlin scripting plugin: created the scripting discovery configuration: testKotlinScriptDef
+All projects evaluated.
+Task path ':ai:test' matched project ':ai'
+Task name matched 'test'
+Selected primary task 'test' from project :ai
+Tasks to be executed: [task ':ai:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sdk:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sdk:compileKotlin', task ':mtg-sdk:compileJava', task ':rules-engine:checkKotlinGradlePluginConfigurationErrors', task ':rules-engine:compileKotlin', task ':rules-engine:compileJava', task ':ai:compileKotlin', task ':ai:compileJava', task ':ai:processResources', task ':ai:classes', task ':ai:jar', task ':mtg-sets:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sets:core:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sets:core:compileKotlin', task ':mtg-sets:core:compileJava', task ':mtg-sets:1993-1999:compileKotlin', task ':mtg-sets:1993-1999:compileJava', task ':mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sets:2000-2002:compileKotlin', task ':mtg-sets:2000-2002:compileJava', task ':mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sets:2003-2007:compileKotlin', task ':mtg-sets:2003-2007:compileJava', task ':mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sets:2008-2016:compileKotlin', task ':mtg-sets:2008-2016:compileJava', task ':mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sets:2017-2022:compileKotlin', task ':mtg-sets:2017-2022:compileJava', task ':mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sets:2023:compileKotlin', task ':mtg-sets:2023:compileJava', task ':mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sets:2024:compileKotlin', task ':mtg-sets:2024:compileJava', task ':mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sets:2025:compileKotlin', task ':mtg-sets:2025:compileJava', task ':mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors', task ':mtg-sets:2026:compileKotlin', task ':mtg-sets:2026:compileJava', task ':mtg-sets:compileKotlin', task ':mtg-sets:compileJava', task ':rules-engine:processResources', task ':rules-engine:classes', task ':rules-engine:jar', task ':rules-engine:compileTestFixturesKotlin', task ':rules-engine:compileTestFixturesJava', task ':ai:compileTestKotlin', task ':ai:compileTestJava', task ':ai:processTestResources', task ':ai:testClasses', task ':mtg-sdk:processResources', task ':mtg-sdk:classes', task ':mtg-sdk:jar', task ':mtg-sets:processResources', task ':mtg-sets:classes', task ':mtg-sets:jar', task ':rules-engine:processTestFixturesResources', task ':rules-engine:testFixturesClasses', task ':rules-engine:testFixturesJar', task ':mtg-sets:1993-1999:processResources', task ':mtg-sets:1993-1999:classes', task ':mtg-sets:1993-1999:jar', task ':mtg-sets:2000-2002:processResources', task ':mtg-sets:2000-2002:classes', task ':mtg-sets:2000-2002:jar', task ':mtg-sets:2003-2007:processResources', task ':mtg-sets:2003-2007:classes', task ':mtg-sets:2003-2007:jar', task ':mtg-sets:2008-2016:processResources', task ':mtg-sets:2008-2016:classes', task ':mtg-sets:2008-2016:jar', task ':mtg-sets:2017-2022:processResources', task ':mtg-sets:2017-2022:classes', task ':mtg-sets:2017-2022:jar', task ':mtg-sets:2023:processResources', task ':mtg-sets:2023:classes', task ':mtg-sets:2023:jar', task ':mtg-sets:2024:processResources', task ':mtg-sets:2024:classes', task ':mtg-sets:2024:jar', task ':mtg-sets:2025:processResources', task ':mtg-sets:2025:classes', task ':mtg-sets:2025:jar', task ':mtg-sets:2026:processResources', task ':mtg-sets:2026:classes', task ':mtg-sets:2026:jar', task ':mtg-sets:core:processResources', task ':mtg-sets:core:classes', task ':mtg-sets:core:jar', task ':ai:test']
+Tasks that were excluded: []
+Ignoring listeners of task graph ready event, as this build (:) has already executed work.
+Resolve mutations for :ai:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:ai:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :ai:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':ai:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :mtg-sdk:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sdk:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sdk:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sdk:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :mtg-sdk:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sdk:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sdk:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sdk:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sdk:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sdk:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sdk:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sdk:compileJava NO-SOURCE
+Skipping task ':mtg-sdk:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :rules-engine:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:rules-engine:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :rules-engine:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':rules-engine:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+work action resolve main (project ':mtg-sdk') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sdk') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :rules-engine:compileKotlin (Thread[#67,included builds,5,main]) started.
+:rules-engine:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :rules-engine:compileKotlin UP-TO-DATE
+Caching disabled for task ':rules-engine:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':rules-engine:compileKotlin' as it is up-to-date.
+Resolve mutations for :rules-engine:compileJava (Thread[#67,included builds,5,main]) started.
+:rules-engine:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :rules-engine:compileJava NO-SOURCE
+Skipping task ':rules-engine:compileJava' as it has no source files and no previous output files.
+work action resolve main (project ':rules-engine') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':rules-engine') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :ai:compileKotlin (Thread[#67,included builds,5,main]) started.
+:ai:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :ai:compileKotlin UP-TO-DATE
+Caching disabled for task ':ai:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':ai:compileKotlin' as it is up-to-date.
+Resolve mutations for :ai:compileJava (Thread[#67,included builds,5,main]) started.
+:ai:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :ai:compileJava NO-SOURCE
+Skipping task ':ai:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :ai:processResources (Thread[#67,included builds,5,main]) started.
+:ai:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :ai:processResources UP-TO-DATE
+Caching disabled for task ':ai:processResources' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':ai:processResources' as it is up-to-date.
+Resolve mutations for :ai:classes (Thread[#67,included builds,5,main]) started.
+:ai:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :ai:classes UP-TO-DATE
+Skipping task ':ai:classes' as it has no actions.
+Resolve mutations for :ai:jar (Thread[#67,included builds,5,main]) started.
+:ai:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :ai:jar UP-TO-DATE
+Caching disabled for task ':ai:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':ai:jar' as it is up-to-date.
+Resolve mutations for :mtg-sets:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sets:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sets:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :mtg-sets:core:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sets:core:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sets:core:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+Resolve mutations for :mtg-sets:core:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sets:core:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:core:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sets:core:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sets:core:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sets:core:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sets:core:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:core:compileJava NO-SOURCE
+Skipping task ':mtg-sets:core:compileJava' as it has no source files and no previous output files.
+work action resolve main (project ':mtg-sets:core') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sets:core') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :mtg-sets:1993-1999:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sets:1993-1999:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:1993-1999:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sets:1993-1999:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sets:1993-1999:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sets:1993-1999:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sets:1993-1999:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:1993-1999:compileJava NO-SOURCE
+Skipping task ':mtg-sets:1993-1999:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+work action resolve main (project ':mtg-sets:1993-1999') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sets:1993-1999') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :mtg-sets:2000-2002:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2000-2002:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2000-2002:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sets:2000-2002:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sets:2000-2002:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sets:2000-2002:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2000-2002:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2000-2002:compileJava NO-SOURCE
+Skipping task ':mtg-sets:2000-2002:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+work action resolve main (project ':mtg-sets:2000-2002') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sets:2000-2002') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :mtg-sets:2003-2007:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2003-2007:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2003-2007:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sets:2003-2007:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sets:2003-2007:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sets:2003-2007:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2003-2007:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2003-2007:compileJava NO-SOURCE
+Skipping task ':mtg-sets:2003-2007:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+work action resolve main (project ':mtg-sets:2003-2007') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sets:2003-2007') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :mtg-sets:2008-2016:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2008-2016:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2008-2016:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sets:2008-2016:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sets:2008-2016:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sets:2008-2016:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2008-2016:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2008-2016:compileJava NO-SOURCE
+Skipping task ':mtg-sets:2008-2016:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+work action resolve main (project ':mtg-sets:2008-2016') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sets:2008-2016') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :mtg-sets:2017-2022:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2017-2022:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2017-2022:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sets:2017-2022:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sets:2017-2022:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sets:2017-2022:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2017-2022:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2017-2022:compileJava NO-SOURCE
+Skipping task ':mtg-sets:2017-2022:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+work action resolve main (project ':mtg-sets:2017-2022') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sets:2017-2022') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :mtg-sets:2023:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2023:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2023:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sets:2023:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sets:2023:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sets:2023:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2023:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2023:compileJava NO-SOURCE
+Skipping task ':mtg-sets:2023:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+work action resolve main (project ':mtg-sets:2023') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sets:2023') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :mtg-sets:2024:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2024:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2024:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sets:2024:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sets:2024:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sets:2024:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2024:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2024:compileJava NO-SOURCE
+Skipping task ':mtg-sets:2024:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+work action resolve main (project ':mtg-sets:2024') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sets:2024') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :mtg-sets:2025:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2025:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2025:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sets:2025:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sets:2025:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sets:2025:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2025:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2025:compileJava NO-SOURCE
+Skipping task ':mtg-sets:2025:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors SKIPPED
+Skipping task ':mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors' as task onlyIf 'errorDiagnostics are present' is false.
+work action resolve main (project ':mtg-sets:2025') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sets:2025') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :mtg-sets:2026:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2026:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2026:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sets:2026:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sets:2026:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sets:2026:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2026:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2026:compileJava NO-SOURCE
+Skipping task ':mtg-sets:2026:compileJava' as it has no source files and no previous output files.
+work action resolve main (project ':mtg-sets:2026') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sets:2026') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :mtg-sets:compileKotlin (Thread[#67,included builds,5,main]) started.
+:mtg-sets:compileKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:compileKotlin UP-TO-DATE
+Caching disabled for task ':mtg-sets:compileKotlin' because:
+  Build cache is disabled
+Skipping task ':mtg-sets:compileKotlin' as it is up-to-date.
+Resolve mutations for :mtg-sets:compileJava (Thread[#67,included builds,5,main]) started.
+:mtg-sets:compileJava (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:compileJava NO-SOURCE
+Skipping task ':mtg-sets:compileJava' as it has no source files and no previous output files.
+Resolve mutations for :rules-engine:processResources (Thread[#67,included builds,5,main]) started.
+:rules-engine:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :rules-engine:processResources UP-TO-DATE
+Caching disabled for task ':rules-engine:processResources' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':rules-engine:processResources' as it is up-to-date.
+Resolve mutations for :rules-engine:classes (Thread[#67,included builds,5,main]) started.
+:rules-engine:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :rules-engine:classes UP-TO-DATE
+Skipping task ':rules-engine:classes' as it has no actions.
+Resolve mutations for :rules-engine:jar (Thread[#67,included builds,5,main]) started.
+:rules-engine:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :rules-engine:jar UP-TO-DATE
+Caching disabled for task ':rules-engine:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':rules-engine:jar' as it is up-to-date.
+work action resolve main (project ':mtg-sets') (Thread[#67,included builds,5,main]) started.
+work action resolve main (project ':mtg-sets') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :rules-engine:compileTestFixturesKotlin (Thread[#67,included builds,5,main]) started.
+:rules-engine:compileTestFixturesKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :rules-engine:compileTestFixturesKotlin UP-TO-DATE
+Caching disabled for task ':rules-engine:compileTestFixturesKotlin' because:
+  Build cache is disabled
+Skipping task ':rules-engine:compileTestFixturesKotlin' as it is up-to-date.
+Resolve mutations for :rules-engine:compileTestFixturesJava (Thread[#67,included builds,5,main]) started.
+:rules-engine:compileTestFixturesJava (Thread[#67,included builds,5,main]) started.
+
+> Task :rules-engine:compileTestFixturesJava NO-SOURCE
+Skipping task ':rules-engine:compileTestFixturesJava' as it has no source files and no previous output files.
+work action resolve testFixtures (project ':rules-engine') (Thread[#67,included builds,5,main]) started.
+work action resolve testFixtures (project ':rules-engine') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :ai:compileTestKotlin (Thread[#67,included builds,5,main]) started.
+:ai:compileTestKotlin (Thread[#67,included builds,5,main]) started.
+
+> Task :ai:compileTestKotlin UP-TO-DATE
+Caching disabled for task ':ai:compileTestKotlin' because:
+  Build cache is disabled
+Skipping task ':ai:compileTestKotlin' as it is up-to-date.
+Resolve mutations for :ai:compileTestJava (Thread[#67,included builds,5,main]) started.
+:ai:compileTestJava (Thread[#67,included builds,5,main]) started.
+
+> Task :ai:compileTestJava NO-SOURCE
+Skipping task ':ai:compileTestJava' as it has no source files and no previous output files.
+Resolve mutations for :ai:processTestResources (Thread[#67,included builds,5,main]) started.
+:ai:processTestResources (Thread[#67,included builds,5,main]) started.
+
+> Task :ai:processTestResources UP-TO-DATE
+Caching disabled for task ':ai:processTestResources' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':ai:processTestResources' as it is up-to-date.
+Resolve mutations for :ai:testClasses (Thread[#67,included builds,5,main]) started.
+:ai:testClasses (Thread[#67,included builds,5,main]) started.
+
+> Task :ai:testClasses UP-TO-DATE
+Skipping task ':ai:testClasses' as it has no actions.
+Resolve mutations for :mtg-sdk:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sdk:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sdk:processResources NO-SOURCE
+Skipping task ':mtg-sdk:processResources' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sdk:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sdk:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sdk:classes UP-TO-DATE
+Skipping task ':mtg-sdk:classes' as it has no actions.
+Resolve mutations for :mtg-sdk:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sdk:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sdk:jar UP-TO-DATE
+Caching disabled for task ':mtg-sdk:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sdk:jar' as it is up-to-date.
+Resolve mutations for :mtg-sets:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sets:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:processResources UP-TO-DATE
+Caching disabled for task ':mtg-sets:processResources' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:processResources' as it is up-to-date.
+Resolve mutations for :mtg-sets:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sets:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:classes UP-TO-DATE
+Skipping task ':mtg-sets:classes' as it has no actions.
+Resolve mutations for :mtg-sets:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sets:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:jar UP-TO-DATE
+Caching disabled for task ':mtg-sets:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:jar' as it is up-to-date.
+Resolve mutations for :rules-engine:processTestFixturesResources (Thread[#67,included builds,5,main]) started.
+:rules-engine:processTestFixturesResources (Thread[#67,included builds,5,main]) started.
+
+> Task :rules-engine:processTestFixturesResources NO-SOURCE
+Skipping task ':rules-engine:processTestFixturesResources' as it has no source files and no previous output files.
+Resolve mutations for :rules-engine:testFixturesClasses (Thread[#67,included builds,5,main]) started.
+:rules-engine:testFixturesClasses (Thread[#67,included builds,5,main]) started.
+
+> Task :rules-engine:testFixturesClasses UP-TO-DATE
+Skipping task ':rules-engine:testFixturesClasses' as it has no actions.
+Resolve mutations for :rules-engine:testFixturesJar (Thread[#67,included builds,5,main]) started.
+:rules-engine:testFixturesJar (Thread[#67,included builds,5,main]) started.
+
+> Task :rules-engine:testFixturesJar UP-TO-DATE
+Caching disabled for task ':rules-engine:testFixturesJar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':rules-engine:testFixturesJar' as it is up-to-date.
+Resolve mutations for :mtg-sets:1993-1999:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sets:1993-1999:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:1993-1999:processResources NO-SOURCE
+Skipping task ':mtg-sets:1993-1999:processResources' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:1993-1999:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sets:1993-1999:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:1993-1999:classes UP-TO-DATE
+Skipping task ':mtg-sets:1993-1999:classes' as it has no actions.
+Resolve mutations for :mtg-sets:1993-1999:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sets:1993-1999:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:1993-1999:jar UP-TO-DATE
+Caching disabled for task ':mtg-sets:1993-1999:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:1993-1999:jar' as it is up-to-date.
+Resolve mutations for :mtg-sets:2000-2002:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2000-2002:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2000-2002:processResources NO-SOURCE
+Skipping task ':mtg-sets:2000-2002:processResources' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2000-2002:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2000-2002:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2000-2002:classes UP-TO-DATE
+Skipping task ':mtg-sets:2000-2002:classes' as it has no actions.
+Resolve mutations for :mtg-sets:2000-2002:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2000-2002:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2000-2002:jar UP-TO-DATE
+Caching disabled for task ':mtg-sets:2000-2002:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:2000-2002:jar' as it is up-to-date.
+Resolve mutations for :mtg-sets:2003-2007:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2003-2007:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2003-2007:processResources NO-SOURCE
+Skipping task ':mtg-sets:2003-2007:processResources' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2003-2007:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2003-2007:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2003-2007:classes UP-TO-DATE
+Skipping task ':mtg-sets:2003-2007:classes' as it has no actions.
+Resolve mutations for :mtg-sets:2003-2007:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2003-2007:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2003-2007:jar UP-TO-DATE
+Caching disabled for task ':mtg-sets:2003-2007:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:2003-2007:jar' as it is up-to-date.
+Resolve mutations for :mtg-sets:2008-2016:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2008-2016:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2008-2016:processResources NO-SOURCE
+Skipping task ':mtg-sets:2008-2016:processResources' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2008-2016:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2008-2016:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2008-2016:classes UP-TO-DATE
+Skipping task ':mtg-sets:2008-2016:classes' as it has no actions.
+Resolve mutations for :mtg-sets:2008-2016:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2008-2016:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2008-2016:jar UP-TO-DATE
+Caching disabled for task ':mtg-sets:2008-2016:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:2008-2016:jar' as it is up-to-date.
+Resolve mutations for :mtg-sets:2017-2022:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2017-2022:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2017-2022:processResources NO-SOURCE
+Skipping task ':mtg-sets:2017-2022:processResources' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2017-2022:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2017-2022:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2017-2022:classes UP-TO-DATE
+Skipping task ':mtg-sets:2017-2022:classes' as it has no actions.
+Resolve mutations for :mtg-sets:2017-2022:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2017-2022:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2017-2022:jar UP-TO-DATE
+Caching disabled for task ':mtg-sets:2017-2022:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:2017-2022:jar' as it is up-to-date.
+Resolve mutations for :mtg-sets:2023:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2023:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2023:processResources NO-SOURCE
+Skipping task ':mtg-sets:2023:processResources' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2023:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2023:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2023:classes UP-TO-DATE
+Skipping task ':mtg-sets:2023:classes' as it has no actions.
+Resolve mutations for :mtg-sets:2023:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2023:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2023:jar UP-TO-DATE
+Caching disabled for task ':mtg-sets:2023:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:2023:jar' as it is up-to-date.
+Resolve mutations for :mtg-sets:2024:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2024:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2024:processResources NO-SOURCE
+Skipping task ':mtg-sets:2024:processResources' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2024:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2024:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2024:classes UP-TO-DATE
+Skipping task ':mtg-sets:2024:classes' as it has no actions.
+Resolve mutations for :mtg-sets:2024:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2024:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2024:jar UP-TO-DATE
+Caching disabled for task ':mtg-sets:2024:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:2024:jar' as it is up-to-date.
+Resolve mutations for :mtg-sets:2025:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2025:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2025:processResources NO-SOURCE
+Skipping task ':mtg-sets:2025:processResources' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2025:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2025:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2025:classes UP-TO-DATE
+Skipping task ':mtg-sets:2025:classes' as it has no actions.
+Resolve mutations for :mtg-sets:2025:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2025:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2025:jar UP-TO-DATE
+Caching disabled for task ':mtg-sets:2025:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:2025:jar' as it is up-to-date.
+Resolve mutations for :mtg-sets:2026:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2026:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2026:processResources NO-SOURCE
+Skipping task ':mtg-sets:2026:processResources' as it has no source files and no previous output files.
+Resolve mutations for :mtg-sets:2026:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2026:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2026:classes UP-TO-DATE
+Skipping task ':mtg-sets:2026:classes' as it has no actions.
+Resolve mutations for :mtg-sets:2026:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sets:2026:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:2026:jar UP-TO-DATE
+Caching disabled for task ':mtg-sets:2026:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:2026:jar' as it is up-to-date.
+Resolve mutations for :mtg-sets:core:processResources (Thread[#67,included builds,5,main]) started.
+:mtg-sets:core:processResources (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:core:processResources UP-TO-DATE
+Caching disabled for task ':mtg-sets:core:processResources' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:core:processResources' as it is up-to-date.
+Resolve mutations for :mtg-sets:core:classes (Thread[#67,included builds,5,main]) started.
+:mtg-sets:core:classes (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:core:classes UP-TO-DATE
+Skipping task ':mtg-sets:core:classes' as it has no actions.
+Resolve mutations for :mtg-sets:core:jar (Thread[#67,included builds,5,main]) started.
+:mtg-sets:core:jar (Thread[#67,included builds,5,main]) started.
+
+> Task :mtg-sets:core:jar UP-TO-DATE
+Caching disabled for task ':mtg-sets:core:jar' because:
+  Build cache is disabled
+  Not worth caching
+Skipping task ':mtg-sets:core:jar' as it is up-to-date.
+work action resolve 2024.jar (project ':mtg-sets:2024') (Thread[#67,included builds,5,main]) started.
+work action resolve mtg-sets.jar (project ':mtg-sets') (Thread[#67,included builds,5,main]) started.
+work action resolve 2023.jar (project ':mtg-sets:2023') (Thread[#67,included builds,5,main]) started.
+work action resolve rules-engine.jar (project ':rules-engine') (Thread[#67,included builds,5,main]) started.
+work action resolve mtg-sdk.jar (project ':mtg-sdk') (Thread[#67,included builds,5,main]) started.
+work action resolve 2008-2016.jar (project ':mtg-sets:2008-2016') (Thread[#67,included builds,5,main]) started.
+work action resolve core.jar (project ':mtg-sets:core') (Thread[#67,included builds,5,main]) started.
+work action resolve 2025.jar (project ':mtg-sets:2025') (Thread[#67,included builds,5,main]) started.
+work action resolve 2003-2007.jar (project ':mtg-sets:2003-2007') (Thread[#67,included builds,5,main]) started.
+work action resolve rules-engine-test-fixtures.jar (project ':rules-engine') (Thread[#67,included builds,5,main]) started.
+work action resolve 1993-1999.jar (project ':mtg-sets:1993-1999') (Thread[#67,included builds,5,main]) started.
+work action resolve 2000-2002.jar (project ':mtg-sets:2000-2002') (Thread[#67,included builds,5,main]) started.
+work action resolve 2026.jar (project ':mtg-sets:2026') (Thread[#67,included builds,5,main]) started.
+work action resolve 2017-2022.jar (project ':mtg-sets:2017-2022') (Thread[#67,included builds,5,main]) started.
+Resolve mutations for :ai:test (Thread[#67,included builds,5,main]) started.
+:ai:test (Thread[#67,included builds,5,main]) started.
+Gradle Test Executor 1 started executing tests.
+
+> Task :ai:test
+Caching disabled for task ':ai:test' because:
+  Build cache is disabled
+Task ':ai:test' is not up-to-date because:
+  Task.upToDateWhen is false.
+file or directory '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/ai/build/classes/java/test', not found
+Starting process 'Gradle Test Executor 1'. Working directory: /home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/ai Command: /usr/lib/jvm/temurin-21-jdk-amd64/bin/java -Dbenchmark=false -DbenchmarkGames=10 -DbenchmarkMaxTurns=50 -DbenchmarkOutputDir=/tmp -DbenchmarkSet=POR -Dorg.gradle.internal.worker.tmpdir=/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/ai/build/tmp/test/work @/home/runner/.gradle/.tmp/gradle-worker-classpath15906042059296108285txt -Xmx2g -Dfile.encoding=UTF-8 -Duser.country -Duser.language=en -Duser.variant -ea worker.org.gradle.process.internal.worker.GradleWorkerMain 'Gradle Test Executor 1'
+Successfully started process 'Gradle Test Executor 1'
+Picked up JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+
+Gradle Test Executor 1 finished executing tests.
+
+> Task :ai:test
+Generating HTML test report...
+Finished generating test html results (0.039 secs) into: /home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/ai/build/reports/tests/test
+Finished generating test XML results (0.006 secs) into: /home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/ai/build/test-results/test
+gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/__run-1790485044619.json
+Kotlin build report is written to file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/build/reports/kotlin-build/argentum-engine-build-2026-09-27-04-57-54-0.txt
+
+See the complete report at file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/build/reports/configuration-cache/eefi6xjo9wvzn54avouihdxhv/a7660wrsqgap0sc6nvnui7vvj/configuration-cache-report.html
+
+[Incubating] Problems report is available at: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/build/reports/problems/problems-report.html
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD SUCCESSFUL in 33s
+46 actionable tasks: 1 executed, 45 up-to-date
+Configuration cache entry stored.
