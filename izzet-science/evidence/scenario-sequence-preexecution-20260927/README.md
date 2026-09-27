@@ -1,0 +1,11 @@
+# Five existing scenario cases: preparation archive
+
+This record preserves the preparation of a new finite source qualification for the three existing Arcane Denial and two existing Mnemonic Wall cases. It records no test result and grants no gameplay or complete runtime admission. The original failures remain in the published 973 and six-case diagnostic evidence.
+
+The source candidate is `af8685ec97fd0f56195f25e7d3ca83c609fa018a`, tree `b46e165748abf32b2c8856052e5df3d8ffa910f9`. It changes only the two independently reviewed test files and adds three scope/review records. The golden baseline, all production source, decks, pilots and official vector remain unchanged. The preserved original case identities and final effect assertions remain required; the Wall intermediate target-before-May sequence change is explicitly described in the source proposal.
+
+The prepared isolated control is `58802ba41a246cfd6acfbb4cd6298daa61066ed4`, tree `99c8c9b409b6dbd08475f6f73fb4e7bca9a9d817`. It has exactly three tracked files and checks out the source separately. Its gate activation differs from the reviewed unready gate only by readiness and the embedded exact Manual control review. Do not merge this isolated control tree into runtime source. At this archive cut, neither prospective branch existed and root's final source/release/event review was pending. A later execution record must identify the actual event, head and attempt; this preparation record is not evidence of execution.
+
+The lossless ZIP retains the old control with its two review findings, the corrected control, both author and reviewer synthetic guard records, the exact review, prior trigger/absence observations, final release and remote preparation identities. Old observations are retained with their timestamps and superseded status. The tests inside guard records use synthetic local XML and mocked commands; no compiler, engine fixture or official game ran locally. The archive index lists every member's byte length and SHA-256. The exact Manual review is also separately readable.
+
+The separate baseline expectation disposition and unresolved default Yes/No strategy drift are outside this five-case gate. No baseline change or global LEGACY_V0 equivalence is implied. There is no retry authority for any consumed prior gate.
