@@ -1,7 +1,9 @@
 name: Pest Monster Search Actor Receiving
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - lab/pest-monster-search-ms01-ms05-one-shot-20260927
 
 permissions:
   contents: read
@@ -12,6 +14,7 @@ concurrency:
 
 jobs:
   receive:
+    if: github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == 1
     runs-on: ubuntu-latest
     timeout-minutes: 45
     env:
@@ -44,7 +47,7 @@ jobs:
           just test-class PestMonsterTronAuthorizedSearchReceivingTest --rerun --no-build-cache \
             --max-workers=1 -PkotlinCompileParallelism=1 \
             -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
-            --info --stacktrace 2>&1 | tee build/reports/pest-monster-search-actor-receiving/tests.log
+            --console=plain --info --stacktrace 2>&1 | tee build/reports/pest-monster-search-actor-receiving/tests.log
           result=${PIPESTATUS[0]}
           printf '%s\n' "$result" > build/reports/pest-monster-search-actor-receiving/test-exit-code.txt
           exit "$result"
