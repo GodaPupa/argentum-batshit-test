@@ -1,0 +1,22 @@
+{
+  "schema": "authorized-search-snapshot-structural-independent-review-v1",
+  "disposition": "ACCEPT_BOUNDED_96_GOLDEN_SERIALIZATION_CHANGES_FOR_REBASELINE_CANDIDATE_ONLY",
+  "source_commit": "197f95e858638de2fd215073b0b876378fc4c92d",
+  "source_tree": "e22c55bdf80896760bb8009c67ddcb91f254e27d",
+  "workflow_run": 36294512807,
+  "artifact_id": 10923068459,
+  "evidence_commit": "57b365e479a463c2a50a3677c1f3fa6d71448d1d",
+  "original_zip_sha256": "939f3abecc318cf05e278cf8fa5c47fc88abb3b931294fbea43002a69fde6510",
+  "reviewer": "/root",
+  "raw_findings": [
+    "Original 7,016,135-byte, 197-member ZIP CRC clean, contains exactly 96 generated actual JSON files and 96 corresponding committed baseline files, XML, source/exit/log/diff.",
+    "Source before/after remains 197f/tree e22c, updateSnapshots=false, tracked clean, fresh :mtg-sets:test executed. XML has 338 cases, 96 golden mismatches, zero error/skip; 242 pass including round trips.",
+    "Every one of the 96 per-file card name/order inventories is unchanged. Across those files all 1,061 JSON leaf differences are restricted to typed authorized-library-search serialization and paired current authorized search choice-order fields.",
+    "337 source objects change only type FromZone to AuthorizedLibrarySearch and remove zone Library (674 leaf changes); 25 additional propertyless sources compact directly from {type:FromZone,zone:Library} to scalar AuthorizedLibrarySearch; 362 librarySearchChoiceOrder fields are added as CurrentAuthorizedSearch. There are no other leaf differences."
+  ],
+  "original_workflow_disposition": "INCOMPLETE_DIAGNOSTIC because its classifier omitted the 25 propertyless compact scalar forms. Preserve that raw failure; this independent structural review accounts for those forms offline without a Gradle rerun.",
+  "limits": [
+    "Authorizes preparing changed goldens only for the exact 96 files and the 1,061 reviewed leaf changes, followed by a fresh targeted snapshot and required integration CI; neither original diagnostic workflow nor PR210 is passing yet.",
+    "No card/deck/pilot/gameplay evidence or Pest MC10/C2/A2 authority; do not silently accept any additional snapshot delta."
+  ]
+}
