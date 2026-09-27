@@ -1,0 +1,106 @@
+{
+  "schema": "pest-monster-c2-p03-p04-source-bound-case-split-proposal-v1",
+  "status": "CONSTRUCTION_ONLY_INCOMPLETE_FINITE_BANK_NO_FIXTURE_OR_C2_ADMISSION",
+  "source_map": "pest/c2-pair-pilot-seam-20260927@2637275b:docs/experiments/pest-control/tier-one-monster-c2-exact-main-source-map.json",
+  "governing_inventory": "04968e17:docs/experiments/pest-control/tier-one-monster-c2-pair-receiving-inventory-proposal.json",
+  "cases": [
+    {
+      "key": "P03-01",
+      "name": "Both-pilot land menu and ordered physical play",
+      "source_cards": "Forest/Swamp/Jungle Hollow; Urza three; Bojuka Bog, Conduit Pylons, Haunted Fengraf",
+      "prospective_assertion": "play/draw seats, tapped entry and land-drop limit; exact visible hand handle and engine accepted play"
+    },
+    {
+      "key": "P03-02",
+      "name": "Both-pilot cast and response timing",
+      "source_cards": "Weather the Storm, Follow the Lumarets, Ancient Stirrings; Crop Rotation, Cast Down, Bone Shards, Chainer's Edict, Breath Weapon",
+      "prospective_assertion": "sorcery/instant, stack and response windows; exact accepted physical spell/action or prospective raw nonequivalence"
+    },
+    {
+      "key": "P03-03",
+      "name": "Both-pilot alternate action costs",
+      "source_cards": "Bone Shards sacrifice/discard, Crop Rotation public land sacrifice, Chainer's Edict flashback",
+      "prospective_assertion": "all lawful cost branches and target bindings, physical source/fodder and mana payment"
+    },
+    {
+      "key": "P03-04",
+      "name": "Both-pilot artifact and land activations",
+      "source_cards": "Expedition Map, Candy Trail, Giant's Boulder, Bonder's Ornament, Barrels of Blasting Jelly, Bramble Wurm, Haunted Fengraf, Conduit Pylons",
+      "prospective_assertion": "mana/tap/sacrifice/target alternatives, resource sufficiency, accepted action"
+    },
+    {
+      "key": "P03-05",
+      "name": "Both-pilot typecycling and search activation",
+      "source_cards": "Generous Ent Forestcycling",
+      "prospective_assertion": "discard/cost/search as distinct steps; only current search obtains typed offer authority"
+    },
+    {
+      "key": "P03-06",
+      "name": "Monster cascade and station priority",
+      "source_cards": "Maelstrom Colossus cascade; Pinnacle Kill-Ship station",
+      "prospective_assertion": "cast/trigger timing; tapped station creature identity and sorcery restriction"
+    },
+    {
+      "key": "P03-07",
+      "name": "Both-pilot declaration and post-block priority",
+      "source_cards": "creature attacks/blocks across exact mains",
+      "prospective_assertion": "mandatory/empty/nonempty declarations, assignment legality and active-player priority after blocks"
+    },
+    {
+      "key": "P03-08",
+      "name": "Both-pilot pass and held response",
+      "source_cards": "Weather the Storm storm, lethal pressure, opponent open stack",
+      "prospective_assertion": "legal pass versus response choice; no silent NoOverride or default; exact policy equality/disposition"
+    },
+    {
+      "key": "P04-01",
+      "name": "Current typed searches versus public costs",
+      "source_cards": "Map, Crop, Generous Ent Forestcycling",
+      "prospective_assertion": "trusted current option order only for authorized search; Crop public sacrifice canonical; no copied provenance"
+    },
+    {
+      "key": "P04-02",
+      "name": "Look and selected physical cards",
+      "source_cards": "Ancient Stirrings top-five; Follow the Lumarets top-four",
+      "prospective_assertion": "offered look subset, optional eligible choices, life-gain conditional upper bound, bottom handling separate from search"
+    },
+    {
+      "key": "P04-03",
+      "name": "Scry and surveil continuations",
+      "source_cards": "Candy Trail, Giant's Boulder, Conduit Pylons",
+      "prospective_assertion": "top revealed permitted portion, keep/bottom or graveyard exact handles; hidden future order stays masked"
+    },
+    {
+      "key": "P04-04",
+      "name": "Optional and graveyard targets",
+      "source_cards": "Rooftop Percher up to two graveyard cards, Pinnacle Kill-Ship up to one creature, Bojuka Bog target player",
+      "prospective_assertion": "zero/one/two domains, eligible target order and opponent public graveyard only"
+    },
+    {
+      "key": "P04-05",
+      "name": "Cost and opposing sacrifice decisions",
+      "source_cards": "Bone Shards, Crop Rotation, Chainer's Edict",
+      "prospective_assertion": "actor identity and physical visible fodder; Edict opponent chooses own creature without pilot leakage"
+    },
+    {
+      "key": "P04-06",
+      "name": "Mana source/color payment",
+      "source_cards": "Conduit Pylons, Urza lands, Bonder's Ornament, Food/Spawn token abilities",
+      "prospective_assertion": "complete payment menu and accepted selected physical sources/colors under both profiles"
+    },
+    {
+      "key": "P04-07",
+      "name": "Triggers and ordering",
+      "source_cards": "Essence Warden, Blood Researcher, Pest Mascot, Carrier Thrall, Boulderbranch Golem, Rooftop Percher",
+      "prospective_assertion": "simultaneous ETB/death, source/history, APNAP and exact actor-resolved ordering where exposed"
+    },
+    {
+      "key": "P04-08",
+      "name": "Cascade and random resolution",
+      "source_cards": "Maelstrom Colossus; Haunted Fengraf",
+      "prospective_assertion": "engine RNG resolution is trusted and not chosen from hidden actor data; any surfaced question is classified separately"
+    }
+  ],
+  "still_required": "These are named card/mechanic source classes, not complete enumerated reachable state/action/decision fixtures. Bind exact state setup, all engine decision variants, test paths/source blobs and collector counts; review both seats/starts, public projection and raw-policy equality; map accepted shared cases. No executable fixture or official seed/action yet.",
+  "official_games": 0
+}
