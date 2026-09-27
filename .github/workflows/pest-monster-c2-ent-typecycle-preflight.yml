@@ -1,0 +1,50 @@
+name: Pest Monster Ent typecycling static preflight
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-c2-ent-typecycle-preflight.yml"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterEntTypecycleReceivingTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact Ent fixture source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-c2-ent-preflight
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterEntTypecycleReceivingTest.kt)" = "3af410404a63957c20b6e31ac2a29c467aaec395"
+          test -x gradlew
+          test -x scripts/test-class
+          {
+            git rev-parse HEAD
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterEntTypecycleReceivingTest.kt
+            git hash-object .github/workflows/pest-monster-c2-ent-typecycle-preflight.yml
+            git status --porcelain
+          } > build/reports/pest-c2-ent-preflight/source.txt
+      - name: Compile test source without executing cases
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/pest-c2-ent-preflight/compile.log
+          test -f gym/build/classes/kotlin/test/com/wingedsheep/gym/actorinput/PestMonsterEntTypecycleReceivingTest.class
+      - name: Retain original preflight result
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-ent-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-c2-ent-preflight/
+          if-no-files-found: error
+          retention-days: 90
