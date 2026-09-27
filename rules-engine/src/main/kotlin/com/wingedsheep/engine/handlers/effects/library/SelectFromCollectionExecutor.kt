@@ -521,6 +521,7 @@ class SelectFromCollectionExecutor(
                     sourceOrigin = candidate.sourceOrigin,
                     resolutionKey = candidate.resolutionKey,
                     offeredHandles = cards,
+                    offeredObjects = candidate.gatheredObjects,
                 )
             },
         ) }

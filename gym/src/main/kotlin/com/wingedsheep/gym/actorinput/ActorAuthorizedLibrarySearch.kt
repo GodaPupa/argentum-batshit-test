@@ -31,7 +31,10 @@ internal fun verifiedAuthorizedLibrarySearchOrder(
         proof.sourceOrigin.entityId != answer.sourceId ||
         proof.sourceOrigin != refs.origin || !refs.captured ||
         proof.resolutionKey.isBlank() || proof.resolutionKey != refs.resolutionKey ||
-        proof.offeredHandles != offered || answer.playerId != actor ||
+        proof.offeredHandles != offered ||
+        proof.offeredObjects.map { it.entityId } != offered ||
+        proof.offeredObjects != offered.map { state.objectRef(it) } ||
+        answer.playerId != actor ||
         answer.allCards != offered || offered.isEmpty() ||
         offered.size != offered.toSet().size ||
         decision.nonSelectableOptions.isNotEmpty() ||
@@ -49,6 +52,5 @@ internal fun verifiedAuthorizedLibrarySearchOrder(
     val handles = offered.toSet()
     // The search may offer a filtered subset. Its eligible cards must remain in this permitted
     // portion, in physical relative order; unrelated hidden library positions stay excluded.
-    return portion.filter { it in handles } == offered &&
-        offered.all { state.objectRef(it) != null }
+    return portion.filter { it in handles } == offered
 }

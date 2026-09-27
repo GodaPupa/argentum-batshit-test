@@ -48,6 +48,7 @@ class ActorAuthorizedLibrarySearchOrderTest : ScenarioTestBase() {
                 { it.copy(sourceOrigin = origin.copy(generation = origin.generation + 1)) },
                 { it.copy(resolutionKey = "other-resolution") },
                 { it.copy(offeredHandles = it.offeredHandles.reversed()) },
+                { it.copy(offeredObjects = it.offeredObjects.reversed()) },
                 { it.copy(portion = ResolvedLibrarySearchPortion.Top(1)) },
             )
             for (mutate in variants) {
@@ -60,6 +61,19 @@ class ActorAuthorizedLibrarySearchOrderTest : ScenarioTestBase() {
                     state.getLibrary(actor).reversed()))
             }
             (project(changedLibrary, actor).decision as SelectCardsDecision).options shouldBe
+                options.sortedBy { it.value }
+
+            // A paused card can leave and reenter under the same EntityId. The old offer does
+            // not authorize the new object, even if the library slot order is restored.
+            val paused = pause(base, actor, source, options)
+            val from = ZoneKey(actor, Zone.LIBRARY)
+            val hand = ZoneKey(actor, Zone.HAND)
+            val departed = paused.moveToZone(options.first(), from, hand)
+            val returned = departed.moveToZone(options.first(), hand, from).copy(
+                zones = returned.zones + (from to paused.getLibrary(actor)),
+            )
+            returned.objectRef(options.first()) shouldNotBe paused.objectRef(options.first())
+            (project(returned, actor).decision as SelectCardsDecision).options shouldBe
                 options.sortedBy { it.value }
         }
     }
@@ -98,6 +112,7 @@ class ActorAuthorizedLibrarySearchOrderTest : ScenarioTestBase() {
                     libraryOwner = actor, portion = ResolvedLibrarySearchPortion.Top(2),
                     sourceOrigin = origin, resolutionKey = "map-resolution",
                     offeredHandles = options,
+                    offeredObjects = options.map { requireNotNull(state.objectRef(it)) },
                 )
                 SelectCardsDecision(id, actor, "Search two", DecisionContext(sourceId = source),
                     options, 0, 1, cardInfo = info,

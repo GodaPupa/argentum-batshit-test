@@ -343,8 +343,6 @@ export interface SelectCardsDecision extends PendingDecisionBase {
   readonly ordered: boolean
   /** Card info for hidden cards (null/undefined if cards are visible in gameState) */
   readonly cardInfo?: Record<EntityId, SearchCardInfo> | null
-  /** One current authorized search choice only; never a general library-order view. */
-  readonly authorizedLibrarySearch?: AuthorizedLibrarySearchChoice | null
   /** If true, use targeting UI (click on board) instead of modal overlay */
   readonly useTargetingUI?: boolean
   /** Label describing where selected cards go (e.g., "Put on bottom") */
@@ -396,17 +394,6 @@ export interface SelectCardsDecision extends PendingDecisionBase {
 }
 
 /** Current chooser-only proof, bound to this routed decision ID and exact offered handles. */
-export interface AuthorizedLibrarySearchChoice {
-  readonly decisionId: string
-  readonly chooserId: EntityId
-  readonly actorId: EntityId
-  readonly libraryOwner: EntityId
-  readonly portion: { readonly type: 'Whole' } | { readonly type: 'Top'; readonly count: number }
-  readonly sourceOrigin: { readonly entityId: EntityId; readonly generation: number }
-  readonly resolutionKey: string
-  readonly offeredHandles: readonly EntityId[]
-}
-
 export interface ConditionalSelectionMinimum {
   readonly requiredSelections: number
   readonly minimumSelections: number

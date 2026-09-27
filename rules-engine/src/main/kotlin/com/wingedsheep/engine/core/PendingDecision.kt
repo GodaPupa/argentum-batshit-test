@@ -187,6 +187,8 @@ data class AuthorizedLibrarySearchChoice(
     val sourceOrigin: com.wingedsheep.engine.state.ObjectRef,
     val resolutionKey: String,
     val offeredHandles: List<EntityId>,
+    /** Card object generations at the current offer; a leave/reenter invalidates this question. */
+    val offeredObjects: List<com.wingedsheep.engine.state.ObjectRef>,
 )
 
 /**

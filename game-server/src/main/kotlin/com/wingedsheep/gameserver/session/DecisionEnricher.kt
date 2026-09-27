@@ -69,13 +69,9 @@ class DecisionEnricher(private val cardRegistry: CardRegistry) {
                 cardInfo = decision.cardInfo?.mapValues { (entityId, cardInfo) ->
                     cardInfo.copy(imageUri = imageUriFor(state, entityId))
                 },
-                // Never forward a stale or non-actor order proof to a client.
-                authorizedLibrarySearch = decision.authorizedLibrarySearch?.takeIf { proof ->
-                    state.pendingDecision?.id == decision.id &&
-                        state.actorFor(decision.playerId) == viewerId &&
-                        proof.decisionId == decision.id && proof.chooserId == decision.playerId &&
-                        proof.actorId == viewerId && proof.offeredHandles == decision.options
-                },
+                // Search origin and object generations are trusted engine/actor metadata.
+                // The chooser already receives the exact eligible options in this decision.
+                authorizedLibrarySearch = null,
             )
             is OrderObjectsDecision -> decision.copy(
                 cardInfo = decision.cardInfo?.mapValues { (entityId, cardInfo) ->

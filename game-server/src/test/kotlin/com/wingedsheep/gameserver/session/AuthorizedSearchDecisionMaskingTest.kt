@@ -12,6 +12,7 @@ import com.wingedsheep.engine.state.ObjectRef
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import kotlinx.serialization.json.Json
 
 class AuthorizedSearchDecisionMaskingTest : FunSpec({
     val chooser = EntityId("chooser")
@@ -20,7 +21,7 @@ class AuthorizedSearchDecisionMaskingTest : FunSpec({
     val first = EntityId("first")
     val second = EntityId("second")
 
-    test("only the current actor receives a proof bound to the routed decision ID") {
+    test("routed browser decision keeps the choice order but strips internal search history") {
         val initial = GameState(turnOrder = listOf(chooser, opponent))
         val paused = initial.suspendForDecision(
             question = { id ->
@@ -41,6 +42,7 @@ class AuthorizedSearchDecisionMaskingTest : FunSpec({
                         sourceOrigin = ObjectRef(source, 3),
                         resolutionKey = "source:resolution",
                         offeredHandles = listOf(second, first),
+                        offeredObjects = listOf(ObjectRef(second, 2), ObjectRef(first, 5)),
                     ),
                 )
             },
@@ -61,8 +63,15 @@ class AuthorizedSearchDecisionMaskingTest : FunSpec({
         val routed = actorView.withClientRoutingId(wireId) as SelectCardsDecision
 
         routed.id shouldBe wireId
-        routed.authorizedLibrarySearch?.decisionId shouldBe wireId
-        routed.authorizedLibrarySearch?.offeredHandles shouldBe listOf(second, first)
+        routed.options shouldBe listOf(second, first)
+        routed.authorizedLibrarySearch shouldBe null
+        val wireJson = Json.encodeToString(SelectCardsDecision.serializer(), routed)
+        wireJson.contains("resolutionKey") shouldBe false
+        wireJson.contains("generation") shouldBe false
+        wireJson.contains("offeredObjects") shouldBe false
+        actorView.authorizedLibrarySearch shouldBe null
+        // Direct routing also strips proof if a caller forgot the presentation step.
+        (decision.withClientRoutingId(wireId) as SelectCardsDecision).authorizedLibrarySearch shouldBe null
         (presenter.enrich(decision, state, opponent) as SelectCardsDecision)
             .authorizedLibrarySearch shouldBe null
         (presenter.enrich(decision.copy(id = "stale"), state, chooser) as SelectCardsDecision)

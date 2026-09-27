@@ -107,6 +107,7 @@ class AuthorizedLibrarySearchChoiceTest : FunSpec({
         val opposite = run(state(listOf(b, a, c)))
         first.options shouldBe listOf(a, b, c)
         first.authorizedLibrarySearch?.offeredHandles shouldBe first.options
+        first.authorizedLibrarySearch?.offeredObjects?.map { it.entityId } shouldBe first.options
         first.authorizedLibrarySearch?.decisionId shouldBe first.id
         opposite.options shouldBe listOf(b, a, c)
         opposite.authorizedLibrarySearch?.offeredHandles shouldBe opposite.options
