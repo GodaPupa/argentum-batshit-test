@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.CombatResolutionDecision
 import com.wingedsheep.engine.core.CombatResolutionResponse
@@ -142,6 +145,10 @@ class RenownKeywordTest : FunSpec({
     fun resolveThroughCombat(driver: GameTestDriver) {
         var guard = 0
         while (driver.currentStep != Step.POSTCOMBAT_MAIN && guard++ < 300) {
+            if (driver.state.hasPendingTriggerOrder()) {
+                driver.chooseTriggerOrderInListedOrder()
+                continue
+            }
             when (val decision = driver.state.pendingDecision) {
                 is OrderObjectsDecision ->
                     driver.submitDecision(decision.playerId, OrderedResponse(decision.id, decision.objects))

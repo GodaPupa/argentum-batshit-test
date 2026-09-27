@@ -1,0 +1,40 @@
+{
+  "schema": "pest-post-block-priority-gameplay-blocker-v1",
+  "status": "GAMEPLAY_BLOCKED_PENDING_CANONICAL_REPAIR_AND_RECEIVING_QUALIFICATION",
+  "receiving_head": "1669cc465bf1530d744f9b5612cf733240154ea3",
+  "source_files_sha256": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/combat/DeclareBlockersHandler.kt": "6a2ae1405b552e27dd8a1012928e3e240fa1bcde6abf2fe2877eec930e62c974",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/combat/CombatModule.kt": "560fca960d5a4a73af6b892c3e12006dda7343d664b408687ae8c952306ea1bf",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ActionProcessor.kt": "971246aa1958d74bc8ed3a37ba2016fbd869f4293052d4b515991fafca948822",
+    "gym/src/main/kotlin/com/wingedsheep/gym/GameEnvironment.kt": "8101b0bc53778f9790b7c7f034ee2e0df20294b6d96e09c2b6721f8afc9be4de",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt": "af78e3f08b8729f5271ee8ebe2190a89614951dc72183264f9e2987808dabf26"
+  },
+  "confirmed_routing": [
+    "Monster submitExactlyOne defaults to GameEnvironment.stepExactlyOne.",
+    "GameEnvironment.stepExactlyOne calls ActionProcessor.process.",
+    "ActionProcessor registers CombatModule, which registers DeclareBlockersHandler.",
+    "After the final defender declares, handToNextUndeclaredDefender returns its input state unchanged; priority remains with that defender."
+  ],
+  "reachability": "Both frozen mains include creatures that can attack and block. This interaction cannot be excluded by a pilot choosing to avoid combat. Postboard exchange rules retain a combat-capable scope as well.",
+  "required_next_actions": [
+    "Use the single coordinator-owned canonical shared post-block priority repair; no separate Pest implementation.",
+    "Qualify the exact repaired receiving source through real actions, replay, relevant interactions and mandatory compatibility gates.",
+    "Keep Monster replacement protocol review and C2/A2 source/admission gates explicit before any new official seed or gameplay authority."
+  ],
+  "existing_gates_do_not_cover_this": [
+    "The 27-stage after-resolution/post-cast qualification is a distinct boundary.",
+    "The seven-card postboard363-case closure is support evidence, not this combat-priority proof.",
+    "The30-case exact-deck targeting gate is distinct and grants no C2/A2 acceptance."
+  ],
+  "official": {
+    "new_seeds": 0,
+    "new_games": 0,
+    "new_actions": 0,
+    "new_outcomes": 0,
+    "historical_games_quarantined": 81
+  },
+  "deck_changes": false,
+  "pilot_changes": false,
+  "negative_deck_conclusion": false,
+  "official_execution_authorized": false
+}

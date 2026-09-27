@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
@@ -84,6 +86,8 @@ class LadyOctopusInspiredInventorScenarioTest : ScenarioTestBase() {
                 // neither, so exactly two ingenuity counters land.
                 game.castSpell(1, "Draw Three Test").error shouldBe null
                 game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
+                game.resolveStack()
 
                 withClue("first + second draw each add one counter, third adds none") {
                     ingenuityCounters(game, "Lady Octopus, Inspired Inventor") shouldBe 2
@@ -108,6 +112,8 @@ class LadyOctopusInspiredInventorScenarioTest : ScenarioTestBase() {
 
                 // Build up two ingenuity counters via the draw triggers.
                 game.castSpell(1, "Draw Three Test").error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
                 ingenuityCounters(game, "Lady Octopus, Inspired Inventor") shouldBe 2
 

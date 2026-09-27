@@ -1054,6 +1054,22 @@ defaults, preserving ordinary snapshot bytes. Cast/activation decisions outside 
 the actor's existing Rule 117.3c priority behavior. The existing `PriorityChangedEvent` publishes the
 completed resolution's next priority recipient; no new client interaction is introduced.
 
+**Block declarations precede priority.** `CombatDefenders.nextUndeclaredDefender` identifies the
+remaining turn-based declaration. During that round, `hasPriority` is false and `priorityTeam` is
+empty; the raw recipient field only routes the next declaration. `BlockDeclarationProcessor`
+retains cost and block triggers until all defenders finish, then enters the existing state-based
+action and trigger boundary before returning priority to the active player. The server queries
+the same declaration permission, including shared-turn teammates, rather than interpreting the
+routing recipient as priority. Nested mana choices retain the enclosing payment boundary.
+
+**Simultaneous triggered abilities retain their placement order.** A serializable
+`TriggerOrderingContinuation` carries the actual pending abilities while the existing
+`ChooseOptionDecision` asks their controller which to place next. The selected order survives
+target choices and serialization. Optional effects still choose whether to act at resolution.
+If a chooser departs, surviving controllers' pending batches remain in the priority boundary.
+Source snapshots retain the exact object reference at departure, so queued damage and target
+choices cannot borrow the characteristics of a returned object with the same entity ID.
+
 **Step-specific auto-actions.** The `TurnManager.advanceStep()` method handles each step's built-in
 behavior:
 

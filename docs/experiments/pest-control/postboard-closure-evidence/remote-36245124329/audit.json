@@ -1,0 +1,80 @@
+{
+  "schema": "pest-postboard-source-specific-artifact-audit-v1",
+  "status": "SUPERSEDED_STALE_SHM_GOLDEN_FAILURE_PRESERVED",
+  "candidate_head": "a5425631b613920b3a6cc9aa4f88e9f44eb488ca",
+  "run_id": 36245124329,
+  "artifact_id": 10907167855,
+  "artifact_zip_sha256": "81d9a6a25a59b06ad7fca36e46fe498ce170c78a26c5ff9b11cc150e4244df9b",
+  "xml": [
+    {
+      "file": "test-results/accepted-postboard-compatibility/TEST-com.wingedsheep.gym.PestControlTierOnePostboardSupportBatchATest.xml",
+      "cases": 1,
+      "sha256": "97f1166d9bb401c1fd9166291fa66c72cf30bb7eaadc9e24cff79f1e2eba3229"
+    },
+    {
+      "file": "test-results/card-lint/TEST-com.wingedsheep.sdk.serialization.CardLinterTest.xml",
+      "cases": 43,
+      "sha256": "6a7655d76a6e420f9fa1bc572021f7059b051ace120982e4a7456b12166a0836"
+    },
+    {
+      "file": "test-results/card-serialization/TEST-com.wingedsheep.sdk.serialization.CardSerializationRoundTripTest.xml",
+      "cases": 21,
+      "sha256": "0ce7160c182bf70907c4ad2fe1207fefb0353a6c187eb49e9742517486a686f2"
+    },
+    {
+      "file": "test-results/cascade-regression/TEST-com.wingedsheep.engine.scenarios.CascadeKeywordTest.xml",
+      "cases": 3,
+      "sha256": "d45de8b080a79deb4b5e016ba6c664d7bd6258052d7e279dc9327457112ddcbf"
+    },
+    {
+      "file": "test-results/component-registration/TEST-com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest.xml",
+      "cases": 8,
+      "sha256": "3ad2c91ce96ce4ee0c323e3a592ef27be3e79022a7ffaa140061a102b0ca2ac7"
+    },
+    {
+      "file": "test-results/frozen-admission/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboAdmissionTest.xml",
+      "cases": 1,
+      "sha256": "b021f3a18212619b46f9d4355d087b912bf129bf0555e94c5f2f5b41e5fbad8c"
+    },
+    {
+      "file": "test-results/main-closure/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchCTest.xml",
+      "cases": 1,
+      "sha256": "bb91c1366c3e3dd5dad5a742a580b24d7a4f6a4ce23aa94b108ad08c47e3014e"
+    },
+    {
+      "file": "test-results/nyxborn-hydra/TEST-com.wingedsheep.engine.scenarios.NyxbornHydraScenarioTest.xml",
+      "cases": 15,
+      "sha256": "ebb543cd435e3c5fcc7f5726c6161eb48efae66c619f950ed2a30806263f7226"
+    },
+    {
+      "file": "test-results/prior-support/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchBTest.xml",
+      "cases": 1,
+      "sha256": "77fdfd8011ceea8e25496e7a82e1bce2abbe03908ce40d56fb09e9b508b6fd80"
+    },
+    {
+      "file": "test-results/prototype-regression/TEST-com.wingedsheep.engine.scenarios.PrototypeKeywordTest.xml",
+      "cases": 3,
+      "sha256": "852a49bc08ee62c28d9af262b35a2358a1939dc42198f4b6b2b695dfc3c6eb49"
+    },
+    {
+      "file": "test-results/strict-snapshots/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+      "cases": 338,
+      "sha256": "160ce0fbd9a994b103ac97f41dae651f4b86b5f453873ff90ff87a714f2d7dea"
+    }
+  ],
+  "failed_or_skipped_cases": [
+    {
+      "file": "test-results/strict-snapshots/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+      "case": "SHM (Shadowmoor): card trees match golden",
+      "kind": "failure"
+    }
+  ],
+  "official": {
+    "new_seeds": 0,
+    "new_games": 0,
+    "new_actions": 0,
+    "new_outcomes": 0
+  },
+  "official_execution_authorized": false,
+  "gameplay_blockers_include": "Canonical post-block priority repair and Pest receiving-source qualification, protocol/boarding/pilot/replay/admission/activation gates remain separate."
+}

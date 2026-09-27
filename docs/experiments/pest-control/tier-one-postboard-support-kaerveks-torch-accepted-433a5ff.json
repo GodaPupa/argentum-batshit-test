@@ -1,0 +1,58 @@
+{
+  "schema": "pest-postboard-kaerveks-torch-acceptance-v1",
+  "status": "ACCEPTED_SEED_FREE_CARD_AND_COVERAGE_CAPABILITY_ONLY",
+  "source_branch": "pest-control/tier1-postboard-support-kaerveks-torch",
+  "predecessor_acceptance_commit": "49e1c2fc24024eb4f2b13ea306dea4993223c356",
+  "shared_stack_tax_plumbing_commits": [
+    "8950eeb66410f2ff6b60d61ab87d7d2d2a00efcf",
+    "8dc2613eeb2ec16865288aae1ab3a39456342a63",
+    "a4fd1d9b03a5b45417da43ac5a05782753f506fb"
+  ],
+  "implementation_commit": "ff31f24b14bcad579064a619227d11acf32f9f44",
+  "scenario_commit": "6705abfcd894baba9ed6a4cef2ba5e6980b09d7a",
+  "workflow_commit": "9be0bd7b7eea2cc56330e89e23f0c1941b7d1844",
+  "generated_snapshot_commit": "433a5ffd4942996f3742f7b09ab493e896bdb786",
+  "workflow_run_id": 36225609445,
+  "workflow_job_id": 108358925292,
+  "audit": {
+    "workflow_conclusion": "success",
+    "exact_scenarios": "PASS",
+    "scenario_cases": 4,
+    "postboard_inventory_reduction": "PASS",
+    "card_lint": "PASS",
+    "snapshot_regeneration": "PASS",
+    "unrelated_snapshot_drift_guard": "PASS",
+    "only_generated_snapshot": "mtg-sets/src/test/resources/snapshots/cards/MIR.json"
+  },
+  "card": "Kaervek's Torch",
+  "printing": "MIR #185",
+  "qualified_behavior": [
+    "mana cost is {X}{R} and damage equals the announced X value",
+    "while on the stack, spells that target Kaervek's Torch cost {2} more",
+    "the stack-targeting tax applies to any caster, including Kaervek's Torch's controller",
+    "the stack-zone cost modifier is scoped to the exact source spell"
+  ],
+  "queue_after_acceptance_on_this_branch": {
+    "remaining_unique_identities": 2,
+    "remaining_sideboard_slots": 3,
+    "identities": {
+      "Jack-o'-Lantern": 1,
+      "Faerie Macabre": 2
+    }
+  },
+  "cross_branch_note": "Jack-o'-Lantern is independently accepted on pest-control/tier1-postboard-support-jack-o-lantern; final support closure must reconcile both accepted branches plus Faerie Macabre before boarding-plan freeze.",
+  "official": {
+    "seeds_generated": 0,
+    "games_initialized": 0,
+    "actions_submitted": 0,
+    "outcomes_exposed": 0,
+    "boarding_plans_frozen": false,
+    "postboard_gameplay_authorized": false
+  },
+  "historical_evidence": {
+    "quarantined_pest_games": 81,
+    "usable_as_clean_tier1_evidence": false
+  },
+  "deck_list_changes": false,
+  "disposition": "Accepted only for exact seed-free postboard support. Reconcile the independent Jack-o'-Lantern acceptance and complete Faerie Macabre before any postboard execution authority."
+}

@@ -62,7 +62,6 @@ class SorrowsPathScenarioTest : ScenarioTestBase() {
                         "Wall of Wood" to listOf("Craw Wurm"),
                     )
                 ).error shouldBe null
-                game.passPriority()
 
                 game.execute(
                     ActivateAbility(
@@ -119,6 +118,9 @@ class SorrowsPathScenarioTest : ScenarioTestBase() {
                     )
                 ).error shouldBe null
 
+                game.state.priorityPlayerId shouldBe game.player2Id
+                game.passPriority().error shouldBe null
+                game.state.priorityPlayerId shouldBe game.player1Id
                 val result = game.execute(
                     ActivateAbility(
                         playerId = game.player1Id,
@@ -185,9 +187,7 @@ class SorrowsPathScenarioTest : ScenarioTestBase() {
                         ?.blockedAttackerIds?.toList() shouldContainExactly listOf(wurm)
                 }
 
-                // After blockers are declared the defender holds priority, so pass it to the
-                // active player — the one holding Sorrow's Path.
-                game.passPriority()
+                // The active player receives first priority after the completed blocker declaration.
                 game.state.priorityPlayerId shouldBe game.player1Id
 
                 val lifeBefore = game.getLifeTotal(1)
@@ -254,9 +254,9 @@ class SorrowsPathScenarioTest : ScenarioTestBase() {
                         "Grizzly Bears" to listOf("Craw Wurm"),
                     )
                 ).error shouldBe null
-                game.passPriority()
 
                 val lifeBefore = game.getLifeTotal(1)
+                game.state.priorityPlayerId shouldBe game.player1Id
                 val result = game.execute(
                     ActivateAbility(
                         playerId = game.player1Id,

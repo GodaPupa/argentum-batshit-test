@@ -1,0 +1,36 @@
+{
+  "schema": "independent-entry-choice-event-four-bank-source-review-v1",
+  "reviewer": "/root/pest",
+  "reviewer_is_source_author": false,
+  "source": "c8076b33fa222c6cd62317af61c62f2dcc1855f7",
+  "tree": "4efe866c5c36f35e392c058f9c231ae19bca624b",
+  "disposition": "ACCEPT_FIXED_FOUR_MECHANICAL_SOURCE_BANK_FOR_PROSPECTIVE_RECEIVING_QUALIFICATION_ONLY",
+  "reviewed_scope": {
+    "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt",
+    "test_sha256": "354f437f24b479e19f0c952d5298889c6ac1cee479ccc29070a06d1e9d98b863",
+    "budget_path": "lab-coordinator/shared-capabilities/entry-choice-event-provenance-budget.json",
+    "budget_sha256": "ba67b09a6e3b188a0a5fefdcfed0275b9c7fce44c36503deba345bb5c44accff",
+    "original16_budget_and_case_names_unchanged": true,
+    "published_parent": "91e3e6f23cbbc28ea5d691b4fd4256beb3f0992d",
+    "published_parent_tree_verified_by_authenticated_github_api": "b557bef60d703be34429504acd8c0c6bf26701b5",
+    "equal_local_parent_tree": "d62519c74d177d1891fc7f0e20c109bca4799898"
+  },
+  "actual_new_cases_executed_by_reviewer": 0,
+  "verified": [
+    "All four exact case names and production source pins match Git. Original16 budget and token case names are retained.",
+    "EP01 drives actual token-copy as-enters choice, requires exactly one outward entry and one self ETB trigger, then verifies one life effect through real priority passes.",
+    "EP02 captures an entry observer before the automatic tail sacrifices it and distinguishes the separate unmarked leave event. Ordered events, both trigger sources and three-life result are asserted. The synthetic definitions yield one trigger per relevant entry/leave batch, so no simultaneous trigger-order choice is hidden.",
+    "EP03 restores both actual pending choices, repeats explicit Blue/Red answers, compares exact serialized state and event streams, and verifies distinct tokens and two self ETB effects.",
+    "EP04 checks default-false field omission, true-marker roundtrip, two identical unprocessed occurrences in both mixed positions, and rejection of a marked non-entry.",
+    "The bounded settle helper only passes actual current priority and requires no pending decision before each pass. It never answers targeting, optional or trigger-order questions.",
+    "Reviewed CardScript, token-copy, registry, lifecycle and event APIs support the prescribed fixture constructions. No game/pilot choice or expectation relaxation occurs."
+  ],
+  "limits": [
+    "Root independently reviews the three production changes; this receipt accepts only the fixed4 source bank.",
+    "No Kotlin execution, gate, raw artifact, combined runtime or full token acceptance is claimed.",
+    "Original16 plus separate4 must run on one immutable receiving source and receive independent artifact review.",
+    "Generic beforeEntry snapshots, receiving regressions and all project gameplay gates remain separate."
+  ],
+  "github_approval_claimed": false,
+  "gameplay_authorized": false
+}

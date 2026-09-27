@@ -1,0 +1,128 @@
+{
+  "schema": "shared-994383-successor-independent-static-source-review-v1",
+  "reviewer": "/root/pest successor agent",
+  "reviewer_is_source_author": false,
+  "reviewed_at_utc": "2026-09-26 21:22 UTC",
+  "disposition": "ACCEPT_LATEST_SOURCE_DELTA_AND_COMBINED_BINDING_SCOPE_WITH_RETAINED_LIMITS",
+  "head": "994383d4a9495bcb34d5aae0e69181bcf4c04d45",
+  "tree": "4b8f4d155a37e6b66ab623d344b19cedf435d845",
+  "parent": "548dc458cbd07ea0d9e07de421cb1b1bc63318d3",
+  "receiving_base": "b35d4778dada69476da0f67549be7e70424c18bd",
+  "pr": 191,
+  "merge_preview": "add15d9a46c890f861a12126f6e2fc85611ff1c5",
+  "merge_preview_tree_equal": true,
+  "guidance_read": [
+    "AGENTS.md",
+    "CONTRIBUTING.md",
+    ".agents/skills/add-feature/SKILL.md",
+    "docs/architecture-principles.md",
+    "docs/sdk-design-principles.md"
+  ],
+  "source_scope": "Latest 548dc458 to994383 production correction, exact original-bank fixture correction, current receiving-binding changes and retained prior source reviews. This does not pretend to independently re-review every earlier production change in the256-file PR.",
+  "donor_binding": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+      "donor_git_blob": "ea6d49651cac814fd59fadca4169e9d8a5100f0f",
+      "calculated_git_blob": "ea6d49651cac814fd59fadca4169e9d8a5100f0f",
+      "same_current_bytes": true,
+      "sha256": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+      "donor_git_blob": "c0e8a696db522403095d0162fea486cb175b3f99",
+      "calculated_git_blob": "c0e8a696db522403095d0162fea486cb175b3f99",
+      "same_current_bytes": true,
+      "sha256": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+      "donor_git_blob": "d88f826772539e858a9d215f98a5995b62fb5aac",
+      "calculated_git_blob": "d88f826772539e858a9d215f98a5995b62fb5aac",
+      "same_current_bytes": true,
+      "sha256": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt",
+      "donor_git_blob": "0250a12ad245eded770bec604dbbfda63f7210e9",
+      "calculated_git_blob": "0250a12ad245eded770bec604dbbfda63f7210e9",
+      "same_current_bytes": true,
+      "sha256": "73c761176e87fdb40add594b7591c508784cadcbc2c47bc247d5b18658f6e44d"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt",
+      "donor_git_blob": "81d2ec00484429e88bb4b2b77fd36ae5c154290e",
+      "calculated_git_blob": "81d2ec00484429e88bb4b2b77fd36ae5c154290e",
+      "same_current_bytes": true,
+      "sha256": "becb1edcc7a08998ca0dab03ebc83b2fb4f484339859e0c771bc7a08851578ee"
+    }
+  ],
+  "findings": [
+    "The only new production deltas are GameEvent, TriggerDetector and ModalAndCloneContinuationResumer. All three plus both test files exactly equal corrected donor1bc66b27 by immutable Git blob and SHA256.",
+    "Default-false entry provenance is omitted from serialized historical events; marked non-battlefield entries are rejected. No new SDK vocabulary or card data is added.",
+    "Final choice detects against entry-time state before automatic tails and publishes the same marked entry on all three final return paths. Existing priority/trigger processing is retained.",
+    "Detector suppresses only explicitly marked entry occurrences as causes, retaining the full ordered context for indexed draw counts, attachment departure, future source/trigger object references and granter stamping. Batch, delayed, duplicate and suppression detectors use the filtered cause list.",
+    "Original14 fixture repair changes only base-typed with(component) to runtime withComponent(component); original16 case identities and criteria remain unchanged. EP01-EP04 remain separate prospectively reviewed deterministic cases, with EP04 partial-history scope explicit.",
+    "Independent local bytes and Git blob checks pass for all250 current source bindings; all246 prior paths retained, exactly9 manifest binding changes reconcile with explicit receiving records. Original stages, preserved authorities, prior binding records and scope fields remain unchanged.",
+    "Token gate uses exact original16 plus separate4; captures each bank XML/exit immediately before the next same-module invocation; preserves all earlier failures and uses unchanged collector.",
+    "Existing nonauthor source receipts match their durable hashes; production source/gate review979d233b and four-bank reviews9a223ad3/95c76c4a are source-only and remain described that way."
+  ],
+  "prior_review_receipts": [
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/entry-provenance-source-review/pest-four-bank-followup-review.json",
+      "sha256": "95c76c4adafe4a1acc1cc5f8ab3040eb3a0f6595f1bf4c82ba88aa3f1cdb62ce"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/entry-provenance-source-review/pest-four-bank-source-review.json",
+      "sha256": "9a223ad343a924a8f599718d264c3c267a5c1f951aaa45ee8b12a49a3a90ff10"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/entry-provenance-source-review/root-source-gate-review.json",
+      "sha256": "979d233b01354a2e1b3c24920516d614f65fc91f8a2211f88da83f4f6947e9d2"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-source-review/pest-shared-composition-binding-check.json",
+      "sha256": "a7e5058be15e4c1a0cd4ba8bba41321f8fc7d63f532549ca84ec379d2215a910"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-source-review/pest-source-gate-review.json",
+      "sha256": "5428c9fa7af1bb05f3cfb1bb074090c7bbe8b8aa7ba9fa53a1d38408e07494e1"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/combined-source-review/pest-syntax-followup-review.json",
+      "sha256": "98fe188140087e2d83a938d00eb8e4051c80bfb12f5c3e669ed37804023455e0"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/token-defender-source-review/manual-continuation-source-review.json",
+      "sha256": "84d28c0e43612ed0478c11f54a63c6415117b5e2734c927cdea215314dad0cf1"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/token-defender-source-review/root-source-gate-review.json",
+      "sha256": "ecbe89dca0fce686febc1108228e40e2cd158a18de924dfa8a4df9cb5ab092a8"
+    }
+  ],
+  "result_evidence": {
+    "combined407": "Published685fc47b, separate Sphinx nonauthor raw review; not re-audited by this static review.",
+    "full_ci": 36267982979,
+    "fresh_four_supplement": 36271229739,
+    "fresh_four_peer_review_sha256": "1d0b4b88b964e39d898c8ac1101acd6b2afb2b0d71070b7c39dc143c2bf60e0b",
+    "fresh_four_evidence_commit": "9bed397f31f6125d79982e07a78f960197c06269"
+  },
+  "remaining_merge_gate_findings": [
+    "The inherited shared-postblock push gate still binds nine production files to original donor bytes; exact994383 will fail that binder before its127 cases. Root has requested a prospective receiving-only correction before integration. Original donor manifests must remain unchanged.",
+    "PR191 remains draft and has no GitHub review submissions. Source/gate agent reviews are not GitHub approvals.",
+    "AGENTS/CONTRIBUTING do not state a mandatory formal GitHub approval rule for this authorized integration; CONTRIBUTING describes personal review practice. User standing authorization covers reviewed integration only when protections and governing acceptance permit.",
+    "Rulesets collection was empty, but branch-protection read was403 Resource not accessible by integration. Protection requirements remain unverified; ordinary merge API must enforce them and no bypass is authorized."
+  ],
+  "retained_limits": [
+    "InitialCounters with attached-copy token replacement remains explicitly unqualified.",
+    "Original batch pre-entry context through suspended choices and receiving beforeEntry API compatibility require project-specific qualification where reachable.",
+    "Engine combat component does not admit frontend/browser or comprehensive banding.",
+    "No complete six-project runtime, pilot, replay, durable allocation or source-bound gameplay permission is granted."
+  ],
+  "new_tests_executed_by_static_reviewer": 0,
+  "github_approval": false,
+  "merge_performed": false,
+  "gameplay_authorized": false,
+  "official_games": 0,
+  "outcomes_exposed": 0
+}

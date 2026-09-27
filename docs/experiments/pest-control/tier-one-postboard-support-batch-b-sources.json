@@ -1,0 +1,337 @@
+{
+  "schema": "pest-postboard-support-batch-b-sources-v1",
+  "verified_date": "2026-09-25",
+  "base_commit": "8d401bda54a39ad75814b89b04c2bd42b4324843",
+  "scope": "DETERMINISTIC_CARD_AND_REGISTRY_QUALIFICATION_ONLY",
+  "cards": [
+    {
+      "name": "Pyroblast",
+      "canonical_set": "ICE",
+      "collector_number": "213",
+      "earliest_real_printing": "1995-06-03",
+      "canonical_api_url": "https://api.scryfall.com/cards/named?exact=Pyroblast&set=ice",
+      "oracle_id": "ecc435e2-deb1-420a-a79f-01dd08747314",
+      "scryfall_id": "c342cac5-08ae-4428-9c2c-f6c5904e54d2",
+      "pauper_legality": "legal",
+      "mana_cost": "{R}",
+      "type_line": "Instant",
+      "oracle_text": "Choose one \u2014\n\u2022 Counter target spell if it's blue.\n\u2022 Destroy target permanent if it's blue.",
+      "image_uri": "https://cards.scryfall.io/normal/front/c/3/c342cac5-08ae-4428-9c2c-f6c5904e54d2.jpg?1783947483",
+      "image_http_status": 200,
+      "rulings": [
+        {
+          "date": "2016-06-08",
+          "text": "Pyroblast can target any spell or permanent, not just a blue one. It checks the color of the target only on resolution."
+        },
+        {
+          "date": "2004-10-04",
+          "text": "The decision to counter a spell or destroy a permanent is a decision made on announcement before the target is selected. If the spell is redirected, this mode can't be changed, so only targets of the selected type are valid."
+        }
+      ],
+      "definition": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ice/cards/Pyroblast.kt",
+      "scenario": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PyroblastScenarioTest.kt",
+      "source_payloads": {
+        "canonical": {
+          "path": "docs/experiments/pest-control/card-sources/postboard-b/pyroblast-canonical.json",
+          "sha256": "15344353fb0a8047372c969713e3e3dc79fbd3bc39e74b3c6bb20dc8caf40e82"
+        },
+        "printings": {
+          "path": "docs/experiments/pest-control/card-sources/postboard-b/pyroblast-printings.json",
+          "sha256": "29f52f20ae2b08123cb41533d2cf328e5b05d6fb0faa677b72967562ad65611f"
+        },
+        "rulings": {
+          "path": "docs/experiments/pest-control/card-sources/postboard-b/pyroblast-rulings.json",
+          "sha256": "8bc7ea4144e5a3f9fbbfb9b4f2bcb2b9896efa3f7b9d5a24e5432ac983ae23c1"
+        }
+      },
+      "common_printings": [
+        {
+          "set": "ice",
+          "number": "213",
+          "released_at": "1995-06-03",
+          "id": "c342cac5-08ae-4428-9c2c-f6c5904e54d2"
+        },
+        {
+          "set": "ptc",
+          "number": "mj213sb",
+          "released_at": "1996-05-01",
+          "id": "93d1d5c9-fcb5-4d43-bc1e-5c7ba5e22046"
+        },
+        {
+          "set": "wc98",
+          "number": "br213sb",
+          "released_at": "1998-08-12",
+          "id": "f0ef36fc-1f9d-47e3-b71c-26f2cbb978ac"
+        },
+        {
+          "set": "wc98",
+          "number": "bs213sb",
+          "released_at": "1998-08-12",
+          "id": "4ed2611b-8e9f-42e2-8271-25e602a2bfa9"
+        },
+        {
+          "set": "me1",
+          "number": "107",
+          "released_at": "2007-09-10",
+          "id": "576c6f1d-ed02-46b0-a799-dc503ad6e319"
+        },
+        {
+          "set": "prm",
+          "number": "69981",
+          "released_at": "2018-09-28",
+          "id": "33afbf78-7a50-48e0-bec8-656f571759e2"
+        },
+        {
+          "set": "mb2",
+          "number": "198",
+          "released_at": "2024-08-02",
+          "id": "2dea1e46-9786-429f-ad57-d608c006f508"
+        }
+      ]
+    },
+    {
+      "name": "Hydroblast",
+      "canonical_set": "ICE",
+      "collector_number": "72",
+      "earliest_real_printing": "1995-06-03",
+      "canonical_api_url": "https://api.scryfall.com/cards/named?exact=Hydroblast&set=ice",
+      "oracle_id": "b94c0336-2ca8-4bb1-bb1f-e9babd1826ad",
+      "scryfall_id": "f62716f0-fde2-49ef-b8a4-c1b03f451194",
+      "pauper_legality": "legal",
+      "mana_cost": "{U}",
+      "type_line": "Instant",
+      "oracle_text": "Choose one \u2014\n\u2022 Counter target spell if it's red.\n\u2022 Destroy target permanent if it's red.",
+      "image_uri": "https://cards.scryfall.io/normal/front/f/6/f62716f0-fde2-49ef-b8a4-c1b03f451194.jpg?1783947514",
+      "image_http_status": 200,
+      "rulings": [
+        {
+          "date": "2016-06-08",
+          "text": "Hydroblast can target any spell or permanent, not just a red one. It checks the color of the target only on resolution."
+        },
+        {
+          "date": "2004-10-04",
+          "text": "The decision to counter a spell or destroy a permanent is a decision made on announcement before the target is selected. If the spell is redirected, this mode can't be changed, so only targets of the selected type are valid."
+        }
+      ],
+      "definition": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ice/cards/Hydroblast.kt",
+      "scenario": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HydroblastScenarioTest.kt",
+      "source_payloads": {
+        "canonical": {
+          "path": "docs/experiments/pest-control/card-sources/postboard-b/hydroblast-canonical.json",
+          "sha256": "9794439f9adc909a7ac7fe6dcf55827cb395ab8c050dffc24b5b6b050e3eed98"
+        },
+        "printings": {
+          "path": "docs/experiments/pest-control/card-sources/postboard-b/hydroblast-printings.json",
+          "sha256": "f07a2ca1b668750c8f013ecbabc6cb9fd86b0b1388a94066726edbd23b0c81eb"
+        },
+        "rulings": {
+          "path": "docs/experiments/pest-control/card-sources/postboard-b/hydroblast-rulings.json",
+          "sha256": "2443e4badea9f9022f008b49a7b8f61ebcc99db9e76bcadc1e06619c1eb4c285"
+        }
+      },
+      "common_printings": [
+        {
+          "set": "ice",
+          "number": "72",
+          "released_at": "1995-06-03",
+          "id": "f62716f0-fde2-49ef-b8a4-c1b03f451194"
+        },
+        {
+          "set": "ptc",
+          "number": "ml72sb",
+          "released_at": "1996-05-01",
+          "id": "b6ea7e24-a8eb-4c09-ae2e-9404716042e1"
+        },
+        {
+          "set": "wc98",
+          "number": "rb72sb",
+          "released_at": "1998-08-12",
+          "id": "b6d7cd2d-9c5c-4f7e-a96b-97a7b00fe579"
+        },
+        {
+          "set": "me1",
+          "number": "37",
+          "released_at": "2007-09-10",
+          "id": "22dcd927-549e-4b34-8367-a4bee61f5128"
+        },
+        {
+          "set": "prm",
+          "number": "69979",
+          "released_at": "2018-09-28",
+          "id": "222db3a6-c2b1-48fc-9b0c-018ac6ed517b"
+        },
+        {
+          "set": "mb2",
+          "number": "165",
+          "released_at": "2024-08-02",
+          "id": "2ea09917-b3e6-4f5b-a69e-43d6c86b36fd"
+        }
+      ]
+    },
+    {
+      "name": "Gut Shot",
+      "canonical_set": "NPH",
+      "collector_number": "86",
+      "earliest_real_printing": "2011-05-13",
+      "canonical_api_url": "https://api.scryfall.com/cards/named?exact=Gut%20Shot&set=nph",
+      "oracle_id": "9afb3b6e-4909-4efa-aa79-81c0229411c9",
+      "scryfall_id": "a54a2a30-b96a-49c7-9151-1f4b0d4a4413",
+      "pauper_legality": "legal",
+      "mana_cost": "{R/P}",
+      "type_line": "Instant",
+      "oracle_text": "({R/P} can be paid with either {R} or 2 life.)\nGut Shot deals 1 damage to any target.",
+      "image_uri": "https://cards.scryfall.io/normal/front/a/5/a54a2a30-b96a-49c7-9151-1f4b0d4a4413.jpg?1783941308",
+      "image_http_status": 200,
+      "rulings": [
+        {
+          "date": "2011-06-01",
+          "text": "A card with Phyrexian mana symbols in its mana cost is each color that appears in that mana cost, regardless of how that cost may have been paid."
+        },
+        {
+          "date": "2011-06-01",
+          "text": "To calculate the mana value of a card with Phyrexian mana symbols in its cost, count each Phyrexian mana symbol as 1."
+        },
+        {
+          "date": "2011-06-01",
+          "text": "As you cast a spell or activate an activated ability with one or more Phyrexian mana symbols in its cost, you choose how to pay for each Phyrexian mana symbol at the same time you would choose modes or choose a value for X."
+        },
+        {
+          "date": "2011-06-01",
+          "text": "If you're at 1 life or less, you can't pay 2 life."
+        },
+        {
+          "date": "2011-06-01",
+          "text": "Phyrexian mana is not a new color. Players can't produce Phyrexian mana."
+        }
+      ],
+      "definition": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/GutShot.kt",
+      "scenario": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GutShotScenarioTest.kt",
+      "source_payloads": {
+        "canonical": {
+          "path": "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-canonical.json",
+          "sha256": "14b301701dc0737c22b4ef0d7a4c4b2d671254173aea1b54acd78ffc61f56328"
+        },
+        "printings": {
+          "path": "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-printings.json",
+          "sha256": "73deaf11f87c318f695bb29576f2d04e552c7009cf0da7374a11d5c8fba4b4dc"
+        },
+        "rulings": {
+          "path": "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-rulings.json",
+          "sha256": "4a9f4e6a51f12e7861a0861659e47cf5b23c29c10d25babab40e59c701e62287"
+        }
+      },
+      "common_printings": [
+        {
+          "set": "mm2",
+          "number": "117",
+          "released_at": "2015-05-22",
+          "id": "461987da-8860-4a04-8f93-d182523ca311"
+        },
+        {
+          "set": "plst",
+          "number": "MM2-117",
+          "released_at": "2019-11-07",
+          "id": "98423ff9-48e3-4985-9fe4-7c095c3ceee0"
+        },
+        {
+          "set": "slz",
+          "number": "59",
+          "released_at": "2026-09-02",
+          "id": "e231557f-00cd-4765-85cc-ea7fd41402f2"
+        },
+        {
+          "set": "slz",
+          "number": "180",
+          "released_at": "2026-09-02",
+          "id": "d758d2a8-ee83-4828-b106-56c28e1f8a4a"
+        },
+        {
+          "set": "slz",
+          "number": "301",
+          "released_at": "2026-09-02",
+          "id": "f97f1dd5-247d-40ba-8ceb-0d550e4d2285"
+        }
+      ]
+    }
+  ],
+  "snapshot_additions": {
+    "ICE": [
+      "Hydroblast",
+      "Pyroblast"
+    ],
+    "NPH": [
+      "Gut Shot"
+    ]
+  },
+  "snapshot_review_status": "REVIEWED_EXACT_ADDITIONS",
+  "excluded_regression_fixture_seeds": [
+    "9250925021",
+    "9250925022",
+    "9250925023"
+  ],
+  "literal_collision_audit": "No prior occurrence in project docs, gym or card scenario sources before these three new fixtures; these are excluded regression identities, never official seeds.",
+  "source_files_sha256": {
+    ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml": "9675dc35966096a20eccce7a02dbc5d6b45a44366a1716e7d869355aa6a82bbb",
+    "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-canonical.json": "14b301701dc0737c22b4ef0d7a4c4b2d671254173aea1b54acd78ffc61f56328",
+    "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-printings.json": "73deaf11f87c318f695bb29576f2d04e552c7009cf0da7374a11d5c8fba4b4dc",
+    "docs/experiments/pest-control/card-sources/postboard-b/gut-shot-rulings.json": "4a9f4e6a51f12e7861a0861659e47cf5b23c29c10d25babab40e59c701e62287",
+    "docs/experiments/pest-control/card-sources/postboard-b/hydroblast-canonical.json": "9794439f9adc909a7ac7fe6dcf55827cb395ab8c050dffc24b5b6b050e3eed98",
+    "docs/experiments/pest-control/card-sources/postboard-b/hydroblast-printings.json": "f07a2ca1b668750c8f013ecbabc6cb9fd86b0b1388a94066726edbd23b0c81eb",
+    "docs/experiments/pest-control/card-sources/postboard-b/hydroblast-rulings.json": "2443e4badea9f9022f008b49a7b8f61ebcc99db9e76bcadc1e06619c1eb4c285",
+    "docs/experiments/pest-control/card-sources/postboard-b/pyroblast-canonical.json": "15344353fb0a8047372c969713e3e3dc79fbd3bc39e74b3c6bb20dc8caf40e82",
+    "docs/experiments/pest-control/card-sources/postboard-b/pyroblast-printings.json": "29f52f20ae2b08123cb41533d2cf328e5b05d6fb0faa677b72967562ad65611f",
+    "docs/experiments/pest-control/card-sources/postboard-b/pyroblast-rulings.json": "8bc7ea4144e5a3f9fbbfb9b4f2bcb2b9896efa3f7b9d5a24e5432ac983ae23c1",
+    "docs/experiments/pest-control/tier-one-postboard-support-batch-a-sources.json": "61ece0601f7f4f216c86792a9bf479d9f60d91fcb10c08ab5fe802e876154ecd",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt": "16ff729bf1cce9fcd5a9d3a46233efe73a2ff3f2bb61f105a48054489266fb11",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReadinessTest.kt": "0d40cf181af08bceb799e9c5b71278cca528792af87f53e508eb9d9eb28033ee",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt": "dd41dccfc2ca704ba9cb92139450ca634538d971524295ea042c2de085c8ddb8",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchBTest.kt": "f9f6035131cc98a280d29fba153a1533e345b31c6f8d1c801dccea0a31a1db46",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ice/cards/Hydroblast.kt": "76e79693617b666af54141bdcd783c289e8fb5d347d89f642d60e9fbec332dc1",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ice/cards/Pyroblast.kt": "6c0c30859f3a295992f9b37c4611c771791e1b85404295ae71ebe2ba6b8b4478",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HydroblastScenarioTest.kt": "e59b0210d89dfc557bcfa9609272fcd1c95881ca278968cf3b68310388401f8f",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PyroblastScenarioTest.kt": "d8904617758207438ebf554cb50335cd6275c579e3cbf29aab30ffab6da5ce74",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/GutShot.kt": "cf91672c609caa7fedb67d45303ec16b7db87ca1c2baa1f63efb4e0dcc35c6f8",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GutShotScenarioTest.kt": "166574ba86ec7bed6c34ae897ab43214db0397d6ac2f1a665162a1295181f3be",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchBTest.kt": "39d944c276a2c4fa1b1d60779a94a63128d99b1e14a0e15b0571cf02082d7fb8",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/utils/TargetEnumerationUtils.kt": "987fa1b817642c423390aa6461e21e1eff3f58420e7d447fa8b9cc323d2674e4",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt": "a67307ebe8577ffcc8b544759f63bac17d44eb9ef03e2c912faefdc6247b502a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": "cc64a43fb77f688624be550d07c8aa96baddd5bbe9a4d1727b166110f0e3f6ed",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/targets/TargetRequirement.kt": "786a2f2c5ada9fd15992bdfa4239ae27fe164c3b3df43ac4312c42ea77914276",
+    "mtg-sets/src/test/resources/snapshots/cards/ICE.json": "dd05c266d119537bd89d0454b2014f2ddd3888e90060ced4c5254ae497a1911f",
+    "mtg-sets/src/test/resources/snapshots/cards/NPH.json": "8c5ca92e9674c4e03f2277fd04711f4d67a9a553c0a87d8894c0e2dee3b41a43",
+    "game-server/src/test/kotlin/com/wingedsheep/gameserver/FreeForAllLobbyTest.kt": "416eb14c312d706f6c125de5f70de8c5f1abf175f5bee813321260fd75271a73",
+    "docs/experiments/pest-control/tier-one-postboard-support-batch-b-failure-audit.json": "1ab97e2c34e2fe274c137a9b03caf996f1cad14223c7f248f5c28f1413d075ef",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt": "ac9604c03754dffdd06e294e30f6a3379a7bfd7129a9ce31abba879576a75496",
+    "docs/experiments/pest-control/tier-one-postboard-support-batch-b-failure-audit-36092747077.json": "69cdf06b2532fd94b9856fddcc968d86e6f86751f73e74027d98fe2dcc311c4a"
+  },
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_actions_submitted": 0,
+  "outcome_exposure": 0,
+  "boarding_plans_frozen": false,
+  "gameplay_authorized": false,
+  "integrated_postboard_a_commit": "1cf29885757fae24aac05cfe2d1097e5088e5375",
+  "compiled_snapshot_review_artifact": 10845845066,
+  "compiled_snapshot_review_run": 36089250333,
+  "runtime_status": "REJECTED_PENDING_BATTLE_PREDICATE_AND_POST_CAST_SBA_REPAIR",
+  "canonical_any_target_rules": {
+    "effective_date": "2026-09-25",
+    "rule": "115.4 and 608.2b",
+    "archive_sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+    "archive_url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+    "source_review_status": "ANY_TARGET_HUNKS_SOURCE_REVIEWED_PROJECTED_PERMANENT_GAP_IDENTIFIED_BY_RUNTIME",
+    "runtime_status": "TEN_OF_TWELVE_GUT_CASES_PASSED_CORRECTIVE_CI_REQUIRED",
+    "projected_permanent_correction": "Include BATTLE in shared CardPredicate.IsPermanent; keep the real battle-offer assertion unchanged."
+  },
+  "integrated_spy_batch_c": {
+    "source_commit": "1ad4079b8fbdbc79ec5bb88dad343aad7d417f96",
+    "merge_commit": "1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698",
+    "run_id": 36091157502,
+    "artifact_id": 10846221712,
+    "zip_sha256": "6a1339c66a2d5c1cfcf060e14501999e4eeeda4831cefccf4f9ae2da8bce3345",
+    "newly_supported_sideboard_slots": 1,
+    "accepted_main_unresolved": 0,
+    "scope": "Accepted Bestow/Hydra support only; no imported matchup or pilot evidence"
+  },
+  "latest_failure_audit": "docs/experiments/pest-control/tier-one-postboard-support-batch-b-failure-audit-36092747077.json"
+}

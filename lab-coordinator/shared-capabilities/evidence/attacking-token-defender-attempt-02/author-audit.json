@@ -1,0 +1,85 @@
+{
+  "schema": "shared-token-actual-attempt-audit/v1",
+  "reviewer": "/root/sphinx",
+  "independent": false,
+  "status": "FAILED_FIXED16_RETAINED_WITHOUT_RECLASSIFICATION",
+  "source": "91e3e6f23cbbc28ea5d691b4fd4256beb3f0992d",
+  "tree": "b557bef60d703be34429504acd8c0c6bf26701b5",
+  "run": 36264931220,
+  "artifact": 10913711834,
+  "archive_bytes": 258700,
+  "archive_sha256": "f77fa49ce7e0b7c295faadf5ce43b9a608643b2e5776ca037db9dcfd4a2c2874",
+  "zip_crc_valid": true,
+  "actual_cases": 16,
+  "passing": 12,
+  "failing": 4,
+  "errors": 0,
+  "skipped": 0,
+  "xml_banks": [
+    {
+      "path": "tests/dalkovan-2/TEST-com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest.xml",
+      "sha256": "51f2eb3c935f725b50800927c9c3befc2e867d076a3d288c3d2edc4f2a9f4614",
+      "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+      "actual_cases": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "case_names": [
+        "activating the ability then attacking creates two tapped, attacking Warrior tokens",
+        "the tokens are sacrificed at the next end step"
+      ],
+      "failing_cases": []
+    },
+    {
+      "path": "tests/token-defender-14/TEST-com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest.xml",
+      "sha256": "ae7a7e24dac37556be8ace85cf650bd35bacb12ac89a5b04735543a0a2b44b7f",
+      "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "actual_cases": 14,
+      "failures": 4,
+      "errors": 0,
+      "skipped": 0,
+      "case_names": [
+        "TD01 land attack trigger creates two tokens attacking the sole opponent, never its controller",
+        "TD02 multiple opponents require a separate controller choice for every not-yet-created token",
+        "TD03 public planeswalkers and protected battles are nontargeting defender choices",
+        "TD04 attack-left and attack-right preserve the legal neighboring seat",
+        "TD05 recipient fanout suspends once, retains all token collections and does not make nonactive players attack",
+        "TD06 doubled plain batch freezes four defender choices and four delayed riders across serialization",
+        "TD07 target-copy batch uses the same once-only count replacement and selected defenders",
+        "TD08 noncreature target copies enter tapped without attacking or asking for a defender",
+        "TD09 wrong actor and malformed defender submissions preserve the exact pending state",
+        "TD10 serialized pending choice and identical answer replay preserve state and events exactly",
+        "TD11 copy as-enters choices retain chosen defender tail, token collection, entry events and delayed riders",
+        "TD12 declining token replacement keeps the prepared count and actual recipient across the next choice",
+        "TD13 accepting replacement preserves attacking state, actual recipient, collection and delayed riders",
+        "TD14 active teammate chooses its own legal defenders while declaration restrictions do not prevent entry"
+      ],
+      "failing_cases": [
+        {
+          "name": "TD03 public planeswalkers and protected battles are nontargeting defender choices",
+          "message": "org.opentest4j.AssertionFailedError: expected:<[e1, e2, e123, e125]> but was:<[e1, e2, e123]>"
+        },
+        {
+          "name": "TD11 copy as-enters choices retain chosen defender tail, token collection, entry events and delayed riders",
+          "message": "org.opentest4j.AssertionFailedError: Missing elements from index 0\nexpected:<[e124, e125]> but was:<[]>"
+        },
+        {
+          "name": "TD12 declining token replacement keeps the prepared count and actual recipient across the next choice",
+          "message": "java.lang.ClassCastException: class com.wingedsheep.engine.core.ChooseTargetsDecision cannot be cast to class com.wingedsheep.engine.core.YesNoDecision (com.wingedsheep.engine.core.ChooseTargetsDecision and com.wingedsheep.engine.core.YesNoDecision are in unnamed module of loader 'app')"
+        },
+        {
+          "name": "TD13 accepting replacement preserves attacking state, actual recipient, collection and delayed riders",
+          "message": "java.lang.ClassCastException: class com.wingedsheep.engine.core.ChooseTargetsDecision cannot be cast to class com.wingedsheep.engine.core.YesNoDecision (com.wingedsheep.engine.core.ChooseTargetsDecision and com.wingedsheep.engine.core.YesNoDecision are in unnamed module of loader 'app')"
+        }
+      ]
+    }
+  ],
+  "diagnosis": {
+    "TD03_TD12_TD13": "Fixture Component list used reified with(Component), storing extras under base Component key. Correct runtime-key withComponent preserves all original assertions.",
+    "TD11": "Final as-enters resumer captured triggers but omitted its actual battlefield-entry event from outward events. Production repair retains local observer capture and publishes marked per-occurrence event; no blanket whole-result suppression."
+  },
+  "separate_prospective_checks": "Four entry-event provenance checks are new mechanical qualification, not retroactive replacements for failed16 cases.",
+  "official_games": 0,
+  "outcomes_exposed": 0,
+  "gameplay_authorized": false
+}

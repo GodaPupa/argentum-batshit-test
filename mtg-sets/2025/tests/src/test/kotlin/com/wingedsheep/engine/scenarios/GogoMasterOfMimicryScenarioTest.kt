@@ -1,5 +1,21 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+
+import com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfTargetEffect
+
+import com.wingedsheep.sdk.scripting.effects.CopyExceptions
+
+import com.wingedsheep.sdk.dsl.card
+
+import com.wingedsheep.sdk.dsl.Targets
+
+import com.wingedsheep.sdk.core.Supertype
+
+import com.wingedsheep.engine.state.components.identity.TokenComponent
+
+import com.wingedsheep.engine.state.components.identity.CardComponent
+
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.core.PaymentStrategy
@@ -31,10 +47,23 @@ import io.kotest.matchers.shouldNotBe
  */
 class GogoMasterOfMimicryScenarioTest : FunSpec({
 
+    val copySpell = card("Test Nonlegendary Gogo Copy") {
+        manaCost = "{0}"
+        typeLine = "Sorcery"
+        spell {
+            target = Targets.PermanentYouControl
+            effect = CreateTokenCopyOfTargetEffect(
+                target = EffectTarget.ContextTarget(0),
+                exceptions = CopyExceptions(removedSupertypes = setOf(Supertype.LEGENDARY))
+            )
+        }
+    }
+
     fun createDriver(): GameTestDriver {
         val driver = GameTestDriver()
         driver.registerCards(TestCards.all)
         driver.registerCard(GogoMasterOfMimicry)
+        driver.registerCard(copySpell)
         driver.registerCard(ProdigalPyromancer)
         driver.registerCard(JayemdaeTome)
         driver.initMirrorMatch(deck = Deck.of("Mountain" to 40), skipMulligans = true, startingPlayer = 0)
@@ -194,7 +223,18 @@ class GogoMasterOfMimicryScenarioTest : FunSpec({
         val opponent = driver.getOpponent(me)
 
         val gogoA = driver.putPermanentOnBattlefield(me, "Gogo, Master of Mimicry")
-        val gogoB = driver.putPermanentOnBattlefield(me, "Gogo, Master of Mimicry")
+        val copy = driver.putCardInHand(me, copySpell.name)
+        driver.castSpell(me, copy, listOf(gogoA)).error shouldBe null
+        driver.bothPass().error shouldBe null
+        driver.pendingDecision shouldBe null
+        driver.stackSize shouldBe 0
+        val gogos = driver.state.getBattlefield().filter {
+            driver.state.getEntity(it)?.get<CardComponent>()?.name == "Gogo, Master of Mimicry"
+        }
+        gogos.size shouldBe 2
+        val gogoB = gogos.single { driver.state.getEntity(it)?.get<TokenComponent>() != null }
+        driver.state.getEntity(gogoA)!!.get<CardComponent>()!!.typeLine.isLegendary shouldBe true
+        driver.state.getEntity(gogoB)!!.get<CardComponent>()!!.typeLine.isLegendary shouldBe false
         val pyromancer = driver.putPermanentOnBattlefield(me, "Prodigal Pyromancer")
         driver.removeSummoningSickness(gogoA)
         driver.removeSummoningSickness(gogoB)

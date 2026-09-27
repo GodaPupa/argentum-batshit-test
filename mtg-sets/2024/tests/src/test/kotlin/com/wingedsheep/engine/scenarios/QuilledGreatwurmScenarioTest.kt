@@ -1,8 +1,11 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.hasPendingTriggerOrder
+
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.CombatResolutionDecision
-import com.wingedsheep.engine.core.OrderObjectsDecision
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.legalactions.EnumerationMode
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
@@ -74,8 +77,7 @@ class QuilledGreatwurmScenarioTest : FunSpec({
             val decision = pendingDecision
             when {
                 decision is CombatResolutionDecision -> confirmCombatDamage()
-                decision is OrderObjectsDecision ->
-                    submitOrderedResponse(decision.playerId, decision.objects)
+                state.hasPendingTriggerOrder() -> chooseTriggerOrderInListedOrder()
                 decision != null -> autoResolveDecision()
                 state.stack.isNotEmpty() -> bothPass()
                 else -> return

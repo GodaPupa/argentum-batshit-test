@@ -64,7 +64,7 @@
       "rulings": [
         {
           "date": "2015-06-22",
-          "text": "Smash to Smithereens targets only the artifact, not any player. If that artifact becomes an illegal target by the time Smash to Smithereens tries to resolve, Smash to Smithereens won’t resolve and none of its effects will happen. No damage will be dealt."
+          "text": "Smash to Smithereens targets only the artifact, not any player. If that artifact becomes an illegal target by the time Smash to Smithereens tries to resolve, Smash to Smithereens won\u2019t resolve and none of its effects will happen. No damage will be dealt."
         }
       ]
     },
@@ -130,7 +130,7 @@
       "rulings_payload_sha256": "d65c892660866d943ccec58535ff6c1f55c2680e6efe5919e982954ad4747918",
       "oracle_text": "Whenever you cast an instant or sorcery spell, create a 1/1 blue Bird Illusion creature token with flying.",
       "mana_cost": "{3}{U}",
-      "type_line": "Creature — Human Wizard",
+      "type_line": "Creature \u2014 Human Wizard",
       "power": "1",
       "toughness": "5",
       "pauper_legality": "legal",
@@ -199,7 +199,7 @@
       "rulings_payload_sha256": "76c364a5ba798d4a3df2add1bba89db23451f055c6d232bdf8909cf92ec63f89",
       "oracle_text": "When this creature enters, you gain life equal to your devotion to green. (Each {G} in the mana costs of permanents you control counts toward your devotion to green.)",
       "mana_cost": "{2}{G}{G}",
-      "type_line": "Creature — Centaur Archer",
+      "type_line": "Creature \u2014 Centaur Archer",
       "power": "3",
       "toughness": "3",
       "pauper_legality": "legal",
@@ -241,7 +241,8 @@
   ],
   "snapshot_additions": {
     "SHM": [
-      "Smash to Smithereens"
+      "Smash to Smithereens",
+      "Faerie Macabre"
     ],
     "IKO": [
       "Unexpected Fangs"
@@ -250,31 +251,34 @@
       "Murmuring Mystic"
     ],
     "THS": [
-      "Nylea's Disciple",
-      "Purphoros, God of the Forge"
+      "Nylea's Disciple"
     ]
   },
   "source_files_sha256": {
-    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/shm/cards/SmashToSmithereens.kt": "188486aed285f9274f2d55c2d09a5c758b0744a97376e040e812ba891d65ffd6",
-    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SmashToSmithereensScenarioTest.kt": "4b8b9c55ebd02c654b51c1a374f609b80f9d696ac2c232d06ad8a5b657561179",
-    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/UnexpectedFangs.kt": "a3808dd3ed6d3c3428ba1798291f9e5fc9b8f4c720acfd6e129c5c04ecdb73b0",
-    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UnexpectedFangsScenarioTest.kt": "e08a93a3799996625f09a906c7e0fc518d201de745a4f0e1d94f7185d71adb6f",
-    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/grn/cards/MurmuringMystic.kt": "bd4d88c1187f5413d5c181def2576fb60044453f97a5e99dfb0c84ba66f4aea1",
-    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MurmuringMysticScenarioTest.kt": "b14c970c8868a6d2e8aee58f16b4f3b12f8ea9d819c660984eb91531f1c21d5f",
-    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/NyleasDisciple.kt": "78ec5846cfaff0bd23c1f94992a3053b042dc5425603df94fa73f4fca0eca321",
-    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NyleasDiscipleScenarioTest.kt": "fc62d8d6d7e8186d142aef33e742cb26444feb60c6d3ac5132b663ede42c35eb",
-    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt": "e8e6dafd0485ab3f98676e82b2e3ce8bf11c7345541d4bb5de20b8b8df84b2fe",
-    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReadinessTest.kt": "d353fcf8f6624507bf549d0769440e8aa0adff59387e3f9ad421b02f69efdbe9",
     ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml": "1da307055612deb6dbc72c67f6313a5feef452ffe7c4acfbe9acfeb16336cf0c",
-    "mtg-sets/src/test/resources/snapshots/cards/SHM.json": "6f56256a287a893d95ed66f4919bd12b130907cda83039bdf328ddd006e9bb11",
-    "mtg-sets/src/test/resources/snapshots/cards/IKO.json": "192f313dda525e248ea08273c47ad17c58ddb382e0762652c99121eb8e8df204",
-    "mtg-sets/src/test/resources/snapshots/cards/GRN.json": "01c0352f5631bb2264af1e9aa42e85279dac483d7093ed7e1b57beff6a5fe5b9",
-    "mtg-sets/src/test/resources/snapshots/cards/THS.json": "b5e09edec9ab49c9dd78fdaed7fca40db65fcf1fa36ee61fdabb7555eacd78da",
-    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt": "fb3eb12458dbdf478d9302da378b6377eb435ecc3057413dcac9dc769da09d6c",
+    "docs/experiments/pest-control/postboard-closure-evidence/remote-36244588321/snapshot-peer-review.json": "900622265087ac82ce363687f74dc8c45f319b1564e4afe5616d562864494b8b",
+    "docs/experiments/pest-control/postboard-closure-evidence/remote-36245631616/audit.json": "b5f2efbce8aef45ec6b211cb48d7280043a290e6f617a21c8e1f09c42978c46c",
+    "docs/experiments/pest-control/tier-one-postboard-support-closure-qualification-3785964.json": "8edab8a5fb68a8eef3d8b019bc8c6e6383798795a3af2a4d3a154133e4859850",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt": "9cc5694d80620d163a6f6c6da8d59434cea309cf238f5623c75f0dd66ceb4b30",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReadinessTest.kt": "a665ccc7c8067b52ae42a49b75c24f62a3d348289d23807ce140fc327884508e",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt": "68c0676cc90575e23af2bddfb899b8d0fe5ceeedade9936afb5e2792ad4cc24b",
     "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneSpyComboSupportBatchBTest.kt": "39d944c276a2c4fa1b1d60779a94a63128d99b1e14a0e15b0571cf02082d7fb8",
-    "docs/experiments/pest-control/tier-one-postboard-support-batch-a-sources.json": "88eceb48094277bfc20c7baef6bfd5b2cc22da022094343e30d72aab581b51e2",
-    "experiments/manual-transmission-phase2/evidence/purphoros-receiving-36262347141/izzet-independent-artifact-review.json": "8e112a30eac3374c05f4e2dc16a7ffcb107cd4b2d181d73505ab107cb6c77c2d",
-    "experiments/manual-transmission-phase2/evidence/purphoros-receiving-36262347141/receipt.json": "5b8bfaac7895b90a006dd9ccb62569fa7a5892303aa14c89544364d1e3c3a6f3"
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/shm/cards/FaerieMacabre.kt": "96ca35a6f118b1130dad4565422bfd863348a26b1dd8f9b1f5ba6c6dcd13e5c6",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/shm/cards/SmashToSmithereens.kt": "188486aed285f9274f2d55c2d09a5c758b0744a97376e040e812ba891d65ffd6",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/NyleasDisciple.kt": "78ec5846cfaff0bd23c1f94992a3053b042dc5425603df94fa73f4fca0eca321",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/SpreadingSeas.kt": "86664a535d1e53cc451d12375e885ba998ce738ae785226395d98ea2093a154b",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FaerieMacabreScenarioTest.kt": "e0326658d1f39d386f3f47fbf7e65e083513bea0a62451f658e49cc58b5ddd5b",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NyleasDiscipleScenarioTest.kt": "fc62d8d6d7e8186d142aef33e742cb26444feb60c6d3ac5132b663ede42c35eb",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SmashToSmithereensScenarioTest.kt": "4b8b9c55ebd02c654b51c1a374f609b80f9d696ac2c232d06ad8a5b657561179",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpreadingSeasScenarioTest.kt": "03b6f722dc0dad78e921b6121a4cbe5e051fcc390626fbd1cc365e75183e2b81",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/grn/cards/MurmuringMystic.kt": "bd4d88c1187f5413d5c181def2576fb60044453f97a5e99dfb0c84ba66f4aea1",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/UnexpectedFangs.kt": "a3808dd3ed6d3c3428ba1798291f9e5fc9b8f4c720acfd6e129c5c04ecdb73b0",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MurmuringMysticScenarioTest.kt": "b14c970c8868a6d2e8aee58f16b4f3b12f8ea9d819c660984eb91531f1c21d5f",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UnexpectedFangsScenarioTest.kt": "e08a93a3799996625f09a906c7e0fc518d201de745a4f0e1d94f7185d71adb6f",
+    "mtg-sets/src/test/resources/snapshots/cards/GRN.json": "01c0352f5631bb2264af1e9aa42e85279dac483d7093ed7e1b57beff6a5fe5b9",
+    "mtg-sets/src/test/resources/snapshots/cards/IKO.json": "192f313dda525e248ea08273c47ad17c58ddb382e0762652c99121eb8e8df204",
+    "mtg-sets/src/test/resources/snapshots/cards/SHM.json": "bd54ea40b29985e202f1b8622cf5dcef83e71dbde6db6f71007fe954275b3b1b",
+    "mtg-sets/src/test/resources/snapshots/cards/THS.json": "8cd0c2797a4258e42b5ed86d6e1345cc2c0cb69fd70d26ba8256fff5375aaa42"
   },
   "official_seeds_generated": 0,
   "official_games_initialized": 0,
@@ -293,31 +297,71 @@
     "newly_supported_sideboard_slots": 1,
     "scope": "Current support assertions only; accepted A artifact remains unchanged; exact integration requires fresh CI"
   },
-  "receiving_integration": {
-    "receiving_date": "2026-09-26",
-    "historical_source_manifest": "docs/experiments/pest-control/tier-one-postboard-support-batch-a-sources.json",
-    "historical_source_manifest_sha256": "88eceb48094277bfc20c7baef6bfd5b2cc22da022094343e30d72aab581b51e2",
-    "canonical_workflow_donor": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
-    "workflow_received_byte_identically": true,
-    "failed_source": "d022f5df080284e88d8506ab620a1a6327f09fc8",
-    "failed_run": 36263438199,
-    "failed_job": 108463480672,
-    "change": "Receive the independently audited ordinary Purphoros-only THS snapshot addition in a separate prospective source manifest. Every historical manifest byte, original card record, source definition, test, and all ten execution stages remain preserved.",
-    "source_changes": {
-      ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml": {
-        "before": "ae0c74da029e89f060ac70d01b5f943a44a4292b0f5a5e9e07f191ef76789719",
-        "after": "1da307055612deb6dbc72c67f6313a5feef452ffe7c4acfbe9acfeb16336cf0c"
+  "current_support_successor": {
+    "program": "postboard_support_batch_b",
+    "predecessor_source": "1cf29885757fae24aac05cfe2d1097e5088e5375",
+    "predecessor_manifest_sha256": "7a99a8f4ea94f4eda8cc3e318d5f60e96ab1ef195bf7363adda32d167537a715",
+    "new_registry_identities": [
+      "Pyroblast",
+      "Hydroblast",
+      "Gut Shot"
+    ],
+    "historical_admission_records_changed": false,
+    "integrated_spy_batch_c_merge": "1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698"
+  },
+  "historical_manifest": {
+    "path": "docs/experiments/pest-control/tier-one-postboard-support-batch-a-sources.json",
+    "sha256": "61ece0601f7f4f216c86792a9bf479d9f60d91fcb10c08ab5fe802e876154ecd",
+    "unchanged": true
+  },
+  "receiving_successor": {
+    "originating_combined_head": "1669cc465bf1530d744f9b5612cf733240154ea3",
+    "status": "PROSPECTIVE_BINDING_RUNTIME_AND_RECEIVING_ACCEPTANCE_PENDING",
+    "changed_historical_bindings": [
+      {
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt",
+        "prior_sha256": "dd41dccfc2ca704ba9cb92139450ca634538d971524295ea042c2de085c8ddb8",
+        "candidate_sha256": "68c0676cc90575e23af2bddfb899b8d0fe5ceeedade9936afb5e2792ad4cc24b"
       },
-      "mtg-sets/src/test/resources/snapshots/cards/THS.json": {
-        "before": "8cd0c2797a4258e42b5ed86d6e1345cc2c0cb69fd70d26ba8256fff5375aaa42",
-        "after": "b5e09edec9ab49c9dd78fdaed7fca40db65fcf1fa36ee61fdabb7555eacd78da"
+      {
+        "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReadinessTest.kt",
+        "prior_sha256": "0d40cf181af08bceb799e9c5b71278cca528792af87f53e508eb9d9eb28033ee",
+        "candidate_sha256": "a665ccc7c8067b52ae42a49b75c24f62a3d348289d23807ce140fc327884508e"
+      },
+      {
+        "path": ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml",
+        "prior_sha256": "ae0c74da029e89f060ac70d01b5f943a44a4292b0f5a5e9e07f191ef76789719",
+        "candidate_sha256": "1da307055612deb6dbc72c67f6313a5feef452ffe7c4acfbe9acfeb16336cf0c"
+      },
+      {
+        "path": "mtg-sets/src/test/resources/snapshots/cards/SHM.json",
+        "prior_sha256": "6f56256a287a893d95ed66f4919bd12b130907cda83039bdf328ddd006e9bb11",
+        "candidate_sha256": "bd54ea40b29985e202f1b8622cf5dcef83e71dbde6db6f71007fe954275b3b1b"
+      },
+      {
+        "path": "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonoBlueTerrorReadiness.kt",
+        "prior_sha256": "16ff729bf1cce9fcd5a9d3a46233efe73a2ff3f2bb61f105a48054489266fb11",
+        "candidate_sha256": "9cc5694d80620d163a6f6c6da8d59434cea309cf238f5623c75f0dd66ceb4b30"
       }
-    },
-    "snapshot_review": "experiments/manual-transmission-phase2/evidence/purphoros-receiving-36262347141/izzet-independent-artifact-review.json",
-    "snapshot_receipt": "experiments/manual-transmission-phase2/evidence/purphoros-receiving-36262347141/receipt.json",
-    "snapshot_review_scope": "Non-author Izzet acceptance of actual415 component and ordinary sole-record generation; does not transfer Manual gameplay/card-pool conclusions to Pest.",
+    ],
+    "historical_inventory_test_change": "Inherited test preserves all four Batch A definitions, eleven original slots and frozen identities while permitting qualified successors to reduce the original unresolved queue; separate combined closure gate requires every six-deck gap list empty. This patch does not change the test.",
+    "new_snapshot_record": "Only independently reviewed ordinary Faerie Macabre bytes are added beyond historical Batch A snapshots. Every original record remains byte-identical.",
+    "snapshot_review": "docs/experiments/pest-control/postboard-closure-evidence/remote-36244588321/snapshot-peer-review.json",
     "stages_retained": 10,
+    "official_execution_authorized": false,
+    "failed_run": 36245631609,
+    "current_registry_correction": {
+      "failed_ci_run": 36245631665,
+      "failed_job": 108414823225,
+      "cause": "Inherited current support set requires Spreading Seas absent although combined source resolves it; this causes sideboard support audit drift through dormant Mono-Blue Terror construction.",
+      "change": "Require exact empty current unresolved set, retain historical four-identity/eleven-slot inventory and disabled authority, add Spreading Seas missing-identity regression.",
+      "source_scoped_card_cases": 2,
+      "source_scoped_combined_cases": 363,
+      "evidence": "docs/experiments/pest-control/postboard-closure-evidence/remote-36245631616/audit.json",
+      "no_reopening_of_closed_matchup": true,
+      "runtime_validation_pending": true
+    },
     "gameplay_runtime_or_policy_change": false,
-    "official_execution_authorized": false
+    "current_registry_readiness_assertion_changed": true
   }
 }

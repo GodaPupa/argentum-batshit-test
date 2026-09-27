@@ -1,0 +1,478 @@
+{
+  "schema": "manual-non-author-shared-cast-observer-artifact-review-v1",
+  "reviewer": "non-author agent /root/manual",
+  "reviewed_at_utc": "2026-09-26T17:59:58.798376+00:00",
+  "verdict": "ACCEPT_TARGETED_COMPONENT_EVIDENCE_ONLY",
+  "source_head": "b6aef3afede89f2044f26b0af9d5bdd4efe751c6",
+  "source_tree": "0f95045d7e03b539144ffb9ef2a603c6f035f484",
+  "run_id": 36258696556,
+  "job_id": 108450250870,
+  "artifact_id": 10912050674,
+  "archive": {
+    "bytes": 282736,
+    "sha256": "8f83f75b67b5a81cd5d1a99a82aa17cd6d3a123275c937512dde3989143c429b",
+    "crc_check": "passed",
+    "members": 22
+  },
+  "source_pins": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/combat/DeclareBlockersHandler.kt": "1d32d48dc5861865046f5aa274698534e7fdb6b237d267af86c012b158d6e1d6",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt": "ec9e7aef1d5a02c228e8614d8a5fb442cd8d7c2fdf397dd681bfb7073ce50614",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt": "56a68883a54a3accef7da0066c3148aa0fc5795174383418922481a4a62c71e2",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt": "19e46ab82c959375752046940f0dc8e39a34513eac26d687cc835b6bf91622fe",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/BlockDeclarationProcessor.kt": "47491b790c9b856122140a2049e1defffd5b2f23fbd348f8be90a333ee7f9d4e",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/PendingTrigger.kt": "1df77a7df84d006ae7db58a461d28c091d22aeb26b6b880616058e77fd927cff",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": "4203df9bac92685480e694f2ad882d700abe8f78c311e852548138add8fbe5e9",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt": "6fe9da8a33999c557eecbf7ca8e64dea4a7e11cd06d5493404f2d7afc36013f8",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentWindow.kt": "aa66c482d1e65b2d91e74e601461f24a1b3698c8d887e5a915e69db7d0a7dd4f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/ConcedeHandler.kt": "53282467b099ced2d3f31dd758a4de14f1a50f0db3a2c69c3924be2dc07e14fa",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/special/SpecialActionsModule.kt": "5e3423ed680afee620b07c005a58080b2701ab37fd8d3740a4eb28c25ff9dd82",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "0b6b44e9598e10c86222f455c9fe3c6e13d6fdcdc75809bf0d88f343310ac4e7",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TriggerOrderingContinuation.kt": "660fed148d51fa0736a9cbe225bf0e9d21783a8dbb77e20d4fd95cd47287e910",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TriggerOrderingResumer.kt": "851f8690ba812ac033a2c36ffb4235477ec9cc2d0a9862ad7b630611e4035fbb",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt": "7a6164084ff2f6b49aa6f90ac4108ccfef86c7184b43e3841cf6482e07186d41",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt": "41e483dccbf19148ea5d266176532b8e3689f56e0193d57e7de1a6bb4ccf30aa",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/player/PlayerLeavesGameProcessor.kt": "91baf7d4f817e65ff93ed6e91c054f2328d50caf2be8309c72cd3bbfa57c781c",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt": "7bf956fc068bcfef7ddacffca0f08372e7ac4e3576f9f0f8ace416e1abaffe46",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt": "a24ee46915d62b7dc36a42bef5e049867360a4f53b97f877c4c304dc0958b224",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CoreContinuations.kt": "fa14c5a3abea93a6cfc6a4c3395105e32fe971691186a250ec9311359087083f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/EffectAndTriggerContinuationResumer.kt": "6980996cc6cc4481d5f53bc12785724b38a7f9eaa6c986be5692999d691a87c5",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt": "ab14c3d79c6bf842313b948af585642b80b96d40834925af5cfa75fda084c155",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt": "9ae281988e9ced26d699e776976c8ccd74b7fdb93d0f8509e54c87ccef855aac",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt": "685ab54058fc2e25e9b4e1dc352642080623b785781c7b2161a411eaad0360f6",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt": "9939278edba7d26c850e4c36199165349f9889a7e92b8507dfaa3d53ae6f9ece",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt": "bcdb4cdceda875abc2910ef943f416918d77c0488a90c3c8f4beb8a7ccc3c5d5",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt": "89f23e25b2ef59497c8d24ba945d77c159778765499fdc904c7b595f20fd451a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt": "4332fa35b5cb92292cdf66ab967e187b64cc81c7ae53545d2eda8b81a3d84e86",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/PlayerProtectionRules.kt": "5632a9bbe51e675d21c4ade2ed352ba44a44b3ff9d27b535032ff179ccb8c2c4",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/GameSession.kt": "4b19fa5b43175d4c4a089f6efbceb2c1aa560b92f4d5f605d6d66f09707fb2ce",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": "1c355fc1c7a92606ea24dced8109ff15b1b2c757cb2879d13aaa4c53b57514e2",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerContext.kt": "17d8bd3576b97ca63ac573427dfc08ebbef14e31ba3ff80de4e369b886932d0c",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/DamageTriggerDetector.kt": "ce80c20f92b2f089d056d0cc7a89a3ee8e426946eace0fb12a288c5c41455098",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/AttachmentTriggerDetector.kt": "e1d373932975ed60717d1a8365b4e614387aa57a585f379d994bb7dea1d77d7e",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt": "1401491fe5292ec746fd991fbcd89fe82914d1e07428bdae0487ed0487e0e517",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/priority/PassPriorityHandler.kt": "4f6538e2782660074c0db08db8125ec4558dd77995c7d1e2fd8b50b59cebec9d",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PostBlockDeclarationPriorityScenarioTest.kt": "a73890b33b97ba47097fe86a22cf851a75ad8f3843b35f58cf4eb2439c82691d",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DeclareBlockersPriorityWindowTest.kt": "cca06f4c7fa7f9dda5cd5001cbb31ac5e39b7c3b4f588e38ee5c170abba5870d",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/MultiDefenderCombatTest.kt": "f434f2d0e81aea2040efe499f91c336531a8b347fc16c2f3d6a431df552f8e1d",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/TwoHeadedGiantCombatTest.kt": "9f5c5205ea4539b5904c3342682510b40aadd4691291c599c8ef6f812a8b9855",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt": "d14fe20f774f650d132f679966dc4eefe556cf48fb67d34fffdadd88fefda978",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/NestedManaPaymentBoundaryScenarioTest.kt": "d45876c5e64d3be6c6882c4317fbb192913c91b89b540b221eb43d03c96604a6",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BatchMayQuestionTest.kt": "11ef82e18f8d2a02ee83b874fb89d8567f7bc810e69709662ff2fedf9ac5cec4",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TriggerOrderingScenarioTest.kt": "e4d8ce58696a968126bb17d0e9403ff59ff99ce51e1efdba05a3c0ec846bfee5",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TriggerOrderingConcessionScenarioTest.kt": "b8f72093ef6b966e37616e14dec673bf79f13ffab8bcca7385b67d6134fdd167",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DamageSourceIdentityScenarioTest.kt": "0a674ab29cf2d263dcccdec2ee0e599df1418db7fd11767b692cc4d2522da736",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DamageSourceTriggerScenarioTest.kt": "f6ffca9fb9a75998ceb0854df4f49847e53d9a61c9d5a2d76ae9c790e3f63c86",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TargetedDepartedSourceLkiTest.kt": "25125e95e9029c8f5aaed32897ddaa91bd29d562083af59262b32aec4761c342",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluatorRecordTest.kt": "8b17caf224042dccd16fb438133c0eadc00697d9de4350962c49df925eb6adde",
+    "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/PostBlockDeclarationSessionTest.kt": "4d996d5d850abcfe0f7a6300fb85d71efe0d68968ac6284031b8a3491c70ae06",
+    "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/TwoHeadedGiantSessionTest.kt": "13d3447a79da2e154b6819f8718ff444013235c71e6ed6210c946f2af4aa2604",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaAbilityColorChoicePipelineTest.kt": "a9ae644130670d4ca9d7fca149f8f13d82f4ac83b04ee6788f0e304bd772b28e",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/zones/MoveToZoneEffectExecutorTest.kt": "c37bbf20129b0a3cb0edd043f0a341b3d8a47abb627d01568a10dc265e0c32f7",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastObserverSourceLkiTest.kt": "29622301652a19f6f9b73aaf7cc700524f5f23a91764f5596c6520dbc3d6da96",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/research/ferocity/FerocityOfTheHuntPrerelease.kt": "e4d4c081c89788af1fad06708a35ad447a93444b2fe4ba038131b7f7222bea8b"
+  },
+  "manifest_bindings": {
+    "extraction_manifest_sha256": {
+      "path": "lab-coordinator/shared-capabilities/postblock-source-extraction.json",
+      "sha256": "a24e602e4af03d3baa8bff1a2efe6581b4106b05a27dec9f4c4508cea288863a"
+    },
+    "fixture_receiving_manifest_sha256": {
+      "path": "lab-coordinator/shared-capabilities/postblock-fixture-receiving.json",
+      "sha256": "52ac7b85f1a6e68bdd6ee99f07cdcb3c5692a5322835199e4dd0006eff83c257"
+    },
+    "observer_manifest_sha256": {
+      "path": "lab-coordinator/shared-capabilities/cast-observer-receiving.json",
+      "sha256": "cf56a4a6cd72c4b1b0825d6b9b1f778c0ec824b9d348f11ca088edaca426cba3"
+    }
+  },
+  "suites": {
+    "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PostBlockDeclarationPriorityScenarioTest.kt",
+      "source_sha256": "a73890b33b97ba47097fe86a22cf851a75ad8f3843b35f58cf4eb2439c82691d",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest.xml",
+      "xml_sha256": "0bfb72180c978fe4a9675c906e257c18a9bcdae3e6794f8f80f77382b5071c62",
+      "tests": 16,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "PB01 empty final declaration gives active seat 1 first priority",
+        "PB03 actual blocks give active seat 1 an immediate combat trick",
+        "PB02 empty final declaration gives active seat 2 first priority",
+        "PB04 actual blocks give active seat 2 an immediate combat trick",
+        "PB05 a targeted block trigger preserves active priority across serialized target choice",
+        "PB06 simultaneous block triggers keep ordering and targets before active priority",
+        "PB07 paid block tax restores active priority after a serialized mana selection",
+        "PB08 declining a block tax preserves declaration duty and grants no priority",
+        "PB09 nested block-tax mana pays before SBA and targeted death-trigger placement",
+        "PB10 multiple defenders have only an APNAP declaration baton before active priority",
+        "PB11 first defender's target choice waits until every block declaration is complete",
+        "PB12 multiple defenders' block triggers wait through paid tax then stack in APNAP order",
+        "PB13 a queued block-trigger token retains exact departure LKI through later payment and cleanup",
+        "PB14 a final defender's concession abandons tax but preserves the prior defender's trigger",
+        "PB15 owner concession preserves a remaining controller's queued source LKI without early placement",
+        "PB16 concession during two-player block payment clears the actual waiting batch at game end"
+      ]
+    },
+    "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DeclareBlockersPriorityWindowTest.kt",
+      "source_sha256": "cca06f4c7fa7f9dda5cd5001cbb31ac5e39b7c3b4f588e38ee5c170abba5870d",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest.xml",
+      "xml_sha256": "55961f831d26c067e419eb07f3835a0129db3edb665b7be204b139d0f3a44d16",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "active player gets a priority window in declare blockers before combat damage",
+        "attacker's combat trick is an affordable, targetable legal action at the declare-blockers window",
+        "combat trick is detectable in the two-blockers-block-two-attackers board shape"
+      ]
+    },
+    "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/MultiDefenderCombatTest.kt",
+      "source_sha256": "f434f2d0e81aea2040efe499f91c336531a8b347fc16c2f3d6a431df552f8e1d",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest.xml",
+      "xml_sha256": "19bbde2057636b354dfa0ad2c16499dc65839e482f4d198af75dda85a054a00c",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "CombatDefenders reports the right defending players in APNAP order",
+        "a defender can only block an attacker that is attacking them (CR 509.1b)",
+        "no seat gets a priority window between two defenders' block declarations (CR 802.4)",
+        "both defenders declare blockers (APNAP) and damage lands on the right players"
+      ]
+    },
+    "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/TwoHeadedGiantCombatTest.kt",
+      "source_sha256": "9f5c5205ea4539b5904c3342682510b40aadd4691291c599c8ef6f812a8b9855",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest.xml",
+      "xml_sha256": "78cd2631e777b180d8c3430067faf3dba32eb666927a1b33932cf2c145a91264",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "a creature attacks the opposing team, never a teammate (CR 805.10b)",
+        "the combined attack may include creatures controlled by BOTH active-team members (CR 805.10b)",
+        "one declaration is the whole team's \u2014 the teammate may pass and can't add a second wave (CR 805.10b)",
+        "the whole nonactive team defends \u2014 even an un-attacked teammate is a defending player (CR 805.10a)",
+        "a defending creature may block an attacker aimed at its TEAMMATE (CR 805.10d)",
+        "a member of the attacking team cannot declare blockers (CR 805.10a)",
+        "the teammate's attackers survive a state-based-action pass (CR 805.10a / CR 506.4)",
+        "both defenders' blockers survive a state-based-action pass (CR 805.10d / CR 506.4)",
+        "an attacker stolen by the DEFENDING team is still removed from combat (CR 506.4)"
+      ]
+    },
+    "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt",
+      "source_sha256": "d14fe20f774f650d132f679966dc4eefe556cf48fb67d34fffdadd88fefda978",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest.xml",
+      "xml_sha256": "a5a5b093e28bbe1aa311501b0a21b4fadcc9716ee9fcbaabf86255d9f4493dc3",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "nonactive activation removes its sacrificed token before returning priority",
+        "cost and SBA deaths join one APNAP batch above a nonactive player's activation",
+        "SBA death occurs before choosing targets for a cost-triggered ability",
+        "Ferocity's cost-death return waits above the activated ability after Aura cleanup",
+        "paying the last life loses before an activated life gain can resolve",
+        "standalone Spawn mana removes the token before nonactive player receives priority",
+        "standalone Treasure with explicit color settles token cleanup before priority",
+        "Treasure color-choice pause completes its mana effect before SBA and restores activator priority",
+        "Spawn activation inside ward payment does not run SBA until the outer payment completes"
+      ]
+    },
+    "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/NestedManaPaymentBoundaryScenarioTest.kt",
+      "source_sha256": "d45876c5e64d3be6c6882c4317fbb192913c91b89b540b221eb43d03c96604a6",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest.xml",
+      "xml_sha256": "71ccaf5868eafe27a2dacecd4aeefe7aeb253c7c9668eb3f58eb32d3dba63ae6",
+      "tests": 12,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "seat 1 nested sacrifice choice restores the same payment without priority",
+        "seat 1 deferred death target is chosen only after payment and lethal toughness SBA",
+        "seat 1 preselected sacrifice defers its death trigger exactly once",
+        "seat 1 mana color pause preserves cost events and defers the draw",
+        "seat 1 declined outer payment retains the already paid death trigger",
+        "seat 1 illegal interrupt during nested sacrifice is atomic and does not pay a cost",
+        "seat 2 nested sacrifice choice restores the same payment without priority",
+        "seat 2 deferred death target is chosen only after payment and lethal toughness SBA",
+        "seat 2 preselected sacrifice defers its death trigger exactly once",
+        "seat 2 mana color pause preserves cost events and defers the draw",
+        "seat 2 declined outer payment retains the already paid death trigger",
+        "seat 2 illegal interrupt during nested sacrifice is atomic and does not pay a cost"
+      ]
+    },
+    "com.wingedsheep.engine.scenarios.BatchMayQuestionTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BatchMayQuestionTest.kt",
+      "source_sha256": "11ef82e18f8d2a02ee83b874fb89d8567f7bc810e69709662ff2fedf9ac5cec4",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.BatchMayQuestionTest.xml",
+      "xml_sha256": "8a0d33be1283b4aab3f824ba2803a6ac6a38d3a0dd391d4f24d28d658f90d0f1",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "two optional triggers choose targets before either consent decision",
+        "each targeted trigger asks at its own resolution and both may be accepted",
+        "declining both effects still requires both triggers to resolve",
+        "identical triggers retain independent resolution choices",
+        "a single optional trigger chooses its target before offering yes or no",
+        "may does not make a required target optional",
+        "removing the chosen target in response causes a fizzle without a may decision"
+      ]
+    },
+    "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TriggerOrderingScenarioTest.kt",
+      "source_sha256": "e4d8ce58696a968126bb17d0e9403ff59ff99ce51e1efdba05a3c0ec846bfee5",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest.xml",
+      "xml_sha256": "df5eff38487c21184c7b28ede7dc190876b49db862d228b6466fb8cb5b63892b",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "putting life loss below life gain permits surviving at one life",
+        "the other legal ordering resolves life loss first and loses before the gain",
+        "invalid ordering choices fail without altering the game or consuming a trigger",
+        "ordering is preserved through serialization and two separate target decisions",
+        "active and nonactive controllers order their own groups in APNAP placement order",
+        "two copies of a card retain all four source identities and trigger payloads"
+      ]
+    },
+    "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TriggerOrderingConcessionScenarioTest.kt",
+      "source_sha256": "b8f72093ef6b966e37616e14dec673bf79f13ffab8bcca7385b67d6134fdd167",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest.xml",
+      "xml_sha256": "688cc954d4cef1132c6ecc37afc0477dc72b1d9876cfc6e0e2e8677bfa293956",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "a conceding ordering chooser leaves the surviving controller's exact APNAP group and priority recipient intact"
+      ]
+    },
+    "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DamageSourceIdentityScenarioTest.kt",
+      "source_sha256": "0a674ab29cf2d263dcccdec2ee0e599df1418db7fd11767b692cc4d2522da736",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest.xml",
+      "xml_sha256": "882739bd4d3c5b96de29298150db772061c591b4aa6923bab10fcefc4bce801a",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "a live original source gains effective damage keywords after activation",
+        "a live original source uses its new projected controller and color",
+        "departed source uses final controller color and keywords after serialization; token=false",
+        "departed source uses final controller color and keywords after serialization; token=true",
+        "old damage does not borrow deathtouch or lifelink newly granted to the returned source"
+      ]
+    },
+    "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DamageSourceTriggerScenarioTest.kt",
+      "source_sha256": "f6ffca9fb9a75998ceb0854df4f49847e53d9a61c9d5a2d76ae9c790e3f63c86",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest.xml",
+      "xml_sha256": "8b377ce0180f0334097daa5e223414585c65aaafbec4343f2a35c19ba82bbc78",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "a dies trigger retains source damage characteristics before token cleanup; token=false",
+        "a dies trigger retains source damage characteristics before token cleanup; token=true",
+        "a triggered ability already on the stack gains departure LKI when its source later dies",
+        "generic sacrifice cost retains a token source before its ability enters the stack",
+        "missing required source snapshot fails visibly instead of a silent damage result",
+        "old source damage triggers the matching observer but not a returned object's own ability"
+      ]
+    },
+    "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TargetedDepartedSourceLkiTest.kt",
+      "source_sha256": "25125e95e9029c8f5aaed32897ddaa91bd29d562083af59262b32aec4761c342",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest.xml",
+      "xml_sha256": "348e08cc50108615c71dece353ee6c6e4793805bc80835b3e0e3326cd6258917",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "departed token target pause preserves full source LKI seat 1 player target true",
+        "departed token target pause preserves full source LKI seat 1 player target false",
+        "departed token target pause preserves full source LKI seat 2 player target true",
+        "departed token target pause preserves full source LKI seat 2 player target false"
+      ]
+    },
+    "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluatorRecordTest.kt",
+      "source_sha256": "8b17caf224042dccd16fb438133c0eadc00697d9de4350962c49df925eb6adde",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest.xml",
+      "xml_sha256": "95cefa9f27a84c7e753d7ec3cc20a2c64036edfb2d98f0c2c51673dfe8797642",
+      "tests": 19,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "empty predicate list matches anything",
+        "face-down cast records never match any non-empty filter",
+        "conjunction (AND) requires every predicate to match",
+        "CardPredicate.Or matches when any inner predicate matches (OR)",
+        "positive type matches",
+        "negation predicates",
+        "token predicates: spells are never tokens",
+        "legendary predicates read the supertype set",
+        "HasColor and NotColor inspect the recorded color set",
+        "Colorless, Monocolored, Multicolored",
+        "HasSubtype / NotSubtype / HasAnyOfSubtypes",
+        "HasBasicLandType treats the landType string as a subtype",
+        "equals / at-most / at-least",
+        "power / toughness predicates all return false",
+        "name / keyword / ability predicates return false",
+        "source-relative and context predicates return false",
+        "And: all sub-predicates must match",
+        "Or: any sub-predicate matches",
+        "Not inverts the wrapped predicate"
+      ]
+    },
+    "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest": {
+      "source_path": "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/PostBlockDeclarationSessionTest.kt",
+      "source_sha256": "4d996d5d850abcfe0f7a6300fb85d71efe0d68968ac6284031b8a3491c70ae06",
+      "xml_path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest.xml",
+      "xml_sha256": "01c6d867699d8d827b202bd43e22bcc49d87700a49e1a69dc2fc09912ea7fe88",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "GS-PB01 both defending teammates get their own declaration without ordinary priority",
+        "GS-PB02 block-tax payment exposes only the payer's mana actions before declarations resume"
+      ]
+    },
+    "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest": {
+      "source_path": "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/TwoHeadedGiantSessionTest.kt",
+      "source_sha256": "13d3447a79da2e154b6819f8718ff444013235c71e6ed6210c946f2af4aa2604",
+      "xml_path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest.xml",
+      "xml_sha256": "bd0bc4d914ab0d784caa6ce5df3e73187eccfd9fe6d42e72594bc8b6452b2546",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "seat roster carries each seat's team index, with teammates in adjacent seats (CR 805.1)",
+        "both heads of the surviving team are winners, not just the representative (CR 810.8a)",
+        "a teammate is not an opponent (CR 810): getOpponentIds returns only the other team",
+        "life totals are the shared team total for both teammates, not each raw component",
+        "a player sees their teammate's hand but not an opponent's (CR 810.2)",
+        "the seat roster carries the shared-turn flag, which the client needs to answer \"may I act?\"",
+        "a teammate is offered their OWN actions while their partner holds the baton (CR 805.5)",
+        "a Free-for-All pod stays one seat at a time \u2014 only the baton holder is offered actions",
+        "a revealed card in an opponent's hand still reaches the viewer, count and all",
+        "non-team game is unchanged: no team index, every other seat is an opponent"
+      ]
+    },
+    "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaAbilityColorChoicePipelineTest.kt",
+      "source_sha256": "a9ae644130670d4ca9d7fca149f8f13d82f4ac83b04ee6788f0e304bd772b28e",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest.xml",
+      "xml_sha256": "d3cfc93ac24be1d3685d1f13dc68b07d3bd3bf4aac3dd50b390852a7b2270a62",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "Damping Sphere replaces the two mana with one {C}",
+        "a mirror bonus and its rider both resolve",
+        "an attached 'additional mana on tap' aura fires",
+        "the land-tapped-for-mana event is still emitted"
+      ]
+    },
+    "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/zones/MoveToZoneEffectExecutorTest.kt",
+      "source_sha256": "c37bbf20129b0a3cb0edd043f0a341b3d8a47abb627d01568a10dc265e0c32f7",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest.xml",
+      "xml_sha256": "9997f84a0ba16f7eefac70a7a083f263d4f37bb19949f63cc50af8ba734e97bd",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "move from battlefield to graveyard (default)",
+        "move from battlefield to hand (bounce)",
+        "move from battlefield to exile",
+        "move to library top",
+        "move to library bottom",
+        "move to library shuffled emits LibraryShuffledEvent",
+        "move to battlefield tapped",
+        "byDestruction = true destroys the permanent",
+        "byDestruction = true on indestructible creature is a no-op",
+        "battlefield components are cleaned up when leaving battlefield"
+      ]
+    },
+    "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest": {
+      "source_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastObserverSourceLkiTest.kt",
+      "source_sha256": "29622301652a19f6f9b73aaf7cc700524f5f23a91764f5596c6520dbc3d6da96",
+      "xml_path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest.xml",
+      "xml_sha256": "02c0491e1b600a7538a94ba6d46f551b495b21436f24cb0db7726a76167b55e6",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "cast observer keeps its own source history seat 1 player target true survives false",
+        "cast observer keeps its own source history seat 1 player target true survives true",
+        "cast observer keeps its own source history seat 1 player target false survives false",
+        "cast observer keeps its own source history seat 1 player target false survives true",
+        "cast observer keeps its own source history seat 2 player target true survives false",
+        "cast observer keeps its own source history seat 2 player target true survives true",
+        "cast observer keeps its own source history seat 2 player target false survives false",
+        "cast observer keeps its own source history seat 2 player target false survives true"
+      ]
+    }
+  },
+  "actual_cases": {
+    "engine": 123,
+    "server": 12
+  },
+  "total_actual_cases": 135,
+  "retained_execution_logs": {
+    "engine": {
+      "sha256": "427d3a519aa7ba91dca357e0b9a043d6774793662ff5c8ebd7a1f1cd6086429c",
+      "bytes": 3431549,
+      "fresh_test_execution": true,
+      "build_successful": true
+    },
+    "server": {
+      "sha256": "2e38ec1a9ecd7dde1f6a13b87279784f796d9cde45e6647e3f2a92736361942c",
+      "bytes": 240614,
+      "fresh_test_execution": true,
+      "build_successful": true
+    }
+  },
+  "live_run_job_artifact_verified": true,
+  "fresh_complete_job_log_reviewed": true,
+  "fresh_job_execution_observations": {
+    "engine_started": "2026-09-26T17:29:20.3266140Z",
+    "engine_finished": "2026-09-26T17:30:34.9201145Z",
+    "engine_build_successful": "2026-09-26T17:30:37.1232500Z",
+    "server_started": "2026-09-26T17:34:43.1899058Z",
+    "server_finished": "2026-09-26T17:35:43.8896768Z",
+    "server_build_successful": "2026-09-26T17:35:45.7924257Z"
+  },
+  "scope": "Independent original-archive, exact Git source binding, raw XML identity/completeness, and fresh execution audit. This review does not independently re-review every production semantic change.",
+  "limitations": [
+    "Full repository CI is separate.",
+    "Every receiving project requires combined-source compatibility, replay, runtime and admission checks.",
+    "No production actor or gameplay admission is granted.",
+    "No official allocation was initialized or outcome exposed by this component gate.",
+    "No GitHub approval was fabricated."
+  ]
+}

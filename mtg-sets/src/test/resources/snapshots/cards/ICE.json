@@ -1431,6 +1431,103 @@
     ]
 }
 
+// Hydroblast
+{
+    "name": "Hydroblast",
+    "manaCost": "{U}",
+    "typeLine": "Instant",
+    "oracleText": "Choose one —\n• Counter target spell if it's red.\n• Destroy target permanent if it's red.",
+    "script": {
+        "spellEffect": {
+            "type": "Modal",
+            "modes": [
+                {
+                    "effect": {
+                        "type": "Gated",
+                        "gate": {
+                            "type": "Gate.WhenCondition",
+                            "condition": {
+                                "type": "EntityMatches",
+                                "entity": {
+                                    "type": "ContextTarget",
+                                    "index": 0
+                                },
+                                "filter": "red"
+                            }
+                        },
+                        "then": "Counter"
+                    },
+                    "targetRequirements": [
+                        {
+                            "type": "TargetObject",
+                            "filter": {
+                                "baseFilter": {},
+                                "zone": "Stack"
+                            },
+                            "id": "spell"
+                        }
+                    ],
+                    "description": "Counter target spell if it's red"
+                },
+                {
+                    "effect": {
+                        "type": "Gated",
+                        "gate": {
+                            "type": "Gate.WhenCondition",
+                            "condition": {
+                                "type": "EntityMatches",
+                                "entity": {
+                                    "type": "ContextTarget",
+                                    "index": 0
+                                },
+                                "filter": "red"
+                            }
+                        },
+                        "then": {
+                            "type": "MoveToZone",
+                            "target": {
+                                "type": "BoundVariable",
+                                "name": "permanent"
+                            },
+                            "destination": "Graveyard",
+                            "byDestruction": true
+                        }
+                    },
+                    "targetRequirements": [
+                        {
+                            "type": "TargetObject",
+                            "filter": {
+                                "baseFilter": "permanent"
+                            },
+                            "id": "permanent"
+                        }
+                    ],
+                    "description": "Destroy target permanent if it's red"
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "72",
+        "artist": "Kaja Foglio",
+        "flavorText": "\"Heed the lessons of our time: the forms of water may move the land itself and hold captive the fires within.\"\n—Gustha Ebbasdotter, Kjeldoran Royal Mage",
+        "imageUri": "https://cards.scryfall.io/normal/front/f/6/f62716f0-fde2-49ef-b8a4-c1b03f451194.jpg?1783947514",
+        "rulings": [
+            {
+                "date": "2016-06-08",
+                "text": "Hydroblast can target any spell or permanent, not just a red one. It checks the color of the target only on resolution."
+            },
+            {
+                "date": "2004-10-04",
+                "text": "The decision to counter a spell or destroy a permanent is a decision made on announcement before the target is selected. If the spell is redirected, this mode can't be changed, so only targets of the selected type are valid."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Iceberg
 {
     "name": "Iceberg",
@@ -2686,6 +2783,103 @@
     },
     "colorIdentityOverride": [
         "GREEN"
+    ]
+}
+
+// Pyroblast
+{
+    "name": "Pyroblast",
+    "manaCost": "{R}",
+    "typeLine": "Instant",
+    "oracleText": "Choose one —\n• Counter target spell if it's blue.\n• Destroy target permanent if it's blue.",
+    "script": {
+        "spellEffect": {
+            "type": "Modal",
+            "modes": [
+                {
+                    "effect": {
+                        "type": "Gated",
+                        "gate": {
+                            "type": "Gate.WhenCondition",
+                            "condition": {
+                                "type": "EntityMatches",
+                                "entity": {
+                                    "type": "ContextTarget",
+                                    "index": 0
+                                },
+                                "filter": "blue"
+                            }
+                        },
+                        "then": "Counter"
+                    },
+                    "targetRequirements": [
+                        {
+                            "type": "TargetObject",
+                            "filter": {
+                                "baseFilter": {},
+                                "zone": "Stack"
+                            },
+                            "id": "spell"
+                        }
+                    ],
+                    "description": "Counter target spell if it's blue"
+                },
+                {
+                    "effect": {
+                        "type": "Gated",
+                        "gate": {
+                            "type": "Gate.WhenCondition",
+                            "condition": {
+                                "type": "EntityMatches",
+                                "entity": {
+                                    "type": "ContextTarget",
+                                    "index": 0
+                                },
+                                "filter": "blue"
+                            }
+                        },
+                        "then": {
+                            "type": "MoveToZone",
+                            "target": {
+                                "type": "BoundVariable",
+                                "name": "permanent"
+                            },
+                            "destination": "Graveyard",
+                            "byDestruction": true
+                        }
+                    },
+                    "targetRequirements": [
+                        {
+                            "type": "TargetObject",
+                            "filter": {
+                                "baseFilter": "permanent"
+                            },
+                            "id": "permanent"
+                        }
+                    ],
+                    "description": "Destroy target permanent if it's blue"
+                }
+            ]
+        }
+    },
+    "metadata": {
+        "collectorNumber": "213",
+        "artist": "Kaja Foglio",
+        "flavorText": "\"Just the thing for those pesky water mages.\"\n—Jaya Ballard, Task Mage",
+        "imageUri": "https://cards.scryfall.io/normal/front/c/3/c342cac5-08ae-4428-9c2c-f6c5904e54d2.jpg?1783947483",
+        "rulings": [
+            {
+                "date": "2016-06-08",
+                "text": "Pyroblast can target any spell or permanent, not just a blue one. It checks the color of the target only on resolution."
+            },
+            {
+                "date": "2004-10-04",
+                "text": "The decision to counter a spell or destroy a permanent is a decision made on announcement before the target is selected. If the spell is redirected, this mode can't be changed, so only targets of the selected type are valid."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "RED"
     ]
 }
 

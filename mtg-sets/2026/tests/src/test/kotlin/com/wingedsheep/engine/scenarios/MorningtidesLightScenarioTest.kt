@@ -3,6 +3,7 @@ package com.wingedsheep.engine.scenarios
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.mtg.sets.definitions.ecl.cards.MorningtidesLight
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Step
@@ -68,6 +69,7 @@ class MorningtidesLightScenarioTest : FunSpec({
 
         // At the beginning of the next end step one delayed trigger per exiled creature fires.
         driver.passPriorityUntil(Step.END)
+        driver.chooseTriggerOrderInListedOrder()
         driver.stackSize shouldBe 3
         repeat(3) { driver.bothPass() }
         driver.stackSize shouldBe 0
