@@ -1,7 +1,11 @@
 name: Authorized Search Provenance Focused
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - shared/authorized-search-actor-gate-20260927
+    paths:
+      - .github/workflows/authorized-search-provenance-focused.yml
 
 permissions:
   contents: read
@@ -9,24 +13,142 @@ permissions:
 jobs:
   source-bound-gate:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 90
     steps:
       - name: Checkout immutable source candidate
         uses: actions/checkout@v6
         with:
-          ref: 050a3156181eaab2069d4be2ba82502204d1e44d
-      - name: Verify source identity
-        run: test "$(git rev-parse HEAD)" = "050a3156181eaab2069d4be2ba82502204d1e44d"
+          ref: b3d4d2922f92e325f57ae7491b96068f8bf6a7b4
+      - name: Verify exact source and finite test blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            printf 'workflow_event=%s\nsource_checkout=%s\n' "$GITHUB_SHA" "$(git rev-parse HEAD)"
+            test "$(git rev-parse HEAD)" = "b3d4d2922f92e325f57ae7491b96068f8bf6a7b4"
+            while read -r expected path; do
+              actual="$(git rev-parse "HEAD:$path")"
+              if [[ "$actual" != "$expected" ]]; then
+                printf 'BLOB_MISMATCH %s expected=%s actual=%s\n' "$path" "$expected" "$actual"
+                exit 1
+              fi
+              printf 'verified %s %s\n' "$expected" "$path"
+            done <<'PINNED_BLOBS'
+            24809fe47531eab30dd133c9f6629cb0c414c568 mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/PipelineEffects.kt
+            5ec03c79a23e7369b76550833ca2ad524e0f07e1 mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/LibraryPatterns.kt
+            51090383993c1d315194f5b2a0ff0e3ccbc24cba rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/GatherCardsExecutor.kt
+            d3c80ae6077571db17292e34a447dc4329a6f62d rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt
+            81e07af6594f0848d2aee1360895c2bc4d249a47 rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/SelectFromCollectionExecutor.kt
+            e3995899772b15974782bec71cb1644395206131 game-server/src/main/kotlin/com/wingedsheep/gameserver/session/DecisionEnricher.kt
+            081c74fd31391bc40e944ea9f0d69a8306627234 game-server/src/main/kotlin/com/wingedsheep/gameserver/session/PendingDecisionRouting.kt
+            9d9eced96eccd7b1ac3ea4211d6c50728477e5f9 gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorAuthorizedLibrarySearch.kt
+            cb01d8bb8cb3c751f533c71ea29781ba6a05f397 gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorDecisionProjection.kt
+            17cbc1bdb65d9da597eff9811c1b4fb2f7cefee0 gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt
+            920f82e00433a6260c275a3d30b6d0d036670f14 rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/library/AuthorizedLibrarySearchChoiceTest.kt
+            494599e337e6ca588463cd775cc428dd6b01df9f game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AuthorizedSearchDecisionMaskingTest.kt
+            628d8ab01442cb7e4488c643d463eed4b6b59d2d gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorAuthorizedLibrarySearchOrderTest.kt
+            5d9ebb717697fafdd166fa1c5468fb57922e4d0f gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorObservationBoundaryTest.kt
+            526b21d188ffdfe2f08e92ea7514f7ac111d6b1a gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt
+          PINNED_BLOBS
+          } 2>&1 | tee focused-source.txt
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: 21
       - uses: gradle/actions/setup-gradle@v6
-      - name: Engine, routing, and sealed actor receiver
-        run: >-
-          scripts/gradle-locked
-          :rules-engine:test --tests com.wingedsheep.engine.handlers.effects.library.AuthorizedLibrarySearchChoiceTest
-          :game-server:test --tests com.wingedsheep.gameserver.session.AuthorizedSearchDecisionMaskingTest
-          :gym:test --tests com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest
-          --tests com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest
-          --tests com.wingedsheep.gym.actorinput.ActorPriorityObservationTest
+      - name: Run finite engine, wire, and actor boundary classes
+        shell: bash
+        run: |
+          set -o pipefail
+          set +e
+          scripts/gradle-locked \
+            :rules-engine:test --tests com.wingedsheep.engine.handlers.effects.library.AuthorizedLibrarySearchChoiceTest \
+            :game-server:test --tests com.wingedsheep.gameserver.session.AuthorizedSearchDecisionMaskingTest \
+            :gym:test --tests com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest \
+              --tests com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest \
+              --tests com.wingedsheep.gym.actorinput.ActorPriorityObservationTest \
+            --rerun-tasks --stacktrace 2>&1 | tee focused-build.log
+          gradle_status="${PIPESTATUS[0]}"
+          python3 - "$gradle_status" "$GITHUB_SHA" "$(git rev-parse HEAD)" <<'PY'
+          import json, subprocess, sys
+          status, event, after = sys.argv[1:]
+          changes = subprocess.check_output(
+              ['git', 'status', '--porcelain', '--untracked-files=no'], text=True).splitlines()
+          with open('focused-exit.json', 'w') as evidence:
+              json.dump({'gradleExit': int(status), 'workflowEvent': event,
+                         'sourceBefore': 'b3d4d2922f92e325f57ae7491b96068f8bf6a7b4',
+                         'sourceAfter': after, 'trackedWorktreeClean': not changes,
+                         'trackedChanges': changes, 'rerunTasks': True}, evidence, indent=2)
+              evidence.write('\n')
+          PY
+          test "$(git rev-parse HEAD)" = "b3d4d2922f92e325f57ae7491b96068f8bf6a7b4" || exit 1
+          test -z "$(git status --porcelain --untracked-files=no)" || exit 1
+          exit "$gradle_status"
+      - name: Audit exact XML counts and skipped cases
+        if: always()
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          expected = [
+              ('rules-engine', 'com.wingedsheep.engine.handlers.effects.library.AuthorizedLibrarySearchChoiceTest', 5),
+              ('game-server', 'com.wingedsheep.gameserver.session.AuthorizedSearchDecisionMaskingTest', 1),
+              ('gym', 'com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest', 2),
+              ('gym', 'com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest', 28),
+              ('gym', 'com.wingedsheep.gym.actorinput.ActorPriorityObservationTest', 4),
+          ]
+          reports = []
+          for module, name, count in expected:
+              path = Path(module) / 'build/test-results/test' / ('TEST-' + name + '.xml')
+              row = {'module': module, 'className': name, 'expected': count, 'xml': str(path)}
+              if path.is_file():
+                  root = ET.parse(path).getroot()
+                  cases = root.findall('.//testcase')
+                  names = [case.get('name') for case in cases]
+                  row.update(observed=len(cases),
+                             skipped=sum(len(case.findall('skipped')) for case in cases),
+                             failures=sum(len(case.findall('failure')) for case in cases),
+                             errors=sum(len(case.findall('error')) for case in cases),
+                             caseNames=names, distinctCaseNames=len(set(names)) == len(names)
+                                 and all(name for name in names),
+                             suiteDeclared={key: int(root.get(key, '-1'))
+                                            for key in ('tests', 'skipped', 'failures', 'errors')})
+              else:
+                  row.update(observed=0, skipped=0, failures=0, errors=0, caseNames=[],
+                             distinctCaseNames=False, suiteDeclared={})
+              row['accepted'] = (
+                  row['observed'] == count and row['distinctCaseNames'] and
+                  row['suiteDeclared'] == {'tests': row['observed'],
+                                           'skipped': row['skipped'],
+                                           'failures': row['failures'],
+                                           'errors': row['errors']} and
+                  not (row['skipped'] or row['failures'] or row['errors'])
+              )
+              reports.append(row)
+          result = {'source': 'b3d4d2922f92e325f57ae7491b96068f8bf6a7b4',
+                    'expectedTotal': 40, 'observedTotal': sum(row['observed'] for row in reports),
+                    'accepted': all(row['accepted'] for row in reports), 'reports': reports}
+          Path('focused-xml-audit.json').write_text(json.dumps(result, indent=2) + '\n')
+          print(json.dumps({'accepted': result['accepted'],
+                            'observedTotal': result['observedTotal'],
+                            'classes': [(r['className'], r['observed'], r['skipped'])
+                                        for r in reports]}))
+          raise SystemExit(0 if result['accepted'] else 1)
+          PY
+      - name: Retain raw build and XML evidence on success or failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: authorized-search-focused-evidence
+          path: |
+            focused-source.txt
+            focused-build.log
+            focused-exit.json
+            focused-xml-audit.json
+            **/build/test-results/**/*.xml
+            **/build/reports/tests/**
+          if-no-files-found: error
+          retention-days: 30
