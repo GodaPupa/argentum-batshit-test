@@ -45,7 +45,8 @@ internal class SphinxStageEOpeningRouter(
                         ?: error("Opening seat lacks mulligan state")
                     if (mulligan.hasKept) 1 else 0
                 }.thenBy {
-                    state.getEntity(it)!!.get<MulliganStateComponent>()!!.mulligansTaken
+                    val mulligan = state.getEntity(it)!!.get<MulliganStateComponent>()!!
+                    if (mulligan.hasKept) 0 else mulligan.mulligansTaken
                 }.thenBy { frozenSeatOrder.indexOf(it) }
             )
         } else frozenSeatOrder.firstOrNull { it in eligible }
