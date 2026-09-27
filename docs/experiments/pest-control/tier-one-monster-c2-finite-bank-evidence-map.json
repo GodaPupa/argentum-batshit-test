@@ -1,0 +1,56 @@
+{
+  "schema": "pest-monster-c2-finite-bank-evidence-map-v1",
+  "status": "PROSPECTIVE_INCOMPLETE_NO_P03_P04_OR_PAIR_ADMISSION",
+  "frozen_mains": {
+    "pest": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f"
+  },
+  "accepted_component": {
+    "source": "b081c56f:gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisionsTest.kt",
+    "test_blob": "9a590f0424448da7e0edafe325e154769ead5a20",
+    "run": 36312087906,
+    "scoped_cases": "MC01-MC10",
+    "independent_review": "cb5a88c5",
+    "mapping": {
+      "P04_01": [
+        "MC01 Map current search",
+        "MC02 Crop public-sacrifice plus search",
+        "MC10 verified offered order"
+      ],
+      "P04_02": [
+        "MC04 Stirrings offered group; reorder remains unresolved",
+        "MC06 null defer"
+      ],
+      "P04_04": [
+        "MC05 Bojuka target public graveyard",
+        "MC07 hidden invariance"
+      ],
+      "P04_05": [
+        "MC03 cascade Crop sacrifice only"
+      ],
+      "P03_03": [
+        "MC02 explicit Crop sacrifice only"
+      ],
+      "P03_06": [
+        "MC03 cascade Crop branch only"
+      ]
+    }
+  },
+  "new_receiving": {
+    "P03_01": {
+      "source": "9142aede:gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterPriorityLandReceivingTest.kt",
+      "test_blob": "b42e1aac801f1d465fd2918220195015b5e554ed",
+      "run": 36335895831,
+      "artifact": 10936838749,
+      "author_audit": "6eb3cfc8:docs/experiments/pest-control/evidence/c2-p03-land-36335895831-author-audit.json",
+      "scope": "two actual-card actor seat land menus and accepted land play; no strategic parity"
+    },
+    "P04_03": {
+      "source": "a9d01ebd:gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterPendingScryReceivingTest.kt",
+      "test_blob": "59fbf6498bd7b9ee7917531aa6ae53d9ede0b415",
+      "scope": "prospective two-seat Monster Candy Trail bottom/reorder, unexecuted and unreviewed"
+    }
+  },
+  "missing": "Complete exact reachable action and decision variants for all frozen mains, both actor seats and starts, including non-search looks, other scry/surveil, alternative costs, payment, triggers/order, attack/block/post-block priority, response/pass, random/cascade separation, raw-policy parity and complete own/public pilots. Map every accepted shared case by exact identity. Existing scoped cases cannot be summed into admission.",
+  "official_games": 0
+}
