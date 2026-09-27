@@ -2,7 +2,7 @@ package com.wingedsheep.gym.actorinput
 
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.CastSpell
-import com.wingedsheep.engine.core.ChosenTarget
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.core.SelectCardsDecision
 import com.wingedsheep.engine.core.SubmitDecision
 import com.wingedsheep.engine.support.ScenarioTestBase
