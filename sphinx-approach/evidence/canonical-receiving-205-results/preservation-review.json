@@ -1,0 +1,26 @@
+{
+  "schema": "sphinx-pr205-final-evidence-package-independent-preservation-review-v1",
+  "reviewer": "actual /root/pest",
+  "status": "PASS_BYTE_PRESERVATION_ONLY",
+  "source": "00ad4265cff954bc770a34cf0b6289bde2145eaf",
+  "tree": "4693352c4a22d9f3b35eb47048c8edaabe8157f1",
+  "archive_index_sha256": "39f51a3055d7a5cb0d1a18069a5562219264ae5f677c4acfbd03c3d8e6eb505c",
+  "complete_zip_bytes": 12604082,
+  "complete_zip_sha256": "4a1359885748a9d900d0fd5b5725b733b4188412505d6761d8dc806bcb7bdd2f",
+  "checks": [
+    "Read all three parts and checked their listed size/SHA values; concatenated in memory only, with no duplicate archive written.",
+    "Verified all84 unique ZIP names and CRC, exact83-entry embedded/external member manifest equality and every member size/SHA.",
+    "Verified all23 nested original ZIPs against existing original attachment/owned original bytes, and verified every nested CRC and name uniqueness. No original was downloaded again.",
+    "Verified all18 complete decoded gzip logs byte-for-byte against their existing owned files and fully decompressed each gzip to verify its stream integrity; recorded decoded sizes/hashes.",
+    "Verified all nine Pest original ZIPs, eight Pest logs and exact0cee receiving audit are preserved unchanged.",
+    "Verified exact reviewed records0cee Pest,0afe Izzet,7982 Ferocity andafd5 root priority are present with their declared full hashes.",
+    "The packaged README equals the existing reviewed f98b bytes. This review does not replace the separate Izzet e7f88 prose/current-status review."
+  ],
+  "script_sha256": "a21f1f29ea48c282cd339ae3031cc57bf931bf356dd3062e20bdb3356b768769",
+  "checks_sha256": "c191e26440bfdb734f3ea494d11506fbda380c3c91d10adae71f87fd0b4a3f2b",
+  "limits": [
+    "Preservation review only; no new source, rules, test-count or scientific judgment is inferred by this packaging pass. Prior component/CI reviews and their cached-task, legacy-XML, overlap and gameplay limitations remain authoritative.",
+    "No new execution, dispatch, source changes, experimental allocation, seed access, deck changes or deck-performance evidence.",
+    "Publication must still verify its live expected parent and inert push/PR trigger context. This is not GitHub approval or merge permission."
+  ]
+}
