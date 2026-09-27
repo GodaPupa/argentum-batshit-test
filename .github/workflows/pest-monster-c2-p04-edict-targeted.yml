@@ -28,7 +28,7 @@ jobs:
             git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterOpposingSacrificeReceivingTest.kt
             git status --porcelain
           } > build/reports/pest-c2-p04-edict/source.txt
-          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterOpposingSacrificeReceivingTest.kt)" = "9174cfaa5d4986c8251542267be7a8602b6a6dea"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterOpposingSacrificeReceivingTest.kt)" = "9f8cc16a624d45fe81c32e6be9b4e5b84b950458"
       - name: Execute fresh two-seat opposing-sacrifice fixtures
         shell: bash
         run: |
