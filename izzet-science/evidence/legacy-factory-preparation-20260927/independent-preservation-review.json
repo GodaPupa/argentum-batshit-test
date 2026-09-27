@@ -1,0 +1,101 @@
+{
+  "schema": "independent-held-recovery-preservation-review/v1",
+  "reviewer": "/root/sphinx",
+  "reviewed_utc": "2026-09-27T04:29:57.236678+00:00",
+  "disposition": "PASS_PRESERVATION_ONLY_OF_HISTORICAL_HELD_DRAFT_AND_SEPARATE_HELD_SUCCESSOR",
+  "independence": "I did not author the Izzet source candidates, controls, recovery packet or visibility successor. Some historical Manual process-boundary findings and a Sphinx workflow-body cache preserved in the packet were authored by this lane; this is independent review of Izzet packaging, not a second independent semantic review of those original notes.",
+  "exact_publication_files": [
+    {
+      "path": "izzet-takeover/shared-receiving/legacy-factory-recovery-20260927/README.md",
+      "bytes": 2719,
+      "sha256": "7d6e0a235b9fdedc50953c71909be3148e118fcf885c4a7bc66eab10d27ebeb3"
+    },
+    {
+      "path": "izzet-takeover/shared-receiving/legacy-factory-recovery-20260927/archive-index.json",
+      "bytes": 22054,
+      "sha256": "d2face45125799c5f91776af5eb33a077c8d1fcfc4dd9af35850bdc2f6fd295f"
+    },
+    {
+      "path": "izzet-takeover/shared-receiving/legacy-factory-recovery-20260927/held-factory-preparation.zip",
+      "bytes": 496995,
+      "sha256": "4276c2f631306991fff1c8d6104383656f73e648f653ae2c231e32933c9cc728"
+    },
+    {
+      "path": "izzet-takeover/shared-receiving/legacy-factory-recovery-20260927/visibility-successor-held.zip",
+      "bytes": 32102,
+      "sha256": "613ff0bebca9651304962760636abab14ff0583d2f9c1a19284a91e85192ff54"
+    },
+    {
+      "path": "izzet-takeover/shared-receiving/legacy-factory-recovery-20260927/POST_FREEZE_STATUS.md",
+      "bytes": 2587,
+      "sha256": "6926924d71e2fde3bc5d37caf35f95781c97f53fffa538b953a8dcffd62eef54"
+    }
+  ],
+  "publication_plan": {
+    "path": "izzet-takeover/shared-receiving/legacy-factory-recovery-20260927/publication-plan.json",
+    "bytes": 1335,
+    "sha256": "f7f822745de35c0997ad45e26f81a1663ee0c911d36bf1c1788fec66d1e6ba32"
+  },
+  "independent_proof": {
+    "path": "sphinx-audit/izzet-held-recovery-review/independent-byte-preservation-proof.json",
+    "bytes": 56008,
+    "sha256": "1fc2c72ab4aa414237d582ea364db25242a86735ae694b2fac9e7f9a299fd4a6"
+  },
+  "independent_checker": {
+    "path": "sphinx-audit/izzet-held-recovery-review/check_preservation.py",
+    "bytes": 9734,
+    "sha256": "db6256db5704dfdd57c5c3fde4f248094fb1dc10783c974feb29acb2f58d564e"
+  },
+  "verification": [
+    "Fully read both original ZIPs, checked whole-byte sizes/SHA256, all member CRCs, unique names, no traversal or symlinks, and exact manifest coverage. No packet code was imported or executed.",
+    "Original 496,995-byte ZIP has 89 members: 88 payloads plus manifest. Every payload size/SHA256 agrees with both internal manifest and external index, and all 88 payloads equal the actual local originals byte-for-byte.",
+    "Original index uncompressed_bytes=2,410,775 describes payloads only. The full 89-member uncompressed total is 2,431,335, including the 20,560-byte manifest. No archive or index was changed.",
+    "Separate 32,102-byte successor ZIP has 13 members: 12 payloads plus manifest. Every payload size/SHA256 and local original byte equality passed. Its standalone POST_FREEZE_STATUS.md is identical to the archived version.",
+    "Independently recomputed Git blob SHA1 and SHA256 for baseline/fixed AIPlayer and new factory fixture. Candidate manifest, gate and preserved API commit responses consistently bind before af16191/e9aba19 and fixed e825589/52932b6 with the recorded parent chain. This is internal provenance consistency, not a new remote source-tree audit.",
+    "Preserved Pest source review adf3df49 is exact and limited to a static two-file candidate for prospective qualification design. No runtime or event permission is inferred.",
+    "Original 67ba collector/gate ba7a/workflow 53165 match their frozen manifest; gate ready_for_execution=false and source_review=null remain intact. Three prospective banks contain 11 executions of 9 identities, including one explicitly required original assertion failure. No actual factory execution is claimed.",
+    "All four predecessor collector versions, original missing-source observation finding, namespace self-check failure, and 13/6/4 author-check records are retained with exact original hashes. Historical proposal labels remain historical; README and compact continuation explicitly state held scope.",
+    "Post-freeze note binds the exact independently authored 9e7188 PermissionError finding, byte-identical to Ferocity original. It explicitly prevents acceptance of original 67ba. Successor ed3c is separately held; unchanged gate/workflow equal the original ZIP bytes. Its ten reported in-memory guards are preserved as author reports, not reexecuted or accepted by this review.",
+    "Read complete README, post-freeze status, held continuation, source and control manifests and prior failure dispositions. Prose distinguishes original held history, later finding, prospective source pair, unrun package/JVM prerequisite and separate 973 receiver. No full policy/runtime/gameplay admission or new performance evidence is claimed.",
+    "All five proposed publication file sizes/hashes match the prospective evidence-only plan; only files under the stated evidence prefix are proposed. Root must still validate live parent, actual Git delta and event scope before publication."
+  ],
+  "parser_corrections_preserved": [
+    {
+      "path": "sphinx-audit/izzet-held-recovery-review/check_preservation.initial.py",
+      "bytes": 9611,
+      "sha256": "961c200f5d95c1e4fa6e6c63a2196a261b02cc6e14351dd8d81e67db80d7ae55"
+    },
+    {
+      "path": "sphinx-audit/izzet-held-recovery-review/initial-parser-observation.json",
+      "bytes": 509,
+      "sha256": "b4830b63712b5a94575fd5b8732545cf1c107e59adc84b2777c91c9bb69e9d2c"
+    },
+    {
+      "path": "sphinx-audit/izzet-held-recovery-review/check_preservation.second.py",
+      "bytes": 9703,
+      "sha256": "82ba5c131b4e902e2af54e7ec3e0c99c36feec7df9e0274d40df02849ae45fcf"
+    },
+    {
+      "path": "sphinx-audit/izzet-held-recovery-review/second-parser-observation.json",
+      "bytes": 353,
+      "sha256": "f651b756c45452c87b30a7bc4eb2f278dbd3d2f50cc1b0c0c441b069bb77a054"
+    }
+  ],
+  "publication_boundary": {
+    "proposed_parent": "e374a48f078d2a9d4e760c1d70d04549a1caf18f",
+    "proposed_branch": "review/izzet-shared-receiving-evidence-20260926",
+    "prefix": "izzet-science/evidence/legacy-factory-held-recovery-20260927",
+    "required_context": "Publish the separate POST_FREEZE_STATUS.md and successor ZIP with the original three files so historical Current labels cannot be mistaken for current controller acceptance. Preserve original packet unchanged.",
+    "current_live_parent_or_trigger_check_performed": false,
+    "refs_changed_by_reviewer": false
+  },
+  "limits": [
+    "No source/controller semantic approval, source ref, workflow activation, GitHub approval, or gameplay permission.",
+    "No process/AST guard reproduction, package command, engine/JVM/software fixture or game executed; only independent standard-library byte/JSON parsing.",
+    "No fresh official counter, source ownership, workflow status, remote object or package availability verification.",
+    "No claim that reported live-process guards for 67ba validate successor ed3c; no claim that package layout/version references establish functioning runner semaphore.",
+    "Any later source/helper revision requires its own source and event review; this preservation review does not admit it."
+  ],
+  "games_or_allocations_executed": 0,
+  "deck_performance_evidence_changed": false
+}

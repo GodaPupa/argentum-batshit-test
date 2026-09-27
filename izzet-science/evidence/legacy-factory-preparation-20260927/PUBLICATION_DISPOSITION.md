@@ -1,0 +1,13 @@
+# Izzet factory preparation: preserved history and later source review
+
+This evidence-only checkpoint preserves two different states. The original `held-factory-preparation.zip` (`4276c2f6…`) contains the unchanged, unready `67ba5871` controller and its historical findings. `POST_FREEZE_STATUS.md` and `visibility-successor-held.zip` (`613ff0be…`) separately preserve the later process-visibility finding and the still-unready `ed3c72a1` successor snapshot. Historical “current” and “pending” labels inside those snapshots remain attributed to their recorded times.
+
+The subsequently issued [Ferocity source review](independent-shared-helper-source-review.json), SHA-256 `2121e9c8bfcc4f896059babd901899c975db54673edb1c77aa1e113e0cb2f4b0`, passes the exact prospective finite `ed3c72a1` control source subject to root's final source/tree/event release. Its complete twelve-file support set and original review are preserved separately in `issued-review-support.zip`. This source review does not approve the old `67ba5871` controller, turn synthetic checks into engine results, or report a successful package acquisition or working CI semaphore.
+
+The prospective experiment remains three software banks, eleven executions of nine identities, including one specifically required actual pre-fix assertion failure. No factory qualification event or result is established by this preservation checkpoint. It grants no official seed access, allocation, policy adoption, runtime acceptance or gameplay admission. The before/fixed source objects remain `af16191eba3c93efa40f4ab28c2454b4b3c23d88` and `e825589e1deff9de09f4ffe78aece41dc5ac0df9`.
+
+[Sphinx's preservation review](independent-preservation-review.json), SHA-256 `b80b81a4afc26fa7892a25358efb28341165f2ebfdd34e2dd629726823fa66ac`, verifies the original and successor archives byte-for-byte. The later `issued-review-preservation-check.json` verifies the issued Ferocity review archive and all support bytes. These packaging checks do not duplicate or replace Ferocity's source review. Independent parser corrections are preserved alongside their final byte checker; none altered the archived material.
+
+All files in this checkpoint are under `izzet-science/evidence/legacy-factory-preparation-20260927/`. The older proposed prefix embedded in the historical archive index is retained unchanged; this document records the actual publication namespace. No production, test, workflow, deck, pilot or protocol path is changed. The preparation was made as an unreferenced child of evidence commit `e374a48f078d2a9d4e760c1d70d04549a1caf18f`; root retains the final live-parent, ownership, exact-delta and event review before any branch update.
+
+No deck-performance evidence changed.

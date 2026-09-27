@@ -1,0 +1,9 @@
+{
+  "scope": "Preservation-parser correction, no tested code execution or qualification failure",
+  "script_sha256": "961c200f5d95c1e4fa6e6c63a2196a261b02cc6e14351dd8d81e67db80d7ae55",
+  "exception": "AssertionError at all-member uncompressed bytes == index uncompressed_bytes",
+  "reason": "Index uncompressed_bytes describes payload files and excludes manifest; independent initial parser assumed all ZIP members.",
+  "all_zip_member_bytes": 2431335,
+  "payload_bytes": 2410775,
+  "manifest_bytes": 20560
+}
