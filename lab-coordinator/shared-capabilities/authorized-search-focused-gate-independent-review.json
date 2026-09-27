@@ -1,0 +1,33 @@
+{
+  "schema": "authorized-search-focused-gate-independent-review-v1",
+  "reviewer": "single active conductor /root, nonauthor of source/collector",
+  "disposition": "ACCEPT_FOCUSED_GENERIC_SOFTWARE_GATE_ONLY",
+  "source": {
+    "tested_commit": "b3d4d2922f92e325f57ae7491b96068f8bf6a7b4",
+    "inventory_commit": "198d197953d68fd97fadd0b8f13e315cf29bcaa8",
+    "workflow_head": "463e5b01e99a2af9979625f45e822d552ec94095",
+    "implementer_raw_audit": "ac9eefad0d0df0c905377fa5c7124f89e51bfe67"
+  },
+  "run": {
+    "id": 36292196895,
+    "attempt": 1,
+    "job": 108544299057,
+    "conclusion": "success",
+    "artifact_id": 10923105808,
+    "artifact_bytes": 39399,
+    "artifact_sha256": "ae1c76b7a82351e9f118187d9c36bcc14c8131b18df2f878fd6913391f264c0d"
+  },
+  "independent_raw_checks": [
+    "Downloaded the original artifact, verified exact byte length and SHA256, ZIP CRC and 27 distinct archive members.",
+    "Decoded five original XML suites and compared each of 40 names with the prospective inventory: 5 engine + 1 browser wire + 2 authorized search actor + 28 observation boundary + 4 priority, all unique, zero failure/error/skip and declared suite counts agree.",
+    "Original source file lists verify 15 exact source/test Git blobs, checkout b3d4 before/after, clean tracked worktree, rerunTasks true and Gradle exit0.",
+    "Original build log reports BUILD SUCCESSFUL, 63 actionable tasks executed, and each selected test task ran; this is freshly executed software evidence."
+  ],
+  "scope": "Accepted focused deterministic generic engine, browser-wire and actor projection behavior at immutable source only. Requires broader CI at integration acceptance boundary and Pest-specific receiving/complete pair pilots; not C2/A2 or official experiment.",
+  "excluded": [
+    "No S01–S12 accepted scenario bank, MC10 pilot equivalence, Pest C2 or A2, seed freeze, claim or game.",
+    "No matchup evidence or conclusion for any project."
+  ],
+  "official_games": 0,
+  "official_seeds": 0
+}
