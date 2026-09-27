@@ -1,0 +1,256 @@
+{
+  "at_utc": "2026-09-27T01:13:31.585916+00:00",
+  "source": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+  "tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "status": "AUTHOR_BOUNDED_RAW_52_CASE_AUDIT_PASS_REQUIRES_NONAUTHOR_REVIEW",
+  "banks": [
+    {
+      "bank": "combat",
+      "run": 36283941451,
+      "attempt": 1,
+      "artifact_id": 10919593751,
+      "original_bytes": 243356,
+      "original_sha256": "30c03e8050e0d811ed71c1dccacf0604ca047a47c02d753566edbdcb293bff8e",
+      "zip_crc_pass": true,
+      "members": [
+        {
+          "path": "actual-case-audit.json",
+          "bytes": 4972,
+          "sha256": "8f3b9a9da8aaa261cc85b22fce549a9ec8d5188b9f8de781e6adf9257f88410f"
+        },
+        {
+          "path": "command-exit-status.txt",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "qualification.log",
+          "bytes": 3476472,
+          "sha256": "497ebc53c00236da0f031863b97c73be7e9f1c3496104830ef0b6451f2e4727b"
+        },
+        {
+          "path": "source-provenance.json",
+          "bytes": 4975,
+          "sha256": "7fa3032ca807f6d8ea94b493d5b0185776da00714a3316fd1ca6ec2a8259499b"
+        },
+        {
+          "path": "tests/BandingTrampleDrainScenarioTest/TEST-com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest.xml",
+          "bytes": 560,
+          "sha256": "19e4dd85e774056e054c6ed331581fa2469c4bde250e7572c239b9bff4983d9f"
+        },
+        {
+          "path": "tests/BandingTrampleDrainScenarioTest/exit-status.txt",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "tests/CombatAssignmentCurrentRulesTest/TEST-com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest.xml",
+          "bytes": 2678,
+          "sha256": "f1ca514d1b48db8aa29f12c862053e2eadbaf1a40673aa959ee4d7d28f08a86d"
+        },
+        {
+          "path": "tests/CombatAssignmentCurrentRulesTest/exit-status.txt",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "tests/CombatDamageAssignmentTest/TEST-com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest.xml",
+          "bytes": 1902,
+          "sha256": "42a2ff9c901bd99e4f440322ec5657a9f957377b698669b452c6c990e6234d30"
+        },
+        {
+          "path": "tests/CombatDamageAssignmentTest/exit-status.txt",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "tests/CombatResolutionBoardTest/TEST-com.wingedsheep.engine.scenarios.CombatResolutionBoardTest.xml",
+          "bytes": 2230,
+          "sha256": "8094dbb8bb3bb27767d0c9359116eabfd7ceda103a60da0f9ddd43014e5be143"
+        },
+        {
+          "path": "tests/CombatResolutionBoardTest/exit-status.txt",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        }
+      ],
+      "unique_cases": 32,
+      "raw_identity_bank_matches_old_original": "industrial/audit-fc9bb/10915076010.zip",
+      "raw_old_sha256": "2693df11d8e62cdbf38964ef9e8de5679cb1f7cd6e0d0fef2f28251a8a941621",
+      "xml": [
+        {
+          "path": "tests/BandingTrampleDrainScenarioTest/TEST-com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest.xml",
+          "tests": 1,
+          "timestamp": "2026-09-27T01:02:12.794Z"
+        },
+        {
+          "path": "tests/CombatAssignmentCurrentRulesTest/TEST-com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest.xml",
+          "tests": 12,
+          "timestamp": "2026-09-27T01:02:46.201Z"
+        },
+        {
+          "path": "tests/CombatDamageAssignmentTest/TEST-com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest.xml",
+          "tests": 9,
+          "timestamp": "2026-09-27T01:02:47.202Z"
+        },
+        {
+          "path": "tests/CombatResolutionBoardTest/TEST-com.wingedsheep.engine.scenarios.CombatResolutionBoardTest.xml",
+          "tests": 10,
+          "timestamp": "2026-09-27T01:02:47.575Z"
+        }
+      ],
+      "actual_command_logs": [
+        {
+          "path": "qualification.log",
+          "fresh_worker_count": 1,
+          "actual_test_tasks": [
+            ":rules-engine:test"
+          ]
+        }
+      ],
+      "manifest_path": "industrial-waste/v2/shared-current-combat-receiving.json",
+      "manifest_sha256": "679dd7e9237e9a6f32e38a2aed94821cd973cd9502c7e8d2862859195834844c",
+      "source_pins_verified": 32,
+      "errors_failures_skips": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "bank": "token",
+      "run": 36283941475,
+      "attempt": 1,
+      "artifact_id": 10919887433,
+      "original_bytes": 266781,
+      "original_sha256": "52907ab1c91f7728366dd8e29900d827f44165d10138fcad78283700574400c4",
+      "zip_crc_pass": true,
+      "members": [
+        {
+          "path": "actual-case-audit.json",
+          "bytes": 3551,
+          "sha256": "a838252e330e7c5ae720dca7aa4d263b73b658d6ac2dca23ba0157fe9f486465"
+        },
+        {
+          "path": "dalkovan-2-exit-status.txt",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "dalkovan-2.log",
+          "bytes": 176530,
+          "sha256": "d08f24658b766db58f03d95c0eb212fc67e7ca959ff4125dcd14ad63296431f8"
+        },
+        {
+          "path": "entry-event-provenance-4-exit-status.txt",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "entry-event-provenance-4.log",
+          "bytes": 76552,
+          "sha256": "60829d7acc15f92a65798331a1251e01f1bf6d68af9e2c078e3b656b5fdb27b8"
+        },
+        {
+          "path": "source-provenance.json",
+          "bytes": 7822,
+          "sha256": "899c580b1c5014ef1d9dc561498cdbab3de24530431ed4c51874204a96443f35"
+        },
+        {
+          "path": "tests/dalkovan-2/TEST-com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest.xml",
+          "bytes": 703,
+          "sha256": "20b804141dfe04f749692030efe1569a34b35a49c6832510ebd7840d93c6ab24"
+        },
+        {
+          "path": "tests/dalkovan-2/exit-status.txt",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "tests/entry-event-provenance-4/TEST-com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest.xml",
+          "bytes": 1189,
+          "sha256": "7529a13f7a23bf75a5258b2d8652d5de1c4f9440441e4ae66a06af9c9e10fbdc"
+        },
+        {
+          "path": "tests/entry-event-provenance-4/exit-status.txt",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "tests/token-defender-14/TEST-com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest.xml",
+          "bytes": 3434,
+          "sha256": "58b8885c20116dc1f74b5166da0758430539d058ecbbe51b247a994861a0842f"
+        },
+        {
+          "path": "tests/token-defender-14/exit-status.txt",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "token-defender-14-exit-status.txt",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        {
+          "path": "token-defender-14.log",
+          "bytes": 3476248,
+          "sha256": "f46b6c094a0cfcb72ccd455ff6e1080b6a678068ec49c5e47e3a938d7b1f32d7"
+        }
+      ],
+      "unique_cases": 20,
+      "raw_identity_bank_matches_old_original": "industrial/audit-fc9bb/10914682665.zip",
+      "raw_old_sha256": "292fc90caac32c9730ee2f071892cd2024efc074cd2812196843a39c3dec5491",
+      "xml": [
+        {
+          "path": "tests/dalkovan-2/TEST-com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest.xml",
+          "tests": 2,
+          "timestamp": "2026-09-27T01:01:14.216Z"
+        },
+        {
+          "path": "tests/entry-event-provenance-4/TEST-com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest.xml",
+          "tests": 4,
+          "timestamp": "2026-09-27T01:01:36.959Z"
+        },
+        {
+          "path": "tests/token-defender-14/TEST-com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest.xml",
+          "tests": 14,
+          "timestamp": "2026-09-27T01:00:32.973Z"
+        }
+      ],
+      "actual_command_logs": [
+        {
+          "path": "dalkovan-2.log",
+          "fresh_worker_count": 1,
+          "actual_test_tasks": [
+            ":mtg-sets:2025:tests:test"
+          ]
+        },
+        {
+          "path": "entry-event-provenance-4.log",
+          "fresh_worker_count": 1,
+          "actual_test_tasks": [
+            ":rules-engine:test"
+          ]
+        },
+        {
+          "path": "token-defender-14.log",
+          "fresh_worker_count": 1,
+          "actual_test_tasks": [
+            ":rules-engine:test"
+          ]
+        }
+      ],
+      "manifest_path": "industrial-waste/v2/shared-attacking-token-receiving.json",
+      "manifest_sha256": "c55e36ed7db906c92c40ed69fbe797836d9279789b5ac32ea478d95ae9e574c5",
+      "source_pins_verified": 49,
+      "errors_failures_skips": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "source_binding_scope": "Retained exact source bytes previously independently fetched by root forfc9; current immutable tree Gitblob equality independently checked by Industrial author, not68 new fetches.",
+  "official_games": 0,
+  "complete_runtime_admitted": false
+}

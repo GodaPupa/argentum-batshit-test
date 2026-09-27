@@ -1,0 +1,147 @@
+{
+  "schema": "sphinx-independent-industrial1261-card-and52-review-v1",
+  "reviewer": "/root/sphinx",
+  "role": "Non-author raw receiving artifact reviewer. Earlier source review of prospective Industrial tests is disclosed; no production implementation, original execution or author audit was supplied by this reviewer. Separate Sphinx/shared actor-mulligan work is outside this reviewed Industrial source scope.",
+  "disposition": "PASS_BOUNDED_CARD154_AND_COMBAT32_TOKEN20_RECEIVING_EVIDENCE",
+  "source": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+  "tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "pr_test_merge": "9af38ac609a7adddb64bdab6ad9627a9378f4ef8",
+  "pr_test_merge_tree_equals_source": true,
+  "original_artifacts": [
+    {
+      "run": 36283945576,
+      "event": "pull_request",
+      "attempt": 1,
+      "job": 108521000011,
+      "artifact_id": 10920645338,
+      "path": "industrial/audit-1261/card-original.zip",
+      "bytes": 499232,
+      "sha256": "9be6bc5f0a21308221234f8fbeb3b916121332c68181a9f594301b0acebb8067",
+      "crc": "PASS"
+    },
+    {
+      "run": 36283941451,
+      "event": "push",
+      "attempt": 1,
+      "job": 108520988144,
+      "artifact_id": 10919593751,
+      "path": "industrial/audit-1261/combat-original.zip",
+      "bytes": 243356,
+      "sha256": "30c03e8050e0d811ed71c1dccacf0604ca047a47c02d753566edbdcb293bff8e",
+      "crc": "PASS"
+    },
+    {
+      "run": 36283941475,
+      "event": "push",
+      "attempt": 1,
+      "job": 108520988252,
+      "artifact_id": 10919887433,
+      "path": "industrial/audit-1261/token-original.zip",
+      "bytes": 266781,
+      "sha256": "52907ab1c91f7728366dd8e29900d827f44165d10138fcad78283700574400c4",
+      "crc": "PASS"
+    }
+  ],
+  "author_records_reviewed": [
+    {
+      "path": "industrial/audit-1261/AUTHOR_CARD_AUDIT.json",
+      "bytes": 19357,
+      "sha256": "2c645421493a7cab07cff471461ec1f53eeddf226bb64da9c492aa093d1935c9"
+    },
+    {
+      "path": "industrial/audit-1261/AUTHOR_RECEIVING52_AUDIT.json",
+      "bytes": 9805,
+      "sha256": "85e76907f889fc95fb9f597d21bc591de6efc3a6c5abdd2ec0d8f2a507c379b5"
+    }
+  ],
+  "independent_proof": [
+    {
+      "path": "sphinx-audit/industrial1261-review/live-metadata-source-scope.json",
+      "bytes": 100822,
+      "sha256": "f8efa4be75a95f82359696377b8399665d3cb55f29d584f3b2d1eb5dd30ff5a4"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/fresh-status-source-bodies.json",
+      "bytes": 72868,
+      "sha256": "593e0e94bb22f355b77670e41bd70e50e7e3606e8df8cfccf74e2afaa48b1720"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/audit_receiving.py",
+      "bytes": 11470,
+      "sha256": "9ec4c6eb1cbec51c80062092bd08cc4e2b1174f03de9146d9ff84bf6f7dc6910"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/independent-raw-audit.json",
+      "bytes": 116376,
+      "sha256": "bbbf90d96f2287550d4d9249d2b310a4659e5eadd2dd7934f187fd298b5bcc60"
+    }
+  ],
+  "actual_results": {
+    "card_focused": {
+      "xml_suites": 3,
+      "execution_records": 20,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "fresh_test_tasks": 3
+    },
+    "card_broad": {
+      "xml_suites": 27,
+      "execution_records": 154,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "fresh_test_tasks": 8
+    },
+    "card_unique_cases": 154,
+    "focused20_is_subset_of154": true,
+    "combat": {
+      "xml_suites": 4,
+      "execution_records": 32,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "fresh_test_workers": 1
+    },
+    "token_event": {
+      "xml_suites": 3,
+      "execution_records": 20,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "fresh_test_workers": 3
+    }
+  },
+  "checks": [
+    "Independently fetched all three runs, complete job inventories and artifact metadata. Card is the PR event; combat and token are push events. Each is completed success, attempt1, exact source1261. Original whole ZIP sizes/digests match live artifact metadata. All77 total members across51/12/14 have unique paths, complete byte hashes and passing CRC.",
+    "Independently fetched the immutable source and PR test-merge commit objects and complete untruncated29,136-entry current Git tree. Both commit trees are7e635. Scoped current tree entries are retained; no claim that this proof file preserves the entire original tree HTTP response.",
+    "Rehashed86 exact source bodies, including the68 prior retained combat/token bodies,12 produced-token source bodies and6 freshly downloaded current status sources. Every Git blob matches the newly fetched current immutable tree. This is actual byte reuse with exact blob identity, not86 new source downloads.",
+    "Recomputed raw XML cases and names. All32 combat and20 token names match both the current preserved manifests and their original fc9 ZIP banks. Actual exits are zero. Combat has one fresh Gradle test worker because the four classes share one invocation; token has three fresh worker pairs for its three original invocations. Build logs show successful execution and exact test tasks without cached/up-to-date/no-source status.",
+    "All20 focused and154 broad card names match the prospective expected identity set. All136 prior accepted card-bank identities are retained, with exactly18 additional identities. Focused20 repeats a subset of broad154 and is never added as174 unique cases. Raw logs contain20 and154 named PASSED records, and every XML timestamp lies inside its corresponding fresh live test-step interval.",
+    "Card commands retain --rerun-tasks --no-build-cache --no-daemon and broad --continue. Three focused and eight broad actual test-task routes are present and executed. These card logs do not emit --info worker-pair lines; none are invented. The complete retained decoded card job log contains the actual1261 checkout, named PASSED records and normal cleanup.",
+    "Both combat/token preflight source maps match all32/49 declared SHA256 pins and immutable receiving manifests. Produced-token map matches12 source pins and original expected7/11/2 case counts. Current status provenance matches all7 receiving pins and exact predecessor/receiving manifests retained in the ZIP.",
+    "The archived TSP/ROE snapshot bytes match current Git blob identities and the actual tracked snapshot diff is empty. The earlier failed18-case artifact f83ef1fc is still present and rehashed via the expected-identity provenance inputs; later passing evidence does not overwrite it.",
+    "Read exact immutable workflow bodies and actual command logs. They execute deterministic software qualification only. Missing shlock is reported by the actual runner and uses its existing unlocked fallback; this review does not claim that a working build semaphore was observed."
+  ],
+  "source_binding_limits": [
+    "Combat/token archives retain the pre-execution source map. There is no separate archived post-run source map; do not advertise before-and-after pin verification for these two banks.",
+    "Card retained manifests and preflight source map bind the declared produced-token/status inputs. The successful tracked-diff check and empty snapshot diff support no tracked source/snapshot drift at that check; this is not a separate full runtime dependency/compiled-byte witness.",
+    "Card Assay members were completely read, CRC-checked and hashed as part of the original ZIP. This review does not independently certify Assay parser semantics, exclusion diagnoses or whole Oracle bulk recovery. It accepts the requested card/test receiving scope only.",
+    "Existing recorded combat/token limits remain: this32/20 bank does not establish all multiplayer or attached-copy/token replacement behavior as reachable-scope complete."
+  ],
+  "audit_parser_correction": "The first local audit script queried case_names in token execution-stage metadata and stopped with KeyError. It was corrected to use the original manifest banks list, where exact names are defined; no source, manifest, artifact, expected identity, test command or engine execution changed. The corrected complete read-only audit passed.",
+  "not_granted": [
+    "whole-runtime acceptance",
+    "R1 execution authority",
+    "canonical source merge approval",
+    "runtime/JVM identity admission",
+    "pilot acceptance",
+    "official claim/seed/initialization permission",
+    "GitHub approval",
+    "deck-performance conclusion"
+  ],
+  "new_engine_commands": 0,
+  "new_gameplay_allocations": 0,
+  "new_outcomes_exposed": 0,
+  "source_modified": false
+}

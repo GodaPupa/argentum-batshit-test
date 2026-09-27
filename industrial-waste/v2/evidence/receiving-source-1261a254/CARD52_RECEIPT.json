@@ -1,0 +1,66 @@
+{
+  "schema": "industrial-source1261-bounded-receiving-checkpoint-v1",
+  "source": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+  "tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "disposition": "INDEPENDENTLY_REVIEWED_CARD_AND_CURRENT_COMBAT_TOKEN_COMPONENT_EVIDENCE",
+  "independent_review_sha256": "39536c99f7fec08a0d934708e3b05007cf781a4f56710e05756225f483e8e54d",
+  "author_card_audit_sha256": "2c645421493a7cab07cff471461ec1f53eeddf226bb64da9c492aa093d1935c9",
+  "author52_audit_sha256": "85e76907f889fc95fb9f597d21bc591de6efc3a6c5abdd2ec0d8f2a507c379b5",
+  "card": {
+    "run": 36283945576,
+    "attempt": 1,
+    "artifact_id": 10920645338,
+    "focused": 20,
+    "broad_unique": 154,
+    "focused_is_subset": true,
+    "failure": 0,
+    "error": 0,
+    "skip": 0
+  },
+  "combat": {
+    "run": 36283941451,
+    "attempt": 1,
+    "artifact_id": 10919593751,
+    "cases": 32,
+    "failure": 0,
+    "error": 0,
+    "skip": 0
+  },
+  "token": {
+    "run": 36283941475,
+    "attempt": 1,
+    "artifact_id": 10919887433,
+    "cases": 20,
+    "failure": 0,
+    "error": 0,
+    "skip": 0
+  },
+  "raw_archives": {
+    "card-original.zip": {
+      "bytes": 499232,
+      "sha256": "9be6bc5f0a21308221234f8fbeb3b916121332c68181a9f594301b0acebb8067"
+    },
+    "combat-original.zip": {
+      "bytes": 243356,
+      "sha256": "30c03e8050e0d811ed71c1dccacf0604ca047a47c02d753566edbdcb293bff8e"
+    },
+    "token-original.zip": {
+      "bytes": 266781,
+      "sha256": "52907ab1c91f7728366dd8e29900d827f44165d10138fcad78283700574400c4"
+    },
+    "card52-source-and-review-inputs.zip": {
+      "bytes": 535233,
+      "sha256": "02f163a443866f3ba0faa50315e9114c00efafec27713c5b21bb7a9c264d0a43"
+    }
+  },
+  "limits": [
+    "Focused20 is contained in broad154; these are not174 unique cases.",
+    "Current source/receiving tests only; no complete R1 runtime admission, permit or official execution.",
+    "Sphinx review verifies raw hashes/source/freshness and exact card/card-component identities. Assay parser/exclusion interpretation is outside that review; author Assay observation and raw528 rows are retained separately in the original card artifact.",
+    "Card logs contain actual fresh task and PASS records without --info worker lines; shlock missing fallback is disclosed. Combat/token pinmaps are preflight-only.",
+    "Other source1261 receiving banks/runtime/full-CI audits are separate pending checkpoints."
+  ],
+  "official_allocations_initialized": 0,
+  "comparative_outcomes_exposed": 0,
+  "deck_performance_evidence_changed": false
+}
