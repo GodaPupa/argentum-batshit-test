@@ -1,0 +1,102 @@
+name: Sphinx Ponder memory bounded diagnostic
+on:
+  push:
+    branches: ['sphinx/ponder-memory-once-20260927']
+permissions:
+  contents: read
+jobs:
+  diagnose:
+    if: github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      UPDATE_SNAPSHOTS: '0'
+      GRADLE_LOCK_SLOTS: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 5baaf37382ee03bb6f8e3426cd8c5e9e001e01b0
+          fetch-depth: 1
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact reviewed source and four frozen decks
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-ponder-memory
+          python - <<'PYCODE' 2>&1 | tee build/reports/sphinx-ponder-memory/bind.log
+          import json,subprocess,pathlib,hashlib
+          expected={'gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt': 'd03ae91eee0d5da1668a246174195fd0645d51bfc9195c254508d8d7f9641627', 'gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPonderMemory.kt': 'f229a08694d82794db6692171c410d5eec83c0157594f5b28d16b32e9facef49', 'gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoice.kt': 'fcdf801b7a3b1271278d6eb65aac902bcecf1b9a133594ee357b28f3e2d02836', 'gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPonderMemoryTraceTest.kt': '0d567d91a0fe91b002624ab62dbc0374940582983ce7c77557c088a982140e23', 'sphinx-approach/STAGE_E_PONDER_MEMORY_PROPOSAL.json': 'd7ba35a14ad065a9635128b47a99ea00c97490d5a764a3f99ebb35782e581983', 'sphinx-approach/decks/closest-no-approach-v01.csv': '548998c77f5f688d793d36cdb9f21ae8b3b63963856875c4b84d82c271196a83', 'sphinx-approach/decks/reconstructed-hybrid.csv': 'f4cf2c64bb07847bd013e9984480f5b0fa76ac3a40dc5a47894a3609e9cb3b2e', 'sphinx-approach/decks/reconstructed-v01.csv': '274521097cc731ac5f5aa9b7645a20b13d4546fd73b17dbcd14af0b0a25c4486', 'sphinx-approach/decks/serpico-terror-benchmark.csv': '6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62'}
+          head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+          tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+          assert head=='5baaf37382ee03bb6f8e3426cd8c5e9e001e01b0' and tree=='5b19fb51dfbb55ec9e1d5446a264d1ef9145c346'
+          assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=all'],text=True).strip()
+          for path,digest in expected.items():
+              assert hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()==digest,path
+          binding={'head':head,'tree':tree,'source_and_deck_sha256':expected,'official_games':0,'official_seeds':0}
+          assert not list(pathlib.Path('gym/build/test-results/test').glob('TEST-*.xml'))
+          pathlib.Path('build/reports/sphinx-ponder-memory/source-before.json').write_text(json.dumps(binding,indent=2)+'\n')
+          PYCODE
+      - name: Execute only four newly frozen Ponder memory traces
+        run: |
+          set -uo pipefail
+          set +e
+          cat > /tmp/sphinx-ponder.Justfile <<'JUSTFILE'
+          qualify:
+              bash scripts/gradle-locked :gym:test --tests 'com.wingedsheep.gym.sphinx.SphinxStageEPonderMemoryTraceTest' --no-daemon --no-build-cache --info
+          JUSTFILE
+          just --justfile /tmp/sphinx-ponder.Justfile --working-directory . qualify 2>&1 | tee build/reports/sphinx-ponder-memory/tests.log
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > build/reports/sphinx-ponder-memory/exit.txt
+          exit "$rc"
+      - name: Reconcile exact source and original raw case inventory
+        if: always()
+        run: |
+          python - <<'PYCODE'
+          import json,pathlib,re,xml.etree.ElementTree as ET
+          out=pathlib.Path('build/reports/sphinx-ponder-memory');out.mkdir(parents=True,exist_ok=True)
+          errors=[];rows=[]
+          try:
+              import json,subprocess,pathlib,hashlib
+              expected={'gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt': 'd03ae91eee0d5da1668a246174195fd0645d51bfc9195c254508d8d7f9641627', 'gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPonderMemory.kt': 'f229a08694d82794db6692171c410d5eec83c0157594f5b28d16b32e9facef49', 'gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoice.kt': 'fcdf801b7a3b1271278d6eb65aac902bcecf1b9a133594ee357b28f3e2d02836', 'gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPonderMemoryTraceTest.kt': '0d567d91a0fe91b002624ab62dbc0374940582983ce7c77557c088a982140e23', 'sphinx-approach/STAGE_E_PONDER_MEMORY_PROPOSAL.json': 'd7ba35a14ad065a9635128b47a99ea00c97490d5a764a3f99ebb35782e581983', 'sphinx-approach/decks/closest-no-approach-v01.csv': '548998c77f5f688d793d36cdb9f21ae8b3b63963856875c4b84d82c271196a83', 'sphinx-approach/decks/reconstructed-hybrid.csv': 'f4cf2c64bb07847bd013e9984480f5b0fa76ac3a40dc5a47894a3609e9cb3b2e', 'sphinx-approach/decks/reconstructed-v01.csv': '274521097cc731ac5f5aa9b7645a20b13d4546fd73b17dbcd14af0b0a25c4486', 'sphinx-approach/decks/serpico-terror-benchmark.csv': '6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62'}
+              head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
+              tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
+              assert head=='5baaf37382ee03bb6f8e3426cd8c5e9e001e01b0' and tree=='5b19fb51dfbb55ec9e1d5446a264d1ef9145c346'
+              assert not subprocess.check_output(['git','status','--porcelain','--untracked-files=all'],text=True).strip()
+              for path,digest in expected.items():
+                  assert hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest()==digest,path
+              binding={'head':head,'tree':tree,'source_and_deck_sha256':expected,'official_games':0,'official_seeds':0}
+              (out/'source-after.json').write_text(json.dumps(binding,indent=2)+'\n')
+              assert binding==json.loads((out/'source-before.json').read_text())
+              assert (out/'exit.txt').read_text().strip()=='0'
+              log=(out/'tests.log').read_text()
+              assert 'BUILD SUCCESSFUL' in log
+              lines=[l for l in log.splitlines() if re.match(r'^> Task :gym:test(?:\s|$)',l)]
+              assert lines and not any(re.search(r'FROM-CACHE|UP-TO-DATE|SKIPPED|NO-SOURCE|FAILED',l) for l in lines)
+              xml=list(pathlib.Path('gym/build/test-results/test').glob('TEST-*.xml'))
+              assert len(xml)==1 and xml[0].name=='TEST-com.wingedsheep.gym.sphinx.SphinxStageEPonderMemoryTraceTest.xml'
+              raw=xml[0].read_bytes();x=ET.fromstring(raw);cases=x.findall('testcase')
+              expected_names=json.loads(pathlib.Path('sphinx-approach/STAGE_E_PONDER_MEMORY_PROPOSAL.json').read_text())['expected_cases']
+              names=[c.get('name') for c in cases]
+              assert x.get('name')=='com.wingedsheep.gym.sphinx.SphinxStageEPonderMemoryTraceTest'
+              assert int(x.get('tests'))==len(cases)==len(set(names))==4 and set(names)==set(expected_names)
+              assert all(int(x.get(k,0))==0 for k in ['failures','errors','skipped'])
+              assert all(c.get('classname')==x.get('name') and not any(n.tag in ['failure','error','skipped'] for n in c) for c in cases)
+              rows=[{'case_names':names,'xml_sha256':hashlib.sha256(raw).hexdigest()}]
+          except (AssertionError,OSError,KeyError,ValueError,ET.ParseError,subprocess.SubprocessError) as e:
+              errors.append(type(e).__name__+': '+str(e))
+          (out/'audit.json').write_text(json.dumps({'status':'INCOMPLETE' if errors else 'AWAIT_INDEPENDENT_ARTIFACT_REVIEW','errors':errors,'rows':rows,'official_games':0,'official_seeds':0,'gameplay_authorized':False},indent=2)+'\n')
+          raise SystemExit(bool(errors))
+          PYCODE
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: sphinx-ponder-memory-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/sphinx-ponder-memory/
+            gym/build/test-results/test/*.xml
+          if-no-files-found: error
+          retention-days: 90
