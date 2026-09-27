@@ -1,0 +1,46 @@
+name: Manual Transmission Phase 2 Pilot Boundary
+
+on:
+  pull_request:
+    paths:
+      - 'gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt'
+      - 'gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundaryTest.kt'
+      - '.github/workflows/manual-transmission-phase2-pilot-boundary.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-pilot-boundary:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Exercise exact four-seat masked pilot boundary and engine replay
+        run: scripts/test-class PhaseTwoPilotBoundaryTest --info --stacktrace
+      - name: Bind tested source and retain the excluded fixture result
+        if: always()
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          mkdir -p build/reports/manual-transmission-phase2/pilot-boundary
+          printf '%s\n' "source_sha=$SOURCE_SHA" "official_capability_games=0" "official_primary_games=0" "execution_authorized=false" > build/reports/manual-transmission-phase2/pilot-boundary/provenance.txt
+          sha256sum gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundaryTest.kt > build/reports/manual-transmission-phase2/pilot-boundary/source-sha256.txt
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-transmission-phase2-pilot-boundary
+          path: |
+            build/reports/manual-transmission-phase2/pilot-boundary/
+            gym/build/test-results/test/
+          if-no-files-found: error
+          retention-days: 90
