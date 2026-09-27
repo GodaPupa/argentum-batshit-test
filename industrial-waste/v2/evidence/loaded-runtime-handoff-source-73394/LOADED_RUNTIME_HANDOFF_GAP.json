@@ -1,0 +1,65 @@
+{
+  "schema": "industrial-r1-loaded-runtime-handoff-gap-v1",
+  "source": "73394d7eabc7cc3dad609b9d416102a9ecce8e4f",
+  "tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "status": "CONCRETE_MISSING_BINDING_CONTRACT_NO_SOURCE_CHANGE_OR_EXECUTION",
+  "facts": [
+    {
+      "file": "industrial-waste/v2/r1_execute.py",
+      "lines": [
+        238,
+        285,
+        299,
+        334,
+        356,
+        430
+      ],
+      "finding": "validate_authority checks published source/receipt pins and broad source closure, but no loaded-JVM/classpath witness. prepare calls reserve_claim at line356 before the contract launches the Kotlin worker. admit writes allocation declaration but still has no executing Java/classpath/compiled-byte measurement."
+    },
+    {
+      "file": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2R1OfficialExecutionTest.kt",
+      "lines": [
+        20,
+        31,
+        48,
+        54,
+        58
+      ],
+      "finding": "The worker requires an already prepared directory, reads tails/0000.json, and invokes Python admit. No prepare operation exists in its command path, and no actual executing-process identity is supplied to Python. A new guard only here would run after one-use remote consumption."
+    },
+    {
+      "file": "industrial-waste/v2/r1_runtime_identity_binding.py",
+      "lines": [
+        68,
+        73,
+        81
+      ],
+      "finding": "The accepted seed-free identity component hashes Kotlin source and canonical JSON snapshots. It deliberately records provenance only; it neither records the actual Java executable/ordered loaded classpath nor defines an execution handoff."
+    },
+    {
+      "file": "industrial-waste/v2/r1-runtime-composition-contract.json",
+      "lines": [
+        18,
+        28
+      ],
+      "finding": "The frozen dormant entrypoint is explicitly prepare first, then the environment-bound Kotest runner. It requires exact published runtime identity and complete acceptance, but does not define a pre-reservation loaded-worker witness/handshake schema or the permitted controlled restoration/launch command."
+    }
+  ],
+  "missing_dependency": {
+    "required": "Prospectively accepted proof that the actual execution runtime matches the qualified Java/dependency/compiled source and card-definition identity before irreversible consumption and admission. Existing contracts require exact accepted runtime identity but do not prescribe a particular live-worker handshake architecture.",
+    "cannot_substitute": [
+      "A source-only hash or status string",
+      "Post-run provenance from a different process treated as this live worker",
+      "A Kotlin-only pre-admit check after prepare already consumed namespace",
+      "A new unreviewed environment/JSON witness treated as accepted authority"
+    ],
+    "contract_changes_need": "Explicit prospective implementation and acceptance of the chosen exact-runtime binding/handoff approach. If it introduces witness fields, restoration commands or entrypoint ordering changes, freeze those explicitly; no statistical protocol, deck, pilot, corpus, turn/action cap or invalid-attempt rule change is implied.",
+    "prospective_closure_option": "One proposed implementation is a pre-reservation loaded-worker witness bound to the actual Java executable, ordered classpath, compiled classes/card definitions, dependencies, source and caller context, with continuing identity verification before admission. Another independently accepted design proving the same exact executing-runtime property before consumption/admission is permitted; no new mandatory witness schema is declared here."
+  },
+  "next_bounded_work": "Select and prospectively freeze an exact-runtime proof approach against a newly accepted repaired-runtime capture before changing the official executor. Keep the existing official entrypoint dormant. A source-only preflight repair cannot demonstrate the loaded-runtime identity property.",
+  "separate_watchdog_gap": "The all512 single leaf retains the already documented120s/300s watchdog/resource-envelope gap; no bypass is introduced.",
+  "production_code_changed": false,
+  "claim_or_consumption_created": false,
+  "official_allocations_initialized": 0,
+  "deck_performance_evidence_changed": false
+}
