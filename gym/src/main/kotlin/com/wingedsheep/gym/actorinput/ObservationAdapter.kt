@@ -69,7 +69,10 @@ class ObservationAdapter(registry: CardRegistry) {
                 else listOf(KeepHand::class)
             } else listOf(BottomCards::class)
             if (legalActions.map { it.action::class } != expectedTypes ||
-                legalActions.any { it.action is BottomCards && it.action.cardIds.isNotEmpty() }
+                legalActions.any { legal ->
+                    val action = legal.action
+                    action is BottomCards && action.cardIds.isNotEmpty()
+                }
             ) {
                 fail(BoundaryFailure.INCOMPLETE_INPUT, "Supply the complete London setup menu")
             }
