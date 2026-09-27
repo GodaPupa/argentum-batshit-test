@@ -1,0 +1,43 @@
+{
+  "checked_at_utc": "2026-09-27T03:52:17.330283+00:00",
+  "scope": "Read-only original command-log check prompted by newly identified wrapper prerequisite gap; no rerun or source change.",
+  "results": [
+    {
+      "original": "shared-50-original.zip",
+      "sha256": "11617efc668f25b4d443110d1679f2f9ad4c12e4c058ea19d40c89ebc8fd4d28",
+      "test_command_log_sha256": "28f8b12a879c0692f1fba084dda4161497850d3b25c04124ca85b25b8109d696",
+      "matches": [
+        {
+          "line": 3,
+          "text": "gradle-locked: 'shlock' not found; running ./gradlew unlocked",
+          "context": [
+            "scripts/test-class \"ActorObservationBoundaryTest\" --tests *ActorStackSourceObservationTest --tests *ActorTriggerOrderObservationTest --tests *ActorPriorityObservationTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace",
+            "test-class: ActorObservationBoundaryTest -> :gym",
+            "gradle-locked: 'shlock' not found; running ./gradlew unlocked",
+            "Picked up JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m",
+            "Initialized native services in: /home/runner/.gradle/native"
+          ]
+        }
+      ]
+    },
+    {
+      "original": "sphinx-136-original.zip",
+      "sha256": "759fbcb77ef8dccc0d78cc954f28931e4138636cbd8e6024945ed6d1becb96c5",
+      "test_command_log_sha256": "dc06e36c785cb671b282940cdb228721fe36d16e206e1c16dc5a059f087c7b6c",
+      "matches": [
+        {
+          "line": 3,
+          "text": "gradle-locked: 'shlock' not found; running ./gradlew unlocked",
+          "context": [
+            "scripts/test-class \"ActorSpellPaymentProjectionTest\" --tests *SphinxStageEActorAdapterTest --tests *ActorObservationBoundaryTest --tests *ActorStackSourceObservationTest --tests *ActorTriggerOrderObservationTest --tests *ActorPriorityObservationTest --tests *SphinxStageEPilotComponentTest --rerun --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace",
+            "test-class: ActorSpellPaymentProjectionTest -> :gym",
+            "gradle-locked: 'shlock' not found; running ./gradlew unlocked",
+            "Picked up JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m",
+            "Initialized native services in: /home/runner/.gradle/native"
+          ]
+        }
+      ]
+    }
+  ],
+  "effect": "Actual bounded XML/case/source outcomes remain as observed; prescribed build semaphore use is not established if fallback occurred. This requires an attributed limitation correction, not another experiment attempt."
+}

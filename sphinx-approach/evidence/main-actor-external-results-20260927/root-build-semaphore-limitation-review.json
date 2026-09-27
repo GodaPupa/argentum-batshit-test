@@ -1,0 +1,31 @@
+{
+  "schema": "root-sphinx-semaphore-limitation-review-v1",
+  "reviewer": "/root",
+  "verdict": "PASS_FACTUAL_LIMITATION_ADDENDUM",
+  "observations": [
+    {
+      "original": "shared-50-original.zip",
+      "member": "test-command.log",
+      "log_sha256": "28f8b12a879c0692f1fba084dda4161497850d3b25c04124ca85b25b8109d696",
+      "hits": [
+        {
+          "line": 3,
+          "text": "gradle-locked: 'shlock' not found; running ./gradlew unlocked"
+        }
+      ]
+    },
+    {
+      "original": "sphinx-136-original.zip",
+      "member": "test-command.log",
+      "log_sha256": "dc06e36c785cb671b282940cdb228721fe36d16e206e1c16dc5a059f087c7b6c",
+      "hits": [
+        {
+          "line": 3,
+          "text": "gradle-locked: 'shlock' not found; running ./gradlew unlocked"
+        }
+      ]
+    }
+  ],
+  "effect": "The wrapper took its explicit unlocked fallback. These original passing XML/source/worker observations do not establish compliance with the prescribed build semaphore; no complete receiver or repository acceptance follows. Prior operational compliance implication is withdrawn, not retroactively waived. Original source/command/result bytes and consumed event are unchanged.",
+  "scope": "Read-only original logs; no repeat fixture/event or gameplay. Root issued original bounded release but did not author these logs. This is factual correction, not an independent reacceptance or GitHub approval."
+}
