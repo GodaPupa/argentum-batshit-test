@@ -3,9 +3,12 @@ package com.wingedsheep.engine.handlers.continuations
 import com.wingedsheep.engine.core.EffectContinuation
 import com.wingedsheep.engine.core.EffectResult
 import com.wingedsheep.engine.handlers.EffectContext
+import com.wingedsheep.engine.handlers.AuthorizedLibrarySearchCandidate
 import com.wingedsheep.engine.handlers.effects.EffectExecutorRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.sdk.scripting.effects.Effect
+import com.wingedsheep.sdk.scripting.effects.GatherCardsEffect
+import com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect
 
 /**
  * Executes a list of effects in sequence, handling pauses, errors, and context updates.
@@ -22,11 +25,16 @@ class EffectContinuationRunner(
         effects: List<Effect>,
         initialContext: EffectContext
     ): EffectResult {
-        var currentContext = initialContext
+        var currentContext = initialContext.copy(authorizedLibrarySearchCandidate = null)
+        var nextSearchCandidate: AuthorizedLibrarySearchCandidate? = null
         var currentState = initialState
         val allEvents = mutableListOf<com.wingedsheep.engine.core.GameEvent>()
 
         for ((index, effect) in effects.withIndex()) {
+            val executionContext = currentContext.copy(
+                authorizedLibrarySearchCandidate = if (effect is SelectFromCollectionEffect) nextSearchCandidate else null
+            )
+            nextSearchCandidate = null
             val stillRemaining = effects.drop(index + 1)
 
             val stateForExecution = if (stillRemaining.isNotEmpty()) {
@@ -39,7 +47,7 @@ class EffectContinuationRunner(
                 currentState
             }
 
-            val result = effectExecutorRegistry.execute(stateForExecution, effect, currentContext)
+            val result = effectExecutorRegistry.execute(stateForExecution, effect, executionContext)
 
             if (!result.isSuccess && !result.isPaused) {
                 currentState = if (stillRemaining.isNotEmpty()) {
@@ -67,6 +75,7 @@ class EffectContinuationRunner(
             }
             allEvents.addAll(result.events)
             currentContext = currentContext.authorizeObjectMoves(result.events)
+            if (effect is GatherCardsEffect) nextSearchCandidate = result.authorizedLibrarySearchCandidate
 
             if (result.updatedCollections.isNotEmpty() ||
                 result.updatedSubtypeGroups.isNotEmpty() ||
