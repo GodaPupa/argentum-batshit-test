@@ -1,0 +1,142 @@
+{
+  "schema": "izzet-receiving-four-failure-diagnostic-proposal-v1",
+  "status": "PROSPECTIVE_PASSIVE_DIAGNOSTIC_SCOPE_NOT_GAMEPLAY",
+  "ready": true,
+  "source_review": {
+    "sha256": "67e5939e63964d69a2c9cd4caa7ed2e08234c4b82c442df2a4c99d8602adc3b9",
+    "record": "{\n  \"schema\": \"izzet-six-existing-case-passive-diagnostic-complete-control-review-v1\",\n  \"reviewer\": \"actual /root/manual\",\n  \"source_author\": false,\n  \"status\": \"PASS_ONE_PROSPECTIVE_BOUNDED_DIAGNOSTIC_EVENT_AFTER_EXACT_RELEASE_BINDING\",\n  \"source\": \"8b05f2cecee6e992f7eca6d77695040f32901f40\",\n  \"source_tree\": \"4f91346617cd0d4e29e09ab8405c141883cf1820\",\n  \"control_files_sha256\": {\n    \"run.py\": \"91d913cd8eb0ab7c8a7b9104f1bcfee0bb5958fa875937272bf63fc67cc49d94\",\n    \"scope.json\": \"af15656564f45f28bae573d0fbd6bff428d16fe94b752ab0c6c1f6dc10a6153b\",\n    \".github/workflows/izzet-receiving-failure-diagnostic.yml\": \"456e03ae92a32ae0f2a23a94679c5d0b983de8335442a8c3e0609abb7c16447c\"\n  },\n  \"prior_source_scope_review_sha256\": \"62edf3a5c9f54640a74f11ce2c7878d8c08f7716013b2fc1f1956d9e10157312\",\n  \"instrumentation\": [\n    {\n      \"path\": \"ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt\",\n      \"original_git_blob\": \"0871594a6f90c3ebd95272d01974ab07bcd5f2d4\",\n      \"original_sha256\": \"36c5348e3d59d569001c9b5d85db3f5ae89683d10eeab704ff6a8c1636835bf6\",\n      \"instrumented_sha256\": \"bdd45e68526e95144c09d64172e5c780283f9defb3ce8796295af3d5c7a9da74\",\n      \"replacement_old\": \"        fun record(entry: String) = stream?.update(entry.toByteArray(Charsets.UTF_8))\",\n      \"replacement_new\": \"        fun record(entry: String) {\\n            stream?.update(entry.toByteArray(Charsets.UTF_8))\\n            if (recordActionStream) {\\n                println(\\\"IZZET_DIAGNOSTIC_TRACE \\\" + java.util.Base64.getEncoder().encodeToString(entry.toByteArray(Charsets.UTF_8)))\\n            }\\n        }\",\n      \"reversible\": true\n    },\n    {\n      \"path\": \"rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/GameTestDriver.kt\",\n      \"original_git_blob\": \"7738b6a9e861d4675a3785404870a0eea3daacf8\",\n      \"original_sha256\": \"34cb7972a73c3cc90dddaf43749adcc6dd1bd8495c8b3e3dae23ec78fe9c5df0\",\n      \"instrumented_sha256\": \"5bf82dba69e7d14796d11406d6b35987c71baa55418c800dfd744d0387b253ee\",\n      \"replacement_old\": \"        val result = processor.process(_state, action).result\\n        if (result.isSuccess || result.isPaused) {\\n            _state = result.newState\\n            _events.addAll(result.events)\\n        }\\n        return result\",\n      \"replacement_new\": \"        val diagnosticBefore = _state.toString()\\n        val diagnosticBeforePendingType = _state.pendingDecision?.javaClass?.name\\n        val result = processor.process(_state, action).result\\n        if (result.isSuccess || result.isPaused) {\\n            _state = result.newState\\n            _events.addAll(result.events)\\n        }\\n        val diagnosticPayload = \\\"action=$action\\\\n\\\" +\\n            \\\"success=${result.isSuccess} paused=${result.isPaused} error=${result.error}\\\\n\\\" +\\n            \\\"beforePendingType=$diagnosticBeforePendingType\\\\n\\\" +\\n            \\\"afterPendingType=${_state.pendingDecision?.javaClass?.name}\\\\n\\\" +\\n            \\\"before=$diagnosticBefore\\\\n\\\" +\\n            \\\"resultState=${result.newState}\\\\n\\\" +\\n            \\\"storedAfter=$_state\\\\n\\\"\\n        println(\\\"IZZET_DECISION_DIAGNOSTIC \\\" + java.util.Base64.getEncoder().encodeToString(diagnosticPayload.toByteArray(Charsets.UTF_8)))\\n        return result\",\n      \"reversible\": true\n    }\n  ],\n  \"unchanged_tests\": [\n    {\n      \"path\": \"ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt\",\n      \"git_blob\": \"bfeb52503c604549b7625fa02a486a0f85cfdbef\",\n      \"sha256\": \"87978d468ff109f88378607fec34b4ad825ed91671069a62c0f7eb6fb2a60b52\"\n    },\n    {\n      \"path\": \"mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt\",\n      \"git_blob\": \"0046c1bbaef6c037be51b796c1cb9b7349e4598e\",\n      \"sha256\": \"2c898e708e6b7da9e9a322ddaecbfb7d72ecd1d5938b6729c6f14274b657f062\"\n    },\n    {\n      \"path\": \"mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MnemonicWallScenarioTest.kt\",\n      \"git_blob\": \"6efb399f641a929a81bb3d771df61e82969a4feb\",\n      \"sha256\": \"44bda959e4227a43380c51f70b8d2fc60aa0eea89ea07e13c86881f096d68f20\"\n    }\n  ],\n  \"bound_guard_evidence\": {\n    \"manual-independent-process-guard-check.json\": \"0c377008228c42297ce269d5740ba050909584356d0cb15d0bcbd9822de5bfb3\",\n    \"manual-independent-source-guard-check.json\": \"e384e2d525c1e5e2ae0b925b2b46cd1a6f1c6c042539155de2ab09359ded34d8\",\n    \"resource-selfcheck-first-observation.json\": \"d8fc739e0c775b720c4d1b870bad08307f3e59b1908ee21a10f4ac6200da4c6e\",\n    \"resource-selfcheck.json\": \"78685a3e14225a7a56b6aa4f87a69bb4b91381a8dc1016393ebc32ad3818c612\",\n    \"resource-volume-selfcheck.json\": \"aaca97b25ac0b21c5d1787e77cf0039d5db65e30dc783009b6f1056d258204dd\",\n    \"derived-resource-selfcheck.json\": \"486615bfe9f4a8bb7ec2494e61b7cc4f2b2bc5c73de58ab65fb87a16574ae5f0\"\n  },\n  \"independent_checks\": [\n    \"Read complete current collector/workflow/scope. Three-file control only; separate immutable8b05 source checkout; readonly credentials/permissions, Java21, build semaphore1, exact branch-creation push attempt1 workflow guard, always-upload includes hidden workflow. No manual event or gameplay runner.\",\n    \"Both original helpers and three original test bodies independently fetched/verified in prior source review. Final eager-capture helper reverses exactly to original and captures before-state STRING/pending type before processor; original process/update/events/return preserved. TableGameRunner original hash-update bytes retained.\",\n    \"Exact unchanged3classes/6identities remain4historicalfailures+2existing Arcanecontrols. Prior7 authority hashes unchanged from separately reviewed973gate; no officialseedvector access. Observer record contents belong only to existing synthetic unit fixtures and fixed vanilla baseline.\",\n    \"Collector now checks diff against HEAD, explicitly rejects staged and unmerged changes, and requires clean source outside the exact two helper patches. Before each class and after all classes it verifies complete tracked-change scope plus named helper/test/authority hashes. Both helpers restored and source/control hashes checked in finally.\",\n    \"Independent disposable Git probes accepted clean and exact helper states, rejected staged nonhelper drift and untracked source. Independent owned Python child checks confirmed successful capture, exact4096-byte stdout truncation with incomplete flag, and timeout termination. run_capped AST unchanged since those checks. No Java/engine execution in these probes.\",\n    \"Commands use just test-class on exact existing classes with --rerun --no-build-cache --no-daemon, snapshots false and one worker. This avoids borrowing a persistent Gradle daemon outside the owned command session. Actual original assertion failures are retained and cause final exit1; complete diagnostics never convert failed assertions to success.\",\n    \"Finite limits:1200sec percommand,32MiB captured stdout,32MiB observed testresults,192MiB retainedartifact with4MiB metadata reserve,512MiB preflight free space. Derived decisions limited4096records/32MiB perclass. Owned process-group timeout/resource termination, explicit partial-byte retention and unattempted remainingclasses; no rerun entitlement.\",\n    \"Resource-incomplete XML and derived records now explicitly set technical_limit before main stops remainingclasses. All original XML/log/exit bytes are copied before interpreting names/counts/freshness. Incomplete prefixes are marked and cannot satisfy diagnostic completion.\",\n    \"All3raw controls plus initialaudit retained before readiness/review/source assertions; scope parsing inside preservedtry/finally. Original early Python-only selfcheck AssertionError and preceding candidate versions retained separately.\",\n    \"Exact XML class/case uniqueness/counts/statuses, timestamp bounds, actual task/no-cache and one fresh worker pair checked. Baseline derived stream requires ordered actionindices and terminalEND; decision records require explicitlabels. Resource/parser/collector failures remain technicaldiagnostic failures.\"\n  ],\n  \"resource_limit_interpretation\": \"Captured stdout/artifact caps are explicit retained-byte limits. Test-result growth is monitored while the owned command runs, so observed source files can exceed threshold before termination; retained prefixes are bounded and labelled incomplete. This is not full-game capacity or resource-calibration evidence.\",\n  \"release_rule\": {\n    \"permitted_scope_changes\": [\n      \"ready:false to true\",\n      \"source_review:null to an object containing this exact review record string and its SHA256; archive metadata may be included inside that object\"\n    ],\n    \"normalization\": \"Reset only ready=false and source_review=null and serialize with the same formatting to reproduce reviewed scopeSHAaf15656564f45f28bae573d0fbd6bff428d16fe94b752ab0c6c1f6dc10a6153b. All other scope values must remain identical.\",\n    \"unchanged_files\": [\n      \"run.py exact91d913cd\",\n      \"workflow exact456e03ae\"\n    ],\n    \"event\": \"One absent-branch creation push to lab/izzet-receiving-failure-diagnostic-20260926, run_attempt1; root verifies exact final control/tree and event before activation. No unchanged973 rerun.\"\n  },\n  \"scope_limits\": [\n    \"One passive diagnostic of6already-existing software cases, no new card/pilot testbudget or experimental game.\",\n    \"No source correction, assertion/golden reblessing, baseline equivalence or pendingdecision conclusion before actual raw artifacts.\",\n    \"No runtime,resourcecapacity,offlinebundle,pilot,gameplay admission, officialclaim/seed allocation or GitHub approval.\",\n    \"Root owns final archive/release/branch/trigger checks. Reviewer performed no remote publication, merge, dispatch or engine run.\"\n  ],\n  \"official_games\": 0,\n  \"official_allocations\": 0,\n  \"outcomes_exposed\": 0,\n  \"deck_performance_evidence_changed\": false\n}\n"
+  },
+  "source_head": "8b05f2cecee6e992f7eca6d77695040f32901f40",
+  "source_tree": "4f91346617cd0d4e29e09ab8405c141883cf1820",
+  "original_failed_run": 36275982231,
+  "original_artifact": 10918805789,
+  "original_zip_sha256": "1a9f82fd580b837ad335b151a7e83b2ad200fb95200e539524d8518e4d479b31",
+  "purpose": "Observe actual pending decision and action/result state at existing failures; preserve new-source complete baseline hash input. No correction or assertion change.",
+  "existing_class_bank": [
+    {
+      "scope": "izzet-original-failing-regression",
+      "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "expected_cases": 1,
+      "case_names": [
+        "LEGACY_V0 plays the frozen baseline game exactly as it always has"
+      ],
+      "original_archive_sha256": "869e0cdd41e5827fbf51e74ed807ba549e4e533f7bc98b2a2395be91c6fb5edf",
+      "original_xml_sha256": "ab877de6fb5d15f98af2e5e1360bf6fe5faa9bb4c59efd13c6df245c1019533a",
+      "original_xml_path": "FrozenBaselineTest/raw-test-results/TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml",
+      "original_result": "FAILED_C47_DIAGNOSTIC_RETAINED_NOT_ACCEPTED",
+      "test_source": "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt",
+      "test_source_git_blob": "bfeb52503c604549b7625fa02a486a0f85cfdbef",
+      "module": "ai",
+      "stage": "historical-regression-FrozenBaselineTest"
+    },
+    {
+      "scope": "izzet-original-failing-regression",
+      "class": "com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest",
+      "expected_cases": 3,
+      "case_names": [
+        "counter schedules two one-shot triggers for the next turn's upkeep and captures target controller",
+        "on the next turn's upkeep target controller may draw 0 to 2 and Denial caster draws one",
+        "uncounterable target still gets Arcane Denial's delayed draw abilities"
+      ],
+      "original_archive_sha256": "869e0cdd41e5827fbf51e74ed807ba549e4e533f7bc98b2a2395be91c6fb5edf",
+      "original_xml_sha256": "efad19603b382cc98364273cbd57483bb202a8003569c78700784823437c64bb",
+      "original_xml_path": "ArcaneDenialScenarioTest/raw-test-results/TEST-com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest.xml",
+      "original_result": "FAILED_C47_DIAGNOSTIC_RETAINED_NOT_ACCEPTED",
+      "test_source": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt",
+      "test_source_git_blob": "0046c1bbaef6c037be51b796c1cb9b7349e4598e",
+      "module": "mtg-sets/1993-1999/tests",
+      "stage": "historical-regression-ArcaneDenialScenarioTest"
+    },
+    {
+      "scope": "izzet-original-failing-regression",
+      "class": "com.wingedsheep.engine.scenarios.MnemonicWallScenarioTest",
+      "expected_cases": 2,
+      "case_names": [
+        "ETB may return a targeted instant from your graveyard",
+        "ETB may be declined without returning the targeted card"
+      ],
+      "original_archive_sha256": "869e0cdd41e5827fbf51e74ed807ba549e4e533f7bc98b2a2395be91c6fb5edf",
+      "original_xml_sha256": "33aed82ed070cce7b3b0b78e1b5be2ed2a2d649668b6ab7ba5726101a93bae28",
+      "original_xml_path": "MnemonicWallScenarioTest/raw-test-results/TEST-com.wingedsheep.engine.scenarios.MnemonicWallScenarioTest.xml",
+      "original_result": "FAILED_C47_DIAGNOSTIC_RETAINED_NOT_ACCEPTED",
+      "test_source": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MnemonicWallScenarioTest.kt",
+      "test_source_git_blob": "6efb399f641a929a81bb3d771df61e82969a4feb",
+      "module": "mtg-sets/2008-2016/tests",
+      "stage": "historical-regression-MnemonicWallScenarioTest"
+    }
+  ],
+  "expected_existing_cases": 6,
+  "failing_cases": 4,
+  "existing_passing_arcane_controls": 2,
+  "new_cases": 0,
+  "instrumentation": [
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt",
+      "original_git_blob": "0871594a6f90c3ebd95272d01974ab07bcd5f2d4",
+      "original_sha256": "36c5348e3d59d569001c9b5d85db3f5ae89683d10eeab704ff6a8c1636835bf6",
+      "instrumented_sha256": "bdd45e68526e95144c09d64172e5c780283f9defb3ce8796295af3d5c7a9da74",
+      "replacement_old": "        fun record(entry: String) = stream?.update(entry.toByteArray(Charsets.UTF_8))",
+      "replacement_new": "        fun record(entry: String) {\n            stream?.update(entry.toByteArray(Charsets.UTF_8))\n            if (recordActionStream) {\n                println(\"IZZET_DIAGNOSTIC_TRACE \" + java.util.Base64.getEncoder().encodeToString(entry.toByteArray(Charsets.UTF_8)))\n            }\n        }",
+      "reversible": true
+    },
+    {
+      "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/GameTestDriver.kt",
+      "original_git_blob": "7738b6a9e861d4675a3785404870a0eea3daacf8",
+      "original_sha256": "34cb7972a73c3cc90dddaf43749adcc6dd1bd8495c8b3e3dae23ec78fe9c5df0",
+      "instrumented_sha256": "5bf82dba69e7d14796d11406d6b35987c71baa55418c800dfd744d0387b253ee",
+      "replacement_old": "        val result = processor.process(_state, action).result\n        if (result.isSuccess || result.isPaused) {\n            _state = result.newState\n            _events.addAll(result.events)\n        }\n        return result",
+      "replacement_new": "        val diagnosticBefore = _state.toString()\n        val diagnosticBeforePendingType = _state.pendingDecision?.javaClass?.name\n        val result = processor.process(_state, action).result\n        if (result.isSuccess || result.isPaused) {\n            _state = result.newState\n            _events.addAll(result.events)\n        }\n        val diagnosticPayload = \"action=$action\\n\" +\n            \"success=${result.isSuccess} paused=${result.isPaused} error=${result.error}\\n\" +\n            \"beforePendingType=$diagnosticBeforePendingType\\n\" +\n            \"afterPendingType=${_state.pendingDecision?.javaClass?.name}\\n\" +\n            \"before=$diagnosticBefore\\n\" +\n            \"resultState=${result.newState}\\n\" +\n            \"storedAfter=$_state\\n\"\n        println(\"IZZET_DECISION_DIAGNOSTIC \" + java.util.Base64.getEncoder().encodeToString(diagnosticPayload.toByteArray(Charsets.UTF_8)))\n        return result",
+      "reversible": true
+    }
+  ],
+  "unchanged_tests": [
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt",
+      "git_blob": "bfeb52503c604549b7625fa02a486a0f85cfdbef",
+      "sha256": "87978d468ff109f88378607fec34b4ad825ed91671069a62c0f7eb6fb2a60b52"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt",
+      "git_blob": "0046c1bbaef6c037be51b796c1cb9b7349e4598e",
+      "sha256": "2c898e708e6b7da9e9a322ddaecbfb7d72ecd1d5938b6729c6f14274b657f062"
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MnemonicWallScenarioTest.kt",
+      "git_blob": "6efb399f641a929a81bb3d771df61e82969a4feb",
+      "sha256": "44bda959e4227a43380c51f70b8d2fc60aa0eea89ea07e13c86881f096d68f20"
+    }
+  ],
+  "interpretation": [
+    "Same three original classes, six original identities, actions/assertions/seeds unchanged.",
+    "Use a new bounded source-bound diagnostic event only after exact control/source review. No unchanged973 rerun.",
+    "Original failures remain workflow failures even if diagnostic material is complete.",
+    "No assumed pending-decision type and no helper auto-answer behavior introduced.",
+    "Baseline full stream can be compared against preserved earlier base/c47 streams only after actual complete raw extraction.",
+    "No official gameplay, vector access, deck/pilot/protocol changes or new pilot fixture budget."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "preserved_authority_sha256": {
+    "izzet-science/v0.7-control.md": "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01",
+    "izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt": "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be",
+    "izzet-science/v09-position1-bootstrap-gate.md": "8344ad7c543a42ac71ef9c999583ea65f1b44de57ed870e7480f91df46941257",
+    "izzet-science/v09-phase33-position1-execution-authorization-accepted.md": "3851d3c0405d3a7186de4f2161abf165a1ca38d12ff6a352a432d39fec0a7375",
+    "izzet-science/shared-priority-receiving/priority.json": "e9fbb30abbc13425c1675fa2cb6ba2bd1f8275e1f9b9fa6872a49c21cfd54643",
+    "izzet-science/shared-priority-receiving/cast-observer.json": "81973f3fd87739d5846244174aa426ba3790e7ebdcb2bf86977e70f7f21f4e5b",
+    "izzet-science/v09-position1-execution-adapter-accepted.md": "2802ef8475394ca8f3b889289dda6be5887e6506c348dc01a449b9db4eb03c01"
+  },
+  "resource_limits": {
+    "command_timeout_seconds": 1200,
+    "stdout_bytes": 33554432,
+    "test_result_bytes": 33554432,
+    "artifact_bytes": 201326592,
+    "minimum_free_bytes": 536870912
+  },
+  "resource_disposition": "A command timeout, captured stdout limit, observed test-result limit, artifact budget exhaustion, or incomplete XML/diagnostic record is a technical diagnostic failure. Stop only the owned process group; retain raw prefix and explicit completeness/observed-size metadata. Never treat truncated output as complete state, a test pass, a game outcome, or permission to rerun. No helper choice/actions change. Derived records are bounded separately and already retained losslessly in raw XML; inability to emit all derived records is explicitly incomplete. A timeout/volume-limited command stops remaining classes with their unattempted identities recorded.",
+  "derived_diagnostic_limits": {
+    "max_decision_records_per_class": 4096,
+    "max_decoded_state_bytes_per_class": 33554432,
+    "reserved_artifact_metadata_bytes": 4194304
+  },
+  "preaction_snapshot_note": "Capture before-state string and pending type before processor invocation, so subsequent processing cannot affect the representation of the prior state even if a mutable subobject existed."
+}
