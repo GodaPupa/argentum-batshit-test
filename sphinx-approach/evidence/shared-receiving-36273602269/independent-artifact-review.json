@@ -1,0 +1,79 @@
+{
+  "schema": "sphinx-shared-receiving-independent-artifact-review-v1",
+  "reviewer": "Argentum Work conductor, independent of source/control author",
+  "disposition": "PASS_EXACT_999_DETERMINISTIC_RECEIVING_BANK_ONLY",
+  "run_id": 36273602269,
+  "run_attempt": 1,
+  "event": "push",
+  "run_conclusion": "success",
+  "control_commit": "5b92b8f28b4023420bd510ec354ceef6d763d99d",
+  "control_tree": "83e376ca1911dca2388a52aa9fe11ef781fca4ea",
+  "tested_source_commit": "a0c5b995c2829c0b4069562b1f1eede8a820dd97",
+  "tested_source_tree": "1ee5590bacf2f6507fff6487be9d3e20df8b5e40",
+  "artifact_id": 10916917146,
+  "artifact_original_filename": "github-actions-artifact-10916917146.zip",
+  "artifact_size_bytes": 995625,
+  "artifact_sha256": "1894feb1549e9f9a5ede3ff710635772e5f392b7c4a93b8bcdf9a1019ab6da1c",
+  "artifact_repo_parts": [
+    {
+      "path": "sphinx-approach/evidence/shared-receiving-36273602269/original-artifact.part-01",
+      "offset": 0,
+      "size": 500000,
+      "sha256": "2dfbf9ca5a16c5b653ef342a19675f156f19b3f142517ef446f74e2e2fe5c71f",
+      "git_blob_sha": "286d6d939b7e1463ab0438d8419ecc65711081d3"
+    },
+    {
+      "path": "sphinx-approach/evidence/shared-receiving-36273602269/original-artifact.part-02",
+      "offset": 500000,
+      "size": 495625,
+      "sha256": "652d4be9a2663b4bf5606a9677a52315124ac21db766d04ea25d527067e3ff51",
+      "git_blob_sha": "a938368d911303e20f1db3b1c3f1ad374f9d32a1"
+    }
+  ],
+  "artifact_reconstruction": "Concatenate part-01 and part-02 in order without transformation; verify size, whole SHA-256 and ZIP CRC before inspecting.",
+  "control_gate_sha256": "ffb1f5380c9b9b2c2f3e8bc0caf53997badc6e5b58fa74dfeb7da9ad410e699a",
+  "raw_review": {
+    "zip_crc": "clean",
+    "original_xml_suites": 69,
+    "original_xml_cases": 999,
+    "distinct_exact_class_and_case_name_pairs": 999,
+    "xml_failures": 0,
+    "xml_errors": 0,
+    "xml_skips": 0,
+    "nonzero_command_exits": 0,
+    "cached_or_up_to_date_test_task_markers": 0,
+    "control_bank_class_count": 69,
+    "control_bank_case_count": 999,
+    "case_names_classes_modules_stage_order_and_counts_match_control": true,
+    "audit_per_stage_matches_raw_command_and_xml": true,
+    "source_before_equals_source_after": true,
+    "audit_snapshots_match_raw_bound_snapshots": true,
+    "audit_errors": [],
+    "scope_counts": {
+      "sphinx_actor": 136,
+      "sphinx_initialized_seat": 16,
+      "sphinx_cards_and_atomic": 426,
+      "canonical_mulligan": 14,
+      "shared_priority": 220,
+      "shared_observer": 135,
+      "shared_combat": 32,
+      "shared_token": 20
+    }
+  },
+  "independent_validation_method": "Read the downloaded original GitHub artifact ZIP bytes and run metadata. Checked ZIP CRC and digest; parsed each original XML and command JSON, matched every exact class and case name to the frozen control's ordered bank, checked all exit-status files and test-task logs, and compared before/after source and authority snapshots. No test or experiment was rerun.",
+  "remaining_gates": [
+    "Separate complete source-specific CI and receiving integration disposition.",
+    "Whole pilot competence for four frozen 60-card identities with equal bounded development and every reachable actor choice.",
+    "Trusted runner, semantic replay, durable claim and runtime identity binding.",
+    "Prospective opponent, allocation, sample, endpoint and stopping-rule freeze followed by independent admission before any Stage-E seed."
+  ],
+  "limits": {
+    "new_pilot_development_cases": 0,
+    "official_stage_e_seeds": 0,
+    "official_stage_e_games": 0,
+    "deck_performance_evidence": false,
+    "full_runtime_accepted": false,
+    "stage_e_admitted": false,
+    "historical_a_to_d_bytes_recovered": false
+  }
+}
