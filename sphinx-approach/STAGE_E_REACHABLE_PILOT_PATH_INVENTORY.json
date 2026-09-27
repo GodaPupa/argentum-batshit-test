@@ -75,7 +75,7 @@
       ],
       "source": "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/cards/SphinxsApproach.kt",
       "scenario": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SphinxsApproachScenarioTest.kt",
-      "reachable": "draw two; YesNoDecision May; SelectCardsDecision exactly four current graveyard copies; SelectCardsDecision library Sphinx choice including fail-to-find; source-to-exile atomicity",
+      "reachable": "Draw two; YesNoDecision May; conditional SelectCardsDecision choosing exactly four graveyard copies when choice is needed (four exact copies may resolve without a separate chooser); subsequent SelectCardsDecision for library Sphinx or fail-to-find; source-to-exile atomicity",
       "evidence_status": "typed question sequence verified in exact card scenario; actor response unqualified"
     },
     {
