@@ -1,0 +1,89 @@
+{
+  "schema": "argentum-root-original-artifact-readback-release/v1",
+  "reviewer": "/root",
+  "at_utc": "2026-09-27 05:43:28 UTC",
+  "disposition": "RELEASE_ONE_DISTINCT_READ_ONLY_ORIGINAL_ARTIFACT_TRANSPORT_AFTER_PREPARATION_PUBLICATION_AND_FINAL_FRESH_REF_CHECK",
+  "authority": "User's standing authorization for source-bound validation and public project evidence publication; this is no official gameplay authority or GitHub approval.",
+  "control": {
+    "commit": "7e09c6622292bafb559f7bbe04fa777815e03b8d",
+    "tree": "b56995648c9917128e09baec19823963562b5915",
+    "sole_parent": "a0fe959d2fa345b77513e199e2db046d52cf2d0f",
+    "files": [
+      {
+        "path": ".github/workflows/izzet-factory-artifact-readback.yml",
+        "git_blob": "44f87f149fdd462ead03d63fdfd75b7439e3ecd9",
+        "bytes": 852
+      },
+      {
+        "path": "readback.py",
+        "git_blob": "406442bdc7d34736b949fadc8ce0aeed28aa93fc",
+        "bytes": 23915
+      },
+      {
+        "path": "scope.json",
+        "git_blob": "4ff02e7c9588cde9c8f0c6bc6a5869758770479b",
+        "bytes": 3632
+      }
+    ]
+  },
+  "independent_source_review": {
+    "git_blob": "97a5bb411602224395f5d62dd16603d1d207c575",
+    "sha256": "5a2c14fe9c39e28f27424fd80c2a2fe2118ff4137ac37460bcc48819e1faf04c"
+  },
+  "root_checks": [
+    "Read complete final source, workflow, scope, independent review and original collector path contract. Exact final file identities/lengths and hashes checked.",
+    "Final ready scope SHA256 c246c1b55c5058b7bf910e52924b8b8c08a7ac245800677f950d1b57e5a11ae5. Normalizing only readiness=false/source_review=null reproduces exact reviewed unready bytes af65285745b2842661bfb49bc6696dc963ccbdfa370bcb9c45074968a8be0e90.",
+    "Exact untruncated final tree contains three regular files, direct original control parent. No other branch source or workflow is inherited.",
+    "External 300-second SIGKILL encloses Python including output; no test, package, JVM, Gradle, official seed, claim or runtime command in this readback.",
+    "All private locator values omitted. Rejected draft preserved by sanitized hashes/findings only; no private-bearing draft contents enter publication.",
+    "Root fixed four in-memory byte-helper checks already preserved; independently reviewed helper is for exact binary digest, not transport capacity or experiment proof."
+  ],
+  "event": {
+    "branch": "lab/izzet-factory-artifact-readback-20260927",
+    "event": "push",
+    "created": true,
+    "before": "0000000000000000000000000000000000000000",
+    "attempt": 1,
+    "maximum_new_creation_events": 1,
+    "reruns_permitted": 0,
+    "extra_artifact_transports_permitted": 1
+  },
+  "original": {
+    "run": 36295267824,
+    "attempt": 1,
+    "head": "a0fe959d2fa345b77513e199e2db046d52cf2d0f",
+    "artifact": 10923618567,
+    "bytes": 1945147,
+    "sha256": "a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5",
+    "status": "completed",
+    "workflow_conclusion": "success",
+    "raw_admission": "pending"
+  },
+  "transport_history": {
+    "previous_transfer": 1,
+    "previous_local_materialization": "failed environment_offline; no original bytes audited",
+    "private_reference": "excluded",
+    "this_release": "One additional distinct read-only transport; no qualification rerun and no erasure of original history."
+  },
+  "preflight": {
+    "branch": "404 NOT_FOUND",
+    "all_event_branch_runs": 0,
+    "all_event_head_runs": 0,
+    "open_prs_checked": 37,
+    "applicable_prs": 0,
+    "main": "8bb5aad17f0f360fd35f3066085525dbb460ef0a",
+    "main_dotgithub": "35cfd2ad7a79fe94f65259a2db90a781083fd2e7",
+    "evidence_expected_parent": "0e43813417a65937a9e6b7e5beffe62aca4a55b5",
+    "evidence_dotgithub": "e01e446fd69962c36ac82d351288c888ddbac7b6",
+    "trigger_review": "Retained complete review blob62f4e7debb1005051303614b4234dcb3c1dd3990 read; full111 evidence/80 default workflow bodies previously parsed and rehashed. Current exact .github trees unchanged. No applicable automatic branch/workflow watcher. This control contains its one reviewed workflow only.",
+    "metadata_route": "Direct single-artifact fetch is unsupported by connector (400). Supported original-run artifacts endpoint was read successfully; exact one artifact identity/size/digest/expiry unchanged."
+  },
+  "consumer_requirements": [
+    "Reject missing/duplicate/out-of-order frames, missing END, incorrect identities/counts/bytes/body SHA or original ZIP SHA; caller enforces <=4MiB framing before helper accumulation.",
+    "Preserve failed/incomplete readback without automatic retry; partial output is not original evidence admission.",
+    "Original ZIP sensitivity inspection and independent raw bank review must precede public original-blob publication or component acceptance; no gameplay admission."
+  ],
+  "official_allocations_or_games": 0,
+  "deck_changes": 0,
+  "deck_performance_evidence_changed": false
+}

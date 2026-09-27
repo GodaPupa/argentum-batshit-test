@@ -85,10 +85,16 @@
       "git_blob": "62bbe217ea6bbaf13b051727bb2a408e92f42b42",
       "sha256": "86c729e0e8ddbb9f9d85d79d242d217daaff8cf9390a119e054a9c13c4ae2bdb",
       "mode": "100644"
+    },
+    {
+      "path": "izzet-science/evidence/original-factory-artifact-readback-20260927/preparation/ROOT_RELEASE.json",
+      "git_blob": "a57cebf24ed3dd908cba85152d5d23096a224703",
+      "sha256": "9e53b6a8d242673194117bf744ab250ef0499d84d990d2d0b0f44fb672310636",
+      "mode": "100644"
     }
   ],
   "preservation": [
-    "All12payloads reuse existing exact Git blobs; no validation/check/probe is rerun during packaging.",
+    "All13payloads reuse existing exact Git blobs; no validation/check/probe is rerun during packaging.",
     "Workflow copies are nested below evidence and do not replace active .github workflows.",
     "Private-bearing draft content and private first-transfer locator are excluded; only sanitized findings preserve original hashes.",
     "Readiness normalization changes only readiness and exact public source review reference; original script/workflow are unchanged.",
@@ -97,5 +103,11 @@
   "additional_artifact_transport_during_preparation": 0,
   "ref_or_workflow_event_created_by_author": false,
   "official_games": 0,
-  "deck_performance_evidence_changed": false
+  "deck_performance_evidence_changed": false,
+  "root_release": {
+    "git_blob": "a57cebf24ed3dd908cba85152d5d23096a224703",
+    "sha256": "9e53b6a8d242673194117bf744ab250ef0499d84d990d2d0b0f44fb672310636",
+    "bytes": 4913,
+    "scope": "One distinct read-only transport only after durable preparation and fresh preflight; root owns event."
+  }
 }
