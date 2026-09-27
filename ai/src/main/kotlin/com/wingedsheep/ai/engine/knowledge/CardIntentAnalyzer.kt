@@ -379,10 +379,14 @@ object CardIntentAnalyzer {
         is GrantEvasionKeywordEffect -> setOf(IntentTag.EVASION_GRANT)
 
         is GatherCardsEffect -> {
-            val source = effect.source as? CardSource.FromZone
-            if (source?.zone != Zone.LIBRARY) {
+            val libraryFilter = when (val source = effect.source) {
+                is CardSource.FromZone -> source.filter.takeIf { source.zone == Zone.LIBRARY }
+                is CardSource.AuthorizedLibrarySearch -> source.filter
+                else -> null
+            }
+            if (libraryFilter == null) {
                 emptySet()
-            } else if (source.filter == GameObjectFilter.BasicLand) {
+            } else if (libraryFilter == GameObjectFilter.BasicLand) {
                 setOf(IntentTag.TUTOR, IntentTag.LAND_TUTOR)
             } else {
                 setOf(IntentTag.TUTOR)
