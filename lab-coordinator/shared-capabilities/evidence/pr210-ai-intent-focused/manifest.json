@@ -1,0 +1,52 @@
+{
+  "schema": "pr210-ai-intent-focused-repair-v1",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "source": "197f95e858638de2fd215073b0b876378fc4c92d",
+  "sourceTree": "e22c55bdf80896760bb8009c67ddcb91f254e27d",
+  "aiSourceBlob": "013510d79b05f88e3b70d0ed8609d58d79349d67",
+  "gateCommit": "8d63bb8f4bc4ceca21234abbec464c64fda04abb",
+  "run": {
+    "id": 36294279717,
+    "event": "push",
+    "attempt": 1,
+    "conclusion": "success"
+  },
+  "artifact": {
+    "id": 10923143035,
+    "name": "authorized-search-ai-intent-focused-evidence",
+    "path": "original-focused-evidence.zip",
+    "bytes": 26599,
+    "sha256": "f92f11e9d43b152ee4b2c7247a073e77d40542350e0ae1a5ba4a27e3a0d37d7f",
+    "gitBlob": "9f3af014f94c67398bdba556750854d3c4487581",
+    "crc": "clean"
+  },
+  "classes": [
+    {
+      "name": "com.wingedsheep.ai.engine.knowledge.CardIntentAnalyzerTest",
+      "tests": 30,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xmlSha256": "cf966dfdbdf19c51caf27525a43e8ee3353cc45d6277bfa59700badb17548b5b"
+    },
+    {
+      "name": "com.wingedsheep.ai.engine.PestControlAgentDecisionTest",
+      "tests": 86,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "xmlSha256": "68997abdeaa663629233c7206a851b1e65100e1312bb71945cacb08a0e7cf51b"
+    }
+  ],
+  "caseNamesMatchOriginalFailedRun": true,
+  "gradle": {
+    "exit": 0,
+    "task": ":ai:test",
+    "taskExecuted": true,
+    "actionableTasks": 46,
+    "executedTasks": 46,
+    "fromCache": false,
+    "trackedSourceClean": true
+  },
+  "scope": "deterministic two-class AI source repair only; snapshot goldens and full PR CI remain unresolved; no Pest actor/gameplay admission"
+}
