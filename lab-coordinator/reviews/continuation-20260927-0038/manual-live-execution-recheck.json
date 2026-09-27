@@ -1,0 +1,5388 @@
+{
+  "schema": "manual-phase2-live-execution-recheck-v1",
+  "at_utc": "2026-09-27T00:27:30.384Z",
+  "canonical": {
+    "head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+    "tree": "d424071009722a8c0dbc01c3929332fb9d5a941e"
+  },
+  "reviewed_receiving": {
+    "head": "ffbfaa383eba59ae7c129f651769fdf388caedb4",
+    "tree": "e1b4e74d9ed4d8412762ae24863b59b79b2dc0be"
+  },
+  "all_head_refs": [
+    {
+      "ref": "refs/heads/affinity/grixis-policy-regression",
+      "sha": "a326db872c0f6ebf44524db1c0477883fce2b054"
+    },
+    {
+      "ref": "refs/heads/affinity/grixis-preboard-sample-1",
+      "sha": "51d2446d2f9c0f0595574f8f489d10a8485be8e4"
+    },
+    {
+      "ref": "refs/heads/affinity/grixis-readiness",
+      "sha": "abdb87f7e120bf0dfb0dffb5020018855e9c6bcb"
+    },
+    {
+      "ref": "refs/heads/affinity/grixis-smoke-10",
+      "sha": "42b7e2d159c2e5e0587ee1ae474e58b634916827"
+    },
+    {
+      "ref": "refs/heads/engine/ojer-pakpatiq-lethal-fixture",
+      "sha": "9834751b54bbfa5fd26cabf640cb9dde168c9c3d"
+    },
+    {
+      "ref": "refs/heads/engine/post-cast-sba",
+      "sha": "de864d604215acf402a2c708d6b62ee9b4001a72"
+    },
+    {
+      "ref": "refs/heads/engine/priority-after-resolution",
+      "sha": "21e9f2a82ea9d5292054b937456396e00060eb8d"
+    },
+    {
+      "ref": "refs/heads/experiment/optimization-a-preflight",
+      "sha": "bf100f030cba4b81654fb43f2faec32a166c19af"
+    },
+    {
+      "ref": "refs/heads/experiment/paired-counterfactual-framework",
+      "sha": "d8a041329fb002d2836feb3c0ebe0f6a307ae13a"
+    },
+    {
+      "ref": "refs/heads/experiment/preboard-100-v1",
+      "sha": "279874468cb4ee277e8aad9af00657b1eef2900e"
+    },
+    {
+      "ref": "refs/heads/experiment/preboard-100-v2",
+      "sha": "d7e80be6d819090f39c6b8f1e8e60fb20bd85424"
+    },
+    {
+      "ref": "refs/heads/face-value-edh/r1-reconstruction",
+      "sha": "e9978e85ecf39165e3b57e7c7fce08c7653a0860"
+    },
+    {
+      "ref": "refs/heads/face-value/lab",
+      "sha": "127a594811d0bdcd2c0462c05eaa6bdbab9f118f"
+    },
+    {
+      "ref": "refs/heads/ferocity-recycling/archetype-research",
+      "sha": "7052de0b64d5d01c3a31465d19157d95089b7d40"
+    },
+    {
+      "ref": "refs/heads/ferocity-recycling/qualification-review",
+      "sha": "3a4f99a7653839506e96d19e6639f58d9e8c5ced"
+    },
+    {
+      "ref": "refs/heads/ferocity-recycling/source08-evidence-20260926",
+      "sha": "6250186025243744fdfed479588cae91514747d6"
+    },
+    {
+      "ref": "refs/heads/fix/bats-rescue-readiness",
+      "sha": "e0b553901758977669f182f6cff7d901c90f4c01"
+    },
+    {
+      "ref": "refs/heads/fix/tapped-land-sequencing",
+      "sha": "44222eef9796a28bae6cec06315ee5885a5219f2"
+    },
+    {
+      "ref": "refs/heads/fix/trace-format-assertion",
+      "sha": "a45f97d059b486d6b1e96c141279537422eb7578"
+    },
+    {
+      "ref": "refs/heads/industrial-waste/gate-10-elves-readiness",
+      "sha": "5f80176c90124574b0686db38260c95cc2e62bd1"
+    },
+    {
+      "ref": "refs/heads/industrial-waste/gate-11-spy-combo-readiness",
+      "sha": "e6d5bd319fd2e20e5d81761522e4f355e1f7e0bf"
+    },
+    {
+      "ref": "refs/heads/industrial-waste/gate-9-monster-tron-readiness",
+      "sha": "a945990b2ff4c48eb753434d3c44344db9937f86"
+    },
+    {
+      "ref": "refs/heads/industrial-waste/lab",
+      "sha": "abfd806f6332c0da311e40b01c9d85eeb0962165"
+    },
+    {
+      "ref": "refs/heads/industrial-waste/r1-produced-token-qualification",
+      "sha": "73394d7eabc7cc3dad609b9d416102a9ecce8e4f"
+    },
+    {
+      "ref": "refs/heads/industrial-waste/r1-receiving-evidence-20260926",
+      "sha": "be3e2b43acb6ddcea9ac7ff289821329707a8077"
+    },
+    {
+      "ref": "refs/heads/industrial-waste/r1-runtime-composition",
+      "sha": "94af8331e83c7b48cfa0cb61fd626591b4928462"
+    },
+    {
+      "ref": "refs/heads/industrial-waste/r1-runtime-evidence-20260926",
+      "sha": "0de8a955b8f81f6ce48304bcde42eaa6116ae4e9"
+    },
+    {
+      "ref": "refs/heads/industrial-waste/v2-baseline-diagnostics",
+      "sha": "d1dfbca94a8a7eeb6f95a13ae58fb06184b10537"
+    },
+    {
+      "ref": "refs/heads/industrial-waste/v2-reality-fracture-challengers",
+      "sha": "caa08526569d8cd212939ca6ae94a34e1b9169c8"
+    },
+    {
+      "ref": "refs/heads/industrial-waste/v2-structural-redesign",
+      "sha": "e5a0facd17af60f099463f5ebe3e5e4afbe4bd0d"
+    },
+    {
+      "ref": "refs/heads/izzet-science/twinned-vision-challenger",
+      "sha": "0f40e722776176fdab8e30f2d4a399fd9efd1d6c"
+    },
+    {
+      "ref": "refs/heads/lab-coordinator/critical-path",
+      "sha": "e78196cbf7a4bd607ef65006c126d6531b68ed15"
+    },
+    {
+      "ref": "refs/heads/lab-coordinator/industrial-r1-runtime",
+      "sha": "561656acb886392c95df36b2d65f1779fcc69776"
+    },
+    {
+      "ref": "refs/heads/lab/ai-receiving-diagnostics",
+      "sha": "929b8a975438c405c6c0310b781b953f573726a2"
+    },
+    {
+      "ref": "refs/heads/lab/attacking-token-defender-choice",
+      "sha": "1bc66b276f5db54640df1f956a32fa3d188628e3"
+    },
+    {
+      "ref": "refs/heads/lab/conductor-continuation-20260926",
+      "sha": "be5828aae6a8b533539b335d1d2c98f2653b947b"
+    },
+    {
+      "ref": "refs/heads/lab/ferocity-existing-artifact-transfer-20260926",
+      "sha": "86bb30041d8076f2fe267883bddc053e68bef74c"
+    },
+    {
+      "ref": "refs/heads/lab/ferocity-historical-gift-retrieval-20260926",
+      "sha": "5771a2cd5343610f2a4f5142269ca6a235ed9aec"
+    },
+    {
+      "ref": "refs/heads/lab/ferocity-source08-artifact-transfer-20260926",
+      "sha": "45bd52f967d9880e9792f30e1f00d40c68711c66"
+    },
+    {
+      "ref": "refs/heads/lab/ferocity-source08-mtgish-freshness-20260926",
+      "sha": "c0124122528ca66c598cfc27a7d6c3f9bad45af8"
+    },
+    {
+      "ref": "refs/heads/lab/izzet-receiving-failure-diagnostic-20260926",
+      "sha": "42cd18ac4c573a945dcfd42e237581d86bb2f4d7"
+    },
+    {
+      "ref": "refs/heads/lab/izzet-shared-receiving-candidate-20260926",
+      "sha": "8b05f2cecee6e992f7eca6d77695040f32901f40"
+    },
+    {
+      "ref": "refs/heads/lab/izzet-shared-receiving-qualification-20260926",
+      "sha": "49677903b81afe8b3464f3ccf7fedc60002bdfcb"
+    },
+    {
+      "ref": "refs/heads/lab/manual-aether-channeler-20260926",
+      "sha": "e889b5c4da1e7a310705d603d3ddc31097ab2fac"
+    },
+    {
+      "ref": "refs/heads/lab/manual-entry-receipt-takeover-20260926",
+      "sha": "64ddbcf85a3a0a8099b189b4b64a73a834e574c8"
+    },
+    {
+      "ref": "refs/heads/lab/manual-entry-snapshot-receiving-20260926",
+      "sha": "b6d5ff1a902eede46ae290a1a36bda53a8aab36d"
+    },
+    {
+      "ref": "refs/heads/lab/manual-etb-receiving-20260926",
+      "sha": "ffbfaa383eba59ae7c129f651769fdf388caedb4"
+    },
+    {
+      "ref": "refs/heads/lab/manual-phase2-journal-20260926",
+      "sha": "a22f07df6521971f69bb04e042b7cafaa070d192"
+    },
+    {
+      "ref": "refs/heads/lab/manual-phase2-journal-receipt-20260926",
+      "sha": "dcce30a6f37f2ca619229354e057b9d0dd279469"
+    },
+    {
+      "ref": "refs/heads/lab/manual-phase2-telemetry-20260926",
+      "sha": "694d563cd571f857e058c5a40b4bcc638bb7e30d"
+    },
+    {
+      "ref": "refs/heads/lab/manual-phase2-telemetry-acceptance-20260926",
+      "sha": "5ed29bf4cdfd13c7fc25bee84e9ea3d9549739e5"
+    },
+    {
+      "ref": "refs/heads/lab/manual-purphoros-qualification-20260926",
+      "sha": "45ca5ede77e0fd1cc33bfd87b51d918122bc0727"
+    },
+    {
+      "ref": "refs/heads/lab/manual-world-breaker-receipt-20260926",
+      "sha": "52095c6d93988258a0c6cbca787fa73a2b78ed16"
+    },
+    {
+      "ref": "refs/heads/lab/manual-world-breaker-routing-20260926",
+      "sha": "83a6b5c9e4318f5247d757b75756ce4ef5825800"
+    },
+    {
+      "ref": "refs/heads/lab/observed-runtime-restoration",
+      "sha": "c04f9ffebe73acd1520133bd057d46925dab6b73"
+    },
+    {
+      "ref": "refs/heads/lab/pest-actor-retry-evidence-20260926",
+      "sha": "98377f068b005b9b46e288dd98dfc7baca5e4259"
+    },
+    {
+      "ref": "refs/heads/lab/pest-monster-actor-component",
+      "sha": "edfde68ae2005b5e480aca194051b982069d8439"
+    },
+    {
+      "ref": "refs/heads/lab/pest-monster-prerequisite-reconciliation-20260926",
+      "sha": "d08cd906d39ad72e4214a1cafaea2b3ff0f7ee99"
+    },
+    {
+      "ref": "refs/heads/lab/pest-monster-targeting-20260926",
+      "sha": "56ed27fdd42e2d09b09128cc2c9564a05cecf3f1"
+    },
+    {
+      "ref": "refs/heads/lab/pest-postboard-acceptance-receipt-20260926",
+      "sha": "4a363dccf13941ee7a1402063738d98bacc9e3e4"
+    },
+    {
+      "ref": "refs/heads/lab/pest-postboard-closure-20260926",
+      "sha": "fbbf7207d7f493648dcdb7099b0a88b102e8cd59"
+    },
+    {
+      "ref": "refs/heads/lab/pest-postboard-policies-20260926",
+      "sha": "9b89c9d8893fac295ea01d30c7b8356e6d75c3d2"
+    },
+    {
+      "ref": "refs/heads/lab/pest-receiving-closure-20260926",
+      "sha": "232f4904f3929fec917f87b9565f8adb4047487c"
+    },
+    {
+      "ref": "refs/heads/lab/shared-actor-input-qualification",
+      "sha": "7015d243df250bcb1660d4a7b76c937c3c0a4ada"
+    },
+    {
+      "ref": "refs/heads/lab/shared-actor-mulligan",
+      "sha": "c38fd8028c8b3587e0bca39a42ea8ca8f838f129"
+    },
+    {
+      "ref": "refs/heads/lab/shared-actor-mulligan-evidence-20260926",
+      "sha": "675d80921d0a7577458b83abe4c9d8e9154db12d"
+    },
+    {
+      "ref": "refs/heads/lab/shared-cast-observer-lki",
+      "sha": "bb42622219df3275c21ebf597ea1edaa82d15ec1"
+    },
+    {
+      "ref": "refs/heads/lab/shared-core-integration",
+      "sha": "b6fc446543d3ce566bb12c60d1ab6b84e1c96d8c"
+    },
+    {
+      "ref": "refs/heads/lab/shared-current-combat-receiving",
+      "sha": "a4730f0ab2e58895b0a428a05faa4d91fa85ef71"
+    },
+    {
+      "ref": "refs/heads/lab/shared-existing-ci-freshness-20260926",
+      "sha": "b2e99f13d19dc5d0d25617b9d113830adbb0fdb4"
+    },
+    {
+      "ref": "refs/heads/lab/shared-flashback-additional-costs",
+      "sha": "4aa0f3ee65caa857d1017fa4e522c43cf8946b99"
+    },
+    {
+      "ref": "refs/heads/lab/shared-postblock-receiving-binding-20260926",
+      "sha": "96b2a98e8944fded43ccfae8453457b77fb724f4"
+    },
+    {
+      "ref": "refs/heads/lab/shared-receiving-diagnostics",
+      "sha": "ee22714c3fa6998aefdc2a0dd356de4f02b87df4"
+    },
+    {
+      "ref": "refs/heads/lab/shared-receiving-evidence-20260926",
+      "sha": "405234eaf8b1d5edb61f41a643c04fdf0c4b9630"
+    },
+    {
+      "ref": "refs/heads/lab/shared-token-entry-event-fix",
+      "sha": "daaa0690c473735d831e80bcffece8b3aea372b9"
+    },
+    {
+      "ref": "refs/heads/lab/shared-type-loss-repair-20260926",
+      "sha": "8d76bbb7a8f6a8ea5332f2f1d88dadb12b289c39"
+    },
+    {
+      "ref": "refs/heads/lab/sphinx-actor-adapter",
+      "sha": "c0ffc71449068e8b6329d7c437127d800474884c"
+    },
+    {
+      "ref": "refs/heads/lab/sphinx-canonical-receiving-20260926",
+      "sha": "00ad4265cff954bc770a34cf0b6289bde2145eaf"
+    },
+    {
+      "ref": "refs/heads/lab/sphinx-full-ci-20260926",
+      "sha": "c13b3c84cb30850beca23620b2de53d7a35f7391"
+    },
+    {
+      "ref": "refs/heads/lab/sphinx-initialized-seat-binding",
+      "sha": "dee5b4788a6944a29c876cbc740b042d61bc7fec"
+    },
+    {
+      "ref": "refs/heads/lab/sphinx-initialized-seat-evidence-20260926",
+      "sha": "557b5221695fcd8374650f40e500583df9dc011c"
+    },
+    {
+      "ref": "refs/heads/lab/sphinx-input-freeze",
+      "sha": "bd792e833c1241fd99d4a38e0e2e4fc11afc20f4"
+    },
+    {
+      "ref": "refs/heads/lab/sphinx-next-gate",
+      "sha": "dc5e3c7d884766aeb3195fbe6aa43f97fa9a1654"
+    },
+    {
+      "ref": "refs/heads/lab/sphinx-pilot-components",
+      "sha": "371307bd21cb65665c8f9ff8c9f748ed90a4ddb1"
+    },
+    {
+      "ref": "refs/heads/lab/sphinx-shared-receiving-candidate-20260926",
+      "sha": "a0c5b995c2829c0b4069562b1f1eede8a820dd97"
+    },
+    {
+      "ref": "refs/heads/lab/sphinx-shared-receiving-evidence-20260926",
+      "sha": "9f8730dcad9e1c22f369b16067dc5dd67b616c5e"
+    },
+    {
+      "ref": "refs/heads/lab/sphinx-shared-receiving-qualification-20260926",
+      "sha": "5b92b8f28b4023420bd510ec354ceef6d763d99d"
+    },
+    {
+      "ref": "refs/heads/lilysplash/lab",
+      "sha": "77b5b7a30d2b8d556c407590e938a7df7e94c835"
+    },
+    {
+      "ref": "refs/heads/main",
+      "sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a"
+    },
+    {
+      "ref": "refs/heads/manual-transmission/emrakul-exigent-doom-challenger",
+      "sha": "adc1df05912258f5d2bb246c4c009a006a3612f6"
+    },
+    {
+      "ref": "refs/heads/manual-transmission/phase2-cedh",
+      "sha": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf"
+    },
+    {
+      "ref": "refs/heads/manual-transmission/phase2-reality-shift",
+      "sha": "e1746dc65fa5a2fe712d290779a5bedec1e171db"
+    },
+    {
+      "ref": "refs/heads/manual-transmission/qualification",
+      "sha": "e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-baseline-bestow-diagnostic",
+      "sha": "4fd5c78e1909de2c0bf3e13c52565fca03017644"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-baseline-control-diagnostic",
+      "sha": "fae94dd0eb59fca0104e6d69fd9a3397fe44cce8"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-benevolent-qualification",
+      "sha": "c78c50b4725d4d2c9069c4b952ae3d14ab7987da"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-bestow-integration",
+      "sha": "50eca5fb955013d70ea26c3c6a09efabef4bcff4"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-c47e-diagnostic-20260926",
+      "sha": "298a4a1ac0586c20c4983c5ee64513e1bee3ed18"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-forge-commander",
+      "sha": "a933d940703979623fcbf4d860448d92df566ba2"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-forge-receiving-acceptance",
+      "sha": "05008c273e995c70ab09e1efdd0ab34c45ca08d4"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-forge-valid-types",
+      "sha": "b6e34bd5f5b62a20eb8c63e9f614f2703869ae2e"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-position1-bootstrap",
+      "sha": "a31d4eac79bd6eb50a3890e90fe50e68862bf565"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-position1-bootstrap-acceptance",
+      "sha": "33164890e4e94651399b5c189ee75365445b6308"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-remaining-card-sources",
+      "sha": "43d094f6485279f71daa908b6216c837b7e550e2"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-science",
+      "sha": "25aca91fd476358d0d5b2adfb6f8d9e986a777af"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-science-v07-twinned-vision",
+      "sha": "412e0e34fcb5c12ba3b035d8d1f7b61a537bc5b4"
+    },
+    {
+      "ref": "refs/heads/mayhem/izzet-vines-targeting",
+      "sha": "c47e9dbafc1fd582f81be1db04e9f35a09f067b5"
+    },
+    {
+      "ref": "refs/heads/mayhem/project-x",
+      "sha": "087b2993360d2552ce5820d88a034085394068e5"
+    },
+    {
+      "ref": "refs/heads/optimization/experiment-a",
+      "sha": "bf100f030cba4b81654fb43f2faec32a166c19af"
+    },
+    {
+      "ref": "refs/heads/optimization/experiment-b",
+      "sha": "6e7a74111be0b33a0aefa78406fe005ca2eca5ad"
+    },
+    {
+      "ref": "refs/heads/optimization/experiment-c",
+      "sha": "1fd370e212575f464ca334af14f89654680ca4b6"
+    },
+    {
+      "ref": "refs/heads/optimization/experiment-c-replication",
+      "sha": "13e0379f1eaa176bee2d03f8cf77d167d67256d8"
+    },
+    {
+      "ref": "refs/heads/optimization/experiment-d",
+      "sha": "070d44f082f3968d517ff2150271bf39388878e3"
+    },
+    {
+      "ref": "refs/heads/optimization/experiment-e",
+      "sha": "59d8c5e9abce87c86a5e45e4c27ac0c785f86227"
+    },
+    {
+      "ref": "refs/heads/optimization/experiment-e-results",
+      "sha": "2bcd967733a28780d91f3fa632d25a06695577ba"
+    },
+    {
+      "ref": "refs/heads/optimization/greedy-freebooter-readiness",
+      "sha": "cea8009399062a1609a041d3ff479301af8a0e23"
+    },
+    {
+      "ref": "refs/heads/pest-control/gate3-validation-bridge",
+      "sha": "52b50100d62abf802271a6d7944ea2833de7b11f"
+    },
+    {
+      "ref": "refs/heads/pest-control/gate4-sideboard-validation-bridge",
+      "sha": "6294a0a1f3d7b545f68e57f641797be26a158e74"
+    },
+    {
+      "ref": "refs/heads/pest-control/gate4-validation-bridge",
+      "sha": "b34540148ab4ca0e357f0d80a4b3f77ebf1286c2"
+    },
+    {
+      "ref": "refs/heads/pest-control/gate5-block-a-validation-bridge",
+      "sha": "30d929e189f0818161669084c576eee27221c5c4"
+    },
+    {
+      "ref": "refs/heads/pest-control/gate6-block-a-execution",
+      "sha": "32ce1fd6f15dc00342baf7ee03c9891672f44796"
+    },
+    {
+      "ref": "refs/heads/pest-control/gate6-readiness-validation-bridge",
+      "sha": "60251656b6a571cdedef9ef03b831bc9f7bd8262"
+    },
+    {
+      "ref": "refs/heads/pest-control/lab",
+      "sha": "44e28ab405afa7ca1f36d761f76ac9ec1506ffdf"
+    },
+    {
+      "ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+      "sha": "1c2e253ad7f5a7652304f7c9aaafc30e547a481e"
+    },
+    {
+      "ref": "refs/heads/pest-control/pass-terminal-validation-bridge",
+      "sha": "09a0aea67215182ed85832f247356963e42de15e"
+    },
+    {
+      "ref": "refs/heads/pest-control/reality-fracture-challengers",
+      "sha": "cf85ba1028d1019b8679439d6c3b6a3961f20ea9"
+    },
+    {
+      "ref": "refs/heads/pest-control/reality-fracture-medics-kitesail",
+      "sha": "cc9391595aa66f651983748ad8154bfd5e573438"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-execution-authorization",
+      "sha": "bfe5592b68a9cd1b46d1990b2f7d075874af46e0"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-execution-coordinator",
+      "sha": "6c053bb9f84127ccac782f4e2f643f48ef2d82a5"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-execution-implementation",
+      "sha": "5cf3fa80b005968d013ca43a292fdeb5587b8d99"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-execution-preflight-fix",
+      "sha": "819fcfd99069780654782ff4ae1eb5053af32144"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-execution-preflight-v3",
+      "sha": "6d4d529d78fa5af8adc56e74f779e7ef3699a581"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-execution-preflight-v4",
+      "sha": "43990355b009959d82ab37f8e8ca81bed3a98039"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-execution-preflight-v5",
+      "sha": "758997f32197b8ca7dcf05a5b520867edfa05bc6"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-execution-preflight-v6",
+      "sha": "e9ae35c41f68dea9a6514cccff19c9ba617a3c17"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-final-composed-validation",
+      "sha": "6d11b07799050db22e44c67ff46313627f642467"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-official-integration",
+      "sha": "147c87c1cdd65b7d19274bb9f7dd4bdb461cfe2d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-one-shot-execution",
+      "sha": "c12519fa9b43fe92e40aa54ba99ce4049e5e1963"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-production-driver",
+      "sha": "4e1d06021f72b402795bc0c6074e8142be30d9e6"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-replication-artifact-validation",
+      "sha": "fd65a8fa5d608a7dc6356a61bbf3883fec27fe20"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-replication-continuation-methodology",
+      "sha": "b780462f774f0936c80651bdc48f223ae099ef6d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-replication-execution-harness",
+      "sha": "735b1da8e34cea3ebde86a47ab98c1ea23b40862"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-replication-freeze-gate",
+      "sha": "e004ba45ddcddb8f574c9a7d1851a79cc1960a1d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-replication-freeze-provenance",
+      "sha": "547b04e43e9c9d55c78d2aa9369b1e162599b097"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-replication-game1-incident",
+      "sha": "0ee80c264cb18478f705d9c1054055d6813dba98"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-replication-initializer-fix",
+      "sha": "1bddcbdcd894c6e2510fb720c2f87305ff46d5dc"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-replication-official-execution",
+      "sha": "e180d71e4684529c6c1f049c91c60d3320bca2dc"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-replication-production-freeze",
+      "sha": "f26b736b22cf43c3b9c76e8ef56733ab8bacfaec"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-salvage-11-artifact-validation",
+      "sha": "29df28f94dad75b6bf0a066e3ead758747138559"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-salvage-11-harness",
+      "sha": "5e07a6584298da72994ae02ca60a82bfc55e27af"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-salvage-11-official-execution",
+      "sha": "2efe7eba861073a6d92f4f0bfee92326e33258a4"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-salvage-11-result",
+      "sha": "96908dda992a89158b0188c7978a12b1693c26ca"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier-one-grixis-smoke-result",
+      "sha": "1532eb255a403d4943fe169d7c1b1b5d64dae154"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-adapter-contract",
+      "sha": "94fac830a9283ebe855073ae8f08a5f3aecef674"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-artifact-envelope",
+      "sha": "d0f3e941a7a2a188fda6b3bd73196608feaea9a4"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-construction-closure",
+      "sha": "c134ba454dcd54948f77c5b9ab77166cffb01ad9"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-coordinator-ledger",
+      "sha": "7ff9aadf4892afed2d11fb5e3a91c85029fcf8f7"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-disabled-assignment-schema",
+      "sha": "f238cf20c744fa93333bc55d5a201d3308324068"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-disabled-durability",
+      "sha": "d417d5e8f8ad44afedda726dd7fa7410c37fee32"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-disabled-four-cell-plan",
+      "sha": "5c3825daea94010c7200ac60457cb3bc11c1949d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-disabled-official-initializer",
+      "sha": "745162057ef66da31d2ce760fbfbecade795bdcc"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-disabled-preexecution-manifest",
+      "sha": "55e33f3abe8d32eebb54e783b49e8b466da01026"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-disabled-runner",
+      "sha": "e51dd29f107ed9b102328f89b9dbc89c25fd301b"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-disabled-single-game",
+      "sha": "077ac8c2dcaeaf4be032f37f3c7baff2a7345638"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-disabled-synthetic-provenance",
+      "sha": "c15b4b4f957e3c45244873457a0ff7f5fae760fd"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-execution-admission",
+      "sha": "d3f6a31bb7effffdd17b52060944d64ff4c691ad"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-execution-contract",
+      "sha": "f868c6d6c6d0305941d87a3361ac69317db9f518"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-final-readiness",
+      "sha": "30db247715f7c7e6382971ce963f8a97046ed7c1"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-frozen-vector-binding",
+      "sha": "a9d8b4851fdb6bfc1551d1b48dc81ec3893e5e16"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-initializer-contract",
+      "sha": "fc90c18867c05831f1dcc6811abd4aea2c2aa591"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-official-init-boundary",
+      "sha": "59ca2e154e3ffbcc7c526226de15ae3f0df629ac"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-official-loader",
+      "sha": "d8be4d13c025d2cf4529fb4720c1bb27b132c48f"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-official-loader-provenance",
+      "sha": "470106956e9a1ba894f82461a57ae3c8dc96db1c"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-opaque-execution-plan",
+      "sha": "2dacd05b4b860acf8837e645e4e62728180e03b8"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-private-parser",
+      "sha": "a3ba2a835f9ba89f866f760f16f47257af2546ba"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-readiness",
+      "sha": "2444f50ce84007d7bc10fc73495956e6025d8990"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-runner-surface-preflight",
+      "sha": "7ee743fc76b2c9e998c5f6c06f2e911bf87750cc"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-smoke-harness",
+      "sha": "a6b72df2f9b4541cba06b86dff3d4b3ee7c615ad"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-turn-zero-preflight",
+      "sha": "68f3896e5d0d592777773ca8e323b0a506965ec2"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-vector-freeze",
+      "sha": "6b5e9cf605c37ddb9b4af4af068278f8093f2ff8"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-grixis-vector-provenance",
+      "sha": "321ee19cddc875359c143aca658303b068348dfd"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-ack-normalization",
+      "sha": "57a6b35e40bff19f9438197a6eebe2f0be56d5ac"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-adapter-contract",
+      "sha": "19097d876ec970d9506b71863557afc56f53b86e"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-assignment-journal",
+      "sha": "1d0bfd00f87b2ad9b0a0202e0c267402f964664d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-authorized-initializer",
+      "sha": "5d9eb95f0f01e095f12d6390ebe35c4a649d8210"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-auto-execution",
+      "sha": "4f9d419da610ce77473d565587959f02fd14ce4c"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-automatic-freeze",
+      "sha": "295491be2203c2314ceff031e2dce348b19337df"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-card-support-a",
+      "sha": "4ae046c38c06c2d1992a7e8f855a59970660e971"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-composed-validation",
+      "sha": "629d44c695f0a2cac9f21b42bd07323ace96a079"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-construction-closure",
+      "sha": "b4503ab5d04187ad3bdb9fcc62267266e44b56a0"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-coordinator-ledger",
+      "sha": "4282219075576411a11490a1a653b4456e7becfc"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-disabled-assignment-schema",
+      "sha": "62b80a4697603ea9a9fbcb235b4af5737ad2cdc8"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-disabled-four-cell-plan",
+      "sha": "c1210115895db646c1d7a63f2a62f6591f9f7a15"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-disabled-official-initializer",
+      "sha": "4cbeafc05df027a2ec481da0544508d0d149796d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-disabled-preexecution-manifest",
+      "sha": "851491bc145277a9e1497336c2df8d280708fb86"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-disabled-single-game",
+      "sha": "e10c059500fd0129cc65cb109b25a8ef21382cdd"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-disabled-synthetic-provenance",
+      "sha": "91f4e7c71db31ae6615a08cd796017fdc04b590d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-dispatch-guard-v2",
+      "sha": "6b2df6c0fba6e8ca0941121378187c14faf1f836"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-dispatch-order-fix",
+      "sha": "d0626f97a128ac79c4dcf70a1923fb50fba3c6bd"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-engine-evidence-rehearsal",
+      "sha": "cf1af6119219785ace7688074ca4ff776a45605a"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-escape-support",
+      "sha": "44580abc5f0b0f5aeaae1c55d1a3df7c01e5407c"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-execution-authorization",
+      "sha": "4f91ae029a1a14b4ecf52c4ecdc3d5d6a0468b0d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-execution-contract",
+      "sha": "1e9a499441a98da405b62296ce73a247128d32f6"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-execution-coordinator",
+      "sha": "9c7ed2c7c06df4806c07a30f64da8c65185c442c"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-freeze-guard-fix",
+      "sha": "a42c4044c23f709de2cca9fdcc921acfa0740228"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-frozen-artifact-binding",
+      "sha": "1f4a91056a2406b3991cc70ed79d46a864ee78cb"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-initializer-contract",
+      "sha": "646a9d07bebf2feb9849d94d3e45768bfd0c379c"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-official-init-boundary",
+      "sha": "b5416fc90ceef632d8616769c91f4ae8c808414e"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-policy-calibration",
+      "sha": "a930db07f86ae02b48483cd46d90054e7ee6fe5c"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-production-driver",
+      "sha": "64f9fb83c0453e42352806333a562cff16efe66d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-readiness",
+      "sha": "877fc0d6fe35f05e65fcfb6271371ae9afb57869"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-replication-auto-execution",
+      "sha": "74c22f7e3dabcebe2bb7354569f0ebf36f51efc2"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-replication-auto-freeze",
+      "sha": "272721968ba584cbd11c6f259ed9a572a29b0205"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-replication-execution-authorization",
+      "sha": "c23a85cbf975cf76beebdb3597813f9b0b84438b"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-replication-execution-stack",
+      "sha": "728e2d5e150c527b2049e10b8bc304945e2b7d99"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-replication-freeze-gate",
+      "sha": "7ea52eb2d60b6aedf7367e1866db7652978eab18"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-replication-freeze-provenance",
+      "sha": "d7758d11b1a08321cdee073bd6a11fd3f9ebe4e3"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-replication-harness-validation",
+      "sha": "e9c0b357ad2eca3d6d5cb99ce225f6532d640913"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-replication-result",
+      "sha": "483518c8128161e4127f8d2329e27e54e3c622da"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-runner-surface-preflight",
+      "sha": "eba3f0f0b5eb325c5a43585bcd9e6703597fa2e0"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-smoke-harness",
+      "sha": "602daf6e37e4cd5014c5c218fe6cc694266fcb4f"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-smoke-result",
+      "sha": "3d12a07c17e2e697ccb5c5af87c578cd1040994f"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-turn-zero-preflight",
+      "sha": "9fa228336e5dc33871db7dd6d351aa687b8bc9aa"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-vector-freeze",
+      "sha": "cbbdd116594a471c7688e62cbce257c3f87f5a17"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-mono-blue-terror-vector-provenance",
+      "sha": "f0cd0956a0b50867bf079447222a8b17d9976588"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-admission",
+      "sha": "d0de7521705402765e07db6f4e3e61b3ade0ec2d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-cascade",
+      "sha": "ed04d8ee7581537f893712c4f914d7a4c8571238"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-cascade-readiness",
+      "sha": "5bddd2f0981f8cd74cf718503ab6088caf1b6f57"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-command-repair",
+      "sha": "7271c7702ee02528c6ca9a58878c4f5b4986d052"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-execution-authorization",
+      "sha": "c5d22ca00784959be887196de1b615e6ade338b5"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-official-smoke",
+      "sha": "ac2188f7fe1f67dd300d07b4c4e6b5b0c5d96814"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-one-shot-construction",
+      "sha": "8a425d8532395e3d4262fbb35cfbac71e96feeb5"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-operational-stack",
+      "sha": "bfc41872c8080accacc91dc7d2159115cd23c872"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-policy",
+      "sha": "10051c2fa69e5bdd1c2c87f38125a84b17c6bd5d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-prototype",
+      "sha": "9ad69bb8932f1e20866bd1e2dd2c1fc18ce4d760"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-readiness",
+      "sha": "d2ce2746cfe63c387ba4f6db04c32eab25fd5798"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-runner-construction",
+      "sha": "3389b73e8a701f409819c0d0a21c1103478e241c"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-runner-preflight",
+      "sha": "8223d26583c2af063c1048adfaeb1ed67bdc67b3"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-smoke-freeze",
+      "sha": "45e7640ec189c8743035f51dd0c9c800b991359d"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-smoke-production-freeze",
+      "sha": "cb8bb50e7068d79e3df19071b0247f226d6386d5"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-monster-tron-support",
+      "sha": "702db2819597aa86f24de096778bf404acd1938b"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-postboard-support-audit",
+      "sha": "e0aa8a03ec8b903338553e034f17431632ddc164"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-postboard-support-batch-a",
+      "sha": "1cf29885757fae24aac05cfe2d1097e5088e5375"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-postboard-support-batch-b",
+      "sha": "08fc7f96ec41be028ddb69ef23fefdfd852a23ad"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-postboard-support-faerie-macabre",
+      "sha": "5c2034b1e581fcc9877790f2893f80a38ec11d80"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-postboard-support-flaring-pain",
+      "sha": "eda47d08c521e845235b40820b67cf1e0f91a5d8"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-postboard-support-jack-o-lantern",
+      "sha": "dd589e34fdf77633627748f7f3651bcf8ed21dac"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-postboard-support-kaerveks-torch",
+      "sha": "f24d715f5929c4f328b526de7d0551c825114db3"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-postboard-support-relic",
+      "sha": "49e1c2fc24024eb4f2b13ea306dea4993223c356"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-postboard-support-spreading-seas",
+      "sha": "e62757f3968a7c9455aabc8113fa86a5234ede89"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-priority-evidence-audit",
+      "sha": "9bf29b048b12b816824ba96b08bdf5b6874133c1"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-spy-admission",
+      "sha": "066fb656a5c0314d51bcd825af37b147b2532810"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-spy-policy",
+      "sha": "69aca0617fb2583093d0b6b59b14f6910182dbc2"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-spy-support-batch-a",
+      "sha": "d0705a90f30241f7b6509669ab9e952fd558c051"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-spy-support-batch-b",
+      "sha": "7a3f1429c027925c30ed7c1e329c3879e674574a"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-spy-support-batch-c",
+      "sha": "1ad4079b8fbdbc79ec5bb88dad343aad7d417f96"
+    },
+    {
+      "ref": "refs/heads/pest-control/tier1-terror-simple-card-support",
+      "sha": "fa94680871230188a229578987f4bc7b0798bcb2"
+    },
+    {
+      "ref": "refs/heads/pest-control/v2-acceptance-audit",
+      "sha": "bf573ee74c817bfc65a46fe2dc4875906a1b9634"
+    },
+    {
+      "ref": "refs/heads/pest-control/v2-calibration",
+      "sha": "b81d0d318808216247649dcd86081eace835a5d3"
+    },
+    {
+      "ref": "refs/heads/pest-control/v2-official-results",
+      "sha": "b3db5a5d4f3a86c27170aa04302076cdbafee855"
+    },
+    {
+      "ref": "refs/heads/pest-control/v2-qualification-acceptance",
+      "sha": "0ec230dc0d81355b6aa2946edd34952f8c53f735"
+    },
+    {
+      "ref": "refs/heads/pest-control/v2-qualification-authorization",
+      "sha": "52a346949ed14140c50931875de016b84c336ed2"
+    },
+    {
+      "ref": "refs/heads/pest-control/v2-qualification-coordinator",
+      "sha": "9fe036c3b6e1f721bc1d0a05e5f767ca219136e8"
+    },
+    {
+      "ref": "refs/heads/pest-control/v2-qualification-execution-harness",
+      "sha": "c59f01ef0959619be30f49d5be849be79ee2fef3"
+    },
+    {
+      "ref": "refs/heads/pest-control/v2-qualification-freeze",
+      "sha": "68326924824ddbb937054dac35be2d21fd89f8b9"
+    },
+    {
+      "ref": "refs/heads/pest-control/v2-qualification-freeze-provenance",
+      "sha": "31421788751ca8eaa3a70ae4ecdae563748ad67b"
+    },
+    {
+      "ref": "refs/heads/pest-control/v2-qualification-harness",
+      "sha": "c41b8cd2ee14133f30855866c0b1c37919edd942"
+    },
+    {
+      "ref": "refs/heads/pest-control/v2-qualification-runner",
+      "sha": "5149e4cf03a5967d2f765f6ab881b76e6f8cb25a"
+    },
+    {
+      "ref": "refs/heads/review/izzet-c47e-diagnostic-evidence-20260926",
+      "sha": "bff4de452a6fca076e3c42fe7c2590862c0c234d"
+    },
+    {
+      "ref": "refs/heads/review/izzet-c47e-evidence-20260926",
+      "sha": "11698a4812e98dc9e736aa70e40420d6354e4d40"
+    },
+    {
+      "ref": "refs/heads/review/izzet-shared-receiving-evidence-20260926",
+      "sha": "f97176f22af16b43065ae9f7803576467ef84593"
+    },
+    {
+      "ref": "refs/heads/review/izzet-shared-receiving-gate-20260926",
+      "sha": "996af220e570558260435d84768ac49bca1a6159"
+    },
+    {
+      "ref": "refs/heads/shared/paid-filter-mana-qualification",
+      "sha": "46619ef8792a1d3facb780e73b18e4004a97462b"
+    },
+    {
+      "ref": "refs/heads/shared/payment-feasibility-qualification",
+      "sha": "042dbc51b06cf89030cfb5026cbe84e783d5cf77"
+    },
+    {
+      "ref": "refs/heads/smoke/experimental-preboard-100-v1",
+      "sha": "279874468cb4ee277e8aad9af00657b1eef2900e"
+    },
+    {
+      "ref": "refs/heads/smoke/experimental-preboard-100-v2",
+      "sha": "d7e80be6d819090f39c6b8f1e8e60fb20bd85424"
+    },
+    {
+      "ref": "refs/heads/smoke/fresh-preboard-10-20260909",
+      "sha": "82a9e5906b923d519b2c1eeb18a2f155bbc26e5f"
+    },
+    {
+      "ref": "refs/heads/smoke/frozen-ten-damage-trigger-replay-20260909",
+      "sha": "9af8684ea8538295eb24b6dffc765ec39c9329da"
+    },
+    {
+      "ref": "refs/heads/smoke/frozen-ten-telemetry-replay-20260909",
+      "sha": "6ae96c7885e11bee41c362920697bf77b2bf3aaf"
+    },
+    {
+      "ref": "refs/heads/sphinx-approach/reconstruction-stage-e",
+      "sha": "fae4f5f61260a3e99109b38328afc31894bac8d4"
+    }
+  ],
+  "canonical_workflow_runs": [
+    {
+      "id": 36258427000,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T17:16:13Z"
+    },
+    {
+      "id": 36258426982,
+      "name": "CI",
+      "head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T17:16:13Z"
+    },
+    {
+      "id": 36258427001,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T17:16:13Z"
+    },
+    {
+      "id": 36258427092,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T17:16:13Z"
+    },
+    {
+      "id": 36258427076,
+      "name": "Manual Transmission Phase 2 Engine Telemetry",
+      "head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T17:16:13Z"
+    },
+    {
+      "id": 36258427008,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T17:16:13Z"
+    },
+    {
+      "id": 36258427069,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T17:16:13Z"
+    },
+    {
+      "id": 36258426989,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T17:16:13Z"
+    },
+    {
+      "id": 36258427010,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T17:16:13Z"
+    },
+    {
+      "id": 36258426996,
+      "name": "Engine Priority After Resolution",
+      "head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T17:16:13Z"
+    },
+    {
+      "id": 36256693313,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "dc2c9f0c5b27b5c35e174005abefc92b5770788c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T16:47:03Z"
+    },
+    {
+      "id": 36256693330,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "dc2c9f0c5b27b5c35e174005abefc92b5770788c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T16:47:03Z"
+    },
+    {
+      "id": 36256693312,
+      "name": "Manual Transmission Phase 2 Engine Telemetry",
+      "head": "dc2c9f0c5b27b5c35e174005abefc92b5770788c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T16:47:03Z"
+    },
+    {
+      "id": 36256693381,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "dc2c9f0c5b27b5c35e174005abefc92b5770788c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T16:47:03Z"
+    },
+    {
+      "id": 36256693372,
+      "name": "Engine Priority After Resolution",
+      "head": "dc2c9f0c5b27b5c35e174005abefc92b5770788c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T16:47:03Z"
+    },
+    {
+      "id": 36256693331,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "dc2c9f0c5b27b5c35e174005abefc92b5770788c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T16:47:03Z"
+    },
+    {
+      "id": 36256693386,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "dc2c9f0c5b27b5c35e174005abefc92b5770788c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T16:47:03Z"
+    },
+    {
+      "id": 36256693345,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "dc2c9f0c5b27b5c35e174005abefc92b5770788c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T16:47:03Z"
+    },
+    {
+      "id": 36256693338,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "dc2c9f0c5b27b5c35e174005abefc92b5770788c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T16:47:03Z"
+    },
+    {
+      "id": 36256693389,
+      "name": "CI",
+      "head": "dc2c9f0c5b27b5c35e174005abefc92b5770788c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T16:47:03Z"
+    },
+    {
+      "id": 36249067954,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "c6bfd808850d46010e077153f294dd01c7a8450f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:36:13Z"
+    },
+    {
+      "id": 36249067996,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "c6bfd808850d46010e077153f294dd01c7a8450f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:36:13Z"
+    },
+    {
+      "id": 36249068086,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "c6bfd808850d46010e077153f294dd01c7a8450f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:36:13Z"
+    },
+    {
+      "id": 36249068057,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "c6bfd808850d46010e077153f294dd01c7a8450f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:36:13Z"
+    },
+    {
+      "id": 36249068038,
+      "name": "Manual Transmission Phase 2 Engine Telemetry",
+      "head": "c6bfd808850d46010e077153f294dd01c7a8450f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:36:13Z"
+    },
+    {
+      "id": 36249068028,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "c6bfd808850d46010e077153f294dd01c7a8450f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:36:13Z"
+    },
+    {
+      "id": 36249067984,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "c6bfd808850d46010e077153f294dd01c7a8450f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:36:13Z"
+    },
+    {
+      "id": 36249067998,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "c6bfd808850d46010e077153f294dd01c7a8450f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:36:13Z"
+    },
+    {
+      "id": 36249068027,
+      "name": "CI",
+      "head": "c6bfd808850d46010e077153f294dd01c7a8450f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:36:13Z"
+    },
+    {
+      "id": 36249067941,
+      "name": "Engine Priority After Resolution",
+      "head": "c6bfd808850d46010e077153f294dd01c7a8450f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:36:13Z"
+    },
+    {
+      "id": 36247426153,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "dbf7d79035f09c362d687ac077e509fc91249232",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:07:22Z"
+    },
+    {
+      "id": 36247426127,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "dbf7d79035f09c362d687ac077e509fc91249232",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:07:21Z"
+    },
+    {
+      "id": 36247426085,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "dbf7d79035f09c362d687ac077e509fc91249232",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:07:21Z"
+    },
+    {
+      "id": 36247426081,
+      "name": "Manual Transmission Phase 2 Engine Telemetry",
+      "head": "dbf7d79035f09c362d687ac077e509fc91249232",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:07:21Z"
+    },
+    {
+      "id": 36247426077,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "dbf7d79035f09c362d687ac077e509fc91249232",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:07:21Z"
+    },
+    {
+      "id": 36247426106,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "dbf7d79035f09c362d687ac077e509fc91249232",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:07:21Z"
+    },
+    {
+      "id": 36247426107,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "dbf7d79035f09c362d687ac077e509fc91249232",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:07:21Z"
+    },
+    {
+      "id": 36247426080,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "dbf7d79035f09c362d687ac077e509fc91249232",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:07:21Z"
+    },
+    {
+      "id": 36247426093,
+      "name": "CI",
+      "head": "dbf7d79035f09c362d687ac077e509fc91249232",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:07:21Z"
+    },
+    {
+      "id": 36247426117,
+      "name": "Engine Priority After Resolution",
+      "head": "dbf7d79035f09c362d687ac077e509fc91249232",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T14:07:21Z"
+    },
+    {
+      "id": 36242362029,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:47Z"
+    },
+    {
+      "id": 36242362116,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:47Z"
+    },
+    {
+      "id": 36242362084,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:47Z"
+    },
+    {
+      "id": 36242362151,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:47Z"
+    },
+    {
+      "id": 36242362028,
+      "name": "CI",
+      "head": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:47Z"
+    },
+    {
+      "id": 36242362128,
+      "name": "Engine Priority After Resolution",
+      "head": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:47Z"
+    },
+    {
+      "id": 36242362102,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:47Z"
+    },
+    {
+      "id": 36242362153,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:47Z"
+    },
+    {
+      "id": 36242362081,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:47Z"
+    },
+    {
+      "id": 36242358451,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "802f24e41d34f451954a61474820543e19c0f7f8",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:43Z"
+    },
+    {
+      "id": 36242358449,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "802f24e41d34f451954a61474820543e19c0f7f8",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:43Z"
+    },
+    {
+      "id": 36242358431,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "802f24e41d34f451954a61474820543e19c0f7f8",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:43Z"
+    },
+    {
+      "id": 36242358459,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "802f24e41d34f451954a61474820543e19c0f7f8",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:43Z"
+    },
+    {
+      "id": 36242358436,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "802f24e41d34f451954a61474820543e19c0f7f8",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:43Z"
+    },
+    {
+      "id": 36242358457,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "802f24e41d34f451954a61474820543e19c0f7f8",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:43Z"
+    },
+    {
+      "id": 36242358450,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "802f24e41d34f451954a61474820543e19c0f7f8",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:43Z"
+    },
+    {
+      "id": 36242358515,
+      "name": "Engine Priority After Resolution",
+      "head": "802f24e41d34f451954a61474820543e19c0f7f8",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:43Z"
+    },
+    {
+      "id": 36242358440,
+      "name": "CI",
+      "head": "802f24e41d34f451954a61474820543e19c0f7f8",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-26T12:34:43Z"
+    },
+    {
+      "id": 36242354699,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "8a0730d084e8b8850b572666fdb0496c085a9d0a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:38Z"
+    },
+    {
+      "id": 36242354651,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "8a0730d084e8b8850b572666fdb0496c085a9d0a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T12:34:38Z"
+    },
+    {
+      "id": 36242354773,
+      "name": "CI",
+      "head": "8a0730d084e8b8850b572666fdb0496c085a9d0a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-26T12:34:38Z"
+    },
+    {
+      "id": 36242354626,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "8a0730d084e8b8850b572666fdb0496c085a9d0a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T12:34:38Z"
+    },
+    {
+      "id": 36242354618,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "8a0730d084e8b8850b572666fdb0496c085a9d0a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:38Z"
+    },
+    {
+      "id": 36242354587,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "8a0730d084e8b8850b572666fdb0496c085a9d0a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T12:34:38Z"
+    },
+    {
+      "id": 36242354632,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "8a0730d084e8b8850b572666fdb0496c085a9d0a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T12:34:38Z"
+    },
+    {
+      "id": 36242354572,
+      "name": "Engine Priority After Resolution",
+      "head": "8a0730d084e8b8850b572666fdb0496c085a9d0a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:38Z"
+    },
+    {
+      "id": 36242354611,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "8a0730d084e8b8850b572666fdb0496c085a9d0a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T12:34:38Z"
+    },
+    {
+      "id": 36239995771,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "3d45b6e9a5bd5d0b2da4351d92b7ff04f12b5328",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T11:49:02Z"
+    },
+    {
+      "id": 36239995761,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "3d45b6e9a5bd5d0b2da4351d92b7ff04f12b5328",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T11:49:02Z"
+    },
+    {
+      "id": 36239995787,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "3d45b6e9a5bd5d0b2da4351d92b7ff04f12b5328",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T11:49:02Z"
+    },
+    {
+      "id": 36239995751,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "3d45b6e9a5bd5d0b2da4351d92b7ff04f12b5328",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T11:49:02Z"
+    },
+    {
+      "id": 36239995768,
+      "name": "CI",
+      "head": "3d45b6e9a5bd5d0b2da4351d92b7ff04f12b5328",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T11:49:02Z"
+    },
+    {
+      "id": 36239995790,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "3d45b6e9a5bd5d0b2da4351d92b7ff04f12b5328",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T11:49:02Z"
+    },
+    {
+      "id": 36239995783,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "3d45b6e9a5bd5d0b2da4351d92b7ff04f12b5328",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T11:49:02Z"
+    },
+    {
+      "id": 36239995765,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "3d45b6e9a5bd5d0b2da4351d92b7ff04f12b5328",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T11:49:02Z"
+    },
+    {
+      "id": 36239995784,
+      "name": "Engine Priority After Resolution",
+      "head": "3d45b6e9a5bd5d0b2da4351d92b7ff04f12b5328",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T11:49:02Z"
+    },
+    {
+      "id": 36226931953,
+      "name": "Engine Priority After Resolution",
+      "head": "d17c02419cb10b55216924707ca8c8324a3e27df",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:29:30Z"
+    },
+    {
+      "id": 36226932032,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "d17c02419cb10b55216924707ca8c8324a3e27df",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:29:30Z"
+    },
+    {
+      "id": 36226932018,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "d17c02419cb10b55216924707ca8c8324a3e27df",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:29:30Z"
+    },
+    {
+      "id": 36226931943,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "d17c02419cb10b55216924707ca8c8324a3e27df",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:29:30Z"
+    },
+    {
+      "id": 36226931983,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "d17c02419cb10b55216924707ca8c8324a3e27df",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:29:30Z"
+    },
+    {
+      "id": 36226932012,
+      "name": "CI",
+      "head": "d17c02419cb10b55216924707ca8c8324a3e27df",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:29:30Z"
+    },
+    {
+      "id": 36226932067,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "d17c02419cb10b55216924707ca8c8324a3e27df",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:29:30Z"
+    },
+    {
+      "id": 36226931978,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "d17c02419cb10b55216924707ca8c8324a3e27df",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:29:30Z"
+    },
+    {
+      "id": 36226931995,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "d17c02419cb10b55216924707ca8c8324a3e27df",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:29:30Z"
+    },
+    {
+      "id": 36226799838,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T07:26:50Z"
+    },
+    {
+      "id": 36226799832,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T07:26:50Z"
+    },
+    {
+      "id": 36226799829,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T07:26:50Z"
+    },
+    {
+      "id": 36226799826,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T07:26:50Z"
+    },
+    {
+      "id": 36226799855,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T07:26:50Z"
+    },
+    {
+      "id": 36226799847,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T07:26:50Z"
+    },
+    {
+      "id": 36226799834,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T07:26:50Z"
+    },
+    {
+      "id": 36226799823,
+      "name": "CI",
+      "head": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T07:26:50Z"
+    },
+    {
+      "id": 36226799864,
+      "name": "Engine Priority After Resolution",
+      "head": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T07:26:50Z"
+    },
+    {
+      "id": 36226549107,
+      "name": "Engine Priority After Resolution",
+      "head": "ee79003408f58384e40791377d54fe732ae4912c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:21:52Z"
+    },
+    {
+      "id": 36226549126,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "ee79003408f58384e40791377d54fe732ae4912c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T07:21:52Z"
+    },
+    {
+      "id": 36226549153,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "ee79003408f58384e40791377d54fe732ae4912c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:21:52Z"
+    },
+    {
+      "id": 36226549144,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "ee79003408f58384e40791377d54fe732ae4912c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T07:21:52Z"
+    },
+    {
+      "id": 36226549145,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "ee79003408f58384e40791377d54fe732ae4912c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T07:21:52Z"
+    },
+    {
+      "id": 36226549157,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "ee79003408f58384e40791377d54fe732ae4912c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:21:52Z"
+    },
+    {
+      "id": 36226549119,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "ee79003408f58384e40791377d54fe732ae4912c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:21:52Z"
+    },
+    {
+      "id": 36226549202,
+      "name": "CI",
+      "head": "ee79003408f58384e40791377d54fe732ae4912c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-26T07:21:52Z"
+    },
+    {
+      "id": 36226549124,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "ee79003408f58384e40791377d54fe732ae4912c",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T07:21:52Z"
+    },
+    {
+      "id": 36226546742,
+      "name": "Manual Phase 2 Bane of Progress Qualification",
+      "head": "ee79003408f58384e40791377d54fe732ae4912c",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T07:21:50Z"
+    },
+    {
+      "id": 36222375152,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "b5cd19787d69b179377ad5fb16e3c09e7f13e275",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T05:59:00Z"
+    },
+    {
+      "id": 36222375129,
+      "name": "CI",
+      "head": "b5cd19787d69b179377ad5fb16e3c09e7f13e275",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T05:59:00Z"
+    },
+    {
+      "id": 36222375149,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "b5cd19787d69b179377ad5fb16e3c09e7f13e275",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T05:59:00Z"
+    },
+    {
+      "id": 36222375135,
+      "name": "Engine Priority After Resolution",
+      "head": "b5cd19787d69b179377ad5fb16e3c09e7f13e275",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T05:59:00Z"
+    },
+    {
+      "id": 36222375125,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "b5cd19787d69b179377ad5fb16e3c09e7f13e275",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T05:59:00Z"
+    },
+    {
+      "id": 36222375138,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "b5cd19787d69b179377ad5fb16e3c09e7f13e275",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T05:59:00Z"
+    },
+    {
+      "id": 36222375132,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "b5cd19787d69b179377ad5fb16e3c09e7f13e275",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T05:59:00Z"
+    },
+    {
+      "id": 36222375130,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "b5cd19787d69b179377ad5fb16e3c09e7f13e275",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T05:59:00Z"
+    },
+    {
+      "id": 36222375133,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "b5cd19787d69b179377ad5fb16e3c09e7f13e275",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T05:59:00Z"
+    },
+    {
+      "id": 36219359347,
+      "name": "Engine Priority After Resolution",
+      "head": "8af7d3bc573341c97cddf069a36a3c483eb850c3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:57:27Z"
+    },
+    {
+      "id": 36219359394,
+      "name": "CI",
+      "head": "8af7d3bc573341c97cddf069a36a3c483eb850c3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:57:27Z"
+    },
+    {
+      "id": 36219359373,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "8af7d3bc573341c97cddf069a36a3c483eb850c3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:57:27Z"
+    },
+    {
+      "id": 36219359370,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "8af7d3bc573341c97cddf069a36a3c483eb850c3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:57:27Z"
+    },
+    {
+      "id": 36219359368,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "8af7d3bc573341c97cddf069a36a3c483eb850c3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:57:27Z"
+    },
+    {
+      "id": 36219359351,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "8af7d3bc573341c97cddf069a36a3c483eb850c3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:57:27Z"
+    },
+    {
+      "id": 36219359391,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "8af7d3bc573341c97cddf069a36a3c483eb850c3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:57:27Z"
+    },
+    {
+      "id": 36219359378,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "8af7d3bc573341c97cddf069a36a3c483eb850c3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:57:27Z"
+    },
+    {
+      "id": 36219359425,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "8af7d3bc573341c97cddf069a36a3c483eb850c3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:57:27Z"
+    },
+    {
+      "id": 36219013540,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T04:50:23Z"
+    },
+    {
+      "id": 36219013545,
+      "name": "Engine Priority After Resolution",
+      "head": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T04:50:23Z"
+    },
+    {
+      "id": 36219013549,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T04:50:23Z"
+    },
+    {
+      "id": 36219013550,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T04:50:23Z"
+    },
+    {
+      "id": 36219013697,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T04:50:23Z"
+    },
+    {
+      "id": 36219013544,
+      "name": "CI",
+      "head": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T04:50:23Z"
+    },
+    {
+      "id": 36219013554,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T04:50:23Z"
+    },
+    {
+      "id": 36219013551,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T04:50:23Z"
+    },
+    {
+      "id": 36219013571,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T04:50:23Z"
+    },
+    {
+      "id": 36218683904,
+      "name": "Engine Priority After Resolution",
+      "head": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:39Z"
+    },
+    {
+      "id": 36218683923,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:39Z"
+    },
+    {
+      "id": 36218683936,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:39Z"
+    },
+    {
+      "id": 36218683909,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:39Z"
+    },
+    {
+      "id": 36218683906,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:39Z"
+    },
+    {
+      "id": 36218683921,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:39Z"
+    },
+    {
+      "id": 36218683916,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:39Z"
+    },
+    {
+      "id": 36218683913,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:39Z"
+    },
+    {
+      "id": 36218683915,
+      "name": "CI",
+      "head": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-26T04:43:39Z"
+    },
+    {
+      "id": 36218680598,
+      "name": "Manual Phase 2 World Breaker Snapshot Sync",
+      "head": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:34Z"
+    },
+    {
+      "id": 36218671752,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "5cf175a2dfee136eb5c69dc8553160c58a8fcaec",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:22Z"
+    },
+    {
+      "id": 36218671671,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "5cf175a2dfee136eb5c69dc8553160c58a8fcaec",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:22Z"
+    },
+    {
+      "id": 36218671618,
+      "name": "CI",
+      "head": "5cf175a2dfee136eb5c69dc8553160c58a8fcaec",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-26T04:43:22Z"
+    },
+    {
+      "id": 36218671686,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "5cf175a2dfee136eb5c69dc8553160c58a8fcaec",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:22Z"
+    },
+    {
+      "id": 36218671665,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "5cf175a2dfee136eb5c69dc8553160c58a8fcaec",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:22Z"
+    },
+    {
+      "id": 36218671711,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "5cf175a2dfee136eb5c69dc8553160c58a8fcaec",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:22Z"
+    },
+    {
+      "id": 36218671644,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "5cf175a2dfee136eb5c69dc8553160c58a8fcaec",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:22Z"
+    },
+    {
+      "id": 36218671788,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "5cf175a2dfee136eb5c69dc8553160c58a8fcaec",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:22Z"
+    },
+    {
+      "id": 36218671621,
+      "name": "Engine Priority After Resolution",
+      "head": "5cf175a2dfee136eb5c69dc8553160c58a8fcaec",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:22Z"
+    },
+    {
+      "id": 36218655228,
+      "name": "Engine Priority After Resolution",
+      "head": "65e6ab2af4c8435d7f96d6c068d1754dc59aaa8e",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:04Z"
+    },
+    {
+      "id": 36218655270,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "65e6ab2af4c8435d7f96d6c068d1754dc59aaa8e",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:04Z"
+    },
+    {
+      "id": 36218655196,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "65e6ab2af4c8435d7f96d6c068d1754dc59aaa8e",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:04Z"
+    },
+    {
+      "id": 36218655213,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "65e6ab2af4c8435d7f96d6c068d1754dc59aaa8e",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:04Z"
+    },
+    {
+      "id": 36218655207,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "65e6ab2af4c8435d7f96d6c068d1754dc59aaa8e",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:04Z"
+    },
+    {
+      "id": 36218655198,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "65e6ab2af4c8435d7f96d6c068d1754dc59aaa8e",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:04Z"
+    },
+    {
+      "id": 36218655197,
+      "name": "CI",
+      "head": "65e6ab2af4c8435d7f96d6c068d1754dc59aaa8e",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-26T04:43:04Z"
+    },
+    {
+      "id": 36218655215,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "65e6ab2af4c8435d7f96d6c068d1754dc59aaa8e",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:43:04Z"
+    },
+    {
+      "id": 36218655211,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "65e6ab2af4c8435d7f96d6c068d1754dc59aaa8e",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:43:04Z"
+    },
+    {
+      "id": 36218620910,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "b0f20e929631a73bff58f1dcb409739a23158e71",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:42:19Z"
+    },
+    {
+      "id": 36218620864,
+      "name": "CI",
+      "head": "b0f20e929631a73bff58f1dcb409739a23158e71",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-26T04:42:19Z"
+    },
+    {
+      "id": 36218620882,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "b0f20e929631a73bff58f1dcb409739a23158e71",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:42:19Z"
+    },
+    {
+      "id": 36218620877,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "b0f20e929631a73bff58f1dcb409739a23158e71",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:42:19Z"
+    },
+    {
+      "id": 36218620857,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "b0f20e929631a73bff58f1dcb409739a23158e71",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:42:19Z"
+    },
+    {
+      "id": 36218620855,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "b0f20e929631a73bff58f1dcb409739a23158e71",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:42:19Z"
+    },
+    {
+      "id": 36218620884,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "b0f20e929631a73bff58f1dcb409739a23158e71",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:42:19Z"
+    },
+    {
+      "id": 36218620863,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "b0f20e929631a73bff58f1dcb409739a23158e71",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T04:42:19Z"
+    },
+    {
+      "id": 36218620854,
+      "name": "Engine Priority After Resolution",
+      "head": "b0f20e929631a73bff58f1dcb409739a23158e71",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:42:19Z"
+    },
+    {
+      "id": 36218163960,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "b77280b424b0007f6b5c7da8a6d6ede5e67e5134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:33:04Z"
+    },
+    {
+      "id": 36218164002,
+      "name": "CI",
+      "head": "b77280b424b0007f6b5c7da8a6d6ede5e67e5134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:33:04Z"
+    },
+    {
+      "id": 36218163993,
+      "name": "Engine Priority After Resolution",
+      "head": "b77280b424b0007f6b5c7da8a6d6ede5e67e5134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:33:04Z"
+    },
+    {
+      "id": 36218164046,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "b77280b424b0007f6b5c7da8a6d6ede5e67e5134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:33:04Z"
+    },
+    {
+      "id": 36218163956,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "b77280b424b0007f6b5c7da8a6d6ede5e67e5134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:33:04Z"
+    },
+    {
+      "id": 36218163986,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "b77280b424b0007f6b5c7da8a6d6ede5e67e5134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:33:04Z"
+    },
+    {
+      "id": 36218163972,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "b77280b424b0007f6b5c7da8a6d6ede5e67e5134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:33:04Z"
+    },
+    {
+      "id": 36218163966,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "b77280b424b0007f6b5c7da8a6d6ede5e67e5134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:33:04Z"
+    },
+    {
+      "id": 36218164004,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "b77280b424b0007f6b5c7da8a6d6ede5e67e5134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T04:33:04Z"
+    },
+    {
+      "id": 36213608577,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "55d102dce922a85b7d188ee6465c5b4ff9cad19f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T03:03:21Z"
+    },
+    {
+      "id": 36213608479,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "55d102dce922a85b7d188ee6465c5b4ff9cad19f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T03:03:21Z"
+    },
+    {
+      "id": 36213608520,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "55d102dce922a85b7d188ee6465c5b4ff9cad19f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T03:03:21Z"
+    },
+    {
+      "id": 36213608517,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "55d102dce922a85b7d188ee6465c5b4ff9cad19f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T03:03:21Z"
+    },
+    {
+      "id": 36213608531,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "55d102dce922a85b7d188ee6465c5b4ff9cad19f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T03:03:21Z"
+    },
+    {
+      "id": 36213608523,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "55d102dce922a85b7d188ee6465c5b4ff9cad19f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T03:03:21Z"
+    },
+    {
+      "id": 36213608576,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "55d102dce922a85b7d188ee6465c5b4ff9cad19f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T03:03:21Z"
+    },
+    {
+      "id": 36213608635,
+      "name": "CI",
+      "head": "55d102dce922a85b7d188ee6465c5b4ff9cad19f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T03:03:21Z"
+    },
+    {
+      "id": 36213608518,
+      "name": "Engine Priority After Resolution",
+      "head": "55d102dce922a85b7d188ee6465c5b4ff9cad19f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T03:03:21Z"
+    },
+    {
+      "id": 36213069053,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "8b1a769e07757cffaaa89b91a65f5b1932466658",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T02:52:58Z"
+    },
+    {
+      "id": 36213069074,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "8b1a769e07757cffaaa89b91a65f5b1932466658",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T02:52:58Z"
+    },
+    {
+      "id": 36213069065,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "8b1a769e07757cffaaa89b91a65f5b1932466658",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T02:52:58Z"
+    },
+    {
+      "id": 36213069118,
+      "name": "CI",
+      "head": "8b1a769e07757cffaaa89b91a65f5b1932466658",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T02:52:58Z"
+    },
+    {
+      "id": 36213069120,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "8b1a769e07757cffaaa89b91a65f5b1932466658",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T02:52:58Z"
+    },
+    {
+      "id": 36213069066,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "8b1a769e07757cffaaa89b91a65f5b1932466658",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T02:52:58Z"
+    },
+    {
+      "id": 36213069128,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "8b1a769e07757cffaaa89b91a65f5b1932466658",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T02:52:58Z"
+    },
+    {
+      "id": 36213069171,
+      "name": "Engine Priority After Resolution",
+      "head": "8b1a769e07757cffaaa89b91a65f5b1932466658",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T02:52:58Z"
+    },
+    {
+      "id": 36213069193,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "8b1a769e07757cffaaa89b91a65f5b1932466658",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "action_required",
+      "created_at": "2026-09-26T02:52:58Z"
+    },
+    {
+      "id": 36212444249,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "7c7ac26e61fc6e0bb6b5e6a661bb25147eadb1f6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:49Z"
+    },
+    {
+      "id": 36212444240,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "7c7ac26e61fc6e0bb6b5e6a661bb25147eadb1f6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:49Z"
+    },
+    {
+      "id": 36212444317,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "7c7ac26e61fc6e0bb6b5e6a661bb25147eadb1f6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:49Z"
+    },
+    {
+      "id": 36212444291,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "7c7ac26e61fc6e0bb6b5e6a661bb25147eadb1f6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:49Z"
+    },
+    {
+      "id": 36212444248,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "7c7ac26e61fc6e0bb6b5e6a661bb25147eadb1f6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:49Z"
+    },
+    {
+      "id": 36212444272,
+      "name": "Engine Priority After Resolution",
+      "head": "7c7ac26e61fc6e0bb6b5e6a661bb25147eadb1f6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:49Z"
+    },
+    {
+      "id": 36212444259,
+      "name": "CI",
+      "head": "7c7ac26e61fc6e0bb6b5e6a661bb25147eadb1f6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-26T02:40:49Z"
+    },
+    {
+      "id": 36212444202,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "7c7ac26e61fc6e0bb6b5e6a661bb25147eadb1f6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:48Z"
+    },
+    {
+      "id": 36212444211,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "7c7ac26e61fc6e0bb6b5e6a661bb25147eadb1f6",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:48Z"
+    },
+    {
+      "id": 36212441931,
+      "name": "Manual Phase 2 Walking Ballista Snapshot Sync",
+      "head": "7c7ac26e61fc6e0bb6b5e6a661bb25147eadb1f6",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:46Z"
+    },
+    {
+      "id": 36212436559,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "8decf651c40aab0ed801b7780e700bcecb804bc4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:39Z"
+    },
+    {
+      "id": 36212436508,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "8decf651c40aab0ed801b7780e700bcecb804bc4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:39Z"
+    },
+    {
+      "id": 36212436478,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "8decf651c40aab0ed801b7780e700bcecb804bc4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:39Z"
+    },
+    {
+      "id": 36212436476,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "8decf651c40aab0ed801b7780e700bcecb804bc4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:39Z"
+    },
+    {
+      "id": 36212436491,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "8decf651c40aab0ed801b7780e700bcecb804bc4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:39Z"
+    },
+    {
+      "id": 36212436486,
+      "name": "CI",
+      "head": "8decf651c40aab0ed801b7780e700bcecb804bc4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-26T02:40:39Z"
+    },
+    {
+      "id": 36212436514,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "8decf651c40aab0ed801b7780e700bcecb804bc4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:39Z"
+    },
+    {
+      "id": 36212436534,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "8decf651c40aab0ed801b7780e700bcecb804bc4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:39Z"
+    },
+    {
+      "id": 36212436479,
+      "name": "Engine Priority After Resolution",
+      "head": "8decf651c40aab0ed801b7780e700bcecb804bc4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:39Z"
+    },
+    {
+      "id": 36212424036,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "c243358b23a2bdf53f312006c4c53024c8f53c75",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:24Z"
+    },
+    {
+      "id": 36212424054,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "c243358b23a2bdf53f312006c4c53024c8f53c75",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:24Z"
+    },
+    {
+      "id": 36212424149,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "c243358b23a2bdf53f312006c4c53024c8f53c75",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:24Z"
+    },
+    {
+      "id": 36212424111,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "c243358b23a2bdf53f312006c4c53024c8f53c75",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:24Z"
+    },
+    {
+      "id": 36212424089,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "c243358b23a2bdf53f312006c4c53024c8f53c75",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:24Z"
+    },
+    {
+      "id": 36212424147,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "c243358b23a2bdf53f312006c4c53024c8f53c75",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:24Z"
+    },
+    {
+      "id": 36212424143,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "c243358b23a2bdf53f312006c4c53024c8f53c75",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T02:40:24Z"
+    },
+    {
+      "id": 36212424065,
+      "name": "CI",
+      "head": "c243358b23a2bdf53f312006c4c53024c8f53c75",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-26T02:40:24Z"
+    },
+    {
+      "id": 36212424078,
+      "name": "Engine Priority After Resolution",
+      "head": "c243358b23a2bdf53f312006c4c53024c8f53c75",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:40:24Z"
+    },
+    {
+      "id": 36210614573,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "a3fe72264b4f104beaa3f9032155727f688abb92",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:06:09Z"
+    },
+    {
+      "id": 36210614565,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "a3fe72264b4f104beaa3f9032155727f688abb92",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:06:09Z"
+    },
+    {
+      "id": 36210614529,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "a3fe72264b4f104beaa3f9032155727f688abb92",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:06:09Z"
+    },
+    {
+      "id": 36210614541,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "a3fe72264b4f104beaa3f9032155727f688abb92",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:06:09Z"
+    },
+    {
+      "id": 36210614545,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "a3fe72264b4f104beaa3f9032155727f688abb92",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:06:09Z"
+    },
+    {
+      "id": 36210614535,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "a3fe72264b4f104beaa3f9032155727f688abb92",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:06:09Z"
+    },
+    {
+      "id": 36210614586,
+      "name": "CI",
+      "head": "a3fe72264b4f104beaa3f9032155727f688abb92",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:06:09Z"
+    },
+    {
+      "id": 36210614599,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "a3fe72264b4f104beaa3f9032155727f688abb92",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:06:09Z"
+    },
+    {
+      "id": 36210614568,
+      "name": "Engine Priority After Resolution",
+      "head": "a3fe72264b4f104beaa3f9032155727f688abb92",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T02:06:09Z"
+    },
+    {
+      "id": 36196576031,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "39f92afee9c8392036765368710ede3df688b814",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:24:47Z"
+    },
+    {
+      "id": 36196576166,
+      "name": "CI",
+      "head": "39f92afee9c8392036765368710ede3df688b814",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:24:47Z"
+    },
+    {
+      "id": 36196576032,
+      "name": "Engine Priority After Resolution",
+      "head": "39f92afee9c8392036765368710ede3df688b814",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:24:47Z"
+    },
+    {
+      "id": 36196576048,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "39f92afee9c8392036765368710ede3df688b814",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:24:47Z"
+    },
+    {
+      "id": 36196576077,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "39f92afee9c8392036765368710ede3df688b814",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:24:47Z"
+    },
+    {
+      "id": 36196576033,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "39f92afee9c8392036765368710ede3df688b814",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:24:47Z"
+    },
+    {
+      "id": 36196576037,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "39f92afee9c8392036765368710ede3df688b814",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:24:47Z"
+    },
+    {
+      "id": 36196575979,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "39f92afee9c8392036765368710ede3df688b814",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:24:47Z"
+    },
+    {
+      "id": 36196576143,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "39f92afee9c8392036765368710ede3df688b814",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:24:47Z"
+    },
+    {
+      "id": 36196315205,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "35373073853608624489a11f8ecfabd48127050a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:21:38Z"
+    },
+    {
+      "id": 36196315226,
+      "name": "Engine Priority After Resolution",
+      "head": "35373073853608624489a11f8ecfabd48127050a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:21:38Z"
+    },
+    {
+      "id": 36196315206,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "35373073853608624489a11f8ecfabd48127050a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:21:38Z"
+    },
+    {
+      "id": 36196315180,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "35373073853608624489a11f8ecfabd48127050a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:21:38Z"
+    },
+    {
+      "id": 36196315192,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "35373073853608624489a11f8ecfabd48127050a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:21:38Z"
+    },
+    {
+      "id": 36196315251,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "35373073853608624489a11f8ecfabd48127050a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:21:38Z"
+    },
+    {
+      "id": 36196315242,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "35373073853608624489a11f8ecfabd48127050a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:21:38Z"
+    },
+    {
+      "id": 36196315321,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "35373073853608624489a11f8ecfabd48127050a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:21:38Z"
+    },
+    {
+      "id": 36196315178,
+      "name": "CI",
+      "head": "35373073853608624489a11f8ecfabd48127050a",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-25T22:21:38Z"
+    },
+    {
+      "id": 36196041947,
+      "name": "Engine Priority After Resolution",
+      "head": "69a01eb8d895ca2e7dd5a040932df106689457bd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:18:17Z"
+    },
+    {
+      "id": 36196041906,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "69a01eb8d895ca2e7dd5a040932df106689457bd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:18:17Z"
+    },
+    {
+      "id": 36196041902,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "69a01eb8d895ca2e7dd5a040932df106689457bd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:18:17Z"
+    },
+    {
+      "id": 36196041925,
+      "name": "CI",
+      "head": "69a01eb8d895ca2e7dd5a040932df106689457bd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-25T22:18:17Z"
+    },
+    {
+      "id": 36196041889,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "69a01eb8d895ca2e7dd5a040932df106689457bd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:18:17Z"
+    },
+    {
+      "id": 36196041857,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "69a01eb8d895ca2e7dd5a040932df106689457bd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:18:17Z"
+    },
+    {
+      "id": 36196041934,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "69a01eb8d895ca2e7dd5a040932df106689457bd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:18:17Z"
+    },
+    {
+      "id": 36196041863,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "69a01eb8d895ca2e7dd5a040932df106689457bd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:18:17Z"
+    },
+    {
+      "id": 36196041895,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "69a01eb8d895ca2e7dd5a040932df106689457bd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:18:17Z"
+    },
+    {
+      "id": 36195455159,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "5b6cf0cc71c46d4acfc6057c0bf725acb1b888f9",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:11:16Z"
+    },
+    {
+      "id": 36195455186,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "5b6cf0cc71c46d4acfc6057c0bf725acb1b888f9",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:11:16Z"
+    },
+    {
+      "id": 36195455168,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "5b6cf0cc71c46d4acfc6057c0bf725acb1b888f9",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:11:16Z"
+    },
+    {
+      "id": 36195455164,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "5b6cf0cc71c46d4acfc6057c0bf725acb1b888f9",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:11:16Z"
+    },
+    {
+      "id": 36195455182,
+      "name": "CI",
+      "head": "5b6cf0cc71c46d4acfc6057c0bf725acb1b888f9",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:11:16Z"
+    },
+    {
+      "id": 36195455169,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "5b6cf0cc71c46d4acfc6057c0bf725acb1b888f9",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T22:11:16Z"
+    },
+    {
+      "id": 36195455195,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "5b6cf0cc71c46d4acfc6057c0bf725acb1b888f9",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:11:16Z"
+    },
+    {
+      "id": 36195455176,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "5b6cf0cc71c46d4acfc6057c0bf725acb1b888f9",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:11:16Z"
+    },
+    {
+      "id": 36195455165,
+      "name": "Engine Priority After Resolution",
+      "head": "5b6cf0cc71c46d4acfc6057c0bf725acb1b888f9",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T22:11:16Z"
+    },
+    {
+      "id": 36189218533,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "a9da4413a97758dcbe565ef7b86cb4975d2bc17d",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T21:01:39Z"
+    },
+    {
+      "id": 36189218561,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "a9da4413a97758dcbe565ef7b86cb4975d2bc17d",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T21:01:39Z"
+    },
+    {
+      "id": 36189218554,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "a9da4413a97758dcbe565ef7b86cb4975d2bc17d",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T21:01:39Z"
+    },
+    {
+      "id": 36189218565,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "a9da4413a97758dcbe565ef7b86cb4975d2bc17d",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T21:01:39Z"
+    },
+    {
+      "id": 36189218539,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "a9da4413a97758dcbe565ef7b86cb4975d2bc17d",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T21:01:39Z"
+    },
+    {
+      "id": 36189218586,
+      "name": "Engine Priority After Resolution",
+      "head": "a9da4413a97758dcbe565ef7b86cb4975d2bc17d",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T21:01:39Z"
+    },
+    {
+      "id": 36189218587,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "a9da4413a97758dcbe565ef7b86cb4975d2bc17d",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T21:01:39Z"
+    },
+    {
+      "id": 36189218590,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "a9da4413a97758dcbe565ef7b86cb4975d2bc17d",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T21:01:39Z"
+    },
+    {
+      "id": 36189218595,
+      "name": "CI",
+      "head": "a9da4413a97758dcbe565ef7b86cb4975d2bc17d",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T21:01:39Z"
+    },
+    {
+      "id": 36189088680,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "180418ec23f759361b275e43a0c0515618bbd368",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T21:00:24Z"
+    },
+    {
+      "id": 36189088604,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "180418ec23f759361b275e43a0c0515618bbd368",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T21:00:24Z"
+    },
+    {
+      "id": 36189088750,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "180418ec23f759361b275e43a0c0515618bbd368",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T21:00:24Z"
+    },
+    {
+      "id": 36189088642,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "180418ec23f759361b275e43a0c0515618bbd368",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T21:00:24Z"
+    },
+    {
+      "id": 36189088644,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "180418ec23f759361b275e43a0c0515618bbd368",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T21:00:24Z"
+    },
+    {
+      "id": 36189088624,
+      "name": "CI",
+      "head": "180418ec23f759361b275e43a0c0515618bbd368",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-25T21:00:24Z"
+    },
+    {
+      "id": 36189088670,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "180418ec23f759361b275e43a0c0515618bbd368",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T21:00:24Z"
+    },
+    {
+      "id": 36189088711,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "180418ec23f759361b275e43a0c0515618bbd368",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T21:00:24Z"
+    },
+    {
+      "id": 36189088612,
+      "name": "Engine Priority After Resolution",
+      "head": "180418ec23f759361b275e43a0c0515618bbd368",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T21:00:24Z"
+    },
+    {
+      "id": 36189017759,
+      "name": "CI",
+      "head": "75c2976c76fc335870c80ed013842bcab5e6b6a4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-25T20:59:42Z"
+    },
+    {
+      "id": 36189017725,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "75c2976c76fc335870c80ed013842bcab5e6b6a4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T20:59:42Z"
+    },
+    {
+      "id": 36189017770,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "75c2976c76fc335870c80ed013842bcab5e6b6a4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T20:59:42Z"
+    },
+    {
+      "id": 36189017685,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "75c2976c76fc335870c80ed013842bcab5e6b6a4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T20:59:42Z"
+    },
+    {
+      "id": 36189017731,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "75c2976c76fc335870c80ed013842bcab5e6b6a4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T20:59:42Z"
+    },
+    {
+      "id": 36189017673,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "75c2976c76fc335870c80ed013842bcab5e6b6a4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T20:59:42Z"
+    },
+    {
+      "id": 36189017677,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "75c2976c76fc335870c80ed013842bcab5e6b6a4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T20:59:42Z"
+    },
+    {
+      "id": 36189017709,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "75c2976c76fc335870c80ed013842bcab5e6b6a4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T20:59:42Z"
+    },
+    {
+      "id": 36189017736,
+      "name": "Engine Priority After Resolution",
+      "head": "75c2976c76fc335870c80ed013842bcab5e6b6a4",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T20:59:42Z"
+    },
+    {
+      "id": 36180803856,
+      "name": "Engine Priority After Resolution",
+      "head": "fb4cac95456a407771808e447b56fcd96d9fa668",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T19:37:21Z"
+    },
+    {
+      "id": 36180803661,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "fb4cac95456a407771808e447b56fcd96d9fa668",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T19:37:21Z"
+    },
+    {
+      "id": 36180803600,
+      "name": "CI",
+      "head": "fb4cac95456a407771808e447b56fcd96d9fa668",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T19:37:21Z"
+    },
+    {
+      "id": 36180803864,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "fb4cac95456a407771808e447b56fcd96d9fa668",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T19:37:21Z"
+    },
+    {
+      "id": 36180803656,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "fb4cac95456a407771808e447b56fcd96d9fa668",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T19:37:21Z"
+    },
+    {
+      "id": 36180803591,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "fb4cac95456a407771808e447b56fcd96d9fa668",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T19:37:21Z"
+    },
+    {
+      "id": 36180803568,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "fb4cac95456a407771808e447b56fcd96d9fa668",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T19:37:21Z"
+    },
+    {
+      "id": 36180803614,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "fb4cac95456a407771808e447b56fcd96d9fa668",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T19:37:21Z"
+    },
+    {
+      "id": 36180803774,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "fb4cac95456a407771808e447b56fcd96d9fa668",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T19:37:21Z"
+    },
+    {
+      "id": 36154917860,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "8c39826b239c3dd85e5d4fbfd563c6d543c07074",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:33:00Z"
+    },
+    {
+      "id": 36154917853,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "8c39826b239c3dd85e5d4fbfd563c6d543c07074",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:33:00Z"
+    },
+    {
+      "id": 36154917864,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "8c39826b239c3dd85e5d4fbfd563c6d543c07074",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:33:00Z"
+    },
+    {
+      "id": 36154917975,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "8c39826b239c3dd85e5d4fbfd563c6d543c07074",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:33:00Z"
+    },
+    {
+      "id": 36154918037,
+      "name": "Engine Priority After Resolution",
+      "head": "8c39826b239c3dd85e5d4fbfd563c6d543c07074",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:33:00Z"
+    },
+    {
+      "id": 36154917846,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "8c39826b239c3dd85e5d4fbfd563c6d543c07074",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:33:00Z"
+    },
+    {
+      "id": 36154917832,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "8c39826b239c3dd85e5d4fbfd563c6d543c07074",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:32:59Z"
+    },
+    {
+      "id": 36154917831,
+      "name": "CI",
+      "head": "8c39826b239c3dd85e5d4fbfd563c6d543c07074",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:32:59Z"
+    },
+    {
+      "id": 36154917838,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "8c39826b239c3dd85e5d4fbfd563c6d543c07074",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:32:59Z"
+    },
+    {
+      "id": 36152893732,
+      "name": "CI",
+      "head": "84480ff43214568ccb2a056707ad6e41db66a62f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:15:04Z"
+    },
+    {
+      "id": 36152893498,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "84480ff43214568ccb2a056707ad6e41db66a62f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:15:03Z"
+    },
+    {
+      "id": 36152893516,
+      "name": "Engine Priority After Resolution",
+      "head": "84480ff43214568ccb2a056707ad6e41db66a62f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T15:15:03Z"
+    },
+    {
+      "id": 36152893562,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "84480ff43214568ccb2a056707ad6e41db66a62f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:15:03Z"
+    },
+    {
+      "id": 36152893565,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "84480ff43214568ccb2a056707ad6e41db66a62f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:15:03Z"
+    },
+    {
+      "id": 36152893598,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "84480ff43214568ccb2a056707ad6e41db66a62f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:15:03Z"
+    },
+    {
+      "id": 36152893532,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "84480ff43214568ccb2a056707ad6e41db66a62f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:15:03Z"
+    },
+    {
+      "id": 36152893570,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "84480ff43214568ccb2a056707ad6e41db66a62f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:15:03Z"
+    },
+    {
+      "id": 36152893576,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "84480ff43214568ccb2a056707ad6e41db66a62f",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T15:15:03Z"
+    },
+    {
+      "id": 36135874902,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "1884e93e97d410252c7fcf665a8837578fce9952",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T12:36:14Z"
+    },
+    {
+      "id": 36135874906,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "1884e93e97d410252c7fcf665a8837578fce9952",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T12:36:14Z"
+    },
+    {
+      "id": 36135874845,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "1884e93e97d410252c7fcf665a8837578fce9952",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T12:36:14Z"
+    },
+    {
+      "id": 36135874994,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "1884e93e97d410252c7fcf665a8837578fce9952",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T12:36:14Z"
+    },
+    {
+      "id": 36135874966,
+      "name": "CI",
+      "head": "1884e93e97d410252c7fcf665a8837578fce9952",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T12:36:14Z"
+    },
+    {
+      "id": 36135874912,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "1884e93e97d410252c7fcf665a8837578fce9952",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T12:36:14Z"
+    },
+    {
+      "id": 36135874908,
+      "name": "Engine Priority After Resolution",
+      "head": "1884e93e97d410252c7fcf665a8837578fce9952",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T12:36:14Z"
+    },
+    {
+      "id": 36135874973,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "1884e93e97d410252c7fcf665a8837578fce9952",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T12:36:14Z"
+    },
+    {
+      "id": 36135874977,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "1884e93e97d410252c7fcf665a8837578fce9952",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T12:36:14Z"
+    },
+    {
+      "id": 36135869401,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "1884e93e97d410252c7fcf665a8837578fce9952",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T12:36:11Z"
+    },
+    {
+      "id": 36107734876,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "b9355536ebc9a74aff2de77dafbc35dba8b86ff5",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:27:34Z"
+    },
+    {
+      "id": 36107734755,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "b9355536ebc9a74aff2de77dafbc35dba8b86ff5",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:27:34Z"
+    },
+    {
+      "id": 36107734884,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "b9355536ebc9a74aff2de77dafbc35dba8b86ff5",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:27:34Z"
+    },
+    {
+      "id": 36107734749,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "b9355536ebc9a74aff2de77dafbc35dba8b86ff5",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:27:34Z"
+    },
+    {
+      "id": 36107734913,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "b9355536ebc9a74aff2de77dafbc35dba8b86ff5",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:27:34Z"
+    },
+    {
+      "id": 36107734918,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "b9355536ebc9a74aff2de77dafbc35dba8b86ff5",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:27:34Z"
+    },
+    {
+      "id": 36107734941,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "b9355536ebc9a74aff2de77dafbc35dba8b86ff5",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:27:34Z"
+    },
+    {
+      "id": 36107734819,
+      "name": "CI",
+      "head": "b9355536ebc9a74aff2de77dafbc35dba8b86ff5",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:27:34Z"
+    },
+    {
+      "id": 36107730528,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "b9355536ebc9a74aff2de77dafbc35dba8b86ff5",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:27:31Z"
+    },
+    {
+      "id": 36107679105,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "81ddb33253bdb9ec865f001801188fd47abde77b",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T07:26:54Z"
+    },
+    {
+      "id": 36107679202,
+      "name": "CI",
+      "head": "81ddb33253bdb9ec865f001801188fd47abde77b",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-25T07:26:54Z"
+    },
+    {
+      "id": 36107679240,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "81ddb33253bdb9ec865f001801188fd47abde77b",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:26:54Z"
+    },
+    {
+      "id": 36107679357,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "81ddb33253bdb9ec865f001801188fd47abde77b",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:26:54Z"
+    },
+    {
+      "id": 36107679377,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "81ddb33253bdb9ec865f001801188fd47abde77b",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:26:54Z"
+    },
+    {
+      "id": 36107679179,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "81ddb33253bdb9ec865f001801188fd47abde77b",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:26:54Z"
+    },
+    {
+      "id": 36107679121,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "81ddb33253bdb9ec865f001801188fd47abde77b",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:26:54Z"
+    },
+    {
+      "id": 36107679130,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "81ddb33253bdb9ec865f001801188fd47abde77b",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T07:26:54Z"
+    },
+    {
+      "id": 36107674443,
+      "name": "Manual Transmission Phase 2 Telemetry Component",
+      "head": "81ddb33253bdb9ec865f001801188fd47abde77b",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T07:26:50Z"
+    },
+    {
+      "id": 36095494483,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "3c52844c9b91946b80bc9454cc1a4d2d147b1c99",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:42:03Z"
+    },
+    {
+      "id": 36095494634,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "3c52844c9b91946b80bc9454cc1a4d2d147b1c99",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:42:03Z"
+    },
+    {
+      "id": 36095494471,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "3c52844c9b91946b80bc9454cc1a4d2d147b1c99",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:42:03Z"
+    },
+    {
+      "id": 36095494489,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "3c52844c9b91946b80bc9454cc1a4d2d147b1c99",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:42:03Z"
+    },
+    {
+      "id": 36095494474,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "3c52844c9b91946b80bc9454cc1a4d2d147b1c99",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:42:03Z"
+    },
+    {
+      "id": 36095494478,
+      "name": "CI",
+      "head": "3c52844c9b91946b80bc9454cc1a4d2d147b1c99",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:42:03Z"
+    },
+    {
+      "id": 36095494400,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "3c52844c9b91946b80bc9454cc1a4d2d147b1c99",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:42:02Z"
+    },
+    {
+      "id": 36094281376,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:24:02Z"
+    },
+    {
+      "id": 36094281387,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:24:02Z"
+    },
+    {
+      "id": 36094281416,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:24:02Z"
+    },
+    {
+      "id": 36094281422,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:24:02Z"
+    },
+    {
+      "id": 36094281371,
+      "name": "CI",
+      "head": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:24:02Z"
+    },
+    {
+      "id": 36094281390,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:24:02Z"
+    },
+    {
+      "id": 36094281378,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:24:02Z"
+    },
+    {
+      "id": 36093050036,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "c09bc4b863d7eef26b7f824d5e6e6ace36e12456",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T04:06:04Z"
+    },
+    {
+      "id": 36093050038,
+      "name": "Pest Control Tier-1 Spy Support Batch C",
+      "head": "c09bc4b863d7eef26b7f824d5e6e6ace36e12456",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T04:06:04Z"
+    },
+    {
+      "id": 36093050019,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "c09bc4b863d7eef26b7f824d5e6e6ace36e12456",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:06:04Z"
+    },
+    {
+      "id": 36093050034,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "c09bc4b863d7eef26b7f824d5e6e6ace36e12456",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:06:04Z"
+    },
+    {
+      "id": 36093050024,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "c09bc4b863d7eef26b7f824d5e6e6ace36e12456",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:06:04Z"
+    },
+    {
+      "id": 36093050016,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "c09bc4b863d7eef26b7f824d5e6e6ace36e12456",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:06:04Z"
+    },
+    {
+      "id": 36093049996,
+      "name": "CI",
+      "head": "c09bc4b863d7eef26b7f824d5e6e6ace36e12456",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T04:06:04Z"
+    },
+    {
+      "id": 36090117038,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "0b450c714197a9d175c0ca83016be52a7125e907",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T03:22:47Z"
+    },
+    {
+      "id": 36090117040,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "0b450c714197a9d175c0ca83016be52a7125e907",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T03:22:47Z"
+    },
+    {
+      "id": 36090117072,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "0b450c714197a9d175c0ca83016be52a7125e907",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T03:22:47Z"
+    },
+    {
+      "id": 36090117037,
+      "name": "CI",
+      "head": "0b450c714197a9d175c0ca83016be52a7125e907",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T03:22:47Z"
+    },
+    {
+      "id": 36090117073,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "0b450c714197a9d175c0ca83016be52a7125e907",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T03:22:47Z"
+    },
+    {
+      "id": 36090117047,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "0b450c714197a9d175c0ca83016be52a7125e907",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T03:22:47Z"
+    },
+    {
+      "id": 36089000341,
+      "name": "Pest Control Tier-1 Spy Support Batch B",
+      "head": "5facc2dfcae8ccc175134ac1269d8c84fc549115",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T03:06:22Z"
+    },
+    {
+      "id": 36089000289,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "5facc2dfcae8ccc175134ac1269d8c84fc549115",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T03:06:22Z"
+    },
+    {
+      "id": 36089000280,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "5facc2dfcae8ccc175134ac1269d8c84fc549115",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T03:06:22Z"
+    },
+    {
+      "id": 36089000307,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "5facc2dfcae8ccc175134ac1269d8c84fc549115",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T03:06:22Z"
+    },
+    {
+      "id": 36089000288,
+      "name": "CI",
+      "head": "5facc2dfcae8ccc175134ac1269d8c84fc549115",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-25T03:06:22Z"
+    },
+    {
+      "id": 36089000321,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "5facc2dfcae8ccc175134ac1269d8c84fc549115",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T03:06:22Z"
+    },
+    {
+      "id": 36087805607,
+      "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+      "head": "94b34d5c51cece560119e580c75d673286ce0fca",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T02:48:54Z"
+    },
+    {
+      "id": 36087805569,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "94b34d5c51cece560119e580c75d673286ce0fca",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T02:48:54Z"
+    },
+    {
+      "id": 36087805633,
+      "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+      "head": "94b34d5c51cece560119e580c75d673286ce0fca",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T02:48:54Z"
+    },
+    {
+      "id": 36087805530,
+      "name": "CI",
+      "head": "94b34d5c51cece560119e580c75d673286ce0fca",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T02:48:53Z"
+    },
+    {
+      "id": 36087805532,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "94b34d5c51cece560119e580c75d673286ce0fca",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T02:48:53Z"
+    },
+    {
+      "id": 36086809145,
+      "name": "CI",
+      "head": "68a5ef98d58ceb9d4d8d88025a49184867fdc134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T02:34:24Z"
+    },
+    {
+      "id": 36086809178,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "68a5ef98d58ceb9d4d8d88025a49184867fdc134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T02:34:24Z"
+    },
+    {
+      "id": 36086809168,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "68a5ef98d58ceb9d4d8d88025a49184867fdc134",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T02:34:24Z"
+    },
+    {
+      "id": 36085848458,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "d5727749aa04a42e6db7035565ed504c3e267abd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T02:20:23Z"
+    },
+    {
+      "id": 36085848452,
+      "name": "CI",
+      "head": "d5727749aa04a42e6db7035565ed504c3e267abd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T02:20:23Z"
+    },
+    {
+      "id": 36085848485,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "d5727749aa04a42e6db7035565ed504c3e267abd",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T02:20:23Z"
+    },
+    {
+      "id": 36084973300,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "a14bf75efff9a5d6d66bfe579d46a9f001d68877",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T02:07:49Z"
+    },
+    {
+      "id": 36084973325,
+      "name": "CI",
+      "head": "a14bf75efff9a5d6d66bfe579d46a9f001d68877",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T02:07:49Z"
+    },
+    {
+      "id": 36084973312,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "a14bf75efff9a5d6d66bfe579d46a9f001d68877",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T02:07:49Z"
+    },
+    {
+      "id": 36083194629,
+      "name": "Pest Control Tier-1 Monster Tron Support Closure",
+      "head": "76dd49362976f60f94012e17e98c649535d75b03",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T01:42:39Z"
+    },
+    {
+      "id": 36083194606,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "76dd49362976f60f94012e17e98c649535d75b03",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T01:42:39Z"
+    },
+    {
+      "id": 36083194601,
+      "name": "CI",
+      "head": "76dd49362976f60f94012e17e98c649535d75b03",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-25T01:42:39Z"
+    },
+    {
+      "id": 36081497151,
+      "name": "CI",
+      "head": "1d167c5cfc846dcf0c93239550d34cd3437458a0",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T01:19:21Z"
+    },
+    {
+      "id": 36081497161,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "1d167c5cfc846dcf0c93239550d34cd3437458a0",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T01:19:21Z"
+    },
+    {
+      "id": 36080499999,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "d3c6ad099fa9cf4b82094fb8ae36955131153c71",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T01:05:41Z"
+    },
+    {
+      "id": 36080499973,
+      "name": "CI",
+      "head": "d3c6ad099fa9cf4b82094fb8ae36955131153c71",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T01:05:41Z"
+    },
+    {
+      "id": 36079828411,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "0bb3e1674b8c3f74671c08cbd830d493baa4be61",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T00:56:45Z"
+    },
+    {
+      "id": 36079828404,
+      "name": "CI",
+      "head": "0bb3e1674b8c3f74671c08cbd830d493baa4be61",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-25T00:56:45Z"
+    },
+    {
+      "id": 36071200433,
+      "name": "CI",
+      "head": "d0461c3ee521ea825c0938f48952174c68e00be2",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-24T23:08:22Z"
+    },
+    {
+      "id": 36071200439,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "d0461c3ee521ea825c0938f48952174c68e00be2",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-24T23:08:22Z"
+    },
+    {
+      "id": 36070573782,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "9146ec4cbdb4c90489dc5ee2f58f30308d3ba1c1",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-24T23:01:13Z"
+    },
+    {
+      "id": 36070573882,
+      "name": "CI",
+      "head": "9146ec4cbdb4c90489dc5ee2f58f30308d3ba1c1",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-24T23:01:13Z"
+    },
+    {
+      "id": 36070118374,
+      "name": "CI",
+      "head": "87645a654d66482b8cc2a2f24a04c0f65bc71b7b",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-24T22:55:55Z"
+    },
+    {
+      "id": 36070118246,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "87645a654d66482b8cc2a2f24a04c0f65bc71b7b",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-24T22:55:55Z"
+    },
+    {
+      "id": 36069705619,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "4326bf840f25bdcfee2a997664b969d965065978",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-24T22:51:11Z"
+    },
+    {
+      "id": 36069705568,
+      "name": "CI",
+      "head": "4326bf840f25bdcfee2a997664b969d965065978",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-24T22:51:11Z"
+    },
+    {
+      "id": 36053183275,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "b73397e723c71808ec7ae5d3b21731e2fe1f5026",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-24T20:11:26Z"
+    },
+    {
+      "id": 36053183264,
+      "name": "CI",
+      "head": "b73397e723c71808ec7ae5d3b21731e2fe1f5026",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-24T20:11:26Z"
+    },
+    {
+      "id": 36052649200,
+      "name": "CI",
+      "head": "ffc4695db8dabdbb21674c8e4be18d7aa4f01f00",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "cancelled",
+      "created_at": "2026-09-24T20:06:40Z"
+    },
+    {
+      "id": 36052648875,
+      "name": "Manual Transmission Phase 2 Capability Audit",
+      "head": "ffc4695db8dabdbb21674c8e4be18d7aa4f01f00",
+      "event": "pull_request",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-24T20:06:40Z"
+    }
+  ],
+  "receiving_workflow_runs": [
+    {
+      "id": 36268307239,
+      "name": "Manual Phase 2 ETB Batch Qualification",
+      "head": "a36681568f024c4f3319df5cf9dc9bf4685adf5f",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T20:05:39Z"
+    },
+    {
+      "id": 36266712834,
+      "name": "Manual Phase 2 ETB Batch Qualification",
+      "head": "ea3ea076e6c5a79d197ca0c7c9e2bae3edef130a",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T19:37:48Z"
+    },
+    {
+      "id": 36259693628,
+      "name": "Manual Phase 2 Type Loss Diagnostic",
+      "head": "086f049467f82948a17ca0e52d321c0ff26952f9",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T17:37:36Z"
+    },
+    {
+      "id": 36257704437,
+      "name": "Manual Phase 2 Type Loss Diagnostic",
+      "head": "05280369dd412c7cd697430abb835fcacf1e36d8",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "failure",
+      "created_at": "2026-09-26T17:04:15Z"
+    },
+    {
+      "id": 36257126929,
+      "name": "Manual Phase 2 Purphoros Authoring Probes",
+      "head": "e85d37a1e6aeaf407c292fc58c0365f807c1344b",
+      "event": "push",
+      "attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T16:54:24Z"
+    }
+  ],
+  "claim_source": "tools/repository_claim.py atffbf blob3020f0b6f57f3adfb03017fadee7807bc2accd34 requires project-scoped refs/heads/.../official-attempts/; Manual namespace is not yet admitted.",
+  "observed_manual_official_attempt_refs": [],
+  "official_journal_records_in_project_tree": [],
+  "scope": "Full untruncated receiving tree contains prospective AttemptJournal component and synthetic component evidence, no official execution store/permit. Full280remoteheads contain only Pest's retained Monster official-attempt ref, no Manual officialattempt. All418canonical and5receiving runs paginated/inspected by name/event/source; actualdeck runner not admitted. Component audit names do not count as games. This is a live repository execution-status check, not a claim about inaccessible external/private executions.",
+  "capability_games": 0,
+  "capability_initial_budget": 36,
+  "primary_games": 0,
+  "primary_budget": 864,
+  "official_initializations_observed": 0,
+  "allocation_reset": false,
+  "gameplay_authorized": false,
+  "composition": {
+    "local": "manual-shared-composition/candidate",
+    "files": 20,
+    "status": "UNQUALIFIED_INCOMPLETE_SOURCE_COMPOSITION",
+    "pins_sha256": "7d27a4bfcdeb298cd7baca90286c4e8f5066b866dd29cb3c37279e6caa855506",
+    "patch_sha256": "71266e28b9d573f4c8c93010d9ea79d7d91e75ae0867259a619e0fb48801d9a2",
+    "compile_or_tests_run": false,
+    "remote_source_branch_created": false
+  }
+}
