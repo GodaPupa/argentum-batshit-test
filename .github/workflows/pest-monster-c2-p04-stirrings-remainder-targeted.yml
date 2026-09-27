@@ -1,0 +1,60 @@
+name: Pest Monster P04 Stirrings remainder receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-c2-p04-stirrings-remainder-targeted.yml"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterStirringsRemainderReceivingTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-remainder-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact fixture source
+        run: |
+          mkdir -p build/reports/pest-c2-p04-stirrings
+          {
+            git rev-parse HEAD
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterStirringsRemainderReceivingTest.kt
+            git status --porcelain
+          } > build/reports/pest-c2-p04-stirrings/source.txt
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterStirringsRemainderReceivingTest.kt)" = "22c09f4fb1dff71ae9bc598e0c327b90e076bd7b"
+      - name: Execute two fresh Stirrings remainder fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterStirringsRemainderReceivingTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/pest-c2-p04-stirrings/gradle.log
+      - name: Verify exact JUnit cases
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          paths=glob.glob("gym/build/test-results/test/TEST-*PestMonsterStirringsRemainderReceivingTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          cases=root.findall(".//testcase")
+          assert sorted(c.get("name") for c in cases)==[
+              f"P04-02 Monster seat {seat} Stirrings selects and orders physical remainder"
+              for seat in (1, 2)
+          ], [c.get("name") for c in cases]
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-p04-stirrings-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-c2-p04-stirrings/
+            gym/build/test-results/test/TEST-*PestMonsterStirringsRemainderReceivingTest.xml
+          if-no-files-found: error
+          retention-days: 90
