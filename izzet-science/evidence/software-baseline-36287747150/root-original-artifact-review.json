@@ -1,0 +1,102 @@
+{
+  "schema": "root-exact-one-baseline-original-review/v1",
+  "reviewer": "/root in /workspace/scratch/94f5141e9448, non-author of source/control",
+  "at_utc": "2026-09-27T03:05:30.531461+00:00",
+  "disposition": "PASS_EXACT_ONE_EXISTING_SOFTWARE_BASELINE_ONLY",
+  "source_head": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+  "source_tree": "1a903dc4862d32fdd029e73a916cc9659678db4d",
+  "control_head": "71a5bdf918a3e07ebb20c17a676877d406df2f17",
+  "run_id": "36287747150",
+  "attempt": 1,
+  "original": {
+    "bytes": 246877,
+    "sha256": "457bff957829d1480e3cbbe2940a5eb70976962fa01c4f243ae9885ab56b033b",
+    "git_blob_sha1": "62f621980320ea37b16d907ef65d5bce4e283609",
+    "members": 10,
+    "all_crc_pass": true
+  },
+  "exact_release_sha256": "f63f9eedf9c4a421ad1ecbb458210617ce2faefd72e91d764476a400fdd3507a",
+  "control_actual_sha256": {
+    ".github/workflows/izzet-software-baseline-qualification.yml": "c949c46a030868e4af8274d6e86afd5c56b93adcf9f4a6d9d160c65513ac4ce5",
+    "qualify.py": "cceb6fb220cfb45fd9ac268314c8dbde031827ef25f08e3c30f6d3d5016caa13",
+    "gate.json": "03f596398e7d3a277d014d5c24eb63f64daa23d847f8ebf2a9141a4999f5442b"
+  },
+  "source_before_after_equal": true,
+  "authority_pins": 12,
+  "bound_dependency_files": 8,
+  "case": {
+    "name": "LEGACY_V0 plays the frozen baseline game exactly as it always has",
+    "classname": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+    "time": "3.006"
+  },
+  "xml_sha256": "78b3d1407d1a5bb358702ca830810a9d42f6faa727fe0f45628df01dcd4fac15",
+  "command": {
+    "stage": "FrozenBaselineTest",
+    "scope": "one-existing-software-baseline-after-independent-disposition",
+    "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+    "module": "ai",
+    "expected_cases": 1,
+    "command": [
+      "just",
+      "test-class",
+      "FrozenBaselineTest",
+      "--rerun",
+      "--no-build-cache",
+      "--no-daemon",
+      "-DupdateSnapshots=false",
+      "--info",
+      "--stacktrace",
+      "--max-workers=1",
+      "-PkotlinCompileParallelism=1",
+      "-Pkotlin.compiler.execution.strategy=in-process",
+      "-Dorg.gradle.jvmargs=-Xmx4g"
+    ],
+    "status": "PASS_PRESERVED_CASE_IDENTITIES",
+    "started_ns": 1790475066105315110,
+    "exit_status": 0,
+    "technical_limit": null,
+    "stdout_retained_bytes": 3546850,
+    "discarded_observed_pipe_bytes": 0,
+    "output_complete": true,
+    "elapsed_seconds": 356.659482895,
+    "finished_ns": 1790475422764935019,
+    "observed_report_bytes_after_exit": 981,
+    "xml_retention": [
+      {
+        "name": "TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml",
+        "observed_bytes": 561,
+        "retained_bytes": 561,
+        "complete": true,
+        "sha256": "78b3d1407d1a5bb358702ca830810a9d42f6faa727fe0f45628df01dcd4fac15"
+      }
+    ],
+    "actual": {
+      "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "actual_cases": 1,
+      "case_names": [
+        "LEGACY_V0 plays the frozen baseline game exactly as it always has"
+      ],
+      "xml_sha256": "78b3d1407d1a5bb358702ca830810a9d42f6faa727fe0f45628df01dcd4fac15"
+    }
+  },
+  "member_hashes": {
+    "01-FrozenBaselineTest/TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml": "78b3d1407d1a5bb358702ca830810a9d42f6faa727fe0f45628df01dcd4fac15",
+    "01-FrozenBaselineTest/command.json": "d4ff56c5e565548a09f329426206a26108bbca01a43dd6d2bb077cfd7aec1039",
+    "01-FrozenBaselineTest/command.log": "8d7e99628c0199eda91b22d9edd3c7b27cbf30bfdf009826f153a7624850eae4",
+    "01-FrozenBaselineTest/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "audit.json": "393ce513d114b51a9518834786d0fd4edaed10ae76ba9f48778b27c2e7effe88",
+    "control/.github/workflows/izzet-software-baseline-qualification.yml": "c949c46a030868e4af8274d6e86afd5c56b93adcf9f4a6d9d160c65513ac4ce5",
+    "control/gate.json": "03f596398e7d3a277d014d5c24eb63f64daa23d847f8ebf2a9141a4999f5442b",
+    "control/qualify.py": "cceb6fb220cfb45fd9ac268314c8dbde031827ef25f08e3c30f6d3d5016caa13",
+    "source-after.json": "169d33a49dd0d482ad8d87b2da3ccdf2e2fd12283b63be6c3eb8c9abb2e8d2da",
+    "source-before.json": "169d33a49dd0d482ad8d87b2da3ccdf2e2fd12283b63be6c3eb8c9abb2e8d2da"
+  },
+  "limitations": [
+    "Actual original bytes/XML/complete command log reviewed, no local JVM or trace replay.",
+    "Existing outside Work reviewer attribution in1af is preserved separately; this is an additional root review against our exact prior release.",
+    "One vanilla software fixture only; full973 receiving and default Yes/No policy equivalence remain separate.",
+    "Original failed samples preserved; no seed, official allocation, game, outcome or performance evidence change."
+  ],
+  "official_games": 0,
+  "deck_performance_evidence_changed": false
+}

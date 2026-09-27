@@ -1,0 +1,71 @@
+{
+  "schema": "izzet-one-baseline-root-release-review-v1",
+  "at_utc": "2026-09-27T02:09:36.069329+00:00",
+  "reviewer": "/root, non-author of source and controls",
+  "disposition": "PASS_EXACT_ONE_ORIGINAL_SOFTWARE_FIXTURE_EVENT_AFTER_LIVE_EXPECTED_REF_RECHECK",
+  "source": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+  "source_tree": "1a903dc4862d32fdd029e73a916cc9659678db4d",
+  "control": "71a5bdf918a3e07ebb20c17a676877d406df2f17",
+  "control_tree": "00a13923f88286b561a65590aab762da193d1074",
+  "independent_source_review": "dad1b680fad40b8997e9cd8e5813b1fab6b62c3648c9c3e8f0abb252147e10d9",
+  "independent_control_review": "25fbe79dc3c0e5ba9d5a7ac439e49f3a2f362273cb09d458d597395204d24197",
+  "reviewed_files": {
+    "qualify.py": "cceb6fb220cfb45fd9ac268314c8dbde031827ef25f08e3c30f6d3d5016caa13",
+    "gate.json": "03f596398e7d3a277d014d5c24eb63f64daa23d847f8ebf2a9141a4999f5442b",
+    ".github/workflows/izzet-software-baseline-qualification.yml": "c949c46a030868e4af8274d6e86afd5c56b93adcf9f4a6d9d160c65513ac4ce5"
+  },
+  "checks": [
+    "Fresh exact source/control/parent/tree objects; seven source changes equal prior reviewed direct-parent diff; isolated control has exactly three blobs.",
+    "Actual local control bytes rehashed against fresh remote Git blobs. Gate normalization reproduces exact unready de6c bytes; embedded record equals the complete independent review.",
+    "Read full control diffs and final workflow/gate; eight helper ASTs unchanged from completed five-case controller. One original case, original failure provenance, fresh source-bound XML, original caps and raw retention remain.",
+    "Rehashed all111 full inherited workflow bodies against fresh current source tree. Neither source nor evidence branch matches any inherited push workflow even ignoring path constraints and negative exclusions. Isolated control has exactly one creation-push/attempt1 workflow and no manual route.",
+    "All25 preparation ZIP members hash/CRC verified and compared byte-for-byte with original local files; all four prepared publication blobs match remote comparison. README accurately marks preparation cut.",
+    "Both proposed refs absent, both prepared heads have zero all-event runs, no source/evidence open PR at recorded preflight. Owner must repeat expected-ref/event checks immediately before each mutation."
+  ],
+  "permitted_operations": [
+    {
+      "operation": "normal fast-forward reviewed evidence only",
+      "branch": "review/izzet-shared-receiving-evidence-20260926",
+      "expected_parent": "767d69e7eb2cdabd8a5cb6af8050e041c2e11f7b",
+      "new_head": "8be1a9d9a2dc2ccc75a7a2bf1bc0dc30e6610bde"
+    },
+    {
+      "operation": "create previously absent inert exact source branch once",
+      "branch": "lab/izzet-software-baseline-candidate-20260927",
+      "sha": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5"
+    },
+    {
+      "operation": "create previously absent exact control branch once; creation push is sole qualification event",
+      "branch": "lab/izzet-software-baseline-qualification-20260927",
+      "sha": "71a5bdf918a3e07ebb20c17a676877d406df2f17"
+    }
+  ],
+  "limits": [
+    "No PR creation, later push, retry, unchanged rerun or973 bank is covered.",
+    "This fixture expectation disposition concerns seven explained active-player post-block handoffs in the single vanilla fixture. It does not establish global LEGACY_V0 equivalence or resolve default Yes/No strategy drift.",
+    "No deck or pilot tuning, Position1 seed access, experimental claim, gameplay or whole-runtime admission.",
+    "Source/control author audit is not independent result review; retain original result and obtain independent artifact audit.",
+    "No formal GitHub approval or protection override is supplied."
+  ],
+  "evidence": {
+    "root_verify_release.py": {
+      "bytes": 6950,
+      "sha256": "8cc399fac61b38fc9e211c3dd74a7f80b8f85d2281540635d30b64c1eff17a5a"
+    },
+    "root-release-byte-proof.json": {
+      "bytes": 28130,
+      "sha256": "3336a95d8f7eca452327ef5ee0bc03c1e534b884e99d108e77c0d3e2047ddc6e"
+    },
+    "root-fresh-release-metadata.json": {
+      "bytes": 86619,
+      "sha256": "671198a474d4cbd4a13d1e1741ac45b9cd03a15bf3d61504cace8b495613c650"
+    },
+    "root-fresh-event-and-comparison-check.json": {
+      "bytes": 52506,
+      "sha256": "21cc5fd2e91e1fb6370146b4d2baa942da48f2abcb0c347ceac7ca8d1b0bb1de"
+    }
+  },
+  "engine_cases_during_review": 0,
+  "official_games": 0,
+  "deck_performance_evidence_changed": false
+}

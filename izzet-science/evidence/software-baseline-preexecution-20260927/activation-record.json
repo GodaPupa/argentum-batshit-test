@@ -1,0 +1,101 @@
+{
+  "schema": "izzet-one-baseline-actual-activation-v1",
+  "cut_utc": "2026-09-27T02:12:02.628332+00:00",
+  "source": {
+    "branch": "lab/izzet-software-baseline-candidate-20260927",
+    "commit": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+    "tree": "1a903dc4862d32fdd029e73a916cc9659678db4d",
+    "observed_head_runs": 0
+  },
+  "evidence": {
+    "commit": "8be1a9d9a2dc2ccc75a7a2bf1bc0dc30e6610bde",
+    "tree": "01e5f0925f470699ef31a9dc708e36c82cfbdefd",
+    "observed_head_runs": 0
+  },
+  "control": {
+    "branch": "lab/izzet-software-baseline-qualification-20260927",
+    "commit": "71a5bdf918a3e07ebb20c17a676877d406df2f17",
+    "tree": "00a13923f88286b561a65590aab762da193d1074"
+  },
+  "actual_run": {
+    "id": 36287747150,
+    "event": "push",
+    "attempt": 1,
+    "head_sha": "71a5bdf918a3e07ebb20c17a676877d406df2f17",
+    "created_at": "2026-09-27T02:10:40Z",
+    "observed_status": "in_progress",
+    "conclusion_at_observation": null,
+    "observed_head_run_count": 1
+  },
+  "root_review_sha256": "f63f9eedf9c4a421ad1ecbb458210617ce2faefd72e91d764476a400fdd3507a",
+  "proof_archive": {
+    "bytes": 59409,
+    "sha256": "44367483b46b7d2a65f1a4283774184b1d61e9ebe5c1f03f9d8327f6553b2b6a",
+    "members": [
+      {
+        "path": "root-final-release-review.json",
+        "bytes": 4498,
+        "sha256": "f63f9eedf9c4a421ad1ecbb458210617ce2faefd72e91d764476a400fdd3507a"
+      },
+      {
+        "path": "root_verify_release.py",
+        "bytes": 6950,
+        "sha256": "8cc399fac61b38fc9e211c3dd74a7f80b8f85d2281540635d30b64c1eff17a5a"
+      },
+      {
+        "path": "root-release-byte-proof.json",
+        "bytes": 28130,
+        "sha256": "3336a95d8f7eca452327ef5ee0bc03c1e534b884e99d108e77c0d3e2047ddc6e"
+      },
+      {
+        "path": "root-fresh-release-metadata.json",
+        "bytes": 86619,
+        "sha256": "671198a474d4cbd4a13d1e1741ac45b9cd03a15bf3d61504cace8b495613c650"
+      },
+      {
+        "path": "root-fresh-event-and-comparison-check.json",
+        "bytes": 52506,
+        "sha256": "21cc5fd2e91e1fb6370146b4d2baa942da48f2abcb0c347ceac7ca8d1b0bb1de"
+      },
+      {
+        "path": "root-exact-source-comparison.json",
+        "bytes": 48431,
+        "sha256": "c6a0e4eb426cc15f054f8fa00b00683f933d9b11b4223f505ec138c6e4f8c3b2"
+      },
+      {
+        "path": "immediate-activation-preflight.json",
+        "bytes": 4987,
+        "sha256": "e741b1b5d6259cfc5c561d7b014e52a2be87e9926aa5aac95cee991459853172"
+      },
+      {
+        "path": "archive-publication-receipt.json",
+        "bytes": 161,
+        "sha256": "0aad31566ba642e38c47f18ab55ad16470654eade0b74575427dd592d966998e"
+      },
+      {
+        "path": "source-publication-receipt.json",
+        "bytes": 204,
+        "sha256": "df3d7cc4719007b87d5a51f7305e3496b3eaf60f2db800dff604914d51e59e3f"
+      },
+      {
+        "path": "control-creation-receipt.json",
+        "bytes": 1054,
+        "sha256": "f23fe77ddda951fb04cbab419439e9b8b0e1e16a5997aa9180021c091f912cf0"
+      },
+      {
+        "path": "post-creation-live-metadata.json",
+        "bytes": 37919,
+        "sha256": "9a413f1498b5538065c36993e10a61b99989e86bbd35df27c383dc800f05839d"
+      },
+      {
+        "path": "prepared-archive-remote.json",
+        "bytes": 1157,
+        "sha256": "ce9edf0b4502c1a6b639e834f96f66d16a89f3d7d6f142c15e6aa3f2e439317f"
+      }
+    ]
+  },
+  "scope": "Actual activation preservation only; no case outcome, artifact qualification, globallegacy equivalence or runtime/gameplay admission",
+  "disposition": "SOLE_CREATION_ATTEMPT_CONSUMED_NO_RETRY_OR_LATER_PUSH",
+  "official_games": 0,
+  "official_allocations": 0
+}
