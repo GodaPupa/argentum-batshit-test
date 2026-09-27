@@ -1,0 +1,38 @@
+{
+  "scope": "Read-only source-informed reimplementation of text-normalization comparison to identify two excluded rows; not a JVM replay or new qualification",
+  "source": "73394d7eabc7cc3dad609b9d416102a9ecce8e4f",
+  "unmatched": [],
+  "mismatches": [
+    {
+      "set": "VOW",
+      "name": "Halana and Alena, Partners",
+      "golden_text": "First strike (This creature deals combat damage before creatures without first strike.)\nReach (This creature can block creatures with flying.)\nAt the beginning of combat on your turn, put X +1/+1 counters on another target creature you control, where X is Halana and Alena's power. That creature gains haste until end of turn.",
+      "captured_oracle_text": "Reach (This creature can block creatures with flying.)\nFirst strike (This creature deals combat damage before creatures without first strike.)\nAt the beginning of combat on your turn, put X +1/+1 counters on another target creature you control, where X is Halana and Alena's power. That creature gains haste until end of turn.",
+      "golden_normalized": [
+        "First strike",
+        "Reach",
+        "At the beginning of combat on your turn, put X +1/+1 counters on another target creature you control, where X is ~'s power. That creature gains haste until end of turn."
+      ],
+      "oracle_normalized": [
+        "Reach",
+        "First strike",
+        "At the beginning of combat on your turn, put X +1/+1 counters on another target creature you control, where X is ~'s power. That creature gains haste until end of turn."
+      ],
+      "oracle_id": "b347be2d-9aa1-42a9-b652-8fb032832f09"
+    },
+    {
+      "set": "LCI",
+      "name": "Walk with the Ancestors",
+      "golden_text": "Return up to one target permanent card from your graveyard to your hand.\nDiscover 4.",
+      "captured_oracle_text": "Return up to one target permanent card from your graveyard to your hand. Discover 4. (Exile cards from the top of your library until you exile a nonland card with mana value 4 or less. Cast it without paying its mana cost or put it into your hand. Put the rest on the bottom in a random order.)",
+      "golden_normalized": [
+        "Return up to one target permanent card from your graveyard to your hand.",
+        "Discover 4."
+      ],
+      "oracle_normalized": [
+        "Return up to one target permanent card from your graveyard to your hand. Discover 4."
+      ],
+      "oracle_id": "ce657a2e-461b-45fd-ab98-35b5c8512777"
+    }
+  ]
+}

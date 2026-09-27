@@ -1,0 +1,724 @@
+{
+  "status": "PROSPECTIVE_EXPECTED_CASE_IDENTITIES_NOT_EXECUTION",
+  "source": "73394d7eabc7cc3dad609b9d416102a9ecce8e4f",
+  "inputs": [
+    {
+      "path": "industrial/audit-51607/cards-e5a0.zip",
+      "sha256": "3f92aa8b035817ac3dffe7c658e75e2fbc7bc068544ac8f65eab000903581848"
+    },
+    {
+      "path": "industrial/produced-token-qualification/attempt-01-original.zip",
+      "sha256": "f83ef1fcdce0dc823f16efb3be93b50e2d153c7332da1176a76f832cda2c6049"
+    }
+  ],
+  "focused": [
+    {
+      "class": "com.wingedsheep.engine.handlers.CostHandlerDiscardChoiceTest",
+      "name": "discard land rejects an owned nonland and accepts an eligible owned land"
+    },
+    {
+      "class": "com.wingedsheep.engine.handlers.CostHandlerDiscardChoiceTest",
+      "name": "discard two rejects one card repeated and accepts two distinct hand cards"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "entering the battlefield creates a Blood token"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "pays mana tap sacrifice and own discard before drawing exactly one card"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "rejects empty hand without spending resources or drawing"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "rejects opponent discard without spending resources or drawing"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "rejects tapped without spending resources or drawing"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "rejects unfunded without spending resources or drawing"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "the {3}{B}, tap, sacrifice ability returns two graveyard creatures to hand"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map explores a nonland with keep on top=false"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map explores a nonland with keep on top=true"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map exploring an empty library gives one counter without drawing or a choice"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map pays mana tap and sacrifice before an own creature explores a land"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map rejects nonempty stack without paying costs or exploring"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map rejects opponent creature without paying costs or exploring"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map rejects outside main without paying costs or exploring"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map rejects tapped without paying costs or exploring"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map rejects unfunded without paying costs or exploring"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "sacrificing a creature draws two cards and creates a Map token"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "sacrificing an artifact draws two cards and creates a Map token"
+    }
+  ],
+  "broad": [
+    {
+      "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "name": "LEGACY_V0 plays the frozen baseline game exactly as it always has"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+      "name": "Ashnod's Altar sacrifices Retriever when the payoff loop is assembled"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+      "name": "Ashnod's Altar seeds the loop when the second Retriever is in hand"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+      "name": "Crop Rotation uses the same missing-piece policy"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+      "name": "Expedition Map selects the missing Tron piece independent of library order"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+      "name": "Myr Retriever death trigger returns the other Retriever"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+      "name": "policy prefers staging the Retriever loop over passing"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2CapabilityRunnerTest",
+      "name": "all four frozen R1 lists complete one measured own turn through the composed real runner"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2CapabilityRunnerTest",
+      "name": "captured one-turn action transcript replays exactly for all four frozen lists"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2CapabilityRunnerTest",
+      "name": "composed one-turn capability runner replays identically for all four frozen lists"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "name": "Blood Fountain return and recast is recursion without inventing an Altar loop"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "name": "Foundry future conversion requires real charges token creation and a later legal attack"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "name": "Scry and Rumble count only observed copies and distinguish seeing from land access"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "name": "a development action spending loop resources abandons the partial cycle proof"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "name": "actual Pactdoll lethal is counted only after the engine ends the game"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "name": "all three controlled real Tron lands establish access and full Tron"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "name": "duplicated missing or rejected transitions cannot enter the metric stream"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "name": "inventory is not a loop but a real neutral sacrifice return cast and entry is"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "name": "quiet checkpoint distinguishes colored-payment failure from total-mana shortage"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "name": "quiet checkpoint recognizes an actually executable fixed-cost artifact"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "name": "replaying the same complete accepted transcript reproduces metric evidence"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+      "name": "PLAY and DRAW own eighth turns include end and cleanup decisions before turn-cap status"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+      "name": "forged terminal and missing turn-event provenance remain unresolved"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+      "name": "four thousand actual neutral-loop submissions stop without resolving an extra action"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+      "name": "initialization does not count but both players London submissions each count once"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+      "name": "real SBA settlement of a zero-life setup produces draw and never a synthetic winner"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+      "name": "real concession is terminal with its actual engine winner and reason"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+      "name": "rejected action counts once stops exposure and preserves last accepted state"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+      "name": "synthetic simultaneous boundary precedence preserves genuine terminal and quarantines faults"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+      "name": "throwing executor records a submitted exception without retry or engine winner"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+      "name": "unresolved observer overrides provisional terminal while preserving actual terminal diagnostics"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2OrderingIntegrationTest",
+      "name": "Crop Rotation uses the frozen shuffle through its real continuation with deterministic replay"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2OrderingIntegrationTest",
+      "name": "Expedition Map uses the frozen shuffle through its real continuation with deterministic replay"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2OrderingIntegrationTest",
+      "name": "Myr Kinsmith uses the frozen shuffle through its real continuation with deterministic replay"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2OrderingIntegrationTest",
+      "name": "the public action policy cannot observe a changed future ordering plan or library order"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "Dross binds an offered graveyard target and pays black recursion mana"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "Foundry loop creates lethal power then wins through the next legal combat"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "Insight pays with Wellspring and preserves live loop hardware"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "Star activation pays one mana and chooses an observed hand's black pip"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "action choice ignores opponent hidden identity and both future library orders"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "explicit regression seed repeats initial state and identities while another seed changes shuffle"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "opening policy has one common keep rule and honors the three-mulligan bound"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "passive Forest fixture plays one land and then passes without a second land drop"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "public development policy casts an affordable missing Altar through the real engine"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "public loop actions sacrifice return and recast a Retriever using real generated mana"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "real Candy Trail and Boulder scry continuations keep Altar above a surplus land"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "real two-player London mulligans draw seven then bottom three at the forced keep"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "name": "scry and surveil keep an engine card while discarding surplus mana"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest",
+      "name": "all frozen v2 candidates and historical comparator resolve in the compiled catalog"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RuntimeFailureTest",
+      "name": "a real checkpoint identity failure stops before submitting or fabricating any action"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RuntimeFailureTest",
+      "name": "a real selection failure retains accepted actions and typed invalid final artifacts without another action"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RuntimeFailureTest",
+      "name": "checkpoint evidence writer failure propagates before any action"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RuntimeFailureTest",
+      "name": "payment intent writer failure propagates before its planned funding action"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "name": "Blood Fountain returns both offered Retrievers before a redundant expensive creature"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "name": "Kinsmith takes its optional search and Dross recursion prefers the accessible loop creature"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "name": "Recursive Eggs Rumble fixes black access without inventing Tron in the list"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "name": "Stirrings bottom order is deterministic and never selects a nonselectable card"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "name": "Tron-capable Stirrings takes the missing third piece when colored access is sufficient"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "name": "collection-shaped Map and Rotation decisions build missing Tron while fixing a visible black need first"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "name": "one shared Rumble policy selects the missing engine across all four mana architectures"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "name": "opponent hidden identities and future library order cannot change an offered choice"
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "name": "real Stirrings Rumble and Kinsmith decisions accept the shared selector responses"
+    },
+    {
+      "class": "com.wingedsheep.engine.handlers.CostHandlerDiscardChoiceTest",
+      "name": "discard land rejects an owned nonland and accepts an eligible owned land"
+    },
+    {
+      "class": "com.wingedsheep.engine.handlers.CostHandlerDiscardChoiceTest",
+      "name": "discard two rejects one card repeated and accepts two distinct hand cards"
+    },
+    {
+      "class": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+      "name": "a fourth mulligan fails closed without changing the immutable input state"
+    },
+    {
+      "class": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+      "name": "absent component preserves the exact prior shuffle state RNG and JSON bytes"
+    },
+    {
+      "class": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+      "name": "duplicate missing or wrong-domain opening labels are rejected"
+    },
+    {
+      "class": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+      "name": "effect ordering ignores current order and retains copy labels after zone changes"
+    },
+    {
+      "class": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+      "name": "effect shuffles use independently computed hash ranks and clear positional reveals"
+    },
+    {
+      "class": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+      "name": "empty and singleton effect shuffles still record one actual shuffle event"
+    },
+    {
+      "class": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+      "name": "frozen initialization orders the actual opening draw and its event IDs"
+    },
+    {
+      "class": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+      "name": "matched original copy ranks remain coupled across different card counts and seats"
+    },
+    {
+      "class": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+      "name": "opt-in rejects entropy seeds hand smoothing and cards outside the frozen original domain"
+    },
+    {
+      "class": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+      "name": "three real London mulligans consume the next frozen orders then legally keep four"
+    },
+    {
+      "class": "com.wingedsheep.engine.library.LibraryOrderingServiceTest",
+      "name": "whole state serialization resumes a real London action and shuffle deterministically"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.AncientStirringsScenarioTest",
+      "name": "an empty library produces no card and no unresolved choice"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.AncientStirringsScenarioTest",
+      "name": "colorless artifacts and lands qualify while a green land and black artifact do not"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.AncientStirringsScenarioTest",
+      "name": "the optional selection may be declined and every seen card is ordered on the bottom"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "entering the battlefield creates a Blood token"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "pays mana tap sacrifice and own discard before drawing exactly one card"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "rejects empty hand without spending resources or drawing"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "rejects opponent discard without spending resources or drawing"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "rejects tapped without spending resources or drawing"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "rejects unfunded without spending resources or drawing"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "name": "the {3}{B}, tap, sacrifice ability returns two graveyard creatures to hand"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.CandyTrailScenarioTest",
+      "name": "a newly entered Trail pays two mana and sacrifices before gaining life and drawing"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.CandyTrailScenarioTest",
+      "name": "an already tapped Trail cannot pay its tap cost even with two available mana"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.CandyTrailScenarioTest",
+      "name": "entry looks at exactly two cards and bottoms only the chosen card"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.CandyTrailScenarioTest",
+      "name": "keeping both scried cards permits their chosen top order"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.CandyTrailScenarioTest",
+      "name": "one mana cannot pay the activation and does not sacrifice the Trail"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ChromaticStarScenarioTest",
+      "name": "destroying Star draws without adding mana"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ChromaticStarScenarioTest",
+      "name": "mana is immediate while the independent draw trigger waits on the stack"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ChromaticStarScenarioTest",
+      "name": "milling Star with Malevolent Rumble does not trigger its battlefield departure ability"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ChromaticStarScenarioTest",
+      "name": "sacrificing Star to Eviscerators Insight draws one in addition to the spell's two"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "name": "Pylons cannot fund its own filter activation through auto or explicit payment"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "name": "declining the surveil graveyard choice keeps the same top card"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "name": "filtering to BLACK consumes another land's one mana and adds only one chosen mana"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "name": "filtering to BLUE consumes another land's one mana and adds only one chosen mana"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "name": "filtering to GREEN consumes another land's one mana and adds only one chosen mana"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "name": "filtering to RED consumes another land's one mana and adds only one chosen mana"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "name": "filtering to WHITE consumes another land's one mana and adds only one chosen mana"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "name": "playing Pylons triggers surveil one and can put the top card in its owner's graveyard"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "name": "the colorless ability adds one colorless mana immediately and taps Pylons"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DarkmossBridgeScenarioTest",
+      "name": "Naturalize can target the artifact land but cannot destroy it"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DarkmossBridgeScenarioTest",
+      "name": "Revoke Existence exiles Bridge despite indestructible"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DarkmossBridgeScenarioTest",
+      "name": "an untapped Bridge adds exactly one BLACK immediately"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DarkmossBridgeScenarioTest",
+      "name": "an untapped Bridge adds exactly one GREEN immediately"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DarkmossBridgeScenarioTest",
+      "name": "indestructible does not prevent paying Insight's artifact sacrifice"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DarkmossBridgeScenarioTest",
+      "name": "playing Bridge enters tapped and does not briefly offer mana"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DrossSkullbombScenarioTest",
+      "name": "an illegal sole recursion target prevents both return and draw on resolution"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DrossSkullbombScenarioTest",
+      "name": "generic mana cannot pay the black recursion pip and a rejected attempt pays no costs"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DrossSkullbombScenarioTest",
+      "name": "one generic mana sacrifices the Skullbomb and draws through the stack"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DrossSkullbombScenarioTest",
+      "name": "recursion is unavailable in the end step but the draw ability remains legal"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DrossSkullbombScenarioTest",
+      "name": "two generic and one black return a creature and then draw one card"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map explores a nonland with keep on top=false"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map explores a nonland with keep on top=true"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map exploring an empty library gives one counter without drawing or a choice"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map pays mana tap and sacrifice before an own creature explores a land"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map rejects nonempty stack without paying costs or exploring"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map rejects opponent creature without paying costs or exploring"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map rejects outside main without paying costs or exploring"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map rejects tapped without paying costs or exploring"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "produced Map rejects unfunded without paying costs or exploring"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "sacrificing a creature draws two cards and creates a Map token"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.FanaticalOfferingScenarioTest",
+      "name": "sacrificing an artifact draws two cards and creates a Map token"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.GolemFoundryScenarioTest",
+      "name": "a nonartifact spell and the artifact it returns do not trigger Foundry"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.GolemFoundryScenarioTest",
+      "name": "a tapped Foundry removes exactly three counters without paying a tap cost"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.GolemFoundryScenarioTest",
+      "name": "an opponent's artifact spell does not trigger this Foundry"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.GolemFoundryScenarioTest",
+      "name": "declining a cast trigger leaves no counter when the artifact subsequently enters"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.GolemFoundryScenarioTest",
+      "name": "fewer than three charge counters cannot create a token or partially pay"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.GolemFoundryScenarioTest",
+      "name": "three accepted artifact cast triggers fund a new Foundry's exact token ability"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.KurgadonTest",
+      "name": "casting creature with CMC 6 or greater triggers Kurgadon"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.KurgadonTest",
+      "name": "casting face-down morph with high CMC does not trigger Kurgadon"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MyrKinsmithScenarioTest",
+      "name": "a library with no Myr still completes an accepted search and shuffle"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MyrKinsmithScenarioTest",
+      "name": "accepting the optional search offers only own library Myr cards and reveals the chosen card"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MyrKinsmithScenarioTest",
+      "name": "accepting then finding no card still searches and shuffles even when a Myr is available"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MyrKinsmithScenarioTest",
+      "name": "declining the optional search preserves library order and emits no search reveal or shuffle"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.MyrKinsmithScenarioTest",
+      "name": "non-Myr foreign-library and graveyard selections are rejected without consuming the choice"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PactdollTerrorScenarioTest",
+      "name": "Fountain and its created Blood token each cause one separate drain"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PactdollTerrorScenarioTest",
+      "name": "Pactdoll's own resolved entry drains once and gains once"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PactdollTerrorScenarioTest",
+      "name": "a resolved drain produces a real terminal loss at zero life"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PactdollTerrorScenarioTest",
+      "name": "an opponent's artifact entry does not trigger our Pactdoll"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PactdollTerrorScenarioTest",
+      "name": "our nonartifact creature entry does not trigger Pactdoll"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PactdollTerrorScenarioTest",
+      "name": "playing Darkmoss Bridge triggers its controller's Pactdoll without casting a spell"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PactdollTerrorScenarioTest",
+      "name": "playing Tree of Tales triggers its controller's Pactdoll without casting a spell"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.TownLandSpellAdventureScenarioTest",
+      "name": "casting the Adventure spell resolves its effect, exiles the card, then the land is playable from exile"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.TownLandSpellAdventureScenarioTest",
+      "name": "playing the land from exile consumes the turn's land drop"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.TownLandSpellAdventureScenarioTest",
+      "name": "the land primary can be played from hand and enters tapped"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.TreeOfTalesScenarioTest",
+      "name": "Naturalize can destroy a played Tree because it is an artifact"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.TreeOfTalesScenarioTest",
+      "name": "Tree cannot be cast and its land play consumes the one available land drop"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.TreeOfTalesScenarioTest",
+      "name": "playing Tree produces an untapped colorless artifact land with immediate green mana"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.VaultOfWhispersScenarioTest",
+      "name": "Naturalize can destroy a played Vault because it is an artifact"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.VaultOfWhispersScenarioTest",
+      "name": "Vault cannot be cast and its land play consumes the one available land drop"
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.VaultOfWhispersScenarioTest",
+      "name": "playing Vault produces an untapped colorless artifact land with immediate black mana"
+    }
+  ],
+  "counts": {
+    "prior": 136,
+    "preserved_token": 18,
+    "overlap": 2,
+    "new_generic": 2,
+    "focused": 20,
+    "broad": 154
+  },
+  "actual_executed_cases": null,
+  "official_games": 0
+}
