@@ -1,0 +1,28 @@
+{
+  "schema": "pest-c2-london-original-attempt-audit-v1",
+  "run_id": 36333472320,
+  "head": "3377b3fdc68cf9347f2ff0baf845199729ef349e",
+  "conclusion": "FAILURE",
+  "disposition": "INCOMPLETE_PRETEST_COMPILE_NO_CASES",
+  "artifact": {
+    "id": 10935967817,
+    "name": "pest-c2-london-original-36333472320-1",
+    "sha256": "0586adf8500cc901b16e6ee2816d8274f880e054930d3047fed89a74147f6d5c",
+    "size_bytes": 223489,
+    "zip_crc": "PASS",
+    "members": [
+      "build/reports/pest-c2-london/gradle.log",
+      "build/reports/pest-c2-london/source.txt",
+      "docs/experiments/pest-control/tier-one-monster-c2-london-seam-receiving.json"
+    ],
+    "repository_raw_copy": false
+  },
+  "source_blobs": {
+    "adapter": "25a166415fe29189802940fc76f6f283da686072",
+    "test": "4a55adc2174995906876bc04f836f77eb05ce6f1"
+  },
+  "failure": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt:72:64 Kotlin compile: smart cast to BottomCards impossible because LegalAction.action is public property from different module. :gym:compileKotlin failed; :gym:test did not run.",
+  "fresh_cases": 0,
+  "corrective_scope": "Capture action into a local val before BottomCards type check; freeze changed source in successor prospective manifest and run targeted cases only. Original run remains INCOMPLETE, no rerun.",
+  "official_games": 0
+}
