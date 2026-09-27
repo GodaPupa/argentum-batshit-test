@@ -1,0 +1,28 @@
+{
+  "schema": "manual-pr208-to-clean-source-causal-delta-v1",
+  "status": "SOURCE_COMPARE_PENDING_TARGETED_RECEIVING_NOT_ADMISSION",
+  "donor": {
+    "pr": 208,
+    "head": "032fdc8f6fe4dcf29970905d0f36e39bed41f7b4",
+    "base": "60a9e20b61f63c4d42772ca8d122aabe68aabe2f",
+    "source_blob": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "test_blob": "b747ad5a1bcf6780b5c31d8b4244f364b4f4acd3"
+  },
+  "clean_receiver": {
+    "pr_hold": 211,
+    "base": "83f78b4b63264346347b40cee19f0459513cf40b",
+    "runtime_parent": "a333dc1e6b8c2e78961bbbe052ee01105e2f1264",
+    "targeted_run": 36334558460
+  },
+  "dependency_compare": {
+    "unchanged": "gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt blob 44608301d535a2114073d80c06d5ca0480c40043 at donor base and clean runtime parent",
+    "single_changed_dependency": {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/contract/ObservationBuilder.kt",
+      "donor_blob": "3b16682183cd261acad067dc0b5dee51ef17fe4c",
+      "receiver_blob": "0a8cb7c1b26cb65bd9dd5ada9bfb4812662744c7",
+      "delta": "hasPriority changed from playerId == priorityPlayerId to state.hasPriority(playerId). Four-seat fixture is unteamed; expected designated acting view and digest are separately handled by PhaseTwoPilotBoundary."
+    }
+  },
+  "inference": "No changed source under gym/manual except composed donor files; target three-case run checks compile and fixture behavior on clean receiving parent. It does not prove strategic policy competence, full action parameterization, opponent pilots, general four-player rules or official admission.",
+  "official_games": 0
+}
