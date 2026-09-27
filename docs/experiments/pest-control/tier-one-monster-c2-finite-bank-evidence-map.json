@@ -164,13 +164,20 @@
       "audit": "docs/experiments/pest-control/evidence/c2-p04-other-36352892774-original-audit.json"
     },
     "P04_04_optional_targets": {
-      "status": "PROSPECTIVE_STATIC_PREFLIGHT_ONLY_NO_BEHAVIORAL_DISPATCH",
+      "status": "STATIC_PREFLIGHT_AUTHOR_AUDITED_BEHAVIORAL_RUN_PROSPECTIVE_NO_RECEIVING_ADMISSION",
       "fixture_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterOptionalTargetReceivingTest.kt",
       "fixture_blob": "d73aea0ca099ec74718eb1e558fb0e750430c871",
       "preflight_workflow_path": ".github/workflows/pest-monster-c2-p04-optional-target-preflight.yml",
       "preflight_workflow_blob": "bdd380709f19a0e91506340d23f6af0bf6754bdf",
       "scope": "Rooftop Percher 0/2 and Pinnacle Kill-Ship 0/1 optional target domains in both Monster seats; eight declared cases. Compile-only preflight before any behavioral source-bound run.",
-      "limitations": "No P04-04 optional target receiving result, actor policy parity or pair-pilot admission."
+      "limitations": "No P04-04 optional target receiving result, actor policy parity or pair-pilot admission.",
+      "preflight_run": 36354913407,
+      "preflight_artifact": 10943209698,
+      "preflight_audit": "docs/experiments/pest-control/evidence/c2-p04-optional-preflight-36354913407-original-audit.json",
+      "preflight_artifact_sha256": "f015a6bb77a2f3eea99ca3f3545cd892acfdae34495c85db1875490182bfcc1e",
+      "behavioral_workflow_path": ".github/workflows/pest-monster-c2-p04-optional-targeted.yml",
+      "behavioral_workflow_blob": "42f778b5956ed2dbb3cce3afba117f1153946d2f",
+      "behavioral_status": "PROSPECTIVE_EIGHT_CASES_NOT_YET_EXECUTED"
     }
   },
   "missing": "Complete exact reachable action and decision variants for all frozen mains, both actor seats and starts, including non-search looks, other scry/surveil, alternative costs, payment, triggers/order, attack/block/post-block priority, response/pass, random/cascade separation, raw-policy parity and complete own/public pilots. Map every accepted shared case by exact identity. Existing scoped cases cannot be summed into admission.",
