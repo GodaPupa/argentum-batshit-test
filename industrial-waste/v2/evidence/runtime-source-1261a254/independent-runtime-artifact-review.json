@@ -1,0 +1,123 @@
+{
+  "schema": "industrial1261-independent-runtime-artifact-review-v1",
+  "reviewer": "/root/sphinx",
+  "role": "Non-author review of actual completed Industrial CI runtime/fixture evidence and preservation. This reviewer authored no Industrial runtime source or fixtures in this change. Earlier shared actor/mulligan work is outside this Industrial source.",
+  "disposition": "PASS_BOUNDED_COMPONENT_EVIDENCE_PRESERVATION",
+  "source": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+  "tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "run": 36283941502,
+  "attempt": 1,
+  "event": "push",
+  "job": 108520988304,
+  "artifact_id": 10920296265,
+  "original": {
+    "path": "/dev/shm/industrial-1261-runtime-36283941502/runtime-original.zip",
+    "bytes": 99456585,
+    "sha256": "b2e1dc8140c2cde707c55cc5e47a5c156b9e84ccb8bb543a7af859082e867677"
+  },
+  "scope": "Completed current-source runtime/metrics/payment/action-journal fixture qualification, not complete R1 admission. Accepts exact proposed receipt only within limitations below.",
+  "reviewed_proposal": {
+    "path": "industrial/audit-1261/PROPOSED_RUNTIME_RECEIPT.json",
+    "bytes": 3792,
+    "sha256": "71f74ba4360b14748d80b91088b65d758fad3919271a3e68b337ab5bf5e234cd"
+  },
+  "author_reports": [
+    {
+      "path": "industrial/audit-1261/RUNTIME_RAW_AUDIT.json",
+      "bytes": 1540956,
+      "sha256": "d0665016e47007c990ca1dfed37343fc966423e4a2d09d32c6f29d23f9498095"
+    },
+    {
+      "path": "industrial/audit-1261/RUNTIME_SUPPLEMENT_AUDIT.json",
+      "bytes": 1669,
+      "sha256": "abb61752f85692746e11075980c2afa3c465412d82556c36e7a7a68d1e265f94"
+    }
+  ],
+  "independent_proof": [
+    {
+      "path": "sphinx-audit/industrial1261-review/independent-runtime-raw-audit.json",
+      "bytes": 275014,
+      "sha256": "c1e0c9132b187d2ae0bc3a8498d49fb8cd9b5aa904da9e2c6b6d5ed1747cd400"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/audit_runtime_original.py",
+      "bytes": 14937,
+      "sha256": "a79354cf973f28becad661062a7ae49d88f1c10a968a44eef39261f4d5ccf95e"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/runtime-auditor-parser-correction.json",
+      "bytes": 527,
+      "sha256": "b3f33d9568a759c96490510f675e97112528998a623368a3c23e4d636001fb69"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/priority-runtime-live-metadata.json",
+      "bytes": 53034,
+      "sha256": "3e7a3380c81d0afae678783a32f27f93b3eaa710d07b850b95defc349e5fbdf3"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/current-complete-tree.json.gz",
+      "bytes": 1209991,
+      "sha256": "0f9a72c73f82c6776bad66c46ae40acaa238f162d1efb441e8b2f879878ac467"
+    }
+  ],
+  "checks": {
+    "outer_zip": "99,456,585 bytes; original digest agrees with live artifact metadata; all554 unique members CRC and SHA256 verified.",
+    "actual_cases": {
+      "python": 80,
+      "engine": 148,
+      "lava_dart": 2,
+      "ai_declared": 144,
+      "ai_passed": 143,
+      "ai_deliberate_official_skip": 1,
+      "failures": 0,
+      "errors": 0
+    },
+    "freshness": "All36 raw XML suites have timestamps inside the corresponding live successful job steps; all18 copied AI XMLs byte-identical. Engine/Lava tasks freshly executed with BUILD SUCCESSFUL; non-info logs lack explicit worker-start markers. AI has one fresh worker start/end and all144 exact frozen identities inside its recorded command window.",
+    "source_binding": "All49 post-qualification source SHA256 pins independently rehashed from exact immutable-source bodies and matched current Git blob identities. All21,066 compiled-input before/after records byte-identical and matched independently fetched complete tree mode/blob records. Initial checkout clean; only final untracked generated runtime-evidence directory permitted and preserved.",
+    "actual_runtime": "All2,549 nested tar members hashed/size-checked, unique, exactly equal flattening of56 ordered classpath entries; tar hash and receipt/observation chain agree. One worker and69 raw registry definitions independently rehashed and names reconciled. Registry coverage is not complete mechanic qualification.",
+    "java_and_argument_limit": "Reported Java and worker-argument hashes agree between observation/archive/qualification records; Java binary was not independently rehashed from this artifact.",
+    "three_excluded_traces": "Actual CI EXACT_ACTION_EVENT_STATE_REPLAY and EXACT_EVERY_QUIET_CHECKPOINT_REPLAY receipts preserved for227/16,242/16,428/60 action/quiet counts. Independently matched every action with paired declared/returned journal records, quiet-state hashes, final-state hash and first-per-turn checkpoints. No local semantic replay performed. First two synthetic Forest fixtures remain excluded and do not replace official four-deck scope.",
+    "failure_preservation": "Original deliberate failure fixture remains among554 members. Auditor initial branch-checkout format assertion and correction separately recorded; no raw source, fixture or outcome altered.",
+    "complete_job_log": {
+      "path": "industrial/audit-1261/runtime-complete-decoded-job.log",
+      "bytes": 162012,
+      "sha256": "23b511a2f249bf283a1764045ed29a745415084a4c5ec370a382f96c936cab91"
+    },
+    "build_lock": "Logs report shlock unavailable and running unlocked; no working build semaphore inferred.",
+    "transport": "Twelve contiguous part offsets/size/SHA256/Git blob identities independently computed from exact original. This reviewer did not independently refetch staged remote blobs. Artifact-retrieval transport did not execute a new qualification.",
+    "stale_labels": "Original provenance.remaining_gates strings are preserved historical collector output; source1261 priority/cast355/currentCI dispositions must be read separately. No mutation of raw labels."
+  },
+  "recovery_helper_review": {
+    "file": {
+      "path": "industrial/audit-1261/reconstruct_runtime_original.py",
+      "bytes": 1698,
+      "sha256": "4f3ef2f0181d58a3345378552c1205ff5afb577bbd03514917117e4137bdedbb"
+    },
+    "manifest": {
+      "path": "industrial/audit-1261/runtime-publication-parts.json",
+      "bytes": 4204,
+      "sha256": "6d68d41c83d5a2f2c234c4228cad558f0fbd8c41a461cb7c9e23672c0bc86790"
+    },
+    "disposition": "PASS_STATIC_READ_ONLY_REASSEMBLY_HELPER",
+    "notes": "Read complete helper: fixed part path/order/index/offset, per-part SHA256/Git blob and total digest checks, exclusive output creation, full original ZIP CRC, no network/subprocess/runtime execution. Owner reconstruction result is retained as an author observation, not our execution. Validation failure leaves an incomplete exclusive-created output and does not overwrite an existing file.",
+    "author_reconstruction_observation": {
+      "path": "industrial/audit-1261/reconstruction-check.json",
+      "bytes": 531,
+      "sha256": "58e30dd7a2886924d0bce4e870ba17b5feac869a7c28fb66f1dfa31f938a5f1c"
+    }
+  },
+  "required_preservation": [
+    "Original complete99MB ZIP via reviewed12 lossless parts and manifest; recovery helper.",
+    "Author reports and independent raw checker/proof, full decoded job log, parser correction, exact immutable-source caches used in355review.",
+    "Proposed receipt with this separate bounded disposition; do not relabel source-author collector as independent review."
+  ],
+  "limits": [
+    "Post-run-only observation does not prove in-flight byte stability or executing-runtime identity before prepare/irreversible consumption.",
+    "Official512 execution leaf intentionally skipped; no official initialization, action or comparative result arises from these fixtures. Zero refers to this qualification and its evidence, not a substitute for current global ledger audit.",
+    "Fresh remote claim/consumption-namespace absence sentence in proposed receipt remains attributed to source-author live lookup; this review did not re-query that namespace.",
+    "Existing unresolved whole-source/reachable-scope/runtime/admission, durable exact executor and120ssoft/300shard whole512-leaf resource envelope remain separate gates. No frozen scientific action/turn cap altered.",
+    "No whole-runtime/gameplay admission, permit, GitHub approval, canonical merge or publication event authorized by this artifact review alone."
+  ],
+  "official_allocations_executed_by_reviewer": 0,
+  "deck_performance_evidence_changed": false
+}

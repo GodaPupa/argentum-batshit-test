@@ -1,0 +1,292 @@
+{
+  "schema": "industrial-1261-pest-independent-ci-auxiliary-review-v1",
+  "at_utc": "2026-09-27T01:41:25.769190+00:00",
+  "reviewer": "/root/pest, non-author of reviewed Industrial source and run artifacts",
+  "disposition": "PASS_BOUNDED_SOFTWARE_LOG_RECEIPT_PRESERVATION_AND_SAME_TREE_PREDECESSOR_REUSE",
+  "source": {
+    "head": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+    "actual_CI_G9_G10_guard_checkout": "9af38ac609a7adddb64bdab6ad9627a9378f4ef8",
+    "actual_R0_checkout": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+    "previously_reviewed_head": "73394d7eabc7cc3dad609b9d416102a9ecce8e4f",
+    "all_three_canonical_commit_tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+    "method": "Fresh GET of all three Git commit objects; exact full tree equality, not PR prose or alias tree response. Fresh canonical ref still1261; complete matching-ref query for heads/industrial-waste/official-attempts/ returned empty."
+  },
+  "current_CI": {
+    "run": 36283945557,
+    "attempt": 1,
+    "event": "pull_request",
+    "conclusion": "success",
+    "complete_decoded_logs": 9,
+    "jobs": {
+      "successful": 9,
+      "skipped_coverage": 1
+    },
+    "archive": {
+      "bytes": 756448,
+      "sha256": "eb26307631886e85e02c6ac9898a367918c7a51278658d304ce3b54b69566c72",
+      "members": 9,
+      "CRC": "PASS"
+    },
+    "result_line_counts": {
+      "PASSED": 16698,
+      "SKIPPED": 39
+    },
+    "failed_result_lines": 0,
+    "fresh_tasks": [
+      ":ai:test",
+      ":game-server:test",
+      ":gym-server:test",
+      ":gym-trainer:test",
+      ":gym:test",
+      ":mtg-sdk:test",
+      ":mtg-sets:1993-1999:tests:test",
+      ":mtg-sets:2000-2002:tests:test",
+      ":mtg-sets:2003-2007:tests:test",
+      ":mtg-sets:2008-2016:tests:test",
+      ":mtg-sets:2017-2022:tests:test",
+      ":mtg-sets:2023:tests:test",
+      ":mtg-sets:2024:tests:test",
+      ":mtg-sets:2025:tests:test",
+      ":mtg-sets:2026:tests:test",
+      ":mtg-sets:test",
+      ":rules-engine:test"
+    ],
+    "cached_tasks": [
+      ":mtg-search:test",
+      ":mtgish-tooling:test"
+    ],
+    "artifact_API_total_count": 0,
+    "raw_XML_available_in_this_current_run": false,
+    "case_count_scope": "These are actual timestamped Gradle result suffix records, not unique XML testcase counts. No claim of fresh cached results or skipped-case qualification. Frontend and aggregate backend success have separate actual job/log evidence. The coverage workflow job was skipped and is not counted as a testcase.",
+    "independent_method": "Read/decode all nine ZIP members, CRC and exact byte/hash match against author inventory; independently parse every result record and actual task suffix, reject unexpected record suffix forms, compare complete live successful-job IDs to nine retained member filenames.",
+    "parser_history": "Author initial suffix-only report remains preserved; Gradle task headings ending SKIPPED are excluded from testcase counts. Independent parser first invocation had a local closing-brace SyntaxError before executing any statement; corrected read-only script then completed. No repository/test/runtime source or outcome changed."
+  },
+  "prior_reuse": {
+    "proof_sha256": "e413bcaff9efc4b4b3ab9bd088a29a552bcfa39746067f93cec7ef9220ca54a9",
+    "root_review_sha256": "c666ea0139d541c13f6f293ae6970a8aa240a3d0ebf90a6494324ed4eade9d18",
+    "durable_commit": "c44e2f1c0484a673efb9ff158b705890677c31b5",
+    "durable_prefix": "industrial-waste/v2/evidence/software-integration-source-73394/",
+    "independent_current_binding": "Exact complete tree equality1261/9af/73394 carries unchanged inputs to the previously independently reviewed software evidence. Both prior receipt Git blobs independently rehashed against fetched public published tree entries.",
+    "donor_original_archive": {
+      "sha256": "4754791ad0f42d5a815e56e55b2191e70d15ce11be52d8e0b23eade746a74b20",
+      "bytes": 785532,
+      "members": 8,
+      "CRC": "PASS"
+    },
+    "selected_donor_records": {
+      "mtg-search": {
+        "PASSED": 163
+      },
+      "mtgish-tooling": {
+        "PASSED": 144,
+        "SKIPPED": 3
+      }
+    },
+    "all_310_selected_records_found_exactly_in_original_two_decoded_logs": true,
+    "three_donor_skips_remain_unqualified": true,
+    "reliance": "This review read prior c666/e413 findings and independently checked source identity, published receipt bytes and original relevant log records. It does not repeat root's original35-root/116-body donor dependency-closure audit.",
+    "limitations": [
+      "No actual current Gradle cache-key-to-producer identity is established.",
+      "No per-JAR or JVM executable byte equality across runs is established.",
+      "All seven current test-job logs expose JDK21.0.12-1; matching version and unchanged declarations do not prove external binary equality.",
+      "No prior donor software evidence is transplanted as deck-performance or complete gameplay-runtime admission."
+    ]
+  },
+  "auxiliary_gates": {
+    "G9": {
+      "run": 36283945581,
+      "job": 108520999836,
+      "attempt": 1,
+      "fresh_test_tasks": 3,
+      "successful_builds": 3,
+      "passed_records": 9,
+      "failed_records": 0,
+      "skipped_records": 0,
+      "Actions_artifacts": []
+    },
+    "G10": {
+      "run": 36283945545,
+      "job": 108520999739,
+      "attempt": 1,
+      "fresh_test_tasks": 3,
+      "successful_builds": 3,
+      "passed_records": 12,
+      "failed_records": 0,
+      "skipped_records": 0,
+      "Actions_artifacts": []
+    },
+    "G9_G10_scope": "All21 record identities/results also occur in current fullCI; do not sum them as independent coverage. Original workflow bodies directly invoke existing Gradle filters, no uploaded rawXML. This read-only review preserves actual historical route without approving new dispatch or altering it.",
+    "R0": {
+      "run": 36283945485,
+      "job": 108520999587,
+      "attempt": 1,
+      "static_boundary_Python_checks": 5,
+      "synthetic_decision_rule_Python_checks": 9,
+      "receipt_status": "R0_STATIC_FREEZE_VALID",
+      "r1_execution_ready": false,
+      "candidate_count": 3,
+      "r1_corpus_rows": 64,
+      "games_initialized_by_validator": 0,
+      "scope": "Frozen construction arithmetic/validation only. Synthetic rule fixtures are not official allocations or outcomes."
+    },
+    "guard": {
+      "run": 36283945457,
+      "job": 108520999584,
+      "attempt": 1,
+      "Python_unit_checks": 7,
+      "actual_live_receipt_status": "BLOCKED_BEFORE_INITIALIZATION",
+      "reason_type": "FileNotFoundError",
+      "missing_path": "industrial-waste/v2/r1-execution-claim.json",
+      "official_allocations_initialized": 0,
+      "official_actions_submitted": 0,
+      "official_outcomes_exposed": 0,
+      "scope": "Expected fail-closed software check. Workflow explicitly errors if guard unexpectedly admits; green workflow therefore means refusal worked. This old guard workflow claim path is distinct from r1_execute.py canonical remote claim/consumption transaction paths; empty actual official namespace is separately verified. Neither record creates an authority, claim or gameplay admission."
+    }
+  },
+  "receipts": {
+    "r0-original.zip": {
+      "bytes": 672,
+      "sha256": "599b0115761e4c0b11b66367946bc827024d39ba9994c65d9d0d3c6421a6c618",
+      "members": {
+        "iw-v2-r0-validation.json": {
+          "bytes": 938,
+          "sha256": "1104482f7fe2e257230775e2bf944438993597f0ce83d8efbd23a1e553211a21",
+          "content": {
+            "candidate_count": 3,
+            "candidates": {
+              "COMPACT_LOOP": {
+                "main": 60,
+                "maindeck_slots_replaced": 13,
+                "sha256": "759d0cbab344bd6bbc89460a61fe5e02e13a0dbf6ce804c424fd22c1ebd50619",
+                "sideboard": 15
+              },
+              "LEAN_TRON_HYBRID": {
+                "main": 60,
+                "maindeck_slots_replaced": 15,
+                "sha256": "1c2ae6ba0f8a0f0dcd124f79d77b3b9f57d9f32180f31662f5fbde0f0f15bc07",
+                "sideboard": 15
+              },
+              "RECURSIVE_EGGS": {
+                "main": 60,
+                "maindeck_slots_replaced": 32,
+                "sha256": "0d8c61db235ac5a38813ee74211f4ca55bab8f82b2a9bdd426a2570e2040898a",
+                "sideboard": 15
+              }
+            },
+            "comparative_outcomes_exposed": 0,
+            "gameplay_initialized_by_this_validator": 0,
+            "legality_identities": 34,
+            "r1_corpus_rows": 64,
+            "r1_execution_ready": false,
+            "remaining_gate": "Exact engine/card/pilot/telemetry qualification and guarded runtime binding receipt",
+            "status": "R0_STATIC_FREEZE_VALID"
+          }
+        }
+      }
+    },
+    "guard-original.zip": {
+      "bytes": 460,
+      "sha256": "714ede6348b88009fa20371bee4eef7f0bd4140a34aef056cdf2e78d58d8ecfc",
+      "members": {
+        "live-guard-status.json": {
+          "bytes": 468,
+          "sha256": "0d77c8d125d7d57556c962b9c2d3240183a65a1e149b2543bfbbe7b8f2f64ae5",
+          "content": {
+            "schema": "industrial-waste-v2-r1-live-guard-check-v1",
+            "status": "BLOCKED_BEFORE_INITIALIZATION",
+            "head": "9af38ac609a7adddb64bdab6ad9627a9378f4ef8",
+            "reason_type": "FileNotFoundError",
+            "reason": "[Errno 2] No such file or directory: '/home/runner/work/argentum-batshit-test/argentum-batshit-test/industrial-waste/v2/r1-execution-claim.json'",
+            "official_allocations_initialized": 0,
+            "official_actions_submitted": 0,
+            "official_outcomes_exposed": 0
+          }
+        }
+      }
+    }
+  },
+  "independently_fetched_sources": [
+    ".github/workflows/ci.yml",
+    ".github/workflows/industrial-waste-g9-pulse-capability.yml",
+    ".github/workflows/industrial-waste-g10-elves-card-capability.yml",
+    ".github/workflows/industrial-waste-v2-r0.yml",
+    ".github/workflows/industrial-waste-v2-execution-guard.yml",
+    "industrial-waste/v2/r1_execution_guard.py",
+    "industrial-waste/v2/validate_r0.py",
+    "industrial-waste/v2/r1_execute.py"
+  ],
+  "scope_exclusions": [
+    "No review or replacement of Manual/Sphinx-owned source96/runtime/355-case evidence.",
+    "No new engine/test execution, dispatch, branch/source write or gameplay.",
+    "No complete runtime acceptance, source-bound R1 execution permission, claim or consumed allocation.",
+    "No formal GitHub approval or merge authority is supplied. Root owns combined receiving acceptance and integrations."
+  ],
+  "deck_changes": false,
+  "deck_performance_evidence_changed": false,
+  "inputs": {
+    "pest-takeover/industrial-1261-review/independent-checks.json": {
+      "bytes": 63236,
+      "sha256": "170235baea49ffde90b8779d84328add0748fbdac9045a9903c27c3d36306824"
+    },
+    "pest-takeover/industrial-1261-review/independent-predecessor-checks.json": {
+      "bytes": 2550,
+      "sha256": "754b43ca5f275a1beb4df259a42ff61c20c22c024d8fc4656e9dab225737f338"
+    },
+    "pest-takeover/industrial-1261-review/live-auxiliary-metadata.json": {
+      "bytes": 84653,
+      "sha256": "a709508b64c2de949ab94f0da8557dfda608ea6acc92d16c790399d5b33975fe"
+    },
+    "pest-takeover/industrial-1261-review/live-ledger-and-prior-publication.json": {
+      "bytes": 2152,
+      "sha256": "05c1b72721d95139909af6060b86690e494abdded235d7ef4ae6ce14289bb1f6"
+    },
+    "pest-takeover/industrial-1261-review/live-metadata.json": {
+      "bytes": 63215,
+      "sha256": "650c0c64a21d57a454f48e58bac99245b8fed8b4634d65aeb2cf32f7e6370da4"
+    },
+    "pest-takeover/industrial-1261-review/live-source.json": {
+      "bytes": 75138,
+      "sha256": "8135238221c2993975f1e9cf755c45e89bbe5b18586bc39d43b2e556d8eee016"
+    },
+    "pest-takeover/industrial-1261-review/recount_logs.py": {
+      "bytes": 5384,
+      "sha256": "5879b9d6b7e4f45e6fed622d0a8d0de1e8970b8f5e7d459d73dd421cd0de6d46"
+    },
+    "industrial/audit-1261/FULL_CI_LOG_AUDIT.json": {
+      "bytes": 6735,
+      "sha256": "05a37c82e2da07a1f9f34953e667573f53dd4da5927100eb6b4903f18d28830e"
+    },
+    "industrial/audit-1261/FULL_CI_LOG_AUDIT_INITIAL_SUFFIX_ONLY.json": {
+      "bytes": 6984,
+      "sha256": "0c31a1ed2a61ae1d47f383b03534418bb09279cdf4132469569183e725498073"
+    },
+    "industrial/audit-1261/full-ci-decoded-logs.zip": {
+      "bytes": 756448,
+      "sha256": "eb26307631886e85e02c6ac9898a367918c7a51278658d304ce3b54b69566c72"
+    },
+    "industrial/audit-1261/r0-original.zip": {
+      "bytes": 672,
+      "sha256": "599b0115761e4c0b11b66367946bc827024d39ba9994c65d9d0d3c6421a6c618"
+    },
+    "industrial/audit-1261/guard-original.zip": {
+      "bytes": 460,
+      "sha256": "714ede6348b88009fa20371bee4eef7f0bd4140a34aef056cdf2e78d58d8ecfc"
+    },
+    "industrial/audit-1261/job-108520999836.log": {
+      "bytes": 74792,
+      "sha256": "55866d26b049410eefa6b2ac44c0fdbb5fa218d27cb3327831e89e5258cab39f"
+    },
+    "industrial/audit-1261/job-108520999739.log": {
+      "bytes": 75593,
+      "sha256": "247562722fd9997ec7c0f91ecf5c89e3fd953efbc6dd9fbf10ad044194e0fba2"
+    },
+    "industrial/audit-1261/job-108520999587.log": {
+      "bytes": 24269,
+      "sha256": "e2c4f014d7dfa4acfddea78be0d8e5554b83833e079bcbc9536ef1898163e092"
+    },
+    "industrial/audit-1261/job-108520999584.log": {
+      "bytes": 24307,
+      "sha256": "acae77001e99bfc9d530c5b306192a961a8f9dbcc2dfc9b377f4aa84a3b807d1"
+    }
+  }
+}

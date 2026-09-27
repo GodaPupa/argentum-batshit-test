@@ -1,0 +1,79 @@
+{
+  "schema": "industrial-runtime-source1261-proposed-component-receipt-v1",
+  "status": "SOURCE_AUTHOR_PROPOSED_BOUNDED_RECEIPT_PENDING_INDEPENDENT_DISPOSITION",
+  "source": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+  "tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "run": 36283941502,
+  "attempt": 1,
+  "event": "push",
+  "job": 108520988304,
+  "artifact_id": 10920296265,
+  "artifact": {
+    "path": "runtime-original.zip",
+    "bytes": 99456585,
+    "sha256": "b2e1dc8140c2cde707c55cc5e47a5c156b9e84ccb8bb543a7af859082e867677"
+  },
+  "raw_audit_sha256": "d0665016e47007c990ca1dfed37343fc966423e4a2d09d32c6f29d23f9498095",
+  "supplement_sha256": "abb61752f85692746e11075980c2afa3c465412d82556c36e7a7a68d1e265f94",
+  "counts": {
+    "python": 80,
+    "engine": 148,
+    "lava_dart": 2,
+    "AI_declared": 144,
+    "AI_passed": 143,
+    "AI_deliberate_official_skip": 1,
+    "failures": 0,
+    "errors": 0
+  },
+  "compiled_input_records": {
+    "entries": 21066,
+    "before_after_identical": true,
+    "all_git_blob_mode_records_match_exact_source": true,
+    "before_sha256": "f73f4456ccb0f776f7d25c1334f2203cd3746f5647b5ab55c19b77576c40fa6d",
+    "after_sha256": "f73f4456ccb0f776f7d25c1334f2203cd3746f5647b5ab55c19b77576c40fa6d"
+  },
+  "observed_runtime": {
+    "actual_ai_workers": 1,
+    "registry_definitions": 69,
+    "ordered_classpath_entries": 56,
+    "runtime_members": 2549,
+    "complete_ordered_classpath_flattening_matches_archived_members": true,
+    "archive_sha256": "b2378b5d43adeaae8c4dbd1501b6c4221117203ae365e60fe293daf280f13891",
+    "java_sha256": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "worker_argument_sha256": "dabf5df64f4823fcad1645ed516bd5be3776c6e7a9663388f4552f11962f4228"
+  },
+  "excluded_fixture_traces": [
+    {
+      "actions": 227,
+      "quiet": 16,
+      "replay": "EXACT_ACTION_EVENT_STATE_REPLAY",
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-allocation-trace4944004706771844842/allocation/"
+    },
+    {
+      "actions": 242,
+      "quiet": 16,
+      "replay": "EXACT_ACTION_EVENT_STATE_REPLAY",
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-quiet-baseline339695879906845993/allocation/"
+    },
+    {
+      "actions": 428,
+      "quiet": 60,
+      "replay": "EXACT_ACTION_EVENT_STATE_REPLAY",
+      "root": "build/reports/industrial-waste-v2/runtime-composition/excluded-traces/iw-v2-spell-trace11928469090235224818/allocation/"
+    }
+  ],
+  "raw_parts_manifest_sha256": "6d68d41c83d5a2f2c234c4228cad558f0fbd8c41a461cb7c9e23672c0bc86790",
+  "limits": [
+    "Bounded receiving runtime/metrics/payment/trace fixtures, not complete source admission.",
+    "Actual runtime archive is post-run observation; it does not prove no runtime bytes changed in flight and does not enforce executing-runtime identity before prepare.",
+    "No local JVM replay performed. Source-bound CI replay and complete raw action/event/state/journal observations preserved; the three deterministic fixtures are excluded from512official allocations.",
+    "AI official512test intentionally skipped; zero official initializations/actions/outcomes.",
+    "Current source requires independent complete reachable scope/compiled-runtime/actual executor/resource-envelope acceptance and a separate exact gameplay permit.",
+    "Current dormant512-allocation Kotest leaf inherits120ssoft/300shard watchdog; no bypass or scientific cap changes authorized.",
+    "The existing claim/consumption namespace is absent on the fresh live read; no prepare/reservation/consumption was invoked."
+  ],
+  "official_allocations_initialized": 0,
+  "official_actions_submitted": 0,
+  "comparative_outcomes_exposed": 0,
+  "deck_performance_evidence_changed": false
+}
