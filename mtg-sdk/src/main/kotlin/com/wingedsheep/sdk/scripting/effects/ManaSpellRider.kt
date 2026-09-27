@@ -60,7 +60,7 @@ sealed interface ManaSpellRider {
      * One copy of this rider is consumed for each mana actually spent. The cast pipeline freezes
      * the command-zone cast count, including the current cast if applicable, onto that commander
      * spell. The entry pipeline applies the counters only if the spell resolves. Two such mana
-     * spent on one spell contribute two independent copies of the entry replacement.
+     * spent on one spell contribute to a single counter placement before modifiers apply.
      */
     @SerialName("CommanderCastEntryCounters")
     @Serializable
