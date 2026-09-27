@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Qualify five existing corrected card fixtures; no baseline or gameplay admission."""
+"""Qualify two prospective Veteran Beastrider card fixtures; no gameplay admission."""
 import hashlib
 import json
 import os
@@ -11,13 +11,13 @@ import subprocess
 import time
 import xml.etree.ElementTree as ET
 
-SOURCE = "af8685ec97fd0f56195f25e7d3ca83c609fa018a"
-TREE = "b46e165748abf32b2c8856052e5df3d8ffa910f9"
+SOURCE = "82b5e4660c28bfb399b09cbaaf92d4e59181bf82"
+TREE = "aecacb5c0e520721b8ae263e9e1f3822bb46f783"
 ROOT = Path(os.environ["GITHUB_WORKSPACE"])
 CHECKOUT = ROOT / "source"
 CONTROL = ROOT / "control"
 OUT = ROOT / "output"
-CONTROL_PATHS = [".github/workflows/izzet-scenario-sequence-qualification.yml",
+CONTROL_PATHS = [".github/workflows/izzet-veteran-mechanics-qualification.yml",
                  "qualify.py", "gate.json"]
 
 
@@ -199,7 +199,7 @@ def run_bank(bank, index, limits):
 
 def main():
     OUT.mkdir(exist_ok=False)
-    manifest = {"schema": "izzet-five-scenario-sequence-qualification-audit-v1", "status": "INCOMPLETE",
+    manifest = {"schema": "izzet-veteran-two-case-qualification-audit-v1", "status": "INCOMPLETE",
                 "source_head": SOURCE, "source_tree": TREE,
                 "control_head": None, "control_files_sha256": {},
                 "run_id": os.environ.get("GITHUB_RUN_ID"), "attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
@@ -223,12 +223,12 @@ def main():
         assert not git(CONTROL, "status", "--porcelain")
         assert sorted(git(CONTROL, "ls-files").splitlines()) == sorted(CONTROL_PATHS)
         assert gate["ready_for_execution"] is True and gate["source_review"]
-        assert os.environ["GITHUB_REF"] == "refs/heads/lab/izzet-scenario-sequence-qualification-20260927"
+        assert os.environ["GITHUB_REF"] == "refs/heads/lab/izzet-veteran-mechanics-qualification-20260927"
         event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
         assert event["before"] == "0" * 40, "Only the one reviewed branch-creation event is admitted"
         assert shutil.disk_usage(ROOT).free >= gate["resource_limits"]["minimum_free_bytes"]
         identities = [(bank["class"], name) for bank in gate["banks"] for name in bank["case_names"]]
-        assert len(gate["banks"]) == 2 and len(identities) == len(set(identities)) == 5
+        assert len(gate["banks"]) == 1 and len(identities) == len(set(identities)) == 2
         manifest["source_before"] = source_snapshot(gate)
         manifest["dependency_files_sha256"] = {p: sha(CHECKOUT / p) for p in gate["dependency_files"]}
         (OUT / "source-before.json").write_text(json.dumps(manifest["source_before"], indent=2) + "\n")
@@ -248,7 +248,7 @@ def main():
         assert manifest["control_files_sha256"] == {p: sha(CONTROL / p) for p in CONTROL_PATHS}
         assert manifest["dependency_files_sha256"] == {p: sha(CHECKOUT / p) for p in gate["dependency_files"]}
         assert all(row["status"] == "PASS_PRESERVED_CASE_IDENTITIES" for row in manifest["stages"]), "One or more preserved classes failed; see raw artifacts"
-        assert sum(row["actual"]["actual_cases"] for row in manifest["stages"]) == 5
+        assert sum(row["actual"]["actual_cases"] for row in manifest["stages"]) == 2
         manifest["status"] = "PASS_REQUIRES_INDEPENDENT_ARTIFACT_REVIEW"
     except Exception as error:
         manifest["errors"].append(type(error).__name__ + ": " + str(error))

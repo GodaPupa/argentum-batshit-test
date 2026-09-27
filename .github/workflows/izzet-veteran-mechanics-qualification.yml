@@ -1,8 +1,8 @@
-name: Izzet five existing scenario sequence qualification
+name: Izzet Veteran Beastrider two-case mechanics qualification
 
 on:
   push:
-    branches: [lab/izzet-scenario-sequence-qualification-20260927]
+    branches: [lab/izzet-veteran-mechanics-qualification-20260927]
 
 permissions:
   contents: read
@@ -23,7 +23,7 @@ jobs:
           persist-credentials: false
       - uses: actions/checkout@v6
         with:
-          ref: af8685ec97fd0f56195f25e7d3ca83c609fa018a
+          ref: 82b5e4660c28bfb399b09cbaaf92d4e59181bf82
           path: source
           persist-credentials: false
       - uses: actions/setup-java@v5
@@ -32,12 +32,12 @@ jobs:
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v6
       - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
-      - name: Qualify five existing corrected scenario identities on the exact source
+      - name: Qualify two prospective Veteran Beastrider card identities on the exact source
         run: python3 control/qualify.py
       - uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: izzet-scenario-sequence-${{ github.run_id }}-${{ github.run_attempt }}
+          name: izzet-veteran-mechanics-${{ github.run_id }}-${{ github.run_attempt }}
           path: output/
           include-hidden-files: true
           if-no-files-found: error
