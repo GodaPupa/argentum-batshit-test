@@ -1,0 +1,145 @@
+{
+  "artifact": 10928844530,
+  "artifact_sha256": "2f12613c1c3c448317c5b560f2365c6ebb98240f65ec03482e2b76b1e91c92eb",
+  "artifact_size": 242725,
+  "attempt_consumed": true,
+  "case_results": [
+    {
+      "failure": null,
+      "name": "first command-zone cast enters with one counter when paid with Palace mana",
+      "status": "PASS"
+    },
+    {
+      "failure": "org.opentest4j.AssertionFailedError: Hand cast paid with Palace mana: You don't have priority\nExpected null but actual was \"You don't have priority\"",
+      "name": "a later hand cast uses only prior command-zone casts",
+      "status": "FAIL"
+    },
+    {
+      "failure": null,
+      "name": "Palace mana spent on a noncommander does not add counters",
+      "status": "PASS"
+    },
+    {
+      "failure": "org.opentest4j.AssertionFailedError: expected:<2> but was:<1>",
+      "name": "two Palace mana spent on a first command-zone cast add two counters",
+      "status": "FAIL"
+    },
+    {
+      "failure": null,
+      "name": "ordinary mana spent on a commander does not add Palace counters",
+      "status": "PASS"
+    },
+    {
+      "failure": null,
+      "name": "colorless commander identity makes the second Palace ability add no mana",
+      "status": "PASS"
+    },
+    {
+      "failure": null,
+      "name": "countered Palace spell loses its rider before a hand recast with ordinary mana",
+      "status": "PASS"
+    },
+    {
+      "failure": null,
+      "name": "pending Palace counters survive serialization and apply once on resolution",
+      "status": "PASS"
+    },
+    {
+      "failure": null,
+      "name": "entry observers see Palace counters before checking entering power",
+      "status": "PASS"
+    },
+    {
+      "failure": "org.opentest4j.AssertionFailedError: expected:<3> but was:<2>",
+      "name": "two Palace contributions are combined before an additive counter modifier",
+      "status": "FAIL"
+    }
+  ],
+  "cases_executed": 10,
+  "cases_failed": 3,
+  "cases_passed": 7,
+  "collector_receipt": {
+    "errors": [
+      "AssertionError: "
+    ],
+    "gameplay_authorized": false,
+    "official_games": 0,
+    "rows": [],
+    "status": "INCOMPLETE"
+  },
+  "component_accepted": false,
+  "crc_clean": true,
+  "disposition": "INCOMPLETE_TARGETED_RECEIVING_THREE_ASSERTION_FAILURES",
+  "exit_code": 1,
+  "freshness": {
+    "actionable_tasks": "43 executed; no cached/skipped test execution claimed",
+    "executor_commands": 1,
+    "executor_finishes": [
+      "Gradle Test Executor 1 finished executing tests."
+    ],
+    "executor_starts": [
+      "Gradle Test Executor 1 started executing tests."
+    ],
+    "task_lines": [
+      "> Task :mtg-sets:2008-2016:tests:test\nCaching disabled for task ':mtg-sets:2008-2016:tests:test' because:",
+      "> Task :mtg-sets:2008-2016:tests:test FAILED"
+    ]
+  },
+  "gameplay_authorized": false,
+  "gate_files_sha256": {
+    ".github/workflows/opal-palace-composed-once-02.yml": "88955c4c67339ed8fbdb39af361ca1616894d07453d673bb73dfb6a5e3310f8a",
+    "izzet-science/evidence/opal-palace-prospective-20260927/qualify_attempt_02.py": "eca9acdc755cc64097fedfba97ce6fa6ab6781feab0238372c68896ceeb951d1"
+  },
+  "interpretation": [
+    "Dependency repair allowed compilation and all ten original cases ran; seven successful individual fixture observations may be retained source-bound but cannot be promoted to complete mechanic acceptance.",
+    "Hand recast priority precondition rejected; two multi-Palace expected counter counts diverge. Exact cause between fixture spending/setup and mechanic requires prospective source diagnosis; raw outcomes alone do not distinguish.",
+    "Collector fails early on nonzero exit, correctly emits INCOMPLETE; raw XML uploaded independently preserves three failures and seven passes.",
+    "No unfavorable case may be dropped, relabeled pass, or silently replaced. Any changed-source follow-up requires diagnosis and explicit finite successor authority."
+  ],
+  "job": 108599004355,
+  "members_sha256": {
+    "build/reports/opal-palace-once-02/bind.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "build/reports/opal-palace-once-02/exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "build/reports/opal-palace-once-02/receipt.json": "c41d7614d81ba8e90ad8a24595e466f4046f44397008c04145a2490895206d1f",
+    "build/reports/opal-palace-once-02/source-after.json": "a202a25bc99ccb256fac408d8379a4c644ee83c1868bf4bc168685521026cf0a",
+    "build/reports/opal-palace-once-02/source-before.json": "a202a25bc99ccb256fac408d8379a4c644ee83c1868bf4bc168685521026cf0a",
+    "build/reports/opal-palace-once-02/tests.log": "dc048eeeccdfa22703aa5ef745e265c30322609212b7b6829474ddd5863e19da",
+    "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest.xml": "7e5d8f58df62fd75adc9dcf686ed7e1dc9f31257f0a9b81bb2bd640ede470e6d"
+  },
+  "official_games": 0,
+  "reviewer": "/root/compatibility_review",
+  "run": 36311784226,
+  "run_attempt": 1,
+  "schema": "opal-successor-original-independent-artifact-review-v1",
+  "source_after_identical": true,
+  "source_before": {
+    "bank": [
+      "first command-zone cast enters with one counter when paid with Palace mana",
+      "a later hand cast uses only prior command-zone casts",
+      "Palace mana spent on a noncommander does not add counters",
+      "two Palace mana spent on a first command-zone cast add two counters",
+      "ordinary mana spent on a commander does not add Palace counters",
+      "colorless commander identity makes the second Palace ability add no mana",
+      "countered Palace spell loses its rider before a hand recast with ordinary mana",
+      "pending Palace counters survive serialization and apply once on resolution",
+      "entry observers see Palace counters before checking entering power",
+      "two Palace contributions are combined before an additive counter modifier"
+    ],
+    "gameplay_authorized": false,
+    "head": "ec3b56352bdead2b9ee1ef8272f8fcced042c54b",
+    "official_games": 0,
+    "test_blob": "e8fe5bc8020a3a6991ca9820903e81d1174ec4a9",
+    "tree": "a2a573c80d723ed77f803983e7720e2ab8e3cddc"
+  },
+  "source_parent": "2992a354ff15ce9d376da3b22c2da89f6984fa0a",
+  "suite": {
+    "errors": "0",
+    "failures": "3",
+    "hostname": "runnervmtr4k5",
+    "name": "com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest",
+    "skipped": "0",
+    "tests": "10",
+    "time": "18.181",
+    "timestamp": "2026-09-27T10:16:51.359Z"
+  }
+}
