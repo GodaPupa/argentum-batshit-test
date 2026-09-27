@@ -2,11 +2,17 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.DecisionPhase
+import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.identity.CommanderComponent
 import com.wingedsheep.engine.state.components.identity.CommanderRegistryComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
+import com.wingedsheep.engine.state.components.player.RestrictedManaEntry
+import com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent
+import com.wingedsheep.sdk.scripting.effects.ManaRestriction
+import com.wingedsheep.sdk.scripting.effects.ManaSpellRider
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.mtg.sets.definitions.c13.cards.OpalPalace
 import com.wingedsheep.sdk.core.Color
@@ -57,6 +63,19 @@ class OpalPalaceScenarioTest : ScenarioTestBase() {
             val commanderId = game.state.getHand(game.player1Id).single()
             designateCommander(game, commanderId, priorCommandCasts = 2)
             tapForCommanderMana(game)
+            // The fixture designated a commander already in hand. The next SBA offers its
+            // real command-zone choice before priority returns; decline through the game API.
+            val zoneChoice = game.state.pendingDecision as? YesNoDecision
+                ?: error("Expected the commander's state-based zone choice")
+            zoneChoice.playerId shouldBe game.player1Id
+            zoneChoice.context.sourceId shouldBe commanderId
+            zoneChoice.context.phase shouldBe DecisionPhase.STATE_BASED
+            zoneChoice.yesText shouldBe "Command zone"
+            zoneChoice.noText shouldBe "Leave in your hand"
+            game.answerYesNo(false).error shouldBe null
+            game.state.pendingDecision shouldBe null
+            game.state.hasPriority(game.player1Id) shouldBe true
+            (commanderId in game.state.getHand(game.player1Id)) shouldBe true
             val cast = game.castSpell(1, "Grizzly Bears")
             withClue("Hand cast paid with Palace mana: ${cast.error}") { cast.error shouldBe null }
             game.resolveStack()
@@ -98,14 +117,18 @@ class OpalPalaceScenarioTest : ScenarioTestBase() {
                 .build()
             val commanderId = game.state.getZone(game.player1Id, Zone.COMMAND).single()
             designateCommander(game, commanderId)
-            val palaces = game.state.getBattlefield().filter { id ->
-                game.state.getEntity(id)?.get<CardComponent>()?.name == "Opal Palace"
-            }
-            palaces.size shouldBe 2
-            palaces.forEach { tapForCommanderMana(game, it, Color.WHITE) }
+            // This is the two-unit *spent-rider aggregation* fixture. Sequentially activating
+            // two Palaces with AutoPay spends the first unrestricted Palace mana on the
+            // second {1} activation, so it is not a two-unit payment. Keep that separate
+            // payment-selection limitation explicit while testing the actual cast/entry path.
+            stageTwoPalaceManaForCast(game)
+            taggedPalaceManaCount(game) shouldBe 2
 
             val cast = game.execute(CastSpell(game.player1Id, commanderId))
             withClue("Two Palace mana must pay for the commander: ${cast.error}") { cast.error shouldBe null }
+            taggedPalaceManaCount(game) shouldBe 0
+            (commanderId in game.state.stack) shouldBe true
+            game.state.getEntity(commanderId)!!.get<CommanderManaEntryCountersComponent>()!!.count shouldBe 2
             game.resolveStack()
             counters(game, commanderId) shouldBe 2
         }
@@ -244,12 +267,35 @@ class OpalPalaceScenarioTest : ScenarioTestBase() {
                 .withActivePlayer(1).inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
             val id = game.state.getZone(game.player1Id, Zone.COMMAND).single()
             designateCommander(game, id)
-            game.state.getBattlefield().filter {
-                game.state.getEntity(it)?.get<CardComponent>()?.name == "Opal Palace"
-            }.forEach { tapForCommanderMana(game, it, Color.WHITE) }
+            stageTwoPalaceManaForCast(game)
+            taggedPalaceManaCount(game) shouldBe 2
             game.execute(CastSpell(game.player1Id, id)).error shouldBe null
+            taggedPalaceManaCount(game) shouldBe 0
+            (id in game.state.stack) shouldBe true
+            game.state.getEntity(id)!!.get<CommanderManaEntryCountersComponent>()!!.count shouldBe 2
             game.resolveStack().forEach { it.error shouldBe null }
             counters(game, id) shouldBe 3
+        }
+    }
+
+    private fun taggedPalaceManaCount(game: TestGame): Int =
+        game.state.getEntity(game.player1Id)!!.get<ManaPoolComponent>()!!.restrictedMana.count {
+            it.riders.contains(ManaSpellRider.CommanderCastEntryCounters)
+        }
+
+    private fun stageTwoPalaceManaForCast(game: TestGame) {
+        val palaces = game.state.getBattlefield().filter {
+            game.state.getEntity(it)?.get<CardComponent>()?.name == "Opal Palace"
+        }
+        palaces.size shouldBe 2
+        val rider = RestrictedManaEntry(
+            color = Color.WHITE,
+            restriction = ManaRestriction.AnySpend,
+            riders = setOf(ManaSpellRider.CommanderCastEntryCounters),
+        )
+        game.state = game.state.updateEntity(game.player1Id) { player ->
+            val pool = player.get<ManaPoolComponent>() ?: ManaPoolComponent()
+            player.with(pool.copy(restrictedMana = pool.restrictedMana + listOf(rider, rider)))
         }
     }
 
