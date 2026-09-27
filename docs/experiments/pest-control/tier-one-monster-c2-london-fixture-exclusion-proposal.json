@@ -1,0 +1,31 @@
+{
+  "schema": "pest-monster-c2-new-deterministic-fixture-exclusion-proposal-v1",
+  "status": "PROSPECTIVE_ADDITIONS_NO_COMPLETE_LIVE_UNION_OR_FREEZE_AUTHORITY",
+  "baseline": {
+    "ref": "d0882e736edbadd02ce1a33fc66567642aa30ded",
+    "path": "docs/experiments/pest-control/monster-replacement-prerequisite-evidence/prospective-known-minimum-exclusion-582.txt",
+    "blob": "53d3879c58deb81a95a1393bd573758ce81fb25b",
+    "distinct_count": 582
+  },
+  "proposed": [
+    {
+      "canonical_decimal": "12734721",
+      "source_literal": "0xC2_5101L",
+      "role": "deterministic nonexperimental GameConfig fixture",
+      "source_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganObservationTest.kt",
+      "source_blob": "4a55adc2174995906876bc04f836f77eb05ce6f1"
+    },
+    {
+      "canonical_decimal": "12734722",
+      "source_literal": "0xC2_5102L",
+      "role": "deterministic policy RNG input only; conservatively exclude as explicit Pest fixture",
+      "source_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganObservationTest.kt",
+      "source_blob": "4a55adc2174995906876bc04f836f77eb05ce6f1"
+    }
+  ],
+  "verification": "Both canonical signed Long decimals were independently parsed from literals and absent from the 582-value prospective minimum source at d088. This proposal does not certify union completeness, uniqueness against other unreviewed fixture sources, or freeze-time live refs.",
+  "provisional_minimum_if_independently_adopted": 584,
+  "remaining_gap": "Prior checkpoint identifies 48 unreviewed candidate identities plus complete live accepted/rejected/quarantined/pending/claimed source reconciliation; verify at actual freeze. No entropy or vector.",
+  "official_new_entropy": 0,
+  "official_games": 0
+}
