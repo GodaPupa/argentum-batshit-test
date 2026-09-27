@@ -1,0 +1,45 @@
+{
+  "schema": "pest-pair-pilot-source-gap-inventory-v1",
+  "status": "SOURCE_BOUND_GAP_AUDIT_NO_RECEIVING_OR_EXECUTION_AUTHORITY",
+  "governing_boundary_acceptance": "f0fe77c5ea676cc8c971ee30e037b51f94996bf5",
+  "inspected_actor_component": "edfde68ae2005b5e480aca194051b982069d8439",
+  "exact_frozen_main_sha256": {
+    "pest": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f"
+  },
+  "inspected_paths": {
+    "runner": "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt",
+    "legacy_ai": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt",
+    "mulligan": "ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt",
+    "component_adapter": "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisions.kt",
+    "actor_input": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorInput.kt"
+  },
+  "observed_boundary": {
+    "runner": "Around lines 779–819, runner supplies environment.state to mulligan controllers, AIPlayer.respondToDecision and AIPlayer.chooseAction. These are authoritative GameState entry points.",
+    "component": "The actor adapter is limited to Map/Crop/Stirrings pending-card choices and Bog targets; null returns NoOverride. It does not rank priority actions, decide keep/bottom, or resolve all reachable questions.",
+    "mulligan": "EngineAiPlayerController.guaranteedSecondLandAccess scans state.getLibrary(playerId) for a matching land and retains a representative entity ID while simulating land/cycling/payment. Its comments describe existence-only use, but an own/public pilot must derive allowed existence from frozen own deck identity and visible hand or use separately qualified lawful input. It must not receive the hidden library list or representative physical ID.",
+    "separate_domains": "Map/Crop search, Stirrings top-five look/bottom order, and Crop public sacrifice are distinct authority surfaces. sourceName and cardInfo presence in current adapter do not alone prove a search."
+  },
+  "required_receiving_domains": [
+    "For both pilots: London keep/take and bottom physical-card choices under the same frozen profiles.",
+    "For both pilots: complete priority menu action ranking, mana/payment/target legality, phase and response-window choices.",
+    "For both pilots: all reachable pending choices, including search, look/reorder, optional, targeting, combat declaration and triggered ordering; source-only registry coverage is insufficient.",
+    "Pair interaction: both seats/start cells, attacks and blocks with active-player priority after declaration, opponent hand/future library invariance and authorized current public/own information.",
+    "Exact physical action/decision equality with the unchanged frozen policy where required; explicit prospective disposition for any nonequivalence, never silently substitute a default/pass.",
+    "Semantic serialization/replay, stale actor/epoch rejection, fail-closed partial journal and independent exact combined C2 receiving acceptance."
+  ],
+  "accepted_components_not_whole_pilot": {
+    "actor_diagnostic": "72-case MC10 bank at run 36264267437 diagnoses option-order nonequivalence and is consumed; it does not admit raw/canonical pilot equivalence.",
+    "postboard": "Ten independently reviewed exchange-construction cases at 9b89c9d889 prove only legal frozen 60/15 construction, not postboard pilot competence."
+  },
+  "next_concrete_action": "Compose actor boundary with actual shared typed search provenance on one immutable receiving source; then implement both unchanged-strategy actor pilots and freeze a finite case inventory/collector before a new software run. New official gameplay requires separate C2, A2 and exclusion/seed/claim gates.",
+  "counters": {
+    "fresh_official_games": 0,
+    "historical_games_quarantined": 81,
+    "original_monster_claim_consumed": 1,
+    "original_monster_reservations_retired": 4,
+    "new_seed_draws": 0,
+    "new_claims": 0,
+    "new_fixture_runs_by_this_audit": 0
+  }
+}
