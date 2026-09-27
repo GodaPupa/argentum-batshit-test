@@ -44,7 +44,7 @@ class PestMonsterTronActorDecisions(
 ) {
     fun respond(input: ActorInput): PestMonsterTronActorDecision = respondCurrent(input, null)
 
-    fun respond(search: PestMonsterVerifiedSearch): PestMonsterTronActorDecision =
+    internal fun respond(search: PestMonsterVerifiedSearch): PestMonsterTronActorDecision =
         respondCurrent(search.input, search)
 
     private fun respondCurrent(input: ActorInput, search: PestMonsterVerifiedSearch?): PestMonsterTronActorDecision {
