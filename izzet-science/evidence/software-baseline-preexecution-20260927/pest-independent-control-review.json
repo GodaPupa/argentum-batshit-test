@@ -1,0 +1,96 @@
+{
+  "schema": "izzet-one-baseline-pest-independent-control-review-v1",
+  "at_utc": "2026-09-27T02:01:41.507109+00:00",
+  "reviewer": "/root/pest, non-author of the control and fixture source",
+  "disposition": "PASS_BOUNDED_PROSPECTIVE_ONE_EXISTING_SOFTWARE_BASELINE_CONTROL",
+  "source": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+  "source_tree": "1a903dc4862d32fdd029e73a916cc9659678db4d",
+  "source_parent": "af8685ec97fd0f56195f25e7d3ca83c609fa018a",
+  "files": {
+    "qualify.py": {
+      "bytes": 14203,
+      "sha256": "cceb6fb220cfb45fd9ac268314c8dbde031827ef25f08e3c30f6d3d5016caa13"
+    },
+    "gate.json": {
+      "bytes": 3999,
+      "sha256": "de6cce5cb9fb268f9cd8218bd073d170aa959160f66aa23941e101262e4ff889"
+    },
+    "izzet-software-baseline-qualification.yml": {
+      "bytes": 1402,
+      "sha256": "c949c46a030868e4af8274d6e86afd5c56b93adcf9f4a6d9d160c65513ac4ce5"
+    }
+  },
+  "reviewed_basis": {
+    "collector_sha256": "c658e1231278c652379b273dde68b9f0a7e597d123d7cba3c04574160cd7b044",
+    "five_case_control_review_sha256": "a0e5e66c1cf23b6edd9171d2eff0134a64f713106e4743193d3e2d013757a38f",
+    "exact_fixture_source_review_sha256": "dad1b680fad40b8997e9cd8e5813b1fab6b62c3648c9c3e8f0abb252147e10d9",
+    "baseline_governance_review_sha256": "9fb5f18e76b93646d0051de2406a23d6e5d2f1ba8880d84b4c5f4bb90837694f"
+  },
+  "checks": [
+    "Read complete14203-byte collector,3999-byte gate,1402-byte workflow and all three exact diffs; independently reproduced each diff against reviewed c658 basis.",
+    "Eight helper functions, including full command/resource monitor, source snapshot, rawXML preservation and XML/freshness validation, are AST-identical to c658. main changes are schema, exact branch and finite totals from two banks/five cases to one bank/one case; no weakened validation route.",
+    "Fresh Git commit object confirms exact60d2/tree1a903/parentaf868. Read root's fresh complete seven-path direct-parent comparison: exact previously reviewed baseline source plus six named software-baseline governance/evidence records, no production/build/deck/pilot or inherited workflow change.",
+    "Independently fetched all12 authority/test/helper bodies at exact60d2 and matched every gate SHA256. Raw candidate baseline body7327bytes matches82572 SHA256 and928eb60 Git blob plus prior dad1-reviewed local source. Both prospective scenario corrections remain exactly pinned without being selected for this run.",
+    "Reopened exact original six-case diagnosticZIP8bfcb288; original single-baseline XML43a9619e still contains the named one case and one failure. Gate correctly preserves that prior failure provenance; new XML must have exact original name/class/count with no failures, errors or skips. No prior failure was rewritten.",
+    "Source snapshot binds actual head/tree, clean tracked/untracked status, exact test blob and12 original authority hashes before and after. Eight dependency files including just/test-class/gradle-locked are hashed before/after; exact Git tree binds their committed content. Independently read source60d2 justfile and test-class route.",
+    "Owned generated XML directory is cleared before command, then actual just test-class FrozenBaselineTest runs with --rerun --no-build-cache --no-daemon, snapshot updates false, one Gradle worker/compiler slot and receiving semaphore1. Exact required :ai:test task must be fresh and a started/finished test worker must appear; cached/UP-TO-DATE/NO-SOURCE/SKIPPED cannot pass.",
+    "Initial audit and all three raw control bytes are retained before JSON/readiness assertions. Actual command/log/exit and every produced XML or explicitly incomplete bounded prefix precede interpretation. Timestamp/count/name/class/error checks are preserved; source/control/dependency after-checks remain required.",
+    "Finite caps unchanged:1200seconds command,32MiB stdout,32MiB report,128MiB artifact,512MiB free preflight; monitor only terminates its own process group. Truncation/timeouts/final XML-flush overflow become technical failure, never a passing result; always artifact upload preserves output.",
+    "Workflow admits only exact new control-branch creation push, attempt1, zero-before SHA, read-only token and no persisted checkout credentials. Isolated control ls-files must equal exactly three reviewed files; no manual-dispatch path, cancellation stanza or official gameplay entry point.",
+    "Fresh read-only ref checks returned NOT_FOUND for both prospective source/control branch names and zero runs for preparedsource60d2. These are review-time observations, not permission to skip final expected-ref/trigger checks."
+  ],
+  "resolved_findings": [],
+  "activation_boundary": {
+    "currently_ready": false,
+    "source_review": null,
+    "permitted_preparation_delta": "Only gate.ready_for_execution=true and gate.source_review binding this exact review SHA256 and durable archival location. Normalizing those two fields to false/null must reproduce reviewed gate bytes/data de6cce5c; qualify.py and workflow remain exactly pinned. No other source, bank, cap, authority, protocol or control change is covered.",
+    "root_final_review_required": true,
+    "required_before_any_ref_event": [
+      "Root reviews exact final gate/review binding and prepared isolated three-file control tree, exact source commit/tree/parent and immutable publications.",
+      "Recheck source/control branch absence and head-run absence immediately before the one prospective creation event.",
+      "Root verifies inherited source-branch trigger safety and isolated control's single matching push workflow; reviewed event does not include PR creation, later push or unchanged rerun."
+    ],
+    "event_scope": "One original deterministic software baseline case only after exact root release disposition; no scenario or973 bank and no official Position1 seed/gameplay."
+  },
+  "scientific_and_policy_limits": [
+    "A passing vanilla software fixture is not global LEGACY_V0 equivalence, complete interactive runtime admission or experimental execution authority.",
+    "Current default Yes/No strategy drift remains unresolved separately; this gate neither changes factory/pilot behavior nor adopts the separate factory proposal.",
+    "No gameplay permit, seed access, claim, allocation, deck change or performance evidence is supplied.",
+    "No GitHub approval or merge authorization is fabricated. Root owns final integration/admission.",
+    "No JVM, compiler, collector invocation, gate execution or synthetic collector case was performed during this review; only static AST/byte/XML/metadata checks."
+  ],
+  "support": {
+    "check_static.py": {
+      "bytes": 4335,
+      "sha256": "86e0b1614e02a8d724a82c84b8efae04bcc8533590acdb2d34a1c054e0905869"
+    },
+    "exact-authority-bodies.json": {
+      "bytes": 258574,
+      "sha256": "54b5a37adf7b7df8e9f91b695b3ba7e6e798b4ab70ade65e38776fdeb9dfe711"
+    },
+    "independent-static-checks.json": {
+      "bytes": 2595,
+      "sha256": "45dd90fac7643f6896bb27c93cd21023d3c58dfcc0d48ffbd6b67d8a781edf50"
+    },
+    "live-absence.json": {
+      "bytes": 2835,
+      "sha256": "a0728b89bd5618f0d0be7f84c27a487c0c6bc513688290ae445df249d1c2fd00"
+    },
+    "live-authorities-and-route.json": {
+      "bytes": 298110,
+      "sha256": "4272fe491d886f3afa94dc8ccb3c34d4b49ed41b7f7f9b1257f3c66a47df9c0d"
+    },
+    "live-metadata-and-source.json": {
+      "bytes": 47146,
+      "sha256": "854f3a0fe18fa4f0a31f76f58e4512ba435e064d9759cea32d0a972a52f9f042"
+    },
+    "live-source-chain.json": {
+      "bytes": 77083,
+      "sha256": "a363151764db57818f2b0217e88fd9a58b7941b458c4f3086bec3414fff14fdf"
+    }
+  },
+  "read_root_source_comparison_sha256": "c6a0e4eb426cc15f054f8fa00b00683f933d9b11b4223f505ec138c6e4f8c3b2",
+  "official_games": 0,
+  "new_engine_cases_executed": 0,
+  "deck_performance_evidence_changed": false
+}
