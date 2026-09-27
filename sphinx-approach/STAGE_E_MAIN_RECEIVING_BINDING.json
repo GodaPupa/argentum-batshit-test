@@ -1,0 +1,105 @@
+{
+  "schema": "sphinx-main-actor-external-binding/v1",
+  "context": "sphinx-main-actor-external-22cf-v1",
+  "runtime": "22cf67791fda69a65d7e1eeb76c2ae369407cb01",
+  "runtime_tree": "3b4e50dd7a0fe484b796bb191bd848b048bea12b",
+  "canonical": "8ed9787ad75b8bc6c2438a8c0b526ff822aa776e",
+  "main": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+  "main_only_files": [
+    {
+      "path": ".github/workflows/shared-postblock-source-qualification.yml",
+      "status_code": "M",
+      "git_blob_sha1": "6421a5ce32b11aba693148c1d404ffd9bbc0effa"
+    },
+    {
+      "path": "lab-coordinator/CURRENT_STATUS.md",
+      "status_code": "M",
+      "git_blob_sha1": "705c9181f20f998ffacabb68efa663823d3d4ddc"
+    },
+    {
+      "path": "lab-coordinator/NEXT_CHAT_HANDOFF.md",
+      "status_code": "A",
+      "git_blob_sha1": "67aaf75ee7aa0fba3d5c63e8b7b09a652d560350"
+    },
+    {
+      "path": "lab-coordinator/history/20260926-2045-concurrent/CURRENT_STATUS.md",
+      "status_code": "A",
+      "git_blob_sha1": "675d369eef4e4a1a5f3e2e473ea9fa3a494a6ce7"
+    },
+    {
+      "path": "lab-coordinator/history/20260926-2045-concurrent/NEXT_CHAT_HANDOFF.md",
+      "status_code": "A",
+      "git_blob_sha1": "da7efb9981c091a9e302e74609c1d30fba4381c6"
+    },
+    {
+      "path": "lab-coordinator/reviews/continuation-20260926/nonauthor-factual-review.json",
+      "status_code": "A",
+      "git_blob_sha1": "d84026389af9258e7f507007f84f61a3356da6d7"
+    },
+    {
+      "path": "lab-coordinator/reviews/continuation-20260926/nonauthor-final-coordinator-review.json",
+      "status_code": "A",
+      "git_blob_sha1": "3e0584c2bbea211391206248fa6b39d6210beee1"
+    },
+    {
+      "path": "lab-coordinator/reviews/continuation-20260926/workflow-trigger-preflight.json",
+      "status_code": "A",
+      "git_blob_sha1": "3c73a778dc5a53ee202393628d5bf063c371be4a"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/candidate-trigger-review.json",
+      "status_code": "A",
+      "git_blob_sha1": "5ac48f6d41c39b699e4a3c7099125f3fd7e036e9"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/original-stale-bindings.json",
+      "status_code": "A",
+      "git_blob_sha1": "b5a19c8a54760bbac4a479a6d759a27d8c3c63b0"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-static-source-review.json",
+      "status_code": "A",
+      "git_blob_sha1": "a68499ff27ba49e75b2e27abeeb9f633f9dcc551"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/pr191-trigger-review.json",
+      "status_code": "A",
+      "git_blob_sha1": "11b4478159f3d1b134ce20a642b0641a1b4e1a62"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/evidence/postblock-receiving-binding/root-nonauthor-source-review.json",
+      "status_code": "A",
+      "git_blob_sha1": "743ca39445dd9ec2fa0fa2059f5aacf97f9df3c8"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/postblock-combined-receiving.json",
+      "status_code": "A",
+      "git_blob_sha1": "002826be500dd4fa27576bd0f5cc10746caed85f"
+    }
+  ],
+  "control_source_sha256": {
+    "sphinx-approach/main_receiving_binding.py": "2821ad808d0909b374bc3544b74987fdc633adb7eea1a8805195aa8ca212341d",
+    "sphinx-approach/collect-stage-e-actor.py": "d39e104c28e7a3f28a270dfc0a710e7e3bcf09238ea1b7777e20dda14670f901",
+    "lab-coordinator/shared-capabilities/collect-actor-input.py": "3c6ca859135d75c3d36acd73694ddafd54eacb8cd7761cd8b081f18ddfc9daab"
+  },
+  "normalized_workflow_sha256": "22bb32b8e6caf0ad28b04e78ed17c6c1aee649d8dbc7aff970639b79f729328a",
+  "groups": {
+    "shared_actor_50": {
+      "cases": 50,
+      "source": "unchanged original shared actor bank"
+    },
+    "sphinx_actor_136": {
+      "cases": 136,
+      "source": "unchanged original Sphinx actor bank"
+    }
+  },
+  "limits": [
+    "The 50 shared checks are included in the 136 bank; these executions do not establish 186 distinct cases.",
+    "Exact external software qualification only. Runtime and canonical eleven-path controls remain unchanged.",
+    "Separate nonauthor control review, final event review, raw artifact review and repository acceptance remain necessary.",
+    "This does not fix existing failed GitHub contexts or itself authorize PR175 merge.",
+    "No new case, fixture allocation, resource calibration, pilot, deck, seed or gameplay permission."
+  ],
+  "official_games": 0,
+  "gameplay_authorized": false
+}

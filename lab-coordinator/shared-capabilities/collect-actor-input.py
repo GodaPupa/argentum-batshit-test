@@ -11,7 +11,9 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
-ROOT = Path(__file__).resolve().parents[2]
+CONTROL_ROOT = Path(__file__).resolve().parents[2]
+ROOT = (Path(os.environ.get("SPHINX_MAIN_RUNTIME_ROOT", str(CONTROL_ROOT))).resolve()
+        if os.environ.get("SPHINX_RECEIVING_CONTEXT") is not None else CONTROL_ROOT)
 REPORT = ROOT / "build/reports/shared-actor-input"
 EXTRACTION = "lab-coordinator/shared-capabilities/actor-input-extraction.json"
 WORKFLOW = ".github/workflows/shared-actor-input-qualification.yml"
@@ -40,25 +42,44 @@ def file_digests(paths: list[str]) -> dict[str, str]:
     return {path: digest((ROOT / path).read_bytes()) for path in paths}
 
 
+def external_binding(group):
+    # An explicit external context is validated, never used as a fallback after
+    # rejection of the immutable canonical receiving contract.
+    if os.environ.get("SPHINX_RECEIVING_CONTEXT") is None:
+        return None
+    spec = importlib.util.spec_from_file_location(
+        "sphinx_main_receiving_binding", CONTROL_ROOT / "sphinx-approach/main_receiving_binding.py")
+    helper = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(helper)
+    return helper.bind(group, ROOT, CONTROL_ROOT)
+
+
 def bind() -> None:
     REPORT.mkdir(parents=True, exist_ok=True)
+    external = external_binding("shared_actor_50")
     extraction = json.loads((ROOT / EXTRACTION).read_text())
     original_pins = {row['receiving_path']: row['receiving_sha256'] for row in extraction['source_records']}
     for path, digest_value in extraction['local_integration_files_sha256'].items():
         if path in original_pins and original_pins[path] != digest_value:
             raise ValueError('Conflicting original source binding: ' + path)
         original_pins[path] = digest_value
-    receiving_spec = importlib.util.spec_from_file_location('sphinx_receiving_binding', ROOT / 'sphinx-approach/canonical_receiving_binding.py')
-    receiving_helper = importlib.util.module_from_spec(receiving_spec)
-    receiving_spec.loader.exec_module(receiving_helper)
-    effective_pins, receiving_binding = receiving_helper.bind('shared_actor_50', original_pins, ROOT)
+    if external is not None:
+        effective_pins, receiving_binding = external
+        original_digest = digest(json.dumps(original_pins, sort_keys=True, separators=(",", ":")).encode())
+        if original_digest != receiving_binding["original_pins_sha256"]:
+            raise ValueError("External verifier and original collector source scopes disagree")
+    else:
+        receiving_spec = importlib.util.spec_from_file_location('sphinx_receiving_binding', ROOT / 'sphinx-approach/canonical_receiving_binding.py')
+        receiving_helper = importlib.util.module_from_spec(receiving_spec)
+        receiving_spec.loader.exec_module(receiving_helper)
+        effective_pins, receiving_binding = receiving_helper.bind('shared_actor_50', original_pins, ROOT)
 
     paths = sorted({EXTRACTION, WORKFLOW, COLLECTOR, "justfile", "scripts/test-class", "scripts/gradle-locked"}
         | {row["receiving_path"] for row in extraction["source_records"]}
         | set(extraction["local_integration_files_sha256"]) | set(effective_pins))
     binding = {
         "schema": "shared-actor-input-binding-v1",
-        "requested_head": os.environ["GITHUB_SHA"],
+        "requested_head": (receiving_binding["runtime"]["head"] if external is not None else os.environ["GITHUB_SHA"]),
         "actual_head": git("rev-parse", "HEAD"),
         "tree": git("rev-parse", "HEAD^{tree}"),
         "checkout_status": git("status", "--porcelain"),
@@ -84,6 +105,10 @@ def bind() -> None:
 
 def collect() -> None:
     binding = json.loads((REPORT / "source-binding.json").read_text())
+    external = external_binding("shared_actor_50")
+    if external is not None:
+        assert external[1] == binding["prospective_receiving_binding"], "External control or runtime identity changed"
+        assert (REPORT / "test-exit-code.txt").read_text().strip() == "0", "Actual test command failed"
     extraction = json.loads((ROOT / EXTRACTION).read_text())
     banks = {}
     xml_files = {}

@@ -1,0 +1,113 @@
+name: Sphinx exact main actor receiving qualification
+
+on:
+  push:
+    branches: [lab/sphinx-main-actor-external-20260927]
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    if: ${{ github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == 1 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - group: shared_actor_50
+            report: shared-actor-input
+            collector: lab-coordinator/shared-capabilities/collect-actor-input.py
+          - group: sphinx_actor_136
+            report: sphinx-stage-e-actor
+            collector: sphinx-approach/collect-stage-e-actor.py
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      PYTHONDONTWRITEBYTECODE: '1'
+      SPHINX_RECEIVING_CONTEXT: sphinx-main-actor-external-22cf-v1
+      SPHINX_MAIN_RUNTIME_ROOT: ${{ github.workspace }}/runtime
+      SPHINX_MAIN_RUNTIME_SHA: 22cf67791fda69a65d7e1eeb76c2ae369407cb01
+      SPHINX_MAIN_BINDING_SHA256: '1be703ca049d8bb3fef1e6864ce9a165d1d9ac75fd761348cb4846a61d29e8ba'
+      COLLECTOR: ${{ matrix.collector }}
+      REPORT_NAME: ${{ matrix.report }}
+      RECEIVING_GROUP: ${{ matrix.group }}
+    steps:
+      - name: Check out the exact reviewed external controls
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Check out the immutable actual main test merge
+        uses: actions/checkout@v6
+        with:
+          ref: 22cf67791fda69a65d7e1eeb76c2ae369407cb01
+          path: runtime
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Preserve exact controls and attempted source before binding
+        id: preserve
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          workspace=pathlib.Path(os.environ['GITHUB_WORKSPACE'])
+          output=workspace/'output'/os.environ['RECEIVING_GROUP']; output.mkdir(parents=True,exist_ok=True)
+          paths=['sphinx-approach/STAGE_E_MAIN_RECEIVING_BINDING.json','sphinx-approach/main_receiving_binding.py','.github/workflows/sphinx-main-actor-receiving-qualification.yml','sphinx-approach/collect-stage-e-actor.py','lab-coordinator/shared-capabilities/collect-actor-input.py']
+          record={'run_id':os.environ['GITHUB_RUN_ID'],'run_attempt':os.environ['GITHUB_RUN_ATTEMPT'],'github_sha':os.environ['GITHUB_SHA'],'event_name':os.environ['GITHUB_EVENT_NAME'],'group':os.environ['RECEIVING_GROUP'],'files':{},'errors':[],'official_games':0,'gameplay_authorized':False}
+          for path in paths:
+              try:
+                  raw=(workspace/'control'/path).read_bytes(); target=output/'control'/path
+                  target.parent.mkdir(parents=True,exist_ok=True); target.write_bytes(raw)
+                  record['files'][path]={'bytes':len(raw),'sha256':hashlib.sha256(raw).hexdigest()}
+              except Exception as error: record['errors'].append({'path':path,'type':type(error).__name__,'message':str(error)})
+          for label in ['control','runtime']:
+              try:
+                  root=workspace/label
+                  record[label]={key:subprocess.check_output(['git',*args],cwd=root,text=True).strip() for key,args in {'head':['rev-parse','HEAD'],'tree':['rev-parse','HEAD^{tree}'],'parents':['show','-s','--format=%P','HEAD'],'status':['status','--porcelain','--untracked-files=all']}.items()}
+              except Exception as error: record['errors'].append({'checkout':label,'type':type(error).__name__,'message':str(error)})
+          (output/'pre-bind-attempt.json').write_text(json.dumps(record,indent=2)+'\n')
+          if record['errors']: raise SystemExit('Could not preserve complete attempted source/control bytes')
+          PY
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact main/runtime/control identity before tests
+        id: bind
+        run: |
+          set -o pipefail
+          python3 "$GITHUB_WORKSPACE/control/$COLLECTOR" bind 2>&1 | tee "$GITHUB_WORKSPACE/output/$RECEIVING_GROUP/bind.log"
+      - name: Execute only the original complete actor bank
+        id: tests
+        run: |
+          python3 "$GITHUB_WORKSPACE/control/sphinx-approach/main_receiving_binding.py" run-bank "$RECEIVING_GROUP"
+      - name: Collect original XML contracts and unchanged source
+        id: collect
+        if: ${{ always() && steps.bind.outcome == 'success' }}
+        run: |
+          set -o pipefail
+          python3 "$GITHUB_WORKSPACE/control/$COLLECTOR" collect 2>&1 | tee "$GITHUB_WORKSPACE/output/$RECEIVING_GROUP/collect.log"
+      - name: Retain complete original XML and binding attempts
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib,shutil
+          workspace=pathlib.Path(os.environ['GITHUB_WORKSPACE']); out=workspace/'output'/os.environ['RECEIVING_GROUP']; out.mkdir(parents=True,exist_ok=True)
+          for label,source in [('receiving-reports',workspace/'runtime/build/reports'/os.environ['REPORT_NAME']),('control-fallback-reports',workspace/'control/build/reports'/os.environ['REPORT_NAME']),('original-test-xml',workspace/'runtime/gym/build/test-results/test')]:
+              if source.exists(): shutil.copytree(source,out/label,dirs_exist_ok=True)
+          (out/'step-outcomes.json').write_text(json.dumps({'preserve':'${{ steps.preserve.outcome }}','bind':'${{ steps.bind.outcome }}','tests':'${{ steps.tests.outcome }}','collect':'${{ steps.collect.outcome }}','official_games':0,'gameplay_authorized':False},indent=2)+'\n')
+          PY
+      - name: Preserve this bounded qualification attempt
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-main-actor-${{ matrix.group }}-${{ github.run_id }}
+          path: output/${{ matrix.group }}
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90

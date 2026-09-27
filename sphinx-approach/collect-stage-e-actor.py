@@ -9,7 +9,9 @@ import subprocess
 import sys
 import xml.etree.ElementTree as ET
 
-ROOT = Path(__file__).resolve().parents[1]
+CONTROL_ROOT = Path(__file__).resolve().parents[1]
+ROOT = (Path(os.environ.get("SPHINX_MAIN_RUNTIME_ROOT", str(CONTROL_ROOT))).resolve()
+        if os.environ.get("SPHINX_RECEIVING_CONTEXT") is not None else CONTROL_ROOT)
 OUT = ROOT / "build/reports/sphinx-stage-e-actor"
 BUDGET = "sphinx-approach/STAGE_E_ACTOR_FIXTURE_BUDGET.json"
 SCOPE = "sphinx-approach/STAGE_E_ACTOR_RECEIVING_SCOPE.json"
@@ -34,8 +36,21 @@ def git(*args):
     return subprocess.check_output(["git", *args], cwd=ROOT, text=True).strip()
 
 
+def external_binding(group):
+    # An explicit external context is validated, never used as a fallback after
+    # rejection of the immutable canonical receiving contract.
+    if os.environ.get("SPHINX_RECEIVING_CONTEXT") is None:
+        return None
+    spec = importlib.util.spec_from_file_location(
+        "sphinx_main_receiving_binding", CONTROL_ROOT / "sphinx-approach/main_receiving_binding.py")
+    helper = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(helper)
+    return helper.bind(group, ROOT, CONTROL_ROOT)
+
+
 def snapshot():
-    requested = os.environ["GITHUB_SHA"]
+    external = external_binding("sphinx_actor_136")
+    requested = external[1]["runtime"]["head"] if external is not None else os.environ["GITHUB_SHA"]
     head, tree = git("rev-parse", "HEAD"), git("rev-parse", "HEAD^{tree}")
     if head != requested or git("status", "--porcelain", "--untracked-files=all"):
         raise ValueError("Requested source differs from the clean checked-out source")
@@ -52,10 +67,17 @@ def snapshot():
             pins[path] = expected
     if budget["required_actual_total"] != sum(BANKS.values()) or sum(BANKS.values()) != 136:
         raise ValueError("Receiving bank geometry changed")
-    receiving_spec = importlib.util.spec_from_file_location('sphinx_receiving_binding', ROOT / 'sphinx-approach/canonical_receiving_binding.py')
-    receiving_helper = importlib.util.module_from_spec(receiving_spec)
-    receiving_spec.loader.exec_module(receiving_helper)
-    pins, receiving_binding = receiving_helper.bind('sphinx_actor_136', pins, ROOT)
+    if external is not None:
+        effective_pins, receiving_binding = external
+        original_digest = hashlib.sha256(json.dumps(pins, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
+        if original_digest != receiving_binding["original_pins_sha256"]:
+            raise ValueError("External verifier and original collector source scopes disagree")
+        pins = effective_pins
+    else:
+        receiving_spec = importlib.util.spec_from_file_location('sphinx_receiving_binding', ROOT / 'sphinx-approach/canonical_receiving_binding.py')
+        receiving_helper = importlib.util.module_from_spec(receiving_spec)
+        receiving_spec.loader.exec_module(receiving_helper)
+        pins, receiving_binding = receiving_helper.bind('sphinx_actor_136', pins, ROOT)
     return {"head": head, "tree": tree, "requested_source": requested,
             "budget_sha256": BUDGET_SHA256, "scope_sha256": SCOPE_SHA256,
             "source_sha256": pins, "prospective_receiving_binding": receiving_binding}
