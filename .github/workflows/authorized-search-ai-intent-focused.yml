@@ -1,0 +1,133 @@
+name: Authorized Search AI Intent Focused
+
+on:
+  push:
+    branches:
+      - shared/authorized-search-ai-gate-20260927
+    paths:
+      - .github/workflows/authorized-search-ai-intent-focused.yml
+
+permissions:
+  contents: read
+
+jobs:
+  ai-intent:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/shared/authorized-search-ai-gate-20260927' &&
+      github.event.before == '0000000000000000000000000000000000000000' &&
+      github.run_attempt == 1
+    steps:
+      - name: Checkout immutable AI repair source
+        uses: actions/checkout@v6
+        with:
+          ref: 197f95e858638de2fd215073b0b876378fc4c92d
+          persist-credentials: false
+      - name: Verify source, tree and AI repair blob
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            printf 'workflow_event=%s\nsource_checkout=%s\n' "$GITHUB_SHA" "$(git rev-parse HEAD)"
+            test "$(git rev-parse HEAD)" = "197f95e858638de2fd215073b0b876378fc4c92d"
+            test "$(git rev-parse HEAD^{tree})" = "e22c55bdf80896760bb8009c67ddcb91f254e27d"
+            test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/knowledge/CardIntentAnalyzer.kt)" = "013510d79b05f88e3b70d0ed8609d58d79349d67"
+            printf 'verified source=%s tree=%s intent=%s\n' "197f95e858638de2fd215073b0b876378fc4c92d" "e22c55bdf80896760bb8009c67ddcb91f254e27d" "013510d79b05f88e3b70d0ed8609d58d79349d67"
+          } 2>&1 | tee focused-source.txt
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run the two failed AI classes fresh
+        shell: bash
+        run: |
+          set -o pipefail
+          set +e
+          scripts/gradle-locked :ai:test \
+            --tests com.wingedsheep.ai.engine.knowledge.CardIntentAnalyzerTest \
+            --tests com.wingedsheep.ai.engine.PestControlAgentDecisionTest \
+            --rerun-tasks --stacktrace 2>&1 | tee focused-build.log
+          gradle_status=$?
+          python3 - "$gradle_status" "$GITHUB_SHA" "$(git rev-parse HEAD)" <<'PY'
+          import json, subprocess, sys
+          status, event, after = sys.argv[1:]
+          changes = subprocess.check_output(
+              ['git', 'status', '--porcelain', '--untracked-files=no'], text=True).splitlines()
+          with open('focused-exit.json', 'w') as evidence:
+              json.dump({'gradleExit': int(status), 'workflowEvent': event,
+                         'sourceBefore': '197f95e858638de2fd215073b0b876378fc4c92d', 'sourceAfter': after,
+                         'trackedWorktreeClean': not changes, 'trackedChanges': changes,
+                         'rerunTasks': True}, evidence, indent=2)
+              evidence.write('\n')
+          PY
+          test "$(git rev-parse HEAD)" = "197f95e858638de2fd215073b0b876378fc4c92d" || exit 1
+          test -z "$(git status --porcelain --untracked-files=no)" || exit 1
+          exit "$gradle_status"
+      - name: Audit exact original failure classes
+        if: always()
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json, re
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          classes = [
+              ('com.wingedsheep.ai.engine.knowledge.CardIntentAnalyzerTest', 30,
+               'a basic-land tutor face is distinct from land typecycling'),
+              ('com.wingedsheep.ai.engine.PestControlAgentDecisionTest', 86,
+               "casts Sagu Wildling's Omen face for early mana development"),
+          ]
+          reports = []
+          for class_name, expected, failed_case in classes:
+              path = Path('ai/build/test-results/test/TEST-' + class_name + '.xml')
+              row = {'className': class_name, 'xml': str(path), 'expected': expected}
+              if path.is_file():
+                  root = ET.parse(path).getroot()
+                  cases = root.findall('.//testcase')
+                  names = [case.get('name') for case in cases]
+                  row.update(observed=len(cases), names=names,
+                             distinctNames=len(set(names)) == len(names) and all(names),
+                             skipped=sum(len(c.findall('skipped')) for c in cases),
+                             failures=sum(len(c.findall('failure')) for c in cases),
+                             errors=sum(len(c.findall('error')) for c in cases),
+                             suiteDeclared={k: int(root.get(k, '-1'))
+                                            for k in ('tests', 'skipped', 'failures', 'errors')})
+              else:
+                  row.update(observed=0, names=[], distinctNames=False, skipped=0,
+                             failures=0, errors=0, suiteDeclared={})
+              row['accepted'] = (
+                  row['observed'] == expected and row['distinctNames'] and
+                  failed_case in row['names'] and
+                  row['suiteDeclared'] == {'tests': expected, 'skipped': 0,
+                                           'failures': 0, 'errors': 0} and
+                  not (row['skipped'] or row['failures'] or row['errors']))
+              reports.append(row)
+          log = Path('focused-build.log').read_text() if Path('focused-build.log').is_file() else ''
+          result = {'source': '197f95e858638de2fd215073b0b876378fc4c92d', 'expectedTotal': 116,
+                    'observedTotal': sum(r['observed'] for r in reports),
+                    'testTaskExecuted': bool(re.search(r'^> Task :ai:test\s*$', log, re.M)),
+                    'gradleSuccess': 'BUILD SUCCESSFUL' in log, 'reports': reports}
+          result['accepted'] = all(r['accepted'] for r in reports) and result['testTaskExecuted'] and result['gradleSuccess']
+          Path('focused-xml-audit.json').write_text(json.dumps(result, indent=2) + '\n')
+          print(json.dumps({k: result[k] for k in ('accepted', 'observedTotal', 'testTaskExecuted')}))
+          raise SystemExit(0 if result['accepted'] else 1)
+          PY
+      - name: Retain raw command, log, XML and audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: authorized-search-ai-intent-focused-evidence
+          path: |
+            focused-source.txt
+            focused-build.log
+            focused-exit.json
+            focused-xml-audit.json
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.engine.knowledge.CardIntentAnalyzerTest.xml
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.engine.PestControlAgentDecisionTest.xml
+            ai/build/reports/tests/**
+          if-no-files-found: error
+          retention-days: 30
