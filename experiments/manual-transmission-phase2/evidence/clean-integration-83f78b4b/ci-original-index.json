@@ -1,0 +1,95 @@
+{
+  "schema": "manual-clean-integration-original-matrix-audit-v1",
+  "run": {
+    "id": 36328394171,
+    "attempt": 1,
+    "conclusion": "SUCCESS",
+    "head": "83f78b4b63264346347b40cee19f0459513cf40b",
+    "checkout_merge": "63c1d6ee53605653465abffeb1dc0de6d4caad6b",
+    "merge_delta": "29 evidence/status paths only versus head; runtime/test/build source equivalent"
+  },
+  "original_artifacts": [
+    {
+      "id": 10934533932,
+      "domain": "engine",
+      "sha256": "6ac6101e2f56e0c3437f1483f76449cd772e9584bee3b63e39cbb8f0efce6a6a",
+      "classes": 608,
+      "entries": 3783,
+      "skipped": 0
+    },
+    {
+      "id": 10934668692,
+      "domain": "content",
+      "sha256": "9fde2aa8fc91610b45b6beee616ee67767b594f3b2d5c5a267f3a2bbd09b54fd",
+      "classes": 156,
+      "entries": 1832,
+      "skipped": 11
+    },
+    {
+      "id": 10935500092,
+      "domain": "server",
+      "sha256": "8511d1cda0c9411fceed12e766f90078c0f5510da073104d08bd1d4215321ce4",
+      "classes": 82,
+      "entries": 561,
+      "skipped": 4
+    },
+    {
+      "id": 10935545412,
+      "domain": "tools",
+      "sha256": "0b88d4eae68fe556493aa0bbdbc51ae41aeb9d8f06c0b1fb092f84ccdd34afb9",
+      "classes": 167,
+      "entries": 712,
+      "skipped": 38
+    },
+    {
+      "id": 10935350740,
+      "domain": "scenarios-1993-2022",
+      "sha256": "3ffe86afdc59106ea352a7506a34db04d0c4acb2aabf09357b3f1c68d10b2d40",
+      "classes": 1429,
+      "entries": 4464,
+      "skipped": 0
+    },
+    {
+      "id": 10934916694,
+      "domain": "scenarios-2023-24",
+      "sha256": "e19e8ae069a0f83869ec1654472e7339a7718c50d4c0d33bd187f1cbebfa7b47",
+      "classes": 1127,
+      "entries": 3355,
+      "skipped": 0
+    },
+    {
+      "id": 10934513814,
+      "domain": "scenarios-2025-26",
+      "sha256": "5ee176cfa82a1f17c4e05427f307d33b80a64c9476e9121a4aba44e448a0105f",
+      "classes": 1043,
+      "entries": 2934,
+      "skipped": 0
+    }
+  ],
+  "independent_review": {
+    "disposition": "ACCEPT_BOUNDED_INTEGRATION_EVIDENCE_ONLY",
+    "crc_and_original_upload_hashes_match": true,
+    "xml_classes": 4612,
+    "entries": 17641,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 53,
+    "actual_passing": 17588,
+    "fresh_passing": 17442,
+    "cached_passing": 146,
+    "cached_skipped": 3,
+    "cached_task": "mtgish-tooling:test FROM-CACHE",
+    "frontend": "typecheck/build executed successfully",
+    "backend": "aggregate success",
+    "coverage": "SKIPPED"
+  },
+  "limits": [
+    "Five frozen compatibility guards original pretest INCOMPLETE; retained separately.",
+    "Neither green CI nor 540 capability cases admits Manual gameplay or merge.",
+    "All official capability and primary counters zero."
+  ],
+  "raw_retention": {
+    "original_github_action_artifacts": "Seven exact artifact IDs and SHA256 values above; independently read once.",
+    "repository_raw_copy": false
+  }
+}
