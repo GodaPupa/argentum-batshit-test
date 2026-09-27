@@ -376,5 +376,66 @@ class ExecutionAdapterTests(unittest.TestCase):
             successor.assert_live_unchanged()
 
 
+class LauncherSourceBindingTests(unittest.TestCase):
+    """Local Git byte fixtures only; never call prepare, a launcher, or a remote API."""
+
+    def fixture(self, root):
+        # Fake text fixtures are committed but are never executable or launched.
+        for raw in ("gradlew", "scripts/test-class", "scripts/gradle-locked", "project-source.py"):
+            path = root / raw
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("offline source fixture: " + raw + "\n")
+        def command(*args):
+            return subprocess.check_output(["git", *args], cwd=root, text=True,
+                stderr=subprocess.DEVNULL).strip()
+        command("init", "-q")
+        command("add", ".")
+        command("-c", "user.name=Offline Fixture", "-c", "user.email=fixture@invalid.example",
+            "-c", "commit.gpgsign=false", "commit", "-q", "-m", "offline source fixture")
+        source = command("rev-parse", "HEAD")
+        pins = {raw: runner.sha(root / raw) for raw in
+            ("gradlew", "scripts/test-class", "scripts/gradle-locked", "project-source.py")}
+        return source, pins
+
+    def test_prescribed_launch_sources_match_current_and_qualified_bytes(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            source, pins = self.fixture(root)
+            checked = runner.validate_runtime_source_pins(root, source, pins, {"project-source.py"})
+            self.assertEqual(checked, set(pins))
+
+    def test_each_missing_launcher_pin_and_existing_required_pin_is_rejected(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            source, pins = self.fixture(root)
+            for missing in pins:
+                changed = {key: value for key, value in pins.items() if key != missing}
+                with self.subTest(missing=missing), self.assertRaisesRegex(ValueError, "omits execution source"):
+                    runner.validate_runtime_source_pins(root, source, changed, {"project-source.py"})
+
+    def test_changed_launch_bytes_fail_against_accepted_pin(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            source, pins = self.fixture(root)
+            for path in ("gradlew", "scripts/test-class", "scripts/gradle-locked"):
+                original = (root / path).read_bytes()
+                (root / path).write_bytes(original + b"unqualified change\n")
+                with self.subTest(path=path), self.assertRaisesRegex(ValueError, "runtime source drift"):
+                    runner.validate_runtime_source_pins(root, source, pins, {"project-source.py"})
+                (root / path).write_bytes(original)
+
+    def test_rebinding_changed_launcher_hash_cannot_substitute_for_qualification(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            source, pins = self.fixture(root)
+            for path in ("gradlew", "scripts/test-class", "scripts/gradle-locked"):
+                original = (root / path).read_bytes()
+                (root / path).write_bytes(original + b"unqualified change\n")
+                changed = {**pins, path: runner.sha(root / path)}
+                with self.subTest(path=path), self.assertRaisesRegex(ValueError, "not qualified at its declared source"):
+                    runner.validate_runtime_source_pins(root, source, changed, {"project-source.py"})
+                (root / path).write_bytes(original)
+
+
 if __name__ == "__main__":
     unittest.main()

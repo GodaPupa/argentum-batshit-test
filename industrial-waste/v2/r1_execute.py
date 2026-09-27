@@ -40,6 +40,9 @@ CLARIFICATION_SHA256 = "34511344bbdac128964a612ac36cc839c43a431015e3a6d5375aa62b
 CLARIFICATION_PROPOSAL_PATH = "industrial-waste/v2/r1-checkpoint-clarification-proposal.json"
 CLARIFICATION_PROPOSAL_SHA256 = "d1200c65d5b4573ff66a92e3159f8c6bdcaaf5887c182c83c144db22156b60c5"
 ORIGINAL_PROTOCOL_SHA256 = "fd697b6d56b5a5451f4dc6f9ee4bd20584a705570c6f99861dd64f0086ed95bc"
+# These are executed by the contract-bound just test-class launch route.
+# This source check does not establish loaded JVM/runtime identity.
+REQUIRED_LAUNCHER_SOURCES = frozenset({"gradlew", "scripts/test-class", "scripts/gradle-locked"})
 FROZEN_INPUTS = ["industrial-waste/control/industrial-waste-v1.0-submitted.dck",
     "industrial-waste/v2/candidates/compact-loop.dck", "industrial-waste/v2/candidates/recursive-eggs.dck",
     "industrial-waste/v2/candidates/lean-tron-hybrid.dck", "industrial-waste/v2/r0-freeze.json",
@@ -66,6 +69,19 @@ def repo_path(root, value):
     if Path(value).is_absolute() or not path.resolve().is_relative_to(root.resolve()):
         raise ValueError("repository-relative bound path required")
     return path
+
+def validate_runtime_source_pins(root, qualified_source, pins, required):
+    """Bind the prescribed launch scripts as well as the receiving source, without execution."""
+    required = set(required) | REQUIRED_LAUNCHER_SOURCES
+    if not isinstance(pins, dict) or not required.issubset(pins):
+        raise ValueError("accepted runtime omits execution source")
+    for raw, expected in pins.items():
+        if sha(repo_path(root, raw)) != expected:
+            raise ValueError(f"runtime source drift: {raw}")
+        qualified_bytes = subprocess.check_output(["git", "show", f"{qualified_source}:{raw}"], cwd=root)
+        if hashlib.sha256(qualified_bytes).hexdigest() != expected:
+            raise ValueError(f"runtime pin was not qualified at its declared source: {raw}")
+    return required
 
 class GitHubExecutionAPI:
     """Authenticated repository-only client; every write is attempted exactly once, never retried."""
@@ -282,15 +298,8 @@ def validate_authority(root, session, *, require_publication=True):
             "IndustrialWasteV2PaymentIntent", "IndustrialWasteV2PublicActionPolicy",
             "IndustrialWasteV2QuietCheckpointReplayTest")],
     }
-    pins = runtime.get("source_files_sha256")
-    if not isinstance(pins, dict) or not required.issubset(pins):
-        raise ValueError("accepted runtime omits execution source")
-    for raw, expected in pins.items():
-        if sha(repo_path(root, raw)) != expected:
-            raise ValueError(f"runtime source drift: {raw}")
-        qualified_bytes = subprocess.check_output(["git", "show", f"{qualified_source}:{raw}"], cwd=root)
-        if hashlib.sha256(qualified_bytes).hexdigest() != expected:
-            raise ValueError(f"runtime pin was not qualified at its declared source: {raw}")
+    required = validate_runtime_source_pins(root, qualified_source,
+        runtime.get("source_files_sha256"), required)
     # Receipt-only successor heads are allowed only when every executable receiving-project
     # source remains byte-identical to the independently qualified commit.
     for raw in FROZEN_INPUTS:
