@@ -1,0 +1,128 @@
+{
+  "schema": "manual-main-fixture-focused-inventory-r1",
+  "immutable_source_commit": "452faa13b460f5c998bb90ff1182ac416deb329c",
+  "immutable_source_tree": "3322a296f7c6453be10fbadc836a00f1fccb9e95",
+  "manual_first_parent": "85499f82278472ca286c8826e8266d8759ccf2ae",
+  "accepted_main_second_parent": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+  "workflow_proposal_sha256": "ceff8d93b268f4b15e71efde24fe15ba00e40d3548454919b43b779e31bf5375",
+  "classes": [
+    {
+      "module": "rules-engine",
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt",
+      "class_filter": "com.wingedsheep.engine.event.BattlefieldEntrySnapshotTest",
+      "git_blob_sha": "aa68d3d384edee9bbebb755b2630dc66d93c8df3",
+      "source_test_declaration_lines": 11,
+      "same_blob_as_accepted_main": false,
+      "same_blob_as_manual_pr209": true,
+      "purpose": "captured entry facts and serialization"
+    },
+    {
+      "module": "rules-engine",
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenBatchEntryHistoryTest.kt",
+      "class_filter": "com.wingedsheep.engine.handlers.effects.token.TokenBatchEntryHistoryTest",
+      "git_blob_sha": "87b25e8d9427cdb925edd0a1ba2d70e6f277ae3c",
+      "source_test_declaration_lines": 4,
+      "same_blob_as_accepted_main": false,
+      "same_blob_as_manual_pr209": true,
+      "purpose": "paused target/source/Aura copy siblings and missing checkpoint rejection"
+    },
+    {
+      "module": "rules-engine",
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/layers/BattlefieldEntryProjectionTest.kt",
+      "class_filter": "com.wingedsheep.engine.mechanics.layers.BattlefieldEntryProjectionTest",
+      "git_blob_sha": "b226ff6ca8bc669f97fbf2b3377ad86045c0ff2d",
+      "source_test_declaration_lines": 6,
+      "same_blob_as_accepted_main": false,
+      "same_blob_as_manual_pr209": true,
+      "purpose": "pre-entry aggregate and projected continuous effects"
+    },
+    {
+      "module": "rules-engine",
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfEntersTappedOffStackEntryScenarioTest.kt",
+      "class_filter": "com.wingedsheep.engine.scenarios.SelfEntersTappedOffStackEntryScenarioTest",
+      "git_blob_sha": "ca954877ae781f9e52e45762d1f41ce1352ee173",
+      "source_test_declaration_lines": 11,
+      "same_blob_as_accepted_main": true,
+      "same_blob_as_manual_pr209": true,
+      "purpose": "entry-tap replacement behavior"
+    },
+    {
+      "module": "rules-engine",
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TokenCopyOfPlaneswalkerEntryScenarioTest.kt",
+      "class_filter": "com.wingedsheep.engine.scenarios.TokenCopyOfPlaneswalkerEntryScenarioTest",
+      "git_blob_sha": "37e18b5c0228c42d65b8e445b2791678a3966126",
+      "source_test_declaration_lines": 1,
+      "same_blob_as_accepted_main": true,
+      "same_blob_as_manual_pr209": true,
+      "purpose": "token copy entry identity"
+    },
+    {
+      "module": "rules-engine",
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TokenCopyOfSagaEntryScenarioTest.kt",
+      "class_filter": "com.wingedsheep.engine.scenarios.TokenCopyOfSagaEntryScenarioTest",
+      "git_blob_sha": "9f0a8223bfbce47cb827be30c99fac8b2a8c8604",
+      "source_test_declaration_lines": 2,
+      "same_blob_as_accepted_main": true,
+      "same_blob_as_manual_pr209": true,
+      "purpose": "token copy entry and chapter trigger"
+    },
+    {
+      "module": "rules-engine",
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PostBlockDeclarationPriorityScenarioTest.kt",
+      "class_filter": "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "git_blob_sha": "a50dc0cc004b5d965206d76a940b8efb814dc023",
+      "source_test_declaration_lines": 14,
+      "same_blob_as_accepted_main": true,
+      "same_blob_as_manual_pr209": true,
+      "purpose": "accepted shared postblock priority control"
+    },
+    {
+      "module": "rules-engine",
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt",
+      "class_filter": "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "git_blob_sha": "1f5e15c668e4e5ec4606a5190db53dcbe3fc6b50",
+      "source_test_declaration_lines": 9,
+      "same_blob_as_accepted_main": true,
+      "same_blob_as_manual_pr209": true,
+      "purpose": "accepted shared activation priority control"
+    },
+    {
+      "module": "mtg-sets:2008-2016:tests",
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PurphorosGodOfTheForgeScenarioTest.kt",
+      "class_filter": "com.wingedsheep.engine.scenarios.PurphorosGodOfTheForgeScenarioTest",
+      "git_blob_sha": "82f15bba7a09dc5bb898fe8d3f661f03757c89ed",
+      "source_test_declaration_lines": 23,
+      "same_blob_as_accepted_main": false,
+      "same_blob_as_manual_pr209": false,
+      "purpose": "Repaired excluded fixture: explicit simultaneous-trigger order is answered through serialization/event-replay submit(d), then stack is drained"
+    },
+    {
+      "module": "mtg-sets:2017-2022:tests",
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AetherChannelerScenarioTest.kt",
+      "class_filter": "com.wingedsheep.engine.scenarios.AetherChannelerScenarioTest",
+      "git_blob_sha": "96a14ce9751ab5a817d7760635c0d6dabe413510",
+      "source_test_declaration_lines": 10,
+      "same_blob_as_accepted_main": false,
+      "same_blob_as_manual_pr209": true,
+      "purpose": "Manual receiving choice and entry scenario"
+    },
+    {
+      "module": "ai",
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt",
+      "class_filter": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "git_blob_sha": "f5ebdd18148cddcb3a5d0cc6b4ae2bfc5aba2ef4",
+      "source_test_declaration_lines": 1,
+      "same_blob_as_accepted_main": true,
+      "same_blob_as_manual_pr209": true,
+      "purpose": "accepted AI action/order baseline control"
+    }
+  ],
+  "execution": "One reviewed initial branch push directly at the gate workflow commit (all-zero before and run_attempt 1); checkout fixed corrected source commit. Purphoros filtered class runs first; only a pass proceeds to eight engine classes, Aether Channeler, then the AI control. Fresh no-build-cache cleanTest for each task. No full CI, seeds, official game or capability admission.",
+  "evidence": "Per-command raw Gradle logs; all selected XML; source-binding JSON; always source-after HEAD/tree/tracked-worktree check; XML count validation; raw SHA256 manifest; artifact retained on pass/fail. Compile failure stops later tests, without retries.",
+  "failed_predecessor": {
+    "source_commit": "85499f82278472ca286c8826e8266d8759ccf2ae",
+    "run_id": 36292368451,
+    "artifact_id": 10923016236,
+    "artifact_sha256": "bb8cdc635abc129e624a96784f7a22667edbc6dc11decf65340294df77727004"
+  }
+}
