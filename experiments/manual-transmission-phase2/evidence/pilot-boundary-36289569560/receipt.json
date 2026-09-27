@@ -1,0 +1,34 @@
+{
+  "schema": "manual-phase2-pilot-boundary-failed-compile-evidence-v1",
+  "scope": "EXCLUDED_DETERMINISTIC_COMPONENT_ONLY",
+  "source_sha": "a8aceed95b25cb6811cc5a85e8bf8ed581d72bf1",
+  "source_parent": "60a9e20b61f63c4d42772ca8d122aabe68aabe2f",
+  "workflow_run": 36289569560,
+  "attempt": 1,
+  "job": 108536928657,
+  "conclusion": "FAILURE",
+  "phase": ":gym:compileKotlin",
+  "junit_cases_executed": 0,
+  "observed_errors": [
+    "PhaseTwoPilotBoundary.kt:93:44 unresolved reference copy on generic Observation",
+    "PhaseTwoPilotBoundary.kt:94:20 type inference and opt-in cascade",
+    "PhaseTwoPilotBoundary.kt:96:27,96:71 unresolved perspectivePlayerId/agentToAct",
+    "PhaseTwoPilotBoundary.kt:99:64 Any not TrainingObservation"
+  ],
+  "original_artifact": {
+    "id": 10921743905,
+    "name": "manual-transmission-phase2-pilot-boundary",
+    "bytes": 768,
+    "sha256": "f7827a38dccd2159cf710a0a26dde16f020e3b2a9a17f07fe3e69d60577de518",
+    "archive_is_durable_in_this_branch": false
+  },
+  "decoded_job_log": {
+    "path": "experiments/manual-transmission-phase2/evidence/pilot-boundary-36289569560/decoded-job-log.txt",
+    "git_blob_sha": "b633fe1020be0aa93f683b77206ddd1eb7a08f62",
+    "original_server_log_archive": false
+  },
+  "prospective_fix": "032fdc8f6fe4dcf29970905d0f36e39bed41f7b4",
+  "official_capability_games": 0,
+  "official_primary_games": 0,
+  "gameplay_authorized": false
+}
