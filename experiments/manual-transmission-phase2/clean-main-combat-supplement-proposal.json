@@ -1,0 +1,120 @@
+{
+  "schema": "manual-clean-current-combat-supplement-proposal-v1",
+  "status": "PROPOSED_SEPARATE_SOURCE_SCOPED_RECEIVING_FROM_EXISTING_FRESH_CI; ORIGINAL_GUARD_INCOMPLETE",
+  "source": {
+    "pr_head": "83f78b4b63264346347b40cee19f0459513cf40b",
+    "runtime": "a333dc1e6b8c2e78961bbbe052ee01105e2f1264",
+    "synthetic_ci_checkout": "63c1d6ee53605653465abffeb1dc0de6d4caad6b",
+    "merge_delta": "29 evidence/status-only paths; engine/tests/build identical"
+  },
+  "frozen_manifest": {
+    "path": "lab-coordinator/shared-capabilities/current-combat-receiving.json",
+    "sha256": "dbadcc20e29857aefc3014b3dae493bc419c2ff11ebb15cd228a5046dc717b43",
+    "untouched": true,
+    "original_clean_guard_run": 36328393984,
+    "original_artifact": 10934249373,
+    "original_disposition": "INCOMPLETE_PRETEST_NO_XML_OR_CASES"
+  },
+  "sole_pin_delta": {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+    "frozen_sha256": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4",
+    "candidate_sha256": "850125a611fd414d2aaf8dd68aaf628a3ff74a6b961ee9d074e7c10496290202",
+    "origin": "accepted shared PR210 mainline 95fc01aa; source-bound supplemental acceptance 5e0afe1f/36304391327; not a frozen manifest edit"
+  },
+  "original_clean_ci": {
+    "run": 36328394171,
+    "artifact": 10934533932,
+    "artifact_sha256": "6ac6101e2f56e0c3437f1483f76449cd772e9584bee3b63e39cbb8f0efce6a6a",
+    "job": "test (engine)",
+    "test_task": "rules-engine:test executed, not cached",
+    "stages": [
+      {
+        "class": "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+        "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatAssignmentCurrentRulesTest.kt",
+        "test_source_sha256": "8a786f585755bedbc9b84a7ddea0e26d26908b3e6cb51a8a670bc42414177d1e",
+        "xml_member": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest.xml",
+        "xml_sha256": "43cc0505b86d428cce8ddce4b52a23a5a7dd09b245b2f81f764c1977f91a791d",
+        "expected_and_observed_cases": 12,
+        "case_names": [
+          "attacker freely divides four damage as two each among three-toughness blockers",
+          "blocker freely divides four damage as two each among three-toughness attackers",
+          "all damage may be assigned to one creature even beyond lethal",
+          "board underassignment overassignment and negative assignments reject atomically",
+          "serialized legacy assignment accepts a nonlethal split without imposing target order",
+          "legacy underassignment overassignment and negative amounts reject atomically",
+          "trample cannot assign to the defender before every blocker has lethal damage",
+          "marked and concurrent lethal damage permit trample and preserve the other chooser's plan",
+          "deathtouch trample assigns one lethal damage per blocker and the remainder to the defender",
+          "banding changes the chooser while preserving the same free nonlethal division",
+          "changed nonowned unknown and duplicate edges reject while unchanged full-board echoes remain valid",
+          "a blocked source with no remaining recipients assigns zero and cannot invent targets"
+        ]
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+        "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatResolutionBoardTest.kt",
+        "test_source_sha256": "2ec3488cbeac903f5f72a34e7611ed3fe1bba657a67313f4a44b07d20b369bc0",
+        "xml_member": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CombatResolutionBoardTest.xml",
+        "xml_sha256": "9eb1ac5be7d970af61741d0e6f06f912d441473aa0aca8ae1cb5a62e09b3390f",
+        "expected_and_observed_cases": 10,
+        "case_names": [
+          "trample attacker blocked by two creatures emits a CombatResolutionDecision with a drain edge",
+          "banded trampler cannot drain damage to player while the blocker is below band-lethal",
+          "bipartite crusher between two manually-assigned attackers emits BLOCKER_TO_ATTACKER edges",
+          "pure bipartite (no trample, no banding) still emits a CombatResolutionDecision",
+          "banding attacker: BLOCKER_TO_ATTACKER edges have minimum=0 (lethal-first bypassed)",
+          "two 8/4 tramplers double-blocked: emits two-step CR 510.1c flow with defender second",
+          "two 8/4 tramplers double-blocked: defender concentrates damage and kills one attacker",
+          "non-trample attacker with single blocker does not emit a resolution decision",
+          "non-trample attacker with power < blocker lethal: defaults validate cleanly",
+          "banding overassignment: 3-attacker band cooperates to kill two 3/3 blockers"
+        ]
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+        "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatDamageAssignmentTest.kt",
+        "test_source_sha256": "f93b4021f58896e4f7cdbcba6f7a3ba565afb48ab177a1020038df1305e7fcb5",
+        "xml_member": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest.xml",
+        "xml_sha256": "36bc77dcbc7bb373d2c1d1b7077b2cd24c1cd9b526fed33e131bf9b1f5162eac",
+        "expected_and_observed_cases": 9,
+        "case_names": [
+          "trample creature with single blocker presents a damage board with a drain edge",
+          "trample creature with custom damage assignment - all to blocker",
+          "multiple blockers: board defaults to lethal-first order then drains",
+          "deathtouch + trample assigns 1 damage per blocker, rest to player",
+          "deathtouch 1/1 kills larger creature via 704.5h",
+          "single blocker without trample - no decision needed, auto-assigned",
+          "auto-resolve uses default assignments for trample",
+          "Daunting Defender - default assignment accounts for prevention and kills Cleric",
+          "Daunting Defender - player assigns minimum (toughness only) and Cleric survives"
+        ]
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest",
+        "test_source": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BandingTrampleDrainScenarioTest.kt",
+        "test_source_sha256": "897184ce5e5b2be1f07abea4c56b7d8167c7d9782c401ad65273404d9ef97140",
+        "xml_member": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest.xml",
+        "xml_sha256": "16bb2b61b74680972f198cd6aa978ade20bbb0f535521bca1bea3bf348cc562a",
+        "expected_and_observed_cases": 1,
+        "case_names": [
+          "banded trampler may drain its full 2 to the player when a non-trample band-mate covers lethal"
+        ]
+      }
+    ],
+    "actual_cases": 32,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "limits": [
+    "This is prospective supplemental evidence from a completed original CI; no new test dispatch.",
+    "The original frozen guard remains INCOMPLETE and its raw artifact remains retained.",
+    "Adoption, if independent, applies only to current combat receiving at exact source; other four guards remain open.",
+    "No Manual capability game or primary cluster is admitted, and no Pest C2/A2 authority follows."
+  ],
+  "official_counters": {
+    "manual_capability_games": 0,
+    "manual_primary_games": 0,
+    "pest_fresh_games": 0
+  }
+}
