@@ -39,7 +39,10 @@ class PestMonsterStirringsRemainderReceivingTest : ScenarioTestBase() {
                 game.resolveStack().forEach { it.error shouldBe null }
                 val select = game.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
                 select.playerId shouldBe monster
-                select.options.size shouldBe 3\n                val looked = game.state.getLibrary(monster).toSet()\n                looked.size shouldBe 5\n                select.options.toSet().all { it in looked } shouldBe true
+                select.options.size shouldBe 3
+                val looked = game.state.getLibrary(monster).toSet()
+                looked.size shouldBe 5
+                select.options.toSet().all { it in looked } shouldBe true
                 val first = projection.build(game.state, monster, emptyList(),
                     ActorEpoch("pest-monster-p04-02-stirrings-v1", "seat-$monsterSeat-select", 0),
                     0xFE000901L + monsterSeat)
