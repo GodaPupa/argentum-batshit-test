@@ -1,0 +1,51 @@
+name: Opal Palace composed source targeted qualification
+on:
+  push:
+    branches: ['izzet/opal-three-scoped-once-20260927']
+permissions:
+  contents: read
+jobs:
+  opal-three:
+    if: github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      EXPECTED_HEAD: ${{ github.sha }}
+      UPDATE_SNAPSHOTS: '0'
+      GRADLE_LOCK_SLOTS: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind three-case source without gameplay
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/opal-palace-once-03
+          python izzet-science/evidence/opal-palace-prospective-20260927/qualify_attempt_03.py bind 2>&1 | tee build/reports/opal-palace-once-03/bind.log
+      - name: Execute three selected deterministic cases once
+        run: |
+          set -uo pipefail
+          set +e
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test --rerun --no-build-cache --tests 'com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest.scoped repair: a later hand cast uses only prior command-zone casts' --tests 'com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest.scoped repair: two Palace mana spent on a first command-zone cast add two counters' --tests 'com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest.scoped repair: two Palace contributions are combined before an additive counter modifier' --info --stacktrace 2>&1 | tee build/reports/opal-palace-once-03/tests.log
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > build/reports/opal-palace-once-03/exit.txt
+          exit "$rc"
+      - name: Reconcile source and raw three-case evidence
+        if: always()
+        run: python izzet-science/evidence/opal-palace-prospective-20260927/qualify_attempt_03.py collect
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: opal-palace-three-scoped-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/opal-palace-once-03/
+            **/build/test-results/test/*.xml
+          if-no-files-found: error
+          retention-days: 90
