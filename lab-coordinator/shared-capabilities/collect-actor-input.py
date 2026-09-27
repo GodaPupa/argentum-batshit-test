@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -42,9 +43,19 @@ def file_digests(paths: list[str]) -> dict[str, str]:
 def bind() -> None:
     REPORT.mkdir(parents=True, exist_ok=True)
     extraction = json.loads((ROOT / EXTRACTION).read_text())
+    original_pins = {row['receiving_path']: row['receiving_sha256'] for row in extraction['source_records']}
+    for path, digest_value in extraction['local_integration_files_sha256'].items():
+        if path in original_pins and original_pins[path] != digest_value:
+            raise ValueError('Conflicting original source binding: ' + path)
+        original_pins[path] = digest_value
+    receiving_spec = importlib.util.spec_from_file_location('sphinx_receiving_binding', ROOT / 'sphinx-approach/canonical_receiving_binding.py')
+    receiving_helper = importlib.util.module_from_spec(receiving_spec)
+    receiving_spec.loader.exec_module(receiving_helper)
+    effective_pins, receiving_binding = receiving_helper.bind('shared_actor_50', original_pins, ROOT)
+
     paths = sorted({EXTRACTION, WORKFLOW, COLLECTOR, "justfile", "scripts/test-class", "scripts/gradle-locked"}
         | {row["receiving_path"] for row in extraction["source_records"]}
-        | set(extraction["local_integration_files_sha256"]))
+        | set(extraction["local_integration_files_sha256"]) | set(effective_pins))
     binding = {
         "schema": "shared-actor-input-binding-v1",
         "requested_head": os.environ["GITHUB_SHA"],
@@ -55,15 +66,16 @@ def bind() -> None:
         "run_id": os.environ["GITHUB_RUN_ID"],
         "run_attempt": os.environ["GITHUB_RUN_ATTEMPT"],
         "files_sha256": file_digests(paths),
+        "prospective_receiving_binding": receiving_binding,
     }
     write_json(REPORT / "source-binding.json", binding)
     assert binding["actual_head"] == binding["requested_head"], binding
     assert not binding["checkout_status"], binding
     assert extraction["required_cases"] == sum(EXPECTED.values()) == 50
     for row in extraction["source_records"]:
-        assert binding["files_sha256"][row["receiving_path"]] == row["receiving_sha256"], row
+        assert binding["files_sha256"][row["receiving_path"]] == effective_pins[row["receiving_path"]], row
     for path, sha in extraction["local_integration_files_sha256"].items():
-        assert binding["files_sha256"][path] == sha, path
+        assert binding["files_sha256"][path] == effective_pins[path], path
     assert extraction["actor_component_accepted"] is False
     assert extraction["pilot_qualified"] is False and extraction["execution_authorized"] is False
     assert extraction["gameplay_games"] == 0 and not extraction["project_gameplay_evidence_transferred"]

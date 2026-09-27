@@ -39,21 +39,25 @@ jobs:
           import hashlib,json,os,pathlib,subprocess
           path=pathlib.Path('sphinx-approach/STAGE_E_INITIALIZED_SEAT_RECEIVING.json')
           raw=path.read_bytes(); manifest=json.loads(raw)
+          import importlib.util
+          receiving_spec=importlib.util.spec_from_file_location('sphinx_receiving_binding', 'sphinx-approach/canonical_receiving_binding.py')
+          receiving_helper=importlib.util.module_from_spec(receiving_spec); receiving_spec.loader.exec_module(receiving_helper)
+          effective_pins, receiving_binding=receiving_helper.bind('sphinx_seat_16', manifest['source_files_sha256'], pathlib.Path('.'))
           assert manifest['budget_sha256']==hashlib.sha256(pathlib.Path('sphinx-approach/STAGE_E_INITIALIZED_SEAT_FIXTURE_BUDGET.json').read_bytes()).hexdigest()
           head=subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip()
           tree=subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()
           assert head==os.environ['EXPECTED_SOURCE']
           assert not subprocess.check_output(['git','status','--porcelain'],text=True).strip()
           subprocess.run(['git','merge-base','--is-ancestor',manifest['receiving_base'],'HEAD'],check=True)
-          for filename,expected in manifest['source_files_sha256'].items():
+          for filename,expected in effective_pins.items():
               assert hashlib.sha256(pathlib.Path(filename).read_bytes()).hexdigest()==expected,filename
           assert len(manifest['stages'])==1 and sum(s['expected_cases'] for s in manifest['stages'])==16
           assert [b['class'] for b in manifest['banks']]==[s['class'] for s in manifest['stages']]
           workflow='.github/workflows/sphinx-initialized-seat-qualification.yml'
-          source={**manifest['source_files_sha256'],workflow:hashlib.sha256(pathlib.Path(workflow).read_bytes()).hexdigest()}
-          out=pathlib.Path('build/reports/sphinx-initialized-seat'); out.mkdir(parents=True)
+          source={**effective_pins,workflow:hashlib.sha256(pathlib.Path(workflow).read_bytes()).hexdigest()}
+          out=pathlib.Path('build/reports/sphinx-initialized-seat'); out.mkdir(parents=True,exist_ok=True)
           (out/'source-provenance.json').write_text(json.dumps({'candidate_head':head,'tree':tree,
-              'manifest_sha256':hashlib.sha256(raw).hexdigest(),'source_sha256':source,
+              'manifest_sha256':hashlib.sha256(raw).hexdigest(),'source_sha256':source,'prospective_receiving_binding':receiving_binding,
               'official_games':0,'gameplay_authorized':False},indent=2)+'\n')
           PY
       - name: Execute the complete fixed sixteen-case bank

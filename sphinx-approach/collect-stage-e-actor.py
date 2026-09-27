@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Bind one exact receiving source and audit actual XML for the prospective 136 checks."""
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -48,15 +49,16 @@ def snapshot():
         for path, expected in bank.items():
             if path in pins and pins[path] != expected:
                 raise ValueError(f"Conflicting source pin: {path}")
-            actual = sha(ROOT / path)
-            if actual != expected:
-                raise ValueError(f"Reviewed source changed: {path}")
-            pins[path] = actual
+            pins[path] = expected
     if budget["required_actual_total"] != sum(BANKS.values()) or sum(BANKS.values()) != 136:
         raise ValueError("Receiving bank geometry changed")
+    receiving_spec = importlib.util.spec_from_file_location('sphinx_receiving_binding', ROOT / 'sphinx-approach/canonical_receiving_binding.py')
+    receiving_helper = importlib.util.module_from_spec(receiving_spec)
+    receiving_spec.loader.exec_module(receiving_helper)
+    pins, receiving_binding = receiving_helper.bind('sphinx_actor_136', pins, ROOT)
     return {"head": head, "tree": tree, "requested_source": requested,
             "budget_sha256": BUDGET_SHA256, "scope_sha256": SCOPE_SHA256,
-            "source_sha256": pins}
+            "source_sha256": pins, "prospective_receiving_binding": receiving_binding}
 
 
 def write(name, value):

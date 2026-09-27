@@ -67,6 +67,17 @@ jobs:
           out.mkdir(parents=True, exist_ok=True)
           manifest_path = root / os.environ['SOURCE_MANIFEST']
           manifest = json.loads(manifest_path.read_text())
+          import importlib.util
+          receiving_spec=importlib.util.spec_from_file_location('sphinx_receiving_binding', 'sphinx-approach/canonical_receiving_binding.py')
+          receiving_helper=importlib.util.module_from_spec(receiving_spec); receiving_spec.loader.exec_module(receiving_helper)
+          effective_pins, receiving_binding=receiving_helper.bind('priority_220', manifest['source_files_sha256'], pathlib.Path('.'))
+          (out / 'original-source-manifest.json').write_bytes(manifest_path.read_bytes())
+          original_manifest_sha256 = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+          manifest['source_files_sha256'] = effective_pins
+          manifest['prospective_receiving_binding'] = receiving_binding
+          manifest['original_manifest_sha256'] = original_manifest_sha256
+          manifest_path = out / 'effective-receiving-manifest.json'
+          manifest_path.write_text(json.dumps(manifest, indent=2) + '\n')
           head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
           # Record rejected bindings too; a failed source guard is evidence.
           observed = {path: hashlib.sha256((root / path).read_bytes()).hexdigest()
@@ -164,7 +175,7 @@ jobs:
           exit "$failed"
       - name: Audit all original stages and exact receiving source
         if: always()
-        run: python3 lab-coordinator/shared-capabilities/collect-priority-receiving.py
+        run: python3 lab-coordinator/shared-capabilities/collect-priority-receiving.py --manifest build/reports/engine-priority-after-resolution/effective-receiving-manifest.json
       - name: Preserve complete validation evidence
         if: always()
         uses: actions/upload-artifact@v7
