@@ -1,0 +1,67 @@
+{
+  "schema": "manual-clean-mainline-capability-original-audit-v1",
+  "source": {
+    "head": "83f78b4b63264346347b40cee19f0459513cf40b",
+    "tree": "919376507b5d18d095f24afb92c12efc5bdb2d9a",
+    "manual_runtime_parent": "a333dc1e6b8c2e78961bbbe052ee01105e2f1264",
+    "only_added_path": "experiments/manual-transmission-phase2/clean-main-integration-boundary-r1.json"
+  },
+  "run": {
+    "id": 36328394098,
+    "attempt": 1,
+    "conclusion": "SUCCESS",
+    "source_audit": "SUCCESS",
+    "engine_audit": "SUCCESS"
+  },
+  "original_artifacts": [
+    {
+      "id": 10935091312,
+      "name": "manual-transmission-phase2-engine-audit",
+      "bytes": 946325,
+      "sha256": "21ea3e0d5c0395cd8c600bb7c7f9853fc983249eb63dad08d30d91a29861a094",
+      "xml_classes": 35,
+      "case_entries": 540,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    {
+      "id": 10934468719,
+      "name": "manual-transmission-phase2-source-audit",
+      "bytes": 28034333,
+      "sha256": "966d16a8a4a745858e84ceac1609261afe451b0a20ec8e4f9604e5ba320664ed",
+      "xml_classes": 0
+    }
+  ],
+  "independent_review": {
+    "disposition": "ACCEPT_BOUNDED_DETERMINISTIC_EVIDENCE_ONLY",
+    "checks": [
+      "Both original ZIPs match upload SHA256 and pass CRC.",
+      "All 35 XML classes/540 cases pass with zero failure, error or skip.",
+      "Nine test executors ran fresh; up-to-date build dependencies and skipped Kotlin configuration checks are not test cache hits.",
+      "Checkout and bootstrap bind exact head/tree; Phase-1 checkout separate.",
+      "Source bundle contains all 35 selected test class sources, exact two World Breaker cases present.",
+      "Rules archive matches declared 977752-byte SHA256."
+    ]
+  },
+  "limits": [
+    "No capability or game admission",
+    "Five inherited compatibility guards remain original INCOMPLETE pretest source aborts",
+    "Registry coverage is not percent completion",
+    "Source audit no seeds/gameplay and no engine semantic qualification",
+    "Original 42-class/636 and 16-class/136 receipts retain separate scopes"
+  ],
+  "counters": {
+    "capability_games": 0,
+    "primary_games": 0,
+    "official_initializations": 0
+  },
+  "retention": {
+    "original_artifact_ids": [
+      10935091312,
+      10934468719
+    ],
+    "repository_raw_zip_copy": false,
+    "note": "Original GitHub Actions artifacts remain canonical raw bytes; verified SHA and independent audit indexed here."
+  }
+}
