@@ -2,10 +2,10 @@
   "bank_sha256": "d2e9681d11bb21259a73da1b3fbd00c374454cf519d2051334bfd42d2ad5aa17",
   "fixture_runs_by_this_freeze": 0,
   "gate_review": {
-    "accepted": false,
+    "accepted": true,
     "collector_sha256": "be794fafc6f729560fba26bdd85a3e6544399d9150ad5ca4aacba3d5fe98e68e",
-    "review_ref": null,
-    "reviewer": null,
+    "review_ref": "5942e1fa2d7e2eef5c47dc968696cca0e0720615",
+    "reviewer": "/root",
     "workflow_sha256": "5125053f659e2ce8723f9cb924c0d489baa3267988473567881574858386f09d"
   },
   "official_games": 0,
@@ -27,10 +27,10 @@
   "schema": "pest-monster-search-actor-receiving-repair-1-freeze-v1",
   "scope": "Only original MS01-MS05 deterministic cases on changed source after a retained pretest compile failure. No MC10 disposition, pair pilot admission, official allocation or game.",
   "source_review": {
-    "accepted": false,
-    "candidate_commit": null,
-    "review_ref": null,
-    "reviewer": null,
+    "accepted": true,
+    "candidate_commit": "83b9592f39a1063207c3f9642faedbd441ce16d6",
+    "review_ref": "5942e1fa2d7e2eef5c47dc968696cca0e0720615",
+    "reviewer": "/root",
     "source_sha256": {
       "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "21d60a04da428312ede8aa05f29d16f0b7a3baa0a4a077fe47b9455857341912",
       "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronPublicPolicy.kt": "7b99f88d02e287e6cd77997a04b89fa6e54500f9af3613f2b5f77c0d89a9c54d",
@@ -49,5 +49,5 @@
       "scripts/test-class": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81"
     }
   },
-  "status": "PENDING_INDEPENDENT_CHANGED_SOURCE_AND_GATE_REVIEW"
+  "status": "ACCEPT_FOR_EXACT_MS01_MS05_RECEIVING_ONLY"
 }
