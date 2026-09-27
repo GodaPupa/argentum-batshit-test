@@ -20,7 +20,9 @@ import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.gym.actorinput.ActorEpoch
 import com.wingedsheep.gym.actorinput.ActorInput
+import com.wingedsheep.gym.actorinput.BoundaryFailure
 import com.wingedsheep.gym.actorinput.ObservationAdapter
+import com.wingedsheep.gym.actorinput.ObservationBoundaryException
 import com.wingedsheep.gym.actorinput.UnsupportedPolicyInput
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
@@ -72,6 +74,17 @@ class PestMonsterTronAuthorizedSearchReceivingTest : ScenarioTestBase() {
             component.respond(visible) shouldBe PestMonsterTronActorDecision.NoOverride
             proposed(search).response shouldBe legacy
             legacy.selectedCards shouldBe listOf(raw.options.first())
+            shouldThrow<ObservationBoundaryException> {
+                component.respond(visible.copy(epoch = epoch.copy(step = 1)))
+            }.failure shouldBe BoundaryFailure.STALE_INPUT
+            val library = ZoneKey(p1, Zone.LIBRARY)
+            val hand = ZoneKey(p1, Zone.HAND)
+            val moved = game.state.moveToZone(raw.options.first(), library, hand)
+                .moveToZone(raw.options.first(), hand, library)
+            val restoredOrder = moved.copy(zones = moved.zones +
+                (library to game.state.getLibrary(p1)))
+            restoredOrder.objectRef(raw.options.first()) shouldNotBe game.state.objectRef(raw.options.first())
+            shouldThrow<UnsupportedPolicyInput> { verifiedSearch(restoredOrder) }
             // Archived MC10 remains a failure of the older sorted projection. This is a new
             // source-specific receiving assertion; it does not retroactively accept MC10.
         }
