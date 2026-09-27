@@ -1,0 +1,60 @@
+name: Pest Monster P03 combat priority receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-c2-p03-combat-targeted.yml"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterCombatPriorityReceivingTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-combat-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact fixture source
+        run: |
+          mkdir -p build/reports/pest-c2-p03-combat
+          {
+            git rev-parse HEAD
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterCombatPriorityReceivingTest.kt
+            git status --porcelain
+          } > build/reports/pest-c2-p03-combat/source.txt
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterCombatPriorityReceivingTest.kt)" = "0ab8b67361f5ee958d4aaa7b603cedda6dc86a86"
+      - name: Execute two fresh combat priority fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterCombatPriorityReceivingTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/pest-c2-p03-combat/gradle.log
+      - name: Verify exact JUnit cases
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          paths=glob.glob("gym/build/test-results/test/TEST-*PestMonsterCombatPriorityReceivingTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          cases=root.findall(".//testcase")
+          assert sorted(c.get("name") for c in cases)==[
+              "P03-07 attacking seat 1 sees blocker baton then post-block priority",
+              "P03-07 attacking seat 2 sees blocker baton then post-block priority",
+          ], [c.get("name") for c in cases]
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-p03-combat-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-c2-p03-combat/
+            gym/build/test-results/test/TEST-*PestMonsterCombatPriorityReceivingTest.xml
+          if-no-files-found: error
+          retention-days: 90
