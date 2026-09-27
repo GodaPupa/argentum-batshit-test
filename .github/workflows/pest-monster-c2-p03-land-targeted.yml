@@ -1,0 +1,56 @@
+name: Pest Monster P03 land receiving
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-land-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact test source
+        run: |
+          mkdir -p build/reports/pest-c2-p03-land
+          {
+            git rev-parse HEAD
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterPriorityLandReceivingTest.kt
+            git status --porcelain
+          } > build/reports/pest-c2-p03-land/source.txt
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterPriorityLandReceivingTest.kt)" = "b42e1aac801f1d465fd2918220195015b5e554ed"
+      - name: Execute fresh two-seat physical land fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterPriorityLandReceivingTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/pest-c2-p03-land/gradle.log
+      - name: Verify exact JUnit cases
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          paths=glob.glob("gym/build/test-results/test/TEST-*PestMonsterPriorityLandReceivingTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          cases=root.findall(".//testcase")
+          assert sorted(c.get("name") for c in cases)==[
+              "P03-01 seat 1 physical land menu and exhausted drop",
+              "P03-01 seat 2 physical land menu and exhausted drop",
+          ], [c.get("name") for c in cases]
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-p03-land-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-c2-p03-land/
+            gym/build/test-results/test/TEST-*PestMonsterPriorityLandReceivingTest.xml
+          if-no-files-found: error
+          retention-days: 90
