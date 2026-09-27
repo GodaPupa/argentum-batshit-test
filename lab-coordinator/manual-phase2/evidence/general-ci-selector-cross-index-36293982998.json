@@ -1,4 +1,5 @@
 {
+  "actual_checkout_merge": "e62a3daa15a821caacf0818359807636a5b5b538",
   "artifact_ids": [
     10923855139,
     10923671037,
@@ -17,7 +18,7 @@
   },
   "limitations": [
     "Original guard manifests remain source-bound and aborted before their own test step",
-    "CI XML proves tests occurred in general CI at a synthetic merge; task freshness and exact source comparisons require separate audit",
+    "General CI module test tasks for these selectors have no cache/skip markers in original job logs; exact source is synthetic merge e62a3daa. Guard manifest compatibility requires a separate source-delta decision.",
     "Do not infer gameplay or capability admission"
   ],
   "run": 36293982998,
@@ -660,6 +661,21 @@
       }
     }
   ],
+  "task_freshness_review": {
+    "checkout_observed_in_content_job": "e62a3daa15a821caacf0818359807636a5b5b538",
+    "original_run": 36293982998,
+    "selected_module_jobs": {
+      "10922868231": 108549286031,
+      "10922879740": 108549286034,
+      "10923097716": 108549286036,
+      "10923641205": 108549286017,
+      "10923651693": 108549286038,
+      "10923671037": 108549286005,
+      "10923855139": 108549286047
+    },
+    "selected_tasks": "Each module test task occurred with no FROM-CACHE/UP-TO-DATE/SKIPPED marker in its original job log; repeated plain task lines are Gradle output/reporting, not duplicate invocations. :mtg-search:test was FROM-CACHE, and none of the 42 selectors belongs to that module.",
+    "source_limitation": "This checks the PR synthetic merge e62a3daa, not immutable branch head 452faa13 in isolation. Frozen support source guards remain unsatisfied and were aborted before their own tests."
+  },
   "unique_selectors": 42,
   "xml_cases": 636
 }
