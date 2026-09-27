@@ -1,0 +1,35 @@
+{
+  "schema": "manual96-static-dependency-review-correction-v1",
+  "reviewer": "/root/sphinx",
+  "at_utc": "2026-09-27T02:22:47.120551+00:00",
+  "prior_review": {
+    "path": "sphinx-audit/manual71-review/independent-source-fixture-review.json",
+    "sha256": "671b71cf3bb43409e3d59085f0cea4fa92080e3739f562ad95baa18a59a15641"
+  },
+  "source": "60a9e20b61f63c4d42772ca8d122aabe68aabe2f",
+  "tree": "c29d399dc4e481179d48ff833af58ea44db1843f",
+  "disposition": "PRIOR_STATIC_DEPENDENCY_CLOSURE_INCOMPLETE_ACTUAL_COMPILATION_REQUIRED",
+  "direct_source_observation": {
+    "path": "manual-shared-composition/candidate/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt",
+    "sha256": "d14fe20f774f650d132f679966dc4eefe556cf48fb67d34fffdadd88fefda978",
+    "import": "import com.wingedsheep.engine.research.ferocity.FerocityOfTheHuntPrerelease as ferocityResearchFixture",
+    "line": 4,
+    "uses": [
+      94,
+      171,
+      172,
+      178
+    ]
+  },
+  "reported_actual_failure": {
+    "provenance": "Manual source owner PR206 raw-log triage; root/Manual own full seven-run independent disposition. This addendum does not claim a new independent full artifact audit.",
+    "finding": "rules-engine compileTestKotlin cannot resolve the missing imported FerocityOfTheHuntPrerelease fixture in the96-file candidate.",
+    "local_evidence_directory": "manual-shared-composition/pr206-discovery/manual-audit/"
+  },
+  "review_correction": "The earlier static review accepted71files plus the25-file proposed donor fixture/helper closure without compilation. That dependency assessment missed this explicit imported fixture. Preserve the earlier no-compilation/no-runtime limits, but do not treat its static closure statement as proof that the96-file candidate compiles or that all dependencies were covered. The failure is technical, not a Manual deck result.",
+  "required_next": "Preserve the actual failed attempts, inspect the exact donor fixture and every direct/transitive dependency, then prospectively review the smallest necessary receiving correction and its qualification scope. No source helper transplant, rerun or protocol change is authorized by this addendum.",
+  "original_files_modified": false,
+  "tests_or_jvm_executed_by_this_review": false,
+  "official_games": 0,
+  "deck_performance_evidence_changed": false
+}

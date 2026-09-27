@@ -1,0 +1,18 @@
+{
+  "schema": "independent-pr206-review-parser-location-correction-v1",
+  "scope": "Read-only artifact audit, no repository fixture/JVM/event.",
+  "failure": "KeyError: source/.github/workflows/manual-transmission-phase2-capability.yml absent from original nested source bundle.",
+  "reason": "Reviewer initially assumed workflow files were included in the source subset; actual original omitted these paths.",
+  "old_script_sha256": "1bcb0d163a64c42f300cf8f8c8d13107d6bba20bb449f90b9a42775e9ddec899",
+  "new_script_sha256": "016accad21f94c69192209139dc6b1079f05d6f54a51e231759394ad0ccfac53",
+  "correction": "Verify separately source-recovered workflow files against exact committed Git blobs; never describe them as original nested members.",
+  "original_artifacts_changed": false,
+  "second_correction": {
+    "failure": "Assertion that only the literal sum guard changed was too narrow.",
+    "diagnosis": "Read the exact diff: the same arithmetic correction also updates report total496\u2192483, card156\u2192143, and printed total496\u2192483. No other author script delta.",
+    "preserved_v2_script_sha256": "016accad21f94c69192209139dc6b1079f05d6f54a51e231759394ad0ccfac53",
+    "final_script_sha256": "b9e1dfe1bac8c689f09899120eff7bc6dfe65bdac95053a909ac44329b79ac90",
+    "guard": "Require exactly three496 occurrences and one156 occurrence, then exact byte equality after only those replacements.",
+    "original_artifacts_changed": false
+  }
+}

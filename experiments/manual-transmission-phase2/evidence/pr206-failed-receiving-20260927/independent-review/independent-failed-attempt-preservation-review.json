@@ -1,0 +1,159 @@
+{
+  "schema": "manual206-independent-failed-attempt-preservation-review-v1",
+  "reviewer": "/root/sphinx",
+  "verdict": "PASS_FOR_PRESERVING_EXACT_FAILED_ATTEMPTS_AND_BOUNDED_PARTIAL_RESULTS",
+  "scope": "Independent raw source/artifact/log and lossless package review only. All seven original workflows remain failed; no whole-runtime, pilot, official capability-game, primary-game or gameplay admission.",
+  "source": "60a9e20b61f63c4d42772ca8d122aabe68aabe2f",
+  "source_tree": "c29d399dc4e481179d48ff833af58ea44db1843f",
+  "actual_test_merge": "06094adf331b32e937c4a4dd63ab7d0e7c4537d8",
+  "merge_tree_equals_source": true,
+  "inputs": {
+    "packet": {
+      "path": "manual-shared-composition/pr206-discovery/failure-publication/seven-failed-attempts.zip",
+      "bytes": 33916511,
+      "sha256": "a24c895c150f03c8f271183caa8280e996705d5184d22c1f3bcf116d034df029"
+    },
+    "manifest": {
+      "path": "manual-shared-composition/pr206-discovery/failure-publication/preservation-manifest.json",
+      "bytes": 8410,
+      "sha256": "e4677c8be2b95ac7faa4695e9eceafd4cb071aa7bab2b3a4b0703388ab317934"
+    },
+    "README": {
+      "path": "manual-shared-composition/pr206-discovery/failure-publication/README.md",
+      "bytes": 4563,
+      "sha256": "45339cbade48edc5228b7aa07d5bdea8bd8788d938fa5f215647b195a9da67cc"
+    },
+    "receipt": {
+      "path": "manual-shared-composition/pr206-discovery/failure-publication/package-receipt.json",
+      "bytes": 503,
+      "sha256": "9ccd3b18b444d78cfff93ad526bdc7e5a19e02c22e10f4e7ce8b89bb94c9daab"
+    },
+    "author_core_audit": {
+      "path": "manual-shared-composition/pr206-discovery/manual-audit/core-original-audit.json",
+      "bytes": 52221,
+      "sha256": "a14a25d35ef61ee8a929612bbdfa8fa64f3b09e4d8cfd63cb7c7698817454e14"
+    },
+    "independent_raw_audit": {
+      "path": "sphinx-audit/manual206-review/independent-original-byte-audit.json",
+      "bytes": 20875,
+      "sha256": "2f4848fa4b43d4f8d3d1f80c745b9627fcf992ad4336269040d7b0d85de57f86"
+    },
+    "independent_script": {
+      "path": "sphinx-audit/manual206-review/audit_independent_pr206.py",
+      "bytes": 13342,
+      "sha256": "b9e1dfe1bac8c689f09899120eff7bc6dfe65bdac95053a909ac44329b79ac90"
+    },
+    "independent_live_metadata": {
+      "path": "sphinx-audit/manual206-review/independent-live-metadata.json",
+      "bytes": 65506,
+      "sha256": "bc2e09246e4bfcda9307ea6fe98bb61b2e0dffc4093d3081b9abc26775da8d39"
+    },
+    "independent_failure_groups": {
+      "path": "sphinx-audit/manual206-review/independent-failure-source-group-check.json",
+      "bytes": 624,
+      "sha256": "04495fa50b5e9e02e5b57e74e6c717a5d3ffa8b9861623940d9a9e7f3e6854e0"
+    },
+    "independent_parts": {
+      "path": "sphinx-audit/manual206-review/independent-parts-static-check.json",
+      "bytes": 2018,
+      "sha256": "784fe5f283e22563751c4b79ae9fe8060eb8c96068bdedba51c0776a592fb687"
+    },
+    "archive_parts": {
+      "path": "manual-shared-composition/pr206-discovery/failure-publication/archive-parts.json",
+      "bytes": 1668,
+      "sha256": "fe8e65cddaef8f5ba4c10cd26c0137138594fe9df0ce42afb3b5f9edaf8a639b"
+    },
+    "recovery_helper": {
+      "path": "manual-shared-composition/pr206-discovery/failure-publication/reconstruct_archive.py",
+      "bytes": 2069,
+      "sha256": "dbe8a06d0b3f14c8173741057ee0d103a083b811ff69471deceb1bf10a7162ee"
+    },
+    "recovery_notes": {
+      "path": "manual-shared-composition/pr206-discovery/failure-publication/ARCHIVE_RECOVERY.md",
+      "bytes": 1817,
+      "sha256": "d3fa184406649aee9b25cdecd6a86e26ac6463c85d8d7e6c7ba8f268c45c5720"
+    },
+    "author_reconstruction_record": {
+      "path": "manual-shared-composition/pr206-discovery/failure-publication/reconstruction-check.json",
+      "bytes": 806,
+      "sha256": "a43ea473327d88c8018d280f69f7c34c8782d321d3a5bb4514373c00b6fa624c"
+    }
+  },
+  "actual_results": {
+    "run_attempts": "Seven distinct completed failure runs, all pull_request attempt1 on exact60a9; independently refreshed live metadata.",
+    "capability_software": {
+      "run": 36286644783,
+      "card_cases": 143,
+      "card_classes": 26,
+      "snapshot_cases": 340,
+      "total_original_XML_cases": 483,
+      "XML_files": 27,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "fresh_worker_start_end_pairs": 7,
+      "XML_timestamps": "All27 inside their actual successful card/snapshot job-step windows.",
+      "later_state": "Rules-engine test compilation failed; generic commander/multiplayer fixtures and actual catalog collection did not execute."
+    },
+    "priority": {
+      "run": 36286644804,
+      "fixtures_executed": 0,
+      "artifacts": 0,
+      "failure": "Exact Prismari source assertion before any Gradle task; empty-report upload also failed. Failure log retained."
+    },
+    "CI": {
+      "run": 36286644786,
+      "printed_pass_lines": 12316,
+      "printed_fail_lines": 165,
+      "printed_skip_lines": 53,
+      "raw_XML_artifacts": 0,
+      "scope": "Independently parsed exact printed identities and line numbers from complete decoded logs; not raw-XML completeness or distinct-case certification.",
+      "cached": "mtg-search:test FROM-CACHE, not credited as freshly executed.",
+      "unexecuted": "rules-engine test compilation failed; scenarios-old2017\u201322 test task was not reached; coverage skipped."
+    },
+    "inherited_four": "Unchanged9d6ac356 packet and ec3d6809 bounded independent preservation review reused. Rechecked21-member CRC/manifest, both nested originalZIPs, and four complete decoded logs. Prototype/Cascade stop at compilation; SpyB has5 SDK cases and SpyC3 source-only Python checks before compilation failures."
+  },
+  "source_and_retention_checks": [
+    "Both original coreZIP sizes and SHA256 match fresh GitHub artifact metadata; every member hash/CRC independently checked. CI and priority artifact endpoints each report zero artifacts.",
+    "All24,719 nested current-source bodies were independently Git-blob hashed. All1,300 cached Git tree objects were reconstructed up to the fresh immutable c29 root, independently binding the complete source map. The80 retained Phase1 files were not newly Git-rebound.",
+    "The three workflows are separately source-recovered bytes matched to exact Git blobs, not invented nested source-bundle members.",
+    "All12 decoded core logs are fully decompressed/hash-checked;13th job is skipped coverage with no executed log. Four inherited logs are separately retained. Decoded connector logs are not original Actions log-archiveZIPs.",
+    "All49 outer members and exact48-file manifest verified; core members equal the actual retained local originals. The inherited packet and exact prior review are unchanged.",
+    "Five contiguous byteparts independently match every original range, per-part SHA256/Gitblob and whole33,916,511-byte archive SHA. Read the complete reconstruction helper: sibling part-name/offset/size/hash checks precede create-only output; every part and final whole hash are checked again while writing. No preserved code is executed.",
+    "Fresh complete shared-donor tree read independently confirms the factual failure grouping:108 classes/165 printed failures,107 classes/164 cases with different donor test blobs and one Manual-only Purphoros case. This does not diagnose causes or authorize test/golden/policy transfer."
+  ],
+  "preserved_corrections": {
+    "author_arithmetic": "Original496 claim and initial failed assertion script preserved; exact author delta is three496\u2192483 fields and one156\u2192143 card count, with no other script change.",
+    "author_preliminary_parser": "Earlier extracts including Gradle FAILED task headings remain explicitly preliminary; final parser and this independent parser strip timestamps and count actual case statuses.",
+    "prior_static_dependency_review": {
+      "path": "sphinx-audit/manual71-review/static-dependency-review-correction-pr206.json",
+      "bytes": 2372,
+      "sha256": "5eafd82ecda6fdfdae2259be539c8b820560857fe28503d8656d37c6c785ae8d"
+    },
+    "companion_requirement": "Publish the unchanged5eafd static-closure correction alongside this frozen archive; it is not falsely claimed to be inside the49-memberZIP.",
+    "own_readonly_parser_history": {
+      "path": "sphinx-audit/manual206-review/independent-audit-parser-correction.json",
+      "bytes": 1458,
+      "sha256": "d69c37ebd121945abd1947cd7397cd242af2f341fc2e34ea68a5f43385c83302"
+    },
+    "own_parser_scope": "Two preserved reviewer parser corrections concerned omitted workflow locations and arithmetic fields; neither changed original artifacts nor reran repository software."
+  },
+  "limitations": [
+    "This is preservation of failed receiving attempts, not independent acceptance of Manual source/runtime or a formal GitHub approval.",
+    "Three engine-audit command logs report shlock unavailable and unlocked Gradle fallback; no semaphore-conformance claim is made.",
+    "The source bundle is an observed source subset, not executing classpath/loaded-bytecode identity or a full current-runtime admission.",
+    "Bootstrap zero counters are a source-audit self-report, not a replacement for durable experimental ledgers. This audit created no claims, allocations, seeds or outcomes.",
+    "No donor test semantics, snapshot expectation update, frozen pilot change or cause of the165 assertions is admitted from this preservation review.",
+    "Part Gitblob IDs were independently recomputed locally; remote publication objects and final inert branch/event remain root publication checks.",
+    "Package pending-review/publication flags remain historical creation-time fields; later reviews/checkpoints carry disposition without rewriting the originalZIP."
+  ],
+  "authorship": "Reviewer authored earlier independent71-source review and its disclosed5eafd correction, not the Manual96 candidate or this author failure packet. This review is independently about actual original bytes, attempts and preservation.",
+  "new_execution": {
+    "repository_tests": 0,
+    "JVM_or_compiler": 0,
+    "workflow_events": 0,
+    "official_allocations": 0,
+    "gameplay_outcomes": 0
+  },
+  "deck_performance_evidence_changed": false
+}

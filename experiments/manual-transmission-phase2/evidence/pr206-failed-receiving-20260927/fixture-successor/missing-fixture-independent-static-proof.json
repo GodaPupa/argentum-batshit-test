@@ -1,0 +1,97 @@
+{
+  "schema": "manual-missing-fixture-independent-static-proof-v1",
+  "scope": "Only exact missing testFixtures donor addition; no JVM or fixture execution.",
+  "inputs": {
+    "path": "sphinx-audit/manual71-review/missing-fixture-independent-source-inputs.json",
+    "bytes": 276059,
+    "sha256": "89e43ff48e8d7ec84c38e7e0edc2633037d0516550458ac476242480914401ef",
+    "git_blob": "50a5485e60ba9e2d584c46984516bcc4688a551e"
+  },
+  "proposal": {
+    "path": "manual-shared-composition/pr206-discovery/correction-proposal/minimal-fixture-successor.json",
+    "bytes": 1237,
+    "sha256": "514051575aa520df438f5caa2bc717071ca58dc205ccfae8af4cf683256b277f",
+    "git_blob": "543324261b2917fac5ffa2bd8f854f8ed9f599f9"
+  },
+  "staged": {
+    "path": "manual-shared-composition/pr206-discovery/correction-proposal/successor-overlay/rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/research/ferocity/FerocityOfTheHuntPrerelease.kt",
+    "bytes": 2066,
+    "sha256": "e4d4c081c89788af1fad06708a35ad447a93444b2fe4ba038131b7f7222bea8b",
+    "git_blob": "c5a4d517583f76042ebcbbe1b1c9ab855ca58a68"
+  },
+  "consumer": {
+    "path": "manual-shared-composition/candidate/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt",
+    "bytes": 17256,
+    "sha256": "d14fe20f774f650d132f679966dc4eefe556cf48fb67d34fffdadd88fefda978",
+    "git_blob": "1f5e15c668e4e5ec4606a5190db53dcbe3fc6b50"
+  },
+  "consumer_unchanged_vs_live_60a9": true,
+  "fixture_imports": [
+    "com.wingedsheep.sdk.core.Keyword",
+    "com.wingedsheep.sdk.core.Zone",
+    "com.wingedsheep.sdk.dsl.Effects",
+    "com.wingedsheep.sdk.dsl.Targets",
+    "com.wingedsheep.sdk.dsl.Triggers",
+    "com.wingedsheep.sdk.dsl.card",
+    "com.wingedsheep.sdk.model.CardDefinition",
+    "com.wingedsheep.sdk.scripting.GrantKeyword",
+    "com.wingedsheep.sdk.scripting.ModifyStats",
+    "com.wingedsheep.sdk.scripting.TriggerBinding",
+    "com.wingedsheep.sdk.scripting.targets.EffectTarget"
+  ],
+  "direct_sdk_provider_git_bindings": [
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/core/Keyword.kt",
+      "receiver_and_donor_blob": "7637b3f7787cc3e763f1fcb47fa63dd70498c75e"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/core/Zone.kt",
+      "receiver_and_donor_blob": "16bc335b4e7137ee4d4bdd5330bb6958615b3250"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Effects.kt",
+      "receiver_and_donor_blob": "1904846d3b5ad489224784b5d9687c68f8b207ee"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Targets.kt",
+      "receiver_and_donor_blob": "8dc2f2db24ad65fdb2a3d86cae1b8c522a6aa388"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Triggers.kt",
+      "receiver_and_donor_blob": "fab1e952f5c38b6f6b746c0256ed856ba84e67e7"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/CardBuilder.kt",
+      "receiver_and_donor_blob": "40c05dfb0e1f5c4b588f7230f45adce349803da6"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/model/CardDefinition.kt",
+      "receiver_and_donor_blob": "816017d3170edb203e1c0838dd28f63d8bc9d8c4"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/KeywordStaticAbilities.kt",
+      "receiver_and_donor_blob": "8dea3b083316aec0e372019521541428b90a09d2"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/StatsStaticAbilities.kt",
+      "receiver_and_donor_blob": "7f1099377eeb149c2cb7a5d5bcbf5b8af424831a"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/TriggerBinding.kt",
+      "receiver_and_donor_blob": "7b30465168b8c2d9af8eb246201a81b7a3aba179"
+    },
+    {
+      "path": "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/targets/EffectTarget.kt",
+      "receiver_and_donor_blob": "6329954f48574b1ae3026b09a77d6476b92a7d18"
+    }
+  ],
+  "other_sdk_main_differences_retained": [
+    "src/main/kotlin/com/wingedsheep/sdk/scripting/filters/unified/ObjectFilter.kt",
+    "src/main/kotlin/com/wingedsheep/sdk/scripting/predicates/CardPredicate.kt"
+  ],
+  "build_git_blob": "bd186f2dbcbb49b876706c9a1381f951e5521093",
+  "build_test_fixtures_plugin_and_sdk_dependency_present": true,
+  "one_file_overlay_only": true,
+  "new_tests_or_cases": 0,
+  "compilation_or_engine_execution": false
+}

@@ -1,0 +1,216 @@
+{
+  "schema": "manual-inert-fixture-publication-v1",
+  "observed_utc": "2026-09-27 03:30:14 UTC",
+  "branch": "lab/manual-shared-fixture-dependency-20260927",
+  "commit": "99f5611185d4338a45b60b988c9afe227bf74944",
+  "tree": "ee14faf380805b04bfcccc722eb2b0e320ac2508",
+  "parent": "60a9e20b61f63c4d42772ca8d122aabe68aabe2f",
+  "preflight": [
+    {
+      "path": "git/ref/heads/lab/manual-shared-fixture-dependency-20260927",
+      "absent": true,
+      "response": {
+        "error": "GitHub API error 404: {\"message\":\"Not Found\",\"documentation_url\":\"https://docs.github.com/rest/git/refs#get-a-reference\",\"status\":\"404\"}",
+        "error_code": "NOT_FOUND",
+        "error_data": {
+          "message": "Not Found",
+          "documentation_url": "https://docs.github.com/rest/git/refs#get-a-reference",
+          "status": "404"
+        }
+      }
+    },
+    {
+      "path": "pulls?state=open&head=GodaPupa:lab/manual-shared-fixture-dependency-20260927&per_page=100",
+      "data": []
+    },
+    {
+      "path": "pulls?state=open&base=lab/manual-shared-fixture-dependency-20260927&per_page=100",
+      "data": []
+    },
+    {
+      "path": "actions/runs?head_sha=99f5611185d4338a45b60b988c9afe227bf74944&per_page=100",
+      "data": {
+        "total_count": 0,
+        "workflow_runs": []
+      }
+    },
+    {
+      "path": "git/commits/99f5611185d4338a45b60b988c9afe227bf74944",
+      "data": {
+        "sha": "99f5611185d4338a45b60b988c9afe227bf74944",
+        "node_id": "C_kwDOUSZvqdoAKDk5ZjU2MTExODVkNDMzOGE0NWI2MGI5ODhjOWFmZTIyN2JmNzQ5NDQ",
+        "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/99f5611185d4338a45b60b988c9afe227bf74944",
+        "html_url": "https://github.com/GodaPupa/argentum-batshit-test/commit/99f5611185d4338a45b60b988c9afe227bf74944",
+        "author": {
+          "name": "GodaPupa",
+          "email": "ericparanada@yahoo.com",
+          "date": "2026-09-27T03:08:34Z"
+        },
+        "committer": {
+          "name": "GodaPupa",
+          "email": "ericparanada@yahoo.com",
+          "date": "2026-09-27T03:08:34Z"
+        },
+        "tree": {
+          "sha": "ee14faf380805b04bfcccc722eb2b0e320ac2508",
+          "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/trees/ee14faf380805b04bfcccc722eb2b0e320ac2508"
+        },
+        "message": "Restore exact shared test fixture required by activation priority bank\n\nAdd only the unregistered testFixtures declaration imported by the preserved ActivationPriorityScenarioTest. Source bytes match shared donor ff34ac8f, Git blob c5a4d517. Keep the original 96-file candidate, all PR206 failures, and all production/card/policy/golden bytes unchanged. This uncompiled dependency correction is not complete receiving or gameplay admission.",
+        "parents": [
+          {
+            "sha": "60a9e20b61f63c4d42772ca8d122aabe68aabe2f",
+            "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/60a9e20b61f63c4d42772ca8d122aabe68aabe2f",
+            "html_url": "https://github.com/GodaPupa/argentum-batshit-test/commit/60a9e20b61f63c4d42772ca8d122aabe68aabe2f"
+          }
+        ],
+        "verification": {
+          "verified": false,
+          "reason": "unsigned",
+          "signature": null,
+          "payload": null,
+          "verified_at": null
+        }
+      }
+    }
+  ],
+  "creation": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "branch": "lab/manual-shared-fixture-dependency-20260927"
+    },
+    "isError": false
+  },
+  "post_publication": [
+    {
+      "path": "/git/ref/heads/lab/manual-shared-fixture-dependency-20260927",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Action completed."
+          }
+        ],
+        "structuredContent": {
+          "content": "{\"ref\":\"refs/heads/lab/manual-shared-fixture-dependency-20260927\",\"node_id\":\"REF_kwDOUSZvqdoAOHJlZnMvaGVhZHMvbGFiL21hbnVhbC1zaGFyZWQtZml4dHVyZS1kZXBlbmRlbmN5LTIwMjYwOTI3\",\"url\":\"https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/refs/heads/lab/manual-shared-fixture-dependency-20260927\",\"object\":{\"sha\":\"99f5611185d4338a45b60b988c9afe227bf74944\",\"type\":\"commit\",\"url\":\"https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/99f5611185d4338a45b60b988c9afe227bf74944\"}}",
+          "title": "manual-shared-fixture-dependency-20260927",
+          "modified_date": null,
+          "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/ref/heads/lab/manual-shared-fixture-dependency-20260927",
+          "display_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/ref/heads/lab/manual-shared-fixture-dependency-20260927",
+          "display_title": "manual-shared-fixture-dependency-20260927",
+          "structuredContent": {
+            "title": "manual-shared-fixture-dependency-20260927",
+            "content": "{\"ref\":\"refs/heads/lab/manual-shared-fixture-dependency-20260927\",\"node_id\":\"REF_kwDOUSZvqdoAOHJlZnMvaGVhZHMvbGFiL21hbnVhbC1zaGFyZWQtZml4dHVyZS1kZXBlbmRlbmN5LTIwMjYwOTI3\",\"url\":\"https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/refs/heads/lab/manual-shared-fixture-dependency-20260927\",\"object\":{\"sha\":\"99f5611185d4338a45b60b988c9afe227bf74944\",\"type\":\"commit\",\"url\":\"https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/99f5611185d4338a45b60b988c9afe227bf74944\"}}",
+            "display_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/ref/heads/lab/manual-shared-fixture-dependency-20260927"
+          }
+        },
+        "isError": false
+      }
+    },
+    {
+      "path": "/git/commits/99f5611185d4338a45b60b988c9afe227bf74944",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Action completed."
+          }
+        ],
+        "structuredContent": {
+          "content": "{\"sha\":\"99f5611185d4338a45b60b988c9afe227bf74944\",\"node_id\":\"C_kwDOUSZvqdoAKDk5ZjU2MTExODVkNDMzOGE0NWI2MGI5ODhjOWFmZTIyN2JmNzQ5NDQ\",\"url\":\"https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/99f5611185d4338a45b60b988c9afe227bf74944\",\"html_url\":\"https://github.com/GodaPupa/argentum-batshit-test/commit/99f5611185d4338a45b60b988c9afe227bf74944\",\"author\":{\"name\":\"GodaPupa\",\"email\":\"ericparanada@yahoo.com\",\"date\":\"2026-09-27T03:08:34Z\"},\"committer\":{\"name\":\"GodaPupa\",\"email\":\"ericparanada@yahoo.com\",\"date\":\"2026-09-27T03:08:34Z\"},\"tree\":{\"sha\":\"ee14faf380805b04bfcccc722eb2b0e320ac2508\",\"url\":\"https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/trees/ee14faf380805b04bfcccc722eb2b0e320ac2508\"},\"message\":\"Restore exact shared test fixture required by activation priority bank\\n\\nAdd only the unregistered testFixtures declaration imported by the preserved ActivationPriorityScenarioTest. Source bytes match shared donor ff34ac8f, Git blob c5a4d517. Keep the original 96-file candidate, all PR206 failures, and all production/card/policy/golden bytes unchanged. This uncompiled dependency correction is not complete receiving or gameplay admission.\",\"parents\":[{\"sha\":\"60a9e20b61f63c4d42772ca8d122aabe68aabe2f\",\"url\":\"https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/60a9e20b61f63c4d42772ca8d122aabe68aabe2f\",\"html_url\":\"https://github.com/GodaPupa/argentum-batshit-test/commit/60a9e20b61f63c4d42772ca8d122aabe68aabe2f\"}],\"verification\":{\"verified\":false,\"reason\":\"unsigned\",\"signature\":null,\"payload\":null,\"verified_at\":null}}",
+          "title": "99f5611185d4338a45b60b988c9afe227bf74944",
+          "modified_date": null,
+          "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/99f5611185d4338a45b60b988c9afe227bf74944",
+          "display_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/99f5611185d4338a45b60b988c9afe227bf74944",
+          "display_title": "99f5611185d4338a45b60b988c9afe227bf74944",
+          "structuredContent": {
+            "title": "99f5611185d4338a45b60b988c9afe227bf74944",
+            "content": "{\"sha\":\"99f5611185d4338a45b60b988c9afe227bf74944\",\"node_id\":\"C_kwDOUSZvqdoAKDk5ZjU2MTExODVkNDMzOGE0NWI2MGI5ODhjOWFmZTIyN2JmNzQ5NDQ\",\"url\":\"https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/99f5611185d4338a45b60b988c9afe227bf74944\",\"html_url\":\"https://github.com/GodaPupa/argentum-batshit-test/commit/99f5611185d4338a45b60b988c9afe227bf74944\",\"author\":{\"name\":\"GodaPupa\",\"email\":\"ericparanada@yahoo.com\",\"date\":\"2026-09-27T03:08:34Z\"},\"committer\":{\"name\":\"GodaPupa\",\"email\":\"ericparanada@yahoo.com\",\"date\":\"2026-09-27T03:08:34Z\"},\"tree\":{\"sha\":\"ee14faf380805b04bfcccc722eb2b0e320ac2508\",\"url\":\"https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/trees/ee14faf380805b04bfcccc722eb2b0e320ac2508\"},\"message\":\"Restore exact shared test fixture required by activation priority bank\\n\\nAdd only the unregistered testFixtures declaration imported by the preserved ActivationPriorityScenarioTest. Source bytes match shared donor ff34ac8f, Git blob c5a4d517. Keep the original 96-file candidate, all PR206 failures, and all production/card/policy/golden bytes unchanged. This uncompiled dependency correction is not complete receiving or gameplay admission.\",\"parents\":[{\"sha\":\"60a9e20b61f63c4d42772ca8d122aabe68aabe2f\",\"url\":\"https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/60a9e20b61f63c4d42772ca8d122aabe68aabe2f\",\"html_url\":\"https://github.com/GodaPupa/argentum-batshit-test/commit/60a9e20b61f63c4d42772ca8d122aabe68aabe2f\"}],\"verification\":{\"verified\":false,\"reason\":\"unsigned\",\"signature\":null,\"payload\":null,\"verified_at\":null}}",
+            "display_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/99f5611185d4338a45b60b988c9afe227bf74944"
+          }
+        },
+        "isError": false
+      }
+    },
+    {
+      "path": "/actions/runs?head_sha=99f5611185d4338a45b60b988c9afe227bf74944&per_page=100",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Action completed."
+          }
+        ],
+        "structuredContent": {
+          "content": "{\"total_count\":0,\"workflow_runs\":[]}",
+          "title": "runs",
+          "modified_date": null,
+          "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/runs?head_sha=99f5611185d4338a45b60b988c9afe227bf74944&per_page=100",
+          "display_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/runs?head_sha=99f5611185d4338a45b60b988c9afe227bf74944&per_page=100",
+          "display_title": "runs",
+          "structuredContent": {
+            "title": "runs",
+            "content": "{\"total_count\":0,\"workflow_runs\":[]}",
+            "display_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/runs?head_sha=99f5611185d4338a45b60b988c9afe227bf74944&per_page=100"
+          }
+        },
+        "isError": false
+      }
+    },
+    {
+      "path": "/pulls?state=open&head=GodaPupa:lab/manual-shared-fixture-dependency-20260927&per_page=100",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Action completed."
+          }
+        ],
+        "structuredContent": {
+          "content": "[]",
+          "title": "pulls",
+          "modified_date": null,
+          "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/pulls?state=open&head=GodaPupa:lab/manual-shared-fixture-dependency-20260927&per_page=100",
+          "display_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/pulls?state=open&head=GodaPupa:lab/manual-shared-fixture-dependency-20260927&per_page=100",
+          "display_title": "pulls",
+          "structuredContent": {
+            "title": "pulls",
+            "content": "[]",
+            "display_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/pulls?state=open&head=GodaPupa:lab/manual-shared-fixture-dependency-20260927&per_page=100"
+          }
+        },
+        "isError": false
+      }
+    },
+    {
+      "path": "/pulls?state=open&base=lab/manual-shared-fixture-dependency-20260927&per_page=100",
+      "result": {
+        "content": [
+          {
+            "type": "text",
+            "text": "Action completed."
+          }
+        ],
+        "structuredContent": {
+          "content": "[]",
+          "title": "pulls",
+          "modified_date": null,
+          "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/pulls?state=open&base=lab/manual-shared-fixture-dependency-20260927&per_page=100",
+          "display_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/pulls?state=open&base=lab/manual-shared-fixture-dependency-20260927&per_page=100",
+          "display_title": "pulls",
+          "structuredContent": {
+            "title": "pulls",
+            "content": "[]",
+            "display_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/pulls?state=open&base=lab/manual-shared-fixture-dependency-20260927&per_page=100"
+          }
+        },
+        "isError": false
+      }
+    }
+  ],
+  "scope": "One unchanged donor test-fixture dependency only; no qualification, compile, receiving, runtime, policy or gameplay admission."
+}

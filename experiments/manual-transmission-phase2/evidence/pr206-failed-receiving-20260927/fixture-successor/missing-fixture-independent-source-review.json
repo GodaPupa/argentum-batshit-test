@@ -1,0 +1,51 @@
+{
+  "schema": "manual-pr206-missing-fixture-independent-source-review-v1",
+  "reviewer": "/root/sphinx",
+  "verdict": "PASS_BOUNDED_ONE_FILE_SOURCE_CORRECTION",
+  "scope": "Static review of one exact donor test-fixture definition only; not compilation, full receiving repair, policy qualification, gameplay admission, GitHub approval, or publication/trigger authorization.",
+  "reviewed_parent": "60a9e20b61f63c4d42772ca8d122aabe68aabe2f",
+  "reviewed_parent_tree": "c29d399dc4e481179d48ff833af58ea44db1843f",
+  "donor": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+  "donor_tree": "88967f3a9ba0479661f02150f82ddcc9a2066e42",
+  "proposal": {
+    "path": "manual-shared-composition/pr206-discovery/correction-proposal/minimal-fixture-successor.json",
+    "sha256": "514051575aa520df438f5caa2bc717071ca58dc205ccfae8af4cf683256b277f",
+    "bytes": 1237
+  },
+  "source": {
+    "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/research/ferocity/FerocityOfTheHuntPrerelease.kt",
+    "sha256": "e4d4c081c89788af1fad06708a35ad447a93444b2fe4ba038131b7f7222bea8b",
+    "git_blob": "c5a4d517583f76042ebcbbe1b1c9ab855ca58a68",
+    "bytes": 2066
+  },
+  "proof": {
+    "path": "sphinx-audit/manual71-review/missing-fixture-independent-static-proof.json",
+    "sha256": "750aa627d3d9f59e9111f2b1115573afef5e69e24ad68ef089ac00e271769c05"
+  },
+  "observations": [
+    "Independently fetched immutable donor fixture and exact published receiver consumer. Local one-file overlay equals all 2066 donor bytes and declared SHA256/Git blob. Overlay contains exactly this one file.",
+    "The unchanged ActivationPriorityScenarioTest imports this val under the alias ferocityResearchFixture. Its local body equals published60a9 blob1f5e15c668e4e5ec4606a5190db53dcbe3fc6b50.",
+    "The fixture imports only11 existing SDK symbols. Independently fetched receiver and donor SDK tree records show all11 direct provider files byte-identical by Git blob; GrantKeyword and ModifyStats provider declarations were also directly read.",
+    "The entire SDK is not declared equivalent: receiver retains differing ObjectFilter and CardPredicate source. This limited provider mapping does not prove transitive runtime equivalence or compilation.",
+    "Receiver rules-engine/build.gradle.kts blobbd186f2dbcbb49b876706c9a1381f951e5521093 enables java-test-fixtures and testFixturesImplementation(project(\":mtg-sdk\")); no build-file change is required for this source placement.",
+    "No new production/catalog registration code is added. The existing unchanged ActivationPriorityScenarioTest explicitly registers this fixture in its local test registry; the proposal phrase 'No runtime card registration' is interpreted only as no production registry change.",
+    "No test names, case counts, frozen policies, decks, seeds, assertions, goldens, or production files change. Prerelease comments are retained historical source attribution, not a new current-legality certification."
+  ],
+  "prior_review_correction": {
+    "path": "sphinx-audit/manual71-review/static-dependency-review-correction-pr206.json",
+    "sha256": "5eafd82ecda6fdfdae2259be539c8b820560857fe28503d8656d37c6c785ae8d",
+    "text": "My earlier source closure review missed this imported fixture. The original review remains preserved and its incomplete closure claim is corrected by this addendum and this narrow successor review."
+  },
+  "limits": [
+    "No Kotlin compile, JVM invocation, repository fixture, gameplay, or official allocation executed.",
+    "Other observed PR206 assertion failures and source-binding failures remain open; this file does not constitute a complete receiver repair.",
+    "Root must independently review the exact publication/trigger scope before any ref update or qualification."
+  ],
+  "executed": {
+    "static_hashing_and_source_reads": true,
+    "repository_tests": 0,
+    "jvm": 0,
+    "official_allocations": 0
+  },
+  "authorship": "Reviewer did not author the fixture or staged successor; reviewer authored earlier independent71 review and its subsequent limitation correction."
+}

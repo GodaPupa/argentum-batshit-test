@@ -1,0 +1,15 @@
+{
+  "content": "{\n  \"schema\": \"manual-shared-missing-test-fixture-provenance-v1\",\n  \"author\": \"Manual source owner (/root/manual)\",\n  \"source\": {\n    \"commit\": \"99f5611185d4338a45b60b988c9afe227bf74944\",\n    \"tree\": \"ee14faf380805b04bfcccc722eb2b0e320ac2508\",\n    \"parent\": \"60a9e20b61f63c4d42772ca8d122aabe68aabe2f\",\n    \"parent_tree\": \"c29d399dc4e481179d48ff833af58ea44db1843f\",\n    \"delta_files\": 1,\n    \"path\": \"rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/research/ferocity/FerocityOfTheHuntPrerelease.kt\",\n    \"bytes\": 2066,\n    \"git_blob\": \"c5a4d517583f76042ebcbbe1b1c9ab855ca58a68\",\n    \"sha256\": \"e4d4c081c89788af1fad06708a35ad447a93444b2fe4ba038131b7f7222bea8b\"\n  },\n  \"donor\": {\n    \"commit\": \"ff34ac8fa2efbd41f233e877cb2908c2cab5929a\",\n    \"tree\": \"88967f3a9ba0479661f02150f82ddcc9a2066e42\",\n    \"same_path_same_bytes\": true\n  },\n  \"reason\": \"PR206 selected engine fixtures could not compile: unchanged ActivationPriorityScenarioTest imports this exact declaration as ferocityResearchFixture. Restore only the missing test fixture; preserve all96 prior source files and failed attempts.\",\n  \"registration\": \"No new production/catalog registration code. The existing consumer retains its explicit local test registry registration.\",\n  \"independent_review\": {\n    \"reviewer\": \"Actual non-author agent /root/sphinx\",\n    \"record_sha256\": \"c8afbb4f10b7b15175d0169db35cbf95d6003d9788ce6b523eda9781885fe958\",\n    \"local_record\": \"sphinx-audit/manual71-review/missing-fixture-independent-source-review.json\",\n    \"static_proof_sha256_prefix\": \"750aa627\",\n    \"provider_bodies_sha256_prefix\": \"36ce2339\",\n    \"scope\": \"Exact staged2066 donor bytes, unchanged consumer, one-file overlay and11 direct SDK provider blobs. Whole SDK identity is not claimed; receiving ObjectFilter/CardPredicate extensions remain.\",\n    \"attribution\": \"This author record cites the actual reviewer-supplied digest and disposition. It is not a replacement review or signed GitHub approval; complete review/proof bytes remain separately retained for archival publication.\"\n  },\n  \"limits\": [\n    \"Uncompiled source correction only; no workflow or engine fixture has run on99f5611.\",\n    \"Does not close the165 observed broad CI failures or stale priority source pin.\",\n    \"The proposed1058-JVM/80-Python control remains held and unactivated.\",\n    \"No hardware, policies, goldens, official claims, seeds, allocations, outcomes or gameplay admission changed.\",\n    \"No existing Manual/PR206/PR208 source ref has been moved.\"\n  ],\n  \"publication_state\": \"Unreferenced Git source/provenance objects prepared for root final review. Inert branch creation requires completed exact trigger/ref preflight and root release.\"\n}\n",
+  "response": {
+    "content": [
+      {
+        "type": "text",
+        "text": "Action completed."
+      }
+    ],
+    "structuredContent": {
+      "sha": "568e6bbcdb2e0dc4a20dd55e85ed26592b4199ac"
+    },
+    "isError": false
+  }
+}

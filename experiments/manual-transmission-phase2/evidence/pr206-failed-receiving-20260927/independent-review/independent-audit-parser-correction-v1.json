@@ -1,0 +1,10 @@
+{
+  "schema": "independent-pr206-review-parser-location-correction-v1",
+  "scope": "Read-only artifact audit, no repository fixture/JVM/event.",
+  "failure": "KeyError: source/.github/workflows/manual-transmission-phase2-capability.yml absent from original nested source bundle.",
+  "reason": "Reviewer initially assumed workflow files were included in the source subset; actual original omitted these paths.",
+  "old_script_sha256": "1bcb0d163a64c42f300cf8f8c8d13107d6bba20bb449f90b9a42775e9ddec899",
+  "new_script_sha256": "016accad21f94c69192209139dc6b1079f05d6f54a51e231759394ad0ccfac53",
+  "correction": "Verify separately source-recovered workflow files against exact committed Git blobs; never describe them as original nested members.",
+  "original_artifacts_changed": false
+}
