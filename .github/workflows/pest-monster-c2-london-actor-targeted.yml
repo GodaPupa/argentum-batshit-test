@@ -1,0 +1,67 @@
+name: Pest Monster C2 London actor targeted receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-c2-london-actor-targeted.yml"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganObservationTest.kt"
+      - "docs/experiments/pest-control/tier-one-monster-c2-london-seam-receiving.json"
+
+permissions:
+  contents: read
+
+jobs:
+  targeted-software-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind frozen source and capture provenance
+        run: |
+          mkdir -p build/reports/pest-c2-london
+          {
+            git rev-parse HEAD
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganObservationTest.kt
+            git status --porcelain
+          } > build/reports/pest-c2-london/source.txt
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt)" = "25a166415fe29189802940fc76f6f283da686072"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganObservationTest.kt)" = "4a55adc2174995906876bc04f836f77eb05ce6f1"
+      - name: Execute two fresh deterministic actor cases
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class ActorMulliganObservationTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/pest-c2-london/gradle.log
+      - name: Check original JUnit cases
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          paths=glob.glob("gym/build/test-results/test/TEST-*ActorMulliganObservationTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          cases=root.findall(".//testcase")
+          expected=[
+            "London actor follows both seats, then exposes exact own visible bottom handles",
+            "London projection rejects wrong actor and incomplete menu",
+          ]
+          assert len(cases)==2, [(c.get("name"),c.get("classname")) for c in cases]
+          assert sorted(c.get("name") for c in cases)==sorted(expected), [c.get("name") for c in cases]
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-london-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-c2-london/
+            gym/build/test-results/test/TEST-*ActorMulliganObservationTest.xml
+            docs/experiments/pest-control/tier-one-monster-c2-london-seam-receiving.json
+          if-no-files-found: error
+          retention-days: 90
