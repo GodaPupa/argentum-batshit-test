@@ -68,7 +68,14 @@ class DecisionEnricher(private val cardRegistry: CardRegistry) {
             is SelectCardsDecision -> decision.copy(
                 cardInfo = decision.cardInfo?.mapValues { (entityId, cardInfo) ->
                     cardInfo.copy(imageUri = imageUriFor(state, entityId))
-                }
+                },
+                // Never forward a stale or non-actor order proof to a client.
+                authorizedLibrarySearch = decision.authorizedLibrarySearch?.takeIf { proof ->
+                    state.pendingDecision?.id == decision.id &&
+                        state.actorFor(decision.playerId) == viewerId &&
+                        proof.decisionId == decision.id && proof.chooserId == decision.playerId &&
+                        proof.actorId == viewerId && proof.offeredHandles == decision.options
+                },
             )
             is OrderObjectsDecision -> decision.copy(
                 cardInfo = decision.cardInfo?.mapValues { (entityId, cardInfo) ->

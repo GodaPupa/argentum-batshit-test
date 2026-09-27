@@ -5,7 +5,10 @@ import com.wingedsheep.engine.core.*
 /** Change only the browser-facing correlation handle; the engine decision remains untouched. */
 internal fun PendingDecision.withClientRoutingId(id: String): PendingDecision = when (this) {
     is ChooseTargetsDecision -> copy(id = id)
-    is SelectCardsDecision -> copy(id = id)
+    is SelectCardsDecision -> copy(
+        id = id,
+        authorizedLibrarySearch = authorizedLibrarySearch?.copy(decisionId = id),
+    )
     is YesNoDecision -> copy(id = id)
     is BatchYesNoDecision -> copy(id = id)
     is ChooseModeDecision -> copy(id = id)
