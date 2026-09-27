@@ -7,6 +7,7 @@ import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.effects.EffectExecutor
 import com.wingedsheep.engine.handlers.effects.DamageUtils.dealDamageToTarget
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.state.components.battlefield.LastKnownPermanentComponent
 import com.wingedsheep.sdk.scripting.effects.DealDamageEffect
 import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import kotlin.reflect.KClass
@@ -47,6 +48,33 @@ class DealDamageExecutor(
             context.sourceId
         }
 
+        // The ability's source is the object that created it, not a later object with the
+        // same EntityId (CR 113.7a, 400.7, 608.2h). While that original object is present,
+        // damage reads its current projected characteristics, including changes since
+        // activation. Otherwise use the snapshot taken when it departed. In particular,
+        // deathtouch and lifelink survive departure (CR 702.2e, 702.15c), not a return.
+        val origin = context.objectReferences.origin?.takeIf { it.entityId == sourceId }
+        val matchingSnapshot = listOfNotNull(
+            context.lastKnownSourceSnapshot,
+            sourceId?.let { state.getEntity(it)?.get<LastKnownPermanentComponent>()?.snapshot }
+        ).firstOrNull { it.objectRef != null && it.objectRef == origin }
+        // This capture contract is for battlefield sources. Cycling/channel abilities can
+        // originate in a hand or graveyard and have no battlefield snapshot to require.
+        val battlefieldSource = context.sourceBattlefieldTimestamp != null || matchingSnapshot != null
+        val departed = battlefieldSource && origin != null && !state.isCurrentObject(origin)
+        val sourceSnapshot = if (departed) {
+            checkNotNull(matchingSnapshot) {
+                // Missing historical engine data is not a legal partial-resolution no-op.
+                "Missing last-known information for departed damage source $origin"
+            }
+        } else null
+        if (sourceSnapshot != null) {
+            checkNotNull(sourceSnapshot.colors) { "Missing colors for departed damage source $origin" }
+            checkNotNull(sourceSnapshot.typeLine) { "Missing types for departed damage source $origin" }
+            checkNotNull(sourceSnapshot.controllerId) { "Missing controller for departed damage source $origin" }
+            checkNotNull(sourceSnapshot.ownerId) { "Missing owner for departed damage source $origin" }
+        }
+
         // "Each opponent and planeswalker it has dealt damage to this game" (The Fallen): a set
         // that mixes players and permanents, read off the damage source's accumulated memory.
         // Empty is a legal no-op, not an error — a Fallen that has damaged nobody yet does nothing.
@@ -62,7 +90,8 @@ class DealDamageExecutor(
             var newState = readyState
             val events = mutableListOf<EngineGameEvent>()
             for (recipientId in recipients) {
-                val result = dealDamageToTarget(newState, recipientId, amount, sourceId, effect.cantBePrevented)
+                val result = dealDamageToTarget(newState, recipientId, amount, sourceId, effect.cantBePrevented,
+                    sourceSnapshot = sourceSnapshot)
                 newState = result.newState
                 events.addAll(result.events)
             }
@@ -86,7 +115,8 @@ class DealDamageExecutor(
             var newState = readyState
             val events = mutableListOf<EngineGameEvent>()
             for (playerId in playerIds) {
-                val result = dealDamageToTarget(newState, playerId, amount, sourceId, effect.cantBePrevented)
+                val result = dealDamageToTarget(newState, playerId, amount, sourceId, effect.cantBePrevented,
+                    sourceSnapshot = sourceSnapshot)
                 newState = result.newState
                 events.addAll(result.events)
             }
@@ -108,7 +138,8 @@ class DealDamageExecutor(
 
         return dealDamageToTarget(
             readyState, targetId, amount, sourceId, effect.cantBePrevented,
-            excessToController = effect.excessToController
+            excessToController = effect.excessToController,
+            sourceSnapshot = sourceSnapshot
         )
     }
 

@@ -47,9 +47,11 @@ class TargetEnumerationUtils(
             is AnyTarget -> {
                 val creatures = findValidPermanentTargets(state, playerId, TargetFilter.Creature, sourceId)
                 val planeswalkers = findValidPermanentTargets(state, playerId, TargetFilter.Planeswalker, sourceId)
+                val battles = findValidPermanentTargets(state, playerId, TargetFilter.Permanent, sourceId)
+                    .filter { state.projectedState.isBattle(it) }
                 val players = state.turnOrder.filter { state.hasEntity(it) && !playerHasShroud(state, it) &&
                     !playerHasHexproofAgainst(state, it, playerId) && !playerHasProtectionFrom(state, it, sourceId, playerId) }
-                (creatures + planeswalkers).distinct() + players
+                (creatures + planeswalkers + battles).distinct() + players
             }
             is TargetCreatureOrPlayer -> {
                 val creatures = findValidPermanentTargets(state, playerId, TargetFilter.Creature, sourceId)

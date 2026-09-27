@@ -870,18 +870,21 @@ class ModalAndCloneContinuationResumer(
         )
         val triggerEvents = listOf(zoneChangeEvent)
         val triggers = services.triggerDetector.detectTriggers(newState, triggerEvents)
+        // Detection used the actual entry-time observers above. Publish this exact occurrence
+        // once; the next detector must still see every distinct event from an automatic tail.
+        val entryEvents = syntheticRiotEvents + zoneChangeEvent.copy(entryTriggersAlreadyProcessed = true)
         if (triggers.isNotEmpty()) {
             val triggerResult = services.triggerProcessor.processTriggers(newState, triggers)
             if (triggerResult.isPaused) {
                 return ExecutionResult.propagatePause(
                     triggerResult.state,
-                    syntheticRiotEvents + triggerResult.events
+                    entryEvents + triggerResult.events
                 )
             }
-            return checkForMore(triggerResult.newState, syntheticRiotEvents + triggerResult.events)
+            return checkForMore(triggerResult.newState, entryEvents + triggerResult.events)
         }
 
-        return checkForMore(newState, syntheticRiotEvents)
+        return checkForMore(newState, entryEvents)
     }
 
     /**
@@ -1508,6 +1511,7 @@ class ModalAndCloneContinuationResumer(
             controllerId = continuation.controllerId,
             count = 1,
             auraHostId = hostId,
+            beforeEntry = continuation.beforeEntry,
         )
 
         val remaining = continuation.remaining - 1
@@ -1537,6 +1541,7 @@ class ModalAndCloneContinuationResumer(
             controllerId = continuation.controllerId,
             remaining = remaining,
             cardRegistry = services.cardRegistry,
+            beforeEntry = continuation.beforeEntry,
         )
         val events = created.events.toList() + next.events.toList()
         if (next.pendingDecision == null) return checkForMore(next.state, events)

@@ -606,7 +606,9 @@ data class CreateTokenCopyAuraHostContinuation(
     val controllerId: EntityId,
     val auraDefinitionId: String,
     val auraName: String,
-    val remaining: Int
+    val remaining: Int,
+    /** Original batch evaluation state; excludes resolution frames, never used to resume execution. */
+    val beforeEntry: com.wingedsheep.engine.state.GameState,
 ) : AnswerContinuation
 
 /**
@@ -631,7 +633,9 @@ data class CreateTokenCopyAuraHostContinuation(
  * context, both re-used so the copy's source/target still resolves on resume — mirroring
  * [CreateTokenCopyAuraHostContinuation].
  *
- * @property remaining how many more token copies are owed (always > 0 while this frame is live).
+ * @property remaining how many more token copies are owed; zero retains final paused-token publication.
+ * @property beforeEntry the original batch evaluation state, without executable continuation frames.
+ *   It supplies entry predicates only and must never replace the live resolution state.
  */
 @Serializable
 data class CreateTokenCopyRemainingContinuation(
@@ -639,6 +643,11 @@ data class CreateTokenCopyRemainingContinuation(
     val context: com.wingedsheep.engine.handlers.EffectContext,
     val controllerId: EntityId,
     val remaining: Int,
+    /** Null retains the legacy path; a present list is the exact already-chosen remaining batch. */
+    val attackingDefenders: List<EntityId?>? = null,
+    val createdTokens: List<EntityId> = emptyList(),
+    /** Original pre-entry battlefield/history, retained unchanged across every sibling choice. */
+    val beforeEntry: com.wingedsheep.engine.state.GameState,
 ) : AutomaticContinuation
 
 /**
