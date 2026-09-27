@@ -1,0 +1,850 @@
+[
+  {
+    "artifact": "priority-original.zip",
+    "bytes": 799998,
+    "sha256": "c19b8a69ca49bcfea141a0d38ed33e55ffd0f6226b4fee19dca2b0c8c082f6e2",
+    "source_commit": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+    "source_tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+    "bank": "priority",
+    "case_count": 220,
+    "stages": [
+      {
+        "stage": "priority",
+        "class": "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+        "cases": 17,
+        "xml_sha256": "c90f6e5aa94706f12cc50bed5bb22dee2de9f14fe1ea36e1270f8c047f6dc8a1",
+        "timestamp": "2026-09-27T01:02:07.408Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "515a2da89211cb1cad0278bcd7c8c365cc611ab9e643d1fa05fcec670060ad63"
+      },
+      {
+        "stage": "stack-war",
+        "class": "com.wingedsheep.engine.scenarios.StackWarTest",
+        "cases": 15,
+        "xml_sha256": "6cd5a4d47656788552ce652109614d626191456211850a2c86b0315c8f09f34c",
+        "timestamp": "2026-09-27T01:02:55.851Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-2.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "b178555b1d34f50082caaf446a21e73849aa5ccfb72fcb71b7fc8f682efe633e"
+      },
+      {
+        "stage": "continuations",
+        "class": "com.wingedsheep.engine.scenarios.ContinuationSystemTest",
+        "cases": 4,
+        "xml_sha256": "3013e8adbceb0036dbf1ef5c4929a4d0179b118bceccbe89eef4ffb21f56ef89",
+        "timestamp": "2026-09-27T01:03:36.744Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-3.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "2a3606f510de242880a1e9e62d5886900411a02514b4062da8cabb400e9c737e"
+      },
+      {
+        "stage": "ordinary-cleanup",
+        "class": "com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest",
+        "cases": 2,
+        "xml_sha256": "84ea6a631ec24b6e8b38e5b338267c55b585c6bed006dc57c6f4d7b03d46db26",
+        "timestamp": "2026-09-27T01:04:17.906Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-4.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "14c59905318796767bb6f850ff3cf9406a10829b76ccf6d4e86a5a0d49d4a111"
+      },
+      {
+        "stage": "legend-rule",
+        "class": "com.wingedsheep.engine.scenarios.LegendRuleTest",
+        "cases": 4,
+        "xml_sha256": "9e23c782e598da4ae02203e6dc43ac1dc306f1f743539029f18895e7f12da00e",
+        "timestamp": "2026-09-27T01:04:56.759Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-5.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "5db56e3ed33f5872b8ebeeb25005f1d9baf8b3318e818d1ef5e08cdb3731422b"
+      },
+      {
+        "stage": "leave-game",
+        "class": "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+        "cases": 16,
+        "xml_sha256": "5d45c3586555b8a44c0ab6776cc6353ce8ff68527964b1888ed3e9f701de6e0c",
+        "timestamp": "2026-09-27T01:05:39.737Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-6.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "c947fe451bcf9d536797a2e4a692812157cb1cd47cf9c37973823e5ff66109a7"
+      },
+      {
+        "stage": "team-priority",
+        "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+        "cases": 12,
+        "xml_sha256": "89f83c614930465cd492654dca0389a961fb18ee11dc42da5891143f6bf296c7",
+        "timestamp": "2026-09-27T01:05:48.645Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-7.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "814b620497963896150746809f5f520ff511d8b9baf4ea1fd6ff650c38b0f5d9"
+      },
+      {
+        "stage": "flash-permission",
+        "class": "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+        "cases": 9,
+        "xml_sha256": "20a387dd4caa1bed4b41d9bcb9cea7ef999100fd7dd435d9945508dd76c767f7",
+        "timestamp": "2026-09-27T01:05:57.792Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-8.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "8493fdbec2f7d19765d877f209c8a59cb8d562b6d65a4fc1c034ecf991e79562"
+      },
+      {
+        "stage": "legacy-traces",
+        "class": "com.wingedsheep.engine.state.SuspensionTraceTest",
+        "cases": 5,
+        "xml_sha256": "b68e5038a974c2693802e681f1173711b2a29ed14bf03d4d76b79c29c712d16c",
+        "timestamp": "2026-09-27T01:06:38.850Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-9.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "a3537c53372b08ba9e9d472b07f969f74e7e38f3e25c8fedd7e69c322c00dbd1"
+      },
+      {
+        "stage": "legacy-serialization",
+        "class": "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+        "cases": 19,
+        "xml_sha256": "45883a52eff06ca137d3adbab65a4a1442dea741221acb9649e559cafa28eff0",
+        "timestamp": "2026-09-27T01:07:22.693Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-10.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "142aa11bcc0d4d8b2673e62b09c776bd43d1bd1403a898a01e98c19666de7269"
+      },
+      {
+        "stage": "circle-solace",
+        "class": "com.wingedsheep.engine.scenarios.CircleOfSolaceTest",
+        "cases": 4,
+        "xml_sha256": "854671277e486ccc9ea8370a1c9dcf7433f4046160621fe3d46c24478d871abe",
+        "timestamp": "2026-09-27T01:08:29.481Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-11.log",
+        "fresh_test_tasks": [
+          "> Task :mtg-sets:2000-2002:tests:test",
+          "> Task :mtg-sets:2000-2002:tests:test"
+        ],
+        "actual_current_test_body_sha256": "5889ed7df46d7b45ce265d18d271aa08df7015f4f748c3f6dd35c10451cd1011"
+      },
+      {
+        "stage": "scarecrow",
+        "class": "com.wingedsheep.engine.scenarios.ScarecrowScenarioTest",
+        "cases": 4,
+        "xml_sha256": "07af2ec4a64c6f222ddae4556c08f60858d5fa5bb24fec02e673af8508647322",
+        "timestamp": "2026-09-27T01:09:20.383Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-12.log",
+        "fresh_test_tasks": [
+          "> Task :mtg-sets:1993-1999:tests:test",
+          "> Task :mtg-sets:1993-1999:tests:test"
+        ],
+        "actual_current_test_body_sha256": "32d0774fe1edba0d28442f50ce6b1f11b0d1e52bdfa9a1ee9e33a5c7d6f397c5"
+      },
+      {
+        "stage": "abundant-maw",
+        "class": "com.wingedsheep.engine.scenarios.AbundantMawScenarioTest",
+        "cases": 2,
+        "xml_sha256": "6b69e584f7484d49e3f249889a3369eba00fd6bb77f677097c86b2455202972d",
+        "timestamp": "2026-09-27T01:09:54.131Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-13.log",
+        "fresh_test_tasks": [
+          "> Task :mtg-sets:2008-2016:tests:test",
+          "> Task :mtg-sets:2008-2016:tests:test"
+        ],
+        "actual_current_test_body_sha256": "b2115113f3911b95f553e46d0460d8e80783c7865205fc9e890cc4defa7519c1"
+      },
+      {
+        "stage": "spell-queller",
+        "class": "com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest",
+        "cases": 4,
+        "xml_sha256": "c191415aa9529a8f93461bd8f7cabc244c8b0c160f00617f6a7a115d9d2fe7e4",
+        "timestamp": "2026-09-27T01:10:16.105Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-14.log",
+        "fresh_test_tasks": [
+          "> Task :mtg-sets:2008-2016:tests:test",
+          "> Task :mtg-sets:2008-2016:tests:test"
+        ],
+        "actual_current_test_body_sha256": "34e6e79abf33fb3e431919a4fbaa2449c4280d485376f56571c94a7cd9d09289"
+      },
+      {
+        "stage": "mauler",
+        "class": "com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest",
+        "cases": 3,
+        "xml_sha256": "5cf64eb5f7a33f5a83bc4fb6e95878fe5c2eda9310db6ff6e220e2d1dd9c4e9c",
+        "timestamp": "2026-09-27T01:10:37.809Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-15.log",
+        "fresh_test_tasks": [
+          "> Task :mtg-sets:2008-2016:tests:test",
+          "> Task :mtg-sets:2008-2016:tests:test"
+        ],
+        "actual_current_test_body_sha256": "50abd1af867c13c5eb0a0011929650238e458c4c83e925397c60b791ed391af9"
+      },
+      {
+        "stage": "ai-decision-trace",
+        "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+        "cases": 7,
+        "xml_sha256": "8f0df072c7b98222c1d57ee252f969f7de773034186d82a0d956ce4e200e2803",
+        "timestamp": "2026-09-27T01:11:28.482Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-16.log",
+        "fresh_test_tasks": [
+          "> Task :ai:test",
+          "> Task :ai:test"
+        ],
+        "actual_current_test_body_sha256": "650deed7e9b3b9100ccfa69e73d20d0ee5bf601ed87c240b6d727f74c4b65a57"
+      },
+      {
+        "stage": "cast-sba",
+        "class": "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+        "cases": 12,
+        "xml_sha256": "32653cdf3dfaad2cb8bfe1e56c81f7041f7b2fa4ec5d30095676ea2c9f934a48",
+        "timestamp": "2026-09-27T01:11:51.715Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-17.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "9d44ddce1bd1e9b5d3baaf44b28df9ee427f61e039485f98eda88cbb71caf154"
+      },
+      {
+        "stage": "death-trigger",
+        "class": "com.wingedsheep.engine.scenarios.DeathTriggerTest",
+        "cases": 4,
+        "xml_sha256": "7e9d4615f065f28d4200bbd1350352345090f79b4b13a7173269fdb4e4e4b1bb",
+        "timestamp": "2026-09-27T01:12:33.036Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-18.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "ab620239c070d78af59ea9c935a2c2caf8ca9fc11faa96b122195caca839bfef"
+      },
+      {
+        "stage": "krarks-thumb",
+        "class": "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
+        "cases": 5,
+        "xml_sha256": "6dde824c5cdddc17cc574e29e9e2365f1da68af4dc4cfc7c9d3e1ba27eee2886",
+        "timestamp": "2026-09-27T01:13:32.676Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-19.log",
+        "fresh_test_tasks": [
+          "> Task :mtg-sets:2003-2007:tests:test",
+          "> Task :mtg-sets:2003-2007:tests:test"
+        ],
+        "actual_current_test_body_sha256": "dbdcefdd6611f55cf85ba428a9807b5a7df2b57914fdf0b15e6175e71626caf3"
+      },
+      {
+        "stage": "prismari",
+        "class": "com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest",
+        "cases": 3,
+        "xml_sha256": "74c3ac74ce4d8d57baf99aa6a88f4dc27128cc302852e74e1bede29cf8e39c8e",
+        "timestamp": "2026-09-27T01:14:17.495Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-20.log",
+        "fresh_test_tasks": [
+          "> Task :mtg-sets:2026:tests:test",
+          "> Task :mtg-sets:2026:tests:test"
+        ],
+        "actual_current_test_body_sha256": "bcfff1970fe0c008d33e1c9b2c226226a0e6cd6d1870c19d10842c7a32155eed"
+      },
+      {
+        "stage": "free-cast",
+        "class": "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+        "cases": 8,
+        "xml_sha256": "95cfe1f600de78064fdc5d4c406ab245f381c3ff3b8b2c9c8ee04224e691031e",
+        "timestamp": "2026-09-27T01:14:40.695Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-21.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "28580979cb66d5c8c29704eae477921db9708e4f9efb5e56323ddb520830de62"
+      },
+      {
+        "stage": "modal-cost",
+        "class": "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+        "cases": 8,
+        "xml_sha256": "3e2f65848e49a5cf8578f3c8d2e34d8a20d98a20c1dc73487c2e6a58bd4d5453",
+        "timestamp": "2026-09-27T01:15:21.019Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-22.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "7a885c085ea11702eb371c5c8f50125b887dc179b4b17aa9924c7f2d9272d9c8"
+      },
+      {
+        "stage": "modal-cost-enumeration",
+        "class": "com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest",
+        "cases": 2,
+        "xml_sha256": "0eb91edd8634df46c81ca09755b80dcf689cf8b0ff7d3e75792dd70b3d6fea2a",
+        "timestamp": "2026-09-27T01:16:00.873Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-23.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "a50878ae8a9247f5ba043390a111a26bdce3c90699164f366f2bb45346022e10"
+      },
+      {
+        "stage": "reveal-cost",
+        "class": "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+        "cases": 10,
+        "xml_sha256": "b034a440f5dca7f9c0d01c7b22029734e946d9069e6cbbc4b85a7982c5046a9a",
+        "timestamp": "2026-09-27T01:16:43.940Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-24.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "675222c58b2b3071914e3bb9b54efd135876e3c6cc38b7b8ecf1f251b4a13c32"
+      },
+      {
+        "stage": "commander-choice",
+        "class": "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+        "cases": 17,
+        "xml_sha256": "67819fd8e4a176780f4f9fa7ee093de00f819d4b245ae6b20683f9af84b6b400",
+        "timestamp": "2026-09-27T01:17:23.828Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-25.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "48a16c068191e4f88004e19eb8a6ba480a74c841d6f792355402e2af488d0455"
+      },
+      {
+        "stage": "team-loss",
+        "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+        "cases": 10,
+        "xml_sha256": "104d102e1608becb2e4afada47af0a123b0e1d732f6b27433766f4c5aa17960c",
+        "timestamp": "2026-09-27T01:17:29.797Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-26.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "354c18023186b1f247519b34fb382a9910600e53bc9a35cc12c49ba3564e1f04"
+      },
+      {
+        "stage": "team-versus-team",
+        "class": "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+        "cases": 14,
+        "xml_sha256": "9df158db095237face094a7aa384a90f432871a9a76a6d2583bef540127184cb",
+        "timestamp": "2026-09-27T01:18:06.652Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-27.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "97884dc1e62bc83bdc2f80f104857fe8019d32d7077769f0f7f04226f0316fa8"
+      }
+    ],
+    "command_count": 27,
+    "source_pin_count": 324,
+    "all_raw_xml_cases_pass_no_skip": true,
+    "official_games": 0,
+    "scope": "SOURCE_AUTHOR_RAW_COMPONENT_AUDIT_NOT_COMPLETE_R1_ADMISSION",
+    "test_source_independent_live_refetch_count": 27,
+    "source_pin_scope": "All324 archived pins equal independently fetched current immutable manifest; all bank test-source bytes separately refetched and hashed. This is not324 fresh production body fetches.",
+    "command_workers": [
+      {
+        "command": "command-1.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "1835dc9be5daf953633524e0ebf71805af16926805b72b6b0da0f13f6033fb38"
+      },
+      {
+        "command": "command-10.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "4638462f5b90914e191c61e91e5449e2ecb13434224b672e4be38f21c0d61bf5"
+      },
+      {
+        "command": "command-11.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "5033c0bc170fb53adf0026ab2b976953d35ec54d8d5b5ce8dffd80e8d32e4b01"
+      },
+      {
+        "command": "command-12.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "6f3fb3bdb8638427bf62ac9ca25b1335670d8fbd3a0cbdf8aab7bcd84e12855d"
+      },
+      {
+        "command": "command-13.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "f0189bf8e83930bcf0a9e04ca356083fbcca5becc64288a00afbffaad2e0391d"
+      },
+      {
+        "command": "command-14.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "b0b91ee5399188e4725d00ddacd91bb2372aade1d84dab0408ab0eedfebbadea"
+      },
+      {
+        "command": "command-15.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "888b167fd59d4dee470a83911662f6dcda6a6981c2263ea6fd299baff078045f"
+      },
+      {
+        "command": "command-16.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "9a3bd69d925458d3211494190bb57e9710b8dca7a6ee021ccf5f0220ae8d9aab"
+      },
+      {
+        "command": "command-17.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "933b0f2d308e5d52df77cc39e0b4febcd10c19d9f07d79db7de08ae7c3403bb5"
+      },
+      {
+        "command": "command-18.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "36e30a4fe605cb18cc3a2b72682a8d2ca01b4b5978060df2e445a1ff166ac1bd"
+      },
+      {
+        "command": "command-19.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "d7b6bcfc2756859b71260d52471d1288371644f0e5cb507e464e7229e11700eb"
+      },
+      {
+        "command": "command-2.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "a0003a2ce8ca2c1d60d8ef82a3d61e2bf9f01b7549a5a98d74b9c6b29796c2e2"
+      },
+      {
+        "command": "command-21.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "68c55437027398fa6ad2a8dd795648a2d96160aa6af41fef6280270810d2ccfe"
+      },
+      {
+        "command": "command-20.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "3b526bcc3ad295cdf36c5cdb6b47a9cbcc88d70922de78da4f3834d08c7d4954"
+      },
+      {
+        "command": "command-22.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "c31aff6d1e3196327a8ad1d634c5a085aea932aaccd97282605cf0cd3d0055d7"
+      },
+      {
+        "command": "command-23.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "8b1cb530edbe291276aa7b5cadd39db973469f5c0aa5d934cf203a3bbe27cba0"
+      },
+      {
+        "command": "command-25.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "19e228e72a59a3549e1064eef271cc813aa7cc3729778321c5b66c131c68fde6"
+      },
+      {
+        "command": "command-24.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "aa47ae6e9141c503a2e9ac955f9afa929b82efb62a66be1ce93979456bf2ebe3"
+      },
+      {
+        "command": "command-26.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "3f8602e0ad84c658e3297485ac80b81422e8e4365df7659ff87e7cdca45b618f"
+      },
+      {
+        "command": "command-27.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "154d007e60cd6e8f86b11c95ba5edf0d5bc3dd4eeec2a584637b8fda991ca05b"
+      },
+      {
+        "command": "command-3.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "fb70e4fe6b515f85aa9cfe30ba006dc66c381029a09db1a650a85602b6086470"
+      },
+      {
+        "command": "command-4.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "bd07124f49f53479ec50144a53e7f7583ef8c5492a9919b01f53bf82125e3af4"
+      },
+      {
+        "command": "command-5.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "be8e978e6dbce5008dd42c9b8bc94c14b11ad9bd70550cd3655b3d952ff7cc6d"
+      },
+      {
+        "command": "command-6.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "6946d915eb19f124e4fc9bbad5095e59a7eb6019daec4bc5555be2398e14940b"
+      },
+      {
+        "command": "command-7.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "f72370423dd2af3a100b51cb5c18300a9a05f4bcc00804ecc93ff766c43b7d13"
+      },
+      {
+        "command": "command-8.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "94d1a4faa769433988fbfe2c5a23d516251a7d610a16b4ee26cf31be082fd5fd"
+      },
+      {
+        "command": "command-9.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "6ee83daea3bb491e23709ed9adcd636b21e95467b4efa976ba5b365748f9b6c4"
+      }
+    ]
+  },
+  {
+    "artifact": "cast-original.zip",
+    "bytes": 592289,
+    "sha256": "a23b306188b74a7067f02ecc7bbc9898128057ae57842f81832114b465500c70",
+    "source_commit": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+    "source_tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+    "bank": "cast-observer",
+    "case_count": 135,
+    "stages": [
+      {
+        "stage": "PostBlockDeclarationPriorityScenarioTest",
+        "class": "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+        "cases": 16,
+        "xml_sha256": "ae60fa8844b17ede0260eb1f103678b124a0abc9a0a64aa99e04620e70f358c0",
+        "timestamp": "2026-09-27T01:03:25.981Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "a73890b33b97ba47097fe86a22cf851a75ad8f3843b35f58cf4eb2439c82691d"
+      },
+      {
+        "stage": "DeclareBlockersPriorityWindowTest",
+        "class": "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest",
+        "cases": 3,
+        "xml_sha256": "f484c1712a3d4e4cc5ebdccfa21ec678e825baac8d873b0a1ab2f8ba9e9249ea",
+        "timestamp": "2026-09-27T01:03:20.319Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "cca06f4c7fa7f9dda5cd5001cbb31ac5e39b7c3b4f588e38ee5c170abba5870d"
+      },
+      {
+        "stage": "MultiDefenderCombatTest",
+        "class": "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+        "cases": 4,
+        "xml_sha256": "f4a1a42334e63172abc6962bcec1f1c8fc4fb27f6c11236c8ccda1a4a43c082d",
+        "timestamp": "2026-09-27T01:02:38.585Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "f434f2d0e81aea2040efe499f91c336531a8b347fc16c2f3d6a431df552f8e1d"
+      },
+      {
+        "stage": "TwoHeadedGiantCombatTest",
+        "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+        "cases": 9,
+        "xml_sha256": "466a18aca067dd6cb9f29d9e977ec99385bb49858c24e03cf1f20064c68fa729",
+        "timestamp": "2026-09-27T01:02:40.583Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "9f5c5205ea4539b5904c3342682510b40aadd4691291c599c8ef6f812a8b9855"
+      },
+      {
+        "stage": "ActivationPriorityScenarioTest",
+        "class": "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+        "cases": 9,
+        "xml_sha256": "7880c72d7afac6afcc08508ddbd5df3b4e5241b0f02458a92ff606075c028ff0",
+        "timestamp": "2026-09-27T01:02:41.212Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "d14fe20f774f650d132f679966dc4eefe556cf48fb67d34fffdadd88fefda978"
+      },
+      {
+        "stage": "NestedManaPaymentBoundaryScenarioTest",
+        "class": "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+        "cases": 12,
+        "xml_sha256": "277d25170e869d8524ba2c346b431d310d410f63635071c29746483c29f3119c",
+        "timestamp": "2026-09-27T01:03:24.043Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "d45876c5e64d3be6c6882c4317fbb192913c91b89b540b221eb43d03c96604a6"
+      },
+      {
+        "stage": "BatchMayQuestionTest",
+        "class": "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+        "cases": 7,
+        "xml_sha256": "c1519781fa51653b3998613973d8ad4f9cdde3d1255698934c85e4b6ced03071",
+        "timestamp": "2026-09-27T01:03:16.303Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "11ef82e18f8d2a02ee83b874fb89d8567f7bc810e69709662ff2fedf9ac5cec4"
+      },
+      {
+        "stage": "TriggerOrderingScenarioTest",
+        "class": "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+        "cases": 6,
+        "xml_sha256": "5bd5b7877b0e2e74d279a0bba7ad4179311b15218d350d513d5cb68bc23f3ada",
+        "timestamp": "2026-09-27T01:03:31.255Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "e4d8ce58696a968126bb17d0e9403ff59ff99ce51e1efdba05a3c0ec846bfee5"
+      },
+      {
+        "stage": "TriggerOrderingConcessionScenarioTest",
+        "class": "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest",
+        "cases": 1,
+        "xml_sha256": "24e2097c231f6e8cfef4f32aadd8f7e148117bc1750e312037061a7e78817941",
+        "timestamp": "2026-09-27T01:03:30.694Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "b8f72093ef6b966e37616e14dec673bf79f13ffab8bcca7385b67d6134fdd167"
+      },
+      {
+        "stage": "DamageSourceIdentityScenarioTest",
+        "class": "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+        "cases": 5,
+        "xml_sha256": "ee6fa5d2a73db9042fc93444f5768330e1dec877ac09d82ef2b41237c01bc4d7",
+        "timestamp": "2026-09-27T01:03:18.479Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "0a674ab29cf2d263dcccdec2ee0e599df1418db7fd11767b692cc4d2522da736"
+      },
+      {
+        "stage": "DamageSourceTriggerScenarioTest",
+        "class": "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+        "cases": 6,
+        "xml_sha256": "febfa4d48e836f38237962fe849326b8e9178cb7b45d2cfbba7cc5cc6b34df82",
+        "timestamp": "2026-09-27T01:03:19.312Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "f6ffca9fb9a75998ceb0854df4f49847e53d9a61c9d5a2d76ae9c790e3f63c86"
+      },
+      {
+        "stage": "TargetedDepartedSourceLkiTest",
+        "class": "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+        "cases": 4,
+        "xml_sha256": "f73713b1cd6a1ae9f1e756bc0ec9b12a574f5f463559df649a4f953d298ff1d9",
+        "timestamp": "2026-09-27T01:03:29.804Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "25125e95e9029c8f5aaed32897ddaa91bd29d562083af59262b32aec4761c342"
+      },
+      {
+        "stage": "PredicateEvaluatorRecordTest",
+        "class": "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+        "cases": 19,
+        "xml_sha256": "25015a2ec4e71168a68d4c0bc896bb5d9707cdfd45d6ef8f6f9b815e665d2359",
+        "timestamp": "2026-09-27T01:02:32.508Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "8b17caf224042dccd16fb438133c0eadc00697d9de4350962c49df925eb6adde"
+      },
+      {
+        "stage": "PostBlockDeclarationSessionTest",
+        "class": "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest",
+        "cases": 2,
+        "xml_sha256": "002819d788d96eef16493e52a2e7699962993b402c61541cccb63bc9bc7bf14e",
+        "timestamp": "2026-09-27T01:05:34.186Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-2.log",
+        "fresh_test_tasks": [
+          "> Task :game-server:test",
+          "> Task :game-server:test",
+          "> Task :game-server:test",
+          "> Task :game-server:test"
+        ],
+        "actual_current_test_body_sha256": "4d996d5d850abcfe0f7a6300fb85d71efe0d68968ac6284031b8a3491c70ae06"
+      },
+      {
+        "stage": "TwoHeadedGiantSessionTest",
+        "class": "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+        "cases": 10,
+        "xml_sha256": "34428614d916673ba43e30d2379f5e672adcc2fd2e196a6b8d378ea9f7189d94",
+        "timestamp": "2026-09-27T01:06:23.039Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-2.log",
+        "fresh_test_tasks": [
+          "> Task :game-server:test",
+          "> Task :game-server:test",
+          "> Task :game-server:test",
+          "> Task :game-server:test"
+        ],
+        "actual_current_test_body_sha256": "13d3447a79da2e154b6819f8718ff444013235c71e6ed6210c946f2af4aa2604"
+      },
+      {
+        "stage": "ManaAbilityColorChoicePipelineTest",
+        "class": "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+        "cases": 4,
+        "xml_sha256": "e2d992e2e98e9869b37255002591a5e8ab835c79541730d42475b3545921f3c8",
+        "timestamp": "2026-09-27T01:03:22.307Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "a9ae644130670d4ca9d7fca149f8f13d82f4ac83b04ee6788f0e304bd772b28e"
+      },
+      {
+        "stage": "MoveToZoneEffectExecutorTest",
+        "class": "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+        "cases": 10,
+        "xml_sha256": "32a02b0c108568a524aba76a55487b6304fa55fec769dcdb00884383a6cfa9b8",
+        "timestamp": "2026-09-27T01:02:35.744Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "c37bbf20129b0a3cb0edd043f0a341b3d8a47abb627d01568a10dc265e0c32f7"
+      },
+      {
+        "stage": "CastObserverSourceLkiTest",
+        "class": "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+        "cases": 8,
+        "xml_sha256": "711218aedc0fd26d7e89b170b60529a2763daeabf8b5179fe6e886744c7b858c",
+        "timestamp": "2026-09-27T01:03:16.733Z",
+        "exact_prior_raw_case_identity_match": true,
+        "command": "command-1.log",
+        "fresh_test_tasks": [
+          "> Task :rules-engine:test",
+          "> Task :rules-engine:test"
+        ],
+        "actual_current_test_body_sha256": "29622301652a19f6f9b73aaf7cc700524f5f23a91764f5596c6520dbc3d6da96"
+      }
+    ],
+    "command_count": 2,
+    "source_pin_count": 324,
+    "all_raw_xml_cases_pass_no_skip": true,
+    "official_games": 0,
+    "scope": "SOURCE_AUTHOR_RAW_COMPONENT_AUDIT_NOT_COMPLETE_R1_ADMISSION",
+    "test_source_independent_live_refetch_count": 18,
+    "source_pin_scope": "All324 archived pins equal independently fetched current immutable manifest; all bank test-source bytes separately refetched and hashed. This is not324 fresh production body fetches.",
+    "command_workers": [
+      {
+        "command": "command-1.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "79d7c2fd153f842ab411bd538cd0eee9b4bdd0243e39c49755850d276de90d2f"
+      },
+      {
+        "command": "command-2.json",
+        "workers": 1,
+        "exit": 0,
+        "log_sha256": "7f6e8d767f974f2b5b57db69a56ac20e91bcc4ec8a8f31a0189b5a3bac1bfa6d"
+      }
+    ]
+  }
+]

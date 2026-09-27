@@ -1,0 +1,97 @@
+{
+  "schema": "sphinx-independent-industrial1261-priority-cast-review-v1",
+  "reviewer": "/root/sphinx",
+  "independence": "Non-author of Industrial receiving implementation, original jobs and author audits. Earlier shared actor/mulligan and Sphinx qualification control work is outside the reviewed source scope.",
+  "disposition": "PASS_BOUNDED_CURRENT_RECEIVING_PRIORITY220_AND_CAST135",
+  "source": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+  "tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "run": 36283941456,
+  "event": "push",
+  "attempt": 1,
+  "originals": [
+    {
+      "bank": "priority",
+      "artifact_id": 10919767602,
+      "path": "industrial/audit-1261/priority-original.zip",
+      "bytes": 799998,
+      "sha256": "c19b8a69ca49bcfea141a0d38ed33e55ffd0f6226b4fee19dca2b0c8c082f6e2",
+      "unique_cases": 220
+    },
+    {
+      "bank": "cast-observer",
+      "artifact_id": 10920615076,
+      "path": "industrial/audit-1261/cast-original.zip",
+      "bytes": 592289,
+      "sha256": "a23b306188b74a7067f02ecc7bbc9898128057ae57842f81832114b465500c70",
+      "unique_cases": 135
+    }
+  ],
+  "actual": {
+    "priority_classes": 27,
+    "priority_cases": 220,
+    "priority_fresh_commands_workers": 27,
+    "cast_classes": 18,
+    "cast_cases": 135,
+    "cast_fresh_commands_workers": 2,
+    "distinct_case_identities": 355,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "checks": [
+    "Both entire original ZIPs independently read:203 unique members in140/63 archives, CRC and whole metadata digests match freshly fetched live attempt1 records. All45 XML suites, command JSON/logs/exits and preserved effective rules were inspected.",
+    "All raw names equal the original fc9 bank names and fixed receiving stages. Every required XML timestamp lies strictly inside its actual captured command interval. Logs show27+2 fresh worker pairs and executed test tasks, with0 command exits. Eighteen cast classes share two actual invocations; no18-worker claim.",
+    "Independent current source proof covers all324 SHA256 pins and corresponding Git blobs against the newly fetched complete7e635 tree:149 retained bodies rehashed plus175 fresh immutable file fetches, including binary wrapper. Current manifests, fixed case bank and actual45 test sources match. Three preserved authority files were fetched from both current and original donor refs and match byte-for-byte.",
+    "Binding attempt and source provenance preserve exact1261/tree7e635/requested1261/clean checkout, manifest digests, rules hash and explicit gameplay=false. These source maps are pre-execution records; no post-run pin map is claimed.",
+    "The actual missing-shlock fallback is disclosed; the review proves observed finite test execution, not a functioning semaphore or whole runtime dependency admission."
+  ],
+  "author_audit": {
+    "path": "industrial/audit-1261/AUTHOR_PRIORITY_CAST_RAW_AUDIT.json",
+    "bytes": 35013,
+    "sha256": "7412c62589888d94459962bea85c4e7aaa348e63883d61f2766bc24b0d9fbb1c"
+  },
+  "proof": [
+    {
+      "path": "sphinx-audit/industrial1261-review/audit_priority_cast.py",
+      "bytes": 9018,
+      "sha256": "ea2c90d6d481decfaa65c502b19f6c9e3e9c4925ade7a4ab2539509f12fce8cc"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/independent-priority-cast-raw-audit.json",
+      "bytes": 299994,
+      "sha256": "783a6f255bf397604100e9f6351b2d3af2dd067bb042da1aea37723dbaa86a54"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/priority-fresh-source-bodies.json.gz",
+      "bytes": 644071,
+      "sha256": "e4d2f5a2dca8c5b6e286eef463cb43246fa4d1c49d76608e050944b3505a0beb"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/priority-preserved-authorities.json.gz",
+      "bytes": 44434,
+      "sha256": "ac0a47c62221b4bf9a16eabe10dc59888dee725d83b691609c9964a4e44494dd"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/current-complete-tree.json.gz",
+      "bytes": 1209991,
+      "sha256": "0f9a72c73f82c6776bad66c46ae40acaa238f162d1efb441e8b2f879878ac467"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/priority-runtime-live-metadata.json",
+      "bytes": 53034,
+      "sha256": "3e7a3380c81d0afae678783a32f27f93b3eaa710d07b850b95defc349e5fbdf3"
+    },
+    {
+      "path": "sphinx-audit/industrial1261-review/priority-source-locations.json",
+      "bytes": 56753,
+      "sha256": "ad734172358b244d5be380e0de9477b494c791e8a8611c1485a7aeba5ef55628"
+    }
+  ],
+  "limits": [
+    "Bounded priority/cast receiving evidence only. Full runtime qualification and source-bound R1 permit are separate.",
+    "No new engine/JVM/replay/workflow/claim/initialization was executed. No source was changed.",
+    "No full pilot, all reachable mechanics, gameplay, GitHub approval, merge or deck-performance acceptance."
+  ],
+  "official_allocations_by_review": 0,
+  "gameplay_authorized": false
+}
