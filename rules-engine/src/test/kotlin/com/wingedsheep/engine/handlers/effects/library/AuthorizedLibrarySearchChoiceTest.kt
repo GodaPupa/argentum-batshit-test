@@ -11,6 +11,7 @@ import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.OwnerComponent
+import com.wingedsheep.engine.state.components.identity.RevealedToComponent
 import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.ManaCost
 import com.wingedsheep.sdk.core.TypeLine
@@ -26,6 +27,7 @@ import com.wingedsheep.sdk.scripting.effects.LibrarySearchPortion
 import com.wingedsheep.sdk.scripting.effects.SelectFromCollectionEffect
 import com.wingedsheep.sdk.scripting.effects.SelectionMode
 import com.wingedsheep.sdk.scripting.values.DynamicAmount
+import com.wingedsheep.sdk.scripting.references.Player
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 
@@ -122,6 +124,31 @@ class AuthorizedLibrarySearchChoiceTest : FunSpec({
         decision.options shouldBe listOf(b, a)
         decision.authorizedLibrarySearch?.offeredHandles shouldBe listOf(b, a)
         decision.authorizedLibrarySearch?.libraryOwner shouldBe player
+    }
+
+    test("empty search has no order candidate or unanswered choice") {
+        val empty = state(emptyList())
+        val result = GatherCardsExecutor().execute(
+            empty,
+            GatherCardsEffect(CardSource.AuthorizedLibrarySearch(), "pool"),
+            context(empty),
+        )
+        result.updatedCollections["pool"] shouldBe emptyList()
+        result.authorizedLibrarySearchCandidate shouldBe null
+    }
+
+    test("noncontroller searcher fails before revealing a hidden library") {
+        val current = state(listOf(a, b, c))
+        val result = GatherCardsExecutor().execute(
+            current,
+            GatherCardsEffect(
+                CardSource.AuthorizedLibrarySearch(searcher = Player.EachOpponent),
+                "pool",
+            ),
+            context(current),
+        )
+        result.isSuccess shouldBe false
+        result.state.getEntity(a)?.get<RevealedToComponent>() shouldBe null
     }
 
     test("ordinary library gather and overwritten direct collection never grant order") {

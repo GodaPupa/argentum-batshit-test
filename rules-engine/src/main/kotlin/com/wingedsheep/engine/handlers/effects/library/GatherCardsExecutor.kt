@@ -71,8 +71,11 @@ class GatherCardsExecutor : EffectExecutor<GatherCardsEffect> {
                     ?: return EffectResult.error(state, "Authorized search needs one library owner")
                 val searcher = resolvePlayers(source.searcher, context, state)?.singleOrNull()
                     ?: return EffectResult.error(state, "Authorized search needs one searcher")
-                if (searcher !in state.turnOrder) {
-                    return EffectResult.error(state, "Authorized searcher is not a player")
+                if (searcher !in state.turnOrder || searcher != context.controllerId) {
+                    // The current typed producer/consumer pair supports controller choices only.
+                    // A mismatched authoring declaration must not show the hidden pool to a
+                    // different chooser through a later generic SelectCards decision.
+                    return EffectResult.error(state, "Authorized search needs the controller as searcher")
                 }
                 val library = state.getZone(ZoneKey(owner, Zone.LIBRARY))
                 val permitted = when (val portion = source.portion) {
@@ -433,7 +436,14 @@ class GatherCardsExecutor : EffectExecutor<GatherCardsEffect> {
         val revealAudience: Set<EntityId> = when {
             effect.revealed -> state.turnOrder.toSet()
             isLibrarySource(effect.source) -> when (effect.lookAudience) {
-                LookAudience.Controller -> setOf(context.controllerId)
+                LookAudience.Controller -> {
+                    // In a search, "controller" of the look is the declared searcher. A card
+                    // searching another player's library must not reveal its pool to the spell's
+                    // controller merely because GatherCards' default audience is Controller.
+                    val search = effect.source as? CardSource.AuthorizedLibrarySearch
+                    if (search == null) setOf(context.controllerId)
+                    else resolvePlayers(search.searcher, context, state)?.singleOrNull()?.let { setOf(it) } ?: emptySet()
+                }
                 LookAudience.Opponent -> state.getOpponents(context.controllerId).toSet()
                 LookAudience.None -> emptySet()
             }
