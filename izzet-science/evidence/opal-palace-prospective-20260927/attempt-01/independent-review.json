@@ -1,0 +1,85 @@
+{
+  "accepted_cases": 0,
+  "artifact_id": 10928888261,
+  "artifact_sha256": "451365826eec0b99ffd7e2c5554ac780ef0804c7cd87dbd796d33edce96b601a",
+  "artifact_size": 239321,
+  "collector_disposition": {
+    "errors": [
+      "AssertionError: "
+    ],
+    "gameplay_authorized": false,
+    "official_games": 0,
+    "rows": [],
+    "status": "INCOMPLETE"
+  },
+  "compiler_diagnostics": [
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt:192:32 Unresolved reference 'serialization'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt:193:17 Unresolved reference 'serializersModule'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt:193:65 Cannot access class 'kotlinx.serialization.modules.SerializersModule'. Check your module classpath for missing or conflicting dependencies.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt:194:17 Unresolved reference 'encodeDefaults'.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt:197:95 Cannot access class 'kotlinx.serialization.KSerializer'. Check your module classpath for missing or conflicting dependencies.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt:198:98 Cannot access class 'kotlinx.serialization.KSerializer'. Check your module classpath for missing or conflicting dependencies.",
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt:200:113 Unresolved reference 'count'."
+  ],
+  "crc_clean": true,
+  "diagnosis": "Serialization fixture cannot resolve kotlinx.serialization JSON/types on this tests module compile classpath; count diagnostic is downstream of unresolved decode type. Production compilation completed, but no deterministic case executed.",
+  "disposition": "INCOMPLETE_PRETEST_COMPILATION_FAILURE",
+  "exit_code": 1,
+  "gameplay_authorized": false,
+  "independent_git_binding": {
+    "gate_head": "ea6e624bf22f1acbb4f2549ac339c464ab2a319d",
+    "gate_tree": "77f7ace097157e026388cdf4beadf04bce50f436",
+    "matches_reviewed_launcher": true,
+    "only_changes": {
+      ".github/workflows/opal-palace-composed-once.yml": "ff149e9c35a97704c3e824270ec859686784455a8d22d3e436d53bbe4ca11abd",
+      "izzet-science/evidence/opal-palace-prospective-20260927/qualify.py": "15068c2df061118e14ef3cb7278bb7bcd607da852fb6ddf662d2a04c0deaddf2"
+    },
+    "parent": "c9f07997a11f225eaa0bb0d41ab7c964111a92a0"
+  },
+  "members_sha256": {
+    "build/reports/opal-palace-once/bind.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "build/reports/opal-palace-once/exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "build/reports/opal-palace-once/receipt.json": "c41d7614d81ba8e90ad8a24595e466f4046f44397008c04145a2490895206d1f",
+    "build/reports/opal-palace-once/source-after.json": "50bcde3da67a746cef2b39ac0a44daa9dbd49d84dca47a03ef327e4854c827ab",
+    "build/reports/opal-palace-once/source-before.json": "50bcde3da67a746cef2b39ac0a44daa9dbd49d84dca47a03ef327e4854c827ab",
+    "build/reports/opal-palace-once/tests.log": "70852bd6ec7e945a4aa8cbf1d2957f02aab1c29ead7a01782aa25849f7546055"
+  },
+  "official_games": 0,
+  "original_attempt_consumed": true,
+  "primary_failure_task": ":mtg-sets:2008-2016:tests:compileTestKotlin",
+  "review_limitations": [
+    "Source-only prior review failed to detect tests module serialization classpath omission; corrected by original compiler evidence.",
+    "No claim that production mechanic is validated; no gameplay or component acceptance."
+  ],
+  "reviewer": "/root/compatibility_review",
+  "run_id": 36311106374,
+  "schema": "opal-original-failure-independent-review-v1",
+  "source_after_identical": true,
+  "source_before": {
+    "bank": [
+      "first command-zone cast enters with one counter when paid with Palace mana",
+      "a later hand cast uses only prior command-zone casts",
+      "Palace mana spent on a noncommander does not add counters",
+      "two Palace mana spent on a first command-zone cast add two counters",
+      "ordinary mana spent on a commander does not add Palace counters",
+      "colorless commander identity makes the second Palace ability add no mana",
+      "countered Palace spell loses its rider before a hand recast with ordinary mana",
+      "pending Palace counters survive serialization and apply once on resolution",
+      "entry observers see Palace counters before checking entering power",
+      "two Palace contributions are combined before an additive counter modifier"
+    ],
+    "gameplay_authorized": false,
+    "head": "ea6e624bf22f1acbb4f2549ac339c464ab2a319d",
+    "official_games": 0,
+    "test_blob": "e8fe5bc8020a3a6991ca9820903e81d1174ec4a9",
+    "tree": "77f7ace097157e026388cdf4beadf04bce50f436"
+  },
+  "successor_conditions": [
+    "Preserve this untouched ZIP, source identity and failed attempt permanently; do not rerun unchanged gate.",
+    "Inspect exact tests module dependency declarations and repair serialization test compile classpath without changing mechanic assertions or dropping serialization case.",
+    "Publish changed source and exact dependency/source diff; independently review targeted changed-source successor authority and launcher before another attempt.",
+    "Keep original finite ten-case bank; original attempt executed zero cases, but no implicit retry authorization follows from this review."
+  ],
+  "test_executor_start_lines": [],
+  "xml_members": []
+}
