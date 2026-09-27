@@ -1,0 +1,120 @@
+name: Authorized Search Card Linter Focused
+
+on:
+  push:
+    branches:
+      - shared/authorized-search-card-linter-gate-20260927
+    paths:
+      - .github/workflows/authorized-search-card-linter-focused.yml
+
+permissions:
+  contents: read
+
+jobs:
+  card-linter:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    if: >-
+      github.event_name == 'push' &&
+      github.ref == 'refs/heads/shared/authorized-search-card-linter-gate-20260927' &&
+      github.event.before == '0000000000000000000000000000000000000000' &&
+      github.run_attempt == 1
+    steps:
+      - name: Checkout immutable repaired source
+        uses: actions/checkout@v6
+        with:
+          ref: 7463afa68c0307261f611e7280ff5072689c2ada
+          persist-credentials: false
+      - name: Verify exact source and linter blob
+        shell: bash
+        run: |
+          set -euo pipefail
+          {
+            printf 'workflow_event=%s\nsource_checkout=%s\n' "$GITHUB_SHA" "$(git rev-parse HEAD)"
+            test "$(git rev-parse HEAD)" = "7463afa68c0307261f611e7280ff5072689c2ada"
+            test "$(git rev-parse HEAD^{tree})" = "58aa72ed7dbfa8421a00ad57d789c35cfa2db803"
+            test "$(git rev-parse HEAD:mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt)" = "cc7164e1e3a796530b87291d94769f1000092b87"
+            printf 'verified source=%s tree=%s linter=%s\n' "7463afa68c0307261f611e7280ff5072689c2ada" "58aa72ed7dbfa8421a00ad57d789c35cfa2db803" "cc7164e1e3a796530b87291d94769f1000092b87"
+          } 2>&1 | tee focused-source.txt
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run changed-source CardLinterTest fresh
+        shell: bash
+        run: |
+          set -o pipefail
+          set +e
+          scripts/gradle-locked :mtg-sdk:test \
+            --tests com.wingedsheep.sdk.serialization.CardLinterTest \
+            --rerun-tasks --stacktrace 2>&1 | tee focused-build.log
+          gradle_status=$?
+          python3 - "$gradle_status" "$GITHUB_SHA" "$(git rev-parse HEAD)" <<'PY'
+          import json, subprocess, sys
+          status, event, after = sys.argv[1:]
+          changes = subprocess.check_output(
+              ['git', 'status', '--porcelain', '--untracked-files=no'], text=True).splitlines()
+          with open('focused-exit.json', 'w') as evidence:
+              json.dump({'gradleExit': int(status), 'workflowEvent': event,
+                         'sourceBefore': '7463afa68c0307261f611e7280ff5072689c2ada', 'sourceAfter': after,
+                         'trackedWorktreeClean': not changes, 'trackedChanges': changes,
+                         'rerunTasks': True}, evidence, indent=2)
+              evidence.write('\n')
+          PY
+          test "$(git rev-parse HEAD)" = "7463afa68c0307261f611e7280ff5072689c2ada" || exit 1
+          test -z "$(git status --porcelain --untracked-files=no)" || exit 1
+          exit "$gradle_status"
+      - name: Audit exact existing test class and skips
+        if: always()
+        shell: bash
+        run: |
+          python3 <<'PY'
+          import json, re
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+
+          path = Path('mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.CardLinterTest.xml')
+          row = {'source': '7463afa68c0307261f611e7280ff5072689c2ada', 'suite': str(path), 'expected': 43}
+          if path.is_file():
+              root = ET.parse(path).getroot()
+              cases = root.findall('.//testcase')
+              names = [case.get('name') for case in cases]
+              row.update(observed=len(cases), names=names,
+                         distinctNames=len(set(names)) == len(names) and all(names),
+                         skipped=sum(len(c.findall('skipped')) for c in cases),
+                         failures=sum(len(c.findall('failure')) for c in cases),
+                         errors=sum(len(c.findall('error')) for c in cases),
+                         suiteDeclared={k: int(root.get(k, '-1'))
+                                        for k in ('tests', 'skipped', 'failures', 'errors')})
+          else:
+              row.update(observed=0, names=[], distinctNames=False, skipped=0,
+                         failures=0, errors=0, suiteDeclared={})
+          log = Path('focused-build.log').read_text() if Path('focused-build.log').is_file() else ''
+          row['testTaskExecuted'] = bool(re.search(r'^> Task :mtg-sdk:test\s*$', log, re.M))
+          row['gradleSuccess'] = 'BUILD SUCCESSFUL' in log
+          row['accepted'] = (
+              row['observed'] == 43 and row['distinctNames'] and
+              'It: flags a mana ability that searches its library' in row['names'] and
+              row['suiteDeclared'] == {'tests': 43, 'skipped': 0, 'failures': 0, 'errors': 0} and
+              not (row['skipped'] or row['failures'] or row['errors']) and
+              row['testTaskExecuted'] and row['gradleSuccess'])
+          Path('focused-xml-audit.json').write_text(json.dumps(row, indent=2) + '\n')
+          print(json.dumps({k: row[k] for k in ('accepted', 'observed', 'skipped',
+                                               'failures', 'errors', 'testTaskExecuted')}))
+          raise SystemExit(0 if row['accepted'] else 1)
+          PY
+      - name: Retain raw command, log, XML and audit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: authorized-search-card-linter-focused-evidence
+          path: |
+            focused-source.txt
+            focused-build.log
+            focused-exit.json
+            focused-xml-audit.json
+            mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.CardLinterTest.xml
+            mtg-sdk/build/reports/tests/**
+          if-no-files-found: error
+          retention-days: 30
