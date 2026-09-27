@@ -1,0 +1,197 @@
+{
+  "schema": "sphinx-stage-e-pilot-component-artifact-audit-v1",
+  "status": "INDEPENDENT_ARTIFACT_REVIEW_ACCEPTED_COMPONENT_ONLY_PENDING_RECEIVING_INTEGRATION",
+  "workflow_run_id": 36250097974,
+  "job_id": 108426396038,
+  "run_attempt": 1,
+  "workflow_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36250097974",
+  "workflow_conclusion": "success",
+  "source_head": "b1663751f553759f5a51fc25a7e2876328525cd7",
+  "source_tree": "0bcc895d937f7e764bee367e65c238f00772d9fd",
+  "published_budget_head": "e79e64bf8f5c52ced5877d8416b80acfafd1c356",
+  "accepted_input_merge_head": "000f23f1bcc2b5a1b7b79f1ccc1c86c5b612e529",
+  "artifact": {
+    "id": 10907844913,
+    "path": "sphinx-approach/evidence/pilot-component-36250097974/artifact.zip",
+    "bytes": 229763,
+    "sha256": "f27e210a46dbbd2501714466d71f1433cae3abbf2c16799018da54f0e4f03d52",
+    "entries": {
+      "build/reports/sphinx-stage-e-pilot-component/component.log": {
+        "bytes": 3390112,
+        "sha256": "d1948c76a88e42478601207eb326e35950e9687cc03f9a89dd723f26dc3463b5"
+      },
+      "build/reports/sphinx-stage-e-pilot-component/manifest.json": {
+        "bytes": 5284,
+        "sha256": "0e8316dec02727cb7accb116482e8a5cfc42e10d9e923a2c2995781cfe616d95"
+      },
+      "build/reports/sphinx-stage-e-pilot-component/source-binding.json": {
+        "bytes": 1284,
+        "sha256": "00f9f5048602c359de78bdc436b2957934d5f630c672498fef3cdf66eeebcb16"
+      },
+      "gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEPilotComponentTest.xml": {
+        "bytes": 9987,
+        "sha256": "a1545c5881ce80cbc3e1080a1997552a8c413646180888bf881b0dc51550c9cd"
+      }
+    }
+  },
+  "source_binding": {
+    "requested_head": "b1663751f553759f5a51fc25a7e2876328525cd7",
+    "actual_head": "b1663751f553759f5a51fc25a7e2876328525cd7",
+    "tree": "0bcc895d937f7e764bee367e65c238f00772d9fd",
+    "checkout_status": "",
+    "files_sha256": {
+      ".github/workflows/sphinx-stage-e-pilot-component.yml": "e9940787539765111373fbbb1a936627d349f3d96eea1a15c7e2f5a6355b1004",
+      "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt": "e0f1fc2b51ee4271ebf56faff33c84033feae75719fad4077f36e590ac063ee1",
+      "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponentTest.kt": "e461c4defb01a4389de6aff480b317273f9f95b183bea73ea370ec3cd4490897",
+      "sphinx-approach/STAGE_E_PILOT_FIXTURE_BUDGET.json": "24f0826253411d9f97e151da3f941d58c0dafd13083e7159c0b90ac017b32c2d",
+      "sphinx-approach/decks/reconstructed-v01.csv": "274521097cc731ac5f5aa9b7645a20b13d4546fd73b17dbcd14af0b0a25c4486",
+      "sphinx-approach/decks/reconstructed-hybrid.csv": "f4cf2c64bb07847bd013e9984480f5b0fa76ac3a40dc5a47894a3609e9cb3b2e",
+      "sphinx-approach/decks/closest-no-approach-v01.csv": "548998c77f5f688d793d36cdb9f21ae8b3b63963856875c4b84d82c271196a83",
+      "sphinx-approach/decks/serpico-terror-benchmark.csv": "6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62"
+    }
+  },
+  "qualification_manifest": {
+    "schema": "sphinx-stage-e-pilot-component-qualification-v1",
+    "status": "DETERMINISTIC_POLICY_COMPONENT_ONLY",
+    "source_head": "b1663751f553759f5a51fc25a7e2876328525cd7",
+    "source_tree": "0bcc895d937f7e764bee367e65c238f00772d9fd",
+    "run_id": "36250097974",
+    "run_attempt": "1",
+    "budget_sha256": "24f0826253411d9f97e151da3f941d58c0dafd13083e7159c0b90ac017b32c2d",
+    "banks": {
+      "reconstructed-v01": [
+        "reconstructed-v01/D1 safe self-mill then draw",
+        "reconstructed-v01/D2 stop before an impossible mandatory draw",
+        "reconstructed-v01/C1 present resources support the current action",
+        "reconstructed-v01/C2 no credit for a future cleanup discard",
+        "reconstructed-v01/I1 preserve affordable Counterspell over setup",
+        "reconstructed-v01/I2 use excess mana after reserving Counterspell",
+        "reconstructed-v01/P1 take the legal normal deployment window",
+        "reconstructed-v01/P2 wait outside the normal deployment window",
+        "reconstructed-v01/T1 the fresh higher cost controls the next cast",
+        "reconstructed-v01/T2 stale cheap offer is rejected before selection",
+        "reconstructed-v01/A1 select an offered public opposing stack target",
+        "reconstructed-v01/A2 no offered target means no counter cast",
+        "reconstructed-v01/H1 typed own-public input round trip preserves the decision",
+        "reconstructed-v01/H2 undeclared hidden hand or future order is rejected"
+      ],
+      "reconstructed-hybrid": [
+        "reconstructed-hybrid/D1 safe self-mill then draw",
+        "reconstructed-hybrid/D2 stop before an impossible mandatory draw",
+        "reconstructed-hybrid/C1 present resources support the current action",
+        "reconstructed-hybrid/C2 no credit for a future cleanup discard",
+        "reconstructed-hybrid/I1 preserve affordable Counterspell over setup",
+        "reconstructed-hybrid/I2 use excess mana after reserving Counterspell",
+        "reconstructed-hybrid/P1 take the legal normal deployment window",
+        "reconstructed-hybrid/P2 wait outside the normal deployment window",
+        "reconstructed-hybrid/T1 the fresh higher cost controls the next cast",
+        "reconstructed-hybrid/T2 stale cheap offer is rejected before selection",
+        "reconstructed-hybrid/A1 select an offered public opposing stack target",
+        "reconstructed-hybrid/A2 no offered target means no counter cast",
+        "reconstructed-hybrid/H1 typed own-public input round trip preserves the decision",
+        "reconstructed-hybrid/H2 undeclared hidden hand or future order is rejected"
+      ],
+      "closest-no-approach-v01": [
+        "closest-no-approach-v01/D1 safe self-mill then draw",
+        "closest-no-approach-v01/D2 stop before an impossible mandatory draw",
+        "closest-no-approach-v01/C1 present resources support the current action",
+        "closest-no-approach-v01/C2 no credit for a future cleanup discard",
+        "closest-no-approach-v01/I1 preserve affordable Counterspell over setup",
+        "closest-no-approach-v01/I2 use excess mana after reserving Counterspell",
+        "closest-no-approach-v01/P1 take the legal normal deployment window",
+        "closest-no-approach-v01/P2 wait outside the normal deployment window",
+        "closest-no-approach-v01/T1 the fresh higher cost controls the next cast",
+        "closest-no-approach-v01/T2 stale cheap offer is rejected before selection",
+        "closest-no-approach-v01/A1 select an offered public opposing stack target",
+        "closest-no-approach-v01/A2 no offered target means no counter cast",
+        "closest-no-approach-v01/H1 typed own-public input round trip preserves the decision",
+        "closest-no-approach-v01/H2 undeclared hidden hand or future order is rejected"
+      ],
+      "serpico-terror-benchmark": [
+        "serpico-terror-benchmark/D1 safe self-mill then draw",
+        "serpico-terror-benchmark/D2 stop before an impossible mandatory draw",
+        "serpico-terror-benchmark/C1 present resources support the current action",
+        "serpico-terror-benchmark/C2 no credit for a future cleanup discard",
+        "serpico-terror-benchmark/I1 preserve affordable Counterspell over setup",
+        "serpico-terror-benchmark/I2 use excess mana after reserving Counterspell",
+        "serpico-terror-benchmark/P1 take the legal normal deployment window",
+        "serpico-terror-benchmark/P2 wait outside the normal deployment window",
+        "serpico-terror-benchmark/T1 the fresh higher cost controls the next cast",
+        "serpico-terror-benchmark/T2 stale cheap offer is rejected before selection",
+        "serpico-terror-benchmark/A1 select an offered public opposing stack target",
+        "serpico-terror-benchmark/A2 no offered target means no counter cast",
+        "serpico-terror-benchmark/H1 typed own-public input round trip preserves the decision",
+        "serpico-terror-benchmark/H2 undeclared hidden hand or future order is rejected"
+      ]
+    },
+    "actual_cases": 56,
+    "xml_sha256": "a1545c5881ce80cbc3e1080a1997552a8c413646180888bf881b0dc51550c9cd",
+    "actor_adapter_qualified": false,
+    "complete_pilot_qualified": false,
+    "replay_qualified": false,
+    "post_block_priority_qualified": false,
+    "stage_e_execution_authorized": false,
+    "randomized_development_games": 0,
+    "official_seeds": 0,
+    "official_games": 0,
+    "official_outcomes_exposed": 0
+  },
+  "actual_cases": 56,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "fixture_execution": {
+    "complete_equal_bank_attempts": 1,
+    "identities": 4,
+    "checks_per_identity": 14,
+    "distinct_checks": 56,
+    "executed_failed_attempts": 0,
+    "budget_bytes_unchanged": true
+  },
+  "audit_checks": [
+    "GitHub run, job and artifact metadata match requested source and archive SHA-256; ZIP CRC passes.",
+    "All eight source bindings match actual Git objects and reviewed local bytes; exact source tree matches.",
+    "The single actual JUnit suite contains exactly the complete frozen14 distinct checks for each of four unchanged identities, all passing without skips.",
+    "Retained Gradle log shows a real test executor and actual gym:test execution; the workflow requests --rerun for that test task.",
+    "No component code, fixture, frozen list or budget changed after the first result."
+  ],
+  "scope": "Typed own/public policy functions only. This is deterministic pilot development, not matchup evidence, a complete pilot, actor information assurance, or an experimental selection.",
+  "actor_adapter_qualified": false,
+  "whole_pilot_qualified": false,
+  "full_reachable_choice_surface_qualified": false,
+  "post_block_priority_qualified": false,
+  "replay_qualified": false,
+  "receiving_integration_accepted": false,
+  "stage_e_execution_authorized": false,
+  "randomized_development_games": 0,
+  "official_seeds_generated": 0,
+  "official_seeds_consumed": 0,
+  "official_games_initialized": 0,
+  "official_outcomes_exposed": 0,
+  "independent_artifact_review": {
+    "status": "ACCEPT_FOR_SCOPED_COMPONENT_EVIDENCE_PUBLICATION",
+    "reviewer": "independent peer agent /root/pest",
+    "review_type": "independent GitHub metadata, raw archive, source, JUnit and scoped-receipt review; not a GitHub approval",
+    "reviewed_receipt_sha256": "252a80fe8d13469b2e10ed78a1804bf3acb872e53e17c32f196738f6180053c0",
+    "findings": [
+      "Refetched artifact10907844913 and job108426396038 metadata; exact archive bytes/digest and all4 internal member hashes match.",
+      "Actual XML has56 distinct cases, exactly frozen14IDs for each of four identities, with zero failures/errors/skips.",
+      "All8 bound source hashes match exact Git b1663751/tree0bcc895d; retained log confirms --rerun and real test executor.",
+      "Frozen budget parent e79 is an ancestor. Accepted input merge000f is not an ancestor; comparison of their exact trees differs only in six declared component/budget/review/status paths, with inherited card/input bytes unchanged.",
+      "All full-pilot, actor, replay, post-block, receiving-integration and Stage-E admission guards remain false; no randomized/official gameplay evidence."
+    ]
+  },
+  "receiving_lineage": {
+    "budget_is_ancestor": true,
+    "accepted_input_merge_is_ancestor": false,
+    "accepted_input_tree_compatibility": "Only the six listed component/budget/review/status paths differ; all inherited card/input bytes are identical.",
+    "paths_differing_from_accepted_input_tree": [
+      ".github/workflows/sphinx-stage-e-pilot-component.yml",
+      "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt",
+      "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponentTest.kt",
+      "sphinx-approach/CURRENT_STATUS.md",
+      "sphinx-approach/STAGE_E_PILOT_FIXTURE_BUDGET.json",
+      "sphinx-approach/evidence/pilot-component-source-review.json"
+    ]
+  }
+}

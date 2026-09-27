@@ -1,0 +1,79 @@
+{
+  "schema": "sphinx-stage-e-initial-seat-fixture-budget/v1",
+  "status": "PROSPECTIVE_AWAIT_NON_AUTHOR_SOURCE_AND_GOVERNANCE_REVIEW",
+  "purpose": "Bind a supplied frozen own list to the actual GameInitializer opening seat, then preserve actor/source/trial identity at the existing adapter boundary.",
+  "required_receiving_predecessor": "c0ffc71449068e8b6329d7c437127d800474884c",
+  "receiving_predecessor_qualification": {
+    "status": "ACCEPTED_FIXED_136_CASE_ACTOR_COMPONENT_ONLY",
+    "run_id": 36263597657,
+    "artifact_id": 10913148780,
+    "archive_sha256": "05397755f37321912ef0ce77ece1171be7b961b41b04f65913137e609cf8a9e2",
+    "independent_reviewer": "/root",
+    "independent_review_sha256": "64a9952f4452715fc6b8ad0b3e4931164c42e50d68bea97ea8afb26a6b4abe89",
+    "receipt": "sphinx-approach/STAGE_E_ACTOR_COMPONENT_RECEIPT.json",
+    "whole_pilot_or_stage_e_admission": false
+  },
+  "geometry": {
+    "checks": [
+      "IB1 initialized list and seat ownership",
+      "IB2 epoch and explicit opening action boundaries"
+    ],
+    "identities": [
+      "reconstructed-v01",
+      "reconstructed-hybrid",
+      "closest-no-approach-v01",
+      "serpico-terror-benchmark"
+    ],
+    "seats": [
+      0,
+      1
+    ],
+    "expected_cases": 16
+  },
+  "case_names": [
+    "IB1 reconstructed-v01 seat0 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 reconstructed-v01 seat0 binds actor and trial across a real opening action without selecting it",
+    "IB1 reconstructed-v01 seat1 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 reconstructed-v01 seat1 binds actor and trial across a real opening action without selecting it",
+    "IB1 reconstructed-hybrid seat0 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 reconstructed-hybrid seat0 binds actor and trial across a real opening action without selecting it",
+    "IB1 reconstructed-hybrid seat1 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 reconstructed-hybrid seat1 binds actor and trial across a real opening action without selecting it",
+    "IB1 closest-no-approach-v01 seat0 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 closest-no-approach-v01 seat0 binds actor and trial across a real opening action without selecting it",
+    "IB1 closest-no-approach-v01 seat1 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 closest-no-approach-v01 seat1 binds actor and trial across a real opening action without selecting it",
+    "IB1 serpico-terror-benchmark seat0 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 serpico-terror-benchmark seat0 binds actor and trial across a real opening action without selecting it",
+    "IB1 serpico-terror-benchmark seat1 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 serpico-terror-benchmark seat1 binds actor and trial across a real opening action without selecting it"
+  ],
+  "source_sha256": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt": "cab2e241e37f48c9ad16e6769f3684808cbeec676c2f2089bb8878cd81311770",
+    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeatTest.kt": "45d323e17ec952cbce5a82014edb6618dc65d2f83cf1b0e0ed23ae6baa598800"
+  },
+  "frozen_inputs_sha256": {
+    "sphinx-approach/decks/reconstructed-v01.csv": "274521097cc731ac5f5aa9b7645a20b13d4546fd73b17dbcd14af0b0a25c4486",
+    "sphinx-approach/decks/reconstructed-hybrid.csv": "f4cf2c64bb07847bd013e9984480f5b0fa76ac3a40dc5a47894a3609e9cb3b2e",
+    "sphinx-approach/decks/closest-no-approach-v01.csv": "548998c77f5f688d793d36cdb9f21ae8b3b63963856875c4b84d82c271196a83",
+    "sphinx-approach/decks/serpico-terror-benchmark.csv": "6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62"
+  },
+  "fixed_construction_entropy": "0x535048494E580001",
+  "other_seat": "Exactly60 Island construction cards, not a Stage-E opponent package.",
+  "criteria": [
+    "All16 matched cases must execute with actual raw JUnit and zero failures/errors/skips",
+    "No policy decision selects KeepHand: the fixture explicitly submits it solely to test a real epoch transition",
+    "Wrong valid frozen list, wrong seat, late opening bind, source/trial mismatch and stale/other actor payloads must fail closed",
+    "Original frozen56 policy fixture geometry/source remains unchanged; no additional policy-development budget is consumed",
+    "Source and governance non-author review precedes execution; independent actual artifact review is separate"
+  ],
+  "limitations": [
+    "Trusted initializer/caller provenance is still a required runner gate; this component cannot authenticate arbitrary fabricated data objects",
+    "No whole pilot, complete choice surface, replay runner or Stage-E execution admission is granted",
+    "Stage-E opponents, evaluation geometry, endpoints and stopping-rule gate remain incomplete",
+    "No official seed allocation, gameplay action loop or terminal outcome is created"
+  ],
+  "official_games": 0,
+  "outcomes_exposed": 0,
+  "pilot_development_checks_added": 0
+}

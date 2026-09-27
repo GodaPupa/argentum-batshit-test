@@ -1,0 +1,52 @@
+{
+  "schema": "sphinx-stage-e-initialized-seat-component-receipt-v1",
+  "disposition": "ACCEPTED_FIXED_16_INITIALIZED_SEAT_COMPONENT_ONLY",
+  "source_head": "dee5b4788a6944a29c876cbc740b042d61bc7fec",
+  "source_tree": "4e8a43d0f6ff6a79282d8e3a142e58e54e6519dd",
+  "run_id": 36267250605,
+  "run_attempt": 1,
+  "event": "push",
+  "artifact_id": 10914193181,
+  "archive_path": "evidence/stage-e-initialized-seat-attempt-02/raw-artifact.zip",
+  "archive_sha256": "ebadbb9421a5ad32fd9174bbe8edc6bd4d6916da7e9b39db653501d639a184ec",
+  "archive_bytes": 233120,
+  "independent_review": {
+    "reviewer": "/root",
+    "path": "evidence/stage-e-initialized-seat-attempt-02/independent-artifact-review.json",
+    "sha256": "4941ae2d6467cd81ee0b1a99a9fccea1c28c2a4f7bdedc3cf4ef05c33696a58c",
+    "scope": "Actual fixed16 raw archive and59 exact source pins; not a GitHub approval or gameplay admission."
+  },
+  "actual_cases": 16,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "initialized_seat_component_attempts": 2,
+  "prior_attempts": [
+    {
+      "source": "704361a8062cbe235b4c3f67241bab7bbb573a7d",
+      "run_id": 36265670603,
+      "actual_cases": 16,
+      "passing": 8,
+      "failing": 8,
+      "path": "evidence/stage-e-initialized-seat-attempt-01"
+    }
+  ],
+  "qualification_limits": [
+    "Exact four frozen60 identities and both seats; two checks per identity/seat.",
+    "The original136 actor component and56 policy bank remain source-bound and unchanged; this16-case run does not re-execute them.",
+    "Trusted initializer and runner provenance, all eligible simultaneous-mulligan actors, complete choice coverage, competent full pilots, shared-source receiving, replay and final execution freeze/admission remain required.",
+    "The other construction seat is60 Island and is not an experimental opponent.",
+    "Unrecovered historical A-D bytes remain a provenance limitation."
+  ],
+  "initialized_seat_component_accepted": true,
+  "whole_pilot_accepted": false,
+  "full_choice_surface_accepted": false,
+  "full_receiving_accepted": false,
+  "stage_e_admitted": false,
+  "gameplay_authorized": false,
+  "official_seeds_generated": 0,
+  "official_seeds_consumed": 0,
+  "official_games_initialized": 0,
+  "official_actions_submitted": 0,
+  "official_outcomes_exposed": 0
+}

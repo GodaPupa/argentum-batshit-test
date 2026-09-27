@@ -72,6 +72,16 @@ data class ExileMultiZoneContinuation(
     val sourceName: String?,
     val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
 ) : AnswerContinuation
+/** Resume an exact-card selection for MoveSourceAndExactCardsEffect. */
+@Serializable
+data class MoveSourceAndExactCardsContinuation(
+    val playerId: EntityId,
+    val sourceId: EntityId,
+    val sourceName: String,
+    val effect: com.wingedsheep.sdk.scripting.effects.MoveSourceAndExactCardsEffect,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
+) : AnswerContinuation
+
 
 /**
  * Resume after player selects cards/permanents for a generic "pay or suffer" effect.

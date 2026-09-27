@@ -1,0 +1,133 @@
+name: Sphinx Stage E Pilot Component Qualification
+
+on:
+  push:
+    branches: [lab/sphinx-pilot-components]
+    paths:
+      - .github/workflows/sphinx-stage-e-pilot-component.yml
+      - gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt
+      - gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponentTest.kt
+      - sphinx-approach/STAGE_E_PILOT_FIXTURE_BUDGET.json
+      - sphinx-approach/decks/*.csv
+      - gym/build.gradle.kts
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sphinx-stage-e-pilot-component
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Bind source and the prospectively frozen equal fixture budget
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-stage-e-pilot-component
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          def git(*args):
+              return subprocess.check_output(['git', *args], text=True).strip()
+          root = pathlib.Path('.')
+          budget_path = root / 'sphinx-approach/STAGE_E_PILOT_FIXTURE_BUDGET.json'
+          budget = json.loads(budget_path.read_text())
+          paths = [
+              '.github/workflows/sphinx-stage-e-pilot-component.yml',
+              'gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt',
+              'gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponentTest.kt',
+              str(budget_path),
+          ] + ['sphinx-approach/' + row['path'] for row in budget['frozen_input_identities']]
+          binding = {
+              'requested_head': os.environ['GITHUB_SHA'],
+              'actual_head': git('rev-parse', 'HEAD'),
+              'tree': git('rev-parse', 'HEAD^{tree}'),
+              'checkout_status': git('status', '--porcelain'),
+              'files_sha256': {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths},
+          }
+          report = root / 'build/reports/sphinx-stage-e-pilot-component'
+          (report / 'source-binding.json').write_text(json.dumps(binding, indent=2) + '\n')
+          assert binding['actual_head'] == binding['requested_head'], binding
+          assert not binding['checkout_status'], binding
+          assert binding['files_sha256'][str(budget_path)] == '24f0826253411d9f97e151da3f941d58c0dafd13083e7159c0b90ac017b32c2d'
+          for row in budget['frozen_input_identities']:
+              assert binding['files_sha256']['sphinx-approach/' + row['path']] == row['rows_sha256'], row
+          assert budget['equal_budget']['total_distinct_component_checks'] == 56
+          assert budget['execution_record']['fixture_attempts'] == 0
+          PY
+
+      - name: Execute the fixed 56 policy component checks without a game initializer
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :gym:test --rerun --tests '*SphinxStageEPilotComponentTest' --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --info --stacktrace 2>&1 | tee build/reports/sphinx-stage-e-pilot-component/component.log
+
+      - name: Audit all four complete banks and withhold whole-pilot admission
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess, xml.etree.ElementTree as ET
+          report = pathlib.Path('build/reports/sphinx-stage-e-pilot-component')
+          binding = json.loads((report / 'source-binding.json').read_text())
+          budget = json.loads(pathlib.Path('sphinx-approach/STAGE_E_PILOT_FIXTURE_BUDGET.json').read_text())
+          files = list(pathlib.Path('gym/build/test-results/test').glob('TEST-*.SphinxStageEPilotComponentTest.xml'))
+          assert len(files) == 1, files
+          suite = ET.parse(files[0]).getroot()
+          cases = suite.findall('testcase')
+          assert len(cases) == int(suite.attrib['tests']) == 56, suite.attrib
+          assert all(int(suite.attrib.get(key, 0)) == 0 for key in ('failures', 'errors', 'skipped')), suite.attrib
+          assert all(not any(case.find(tag) is not None for tag in ('failure', 'error', 'skipped')) for case in cases)
+          names = [case.attrib['name'] for case in cases]
+          assert len(set(names)) == len(names)
+          banks = {}
+          for row in budget['frozen_input_identities']:
+              names_for_identity = [name for name in names if name.startswith(row['id'] + '/')]
+              assert len(names_for_identity) == 14, (row['id'], names_for_identity)
+              expected = {check['id'] for check in budget['checks']}
+              observed = {name.split('/', 1)[1].split(' ', 1)[0] for name in names_for_identity}
+              assert observed == expected, (row['id'], observed, expected)
+              banks[row['id']] = names_for_identity
+          current = {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in binding['files_sha256']}
+          assert current == binding['files_sha256'], current
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip() == binding['actual_head']
+          assert not subprocess.check_output(['git', 'status', '--porcelain'], text=True).strip()
+          manifest = {
+              'schema': 'sphinx-stage-e-pilot-component-qualification-v1',
+              'status': 'DETERMINISTIC_POLICY_COMPONENT_ONLY',
+              'source_head': binding['actual_head'], 'source_tree': binding['tree'],
+              'run_id': os.environ['GITHUB_RUN_ID'], 'run_attempt': os.environ['GITHUB_RUN_ATTEMPT'],
+              'budget_sha256': binding['files_sha256']['sphinx-approach/STAGE_E_PILOT_FIXTURE_BUDGET.json'],
+              'banks': banks, 'actual_cases': 56,
+              'xml_sha256': hashlib.sha256(files[0].read_bytes()).hexdigest(),
+              'actor_adapter_qualified': False, 'complete_pilot_qualified': False,
+              'replay_qualified': False, 'post_block_priority_qualified': False,
+              'stage_e_execution_authorized': False, 'randomized_development_games': 0,
+              'official_seeds': 0, 'official_games': 0, 'official_outcomes_exposed': 0,
+          }
+          (report / 'manifest.json').write_text(json.dumps(manifest, indent=2) + '\n')
+          PY
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: sphinx-stage-e-pilot-component-qualification
+          if-no-files-found: error
+          path: |
+            build/reports/sphinx-stage-e-pilot-component
+            gym/build/test-results/test/TEST-*.SphinxStageEPilotComponentTest.xml

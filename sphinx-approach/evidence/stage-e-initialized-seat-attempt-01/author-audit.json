@@ -1,0 +1,78 @@
+{
+  "schema": "sphinx-initialized-seat-actual-attempt/v1",
+  "reviewer": "/root/sphinx",
+  "independent": false,
+  "status": "FAILED_FIXED16_RETAINED",
+  "source": "704361a8062cbe235b4c3f67241bab7bbb573a7d",
+  "tree": "3f281311e1c428f9e37801e2041cf2b3db1922d5",
+  "run": 36265670603,
+  "artifact": 10914342020,
+  "archive_bytes": 238325,
+  "archive_sha256": "367b2713ba6baa8074169de9d8e0ea006d4fbca6d4b328f4fad706ecb96b0a7e",
+  "zip_crc_valid": true,
+  "xml": "tests/initialized-seat-16/TEST-com.wingedsheep.gym.sphinx.SphinxStageEInitializedSeatTest.xml",
+  "xml_sha256": "ba8ef423dc5f1c4c5b42994190dc7424da412ce28bee6729c791152cd461524d",
+  "actual_cases": 16,
+  "passing": 8,
+  "failing": 8,
+  "errors": 0,
+  "skipped": 0,
+  "case_names": [
+    "IB1 reconstructed-v01 seat0 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 reconstructed-v01 seat0 binds actor and trial across a real opening action without selecting it",
+    "IB1 reconstructed-v01 seat1 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 reconstructed-v01 seat1 binds actor and trial across a real opening action without selecting it",
+    "IB1 reconstructed-hybrid seat0 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 reconstructed-hybrid seat0 binds actor and trial across a real opening action without selecting it",
+    "IB1 reconstructed-hybrid seat1 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 reconstructed-hybrid seat1 binds actor and trial across a real opening action without selecting it",
+    "IB1 closest-no-approach-v01 seat0 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 closest-no-approach-v01 seat0 binds actor and trial across a real opening action without selecting it",
+    "IB1 closest-no-approach-v01 seat1 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 closest-no-approach-v01 seat1 binds actor and trial across a real opening action without selecting it",
+    "IB1 serpico-terror-benchmark seat0 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 serpico-terror-benchmark seat0 binds actor and trial across a real opening action without selecting it",
+    "IB1 serpico-terror-benchmark seat1 binds the real initialized 60 and rejects every other frozen list",
+    "IB2 serpico-terror-benchmark seat1 binds actor and trial across a real opening action without selecting it"
+  ],
+  "failing_cases": [
+    {
+      "case": "IB2 reconstructed-v01 seat0 binds actor and trial across a real opening action without selecting it",
+      "message": "org.opentest4j.AssertionFailedError: expected:<stage-e-initial-seat-1> but was:<stage-e-initial-seat-0>"
+    },
+    {
+      "case": "IB2 reconstructed-v01 seat1 binds actor and trial across a real opening action without selecting it",
+      "message": "org.opentest4j.AssertionFailedError: expected:<stage-e-initial-seat-0> but was:<stage-e-initial-seat-1>"
+    },
+    {
+      "case": "IB2 reconstructed-hybrid seat0 binds actor and trial across a real opening action without selecting it",
+      "message": "org.opentest4j.AssertionFailedError: expected:<stage-e-initial-seat-1> but was:<stage-e-initial-seat-0>"
+    },
+    {
+      "case": "IB2 reconstructed-hybrid seat1 binds actor and trial across a real opening action without selecting it",
+      "message": "org.opentest4j.AssertionFailedError: expected:<stage-e-initial-seat-0> but was:<stage-e-initial-seat-1>"
+    },
+    {
+      "case": "IB2 closest-no-approach-v01 seat0 binds actor and trial across a real opening action without selecting it",
+      "message": "org.opentest4j.AssertionFailedError: expected:<stage-e-initial-seat-1> but was:<stage-e-initial-seat-0>"
+    },
+    {
+      "case": "IB2 closest-no-approach-v01 seat1 binds actor and trial across a real opening action without selecting it",
+      "message": "org.opentest4j.AssertionFailedError: expected:<stage-e-initial-seat-0> but was:<stage-e-initial-seat-1>"
+    },
+    {
+      "case": "IB2 serpico-terror-benchmark seat0 binds actor and trial across a real opening action without selecting it",
+      "message": "org.opentest4j.AssertionFailedError: expected:<stage-e-initial-seat-1> but was:<stage-e-initial-seat-0>"
+    },
+    {
+      "case": "IB2 serpico-terror-benchmark seat1 binds actor and trial across a real opening action without selecting it",
+      "message": "org.opentest4j.AssertionFailedError: expected:<stage-e-initial-seat-0> but was:<stage-e-initial-seat-1>"
+    }
+  ],
+  "diagnosis": "All IB1 deck/seat bindings passed. All IB2 stopped at the incorrect fixture expectation that KeepHand transfers priority. The actual engine changes only that player hasKept during simultaneous mulligans. No later boundary assertion was counted as executed.",
+  "prospective_correction": "Assert real hasKept transition, preserved priority marker, other-seat KeepHand offer. Use separately initialized opposite starting seat for an authentic wrong-bound-actor payload; preserve original stale, source/trial, late-bind and wrong-actor rejection assertions.",
+  "remaining_reachable_requirement": "Canonical ObservationAdapter simultaneous-mulligan actor routing remains unqualified: other unkept seat has a legal KeepHand action but is rejected when not the unchanged priority actor. This component does not qualify that routing.",
+  "official_games": 0,
+  "outcomes_exposed": 0,
+  "gameplay_authorized": false
+}

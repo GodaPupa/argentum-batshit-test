@@ -1,0 +1,160 @@
+{
+  "schema": "sphinx-stage-e-actor-receiving-budget-v1",
+  "status": "PROSPECTIVE_PENDING_INDEPENDENT_SOURCE_REVIEW_NO_EXECUTION",
+  "controlling_protocol": {
+    "path": "STAGE_E_RECONSTRUCTION_PLAN.md",
+    "sha256": "066a08b74350dcf20a03b917b2c122501b9d87cbca52e3273d216bc183a8ea43",
+    "gates": [
+      4,
+      5
+    ]
+  },
+  "scope": "Shared public projection and mechanical adapter qualification only. No policy source changes, new strategy, pilot selection, randomized rehearsal or gameplay.",
+  "source_parent": "93f5a46ccc61d5902f75908b3e1bc22104f29ad3",
+  "generic_projection_bank": {
+    "class": "com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest",
+    "distinct_cases": 10,
+    "checks": [
+      {
+        "id": "SP01",
+        "criterion": "Actual ordinary cast ownership, mana value and current counterability agree with canonical counter execution."
+      },
+      {
+        "id": "SP02",
+        "criterion": "An explicit uncounterable marker preserves the exact spell in canonical counter execution."
+      },
+      {
+        "id": "SP03",
+        "criterion": "An otherwise identical concealed source with or without the inherited counter-grant definition yields the same complete actor input and explicit unknown."
+      },
+      {
+        "id": "SP04",
+        "criterion": "A real selected split-face cast publishes that face mana value instead of combined cost."
+      },
+      {
+        "id": "SP05",
+        "criterion": "A real face-down cast publishes mana value zero and explicit unknown counterability."
+      },
+      {
+        "id": "SP06",
+        "criterion": "Unrestricted basic-blue automatic payment projection matches actual cast-selected taps, pool and reserve without mutating the input state."
+      },
+      {
+        "id": "SP07",
+        "criterion": "Actual floating-blue-first payment matches the projected remaining pool and untapped sources."
+      },
+      {
+        "id": "SP08",
+        "criterion": "Actual generic-plus-blue payment matches full cost and zero remaining reserve."
+      },
+      {
+        "id": "SP09",
+        "criterion": "A current unaffordable full-menu cast remains present and canonical payment failure has no fabricated reserve."
+      },
+      {
+        "id": "SP10",
+        "criterion": "An out-of-representation mana source remains explicit unsupported without a numeric reserve."
+      }
+    ]
+  },
+  "equal_adapter_bank": {
+    "class": "com.wingedsheep.gym.sphinx.SphinxStageEActorAdapterTest",
+    "distinct_checks_per_identity": 5,
+    "identities": 4,
+    "distinct_cases": 20,
+    "checks": [
+      {
+        "id": "AR1",
+        "criterion": "Current legal offer and actual basic-blue payment feed the unchanged setup component and yield the exact bound real CastSpell."
+      },
+      {
+        "id": "AR2",
+        "criterion": "The prior epoch is rejected after an actual cast spends mana; the next current offer preserves the existing interaction reserve."
+      },
+      {
+        "id": "AR3",
+        "criterion": "Current public offered opposing spell facts map to a typed offered spell target, and the resulting real Counterspell resolves correctly."
+      },
+      {
+        "id": "AR4",
+        "criterion": "Unseen library order and opponent hand identity change neither the complete actor input nor the component proposal."
+      },
+      {
+        "id": "AR5",
+        "criterion": "A different action and a projection-only typed pending question stay explicitly unqualified, without any invented pass or response."
+      }
+    ]
+  },
+  "frozen_input_identities": [
+    {
+      "id": "reconstructed-v01",
+      "path": "decks/reconstructed-v01.csv",
+      "rows_sha256": "274521097cc731ac5f5aa9b7645a20b13d4546fd73b17dbcd14af0b0a25c4486"
+    },
+    {
+      "id": "reconstructed-hybrid",
+      "path": "decks/reconstructed-hybrid.csv",
+      "rows_sha256": "f4cf2c64bb07847bd013e9984480f5b0fa76ac3a40dc5a47894a3609e9cb3b2e"
+    },
+    {
+      "id": "closest-no-approach-v01",
+      "path": "decks/closest-no-approach-v01.csv",
+      "rows_sha256": "548998c77f5f688d793d36cdb9f21ae8b3b63963856875c4b84d82c271196a83"
+    },
+    {
+      "id": "serpico-terror-benchmark",
+      "path": "decks/serpico-terror-benchmark.csv",
+      "rows_sha256": "6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62"
+    }
+  ],
+  "preserved_receiving_regression_banks": {
+    "actor_boundary": 28,
+    "actor_stack_source": 12,
+    "actor_trigger_order": 6,
+    "actor_priority": 4,
+    "unchanged_sphinx_component": 56
+  },
+  "required_actual_total": 136,
+  "fixture_construction": [
+    "All five adapter checks run unchanged for all four frozen identities. Each own fixture partitions exactly that submitted 60 across hand, basic lands and library; no own card count changes. Opposing fixture data are fixed mechanical test data, not a benchmark package or a matchup game.",
+    "The label of a deck identity is used only by fixture construction and JUnit accounting; it is not passed to the unchanged policy component. The actor may know its submitted own list.",
+    "The adapter selects no architecture, new priority ranking, threshold or strategy. The caller requests one existing component function. Successful proposals are verified through actual engine actions where applicable.",
+    "AR5 uses an explicitly inert typed pending-question fixture solely to verify refusal. It is never resumed and does not qualify a real May effect or whole reachable choice surface.",
+    "Generic SP03 pins the inherited concealed-source counterability predicate gap while proving the actor never publishes its hidden-dependent Boolean. SP05 similarly keeps face-down-spell counterability unknown. Neither claims global counterability support.",
+    "Fixed RNG initial-state constants belong only to deterministic fixtures and do not consume any experimental seed or sample. No match is run to a winner."
+  ],
+  "correction_and_selection_rule": [
+    "Publish this prospective bank and exact source before the first execution, after non-author source and governance review. Authoring, source reading and static hash/syntax review consume no fixture attempt.",
+    "Execute all 10 shared checks and all five adapter checks for every identity, together with unchanged actor50 and Sphinx56 on one exact source. Retain every attempted source, actual XML case identity, failure, error and skip.",
+    "A correction reruns the same complete bank for all four identities; no case may be removed, replaced, relabeled or softened after exposure. A fixture failure is an incomplete component/runtime qualification, never a deck loss.",
+    "New distinct checks or randomized pilot rehearsal require another prospective equal budget before exposure. This bank cannot authorize whole-game pilot tuning.",
+    "Passing all 136 cases yields only this bounded receiving component evidence. Full combined-source CI, post-block qualification, whole-choice/pilot/replay and independent Stage-E admission remain required."
+  ],
+  "protected_source_sha256": {
+    "sphinx-approach/STAGE_E_PILOT_FIXTURE_BUDGET.json": "24f0826253411d9f97e151da3f941d58c0dafd13083e7159c0b90ac017b32c2d",
+    "sphinx-approach/STAGE_E_RECONSTRUCTION_PLAN.md": "066a08b74350dcf20a03b917b2c122501b9d87cbca52e3273d216bc183a8ea43",
+    "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt": "e0f1fc2b51ee4271ebf56faff33c84033feae75719fad4077f36e590ac063ee1",
+    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponentTest.kt": "e461c4defb01a4389de6aff480b317273f9f95b183bea73ea370ec3cd4490897",
+    "sphinx-approach/decks/closest-no-approach-v01.csv": "548998c77f5f688d793d36cdb9f21ae8b3b63963856875c4b84d82c271196a83",
+    "sphinx-approach/decks/reconstructed-hybrid.csv": "f4cf2c64bb07847bd013e9984480f5b0fa76ac3a40dc5a47894a3609e9cb3b2e",
+    "sphinx-approach/decks/reconstructed-v01.csv": "274521097cc731ac5f5aa9b7645a20b13d4546fd73b17dbcd14af0b0a25c4486",
+    "sphinx-approach/decks/serpico-terror-benchmark.csv": "6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorObservationBoundaryTest.kt": "b65dfe87c9f88dca6eaa8754c46dc16a6ef76d1266f829c4e1743b3f5fb17f5d",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt": "30617fec9bf58e0360622e1b6e26c36603ccaeae308819217b73f9b29875dfae",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorStackSourceObservationTest.kt": "ab6962cc61d66971a39d9ec674ee2c442705c17a365671bd8b9a9b0a590cf0af",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorTriggerOrderObservationTest.kt": "01c84c1e963801702696b15187cb3d1c24f2f47367f54c0c9c8c77e05a26a4cb"
+  },
+  "fixture_source_sha256": {
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt": "b6b8203017608a83bd553eb95e5190a0faf7d0811c8644b1ca7f0f8c4c279bfa",
+    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapterTest.kt": "f8ac39a68c7551aa880364750f4ea158d20ce90b24d1154dea7f57a73754b647"
+  },
+  "execution_record": {
+    "attempts": 0,
+    "passed": 0,
+    "failed": 0,
+    "official_seeds": 0,
+    "official_games": 0,
+    "official_outcomes_exposed": 0
+  },
+  "gameplay_authorized": false
+}

@@ -1,0 +1,179 @@
+{
+  "evidence_class": "seed_free_focused_card_component_qualification_and_reviewed_generation",
+  "status": "FOCUSED_COMPONENT_PASSED_GENERATED_BYTES_REVIEWED_FINAL_RECEIVING_CI_PENDING",
+  "workflow_run": 36245696000,
+  "job": 108414358072,
+  "artifact_id": 10908205255,
+  "artifact_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36245696000/artifacts/10908205255",
+  "artifact_sha256": "d7d98403caaa3976bb4dcf19280279676cf2ab51ccf945f552f216b37830f6ba",
+  "artifact_size_bytes": 47178,
+  "source": {
+    "requested-source-head": "1366967e381f850a5ce7363d2eb94d2066c7ffac",
+    "runtime-head": "77de482d3513db5ef3b86fc7a08ed5eddd00ab01",
+    "receiving-base-head": "4a97265559e989df937e8c09f9a42d58a4e9d79d",
+    "runtime-tree": "948bc9b22128665c6f0ebd045b010f7db028716f"
+  },
+  "junit": [
+    {
+      "path": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.CardLinterTest.xml",
+      "sha256": "4ea17a645a4a7314cb38e2af8f5386a61a293d76fe788e6f7f500b86f70c508c",
+      "tests": 44,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SnapScenarioTest.xml",
+      "sha256": "4ae890c14a7d0dc55e73c7f9b9ef03585f2bd0dd33a56f759c278109c7974647",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.GoliathSphinxScenarioTest.xml",
+      "sha256": "7b105af3030044705b59297f670afdf0ad7f5fea0af635e9697d81a0ccb1822f",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "mtg-sets/2026/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest.xml",
+      "sha256": "f2c4a9a86b8f19a659e26f94881315f3c4ff64cca3d3c4da244403ab9991d89d",
+      "tests": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+      "sha256": "e0a113848eeb2bd14120dc76ad5fe549ff1a2e66e67e572fbb7688c57dadf4da",
+      "tests": 340,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardLintTest.xml",
+      "sha256": "3c4ed67878b935878c16010cf47eb8fc349b79da75fb735f473b24c83e6c8756",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.effects.zones.MoveSourceAndExactCardsExecutorTest.xml",
+      "sha256": "f68c8b906d70eefee02214d1fa6c19f8006ae94affcc76f9f3f23c1224950cd8",
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest.xml",
+      "sha256": "2d8d89d737d86b86e71db4eae71bd7af4c49b8a222598320a668b2bcdbadce8d",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "total_actual_cases": 426,
+  "exact_card_cases": {
+    "SphinxsApproachScenarioTest": 14,
+    "SnapScenarioTest": 4,
+    "GoliathSphinxScenarioTest": 3
+  },
+  "generic_atomic_cases": 10,
+  "serialization_registration_cases": 8,
+  "sdk_linter_cases": 44,
+  "snapshot_cases": 340,
+  "corpus_lint_cases": 3,
+  "generated_snapshots": [
+    {
+      "path": "mtg-sets/src/test/resources/snapshots/cards/FRA.json",
+      "sha256": "0a6ce5111531e20524656906125babb0513419a144c8f1975f370409fd37e130",
+      "changed_cards": [
+        "Sphinx's Approach"
+      ]
+    },
+    {
+      "path": "mtg-sets/src/test/resources/snapshots/cards/ULG.json",
+      "sha256": "ac19bf8158788e574d282ae9a021c1b090c67c382286b574d3cce98a1b157cdd",
+      "changed_cards": [
+        "Snap"
+      ]
+    },
+    {
+      "path": "mtg-sets/src/test/resources/snapshots/cards/WWK.json",
+      "sha256": "6d81f3c40b5e9a61715cd0b62900c02b8b512187d7bca271726268a1cb9ef69f",
+      "changed_cards": [
+        "Goliath Sphinx"
+      ]
+    }
+  ],
+  "generation_method": "Ordinary just rebless-cards on the exact combined runtime after focused fixtures; no hand-edited snapshot records.",
+  "generation_review": {
+    "evidence_class": "independent_assistant_peer_component_review_not_gameplay_admission",
+    "reviewer": "lab coordinator peer /root/ferocity; independent read-only source/artifact review",
+    "disposition": "ACCEPT_THREE_GENERATED_CARD_RECORDS_AND_FOCUSED_COMPONENT_EVIDENCE",
+    "reviewed_against_runtime": "77de482d3513db5ef3b86fc7a08ed5eddd00ab01",
+    "prior_records_unchanged": {
+      "FRA": 0,
+      "ULG": 57,
+      "WWK": 15
+    },
+    "only_added_records": {
+      "FRA": "Sphinx's Approach",
+      "ULG": "Snap",
+      "WWK": "Goliath Sphinx"
+    },
+    "findings": [
+      "Workflow source identity and actual runtime merge parents agree.",
+      "All eight JUnit files contain 426 actual passing cases with no failure/error/skip; logs show executed test tasks.",
+      "Every preexisting snapshot record remains byte-identical.",
+      "Generated DSL matches atomic source-plus-four exile/search, Snap bounce followed by non-target land selection, and Goliath 8/7 flying."
+    ],
+    "limitations": [
+      "Final receiving-source full integration remains required.",
+      "Card and snapshot evidence grants no pilot, deck-strength, or Stage-E gameplay admission."
+    ]
+  },
+  "receiving_ci_before_generated_bytes": {
+    "run": 36245695999,
+    "content_job": 108414862947,
+    "classification": "REVIEWED_GENERATED_SNAPSHOTS_NOT_YET_COMMITTED",
+    "actual_mtg_sets_cases": 378,
+    "failures": 3,
+    "failed_checks": [
+      "ULG golden match",
+      "WWK golden match",
+      "FRA golden match"
+    ],
+    "raw_log_storage": "remote-36245695999-content-failure.log.gz",
+    "raw_log_sha256": "b7b906d7d3d2a43f2b489347ee08d24c541b52a926058ac5274d62c09dbb03ae",
+    "gzip_sha256": "106759bdada1bb02e463dce2748a7f68656269748f5a76203051d37e549d02d4",
+    "disposition": "Preserve failed run; publish only independently reviewed ordinary generated bytes, then run receiving CI at the resulting source.",
+    "other_observed_jobs": {
+      "engine": "success",
+      "scenarios-old": "success",
+      "scenarios-2023-24": "success",
+      "scenarios-2025-26": "success",
+      "server": "success",
+      "frontend": "success",
+      "tools": "in_progress_when_receipt_prepared"
+    }
+  },
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_outcomes_exposed": 0,
+  "deck_changes": [],
+  "remaining_gameplay_blockers": [
+    "Receiving-source full integration and required independent acceptance.",
+    "Canonical post-block-declaration priority repair on the receiving source.",
+    "Canonical actor-boundary dependencies and complete receiving decision qualification.",
+    "Competent candidate/comparator/benchmark pilots under equivalent bounded development.",
+    "Prospective deck/execution freeze with endpoints, matched randomness and stopping rules before any Stage-E seed."
+  ]
+}

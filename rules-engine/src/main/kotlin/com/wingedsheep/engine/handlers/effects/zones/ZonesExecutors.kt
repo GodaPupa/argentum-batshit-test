@@ -45,6 +45,7 @@ class ZonesExecutors(
         WarpExileExecutor(),
         MoveTrackedBattlefieldObjectExecutor(),
         ForceExileMultiZoneExecutor(),
+        MoveSourceAndExactCardsExecutor(),
         ForceSacrificeExecutor(),
         SacrificeExecutor(),
         SacrificeSelfExecutor(),

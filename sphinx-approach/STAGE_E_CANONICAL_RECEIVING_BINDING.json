@@ -1,0 +1,209 @@
+{
+  "schema": "sphinx-canonical-receiving-binding/v1",
+  "ready_for_qualification": true,
+  "independent_source_review": {
+    "path": "sphinx-approach/evidence/canonical-receiving-binder-source-review.json",
+    "sha256": "5938bf134d1a29109d7c0d5f42af5855b6912996312e3df20969c81f2418153a"
+  },
+  "qualified_source": "a0c5b995c2829c0b4069562b1f1eede8a820dd97",
+  "qualified_tree": "1ee5590bacf2f6507fff6487be9d3e20df8b5e40",
+  "canonical_receiving_base": "fae4f5f61260a3e99109b38328afc31894bac8d4",
+  "purpose": "Preserve original source histories and complete fixed banks on the reviewed combined Sphinx receiver; no production/test/pilot/deck changes.",
+  "preserved_authority_sha256": {
+    "docs/experiments/pest-control/tier-one-postboard-support-batch-b-shared-receiving-sources.json": "1b8d3bd9fd30e7e28def7e0c2bb77e243ce33d0792ebfa31664dcc5c8ad6ca19",
+    "lab-coordinator/shared-capabilities/actor-input-extraction.json": "9689048782254600b748bf9f135f4e62c598efa1df3f42a128b5df83c1ac16f2",
+    "lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json": "e1e01f033145ce3d70ed7174d38643f77ef7a091c804b8c4834ceb1c16be74e3",
+    "lab-coordinator/shared-capabilities/priority-receiving-sources.json": "235cbb5790e59fe7f4d634542b16efcf59ddfb56721a18e948024618e2d4e957",
+    "sphinx-approach/STAGE_E_ACTOR_FIXTURE_BUDGET.json": "e01864d8d22f228f5ea6c9a3a830cf524290297487c85970471553620af9f5ad",
+    "sphinx-approach/STAGE_E_ACTOR_RECEIVING_SCOPE.json": "1602ca99f7be5f80e486e7353994be8e4aba95049b17ff55261beb18372a15c8",
+    "sphinx-approach/STAGE_E_INITIALIZED_SEAT_FIXTURE_BUDGET.json": "8346efb688909227b06967ce39f703f17455de2412e0897915109d739a359b19",
+    "sphinx-approach/STAGE_E_INITIALIZED_SEAT_RECEIVING.json": "5452f7b6d926f9c0d9be2f89cf10d64a242c91bda9f7ca38f1cc9e42d777a01c"
+  },
+  "qualification_control_paths": [
+    ".github/workflows/attacking-token-defender-qualification.yml",
+    ".github/workflows/engine-priority-after-resolution.yml",
+    ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml",
+    ".github/workflows/shared-actor-input-qualification.yml",
+    ".github/workflows/sphinx-initialized-seat-qualification.yml",
+    ".github/workflows/sphinx-stage-e-actor.yml",
+    "lab-coordinator/shared-capabilities/collect-actor-input.py",
+    "sphinx-approach/STAGE_E_CANONICAL_RECEIVING_BINDING.json",
+    "sphinx-approach/canonical_receiving_binding.py",
+    "sphinx-approach/collect-stage-e-actor.py"
+  ],
+  "allowed_qualification_paths": [
+    ".github/workflows/attacking-token-defender-qualification.yml",
+    ".github/workflows/engine-priority-after-resolution.yml",
+    ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml",
+    ".github/workflows/shared-actor-input-qualification.yml",
+    ".github/workflows/sphinx-initialized-seat-qualification.yml",
+    ".github/workflows/sphinx-stage-e-actor.yml",
+    "lab-coordinator/shared-capabilities/collect-actor-input.py",
+    "sphinx-approach/STAGE_E_CANONICAL_RECEIVING_BINDING.json",
+    "sphinx-approach/canonical_receiving_binding.py",
+    "sphinx-approach/collect-stage-e-actor.py",
+    "sphinx-approach/evidence/canonical-receiving-binder-source-review.json"
+  ],
+  "groups": {
+    "priority_220": {
+      "original_binding_authority": "lab-coordinator/shared-capabilities/priority-receiving-sources.json",
+      "original_pin_count": 250,
+      "original_pins_sha256": "d0e77d3de9f93de1be9d2d3d2160f2e5dff0fed705ed072b047cf066b639d650",
+      "explicit_overrides": [
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+          "original_sha256": "bcc6321f1ef85416859bff716b1446498a62917208cc7f7a65b4cd39b0333b68",
+          "receiving_sha256": "c3ae60ffc76db0f4287df9787633288e0e5b8483f2f50751d9b9c77dec9bf887",
+          "receiving_git_blob": "61551a0c0d291922f4c13a5630fc4bf56528678e",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        },
+        {
+          "path": ".github/workflows/attacking-token-defender-qualification.yml",
+          "original_sha256": "cd255fc80a0be71b3e4f05242e2faf97e9e5b96d4c2af89c7538fae70cd04e8e",
+          "receiving_sha256": "50ee7aa530180b4e6440f2c77f9768da60a2d75cc6f7f08801c8b7dd37a26524",
+          "kind": "PROSPECTIVE_BINDER_CONTROL_REQUIRES_SOURCE_REVIEW"
+        },
+        {
+          "path": ".github/workflows/engine-priority-after-resolution.yml",
+          "original_sha256": "4c77ea98f0fa921946e28b53a0288af953566c620e07a11c338ec262783cc35f",
+          "receiving_sha256": "25565462a9a05ac0980d8c62111f0d00e0cd6994d9d48ed3be4f31715c2a857b",
+          "kind": "PROSPECTIVE_BINDER_CONTROL_REQUIRES_SOURCE_REVIEW"
+        }
+      ]
+    },
+    "token_20": {
+      "original_binding_authority": "lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json",
+      "original_pin_count": 47,
+      "original_pins_sha256": "4b78f5294186850a41b637ffc0247c25aceff28434c9628fcd7c677ab5040b11",
+      "explicit_overrides": [
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+          "original_sha256": "bcc6321f1ef85416859bff716b1446498a62917208cc7f7a65b4cd39b0333b68",
+          "receiving_sha256": "c3ae60ffc76db0f4287df9787633288e0e5b8483f2f50751d9b9c77dec9bf887",
+          "receiving_git_blob": "61551a0c0d291922f4c13a5630fc4bf56528678e",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        }
+      ]
+    },
+    "shared_actor_50": {
+      "original_binding_authority": "lab-coordinator/shared-capabilities/actor-input-extraction.json",
+      "original_pin_count": 18,
+      "original_pins_sha256": "33bec3c83e6bcc82c6934e8c21a3e7d7c0394bb6a09235f8ddd32faad1e37084",
+      "explicit_overrides": [
+        {
+          "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorLegalAction.kt",
+          "original_sha256": "aa127db249b75bbb2cfa52c88bc3a4d8a29d6def300200593c29004f31138974",
+          "receiving_sha256": "78a30347b4b1ad97a6d7260f81d6a0450fd552a812b9469875cf3b36407ec87c",
+          "receiving_git_blob": "5931e80c5c35f52b91e6143c7ba0b777be67e623",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        },
+        {
+          "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorObservation.kt",
+          "original_sha256": "860ef853e182bdec3c397bfe069889973cc0f6c8c3756fe65ce32f8ed45c4442",
+          "receiving_sha256": "21b89d4699a73ac43b3dd28e0f0da1557ce364d789b4eb248dedbd49da9e26e6",
+          "receiving_git_blob": "580257de309cca15cbff236950c01d50be97a882",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        },
+        {
+          "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPayloadSchemas.kt",
+          "original_sha256": "b20050c28bb0eebd83b8bf8517932f9f66c33d933f26b98432a2a3fcbd90cd96",
+          "receiving_sha256": "57c1112455a45abab9c90b075f32f9a0d8f7f13dab0f47dc136131b39a583a20",
+          "receiving_git_blob": "b2e63a41a60a6de372605955772a8aeee19d554f",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        },
+        {
+          "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt",
+          "original_sha256": "cf73082a0ff188a1f89aff11a6c3a8685b5c88c62a1fff7ea38e367910f6c100",
+          "receiving_sha256": "283a860e4a8ce7f27fa2a4e0522b732bb08bbf2c56e407f2c212b3e4d7a4cae2",
+          "receiving_git_blob": "3e41a512f91358f763a194527258979755bab7b6",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        },
+        {
+          "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt",
+          "original_sha256": "319b92760360183d2ad082f08104aa28c95cf16c7cca3edc80bce0797573639d",
+          "receiving_sha256": "e10e187587e7c77a75902bd32521e18cdf8f8ff709ba85254e132a85f65c65b7",
+          "receiving_git_blob": "91d25d450c60124bc6db6e9a9fbeba0a5f15ca58",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        }
+      ]
+    },
+    "pest_postboard_b": {
+      "original_binding_authority": "docs/experiments/pest-control/tier-one-postboard-support-batch-b-shared-receiving-sources.json",
+      "original_pin_count": 36,
+      "original_pins_sha256": "154748d189b0b491da496c29430ea64a44dc1ce3dd2f3d0cf0f57153bfa1a649",
+      "explicit_overrides": [
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+          "original_sha256": "cc64a43fb77f688624be550d07c8aa96baddd5bbe9a4d1727b166110f0e3f6ed",
+          "receiving_sha256": "0937aa011d25adbe7292f544feaa424ae5a7fa951589b9775b011088a05ad2c8",
+          "receiving_git_blob": "66c9a2ef991ff632f9490a832d5450b730d049f5",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        },
+        {
+          "path": ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml",
+          "original_sha256": "5a433a6ff27e5c0d6f0f542ee4d2847749fba87c77b5409e9ebbb81f68038691",
+          "receiving_sha256": "b1bf94e69cb41ec6493225d13dbc3275d2e025f71fbebb7c19b52d0c862fbccf",
+          "kind": "PROSPECTIVE_BINDER_CONTROL_REQUIRES_SOURCE_REVIEW"
+        }
+      ]
+    },
+    "sphinx_actor_136": {
+      "original_binding_authority": "sphinx-approach/collect-stage-e-actor.py",
+      "original_pin_count": 41,
+      "original_pins_sha256": "600deeecee7f56dea5fd7186cda37a5a97928f7c47290bc4e9cdc4efe5157dc8",
+      "explicit_overrides": [
+        {
+          "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt",
+          "original_sha256": "319b92760360183d2ad082f08104aa28c95cf16c7cca3edc80bce0797573639d",
+          "receiving_sha256": "e10e187587e7c77a75902bd32521e18cdf8f8ff709ba85254e132a85f65c65b7",
+          "receiving_git_blob": "91d25d450c60124bc6db6e9a9fbeba0a5f15ca58",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        },
+        {
+          "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt",
+          "original_sha256": "ebe1a38edda975ad2462563bbccc0510fe8df12337652e19beff0343a4ea6839",
+          "receiving_sha256": "283a860e4a8ce7f27fa2a4e0522b732bb08bbf2c56e407f2c212b3e4d7a4cae2",
+          "receiving_git_blob": "3e41a512f91358f763a194527258979755bab7b6",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        }
+      ]
+    },
+    "sphinx_seat_16": {
+      "original_binding_authority": "sphinx-approach/STAGE_E_INITIALIZED_SEAT_RECEIVING.json",
+      "original_pin_count": 58,
+      "original_pins_sha256": "a8e16f35962c417f3f8e838e489e61eac34685943237b6cbf1a953e14c5759d7",
+      "explicit_overrides": [
+        {
+          "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt",
+          "original_sha256": "319b92760360183d2ad082f08104aa28c95cf16c7cca3edc80bce0797573639d",
+          "receiving_sha256": "e10e187587e7c77a75902bd32521e18cdf8f8ff709ba85254e132a85f65c65b7",
+          "receiving_git_blob": "91d25d450c60124bc6db6e9a9fbeba0a5f15ca58",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        },
+        {
+          "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt",
+          "original_sha256": "ebe1a38edda975ad2462563bbccc0510fe8df12337652e19beff0343a4ea6839",
+          "receiving_sha256": "283a860e4a8ce7f27fa2a4e0522b732bb08bbf2c56e407f2c212b3e4d7a4cae2",
+          "receiving_git_blob": "3e41a512f91358f763a194527258979755bab7b6",
+          "kind": "EXACT_ALREADY_QUALIFIED_A0_RUNTIME"
+        }
+      ]
+    }
+  },
+  "accepted_evidence": {
+    "runtime_source_composition": "a0c5b995c2829c0b4069562b1f1eede8a820dd97",
+    "same_999_case_bank_run": 36273602269,
+    "same_999_case_bank_artifact_sha256": "1894feb1549e9f9a5ede3ff710635772e5f392b7c4a93b8bcdf9a1019ab6da1c",
+    "fresh_standard_ci_run": 36277074660,
+    "evidence_publication": "9f8730dcad9e1c22f369b16067dc5dd67b616c5e"
+  },
+  "authority_limits": [
+    "Original136 correction rule requires the same complete equal four-identity bank and nonauthor source review; all original fixture bytes, pilot bytes and budget bytes remain unchanged.",
+    "Original16 criteria require all cases, raw XML, no failures/errors/skips and separate source/artifact review; the corrected fixed16 budget and failed prior attempts remain unchanged.",
+    "Shared and Pest receiving pin overrides are prospective qualification controls; prior component results are not receiving runtime or gameplay admission.",
+    "No new case, random rehearsal, seed access, allocation, outcome, opponent package or Stage-E sample geometry is authorized.",
+    "Actual PR merge-tree results, full CI, inherited snapshot drift and complete artifacts require review before canonical integration."
+  ],
+  "official_games": 0,
+  "gameplay_authorized": false
+}

@@ -178,7 +178,7 @@ class ObservationBuilder(
             } ?: ManaPoolView(),
             isPerspective = playerId == perspectivePlayerId,
             isActive = playerId == state.activePlayerId,
-            hasPriority = playerId == state.priorityPlayerId,
+            hasPriority = state.hasPriority(playerId),
             hasLost = hasLost
         )
     }

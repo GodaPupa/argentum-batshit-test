@@ -21,6 +21,9 @@ dependencies {
     // The whole card corpus — scenario tests import the definitions they exercise.
     testImplementation(project(":mtg-sets"))
 
+    // Exact card continuation fixtures serialize and restore GameState across decisions.
+    testImplementation(libs.kotlinxSerialization)
+
     testImplementation(libs.kotestRunner)
     testImplementation(libs.kotestAssertions)
 }
