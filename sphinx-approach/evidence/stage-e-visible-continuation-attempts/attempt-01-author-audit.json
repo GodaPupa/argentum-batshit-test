@@ -1,0 +1,19 @@
+{
+  "schema": "sphinx-stage-e-visible-continuation-attempt-audit-v1",
+  "source_head": "d2a44af8daf362bbcb3b0adc344d55a323bac3c0",
+  "source_tree": "570e3922e01abc6fba5b76887bc0d4b46b1a3ef2",
+  "original_raw_archive": "attempt-01-raw.tgz",
+  "original_raw_archive_sha256": "477511552815f96344ce192f8ac2509b3cfaef475a99f1e29bd562983c645a33",
+  "test_xml_sha256": "8ac40bacb7f6b36f05b093d59f3e1400572f5a71e0e148c4860e89c35c94ff25",
+  "case_count": 12,
+  "passed": 11,
+  "failed": 1,
+  "errored": 0,
+  "skipped": 0,
+  "failed_case": "U4 closest-no-approach-v01 Preordain bottoms and reorders using only current look metadata",
+  "observed_failure": "After the validated Preordain SelectCards response, no ReorderLibraryDecision remained; the fixed fixture assertion at test line 187 expected one. The source definition allows all revealed cards to be bottomed, leaving no reorder question. The other eleven diagnostic cases passed, but the whole first attempt remains INCOMPLETE.",
+  "diagnosed_next_step": "Preserve the actual branch: if a ReorderLibraryDecision remains, submit the policy's current visible order; if no question remains, verify completion. Bind that correction to a new source and collector before any second attempt.",
+  "disposition": "INCOMPLETE_DIAGNOSTIC__RAW_PRESERVED__NO_PILOT_BANK_OR_GAMEPLAY_AUTHORITY",
+  "official_stage_e_seeds": 0,
+  "official_stage_e_games": 0
+}
