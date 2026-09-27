@@ -32,49 +32,44 @@ object PestMonsterTronAdvisorModule : CardAdvisorModule {
     }
 }
 
-private val PEST_MONSTER_TRON_LANDS =
-    listOf("Urza's Mine", "Urza's Power Plant", "Urza's Tower")
-
 private object PestMonsterTronTutorAdvisor : CardAdvisor {
     override val cardNames = setOf("Expedition Map", "Crop Rotation", "Ancient Stirrings")
 
     override fun evaluateCast(context: CastContext): Double? {
-        if (pestMonsterMissingTronLands(context.state, context.playerId).isEmpty()) return null
-
         val cast = context.action.action as? CastSpell
-        if (cast != null && context.state.pestMonsterCardName(cast.cardId) == "Crop Rotation") {
-            val sacrificed = cast.additionalCostPayment?.sacrificedPermanents?.singleOrNull()
-            val sacrificedName = sacrificed?.let(context.state::pestMonsterCardName)
-            if (sacrificedName in PEST_MONSTER_TRON_LANDS) {
-                return context.passScore - 25.0
-            }
-        }
-        return context.passScore + 35.0
+        val sacrificed = cast?.additionalCostPayment?.sacrificedPermanents?.singleOrNull()
+        return PestMonsterTronPublicPolicy.tutorCastScore(
+            context.state.pestMonsterAccessibleNames(context.playerId),
+            cast != null && context.state.pestMonsterCardName(cast.cardId) == "Crop Rotation",
+            sacrificed?.let(context.state::pestMonsterCardName),
+            context.passScore,
+        )
     }
 
     override fun respondToDecision(context: AdvisorDecisionContext) = when (val decision = context.decision) {
         is SearchLibraryDecision -> {
-            val missing = pestMonsterMissingTronLands(context.state, context.playerId)
-            val selected = missing.asSequence().mapNotNull { wanted ->
-                decision.options.firstOrNull { id -> decision.cards[id]?.name == wanted }
-            }.firstOrNull()
-                ?: decision.options.firstOrNull { id -> decision.cards[id]?.name in PEST_MONSTER_TRON_LANDS }
+            val selected = PestMonsterTronPublicPolicy.tutorSelection(
+                context.state.pestMonsterAccessibleNames(context.playerId),
+                decision.options,
+                decision.options.associateWith { decision.cards[it]?.name },
+            )
             selected?.let { CardsSelectedResponse(decision.id, listOf(it)) }
         }
 
         is SelectCardsDecision -> {
             val info = decision.cardInfo
             if (info == null && context.sourceCardName == "Crop Rotation") {
-                val selected = decision.options.firstOrNull { id ->
-                    context.state.pestMonsterCardName(id) !in PEST_MONSTER_TRON_LANDS
-                } ?: return null
-                CardsSelectedResponse(decision.id, listOf(selected))
+                val selected = PestMonsterTronPublicPolicy.cropRotationSacrifice(
+                    decision.options,
+                    decision.options.associateWith(context.state::pestMonsterCardName),
+                )
+                selected?.let { CardsSelectedResponse(decision.id, listOf(it)) }
             } else if (info != null) {
-                val missing = pestMonsterMissingTronLands(context.state, context.playerId)
-                val selected = missing.asSequence().mapNotNull { wanted ->
-                    decision.options.firstOrNull { id -> info[id]?.name == wanted }
-                }.firstOrNull()
-                    ?: decision.options.firstOrNull { id -> info[id]?.name in PEST_MONSTER_TRON_LANDS }
+                val selected = PestMonsterTronPublicPolicy.tutorSelection(
+                    context.state.pestMonsterAccessibleNames(context.playerId),
+                    decision.options,
+                    decision.options.associateWith { info[it]?.name },
+                )
                 selected?.let { CardsSelectedResponse(decision.id, listOf(it)) }
             } else null
         }
@@ -92,12 +87,9 @@ private object PestMonsterTronOrnamentAdvisor : CardAdvisor {
         val otherMana = context.state.projectedState.getBattlefieldControlledBy(context.playerId)
             .count { id ->
                 id != activation.sourceId &&
-                    context.state.pestMonsterCardName(id) in (
-                        PEST_MONSTER_TRON_LANDS +
-                            listOf("Forest", "Conduit Pylons", "Bonder's Ornament")
-                    )
+                    PestMonsterTronPublicPolicy.isOrnamentManaName(context.state.pestMonsterCardName(id))
             }
-        return if (handSize <= 2 && otherMana >= 4) context.passScore + 14.0 else null
+        return PestMonsterTronPublicPolicy.ornamentCastScore(handSize, otherMana, context.passScore)
     }
 }
 
@@ -108,19 +100,19 @@ private object PestMonsterTronBojukaBogAdvisor : CardAdvisor {
         (context.decision as? ChooseTargetsDecision)?.let { decision ->
             val requirement = decision.targetRequirements.singleOrNull() ?: return@let null
             val legal = decision.legalTargets[requirement.index].orEmpty()
-            val opponent = legal
-                .filter { context.state.isOpponentOf(it, context.playerId) }
-                .maxByOrNull { context.state.getZone(it, Zone.GRAVEYARD).size }
+            val opponents = legal.filter { context.state.isOpponentOf(it, context.playerId) }
+            val opponent = PestMonsterTronPublicPolicy.bojukaBogTarget(
+                opponents,
+                opponents.associateWith { context.state.getZone(it, Zone.GRAVEYARD).size },
+            )
                 ?: return@let null
             TargetsResponse(decision.id, mapOf(requirement.index to listOf(opponent)))
         }
 }
 
-private fun pestMonsterMissingTronLands(state: GameState, playerId: EntityId): List<String> {
-    val accessible = state.projectedState.getBattlefieldControlledBy(playerId) +
-        state.getZone(playerId, Zone.HAND)
-    val names = accessible.mapNotNull(state::pestMonsterCardName).toSet()
-    return PEST_MONSTER_TRON_LANDS.filterNot(names::contains)
+private fun GameState.pestMonsterAccessibleNames(playerId: EntityId): List<String> {
+    val accessible = projectedState.getBattlefieldControlledBy(playerId) + getZone(playerId, Zone.HAND)
+    return accessible.mapNotNull(this::pestMonsterCardName)
 }
 
 private fun GameState.pestMonsterCardName(id: EntityId): String? =
