@@ -14,17 +14,20 @@
       "sealed canonical opening actor binding",
       "same land-count keep/mulligan heuristic for all four lists",
       "current-hand London bottom order",
-      "offered basic-Island land play"
+      "offered basic-Island land play",
+      "trusted projection router uses eligible actors, least-advanced unkept London round, then ordered bottom choices; after setup it uses the current priority/decision actor"
     ],
     "qualification": "UNCOMPILED_UNTESTED_SOURCE_CANDIDATE",
-    "limitation": "All typed resolution questions, spell action scheduling, ordinary pass/priority, mana-ability sequencing, combat and trusted whole-game runner still return unqualified or have no implementation. Source is not a pilot admission."
+    "limitation": "All typed resolution questions, spell action scheduling, ordinary pass/priority, mana-ability sequencing, combat and trusted whole-game runner still return unqualified or have no implementation. Source is not a pilot admission.",
+    "opening_router": "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEOpeningRouter.kt",
+    "router_git_blob": "51525cd085010486405fa42bfbaf06482607fb3c"
   },
   "common_paths": [
     {
       "id": "OP1",
       "path": "London KeepHand/TakeMulligan",
       "evidence": "gym/actorinput/ActorActionMenu.kt; rules-engine/core/GameAction.kt",
-      "actor_requirement": "current complete seven-card own hand and current resources; equal policy for every 60",
+      "actor_requirement": "current complete seven-card own hand and current resources; equal policy for every 60; shared opening actor eligibility cannot be replaced by priorityPlayerId",
       "source_state": "candidate authored; no fixture run"
     },
     {
@@ -213,7 +216,8 @@
     "Frozen Stage-E opponent deck packages have not been selected; opponent-triggered question and target inventory is necessarily incomplete.",
     "Card definitions establish possible paths but do not certify the exact actor projection/continuation shape; C06, C07, C09 require real typed trace before an immutable fixture bank.",
     "No blanket yes/first-option policy or legal action index fallback may stand in for a reachable decision.",
-    "The first compiled source/fixture bank must be reviewed prospectively with exact numbered case IDs, source hashes and equal four-identity opportunity; case total is currently unset."
+    "The first compiled source/fixture bank must be reviewed prospectively with exact numbered case IDs, source hashes and equal four-identity opportunity; case total is currently unset.",
+    "The source-only router has not been tested against successive initialized London seat transitions or post-opening priority. The historical 16 initialized-seat fixtures bind seats and inspect one boundary action, but do not qualify this router or opening policy."
   ],
   "finite_bank": {
     "new_distinct_checks_per_identity": null,
