@@ -1,0 +1,147 @@
+{
+  "preserved_authority_sha256": {
+    "izzet-science/v0.7-control.md": "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01",
+    "izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt": "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be",
+    "izzet-science/v09-position1-bootstrap-gate.md": "8344ad7c543a42ac71ef9c999583ea65f1b44de57ed870e7480f91df46941257",
+    "izzet-science/v09-phase33-position1-execution-authorization-accepted.md": "3851d3c0405d3a7186de4f2161abf165a1ca38d12ff6a352a432d39fec0a7375",
+    "izzet-science/shared-priority-receiving/priority.json": "e9fbb30abbc13425c1675fa2cb6ba2bd1f8275e1f9b9fa6872a49c21cfd54643",
+    "izzet-science/shared-priority-receiving/cast-observer.json": "81973f3fd87739d5846244174aa426ba3790e7ebdcb2bf86977e70f7f21f4e5b",
+    "izzet-science/v09-position1-execution-adapter-accepted.md": "2802ef8475394ca8f3b889289dda6be5887e6506c348dc01a449b9db4eb03c01",
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt": "36c5348e3d59d569001c9b5d85db3f5ae89683d10eeab704ff6a8c1636835bf6",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/GameTestDriver.kt": "34cb7972a73c3cc90dddaf43749adcc6dd1bd8495c8b3e3dae23ec78fe9c5df0",
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": "87978d468ff109f88378607fec34b4ad825ed91671069a62c0f7eb6fb2a60b52"
+  },
+  "dependency_files": [
+    "gradle/libs.versions.toml",
+    "gradle/wrapper/gradle-wrapper.properties",
+    "gradle/wrapper/gradle-wrapper.jar",
+    "gradlew",
+    "settings.gradle.kts",
+    "justfile",
+    "scripts/test-class",
+    "scripts/gradle-locked"
+  ],
+  "schema": "izzet-five-existing-scenario-sequence-qualification-v1",
+  "source_head": "af8685ec97fd0f56195f25e7d3ca83c609fa018a",
+  "source_tree": "b46e165748abf32b2c8856052e5df3d8ffa910f9",
+  "ready_for_execution": true,
+  "source_review": {
+    "sha256": "a0e5e66c1cf23b6edd9171d2eff0134a64f713106e4743193d3e2d013757a38f",
+    "archival_location": "izzet-science/evidence/scenario-sequence-preexecution-20260927/manual-independent-control-review.json",
+    "record": {
+      "schema": "manual-independent-izzet-five-case-control-review-v1",
+      "reviewer": "/root/manual",
+      "reviewed_utc": "2026-09-27T01:25:09.186138+00:00",
+      "disposition": "PASS_BOUNDED_PROSPECTIVE_FIVE_EXISTING_CASE_CONTROL",
+      "source_head": "af8685ec97fd0f56195f25e7d3ca83c609fa018a",
+      "source_tree": "b46e165748abf32b2c8856052e5df3d8ffa910f9",
+      "files": [
+        {
+          "path": "qualify.py",
+          "bytes": 14207,
+          "sha256": "c658e1231278c652379b273dde68b9f0a7e597d123d7cba3c04574160cd7b044"
+        },
+        {
+          "path": "gate.json",
+          "bytes": 4696,
+          "sha256": "0cd52ed3e4d81a228c73dcab83846a0d45255da7e45b16aa5f77de010dbfc132"
+        },
+        {
+          "path": "izzet-scenario-sequence-qualification.yml",
+          "bytes": 1421,
+          "sha256": "b7d1464d7a4eeec29d593d03bac091094b4e12a3e1cd1e457f0dba401b526ea2"
+        }
+      ],
+      "checks": [
+        "Read the complete script, gate and workflow; independently fetched the prepared source commit and parent identities in this review. Source test edits are covered by the separate Pest source review; this review does not re-author or independently admit the complete runtime.",
+        "Reopened the original c47 failure archive and matched both raw XML SHA-256 values and all five exact case names: three ArcaneDenialScenarioTest and two MnemonicWallScenarioTest. No new baseline, pilot or gameplay case.",
+        "The finite script checks exact source commit/tree/clean status, preserved authority and helper/baseline hashes, exact original test blobs, all eight dependency hashes, actual XML identities, timestamps, zero failure/error/skip, fresh required task and started/finished test worker. Raw exits, logs and XML precede interpretation; ordinary failures do not suppress the second bank.",
+        "Verified the owned-process resource monitor functions AST-identical to reviewed six-case script91d913cd8. The amended post-exit aggregate XML check closes the final-flush race and marks a technical limit, so remaining classes stop. Truncation and timeouts cannot pass.",
+        "Verified the amended preflight creates an initial audit and copies/hashes all three raw controls before parsing or readiness/source assertions. Final audit preservation remains inside finally.",
+        "Ran only two synthetic Python collector checks, with a mocked run_capped function and no subprocess/engine invocation: malformed gate retains all controls and failure audit; a final aggregate XML flush above the threshold marks technical failure. Record bound below.",
+        "Workflow contains one exact creation-push branch, run-attempt1 guard, read-only permissions, separate exact-source checkout, no persisted credentials, one build semaphore slot, and always-retained output including hidden workflow control. It invokes no gameplay/seed/claim allocation.",
+        "The old f7 script and author guard records remain preserved. An initial reviewer hash assertion caught the candidate changing during review; the mistakenly named copied-controls directory was accurately renamed reviewed-c658-controls, with no source or remote mutation."
+      ],
+      "resolved_findings": [
+        {
+          "original_script_sha256": "f7c2e4c38e5446630d44fac7fc9c64fe2db6be42b1a37a986783e2bf85b929ab",
+          "finding": "Preflight parse/readiness could fail before raw control retention",
+          "disposition": "Fixed in exact c658 script; synthetic malformed-gate check passed"
+        },
+        {
+          "finding": "A final aggregate XML flush could exceed the report limit after live monitor exit",
+          "disposition": "Fixed in exact c658 script; synthetic final-flush overshoot check passed"
+        }
+      ],
+      "independent_collector_record": {
+        "path": "manual-independent-collector-check.json",
+        "sha256": "1ef0bd10f814b2136eab226271ec158b0572772e29e73bce8738af584dbd95ff"
+      },
+      "activation_boundary": {
+        "currently_ready": false,
+        "source_review": null,
+        "permitted_activation_delta": "Only ready_for_execution=true and source_review binding this exact review and its archival location; normalizing those two fields must reproduce reviewed gate0cd52ed3. Script and workflow must remain exactly pinned.",
+        "root_final_review_required": true,
+        "remaining_preflight": "Root must confirm the exact final prepared release, current ref absence, isolated three-file tree, branch-creation event and no unintended inherited workflow trigger. Author trigger/404 records were read as provenance, not independently refreshed here."
+      },
+      "limits": [
+        "No source publication, ref mutation, workflow event, compiler, JVM or engine test was performed by this review.",
+        "This is source/control review only, not completed test evidence, whole-runtime acceptance, a GitHub approval or gameplay admission.",
+        "No 973 rerun, baseline/golden change, official seed access, allocation or deck-policy change is authorized."
+      ],
+      "official_games": 0,
+      "engine_cases_executed": 0,
+      "gameplay_authorized": false
+    }
+  },
+  "banks": [
+    {
+      "scope": "prospective-five-existing-sequence-correction",
+      "class": "com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest",
+      "expected_cases": 3,
+      "case_names": [
+        "counter schedules two one-shot triggers for the next turn's upkeep and captures target controller",
+        "on the next turn's upkeep target controller may draw 0 to 2 and Denial caster draws one",
+        "uncounterable target still gets Arcane Denial's delayed draw abilities"
+      ],
+      "original_archive_sha256": "869e0cdd41e5827fbf51e74ed807ba549e4e533f7bc98b2a2395be91c6fb5edf",
+      "original_xml_sha256": "efad19603b382cc98364273cbd57483bb202a8003569c78700784823437c64bb",
+      "original_xml_path": "ArcaneDenialScenarioTest/raw-test-results/TEST-com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest.xml",
+      "original_result": "FAILED_C47_DIAGNOSTIC_RETAINED_NOT_ACCEPTED",
+      "test_source": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt",
+      "test_source_git_blob": "a84b6853198d10c33fc34165bdfc69f98ea5171c",
+      "module": "mtg-sets/1993-1999/tests",
+      "stage": "ArcaneDenialScenarioTest"
+    },
+    {
+      "scope": "prospective-five-existing-sequence-correction",
+      "class": "com.wingedsheep.engine.scenarios.MnemonicWallScenarioTest",
+      "expected_cases": 2,
+      "case_names": [
+        "ETB may return a targeted instant from your graveyard",
+        "ETB may be declined without returning the targeted card"
+      ],
+      "original_archive_sha256": "869e0cdd41e5827fbf51e74ed807ba549e4e533f7bc98b2a2395be91c6fb5edf",
+      "original_xml_sha256": "33aed82ed070cce7b3b0b78e1b5be2ed2a2d649668b6ab7ba5726101a93bae28",
+      "original_xml_path": "MnemonicWallScenarioTest/raw-test-results/TEST-com.wingedsheep.engine.scenarios.MnemonicWallScenarioTest.xml",
+      "original_result": "FAILED_C47_DIAGNOSTIC_RETAINED_NOT_ACCEPTED",
+      "test_source": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MnemonicWallScenarioTest.kt",
+      "test_source_git_blob": "d4f8dc75c44334f82d5646eb15dceefbc2adde93",
+      "module": "mtg-sets/2008-2016/tests",
+      "stage": "MnemonicWallScenarioTest"
+    }
+  ],
+  "resource_limits": {
+    "command_timeout_seconds": 1200,
+    "stdout_bytes": 33554432,
+    "test_result_bytes": 33554432,
+    "artifact_bytes": 134217728,
+    "minimum_free_bytes": 536870912
+  },
+  "scope": [
+    "Only five existing card fixture identities, source correction independently reviewedefea87d4.",
+    "No baseline/golden execution or adoption, no 973 rerun, no whole-runtime admission.",
+    "No official entropy, allocations or games.",
+    "Timeout/truncation/partialXML remains technical failure; no rerun authority."
+  ]
+}
