@@ -1,0 +1,307 @@
+{
+  "schema": "manual-shared-composition-retained-case-bank-v1",
+  "source": "a333dc1e6b8c2e78961bbbe052ee01105e2f1264",
+  "groups": "Unchanged acceptedManual96 plus acceptedshared40; proposed only, no new fixture or official game",
+  "stages": [
+    {
+      "class": "com.wingedsheep.engine.handlers.effects.library.AuthorizedLibrarySearchChoiceTest",
+      "module": "rules-engine",
+      "case_names": [
+        "only the current direct search carries the offered physical order",
+        "restricted portion and duplicate names expose only eligible physical handles",
+        "empty search has no order candidate or unanswered choice",
+        "noncontroller searcher fails before revealing a hidden library",
+        "ordinary library gather and overwritten direct collection never grant order"
+      ],
+      "origin": "accepted shared40",
+      "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/library/AuthorizedLibrarySearchChoiceTest.kt",
+      "test_blob": "920f82e00433a6260c275a3d30b6d0d036670f14",
+      "expected_cases": 5
+    },
+    {
+      "class": "com.wingedsheep.gameserver.session.AuthorizedSearchDecisionMaskingTest",
+      "module": "game-server",
+      "case_names": [
+        "routed browser decision keeps the choice order but strips internal search history"
+      ],
+      "origin": "accepted shared40",
+      "test_path": "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AuthorizedSearchDecisionMaskingTest.kt",
+      "test_blob": "494599e337e6ca588463cd775cc428dd6b01df9f",
+      "expected_cases": 1
+    },
+    {
+      "class": "com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest",
+      "module": "gym",
+      "case_names": [
+        "current source-bound top search preserves only offered order; ordinary look sorts",
+        "stale, altered, and replaced proof never preserves order"
+      ],
+      "origin": "accepted shared40",
+      "test_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorAuthorizedLibrarySearchOrderTest.kt",
+      "test_blob": "628d8ab01442cb7e4488c643d463eed4b6b59d2d",
+      "expected_cases": 2
+    },
+    {
+      "class": "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "module": "gym",
+      "case_names": [
+        "nullable inline references preserve absence and still reject inaccessible present IDs",
+        "complete actor input is invariant to unknown opponent hand identities",
+        "complete actor input is invariant to both unseen library orders and identities",
+        "hidden exile identity and unrelated entity ID do not enter actor input",
+        "authoritative RNG never changes actor payload or supplied policy stream",
+        "known opponent card remains visible while its unknown neighbor changes",
+        "known library subset is sorted independently of hidden positions",
+        "drawing a previously hidden card exposes its identity to its owner",
+        "public discard exposes the former hidden opponent card",
+        "wrong actor is rejected before current private question is projected",
+        "current own library search reveals options without library order or future draws",
+        "reorder decision preserves its authorized top group but omits unseen remainder",
+        "raw face-down selection metadata is masked while the public option survives",
+        "unauthorized opponent-library cardInfo and extra metadata keys fail visibly",
+        "complete nested target sacrifice discard and mode domains survive detached projection",
+        "inaccessible nested cost reference is rejected instead of removed",
+        "very large mandatory numeric domain is copied without enumeration or auto-answer",
+        "target constraints and nonselectable look cards are retained",
+        "pending mana payment includes actual mana ability menu and rejects ordinary spells",
+        "mulligan public counts do not expose another hand's pending pregame cards",
+        "public spell X and chosen modes are retained",
+        "epoch actor menu and policy-state tampering invalidate response binding",
+        "empty ordinary menu and terminal state fail rather than inventing a pass or winner",
+        "raw authority objects and continuations are rejected by payload graph audit",
+        "all eighteen current decision variants cross as complete typed questions",
+        "real pre-block input identifies vigilant attacker and defender with an empty blocker template",
+        "authorized nonbattlefield power survives power-constrained selection metadata",
+        "unlisted data types and enum values fail closed instead of using package fallbacks"
+      ],
+      "origin": "accepted shared40",
+      "test_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorObservationBoundaryTest.kt",
+      "test_blob": "5d9ebb717697fafdd166fa1c5468fb57922e4d0f",
+      "expected_cases": 28
+    },
+    {
+      "class": "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+      "module": "gym",
+      "case_names": [
+        "HP01 ordinary priority and its actual pass agree in direct and actor observations",
+        "HP02 a real declaration baton has no priority until blockers finish",
+        "HP03 a serialized real block-tax payment retains its actor without priority",
+        "HP04 actual shared-team priority is visible on both teammates"
+      ],
+      "origin": "accepted shared40",
+      "test_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt",
+      "test_blob": "526b21d188ffdfe2f08e92ea7514f7ac111d6b1a",
+      "expected_cases": 4
+    },
+    {
+      "class": "com.wingedsheep.engine.event.BattlefieldEntrySnapshotTest",
+      "module": "rules-engine",
+      "case_names": [
+        "child entry is frozen before later pump and enclosing composite cannot refresh it",
+        "whole simultaneous token group and entry counters are applied before every snapshot",
+        "preexisting anthem affects entry before a later pump; printed zero is not substituted",
+        "entry event survives serialization and absent live token still matches captured characteristics",
+        "captured scalar power and toughness filters ignore later state for all supported relations",
+        "later type and color changes do not rewrite positive or negative entry predicates",
+        "unknown entry predicates remain unknown under negation and compound filters",
+        "copied token captures its copied mana value and copy-exception base power",
+        "face-down entry facts mask concealed card data and client event DTO never includes snapshots",
+        "missing transition reference never fabricates an entry snapshot from eventual state",
+        "a prior battlefield visit is not rebound to the object that returned later"
+      ],
+      "origin": "accepted Manual96; names indexed originalCI10923855139",
+      "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt",
+      "test_blob": "aa68d3d384edee9bbebb755b2630dc66d93c8df3",
+      "expected_cases": 11
+    },
+    {
+      "class": "com.wingedsheep.engine.handlers.effects.token.TokenBatchEntryHistoryTest",
+      "module": "rules-engine",
+      "case_names": [
+        "BE01 target-copy siblings retain original entry history across three serialized color choices",
+        "BE02 source-copy siblings retain original entry history across three serialized color choices",
+        "BE03 Aura-copy siblings retain original entry history across two serialized host choices",
+        "BE04 a pending copy tail missing its original checkpoint is rejected without inventing history"
+      ],
+      "origin": "accepted Manual96; names indexed originalCI10923855139",
+      "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenBatchEntryHistoryTest.kt",
+      "test_blob": "87b25e8d9427cdb925edd0a1ba2d70e6f277ae3c",
+      "expected_cases": 4
+    },
+    {
+      "class": "com.wingedsheep.engine.mechanics.layers.BattlefieldEntryProjectionTest",
+      "module": "rules-engine",
+      "case_names": [
+        "the entering object's own mana cost is excluded from the pre-entry aggregate",
+        "the entrant's static effect applies to itself without changing other permanents",
+        "existing continuous effects apply to the hypothetical entering permanent",
+        "an entry recorded in the prepared state cannot satisfy its own pre-entry history gate",
+        "pre-entry aggregate evaluation preserves existing earlier-layer control changes",
+        "an already-entered state is rejected as a pre-entry checkpoint"
+      ],
+      "origin": "accepted Manual96; names indexed originalCI10923855139",
+      "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/layers/BattlefieldEntryProjectionTest.kt",
+      "test_blob": "b226ff6ca8bc669f97fbf2b3377ad86045c0ff2d",
+      "expected_cases": 6
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "module": "rules-engine",
+      "case_names": [
+        "nonactive activation removes its sacrificed token before returning priority",
+        "cost and SBA deaths join one APNAP batch above a nonactive player's activation",
+        "SBA death occurs before choosing targets for a cost-triggered ability",
+        "Ferocity's cost-death return waits above the activated ability after Aura cleanup",
+        "paying the last life loses before an activated life gain can resolve",
+        "standalone Spawn mana removes the token before nonactive player receives priority",
+        "standalone Treasure with explicit color settles token cleanup before priority",
+        "Treasure color-choice pause completes its mana effect before SBA and restores activator priority",
+        "Spawn activation inside ward payment does not run SBA until the outer payment completes"
+      ],
+      "origin": "accepted Manual96; names indexed originalCI10923855139",
+      "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationPriorityScenarioTest.kt",
+      "test_blob": "1f5e15c668e4e5ec4606a5190db53dcbe3fc6b50",
+      "expected_cases": 9
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "module": "rules-engine",
+      "case_names": [
+        "PB01 empty final declaration gives active seat 1 first priority",
+        "PB03 actual blocks give active seat 1 an immediate combat trick",
+        "PB02 empty final declaration gives active seat 2 first priority",
+        "PB04 actual blocks give active seat 2 an immediate combat trick",
+        "PB05 a targeted block trigger preserves active priority across serialized target choice",
+        "PB06 simultaneous block triggers keep ordering and targets before active priority",
+        "PB07 paid block tax restores active priority after a serialized mana selection",
+        "PB08 declining a block tax preserves declaration duty and grants no priority",
+        "PB09 nested block-tax mana pays before SBA and targeted death-trigger placement",
+        "PB10 multiple defenders have only an APNAP declaration baton before active priority",
+        "PB11 first defender's target choice waits until every block declaration is complete",
+        "PB12 multiple defenders' block triggers wait through paid tax then stack in APNAP order",
+        "PB13 a queued block-trigger token retains exact departure LKI through later payment and cleanup",
+        "PB14 a final defender's concession abandons tax but preserves the prior defender's trigger",
+        "PB15 owner concession preserves a remaining controller's queued source LKI without early placement",
+        "PB16 concession during two-player block payment clears the actual waiting batch at game end"
+      ],
+      "origin": "accepted Manual96; names indexed originalCI10923855139",
+      "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PostBlockDeclarationPriorityScenarioTest.kt",
+      "test_blob": "a50dc0cc004b5d965206d76a940b8efb814dc023",
+      "expected_cases": 16
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.SelfEntersTappedOffStackEntryScenarioTest",
+      "module": "rules-engine",
+      "case_names": [
+        "a reanimation spell brings back a creature that says 'enters tapped' TAPPED",
+        "a tapland moved from the graveyard onto the battlefield enters TAPPED",
+        "a land with no such clause still enters untapped",
+        "a search-library move honors the fetched land's own clause",
+        "condition false \u2014 reanimated with no other lands, it enters TAPPED",
+        "condition true \u2014 reanimated with two other lands, it enters UNTAPPED",
+        "The Wandering Minstrel untaps a reanimated tapland",
+        "without the Minstrel the same land enters tapped",
+        "a shock land put onto the battlefield by an effect enters TAPPED, unasked",
+        "playing a tapland from hand still enters it tapped, exactly once",
+        "casting a creature that says 'enters tapped' still enters it tapped"
+      ],
+      "origin": "accepted Manual96; names indexed originalCI10923855139",
+      "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SelfEntersTappedOffStackEntryScenarioTest.kt",
+      "test_blob": "ca954877ae781f9e52e45762d1f41ce1352ee173",
+      "expected_cases": 11
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.TokenCopyOfPlaneswalkerEntryScenarioTest",
+      "module": "rules-engine",
+      "case_names": [
+        "a token copy of a planeswalker enters with the copied printed loyalty and survives"
+      ],
+      "origin": "accepted Manual96; names indexed originalCI10923855139",
+      "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TokenCopyOfPlaneswalkerEntryScenarioTest.kt",
+      "test_blob": "37e18b5c0228c42d65b8e445b2791678a3966126",
+      "expected_cases": 1
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.TokenCopyOfSagaEntryScenarioTest",
+      "module": "rules-engine",
+      "case_names": [
+        "a token copy of a Saga enters with a SagaComponent, one lore counter, and chapter I fires",
+        "a token copy of a Saga accrues lore on the controller's next turn (chapter II triggers)"
+      ],
+      "origin": "accepted Manual96; names indexed originalCI10923855139",
+      "test_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TokenCopyOfSagaEntryScenarioTest.kt",
+      "test_blob": "9f0a8223bfbce47cb827be30c99fac8b2a8c8604",
+      "expected_cases": 2
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PurphorosGodOfTheForgeScenarioTest",
+      "module": "mtg-sets/2008-2016/tests",
+      "case_names": [
+        "spell remains a creature on stack and resolves to a legendary enchantment below devotion five",
+        "four other red pips plus its own pip meet the exact creature threshold",
+        "hybrid monocolored hybrid and Phyrexian symbols each contribute one red devotion",
+        "opposing permanents and mana symbols in rules text do not provide devotion",
+        "stealing a red permanent immediately removes its contribution from the previous controller",
+        "a stolen God uses the new controller's devotion",
+        "a creature entry deals two to every opponent in a four-player fixture while God is not a creature",
+        "opponent creature entry does not trigger the God",
+        "a noncreature entry does not trigger the God",
+        "two simultaneous creature tokens generate two independent damage triggers",
+        "an already triggered damage ability survives its source returning to hand",
+        "ability removal preserves the type-changing rule but disables later damage triggers",
+        "indestructible prevents destruction while God is a noncreature enchantment",
+        "indestructible prevents destruction while God is a creature",
+        "noncreature God can pump only creatures currently controlled as the ability resolves",
+        "creature God receives its own pump and repeated activations add independently",
+        "insufficient activation mana is rejected without changing returned or current state",
+        "counters remain while God is not a creature and apply when devotion restores its creature type",
+        "temporary pump ends through actual end-of-turn cleanup",
+        "a creature-targeted spell fizzles after a response lowers devotion below five",
+        "a declared attacking God leaves combat after a legal response lowers devotion",
+        "a declared blocking God leaves combat after devotion loss while the attacker remains blocked",
+        "entry replacement uses pre-entry devotion and creature trigger uses post-entry devotion with 3 other pips",
+        "entry replacement uses pre-entry devotion and creature trigger uses post-entry devotion with 4 other pips",
+        "entry replacement uses pre-entry devotion and creature trigger uses post-entry devotion with 5 other pips"
+      ],
+      "origin": "accepted Manual96; names indexed originalCI10923671037",
+      "test_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PurphorosGodOfTheForgeScenarioTest.kt",
+      "test_blob": "82f15bba7a09dc5bb898fe8d3f661f03757c89ed",
+      "expected_cases": 25
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.AetherChannelerScenarioTest",
+      "module": "mtg-sets/2017-2022/tests",
+      "case_names": [
+        "Bird mode creates exactly a white flying 1-1 and does not draw",
+        "draw mode moves exactly one real library card into the controller's hand",
+        "bounce mode returns an opposing creature and no other mode benefit",
+        "bounce can target the controller's noncreature artifact",
+        "another excludes only this source and every land, with illegal responses rejected unchanged",
+        "when only lands and the source exist, the illegal bounce mode is not offered",
+        "bounce returns a controlled opposing card to its owner rather than its controller",
+        "an opponent cannot act between the trigger's mode and target announcements",
+        "removing Channeler in response preserves its already targeted bounce trigger",
+        "removing the target in response cannot turn a fizzled bounce into a draw or Bird"
+      ],
+      "origin": "accepted Manual96; names indexed originalCI10923671037",
+      "test_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AetherChannelerScenarioTest.kt",
+      "test_blob": "96a14ce9751ab5a817d7760635c0d6dabe413510",
+      "expected_cases": 10
+    },
+    {
+      "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "module": "ai",
+      "case_names": [
+        "LEGACY_V0 plays the frozen baseline game exactly as it always has"
+      ],
+      "origin": "accepted Manual96; names indexed originalCI10922868231",
+      "test_path": "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt",
+      "test_blob": "f5ebdd18148cddcb3a5d0cc6b4ae2bfc5aba2ef4",
+      "expected_cases": 1
+    }
+  ],
+  "total_classes": 16,
+  "total_cases": 136,
+  "status": "PROSPECTIVE_NONAUTHOR_REVIEW_REQUIRED",
+  "source_tree": "af7a06ba161c15edd6c387765a2c3167d013b563"
+}
