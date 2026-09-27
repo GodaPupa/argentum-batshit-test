@@ -221,7 +221,7 @@ internal object SphinxStageEVisibleChoice {
                 .thenBy { it.value }))
     }
 
-    private fun score(name: String, cards: ActorPublicCards): Int {
+    internal fun score(name: String, cards: ActorPublicCards): Int {
         val handLands = cards.hand.count { it.name == "Island" || it.name == "Snow-Covered Island" }
         val landsInPlay = cards.ownBoard.count { it.name == "Island" || it.name == "Snow-Covered Island" }
         return when (name) {

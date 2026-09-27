@@ -1,0 +1,33 @@
+{
+  "schema": "sphinx-stage-e-ponder-memory-diagnostic-proposal-v1",
+  "status": "PROSPECTIVE_UNREVIEWED_NO_EXECUTION",
+  "parent": "3e7eba76d0b88ae4ecf86997affd43a6948395ce",
+  "scope": "Only the reachable Ponder reorder-to-shuffle continuation in the two frozen comparator lists. Approach lists have no Ponder. No card changes.",
+  "expected_cases": [
+    "P1 closest-no-approach-v01 accepted reorder memory completes shuffle=false and rejects stale epoch",
+    "P1 closest-no-approach-v01 accepted reorder memory completes shuffle=true and rejects stale epoch",
+    "P1 serpico-terror-benchmark accepted reorder memory completes shuffle=false and rejects stale epoch",
+    "P1 serpico-terror-benchmark accepted reorder memory completes shuffle=true and rejects stale epoch"
+  ],
+  "source_sha256": {
+    "SphinxStageEPonderMemoryTraceTest.kt": "0d567d91a0fe91b002624ab62dbc0374940582983ce7c77557c088a982140e23",
+    "SphinxStageEPonderMemory.kt": "f229a08694d82794db6692171c410d5eec83c0157594f5b28d16b32e9facef49",
+    "SphinxStageEVisibleChoice.kt": "fcdf801b7a3b1271278d6eb65aac902bcecf1b9a133594ee357b28f3e2d02836",
+    "SphinxStageEInitializedSeat.kt": "d03ae91eee0d5da1668a246174195fd0645d51bfc9195c254508d8d7f9641627"
+  },
+  "construction": "Real engine initialized from frozen60, passive60Island fixture. Opening bound before actual keeps. Excluded board5Island and deterministic top3 arrangement preserve actual multiset. Each case processes cast/reorder/shuffle/draw, checks keep/shuffle policy, deterministic proposal and stale epoch rejection. Fixed diagnostic fixture seed0x535048494E580007 is not StageE entropy.",
+  "preconditions": [
+    "Independent candidate and exact one-shot launcher review before diagnostic execution",
+    "Freeze exactsource, deck hashes, four case names, no prior bank rerun",
+    "Capture rawXML/source before-after/exitstatus on success or failure",
+    "Independent original-artifact review before component acceptance"
+  ],
+  "limits": [
+    "The runner must journal real accepted reorder before creating memory and consume it after shuffle; no runner admission granted.",
+    "No generic wholepilot, equalcompetence, replay, gameplay, historicaldensity rerun or StageE seed authority.",
+    "Preserve all prior attempts and frozen decks."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "diagnostic_attempts": 0
+}

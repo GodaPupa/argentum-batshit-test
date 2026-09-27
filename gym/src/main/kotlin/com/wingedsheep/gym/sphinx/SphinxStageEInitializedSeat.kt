@@ -59,6 +59,19 @@ class SphinxStageEInitializedSeat private constructor(
         return SphinxStageEVisibleChoice.decide(input, expectedEpoch, actorId, ownDeck)
     }
 
+    /** Trusted runner calls only after it has accepted and journaled this exact reorder. */
+    internal fun rememberAcceptedPonderReorder(input: ActorInput, expectedEpoch: ActorEpoch,
+                                               accepted: com.wingedsheep.gym.actorinput.ActorProposal): SphinxStageEPonderMemory {
+        require(expectedEpoch.sourceVersion == sourceVersion && expectedEpoch.trialId == trialId)
+        return SphinxStageEPonderMemory.afterAcceptedReorder(input, expectedEpoch, actorId, ownDeck, accepted)
+    }
+
+    fun decidePonderShuffle(input: ActorInput, expectedEpoch: ActorEpoch,
+                            memory: SphinxStageEPonderMemory): SphinxStageEAdapterResult {
+        require(expectedEpoch.sourceVersion == sourceVersion && expectedEpoch.trialId == trialId)
+        return memory.decide(input, expectedEpoch, actorId, ownDeck)
+    }
+
     companion object {
         /**
          * Trusted-runner boundary, called on the actual GameInitializer result before mulligans.
