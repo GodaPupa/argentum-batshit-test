@@ -1,0 +1,90 @@
+{
+  "schema": "root-manual-held-recovery-publication-review-v1",
+  "reviewer": "/root; nonauthor of package and preservation review",
+  "reviewed_at_utc": "2026-09-27T04:21:32.945442+00:00",
+  "disposition": "PASS_INERT_EVIDENCE_PUBLICATION_ONLY",
+  "candidate": "0e8122011bf5d8642578ac988c1805817db2856c",
+  "tree": "27b8809ee2cdcb100b2e045745c5cd551786462d",
+  "expected_parent": "6b7cf4800662c7e976935746ea00d1818a4d0cd9",
+  "branch": "review/manual-pr206-failures-20260927",
+  "workflow_counts": {
+    "parent_workflows": 78,
+    "main_workflows": 80
+  },
+  "matching_push_or_watcher_events": 0,
+  "files": [
+    {
+      "path": "experiments/manual-transmission-phase2/evidence/purphoros-held-recovery-20260927/README.md",
+      "bytes": 3153,
+      "sha256": "2e520150dd027c796a72c333261cc770307f140e3f8cd2e75da909e2abd215dd",
+      "git_blob": "601560e084a65fe4f80741179513ac511d66d7f5"
+    },
+    {
+      "path": "experiments/manual-transmission-phase2/evidence/purphoros-held-recovery-20260927/STATUS_RECOVERY.json",
+      "bytes": 7729,
+      "sha256": "e1553d8a1237ac59bd2fd722ba41ce08e739ff91c4a90f4a480774e97c85faa2",
+      "git_blob": "740978d2df167e4e00993f8538f53a136b2ccf10"
+    },
+    {
+      "path": "experiments/manual-transmission-phase2/evidence/purphoros-held-recovery-20260927/independent-checks.json",
+      "bytes": 18279,
+      "sha256": "3505a7b0e886ad873181a1d0bbe5216691d0cfb5f328773b04e0ecdabd385718",
+      "git_blob": "175506b15dcd37205f87cad458e5f95117d7574b"
+    },
+    {
+      "path": "experiments/manual-transmission-phase2/evidence/purphoros-held-recovery-20260927/independent-preservation-review.json",
+      "bytes": 3879,
+      "sha256": "63a84facf38d2697ed592549d26fdb5032c67c96f0aa10156528f1ba51e23148",
+      "git_blob": "58adbcf61325d13a91cb9845d04e315315404413"
+    },
+    {
+      "path": "experiments/manual-transmission-phase2/evidence/purphoros-held-recovery-20260927/manual-author-recovery-status.json",
+      "bytes": 8378,
+      "sha256": "a3ae8efb822777d6d2aa1201b55dc5eb3af6aff89936ac9fa069ba3163a5fe08",
+      "git_blob": "4a9032f627af620ca7260bef63006323d3cc2753"
+    },
+    {
+      "path": "experiments/manual-transmission-phase2/evidence/purphoros-held-recovery-20260927/prior-failure-publication-receipt.json",
+      "bytes": 11278,
+      "sha256": "a14187992818748bddc7cca0901a6f0036b69d26fcf40cbefbf8f4d70c8cd3e2",
+      "git_blob": "1d4d227351a13ddd70e07ec7347412d33596a471"
+    },
+    {
+      "path": "experiments/manual-transmission-phase2/evidence/purphoros-held-recovery-20260927/publication-inventory.json",
+      "bytes": 3009,
+      "sha256": "7a12ae2a3643ce50ecb208fe762697c9d93174dcd7a480ec4d37dad386f5636f",
+      "git_blob": "da870edacc7520180f0628580d00076e424bb201"
+    },
+    {
+      "path": "experiments/manual-transmission-phase2/evidence/purphoros-held-recovery-20260927/status-recovery-package-receipt.json",
+      "bytes": 859,
+      "sha256": "df263b245e9d7eda1555818f7929a7a946f2e2df3558104f9427dfa949da726a",
+      "git_blob": "9e5f6012f1eb0fa31b13f355e4430c75acb82683"
+    },
+    {
+      "path": "experiments/manual-transmission-phase2/evidence/purphoros-held-recovery-20260927/status-recovery-package.zip",
+      "bytes": 153978,
+      "sha256": "9307b2ea8a86c5e112ac9706ed87104bd4ab7b8b17d6245aa073b5f04b061461",
+      "git_blob": "389c4e33ad2f8b872f772824bff48548f579de47"
+    },
+    {
+      "path": "experiments/manual-transmission-phase2/evidence/purphoros-held-recovery-20260927/verify_preservation.py",
+      "bytes": 4151,
+      "sha256": "50cedc024a0c20c52d65c4f9c3a2443473dd0d55ac6e18ea29b7408da22814bb",
+      "git_blob": "c8b268a8d0d656a7b02da3c97404a8262872658f"
+    }
+  ],
+  "checks": [
+    "Read full README and independent Ferocity preservation review63a84; held original and unreviewed successor remain accurately separate.",
+    "All ten local payloads match exact remote added-file blobs; nine inventory rows additionally match complete byte lengths and SHA256.",
+    "Fresh API compare is exactly one child and ten additions, preserving every prior file and all workflow bytes; no open head/base PR and no candidate run.",
+    "Rehashed all complete retained workflow bodies, matched both fresh complete .github trees, and independently parsed all78 inherited and80 current-main YAML event definitions.",
+    "Manual record a3ae retains unknown30621; no new exit/pass/rerun is implied. Outside452/fullclass attempt is correctly separate from historical04:05 packet."
+  ],
+  "not_granted": [
+    "No source/control acceptance or diagnostic release.",
+    "No acceptance of outside receiving outcomes.",
+    "No gameplay, allocation, seed access, runtime admission or deck-performance conclusion."
+  ],
+  "prior_inspection_error": "One read-only structure inspection assumed a mapping where the retained body collection is a list; AttributeError only, before validation or mutations. The actual completed check above reads the declared list structure."
+}
