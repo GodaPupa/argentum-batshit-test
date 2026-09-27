@@ -393,7 +393,6 @@ export interface SelectCardsDecision extends PendingDecisionBase {
   readonly conditionalMinimums?: readonly ConditionalSelectionMinimum[]
 }
 
-/** Current chooser-only proof, bound to this routed decision ID and exact offered handles. */
 export interface ConditionalSelectionMinimum {
   readonly requiredSelections: number
   readonly minimumSelections: number

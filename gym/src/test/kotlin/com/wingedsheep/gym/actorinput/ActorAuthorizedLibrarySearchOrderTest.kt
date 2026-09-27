@@ -69,11 +69,10 @@ class ActorAuthorizedLibrarySearchOrderTest : ScenarioTestBase() {
             val from = ZoneKey(actor, Zone.LIBRARY)
             val hand = ZoneKey(actor, Zone.HAND)
             val departed = paused.moveToZone(options.first(), from, hand)
-            val returned = departed.moveToZone(options.first(), hand, from).copy(
-                zones = returned.zones + (from to paused.getLibrary(actor)),
-            )
-            returned.objectRef(options.first()) shouldNotBe paused.objectRef(options.first())
-            (project(returned, actor).decision as SelectCardsDecision).options shouldBe
+            val returned = departed.moveToZone(options.first(), hand, from)
+            val restoredOrder = returned.copy(zones = returned.zones + (from to paused.getLibrary(actor)))
+            restoredOrder.objectRef(options.first()) shouldNotBe paused.objectRef(options.first())
+            (project(restoredOrder, actor).decision as SelectCardsDecision).options shouldBe
                 options.sortedBy { it.value }
         }
     }
