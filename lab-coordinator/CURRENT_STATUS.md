@@ -31,3 +31,7 @@ The separate continuing Work conductor under **/workspace/scratch/c354436be8a4**
 
 Izzet owns shared prerequisite/process correction; Ferocity reviews it. Manual will reuse the reviewed helper, not build a competing one. Root owns coordinator/release/integration decisions. Agents own only assigned source/evidence surfaces. Source-author audits are not independent admission; agent reviews are not GitHub approvals or gameplay permits. No source/protocol change or execution authority is created by this checkpoint.
 
+
+## Later bounded addendum (after the04:14:46 cut)
+
+At04:23:40 Manual held-work evidence was published97c86fa62de6c2a52113d04a29c326c2dcd8ca28/treefd1f5583e9236711e8d837959d22157ee00003c1, normal6b7cf→0e812→97c86, with12 evidence-only additions and0head runs. Source99f and the unexecuted diagnostic remain unchanged. Ferocity finding9e7188 shows the shared67ba controller could treat PermissionError during process observation as absence; the helper remains held for correction and independent review. These later observations do not rewrite the earlier active-job snapshot or authorize an event.
