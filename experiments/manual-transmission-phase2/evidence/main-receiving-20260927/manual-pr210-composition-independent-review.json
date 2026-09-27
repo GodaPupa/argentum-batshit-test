@@ -1,0 +1,47 @@
+{
+  "candidate": "a333dc1e6b8c2e78961bbbe052ee01105e2f1264",
+  "candidate_tree": "af7a06ba161c15edd6c387765a2c3167d013b563",
+  "execution_disposition": "HOLD_PENDING_EXACT_LAUNCHER_REVIEW",
+  "gameplay_authorized": false,
+  "input_sha256": {
+    "manual-composition-auto-merges.json": "02fac1fe7da6cc81c1fa03169f542fa36f4b6718679aaa482b61d2e810bcd957",
+    "manual-composition-snapshot-block-audit.json": "9807415c95aef7141574257970d0f345ddc3e5fe9fbc577579a3f927d1be5e81",
+    "manual-pr210-composition.json": "cbbd7be0ab3d6ea76fccde040c5a4203d536387784fafb2fecac12bdc1beb759"
+  },
+  "main_merge_authorized": false,
+  "merge_base": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+  "minimal_targeted_gate": {
+    "broader_boundary": "After independent136 original-artifact acceptance, one coherent broader integration gate including full CI and required Manual receiving bank. Composed snapshots need actual strict snapshot verification there; block audit is structural evidence only.",
+    "choice": "Retain both complete already-qualified banks; do not select favorable subsets or invent new cases.",
+    "expected_union_cases": 136,
+    "manual_retained_cases": 96,
+    "manual_retained_classes": 11,
+    "reason": "New receiving runtime combines shared search proof/actor/serialization paths with Manual entry snapshot and serialized sibling continuation paths. Manual96 exercises these entry/state boundaries and inherited policy behavior; shared40 exercises direct search, wire masking, actor scope and priority on that composed runtime. Static parent-blob identity does not qualify their interactions. No smaller bank has been independently established to preserve those declared acceptance surfaces.",
+    "shared_retained_cases": 40,
+    "shared_retained_classes": 5
+  },
+  "new_fixtures_authorized": false,
+  "parents": [
+    "2e112cd8526fa89bf80c6de30172a5cc3f77f48a",
+    "95fc01aac842aaf32133a95215e894ffb28e979a"
+  ],
+  "project_admission_granted": false,
+  "receiving_bank_review": "ADOPT_PROSPECTIVE_RETAINED16CLASS136CASE_BANK; every declared test blob matches exact composed source, names unique within complete declared classes. Original accepted96/40 provenance retained.",
+  "receiving_bank_sha256": "43390d9b23254410e2392f6f0fcd87d28b595ffb7fc8f2fe78001c25f174ca02",
+  "required_before_dispatch": [
+    "Freeze exact candidate/source tree and complete named136 inventory against original banks.",
+    "Independently review one-shot launcher, source before/after, command exits, freshness and unconditional raw XML/log retention.",
+    "Preserve old receiver source-equivalence receipt only for its oldruntime; never transfer its acceptance automatically to composed source."
+  ],
+  "reviewer": "/root/compatibility_review",
+  "schema": "manual-pr210-composition-independent-source-review-v1",
+  "source_disposition": "ACCEPT_FOR_BOUNDED_CHANGED_RUNTIME_RECEIVING",
+  "source_proof_limit": "Local shallow history does not resolve git merge-base; ff34 common-base proof relies on root API-confirmed record. Exact source/card-block comparisons independently used stated immutable ff34.",
+  "tests_executed": 0,
+  "verified": [
+    "Published candidate has exact stated two parents.",
+    "All runtime/build/test source blobs match one reviewed parent; only16 blobs differ from both parents: SDKdocumentation,12 snapshots,3 evidence/proposal files.",
+    "Independently compared12 snapshot card-block maps against ff34 and both parents. Each composition equals exact union of disjoint parent changes, without jointly changed blocks or omitted/modified card blocks.",
+    "No source fixture editing, deck changes or gameplay authority introduced."
+  ]
+}

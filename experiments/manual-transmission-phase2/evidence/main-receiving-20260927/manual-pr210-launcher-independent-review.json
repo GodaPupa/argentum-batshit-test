@@ -1,0 +1,33 @@
+{
+  "disposition": "ACCEPT_ONE_PROSPECTIVE_RETAINED136_RECEIVING_EXECUTION",
+  "gameplay_authorized": false,
+  "launcher_sha256": "57c4f118e129aca2cb2d95ea10e35f19500c8def2b493cdf67afa98774648873",
+  "limits": [
+    "This is changed-runtime receiving, not a duplicate original bank execution on unchanged runtime.",
+    "Independent original artifact review required after attempt.",
+    "Subsequent coherent fullCI/Manual acceptance boundary remains separate.",
+    "No broader integration merge, project capability or gameplay admission."
+  ],
+  "new_fixture_cases": 0,
+  "receiving_file_sha256": {
+    "Justfile": "15e21b7dbeab7db5a013441cdec821a49aa483133d126dc261291b1c4efd4865",
+    "proposal.json": "9d2aea898f91895d4a56b211719e767ca5a3bf86d408a42346783fbaa7e2c3b1",
+    "qualify.py": "5055085185a3f4f0ab552fc180f6421a8937235f9b961d67b267f4e8e4fc2a41"
+  },
+  "reviewer": "/root/compatibility_review",
+  "runtime_composition": "a333dc1e6b8c2e78961bbbe052ee01105e2f1264",
+  "schema": "manual-pr210-receiving-independent-launcher-review-v1",
+  "source": "44c0be8b20221fe391c9513ea4668459375a6f0d",
+  "source_tree": "7255b8b4b6869af203570783ab428b9878914a07",
+  "tests_executed": 0,
+  "verified": [
+    "Exact source differs from reviewed composition only in three receiving infrastructure files. Published bytes equal reviewed local files.",
+    "All16 original retained stage definitions and case names unchanged;136 expected cases. Justfile selects exactly these16 classes across6 modules.",
+    "Exact checkout/head/tree, infrastructure hashes and16 test blobs bound before execution and reconciled after.",
+    "Creation-push/attempt1 scope, read-only token, UPDATE_SNAPSHOTS=0.",
+    "Preexisting XML forbidden; no-build-cache and collector reject cached/up-to-date/skipped/no-source/failed task status.",
+    "Explicit set+e before pipeline allows actual rc capture on failure; all original module XML plus report/log/source always uploaded.",
+    "Collector rejects missing/extra suites, names, duplicate names, failed/error/skipped cases and before/after source divergence."
+  ],
+  "workflow_dispatched": false
+}
