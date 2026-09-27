@@ -1,0 +1,9 @@
+{
+  "schema": "root-postmerge-analysis-parser-correction-v1",
+  "analyst": "/root",
+  "initial_read_only_probe": "An unanchored result-line regex counted118 Gradle SKIPPED task headings in additionto49 skipped testresult lines, causing local AssertionError at167 vs49.",
+  "correction": "Strip timestamp, exclude lines starting > Task, require full classname/test result row. Recomputed16987PASS49SKIP from same11 unchangeddecodedlogs.",
+  "engine_or_fixture_execution": 0,
+  "workflow_or_result_changes": 0,
+  "not_a_gameplay_or_software_test_failure": true
+}

@@ -1,0 +1,869 @@
+{
+  "schema": "ARGENTUM_MAIN_POSTMERGE_DECODED_LOG_AUDIT_V1",
+  "reviewer": "/root/manual",
+  "disposition": "PASS_BOUNDED_POSTMERGE_SOFTWARE_VALIDATION_LOG_AUDIT",
+  "source": {
+    "head": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+    "tree": "88967f3a9ba0479661f02150f82ddcc9a2066e42",
+    "reviewed_pr186_merge": "fc5c443fc9d674d85dc1942a553319fee8b69d87",
+    "entire_git_tree_equal": true,
+    "workflow_files": [
+      {
+        "path": ".github/workflows/ci.yml",
+        "git_blob": "dbf5723efa463b87c94c1a1ea23c08d641c13e3a",
+        "sha256": "34d0827ab766254f738ec4c903a09ea4e2e8ca3510096b31d0488d942605f43a"
+      },
+      {
+        "path": ".github/workflows/argentum-test.yml",
+        "git_blob": "afae38832e76f886fec8f2a52eab2e6bc2378e9b",
+        "sha256": "c08a726c9d74d76cdc38e822552456198f4c424b434f2c01f84e49abd75aafbc"
+      }
+    ]
+  },
+  "runs": [
+    {
+      "id": 36279987737,
+      "name": "CI",
+      "head_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "event": "push",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T23:36:46Z",
+      "updated_at": "2026-09-26T23:50:53Z",
+      "html_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36279987737"
+    },
+    {
+      "id": 36279987814,
+      "name": "Argentum Validation",
+      "head_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "event": "push",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "created_at": "2026-09-26T23:36:46Z",
+      "updated_at": "2026-09-26T23:59:07Z",
+      "html_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36279987814"
+    }
+  ],
+  "jobs": [
+    {
+      "job_id": 108509861313,
+      "name": "frontend",
+      "run_id": 36279987737,
+      "conclusion": "success",
+      "started_at": "2026-09-26T23:36:49Z",
+      "completed_at": "2026-09-26T23:37:43Z",
+      "actual_checkout_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "task_headings": {},
+      "test_result_log_lines": {},
+      "duplicate_result_text_lines": 0,
+      "build_success_lines": [],
+      "warnings": [],
+      "preserved_nonfatal_stderr_or_cache_messages": [],
+      "non_success_steps": [],
+      "log": {
+        "job_id": 108509861313,
+        "name": "frontend",
+        "path": "shared-audit/main-ff34-postmerge/decoded-job-108509861313.log.gz",
+        "decoded_bytes": 31832,
+        "decoded_sha256": "5ec5c94df8a05eb7bdd11f4c857a03d0e75b8875f87a38290592a21aecd9ea33",
+        "gzip_bytes": 8121,
+        "gzip_sha256": "9cb8dfd85e9d0cabdc7fe1ae1277ac8446664d7f33e23ee11d5c97584abc0f8a",
+        "encoding": "connector-decoded UTF-8, locally lossless gzip; not an original GitHub log archive"
+      }
+    },
+    {
+      "job_id": 108509861381,
+      "name": "coverage",
+      "run_id": 36279987737,
+      "conclusion": "success",
+      "started_at": "2026-09-26T23:36:49Z",
+      "completed_at": "2026-09-26T23:46:55Z",
+      "actual_checkout_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "task_headings": {
+        ":game-server:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sdk:test": [
+          "fresh-task-heading"
+        ],
+        ":rules-engine:test": [
+          "fresh-task-heading"
+        ]
+      },
+      "test_result_log_lines": {
+        "PASSED": 4808,
+        "SKIPPED": 4
+      },
+      "duplicate_result_text_lines": 0,
+      "build_success_lines": [
+        "BUILD SUCCESSFUL in 9m 23s"
+      ],
+      "warnings": [
+        "##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/"
+      ],
+      "preserved_nonfatal_stderr_or_cache_messages": [
+        "grep: write error: Broken pipe",
+        "grep: write error: Broken pipe"
+      ],
+      "non_success_steps": [],
+      "log": {
+        "job_id": 108509861381,
+        "name": "coverage",
+        "path": "shared-audit/main-ff34-postmerge/decoded-job-108509861381.log.gz",
+        "decoded_bytes": 898601,
+        "decoded_sha256": "e51c3c073ec80e215a13faa146be4cb0a4dbe8ab117351fd2dcbea5e74b29e8b",
+        "gzip_bytes": 201035,
+        "gzip_sha256": "e29a06aa5f60ef3bd1301c65109cf1f95b26416c065640118979dc594d4ebe92",
+        "encoding": "connector-decoded UTF-8, locally lossless gzip; not an original GitHub log archive"
+      }
+    },
+    {
+      "job_id": 108509861445,
+      "name": "test (scenarios-2023-24)",
+      "run_id": 36279987737,
+      "conclusion": "success",
+      "started_at": "2026-09-26T23:36:49Z",
+      "completed_at": "2026-09-26T23:40:32Z",
+      "actual_checkout_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "task_headings": {
+        ":mtg-sets:2023:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2024:tests:test": [
+          "fresh-task-heading"
+        ]
+      },
+      "test_result_log_lines": {
+        "PASSED": 3335
+      },
+      "duplicate_result_text_lines": 0,
+      "build_success_lines": [
+        "BUILD SUCCESSFUL in 3m 1s"
+      ],
+      "warnings": [
+        "##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/"
+      ],
+      "preserved_nonfatal_stderr_or_cache_messages": [],
+      "non_success_steps": [
+        {
+          "name": "Upload Pest V2 deterministic diagnostic",
+          "conclusion": "skipped"
+        }
+      ],
+      "log": {
+        "job_id": 108509861445,
+        "name": "test (scenarios-2023-24)",
+        "path": "shared-audit/main-ff34-postmerge/decoded-job-108509861445.log.gz",
+        "decoded_bytes": 641081,
+        "decoded_sha256": "e5b5e9f453f3c585a10fb9436240dea67ebf984e694ff311361accf26da41575",
+        "gzip_bytes": 145214,
+        "gzip_sha256": "5ae308e5accbcf069b4fb800b01d824ca565554b895ba11c3ff8b4b8936af5e1",
+        "encoding": "connector-decoded UTF-8, locally lossless gzip; not an original GitHub log archive"
+      }
+    },
+    {
+      "job_id": 108509861469,
+      "name": "test (engine)",
+      "run_id": 36279987737,
+      "conclusion": "success",
+      "started_at": "2026-09-26T23:36:49Z",
+      "completed_at": "2026-09-26T23:42:53Z",
+      "actual_checkout_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "task_headings": {
+        ":rules-engine:test": [
+          "fresh-task-heading"
+        ]
+      },
+      "test_result_log_lines": {
+        "PASSED": 3725
+      },
+      "duplicate_result_text_lines": 0,
+      "build_success_lines": [
+        "BUILD SUCCESSFUL in 5m 19s"
+      ],
+      "warnings": [
+        "##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/"
+      ],
+      "preserved_nonfatal_stderr_or_cache_messages": [],
+      "non_success_steps": [
+        {
+          "name": "Upload Pest V2 deterministic diagnostic",
+          "conclusion": "skipped"
+        }
+      ],
+      "log": {
+        "job_id": 108509861469,
+        "name": "test (engine)",
+        "path": "shared-audit/main-ff34-postmerge/decoded-job-108509861469.log.gz",
+        "decoded_bytes": 712747,
+        "decoded_sha256": "d4b86a3d031ba9a5ae2ac440c3f550b559b6338f1c7daa664c654d8d1385f051",
+        "gzip_bytes": 160762,
+        "gzip_sha256": "6f3d88051ed0eb6603f9a4e267bb002e692b88a6c7761a16fee3e475b3fc5f6e",
+        "encoding": "connector-decoded UTF-8, locally lossless gzip; not an original GitHub log archive"
+      }
+    },
+    {
+      "job_id": 108509861487,
+      "name": "test (scenarios-2025-26)",
+      "run_id": 36279987737,
+      "conclusion": "success",
+      "started_at": "2026-09-26T23:36:49Z",
+      "completed_at": "2026-09-26T23:42:28Z",
+      "actual_checkout_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "task_headings": {
+        ":mtg-sets:2025:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2026:tests:test": [
+          "fresh-task-heading"
+        ]
+      },
+      "test_result_log_lines": {
+        "PASSED": 2934
+      },
+      "duplicate_result_text_lines": 0,
+      "build_success_lines": [
+        "BUILD SUCCESSFUL in 4m 58s"
+      ],
+      "warnings": [
+        "##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/"
+      ],
+      "preserved_nonfatal_stderr_or_cache_messages": [
+        "Failed to save cache entry with path '/home/runner/.gradle/caches/transforms-4/*/,/home/runner/.gradle/caches/*/transforms/*/' and key: gradle-transforms-v2-67f3841056eb7ab2272a93cecfe100f8: ReserveCacheError: Unable to reserve cache with key gradle-transforms-v2-67f3841056eb7ab2272a93cecfe100f8, another job may be creating this cache."
+      ],
+      "non_success_steps": [
+        {
+          "name": "Upload Pest V2 deterministic diagnostic",
+          "conclusion": "skipped"
+        }
+      ],
+      "log": {
+        "job_id": 108509861487,
+        "name": "test (scenarios-2025-26)",
+        "path": "shared-audit/main-ff34-postmerge/decoded-job-108509861487.log.gz",
+        "decoded_bytes": 580332,
+        "decoded_sha256": "96afbb4dfd4a0ed0dbe8a7b7a7d403893cda075999d77e19d40b36ef55ff457c",
+        "gzip_bytes": 135693,
+        "gzip_sha256": "82ba7fa6611ab59a7fcc2fc1276916f17a6ed77c8726ceb419e3fd3c5eac99cc",
+        "encoding": "connector-decoded UTF-8, locally lossless gzip; not an original GitHub log archive"
+      }
+    },
+    {
+      "job_id": 108509861491,
+      "name": "test (tools)",
+      "run_id": 36279987737,
+      "conclusion": "success",
+      "started_at": "2026-09-26T23:36:49Z",
+      "completed_at": "2026-09-26T23:50:48Z",
+      "actual_checkout_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "task_headings": {
+        ":gym-server:test": [
+          "fresh-task-heading"
+        ],
+        ":gym-trainer:test": [
+          "fresh-task-heading"
+        ],
+        ":gym:test": [
+          "fresh-task-heading"
+        ],
+        ":mtgish-tooling:test": [
+          "FROM-CACHE"
+        ]
+      },
+      "test_result_log_lines": {
+        "PASSED": 484,
+        "SKIPPED": 34
+      },
+      "duplicate_result_text_lines": 0,
+      "build_success_lines": [
+        "BUILD SUCCESSFUL in 13m 19s"
+      ],
+      "warnings": [
+        "##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/"
+      ],
+      "preserved_nonfatal_stderr_or_cache_messages": [],
+      "non_success_steps": [
+        {
+          "name": "Upload Pest V2 deterministic diagnostic",
+          "conclusion": "skipped"
+        }
+      ],
+      "log": {
+        "job_id": 108509861491,
+        "name": "test (tools)",
+        "path": "shared-audit/main-ff34-postmerge/decoded-job-108509861491.log.gz",
+        "decoded_bytes": 156158,
+        "decoded_sha256": "6a7c03bf5fa82f2d46233f32aeef607ba79b1dd477ea6e1bf7ed364beb6ead22",
+        "gzip_bytes": 34187,
+        "gzip_sha256": "a7e82a8f8ff61157ac19c36131e26b36830d164e2f50ffbe257b92f9635cac5d",
+        "encoding": "connector-decoded UTF-8, locally lossless gzip; not an original GitHub log archive"
+      }
+    },
+    {
+      "job_id": 108509861499,
+      "name": "test (server)",
+      "run_id": 36279987737,
+      "conclusion": "success",
+      "started_at": "2026-09-26T23:36:49Z",
+      "completed_at": "2026-09-26T23:45:25Z",
+      "actual_checkout_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "task_headings": {
+        ":game-server:test": [
+          "fresh-task-heading"
+        ]
+      },
+      "test_result_log_lines": {
+        "PASSED": 556,
+        "SKIPPED": 4
+      },
+      "duplicate_result_text_lines": 0,
+      "build_success_lines": [
+        "BUILD SUCCESSFUL in 7m 53s"
+      ],
+      "warnings": [
+        "##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/"
+      ],
+      "preserved_nonfatal_stderr_or_cache_messages": [],
+      "non_success_steps": [
+        {
+          "name": "Upload Pest V2 deterministic diagnostic",
+          "conclusion": "skipped"
+        }
+      ],
+      "log": {
+        "job_id": 108509861499,
+        "name": "test (server)",
+        "path": "shared-audit/main-ff34-postmerge/decoded-job-108509861499.log.gz",
+        "decoded_bytes": 155040,
+        "decoded_sha256": "d87449f32b94ebcc331a5ce787703d32b096f8954e6ee9b25a920b277cc94364",
+        "gzip_bytes": 37161,
+        "gzip_sha256": "d0e82c42c6d235ab5b265670f35fa279ee20d51380ca8553c93a84142b718305",
+        "encoding": "connector-decoded UTF-8, locally lossless gzip; not an original GitHub log archive"
+      }
+    },
+    {
+      "job_id": 108509861505,
+      "name": "test (content)",
+      "run_id": 36279987737,
+      "conclusion": "success",
+      "started_at": "2026-09-26T23:36:49Z",
+      "completed_at": "2026-09-26T23:44:47Z",
+      "actual_checkout_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "task_headings": {
+        ":ai:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sdk:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-search:test": [
+          "FROM-CACHE"
+        ],
+        ":mtg-sets:test": [
+          "fresh-task-heading"
+        ]
+      },
+      "test_result_log_lines": {
+        "PASSED": 1644,
+        "SKIPPED": 11
+      },
+      "duplicate_result_text_lines": 0,
+      "build_success_lines": [
+        "BUILD SUCCESSFUL in 7m 17s"
+      ],
+      "warnings": [
+        "##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/"
+      ],
+      "preserved_nonfatal_stderr_or_cache_messages": [],
+      "non_success_steps": [],
+      "log": {
+        "job_id": 108509861505,
+        "name": "test (content)",
+        "path": "shared-audit/main-ff34-postmerge/decoded-job-108509861505.log.gz",
+        "decoded_bytes": 327102,
+        "decoded_sha256": "b6ea8156291d227a1a86fac96b1a91a8d5948d3f69f59cacbb3670a2fcd1d215",
+        "gzip_bytes": 72620,
+        "gzip_sha256": "05e4823b6f384d2eefb67d9ea97e25842315fda33bed84bab23846c302cf2366",
+        "encoding": "connector-decoded UTF-8, locally lossless gzip; not an original GitHub log archive"
+      }
+    },
+    {
+      "job_id": 108509861542,
+      "name": "test (scenarios-old)",
+      "run_id": 36279987737,
+      "conclusion": "success",
+      "started_at": "2026-09-26T23:36:49Z",
+      "completed_at": "2026-09-26T23:42:12Z",
+      "actual_checkout_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "task_headings": {
+        ":mtg-sets:1993-1999:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2000-2002:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2003-2007:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2008-2016:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2017-2022:tests:test": [
+          "fresh-task-heading"
+        ]
+      },
+      "test_result_log_lines": {
+        "PASSED": 4309
+      },
+      "duplicate_result_text_lines": 0,
+      "build_success_lines": [
+        "BUILD SUCCESSFUL in 4m 40s"
+      ],
+      "warnings": [
+        "##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/cache@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/"
+      ],
+      "preserved_nonfatal_stderr_or_cache_messages": [
+        "Failed to save cache entry with path '/home/runner/.gradle/caches/transforms-4/*/,/home/runner/.gradle/caches/*/transforms/*/' and key: gradle-transforms-v2-67f3841056eb7ab2272a93cecfe100f8: ReserveCacheError: Unable to reserve cache with key gradle-transforms-v2-67f3841056eb7ab2272a93cecfe100f8, another job may be creating this cache."
+      ],
+      "non_success_steps": [
+        {
+          "name": "Upload Pest V2 deterministic diagnostic",
+          "conclusion": "skipped"
+        }
+      ],
+      "log": {
+        "job_id": 108509861542,
+        "name": "test (scenarios-old)",
+        "path": "shared-audit/main-ff34-postmerge/decoded-job-108509861542.log.gz",
+        "decoded_bytes": 771998,
+        "decoded_sha256": "762cc4faa64b021b39ecc32884249f9b4d40997b56bd8ed3e0c9b151e0cc92ed",
+        "gzip_bytes": 171016,
+        "gzip_sha256": "50e5faecb4951fcd47ffd4258c4250013d25faf1826f6cd9fe9558357d080c29",
+        "encoding": "connector-decoded UTF-8, locally lossless gzip; not an original GitHub log archive"
+      }
+    },
+    {
+      "job_id": 108511817916,
+      "name": "backend",
+      "run_id": 36279987737,
+      "conclusion": "success",
+      "started_at": "2026-09-26T23:50:50Z",
+      "completed_at": "2026-09-26T23:50:53Z",
+      "actual_checkout_sha": null,
+      "task_headings": {},
+      "test_result_log_lines": {},
+      "duplicate_result_text_lines": 0,
+      "build_success_lines": [],
+      "warnings": [],
+      "preserved_nonfatal_stderr_or_cache_messages": [],
+      "non_success_steps": [],
+      "log": {
+        "job_id": 108511817916,
+        "name": "backend",
+        "path": "shared-audit/main-ff34-postmerge/decoded-job-108511817916.log.gz",
+        "decoded_bytes": 2359,
+        "decoded_sha256": "e497aeb8197ba7c1059324e11016593cf7a27b44804c7db7fb69d07fe4153b5e",
+        "gzip_bytes": 905,
+        "gzip_sha256": "6a4c34945e6c37b016bdc5a11c5453c5a4e12a8e9f4145f236045a596bc44f75",
+        "encoding": "connector-decoded UTF-8, locally lossless gzip; not an original GitHub log archive"
+      }
+    },
+    {
+      "job_id": 108509861331,
+      "name": "test",
+      "run_id": 36279987814,
+      "conclusion": "success",
+      "started_at": "2026-09-26T23:36:49Z",
+      "completed_at": "2026-09-26T23:59:06Z",
+      "actual_checkout_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+      "task_headings": {
+        ":ai:test": [
+          "fresh-task-heading"
+        ],
+        ":game-server:test": [
+          "fresh-task-heading"
+        ],
+        ":gym-server:test": [
+          "fresh-task-heading"
+        ],
+        ":gym-trainer:test": [
+          "UP-TO-DATE",
+          "fresh-task-heading"
+        ],
+        ":gym:test": [
+          "UP-TO-DATE",
+          "fresh-task-heading"
+        ],
+        ":mtg-sdk:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-search:test": [
+          "FROM-CACHE"
+        ],
+        ":mtg-sets:1993-1999:test": [
+          "NO-SOURCE"
+        ],
+        ":mtg-sets:1993-1999:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2000-2002:test": [
+          "NO-SOURCE"
+        ],
+        ":mtg-sets:2000-2002:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2003-2007:test": [
+          "NO-SOURCE"
+        ],
+        ":mtg-sets:2003-2007:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2008-2016:test": [
+          "NO-SOURCE"
+        ],
+        ":mtg-sets:2008-2016:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2017-2022:test": [
+          "NO-SOURCE"
+        ],
+        ":mtg-sets:2017-2022:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2023:test": [
+          "NO-SOURCE"
+        ],
+        ":mtg-sets:2023:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2024:test": [
+          "NO-SOURCE"
+        ],
+        ":mtg-sets:2024:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2025:test": [
+          "NO-SOURCE"
+        ],
+        ":mtg-sets:2025:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:2026:test": [
+          "NO-SOURCE"
+        ],
+        ":mtg-sets:2026:tests:test": [
+          "fresh-task-heading"
+        ],
+        ":mtg-sets:core:test": [
+          "NO-SOURCE"
+        ],
+        ":mtg-sets:test": [
+          "fresh-task-heading"
+        ],
+        ":mtgish-tooling:test": [
+          "FROM-CACHE"
+        ],
+        ":oracle-assay:test": [
+          "fresh-task-heading"
+        ],
+        ":rules-engine:test": [
+          "fresh-task-heading"
+        ]
+      },
+      "test_result_log_lines": {
+        "PASSED": 17549,
+        "SKIPPED": 49
+      },
+      "duplicate_result_text_lines": 2,
+      "build_success_lines": [
+        "BUILD SUCCESSFUL in 4m 21s",
+        "BUILD SUCCESSFUL in 16m 53s",
+        "BUILD SUCCESSFUL in 4s",
+        "BUILD SUCCESSFUL in 3s",
+        "BUILD SUCCESSFUL in 5s"
+      ],
+      "warnings": [
+        "##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-java@v4, gradle/actions/setup-gradle@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/",
+        "##[warning]setup-java v4 is deprecated and will no longer receive updates. Please migrate to actions/setup-java@v5."
+      ],
+      "preserved_nonfatal_stderr_or_cache_messages": [],
+      "non_success_steps": [],
+      "log": {
+        "job_id": 108509861331,
+        "name": "test",
+        "path": "shared-audit/main-ff34-postmerge/decoded-job-108509861331.log.gz",
+        "decoded_bytes": 3113077,
+        "decoded_sha256": "c2aaeddd206e3a10a8fa57c10a62df5de057acf4a9db346701a0e53278ecfbb6",
+        "gzip_bytes": 701176,
+        "gzip_sha256": "512d1e0ea5b8753767c27ac78482f5239d9dff07e18c2ba59e56210b99ba706c",
+        "encoding": "connector-decoded UTF-8, locally lossless gzip; not an original GitHub log archive"
+      }
+    }
+  ],
+  "matrix_summary": {
+    "groups": 7,
+    "distinct_declared_test_tasks": 19,
+    "fresh_tasks": [
+      ":ai:test",
+      ":game-server:test",
+      ":gym-server:test",
+      ":gym-trainer:test",
+      ":gym:test",
+      ":mtg-sdk:test",
+      ":mtg-sets:1993-1999:tests:test",
+      ":mtg-sets:2000-2002:tests:test",
+      ":mtg-sets:2003-2007:tests:test",
+      ":mtg-sets:2008-2016:tests:test",
+      ":mtg-sets:2017-2022:tests:test",
+      ":mtg-sets:2023:tests:test",
+      ":mtg-sets:2024:tests:test",
+      ":mtg-sets:2025:tests:test",
+      ":mtg-sets:2026:tests:test",
+      ":mtg-sets:test",
+      ":rules-engine:test"
+    ],
+    "cached_tasks": [
+      ":mtg-search:test",
+      ":mtgish-tooling:test"
+    ],
+    "fresh_test_result_log_lines": {
+      "PASSED": 16987,
+      "SKIPPED": 49
+    },
+    "current_xml_downloaded": false,
+    "current_xml_artifact_metadata": [
+      {
+        "id": 10918965683,
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxODk2NTY4Mw==",
+        "name": "ci-junit-engine",
+        "size_in_bytes": 473602,
+        "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918965683",
+        "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918965683/zip",
+        "expired": false,
+        "digest": "sha256:f720a8276bb22aab3ad618842245f5871842715414250035fda4479739fcf849",
+        "created_at": "2026-09-26T23:42:42Z",
+        "updated_at": "2026-09-26T23:42:42Z",
+        "expires_at": "2026-10-26T23:42:41Z",
+        "workflow_run": {
+          "id": 36279987737,
+          "repository_id": 1361473449,
+          "head_repository_id": 1361473449,
+          "head_branch": "main",
+          "head_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a"
+        }
+      },
+      {
+        "id": 10918955866,
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxODk1NTg2Ng==",
+        "name": "ci-junit-content",
+        "size_in_bytes": 133225,
+        "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918955866",
+        "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918955866/zip",
+        "expired": false,
+        "digest": "sha256:47d3e7edfbabcbd31e6bf963edccd8ad88af6da8478474380f51351a22a40eff",
+        "created_at": "2026-09-26T23:44:36Z",
+        "updated_at": "2026-09-26T23:44:36Z",
+        "expires_at": "2026-10-26T23:44:36Z",
+        "workflow_run": {
+          "id": 36279987737,
+          "repository_id": 1361473449,
+          "head_repository_id": 1361473449,
+          "head_branch": "main",
+          "head_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a"
+        }
+      },
+      {
+        "id": 10918816632,
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxODgxNjYzMg==",
+        "name": "ci-junit-scenarios-2023-24",
+        "size_in_bytes": 776977,
+        "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918816632",
+        "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918816632/zip",
+        "expired": false,
+        "digest": "sha256:acec270ebdeaf7cde3cea4ab20eb6d17d5254f6e6118b423cb1556b3c8a5d1dd",
+        "created_at": "2026-09-26T23:40:20Z",
+        "updated_at": "2026-09-26T23:40:20Z",
+        "expires_at": "2026-10-26T23:40:19Z",
+        "workflow_run": {
+          "id": 36279987737,
+          "repository_id": 1361473449,
+          "head_repository_id": 1361473449,
+          "head_branch": "main",
+          "head_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a"
+        }
+      },
+      {
+        "id": 10918711859,
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxODcxMTg1OQ==",
+        "name": "ci-junit-scenarios-old",
+        "size_in_bytes": 963155,
+        "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918711859",
+        "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918711859/zip",
+        "expired": false,
+        "digest": "sha256:677c8aeba0a021c7fd96103f3c7bbd71d97f29c7cfb844984afaf8bad89aafbf",
+        "created_at": "2026-09-26T23:42:00Z",
+        "updated_at": "2026-09-26T23:42:00Z",
+        "expires_at": "2026-10-26T23:41:59Z",
+        "workflow_run": {
+          "id": 36279987737,
+          "repository_id": 1361473449,
+          "head_repository_id": 1361473449,
+          "head_branch": "main",
+          "head_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a"
+        }
+      },
+      {
+        "id": 10918563255,
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxODU2MzI1NQ==",
+        "name": "ci-junit-scenarios-2025-26",
+        "size_in_bytes": 715758,
+        "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918563255",
+        "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918563255/zip",
+        "expired": false,
+        "digest": "sha256:5953ecab359e6c99409bce026de88dc57c19c23000ca04cec361e2f4aca87abd",
+        "created_at": "2026-09-26T23:42:19Z",
+        "updated_at": "2026-09-26T23:42:19Z",
+        "expires_at": "2026-10-26T23:42:17Z",
+        "workflow_run": {
+          "id": 36279987737,
+          "repository_id": 1361473449,
+          "head_repository_id": 1361473449,
+          "head_branch": "main",
+          "head_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a"
+        }
+      },
+      {
+        "id": 10918337446,
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxODMzNzQ0Ng==",
+        "name": "ci-junit-server",
+        "size_in_bytes": 169548,
+        "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918337446",
+        "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918337446/zip",
+        "expired": false,
+        "digest": "sha256:16d78a410a8dcb86b7df5aff82ae9b2f7c04250726341be427dcc701d6cb5902",
+        "created_at": "2026-09-26T23:45:14Z",
+        "updated_at": "2026-09-26T23:45:14Z",
+        "expires_at": "2026-10-26T23:45:13Z",
+        "workflow_run": {
+          "id": 36279987737,
+          "repository_id": 1361473449,
+          "head_repository_id": 1361473449,
+          "head_branch": "main",
+          "head_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a"
+        }
+      },
+      {
+        "id": 10918322802,
+        "node_id": "MDg6QXJ0aWZhY3QxMDkxODMyMjgwMg==",
+        "name": "ci-junit-tools",
+        "size_in_bytes": 121117,
+        "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918322802",
+        "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/10918322802/zip",
+        "expired": false,
+        "digest": "sha256:1f948b36e3b85d1694dec05c6fc3e428513317a0a5ec07b2a363fbc00a9914c8",
+        "created_at": "2026-09-26T23:50:37Z",
+        "updated_at": "2026-09-26T23:50:37Z",
+        "expires_at": "2026-10-26T23:50:37Z",
+        "workflow_run": {
+          "id": 36279987737,
+          "repository_id": 1361473449,
+          "head_repository_id": 1361473449,
+          "head_branch": "main",
+          "head_sha": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a"
+        }
+      }
+    ]
+  },
+  "reuse": {
+    "basis": "Entire source tree ff34 equals independently reviewed PR186 actual merge fc5c, including all production, tests, build, dependencies, workflow and data inputs.",
+    "durable_prior_evidence_commit": "04ee7c6b1394b62ca492fa3159f5e64c354e3bd1",
+    "prior_independent_review_sha256": "a962f859ef4e819405e441bd5d5994d42d6cfaf2627f72292bee68b5ad47024e",
+    "prior_raw_xml_scope": "PR186: 17346 actual cases, 17036 fresh (16987 pass,49 skip); 310 cached (307 pass,3 skip). Disabled CardImageUri Gradle marker is separate.",
+    "fresh_supplement": "Prior accepted identical-input source994383 run36271229739 supplies fresh coverage for cached mtg-search163 and mtgish147; this audit relies on that reviewed closure, and does not re-download it.",
+    "not_asserted": "Current XML bytes, timestamps or individual identities have not been downloaded/reconstructed here. Same-tree reuse does not make cached tasks fresh."
+  },
+  "scope_differences": {
+    "coverage": "Main-only koverXmlReport ran successfully. Its overlapping test logs are not added to matrix case counts. Coverage XML/percentage was not independently downloaded.",
+    "validation": "Full Gradle test ran including oracle-assay; 17549 PASS and49 SKIP result lines, with two duplicate textual labels. No unique-case or XML count asserted. Ten aggregate NO-SOURCE era/core tasks do not substitute for actual fresh era :tests:test tasks. Subsequent named gym and gym-trainer commands were UP-TO-DATE.",
+    "frontend": "npm ci, typecheck and Vite build passed; no frontend unit/e2e test claim.",
+    "validation_artifacts": "Workflow uploads no artifacts; live artifact count is zero."
+  },
+  "warnings": {
+    "frontend_unchanged_from_pr186": [
+      "npm warn deprecated recharts@2.15.4: 1.x and 2.x branches are no longer active. Bump to Recharts v3 to receive latest features and bugfixes. See https://github.com/recharts/recharts/wiki/3.0-migration-guide",
+      "6 vulnerabilities (2 moderate, 4 high)",
+      "(!) Some chunks are larger than 500 kB after minification. Consider:"
+    ],
+    "prior_frontend_log_decoded_sha256": "02d87c9ed30af8620336ded381c20b33b03b636305c30d63f1bfd3f030eac2a4",
+    "other": "Gradle future-incompatibility and Java/Node deprecation warnings remain warnings. Validation older setup-java@v4 and Node20 action deprecations are visible; no failure or baseline-update authorization follows.",
+    "coverage_stderr": "New main-only coverage extraction emits two grep write-error Broken pipe messages at23:46:37. Exact workflow uses grep | head -1 twice, under observed bash -e without pipefail. Closing head after its first line explains upstream grep write failure (inference from source and stderr). The extraction step succeeded, but individual grep exits and the computed coverage value/XML are not exposed or independently certified. This is not evidence every subcommand exited zero, nor a test failure; preserve without altering unrelated source.",
+    "cache_save_races": {
+      "jobs": [
+        108509861487,
+        108509861542
+      ],
+      "scope": "Gradle post-job transform-cache save reported ReserveCacheError while another job may create the same key. Other cache saves and jobs completed successfully. These are cache publication warnings, not test outcomes; original decoded messages retained."
+    },
+    "snapshot": "No failed snapshot/baseline assertion observed in decoded logs; workflow commands contain no snapshot-adoption command. No new before/after runtime-tree capture was produced, so wholesale runtime immutability is not newly certified."
+  },
+  "limits": [
+    "All retained logs are complete connector-decoded UTF8 compressed locally, not original GitHub log ZIPs.",
+    "Current CI XML artifact contents not downloaded; metadata only. No current XML case-bank audit claimed.",
+    "Software validation only; no project complete runtime admission, formal GitHub approval, gameplay permit, seed/claim allocation or outcome.",
+    "No source mutation, workflow dispatch or rerun performed. No deck-performance evidence changed."
+  ],
+  "inputs": [
+    {
+      "file": "live-0.json",
+      "bytes": 3902,
+      "sha256": "0c4475cfd2717b91c7665e6fdd317e77854364a6dc62b1652c60cb9f48e735dc"
+    },
+    {
+      "file": "live-1.json",
+      "bytes": 2764,
+      "sha256": "ed4ed48cd730bcd32d46f4eab98df5dc3db2bbdd938a0ee170b0f3d99cd0b4ab"
+    },
+    {
+      "file": "live-2.json",
+      "bytes": 13724,
+      "sha256": "b151e4c7165ea1456a9612c149c8cadd884675a373d27f7fcb10d7e9103f5ecc"
+    },
+    {
+      "file": "live-3.json",
+      "bytes": 27950,
+      "sha256": "de4bc575fd2793433a79559ccebad3fe568660b74d598430508311c03a4bb62b"
+    },
+    {
+      "file": "live-4.json",
+      "bytes": 5054,
+      "sha256": "1155aa5d648460558dc0b2fe3767bfe591b21c6ca099722823157b72618f6b3e"
+    },
+    {
+      "file": "live-5.json",
+      "bytes": 13751,
+      "sha256": "00af2b6500796ea063595606e7003abdb63b6d2022afea56fbf0bacbcdcaf104"
+    },
+    {
+      "file": "live-6.json",
+      "bytes": 3240,
+      "sha256": "76cb881c033f7084d849e84582f5a26bc829f0fddad20732dd627060e2b2948c"
+    },
+    {
+      "file": "live-7.json",
+      "bytes": 98,
+      "sha256": "02e911f4ab060c453817a4c52cc6e445e01a7c3b1f29f6ccd41590960851ac2d"
+    },
+    {
+      "file": "workflow-source.json",
+      "bytes": 12815,
+      "sha256": "5bc6455b0b5ace4faf8bc8f0b1611a89470e6279c16e1443cc124f5a291899ca"
+    },
+    {
+      "file": "decoded-log-inventory.json",
+      "bytes": 5266,
+      "sha256": "b17a056a85f55505f9b0357664298a971ae4a97a9a6e22abbedd92603bf2cd83"
+    }
+  ]
+}
