@@ -1,0 +1,61 @@
+name: Izzet Veteran Beastrider targeted receiving
+on:
+  push:
+    branches: ["izzet/veteran-beastrider-receiving-20260927"]
+    paths:
+      - ".github/workflows/izzet-veteran-beastrider-targeted.yml"
+      - "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VeteranBeastriderReceivingTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-mechanics-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact test and card source
+        run: |
+          mkdir -p build/reports/izzet-veteran-receiving
+          {
+            git rev-parse HEAD
+            git hash-object mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VeteranBeastriderReceivingTest.kt
+            git hash-object mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dft/cards/VeteranBeastrider.kt
+            git status --porcelain
+          } > build/reports/izzet-veteran-receiving/source.txt
+          test "$(git hash-object mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VeteranBeastriderReceivingTest.kt)" = "d95c360ee3a7824d85215ffdb15f48684a7714c9"
+      - name: Execute two fresh excluded mechanic fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class VeteranBeastriderReceivingTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/izzet-veteran-receiving/gradle.log
+      - name: Verify original JUnit cases
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          paths=glob.glob("mtg-sets/2025/tests/build/test-results/test/TEST-*VeteranBeastriderReceivingTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          cases=root.findall(".//testcase")
+          assert sorted(c.get("name") for c in cases)==[
+              "Veteran end step untaps each own creature, never an opposing creature or land",
+              "Veteran paid activation buffs all own creatures but not opponent",
+          ], [c.get("name") for c in cases]
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-veteran-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/izzet-veteran-receiving/
+            mtg-sets/2025/tests/build/test-results/test/TEST-*VeteranBeastriderReceivingTest.xml
+          if-no-files-found: error
+          retention-days: 90
