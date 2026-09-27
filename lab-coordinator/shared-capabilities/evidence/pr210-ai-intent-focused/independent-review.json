@@ -1,0 +1,22 @@
+{
+  "schema": "authorized-search-ai-intent-focused-independent-review-v1",
+  "disposition": "ACCEPT_TWO_CLASS_AI_REPAIR_SOFTWARE_ONLY",
+  "candidate_source": "197f95e858638de2fd215073b0b876378fc4c92d",
+  "candidate_tree": "e22c55bdf80896760bb8009c67ddcb91f254e27d",
+  "ai_source_blob": "013510d79b05f88e3b70d0ed8609d58d79349d67",
+  "one_shot_gate_head": "8d63bb8f4bc4ceca21234abbec464c64fda04abb",
+  "run_id": 36294279717,
+  "artifact_id": 10923143035,
+  "original_evidence_commit": "0bcc702cff7f429504bdfc1b2e85fcd1333c556b",
+  "original_zip_sha256": "f92f11e9d43b152ee4b2c7247a073e77d40542350e0ae1a5ba4a27e3a0d37d7f",
+  "reviewer": "/root",
+  "findings": [
+    "Independently rehashed the 26,599-byte original ZIP and verified all 12 members CRC clean.",
+    "Raw JUnit has 30 unique CardIntentAnalyzerTest and 86 unique PestControlAgentDecisionTest cases, 116/116 pass with zero failures/errors/skips including the two prior failed names.",
+    "Raw source and exit records bind 197f/e22c/0135 before and after, clean tracked worktree, exit0; raw log has one fresh :ai:test task and BUILD SUCCESSFUL."
+  ],
+  "limits": [
+    "This repairs the targeted AI intent regression only. PR210 broad content snapshot differences and full integration remain unresolved.",
+    "No Pest C2/A2, pair pilot, seed, claim, or gameplay authority."
+  ]
+}
