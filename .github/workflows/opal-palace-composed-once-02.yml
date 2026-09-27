@@ -1,0 +1,51 @@
+name: Opal Palace composed source targeted qualification
+on:
+  push:
+    branches: ['izzet/opal-manual-composed-once-2-20260927']
+permissions:
+  contents: read
+jobs:
+  opal-ten:
+    if: github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      EXPECTED_HEAD: ${{ github.sha }}
+      UPDATE_SNAPSHOTS: '0'
+      GRADLE_LOCK_SLOTS: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 2
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind ten-case source without gameplay
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/opal-palace-once-02
+          python izzet-science/evidence/opal-palace-prospective-20260927/qualify_attempt_02.py bind 2>&1 | tee build/reports/opal-palace-once-02/bind.log
+      - name: Execute ten deterministic cases once
+        run: |
+          set -uo pipefail
+          set +e
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test --rerun --no-build-cache --tests '*OpalPalaceScenarioTest' --info --stacktrace 2>&1 | tee build/reports/opal-palace-once-02/tests.log
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > build/reports/opal-palace-once-02/exit.txt
+          exit "$rc"
+      - name: Reconcile source and raw ten-case evidence
+        if: always()
+        run: python izzet-science/evidence/opal-palace-prospective-20260927/qualify_attempt_02.py collect
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: opal-palace-composed-successor-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/opal-palace-once-02/
+            **/build/test-results/test/*.xml
+          if-no-files-found: error
+          retention-days: 90
