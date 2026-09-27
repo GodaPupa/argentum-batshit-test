@@ -20,7 +20,9 @@
     "name": "manual-transmission-phase2-pilot-boundary",
     "bytes": 768,
     "sha256": "f7827a38dccd2159cf710a0a26dde16f020e3b2a9a17f07fe3e69d60577de518",
-    "archive_is_durable_in_this_branch": false
+    "archive_is_durable_in_this_branch": true,
+    "restorable_base64_path": "experiments/manual-transmission-phase2/evidence/pilot-boundary-36289569560/original-artifact.zip.base64",
+    "restore_command": "base64 -d original-artifact.zip.base64 > original-artifact.zip; sha256sum original-artifact.zip"
   },
   "decoded_job_log": {
     "path": "experiments/manual-transmission-phase2/evidence/pilot-boundary-36289569560/decoded-job-log.txt",
