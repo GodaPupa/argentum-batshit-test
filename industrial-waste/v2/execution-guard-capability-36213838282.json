@@ -1,0 +1,52 @@
+{
+  "schema": "industrial-waste-v2-r1-execution-guard-capability-v1",
+  "status": "ACCEPTED_SEED_FREE_EXECUTION_GUARD_CAPABILITY_ONLY",
+  "source_commit": "db0e2915611c7793daced0c5f3cbbc109ec7689f",
+  "validation_merge_commit": "439d485336c03810a53db3d2b8bc2d2761a431a8",
+  "workflow_run_id": 36213838282,
+  "workflow_job_id": 108325726664,
+  "artifact": {
+    "id": 10896892283,
+    "name": "industrial-waste-v2-r1-execution-guard",
+    "sha256": "61250a56ae98c65780386dacbcf8c7e7d69f24e0a88200100a8e51a2587edd6a",
+    "independent_download_match": true
+  },
+  "deterministic_tests": {
+    "count": 7,
+    "failures": 0,
+    "cases": [
+      "bound path cannot escape repository root",
+      "bound receipt byte drift fails closed",
+      "duplicate attempt declaration fails closed",
+      "exact bound claim and journal admit only the first initialization guard",
+      "HEAD mismatch fails closed",
+      "initialization already present in journal fails closed",
+      "missing or wrong execution authorization fails closed"
+    ]
+  },
+  "live_guard": {
+    "status": "BLOCKED_BEFORE_INITIALIZATION",
+    "reason_class": "MISSING_OFFICIAL_CLAIM",
+    "expected_behavior": true,
+    "official_claim_created": false,
+    "journal_created": false,
+    "initialization_admitted": false
+  },
+  "frozen_r1": {
+    "comparator": "IMMUTABLE_SUBMITTED_V1_0",
+    "candidates": [
+      "COMPACT_LOOP",
+      "RECURSIVE_EGGS",
+      "LEAN_TRON_HYBRID"
+    ],
+    "prospective_allocations": 512,
+    "initialized_allocations": 0,
+    "comparative_outcomes_exposed": 0
+  },
+  "authority": {
+    "execution_authorized": false,
+    "claim_creation_authorized_by_this_receipt": false,
+    "gameplay_authorized": false
+  },
+  "next_gate": "Complete remaining runtime/rules/runner/telemetry/artifact bindings before creating the durable exclusive claim and append-only attempt journal."
+}

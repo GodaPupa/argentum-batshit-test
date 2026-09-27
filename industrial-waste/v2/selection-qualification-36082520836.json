@@ -1,0 +1,110 @@
+{
+  "all_four_lists": "A single scorer has no family input or outcome feedback. Fixed mana-architecture fixtures cover the submitted control and all three candidates. It does not establish whole-deck gameplay performance.",
+  "artifact_id": 10842832146,
+  "artifact_sha256": "b7afc052407b4ffa5df4896e22215c62a90fe0ff2da366216cb0e662e694fc3a",
+  "ci": {
+    "conclusion": "success",
+    "run_id": 36082520829,
+    "same_tree_as_source_head": true,
+    "tested_merge_commit": "2aa6eab57928403d4c5fc89eb74ab872aa8b1920",
+    "tested_tree": "14fe58e45395f2bac23c2ee1e37398476153c426"
+  },
+  "compiled_registry": {
+    "gameplay_ready": false,
+    "identities": 34,
+    "unresolved": 0
+  },
+  "evidence_files_sha256": {
+    "industrial-waste/v2/evidence/selection-qualification-36082520836/TEST-com.wingedsheep.ai.arena.FrozenBaselineTest.xml": "43aec2751b1024e3f224bf5b2fb85fc355485996a330f0a144edd56e6d70e8b3",
+    "industrial-waste/v2/evidence/selection-qualification-36082520836/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest.xml": "073948e5791fcc20187915993933f20907450ab62fa7c399fffbdbd277621e80",
+    "industrial-waste/v2/evidence/selection-qualification-36082520836/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest.xml": "1812b15a7962073bfdeb690ef36224d1d53f874014eda2da8d3969f076f031af",
+    "industrial-waste/v2/evidence/selection-qualification-36082520836/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest.xml": "b7fa09fa8e676d7bfab50eb60dce3ffa3bd5c96ca8c5cd77f375428eef0195bb",
+    "industrial-waste/v2/evidence/selection-qualification-36082520836/TEST-com.wingedsheep.engine.scenarios.AncientStirringsScenarioTest.xml": "918209ed4f9c8aec0a921b5d43295cb59fb84fbbc679cf154ddfe743bfc150a2",
+    "industrial-waste/v2/evidence/selection-qualification-36082520836/TEST-com.wingedsheep.engine.scenarios.ChromaticStarScenarioTest.xml": "a0452be57478ccc29ab148a95f3a5537c1681b2c9d6e1573ca0a74b8c741567a",
+    "industrial-waste/v2/evidence/selection-qualification-36082520836/TEST-com.wingedsheep.engine.scenarios.DrossSkullbombScenarioTest.xml": "e206318263ffa8387e4d826b9a0f60efbdb4563d6db381a095c6fb4853d36e58",
+    "industrial-waste/v2/evidence/selection-qualification-36082520836/registry-audit.txt": "5dbd51087270fa517261c47c7acae32d09155d00411e68352ddd1f8cd9e7d979"
+  },
+  "expected_source_assertion": "Actual git HEAD equals requested PR HEAD; registry receipt agrees.",
+  "final_program_conclusion": null,
+  "official_r1_counters": {
+    "actions_submitted": 0,
+    "comparative_outcomes_exposed": 0,
+    "games_initialized": 0,
+    "matchup_seeds_generated": 0
+  },
+  "prior_rejected_validation": {
+    "cause": "New fixture assigned read-only GameTestDriver.state; repaired using replaceState. No policy or assertion weakened; no official sample affected.",
+    "run_id": 36082136891
+  },
+  "promotion": null,
+  "public_information_scope": "The selector reads acting-player hand, battlefield and graveyard plus offered legal decision metadata; no simulations or library-order reads. Invariance fixture changes opponent hidden card names and both future library orders. This proves this selection component only, not every generic pilot path.",
+  "qualified_component_files_sha256": {
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2SelectionAdvisorModule.kt": "91e5ab7341078b43b04177b868b65fd66d57eeb0ee6b6d4b0260bb1f51aeafad",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2SelectionAdvisorTest.kt": "980827749d7525ce615195638efc976acee7c8b1ae4cea1fc5269e34270becc7"
+  },
+  "r0_static": {
+    "conclusion": "success",
+    "run_id": 36082520762
+  },
+  "r1_execution_ready": false,
+  "real_continuations": "Real engine Stirrings, Rumble and Kinsmith spells accept selector responses and deliver the exact selected card copy to hand.",
+  "remaining_prerequisites": [
+    "Complete exact candidate mechanics and casting/activation/scry/mulligan/payment policy",
+    "Qualify frozen ordering and shuffle adapters without future-information leakage",
+    "Implement exact telemetry, actual loop/conversion certificate and deterministic replay",
+    "Freeze effective rules archive and all runtime identities",
+    "Establish durable exclusive attempt journal, artifact contract and exact execution authorization before initialization"
+  ],
+  "schema": "iw-v2-seed-free-selection-qualification-v1",
+  "snapshot_audit": "No generated diff; TSP and ROE exactly equal the previously audited committed compiled snapshots.",
+  "source_head": "425019cd006e3034c44b93f2fb14e421c6c76e55",
+  "source_tree": "14fe58e45395f2bac23c2ee1e37398476153c426",
+  "status": "ACCEPTED_SELECTION_COMPONENT_NOT_COMPLETE_PILOT",
+  "tests": {
+    "com.wingedsheep.ai.arena.FrozenBaselineTest": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 1,
+      "skipped": 0
+    },
+    "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 6,
+      "skipped": 0
+    },
+    "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 1,
+      "skipped": 0
+    },
+    "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 8,
+      "skipped": 0
+    },
+    "com.wingedsheep.engine.scenarios.AncientStirringsScenarioTest": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 3,
+      "skipped": 0
+    },
+    "com.wingedsheep.engine.scenarios.ChromaticStarScenarioTest": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 4,
+      "skipped": 0
+    },
+    "com.wingedsheep.engine.scenarios.DrossSkullbombScenarioTest": {
+      "errors": 0,
+      "failures": 0,
+      "passed": 5,
+      "skipped": 0
+    }
+  },
+  "tests_passed": 28,
+  "workflow_job_id": 107907343167,
+  "workflow_run_id": 36082520836
+}

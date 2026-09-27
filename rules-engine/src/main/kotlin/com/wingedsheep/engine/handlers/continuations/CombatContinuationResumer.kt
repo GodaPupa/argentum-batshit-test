@@ -140,12 +140,12 @@ class CombatContinuationResumer(
      * own (filtered by [DamageEdge.editableBy] on the paired question), bake those amounts
      * on top of the shape's current amounts, and:
      *
-     * - if more choosers remain (CR 510.1c sequencing, or the CR 702.22j/k two-actor banding case),
+     * - if more choosers remain (CR 510.1 sequencing, or the CR 702.22j/k two-actor banding case),
      *   re-pause via [com.wingedsheep.engine.mechanics.combat.CombatManager.repauseCombatResolution]
      *   for the next chooser with the locked-in amounts shown;
      * - otherwise fold every edge into a per-source [DamageAssignmentComponent] (read straight off
-     *   the cached edge objects — no edge-id parsing), apply any row-order overrides, and re-enter
-     *   `applyCombatDamage` to run the damage pipeline.
+     *   the cached edge objects — no edge-id parsing), and re-enter `applyCombatDamage` to run the
+     *   damage pipeline. Legacy row-order fields have no rules effect and are ignored.
      */
     fun resumeCombatResolution(
         state: GameState,
@@ -164,7 +164,8 @@ class CombatContinuationResumer(
 
         val edgeById = shape.edges.associateBy { it.id }
         val submittedByEdge = response.edges.associate { it.edgeId to it.amount }
-        // Keep only edges this chooser owns; unknown ids and other-owner edges are dropped.
+        // Validation rejects unknown edges and changes to other choosers' amounts. Keep only this
+        // chooser's edges here; unchanged full-board echoes do not replace locked amounts.
         val honoredByEdge = submittedByEdge.filter { (edgeId, _) ->
             submittingPlayer != null && edgeById[edgeId]?.editableBy == submittingPlayer
         }
@@ -196,21 +197,6 @@ class CombatContinuationResumer(
                 )
             }
         }
-        for ((attackerId, order) in response.orderedBlockers) {
-            newState = newState.updateEntity(attackerId) { container ->
-                container.with(
-                    com.wingedsheep.engine.state.components.combat.DamageAssignmentOrderComponent(order)
-                )
-            }
-        }
-        for ((blockerId, order) in response.orderedAttackers) {
-            newState = newState.updateEntity(blockerId) { container ->
-                container.with(
-                    com.wingedsheep.engine.state.components.combat.AttackerOrderComponent(order)
-                )
-            }
-        }
-
         return services.combatManager.applyCombatDamage(newState, firstStrike = continuation.firstStrike)
     }
 

@@ -1,0 +1,94 @@
+{
+  "schema": "industrial-v2-first-replay-divergence-v1",
+  "auditor": "/root/industrial",
+  "role": "source-author exact raw diagnostic audit",
+  "source": "4ff63cef458f0d84eeb822908ec883c241f02608",
+  "tree": "4243928de66e1832a541301310a68d1670ab293a",
+  "run_id": 36259554616,
+  "job_id": 108452637007,
+  "artifact_id": 10912390192,
+  "artifact_bytes": 4607698,
+  "artifact_sha256": "82c03957116d3324239ce4abae00f9ea95b74fedefd75cc60e1d278f6166c629",
+  "actual_cases": {
+    "engine": {
+      "tests": 148,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "Lava": {
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "AI": {
+      "tests": 132,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 1
+    }
+  },
+  "python_checks": 72,
+  "first_mismatch": {
+    "index": 132,
+    "expectedStateSha256": "f0dc3b831f63e640af4ee636419ed0b9a18c9784ebaef85a127230dcc0ee7a41",
+    "actualStateSha256": "a73fa9bef6e1f2be9bc7aa69d4e3a81fb721ccfe819b4d2e1607a3cb04cce573",
+    "action": {
+      "type": "ActivateAbility",
+      "playerId": "e0",
+      "sourceId": "e30",
+      "abilityId": "ability_3728",
+      "targets": [],
+      "costPayment": null,
+      "manaColorChoice": null,
+      "xValue": null,
+      "repeatCount": 1,
+      "paymentStrategy": {
+        "type": "AutoPay"
+      },
+      "alternativePayment": null,
+      "damageDistribution": null,
+      "opponentTargetsChosen": false
+    },
+    "actualEvents": [
+      {
+        "type": "CountersRemovedEvent",
+        "entityId": "e30",
+        "counterType": "charge",
+        "amount": 3,
+        "entityName": "Golem Foundry",
+        "remainingCount": null,
+        "byDamagePrevention": false
+      },
+      {
+        "type": "AbilityActivatedEvent",
+        "sourceId": "e30",
+        "sourceName": "Golem Foundry",
+        "controllerId": "e0",
+        "abilityEntityId": "e128",
+        "costsTap": false,
+        "isManaAbility": false,
+        "isExhaust": false
+      }
+    ]
+  },
+  "differences": [
+    [
+      "/entities/e128/com.wingedsheep.engine.state.components.stack.ActivatedAbilityOnStackComponent/objectReferences/resolutionKey",
+      "b4fee786-e969-4800-8ec8-e2cc00117b3c",
+      "1192aed7-4d62-4ef5-968b-1d8a44b74799"
+    ]
+  ],
+  "causal_byte_check": "Replacing the single diagnosed UUID string in the original returned-state bytes with the independently generated replay UUID yields exactly the replay-state bytes. This is diagnosis only; original hashes still differ and the runtime remains rejected. No comparison was normalized for acceptance.",
+  "earlier_returned_states_matched": 131,
+  "events_at_first_mismatch": "exactly equal",
+  "source_cause": "ActivateAbilityHandler allocated EntityId.generate() (SDK UUID.randomUUID) for the stored ObjectReferenceEnvironment.resolutionKey. The stack entity itself already used the deterministic engine allocator.",
+  "proposed_donor": "b6aef3afede89f2044f26b0af9d5bdd4efe751c6",
+  "donor_scope": "Only canonical deterministic activation routing; full post-block integration remains separate.",
+  "later_replay_not_evaluated": true,
+  "runtime_accepted": false,
+  "execution_authorized": false,
+  "official_allocations_initialized": 0,
+  "comparative_outcomes_exposed": 0
+}

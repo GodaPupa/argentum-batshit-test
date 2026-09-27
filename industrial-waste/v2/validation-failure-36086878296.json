@@ -1,0 +1,160 @@
+{
+  "schema": "iw-v2-validation-failure-audit-v1",
+  "status": "REJECTED_AS_COMPLETE_BATCH_FIXTURE_TRAVERSAL_DEFECT_CONFIRMED",
+  "source_head": "a38bea45a1dc6898482944a16beaa0d59eb707a5",
+  "workflow_run": 36086878296,
+  "workflow_job": 107920637719,
+  "full_ci_run": 36086878300,
+  "artifact_id": 10843968495,
+  "artifact_zip_sha256": "3ded5e9f4f19e2d259eba19895b7fca4b648e19d4e8cc07b85f56a75805a64ee",
+  "observed_xml_suites": [
+    {
+      "name": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "tests": 13,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.ChromaticStarScenarioTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.KurgadonTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.TreeOfTalesScenarioTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.VaultOfWhispersScenarioTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.AncientStirringsScenarioTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.GolemFoundryScenarioTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.DarkmossBridgeScenarioTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.CandyTrailScenarioTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.DrossSkullbombScenarioTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.MyrKinsmithScenarioTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.PactdollTerrorScenarioTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.TownLandSpellAdventureScenarioTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "totals": {
+    "tests": 92,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "raw_evidence_sha256": {
+    "industrial-waste/v2/evidence/validation-failure-36086878296/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest.xml": "29099914ded3003d74fb1a986f9039fa9b6d79ccd1090f120e675ca25278c8f7",
+    "industrial-waste/v2/evidence/validation-failure-36086878296/registry-audit.txt": "486b92940002cb3cf9051dfe3daeadea9155772e91b5525bca1cb85d74b4e29a"
+  },
+  "failure": "Foundry combat fixture waited for DECLARE_ATTACKERS while no legal attackers existed. TurnManager intentionally skips that step, so the fixture reached the following own turn and correctly saw legal attackers. Existing raw-handler summoning-sickness regression passed.",
+  "repair": "Assert newborn sickness and zero valid attackers on the creation turn; advance to that same own turn postcombat checkpoint, then require actual next-own-turn combat and terminal win. No policy or engine combat rule changed.",
+  "official_games_initialized": 0,
+  "comparative_outcomes_exposed": 0,
+  "accepted_prior_source": "63d262a32d4f92525ccd4f167b43038936bc2f76"
+}

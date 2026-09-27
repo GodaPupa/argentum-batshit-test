@@ -1,0 +1,244 @@
+scripts/test-class "IndustrialWasteV2ActivatedCheckpointTest" --tests *IndustrialWasteV2EventMetricsTest --tests *IndustrialWasteV2AllocationRunnerTest --tests *IndustrialWasteV2FullHorizonRunnerTest --offline --no-daemon --max-workers=1 -Pkotlin.compiler.execution.strategy=in-process -PkotlinCompileParallelism=1 -Dorg.gradle.jvmargs=-Xmx4g
+test-class: IndustrialWasteV2ActivatedCheckpointTest -> :ai
+gradle-locked: 'shlock' not found; running ./gradlew unlocked
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :ai:test --tests IndustrialWasteV2ActivatedCheckpointTest --tests *IndustrialWasteV2EventMetricsTest --tests *IndustrialWasteV2AllocationRunnerTest --tests *IndustrialWasteV2FullHorizonRunnerTest
+> Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+> Task :ai:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sdk:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sdk:compileKotlin
+w: file:///workspace/scratch/dea6a31b4c71/industrial/mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/serialization/CardLinter.kt:341:9 'when' is exhaustive so 'else' is redundant here.
+
+> Task :mtg-sdk:compileJava NO-SOURCE
+> Task :rules-engine:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :rules-engine:compileKotlin
+w: file:///workspace/scratch/dea6a31b4c71/industrial/rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt:280:62 No cast needed.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt:473:21 Condition is always 'true'.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ExileTopCardMayPlayFreeExecutor.kt:79:60 Unnecessary non-null assertion (!!) on a non-null receiver of type 'EntityId'.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt:820:49 Unnecessary safe call on a non-null receiver of type 'CardDefinition'.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt:604:27 Unnecessary non-null assertion (!!) on a non-null receiver of type 'ObjectIdentity'.
+
+> Task :rules-engine:compileJava NO-SOURCE
+> Task :ai:compileKotlin
+> Task :ai:compileJava NO-SOURCE
+> Task :ai:processResources
+> Task :ai:classes
+> Task :ai:jar
+> Task :mtg-sets:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:1993-1999:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:core:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:core:compileKotlin
+> Task :mtg-sets:core:compileJava NO-SOURCE
+> Task :mtg-sets:1993-1999:compileKotlin
+> Task :mtg-sets:1993-1999:compileJava NO-SOURCE
+> Task :mtg-sets:2000-2002:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2000-2002:compileKotlin
+> Task :mtg-sets:2000-2002:compileJava NO-SOURCE
+> Task :mtg-sets:2003-2007:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2003-2007:compileKotlin
+> Task :mtg-sets:2003-2007:compileJava NO-SOURCE
+> Task :mtg-sets:2008-2016:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2008-2016:compileKotlin
+> Task :mtg-sets:2008-2016:compileJava NO-SOURCE
+> Task :mtg-sets:2017-2022:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2017-2022:compileKotlin
+> Task :mtg-sets:2017-2022:compileJava NO-SOURCE
+> Task :mtg-sets:2023:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2023:compileKotlin
+> Task :mtg-sets:2023:compileJava NO-SOURCE
+> Task :mtg-sets:2024:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2024:compileKotlin
+> Task :mtg-sets:2024:compileJava NO-SOURCE
+> Task :mtg-sets:2025:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2025:compileKotlin
+> Task :mtg-sets:2025:compileJava NO-SOURCE
+> Task :mtg-sets:2026:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :mtg-sets:2026:compileKotlin
+> Task :mtg-sets:2026:compileJava NO-SOURCE
+> Task :mtg-sets:compileKotlin
+> Task :mtg-sets:compileJava NO-SOURCE
+> Task :rules-engine:processResources
+> Task :rules-engine:classes
+> Task :rules-engine:jar
+> Task :rules-engine:compileTestFixturesKotlin
+> Task :rules-engine:compileTestFixturesJava NO-SOURCE
+
+> Task :ai:compileTestKotlin
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/ElvesAdvisorModule.kt:141:77 Return in function with expression body and without explicit return type. Use block body '{...}' or add an explicit return type. This will become an error in language version 2.5. See https://youtrack.jetbrains.com/issue/KTLC-288.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/ElvesAdvisorModule.kt:152:18 Return in function with expression body and without explicit return type. Use block body '{...}' or add an explicit return type. This will become an error in language version 2.5. See https://youtrack.jetbrains.com/issue/KTLC-288.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/ElvesAdvisorModule.kt:200:45 Return in function with expression body and without explicit return type. Use block body '{...}' or add an explicit return type. This will become an error in language version 2.5. See https://youtrack.jetbrains.com/issue/KTLC-288.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteBorosPilotBenchmark.kt:157:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteBorosReadinessSmokeTest.kt:87:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteElvesPilotBenchmark.kt:176:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteElvesReadinessSmokeTest.kt:109:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGoldfishBenchmark.kt:162:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGrixisPilotBenchmark.kt:149:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteGrixisReadinessSmokeTest.kt:96:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteJundPilotBenchmark.kt:158:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteJundReadinessSmokeTest.kt:102:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMatchupPilotBenchmark.kt:225:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMonoBluePilotBenchmark.kt:157:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMonoBlueReadinessSmokeTest.kt:97:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMonsterTronPilotBenchmark.kt:176:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteMonsterTronReadinessSmokeTest.kt:108:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteSmokeBenchmark.kt:106:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteSpyComboPilotBenchmark.kt:170:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteSpyComboReadinessSmokeTest.kt:112:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteStabilityGrixisPilotBenchmark.kt:158:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteStabilitySmokeBenchmark.kt:88:13 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteTempoBGrixisPilotBenchmark.kt:113:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteTempoGrixisPilotBenchmark.kt:112:35 Redundant creation of Json format. Creating instances for each usage can be slow.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2CheckpointMana.kt:235:44 Unnecessary non-null assertion (!!) on a non-null receiver of type 'CardDefinition'.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/MonsterTronAdvisorModule.kt:78:22 Return in function with expression body and without explicit return type. Use block body '{...}' or add an explicit return type. This will become an error in language version 2.5. See https://youtrack.jetbrains.com/issue/KTLC-288.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/SpyComboAdvisorModule.kt:132:45 Return in function with expression body and without explicit return type. Use block body '{...}' or add an explicit return type. This will become an error in language version 2.5. See https://youtrack.jetbrains.com/issue/KTLC-288.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/SpyComboAdvisorModule.kt:159:45 Return in function with expression body and without explicit return type. Use block body '{...}' or add an explicit return type. This will become an error in language version 2.5. See https://youtrack.jetbrains.com/issue/KTLC-288.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/SpyComboAdvisorModule.kt:219:77 Return in function with expression body and without explicit return type. Use block body '{...}' or add an explicit return type. This will become an error in language version 2.5. See https://youtrack.jetbrains.com/issue/KTLC-288.
+w: file:///workspace/scratch/dea6a31b4c71/industrial/ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/SpyComboAdvisorModule.kt:222:20 Return in function with expression body and without explicit return type. Use block body '{...}' or add an explicit return type. This will become an error in language version 2.5. See https://youtrack.jetbrains.com/issue/KTLC-288.
+
+> Task :ai:compileTestJava NO-SOURCE
+> Task :ai:processTestResources
+> Task :ai:testClasses
+> Task :mtg-sdk:processResources NO-SOURCE
+> Task :mtg-sdk:classes UP-TO-DATE
+> Task :mtg-sdk:jar
+> Task :mtg-sets:processResources
+> Task :mtg-sets:classes
+> Task :mtg-sets:jar
+> Task :rules-engine:processTestFixturesResources NO-SOURCE
+> Task :rules-engine:testFixturesClasses UP-TO-DATE
+> Task :rules-engine:testFixturesJar
+> Task :mtg-sets:1993-1999:processResources NO-SOURCE
+> Task :mtg-sets:1993-1999:classes UP-TO-DATE
+> Task :mtg-sets:1993-1999:jar
+> Task :mtg-sets:2000-2002:processResources NO-SOURCE
+> Task :mtg-sets:2000-2002:classes UP-TO-DATE
+> Task :mtg-sets:2000-2002:jar
+> Task :mtg-sets:2003-2007:processResources NO-SOURCE
+> Task :mtg-sets:2003-2007:classes UP-TO-DATE
+> Task :mtg-sets:2003-2007:jar
+> Task :mtg-sets:2008-2016:processResources NO-SOURCE
+> Task :mtg-sets:2008-2016:classes UP-TO-DATE
+> Task :mtg-sets:2008-2016:jar
+> Task :mtg-sets:2017-2022:processResources NO-SOURCE
+> Task :mtg-sets:2017-2022:classes UP-TO-DATE
+> Task :mtg-sets:2017-2022:jar
+> Task :mtg-sets:2023:processResources NO-SOURCE
+> Task :mtg-sets:2023:classes UP-TO-DATE
+> Task :mtg-sets:2023:jar
+> Task :mtg-sets:2024:processResources NO-SOURCE
+> Task :mtg-sets:2024:classes UP-TO-DATE
+> Task :mtg-sets:2024:jar
+> Task :mtg-sets:2025:processResources NO-SOURCE
+> Task :mtg-sets:2025:classes UP-TO-DATE
+> Task :mtg-sets:2025:jar
+> Task :mtg-sets:2026:processResources NO-SOURCE
+> Task :mtg-sets:2026:classes UP-TO-DATE
+> Task :mtg-sets:2026:jar
+> Task :mtg-sets:core:processResources
+> Task :mtg-sets:core:classes
+> Task :mtg-sets:core:jar
+
+> Task :ai:test
+
+IndustrialWasteV2ActivatedCheckpointTest > Blood Fountain recovery with legal target and enough colorless mana records a colored failure PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > Blood Fountain with no graveyard creature is not a relevant colored recovery failure PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > Blood Fountain recovery payable with a black source is executable PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > Dross Skullbomb recovery with legal target and enough colorless mana records a colored failure PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > Dross Skullbomb with no graveyard creature is not a relevant colored recovery failure PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > Dross Skullbomb recovery payable with a black source is executable PASSED
+
+IndustrialWasteV2ActivatedCheckpointTest > tapped Fountain does not become a color failure when its non-mana cost is unavailable FAILED
+    org.opentest4j.AssertionFailedError at IndustrialWasteV2ActivatedCheckpointTest.kt:82
+
+IndustrialWasteV2AllocationRunnerTest > complete excluded allocation preserves exact actions events checkpoints and replay PASSED
+
+IndustrialWasteV2AllocationRunnerTest > allocation directory is create-once and a second invocation cannot replace evidence PASSED
+
+IndustrialWasteV2AllocationRunnerTest > official namespace or official allocation id is rejected before any filesystem mutation PASSED
+
+IndustrialWasteV2EventMetricsTest > inventory is not a loop but a real neutral sacrifice return cast and entry is PASSED
+
+IndustrialWasteV2EventMetricsTest > actual Pactdoll lethal is counted only after the engine ends the game PASSED
+
+IndustrialWasteV2EventMetricsTest > Blood Fountain return and recast is recursion without inventing an Altar loop PASSED
+
+IndustrialWasteV2EventMetricsTest > a development action spending loop resources abandons the partial cycle proof PASSED
+
+IndustrialWasteV2EventMetricsTest > Scry and Rumble count only observed copies and distinguish seeing from land access PASSED
+
+IndustrialWasteV2EventMetricsTest > all three controlled real Tron lands establish access and full Tron PASSED
+
+IndustrialWasteV2EventMetricsTest > quiet checkpoint distinguishes colored-payment failure from total-mana shortage PASSED
+
+IndustrialWasteV2EventMetricsTest > quiet checkpoint recognizes an actually executable fixed-cost artifact PASSED
+
+IndustrialWasteV2EventMetricsTest > Foundry future conversion requires real charges token creation and a later legal attack PASSED
+
+IndustrialWasteV2EventMetricsTest > duplicated missing or rejected transitions cannot enter the metric stream PASSED
+
+IndustrialWasteV2EventMetricsTest > replaying the same complete accepted transcript reproduces metric evidence PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the play schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the draw schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the play schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the draw schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the play schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the draw schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the play schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the draw schedule PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > full-horizon capability is deterministic for an identical excluded ordering fixture PASSED
+
+IndustrialWasteV2FullHorizonRunnerTest > runner refuses the frozen official R1 namespace before submitting an action PASSED
+
+31 tests completed, 1 failed
+
+> Task :ai:test FAILED
+Kotlin build report is written to file:///workspace/scratch/dea6a31b4c71/industrial/build/reports/kotlin-build/argentum-engine-build-2026-09-26-22-21-00-0.txt
+
+[Incubating] Problems report is available at: file:///workspace/scratch/dea6a31b4c71/industrial/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':ai:test'.
+> There were failing tests. See the report at: file:///workspace/scratch/dea6a31b4c71/industrial/ai/build/reports/tests/test/index.html
+
+* Try:
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 5m 46s
+46 actionable tasks: 37 executed, 9 up-to-date
+Configuration cache entry stored.
+error: recipe `test-class` failed on line 71 with exit code 1

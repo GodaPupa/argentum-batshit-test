@@ -1,0 +1,48 @@
+scripts/test-class "IndustrialWasteV2QuietCheckpointReplayTest" --tests IndustrialWasteV2FullHorizonRunnerTest --tests *IndustrialWasteV2AllocationRunnerTest.complete excluded allocation preserves exact actions events checkpoints and replay --offline --no-daemon --max-workers=1 --console=plain -Pkotlin.compiler.execution.strategy=in-process -PkotlinCompileParallelism=1 -Dorg.gradle.jvmargs=-Xmx4g -XX:MaxMetaspaceSize=768m
+test-class: IndustrialWasteV2QuietCheckpointReplayTest -> :ai
+gradle-locked: 'shlock' not found; running ./gradlew unlocked
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+Calculating task graph as no cached configuration is available for tasks: :ai:test --tests IndustrialWasteV2QuietCheckpointReplayTest --tests IndustrialWasteV2FullHorizonRunnerTest --tests *IndustrialWasteV2AllocationRunnerTest.complete excluded allocation preserves exact actions events checkpoints and replay -X
+> Task :buildSrc:checkKotlinGradlePluginConfigurationErrors SKIPPED
+> Task :buildSrc:generateExternalPluginSpecBuilders UP-TO-DATE
+> Task :buildSrc:extractPrecompiledScriptPluginPlugins UP-TO-DATE
+> Task :buildSrc:compilePluginsBlocks UP-TO-DATE
+> Task :buildSrc:generatePrecompiledScriptPluginAccessors UP-TO-DATE
+> Task :buildSrc:generateScriptPluginAdapters UP-TO-DATE
+> Task :buildSrc:compileKotlin UP-TO-DATE
+> Task :buildSrc:compileJava NO-SOURCE
+> Task :buildSrc:compileGroovy NO-SOURCE
+> Task :buildSrc:pluginDescriptors UP-TO-DATE
+> Task :buildSrc:processResources UP-TO-DATE
+> Task :buildSrc:classes UP-TO-DATE
+> Task :buildSrc:jar UP-TO-DATE
+w: Detected multiple Kotlin daemon sessions at 
+Kotlin build report is written to file:///workspace/scratch/dea6a31b4c71/industrial/build/reports/kotlin-build/argentum-engine-build-2026-09-27-00-22-37-0.txt
+
+[Incubating] Problems report is available at: file:///workspace/scratch/dea6a31b4c71/industrial/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Selection failed
+  Task 'excluded' not found in root project 'argentum-engine' and its subprojects.
+
+* Try:
+> Run gradlew tasks to get a list of available tasks.
+> For more on name expansion, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:name_abbreviation in the Gradle documentation.
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+Deprecated Gradle features were used in this build, making it incompatible with Gradle 10.
+
+You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+
+For more on this, please refer to https://docs.gradle.org/9.6.1/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+
+BUILD FAILED in 11s
+9 actionable tasks: 9 up-to-date
+Configuration cache entry stored.
+error: recipe `test-class` failed on line 71 with exit code 1

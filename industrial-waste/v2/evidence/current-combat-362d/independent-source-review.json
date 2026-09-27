@@ -1,0 +1,153 @@
+{
+  "schema": "industrial-current-combat-manual-independent-source-review-v1",
+  "reviewer": "non-author agent /root/manual",
+  "source": "362d0719a936a42ad44646e3261307ebc12e88c0",
+  "tree": "854a9c9d9f82607ff2350b100545b77033211169",
+  "verdict": "ACCEPT_FOR_COMBINED_RECEIVING_QUALIFICATION_ONLY",
+  "reviewed_delta_files": 20,
+  "canonical_source": "a4730f0ab2e58895b0a428a05faa4d91fa85ef71",
+  "canonical_before": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+  "source_pin_checks": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt",
+      "sha256": "e52549532d4c8805f8ba90198840b29786d84ff281c1509a2845ae38b6afb90a"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+      "sha256": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt",
+      "sha256": "d2f82ea8237dc6a642005e6a6e12a2148555240a2ed93786a24df02af650d3ee"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CombatContinuationResumer.kt",
+      "sha256": "d447fe5fa911f5decad26f7071abb9c51ba4863837cf0ff5a4f25de34ec86951"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageManager.kt",
+      "sha256": "8450597833a6b23dbdd2966b71a8a03d43e0debfa6509baf938afc0364112924"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageUtils.kt",
+      "sha256": "88c0205e05d03fd753aace27dbdcfd1399aeff3b4d652a6ea85299ecc95c4172"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/DamageCalculator.kt",
+      "sha256": "651f1e507d8fd99c8aa972c1a1b2e45aa04570b39ce84f7e209e0dd5c2909a08"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatAssignmentCurrentRulesTest.kt",
+      "sha256": "8a786f585755bedbc9b84a7ddea0e26d26908b3e6cb51a8a670bc42414177d1e"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatResolutionBoardTest.kt",
+      "sha256": "2ec3488cbeac903f5f72a34e7611ed3fe1bba657a67313f4a44b07d20b369bc0"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatDamageAssignmentTest.kt",
+      "sha256": "f93b4021f58896e4f7cdbcba6f7a3ba565afb48ab177a1020038df1305e7fcb5"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BandingTrampleDrainScenarioTest.kt",
+      "sha256": "897184ce5e5b2be1f07abea4c56b7d8167c7d9782c401ad65273404d9ef97140"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/collect-priority-receiving.py",
+      "sha256": "2c158a62f1898dcc7cb3c00a3cf2497a42d87e3a4e3a2a1e37926b2a4483352f"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/receiving-case-banks-v1.json",
+      "sha256": "fbcd17ca4beda7da01a58fed7c627c66dc154bf4955d6b5556b02de9e0a82a97"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/receiving-collector-independent-source-review.json",
+      "sha256": "cebe19436469e4eefad3f8165675e97dfb860c33325c7a4762f5ccd91e7ac1ea"
+    },
+    {
+      "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt",
+      "sha256": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408"
+    },
+    {
+      "path": "rules-engine/build.gradle.kts",
+      "sha256": "6ede083da0d089b6a8b7010e3710067ab8fb4738a6f9e2425ddb09cf62576523"
+    },
+    {
+      "path": "mtg-sdk/build.gradle.kts",
+      "sha256": "5e6927db0f8188dc9bf3817d55d105774d9b12dff9a3fd39fbaa2288ef3bc78c"
+    },
+    {
+      "path": "build.gradle.kts",
+      "sha256": "986599d2c2ff91066e01a660a0f95e6c982ddef029171350f944be549730e40c"
+    },
+    {
+      "path": "settings.gradle.kts",
+      "sha256": "20bb45f9e99f9cd82df3e8aee01f06bbd116915ae99c4acc0b69a47f4a6a789b"
+    },
+    {
+      "path": "justfile",
+      "sha256": "321890ac5f583400c75b50a57ea4b6b2501246ba86b6b14cb6198835f6bb88c5"
+    },
+    {
+      "path": "scripts/test-class",
+      "sha256": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81"
+    },
+    {
+      "path": "scripts/gradle-locked",
+      "sha256": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/CURRENT_COMBAT_SOURCE_PROVENANCE.json",
+      "sha256": "cd59a4d99df7d0e2fadbb238c626b6d1d1f8600f18513c1a36daf39a7532ce57"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/DEATHTOUCH_SCOPE_AMENDMENT.json",
+      "sha256": "e8dc8e0167466a250c93c80c4ed6cf210ff6bec9ebd2025fec0a56666732b1e1"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/PEER_REVIEW.json",
+      "sha256": "fe92340b326e1d0824e2fdd7557d1c607497dc1eca73e002364ec6de37a9edf7"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/REPAIR_PLAN.md",
+      "sha256": "97e546af5fa057adee956597803d91b40b1a0cc63feb2e4a04efb98c69c2454b"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/ROOT_PEER_REVIEW_02.json",
+      "sha256": "679e485d564f7f4ad670241854f20ef064efe4ea92d8e94fd99ac426a92f0768"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/RULES_EXCERPT.txt",
+      "sha256": "02dc75c6f7b09e411c33cb1602c8729a479c438a1184271f83ed2e4038dbe526"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/SOURCE_FREEZE_02.json",
+      "sha256": "412f5841a1442ebcd395891b95e4ca0b5d84f1f5e3f97cf99bf33aeedbf2d946"
+    },
+    {
+      "path": "lab-coordinator/shared-capabilities/current-combat-authority/retained-fixture-non-author-review.json",
+      "sha256": "69a3ab0452e5ab4ec3cf56163452ca9e7b69084989912026677b53c0326d8847"
+    },
+    {
+      "path": "industrial-waste/v2/current-combat-authority/canonical-receiving-manifest.json",
+      "sha256": "dbadcc20e29857aefc3014b3dae493bc419c2ff11ebb15cd228a5046dc717b43"
+    }
+  ],
+  "exact_canonical_production_files": 7,
+  "exact_canonical_fixture_banks": 4,
+  "prospective_distinct_cases": 32,
+  "exact_retained_authority_files": 8,
+  "findings": [
+    "All seven production and four fixture files are byte-identical to previously independently reviewed canonical a473; all existing before-images match canonical77, including unchanged CombatDamageAssignmentTest.",
+    "All 31 source-file bindings and eight authority hashes match immutable receiving Git bytes. Original canonical manifest and its four banks, 32 case identities and stage geometry are preserved exactly.",
+    "Receiving-specific build and source bindings do not change experimental policy, tokens, fixtures, thresholds or gameplay. Required1fe ancestor verified.",
+    "No new rule implementation or runtime execution is accepted by this review."
+  ],
+  "limits": [
+    "Root separately reviews legacy8dc and baseline composition; this review accepts only the20-file current-combat receiving delta.",
+    "Actual32 receiving execution, full CI, post-block, frontend/browser, token repair and Industrial runtime/admission remain separate.",
+    "No R1 corpus member, seed or gameplay is authorized."
+  ],
+  "github_approval_created": false,
+  "gameplay_authorized": false
+}

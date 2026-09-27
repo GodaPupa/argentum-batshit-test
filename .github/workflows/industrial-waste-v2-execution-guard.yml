@@ -1,0 +1,75 @@
+name: Industrial Waste v2 R1 Execution Guard
+
+on:
+  push:
+    branches:
+      - industrial-waste/v2-structural-redesign
+    paths:
+      - industrial-waste/v2/r1_execution_guard.py
+      - industrial-waste/v2/test_r1_execution_guard.py
+      - .github/workflows/industrial-waste-v2-execution-guard.yml
+  pull_request:
+    paths:
+      - industrial-waste/v2/r1_execution_guard.py
+      - industrial-waste/v2/test_r1_execution_guard.py
+      - industrial-waste/v2/r1-execution-claim.json
+      - industrial-waste/v2/r1-attempt-journal.jsonl
+      - industrial-waste/v2/*runtime*binding*.json
+      - industrial-waste/v2/*execution*authorization*.json
+      - .github/workflows/industrial-waste-v2-execution-guard.yml
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Qualify fail-closed claim and journal validator
+        run: python3 -m unittest discover -s industrial-waste/v2 -p 'test_r1_execution_guard.py' -v
+      - name: Prove current branch remains blocked before an official claim exists
+        shell: bash
+        env:
+          EXPECTED_HEAD: ${{ github.sha }}
+        run: |
+          python3 - <<'PY'
+          import importlib.util
+          import json
+          import os
+          from pathlib import Path
+
+          root = Path('.').resolve()
+          mod_path = root / 'industrial-waste/v2/r1_execution_guard.py'
+          spec = importlib.util.spec_from_file_location('r1_execution_guard', mod_path)
+          guard = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(guard)
+          out = root / 'build/reports/industrial-waste-v2-r1-guard'
+          out.mkdir(parents=True, exist_ok=True)
+          claim = root / 'industrial-waste/v2/r1-execution-claim.json'
+          journal = root / 'industrial-waste/v2/r1-attempt-journal.jsonl'
+          try:
+              guard.validate_preinitialization_guard(root, claim, journal, os.environ['EXPECTED_HEAD'])
+          except (FileNotFoundError, ValueError, json.JSONDecodeError) as exc:
+              result = {
+                  'schema': 'industrial-waste-v2-r1-live-guard-check-v1',
+                  'status': 'BLOCKED_BEFORE_INITIALIZATION',
+                  'head': os.environ['EXPECTED_HEAD'],
+                  'reason_type': type(exc).__name__,
+                  'reason': str(exc),
+                  'official_allocations_initialized': 0,
+                  'official_actions_submitted': 0,
+                  'official_outcomes_exposed': 0,
+              }
+              (out / 'live-guard-status.json').write_text(json.dumps(result, indent=2) + '\n')
+              print(json.dumps(result, indent=2))
+          else:
+              raise SystemExit('R1 live guard unexpectedly admitted initialization')
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: industrial-waste-v2-r1-execution-guard
+          path: build/reports/industrial-waste-v2-r1-guard/
+          if-no-files-found: error
+          retention-days: 90

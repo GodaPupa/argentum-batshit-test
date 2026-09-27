@@ -1,11 +1,22 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.PaymentStrategy
+import com.wingedsheep.engine.state.ZoneKey
+import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.mtg.sets.definitions.vow.cards.BloodFountain
+import com.wingedsheep.mtg.sets.tokens.PredefinedTokens
+import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.model.Deck
+import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import io.kotest.assertions.withClue
 import io.kotest.matchers.shouldBe
 
@@ -22,6 +33,26 @@ import io.kotest.matchers.shouldBe
 class BloodFountainScenarioTest : ScenarioTestBase() {
 
     init {
+        // Every activation fixture obtains its token by resolving the actual producer.
+        fun driverWithProducedBlood(): GameTestDriver {
+            val driver = GameTestDriver()
+            driver.registerCards(TestCards.all)
+            driver.registerCards(PredefinedTokens.allTokens)
+            driver.registerCard(BloodFountain)
+            driver.initMirrorMatch(deck = Deck.of("Swamp" to 40), startingLife = 20)
+            driver.passPriorityUntil(Step.PRECOMBAT_MAIN)
+            val me = driver.activePlayer!!
+            val fountain = driver.putCardInHand(me, "Blood Fountain")
+            driver.giveMana(me, Color.BLACK, 1)
+            driver.submitSuccess(CastSpell(me, fountain, paymentStrategy = PaymentStrategy.FromPool))
+            driver.bothPass().isSuccess shouldBe true // Fountain spell
+            driver.bothPass().isSuccess shouldBe true // Its mandatory ETB trigger
+            driver.state.stack.isEmpty() shouldBe true
+            driver.state.pendingDecision shouldBe null
+            checkNotNull(driver.findPermanent(me, "Blood"))
+            return driver
+        }
+
         context("Blood Fountain") {
 
             test("entering the battlefield creates a Blood token") {
@@ -84,6 +115,67 @@ class BloodFountainScenarioTest : ScenarioTestBase() {
                 withClue("Both are gone from the graveyard") {
                     game.isInGraveyard(1, "Grizzly Bears") shouldBe false
                     game.isInGraveyard(1, "Hill Giant") shouldBe false
+                }
+            }
+        }
+
+        context("Blood produced by Blood Fountain") {
+            test("pays mana tap sacrifice and own discard before drawing exactly one card") {
+                val driver = driverWithProducedBlood()
+                val me = driver.activePlayer!!
+                val blood = driver.findPermanent(me, "Blood")!!
+                val discard = driver.putCardInHand(me, "Grizzly Bears")
+                val drawn = driver.putCardOnTopOfLibrary(me, "Forest")
+                val handBefore = driver.getHand(me).toSet()
+                driver.giveColorlessMana(me, 1)
+                val action = ActivateAbility(
+                    me, blood, PredefinedTokens.Blood.activatedAbilities.first().id,
+                    costPayment = AdditionalCostPayment(discardedCards = listOf(discard)),
+                    paymentStrategy = PaymentStrategy.FromPool
+                )
+                driver.submitSuccess(action)
+                driver.state.getEntity(me)!!.get<ManaPoolComponent>()!!.total shouldBe 0
+                driver.findPermanent(me, "Blood") shouldBe null
+                driver.getHand(me).toSet() shouldBe handBefore - discard
+                (discard in driver.state.getZone(ZoneKey(me, Zone.GRAVEYARD))) shouldBe true
+                driver.state.getZone(ZoneKey(me, Zone.LIBRARY)).first() shouldBe drawn
+                driver.state.stack.size shouldBe 1
+
+                // The sacrificed token cannot pay for another activation while the first waits.
+                val beforeRepeat = driver.state
+                val repeat = driver.submit(action)
+                repeat.isSuccess shouldBe false
+                repeat.isPaused shouldBe false
+                repeat.newState shouldBe beforeRepeat
+                driver.bothPass().isSuccess shouldBe true
+                driver.getHand(me).toSet() shouldBe (handBefore - discard) + drawn
+                driver.state.stack.isEmpty() shouldBe true
+                driver.state.pendingDecision shouldBe null
+            }
+
+            for (failure in listOf("unfunded", "tapped", "empty hand", "opponent discard")) {
+                test("rejects $failure without spending resources or drawing") {
+                    val driver = driverWithProducedBlood()
+                    val me = driver.activePlayer!!
+                    val blood = driver.findPermanent(me, "Blood")!!
+                    if (failure != "unfunded") driver.giveColorlessMana(me, 1)
+                    if (failure == "tapped") driver.tapPermanent(blood)
+                    if (failure == "empty hand") driver.getHand(me).toList().forEach(driver::moveToGraveyard)
+                    val discarded = when (failure) {
+                        "empty hand" -> emptyList()
+                        "opponent discard" -> listOf(driver.putCardInHand(driver.getOpponent(me), "Grizzly Bears"))
+                        else -> listOf(driver.getHand(me).first())
+                    }
+                    val before = driver.state
+                    val result = driver.submit(ActivateAbility(
+                        me, blood, PredefinedTokens.Blood.activatedAbilities.first().id,
+                        costPayment = AdditionalCostPayment(discardedCards = discarded),
+                        paymentStrategy = PaymentStrategy.FromPool
+                    ))
+                    result.isSuccess shouldBe false
+                    result.isPaused shouldBe false
+                    result.newState shouldBe before
+                    driver.state shouldBe before
                 }
             }
         }

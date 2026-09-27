@@ -1,0 +1,57 @@
+{
+  "schema": "iw-v2-prospective-execution-status-capability-v1",
+  "status": "SOURCE_REVIEWED_RUNTIME_UNQUALIFIED",
+  "parent_head": "0116ab24aab476cfe6a6dd47b0e575bb3cb7cb41",
+  "protocol": "industrial-waste/v2/protocol-v2-r1.json",
+  "protocol_sha256": "fd697b6d56b5a5451f4dc6f9ee4bd20584a705570c6f99861dd64f0086ed95bc",
+  "accepted_prior_runtime_source": "717b5e80f1116341a513d97acf12fd54c08327b0",
+  "accepted_prior_qualification": "industrial-waste/v2/capability-qualification-36090512239.json",
+  "accepted_prior_fixture_count": 116,
+  "limits": {
+    "own_turn_cap": 8,
+    "submitted_action_cap": 4000
+  },
+  "concrete_turn_boundary": "Finish the acting player eighth own turn, including cleanup questions; stop at its actual TurnChangedEvent. Do not cap merely because turn eight started or use global-turn arithmetic.",
+  "counting": "Every submitted GameAction from either player, including pass, mulligan and other decision response; rejected and throwing attempts count. Initialization and internal events do not count.",
+  "precedence": "Rejected action, exception or unresolved telemetry invalidate the attempt. Consistent real engine terminal/draw beats caps; action cap takes display precedence over simultaneous turn cap while both flags remain.",
+  "scope": [
+    "Bounded execute-once submission wrapper and public engine status extraction.",
+    "Preserve real winner/end reason only as engine diagnostics; never manufacture a capped winner.",
+    "Refuse any submission after a cap, fault or terminal status; no fallback, retry or stack/decision draining.",
+    "Public turn counters must agree with matching ordered TurnChangedEvents; terminal state must match GameEndedEvent.",
+    "Serialize status diagnostics including both cap flags, actual counts and residual stack depth/pending-question flag."
+  ],
+  "fixtures": {
+    "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+    "cases": 10,
+    "seed": 9250925005,
+    "new_seeds": 0,
+    "evidence_class": "EXCLUDED_FIXED_SEMANTIC_REGRESSION_NOT_R1_CORPUS",
+    "scope": "Actual4000 neutral-loop actions and both play/draw eight-own-turn cleanup paths; actual terminal/draw/rejection, injected executor fault, event guards and synthetic simultaneous-boundary precedence. A status-transcript replay forks the fixed3999-action checkpoint for an actual terminal4000th action; it is not a second full engine replay."
+  },
+  "limitations": [
+    "No complete decision-rule metric flags or validity declaration.",
+    "No affordability/colored-mana inference; missing legal actions cannot certify unavailable-payment reasons.",
+    "No future Foundry conversion certificate, full pilot/runner/replay, durable official journal, exclusive claim, runtime binding or authorization.",
+    "The accepted canonical priority repair on main and pending post-cast repair are not integrated or qualified by this source batch.",
+    "A semantic fixture fork or transcript replay never authorizes official allocation duplication, replacement or result reblessing."
+  ],
+  "independent_source_review": {
+    "status": "PASS_FOR_CI",
+    "reviewer": "coordinator agent /root/pest_guard_review",
+    "scope": "All10 status fixtures, execution-once counters, actual own8 cleanup for both seats, actual4000 neutral loop and final-action terminal precedence, London counting, error/exception/unresolved separation, public event consistency and no complete metrics or official authority."
+  },
+  "official_initializations": 0,
+  "official_actions_submitted": 0,
+  "comparative_outcomes_exposed": 0,
+  "execution_authorized": false,
+  "source_sha256": {
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatus.kt": "eef4bb231100bec19dddae305227dfcee1e332f646add81059075aa51b68f6cc",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatusTest.kt": "ec832d228162d4528ed28c1502786a3580bb31ec4e65b6edb4fb61f2d2e9a0b6",
+    ".github/workflows/industrial-waste-v2-card-qualification.yml": "3ae997ed2beb806a0e35bbaac4d240ce7fce8edb04cb257d88a38f06df711f2b",
+    "industrial-waste/v2/protocol-v2-r1.json": "fd697b6d56b5a5451f4dc6f9ee4bd20584a705570c6f99861dd64f0086ed95bc",
+    "industrial-waste/v2/regression-fixtures.json": "8f3381b84c47f6981b0a8508b99ec054dd512fad06822a843b0f2eee4ad1c4b6",
+    "industrial-waste/v2/R1_CAPABILITY.md": "62596cc75652469b5d4f886754df5104ac7fb8d30b20a40f936bfdf853223e3e",
+    "industrial-waste/v2/capability-qualification-36090512239.json": "cdcb5432f63a526c423dcc8f758d5b190f3a3264f56c37341f5bab32af9d24f1"
+  }
+}

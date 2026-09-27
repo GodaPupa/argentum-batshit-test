@@ -1,0 +1,57 @@
+{
+  "schema": "industrial-v2-incomplete-receiving-artifact-v1",
+  "auditor": "/root/industrial",
+  "role": "source-author artifact/failure audit only",
+  "source": "20bec2d66866c039f8281450b8d3d0585f100f6d",
+  "tree": "72749718992e5ce62f5f936cdc8a53362a7bd9a7",
+  "run_id": 36258465804,
+  "job_id": 108449612720,
+  "artifact_id": 10911597184,
+  "artifact_sha256": "a96e38d81cdf054fd190c078383e8f2ddd30d420ea9128fd19b9f6b6755ffe58",
+  "artifact_bytes": 210480,
+  "engine": {
+    "tests": 148,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "Lava": {
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "AI": {
+    "tests": 132,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 1
+  },
+  "AI_actual_passes": 130,
+  "python_checks": 72,
+  "failures": [
+    {
+      "suite": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest",
+      "case": "frozen Compact Loop spell-bearing fixture composes the public pilot typed metrics and snapshot replay",
+      "message": "java.lang.IllegalStateException: Check failed."
+    }
+  ],
+  "finding": "The excluded Compact Loop fixture reached a real engine stopping state, then exact returned-state SHA replay comparison rejected the trace. No runtime acceptance or deck-strength conclusion follows from raw engine diagnostics. All12 payment controls and all4 typed failure/writer controls pass; the replay mismatch is still a technical failure.",
+  "full_CI": {
+    "run_id": 36258470005,
+    "result": "failure",
+    "failed_group": "content",
+    "AI_total": 795,
+    "AI_failures": 1,
+    "AI_skipped": 34,
+    "remaining_groups": "engine, server, all3 scenario groups, tools and frontend passed"
+  },
+  "card_gate": {
+    "run_id": 36258469983,
+    "failure": "Historic execution-status source pin drift before tests; prospective reviewed receiving binding repair9bc29d039b844d3bfe6a9613e36c0594e78ad379 preserves predecessor receipt."
+  },
+  "runtime_accepted": false,
+  "execution_authorized": false,
+  "official_allocations_initialized": 0,
+  "comparative_outcomes_exposed": 0
+}

@@ -1,0 +1,85 @@
+{
+  "schema": "industrial-shared150-independent-artifact-review-v1",
+  "reviewer": "/root",
+  "role": "non-author agent",
+  "github_approval_created": false,
+  "disposition": "ACCEPT_150_RECEIVING_COMPONENT_CASES_ONLY_COMBINED_RUNTIME_REJECTED",
+  "source": "20bec2d66866c039f8281450b8d3d0585f100f6d",
+  "tree": "72749718992e5ce62f5f936cdc8a53362a7bd9a7",
+  "run_id": 36258465804,
+  "artifact_id": 10911597184,
+  "archive_bytes": 210480,
+  "archive_sha256": "a96e38d81cdf054fd190c078383e8f2ddd30d420ea9128fd19b9f6b6755ffe58",
+  "source_pins_verified": 38,
+  "workflow_sha256": "a6408bd4685dae72bc145bbd1ef0dfd701e9638dbac6d307d3805564036d91bb",
+  "all_raw_xml_hashes_and_case_identities_verified": true,
+  "groups": {
+    "shared": {
+      "cases": 150,
+      "failed": 0,
+      "error": 0,
+      "skipped": 0,
+      "classes": {
+        "com.wingedsheep.engine.handlers.mana.ManaSpendRestrictionAnyAbilityTest": 5,
+        "com.wingedsheep.engine.legalactions.CastFromZoneEnumeratorTest": 20,
+        "com.wingedsheep.engine.legalactions.FixedSacrificePaymentTest": 4,
+        "com.wingedsheep.engine.legalactions.FlashbackAdditionalCostEnumerationTest": 12,
+        "com.wingedsheep.engine.legalactions.utils.CostEnumerationUtilsTest": 23,
+        "com.wingedsheep.engine.mechanics.mana.DynamicManaAmountAutoTapTest": 6,
+        "com.wingedsheep.engine.scenarios.AlternativeCostChoiceScenarioTest": 4,
+        "com.wingedsheep.engine.scenarios.EscapeTest": 5,
+        "com.wingedsheep.engine.scenarios.ManaAbilityActivationTriggerScenarioTest": 3,
+        "com.wingedsheep.engine.scenarios.ManaPaymentFeasibilityTest": 21,
+        "com.wingedsheep.engine.scenarios.ManaPaymentPolicyWitnessTest": 7,
+        "com.wingedsheep.engine.scenarios.ManaSourceProvenanceScenarioTest": 3,
+        "com.wingedsheep.engine.scenarios.MonocolorHybridManaSolverTest": 4,
+        "com.wingedsheep.engine.scenarios.MultiManaSourceTest": 7,
+        "com.wingedsheep.engine.scenarios.PaidFilterManaSolverTest": 14,
+        "com.wingedsheep.engine.scenarios.RestrictedXManaReconciliationTest": 4,
+        "com.wingedsheep.engine.scenarios.XSpellFloatingRestrictedManaTest": 6,
+        "com.wingedsheep.engine.scenarios.LavaDartScenarioTest": 2
+      }
+    },
+    "ai": {
+      "cases": 132,
+      "failed": 1,
+      "error": 0,
+      "skipped": 1,
+      "classes": {
+        "com.wingedsheep.ai.arena.FrozenBaselineTest": 1,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest": 6,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ActivatedCheckpointTest": 7,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest": 4,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2CapabilityRunnerTest": 3,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest": 11,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest": 10,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2FullHorizonRunnerTest": 10,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2OrderingIntegrationTest": 4,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest": 12,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest": 13,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest": 11,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2R1OfficialExecutionTest": 1,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest": 1,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RuntimeFailureTest": 4,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SacrificeCheckpointTest": 25,
+        "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest": 9
+      }
+    }
+  },
+  "retained_failures": [
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest",
+      "case": "frozen Compact Loop spell-bearing fixture composes the public pilot typed metrics and snapshot replay",
+      "message": "java.lang.IllegalStateException: Check failed."
+    }
+  ],
+  "retained_skips": [
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2R1OfficialExecutionTest",
+      "case": "execute the frozen R1 corpus only under independently verified durable authority"
+    }
+  ],
+  "whole_replay_audited": false,
+  "full_combined_runtime_accepted": false,
+  "official_r1_authorized": false
+}

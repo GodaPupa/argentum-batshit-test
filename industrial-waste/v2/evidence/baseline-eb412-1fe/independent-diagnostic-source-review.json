@@ -1,0 +1,30 @@
+{
+  "schema": "industrial-baseline-independent-diagnostic-source-review/v1",
+  "reviewer": "/root",
+  "author": "/root/industrial",
+  "independent_of_author": true,
+  "github_approval": false,
+  "disposition": "ACCEPT_FOR_FIXED_TWO_SOURCE_CAUSAL_DIAGNOSTIC_ONLY",
+  "source": "34a2d86ee9cf74af984257b03774e9ed7602290c",
+  "tree": "427ecd65c3cdee89e4ef0060909d92a33a9ad1ce",
+  "files": {
+    "industrial-waste/v2/baseline-diagnostics.py": "844ea63a30645341bd3fd3e6498a5dd1ad6a1c0063f064d89ee8d1186859eea3",
+    ".github/workflows/industrial-waste-v2-baseline-diagnostics.yml": "6d529e78ee8b92c14f455eee7dee452b349dd8a94581fc674818b06301c789b0"
+  },
+  "reviewed": [
+    "Full160-line collector and77-line workflow read",
+    "Both exact source heads and identical original TableGameRunner SHA verified",
+    "Temporary overlay only appends exact existing UTF8 digest entry after original digest update; no action selection/digest mutation",
+    "Original single FrozenBaseline fixture, seed, deck, profile, golden and assertions unchanged on both sources",
+    "Exact source/control identity, before/after source hashes, only runner diff, original rawXML failures and complete stream retained",
+    "Captured stream SHA prefix must equal original case reported actual digest or unchanged accepted golden",
+    "No official corpus, entropy allocation or pilot development invoked"
+  ],
+  "limitations": [
+    "This permits only the two fixed existing diagnostic fixture replays.",
+    "A successful evidence collection is not baseline acceptance, policy equivalence, full runtime acceptance or gameplay admission.",
+    "Any baseline update still requires raw same-lineage causal review and existing regression governance."
+  ],
+  "official_games": 0,
+  "gameplay_authorized": false
+}

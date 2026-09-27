@@ -1,0 +1,950 @@
+{
+  "base": "9ca83110f5907e66a0c289f8205ed1e24575535c",
+  "donor": "b6aef3afede89f2044f26b0af9d5bdd4efe751c6",
+  "excluded": [
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt",
+      "reason": "Experimental/pilot or separately governed frozen AI baseline receiving source"
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/engine/PestControlAgentDecisionTest.kt",
+      "reason": "Experimental/pilot or separately governed frozen AI baseline receiving source"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorReadinessTest.kt",
+      "reason": "Experimental/pilot or separately governed frozen AI baseline receiving source"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchATest.kt",
+      "reason": "Experimental/pilot or separately governed frozen AI baseline receiving source"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOnePostboardSupportBatchBTest.kt",
+      "reason": "Experimental/pilot or separately governed frozen AI baseline receiving source"
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KaerveksTorchScenarioTest.kt",
+      "reason": "New unrelated fixture outside declared canonical135+220 bank"
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AcornHarvestScenarioTest.kt",
+      "reason": "New unrelated fixture outside declared canonical135+220 bank"
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FlaringPainScenarioTest.kt",
+      "reason": "New unrelated fixture outside declared canonical135+220 bank"
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FaerieMacabreScenarioTest.kt",
+      "reason": "New unrelated fixture outside declared canonical135+220 bank"
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RelicOfProgenitusScenarioTest.kt",
+      "reason": "New unrelated fixture outside declared canonical135+220 bank"
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpreadingSeasScenarioTest.kt",
+      "reason": "New unrelated fixture outside declared canonical135+220 bank"
+    },
+    {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/JackOLanternScenarioTest.kt",
+      "reason": "New unrelated fixture outside declared canonical135+220 bank"
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PestControlLifegainEngineScenarioTest.kt",
+      "reason": "New unrelated fixture outside declared canonical135+220 bank"
+    }
+  ],
+  "patch_sha256": "54697cda695ebf24afd41ef1c89aeb75f114fe4f323e5b6c6aced5c35a5a2437",
+  "schema": "industrial-v2-canonical-legacy-fixture-receiving-v1",
+  "receiver_predecessor": "c9d2bef9c83d2baa1d893333151a66c154e72eaa",
+  "source_review": "PENDING_RECEIVING_REVIEW_OF_CANONICAL_DONOR_DELTAS",
+  "qualification": "Full receiving CI required; canonical source reviews are not receiving runtime evidence.",
+  "files": [
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/puzzles/PuzzleSuiteTest.kt",
+      "predecessor_sha256": "143310c9a205b7f4fd479b1787fef5ca2df4c0c215d8fa6a78246551beb605bf",
+      "receiving_sha256": "14ccfcfe749cbbbffb88f0d9e8f748d9707e4ff8cfc352e23f591859824273ec",
+      "donor_sha256": "14ccfcfe749cbbbffb88f0d9e8f748d9707e4ff8cfc352e23f591859824273ec",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "game-server/src/test/kotlin/com/wingedsheep/gameserver/session/AiUndoDecisionFreshnessTest.kt",
+      "predecessor_sha256": "a12c0a6e669fd2dcee0d2f852f06c7d7ed5ee3c5cbb6e6449254e004706fed03",
+      "receiving_sha256": "beb4daa7bfdc998a35b8796c189f39485fe0ef6d726ef0a93c3950bd050e5db4",
+      "donor_sha256": "beb4daa7bfdc998a35b8796c189f39485fe0ef6d726ef0a93c3950bd050e5db4",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FarrelsMantleScenarioTest.kt",
+      "predecessor_sha256": "ee1cfcece0478cf4f1181c397eaa1a688205286321f5586bd19de28a82388f42",
+      "receiving_sha256": "5b1b75f44167e7abed31b0b1d6ac1177794d4a9571cd2003637565075d29c2af",
+      "donor_sha256": "5b1b75f44167e7abed31b0b1d6ac1177794d4a9571cd2003637565075d29c2af",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FarrelsZealotScenarioTest.kt",
+      "predecessor_sha256": "51d51674858c142e1528893fae421d6c7840f9fc44802b919e539064a1bff55d",
+      "receiving_sha256": "d412e83dd5dc22e23b68a3a107004010b3ac48186c7e082432252c3469585160",
+      "donor_sha256": "d412e83dd5dc22e23b68a3a107004010b3ac48186c7e082432252c3469585160",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FastingScenarioTest.kt",
+      "predecessor_sha256": "6ea034c4534712feedca73e5ff756ede2efab736f01725666625ac5cd7a47ffb",
+      "receiving_sha256": "9830ec1bf91825fc97f7f6bf443660461961aef1e82abaedffe3d97a6a3e587d",
+      "donor_sha256": "9830ec1bf91825fc97f7f6bf443660461961aef1e82abaedffe3d97a6a3e587d",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GravediggerTest.kt",
+      "predecessor_sha256": "4c1252ec9c80c519bbdedefdd60adbb5143aca056ea4dc92f4c84039ccc523a3",
+      "receiving_sha256": "ead9eb6401774ba46c5e4369396fb47d9350f4c21dd3976ef86050872f844ee8",
+      "donor_sha256": "ead9eb6401774ba46c5e4369396fb47d9350f4c21dd3976ef86050872f844ee8",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HeroismScenarioTest.kt",
+      "predecessor_sha256": "c2b7e5d247aa82124c71677b8608f130c375d2829c2d3469d7b41c41a11fc7bf",
+      "receiving_sha256": "b85f2bdaa2fe5a331be478e4bde7311dea65423b4066c19f64a0d7e514470c02",
+      "donor_sha256": "b85f2bdaa2fe5a331be478e4bde7311dea65423b4066c19f64a0d7e514470c02",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NafsAspScenarioTest.kt",
+      "predecessor_sha256": "cb6e6d2265a3137b95ba6943b000e9dea207c5da7df803de95604f33c0d1756d",
+      "receiving_sha256": "b70d53c42e9ac9aaf8da3d0ac13b5fb3cdc361fc909f51230ea9105096021e98",
+      "donor_sha256": "b70d53c42e9ac9aaf8da3d0ac13b5fb3cdc361fc909f51230ea9105096021e98",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NecriteScenarioTest.kt",
+      "predecessor_sha256": "2096d720b98f886e75ca8880f008534c3e8237a9a5cdfc964d6f905203f7ba4d",
+      "receiving_sha256": "77148ecb7ad43daf31a0b45cbc39f0b28af813e01aa6fd0498597c902d46dca6",
+      "donor_sha256": "77148ecb7ad43daf31a0b45cbc39f0b28af813e01aa6fd0498597c902d46dca6",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SerpentAssassinTest.kt",
+      "predecessor_sha256": "6b8d831166f27ce698c9b51a248d1dea58348d909ac0fac484eb5fbea5c035e1",
+      "receiving_sha256": "140d225fb8cf79c603a7b4e4116dc33d36b0324fa6e34352c86df02229047f8f",
+      "donor_sha256": "140d225fb8cf79c603a7b4e4116dc33d36b0324fa6e34352c86df02229047f8f",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SorrowsPathScenarioTest.kt",
+      "predecessor_sha256": "d48f5e181335fd6fec9ba5d658ce6f5c87ab66e4ee7003e5101600ee7cee7d84",
+      "receiving_sha256": "15e3bbb81c7bfc1e479b194ce2f68ce0bdefc2718b162ed107f02f8aba03661f",
+      "donor_sha256": "15e3bbb81c7bfc1e479b194ce2f68ce0bdefc2718b162ed107f02f8aba03661f",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TetravusScenarioTest.kt",
+      "predecessor_sha256": "c9fe91a253095409dffa2237f94ca8d9882fd0a11f34e4a3b814272413f8968f",
+      "receiving_sha256": "3891800a847c480551f6accabe766f33cf2287e057994d189fa49cf25f573beb",
+      "donor_sha256": "3891800a847c480551f6accabe766f33cf2287e057994d189fa49cf25f573beb",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TidalFlatsScenarioTest.kt",
+      "predecessor_sha256": "e6a7fed333f27b460e79da38f1fafccefb915c3842a6d80f60340d0c2733f1b7",
+      "receiving_sha256": "408fbae771622b31820c7fed493cdceccffbc91be26931f9c0b946b1ef99cb28",
+      "donor_sha256": "408fbae771622b31820c7fed493cdceccffbc91be26931f9c0b946b1ef99cb28",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VodalianWarMachineScenarioTest.kt",
+      "predecessor_sha256": "7921fe428078e7a983886a68a183c585801bdfeecbb0db85cda0dd57e3b78df2",
+      "receiving_sha256": "9cb20bbf10661baa3650bc02783d3113578394c210e408901c8222f8be458f63",
+      "donor_sha256": "9cb20bbf10661baa3650bc02783d3113578394c210e408901c8222f8be458f63",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AphettoVultureTest.kt",
+      "predecessor_sha256": "c1e1c30d2f16412536c0dd4eac72cff185f92b5cc08f35a6164c238b4cebdb07",
+      "receiving_sha256": "fb57b608303e07d80c76be3b0063f5aa0ccd5730036d9586fb8c4c07b0c5e32a",
+      "donor_sha256": "fb57b608303e07d80c76be3b0063f5aa0ccd5730036d9586fb8c4c07b0c5e32a",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DawningPuristTest.kt",
+      "predecessor_sha256": "fb17a98da3d6a98816dc10bda2b04274082b6b11d8a58e7195e43f9e776f9c07",
+      "receiving_sha256": "b7ce9b1d15746db6af80326ab3bdb940d20b3f2a2fdfd2356791063965f30f63",
+      "donor_sha256": "b7ce9b1d15746db6af80326ab3bdb940d20b3f2a2fdfd2356791063965f30f63",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OversoldCemeteryTest.kt",
+      "predecessor_sha256": "579ce434c1539695501a1beeac935fe8d121997e02c4ae05ddf3e8b685405c85",
+      "receiving_sha256": "57a2c283c1971f7ae9c8122ce8958073f4121997b24e4f33c65835ef8410bd9c",
+      "donor_sha256": "57a2c283c1971f7ae9c8122ce8958073f4121997b24e4f33c65835ef8410bd9c",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RiptideEntrancerTest.kt",
+      "predecessor_sha256": "204b8642544bca53ad806872d7328d0c1034a2c2623d32a7b963b061b843f1e5",
+      "receiving_sha256": "271d8b82fca19b22c3ad67662fe39c6e8cfe6d3bb24624895280f01ac4b3a2a6",
+      "donor_sha256": "271d8b82fca19b22c3ad67662fe39c6e8cfe6d3bb24624895280f01ac4b3a2a6",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BladewingTheRisenTest.kt",
+      "predecessor_sha256": "a5f859ccce262069bb568b3f3506fbb44a53e297caee81e5ec1d5f9ae570dfc0",
+      "receiving_sha256": "75c681106c2a57c94d1d0682c5b06ec87150e92a38a8dce72adfb0604f648e70",
+      "donor_sha256": "75c681106c2a57c94d1d0682c5b06ec87150e92a38a8dce72adfb0604f648e70",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BurrentonForgeTenderScenarioTest.kt",
+      "predecessor_sha256": "d6103add7543556b7516c89367ff79b86db44237a532e0291e66bfb603939c93",
+      "receiving_sha256": "521ec644d990fb327ce7378fbb2d42cc54553d9e6df45474b1e03b83b67410b1",
+      "donor_sha256": "521ec644d990fb327ce7378fbb2d42cc54553d9e6df45474b1e03b83b67410b1",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CircuDimirLobotomistScenarioTest.kt",
+      "predecessor_sha256": "c050f5884ca6e3088814cd2e2b643cb48c1a25185a7b5b52ce538148f2047ef1",
+      "receiving_sha256": "557c1ea84194d63f1e552c1e7adf1953e163c1eb66209bee93c50c45aec62177",
+      "donor_sha256": "557c1ea84194d63f1e552c1e7adf1953e163c1eb66209bee93c50c45aec62177",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EternalWitnessScenarioTest.kt",
+      "predecessor_sha256": "e949cd9ea65c7de40ac84f79fa5182d23ea390141ded8183b5b535511d0347ac",
+      "receiving_sha256": "e409ef1455862e6e928b43c9bd5350c7a7d94ac711ceb624a1ab8d1930cde2e7",
+      "donor_sha256": "e409ef1455862e6e928b43c9bd5350c7a7d94ac711ceb624a1ab8d1930cde2e7",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GlarewielderScenarioTest.kt",
+      "predecessor_sha256": "0040a1764ff16dfa0e9c5ec3a28826c638862df4e01995670cc79230f906e4a3",
+      "receiving_sha256": "bbbb6f3b4bffd447ada69a4c6a8cc6a6f607315d3016d6826bc6b0fb893de7c4",
+      "donor_sha256": "bbbb6f3b4bffd447ada69a4c6a8cc6a6f607315d3016d6826bc6b0fb893de7c4",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HoofprintsOfTheStagScenarioTest.kt",
+      "predecessor_sha256": "f57e04811caa270c8d6388c24be33e3531dc3cf6c2dd700e4a9f5d7f45954cac",
+      "receiving_sha256": "211ab09f37321cdea2733aa0a760f2a6455dba06d3c7a7403df2cbd205c8fca8",
+      "donor_sha256": "211ab09f37321cdea2733aa0a760f2a6455dba06d3c7a7403df2cbd205c8fca8",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LightningCoilsScenarioTest.kt",
+      "predecessor_sha256": "2be462b728703b45fcf44100cda5bc9b88d24d1055a8a0688ca581aa99d43eef",
+      "receiving_sha256": "42a44f6eefbb824d552328797fd22e68a89ac45e6f0e06d7701deed82211a68f",
+      "donor_sha256": "42a44f6eefbb824d552328797fd22e68a89ac45e6f0e06d7701deed82211a68f",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MindsEyeScenarioTest.kt",
+      "predecessor_sha256": "747508fdf7952647e7f581ba03f9c1baa855fa38e5b4c344c0d96b4eee02c9a6",
+      "receiving_sha256": "bb7cec5e47a8977b607e053277c31a94bfac05c4a9911a839308d4110833db1b",
+      "donor_sha256": "bb7cec5e47a8977b607e053277c31a94bfac05c4a9911a839308d4110833db1b",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PsychogenicProbeScenarioTest.kt",
+      "predecessor_sha256": "dd1344c9f49f69ea27e8445edfd2aa41dfe872945a1df3f0cf66b3ca2e5a11bd",
+      "receiving_sha256": "02f915c478810a6b5077073f3efab0536d228936e17e7246d19f82440915a8c3",
+      "donor_sha256": "02f915c478810a6b5077073f3efab0536d228936e17e7246d19f82440915a8c3",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StormMultipleInstancesTest.kt",
+      "predecessor_sha256": "79d490efb17b6c99689cfd7ec00c132978a1ad41d8f0820b064e0c74347e472f",
+      "receiving_sha256": "3d8d558debb0f974fbc9ed4e43ebc2938c9516f6f2692cac97da4e784b3a5369",
+      "donor_sha256": "3d8d558debb0f974fbc9ed4e43ebc2938c9516f6f2692cac97da4e784b3a5369",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StormStackOrderTest.kt",
+      "predecessor_sha256": "399517853988cd9b7fdbf0511d9a4b40d6d4fcd5b695e8156ea9f2b2efad4ba0",
+      "receiving_sha256": "44732ef74a141e92af4b5a67ffc6e69170516ac639c28c58216c85b9b3d6d01d",
+      "donor_sha256": "44732ef74a141e92af4b5a67ffc6e69170516ac639c28c58216c85b9b3d6d01d",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TrygonPredatorScenarioTest.kt",
+      "predecessor_sha256": "6598ef6ac8be3d4aa9c0a89b340f7b6bb4bacbe0514812297df4a69cfa40ac77",
+      "receiving_sha256": "543bff3a826c8d923504e42bd597e8a3f53cab38b56357d05642f79facb539cf",
+      "donor_sha256": "543bff3a826c8d923504e42bd597e8a3f53cab38b56357d05642f79facb539cf",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VulturousZombieScenarioTest.kt",
+      "predecessor_sha256": "d0ac9896897c7a3e949d7ae905e4ab729881c9d15c4c2db6bcfee4942ca1f214",
+      "receiving_sha256": "bd587dcb0e374b14fad27f5790c8dc294143996c41d6ab61e1e3f328d77fa199",
+      "donor_sha256": "bd587dcb0e374b14fad27f5790c8dc294143996c41d6ab61e1e3f328d77fa199",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WoebearerScenarioTest.kt",
+      "predecessor_sha256": "0a69b494808f22e0ae16457eaf48a0043912a4560ae307dd56ad149027d5278a",
+      "receiving_sha256": "35f462a3958b6b0dc6d8195d919eab57acb6da58fb5be9fdafce8508579d5ac8",
+      "donor_sha256": "35f462a3958b6b0dc6d8195d919eab57acb6da58fb5be9fdafce8508579d5ac8",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArchangelAvacynScenarioTest.kt",
+      "predecessor_sha256": "036cf09bb73d201e59fa204b04d7eaf02bb118e073d2f85968d2e3cbf8f05a58",
+      "receiving_sha256": "cd44e657fdd395b98556054e9e014c2d27dd4fff853ca3b0a8bad1f27fa2b268",
+      "donor_sha256": "cd44e657fdd395b98556054e9e014c2d27dd4fff853ca3b0a8bad1f27fa2b268",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BrunaTheFadingLightScenarioTest.kt",
+      "predecessor_sha256": "0fc9be15b9187bd99afbe48c7aa60b43d8c2513eacabcec2f0918d6292350060",
+      "receiving_sha256": "c47f32ba0c617f972a45276a38b224737e783dca617d16962844fd1967cb462a",
+      "donor_sha256": "c47f32ba0c617f972a45276a38b224737e783dca617d16962844fd1967cb462a",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CaptainOfTheMistsScenarioTest.kt",
+      "predecessor_sha256": "c98a57ce4e633bca074ac0d2f7e9e0d73159f83535007991cff13be2119b85ac",
+      "receiving_sha256": "31e4f1a57053643fe0c01ae7523ae21f359423e67b9f39fd49001c14cc938f52",
+      "donor_sha256": "31e4f1a57053643fe0c01ae7523ae21f359423e67b9f39fd49001c14cc938f52",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EerieInterludeScenarioTest.kt",
+      "predecessor_sha256": "0f324889031e0007cb3a0f35d08d4cd1b6c9012d1f71a20f9a02b6ea3d0b29e3",
+      "receiving_sha256": "fc775ba16f4f7b9d25d36cfef9f2d7e20ff6308c2e23698451aa6339fb02831b",
+      "donor_sha256": "fc775ba16f4f7b9d25d36cfef9f2d7e20ff6308c2e23698451aa6339fb02831b",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SeraphSanctuaryScenarioTest.kt",
+      "predecessor_sha256": "d8b747b769ddc03cc27e81891e00f6b5f54281e98a97637ca59abacabeb8a064",
+      "receiving_sha256": "7f934ebdd9163f749bde37bf7ec8512c1c04b71fd83d9a1e69af7504d87109d2",
+      "donor_sha256": "7f934ebdd9163f749bde37bf7ec8512c1c04b71fd83d9a1e69af7504d87109d2",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AshiokWickedManipulatorScenarioTest.kt",
+      "predecessor_sha256": "f1cc206582d5bdecd7ceb9e02a73d0e58519c2392bab53e7ad6c1af5bd464706",
+      "receiving_sha256": "895404659a9eddf2701f76042d1b333caf770583528c1e57e35fbe97fa6d0081",
+      "donor_sha256": "895404659a9eddf2701f76042d1b333caf770583528c1e57e35fbe97fa6d0081",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BreechesEagerPillagerScenarioTest.kt",
+      "predecessor_sha256": "4d96baf814d4ad0449d0358467a7a42b5c9a186d0566d135ad8840edf037c9d1",
+      "receiving_sha256": "510f578d6807079fbaa90e8c02319987d730fd359dd98e0d087aa62ac449d730",
+      "donor_sha256": "510f578d6807079fbaa90e8c02319987d730fd359dd98e0d087aa62ac449d730",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DireFlailScenarioTest.kt",
+      "predecessor_sha256": "60144ff5a681d4570bbcb8b7c19fbe3007c6ead51353b874245172da067a715c",
+      "receiving_sha256": "50fec39299951b0cf08274cf15d5ae51a63a27f0192ef1c5fd169cf2e9e8bd3a",
+      "donor_sha256": "50fec39299951b0cf08274cf15d5ae51a63a27f0192ef1c5fd169cf2e9e8bd3a",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ExperimentalConfectionerScenarioTest.kt",
+      "predecessor_sha256": "d52f80309e079c9294f7dc7e0a36e41051fa3c91c9c55ca42af8064fdb3d0a0f",
+      "receiving_sha256": "7f8cedb40142bac4055ccc669dcf88074f5302126724c508cbe1ce122ec91092",
+      "donor_sha256": "7f8cedb40142bac4055ccc669dcf88074f5302126724c508cbe1ce122ec91092",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GandalfTheWhiteTest.kt",
+      "predecessor_sha256": "b168a7ff5112a5a4d9cd324afec7b0cf712e6e861f3c6f6bc6166cd523cd9cd3",
+      "receiving_sha256": "41a0cca0000ac714d2cd6557e055f42d10d2abf1b89454f5c5f2ef1002f84315",
+      "donor_sha256": "41a0cca0000ac714d2cd6557e055f42d10d2abf1b89454f5c5f2ef1002f84315",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IntiSeneschalOfTheSunScenarioTest.kt",
+      "predecessor_sha256": "06774f5d07e7a82f4dd3dd8d5e6683b84620ad592eadc8cab03ce61c7df08a1f",
+      "receiving_sha256": "8abd1787920f10aea33649c4ab8ef398840e8319e3f25ecbf1f863532fad81d9",
+      "donor_sha256": "8abd1787920f10aea33649c4ab8ef398840e8319e3f25ecbf1f863532fad81d9",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/InvertedIcebergScenarioTest.kt",
+      "predecessor_sha256": "e73806dd3711788e979a1485b0526530e9c9e73c40744b49566f80eca72de484",
+      "receiving_sha256": "17f2b8fac1efba030c85e349656b8a72d6cbbcc52a56dc2c91f9b4a9e18fd389",
+      "donor_sha256": "17f2b8fac1efba030c85e349656b8a72d6cbbcc52a56dc2c91f9b4a9e18fd389",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OrcishBowmastersTest.kt",
+      "predecessor_sha256": "716c579fd6f87b843785eb16e13f0a3318ccc2e75a46ff742a6c9041061d9913",
+      "receiving_sha256": "95297768ac948b194e5a361c0f0e9709b6bdf4026863b1407325fe805ab2c20b",
+      "donor_sha256": "95297768ac948b194e5a361c0f0e9709b6bdf4026863b1407325fe805ab2c20b",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PreacherOfTheSchismScenarioTest.kt",
+      "predecessor_sha256": "6697148821e3c98fa26ca8c2b3bf1c002586e924177334453dedcd35f57bd011",
+      "receiving_sha256": "37333b5963ae59e0ba645127c7f76a4ad8a7db27ef42b3e0247190302ee63bc4",
+      "donor_sha256": "37333b5963ae59e0ba645127c7f76a4ad8a7db27ef42b3e0247190302ee63bc4",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RoamingThroneScenarioTest.kt",
+      "predecessor_sha256": "38714c21d898679d9b6e1a5728dc56386a4ada1b1abdd5d067cf6b5699c32201",
+      "receiving_sha256": "feca7afdbe8f12f4a50aa73096cb9c9b1986dc677116c82da57554b3ba2076a7",
+      "donor_sha256": "feca7afdbe8f12f4a50aa73096cb9c9b1986dc677116c82da57554b3ba2076a7",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StarvingRevenantScenarioTest.kt",
+      "predecessor_sha256": "19bf5e6de60417809cc05b413ba1c5dab4ba0b2a7896bd8904f63636ecfabf62",
+      "receiving_sha256": "b5032af4d6efb33ce36de8b80332ad4a95afc283b9a17bc0a7efda23f70b9e15",
+      "donor_sha256": "b5032af4d6efb33ce36de8b80332ad4a95afc283b9a17bc0a7efda23f70b9e15",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VirtueOfKnowledgeScenarioTest.kt",
+      "predecessor_sha256": "8aa74d890a185d005c205b7f1b3a6ff64ce9c66e7741368884749fe1afd048af",
+      "receiving_sha256": "da34f1a96f0204f77a670a01925fd8d72770f97b7b3e7af3d8ec2624e8fcb5ac",
+      "donor_sha256": "da34f1a96f0204f77a670a01925fd8d72770f97b7b3e7af3d8ec2624e8fcb5ac",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WizardsRocketsXChoiceScenarioTest.kt",
+      "predecessor_sha256": "0b01fce1721df1e1fbdc080fc46077975b76265340912c14520e652d8f24e4d3",
+      "receiving_sha256": "44d58808371146f8711faaa7e0e9b5c34d76429bbdd886b225947caa68f711ac",
+      "donor_sha256": "44d58808371146f8711faaa7e0e9b5c34d76429bbdd886b225947caa68f711ac",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/YouCannotPassScenarioTest.kt",
+      "predecessor_sha256": "7608b49f6994194f50fb7372602525e2d356faaac1922587e780830880aee8cf",
+      "receiving_sha256": "7285cb2c5b9309805051266f285bf4f85d2d7b89ea580f0f02f9bab67c9f1862",
+      "donor_sha256": "7285cb2c5b9309805051266f285bf4f85d2d7b89ea580f0f02f9bab67c9f1862",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AffectionateIndrikScenarioTest.kt",
+      "predecessor_sha256": "e20c0d830bea939745c242f82f0bb846b949b610ce9277d1eb18c82d8a3ad79c",
+      "receiving_sha256": "44050c5c7dac3167fb88eb16e72ac44095288d98f0f6736a0e31606cf1db0213",
+      "donor_sha256": "44050c5c7dac3167fb88eb16e72ac44095288d98f0f6736a0e31606cf1db0213",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AnnieJoinsUpTest.kt",
+      "predecessor_sha256": "c426fdd602ced1a291113de0d49b4deafcebf269a1b44bab4ff97993f3d0e733",
+      "receiving_sha256": "a3a2ec98f66a02a60bef7ece603d614de4b933559007842fca217ce4cefbed38",
+      "donor_sha256": "a3a2ec98f66a02a60bef7ece603d614de4b933559007842fca217ce4cefbed38",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcboundCondorScenarioTest.kt",
+      "predecessor_sha256": "5337ee615c6ca62bbad335ed1b649014629d6c3542f4c76acb757e842c0ab369",
+      "receiving_sha256": "82b2206de9d741e17c69c3779ecbbf030843363f7f87a9d50ab289983e7d97b8",
+      "donor_sha256": "82b2206de9d741e17c69c3779ecbbf030843363f7f87a9d50ab289983e7d97b8",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BriaRiptideRogueScenarioTest.kt",
+      "predecessor_sha256": "507aa2409a362e8cb517ec104691ef45560ac2ad6ea623b32560f36fab9925ca",
+      "receiving_sha256": "5397a70b59b01f5a46075ddaeb1df5f731580303eb372e3151ab7897888abf01",
+      "donor_sha256": "5397a70b59b01f5a46075ddaeb1df5f731580303eb372e3151ab7897888abf01",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CalamityGallopingInfernoScenarioTest.kt",
+      "predecessor_sha256": "afa6ea65116d44f1fbc529d9b824e17715238750e363bfceb18d6a4c6a685640",
+      "receiving_sha256": "aea0b93fd672f05f2589ab5aeaca12765e2abc3b8f7a6af6a78493a008f8d53e",
+      "donor_sha256": "aea0b93fd672f05f2589ab5aeaca12765e2abc3b8f7a6af6a78493a008f8d53e",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ConnectingTheDotsScenarioTest.kt",
+      "predecessor_sha256": "86f5ad760cdda117834513ef0aad2ed550cb24a75e09b72e1652a8b6ed7f676f",
+      "receiving_sha256": "5097d994661639b53202b1c21d0a2f52eef800d9fe32a4fe0118adc9af4b2f11",
+      "donor_sha256": "5097d994661639b53202b1c21d0a2f52eef800d9fe32a4fe0118adc9af4b2f11",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CrimeNovelistScenarioTest.kt",
+      "predecessor_sha256": "655637a1ace6663d68d440664afb0c17d0b257d882b0dd52351a5818613e6b06",
+      "receiving_sha256": "67847cb12ef8729d3c32766f811a7f6d2adde4af61396140dda8b0a3aa344f9b",
+      "donor_sha256": "67847cb12ef8729d3c32766f811a7f6d2adde4af61396140dda8b0a3aa344f9b",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EsotericDuplicatorScenarioTest.kt",
+      "predecessor_sha256": "7b6438264ef44c0eb024961e045e1fd5b7f82ba8c4f4bfc89af4113d857a0af6",
+      "receiving_sha256": "7938dcb624c9f4b2d98c7b5fb6b142b55aec0d7b3075eae4f5fe19ceabfc2866",
+      "donor_sha256": "7938dcb624c9f4b2d98c7b5fb6b142b55aec0d7b3075eae4f5fe19ceabfc2866",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/InsidiousFungusScenarioTest.kt",
+      "predecessor_sha256": "ac9fc556865be04b3875d677c9a3d7d7c4a8f0b7c217055cdc2146d37d5f4dd9",
+      "receiving_sha256": "ec68f81caf4b9771bd53664805c32f54578308427809640d292031c9f893cb85",
+      "donor_sha256": "ec68f81caf4b9771bd53664805c32f54578308427809640d292031c9f893cb85",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/InsidiousRootsScenarioTest.kt",
+      "predecessor_sha256": "2b3746bb5ab61a724ae1e29efeadf661c1076d7ebacffdc62eabec98d40ea975",
+      "receiving_sha256": "89f5e4f372fe0e0c6f09574335b1cba32ae7a2c6ba42eec6e51eccab8f7e0d20",
+      "donor_sha256": "89f5e4f372fe0e0c6f09574335b1cba32ae7a2c6ba42eec6e51eccab8f7e0d20",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LassoedByTheLawScenarioTest.kt",
+      "predecessor_sha256": "cbe83a8fe3a941894d0508ec186d855b3381d583b1190c8fd8295ddaddded21d",
+      "receiving_sha256": "953640329d5aadf3f24adbe700ff8599e64043e7eeb50d84c86828e3766c3d91",
+      "donor_sha256": "953640329d5aadf3f24adbe700ff8599e64043e7eeb50d84c86828e3766c3d91",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LilahUndefeatedSlickshotScenarioTest.kt",
+      "predecessor_sha256": "fbbaf79e3602453dc31d9d4ea6fb00ca77d3c0b20b199562d5568db24b3daf65",
+      "receiving_sha256": "2b6bce25f97409ad8908981088cf7f3c5311da36178ed9054d7e2660777c3802",
+      "donor_sha256": "2b6bce25f97409ad8908981088cf7f3c5311da36178ed9054d7e2660777c3802",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManifoldMouseValiantTest.kt",
+      "predecessor_sha256": "8f6789ee33defc138e6f54e2e7b4844c648cdd8c593d02b0df440004b02144e3",
+      "receiving_sha256": "ec46cbf2791d08d5974c308067e264aa8cfedd98d3c635a9d7ac94fe0e37373b",
+      "donor_sha256": "ec46cbf2791d08d5974c308067e264aa8cfedd98d3c635a9d7ac94fe0e37373b",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MirrorRoomFracturedRealmTest.kt",
+      "predecessor_sha256": "d4ab08d535378921c1a421e3450bb18bf96775819d019e9f62580d37cf711d2c",
+      "receiving_sha256": "bdc64ceebea23de7378a886eade7353789139a281f029360ab166adde231ee0c",
+      "donor_sha256": "bdc64ceebea23de7378a886eade7353789139a281f029360ab166adde231ee0c",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MistwaySpyScenarioTest.kt",
+      "predecessor_sha256": "116df5d897e143042edce1f9f5262d6a2e5a08d5108b9fb789422985e9105ca1",
+      "receiving_sha256": "419302f0e9b417e13f408a5f8ecc3d3a2d4948559c30706d5d006d3970e67b69",
+      "donor_sha256": "419302f0e9b417e13f408a5f8ecc3d3a2d4948559c30706d5d006d3970e67b69",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PerimeterEnforcerScenarioTest.kt",
+      "predecessor_sha256": "1721c19f1d32c0aacf4fc0c69eeff384f9878cd1cd1779acd06a34c4e5f0dd35",
+      "receiving_sha256": "f9e8a9a3383405db3a9036884a3bfbe16b3aa00ac8a3855022026936a40aaf11",
+      "donor_sha256": "f9e8a9a3383405db3a9036884a3bfbe16b3aa00ac8a3855022026936a40aaf11",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/QuilledGreatwurmScenarioTest.kt",
+      "predecessor_sha256": "4ede418a92c36f477abd8c128a6546503f72353b737e57cd3583cc3342f12e3c",
+      "receiving_sha256": "7aed3c1a5a283c0ca65a4cfff89d68c6d6486931684a16b487bb7902dd5cdc19",
+      "donor_sha256": "7aed3c1a5a283c0ca65a4cfff89d68c6d6486931684a16b487bb7902dd5cdc19",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StormsplitterTest.kt",
+      "predecessor_sha256": "02e725817d59d6706984102f247c53e427895017cdbcfd772398cd98d3a8ceea",
+      "receiving_sha256": "b6efc7a196da7722bcb4f5583a27853b328a1e7a9f7e8c4152d712e03d03987d",
+      "donor_sha256": "b6efc7a196da7722bcb4f5583a27853b328a1e7a9f7e8c4152d712e03d03987d",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TinybonesBaubleBurglarScenarioTest.kt",
+      "predecessor_sha256": "d9e7d0cf0c26b608012f398eb4a4d465a544f14e662556a2487b06e65370c8ae",
+      "receiving_sha256": "2b64ba6f461fb183e0c86583bbfb45c0079509f4fce887a5279637c5f80ca060",
+      "donor_sha256": "2b64ba6f461fb183e0c86583bbfb45c0079509f4fce887a5279637c5f80ca060",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VengefulTrackerScenarioTest.kt",
+      "predecessor_sha256": "60df081989065d204c9b2014d077c565d8fc5afdb026d0dba6246481f6c82783",
+      "receiving_sha256": "688cf5d2a6d94f25797cead79fec79b050d348f6a440c7b090df0eaa65bd4015",
+      "donor_sha256": "688cf5d2a6d94f25797cead79fec79b050d348f6a440c7b090df0eaa65bd4015",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BeatrixLoyalGeneralScenarioTest.kt",
+      "predecessor_sha256": "8dbcf542c9f9604282a23b61b01deb5ddad82ff0184528e23195a2c0647d575e",
+      "receiving_sha256": "c67024032e49f46bc6fb813c72219c1268ec3c042c966d3e5f83e8ebde64e8e8",
+      "donor_sha256": "c67024032e49f46bc6fb813c72219c1268ec3c042c966d3e5f83e8ebde64e8e8",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CloudMidgarMercenaryScenarioTest.kt",
+      "predecessor_sha256": "8094994006bc1014c7adf027877b0646e184526f3ca8cef83a82c81e25aef87c",
+      "receiving_sha256": "8759598b7ff8048619de20a55fba2073fb7a5dae9c79089f71fa5a8672e9d34b",
+      "donor_sha256": "8759598b7ff8048619de20a55fba2073fb7a5dae9c79089f71fa5a8672e9d34b",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt",
+      "predecessor_sha256": "7ed6b45e25d831064c8b80d4531b7017829d674c6366811226e066306010ec04",
+      "receiving_sha256": "9036c52571af5f70f7c3eceef2f5bffeef83e5e0a9baaab60244b0d506c4885d",
+      "donor_sha256": "9036c52571af5f70f7c3eceef2f5bffeef83e5e0a9baaab60244b0d506c4885d",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EddieBrockScenarioTest.kt",
+      "predecessor_sha256": "613f65e6dcc022e5b6e27e8c1dbf108bbd38a08ae01c1960d4dee54918ab32c0",
+      "receiving_sha256": "ce9cb2c9cf72c33cc3044bd046d0f105c2b55c7d29002151f7ba1166dea6936f",
+      "donor_sha256": "ce9cb2c9cf72c33cc3044bd046d0f105c2b55c7d29002151f7ba1166dea6936f",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FirebendingScenarioTest.kt",
+      "predecessor_sha256": "6a6f9ec1288de81512e9e8effd881109d79b2224ddfc0bdd605649c86712c945",
+      "receiving_sha256": "a536237a3574499bb21da6a310fd7f2cdf3e2e341a94c43cb2aff14177578f47",
+      "donor_sha256": "a536237a3574499bb21da6a310fd7f2cdf3e2e341a94c43cb2aff14177578f47",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GogoMasterOfMimicryScenarioTest.kt",
+      "predecessor_sha256": "8018a6120678f4f1d0ddaf5e94562e43c6eabb35aded916a11cceb8364ab875d",
+      "receiving_sha256": "4b7eb75ce2bbb6c3ffb76ea16dc423d84b8a04677e7671c1b94778fa2ab99160",
+      "donor_sha256": "4b7eb75ce2bbb6c3ffb76ea16dc423d84b8a04677e7671c1b94778fa2ab99160",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HideOnTheCeilingTest.kt",
+      "predecessor_sha256": "91db7b236bbecc138168a791d9aa539955bacee92873b961c2f79fcb44e86f2d",
+      "receiving_sha256": "65117da61cff0183a04ecdebd91d541d8041eab57c4853c1758bf20997e6adc3",
+      "donor_sha256": "65117da61cff0183a04ecdebd91d541d8041eab57c4853c1758bf20997e6adc3",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IrohTeaMasterScenarioTest.kt",
+      "predecessor_sha256": "73de99c6e3982163854c3ebd9a9e475d457f82132a82711e27324ae5c13d8524",
+      "receiving_sha256": "4983ad3cadfffd4118e89f39b87c84cbaeaec5a003057fc3b5992a926a50f5be",
+      "donor_sha256": "4983ad3cadfffd4118e89f39b87c84cbaeaec5a003057fc3b5992a926a50f5be",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LadyOctopusInspiredInventorScenarioTest.kt",
+      "predecessor_sha256": "2e6cc9281f4a897032511a02c2f06f8bbccb5b5dc98351fd7163c0e71487cb11",
+      "receiving_sha256": "3f45af2283335452ab9766550572f7423b3ed0d908d4b68ebce7b78f6a90e5af",
+      "donor_sha256": "3f45af2283335452ab9766550572f7423b3ed0d908d4b68ebce7b78f6a90e5af",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MagitekScytheScenarioTest.kt",
+      "predecessor_sha256": "818d6af060e6057fdbc1b9ef7ad0c1a3e8097c37d26497caaeed086828b47f99",
+      "receiving_sha256": "55e946ca63252fd13acf6c3546678a106b606ebac0685f6b770066db583b2d2a",
+      "donor_sha256": "55e946ca63252fd13acf6c3546678a106b606ebac0685f6b770066db583b2d2a",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MagmakinArtilleristScenarioTest.kt",
+      "predecessor_sha256": "f2e17b1ca46de47380a37d99a753117c24f54cafa24f5650c5d1924cb66edf03",
+      "receiving_sha256": "d63909a9e0629153dfd9e842a009ee59bb496d1f464af1005f8e77471fd8e4a4",
+      "donor_sha256": "d63909a9e0629153dfd9e842a009ee59bb496d1f464af1005f8e77471fd8e4a4",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MaraudingMakoScenarioTest.kt",
+      "predecessor_sha256": "5fee359a347ad0272099c623b39810e81f3e8d87a91b9a687e81ef17b5f3a9c2",
+      "receiving_sha256": "54dc59f5df2ed260f2be3f71f1410987ad0c8b488eaddc02b3da7165d720da18",
+      "donor_sha256": "54dc59f5df2ed260f2be3f71f1410987ad0c8b488eaddc02b3da7165d720da18",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MobilizeTest.kt",
+      "predecessor_sha256": "eaaa8c37614f54b5bddabeaf2d72eaca93f4e1a9ef3e203e157d9bbb77d2f604",
+      "receiving_sha256": "e924d4441a55c674bbff8edcdcd1d28e35af4908ba2303421da0d883194e5bef",
+      "donor_sha256": "e924d4441a55c674bbff8edcdcd1d28e35af4908ba2303421da0d883194e5bef",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PiratePeddlersTest.kt",
+      "predecessor_sha256": "22e493d1911fc0fd5152cb095b514f1187d2464c152bfbf9a27cb8072b302e42",
+      "receiving_sha256": "2e9a27d7317a7a7a10868689e9153678a8c519aaba723de2f975c2c4675854d3",
+      "donor_sha256": "2e9a27d7317a7a7a10868689e9153678a8c519aaba723de2f975c2c4675854d3",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PushTheLimitScenarioTest.kt",
+      "predecessor_sha256": "065327b64d75eaa5a9ba9cd10d678f01b9ca6d3ad902a5d8882f32f0c847094d",
+      "receiving_sha256": "6549fcc1fdca3c25090023a4da587e3930c6097dc257fc5723517f905af00fe3",
+      "donor_sha256": "6549fcc1fdca3c25090023a4da587e3930c6097dc257fc5723517f905af00fe3",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RandomEncounterScenarioTest.kt",
+      "predecessor_sha256": "ce09aaa381720bf0780547fc7ad40ebbfb206988efa0a7957e003148142b0611",
+      "receiving_sha256": "1c79aabf94d7c09cbba1993eb279f3222a65d0720893db35488260915d89402c",
+      "donor_sha256": "1c79aabf94d7c09cbba1993eb279f3222a65d0720893db35488260915d89402c",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SaltRoadSkirmishScenarioTest.kt",
+      "predecessor_sha256": "c13726600b6a5580194f6daa6451c647534d0bf23b4f1e3ca13a15161ccbccfe",
+      "receiving_sha256": "422581884eeef8799901314fe5e0b275694eb126d43e7d310e96472c5ce99624",
+      "donor_sha256": "422581884eeef8799901314fe5e0b275694eb126d43e7d310e96472c5ce99624",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SecludedStarforgeTest.kt",
+      "predecessor_sha256": "010cd71a592afa46c844dfe3d01230745970c9c1bacdf33027c761b78cc60832",
+      "receiving_sha256": "b372c9ea10c6b1fe40de15b54bb12ada99afaa0c89a7df33d4b8e3e48caa9715",
+      "donor_sha256": "b372c9ea10c6b1fe40de15b54bb12ada99afaa0c89a7df33d4b8e3e48caa9715",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ShadowOfTheGoblinScenarioTest.kt",
+      "predecessor_sha256": "613b0cee1463b780d6527bd0fc7acab68d28508f467c59be71ab7dce7ef015c4",
+      "receiving_sha256": "34b06119c086b4061d22efed6981fa89fa0f5fd2a3f16f308819e9e8ac201e60",
+      "donor_sha256": "34b06119c086b4061d22efed6981fa89fa0f5fd2a3f16f308819e9e8ac201e60",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TheMasamuneScenarioTest.kt",
+      "predecessor_sha256": "278b211bf5b560f1497e1adfedcbb7db18415198c6df38b0727bc15498ecc216",
+      "receiving_sha256": "504ba4ba96f232ab8f8a10711ff5862433ca33681a134f0ac61f6380df9ef2d0",
+      "donor_sha256": "504ba4ba96f232ab8f8a10711ff5862433ca33681a134f0ac61f6380df9ef2d0",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TheWaterCrystalScenarioTest.kt",
+      "predecessor_sha256": "3bf9caff85d40583702ad9fef2c91e4035c4cc6e861a700478e10f3949cbadf0",
+      "receiving_sha256": "1bcb2db6451d5244e5d3850b85aeeeda99b19f2d898b07c7d3694f03a71c791a",
+      "donor_sha256": "1bcb2db6451d5244e5d3850b85aeeeda99b19f2d898b07c7d3694f03a71c791a",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UltrosObnoxiousOctopusScenarioTest.kt",
+      "predecessor_sha256": "0e38494e9c98347399e62f19dfdea03053906b73cd182103b673d38c4ad57826",
+      "receiving_sha256": "213aada7d8910f843dab6245fb0c3898bf4a41d009ad975a469e88ec5df11942",
+      "donor_sha256": "213aada7d8910f843dab6245fb0c3898bf4a41d009ad975a469e88ec5df11942",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WeaponsManufacturingScenarioTest.kt",
+      "predecessor_sha256": "67dc82f1c7e242b840f73986dcbfc2059318e8e819c5a28d435800acc2bc8cef",
+      "receiving_sha256": "013ac40201fd2e0883bb43ab090f312ea360d896019c9726315643906363ca74",
+      "donor_sha256": "013ac40201fd2e0883bb43ab090f312ea360d896019c9726315643906363ca74",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WindcragSiegeTest.kt",
+      "predecessor_sha256": "281a1e0eff66187bf698605a5cea9c1ede62b9d8986db44e649d283d60049100",
+      "receiving_sha256": "fefa433d1cd1abf30b37aa6d20bff993c4f8b1d6dbee784576f02a40fb625c31",
+      "donor_sha256": "fefa433d1cd1abf30b37aa6d20bff993c4f8b1d6dbee784576f02a40fb625c31",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ZhaoRuthlessAdmiralScenarioTest.kt",
+      "predecessor_sha256": "f35787db735f93f1551a168c9f3fe8639e21a8846dc853b373bda4319063e333",
+      "receiving_sha256": "c175a489b95968437929b4e628eb882b4477ed85007feb7b4880868d4d67b8f6",
+      "donor_sha256": "c175a489b95968437929b4e628eb882b4477ed85007feb7b4880868d4d67b8f6",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BelladonnaTookScenarioTest.kt",
+      "predecessor_sha256": "2d90d71f4a950159949baeff9736f929a793c8bbde7a07b20a4154e311ca5c3a",
+      "receiving_sha256": "c0aceaf5dbea2db48dc63ac7beff23ec6c8f9b9328b10e5cc0da6f82d7916d4e",
+      "donor_sha256": "c0aceaf5dbea2db48dc63ac7beff23ec6c8f9b9328b10e5cc0da6f82d7916d4e",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BifurMelodicRiderScenarioTest.kt",
+      "predecessor_sha256": "e98b8fab577edca333c4aed4939469ff4221bf55d87177029234e65f443466f7",
+      "receiving_sha256": "9b5e78f47a9fb9fe57934b67f4d28b8094f2193b2a71f64d4ccc8a3763c08a98",
+      "donor_sha256": "9b5e78f47a9fb9fe57934b67f4d28b8094f2193b2a71f64d4ccc8a3763c08a98",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CelebrateTheMountainKingScenarioTest.kt",
+      "predecessor_sha256": "24b31859f9a8a2b174b287261c1850d6bef8d7986342334946c94005ba125aa2",
+      "receiving_sha256": "b16e35bafe30c41e4c2e0e423204a329473800be92965eb4c8a1c4892991a495",
+      "donor_sha256": "b16e35bafe30c41e4c2e0e423204a329473800be92965eb4c8a1c4892991a495",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ElrondMoonReaderScenarioTest.kt",
+      "predecessor_sha256": "d42477ba97efec83a1ab53ae318f16b9169d3b1e83e5d0204adef7d470be6770",
+      "receiving_sha256": "4354e7fd71a9ef63df08d319a783d78abde85ee9ffafd2c30bcf88bcce745f95",
+      "donor_sha256": "4354e7fd71a9ef63df08d319a783d78abde85ee9ffafd2c30bcf88bcce745f95",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GoblinGlasswrightScenarioTest.kt",
+      "predecessor_sha256": "b7943186a68acb72f1e12b34e30fb2e55e40c1456bc1e16ee4650a454d623b18",
+      "receiving_sha256": "df40b2dba342556290269bd9e18abb1905ef9e8608ee7c41299e8b0c86982357",
+      "donor_sha256": "df40b2dba342556290269bd9e18abb1905ef9e8608ee7c41299e8b0c86982357",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/JenniferWaltersScenarioTest.kt",
+      "predecessor_sha256": "545c15a795d4857e448c26fd7e6789f5d7b710bfae3bdef6b3dfdbdeb4f929d4",
+      "receiving_sha256": "9039b88f01d441d359728eeb9b22900c15ac9bbf76bf24f14360a2576b1cc679",
+      "donor_sha256": "9039b88f01d441d359728eeb9b22900c15ac9bbf76bf24f14360a2576b1cc679",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MaralenFaeAscendantScenarioTest.kt",
+      "predecessor_sha256": "d6fbf23a9090c11c1bee01624257ac8d7e1dc86c93933ad971102a50af3b291f",
+      "receiving_sha256": "340c283fdb8ed0f8735292a9d4ee96ca883376c672762e852cac802388a0f5be",
+      "donor_sha256": "340c283fdb8ed0f8735292a9d4ee96ca883376c672762e852cac802388a0f5be",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MorningtidesLightScenarioTest.kt",
+      "predecessor_sha256": "243d2aa1cb026f2da6e5d945fe4eee9f3c9d41dbff12fd23790d4368c182bd67",
+      "receiving_sha256": "5b0414c7a8baaa78ee44ae2023e4be7379c18511147caec78cdd2df811a90bea",
+      "donor_sha256": "5b0414c7a8baaa78ee44ae2023e4be7379c18511147caec78cdd2df811a90bea",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RavenhillFlockScenarioTest.kt",
+      "predecessor_sha256": "8c0781cae9c6f91f099229b002a1f1405a3a6bb9e1eb209ece6c139ccde5410b",
+      "receiving_sha256": "50344b9bd1d8e632116fe8a758d48e6b506472bfd94676a6ef9ffe0efba5f487",
+      "donor_sha256": "50344b9bd1d8e632116fe8a758d48e6b506472bfd94676a6ef9ffe0efba5f487",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WizardsStaffScenarioTest.kt",
+      "predecessor_sha256": "9b19afb1dd22ed51729cb225d2e08d69a1e674bc02c88225debe9351ff887759",
+      "receiving_sha256": "4e930e993d4dc3d19d94f28a45d1b931c17374f022e30004064838eccfcefd59",
+      "donor_sha256": "4e930e993d4dc3d19d94f28a45d1b931c17374f022e30004064838eccfcefd59",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/AbilityIdentityTest.kt",
+      "predecessor_sha256": "9078cba3cc2d8053bf45396889a66cbb18d1a031f04b0ead01298d9377d7bfc5",
+      "receiving_sha256": "1b66d2e45aaa584618107ff4c90b5a8cbfad40346845ea174be12398f177d21b",
+      "donor_sha256": "1b66d2e45aaa584618107ff4c90b5a8cbfad40346845ea174be12398f177d21b",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/AshlingRimeboundConvokeScenarioTest.kt",
+      "predecessor_sha256": "8b31e8fabe8f527488372882ad1b4ef4bbd52d8027915829f3b4f084b61b84ca",
+      "receiving_sha256": "332436217268e0876c847a4a2a5a9cd0375b187d0c0fa3d2dee60a205270a0e1",
+      "donor_sha256": "332436217268e0876c847a4a2a5a9cd0375b187d0c0fa3d2dee60a205270a0e1",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ChampionKeywordTest.kt",
+      "predecessor_sha256": "f8f436c5e2435fd8d3e11db4fd42e43835841b5138ade5360e280c18d47d0ccf",
+      "receiving_sha256": "4bdfbe231d60af354bec4a6bf38e73bfb86ca154fa7796cfea40205697eb3edc",
+      "donor_sha256": "4bdfbe231d60af354bec4a6bf38e73bfb86ca154fa7796cfea40205697eb3edc",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DelayedIterationObjectIdentityTest.kt",
+      "predecessor_sha256": "8b6c8f5aa16a9fa5fb6372b8e4c4e833086a216c974c8f26792ca50e52a39197",
+      "receiving_sha256": "db9ce73dead683764f738d306893ea32f1b8f0f48dfca224758d36fec5f94778",
+      "donor_sha256": "db9ce73dead683764f738d306893ea32f1b8f0f48dfca224758d36fec5f94778",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EffectOncePerTurnTest.kt",
+      "predecessor_sha256": "8048cad2da56076c5bb2ce1f0676c3e05b3cda50f8180cb8f3b14a662af0b242",
+      "receiving_sha256": "0ad703f8f25fbf9152ced9b955a29e572081364eeabfa026f8078315446d8338",
+      "donor_sha256": "0ad703f8f25fbf9152ced9b955a29e572081364eeabfa026f8078315446d8338",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EnnisAndZaffaiScenarioTest.kt",
+      "predecessor_sha256": "b7892a3391a588763840a8654a09843f526d7b43786d286cfdcd16c527f8cbfc",
+      "receiving_sha256": "59c70c04f3870fd7c201aca2a2eccc6fcca1ced6a8b29761a0ea8144eedc0ded",
+      "donor_sha256": "59c70c04f3870fd7c201aca2a2eccc6fcca1ced6a8b29761a0ea8144eedc0ded",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FabricateScenarioTest.kt",
+      "predecessor_sha256": "4e634c3d8b685a60d15f4cd3d12360801550e3d33c3775c594fae6ad92120da7",
+      "receiving_sha256": "d99906a1a4db98b588f9a4ab248145cd6f426af40d0537e4d472441c81bd55e8",
+      "donor_sha256": "d99906a1a4db98b588f9a4ab248145cd6f426af40d0537e4d472441c81bd55e8",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FlankingCombatTest.kt",
+      "predecessor_sha256": "0dbe38f4ac3a3c1fdc437db595b4c77a926728f04fbb7259802e3a1c96e934e0",
+      "receiving_sha256": "0e95a980d5b2012dcbbd9c03fbcba96cec1d23d618925da625bebc1aa37b6075",
+      "donor_sha256": "0e95a980d5b2012dcbbd9c03fbcba96cec1d23d618925da625bebc1aa37b6075",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GiftPromisedAtCastTimeTest.kt",
+      "predecessor_sha256": "ec98693e269d61bf45f6a352e4850fd8029b959a734a89a392db87a5dba1c432",
+      "receiving_sha256": "de3f0e1d4a2900989ee56c983cbb723218eeac8f42a46fc03f35c729b5d42b60",
+      "donor_sha256": "de3f0e1d4a2900989ee56c983cbb723218eeac8f42a46fc03f35c729b5d42b60",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/GravediggerCombatDeathTest.kt",
+      "predecessor_sha256": "2ba5bd6a27ac125db777d497ddf822667e9ee81517276ea67c704ba797aeac77",
+      "receiving_sha256": "5a1141934dbd70f5e5aaa9a90cb1d23769c5922ff633ce7848a1e750459deb2f",
+      "donor_sha256": "5a1141934dbd70f5e5aaa9a90cb1d23769c5922ff633ce7848a1e750459deb2f",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LeaOracleFidelityFixesScenarioTest.kt",
+      "predecessor_sha256": "82ad9ce375b00f7d3e438a8cfb0c00131cd16b38a4dd8fd085a936ba46f5d784",
+      "receiving_sha256": "e38b5f3bb066d36238453b2dc633e1590fd96bd516f932d1c126d783e18dec32",
+      "donor_sha256": "e38b5f3bb066d36238453b2dc633e1590fd96bd516f932d1c126d783e18dec32",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LinkedExileSourceInstanceTest.kt",
+      "predecessor_sha256": "75ecb3641d1cb8235500797f49cb6907d136f630d054885c17f8664999089adb",
+      "receiving_sha256": "401313a21f42b3990a7fecd0f261781d404f407ff6d1263c60e804ec182d372a",
+      "donor_sha256": "401313a21f42b3990a7fecd0f261781d404f407ff6d1263c60e804ec182d372a",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/LookBackTriggerTest.kt",
+      "predecessor_sha256": "63d35a918bbe7f045c4b6da84d0303fb1936957c5190fee3960057afe1a41864",
+      "receiving_sha256": "cdaec7cc14c168d7dfdfc91814d394659998511fc5bd295284568d2c6c24b053",
+      "donor_sha256": "cdaec7cc14c168d7dfdfc91814d394659998511fc5bd295284568d2c6c24b053",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/MirkwoodBatsTokenCreationTest.kt",
+      "predecessor_sha256": "b90d9bb5fcda68a887fea02ed7ac775dbe4ccad26e4a41f438f762298b9b3227",
+      "receiving_sha256": "ab6246889c5dacdc253284fbafff74a6169921366cd3db0338fd0a5beefe519d",
+      "donor_sha256": "ab6246889c5dacdc253284fbafff74a6169921366cd3db0338fd0a5beefe519d",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedSpellTriggerFinalizationTest.kt",
+      "predecessor_sha256": "37e98a8bfc7163602a0e50801e7cdbb9c0d736cc86c4f3e4e26773c5011144c3",
+      "receiving_sha256": "127b7f57a8a4b2f323d32c6dc2998226bdde94bd29ab45408f4e0f122c9c30d1",
+      "donor_sha256": "127b7f57a8a4b2f323d32c6dc2998226bdde94bd29ab45408f4e0f122c9c30d1",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RenownKeywordTest.kt",
+      "predecessor_sha256": "76943da6546ad6d4bc743dbb3576cd9eaf123d5b33397a8f2ad9e913d139162c",
+      "receiving_sha256": "1bce7db81548b7728c9ccf6682114839374affd3b95b72fb23a1dd34797d7e53",
+      "donor_sha256": "1bce7db81548b7728c9ccf6682114839374affd3b95b72fb23a1dd34797d7e53",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ScryTriggerScenarioTest.kt",
+      "predecessor_sha256": "58d8e46becc06c08bd0fd45b2f29a78ab6e8f55600d996d11a108323cf36777c",
+      "receiving_sha256": "ebb0196cd259102e4f705c5ec92d99f34a3d7a710be6d9eba5a8a3dcd2bc231e",
+      "donor_sha256": "ebb0196cd259102e4f705c5ec92d99f34a3d7a710be6d9eba5a8a3dcd2bc231e",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SurveilTriggerScenarioTest.kt",
+      "predecessor_sha256": "6764154671166fa5a2b2b1aac3b64ff1ac9ad9382f8a8e72c1b671c1ffe4264e",
+      "receiving_sha256": "ea8c16da45d472fd0e909b344187ad735dd00121038b8f39dbdbe51fa9a36c4e",
+      "donor_sha256": "ea8c16da45d472fd0e909b344187ad735dd00121038b8f39dbdbe51fa9a36c4e",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TdmCardsGroupAScenarioTest.kt",
+      "predecessor_sha256": "3329fe0f8598c36cdc2804a6655ee50bba2c73db944507154b933cbfce21c528",
+      "receiving_sha256": "b574079f3eca527f5ca350e7cd975b5f99b21a2b77392297e9e811f85d5f4aaa",
+      "donor_sha256": "b574079f3eca527f5ca350e7cd975b5f99b21a2b77392297e9e811f85d5f4aaa",
+      "receiving_equals_donor": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/WoeCardsScenarioTest.kt",
+      "predecessor_sha256": "55d1a9940b74b713ee9be4d7be1cd4f51ef2f9e0dfda41bda32cf7f19adeb302",
+      "receiving_sha256": "0fc00346e3e72bf5501e12eb69038d4946f0d3254455fee09bedefeb11f74bcc",
+      "donor_sha256": "0fc00346e3e72bf5501e12eb69038d4946f0d3254455fee09bedefeb11f74bcc",
+      "receiving_equals_donor": true
+    }
+  ],
+  "official_execution_authorized": false,
+  "official_allocations_initialized": 0,
+  "comparative_outcomes_exposed": 0
+}

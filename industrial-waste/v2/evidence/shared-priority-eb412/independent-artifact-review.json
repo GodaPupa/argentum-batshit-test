@@ -1,0 +1,1368 @@
+{
+  "schema": "industrial-eb412-independent-receiving-artifact-review-v1",
+  "reviewer": "non-author /root/ferocity",
+  "review_kind": "Independent original archive, exact Git source, raw JUnit, command logs and authenticated live API audit",
+  "source_head": "eb4127cc4ef2a34a740d8bd7a4e623a64b9e7132",
+  "source_tree": "57cd90b1940501d9a87f7a78b31dfdfcb789f001",
+  "run_id": 36263575445,
+  "run_attempt": 1,
+  "live_proof": {
+    "path": "/workspace/scratch/dcc9d005d11f/independent-reviews/ferocity-industrial-eb412-live-proof.json",
+    "sha256": "39b26a1d6d2f7592a78022805f14dad6c0b0edd7e6903c32741e63f2aa0d994e"
+  },
+  "banks": [
+    {
+      "bank": "cast-observer",
+      "artifact_id": 10912274801,
+      "archive_sha256": "1b80726e24fc10149f26bbaa5cef3a29eda9cb1a7bf932f4df7943e4db9abd9c",
+      "archive_bytes": 579164,
+      "path": "attachments/f6ae8b39-1b19-486e-80f8-f5029682a692/github-actions-artifact-10912274801.zip",
+      "source_head": "eb4127cc4ef2a34a740d8bd7a4e623a64b9e7132",
+      "source_tree": "57cd90b1940501d9a87f7a78b31dfdfcb789f001",
+      "stage_rows": [
+        {
+          "stage": "PostBlockDeclarationPriorityScenarioTest",
+          "class": "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+          "cases": [
+            "PB01 empty final declaration gives active seat 1 first priority",
+            "PB03 actual blocks give active seat 1 an immediate combat trick",
+            "PB02 empty final declaration gives active seat 2 first priority",
+            "PB04 actual blocks give active seat 2 an immediate combat trick",
+            "PB05 a targeted block trigger preserves active priority across serialized target choice",
+            "PB06 simultaneous block triggers keep ordering and targets before active priority",
+            "PB07 paid block tax restores active priority after a serialized mana selection",
+            "PB08 declining a block tax preserves declaration duty and grants no priority",
+            "PB09 nested block-tax mana pays before SBA and targeted death-trigger placement",
+            "PB10 multiple defenders have only an APNAP declaration baton before active priority",
+            "PB11 first defender's target choice waits until every block declaration is complete",
+            "PB12 multiple defenders' block triggers wait through paid tax then stack in APNAP order",
+            "PB13 a queued block-trigger token retains exact departure LKI through later payment and cleanup",
+            "PB14 a final defender's concession abandons tax but preserves the prior defender's trigger",
+            "PB15 owner concession preserves a remaining controller's queued source LKI without early placement",
+            "PB16 concession during two-player block payment clears the actual waiting batch at game end"
+          ],
+          "case_count": 16,
+          "xml_sha256": "a66ccb29fac7f88252ab0ff2b6b2b0285f9cc58d8eae394015e12475c3814984",
+          "source_sha256": "a73890b33b97ba47097fe86a22cf851a75ad8f3843b35f58cf4eb2439c82691d",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "DeclareBlockersPriorityWindowTest",
+          "class": "com.wingedsheep.engine.scenarios.DeclareBlockersPriorityWindowTest",
+          "cases": [
+            "active player gets a priority window in declare blockers before combat damage",
+            "attacker's combat trick is an affordable, targetable legal action at the declare-blockers window",
+            "combat trick is detectable in the two-blockers-block-two-attackers board shape"
+          ],
+          "case_count": 3,
+          "xml_sha256": "cb6d629753544044b86f7d03215868a7c94de3495caf903e61163250961d9826",
+          "source_sha256": "cca06f4c7fa7f9dda5cd5001cbb31ac5e39b7c3b4f588e38ee5c170abba5870d",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "MultiDefenderCombatTest",
+          "class": "com.wingedsheep.engine.multiplayer.MultiDefenderCombatTest",
+          "cases": [
+            "CombatDefenders reports the right defending players in APNAP order",
+            "a defender can only block an attacker that is attacking them (CR 509.1b)",
+            "no seat gets a priority window between two defenders' block declarations (CR 802.4)",
+            "both defenders declare blockers (APNAP) and damage lands on the right players"
+          ],
+          "case_count": 4,
+          "xml_sha256": "5e7cc988474353cdcdb833ea1ee76577fe176c665876de1dd74fe14eee674c94",
+          "source_sha256": "f434f2d0e81aea2040efe499f91c336531a8b347fc16c2f3d6a431df552f8e1d",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "TwoHeadedGiantCombatTest",
+          "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantCombatTest",
+          "cases": [
+            "a creature attacks the opposing team, never a teammate (CR 805.10b)",
+            "the combined attack may include creatures controlled by BOTH active-team members (CR 805.10b)",
+            "one declaration is the whole team's \u2014 the teammate may pass and can't add a second wave (CR 805.10b)",
+            "the whole nonactive team defends \u2014 even an un-attacked teammate is a defending player (CR 805.10a)",
+            "a defending creature may block an attacker aimed at its TEAMMATE (CR 805.10d)",
+            "a member of the attacking team cannot declare blockers (CR 805.10a)",
+            "the teammate's attackers survive a state-based-action pass (CR 805.10a / CR 506.4)",
+            "both defenders' blockers survive a state-based-action pass (CR 805.10d / CR 506.4)",
+            "an attacker stolen by the DEFENDING team is still removed from combat (CR 506.4)"
+          ],
+          "case_count": 9,
+          "xml_sha256": "d3efdddb7c9ba10ce4da35b9724276c57ef2b18cb435241fdcc5ffd73e89b3f6",
+          "source_sha256": "9f5c5205ea4539b5904c3342682510b40aadd4691291c599c8ef6f812a8b9855",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "ActivationPriorityScenarioTest",
+          "class": "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+          "cases": [
+            "nonactive activation removes its sacrificed token before returning priority",
+            "cost and SBA deaths join one APNAP batch above a nonactive player's activation",
+            "SBA death occurs before choosing targets for a cost-triggered ability",
+            "Ferocity's cost-death return waits above the activated ability after Aura cleanup",
+            "paying the last life loses before an activated life gain can resolve",
+            "standalone Spawn mana removes the token before nonactive player receives priority",
+            "standalone Treasure with explicit color settles token cleanup before priority",
+            "Treasure color-choice pause completes its mana effect before SBA and restores activator priority",
+            "Spawn activation inside ward payment does not run SBA until the outer payment completes"
+          ],
+          "case_count": 9,
+          "xml_sha256": "40462a1334c6fd151a0622443f0a88193aa6f643a3f567720373af03e11f85a1",
+          "source_sha256": "d14fe20f774f650d132f679966dc4eefe556cf48fb67d34fffdadd88fefda978",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "NestedManaPaymentBoundaryScenarioTest",
+          "class": "com.wingedsheep.engine.scenarios.NestedManaPaymentBoundaryScenarioTest",
+          "cases": [
+            "seat 1 nested sacrifice choice restores the same payment without priority",
+            "seat 1 deferred death target is chosen only after payment and lethal toughness SBA",
+            "seat 1 preselected sacrifice defers its death trigger exactly once",
+            "seat 1 mana color pause preserves cost events and defers the draw",
+            "seat 1 declined outer payment retains the already paid death trigger",
+            "seat 1 illegal interrupt during nested sacrifice is atomic and does not pay a cost",
+            "seat 2 nested sacrifice choice restores the same payment without priority",
+            "seat 2 deferred death target is chosen only after payment and lethal toughness SBA",
+            "seat 2 preselected sacrifice defers its death trigger exactly once",
+            "seat 2 mana color pause preserves cost events and defers the draw",
+            "seat 2 declined outer payment retains the already paid death trigger",
+            "seat 2 illegal interrupt during nested sacrifice is atomic and does not pay a cost"
+          ],
+          "case_count": 12,
+          "xml_sha256": "86c505b5e60db7582cbc99712b69a8124467e4d6be13d957a92c6e4bf5934670",
+          "source_sha256": "d45876c5e64d3be6c6882c4317fbb192913c91b89b540b221eb43d03c96604a6",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "BatchMayQuestionTest",
+          "class": "com.wingedsheep.engine.scenarios.BatchMayQuestionTest",
+          "cases": [
+            "two optional triggers choose targets before either consent decision",
+            "each targeted trigger asks at its own resolution and both may be accepted",
+            "declining both effects still requires both triggers to resolve",
+            "identical triggers retain independent resolution choices",
+            "a single optional trigger chooses its target before offering yes or no",
+            "may does not make a required target optional",
+            "removing the chosen target in response causes a fizzle without a may decision"
+          ],
+          "case_count": 7,
+          "xml_sha256": "d1f2ff72b6c073aeb569622bc0b7fa61d4a1b7791750b702d52ed3f48b3ad433",
+          "source_sha256": "11ef82e18f8d2a02ee83b874fb89d8567f7bc810e69709662ff2fedf9ac5cec4",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "TriggerOrderingScenarioTest",
+          "class": "com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest",
+          "cases": [
+            "putting life loss below life gain permits surviving at one life",
+            "the other legal ordering resolves life loss first and loses before the gain",
+            "invalid ordering choices fail without altering the game or consuming a trigger",
+            "ordering is preserved through serialization and two separate target decisions",
+            "active and nonactive controllers order their own groups in APNAP placement order",
+            "two copies of a card retain all four source identities and trigger payloads"
+          ],
+          "case_count": 6,
+          "xml_sha256": "49baccdc92cc399792559cc1594b5e23f41d0c9c9f0a244a95a3dfa9efebdb55",
+          "source_sha256": "e4d8ce58696a968126bb17d0e9403ff59ff99ce51e1efdba05a3c0ec846bfee5",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "TriggerOrderingConcessionScenarioTest",
+          "class": "com.wingedsheep.engine.scenarios.TriggerOrderingConcessionScenarioTest",
+          "cases": [
+            "a conceding ordering chooser leaves the surviving controller's exact APNAP group and priority recipient intact"
+          ],
+          "case_count": 1,
+          "xml_sha256": "c60aa74c0448a4a90fc3b6e380b7d5e0e8adafa0291a63b5b25391647b41e7e0",
+          "source_sha256": "b8f72093ef6b966e37616e14dec673bf79f13ffab8bcca7385b67d6134fdd167",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "DamageSourceIdentityScenarioTest",
+          "class": "com.wingedsheep.engine.scenarios.DamageSourceIdentityScenarioTest",
+          "cases": [
+            "a live original source gains effective damage keywords after activation",
+            "a live original source uses its new projected controller and color",
+            "departed source uses final controller color and keywords after serialization; token=false",
+            "departed source uses final controller color and keywords after serialization; token=true",
+            "old damage does not borrow deathtouch or lifelink newly granted to the returned source"
+          ],
+          "case_count": 5,
+          "xml_sha256": "d8b64e804be3e884e1ba64bfe4f650dc6cb4512ea1aa792f658cc8cd308dadb5",
+          "source_sha256": "0a674ab29cf2d263dcccdec2ee0e599df1418db7fd11767b692cc4d2522da736",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "DamageSourceTriggerScenarioTest",
+          "class": "com.wingedsheep.engine.scenarios.DamageSourceTriggerScenarioTest",
+          "cases": [
+            "a dies trigger retains source damage characteristics before token cleanup; token=false",
+            "a dies trigger retains source damage characteristics before token cleanup; token=true",
+            "a triggered ability already on the stack gains departure LKI when its source later dies",
+            "generic sacrifice cost retains a token source before its ability enters the stack",
+            "missing required source snapshot fails visibly instead of a silent damage result",
+            "old source damage triggers the matching observer but not a returned object's own ability"
+          ],
+          "case_count": 6,
+          "xml_sha256": "9f41eb3576decee1477f960431d7d3f95fcbff60e7c1102d12b5f72fc2965011",
+          "source_sha256": "f6ffca9fb9a75998ceb0854df4f49847e53d9a61c9d5a2d76ae9c790e3f63c86",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "TargetedDepartedSourceLkiTest",
+          "class": "com.wingedsheep.engine.scenarios.TargetedDepartedSourceLkiTest",
+          "cases": [
+            "departed token target pause preserves full source LKI seat 1 player target true",
+            "departed token target pause preserves full source LKI seat 1 player target false",
+            "departed token target pause preserves full source LKI seat 2 player target true",
+            "departed token target pause preserves full source LKI seat 2 player target false"
+          ],
+          "case_count": 4,
+          "xml_sha256": "9bfb7abd818daecf8907323148bc7bf967e1aa7dc15cda927787f729bd6b52eb",
+          "source_sha256": "25125e95e9029c8f5aaed32897ddaa91bd29d562083af59262b32aec4761c342",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "PredicateEvaluatorRecordTest",
+          "class": "com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest",
+          "cases": [
+            "empty predicate list matches anything",
+            "face-down cast records never match any non-empty filter",
+            "conjunction (AND) requires every predicate to match",
+            "CardPredicate.Or matches when any inner predicate matches (OR)",
+            "positive type matches",
+            "negation predicates",
+            "token predicates: spells are never tokens",
+            "legendary predicates read the supertype set",
+            "HasColor and NotColor inspect the recorded color set",
+            "Colorless, Monocolored, Multicolored",
+            "HasSubtype / NotSubtype / HasAnyOfSubtypes",
+            "HasBasicLandType treats the landType string as a subtype",
+            "equals / at-most / at-least",
+            "power / toughness predicates all return false",
+            "name / keyword / ability predicates return false",
+            "source-relative and context predicates return false",
+            "And: all sub-predicates must match",
+            "Or: any sub-predicate matches",
+            "Not inverts the wrapped predicate"
+          ],
+          "case_count": 19,
+          "xml_sha256": "fd8593a3c26bcfceac42cd2d10daa865f802c9479300a72f411cf14e11d9f8b1",
+          "source_sha256": "8b17caf224042dccd16fb438133c0eadc00697d9de4350962c49df925eb6adde",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "PostBlockDeclarationSessionTest",
+          "class": "com.wingedsheep.gameserver.session.PostBlockDeclarationSessionTest",
+          "cases": [
+            "GS-PB01 both defending teammates get their own declaration without ordinary priority",
+            "GS-PB02 block-tax payment exposes only the payer's mana actions before declarations resume"
+          ],
+          "case_count": 2,
+          "xml_sha256": "1d3944bd4b86d6c2e9c66d7bb381b20cc43d090710f4c1ba53a682f2232eaff4",
+          "source_sha256": "4d996d5d850abcfe0f7a6300fb85d71efe0d68968ac6284031b8a3491c70ae06",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "TwoHeadedGiantSessionTest",
+          "class": "com.wingedsheep.gameserver.session.TwoHeadedGiantSessionTest",
+          "cases": [
+            "seat roster carries each seat's team index, with teammates in adjacent seats (CR 805.1)",
+            "both heads of the surviving team are winners, not just the representative (CR 810.8a)",
+            "a teammate is not an opponent (CR 810): getOpponentIds returns only the other team",
+            "life totals are the shared team total for both teammates, not each raw component",
+            "a player sees their teammate's hand but not an opponent's (CR 810.2)",
+            "the seat roster carries the shared-turn flag, which the client needs to answer \"may I act?\"",
+            "a teammate is offered their OWN actions while their partner holds the baton (CR 805.5)",
+            "a Free-for-All pod stays one seat at a time \u2014 only the baton holder is offered actions",
+            "a revealed card in an opponent's hand still reaches the viewer, count and all",
+            "non-team game is unchanged: no team index, every other seat is an opponent"
+          ],
+          "case_count": 10,
+          "xml_sha256": "d48e975f2e5f34cddcd1fac49bf152b8564e1c8c1138a1bcd052deb13fbfc07c",
+          "source_sha256": "13d3447a79da2e154b6819f8718ff444013235c71e6ed6210c946f2af4aa2604",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "ManaAbilityColorChoicePipelineTest",
+          "class": "com.wingedsheep.engine.scenarios.ManaAbilityColorChoicePipelineTest",
+          "cases": [
+            "Damping Sphere replaces the two mana with one {C}",
+            "a mirror bonus and its rider both resolve",
+            "an attached 'additional mana on tap' aura fires",
+            "the land-tapped-for-mana event is still emitted"
+          ],
+          "case_count": 4,
+          "xml_sha256": "359f39e50c311f349a77e9959314cb4d839fcf7850c94c768bdef694ca522955",
+          "source_sha256": "a9ae644130670d4ca9d7fca149f8f13d82f4ac83b04ee6788f0e304bd772b28e",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "MoveToZoneEffectExecutorTest",
+          "class": "com.wingedsheep.engine.handlers.effects.zones.MoveToZoneEffectExecutorTest",
+          "cases": [
+            "move from battlefield to graveyard (default)",
+            "move from battlefield to hand (bounce)",
+            "move from battlefield to exile",
+            "move to library top",
+            "move to library bottom",
+            "move to library shuffled emits LibraryShuffledEvent",
+            "move to battlefield tapped",
+            "byDestruction = true destroys the permanent",
+            "byDestruction = true on indestructible creature is a no-op",
+            "battlefield components are cleaned up when leaving battlefield"
+          ],
+          "case_count": 10,
+          "xml_sha256": "27e041f9e17664c239160f8ccc4f43a0bcafc72a1684d7fa4a8e2a66e4340d60",
+          "source_sha256": "c37bbf20129b0a3cb0edd043f0a341b3d8a47abb627d01568a10dc265e0c32f7",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "CastObserverSourceLkiTest",
+          "class": "com.wingedsheep.engine.scenarios.CastObserverSourceLkiTest",
+          "cases": [
+            "cast observer keeps its own source history seat 1 player target true survives false",
+            "cast observer keeps its own source history seat 1 player target true survives true",
+            "cast observer keeps its own source history seat 1 player target false survives false",
+            "cast observer keeps its own source history seat 1 player target false survives true",
+            "cast observer keeps its own source history seat 2 player target true survives false",
+            "cast observer keeps its own source history seat 2 player target true survives true",
+            "cast observer keeps its own source history seat 2 player target false survives false",
+            "cast observer keeps its own source history seat 2 player target false survives true"
+          ],
+          "case_count": 8,
+          "xml_sha256": "203099bcc0ad6314a5b03a69f16ca8d2a74d0da9caa8a387648a1799cb49a792",
+          "source_sha256": "29622301652a19f6f9b73aaf7cc700524f5f23a91764f5596c6520dbc3d6da96",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        }
+      ],
+      "command_rows": [
+        {
+          "group": 1,
+          "classes": [
+            "PostBlockDeclarationPriorityScenarioTest",
+            "DeclareBlockersPriorityWindowTest",
+            "MultiDefenderCombatTest",
+            "TwoHeadedGiantCombatTest",
+            "ActivationPriorityScenarioTest",
+            "NestedManaPaymentBoundaryScenarioTest",
+            "BatchMayQuestionTest",
+            "TriggerOrderingScenarioTest",
+            "TriggerOrderingConcessionScenarioTest",
+            "DamageSourceIdentityScenarioTest",
+            "DamageSourceTriggerScenarioTest",
+            "TargetedDepartedSourceLkiTest",
+            "PredicateEvaluatorRecordTest",
+            "ManaAbilityColorChoicePipelineTest",
+            "MoveToZoneEffectExecutorTest",
+            "CastObserverSourceLkiTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "f086646e399b332028c3aa61405c90dc0e69b2f3eaaa1a46e08b5cd63dc081b1",
+          "fresh_workers": 1
+        },
+        {
+          "group": 2,
+          "classes": [
+            "PostBlockDeclarationSessionTest",
+            "TwoHeadedGiantSessionTest"
+          ],
+          "module": "game-server",
+          "exit_status": 0,
+          "log_sha256": "c9f8a8c30ac2f0032ddf2e0e5991fe1dccf015ff28c0b9d33f77109212045833",
+          "fresh_workers": 1
+        }
+      ],
+      "failures": [],
+      "archive_members": 63,
+      "source_pins_verified": 272,
+      "manifest_sha256": "3b94a9424bcfcf06d4b56502f0bf9761db7aeadd94a9597635e1b95e41cab90c",
+      "preserved_authority_count": 3,
+      "actual": {
+        "cases": 135,
+        "passed": 135,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "unique_classes": 18,
+        "command_groups": 2
+      },
+      "disposition": "ACCEPT_SHARED_135_RECEIVING_COMPONENT_ONLY",
+      "independent_source_review": {
+        "path": "industrial-waste/v2/evidence/priority-source-b6a/independent-source-review.json",
+        "sha256": "ca08bf70a8eada1b57d5133fe534d9fc7ca57f8dfc4d33482e9752d9a16d8b4a"
+      },
+      "independent_collector_review": {
+        "path": "lab-coordinator/shared-capabilities/receiving-collector-independent-source-review.json",
+        "sha256": "cebe19436469e4eefad3f8165675e97dfb860c33325c7a4762f5ccd91e7ac1ea"
+      }
+    },
+    {
+      "bank": "priority",
+      "artifact_id": 10914090313,
+      "archive_sha256": "928ba215ce97ab3d9dee46cffdbd0faf5eb73e78ba2b87a8eba1c5bb40ed2dac",
+      "archive_bytes": 791541,
+      "path": "attachments/bc7f0ad3-cec4-46dc-8abc-2cb61756ca4a/github-actions-artifact-10914090313.zip",
+      "source_head": "eb4127cc4ef2a34a740d8bd7a4e623a64b9e7132",
+      "source_tree": "57cd90b1940501d9a87f7a78b31dfdfcb789f001",
+      "stage_rows": [
+        {
+          "stage": "priority",
+          "class": "com.wingedsheep.engine.scenarios.StackResolutionPriorityTest",
+          "cases": [
+            "an opposing Bolt resolves before the active player legally casts Divination",
+            "an opposing activated response returns priority to the active player with another spell still on stack",
+            "resolution-trigger target selection belongs to its controller but priority returns to the active player",
+            "an opposing discard decision survives serialization and cannot seize the next priority window",
+            "an opposing legend-rule decision completes before the active player receives priority",
+            "four-player tax answer from a third seat returns to the active player (pay=false)",
+            "four-player tax answer from a third seat returns to the active player (pay=true)",
+            "a four-player cast-time modal decision retains the caster's priority instead of resetting to active",
+            "a cleanup-window resolution choice restores active priority without advancing or losing another spell",
+            "a nested modal cast completes the outer tail and preserves each trigger batch once (cancel=false)",
+            "a nested modal cast completes the outer tail and preserves each trigger batch once (cancel=true)",
+            "a departed active player is skipped after an opposing spell resolves",
+            "a departing decision owner clears the abandoned resolution boundary",
+            "ending the turn clears the resolution boundary before the next step's priority",
+            "a terminal resolution clears its boundary and grants no further priority",
+            "the false marker is absent from ordinary serialized states even with defaults enabled",
+            "a rejected malformed stack resolution cannot publish a marker or mutate the attempted pass"
+          ],
+          "case_count": 17,
+          "xml_sha256": "e4262684cec23890a5a2789caac8ff9ab16fd12aa5db53b47c533480651df29e",
+          "source_sha256": "515a2da89211cb1cad0278bcd7c8c365cc611ab9e643d1fa05fcec670060ad63",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "stack-war",
+          "class": "com.wingedsheep.engine.scenarios.StackWarTest",
+          "cases": [
+            "stack is empty at start of game",
+            "casting a spell puts it on the stack",
+            "priority passes after casting a spell",
+            "passing priority with empty stack advances the game",
+            "cannot cast spell without priority",
+            "passing priority to opponent",
+            "both players passing resolves top of stack",
+            "stack resolution order is LIFO",
+            "instant can be cast in response",
+            "sorcery cannot be cast in response",
+            "countered spell goes to graveyard",
+            "can respond to opponent's spell",
+            "after resolving top of stack, active player gets priority",
+            "spell targeting a spell on the stack",
+            "multiple spells on stack resolve in order"
+          ],
+          "case_count": 15,
+          "xml_sha256": "3e11fc43d8c4c9b34cf756d104b0a4f616e837fdecd93edf27d378a650cb7825",
+          "source_sha256": "b178555b1d34f50082caaf446a21e73849aa5ccfb72fcb71b7fc8f682efe633e",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "continuations",
+          "class": "com.wingedsheep.engine.scenarios.ContinuationSystemTest",
+          "cases": [
+            "discard effect with choice pauses for player decision",
+            "submitting card selection resumes and discards selected cards",
+            "discard all cards when hand size is less than or equal to discard count",
+            "composite effect (draw then discard) handles pause correctly"
+          ],
+          "case_count": 4,
+          "xml_sha256": "5e945da8bc4844b2ec9db9894f164b24a2a4c088aff4e58a86f06a54d1acb1f4",
+          "source_sha256": "2a3606f510de242880a1e9e62d5886900411a02514b4062da8cabb400e9c737e",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "ordinary-cleanup",
+          "class": "com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest",
+          "cases": [
+            "deathtouch damage is cleared at cleanup despite a hand-size discard \u2014 creature survives next turn",
+            "ordinary marked damage is removed at cleanup even when a hand-size discard interrupts the step"
+          ],
+          "case_count": 2,
+          "xml_sha256": "4d826df5b98e05d288d57e69c158fda552f40713a7c2c8b72fafc7e38cff4da7",
+          "source_sha256": "14c59905318796767bb6f850ff3cf9406a10829b76ccf6d4e86a5a0d49d4a111",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "legend-rule",
+          "class": "com.wingedsheep.engine.scenarios.LegendRuleTest",
+          "cases": [
+            "legend rule asks player to choose which legendary to keep",
+            "legend rule lets player keep the older legendary",
+            "legend rule does not trigger for different legendary names",
+            "legend rule only affects the same player"
+          ],
+          "case_count": 4,
+          "xml_sha256": "0492bdb58377e4e24e5ee7cf443b9fb75752a094503ef30e50c25ee0eaa9734c",
+          "source_sha256": "5db56e3ed33f5872b8ebeeb25005f1d9baf8b3318e818d1ef5e08cdb3731422b",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "leave-game",
+          "class": "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+          "cases": [
+            "conceding in a four-player pod marks the player left and continues the game",
+            "conceding in a two-player game still ends the game with the other player winning",
+            "the leaver's owned objects leave the game (CR 800.4a)",
+            "a creature the leaver stole reverts to its owner (control effect ends, CR 800.4a)",
+            "a creature the leaver owns but another player controls leaves the game (CR 800.4a)",
+            "the leaver's spells and abilities on the stack cease to exist (CR 800.4a)",
+            "combat continues when the leaver's attacker is removed (its blocker stops blocking it)",
+            "attackers aimed at the leaver are removed from combat; the rest of the attack stands (CR 800.4e)",
+            "a player who has left the game is not a legal attack target (CR 800.4a)",
+            "a resolved spell's effect outlives its caster's departure (CR 611.2c) \u2014 only source-bound durations end (CR 800.4a)",
+            "a departed player's 'until your next turn' effect lasts until that turn would have begun (CR 800.4m)",
+            "priority held by the leaver passes to the next player still in the game (CR 800.4a)",
+            "the active player conceding hands the turn forward without stalling",
+            "conceding while owning the pending decision abandons it instead of deadlocking the table (CR 800.4f\u2013h)",
+            "a pending decision addressed to another player survives the leaver's departure",
+            "the abandoned decision's priority skips an active player who has also left"
+          ],
+          "case_count": 16,
+          "xml_sha256": "d1a7a81dfb7cb65b0f0cef667e8ff45a1d7bfd3ca6591330a7a27bb38a128ffa",
+          "source_sha256": "c947fe451bcf9d536797a2e4a692812157cb1cd47cf9c37973823e5ff66109a7",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "team-priority",
+          "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest",
+          "cases": [
+            "hasPriority admits the baton holder's whole team, and nobody else (CR 805.5)",
+            "a free-for-all pod is untouched: priority is still one seat",
+            "Team vs. Team takes individual turns (CR 808.4), so priority stays individual too",
+            "a teammate may respond to their partner's spell while it is still on the stack",
+            "an opposing player still cannot act on the active team's priority",
+            "the chain: partner acts at sorcery speed without the baton making a lap (CR 805.5a)",
+            "an out-of-order action re-arms the whole team: every seat still gets its own window",
+            "the baton skips seats that already passed this round",
+            "a teammate who already passed this round can't pass again until someone acts",
+            "nextUnpassedPriorityAfter is plain getNextPlayer while nobody has passed",
+            "a teammate's cast is a real spell of theirs, not of the baton holder",
+            "priorityTeam is empty when nobody holds priority"
+          ],
+          "case_count": 12,
+          "xml_sha256": "52f4a207bdd8689ab65f2ef58fa444ef57cd4b1d1219d8d1c7ca2311a2ec7ca8",
+          "source_sha256": "814b620497963896150746809f5f520ff511d8b9baf4ea1fd6ff650c38b0f5d9",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "flash-permission",
+          "class": "com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest",
+          "cases": [
+            "a gated flash grant offers nothing while its condition is false",
+            "the grant switches on mid-turn the moment its condition becomes true",
+            "with the condition true the spell is both offered and actually castable",
+            "an open gate does not leak flash to spells outside the grant's filter",
+            "the gate reads the granter's controller's board, not the caster's",
+            "an enabler on the caster's side does not open someone else's gate",
+            "a stolen granter grants to its new controller, not to its owner",
+            "a phased-out granter grants nothing (CR 702.26b)",
+            "the permission goes away with the granter even while the condition still holds"
+          ],
+          "case_count": 9,
+          "xml_sha256": "41d5bc467da7796e3f2e3f9c3487d516dd7870a7b811f9864d1969724b011c40",
+          "source_sha256": "8493fdbec2f7d19765d877f209c8a59cb8d562b6d65a4fc1c034ecf991e79562",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "legacy-traces",
+          "class": "com.wingedsheep.engine.state.SuspensionTraceTest",
+          "cases": [
+            "current nested-may suspension reproduces the captured parent response trace",
+            "current repeat-while suspension reproduces the captured parent response trace",
+            "current suspended-mana-window suspension reproduces the captured parent response trace",
+            "current free-cast-target suspension reproduces the captured parent response trace",
+            "current cycling suspension reproduces the captured parent deferred draw and events"
+          ],
+          "case_count": 5,
+          "xml_sha256": "6955451a5047c68f2b97e3c914c59e628c2b24799a48bd7058b2885b1907a7a9",
+          "source_sha256": "a3537c53372b08ba9e9d472b07f969f74e7e38f3e25c8fedd7e69c322c00dbd1",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "legacy-serialization",
+          "class": "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+          "cases": [
+            "legacy nested-may loads without allocation and resumes the captured response trace",
+            "legacy repeat-while loads without allocation and resumes the captured response trace",
+            "legacy suspended-mana-window loads without allocation and resumes the captured response trace",
+            "legacy free-cast-target loads without allocation and resumes the captured response trace",
+            "default-omitting parent cycling snapshot loads and completes its deferred draw",
+            "legacy active answer still requires its response identity",
+            "legacy mana reopen still requires its saved association identity",
+            "legacy repeat decision becomes an answer carrying an automatic loop",
+            "legacy hidden payment question is paired inside its reopen frame",
+            "legacy combat question is retained once and the duplicate answer shape is removed",
+            "legacy combat answer cannot silently replace a different represented question",
+            "legacy active question with a mismatched top answer fails explicitly",
+            "legacy active question without an answer fails explicitly",
+            "legacy unanswered frame without any represented question fails explicitly",
+            "legacy active question cannot skip automatic work to find an answer",
+            "legacy mana reopen cannot claim a different lower answer",
+            "legacy mana reopen requires its saved question",
+            "legacy repeat with an unknown phase fails explicitly",
+            "legacy migration does not silently ignore unrelated unknown payload fields"
+          ],
+          "case_count": 19,
+          "xml_sha256": "1e7b4b6fa3cd9bef244f67cbb9d5bec7135500f601aa99a8e74fe130441821b4",
+          "source_sha256": "142aa11bcc0d4d8b2673e62b09c776bd43d1bd1403a898a01e98c19666de7269",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "circle-solace",
+          "class": "com.wingedsheep.engine.scenarios.CircleOfSolaceTest",
+          "cases": [
+            "prevents combat damage from creature of chosen type to controller",
+            "does not prevent damage from creature of different type",
+            "shield is consumed after preventing damage once",
+            "multiple activations prevent damage from multiple creatures"
+          ],
+          "case_count": 4,
+          "xml_sha256": "7e8ec50ffdbe51aca6a1b21f6dade986f6a57f27636e099b796f775dfa8e04b0",
+          "source_sha256": "5889ed7df46d7b45ce265d18d271aa08df7015f4f748c3f6dd35c10451cd1011",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "scarecrow",
+          "class": "com.wingedsheep.engine.scenarios.ScarecrowScenarioTest",
+          "cases": [
+            "a flying attacker deals you no combat damage",
+            "a non-flying attacker still hits you for full",
+            "a non-creature source is unaffected",
+            "your own creatures are not protected \u2014 only you"
+          ],
+          "case_count": 4,
+          "xml_sha256": "0f35f174f8effbb2e0a381fe3e2492d9bcd4c26c02563a557e8bb2bad57aec47",
+          "source_sha256": "32d0774fe1edba0d28442f50ce6b1f11b0d1e52bdfa9a1ee9e33a5c7d6f397c5",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "abundant-maw",
+          "class": "com.wingedsheep.engine.scenarios.AbundantMawScenarioTest",
+          "cases": [
+            "emerge cast drains the targeted opponent for 3 before the Leech resolves",
+            "the two amounts are independent \u2014 you gain 3 even if the opponent had less to lose"
+          ],
+          "case_count": 2,
+          "xml_sha256": "191119dc0cc6eb9d4fd8fe0e21ca86e9ab9de6e509b2d6212c0f6e520f891517",
+          "source_sha256": "b2115113f3911b95f553e46d0460d8e80783c7865205fc9e890cc4defa7519c1",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "spell-queller",
+          "class": "com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest",
+          "cases": [
+            "ETB exiles the target spell and links it to the Queller",
+            "when the Queller leaves, the exiled card's owner may cast it for free",
+            "the owner may decline, and the card stays exiled",
+            "a Queller that exiled nothing does nothing when it leaves"
+          ],
+          "case_count": 4,
+          "xml_sha256": "0439560febebbad47b5f71513df2f88275bfb747645ae3b0d47bb317cd6d9db5",
+          "source_sha256": "34e6e79abf33fb3e431919a4fbaa2449c4280d485376f56571c94a7cd9d09289",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "mauler",
+          "class": "com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest",
+          "cases": [
+            "opponent casts a spell: a +1/+1 counter is added (2/2 -> 3/3)",
+            "a second opponent spell grows it again (3/3 -> 4/4)",
+            "your own spell does not trigger it (stays 2/2)"
+          ],
+          "case_count": 3,
+          "xml_sha256": "8bdf9b481c37da2da1d49d1b2e8be96d31fc8b5037e3d2a6f92580883166e88d",
+          "source_sha256": "50abd1af867c13c5eb0a0011929650238e458c4c83e925397c60b791ed391af9",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "ai-decision-trace",
+          "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+          "cases": [
+            "exact one singleton auto-completes without a follow-up decision",
+            "exact one empty result can produce a superior if-you-dont branch without a follow-up",
+            "exact one no-candidate no-payoff acceptance is outcome-equivalent to declining",
+            "genuine up-to-one branch chooses a beneficial legal singleton",
+            "genuine up-to-one branch preserves a superior beneficial empty selection",
+            "genuine up-to-one branch declines when harmful singleton and empty equals decline",
+            "genuine up-to-one branch preserves the superior singleton among multiple candidates"
+          ],
+          "case_count": 7,
+          "xml_sha256": "68afc0acb37fdf001ad6751b1f5e43ca93bb932cfd6bf09ab411093d3f9a9fb6",
+          "source_sha256": "650deed7e9b3b9100ccfa69e73d20d0ee5bf601ed87c240b6d727f74c4b65a57",
+          "timestamp_within_actual_command": true,
+          "failure": 3,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "cast-sba",
+          "class": "com.wingedsheep.engine.scenarios.CastPrioritySbaTest",
+          "cases": [
+            "a real Phyrexian life payment settles SBAs before returning priority (life=2)",
+            "a real Phyrexian life payment settles SBAs before returning priority (life=3)",
+            "a caster who paid their last life never receives a cast-trigger target prompt",
+            "cost-sacrifice and subsequent zero-toughness death precede cast-trigger target selection",
+            "a nonactive cast trigger and active player's SBA death trigger form one APNAP batch",
+            "an opposing commander choice preserves the nonactive caster's priority and death trigger (answer)",
+            "an opposing commander choice preserves the nonactive caster's priority and death trigger (owner-leaves)",
+            "an opposing commander choice preserves the nonactive caster's priority and death trigger (third-party-leaves)",
+            "concession ending a game clears a pending commander question and both priority markers",
+            "the creature-type casting continuation cannot bypass the last-life SBA boundary",
+            "a nested modal life payment may recover within the same outer resolution before SBAs",
+            "an unaffordable life payment is rejected atomically and ordinary serialized states gain no field"
+          ],
+          "case_count": 12,
+          "xml_sha256": "9b49357027f8eaa0f63bf60cbead260ef92d5f041a07adffe9d3e334aa46fe76",
+          "source_sha256": "9d44ddce1bd1e9b5d3baaf44b28df9ee427f61e039485f98eda88cbb71caf154",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "death-trigger",
+          "class": "com.wingedsheep.engine.scenarios.DeathTriggerTest",
+          "cases": [
+            "death trigger fires when creature is destroyed by lethal damage",
+            "filtered ANY-binding death trigger fires when source creature itself dies",
+            "token death trigger fires when token is destroyed by lethal damage",
+            "filtered death trigger fires for creature with toughness boosted by +1/+1 counter"
+          ],
+          "case_count": 4,
+          "xml_sha256": "35adf36ec547e52dc9a9773afe1378cb9635c312849128da6dcba3c1b3d2e6c7",
+          "source_sha256": "ab620239c070d78af59ea9c935a2c2caf8ca9fc11faa96b122195caca839bfef",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "krarks-thumb",
+          "class": "com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest",
+          "cases": [
+            "the Thumb turns the Gambit's first coin into two, and asks which one to keep",
+            "keeping the heads coin wins the flip, so the run continues",
+            "keeping the tails coin loses the flip, which ends the run with nothing",
+            "the won-flip tally survives both of the run's pauses and pays out all three tiers",
+            "a second Thumb flips four coins per flip and still leaves exactly one counting"
+          ],
+          "case_count": 5,
+          "xml_sha256": "9ec03e3b44d3d03e2559100a6b14f5bc827158e2d7f6c8840c002404bb961bba",
+          "source_sha256": "dbdcefdd6611f55cf85ba428a9807b5a7df2b57914fdf0b15e6175e71626caf3",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "prismari",
+          "class": "com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest",
+          "cases": [
+            "instant cast with Prismari in play gets a storm trigger with copyCount = spells cast before it",
+            "two Prismaris produce two separate storm triggers (CR 702.40b)",
+            "without Prismari, an instant produces no storm trigger"
+          ],
+          "case_count": 3,
+          "xml_sha256": "2274318ab1116f3a5117001a696543c336e898a88f506bc4043afc00cb0e9416",
+          "source_sha256": "bcfff1970fe0c008d33e1c9b2c226226a0e6cd6d1870c19d10842c7a32155eed",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "free-cast",
+          "class": "com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest",
+          "cases": [
+            "the next spell can be cast without paying its mana cost, with the source in the graveyard",
+            "the rider is consumed by the next matching cast even when the free cast isn't taken",
+            "an unused rider is cleared at the start of the next turn",
+            "a creature-only rider ignores a noncreature spell and pays for the next creature spell",
+            "a rider-funded free cast doesn't burn a once-per-turn battlefield permission",
+            "the rider belongs to its controller: the opponent is neither offered it nor spends it",
+            "the enumerated free cast has no X \u2014 a free cast pays no mana cost, so X is 0 (CR 107.3b)",
+            "a free cast still pays a mandatory additional cost (CR 118.9 \u2014 only the mana cost is replaced)"
+          ],
+          "case_count": 8,
+          "xml_sha256": "e73dcfed14cf10edc269600f9da10c66422ba65a0ca3c3471961e38e1c1b6ded",
+          "source_sha256": "28580979cb66d5c8c29704eae477921db9708e4f9efb5e56323ddb520830de62",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "modal-cost",
+          "class": "com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest",
+          "cases": [
+            "H1 \u2014 picking the {1}-cost mode drains one extra colorless from the pool",
+            "H1 \u2014 mode 1 cannot be cast without the additional {1}",
+            "H2 \u2014 mode with SacrificePermanent additional cost forces the creature into the graveyard",
+            "H3 \u2014 Spree-style: choosing two modes stacks their additionalManaCosts",
+            "H3 \u2014 with stacked costs unpayable, cast fails",
+            "Escalate \u2014 the first chosen mode adds no mana cost",
+            "Escalate \u2014 its cost is paid once for each mode beyond the first",
+            "Escalate \u2014 a second mode is illegal when its one escalate payment is unaffordable"
+          ],
+          "case_count": 8,
+          "xml_sha256": "33614ff3e33cddf1635972d2567669e63048b39417feeb32853a7b4458b93bfa",
+          "source_sha256": "7a885c085ea11702eb371c5c8f50125b887dc179b4b17aa9924c7f2d9272d9c8",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "modal-cost-enumeration",
+          "class": "com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest",
+          "cases": [
+            "E3 \u2014 mode with unpayable additionalManaCost is flagged unavailable; others stay available",
+            "E3 \u2014 when enough Islands are in play, the {5}{U} mode becomes available"
+          ],
+          "case_count": 2,
+          "xml_sha256": "73f99bcf85bdc41277b6578b280db77408c9aef84318ff347a2a9af7800edf63",
+          "source_sha256": "a50878ae8a9247f5ba043390a111a26bdce3c90699164f366f2bb45346022e10",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "reveal-cost",
+          "class": "com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest",
+          "cases": [
+            "both the reveal path and the pay path are enumerated when the hand has an Elf and mana for either",
+            "CR 701.20b \u2014 the revealed Elf stays in hand and can still be cast afterwards",
+            "the pay path costs {3} more and reveals nothing",
+            "with no Elf in hand only the pay path is offered, and the spell is still castable",
+            "CR 701.4a \u2014 an Elf on the battlefield is not an Elf card in hand and cannot pay the reveal",
+            "a Kindred noncreature Elf card pays it \u2014 the filter is 'an Elf card', not 'an Elf creature card'",
+            "a non-Elf card in hand is rejected as the reveal",
+            "the cost is offered with its own picker when the hand holds a matching card",
+            "the spell is uncastable with nothing to reveal \u2014 a mandatory cost fails closed",
+            "the spell can't pay the cost with itself"
+          ],
+          "case_count": 10,
+          "xml_sha256": "da8aa820fdda0eeee594a4f86535a1d0e17f67cb6efae953c0afe465a9d8545a",
+          "source_sha256": "675222c58b2b3071914e3bb9b54efd135876e3c6cc38b7b8ecf1f251b4a13c32",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "commander-choice",
+          "class": "com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest",
+          "cases": [
+            "pauses with a YesNoDecision when a commander is in the graveyard",
+            "pauses for a commander in exile, hand, or library too",
+            "does not pause when the commander is in the command zone",
+            "does not pause when the commander is on the battlefield",
+            "does not pause when the asked marker is already attached",
+            "does not pause when alwaysDivertToCommand is enabled",
+            "does not pause when the format is not Commander",
+            "Team vs Team prompts when Commander rules are enabled",
+            "prompt text names both the commander and the source zone",
+            "multiple eligible commanders only produce one prompt per SBA pass",
+            "non-owner commander not asked about by this player's turn slot",
+            "commander with the asked marker is invisible to the SBA \u2014 no events, no pause",
+            "a non-commander legendary with the same name does not trigger the prompt",
+            "commander already on the stack is not prompted (CR 903.9 entry zones only)",
+            "commander entry is later 'forgotten' once the marker is stripped",
+            "a commander that's been registered but has no zone slot is skipped silently",
+            "owner with zero commanders does nothing"
+          ],
+          "case_count": 17,
+          "xml_sha256": "6cd36cd0549eaa4710f59d8aa59520b0aa593e703915a134bdf4b44f411bed53",
+          "source_sha256": "48a16c068191e4f88004e19eb8a6ba480a74c841d6f792355402e2af488d0455",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "team-loss",
+          "class": "com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest",
+          "cases": [
+            "a team at 0 shared life loses; the opposing team wins together (CR 810.8a/c)",
+            "conceding makes the whole team lose (CR 810.8b)",
+            "one teammate decking out loses the team, and the game-end reason is the real cause",
+            "poison is pooled by the team and the team loses at 15, not 10 (CR 810.8d / 810.10)",
+            "a team with 10 combined poison does NOT lose under the 15 threshold",
+            "a can't-lose grant on either teammate protects the whole team (CR 810.8a)",
+            "'you don't lose for having 0 or less life' on either head protects the whole team (CR 810.8a example)",
+            "'you win the game' wins for your whole team and defeats only opposing teams (CR 810.8a)",
+            "the game does not end while both teams still have a player standing",
+            "non-team game is unchanged: a player at 0 loses alone and poison threshold stays 10"
+          ],
+          "case_count": 10,
+          "xml_sha256": "39e2123ed5cd3a8c34503bceaca34628dabbce4b0a383d7ffb9558b83222ef80",
+          "source_sha256": "354c18023186b1f247519b34fb382a9910600e53bc9a35cc12c49ba3564e1f04",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        },
+        {
+          "stage": "team-versus-team",
+          "class": "com.wingedsheep.engine.multiplayer.TeamVsTeamTest",
+          "cases": [
+            "a randomly chosen first team starts with the seat left of its midpoint, and turn order wraps the table (CR 808.4)",
+            "each player has their own life total; damaging one teammate doesn't touch the other (CR 808.5)",
+            "teammates have distinct life owners (no canonical pooling)",
+            "a player at 0 life loses ALONE; the teammate plays on and the game continues (CR 104.3b)",
+            "a team loses only once ALL its members are out; the other team wins together (CR 104.2c)",
+            "conceding eliminates only the conceding player; the teammate fights on (no 810.8a propagation)",
+            "a can't-lose grant protects only its controller, not the whole team (CR 808 / normal 104)",
+            "poison is per-player at threshold 10; one poisoned player loses alone",
+            "poison does NOT pool across the team \u2014 8 + 7 = 15 kills no one (each is below 10)",
+            "opponents exclude teammates; teammates are recognised",
+            "turn ownership is individual: only the active player owns the turn; a teammate does not",
+            "each player draws on their own turn; no first-turn draw skip in a 4-player game (CR 103.8c)",
+            "the turn passes to the next individual player, not skipping the whole team",
+            "only the directly-attacked player defends; a teammate is not pulled in as a defender"
+          ],
+          "case_count": 14,
+          "xml_sha256": "9adf025c2cfada0fc7a34c4b141ea64a6d20260acc8c27043e65ebf506a0b9a3",
+          "source_sha256": "97884dc1e62bc83bdc2f80f104857fe8019d32d7077769f0f7f04226f0316fa8",
+          "timestamp_within_actual_command": true,
+          "failure": 0,
+          "error": 0,
+          "skipped": 0
+        }
+      ],
+      "command_rows": [
+        {
+          "group": 1,
+          "classes": [
+            "StackResolutionPriorityTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "d73f9c3a089ec6bb674f1ab7af5085a43be517672cd22e8a50ee1a50c167c014",
+          "fresh_workers": 1
+        },
+        {
+          "group": 2,
+          "classes": [
+            "StackWarTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "90ccc4fe31197957e39a18dd24740c02ef5200b99fed3e595e72f2bdfa8aff1f",
+          "fresh_workers": 1
+        },
+        {
+          "group": 3,
+          "classes": [
+            "ContinuationSystemTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "f21e0b14e0160aa24611534b6f837f29aacedd3b4aad815ba5fbd30d6f48e150",
+          "fresh_workers": 1
+        },
+        {
+          "group": 4,
+          "classes": [
+            "CleanupHandSizeDiscardDamageRemovalTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "8bc6c04fa5ace86ed2bd8d3adc56038ffa35f7114e609681237ab96ab1d17381",
+          "fresh_workers": 1
+        },
+        {
+          "group": 5,
+          "classes": [
+            "LegendRuleTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "a5527a9e17da853e0b9eecba6e6dd95a92de2f700552842b099e3713d43561e9",
+          "fresh_workers": 1
+        },
+        {
+          "group": 6,
+          "classes": [
+            "LeaveTheGameTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "d3c4245cbf3d2e7bd021c2a216830b5db220e68f495b99ae42bfe8d8ff9f2313",
+          "fresh_workers": 1
+        },
+        {
+          "group": 7,
+          "classes": [
+            "TwoHeadedGiantTeamPriorityTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "270ba3fb0c8a963db66359366c76e510174e0054ba1f21a7ba240b161179fe32",
+          "fresh_workers": 1
+        },
+        {
+          "group": 8,
+          "classes": [
+            "ConditionalFlashGrantTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "a65a53aea9244fc99be8e7cbc1d0a6f6eadc865056cf5d63191b8d1649931b57",
+          "fresh_workers": 1
+        },
+        {
+          "group": 9,
+          "classes": [
+            "SuspensionTraceTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "4c78f81eabe1791fa137ba72ea37085fa42228bfa37c8aee614a55674f25b791",
+          "fresh_workers": 1
+        },
+        {
+          "group": 10,
+          "classes": [
+            "LegacySuspensionMigrationTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "f346560f3c4f5ac9bde2cd924b5373e6159afb78960e27da52da57214e6c0f11",
+          "fresh_workers": 1
+        },
+        {
+          "group": 11,
+          "classes": [
+            "CircleOfSolaceTest"
+          ],
+          "module": "mtg-sets/2000-2002/tests",
+          "exit_status": 0,
+          "log_sha256": "786918aa58a95c9f5c49c65989ad206e6c70a883daad81edf0788559b1598bfd",
+          "fresh_workers": 1
+        },
+        {
+          "group": 12,
+          "classes": [
+            "ScarecrowScenarioTest"
+          ],
+          "module": "mtg-sets/1993-1999/tests",
+          "exit_status": 0,
+          "log_sha256": "a3eaaac368c8d32d88af1c561a479cf38a604d2f23b7e6e48066c38b2240675e",
+          "fresh_workers": 1
+        },
+        {
+          "group": 13,
+          "classes": [
+            "AbundantMawScenarioTest"
+          ],
+          "module": "mtg-sets/2008-2016/tests",
+          "exit_status": 0,
+          "log_sha256": "099f84abf998cd3c5839dad0697e6e6df83db0f4a93eb113a6d21dbbc884ccd7",
+          "fresh_workers": 1
+        },
+        {
+          "group": 14,
+          "classes": [
+            "SpellQuellerScenarioTest"
+          ],
+          "module": "mtg-sets/2008-2016/tests",
+          "exit_status": 0,
+          "log_sha256": "527d1333acb3f0d0bea4784bb1b49cf640c3506036a11506570f8b92314bc070",
+          "fresh_workers": 1
+        },
+        {
+          "group": 15,
+          "classes": [
+            "TaureanMaulerScenarioTest"
+          ],
+          "module": "mtg-sets/2008-2016/tests",
+          "exit_status": 0,
+          "log_sha256": "76091b59b7aa7d41a0e425345950710f943771fea5c9acf42fea3052caa78145",
+          "fresh_workers": 1
+        },
+        {
+          "group": 16,
+          "classes": [
+            "DecisionResponderCompletedBranchTest"
+          ],
+          "module": "ai",
+          "exit_status": 1,
+          "log_sha256": "c6decb9e0a2a6e83b489887fb41a77753e3ee0c12ca6b6b4f9cddd7be620f94a",
+          "fresh_workers": 1
+        },
+        {
+          "group": 17,
+          "classes": [
+            "CastPrioritySbaTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "a682033dd9b4e2acec0284672c627fc31ebb50e14f29f0ff36eb8c46704f76b2",
+          "fresh_workers": 1
+        },
+        {
+          "group": 18,
+          "classes": [
+            "DeathTriggerTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "c508cc033e68c370d37f7fb35c2d1c118a2bef4b54a09048553b03c222fe2ccc",
+          "fresh_workers": 1
+        },
+        {
+          "group": 19,
+          "classes": [
+            "KrarksThumbScenarioTest"
+          ],
+          "module": "mtg-sets/2003-2007/tests",
+          "exit_status": 0,
+          "log_sha256": "839fa88dcfa5f0ebe42a29209d8a65191c3691196a9d983ce00be169e98e7dd3",
+          "fresh_workers": 1
+        },
+        {
+          "group": 20,
+          "classes": [
+            "PrismariTheInspirationScenarioTest"
+          ],
+          "module": "mtg-sets/2026/tests",
+          "exit_status": 0,
+          "log_sha256": "985c817078bc5b7a35e1a8a38ee04b384057a7df4486c24ad0893b25706f7c54",
+          "fresh_workers": 1
+        },
+        {
+          "group": 21,
+          "classes": [
+            "GrantNextSpellFreeCastTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "5e257cdf4597a12056733624b41514cc4f396f243231084e70e8b60d8838784f",
+          "fresh_workers": 1
+        },
+        {
+          "group": 22,
+          "classes": [
+            "ModalPerModeAdditionalCostTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "6a283b7e65374925c98c60c1f2a14833df5cd049b1b0200a731f4d51f87d1153",
+          "fresh_workers": 1
+        },
+        {
+          "group": 23,
+          "classes": [
+            "CastSpellEnumeratorModalAdditionalCostTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "7ae0f635923fa3f6a679893cdd190e74073d83800ec49a32c84b1b845fc52556",
+          "fresh_workers": 1
+        },
+        {
+          "group": 24,
+          "classes": [
+            "RevealFromHandAdditionalCostTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "0ed9d36334c481e8ca915f92e69c83f6a460ede331922b4765f38abaa5dc9b85",
+          "fresh_workers": 1
+        },
+        {
+          "group": 25,
+          "classes": [
+            "CommanderZoneChoiceCheckTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "c030b49147bc93c8fa4d3234173df8ed4a91fa5b989e5942708c18b847e8fa7a",
+          "fresh_workers": 1
+        },
+        {
+          "group": 26,
+          "classes": [
+            "TwoHeadedGiantTeamLossTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "744740327ed2fc6c5321b7e8bfc6398fa1478acb738fa4ba171f4d84abf020f6",
+          "fresh_workers": 1
+        },
+        {
+          "group": 27,
+          "classes": [
+            "TeamVsTeamTest"
+          ],
+          "module": "rules-engine",
+          "exit_status": 0,
+          "log_sha256": "46c8b5a7cc68b93de061d2efb5545890a7a3886cef87ef465281a4532f3d0ce4",
+          "fresh_workers": 1
+        }
+      ],
+      "failures": [
+        {
+          "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+          "name": "genuine up-to-one branch chooses a beneficial legal singleton",
+          "kind": "failure",
+          "message": "org.opentest4j.AssertionFailedError: Missing elements from index 0\nexpected:<[card-1002]> but was:<[]>",
+          "trace_sha256": "cdc8936883aa554e54598e008d59d49622671dc798b5810ad713336b1fa16306"
+        },
+        {
+          "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+          "name": "genuine up-to-one branch declines when harmful singleton and empty equals decline",
+          "kind": "failure",
+          "message": "org.opentest4j.AssertionFailedError: true should equal false",
+          "trace_sha256": "0a7683efe24539cb662df373191d6da928573d6f3231b930ce3266cb2508754f"
+        },
+        {
+          "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+          "name": "genuine up-to-one branch preserves the superior singleton among multiple candidates",
+          "kind": "failure",
+          "message": "org.opentest4j.AssertionFailedError: Element differ at index: [0]\nexpected:<[card-1002]> but was:<[card-1003]>",
+          "trace_sha256": "424438ffb3086ae7921722c040f86999063bbc5633ecdc6ee9d968fe3d5eafd0"
+        }
+      ],
+      "archive_members": 140,
+      "source_pins_verified": 272,
+      "manifest_sha256": "0e0e7ec4753a87d587a5d598816346a52599bb11b0dcc5d131f0b3e93fce591f",
+      "preserved_authority_count": 3,
+      "actual": {
+        "cases": 220,
+        "passed": 217,
+        "failed": 3,
+        "errors": 0,
+        "skipped": 0,
+        "unique_classes": 27,
+        "command_groups": 27
+      },
+      "disposition": "REJECT_FULL_PRIORITY_GATE_PRESERVE_217_PASS_3_FAILURES",
+      "independent_source_review": {
+        "path": "industrial-waste/v2/evidence/priority-source-b6a/independent-source-review.json",
+        "sha256": "ca08bf70a8eada1b57d5133fe534d9fc7ca57f8dfc4d33482e9752d9a16d8b4a"
+      },
+      "independent_collector_review": {
+        "path": "lab-coordinator/shared-capabilities/receiving-collector-independent-source-review.json",
+        "sha256": "cebe19436469e4eefad3f8165675e97dfb860c33325c7a4762f5ccd91e7ac1ea"
+      }
+    }
+  ],
+  "limits": [
+    "The 135-case artifact qualifies only the declared shared receiving component on eb412.",
+    "The complete original 27-stage priority gate remains rejected: all220 ran, 217 passed and three completed-branch policy assertions failed.",
+    "Default responder tests do not qualify the proposed frozen legacy strategy. No strategy implementation or equivalence bank is approved here.",
+    "No full CI, complete Industrial R1 runtime, policy upgrade, calibrated runtime, independent admission or official execution is accepted.",
+    "The reviewer authored earlier shared EnergyFlux/provider code, not these receiving workflows, manifests, original case banks, artifacts or submitted Industrial pilot; earlier source approvals remain separately attributed."
+  ],
+  "test_or_game_executions_by_review": 0,
+  "official_games_initialized": 0,
+  "outcomes_exposed": 0,
+  "github_approval_submitted": false,
+  "runtime_accepted": false,
+  "gameplay_authorized": false
+}

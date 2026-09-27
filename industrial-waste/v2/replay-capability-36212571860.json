@@ -1,0 +1,35 @@
+{
+  "schema": "industrial-waste-v2-replay-capability-acceptance-v1",
+  "status": "ACCEPTED_SEED_FREE_REPLAY_CAPABILITY_ONLY",
+  "source_commit": "6a32a3427420bb4b8d52266a0419e2a0f3cfc054",
+  "validation": {
+    "full_ci_run_id": 36212571860,
+    "job_id": 108322181804,
+    "artifact": null,
+    "artifact_note": "The full CI workflow emitted no workflow artifact for this test group; acceptance is bound to the exact source commit, completed CI run, job log, and named passing fixtures.",
+    "fixtures": [
+      "all four frozen R1 lists complete one measured own turn through the composed real runner",
+      "composed one-turn capability runner replays identically for all four frozen lists",
+      "captured one-turn action transcript replays exactly for all four frozen lists"
+    ],
+    "result": "PASS"
+  },
+  "frozen_lists": [
+    "industrial-waste/control/industrial-waste-v1.0-submitted.dck",
+    "industrial-waste/v2/candidates/compact-loop.dck",
+    "industrial-waste/v2/candidates/recursive-eggs.dck",
+    "industrial-waste/v2/candidates/lean-tron-hybrid.dck"
+  ],
+  "scope": "Exact submitted-action transcript capture and deterministic replay against identically initialized seed-free capability fixtures only.",
+  "safeguards": {
+    "official_r1_ordering_rows_bound": false,
+    "official_allocations_initialized": 0,
+    "official_seeds_generated": 0,
+    "comparative_outcomes_exposed": 0,
+    "candidates_promoted": 0,
+    "candidates_eliminated": 0,
+    "replay_action_retry": false,
+    "synthetic_actions": false
+  },
+  "next_gate": "Continue full R1 runner/replay integration, effective rules/runtime binding, durable exclusive claim/attempt journal, telemetry completeness and exact execution authorization before any 512-allocation R1 corpus execution."
+}

@@ -1,0 +1,167 @@
+{
+  "source_head": "73074f2c634ac97c996f74afacdff5626613ac90",
+  "executed_passes": 22,
+  "executed_failures": 0,
+  "excluded_by_requested_filter": 3,
+  "stale_xml_separately_preserved_not_counted": 5,
+  "suites": [
+    {
+      "path": "xml/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2FullHorizonRunnerTest.xml",
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2FullHorizonRunnerTest",
+      "tests": "10",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "19.889",
+      "cases": [
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the play schedule",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the draw schedule",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the play schedule",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the draw schedule",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the play schedule",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the draw schedule",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the play schedule",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the draw schedule",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "full-horizon capability is deterministic for an identical excluded ordering fixture",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "runner refuses the frozen official R1 namespace before submitting an action",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "xml/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest.xml",
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest",
+      "tests": "11",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "0",
+      "time": "6.239",
+      "cases": [
+        {
+          "name": "snapshot replay certifies every quiet state and the first-per-turn compatibility view on the draw",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "missing the first eligible quiet state cannot pass replay",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "missing a later state from the same own turn cannot hide behind the compatibility view",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "extra quiet observations after the final eligible state are rejected",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "reordered quiet observations are rejected even when every row is intact",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "duplicate action indices cannot certify two observations of one accepted state",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "a well-formed substituted state digest is rejected against the real replayed state",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "altered checkpoint values fail semantic replay despite intact action state and event hashes",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "a valid later same-turn checkpoint cannot replace the first-per-turn compatibility row",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "a real terminal has no quiet priority even when the engine retains its prior main-step fields",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "the final real four-thousandth action preserves its eligible quiet checkpoint before the cap stops execution",
+          "skipped": false,
+          "failed": false
+        }
+      ]
+    },
+    {
+      "path": "forest-bridge/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest.xml",
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest",
+      "tests": "4",
+      "failures": "0",
+      "errors": "0",
+      "skipped": "3",
+      "time": "24.537",
+      "cases": [
+        {
+          "name": "complete excluded allocation preserves exact actions events checkpoints and replay",
+          "skipped": false,
+          "failed": false
+        },
+        {
+          "name": "allocation directory is create-once and a second invocation cannot replace evidence",
+          "skipped": true,
+          "failed": false
+        },
+        {
+          "name": "frozen Compact Loop spell-bearing fixture composes the public pilot typed metrics and snapshot replay",
+          "skipped": true,
+          "failed": false
+        },
+        {
+          "name": "official namespace or official allocation id is rejected before any filesystem mutation",
+          "skipped": true,
+          "failed": false
+        }
+      ]
+    }
+  ]
+}

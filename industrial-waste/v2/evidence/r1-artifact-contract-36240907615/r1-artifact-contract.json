@@ -1,0 +1,46 @@
+{
+  "allocation_artifact_schema": "industrial-waste-v2-r1-allocation-artifact-v1",
+  "attempt_journal_creation_authorized": false,
+  "candidate_elimination_authorized": false,
+  "candidate_promotion_authorized": false,
+  "claim_creation_authorized": false,
+  "closes_binding_when_formally_accepted": "official_r1_artifact_schema_and_completeness_contract",
+  "contract_sha256": "7c4d04c21180341f3d6542dabeec963a741d4bfcc9d988434e4416944385d2fc",
+  "decision_metrics": [
+    "loop_ready_by_t8",
+    "conversion_by_t8",
+    "colored_mana_failure",
+    "total_mana_stranded_at_t4"
+  ],
+  "execution_authorized": false,
+  "initialization_admitted": false,
+  "invalid_terminal_statuses": [
+    "EXCEPTION",
+    "REJECTED_ACTION",
+    "UNRESOLVED_TELEMETRY"
+  ],
+  "invariants": [
+    "each artifact must match exactly one frozen allocation id/index/row/schedule/deck",
+    "the complete corpus contains all 512 frozen allocations exactly once",
+    "valid terminal/cap/draw evidence exposes all four Boolean decision metrics",
+    "rejected/exception/unresolved evidence preserves failure bytes and exposes no decision metrics",
+    "submitted actions never exceed 4000 and completed own turns never exceed 8",
+    "all provenance and evidence digests are explicit SHA-256 values"
+  ],
+  "next_gate": "Bind the real official corpus runner and complete metric projection, then issue a successor runtime-binding receipt before any durable official claim.",
+  "official_counters": {
+    "actions_submitted": 0,
+    "allocations_initialized": 0,
+    "comparative_outcomes_exposed": 0
+  },
+  "protocol_id": "IW_V2_R1_ENGINE_STRUCTURAL_2026_09_25",
+  "required_allocation_count": 512,
+  "schema": "industrial-waste-v2-r1-artifact-contract-capability-v1",
+  "status": "QUALIFIED_SEED_FREE_ARTIFACT_AND_COMPLETENESS_CONTRACT_ONLY",
+  "valid_terminal_statuses": [
+    "ACTION_CAP",
+    "DRAW",
+    "REAL_TERMINAL",
+    "TURN_CAP"
+  ]
+}

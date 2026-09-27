@@ -1,0 +1,48 @@
+{
+  "schema_version": 1,
+  "kind": "final_accepted_postcast_predecessor_completion",
+  "implementation_origin": "697e65d578bc212bb994a5ec323a8055c6e4f868",
+  "accepted_source": "de864d604215acf402a2c708d6b62ee9b4001a72",
+  "acceptance_merge": "e02e23622158d52472d4dc5b27ff1c95a0ff382f",
+  "implementation_fix": "8908e51fb17c8c05c71cfbd23f5e623eb2bb79dd",
+  "source_tree": "84c34c48392538fff6c3b61ee7dc9fce6b9460f2",
+  "files": [
+    {
+      "path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KrarksThumbScenarioTest.kt",
+      "sha256": "dbdcefdd6611f55cf85ba428a9807b5a7df2b57914fdf0b15e6175e71626caf3",
+      "git_blob": "7913f17a366a1649b2efbbb4cf0550f078324799",
+      "merge_equals_accepted_source": true
+    },
+    {
+      "path": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PrismariTheInspirationScenarioTest.kt",
+      "sha256": "98643d5a3df6a2888676a20f44e80b2cc5802b769493575b7de9c4060bc11d1a",
+      "git_blob": "df1287f1195234ef7231e51d7878dba4cc0dfc25",
+      "merge_equals_accepted_source": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/DeathAndLeaveTriggerDetector.kt",
+      "sha256": "819656b73e5b3d82023c9d8f536effeebabbbad2de7695e7b45e406d4015ccf5",
+      "git_blob": "24f865871cd16a9f25cdf50355076c3d0eb5ccc3",
+      "merge_equals_accepted_source": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CastPrioritySbaTest.kt",
+      "sha256": "b25929c2e55dd768f8efb38986c117ad1eb6bde123ad72e9504a95eadb3776c1",
+      "git_blob": "1b7f07b6ce1d5a94795c889ea3b6d21d88ed4518",
+      "merge_equals_accepted_source": true
+    }
+  ],
+  "patches": [
+    {
+      "path": "postcast-final-de864-code.patch",
+      "bytes": 11975,
+      "sha256": "0f6dadb0db25afa399f7b0ca592667003f422350a75fd162a405bf016f95116e"
+    },
+    {
+      "path": "postcast-final-de864-production.patch",
+      "bytes": 1178,
+      "sha256": "9f6ec85e4ab459e5cb10afb106622d47fb935e0fbb848ec8bc0e283a187f44cd"
+    }
+  ],
+  "scope": "Complete the already accepted PR156 predecessor; original697 extraction alone omitted the later accepted death-controller repair and three strengthened fixture files. No evidence/experimental proposals are transplanted; receiving qualification remains required."
+}

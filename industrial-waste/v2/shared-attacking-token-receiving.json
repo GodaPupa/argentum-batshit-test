@@ -1,0 +1,266 @@
+{
+  "schema": "industrial-attacking-token-defender-receiving-v1",
+  "status": "PROSPECTIVE_RECEIVING_SOURCE_REVIEW_REQUIRED",
+  "receiving_base": "1fe2118348b83bc9eacb9160c55ec52af67007b3",
+  "budget_sha256": "b3fc75093350389f92d9cf44e02ad0bff4c6c621fc19ef13260000cf3fc92363",
+  "banks": [
+    {
+      "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "case_names": [
+        "TD01 land attack trigger creates two tokens attacking the sole opponent, never its controller",
+        "TD02 multiple opponents require a separate controller choice for every not-yet-created token",
+        "TD03 public planeswalkers and protected battles are nontargeting defender choices",
+        "TD04 attack-left and attack-right preserve the legal neighboring seat",
+        "TD05 recipient fanout suspends once, retains all token collections and does not make nonactive players attack",
+        "TD06 doubled plain batch freezes four defender choices and four delayed riders across serialization",
+        "TD07 target-copy batch uses the same once-only count replacement and selected defenders",
+        "TD08 noncreature target copies enter tapped without attacking or asking for a defender",
+        "TD09 wrong actor and malformed defender submissions preserve the exact pending state",
+        "TD10 serialized pending choice and identical answer replay preserve state and events exactly",
+        "TD11 copy as-enters choices retain chosen defender tail, token collection, entry events and delayed riders",
+        "TD12 declining token replacement keeps the prepared count and actual recipient across the next choice",
+        "TD13 accepting replacement preserves attacking state, actual recipient, collection and delayed riders",
+        "TD14 active teammate chooses its own legal defenders while declaration restrictions do not prevent entry"
+      ]
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+      "case_names": [
+        "activating the ability then attacking creates two tapped, attacking Warrior tokens",
+        "the tokens are sacrificed at the next end step"
+      ]
+    },
+    {
+      "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+      "case_names": [
+        "EP01 a real as-enters token publishes its entry and resolves exactly one self ETB trigger",
+        "EP02 entry-time observer survives its automatic-tail removal and the distinct leave trigger is not suppressed",
+        "EP03 serialized pending token tail and repeated answers preserve exact entry records, state and two ETB effects",
+        "EP04 serialized provenance skips only the marked occurrence and preserves identical unmarked occurrences"
+      ]
+    }
+  ],
+  "stages": [
+    {
+      "stage": "token-defender-14",
+      "module": "rules-engine",
+      "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "expected_cases": 14
+    },
+    {
+      "stage": "dalkovan-2",
+      "module": "mtg-sets/2025/tests",
+      "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+      "expected_cases": 2
+    },
+    {
+      "stage": "entry-event-provenance-4",
+      "module": "rules-engine",
+      "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+      "expected_cases": 4
+    }
+  ],
+  "source_files_sha256": {
+    "build.gradle.kts": "986599d2c2ff91066e01a660a0f95e6c982ddef029171350f944be549730e40c",
+    "justfile": "321890ac5f583400c75b50a57ea4b6b2501246ba86b6b14cb6198835f6bb88c5",
+    "lab-coordinator/shared-capabilities/attacking-token-defender-budget.json": "b3fc75093350389f92d9cf44e02ad0bff4c6c621fc19ef13260000cf3fc92363",
+    "lab-coordinator/shared-capabilities/collect-priority-receiving.py": "2c158a62f1898dcc7cb3c00a3cf2497a42d87e3a4e3a2a1e37926b2a4483352f",
+    "lab-coordinator/shared-capabilities/entry-choice-event-provenance-budget.json": "b80b4bff7dfc49e0ba0e2748e7c12ac93b1fbc40ebb361fa4e10aff0ff4bb6d6",
+    "lab-coordinator/shared-capabilities/receiving-case-banks-v1.json": "fbcd17ca4beda7da01a58fed7c627c66dc154bf4955d6b5556b02de9e0a82a97",
+    "lab-coordinator/shared-capabilities/receiving-collector-independent-source-review.json": "cebe19436469e4eefad3f8165675e97dfb860c33325c7a4762f5ccd91e7ac1ea",
+    "mtg-sdk/build.gradle.kts": "5e6927db0f8188dc9bf3817d55d105774d9b12dff9a3fd39fbaa2288ef3bc78c",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ReplacementEffect.kt": "9351cac8a343e6c8b5e858ef3ea0b49a36b15dd86a9ba2d4b351c685d3e96c8c",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/TokenEffects.kt": "3e5bf1fb5b03e5ee731bf3c6ed478346e13feeb3c46a22b3adde87e0cff08afa",
+    "mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tdm/cards/DalkovanEncampment.kt": "03741c4374ea6f1e3d5cfd1896ad6be3efe4224fea74c4d2cc637bd7357dca38",
+    "mtg-sets/2025/tests/build.gradle.kts": "2ba465279fe10d46ff61a56834f002bd2bdb1ff7aaaed22fb607a4085df1ccd7",
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DalkovanEncampmentScenarioTest.kt": "acb9cd9a32346e5867740305c79f42783f37e5d4202dadf1d7b8b051f60b5532",
+    "rules-engine/build.gradle.kts": "6ede083da0d089b6a8b7010e3710067ab8fb4738a6f9e2425ddb09cf62576523",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt": "c53b05c54338b9a35d56b500d385a16605ed641dad19e179d8604cfb7d5db320",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TokenContinuations.kt": "c1856c5d7165cfe596b09be849faa855d9d7ec5b7bcf3deeb36c8a01bdaf4cd0",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt": "9a2841cc5ca01acaaf655f5bb7259742e500f4a78cf6848677faf8f91768e92d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt": "ab14c3d79c6bf842313b948af585642b80b96d40834925af5cfa75fda084c155",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ObjectReferenceEnvironment.kt": "06433f5ab70350b9d7b30c0e29f84c7f434ea595d52cb9ede573c8fce606b693",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt": "d2f82ea8237dc6a642005e6a6e12a2148555240a2ed93786a24df02af650d3ee",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt": "ec9e7aef1d5a02c228e8614d8a5fb442cd8d7c2fdf397dd681bfb7073ce50614",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ObjectReferencePropagation.kt": "44754cc29fd5abe7b850f819811a1a26af25b845396dd3439135172cb0733393",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/PipelineCollectionPropagation.kt": "2347f1dc0bcd3c6dbdf7c8753bd5ff892eaf80e5da7041cc8c8aaee42d534278",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TokenContinuationResumer.kt": "9213e0e9e7e79c10fd49b2162d38e5b31b369ed0c398f33ff6569b3e66f0a773",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/TargetResolutionUtils.kt": "39a5c5dc02f1ad75db2e4dea3cb56ef59f37456339eb9b18c6a3b3bca2c6680d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChooser.kt": "86ad9102ffaeb07333ae2cd18261430d223b945ad0206ef44f2daa8d24057a05",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AuraTokenHostChooser.kt": "1b4fcd1247790211b7d5aa48b0288babbd3724703348b0089c674d90e7c9321d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenEntryReplacements.kt": "8780e1f31e16bea5a37fe08e9f588d65f920312a3f60e28e7121fa78ca26a445",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/battle/Battles.kt": "d709d7fbc4ffd0967eac3ac3834cbe18e4c088ee8214618169cce85df1e74555",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt": "73c761176e87fdb40add594b7591c508784cadcbc2c47bc247d5b18658f6e44d",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChoiceTest.kt": "becb1edcc7a08998ca0dab03ebc83b2fb4f484339859e0c771bc7a08851578ee",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt": "c7aba22d7937c395075c00f8710cb072a0ec1e3932a5fe55b441c9b1a7da0f71",
+    "scripts/gradle-locked": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1",
+    "scripts/test-class": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81",
+    "settings.gradle.kts": "20bb45f9e99f9cd82df3e8aee01f06bbd116915ae99c4acc0b69a47f4a6a789b",
+    "industrial-waste/v2/attacking-token-authority/canonical-receiving-manifest.json": "dacc9f54babdb4bc1659edd5dfcc0c50427f0afd16fec375972fb53f20f4c453"
+  },
+  "official_games": 0,
+  "outcomes_exposed": 0,
+  "gameplay_authorized": false,
+  "whole_token_runtime_accepted": false,
+  "full_receiving_accepted": false,
+  "additional_budget": {
+    "path": "lab-coordinator/shared-capabilities/entry-choice-event-provenance-budget.json",
+    "sha256": "b80b4bff7dfc49e0ba0e2748e7c12ac93b1fbc40ebb361fa4e10aff0ff4bb6d6",
+    "expected_actual_cases": 4
+  },
+  "scope_partition": {
+    "unchanged_original_token_bank_cases": 16,
+    "separate_prospective_event_provenance_cases": 4,
+    "receiving_total_cases": 20,
+    "experimental_policy_budget_consumed": 0
+  },
+  "canonical_source": "1bc66b276f5db54640df1f956a32fa3d188628e3",
+  "canonical_tree": "9a634d5b1acde2d2d80e1b3a347d0ec31b03e6c9",
+  "receiving_predecessor": "3760edab907c66d3f41773fd3065b7993f837ebb",
+  "compatibility": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+      "receiving_before_sha256": "1c355fc1c7a92606ea24dced8109ff15b1b2c757cb2879d13aaa4c53b57514e2",
+      "donor_sha256": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1",
+      "receiving_after_sha256": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+      "receiving_before_sha256": "ef5a11541639d273904bd878ded0004182b64e9b66c308c221d7d8ad355b73ed",
+      "donor_sha256": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
+      "receiving_after_sha256": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt",
+      "receiving_before_sha256": "c0b9d2429463cdce240048b549d02c97e92d301d6ef75521f989723dda294dbd",
+      "donor_sha256": "bcc6321f1ef85416859bff716b1446498a62917208cc7f7a65b4cd39b0333b68",
+      "receiving_after_sha256": "c53b05c54338b9a35d56b500d385a16605ed641dad19e179d8604cfb7d5db320",
+      "integration": "PRESERVED_RECEIVING_OVERLAP"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TokenContinuations.kt",
+      "receiving_before_sha256": "91d0103a5ced3151b48780add95595121cad676ae3bb7321165b863c457336d3",
+      "donor_sha256": "c1856c5d7165cfe596b09be849faa855d9d7ec5b7bcf3deeb36c8a01bdaf4cd0",
+      "receiving_after_sha256": "c1856c5d7165cfe596b09be849faa855d9d7ec5b7bcf3deeb36c8a01bdaf4cd0",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+      "receiving_before_sha256": "5416f5cec66e8dd2fc9d65985b31ac052a08336e36a6445105b494a312cbcd24",
+      "donor_sha256": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623",
+      "receiving_after_sha256": "9a2841cc5ca01acaaf655f5bb7259742e500f4a78cf6848677faf8f91768e92d",
+      "integration": "PRESERVED_RECEIVING_OVERLAP"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt",
+      "receiving_before_sha256": "41e483dccbf19148ea5d266176532b8e3689f56e0193d57e7de1a6bb4ccf30aa",
+      "donor_sha256": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc",
+      "receiving_after_sha256": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+      "receiving_before_sha256": "685ab54058fc2e25e9b4e1dc352642080623b785781c7b2161a411eaad0360f6",
+      "donor_sha256": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+      "receiving_after_sha256": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+      "receiving_before_sha256": "faa1889a252b70e1306ff4db95236ecf71ebade4706c6907e32bb4159ac5932a",
+      "donor_sha256": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
+      "receiving_after_sha256": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ObjectReferencePropagation.kt",
+      "receiving_before_sha256": "7e3ce6488e5349dc84494315cf4feec7571c0657bbb6e2e63a6d2de5e80829de",
+      "donor_sha256": "44754cc29fd5abe7b850f819811a1a26af25b845396dd3439135172cb0733393",
+      "receiving_after_sha256": "44754cc29fd5abe7b850f819811a1a26af25b845396dd3439135172cb0733393",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/PipelineCollectionPropagation.kt",
+      "receiving_before_sha256": "3f14b0e3145585fe82d4529b9c511f648921d612654b7b0d70ac10a34055f239",
+      "donor_sha256": "2347f1dc0bcd3c6dbdf7c8753bd5ff892eaf80e5da7041cc8c8aaee42d534278",
+      "receiving_after_sha256": "2347f1dc0bcd3c6dbdf7c8753bd5ff892eaf80e5da7041cc8c8aaee42d534278",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/TokenContinuationResumer.kt",
+      "receiving_before_sha256": "1d824810723abdb44456a9a07cf66669243d80bb0442e6143483afd1233a897e",
+      "donor_sha256": "9213e0e9e7e79c10fd49b2162d38e5b31b369ed0c398f33ff6569b3e66f0a773",
+      "receiving_after_sha256": "9213e0e9e7e79c10fd49b2162d38e5b31b369ed0c398f33ff6569b3e66f0a773",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AttackingTokenDefenderChooser.kt",
+      "receiving_before_sha256": null,
+      "donor_sha256": "86ad9102ffaeb07333ae2cd18261430d223b945ad0206ef44f2daa8d24057a05",
+      "receiving_after_sha256": "86ad9102ffaeb07333ae2cd18261430d223b945ad0206ef44f2daa8d24057a05",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt",
+      "receiving_before_sha256": "844cd24f7987bb1b4bcd8fee7d729df6bb0298b6519b75ff03c2aa9a54092087",
+      "donor_sha256": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38",
+      "receiving_after_sha256": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt",
+      "receiving_before_sha256": "a160942be352e9ee0e27a07a022f728e115458a6f82a3a3083912a00e2031239",
+      "donor_sha256": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1",
+      "receiving_after_sha256": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt",
+      "receiving_before_sha256": "2fea303c76a5476c5367f0d52a37f138ffa4dca4e7b599d0f0fc7a9856068c16",
+      "donor_sha256": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a",
+      "receiving_after_sha256": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CombatEnumerator.kt",
+      "receiving_before_sha256": "6fe9da8a33999c557eecbf7ca8e64dea4a7e11cd06d5493404f2d7afc36013f8",
+      "donor_sha256": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b",
+      "receiving_after_sha256": "806c3e20163072b7b96588c695e6d6913cc39a7c70deec88f1ff31a5bc5e0c1b",
+      "integration": "EXACT_CANONICAL_BYTES"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+      "receiving_before_sha256": "19e46ab82c959375752046940f0dc8e39a34513eac26d687cc835b6bf91622fe",
+      "donor_sha256": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920",
+      "receiving_after_sha256": "87543b443ca4f637617f1cbe7613c37f1c577a7754aa272786cf5c0d7be68920",
+      "integration": "EXACT_CANONICAL_BYTES"
+    }
+  ],
+  "receiving_limits": [
+    "The exact original14 plus Dalkovan2 and separate prospective4 case names are preserved.",
+    "Canonical source is under its own targeted execution; no donor runtime acceptance is assumed.",
+    "Serialization preserves existing Industrial initiative/library/skip-untap bindings and absence of Prototype while adding only three canonical continuation registrations.",
+    "TriggerDetector preserves existing initiative and Undercity triggers while receiving canonical processed-entry cause suppression with full object-reference context.",
+    "Already accepted current-combat PendingDecision and DecisionValidators bytes are preserved; the token delta does not change those files.",
+    "Full receiving220/135, current32, shared150, AI144, compiled identity/replay and independent R1 admission remain separate."
+  ],
+  "canonical_local_source_candidate": "145b31ba41a0914207d91f6f939c869b97ded7bf",
+  "canonical_prior_attempt_evidence": [
+    "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-01",
+    "lab-coordinator/shared-capabilities/evidence/attacking-token-defender-attempt-02"
+  ]
+}

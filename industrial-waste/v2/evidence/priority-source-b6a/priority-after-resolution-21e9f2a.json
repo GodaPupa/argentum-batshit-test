@@ -1,0 +1,146 @@
+{
+  "schema_version": 1,
+  "kind": "exact_final_accepted_predecessor_code_extraction",
+  "source_commit": "21e9f2a82ea9d5292054b937456396e00060eb8d",
+  "source_tree": "2b004277e204891878b73b6a1d12169b54fc9223",
+  "acceptance_merge_commit": "692847283129d807a52229481d1d27d33f99a09c",
+  "implementation_origin": "dbdbc3b017ecae07f0f8733757c6bd70af124baf",
+  "parent_commit": "c6953354b1b799fe4506eb9e44ff25523a132d8e",
+  "patch": {
+    "path": "priority-after-resolution-21e9f2a.patch",
+    "bytes": 42666,
+    "sha256": "976513d37818aa5f3de0c24e51548743b2e11b5f5db45c2c6af60818d661e5d7"
+  },
+  "files": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt",
+      "parent": {
+        "sha256": "fdb4929e8d43a8cd2493f91cf757a33ac325160b234549930952ef97acf9bd7e",
+        "git_blob": "7991455c2b668395ecbca1463b75257f3208bc07",
+        "bytes": 5228
+      },
+      "implementation_origin": {
+        "sha256": "53d405a42d0fa5cd1d042cde1c1a8a89f7c4d2240fb003664493261ce7cd22d7",
+        "git_blob": "621b3f1f2b8b70a0183d53f63789187feab95fb1",
+        "bytes": 5652
+      },
+      "accepted_source": {
+        "sha256": "53d405a42d0fa5cd1d042cde1c1a8a89f7c4d2240fb003664493261ce7cd22d7",
+        "git_blob": "621b3f1f2b8b70a0183d53f63789187feab95fb1",
+        "bytes": 5652
+      },
+      "origin_equals_accepted": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt",
+      "parent": {
+        "sha256": "fc25a62695a75eb9e17181bf530cfe6d17e8706d9351933ac2853d13fa2b08cf",
+        "git_blob": "e45aebd84c1f4afd85689f5a95b8e3be6de34746",
+        "bytes": 20756
+      },
+      "implementation_origin": {
+        "sha256": "ed5f280953801a2bbc77927827744d8382a1578e0b5f433d105485a5eb5ddbf8",
+        "git_blob": "89b0a8550157012bb56cad81a4a80b35325e6114",
+        "bytes": 22856
+      },
+      "accepted_source": {
+        "sha256": "ed5f280953801a2bbc77927827744d8382a1578e0b5f433d105485a5eb5ddbf8",
+        "git_blob": "89b0a8550157012bb56cad81a4a80b35325e6114",
+        "bytes": 22856
+      },
+      "origin_equals_accepted": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/priority/PassPriorityHandler.kt",
+      "parent": {
+        "sha256": "1b4f6c6a064335464729975ae1f2ca4e140f4a777f5620d4bef4f0254d70bc5a",
+        "git_blob": "3b1d4608694a7ba6fc314e1b66d90ff60312bfef",
+        "bytes": 19320
+      },
+      "implementation_origin": {
+        "sha256": "5f866d6773ee6d56c059bf30ff54376e398a1b9f984201eaef4c7301f2d4a6b2",
+        "git_blob": "62ad200285b7564a071fa8c005d656b799ca9316",
+        "bytes": 19412
+      },
+      "accepted_source": {
+        "sha256": "5f866d6773ee6d56c059bf30ff54376e398a1b9f984201eaef4c7301f2d4a6b2",
+        "git_blob": "62ad200285b7564a071fa8c005d656b799ca9316",
+        "bytes": 19412
+      },
+      "origin_equals_accepted": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/player/PlayerLeavesGameProcessor.kt",
+      "parent": {
+        "sha256": "8d9c27f1a9b11cd0d7911dbab3577703e4597c2dad92ec4944542b3b0ff32dee",
+        "git_blob": "438a199394dbce6862ddad0a0b5f1f36798e304f",
+        "bytes": 11745
+      },
+      "implementation_origin": {
+        "sha256": "28c075aadd1fd70701acb15829188b3eb34ef07381d21bcb66ce61bc4413bea4",
+        "git_blob": "f58ed3014ebb85d77bfdd76ddd420650ffbbdedb",
+        "bytes": 11785
+      },
+      "accepted_source": {
+        "sha256": "28c075aadd1fd70701acb15829188b3eb34ef07381d21bcb66ce61bc4413bea4",
+        "git_blob": "f58ed3014ebb85d77bfdd76ddd420650ffbbdedb",
+        "bytes": 11785
+      },
+      "origin_equals_accepted": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+      "parent": {
+        "sha256": "32c48a9cf2314442c6cf3945ace2fefe97baa42474889d84d8c2a7e75bc3b7c5",
+        "git_blob": "1d8879b8d38103c9d229d39b12a8893a92dd040d",
+        "bytes": 77647
+      },
+      "implementation_origin": {
+        "sha256": "a0d247d5512c62d0af378334e4660f690ad81ee9036b572c18878e62ae7911b2",
+        "git_blob": "a02090204b4b1ab660945028a75e4ac77029bbfc",
+        "bytes": 78661
+      },
+      "accepted_source": {
+        "sha256": "a0d247d5512c62d0af378334e4660f690ad81ee9036b572c18878e62ae7911b2",
+        "git_blob": "a02090204b4b1ab660945028a75e4ac77029bbfc",
+        "bytes": 78661
+      },
+      "origin_equals_accepted": true
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/StackResolutionPriorityTest.kt",
+      "parent": null,
+      "implementation_origin": {
+        "sha256": "515a2da89211cb1cad0278bcd7c8c365cc611ab9e643d1fa05fcec670060ad63",
+        "git_blob": "091e326dff38fbc21cecfa113f9378c65b4f13d3",
+        "bytes": 22457
+      },
+      "accepted_source": {
+        "sha256": "515a2da89211cb1cad0278bcd7c8c365cc611ab9e643d1fa05fcec670060ad63",
+        "git_blob": "091e326dff38fbc21cecfa113f9378c65b4f13d3",
+        "bytes": 22457
+      },
+      "origin_equals_accepted": true
+    },
+    {
+      "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt",
+      "parent": {
+        "sha256": "bf28a87225a7deffe8efb21968a6708121a8543bc86a9d27ff02c06e2e931f24",
+        "git_blob": "f9d714b6f7a92f996f93ae126c0450f789c394ed",
+        "bytes": 87613
+      },
+      "implementation_origin": {
+        "sha256": "bf28a87225a7deffe8efb21968a6708121a8543bc86a9d27ff02c06e2e931f24",
+        "git_blob": "f9d714b6f7a92f996f93ae126c0450f789c394ed",
+        "bytes": 87613
+      },
+      "accepted_source": {
+        "sha256": "ef59cd04e877e787aa446b3240cb012a9527505d2e1df75e0e3fb82f925f0408",
+        "git_blob": "25c4e0fc143ad8b4d2bb5a29aeb7d67fcf023ece",
+        "bytes": 87803
+      },
+      "origin_equals_accepted": false
+    }
+  ],
+  "meaning": "Final accepted source governs; implementation origin is historical provenance only. No docs/workflows/experimental proposals imported. Receiving-source compatibility, exact combined regressions and admission remain required."
+}

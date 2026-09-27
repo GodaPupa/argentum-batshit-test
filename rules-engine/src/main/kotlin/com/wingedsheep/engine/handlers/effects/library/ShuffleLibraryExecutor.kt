@@ -5,8 +5,8 @@ import com.wingedsheep.engine.core.LibraryShuffledEvent
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.effects.EffectExecutor
 import com.wingedsheep.engine.state.GameState
-import com.wingedsheep.engine.state.ZoneKey
-import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.engine.mechanics.library.LibraryOrderingCause
+import com.wingedsheep.engine.mechanics.library.LibraryOrderingService
 import com.wingedsheep.sdk.scripting.effects.ShuffleLibraryEffect
 import kotlin.reflect.KClass
 
@@ -26,14 +26,13 @@ class ShuffleLibraryExecutor : EffectExecutor<ShuffleLibraryEffect> {
         val targetId = context.resolvePlayerTarget(effect.target)
             ?: return EffectResult.error(state, "No valid player for shuffle")
 
-        val libraryZone = ZoneKey(targetId, Zone.LIBRARY)
         // Strip reveals before shuffling — once shuffled, no player can claim
         // to know positions any more, even cards previously revealed via Scry/Surveil.
         val cleared = LibraryRevealUtils.clearLibraryReveals(state, targetId)
-        val (library, advanced) = cleared.nextRandom { shuffle(cleared.getZone(libraryZone)) }
+        val shuffled = LibraryOrderingService.shuffle(cleared, targetId, LibraryOrderingCause.EFFECT)
 
         return EffectResult.success(
-            advanced.reorderZone(libraryZone, library),
+            shuffled,
             listOf(LibraryShuffledEvent(targetId))
         )
     }

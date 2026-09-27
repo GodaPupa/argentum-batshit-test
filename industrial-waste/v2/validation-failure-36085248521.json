@@ -1,0 +1,151 @@
+{
+  "schema": "iw-v2-validation-failure-audit-v1",
+  "status": "REJECTED_AS_COMPLETE_BATCH_RULES_DEFECT_CONFIRMED",
+  "source_head": "c9573d18c59c3b2a1b20c128811b1f515cb3fb2e",
+  "workflow_run": 36085248521,
+  "workflow_job": 107915579954,
+  "full_ci_run": 36085248449,
+  "old_era_failed_job": 107915580245,
+  "artifact_id": 10843269689,
+  "artifact_zip_sha256": "9baa51defed9cc05b3a36921e21745bf5ee063d0d5aaf4548365b56a7ab7bf3d",
+  "observed_xml_suites": [
+    {
+      "name": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.ChromaticStarScenarioTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.TreeOfTalesScenarioTest",
+      "tests": 3,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.VaultOfWhispersScenarioTest",
+      "tests": 3,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.AncientStirringsScenarioTest",
+      "tests": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.GolemFoundryScenarioTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.BloodFountainScenarioTest",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.DarkmossBridgeScenarioTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.CandyTrailScenarioTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.DrossSkullbombScenarioTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.MyrKinsmithScenarioTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.PactdollTerrorScenarioTest",
+      "tests": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "failures": [
+    {
+      "suite": "com.wingedsheep.engine.scenarios.TreeOfTalesScenarioTest",
+      "case": "Tree cannot be cast and its land play consumes the one available land drop",
+      "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>"
+    },
+    {
+      "suite": "com.wingedsheep.engine.scenarios.VaultOfWhispersScenarioTest",
+      "case": "Vault cannot be cast and its land play consumes the one available land drop",
+      "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>"
+    }
+  ],
+  "defect": "Direct CastSpell accepted Tree of Tales and Vault of Whispers, contrary to CR305.1 and305.9. Legal-action enumeration excluded lands, but the authoritative handler lacked a land-type rejection.",
+  "repair": "Reject effectiveTypeLine.isLand after face-down early return, preserving effective spell-face casting and PlayLand. No tests, card definitions or golden expectations are weakened.",
+  "rules_source_sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+  "rules_effective_date": "2026-09-25",
+  "accepted_complete_capability": false,
+  "official_allocations_initialized": 0,
+  "official_evidence_invalidated": 0
+}

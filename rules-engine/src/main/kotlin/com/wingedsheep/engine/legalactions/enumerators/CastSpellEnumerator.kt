@@ -12,6 +12,7 @@ import com.wingedsheep.engine.legalactions.TapForGenericPermanentData
 import com.wingedsheep.engine.legalactions.TapForPowerCreatureData
 import com.wingedsheep.engine.legalactions.TargetInfo
 import com.wingedsheep.engine.legalactions.utils.SelectionCostPresentation
+import com.wingedsheep.engine.legalactions.utils.FixedSacrificePayment
 import com.wingedsheep.engine.legalactions.utils.TargetEnumerationUtils
 import com.wingedsheep.engine.mechanics.cost.VariablePermanentsCost
 import com.wingedsheep.engine.mechanics.EscalateCosts
@@ -562,7 +563,7 @@ class CastSpellEnumerator : ActionEnumerator {
             // (Arc Reactor) is worth more as a mana source than as an improvise tap, so the
             // no-taps configuration has to stay reachable on its own.
             val improviseHelp = improviseArtifacts.takeIf { hasImprovise && it.isNotEmpty() }.orEmpty()
-            val canAfford = if (hasConvoke && convokeCreatures != null && convokeCreatures.isNotEmpty()) {
+            val ordinaryCanAfford = if (hasConvoke && convokeCreatures != null && convokeCreatures.isNotEmpty()) {
                 context.manaSolver.canPay(state, playerId, payableCost, spellContext = spellContext, precomputedSources = cachedSources) ||
                     context.costUtils.canAffordWithConvoke(
                         state, playerId, payableCost, convokeCreatures,
@@ -603,6 +604,11 @@ class CastSpellEnumerator : ActionEnumerator {
             } else {
                 context.manaSolver.canPay(state, playerId, payableCost, spellContext = spellContext, precomputedSources = cachedSources)
             }
+
+            val canAfford = if (!hasConvoke && !hasDelve && !mandatoryWaterbend && !hasImprovise) {
+                FixedSacrificePayment.assess(context, cardId, payableCost, additionalCosts, spellContext)
+                    ?: ordinaryCanAfford
+            } else ordinaryCanAfford
 
             // Check alternative casting cost affordability (e.g., Jodah's {W}{U}{B}{R}{G}, or
             // Conspiracy Unraveler's "collect evidence 10" in the grant's non-mana half). Both

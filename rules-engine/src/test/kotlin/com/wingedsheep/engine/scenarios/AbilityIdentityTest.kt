@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.core.Suspension
 import com.wingedsheep.engine.core.MayAbilityContinuation
 import com.wingedsheep.engine.core.ActivateAbility
@@ -424,7 +426,7 @@ class AbilityIdentityTest : FunSpec({
 
         val player = driver.activePlayer!!
         // Two Soul Wardens: "Whenever another creature enters, you gain 1 life." Non-optional,
-        // no target — each goes directly on the stack when the bear enters.
+        // no target — the controller chooses their placement order when the bear enters.
         driver.putCreatureOnBattlefield(player, "Soul Warden")
         driver.putCreatureOnBattlefield(player, "Soul Warden")
 
@@ -432,6 +434,7 @@ class AbilityIdentityTest : FunSpec({
         val bear = driver.putCardInHand(player, "Identity Bear")
         driver.castSpell(player, bear).isSuccess shouldBe true
         driver.bothPass() // resolve the bear; it enters and both Soul Wardens trigger
+        driver.chooseTriggerOrderInListedOrder()
 
         val soulWardenTriggers = driver.state.stack.mapNotNull {
             driver.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>()

@@ -33,6 +33,8 @@ import com.wingedsheep.engine.mechanics.MayhemGrants
 import com.wingedsheep.engine.mechanics.SneakWindow
 import com.wingedsheep.engine.mechanics.WebSlinging
 import com.wingedsheep.engine.mechanics.WarpGrants
+import com.wingedsheep.engine.mechanics.CastPriorityProcessor
+import com.wingedsheep.engine.mechanics.StateBasedActionChecker
 import com.wingedsheep.engine.mechanics.MiracleGrants
 import com.wingedsheep.engine.mechanics.mana.paymentSubtypesOf
 import com.wingedsheep.engine.mechanics.mana.SpellPaymentContext
@@ -196,10 +198,12 @@ class CastSpellHandler(
     private val triggerProcessor: TriggerProcessor,
     private val manaAbilitySideEffectExecutor: com.wingedsheep.engine.mechanics.mana.ManaAbilitySideEffectExecutor,
     private val targetFinder: com.wingedsheep.engine.handlers.TargetFinder = com.wingedsheep.engine.handlers.TargetFinder(),
+    private val sbaChecker: StateBasedActionChecker = StateBasedActionChecker(cardRegistry = cardRegistry),
 ) : ActionHandler<CastSpell> {
     override val actionType: KClass<CastSpell> = CastSpell::class
 
     private val predicateEvaluator = PredicateEvaluator()
+    private val castPriorityProcessor = CastPriorityProcessor(sbaChecker, triggerDetector, triggerProcessor)
     private val zoneResolver = CastZoneResolver(cardRegistry, conditionEvaluator)
     private val castPermissionUtils = com.wingedsheep.engine.legalactions.utils.CastPermissionUtils(
         cardRegistry, predicateEvaluator, conditionEvaluator
@@ -405,6 +409,13 @@ class CastSpellHandler(
             ?.let { cardDef?.cardFaces?.getOrNull(it)?.typeLine }
             ?: transformedFace?.typeLine
             ?: cardComponent.typeLine
+        // CR 305.1/305.9: a land is played as a special action, even when it has
+        // another card type. Check the chosen spell face so land-primary
+        // Adventures and modal DFC spell faces remain castable. Morph/disguise
+        // already returned above with face-down creature characteristics.
+        if (effectiveTypeLine.isLand) {
+            return "Land cards can only be played as lands"
+        }
         // Sneak (CR 702.190a) grants an instant-speed casting permission during the active
         // player's declare blockers step — bypassing the normal sorcery-speed timing.
         val castingForSneak = action.useAlternativeCost &&
@@ -623,7 +634,10 @@ class CastSpellHandler(
             val escape = cardDef.keywordAbilities.filterIsInstance<KeywordAbility.Escape>().firstOrNull()
             if (escape != null) {
                 val selected = action.additionalCostPayment?.exiledCards.orEmpty()
-                if (action.cardId in selected) return "Escape requires exiling other cards from your graveyard"
+                if (selected.size != selected.distinct().size) {
+                    return "The same card cannot be exiled more than once to pay Escape"
+                }
+                if (action.cardId in selected) return "The escaping card cannot exile itself to pay Escape"
                 val cost = AdditionalCost.Atom(CostAtom.ExileFrom(Zone.GRAVEYARD, count = escape.exileCards))
                 validateAdditionalCosts(state, listOf(cost), action)?.let { return it }
             }
@@ -4262,6 +4276,11 @@ class CastSpellHandler(
         // matching APNAP ordering within processTriggers.
         val detectedTriggers = triggerDetector.detectTriggers(currentCastState, allEvents)
         val triggers = riderPendingTriggers + conspirePendingTriggers + casualtyPendingTriggers + stormPendingTriggers + detectedTriggers
+        if (!currentCastState.stackResolutionPendingPriority) {
+            return castPriorityProcessor.start(currentCastState, action.playerId, allEvents, triggers)
+        }
+        // A nested cast does not create a priority window. The enclosing resolution owns its
+        // eventual SBA checks; in particular a life payment may be followed by life gain there.
         if (triggers.isNotEmpty()) {
             val triggerResult = triggerProcessor.processTriggers(currentCastState, triggers)
 
@@ -4339,7 +4358,9 @@ class CastSpellHandler(
             sacrificedPermanents = sacrificedSnapshots,
             targetRequirements = spellTargetRequirements,
             count = 0,
-            creatureTypes = sortedTypes
+            creatureTypes = sortedTypes,
+            pendingCostTriggers = if (currentState.stackResolutionPendingPriority) emptyList()
+                else triggerDetector.detectTriggers(currentState, priorEvents),
         )
         return currentState.withPriority(action.playerId).suspendForDecision(
             question = { decisionId ->
@@ -4358,7 +4379,7 @@ class CastSpellHandler(
             },
             answer = continuation,
             events = priorEvents
-        )
+        ).copy(triggersAlreadyProcessed = !currentState.stackResolutionPendingPriority)
     }
 
     /**
@@ -5097,7 +5118,8 @@ class CastSpellHandler(
                 services.triggerDetector,
                 services.triggerProcessor,
                 services.manaAbilitySideEffectExecutor,
-                services.targetFinder
+                services.targetFinder,
+                services.sbaChecker
             )
         }
     }

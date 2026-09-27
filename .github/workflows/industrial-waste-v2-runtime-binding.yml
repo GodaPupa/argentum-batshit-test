@@ -1,0 +1,50 @@
+name: Industrial Waste v2 R1 Runtime Binding Audit
+
+on:
+  push:
+    branches:
+      - industrial-waste/v2-structural-redesign
+    paths:
+      - industrial-waste/v2/r1_runtime_binding_audit.py
+      - industrial-waste/v2/test_r1_runtime_binding_audit.py
+      - .github/workflows/industrial-waste-v2-runtime-binding.yml
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run fail-closed audit fixtures
+        run: python3 -m unittest industrial-waste/v2/test_r1_runtime_binding_audit.py -v
+      - name: Bind accepted components and prove official execution remains closed
+        run: |
+          python3 industrial-waste/v2/r1_runtime_binding_audit.py \
+            --root . \
+            --source-head "${{ github.sha }}" \
+            --out build/reports/industrial-waste-v2/r1-runtime-binding-audit.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p = Path("build/reports/industrial-waste-v2/r1-runtime-binding-audit.json")
+          r = json.loads(p.read_text())
+          assert r["status"] == "BLOCKED_MISSING_RUNTIME_BINDINGS"
+          assert r["frozen_geometry"]["total_allocations"] == 512
+          assert r["official_counters"] == {
+              "allocations_initialized": 0,
+              "actions_submitted": 0,
+              "comparative_outcomes_exposed": 0,
+          }
+          assert r["claim_creation_authorized"] is False
+          assert r["initialization_admitted"] is False
+          assert r["execution_authorized"] is False
+          assert len(r["missing_runtime_bindings"]) == 5
+          PY
+      - uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-v2-r1-runtime-binding-audit
+          path: build/reports/industrial-waste-v2/r1-runtime-binding-audit.json
+          if-no-files-found: error
+          retention-days: 90

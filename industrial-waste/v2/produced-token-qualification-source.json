@@ -1,0 +1,76 @@
+{
+  "schema": "industrial-v2-produced-token-qualification-v1",
+  "scope": "DETERMINISTIC_PRODUCED_TOKEN_FIXTURES_NO_R1_AUTHORITY",
+  "receiving_base": "e5a0facd17af60f099463f5ebe3e5e4afbe4bd0d",
+  "receiving_base_tree": "6ce05ad36bb6cfaf322a7df66fb5bbc4590b292f",
+  "source_sha256": {
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BloodFountainScenarioTest.kt": "ac02eadc8c26ce440449dbf4977619344d7f0a24d2cf542866182650cd0f602c",
+    "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FanaticalOfferingScenarioTest.kt": "6dada12cfa244249a708d35fb8fb5cb0ad325f82584673040e1c00f81e93422c",
+    ".github/workflows/industrial-waste-v2-card-qualification.yml": "9d54261205feea9cedb3655987c8e3fdf0ec989a68d21b09e5ccca38959b602d",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/GameTestDriver.kt": "4a807b64736b0f01d8e03617bad8bade7ad257c52e860b12923474ec2bcd9a49",
+    "mtg-sets/src/main/kotlin/com/wingedsheep/mtg/sets/tokens/PredefinedTokens.kt": "07770051b56e98f07f1a0e4056a5e4974084c9737b44497ddac1093a3ac2069a",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/AdditionalCost.kt": "9e02a1b25bbfc2f0ae2950b3695f93e196afcd0a64f363c70b9bd83d1248b437",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt": "7d74a133cc57fc585d4df21266e0c6402196403843ca2351b235909e926c58c6",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/vow/cards/BloodFountain.kt": "c02d04205df42181fb92c9d957547f5ec45c00b8639fe2fc14dc404267edc974",
+    "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lci/cards/FanaticalOffering.kt": "780f36102cff180e44f9f0262ec47fa6ddc89503e5b53e52342f7d805744b6e9",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/CostHandler.kt": "c83919c773aea1b851455220e439844467f184aff5fa4441858911f54a31eaa9",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/ExploreEffectExecutor.kt": "93d8582429feb80664ca3b119a02ccd4feba09b8ceccdf24646b7183f7002be1",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/CostHandlerDiscardChoiceTest.kt": "3acd11ee18374199ac8dee777f37c117a47f1ffa8408060e146f9e52ffcfac12"
+  },
+  "expected_cases": {
+    "BloodFountainScenarioTest": 7,
+    "FanaticalOfferingScenarioTest": 11,
+    "CostHandlerDiscardChoiceTest": 2
+  },
+  "existing_cases_preserved": {
+    "BloodFountainScenarioTest": 2,
+    "FanaticalOfferingScenarioTest": 2
+  },
+  "new_fixture_cases": 14,
+  "prior_card_gate_cases": 136,
+  "prospective_card_gate_cases": 154,
+  "prior_card_gate_reuse_is_not_new_execution": true,
+  "official_execution_authorized": false,
+  "official_allocations_initialized": 0,
+  "performance_outcomes": 0,
+  "rules_sources": [
+    "https://magic.wizards.com/en/news/feature/innistrad-crimson-vow-release-notes-2021-11-10",
+    "https://magic.wizards.com/en/news/feature/the-lost-caverns-of-ixalan-release-notes"
+  ],
+  "scope_limits": [
+    "Deterministic card fixtures only; no actual 512-allocation runner, seed, claim, or execution permit.",
+    "All original two cases per producer remain intact; 14 new cases exercise actual produced tokens.",
+    "Does not amend frozen public action policy or establish full runtime admission.",
+    "Runtime identity, resource/watchdog envelope and separate independent admission remain required."
+  ],
+  "activation_plan": {
+    "branch": "industrial-waste/r1-produced-token-qualification",
+    "pull_request_base": "industrial-waste/v2-structural-redesign",
+    "manual_dispatch": false,
+    "root_review_required_before_branch_or_pr_activation": true
+  },
+  "additional_software_regression_cases": 2,
+  "production_changes": "Only canonical nonrandom discard eligibility validation and empty-library explore counter application",
+  "pilot_changes": false,
+  "prospective_correction_of_source": "8f8ec082343b0fedcbb6956aeb875cbe29b6ae62",
+  "preserved_attempt": {
+    "run_id": 36278796607,
+    "artifact_id": 10918640760,
+    "original_sha256": "f83ef1fcdce0dc823f16efb3be93b50e2d153c7332da1176a76f832cda2c6049",
+    "cases": 18,
+    "passed": 14,
+    "failed": 4,
+    "broad_receiving_executed": false
+  },
+  "assay_differential": {
+    "required_by": ".agents/skills/add-feature/SKILL.md Step8a",
+    "sets": [
+      "VOW",
+      "LCI"
+    ],
+    "commands": "just assay-differential --set <SET> --top 1000",
+    "comparison_base": "8f8ec082343b0fedcbb6956aeb875cbe29b6ae62",
+    "scope": "SDK/parser versus unchanged committed card snapshots, not engine behavior or gameplay",
+    "acceptance": "Retain exact inputs, full rows/exits and classify divergences before acceptance; no automatic adoption or snapshot rewrite"
+  }
+}

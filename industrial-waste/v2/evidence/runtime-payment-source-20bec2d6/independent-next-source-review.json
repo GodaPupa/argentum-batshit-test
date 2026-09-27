@@ -1,0 +1,30 @@
+{
+  "schema": "industrial-v2-replay-diagnostic-independent-source-review-v1",
+  "reviewer": "/root",
+  "role": "non-author source reviewer in coordinator session",
+  "reviewed_local_commits": [
+    "9bc29d039b844d3bfe6a9613e36c0594e78ad379",
+    "9909268ca1926c96501f9aea6fc6969a6463e7d6"
+  ],
+  "decision": "ACCEPT_FOR_NEXT_RECEIVING_RUN_ONLY",
+  "source_sha256": {
+    ".github/workflows/industrial-waste-v2-card-qualification.yml": "28c925e381704f2ad07df950a1dcec55471c68d807c2cbf90dd241e8041328cd",
+    "industrial-waste/v2/execution-status-receiving-source.json": "f2be6f4b821f519e5b08aef9bbe0aafda14b7e141ed262078044a591a0b5e35c",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2AllocationRunner.kt": "bd3faf6f7e2a16a18f2f2b4e79b451e22f1d14f6179210d92cc38c954ee9d1e9",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2AllocationRunnerTest.kt": "6da21dc3c5eb93de7420d3f39ee744f74de21f432444adf9754057151443bd40"
+  },
+  "findings": [
+    "Status qualification binds the exact predecessor receipt and its attributed independent review. Only the two existing status-source/workflow pins receive prospective overrides; every other pin and frozen cap remains unchanged. Require all10 original status and4 failure actual XML cases with no failure/error/skip. just forwards unchanged tasks/selectors and snapshot allowlist.",
+    "Excluded diagnostics retain full original returned state bytes create-once after real actions. Defaults remain off and the official path cannot request diagnostics. Existing Compact fixture cards, ordering, seed and case count are unchanged.",
+    "The first exact replay-state digest mismatch records index, action, expected and actual hashes, actual events and actual state, then rejects. No normalization, replacement or weakening of subsequent event/checkpoint/final-state comparisons."
+  ],
+  "limits": [
+    "This is source review, not artifact or runtime acceptance.",
+    "The failed20bec raw artifact and exact failure remain preserved. Required150 shared and132 AI actual cases, full CI, canonical post-block receiving qualification and all frozen admission gates remain."
+  ],
+  "runtime_accepted": false,
+  "execution_authorized": false,
+  "official_allocations_initialized": 0,
+  "comparative_outcomes_exposed": 0,
+  "github_approval_submitted": false
+}

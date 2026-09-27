@@ -1,0 +1,117 @@
+{
+  "schema": "industrial-frozen-responder-preservation-prospective-v1",
+  "status": "FROZEN_BEFORE_ANY_EQUIVALENCE_EXECUTION_REQUIRES_NON_AUTHOR_SOURCE_REVIEW",
+  "frozen_responder_source": "1fe2118348b83bc9eacb9160c55ec52af67007b3",
+  "frozen_responder_sha256": "131c51b6f3973a722c41ffdbf5a1d9f11222d21b60c037329689bc78bbd7f5fe",
+  "canonical_default_source": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+  "canonical_default_responder_sha256": "5b9901e1a39b6de6aaccb069fb8d942cf6ae4b6b86b9b9592ca0564c93305223",
+  "legacy_strategy": "LEGACY_SIMULATE_BOTH_V1",
+  "default_strategy": "COMPLETED_BRANCH_V1",
+  "immutable_per_responder": true,
+  "same_strategy_for_all_four_frozen_lists": true,
+  "constructor_bindings": [
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2CapabilityRunner.kt",
+      "before_sha256": "9768e8ded95deb2faf7f0da75aa72733105454ac52a267bbce703cfe4e889f76",
+      "receiving_sha256": "f5865fc31896d30c2ebbf823ebb7380c7cc1c36895ca6bb7bcc8f05e4d9b6084"
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2EventMetricsTest.kt",
+      "before_sha256": "f7267f90ce4865fc3ca54d830edbb076b809b85673f1789180b4e8c6baac5af6",
+      "receiving_sha256": "e85bd7696b50d44cb438d16c6ed528d106c5684bcb460ba9af549cb2505fe0b5"
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatusTest.kt",
+      "before_sha256": "ec832d228162d4528ed28c1502786a3580bb31ec4e65b6edb4fb61f2d2e9a0b6",
+      "receiving_sha256": "bac85c6c8ed33dab7564a177b8e7990e7519cdeb387f847191ffc9654d083d4f"
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2FullHorizonRunner.kt",
+      "before_sha256": "ea17a33a52040458cdec0929bea6dc7890c6438cf387fa35c4cb9c77d6df9773",
+      "receiving_sha256": "b2314510c537726f5ddacf4841dd6fd7c55accbd90b3f9d6d666c5d32880a6cc"
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2OrderingIntegrationTest.kt",
+      "before_sha256": "0da3af618c76673376267a919e585713776415644b07c4a7bce621f0450021a9",
+      "receiving_sha256": "5df729a726c554134cd83216520b399d89c2e64c1e5ae6483f0fa2b255e22069"
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PaymentIntentTest.kt",
+      "before_sha256": "0cb05ab1562758eb62030dc1d7ddef6352aeab521cdca95f10a07ee411c7bd8a",
+      "receiving_sha256": "5e290d17095100b8a45b8b55fa8faeb4b697c87c9cfe71aece171e41e52a47fe"
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PublicActionPolicyTest.kt",
+      "before_sha256": "54730179128f8c91f57938b7d8fae5dfc350b94eebd649d0b6bfbfee4a91ce68",
+      "receiving_sha256": "d54e72dc8f0c6dde06c40798ba15a3e85a27fe882c65faa268062c36d52ff24c"
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2SacrificeCheckpointTest.kt",
+      "before_sha256": "cec02c3701801dbd17e0a590b1ffd6a54514f48c4c9370dadc6fa60877a92cb6",
+      "receiving_sha256": "9b53eb43f5aaec93b4b00d410da90ae6afe22a24cc35694dc5bf087cceba118c"
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2SelectionAdvisorTest.kt",
+      "before_sha256": "68e19cf91becc8ea47d56e9f8380a2bde106183eb68c9d4f3fa6185a8e0eaf0f",
+      "receiving_sha256": "e2d72431a8beb23b41c14992f8afe3d6c44ee3103727c66a2f1abc0fa9c3b4e4"
+    }
+  ],
+  "mechanical_preservation": {
+    "legacy_comparison_body_byte_identical_except_method_name": true,
+    "canonical_source_reconstructs_exactly_when_four_versioning_additions_are_removed": true,
+    "game_simulator_and_optional_cast_helper_exact_canonical_bytes": true,
+    "all_nine_constructor_arguments_unchanged_except_explicit_strategy": true,
+    "advisor_dispatch_precedes_legacy_logic": true,
+    "legacy_has_no_committed_followup_or_affordability_preflight": true
+  },
+  "mechanical_case_bank": {
+    "class": "com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest",
+    "path": "ai/src/test/kotlin/com/wingedsheep/ai/engine/IndustrialWasteV2FrozenResponderEquivalenceTest.kt",
+    "cases": [
+      "legacy exact-one beneficial singleton retains both original evaluation views",
+      "legacy exact-one empty beneficial branch retains both original evaluation views",
+      "legacy no-candidate no-payoff tie retains greater-than-or-equal acceptance",
+      "legacy up-to-one beneficial singleton stores no completed follow-up",
+      "legacy up-to-one beneficial empty branch stores no completed follow-up",
+      "legacy harmful singleton keeps its original tie behavior without default-policy repair",
+      "legacy multiple candidates retain independent generic selection rather than a stored branch",
+      "legacy advisor answer remains first and bypasses generic simulation",
+      "legacy advisor deferral retains original two-simulation generic evaluation",
+      "legacy unaffordable optional cast retains the original simulation tie without preflight"
+    ],
+    "count": 10,
+    "fixture_seed_hex": "0xC0A1_0001",
+    "prior_fixture_definitions_source": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+    "prior_fixture_definitions_path": "ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt",
+    "unaffordable_madness_shape_source_path": "ai/src/test/kotlin/com/wingedsheep/ai/engine/PestControlMonoRedMadnessDecisionTest.kt",
+    "fixture_scope": "Fixed engine decision states only; not candidate policies, development games, R1 allocations or evidence of strategic quality.",
+    "execution_attempts": 0
+  },
+  "source_hashes": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "a7a444f594bef0477230b39e7c8f822b0148ecb7c0e454fd0cb570433e57347f",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/GameSimulator.kt": "e82460f8bf5554dd938355a711fbec5031e61d20638610859067d87752ac418a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/OptionalCastAffordability.kt": "5102111629a564fa99e170714c7053bf0b8785b15f350af7447a677608a00c58",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/YesNoDecisionStrategy.kt": "8a6b0197a183b9f02d33cce8a710cc30ed298913df1a6b5572e3e3fefedea93e",
+    "ai/src/test/kotlin/com/wingedsheep/ai/engine/IndustrialWasteV2FrozenResponderEquivalenceTest.kt": "9ade7716d86001ca168ceb279c9b6a1b008c2d74a1676ad88e60b4a2b7a6fbb9",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2CapabilityRunner.kt": "f5865fc31896d30c2ebbf823ebb7380c7cc1c36895ca6bb7bcc8f05e4d9b6084",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2EventMetricsTest.kt": "e85bd7696b50d44cb438d16c6ed528d106c5684bcb460ba9af549cb2505fe0b5",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ExecutionStatusTest.kt": "bac85c6c8ed33dab7564a177b8e7990e7519cdeb387f847191ffc9654d083d4f",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2FullHorizonRunner.kt": "b2314510c537726f5ddacf4841dd6fd7c55accbd90b3f9d6d666c5d32880a6cc",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2OrderingIntegrationTest.kt": "5df729a726c554134cd83216520b399d89c2e64c1e5ae6483f0fa2b255e22069",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PaymentIntentTest.kt": "5e290d17095100b8a45b8b55fa8faeb4b697c87c9cfe71aece171e41e52a47fe",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PublicActionPolicyTest.kt": "d54e72dc8f0c6dde06c40798ba15a3e85a27fe882c65faa268062c36d52ff24c",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2SacrificeCheckpointTest.kt": "9b53eb43f5aaec93b4b00d410da90ae6afe22a24cc35694dc5bf087cceba118c",
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2SelectionAdvisorTest.kt": "e2d72431a8beb23b41c14992f8afe3d6c44ee3103727c66a2f1abc0fa9c3b4e4"
+  },
+  "required_after_source_review": [
+    "All 10 fixed equivalence controls pass with raw XML and exact receiving source binding.",
+    "Canonical original27/220 and18/135 banks still required independently of legacy-instance evidence.",
+    "All existing Industrial 134 runtime cases, shared150, replay and full CI on the composed source.",
+    "Compiled runtime and complete frozen gameplay admission remain separate."
+  ],
+  "frozen_protocol_or_card_changes": false,
+  "pilot_ranks_scores_ties_materials_changed": false,
+  "official_allocations": 512,
+  "official_games": 0,
+  "official_execution_authorized": false
+}

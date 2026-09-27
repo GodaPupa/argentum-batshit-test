@@ -1,0 +1,111 @@
+{
+  "schema": "shared-fixed-component-root-independent-actual-review/v1",
+  "reviewer": "/root",
+  "author": "/root/sphinx",
+  "independent_of_author": true,
+  "github_approval": false,
+  "disposition": "ACCEPT_EXACT_COMPONENT_ONLY",
+  "source": "1bc66b276f5db54640df1f956a32fa3d188628e3",
+  "tree": "9a634d5b1acde2d2d80e1b3a347d0ec31b03e6c9",
+  "run": 36267146212,
+  "artifact": 10914715439,
+  "archive_sha256": "c93092020de7fc3ca865aa6e91b3ea3d118bd3c4eee7576b9ca2b965824957a3",
+  "archive_bytes": 262473,
+  "source_pins_verified": 48,
+  "manifest_sha256": "dacc9f54babdb4bc1659edd5dfcc0c50427f0afd16fec375972fb53f20f4c453",
+  "actual_cases": 20,
+  "unique_cases": 20,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "stages": [
+    {
+      "stage": "token-defender-14",
+      "class": "com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest",
+      "actual_cases": 14,
+      "case_names": [
+        "TD01 land attack trigger creates two tokens attacking the sole opponent, never its controller",
+        "TD02 multiple opponents require a separate controller choice for every not-yet-created token",
+        "TD03 public planeswalkers and protected battles are nontargeting defender choices",
+        "TD04 attack-left and attack-right preserve the legal neighboring seat",
+        "TD05 recipient fanout suspends once, retains all token collections and does not make nonactive players attack",
+        "TD06 doubled plain batch freezes four defender choices and four delayed riders across serialization",
+        "TD07 target-copy batch uses the same once-only count replacement and selected defenders",
+        "TD08 noncreature target copies enter tapped without attacking or asking for a defender",
+        "TD09 wrong actor and malformed defender submissions preserve the exact pending state",
+        "TD10 serialized pending choice and identical answer replay preserve state and events exactly",
+        "TD11 copy as-enters choices retain chosen defender tail, token collection, entry events and delayed riders",
+        "TD12 declining token replacement keeps the prepared count and actual recipient across the next choice",
+        "TD13 accepting replacement preserves attacking state, actual recipient, collection and delayed riders",
+        "TD14 active teammate chooses its own legal defenders while declaration restrictions do not prevent entry"
+      ],
+      "xml_sha256": "80689999f7d1e1fadacdb9c3dd196c4d69b851c195b15d473a9f6eb563520712",
+      "timestamp": "2026-09-26T19:51:58.002Z",
+      "exit": 0,
+      "fresh_executor_starts": 1,
+      "log_sha256": "bc5c886ba5071eb7b2242be686b3faca91cb80bd3f21ada021058c0ee4c2b898"
+    },
+    {
+      "stage": "dalkovan-2",
+      "class": "com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest",
+      "actual_cases": 2,
+      "case_names": [
+        "activating the ability then attacking creates two tapped, attacking Warrior tokens",
+        "the tokens are sacrificed at the next end step"
+      ],
+      "xml_sha256": "098b7333515fd742814409ed27a7a326a585051f59bb0c6f0028aa9c2b27a00b",
+      "timestamp": "2026-09-26T19:52:35.688Z",
+      "exit": 0,
+      "fresh_executor_starts": 1,
+      "log_sha256": "f3ed79e547c79da9f3409ead273b17fe7076791afb7bc2af2e96445eccb178a2"
+    },
+    {
+      "stage": "entry-event-provenance-4",
+      "class": "com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest",
+      "actual_cases": 4,
+      "case_names": [
+        "EP01 a real as-enters token publishes its entry and resolves exactly one self ETB trigger",
+        "EP02 entry-time observer survives its automatic-tail removal and the distinct leave trigger is not suppressed",
+        "EP03 serialized pending token tail and repeated answers preserve exact entry records, state and two ETB effects",
+        "EP04 serialized provenance skips only the marked occurrence and preserves identical unmarked occurrences"
+      ],
+      "xml_sha256": "f438d69b9cb00d4ccb08a865fa5f3f7fc8f6c8ef1c12d11908622576068ee241",
+      "timestamp": "2026-09-26T19:52:58.642Z",
+      "exit": 0,
+      "fresh_executor_starts": 1,
+      "log_sha256": "5edab3e63ddda47d8e74f99bc27c469b4e5b333bff34775ab73b3f3d3abb928e"
+    }
+  ],
+  "raw_members_sha256": {
+    "actual-case-audit.json": "226660490cde8fd1f5839913911599bbfcc03045ffec39f5c92f9d879f943d64",
+    "dalkovan-2-exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "dalkovan-2.log": "f3ed79e547c79da9f3409ead273b17fe7076791afb7bc2af2e96445eccb178a2",
+    "entry-event-provenance-4-exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "entry-event-provenance-4.log": "5edab3e63ddda47d8e74f99bc27c469b4e5b333bff34775ab73b3f3d3abb928e",
+    "source-provenance.json": "25ec1f4829b2388e293c0c9cc088cb5391e02d7aee5fa3c25c6e70fa61055ce4",
+    "tests/dalkovan-2/TEST-com.wingedsheep.engine.scenarios.DalkovanEncampmentScenarioTest.xml": "098b7333515fd742814409ed27a7a326a585051f59bb0c6f0028aa9c2b27a00b",
+    "tests/dalkovan-2/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/entry-event-provenance-4/TEST-com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest.xml": "f438d69b9cb00d4ccb08a865fa5f3f7fc8f6c8ef1c12d11908622576068ee241",
+    "tests/entry-event-provenance-4/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "tests/token-defender-14/TEST-com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest.xml": "80689999f7d1e1fadacdb9c3dd196c4d69b851c195b15d473a9f6eb563520712",
+    "tests/token-defender-14/exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "token-defender-14-exit-status.txt": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "token-defender-14.log": "bc5c886ba5071eb7b2242be686b3faca91cb80bd3f21ada021058c0ee4c2b898"
+  },
+  "scope_partition": {
+    "original_token_cases": 16,
+    "separate_event_provenance_cases": 4
+  },
+  "verified": [
+    "Live run reports exact source/attempt1/success; source Git tree matches reviewed local immutable tree.",
+    "Every exact source pin and originalbank name reconciled against rawXML; allcases0FES and actualcommandRC0.",
+    "Each declared command has one fresh executor/one successful build, no cached/up-to-date test task.",
+    "Previous failed source attempts preserved separately; no case removed or outcome reclassified."
+  ],
+  "limitations": [
+    "Component acceptance only; every receiving source still needs its exact compatibility, integration and admission gates.",
+    "No new pilot development, official seed, claim or gameplay.",
+    "No generic original-batch beforeEntry or arbitrary historical-observer snapshot completeness accepted.",
+    "This satisfies the donor20 artifact prerequisite only; Ferocity08/Industrial/rootcombined are still unexecuted receiving sources."
+  ]
+}

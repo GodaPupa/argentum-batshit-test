@@ -3,6 +3,7 @@ package com.wingedsheep.engine.scenarios
 import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PaymentStrategy
+import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
@@ -64,13 +65,21 @@ class LavaDartScenarioTest : FunSpec({
         val dart = driver.putCardInGraveyard(me, "Lava Dart")
         val mountain = driver.putLandOnBattlefield(me, "Mountain")
 
+        val offer = LegalActionEnumerator.create(driver.cardRegistry).enumerate(driver.state, me)
+            .single { (it.action as? CastSpell)?.cardId == dart &&
+                (it.action as CastSpell).alternativeCostType == AlternativeCostType.FLASHBACK }
+        offer.affordable shouldBe true
+        offer.requiresTargets shouldBe true
+        offer.validTargets!!.contains(opp) shouldBe true
+        offer.additionalCostInfo!!.costType shouldBe "SacrificePermanent"
+        offer.additionalCostInfo!!.sacrificeCount shouldBe 1
+        offer.additionalCostInfo!!.validSacrificeTargets shouldBe listOf(mountain)
+        val offeredCast = offer.action as CastSpell
+        offeredCast.additionalCostPayment shouldBe null
+
         driver.submit(
-            CastSpell(
-                playerId = me,
-                cardId = dart,
+            offeredCast.copy(
                 targets = listOf(ChosenTarget.Player(opp)),
-                useAlternativeCost = true,
-                alternativeCostType = AlternativeCostType.FLASHBACK,
                 additionalCostPayment = AdditionalCostPayment(sacrificedPermanents = listOf(mountain)),
                 paymentStrategy = PaymentStrategy.AutoPay
             )

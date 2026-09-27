@@ -1,0 +1,72 @@
+{
+  "schema": "industrial-waste-v2-r1-runtime-identity-binding-capability-v1",
+  "status": "ACCEPTED_SEED_FREE_RUNTIME_IDENTITY_BINDING_ONLY",
+  "source_branch": "industrial-waste/v2-structural-redesign",
+  "source_commit": "0f04dcc29fe8cae25b6e5041b5f2c53b1f2f5725",
+  "predecessor_audit_commit": "d4204328f1299cbdb997c1b3d78d52c3a2225ee2",
+  "predecessor_audit_run": 36222711502,
+  "workflow_run_id": 36225863131,
+  "workflow_job_id": 108359655221,
+  "artifact": {
+    "id": 10901310163,
+    "name": "industrial-waste-v2-r1-runtime-identity-binding",
+    "size_in_bytes": 1291,
+    "github_sha256": "133d68bc01934e208a57273c8ecd5a06a5bbad7f22920a0f1e8f58efb3ec4eea"
+  },
+  "validation": {
+    "workflow_conclusion": "success",
+    "full_ci_run": 36225865544,
+    "full_ci_conclusion": "success",
+    "binding_tests": "PASS",
+    "predecessor_fail_closed_audit_composed": true
+  },
+  "runtime_identity": {
+    "canonical_card_snapshots": {
+      "files": 169,
+      "bytes": 29077294,
+      "sha256": "f0fca8cd20ebde93e536c111e22bef2bc5d2458ec882a0e25dee2e5da80b4307"
+    },
+    "card_definition_sources": {
+      "files": 18565,
+      "bytes": 31712582,
+      "sha256": "1c5bdd915b5947fad16802c9d0b2bd78c29e8f98bb28192cca228ff28a3cf88d"
+    },
+    "mtg_sdk_sources": {
+      "files": 228,
+      "bytes": 3712227,
+      "sha256": "619b95cde2d9699b89aec2b924b6be7baea97b485946ca78de3032dca4505127"
+    },
+    "rules_engine_sources": {
+      "files": 825,
+      "bytes": 9533388,
+      "sha256": "0aca389d00fab3f8d77edb18153c0c1b434aabe6063c49c689c5db2c1051d8b3"
+    }
+  },
+  "bindings_closed": [
+    "effective_rules_archive_and_digest",
+    "compiled_card_snapshot_digest"
+  ],
+  "remaining_runtime_bindings": [
+    "official_r1_corpus_runner",
+    "official_r1_artifact_schema_and_completeness_contract",
+    "official_complete_metric_projection"
+  ],
+  "frozen_geometry": {
+    "decks": 4,
+    "ordering_rows": 64,
+    "allocations_per_deck": 128,
+    "total_allocations": 512
+  },
+  "official_counters": {
+    "allocations_initialized": 0,
+    "actions_submitted": 0,
+    "comparative_outcomes_exposed": 0
+  },
+  "claim_creation_authorized": false,
+  "attempt_journal_creation_authorized": false,
+  "initialization_admitted": false,
+  "execution_authorized": false,
+  "candidate_elimination_authorized": false,
+  "candidate_promotion_authorized": false,
+  "next_gate": "Bind the exact official 512-allocation corpus runner, complete artifact/completeness contract, and complete metric projection before creating any durable official claim."
+}

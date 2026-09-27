@@ -1,0 +1,92 @@
+{
+  "schema": "iw-v2-validation-failure-audit-v1",
+  "status": "REJECTED_AS_COMPLETE_BATCH_VALIDATION_SOURCE_FAILURE",
+  "source_head": "c63e836da71a52d3d188817eb619e80b7b09a3c1",
+  "workflow_run": 36084559249,
+  "workflow_job": 107913426567,
+  "full_ci_run": 36084559120,
+  "old_era_failed_job": 107913426592,
+  "artifact_id": 10843467566,
+  "artifact_zip_sha256": "8f968e97614d6aae0b321d1f2520dc0aa3f5aaa9981205088c7d9cd33a174656",
+  "observed_xml_suites": [
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "tests": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "tests": 8,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.ChromaticStarScenarioTest",
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.CandyTrailScenarioTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.DrossSkullbombScenarioTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.MyrKinsmithScenarioTest",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    {
+      "name": "com.wingedsheep.engine.scenarios.ConduitPylonsScenarioTest",
+      "tests": 9,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  ],
+  "compile_failure": "GolemFoundryScenarioTest used DSL string Counters.CHARGE where CountersComponent requires CounterType.CHARGE at lines 24, 143 and 160.",
+  "repair": "Replace fixture import and three references with CounterType.CHARGE; all assertions and game/card code unchanged.",
+  "missing_selected_suites": [
+    "AncientStirringsScenarioTest",
+    "GolemFoundryScenarioTest"
+  ],
+  "accepted_complete_capability": false,
+  "official_allocations_initialized": 0,
+  "official_evidence_invalidated": 0
+}

@@ -1,0 +1,198 @@
+{
+  "audited_local_source": "73074f2c634ac97c996f74afacdff5626613ac90",
+  "audited_tree": "b154d9e2ea81d08a6dca983fa0ac51f5af150f2d",
+  "copy_and_grant_closure": "No main-deck or opponent effect copies a permanent, copies a token, or grants a triggered ability. Weather the Storm creates copies of its own instant spell; each only gains life and cannot create a token observer. Registry presence of other token definitions supplies no creation route.",
+  "deck_files_sha256": {
+    "industrial-waste/control/industrial-waste-v1.0-submitted.dck": "9b8a2932d78c99dd13f5c4834066bfa644f065137ee90efa75f3418ab56d1f1a",
+    "industrial-waste/v2/candidates/compact-loop.dck": "759d0cbab344bd6bbc89460a61fe5e02e13a0dbf6ce804c424fd22c1ebd50619",
+    "industrial-waste/v2/candidates/lean-tron-hybrid.dck": "1c2ae6ba0f8a0f0dcd124f79d77b3b9f57d9f32180f31662f5fbde0f0f15bc07",
+    "industrial-waste/v2/candidates/recursive-eggs.dck": "0d8c61db235ac5a38813ee74211f4ca55bab8f82b2a9bdd426a2570e2040898a"
+  },
+  "excluded_specific_gap": "Token already observing another cost event then itself leaving during the post-cast state-based pass cannot arise: none of the four reachable tokens has any triggered ability, and no reachable effect can grant one or create a token copy of a trigger-bearing permanent.",
+  "frozen_protocol_sha256": "fd697b6d56b5a5451f4dc6f9ee4bd20584a705570c6f99861dd64f0086ed95bc",
+  "limits": [
+    "This is not a claim that all token LKI or cost-event behavior is supported. Required non-token cost observers and all other reachable shared surfaces remain receiving qualification obligations.",
+    "Do not reuse this conclusion after an input or definition change without exact source compatibility verification.",
+    "Incoming shared-core source was not integrated by this audit; verify bound definitions and support behavior before accepting exclusion on that receiving source."
+  ],
+  "main_definition_files": {
+    "Ancient Stirrings": {
+      "path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/AncientStirrings.kt",
+      "sha256": "7ca4c2c1a6b72d4123fa1e55ac7574224fc3fc1c608e21befa62837321155873"
+    },
+    "Ashnod's Altar": {
+      "path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/AshnodsAltar.kt",
+      "sha256": "addcf47e149f35ada8572829cd411e6c3e79243c16a74ed830c2a9a7e838a43b"
+    },
+    "Blood Fountain": {
+      "path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/vow/cards/BloodFountain.kt",
+      "sha256": "c02d04205df42181fb92c9d957547f5ec45c00b8639fe2fc14dc404267edc974"
+    },
+    "Candy Trail": {
+      "path": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/woe/cards/CandyTrail.kt",
+      "sha256": "2d51caf06bfc51e3d6a056e37a973d8fcb157330af5d57fef65c915e9a48462a"
+    },
+    "Chromatic Star": {
+      "path": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tsp/cards/ChromaticStar.kt",
+      "sha256": "e6a1f66780255d31176e7f4b2e7b0cccfb87e033a7a5374e8ad2d398ca80a027"
+    },
+    "Conduit Pylons": {
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/otj/cards/ConduitPylons.kt",
+      "sha256": "26a140d118fdf769ea3c6a69eafe02af252ec943b280c590b05318ee8c57236b"
+    },
+    "Crop Rotation": {
+      "path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/CropRotation.kt",
+      "sha256": "2598cbd90009674eb980c31e57720a3586ec4811b153f10510d512bde36e8126"
+    },
+    "Darkmoss Bridge": {
+      "path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh2/cards/DarkmossBridge.kt",
+      "sha256": "95f0e9c00613bb4129ebba223fafad4ddce810a7e34563ffdd162de37a183cf2"
+    },
+    "Dross Skullbomb": {
+      "path": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/one/cards/DrossSkullbomb.kt",
+      "sha256": "51f261c6bad937e3e1168d7d27bd05f09de45e61c52214a7a9089f9aed583c22"
+    },
+    "Eviscerator's Insight": {
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/EvisceratorsInsight.kt",
+      "sha256": "556312cb37e347a091c223e59c05bbe430ac8816abb826848bac81cb70724dc8"
+    },
+    "Expedition Map": {
+      "path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/zen/cards/ExpeditionMap.kt",
+      "sha256": "862f38a3f0b940bbd7661c7bb6a2b698a178a86605ba0d36ab4c600dc8a58bb3"
+    },
+    "Fanatical Offering": {
+      "path": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lci/cards/FanaticalOffering.kt",
+      "sha256": "780f36102cff180e44f9f0262ec47fa6ddc89503e5b53e52342f7d805744b6e9"
+    },
+    "Giant's Boulder": {
+      "path": "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/hob/cards/GiantsBoulder.kt",
+      "sha256": "98fce610f5bcc07dbbad30f7b13c867d809b490f6274b2bb287270aaff791e63"
+    },
+    "Golem Foundry": {
+      "path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/GolemFoundry.kt",
+      "sha256": "b828e5e4c161658a5116381f48228e1edc873a2d90e989192f1feedd50b561ee"
+    },
+    "Ichor Wellspring": {
+      "path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mbs/cards/IchorWellspring.kt",
+      "sha256": "203b13c4e55add5e42ffe372aa5d8f01d22b64883ad1b82e6835dd842aa7190d"
+    },
+    "Malevolent Rumble": {
+      "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/MalevolentRumble.kt",
+      "sha256": "819a20e2aa20823ffcf335eed3d375617506067ada6e8b81febb7b8a073cb0fc"
+    },
+    "Myr Kinsmith": {
+      "path": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/one/cards/MyrKinsmith.kt",
+      "sha256": "54240dbb06f00a521af266a6e28b1420d433a84fce3abb04f9c72e404953ab41"
+    },
+    "Myr Retriever": {
+      "path": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mrd/cards/MyrRetriever.kt",
+      "sha256": "3e2199d255da98baab5c1f2fb4e025b28bdcc8e8deb3ee8645443e44e5310b75"
+    },
+    "Pactdoll Terror": {
+      "path": "mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dft/cards/PactdollTerror.kt",
+      "sha256": "a879c8ee559f19f406fa1bb307164f6c39845e4072ecc84669c6831e7681059f"
+    },
+    "Prophetic Prism": {
+      "path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/PropheticPrism.kt",
+      "sha256": "7279de1af172e1c878f37a0cc32de492185fe9f19e36431eec804ef88216a389"
+    },
+    "Tree of Tales": {
+      "path": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mrd/cards/TreeOfTales.kt",
+      "sha256": "99542a253c7d10f4599ecd535892d6b0f6bec4992ee4ba3c0ba99ca4f36404d0"
+    },
+    "Urza's Mine": {
+      "path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasMine.kt",
+      "sha256": "f91389d1c0cd766f2de05ab1a3ce4e371d60fa37b4b474ef4ad0d4e0032f250c"
+    },
+    "Urza's Power Plant": {
+      "path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasPowerPlant.kt",
+      "sha256": "db493e5c5680d50844553d653e9dc2073e65fa05481ce335e969970f2b4569a1"
+    },
+    "Urza's Tower": {
+      "path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasTower.kt",
+      "sha256": "5329aaf479d054f1bd3e89fbc5dd64c35c6543a1c55861c43053096f2ad9a686"
+    },
+    "Vault of Whispers": {
+      "path": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mrd/cards/VaultOfWhispers.kt",
+      "sha256": "d1ad3044a547d6bf1c254d5549d5bcebf6809ac2f84e26633e830d60f8f55e85"
+    },
+    "Weather the Storm": {
+      "path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh1/cards/WeatherTheStorm.kt",
+      "sha256": "68c42d59d2fc5ba51c85f3563578e22e23bcb78a1c17259cf85caaa8be28134b"
+    }
+  },
+  "main_identities": [
+    "Ancient Stirrings",
+    "Ashnod's Altar",
+    "Blood Fountain",
+    "Candy Trail",
+    "Chromatic Star",
+    "Conduit Pylons",
+    "Crop Rotation",
+    "Darkmoss Bridge",
+    "Dross Skullbomb",
+    "Eviscerator's Insight",
+    "Expedition Map",
+    "Fanatical Offering",
+    "Forest",
+    "Giant's Boulder",
+    "Golem Foundry",
+    "Ichor Wellspring",
+    "Malevolent Rumble",
+    "Myr Kinsmith",
+    "Myr Retriever",
+    "Pactdoll Terror",
+    "Prophetic Prism",
+    "Swamp",
+    "Tree of Tales",
+    "Urza's Mine",
+    "Urza's Power Plant",
+    "Urza's Tower",
+    "Vault of Whispers",
+    "Weather the Storm"
+  ],
+  "official_allocations_initialized": 0,
+  "ordinary_basic_lands": [
+    "Forest",
+    "Swamp"
+  ],
+  "policy_avoidance_used": false,
+  "reachable_tokens": [
+    {
+      "creator": "Malevolent Rumble",
+      "implementation": "CreatePredefinedTokenEffect(\"Eldrazi Spawn\"); registered definition has only SacrificeSelf:AddColorlessMana(1) activated mana ability",
+      "token": "Eldrazi Spawn",
+      "triggered_abilities": []
+    },
+    {
+      "creator": "Blood Fountain",
+      "implementation": "CreatePredefinedTokenEffect(\"Blood\"); registered definition has only mana1/tap/discard/sacrifice activated draw ability",
+      "token": "Blood",
+      "triggered_abilities": []
+    },
+    {
+      "creator": "Fanatical Offering",
+      "implementation": "CreatePredefinedTokenEffect(\"Map\"); registered definition has only mana1/tap/sacrifice sorcery-speed activated explore ability",
+      "token": "Map",
+      "triggered_abilities": []
+    },
+    {
+      "creator": "Golem Foundry",
+      "implementation": "CreateTokenEffect from literal power3/toughness3/colorless/Golem/artifactToken=true; no keyword, static, activated or triggered ability payload",
+      "token": "3/3 colorless Golem artifact creature",
+      "triggered_abilities": []
+    }
+  ],
+  "runtime_admission_authorized": false,
+  "schema": "industrial-waste-v2-bounded-token-observer-reachability-v1",
+  "scope": "R1 four immutable main60s against passive60Forest. No sideboard, external card pool, extra candidate or policy restriction is used for this exclusion.",
+  "status": "EXACT_SOURCE_AUDIT_PENDING_INDEPENDENT_REVIEW",
+  "support_files_sha256": {
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/CardBuilder.kt": "48ef231d35bad25b3508fc1ec5a57e3c69d83c051e2a88b578188ae1193747c6",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Effects.kt": "b18f03d419ec4d91a368d0ef6b35b164f0ae0e041cfdc3bdf6241db4c608b98c",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/model/CardDefinition.kt": "23650ba95233d819841dadab8a70fd8e9ef624efa1d4c44afbe624379838d63a",
+    "mtg-sets/src/main/kotlin/com/wingedsheep/mtg/sets/tokens/PredefinedTokens.kt": "07770051b56e98f07f1a0e4056a5e4974084c9737b44497ddac1093a3ac2069a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreatePredefinedTokenExecutor.kt": "8f6c8530f9dc547acc3c7bbe0c21ae64c6330efcb0ab3bdc6f2d96f0b761aac8",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt": "a160942be352e9ee0e27a07a022f728e115458a6f82a3a3083912a00e2031239"
+  }
+}

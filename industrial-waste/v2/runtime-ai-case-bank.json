@@ -1,0 +1,267 @@
+{
+  "schema": "industrial-r1-ai-runtime-case-bank-v1",
+  "accepted_source": "1fe2118348b83bc9eacb9160c55ec52af67007b3",
+  "accepted_artifact_sha256": "20f7ed7d9940a06700847762df57e0792ca87929a0148b84d6629b577d63a44c",
+  "cases": [
+    {
+      "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "cases": [
+        "LEGACY_V0 plays the frozen baseline game exactly as it always has"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteAdvisorModuleTest",
+      "cases": [
+        "Expedition Map selects the missing Tron piece independent of library order",
+        "Crop Rotation uses the same missing-piece policy",
+        "Myr Retriever death trigger returns the other Retriever",
+        "Ashnod's Altar sacrifices Retriever when the payoff loop is assembled",
+        "Ashnod's Altar seeds the loop when the second Retriever is in hand",
+        "policy prefers staging the Retriever loop over passing"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ActivatedCheckpointTest",
+      "cases": [
+        "Blood Fountain recovery with legal target and enough colorless mana records a colored failure",
+        "Blood Fountain with no graveyard creature is not a relevant colored recovery failure",
+        "Blood Fountain recovery payable with a black source is executable",
+        "Dross Skullbomb recovery with legal target and enough colorless mana records a colored failure",
+        "Dross Skullbomb with no graveyard creature is not a relevant colored recovery failure",
+        "Dross Skullbomb recovery payable with a black source is executable",
+        "tapped Fountain does not become a color failure when its non-mana cost is unavailable"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2AllocationRunnerTest",
+      "cases": [
+        "complete excluded allocation preserves exact actions events checkpoints and replay",
+        "allocation directory is create-once and a second invocation cannot replace evidence",
+        "frozen Compact Loop spell-bearing fixture composes the public pilot typed metrics and snapshot replay",
+        "official namespace or official allocation id is rejected before any filesystem mutation"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2CapabilityRunnerTest",
+      "cases": [
+        "all four frozen R1 lists complete one measured own turn through the composed real runner",
+        "composed one-turn capability runner replays identically for all four frozen lists",
+        "captured one-turn action transcript replays exactly for all four frozen lists"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2EventMetricsTest",
+      "cases": [
+        "inventory is not a loop but a real neutral sacrifice return cast and entry is",
+        "actual Pactdoll lethal is counted only after the engine ends the game",
+        "Blood Fountain return and recast is recursion without inventing an Altar loop",
+        "a development action spending loop resources abandons the partial cycle proof",
+        "Scry and Rumble count only observed copies and distinguish seeing from land access",
+        "all three controlled real Tron lands establish access and full Tron",
+        "quiet checkpoint distinguishes colored-payment failure from total-mana shortage",
+        "quiet checkpoint recognizes an actually executable fixed-cost artifact",
+        "Foundry future conversion requires real charges token creation and a later legal attack",
+        "duplicated missing or rejected transitions cannot enter the metric stream",
+        "replaying the same complete accepted transcript reproduces metric evidence"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ExecutionStatusTest",
+      "cases": [
+        "initialization does not count but both players London submissions each count once",
+        "PLAY and DRAW own eighth turns include end and cleanup decisions before turn-cap status",
+        "four thousand actual neutral-loop submissions stop without resolving an extra action",
+        "real concession is terminal with its actual engine winner and reason",
+        "real SBA settlement of a zero-life setup produces draw and never a synthetic winner",
+        "rejected action counts once stops exposure and preserves last accepted state",
+        "throwing executor records a submitted exception without retry or engine winner",
+        "unresolved observer overrides provisional terminal while preserving actual terminal diagnostics",
+        "forged terminal and missing turn-event provenance remain unresolved",
+        "synthetic simultaneous boundary precedence preserves genuine terminal and quarantines faults"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2FullHorizonRunnerTest",
+      "cases": [
+        "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the play schedule",
+        "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/control/industrial-waste-v1.0-submitted.dck on the draw schedule",
+        "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the play schedule",
+        "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/compact-loop.dck on the draw schedule",
+        "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the play schedule",
+        "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/recursive-eggs.dck on the draw schedule",
+        "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the play schedule",
+        "full-horizon capability reaches exact own-turn-eight cap for industrial-waste/v2/candidates/lean-tron-hybrid.dck on the draw schedule",
+        "full-horizon capability is deterministic for an identical excluded ordering fixture",
+        "runner refuses the frozen official R1 namespace before submitting an action"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2OrderingIntegrationTest",
+      "cases": [
+        "Expedition Map uses the frozen shuffle through its real continuation with deterministic replay",
+        "Crop Rotation uses the frozen shuffle through its real continuation with deterministic replay",
+        "Myr Kinsmith uses the frozen shuffle through its real continuation with deterministic replay",
+        "the public action policy cannot observe a changed future ordering plan or library order"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest",
+      "cases": [
+        "already automatic payment submits the unchanged selected action without funding",
+        "Altar funding retains selected Star across death trigger instead of rescoring returned Retriever",
+        "one Spawn cannot be both spell sacrifice and explicit funding resource",
+        "real Rumble Spawn funds the selected Star through its exact predefined ability",
+        "Insight explicitly floats its selected Prism before the additional sacrifice",
+        "an unfunded Prism automatic solution does not authorize a selected generic spell",
+        "unassembled Tower funds the bound Prism sacrifice through its canonical conditional output",
+        "assembled Tower funds the bound Prism sacrifice through its canonical conditional output",
+        "a policy-ineligible second creature never authorizes partial funding for a three-mana spell",
+        "delegated automatic Prism payment may choose green while explicit policy would choose black",
+        "explicit Retriever funding retains delegated automatic green payment at its witnessed suffix",
+        "complete repeated Retriever funding keeps the original three-mana spell and both real payments",
+        "lost selected source invalidates retained intent without selecting a replacement",
+        "colorless Altar mana alone does not admit black recovery"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PublicActionPolicyTest",
+      "cases": [
+        "public development policy casts an affordable missing Altar through the real engine",
+        "Star activation pays one mana and chooses an observed hand's black pip",
+        "Insight pays with Wellspring and preserves live loop hardware",
+        "public loop actions sacrifice return and recast a Retriever using real generated mana",
+        "Dross binds an offered graveyard target and pays black recursion mana",
+        "Foundry loop creates lethal power then wins through the next legal combat",
+        "passive Forest fixture plays one land and then passes without a second land drop",
+        "scry and surveil keep an engine card while discarding surplus mana",
+        "real Candy Trail and Boulder scry continuations keep Altar above a surplus land",
+        "opening policy has one common keep rule and honors the three-mulligan bound",
+        "real two-player London mulligans draw seven then bottom three at the forced keep",
+        "action choice ignores opponent hidden identity and both future library orders",
+        "explicit regression seed repeats initial state and identities while another seed changes shuffle"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2QuietCheckpointReplayTest",
+      "cases": [
+        "snapshot replay certifies every quiet state and the first-per-turn compatibility view on the draw",
+        "missing the first eligible quiet state cannot pass replay",
+        "missing a later state from the same own turn cannot hide behind the compatibility view",
+        "extra quiet observations after the final eligible state are rejected",
+        "reordered quiet observations are rejected even when every row is intact",
+        "duplicate action indices cannot certify two observations of one accepted state",
+        "a well-formed substituted state digest is rejected against the real replayed state",
+        "altered checkpoint values fail semantic replay despite intact action state and event hashes",
+        "a valid later same-turn checkpoint cannot replace the first-per-turn compatibility row",
+        "a real terminal has no quiet priority even when the engine retains its prior main-step fields",
+        "the final real four-thousandth action preserves its eligible quiet checkpoint before the cap stops execution"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2R1OfficialExecutionTest",
+      "cases": [
+        "execute the frozen R1 corpus only under independently verified durable authority"
+      ],
+      "allowed_skips": [
+        "execute the frozen R1 corpus only under independently verified durable authority"
+      ]
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RegistryAuditTest",
+      "cases": [
+        "all frozen v2 candidates and historical comparator resolve in the compiled catalog"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2RuntimeFailureTest",
+      "cases": [
+        "a real selection failure retains accepted actions and typed invalid final artifacts without another action",
+        "a real checkpoint identity failure stops before submitting or fabricating any action",
+        "checkpoint evidence writer failure propagates before any action",
+        "payment intent writer failure propagates before its planned funding action"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SacrificeCheckpointTest",
+      "cases": [
+        "Eviscerator's Insight omitted for missing black still records the frozen colored failure",
+        "Eviscerator's Insight without a sacrifice is not misattributed to colored mana",
+        "Eviscerator's Insight with a sacrifice but only one mana is a total shortfall",
+        "Eviscerator's Insight ordinary payment witness keeps its sacrifice for the actual cast",
+        "Fanatical Offering omitted for missing black still records the frozen colored failure",
+        "Fanatical Offering without a sacrifice is not misattributed to colored mana",
+        "Fanatical Offering with a sacrifice but only one mana is a total shortfall",
+        "Fanatical Offering ordinary payment witness keeps its sacrifice for the actual cast",
+        "Crop Rotation needs a sacrificable land and a real green payment",
+        "Crop Rotation cannot spend floating green without its additional land sacrifice",
+        "Crop Rotation can use one Forest for ordinary mana and then sacrifice that tapped Forest",
+        "Insight flashback missing black is a five-mana graveyard failure and never hand stranding",
+        "Insight flashback total shortfall never strands a card in hand",
+        "Insight flashback still needs its ordinary sacrifice even when enumeration omits its metadata",
+        "Insight flashback with actual ordinary mana and sacrifice is executable",
+        "Chromatic Star cannot be assumed to supply color and remain the spell's sacrifice",
+        "repeatable Altar mana proves the generic flashback payment and missing black",
+        "ordinary spell cannot count two Altars consuming the same creature as four mana",
+        "ordinary spell cannot treat one Altar as a maximum of one activation",
+        "recovery activation proves repeated explicit funding without inventing black",
+        "ordinary positive payment does not become unresolved merely because an Altar also exists",
+        "real Rumble Spawn cannot pay and remain the additional sacrifice",
+        "unfunded Prophetic Prism cannot be a positive generic-mana witness",
+        "two unfunded Prisms cannot establish a circular colored payment witness",
+        "a genuine basic-land witness remains executable with an unrelated paid filter present"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.industrialwaste.IndustrialWasteV2SelectionAdvisorTest",
+      "cases": [
+        "Recursive Eggs Rumble fixes black access without inventing Tron in the list",
+        "collection-shaped Map and Rotation decisions build missing Tron while fixing a visible black need first",
+        "Tron-capable Stirrings takes the missing third piece when colored access is sufficient",
+        "one shared Rumble policy selects the missing engine across all four mana architectures",
+        "Blood Fountain returns both offered Retrievers before a redundant expensive creature",
+        "Kinsmith takes its optional search and Dross recursion prefers the accessible loop creature",
+        "real Stirrings Rumble and Kinsmith decisions accept the shared selector responses",
+        "opponent hidden identities and future library order cannot change an offered choice",
+        "Stirrings bottom order is deterministic and never selects a nonselectable card"
+      ],
+      "allowed_skips": []
+    },
+    {
+      "class": "com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest",
+      "cases": [
+        "legacy exact-one beneficial singleton retains both original evaluation views",
+        "legacy exact-one empty beneficial branch retains both original evaluation views",
+        "legacy no-candidate no-payoff tie retains greater-than-or-equal acceptance",
+        "legacy up-to-one beneficial singleton stores no completed follow-up",
+        "legacy up-to-one beneficial empty branch stores no completed follow-up",
+        "legacy harmful singleton keeps its original tie behavior without default-policy repair",
+        "legacy multiple candidates retain independent generic selection rather than a stored branch",
+        "legacy advisor answer remains first and bypasses generic simulation",
+        "legacy advisor deferral retains original two-simulation generic evaluation",
+        "legacy unaffordable optional cast retains the original evaluated decline without preflight"
+      ],
+      "allowed_skips": []
+    }
+  ],
+  "expected_total": 144,
+  "expected_passed": 143,
+  "deliberate_official_skip": 1,
+  "original_accepted_case_count": 134,
+  "prospective_equivalence_manifest": "industrial-waste/v2/frozen-responder-equivalence-v1.json",
+  "prospective_equivalence_scope": "Ten frozen mechanical preservation controls require separate source review; no strategic development or official game."
+}

@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
+
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.CounterType
@@ -88,6 +90,8 @@ class VulturousZombieScenarioTest : ScenarioTestBase() {
                     .build()
 
                 game.castSpellTargetingPlayer(1, "Tome Scour", 2).error shouldBe null
+                game.resolveStack()
+                game.chooseTriggerOrderInListedOrder()
                 game.resolveStack()
 
                 withClue("five cards into their graveyard is five counters") {

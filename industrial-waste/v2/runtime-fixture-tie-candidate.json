@@ -1,0 +1,23 @@
+{
+  "schema": "industrial-v2-fixture-tie-receiving-candidate-v1",
+  "status": "SOURCE_REVIEWED_PENDING_ACTUAL_RECEIVING_QUALIFICATION",
+  "predecessor": "industrial-waste/v2/runtime-canonical-funding-routing-candidate.json",
+  "predecessor_sha256": "a19cfcc117c7ffdf661c8c23d657a95c6d419ae5e21dcf3c39cae818465efce4",
+  "only_source_pin_override": {
+    "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PaymentIntentTest.kt": "0cb05ab1562758eb62030dc1d7ddef6352aeab521cdca95f10a07ee411c7bd8a"
+  },
+  "independent_source_review": "industrial-waste/v2/evidence/runtime-source-289f50bc/independent-next-source-review.json",
+  "rejected_predecessor_artifact": "industrial-waste/v2/evidence/runtime-source-289f50bc/rejected-runtime-audit.json",
+  "qualification_required": {
+    "shared_component_cases": 150,
+    "AI_cases_including_one_official_skip": 134,
+    "original_payment_cases_preserved": 12,
+    "new_conditional_funding_cases": 2
+  },
+  "scope": "Exact fixture tie expectation only; all production and frozen policies unchanged. Historical predecessor source pins are preserved.",
+  "frozen_protocol_sha256": "fd697b6d56b5a5451f4dc6f9ee4bd20584a705570c6f99861dd64f0086ed95bc",
+  "runtime_accepted": false,
+  "execution_authorized": false,
+  "official_allocations_initialized": 0,
+  "comparative_outcomes_exposed": 0
+}
