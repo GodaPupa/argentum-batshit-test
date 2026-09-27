@@ -87,12 +87,14 @@ class PhaseTwoPilotBoundary(
         val actions = if (prompt == PhaseTwoPilotPrompt.Engine && state.pendingDecision == null)
             enumerator.enumerate(state, actor, EnumerationMode.ACTIONS_ONLY) else emptyList()
         val built = observationBuilder.build(state, actor, actions, revealAll = false)
+        val observed = built.observation as? TrainingObservation
+            ?: error("Game policy requires a game observation")
         // During pregame, priority still points at the first player. Make the designated
         // mulligan/bottoming actor and its digest agree without adding private hand details.
         val observation = if (prompt != PhaseTwoPilotPrompt.Engine) {
-            val acting = built.observation.copy(agentToAct = actor)
+            val acting = observed.copy(agentToAct = actor)
             acting.copy(stateDigest = StateDigest.compute(acting))
-        } else built.observation
+        } else observed
         check(observation.perspectivePlayerId == actor && observation.agentToAct == actor)
 
         val action = try {
