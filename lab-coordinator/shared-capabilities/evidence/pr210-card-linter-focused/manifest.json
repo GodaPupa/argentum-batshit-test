@@ -1,0 +1,55 @@
+{
+  "schema": "pr210-card-linter-focused-gate-v1",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "pullRequest": 210,
+  "originalFailedRun": {
+    "runId": 36292832407,
+    "jobId": 108546062957,
+    "evidenceCommit": "ee0634de9d91d8aae3d29addb0be159f9194bd90"
+  },
+  "repairCommit": "7463afa68c0307261f611e7280ff5072689c2ada",
+  "repairTree": "58aa72ed7dbfa8421a00ad57d789c35cfa2db803",
+  "linterBlob": "cc7164e1e3a796530b87291d94769f1000092b87",
+  "gateCommit": "03580c2282f1a796be567c5d8a93c9e8565270d0",
+  "run": {
+    "id": 36293462248,
+    "event": "push",
+    "attempt": 1,
+    "conclusion": "success"
+  },
+  "artifact": {
+    "id": 10923221601,
+    "name": "authorized-search-card-linter-focused-evidence",
+    "path": "original-focused-evidence.zip",
+    "bytes": 23112,
+    "sha256": "f76ca5b9576ce0b35f55d45c940f6c361fe2e3e7b3daf405a5a165963f0557d3",
+    "gitBlob": "dcf9e150af0e2f54ccafad2db80b91c1410a6067",
+    "crc": "clean"
+  },
+  "rawXml": {
+    "member": "mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.CardLinterTest.xml",
+    "sha256": "53a033540de3139b0e24b0b305e7030499655fcf217c89253389ead466296f6f",
+    "tests": 43,
+    "distinctCases": 43,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "originalFailedCase": "It: flags a mana ability that searches its library",
+    "originalFailedCaseNowPassed": true
+  },
+  "rawExit": {
+    "gradleExit": 0,
+    "sourceBefore": "7463afa68c0307261f611e7280ff5072689c2ada",
+    "sourceAfter": "7463afa68c0307261f611e7280ff5072689c2ada",
+    "trackedWorktreeClean": true,
+    "rerunTasks": true
+  },
+  "rawBuild": {
+    "taskExecuted": ":mtg-sdk:test",
+    "actionableTasks": 14,
+    "executedTasks": 14,
+    "taskCached": false,
+    "buildSuccessful": true
+  },
+  "scope": "focused deterministic software repair only; no Pest actor admission, seeds, or gameplay; full PR210 CI remains separately gated"
+}
