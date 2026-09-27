@@ -16,7 +16,7 @@ import com.wingedsheep.sdk.model.EntityId
  * pilot receives the resulting input and this opaque same-question witness, never GameState,
  * continuation data, unoffered library cards or a library index.
  */
-class PestMonsterVerifiedSearch private constructor(
+internal class PestMonsterVerifiedSearch private constructor(
     val input: ActorInput,
     private val questionId: String,
     private val sourceId: EntityId,
@@ -28,7 +28,7 @@ class PestMonsterVerifiedSearch private constructor(
             question.options == offeredHandles
 
     companion object {
-        fun project(
+        internal fun project(
             adapter: ObservationAdapter,
             state: GameState,
             actor: EntityId,
