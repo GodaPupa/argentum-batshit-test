@@ -1,0 +1,149 @@
+{
+  "schema": "coordinator-post-cut-publication-receipt-v1",
+  "scope": "Two evidence-only publication observations and one completed-workflow tense correction; no source, test, gameplay, claim or authority mutation.",
+  "parent_candidate": "ef3f13f73ec29fe3fa73c31ed20a8849845c92db",
+  "immutable_original_event_cut": "2026-09-27 04:58:35 UTC",
+  "derived_receipt_notice": "Selected fields from fresh public GitHub GET responses. This is not either original mutation response, not binary evidence, and not a new workflow/artifact audit.",
+  "root_attributed_publications": [
+    {
+      "project": "Ferocity",
+      "reported_at": "2026-09-27 05:07:35 UTC",
+      "branch": "ferocity-recycling/source08-evidence-20260926",
+      "head": "705e06c91dbf708c641c2a8e081f22e5a1f9fba2",
+      "tree": "85594c31ccf1081d82d3daf358747fcfb9998f65",
+      "root_report": "Normal FF027→eb8→c60→705e; seven evidence-only new paths, including exact public-record copies. No new authority or events."
+    },
+    {
+      "project": "Izzet",
+      "reported_at": "2026-09-27 05:11:02 UTC",
+      "branch": "review/izzet-shared-receiving-evidence-20260926",
+      "head": "0e43813417a65937a9e6b7e5beffe62aca4a55b5",
+      "tree": "7c10b9b10358ab5c528637b38e5e6f3b90124710",
+      "root_report": "Normal FF7ca→e4bb→0e438; four decoded-only evidence files. Original full ZIP audit remains blocked, no actual bank counts approved."
+    }
+  ],
+  "public_get_checks": [
+    {
+      "key": "izzet_ref",
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/ref/heads/review/izzet-shared-receiving-evidence-20260926",
+      "observed_at": "2026-09-27 05:12:29 UTC",
+      "public_ref": "refs/heads/review/izzet-shared-receiving-evidence-20260926",
+      "sha": "0e43813417a65937a9e6b7e5beffe62aca4a55b5"
+    },
+    {
+      "key": "ferocity_ref",
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/ref/heads/ferocity-recycling/source08-evidence-20260926",
+      "observed_at": "2026-09-27 05:12:29 UTC",
+      "public_ref": "refs/heads/ferocity-recycling/source08-evidence-20260926",
+      "sha": "705e06c91dbf708c641c2a8e081f22e5a1f9fba2"
+    },
+    {
+      "key": "izzet_commit",
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/0e43813417a65937a9e6b7e5beffe62aca4a55b5",
+      "observed_at": "2026-09-27 05:12:29 UTC",
+      "sha": "0e43813417a65937a9e6b7e5beffe62aca4a55b5",
+      "tree": "7c10b9b10358ab5c528637b38e5e6f3b90124710",
+      "parents": [
+        "e4bbfbc0b14fb4758fc903d75f5295ab5aded4a4"
+      ]
+    },
+    {
+      "key": "ferocity_commit",
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/commits/705e06c91dbf708c641c2a8e081f22e5a1f9fba2",
+      "observed_at": "2026-09-27 05:12:29 UTC",
+      "sha": "705e06c91dbf708c641c2a8e081f22e5a1f9fba2",
+      "tree": "85594c31ccf1081d82d3daf358747fcfb9998f65",
+      "parents": [
+        "c60cd244390c1d5ed2394bd1ef0089fb8d2d86dc"
+      ]
+    },
+    {
+      "key": "izzet_delta",
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/compare/7ca0a93761677bc12104bd0d370cbd7f471c9d3f...0e43813417a65937a9e6b7e5beffe62aca4a55b5",
+      "observed_at": "2026-09-27 05:12:29 UTC",
+      "status": "ahead",
+      "ahead_by": 2,
+      "behind_by": 0,
+      "files": [
+        {
+          "path": "izzet-science/evidence/legacy-factory-attempt-36295267824/decoded-only/ROOT_PUBLICATION_REVIEW.json",
+          "status": "added",
+          "git_blob": "fb6f3fb672d2cda06f82e18542c31d0b0628da29"
+        },
+        {
+          "path": "izzet-science/evidence/legacy-factory-attempt-36295267824/decoded-only/decoded-job.log",
+          "status": "added",
+          "git_blob": "c99a520cfb2ea1b4f4b6debd52da94242e20403d"
+        },
+        {
+          "path": "izzet-science/evidence/legacy-factory-attempt-36295267824/decoded-only/decoded-metadata.json",
+          "status": "added",
+          "git_blob": "7986c816196d145a2d16263322e704d91e0fd846"
+        },
+        {
+          "path": "izzet-science/evidence/legacy-factory-attempt-36295267824/decoded-only/partial-decoded-log-review.json",
+          "status": "added",
+          "git_blob": "4e43c2604ba6b51f9d3f9a0a08423b898c66b3e8"
+        }
+      ]
+    },
+    {
+      "key": "ferocity_delta",
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/compare/027c89aa509cc8213f36438004e2f4aed2d3779a...705e06c91dbf708c641c2a8e081f22e5a1f9fba2",
+      "observed_at": "2026-09-27 05:12:29 UTC",
+      "status": "ahead",
+      "ahead_by": 3,
+      "behind_by": 0,
+      "files": [
+        {
+          "path": "ferocity-recycling/support-audits/source08-resource-disposition-clarification-20260927/CLARIFICATION.md",
+          "status": "added",
+          "git_blob": "0bae0cab4a9dde8cdc3ddebd36668691559ca73c"
+        },
+        {
+          "path": "ferocity-recycling/support-audits/source08-resource-disposition-clarification-20260927/ROOT_PUBLICATION_REVIEW.json",
+          "status": "added",
+          "git_blob": "2fa7bcc62bb4e82e3d677eff0a6d31ecf2b3c11d"
+        },
+        {
+          "path": "ferocity-recycling/support-audits/source08-resource-disposition-clarification-20260927/original-COORDINATOR_ADOPTION.json",
+          "status": "added",
+          "git_blob": "3ec28a10bbcc5f76074254576894371a23f95b7a"
+        },
+        {
+          "path": "ferocity-recycling/support-audits/source08-resource-disposition-clarification-20260927/original-NONAUTHOR_REVIEW.json",
+          "status": "added",
+          "git_blob": "966d2336636dfdabb815424cbf913220157019c8"
+        },
+        {
+          "path": "ferocity-recycling/support-audits/source08-resource-disposition-clarification-20260927/original-RAW_AUDIT.md",
+          "status": "added",
+          "git_blob": "31b9ffc9a2f16fc031efef73feb55fef542348e9"
+        },
+        {
+          "path": "ferocity-recycling/support-audits/source08-resource-disposition-clarification-20260927/ref-and-event-preflight.json",
+          "status": "added",
+          "git_blob": "8e89839f2ccd6c5eaba1a456cf58e46e1768f09a"
+        },
+        {
+          "path": "ferocity-recycling/support-audits/source08-resource-disposition-clarification-20260927/workflow-source-bodies.json",
+          "status": "added",
+          "git_blob": "211bd8042d0453c3522667618b916c41b8688e71"
+        }
+      ]
+    },
+    {
+      "key": "coordinator_ref",
+      "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/git/ref/heads/lab-coordinator/critical-path",
+      "observed_at": "2026-09-27 05:12:29 UTC",
+      "public_ref": "refs/heads/lab-coordinator/critical-path",
+      "sha": "e5ec05f21fab38ae7078dcd6279643dde9544914"
+    }
+  ],
+  "limits": [
+    "Root-reported publication times are attributed; original ref-update tool responses were not supplied and are not reconstructed.",
+    "Full Izzet original artifact materialization/hash/CRC/XML and independent admission remain blocked.",
+    "No original04:58:35 public observation was rewritten.",
+    "No branch ref was moved by this preparation."
+  ]
+}

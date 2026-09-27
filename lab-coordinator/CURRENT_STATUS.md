@@ -30,3 +30,12 @@ Complete all-event queries return **one IN_PROGRESS** run: outside Pest repair36
 The earlier missing-shlock observations remain preserved at Izzete374 and Sphinx938; new prerequisites do not retroactively repair old operational evidence. No automatic retry, gameplay permission or GitHub approval follows from these notes. See NEXT_CHAT_HANDOFF.md for exact source/release identities, governing records and recovery.
 
 The first root-timed workspace409 environment_offline observation is04:57:07; subsequent reads also failed without an inferred timestamp. GitHub reads/writes still work. Izzet owns reuse/materialization of the already-downloaded original once access returns; no second GitHub download or unchanged workflow rerun. Sphinx's separate decoded-log check cannot substitute for the original full artifact audit. This checkpoint creates no ref/event itself.
+
+## Post-cut publication addendum
+
+The original04:58:35 event snapshot above remains unchanged. Root reports two later normal evidence publications; public refs/commit trees and exact added-path comparisons were independently reread at **05:12:29 UTC**:
+
+- **Ferocity,05:07:35:** source08 evidence branch advanced027→eb8→c60→**705e06c91dbf708c641c2a8e081f22e5a1f9fba2**, tree **85594c31ccf1081d82d3daf358747fcfb9998f65**. Seven evidence-only additions preserve the resource-disposition clarification, three exact original public records and root publication review. This is the later evidence head; the a14→ae22 resource adoption and6976 incomplete offline audit retain their original scope. No new calibration or gameplay authority was created.
+- **Izzet,05:11:02:** shared-receiving evidence advanced7ca→e4bb→**0e43813417a65937a9e6b7e5beffe62aca4a55b5**, tree **7c10b9b10358ab5c528637b38e5e6f3b90124710**. Four files under `izzet-science/evidence/legacy-factory-attempt-36295267824/decoded-only/` preserve a decoded job log, its metadata, the partial review and root publication review. This is decoded-log preservation only. Full original ZIP/hash/CRC/XML, package/semaphore and expected-failure admission remain blocked; no actual bank counts are approved here.
+
+The small publication receipt is `reviews/continuation-20260927-0458/post-cut-publication-receipt.json`. It preserves selected public GET fields and explicitly attributed root publication times, without reconstructing either mutation response. No new execution or outcome follows from these evidence updates.
