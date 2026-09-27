@@ -1,0 +1,160 @@
+[
+  {
+    "manifest": "lab-coordinator/shared-capabilities/priority-receiving-sources.json",
+    "manifest_sha256": "235cbb5790e59fe7f4d634542b16efcf59ddfb56721a18e948024618e2d4e957",
+    "pin_count": 250,
+    "mismatches": [
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+        "frozen": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1",
+        "actual": "3afa085c67355cfb63e2c1758149ac53196cdfdc1fbb6dfebe62b3dd6f5856c1"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+        "frozen": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
+        "actual": "79daf6a2a45f58740388afe6cf17ac50608cf6f919054a07dbc3e676a1785d40"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+        "frozen": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623",
+        "actual": "57be760a6d451b07af762ecd40dd8abf9583f7c2adefdba50893ac2419c7c90e"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+        "frozen": "1401491fe5292ec746fd991fbcd89fe82914d1e07428bdae0487ed0487e0e517",
+        "actual": "5c52485def4e572764580a507acf9365fa416a5abea43fb82208b7232d5f55cf"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt",
+        "frozen": "4332fa35b5cb92292cdf66ab967e187b64cc81c7ae53545d2eda8b81a3d84e86",
+        "actual": "65a9a76abbdc743787a861d07e8f0bc59d1d73777bf539fba2e7d9ee187c2cde"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+        "frozen": "c0c50de6b7384bbf8e1e890e6aafe6733824e4f9a3c0e1b41fbacc20b9ca5529",
+        "actual": "e9a4d97c63cf6e7940a0a3e7d39f86eba054b89e464c44f3cb708f3f3038e5ef"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+        "frozen": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+        "actual": "2b69ea7a88b45747fc760b1a8964249d8fb8f69c7370a3df1c0a61d5b75bc225"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+        "frozen": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
+        "actual": "44d762907ef10f2efc7ef72d0f704b252ad7099ba9e65673d888d373273da9b7"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+        "frozen": "0b6b44e9598e10c86222f455c9fe3c6e13d6fdcdc75809bf0d88f343310ac4e7",
+        "actual": "dd9d1ce6dc44731eb3cbf93fd5045c9cdd2a2316f3b5ab0fe1656a6db38597ae"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AuraTokenHostChooser.kt",
+        "frozen": "1b4fcd1247790211b7d5aa48b0288babbd3724703348b0089c674d90e7c9321d",
+        "actual": "8cb52ffcb8d37826e1ddd91f928e491f5b080ffe10f092056bf7340ef384fe25"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt",
+        "frozen": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38",
+        "actual": "69f0721ceef29500768d87c90a50b41b23f591ca02c889f1ed3028887d26a893"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt",
+        "frozen": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1",
+        "actual": "46cf44d673c2ee104de4eee2b3d93bab8376f60f23d3d2981fd2db0ddae240d6"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt",
+        "frozen": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a",
+        "actual": "332894e7cc3727026129cd04b53fcc9319a6f15ae3a8ca5fa4c54ccc52bffa16"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+        "frozen": "a9b6ba64f35215840ab117c0a11527526f903687d0b326925fa05d7f8be540ac",
+        "actual": "14a1c9bbc3f3bee808e1714c82f2b2e21222a9ccac8e3832dbb9b64a1ff2bce1"
+      }
+    ]
+  },
+  {
+    "manifest": "lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json",
+    "manifest_sha256": "e1e01f033145ce3d70ed7174d38643f77ef7a091c804b8c4834ceb1c16be74e3",
+    "pin_count": 47,
+    "mismatches": [
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+        "frozen": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1",
+        "actual": "3afa085c67355cfb63e2c1758149ac53196cdfdc1fbb6dfebe62b3dd6f5856c1"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+        "frozen": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
+        "actual": "79daf6a2a45f58740388afe6cf17ac50608cf6f919054a07dbc3e676a1785d40"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+        "frozen": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623",
+        "actual": "57be760a6d451b07af762ecd40dd8abf9583f7c2adefdba50893ac2419c7c90e"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+        "frozen": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+        "actual": "2b69ea7a88b45747fc760b1a8964249d8fb8f69c7370a3df1c0a61d5b75bc225"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+        "frozen": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
+        "actual": "44d762907ef10f2efc7ef72d0f704b252ad7099ba9e65673d888d373273da9b7"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AuraTokenHostChooser.kt",
+        "frozen": "1b4fcd1247790211b7d5aa48b0288babbd3724703348b0089c674d90e7c9321d",
+        "actual": "8cb52ffcb8d37826e1ddd91f928e491f5b080ffe10f092056bf7340ef384fe25"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt",
+        "frozen": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38",
+        "actual": "69f0721ceef29500768d87c90a50b41b23f591ca02c889f1ed3028887d26a893"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt",
+        "frozen": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1",
+        "actual": "46cf44d673c2ee104de4eee2b3d93bab8376f60f23d3d2981fd2db0ddae240d6"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt",
+        "frozen": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a",
+        "actual": "332894e7cc3727026129cd04b53fcc9319a6f15ae3a8ca5fa4c54ccc52bffa16"
+      }
+    ]
+  },
+  {
+    "manifest": "docs/experiments/pest-control/tier-one-postboard-support-batch-a-receiving-sources.json",
+    "manifest_sha256": "9ea4953302aeeac2a0b539c6ddc369c6404e3a291ed8a131a7976068e95c67e7",
+    "pin_count": 24,
+    "mismatches": [
+      {
+        "path": "mtg-sets/src/test/resources/snapshots/cards/THS.json",
+        "frozen": "8cd0c2797a4258e42b5ed86d6e1345cc2c0cb69fd70d26ba8256fff5375aaa42",
+        "actual": "b5e09edec9ab49c9dd78fdaed7fca40db65fcf1fa36ee61fdabb7555eacd78da"
+      }
+    ]
+  },
+  {
+    "manifest": "docs/experiments/pest-control/tier-one-postboard-support-batch-b-shared-receiving-sources.json",
+    "manifest_sha256": "1b8d3bd9fd30e7e28def7e0c2bb77e243ce33d0792ebfa31664dcc5c8ad6ca19",
+    "pin_count": 36,
+    "mismatches": [
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt",
+        "frozen": "4332fa35b5cb92292cdf66ab967e187b64cc81c7ae53545d2eda8b81a3d84e86",
+        "actual": "65a9a76abbdc743787a861d07e8f0bc59d1d73777bf539fba2e7d9ee187c2cde"
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+        "frozen": "cc64a43fb77f688624be550d07c8aa96baddd5bbe9a4d1727b166110f0e3f6ed",
+        "actual": "6442ad13736594e9539060589154d5c84a421d106775044f5a31ef34025e09d1"
+      }
+    ]
+  }
+]
