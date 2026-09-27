@@ -190,5 +190,75 @@
     "official_initializations": 0,
     "complete_runtime_admission": false,
     "permit": false
+  },
+  "current_1261_small_raw_receiving_audit": {
+    "status": "AUTHOR_SCOPED_RAW_AUDIT_PENDING_INDEPENDENT_REVIEW",
+    "source_commit": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+    "source_tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+    "checks": "Original ZIP SHA256 matches GitHub artifact digest, ZIP CRC clean, XML case counts equal testcase elements, zero XML failures/errors/skips, original source provenance and actual-case-audit status checked.",
+    "artifacts": [
+      {
+        "component": "priority",
+        "run_id": 36283941456,
+        "job_id": 108520988225,
+        "artifact_id": 10919767602,
+        "bytes": 799998,
+        "sha256": "c19b8a69ca49bcfea141a0d38ed33e55ffd0f6226b4fee19dca2b0c8c082f6e2",
+        "zip_members": 140,
+        "xml_suites": 27,
+        "xml_cases": 220,
+        "manifest_sha256": "c19dcb260e73eb282968461f73cc78ada0c55032dc6af196e12a8fc9a64119bb"
+      },
+      {
+        "component": "cast_observer",
+        "run_id": 36283941456,
+        "job_id": 108520988368,
+        "artifact_id": 10920615076,
+        "bytes": 592289,
+        "sha256": "a23b306188b74a7067f02ecc7bbc9898128057ae57842f81832114b465500c70",
+        "zip_members": 63,
+        "xml_suites": 18,
+        "xml_cases": 135,
+        "manifest_sha256": "6dbc3e128077d73c9ab04194eefdfe4a1bc8e616f9208f4daee47bd813191ce7"
+      },
+      {
+        "component": "current_combat",
+        "run_id": 36283941451,
+        "job_id": 108520988144,
+        "artifact_id": 10919593751,
+        "bytes": 243356,
+        "sha256": "30c03e8050e0d811ed71c1dccacf0604ca047a47c02d753566edbdcb293bff8e",
+        "zip_members": 12,
+        "xml_suites": 4,
+        "xml_cases": 32,
+        "manifest_sha256": "679dd7e9237e9a6f32e38a2aed94821cd973cd9502c7e8d2862859195834844c"
+      },
+      {
+        "component": "attacking_token",
+        "run_id": 36283941475,
+        "job_id": 108520988252,
+        "artifact_id": 10919887433,
+        "bytes": 266781,
+        "sha256": "52907ab1c91f7728366dd8e29900d827f44165d10138fcad78283700574400c4",
+        "zip_members": 14,
+        "xml_suites": 3,
+        "xml_cases": 20,
+        "manifest_sha256": "c55e36ed7db906c92c40ed69fbe797836d9279789b5ac32ea478d95ae9e574c5"
+      }
+    ],
+    "xml_failures": 0,
+    "xml_errors": 0,
+    "xml_skips": 0,
+    "zip_crc_errors": 0,
+    "actual_case_audit_status": "PASS_REQUIRES_INDEPENDENT_ARTIFACT_REVIEW",
+    "official_games": 0,
+    "compiled_runtime_artifact": {
+      "artifact_id": 10920296265,
+      "bytes": 99456585,
+      "sha256": "b2e1dc8140c2cde707c55cc5e47a5c156b9e84ccb8bb543a7af859082e867677",
+      "raw_audit": "PENDING",
+      "loaded_runtime_identity_acceptance": false
+    },
+    "limits": "This audit verifies four small receiving artifacts. It does not inspect the 99MB combined runtime original, every source pin, or actual compiled classpath archive; no complete R1 admission or permit."
   }
 }
