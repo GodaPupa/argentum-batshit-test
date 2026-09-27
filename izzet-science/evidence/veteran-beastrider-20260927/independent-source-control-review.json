@@ -1,0 +1,33 @@
+{
+  "schema": "izzet-veteran-two-case-independent-source-control-review-v1",
+  "reviewer": "single active conductor /root, nonauthor of source and control",
+  "disposition": "PASS_BOUNDED_PROSPECTIVE_TWO_CASE_DIAGNOSTIC_CONTROL",
+  "source": {
+    "head": "82b5e4660c28bfb399b09cbaaf92d4e59181bf82",
+    "tree": "aecacb5c0e520721b8ae263e9e1f3822bb46f783",
+    "parent": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+    "sole_added_test": "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/VeteranBeastriderScenarioTest.kt",
+    "test_blob": "dc1355602376439daa87f9dae118f3fdb71a0cf5"
+  },
+  "inert_control": {
+    "head": "f8f231ec16c73d13854b747795f7df1de7ed866b",
+    "tree": "0c17684c6a41dae9621ac03a310d292d81911710",
+    "ready_for_execution": false
+  },
+  "checks": [
+    "Reviewed complete two-case test against existing Veteran Beastrider definition: end-step own-creature untap and paid own-team +1/+1 duration, including opponent controls; no production/deck/seed mutation in source delta.",
+    "Reviewed full inherited qualify.py and complete gate/workflow: exact source and tree, preserved authority and helper hashes, one named two-case class, clean before/after, fresh XML case names/counts/timestamps, Gradle task and test executor, raw exit/log/XML retention including failure, bounded one owned process.",
+    "Workflow is one creation-push on new exact control branch, run attempt1, read-only credentials, exact separate source checkout, Java21, one bank, always artifact; no gameplay, entropy or claim action.",
+    "The 973-case receiving run remains separately source-bound and no part of it is replaced by this diagnostic."
+  ],
+  "activation_boundary": {
+    "allowed_delta": "Set gate.ready_for_execution=true and gate.source_review to this review identity; preserve qualify.py, workflow, source hash/tree, two test names, all other gate fields. Check live target branch absence and any identical run before creating the one-shot branch.",
+    "root_final_ref_check": true
+  },
+  "limits": [
+    "Prospective deterministic card mechanics test only; neither case has compiled or run at review.",
+    "Observed failure is technical evidence, not game loss. No official seeds, initialized matchup games, pilot or full Izzet admission."
+  ],
+  "official_seeds_consumed": 0,
+  "official_games": 0
+}
