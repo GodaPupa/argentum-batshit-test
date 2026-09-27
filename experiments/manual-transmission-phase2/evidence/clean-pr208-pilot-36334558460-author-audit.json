@@ -1,0 +1,47 @@
+{
+  "schema": "manual-clean-pr208-pilot-original-audit-v1",
+  "status": "AUTHOR_AUDITED_BOUNDARY_RECEIVING_PENDING_INDEPENDENT_ADOPTION_NO_CAPABILITY_GAME_AUTHORITY",
+  "run": 36334558460,
+  "head": "03910f055d38ec7952cee6bf02b5aae227ee5845",
+  "artifact": {
+    "id": 10936103503,
+    "sha256": "9e6fb6540034237d3959cfe84f0d0a17b6d0c56aec60e05322256bc1a1c1ae8a",
+    "size_bytes": 240881,
+    "zip_crc": "PASS",
+    "source_member_sha256": "74a45ed9d16d67d6606ad02681915b30ebca3c47b06f9dcb48f6e0cba69d3777",
+    "junit_member_sha256": "af5ed3956cc92cbef3d67a38abcf71d567a9f925cebc2d2af49f080f15d58a6e",
+    "gradle_log_sha256": "d763cfb9345e732162691b526569f01a8beccc885187568653b421c065aa3a3c",
+    "repository_raw_copy": false
+  },
+  "source_blobs": {
+    "pilot": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "test": "b747ad5a1bcf6780b5c31d8b4244f364b4f4acd3",
+    "unchanged_from_pr208": true
+  },
+  "junit": {
+    "classes": 1,
+    "fresh_cases": 3,
+    "passes": 3,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "task": "EXECUTED --rerun-tasks, no cache",
+    "names": [
+      "four masked mulligan seats and a priority action pass only through traced boundary",
+      "London free mulligan and later bottom cards are selected from only the actor's hand",
+      "invalid policy choice records integrity failure without silently passing or retrying"
+    ]
+  },
+  "prior_pr208": {
+    "run": 36289923892,
+    "artifact": 10921938825,
+    "sha256": "d5114d229d1df81b4e0dfc2f07330e954a38206f01212f04f78891dff1272c7e",
+    "junit_cases": 3
+  },
+  "causal_map": "0933cc3e:experiments/manual-transmission-phase2/clean-pr208-pilot-source-causal-map.json",
+  "limits": "Excluded invented cards/fixed fixture. No full Manual 100-card/complex action parameterization/three gear or opponent policy competence; original PR211 frozen guards remain INCOMPLETE; no PR211 merge, no capability allocation.",
+  "official_counters": {
+    "capability": 0,
+    "primary": 0
+  }
+}
