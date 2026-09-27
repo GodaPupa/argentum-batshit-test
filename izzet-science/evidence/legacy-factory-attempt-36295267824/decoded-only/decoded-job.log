@@ -1,0 +1,871 @@
+﻿2026-09-27T04:46:14.3345616Z Current runner version: '2.337.0'
+2026-09-27T04:46:14.3369587Z ##[group]Runner Image Provisioner
+2026-09-27T04:46:14.3371023Z Hosted Compute Agent
+2026-09-27T04:46:14.3371610Z Version: 20260828.587
+2026-09-27T04:46:14.3372252Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+2026-09-27T04:46:14.3372976Z Build Date: 2026-08-28T16:44:25Z
+2026-09-27T04:46:14.3373671Z Worker ID: {6159600c-5d3d-420c-bf49-fd525b9a0bc9}
+2026-09-27T04:46:14.3374573Z Azure Region: westus3
+2026-09-27T04:46:14.3375144Z ##[endgroup]
+2026-09-27T04:46:14.3376561Z ##[group]Operating System
+2026-09-27T04:46:14.3377211Z Ubuntu
+2026-09-27T04:46:14.3377729Z 24.04.5
+2026-09-27T04:46:14.3378264Z LTS
+2026-09-27T04:46:14.3378769Z ##[endgroup]
+2026-09-27T04:46:14.3379296Z ##[group]Runner Image
+2026-09-27T04:46:14.3379909Z Image: ubuntu-24.04
+2026-09-27T04:46:14.3380483Z Version: 20260920.314.1
+2026-09-27T04:46:14.3381782Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260920.314/images/ubuntu/Ubuntu2404-Readme.md
+2026-09-27T04:46:14.3383290Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260920.314
+2026-09-27T04:46:14.3384408Z ##[endgroup]
+2026-09-27T04:46:14.3385500Z ##[group]GITHUB_TOKEN Permissions
+2026-09-27T04:46:14.3387472Z Contents: read
+2026-09-27T04:46:14.3388041Z Metadata: read
+2026-09-27T04:46:14.3388648Z ##[endgroup]
+2026-09-27T04:46:14.3390557Z Secret source: Actions
+2026-09-27T04:46:14.3391463Z Cache mode: write
+2026-09-27T04:46:14.3392140Z Prepare workflow directory
+2026-09-27T04:46:14.4728738Z Prepare all required actions
+2026-09-27T04:46:14.4803292Z Getting action download info
+2026-09-27T04:46:14.7956878Z Download action repository 'actions/checkout@v6' (SHA:d23441a48e516b6c34aea4fa41551a30e30af803)
+2026-09-27T04:46:14.9143397Z Download action repository 'actions/setup-java@v5' (SHA:b6effb05e454b25005698d916606bdc6ffcbf961)
+2026-09-27T04:46:15.8679850Z Download action repository 'gradle/actions@v6' (SHA:9c971963bec38e04b3d30dcc455b5382be2fdbfb)
+2026-09-27T04:46:17.7345281Z Download action repository 'extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b' (SHA:f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b)
+2026-09-27T04:46:17.9471604Z Download action repository 'actions/upload-artifact@v7' (SHA:043fb46d1a93c77aae656e7c1c64a875d1fc6a0a)
+2026-09-27T04:46:18.3162161Z Getting action download info
+2026-09-27T04:46:18.4424193Z Download action repository 'extractions/setup-crate@4993624604c307fbca528d28a3c8b60fa5ecc859' (SHA:4993624604c307fbca528d28a3c8b60fa5ecc859)
+2026-09-27T04:46:19.0015386Z Complete job name: original-and-corrected-factory
+2026-09-27T04:46:19.2492101Z ##[group]Run actions/checkout@v6
+2026-09-27T04:46:19.2492569Z with:
+2026-09-27T04:46:19.2492849Z   ref: a0fe959d2fa345b77513e199e2db046d52cf2d0f
+2026-09-27T04:46:19.2493165Z   path: control
+2026-09-27T04:46:19.2493410Z   persist-credentials: false
+2026-09-27T04:46:19.2493721Z   repository: GodaPupa/argentum-batshit-test
+2026-09-27T04:46:19.2496987Z   token: ***
+2026-09-27T04:46:19.2497219Z   ssh-strict: true
+2026-09-27T04:46:19.2497487Z   ssh-user: git
+2026-09-27T04:46:19.2497736Z   clean: true
+2026-09-27T04:46:19.2497982Z   sparse-checkout-cone-mode: true
+2026-09-27T04:46:19.2498267Z   fetch-depth: 1
+2026-09-27T04:46:19.2498503Z   fetch-tags: false
+2026-09-27T04:46:19.2498732Z   show-progress: true
+2026-09-27T04:46:19.2498960Z   lfs: false
+2026-09-27T04:46:19.2499173Z   submodules: false
+2026-09-27T04:46:19.2499403Z   set-safe-directory: true
+2026-09-27T04:46:19.2499667Z   allow-unsafe-pr-checkout: false
+2026-09-27T04:46:19.2500072Z env:
+2026-09-27T04:46:19.2500333Z   GRADLE_LOCK_SLOTS: 1
+2026-09-27T04:46:19.2500666Z   JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+2026-09-27T04:46:19.2500973Z ##[endgroup]
+2026-09-27T04:46:19.3543643Z Syncing repository: GodaPupa/argentum-batshit-test
+2026-09-27T04:46:19.3545813Z ##[group]Getting Git version info
+2026-09-27T04:46:19.3546521Z Working directory is '/home/runner/work/argentum-batshit-test/argentum-batshit-test/control'
+2026-09-27T04:46:19.3547576Z [command]/usr/bin/git version
+2026-09-27T04:46:19.3618441Z git version 2.55.0
+2026-09-27T04:46:19.3641091Z ##[endgroup]
+2026-09-27T04:46:19.3654840Z Temporarily overriding HOME='/home/runner/work/_temp/66457835-818c-4d9e-af19-cb1bd5760075' before making global git config changes
+2026-09-27T04:46:19.3655884Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T04:46:19.3660703Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test/control
+2026-09-27T04:46:19.3712706Z ##[group]Determining repository object format
+2026-09-27T04:46:19.3717093Z ##[endgroup]
+2026-09-27T04:46:19.3717975Z ##[group]Initializing the repository
+2026-09-27T04:46:19.3723314Z [command]/usr/bin/git init /home/runner/work/argentum-batshit-test/argentum-batshit-test/control
+2026-09-27T04:46:19.4282710Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-27T04:46:19.4284120Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-27T04:46:19.4284953Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-27T04:46:19.4287548Z hint: call:
+2026-09-27T04:46:19.4290381Z hint:
+2026-09-27T04:46:19.4291387Z hint: 	git config --global init.defaultBranch <name>
+2026-09-27T04:46:19.4292523Z hint:
+2026-09-27T04:46:19.4293272Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-27T04:46:19.4294534Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-27T04:46:19.4295332Z hint:
+2026-09-27T04:46:19.4295859Z hint: 	git branch -m <name>
+2026-09-27T04:46:19.4296562Z hint:
+2026-09-27T04:46:19.4297350Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-27T04:46:19.4298922Z Initialized empty Git repository in /home/runner/work/argentum-batshit-test/argentum-batshit-test/control/.git/
+2026-09-27T04:46:19.4307777Z [command]/usr/bin/git remote add origin https://github.com/GodaPupa/argentum-batshit-test
+2026-09-27T04:46:19.5450705Z ##[endgroup]
+2026-09-27T04:46:19.5451427Z ##[group]Disabling automatic garbage collection
+2026-09-27T04:46:19.5456577Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-27T04:46:19.6132141Z ##[endgroup]
+2026-09-27T04:46:19.6132591Z ##[group]Setting up auth
+2026-09-27T04:46:19.6134308Z Removing SSH command configuration
+2026-09-27T04:46:19.6142400Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T04:46:19.6175980Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T04:46:19.6483495Z Removing HTTP extra header
+2026-09-27T04:46:19.6491618Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T04:46:19.6526676Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T04:46:19.6714381Z Removing includeIf entries pointing to credentials config files
+2026-09-27T04:46:19.6721397Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T04:46:19.6752622Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T04:46:19.6941000Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-27T04:46:19.7020482Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/control/.git.path /home/runner/work/_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:19.7130569Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/control/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:19.7233193Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/control/.git.path /github/runner_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:19.7336635Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/control/.git/worktrees/*.path /github/runner_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:19.7421788Z ##[endgroup]
+2026-09-27T04:46:19.7422411Z ##[group]Fetching the repository
+2026-09-27T04:46:19.7430490Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin a0fe959d2fa345b77513e199e2db046d52cf2d0f
+2026-09-27T04:46:20.3453343Z From https://github.com/GodaPupa/argentum-batshit-test
+2026-09-27T04:46:20.3454322Z  * branch            a0fe959d2fa345b77513e199e2db046d52cf2d0f -> FETCH_HEAD
+2026-09-27T04:46:20.3464806Z [command]/usr/bin/git rev-parse --verify --quiet a0fe959d2fa345b77513e199e2db046d52cf2d0f^{object}
+2026-09-27T04:46:20.3489937Z a0fe959d2fa345b77513e199e2db046d52cf2d0f
+2026-09-27T04:46:20.3492780Z ##[endgroup]
+2026-09-27T04:46:20.3493367Z ##[group]Determining the checkout info
+2026-09-27T04:46:20.3494530Z ##[endgroup]
+2026-09-27T04:46:20.3500409Z [command]/usr/bin/git sparse-checkout disable
+2026-09-27T04:46:20.3548491Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-27T04:46:20.3588785Z ##[group]Checking out the ref
+2026-09-27T04:46:20.3591993Z [command]/usr/bin/git checkout --progress --force a0fe959d2fa345b77513e199e2db046d52cf2d0f
+2026-09-27T04:46:20.3634479Z Note: switching to 'a0fe959d2fa345b77513e199e2db046d52cf2d0f'.
+2026-09-27T04:46:20.3634860Z 
+2026-09-27T04:46:20.3635093Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-27T04:46:20.3635599Z changes and commit them, and you can discard any commits you make in this
+2026-09-27T04:46:20.3636112Z state without impacting any branches by switching back to a branch.
+2026-09-27T04:46:20.3636401Z 
+2026-09-27T04:46:20.3636618Z If you want to create a new branch to retain commits you create, you may
+2026-09-27T04:46:20.3637075Z do so (now or later) by using -c with the switch command. Example:
+2026-09-27T04:46:20.3637342Z 
+2026-09-27T04:46:20.3637486Z   git switch -c <new-branch-name>
+2026-09-27T04:46:20.3637687Z 
+2026-09-27T04:46:20.3637830Z Or undo this operation with:
+2026-09-27T04:46:20.3638020Z 
+2026-09-27T04:46:20.3638381Z   git switch -
+2026-09-27T04:46:20.3638544Z 
+2026-09-27T04:46:20.3638772Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-27T04:46:20.3639085Z 
+2026-09-27T04:46:20.3639499Z HEAD is now at a0fe959 Qualify exact LEGACY factory differential with required upstream semaphore and complete owned-process observations
+2026-09-27T04:46:20.3641853Z ##[endgroup]
+2026-09-27T04:46:20.3676104Z [command]/usr/bin/git log -1 --format=%H
+2026-09-27T04:46:20.3697718Z a0fe959d2fa345b77513e199e2db046d52cf2d0f
+2026-09-27T04:46:20.3707304Z ##[group]Removing auth
+2026-09-27T04:46:20.3707664Z Removing SSH command configuration
+2026-09-27T04:46:20.3710934Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T04:46:20.3736656Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T04:46:20.3916044Z Removing HTTP extra header
+2026-09-27T04:46:20.3923062Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T04:46:20.3951378Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T04:46:20.4129522Z Removing includeIf entries pointing to credentials config files
+2026-09-27T04:46:20.4133128Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T04:46:20.4157267Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/control/.git.path
+2026-09-27T04:46:20.4158130Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/control/.git/worktrees/*.path
+2026-09-27T04:46:20.4158820Z includeif.gitdir:/github/workspace/control/.git.path
+2026-09-27T04:46:20.4159418Z includeif.gitdir:/github/workspace/control/.git/worktrees/*.path
+2026-09-27T04:46:20.4166846Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/control/.git.path
+2026-09-27T04:46:20.4186919Z /home/runner/work/_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:20.4196747Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/control/.git.path /home/runner/work/_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:20.4252484Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/control/.git/worktrees/*.path
+2026-09-27T04:46:20.4271887Z /home/runner/work/_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:20.4279934Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/control/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:20.4319414Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/control/.git.path
+2026-09-27T04:46:20.4338684Z /github/runner_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:20.4346845Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/control/.git.path /github/runner_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:20.4388600Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/control/.git/worktrees/*.path
+2026-09-27T04:46:20.4408159Z /github/runner_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:20.4415978Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/control/.git/worktrees/*.path /github/runner_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config
+2026-09-27T04:46:20.4444330Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T04:46:20.4618048Z Removing credentials config '/home/runner/work/_temp/git-credentials-9da1089b-1da7-49ac-b21b-5c91521ff4ff.config'
+2026-09-27T04:46:20.4627381Z ##[endgroup]
+2026-09-27T04:46:20.5892127Z ##[group]Run actions/checkout@v6
+2026-09-27T04:46:20.5892574Z with:
+2026-09-27T04:46:20.5892982Z   ref: af16191eba3c93efa40f4ab28c2454b4b3c23d88
+2026-09-27T04:46:20.5893421Z   path: before
+2026-09-27T04:46:20.5893746Z   persist-credentials: false
+2026-09-27T04:46:20.5894230Z   repository: GodaPupa/argentum-batshit-test
+2026-09-27T04:46:20.5897103Z   token: ***
+2026-09-27T04:46:20.5897419Z   ssh-strict: true
+2026-09-27T04:46:20.5897799Z   ssh-user: git
+2026-09-27T04:46:20.5898097Z   clean: true
+2026-09-27T04:46:20.5898403Z   sparse-checkout-cone-mode: true
+2026-09-27T04:46:20.5898793Z   fetch-depth: 1
+2026-09-27T04:46:20.5899110Z   fetch-tags: false
+2026-09-27T04:46:20.5899457Z   show-progress: true
+2026-09-27T04:46:20.5899785Z   lfs: false
+2026-09-27T04:46:20.5900081Z   submodules: false
+2026-09-27T04:46:20.5900415Z   set-safe-directory: true
+2026-09-27T04:46:20.5900770Z   allow-unsafe-pr-checkout: false
+2026-09-27T04:46:20.5901186Z env:
+2026-09-27T04:46:20.5901560Z   GRADLE_LOCK_SLOTS: 1
+2026-09-27T04:46:20.5901947Z   JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+2026-09-27T04:46:20.5902471Z ##[endgroup]
+2026-09-27T04:46:20.6725221Z Syncing repository: GodaPupa/argentum-batshit-test
+2026-09-27T04:46:20.6732083Z ##[group]Getting Git version info
+2026-09-27T04:46:20.6733067Z Working directory is '/home/runner/work/argentum-batshit-test/argentum-batshit-test/before'
+2026-09-27T04:46:20.6774247Z [command]/usr/bin/git version
+2026-09-27T04:46:20.6816798Z git version 2.55.0
+2026-09-27T04:46:20.6840761Z ##[endgroup]
+2026-09-27T04:46:20.6854762Z Temporarily overriding HOME='/home/runner/work/_temp/6f685c28-578f-4064-ba7c-1413f044bfe6' before making global git config changes
+2026-09-27T04:46:20.6856061Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T04:46:20.6861304Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test/before
+2026-09-27T04:46:20.6891165Z ##[group]Determining repository object format
+2026-09-27T04:46:20.6894193Z ##[endgroup]
+2026-09-27T04:46:20.6895039Z ##[group]Initializing the repository
+2026-09-27T04:46:20.6899162Z [command]/usr/bin/git init /home/runner/work/argentum-batshit-test/argentum-batshit-test/before
+2026-09-27T04:46:20.6939646Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-27T04:46:20.6941064Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-27T04:46:20.6945013Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-27T04:46:20.6946066Z hint: call:
+2026-09-27T04:46:20.6947180Z hint:
+2026-09-27T04:46:20.6947972Z hint: 	git config --global init.defaultBranch <name>
+2026-09-27T04:46:20.6948565Z hint:
+2026-09-27T04:46:20.6949134Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-27T04:46:20.6950044Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-27T04:46:20.6950709Z hint:
+2026-09-27T04:46:20.6951174Z hint: 	git branch -m <name>
+2026-09-27T04:46:20.6951634Z hint:
+2026-09-27T04:46:20.6952336Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-27T04:46:20.6953551Z Initialized empty Git repository in /home/runner/work/argentum-batshit-test/argentum-batshit-test/before/.git/
+2026-09-27T04:46:20.6955661Z [command]/usr/bin/git remote add origin https://github.com/GodaPupa/argentum-batshit-test
+2026-09-27T04:46:20.6997433Z ##[endgroup]
+2026-09-27T04:46:20.6998036Z ##[group]Disabling automatic garbage collection
+2026-09-27T04:46:20.7004861Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-27T04:46:20.7033566Z ##[endgroup]
+2026-09-27T04:46:20.7034425Z ##[group]Setting up auth
+2026-09-27T04:46:20.7035313Z Removing SSH command configuration
+2026-09-27T04:46:20.7042479Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T04:46:20.7072611Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T04:46:20.7266833Z Removing HTTP extra header
+2026-09-27T04:46:20.7271770Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T04:46:20.7305642Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T04:46:20.7503640Z Removing includeIf entries pointing to credentials config files
+2026-09-27T04:46:20.7510376Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T04:46:20.7540570Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T04:46:20.7808384Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-27T04:46:20.7843058Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/before/.git.path /home/runner/work/_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:20.7884368Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/before/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:20.7923070Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/before/.git.path /github/runner_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:20.7969299Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/before/.git/worktrees/*.path /github/runner_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:20.8003641Z ##[endgroup]
+2026-09-27T04:46:20.8004738Z ##[group]Fetching the repository
+2026-09-27T04:46:20.8012156Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin af16191eba3c93efa40f4ab28c2454b4b3c23d88
+2026-09-27T04:46:29.8323460Z From https://github.com/GodaPupa/argentum-batshit-test
+2026-09-27T04:46:29.8324686Z  * branch              af16191eba3c93efa40f4ab28c2454b4b3c23d88 -> FETCH_HEAD
+2026-09-27T04:46:29.8332387Z [command]/usr/bin/git rev-parse --verify --quiet af16191eba3c93efa40f4ab28c2454b4b3c23d88^{object}
+2026-09-27T04:46:29.8357510Z af16191eba3c93efa40f4ab28c2454b4b3c23d88
+2026-09-27T04:46:29.8360513Z ##[endgroup]
+2026-09-27T04:46:29.8361334Z ##[group]Determining the checkout info
+2026-09-27T04:46:29.8363092Z ##[endgroup]
+2026-09-27T04:46:29.8372028Z [command]/usr/bin/git sparse-checkout disable
+2026-09-27T04:46:29.9827968Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-27T04:46:29.9863365Z ##[group]Checking out the ref
+2026-09-27T04:46:29.9867842Z [command]/usr/bin/git checkout --progress --force af16191eba3c93efa40f4ab28c2454b4b3c23d88
+2026-09-27T04:46:31.0794834Z Updating files:  91% (25384/27767)
+2026-09-27T04:46:31.1078501Z Updating files:  92% (25546/27767)
+2026-09-27T04:46:31.1203587Z Updating files:  93% (25824/27767)
+2026-09-27T04:46:31.1386249Z Updating files:  94% (26101/27767)
+2026-09-27T04:46:31.1555631Z Updating files:  95% (26379/27767)
+2026-09-27T04:46:31.1703015Z Updating files:  96% (26657/27767)
+2026-09-27T04:46:31.1850053Z Updating files:  97% (26934/27767)
+2026-09-27T04:46:31.2700648Z Updating files:  98% (27212/27767)
+2026-09-27T04:46:31.2880023Z Updating files:  99% (27490/27767)
+2026-09-27T04:46:31.2880591Z Updating files: 100% (27767/27767)
+2026-09-27T04:46:31.2881437Z Updating files: 100% (27767/27767), done.
+2026-09-27T04:46:31.3148853Z Note: switching to 'af16191eba3c93efa40f4ab28c2454b4b3c23d88'.
+2026-09-27T04:46:31.3149395Z 
+2026-09-27T04:46:31.3150101Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-27T04:46:31.3151035Z changes and commit them, and you can discard any commits you make in this
+2026-09-27T04:46:31.3151902Z state without impacting any branches by switching back to a branch.
+2026-09-27T04:46:31.3152266Z 
+2026-09-27T04:46:31.3152698Z If you want to create a new branch to retain commits you create, you may
+2026-09-27T04:46:31.3154199Z do so (now or later) by using -c with the switch command. Example:
+2026-09-27T04:46:31.3154717Z 
+2026-09-27T04:46:31.3154919Z   git switch -c <new-branch-name>
+2026-09-27T04:46:31.3155262Z 
+2026-09-27T04:46:31.3155509Z Or undo this operation with:
+2026-09-27T04:46:31.3155919Z 
+2026-09-27T04:46:31.3156080Z   git switch -
+2026-09-27T04:46:31.3156344Z 
+2026-09-27T04:46:31.3156763Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-27T04:46:31.3157273Z 
+2026-09-27T04:46:31.3157866Z HEAD is now at af16191e Add reviewed frozen-factory strategy differential fixture on unchanged production source
+2026-09-27T04:46:31.3182687Z ##[endgroup]
+2026-09-27T04:46:31.3223717Z [command]/usr/bin/git log -1 --format=%H
+2026-09-27T04:46:31.3255583Z af16191eba3c93efa40f4ab28c2454b4b3c23d88
+2026-09-27T04:46:31.3257502Z ##[group]Removing auth
+2026-09-27T04:46:31.3258118Z Removing SSH command configuration
+2026-09-27T04:46:31.3261444Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T04:46:31.3292669Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T04:46:31.3554535Z Removing HTTP extra header
+2026-09-27T04:46:31.3558820Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T04:46:31.3591803Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T04:46:31.3814398Z Removing includeIf entries pointing to credentials config files
+2026-09-27T04:46:31.3819776Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T04:46:31.3842922Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/before/.git.path
+2026-09-27T04:46:31.3844576Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/before/.git/worktrees/*.path
+2026-09-27T04:46:31.3845615Z includeif.gitdir:/github/workspace/before/.git.path
+2026-09-27T04:46:31.3846403Z includeif.gitdir:/github/workspace/before/.git/worktrees/*.path
+2026-09-27T04:46:31.3854213Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/before/.git.path
+2026-09-27T04:46:31.3874795Z /home/runner/work/_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:31.3885354Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/before/.git.path /home/runner/work/_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:31.3921491Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/before/.git/worktrees/*.path
+2026-09-27T04:46:31.3941204Z /home/runner/work/_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:31.3951751Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/before/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:31.3985761Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/before/.git.path
+2026-09-27T04:46:31.4004333Z /github/runner_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:31.4015337Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/before/.git.path /github/runner_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:31.4052333Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/before/.git/worktrees/*.path
+2026-09-27T04:46:31.4071247Z /github/runner_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:31.4077524Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/before/.git/worktrees/*.path /github/runner_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config
+2026-09-27T04:46:31.4107646Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T04:46:31.4309059Z Removing credentials config '/home/runner/work/_temp/git-credentials-8130afb0-1aa2-4cbf-bc5b-a9314f1b78c4.config'
+2026-09-27T04:46:31.4319370Z ##[endgroup]
+2026-09-27T04:46:31.4923483Z ##[group]Run actions/checkout@v6
+2026-09-27T04:46:31.4923764Z with:
+2026-09-27T04:46:31.4924145Z   ref: e825589e1deff9de09f4ffe78aece41dc5ac0df9
+2026-09-27T04:46:31.4924586Z   path: fixed
+2026-09-27T04:46:31.4924826Z   persist-credentials: false
+2026-09-27T04:46:31.4925119Z   repository: GodaPupa/argentum-batshit-test
+2026-09-27T04:46:31.4927937Z   token: ***
+2026-09-27T04:46:31.4928157Z   ssh-strict: true
+2026-09-27T04:46:31.4928380Z   ssh-user: git
+2026-09-27T04:46:31.4928604Z   clean: true
+2026-09-27T04:46:31.4928950Z   sparse-checkout-cone-mode: true
+2026-09-27T04:46:31.4929220Z   fetch-depth: 1
+2026-09-27T04:46:31.4929442Z   fetch-tags: false
+2026-09-27T04:46:31.4929669Z   show-progress: true
+2026-09-27T04:46:31.4929894Z   lfs: false
+2026-09-27T04:46:31.4930108Z   submodules: false
+2026-09-27T04:46:31.4930344Z   set-safe-directory: true
+2026-09-27T04:46:31.4930610Z   allow-unsafe-pr-checkout: false
+2026-09-27T04:46:31.4930864Z env:
+2026-09-27T04:46:31.4931114Z   GRADLE_LOCK_SLOTS: 1
+2026-09-27T04:46:31.4931382Z   JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+2026-09-27T04:46:31.4931679Z ##[endgroup]
+2026-09-27T04:46:31.5807913Z Syncing repository: GodaPupa/argentum-batshit-test
+2026-09-27T04:46:31.5809017Z ##[group]Getting Git version info
+2026-09-27T04:46:31.5809804Z Working directory is '/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed'
+2026-09-27T04:46:31.5848046Z [command]/usr/bin/git version
+2026-09-27T04:46:31.5890134Z git version 2.55.0
+2026-09-27T04:46:31.5914591Z ##[endgroup]
+2026-09-27T04:46:31.5928679Z Temporarily overriding HOME='/home/runner/work/_temp/7c01910e-6599-4d61-908d-13d896878171' before making global git config changes
+2026-09-27T04:46:31.5929639Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T04:46:31.5934482Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed
+2026-09-27T04:46:31.5965837Z ##[group]Determining repository object format
+2026-09-27T04:46:31.5968649Z ##[endgroup]
+2026-09-27T04:46:31.5969537Z ##[group]Initializing the repository
+2026-09-27T04:46:31.5973766Z [command]/usr/bin/git init /home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed
+2026-09-27T04:46:31.6010760Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-09-27T04:46:31.6011573Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-09-27T04:46:31.6012357Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-09-27T04:46:31.6012925Z hint: call:
+2026-09-27T04:46:31.6013188Z hint:
+2026-09-27T04:46:31.6013563Z hint: 	git config --global init.defaultBranch <name>
+2026-09-27T04:46:31.6014171Z hint:
+2026-09-27T04:46:31.6014598Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-09-27T04:46:31.6015123Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-09-27T04:46:31.6015495Z hint:
+2026-09-27T04:46:31.6015735Z hint: 	git branch -m <name>
+2026-09-27T04:46:31.6016020Z hint:
+2026-09-27T04:46:31.6016346Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-09-27T04:46:31.6016964Z Initialized empty Git repository in /home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/.git/
+2026-09-27T04:46:31.6020926Z [command]/usr/bin/git remote add origin https://github.com/GodaPupa/argentum-batshit-test
+2026-09-27T04:46:31.6052229Z ##[endgroup]
+2026-09-27T04:46:31.6052813Z ##[group]Disabling automatic garbage collection
+2026-09-27T04:46:31.6057256Z [command]/usr/bin/git config --local gc.auto 0
+2026-09-27T04:46:31.6097200Z ##[endgroup]
+2026-09-27T04:46:31.6097675Z ##[group]Setting up auth
+2026-09-27T04:46:31.6099271Z Removing SSH command configuration
+2026-09-27T04:46:31.6108552Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T04:46:31.6143343Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T04:46:31.6340819Z Removing HTTP extra header
+2026-09-27T04:46:31.6346709Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T04:46:31.6373183Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T04:46:31.6576031Z Removing includeIf entries pointing to credentials config files
+2026-09-27T04:46:31.6578998Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T04:46:31.6611070Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T04:46:31.6808693Z [command]/usr/bin/git config --file /home/runner/work/_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-09-27T04:46:31.6842795Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/.git.path /home/runner/work/_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:31.6873182Z [command]/usr/bin/git config --local includeIf.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:31.6904564Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/fixed/.git.path /github/runner_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:31.6938933Z [command]/usr/bin/git config --local includeIf.gitdir:/github/workspace/fixed/.git/worktrees/*.path /github/runner_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:31.6975670Z ##[endgroup]
+2026-09-27T04:46:31.6976445Z ##[group]Fetching the repository
+2026-09-27T04:46:31.6984111Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin e825589e1deff9de09f4ffe78aece41dc5ac0df9
+2026-09-27T04:46:39.0728531Z From https://github.com/GodaPupa/argentum-batshit-test
+2026-09-27T04:46:39.0729067Z  * branch              e825589e1deff9de09f4ffe78aece41dc5ac0df9 -> FETCH_HEAD
+2026-09-27T04:46:39.0740184Z [command]/usr/bin/git rev-parse --verify --quiet e825589e1deff9de09f4ffe78aece41dc5ac0df9^{object}
+2026-09-27T04:46:39.0765620Z e825589e1deff9de09f4ffe78aece41dc5ac0df9
+2026-09-27T04:46:39.0770592Z ##[endgroup]
+2026-09-27T04:46:39.0771160Z ##[group]Determining the checkout info
+2026-09-27T04:46:39.0776826Z ##[endgroup]
+2026-09-27T04:46:39.0782192Z [command]/usr/bin/git sparse-checkout disable
+2026-09-27T04:46:39.0824361Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-09-27T04:46:39.0850877Z ##[group]Checking out the ref
+2026-09-27T04:46:39.0854490Z [command]/usr/bin/git checkout --progress --force e825589e1deff9de09f4ffe78aece41dc5ac0df9
+2026-09-27T04:46:40.1816840Z Updating files:  91% (25372/27767)
+2026-09-27T04:46:40.2096754Z Updating files:  92% (25546/27767)
+2026-09-27T04:46:40.2222727Z Updating files:  93% (25824/27767)
+2026-09-27T04:46:40.2403350Z Updating files:  94% (26101/27767)
+2026-09-27T04:46:40.2571385Z Updating files:  95% (26379/27767)
+2026-09-27T04:46:40.2716780Z Updating files:  96% (26657/27767)
+2026-09-27T04:46:40.2863282Z Updating files:  97% (26934/27767)
+2026-09-27T04:46:40.3718175Z Updating files:  98% (27212/27767)
+2026-09-27T04:46:40.3897153Z Updating files:  99% (27490/27767)
+2026-09-27T04:46:40.3897684Z Updating files: 100% (27767/27767)
+2026-09-27T04:46:40.3898062Z Updating files: 100% (27767/27767), done.
+2026-09-27T04:46:40.4165449Z Note: switching to 'e825589e1deff9de09f4ffe78aece41dc5ac0df9'.
+2026-09-27T04:46:40.4165764Z 
+2026-09-27T04:46:40.4166657Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-09-27T04:46:40.4167152Z changes and commit them, and you can discard any commits you make in this
+2026-09-27T04:46:40.4167738Z state without impacting any branches by switching back to a branch.
+2026-09-27T04:46:40.4168006Z 
+2026-09-27T04:46:40.4168194Z If you want to create a new branch to retain commits you create, you may
+2026-09-27T04:46:40.4168639Z do so (now or later) by using -c with the switch command. Example:
+2026-09-27T04:46:40.4168902Z 
+2026-09-27T04:46:40.4169025Z   git switch -c <new-branch-name>
+2026-09-27T04:46:40.4169217Z 
+2026-09-27T04:46:40.4169338Z Or undo this operation with:
+2026-09-27T04:46:40.4169505Z 
+2026-09-27T04:46:40.4169613Z   git switch -
+2026-09-27T04:46:40.4169744Z 
+2026-09-27T04:46:40.4169961Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-09-27T04:46:40.4170251Z 
+2026-09-27T04:46:40.4170548Z HEAD is now at e825589e Bind structurally frozen LEGACY_V0 factory to explicit legacy Yes-No strategy
+2026-09-27T04:46:40.4196115Z ##[endgroup]
+2026-09-27T04:46:40.4236122Z [command]/usr/bin/git log -1 --format=%H
+2026-09-27T04:46:40.4259900Z e825589e1deff9de09f4ffe78aece41dc5ac0df9
+2026-09-27T04:46:40.4270834Z ##[group]Removing auth
+2026-09-27T04:46:40.4271162Z Removing SSH command configuration
+2026-09-27T04:46:40.4279879Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T04:46:40.4311005Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T04:46:40.4527455Z Removing HTTP extra header
+2026-09-27T04:46:40.4532507Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T04:46:40.4560625Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T04:46:40.4766330Z Removing includeIf entries pointing to credentials config files
+2026-09-27T04:46:40.4770385Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T04:46:40.4791293Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/.git.path
+2026-09-27T04:46:40.4792032Z includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/.git/worktrees/*.path
+2026-09-27T04:46:40.4792688Z includeif.gitdir:/github/workspace/fixed/.git.path
+2026-09-27T04:46:40.4793246Z includeif.gitdir:/github/workspace/fixed/.git/worktrees/*.path
+2026-09-27T04:46:40.4799279Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/.git.path
+2026-09-27T04:46:40.4819499Z /home/runner/work/_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:40.4829617Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/.git.path /home/runner/work/_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:40.4861298Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/.git/worktrees/*.path
+2026-09-27T04:46:40.4881904Z /home/runner/work/_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:40.4891476Z [command]/usr/bin/git config --local --unset includeif.gitdir:/home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed/.git/worktrees/*.path /home/runner/work/_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:40.4924146Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/fixed/.git.path
+2026-09-27T04:46:40.4943991Z /github/runner_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:40.4956348Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/fixed/.git.path /github/runner_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:40.4995048Z [command]/usr/bin/git config --local --get-all includeif.gitdir:/github/workspace/fixed/.git/worktrees/*.path
+2026-09-27T04:46:40.5014135Z /github/runner_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:40.5020389Z [command]/usr/bin/git config --local --unset includeif.gitdir:/github/workspace/fixed/.git/worktrees/*.path /github/runner_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config
+2026-09-27T04:46:40.5067212Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T04:46:40.5279624Z Removing credentials config '/home/runner/work/_temp/git-credentials-82e30271-26e8-49c7-b643-6224c739ca88.config'
+2026-09-27T04:46:40.5289332Z ##[endgroup]
+2026-09-27T04:46:40.5918172Z ##[group]Run actions/setup-java@v5
+2026-09-27T04:46:40.5918465Z with:
+2026-09-27T04:46:40.5918688Z   distribution: temurin
+2026-09-27T04:46:40.5918953Z   java-version: 21
+2026-09-27T04:46:40.5919184Z   java-package: jdk
+2026-09-27T04:46:40.5919410Z   check-latest: false
+2026-09-27T04:46:40.5919634Z   set-default: true
+2026-09-27T04:46:40.5919860Z   verify-signature: false
+2026-09-27T04:46:40.5920100Z   server-id: github
+2026-09-27T04:46:40.5920335Z   server-username: GITHUB_ACTOR
+2026-09-27T04:46:40.5920605Z   server-password: GITHUB_TOKEN
+2026-09-27T04:46:40.5920870Z   overwrite-settings: true
+2026-09-27T04:46:40.5921115Z   job-status: success
+2026-09-27T04:46:40.5923971Z   token: ***
+2026-09-27T04:46:40.5924219Z   show-download-progress: false
+2026-09-27T04:46:40.5924473Z env:
+2026-09-27T04:46:40.5924683Z   GRADLE_LOCK_SLOTS: 1
+2026-09-27T04:46:40.5924952Z   JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+2026-09-27T04:46:40.5925254Z ##[endgroup]
+2026-09-27T04:46:40.7418585Z ##[group]Installed distributions
+2026-09-27T04:46:40.7480170Z Resolved Java 21.0.12+1 from tool-cache
+2026-09-27T04:46:40.7480607Z Setting Java 21.0.12+1 as the default
+2026-09-27T04:46:40.7490176Z Creating toolchains.xml for JDK version 21 from temurin
+2026-09-27T04:46:40.7560054Z Writing to /home/runner/.m2/toolchains.xml
+2026-09-27T04:46:40.7560696Z 
+2026-09-27T04:46:40.7561231Z Java configuration:
+2026-09-27T04:46:40.7561607Z   Distribution: temurin
+2026-09-27T04:46:40.7561920Z   Version: 21.0.12+1
+2026-09-27T04:46:40.7562351Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T04:46:40.7562707Z 
+2026-09-27T04:46:40.7563236Z ##[endgroup]
+2026-09-27T04:46:40.7612334Z Creating settings.xml with server-id: github
+2026-09-27T04:46:40.7612804Z Writing to /home/runner/.m2/settings.xml
+2026-09-27T04:46:40.7613497Z Configured MAVEN_ARGS to include -ntp to suppress Maven transfer progress logs. Set 'show-download-progress: true' to keep the download progress output.
+2026-09-27T04:46:40.8516268Z ##[group]Run gradle/actions/setup-gradle@v6
+2026-09-27T04:46:40.8516590Z with:
+2026-09-27T04:46:40.8516825Z   cache-provider: enhanced
+2026-09-27T04:46:40.8517089Z   cache-disabled: false
+2026-09-27T04:46:40.8517358Z   cache-read-only: true
+2026-09-27T04:46:40.8517601Z   cache-write-only: false
+2026-09-27T04:46:40.8517863Z   cache-overwrite-existing: false
+2026-09-27T04:46:40.8518142Z   cache-cleanup: on-success
+2026-09-27T04:46:40.8518446Z   gradle-home-cache-includes: caches
+notifications
+
+2026-09-27T04:46:40.8518778Z   add-job-summary: always
+2026-09-27T04:46:40.8519044Z   add-job-summary-as-pr-comment: never
+2026-09-27T04:46:40.8519334Z   dependency-graph: disabled
+2026-09-27T04:46:40.8519652Z   dependency-graph-report-dir: dependency-graph-reports
+2026-09-27T04:46:40.8520029Z   dependency-graph-continue-on-failure: true
+2026-09-27T04:46:40.8520338Z   build-scan-publish: false
+2026-09-27T04:46:40.8520596Z   validate-wrappers: true
+2026-09-27T04:46:40.8520911Z   allow-snapshot-wrappers: false
+2026-09-27T04:46:40.8521199Z   gradle-home-cache-strict-match: false
+2026-09-27T04:46:40.8521488Z   workflow-job-context: null
+2026-09-27T04:46:40.8524336Z   github-token: ***
+2026-09-27T04:46:40.8524697Z env:
+2026-09-27T04:46:40.8524907Z   GRADLE_LOCK_SLOTS: 1
+2026-09-27T04:46:40.8525189Z   JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+2026-09-27T04:46:40.8525595Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T04:46:40.8526075Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T04:46:40.8526456Z   MAVEN_ARGS: -ntp
+2026-09-27T04:46:40.8526677Z ##[endgroup]
+2026-09-27T04:46:42.3250640Z Merged default JDK locations into /home/runner/.m2/toolchains.xml
+2026-09-27T04:46:42.3255372Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+2026-09-27T04:46:42.4027789Z ##[group]Restore Gradle state from cache
+2026-09-27T04:46:42.6155296Z Cache hit for restore-key: gradle-home-v2|Linux-X64|test[360f1d0ae557562780e09ca635750892]-04c3cd58de904f62f509e633298c38ce7bc49ec9
+2026-09-27T04:46:43.2972634Z Received 365154 of 365154 (100.0%), 0.7 MBs/sec
+2026-09-27T04:46:43.2973201Z Cache Size: ~0 MB (365154 B)
+2026-09-27T04:46:43.3000978Z [command]/usr/bin/tar -xf /home/runner/work/_temp/e8e20784-ea9b-4d71-a444-61123991c0b5/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T04:46:43.3291530Z Cache restored successfully
+2026-09-27T04:46:43.3294102Z Restored cache entry with key gradle-home-v2|Linux-X64|original-and-corrected-factory[468e549312a32e1a5e71c338ff827b8e]-a0fe959d2fa345b77513e199e2db046d52cf2d0f in 926ms
+2026-09-27T04:46:43.5702036Z Cache hit for: gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-27T04:46:43.5712556Z Cache hit for: gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-27T04:46:43.5755115Z Cache hit for: gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-27T04:46:43.5772002Z Cache hit for: gradle-dependencies-v2-b4780b40118e6330d3a8e660adf90e74
+2026-09-27T04:46:43.5889776Z Cache hit for: gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-27T04:46:43.5899532Z Cache hit for: gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-27T04:46:43.5932810Z Cache hit for: gradle-transforms-v2-67f3841056eb7ab2272a93cecfe100f8
+2026-09-27T04:46:44.1020661Z Received 101824 of 101824 (100.0%), 0.3 MBs/sec
+2026-09-27T04:46:44.1021237Z Cache Size: ~0 MB (101824 B)
+2026-09-27T04:46:44.1037981Z [command]/usr/bin/tar -xf /home/runner/work/_temp/7b4d56a2-4e7f-43bc-b2c7-a915d87f8626/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T04:46:44.1110635Z Received 60281 of 60281 (100.0%), 0.2 MBs/sec
+2026-09-27T04:46:44.1111254Z Cache Size: ~0 MB (60281 B)
+2026-09-27T04:46:44.1135521Z [command]/usr/bin/tar -xf /home/runner/work/_temp/349d14fd-255b-4ed9-a3d3-4854af4765b7/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T04:46:44.1200748Z Cache restored successfully
+2026-09-27T04:46:44.1202910Z Restored cache entry with key gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114 in 789ms
+2026-09-27T04:46:44.1222235Z Cache restored successfully
+2026-09-27T04:46:44.1223414Z Restored cache entry with key gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19 in 792ms
+2026-09-27T04:46:44.2062556Z Received 338388 of 338388 (100.0%), 0.8 MBs/sec
+2026-09-27T04:46:44.2063457Z Cache Size: ~0 MB (338388 B)
+2026-09-27T04:46:44.2091263Z [command]/usr/bin/tar -xf /home/runner/work/_temp/ee501ed0-c1e5-464d-bc2f-c0d3ff818749/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T04:46:44.2922862Z Cache restored successfully
+2026-09-27T04:46:44.2924781Z Restored cache entry with key gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a in 962ms
+2026-09-27T04:46:44.6429091Z Received 41943040 of 139934591 (30.0%), 40.0 MBs/sec
+2026-09-27T04:46:44.8206000Z Received 33770065 of 42158673 (80.1%), 32.1 MBs/sec
+2026-09-27T04:46:44.8268218Z Received 12582912 of 226359753 (5.6%), 12.0 MBs/sec
+2026-09-27T04:46:44.8445394Z Received 4194304 of 50739067 (8.3%), 4.0 MBs/sec
+2026-09-27T04:46:44.9726055Z Received 42158673 of 42158673 (100.0%), 34.8 MBs/sec
+2026-09-27T04:46:44.9726654Z Cache Size: ~40 MB (42158673 B)
+2026-09-27T04:46:45.0153597Z [command]/usr/bin/tar -xf /home/runner/work/_temp/f18cc82c-772b-4b59-a758-bcdbc3a842a1/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T04:46:45.3291259Z Received 50739067 of 50739067 (100.0%), 32.6 MBs/sec
+2026-09-27T04:46:45.3291889Z Cache Size: ~48 MB (50739067 B)
+2026-09-27T04:46:45.3489195Z Cache restored successfully
+2026-09-27T04:46:45.3515555Z Restored cache entry with key gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de in 2022ms
+2026-09-27T04:46:45.3681004Z [command]/usr/bin/tar -xf /home/runner/work/_temp/3663c4f5-a9ae-4134-bdb5-3bc2db601d0f/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T04:46:45.5281668Z Received 139934591 of 139934591 (100.0%), 70.8 MBs/sec
+2026-09-27T04:46:45.5305159Z Cache Size: ~133 MB (139934591 B)
+2026-09-27T04:46:45.5539387Z [command]/usr/bin/tar -xf /home/runner/work/_temp/a96a9a44-1583-43bd-8e6b-ce7a66c357ea/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T04:46:45.8026043Z Cache restored successfully
+2026-09-27T04:46:45.8251515Z Restored cache entry with key gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60 in 2490ms
+2026-09-27T04:46:45.8275242Z Received 130023424 of 226359753 (57.4%), 62.0 MBs/sec
+2026-09-27T04:46:45.8305173Z Cache restored successfully
+2026-09-27T04:46:45.8324543Z Restored cache entry with key gradle-transforms-v2-67f3841056eb7ab2272a93cecfe100f8 in 2501ms
+2026-09-27T04:46:46.8118645Z Received 226359753 of 226359753 (100.0%), 72.3 MBs/sec
+2026-09-27T04:46:46.8119352Z Cache Size: ~216 MB (226359753 B)
+2026-09-27T04:46:46.8205468Z [command]/usr/bin/tar -xf /home/runner/work/_temp/e3ada065-4bf4-4791-bb9a-8839379e3f74/cache.tzst -P -C /home/runner/work/argentum-batshit-test/argentum-batshit-test --use-compress-program unzstd
+2026-09-27T04:46:47.0510974Z Cache restored successfully
+2026-09-27T04:46:47.0591648Z Restored cache entry with key gradle-dependencies-v2-b4780b40118e6330d3a8e660adf90e74 in 3729ms
+2026-09-27T04:46:47.0601112Z ##[endgroup]
+2026-09-27T04:46:47.5395000Z ##[group]All Gradle Wrapper jars are valid
+2026-09-27T04:46:47.5396215Z ✓ Found known Gradle Wrapper JAR files:
+2026-09-27T04:46:47.5397110Z   497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7 before/gradle/wrapper/gradle-wrapper.jar
+2026-09-27T04:46:47.5398263Z   497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7 fixed/gradle/wrapper/gradle-wrapper.jar
+2026-09-27T04:46:47.5399063Z ##[endgroup]
+2026-09-27T04:46:47.6919783Z ##[group]Run extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+2026-09-27T04:46:47.6920601Z with:
+2026-09-27T04:46:47.6924762Z   github-token: ***
+2026-09-27T04:46:47.6925146Z env:
+2026-09-27T04:46:47.6925489Z   GRADLE_LOCK_SLOTS: 1
+2026-09-27T04:46:47.6925920Z   JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+2026-09-27T04:46:47.6926610Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T04:46:47.6927438Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T04:46:47.6928128Z   MAVEN_ARGS: -ntp
+2026-09-27T04:46:47.6928586Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-27T04:46:47.6929097Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-27T04:46:47.6929579Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-27T04:46:47.6930309Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-27T04:46:47.6931212Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-27T04:46:47.6931760Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-27T04:46:47.6932467Z ##[endgroup]
+2026-09-27T04:46:47.7026011Z ##[start-action display=Run extractions/setup-crate@4993624604c307fbca528d28a3c8b60fa5ecc859;id=__extractions_setup-just.__extractions_setup-crate]
+2026-09-27T04:46:47.7177172Z ##[group]Run extractions/setup-crate@4993624604c307fbca528d28a3c8b60fa5ecc859
+2026-09-27T04:46:47.7177685Z with:
+2026-09-27T04:46:47.7177991Z   repo: casey/just
+2026-09-27T04:46:47.7180935Z   github-token: ***
+2026-09-27T04:46:47.7181243Z env:
+2026-09-27T04:46:47.7181507Z   GRADLE_LOCK_SLOTS: 1
+2026-09-27T04:46:47.7181849Z   JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+2026-09-27T04:46:47.7182344Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T04:46:47.7182949Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T04:46:47.7183429Z   MAVEN_ARGS: -ntp
+2026-09-27T04:46:47.7183790Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-27T04:46:47.7184493Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-27T04:46:47.7184866Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-27T04:46:47.7185373Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-27T04:46:47.7185887Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-27T04:46:47.7186267Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-27T04:46:47.7186600Z ##[endgroup]
+2026-09-27T04:46:48.8567114Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/9f97f073-9a52-4829-b7c0-52d9b5a511a1 -f /home/runner/work/_temp/770df085-ecd3-4732-b6a7-6ed7241c48e5
+2026-09-27T04:46:48.9271987Z Successfully setup just v1.58.0
+2026-09-27T04:46:48.9344719Z ##[end-action id=__extractions_setup-just.__extractions_setup-crate;outcome=success;conclusion=success;duration_ms=1231]
+2026-09-27T04:46:48.9474079Z ##[group]Run python3 control/qualify.py
+2026-09-27T04:46:48.9474695Z [36;1mpython3 control/qualify.py[0m
+2026-09-27T04:46:48.9697604Z shell: /usr/bin/bash -e {0}
+2026-09-27T04:46:48.9697988Z env:
+2026-09-27T04:46:48.9698274Z   GRADLE_LOCK_SLOTS: 1
+2026-09-27T04:46:48.9698625Z   JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+2026-09-27T04:46:48.9699121Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T04:46:48.9699667Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T04:46:48.9700098Z   MAVEN_ARGS: -ntp
+2026-09-27T04:46:48.9700413Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-27T04:46:48.9700792Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-27T04:46:48.9701146Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-27T04:46:48.9701646Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-27T04:46:48.9702244Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-27T04:46:48.9702628Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-27T04:46:48.9702961Z ##[endgroup]
+2026-09-27T04:57:55.3380916Z ##[group]Run actions/upload-artifact@v7
+2026-09-27T04:57:55.3381327Z with:
+2026-09-27T04:57:55.3381637Z   name: izzet-legacy-factory-36295267824-1
+2026-09-27T04:57:55.3381997Z   path: output/
+2026-09-27T04:57:55.3382292Z   include-hidden-files: true
+2026-09-27T04:57:55.3382620Z   if-no-files-found: error
+2026-09-27T04:57:55.3382937Z   retention-days: 90
+2026-09-27T04:57:55.3383229Z   compression-level: 6
+2026-09-27T04:57:55.3383517Z   overwrite: false
+2026-09-27T04:57:55.3383791Z   archive: true
+2026-09-27T04:57:55.3384188Z env:
+2026-09-27T04:57:55.3384453Z   GRADLE_LOCK_SLOTS: 1
+2026-09-27T04:57:55.3384783Z   JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+2026-09-27T04:57:55.3385256Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T04:57:55.3385806Z   JAVA_HOME_21_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64
+2026-09-27T04:57:55.3386255Z   MAVEN_ARGS: -ntp
+2026-09-27T04:57:55.3386605Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+2026-09-27T04:57:55.3386976Z   GRADLE_USER_HOME: /home/runner/.gradle
+2026-09-27T04:57:55.3387487Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+2026-09-27T04:57:55.3388006Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+2026-09-27T04:57:55.3388557Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+2026-09-27T04:57:55.3388941Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+2026-09-27T04:57:55.3389280Z ##[endgroup]
+2026-09-27T04:57:55.4866492Z With the provided path, there will be 63 files uploaded
+2026-09-27T04:57:55.4871996Z Artifact name is valid!
+2026-09-27T04:57:55.4872539Z Root directory input is valid!
+2026-09-27T04:57:55.8345067Z Uploading artifact: izzet-legacy-factory-36295267824-1.zip
+2026-09-27T04:57:55.8385394Z Beginning upload of artifact content to blob storage
+2026-09-27T04:57:56.5760531Z Uploaded bytes 1945147
+2026-09-27T04:57:56.6320957Z Finished uploading artifact content to blob storage!
+2026-09-27T04:57:56.6321951Z SHA256 digest of uploaded artifact is a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5
+2026-09-27T04:57:56.6322823Z Finalizing artifact upload
+2026-09-27T04:57:57.0018149Z Artifact izzet-legacy-factory-36295267824-1 successfully finalized. Artifact ID 10923618567
+2026-09-27T04:57:57.0019376Z Artifact izzet-legacy-factory-36295267824-1 has been successfully uploaded! Final size is 1945147 bytes. Artifact ID is 10923618567
+2026-09-27T04:57:57.0022987Z Artifact download URL: https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36295267824/artifacts/10923618567
+2026-09-27T04:57:57.0903681Z Post job cleanup.
+2026-09-27T04:57:57.3446302Z In post-action step
+2026-09-27T04:57:57.3453722Z Enhanced Caching: This build is using the proprietary 'gradle-actions-caching' provider for optimized caching support. See https://github.com/gradle/actions/blob/main/DISTRIBUTION.md for terms of use and opt-out instructions.
+2026-09-27T04:57:57.4171035Z Cache is read-only: will not save state for use in subsequent builds.
+2026-09-27T04:57:57.4174468Z ##[group]Generating Job Summary
+2026-09-27T04:57:57.4179563Z 
+2026-09-27T04:57:57.4179611Z 
+2026-09-27T04:57:57.4179780Z <table>
+2026-09-27T04:57:57.4180145Z     <tr>
+2026-09-27T04:57:57.4180561Z         <th>Gradle Root Project</th>
+2026-09-27T04:57:57.4181084Z         <th>Requested Tasks</th>
+2026-09-27T04:57:57.4181579Z         <th>Gradle Version</th>
+2026-09-27T04:57:57.4182036Z         <th>Build Outcome</th>
+2026-09-27T04:57:57.4182742Z         <th>Build&nbsp;Scan®</th>
+2026-09-27T04:57:57.4183146Z     </tr>
+2026-09-27T04:57:57.4183582Z     <tr>
+2026-09-27T04:57:57.4184061Z         <td>argentum-engine</td>
+2026-09-27T04:57:57.4184708Z         <td>:ai:test --tests AIPlayerLegacyYesNoStrategyTest --rerun</td>
+2026-09-27T04:57:57.4185213Z         <td align='center'>9.6.1</td>
+2026-09-27T04:57:57.4185565Z         <td align='center'>:x:</td>
+2026-09-27T04:57:57.4186387Z         <td><a href="https://scans.gradle.com" rel="nofollow" target="_blank"><img src="https://img.shields.io/badge/Not%20published-lightgrey" alt="Build Scan not published" /></a></td>
+2026-09-27T04:57:57.4187165Z     </tr>
+2026-09-27T04:57:57.4187437Z     <tr>
+2026-09-27T04:57:57.4187764Z         <td>argentum-engine</td>
+2026-09-27T04:57:57.4188196Z         <td>:ai:test --tests AIPlayerLegacyYesNoStrategyTest --rerun</td>
+2026-09-27T04:57:57.4188648Z         <td align='center'>9.6.1</td>
+2026-09-27T04:57:57.4189021Z         <td align='center'>:white_check_mark:</td>
+2026-09-27T04:57:57.4189815Z         <td><a href="https://scans.gradle.com" rel="nofollow" target="_blank"><img src="https://img.shields.io/badge/Not%20published-lightgrey" alt="Build Scan not published" /></a></td>
+2026-09-27T04:57:57.4190540Z     </tr>
+2026-09-27T04:57:57.4190809Z     <tr>
+2026-09-27T04:57:57.4191094Z         <td>argentum-engine</td>
+2026-09-27T04:57:57.4192301Z         <td><div title=':ai:test --tests DecisionResponderCompletedBranchTest --rerun'>:ai:test --tests DecisionResponderCompletedBranchTest --rer…</div></td>
+2026-09-27T04:57:57.4193008Z         <td align='center'>9.6.1</td>
+2026-09-27T04:57:57.4193389Z         <td align='center'>:white_check_mark:</td>
+2026-09-27T04:57:57.4194692Z         <td><a href="https://scans.gradle.com" rel="nofollow" target="_blank"><img src="https://img.shields.io/badge/Not%20published-lightgrey" alt="Build Scan not published" /></a></td>
+2026-09-27T04:57:57.4195458Z     </tr>
+2026-09-27T04:57:57.4195720Z </table>
+2026-09-27T04:57:57.4195972Z     
+2026-09-27T04:57:57.4196248Z ============================
+2026-09-27T04:57:57.4196704Z <h4>Gradle State Caching - ⚡ Enhanced (read-only)</h4>
+2026-09-27T04:57:57.4196964Z 
+2026-09-27T04:57:57.4197924Z **[Enhanced Caching](https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#enhanced-caching)** uses the proprietary `gradle-actions-caching` provider. See [DISTRIBUTION.md](https://github.com/gradle/actions/blob/main/DISTRIBUTION.md) for terms of use and opt-out instructions.
+2026-09-27T04:57:57.4199211Z 
+2026-09-27T04:57:57.4199337Z <details>
+2026-09-27T04:57:57.4199768Z <summary>Entries: 8 restored (439Mb), 0 saved (0Mb) - Expand for more details</summary>
+2026-09-27T04:57:57.4200147Z 
+2026-09-27T04:57:57.4202091Z [Cache was read-only](https://github.com/gradle/actions/blob/main/docs/setup-gradle.md#using-the-cache-read-only) — by default, the action only writes to the cache for jobs running on the default branch.
+2026-09-27T04:57:57.4203048Z 
+2026-09-27T04:57:57.4203213Z <table>
+2026-09-27T04:57:57.4203784Z     <tr><td></td><th>Count</th><th>Total Size (Mb)</th><th>Total Time (ms)</th></tr>
+2026-09-27T04:57:57.4205209Z     <tr><td>Entries Restored</td>
+2026-09-27T04:57:57.4205707Z         <td>8</td>
+2026-09-27T04:57:57.4206106Z         <td>439</td>
+2026-09-27T04:57:57.4206502Z         <td>14211</td>
+2026-09-27T04:57:57.4206855Z     </tr>
+2026-09-27T04:57:57.4207235Z     <tr><td>Entries Saved</td>
+2026-09-27T04:57:57.4207698Z         <td>0</td>
+2026-09-27T04:57:57.4208120Z         <td>0</td>
+2026-09-27T04:57:57.4208532Z         <td>0</td>
+2026-09-27T04:57:57.4208938Z     </tr>
+2026-09-27T04:57:57.4209375Z </table>
+2026-09-27T04:57:57.4209590Z 
+2026-09-27T04:57:57.4209819Z <pre>
+2026-09-27T04:57:57.4210253Z Entry: Gradle User Home
+2026-09-27T04:57:57.4211358Z     Requested Key : gradle-home-v2|Linux-X64|original-and-corrected-factory[468e549312a32e1a5e71c338ff827b8e]-a0fe959d2fa345b77513e199e2db046d52cf2d0f
+2026-09-27T04:57:57.4212906Z     Restored  Key : gradle-home-v2|Linux-X64|test[360f1d0ae557562780e09ca635750892]-04c3cd58de904f62f509e633298c38ce7bc49ec9
+2026-09-27T04:57:57.4213961Z               Size: 0 MB (365154 B)
+2026-09-27T04:57:57.4214450Z               Time: 926 ms
+2026-09-27T04:57:57.4214918Z               (Entry restored: partial match found)
+2026-09-27T04:57:57.4215404Z     Saved     Key : 
+2026-09-27T04:57:57.4215797Z               Size: 
+2026-09-27T04:57:57.4216181Z               Time: 
+2026-09-27T04:57:57.4216604Z               (Entry not saved: cache is read-only)
+2026-09-27T04:57:57.4217105Z ---
+2026-09-27T04:57:57.4217640Z Entry: caches/9.6.1/generated-gradle-jars/gradle-api-9.6.1.jar
+2026-09-27T04:57:57.4218493Z     Requested Key : gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-27T04:57:57.4219490Z     Restored  Key : gradle-generated-gradle-jars-v2-aab574994eb421acff6809687eadd5de
+2026-09-27T04:57:57.4220687Z               Size: 40 MB (42158673 B)
+2026-09-27T04:57:57.4221200Z               Time: 2022 ms
+2026-09-27T04:57:57.4221699Z               (Entry restored: exact match found)
+2026-09-27T04:57:57.4222203Z     Saved     Key : 
+2026-09-27T04:57:57.4222772Z               Size: 
+2026-09-27T04:57:57.4223178Z               Time: 
+2026-09-27T04:57:57.4223639Z               (Entry not saved: cache is read-only)
+2026-09-27T04:57:57.4224354Z ---
+2026-09-27T04:57:57.4224879Z Entry: wrapper/dists/gradle-9.6.1-bin/4ticwg1pgcbps2hj28r8so764
+2026-09-27T04:57:57.4225709Z     Requested Key : gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-27T04:57:57.4226517Z     Restored  Key : gradle-wrapper-zips-v2-852daf033b54d6f5dd2552660ef7de60
+2026-09-27T04:57:57.4227296Z               Size: 133 MB (139934591 B)
+2026-09-27T04:57:57.4229935Z               Time: 2490 ms
+2026-09-27T04:57:57.4230501Z               (Entry restored: exact match found)
+2026-09-27T04:57:57.4231026Z     Saved     Key : 
+2026-09-27T04:57:57.4231479Z               Size: 
+2026-09-27T04:57:57.4231891Z               Time: 
+2026-09-27T04:57:57.4232358Z               (Entry not saved: cache is read-only)
+2026-09-27T04:57:57.4232985Z ---
+2026-09-27T04:57:57.4233403Z Entry: dependencies
+2026-09-27T04:57:57.4234472Z     Requested Key : gradle-dependencies-v2-b4780b40118e6330d3a8e660adf90e74
+2026-09-27T04:57:57.4235341Z     Restored  Key : gradle-dependencies-v2-b4780b40118e6330d3a8e660adf90e74
+2026-09-27T04:57:57.4235974Z               Size: 216 MB (226359753 B)
+2026-09-27T04:57:57.4236480Z               Time: 3729 ms
+2026-09-27T04:57:57.4236987Z               (Entry restored: exact match found)
+2026-09-27T04:57:57.4237589Z     Saved     Key : 
+2026-09-27T04:57:57.4238004Z               Size: 
+2026-09-27T04:57:57.4238374Z               Time: 
+2026-09-27T04:57:57.4238801Z               (Entry not saved: cache is read-only)
+2026-09-27T04:57:57.4239281Z ---
+2026-09-27T04:57:57.4239672Z Entry: instrumented-jars
+2026-09-27T04:57:57.4240316Z     Requested Key : gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-27T04:57:57.4241197Z     Restored  Key : gradle-instrumented-jars-v2-bb910fcacf708cb42c10c2b5b22b5d19
+2026-09-27T04:57:57.4241866Z               Size: 0 MB (60281 B)
+2026-09-27T04:57:57.4242520Z               Time: 792 ms
+2026-09-27T04:57:57.4242975Z               (Entry restored: exact match found)
+2026-09-27T04:57:57.4243461Z     Saved     Key : 
+2026-09-27T04:57:57.4243829Z               Size: 
+2026-09-27T04:57:57.4244325Z               Time: 
+2026-09-27T04:57:57.4244749Z               (Entry not saved: cache is read-only)
+2026-09-27T04:57:57.4245279Z ---
+2026-09-27T04:57:57.4245653Z Entry: kotlin-dsl
+2026-09-27T04:57:57.4246406Z     Requested Key : gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-27T04:57:57.4247168Z     Restored  Key : gradle-kotlin-dsl-v2-47bb15ab9d1d244419f88a8f7d95ae8a
+2026-09-27T04:57:57.4247807Z               Size: 0 MB (338388 B)
+2026-09-27T04:57:57.4248281Z               Time: 962 ms
+2026-09-27T04:57:57.4248770Z               (Entry restored: exact match found)
+2026-09-27T04:57:57.4249275Z     Saved     Key : 
+2026-09-27T04:57:57.4249709Z               Size: 
+2026-09-27T04:57:57.4250103Z               Time: 
+2026-09-27T04:57:57.4250556Z               (Entry not saved: cache is read-only)
+2026-09-27T04:57:57.4251022Z ---
+2026-09-27T04:57:57.4251386Z Entry: groovy-dsl
+2026-09-27T04:57:57.4252056Z     Requested Key : gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-27T04:57:57.4253194Z     Restored  Key : gradle-groovy-dsl-v2-f899aff15c2d37ebc18315a6bfe61114
+2026-09-27T04:57:57.4254312Z               Size: 0 MB (101824 B)
+2026-09-27T04:57:57.4255064Z               Time: 789 ms
+2026-09-27T04:57:57.4255804Z               (Entry restored: exact match found)
+2026-09-27T04:57:57.4256755Z     Saved     Key : 
+2026-09-27T04:57:57.4257481Z               Size: 
+2026-09-27T04:57:57.4258426Z               Time: 
+2026-09-27T04:57:57.4259160Z               (Entry not saved: cache is read-only)
+2026-09-27T04:57:57.4259894Z ---
+2026-09-27T04:57:57.4260495Z Entry: transforms
+2026-09-27T04:57:57.4261108Z     Requested Key : gradle-transforms-v2-67f3841056eb7ab2272a93cecfe100f8
+2026-09-27T04:57:57.4261871Z     Restored  Key : gradle-transforms-v2-67f3841056eb7ab2272a93cecfe100f8
+2026-09-27T04:57:57.4262482Z               Size: 48 MB (50739067 B)
+2026-09-27T04:57:57.4262964Z               Time: 2501 ms
+2026-09-27T04:57:57.4263484Z               (Entry restored: exact match found)
+2026-09-27T04:57:57.4264268Z     Saved     Key : 
+2026-09-27T04:57:57.4264691Z               Size: 
+2026-09-27T04:57:57.4265100Z               Time: 
+2026-09-27T04:57:57.4265566Z               (Entry not saved: cache is read-only)
+2026-09-27T04:57:57.4266116Z </pre>
+2026-09-27T04:57:57.4266499Z </details>
+2026-09-27T04:57:57.4266716Z 
+2026-09-27T04:57:57.4267449Z ##[endgroup]
+2026-09-27T04:57:57.4267831Z Completed post-action step
+2026-09-27T04:57:57.4861174Z Post job cleanup.
+2026-09-27T04:57:57.6804682Z Post job cleanup.
+2026-09-27T04:57:57.7684918Z [command]/usr/bin/git version
+2026-09-27T04:57:57.7715116Z git version 2.55.0
+2026-09-27T04:57:57.7759298Z Temporarily overriding HOME='/home/runner/work/_temp/3ea7be84-8571-4c15-b03f-d1076649a65a' before making global git config changes
+2026-09-27T04:57:57.7760595Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T04:57:57.7765440Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test/fixed
+2026-09-27T04:57:57.7796284Z Removing SSH command configuration
+2026-09-27T04:57:57.7802391Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T04:57:57.7834538Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T04:57:57.8075751Z Removing HTTP extra header
+2026-09-27T04:57:57.8081139Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T04:57:57.8111762Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T04:57:57.8341334Z Removing includeIf entries pointing to credentials config files
+2026-09-27T04:57:57.8349694Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T04:57:57.8380442Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T04:57:57.9189882Z Post job cleanup.
+2026-09-27T04:57:58.0006919Z [command]/usr/bin/git version
+2026-09-27T04:57:58.0043789Z git version 2.55.0
+2026-09-27T04:57:58.0078526Z Temporarily overriding HOME='/home/runner/work/_temp/91c35b3b-7325-448e-80c3-a410a7b41afc' before making global git config changes
+2026-09-27T04:57:58.0079848Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T04:57:58.0095439Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test/before
+2026-09-27T04:57:58.0113151Z Removing SSH command configuration
+2026-09-27T04:57:58.0119786Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T04:57:58.0151141Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T04:57:58.0398458Z Removing HTTP extra header
+2026-09-27T04:57:58.0403345Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T04:57:58.0431037Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T04:57:58.0663020Z Removing includeIf entries pointing to credentials config files
+2026-09-27T04:57:58.0668803Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T04:57:58.0700892Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T04:57:58.1447303Z Post job cleanup.
+2026-09-27T04:57:58.2355058Z [command]/usr/bin/git version
+2026-09-27T04:57:58.2401193Z git version 2.55.0
+2026-09-27T04:57:58.2455469Z Temporarily overriding HOME='/home/runner/work/_temp/14723f89-c098-4e22-8616-92c79fdd9e02' before making global git config changes
+2026-09-27T04:57:58.2465821Z Adding repository directory to the temporary git global config as a safe directory
+2026-09-27T04:57:58.2467590Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/argentum-batshit-test/argentum-batshit-test/control
+2026-09-27T04:57:58.2505065Z Removing SSH command configuration
+2026-09-27T04:57:58.2513585Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-09-27T04:57:58.2555604Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-09-27T04:57:58.2842709Z Removing HTTP extra header
+2026-09-27T04:57:58.2850267Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-09-27T04:57:58.2895398Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-09-27T04:57:58.3167779Z Removing includeIf entries pointing to credentials config files
+2026-09-27T04:57:58.3178675Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-09-27T04:57:58.3228418Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-09-27T04:57:58.3649348Z Cleaning up orphan processes
+2026-09-27T04:57:58.3897645Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: extractions/setup-crate@4993624604c307fbca528d28a3c8b60fa5ecc859. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

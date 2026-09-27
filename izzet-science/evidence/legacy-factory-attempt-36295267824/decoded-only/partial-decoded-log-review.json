@@ -1,0 +1,136 @@
+{
+  "schema": "izzet-factory-partial-decoded-job-log-review/v1",
+  "reviewer": "/root/sphinx",
+  "disposition": "OUTER_JOB_LOG_PRESERVED_RAW_ARTIFACT_REVIEW_BLOCKED_NO_QUALIFICATION_ACCEPTANCE",
+  "run": 36295267824,
+  "job": 108552837325,
+  "event": "push",
+  "attempt": 1,
+  "control": "a0fe959d2fa345b77513e199e2db046d52cf2d0f",
+  "scope": "One purpose-built GitHub decoded job-log retrieval and metadata reads. Complete returned decoded text retained unchanged; this is not the original ZIP or its inner command logs/XML.",
+  "decoded_log": {
+    "bytes": 75503,
+    "sha256": "b38910eba5f4d9c8c455955ad983c6e54d091ce313841c5e1cbef8295fa350c8",
+    "unicode_characters": 75492,
+    "lines": 871,
+    "initial_BOM_preserved": true,
+    "git_blob": "c99a520cfb2ea1b4f4b6debd52da94242e20403d",
+    "git_round_trip_content_equal": true
+  },
+  "decoded_metadata": {
+    "git_blob": "7986c816196d145a2d16263322e704d91e0fd846",
+    "bytes": 23569,
+    "sha256": "0ce9908dd5981379a60ea81bdfa78e8a6322b42c8fb05a1a7d71815394c55517"
+  },
+  "original_artifact": {
+    "id": 10923618567,
+    "name": "izzet-legacy-factory-36295267824-1",
+    "reported_bytes": 1945147,
+    "reported_sha256": "a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5",
+    "source": "API metadata and matching upload log, not independent original-byte hashing",
+    "transport_owner": "/root/izzet",
+    "transport_count_reported_by_owner": 1,
+    "local_materialization": "One same-reference materialization failed:409 environment_offline, cannot create attachment directory; original raw bytes unavailable to reviewer.",
+    "private_transport_reference": "Omitted from this public subset; retained by the artifact owner for same-file materialization."
+  },
+  "findings": [
+    "Fresh API metadata confirms completed success on exact control a0fe, push attempt1; job completed2026-09-27T04:58:00Z. This status does not establish inner outcomes.",
+    "Decoded checkout logs identify control a0fe959d2fa345b77513e199e2db046d52cf2d0f, beforeaf16191eba3c93efa40f4ab28c2454b4b3c23d88 and fixede825589e1deff9de09f4ffe78aece41dc5ac0df9. These outer checkout lines do not replace original source-before/source-after pin maps.",
+    "Runner log reports Ubuntu24.04.5, setup-java resolves Temurin21.0.12+1 and sets the shown JAVA_HOME, and setup-just reports1.58.0. Gradle setup validates both wrapper JARs against497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7. These are printed setup records, not a complete executing-runtime identity audit.",
+    "The collector command python3 control/qualify.py is printed at04:46:48.947Z with GRADLE_LOCK_SLOTS=1. Next group is artifact upload at04:57:55.338Z. No inner package commands/results, shlock binary/library hashes, lock acquire/contention/release observations, bank commands/exits, XML, maps or testcase lines are printed in between.",
+    "Upload log reports63 files, include-hidden-files:true, successful upload1,945,147bytes, matching artifact10923618567 and reported SHAa8ea41fb. Actual member count/content, CRC, archive hash and preservation completeness have not been independently checked.",
+    "No inner Gradle test executor lines, FROZEN_FACTORY_LEGACY_BINDING failure diagnostic, or IZZET_LEGACY_FACTORY observation maps occur in the decoded outer log. The absence of an unlocked-fallback phrase in this outer log does not prove semaphore compliance because the collector directs inner output to artifact files."
+  ],
+  "printed_record_locations": {
+    "checkouts": [
+      {
+        "line": 138,
+        "text": "2026-09-27T04:46:20.3639499Z HEAD is now at a0fe959 Qualify exact LEGACY factory differential with required upstream semaphore and complete owned-process observations"
+      },
+      {
+        "line": 281,
+        "text": "2026-09-27T04:46:31.3157866Z HEAD is now at af16191e Add reviewed frozen-factory strategy differential fixture on unchanged production source"
+      },
+      {
+        "line": 424,
+        "text": "2026-09-27T04:46:40.4170548Z HEAD is now at e825589e Bind structurally frozen LEGACY_V0 factory to explicit legacy Yes-No strategy"
+      }
+    ],
+    "java": [
+      {
+        "line": 476,
+        "text": "2026-09-27T04:46:40.7480170Z Resolved Java 21.0.12+1 from tool-cache"
+      },
+      {
+        "line": 483,
+        "text": "2026-09-27T04:46:40.7561920Z   Version: 21.0.12+1"
+      },
+      {
+        "line": 484,
+        "text": "2026-09-27T04:46:40.7562351Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21.0.12-1/x64"
+      }
+    ],
+    "wrapper": [
+      {
+        "line": 578,
+        "text": "2026-09-27T04:46:47.5397110Z   497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7 before/gradle/wrapper/gradle-wrapper.jar"
+      },
+      {
+        "line": 579,
+        "text": "2026-09-27T04:46:47.5398263Z   497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7 fixed/gradle/wrapper/gradle-wrapper.jar"
+      }
+    ],
+    "collector": [
+      {
+        "line": 618,
+        "text": "2026-09-27T04:46:48.9474079Z ##[group]Run python3 control/qualify.py"
+      }
+    ],
+    "upload": [
+      {
+        "line": 657,
+        "text": "2026-09-27T04:57:55.4866492Z With the provided path, there will be 63 files uploaded"
+      },
+      {
+        "line": 664,
+        "text": "2026-09-27T04:57:56.6321951Z SHA256 digest of uploaded artifact is a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5"
+      },
+      {
+        "line": 667,
+        "text": "2026-09-27T04:57:57.0019376Z Artifact izzet-legacy-factory-36295267824-1 has been successfully uploaded! Final size is 1945147 bytes. Artifact ID is 10923618567"
+      }
+    ]
+  },
+  "visible_inner_evidence_counts": {
+    "gradle_test_executor_lines": 0,
+    "factory_observation_map_lines": 0,
+    "specific_failure_marker_lines": 0,
+    "interpretation": "Counts of visible outer-log markers only; not counts of executed tests or actual failures."
+  },
+  "remaining_raw_review": [
+    "OriginalZIP byte length/SHA256, unique members, fullCRC and each preserved file hash.",
+    "Exact activated controls and sourcebefore/after production/test/authority/dependency pins.",
+    "Original package bytes/metadata, extracted upstream shlock binary/libraries, actual utilitychecks and each bank's defaultlock ownership observations.",
+    "Two before cases with exactly the declared original assertion failure and complete equal-input observation maps; two fixed plus seven unchanged exact cases.",
+    "Fresh worker/task/XML timing/exits, errors/skips, process-group quiescence, caps/prefix/completeness and unattempted-stage disposition."
+  ],
+  "actions_performed": {
+    "duplicate_artifact_download": 0,
+    "duplicate_materialization": 0,
+    "package_or_process_probe": 0,
+    "test_or_JVM_execution": 0,
+    "workflow_or_rerun": 0,
+    "official_allocation": 0,
+    "decoded_job_log_fetch": 1
+  },
+  "next_action": "When workspace access returns, materialize the already downloaded reusable file reference through the artifact owner and complete original-byte review. Do not redownload GitHub or rerun the attempt.",
+  "limited_hash_method": "Decoded UTF-8 text (including initial BOM) hashed in functions with standard SHA256; implementation verified against empty/abc vectors. Original artifact digest remains reported-only.",
+  "review_parser_history": "A metadata GET by artifact ID was unsupported; permitted run-artifacts collection supplied metadata. An initial record-construction JavaScript literal had an invalid regex escape and was corrected before any record/blob side effect. Neither touched artifact bytes or executed tested code.",
+  "deck_performance_evidence_changed": false,
+  "publication_subset": {
+    "scope": "Public decoded-only record, not original artifact preservation or admission.",
+    "redaction": "Removed only the private uploaded-file reference from the earlier unreferenced review draft. The decoded job log and API metadata bytes are unchanged.",
+    "sensitivity_review": "Decoded log contains three GitHub-masked authorization lines (***), no unmasked credential found, no uploaded-file handle, and no signed temporary URL. Metadata contains ordinary GitHub/API/avatar links only; no uploaded-file handle or signed temporary URL. No unrelated private information identified.",
+    "reference_note": "Private transport locator is deliberately excluded; public artifact ID10923618567 remains."
+  }
+}
