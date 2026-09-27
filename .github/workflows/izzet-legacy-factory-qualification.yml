@@ -1,0 +1,49 @@
+name: Izzet bounded legacy factory differential
+
+on:
+  push:
+    branches: [lab/izzet-legacy-factory-qualification-20260927]
+
+permissions:
+  contents: read
+
+jobs:
+  original-and-corrected-factory:
+    if: ${{ github.event.before == '0000000000000000000000000000000000000000' && github.event.created == true && github.run_attempt == 1 }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          path: control
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          ref: af16191eba3c93efa40f4ab28c2454b4b3c23d88
+          path: before
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          ref: e825589e1deff9de09f4ffe78aece41dc5ac0df9
+          path: fixed
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Observe exact same-input differential and preserve declared old-source failure
+        run: python3 control/qualify.py
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: izzet-legacy-factory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: output/
+          include-hidden-files: true
+          if-no-files-found: error
+          retention-days: 90

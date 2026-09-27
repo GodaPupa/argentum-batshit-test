@@ -1,0 +1,349 @@
+{
+  "schema": "izzet-legacy-factory-meaningful-differential-v1",
+  "ready_for_execution": true,
+  "source_review": {
+    "reviewer": "/root/ferocity",
+    "review_sha256": "2121e9c8bfcc4f896059babd901899c975db54673edb1c77aa1e113e0cb2f4b0",
+    "archive_path": "izzet-science/evidence/legacy-factory-preparation-20260927/independent-shared-helper-source-review.json",
+    "review": {
+      "schema": "independent-izzet-factory-shared-helper-source-review/v2",
+      "reviewer": "/root/ferocity, non-author of production patch, fixtures and reviewed qualification controls",
+      "reviewed_at_utc": "2026-09-27T04:29:11.836559+00:00",
+      "disposition": "PASS_PROSPECTIVE_FINITE_CONTROL_SOURCE_REQUIRES_ROOT_EXACT_FINAL_EVENT_RELEASE",
+      "controls": {
+        "qualify.py": {
+          "bytes": 31969,
+          "sha256": "ed3c72a1fa5494598f212d0981e37eb0f6cf1c9116bf61938f2fa8dca9ad88e8"
+        },
+        "gate.json": {
+          "bytes": 9140,
+          "sha256": "ba7a6d227803c7626e0ad3e51804104d0b044284bc59064a12d30688e852abe4"
+        },
+        "izzet-legacy-factory-qualification.yml": {
+          "bytes": 1609,
+          "sha256": "53165b8e9920c3c6c46c16a5c642106fbe8a5d010a18ebe6661c6fc9b6d6d74c"
+        }
+      },
+      "canonical_helper": {
+        "file": "shared-build-prerequisite.py",
+        "bytes": 15928,
+        "sha256": "ff4023be53b60a80f464f58a6a3c442b2dcea2b0e4d22c070134fb49613ed209",
+        "function_ASTs_match_embedded_source": [
+          "directory_bytes",
+          "dump",
+          "owned_group_members",
+          "prepare_build_semaphore",
+          "run_capped",
+          "sha",
+          "terminate_owned_group"
+        ]
+      },
+      "readiness_at_review": {
+        "ready_for_execution": false,
+        "source_review": null,
+        "no_event_granted_by_this_review": true
+      },
+      "sources": {
+        "before": {
+          "head": "af16191eba3c93efa40f4ab28c2454b4b3c23d88",
+          "tree": "e9aba19e87a05fd6844b536d394b143f8e8a4235",
+          "production_sha256": "28e36e75806202a36c920256a7ac2dba0c318c147e1e2a09f16cef5564f056cf"
+        },
+        "fixed": {
+          "head": "e825589e1deff9de09f4ffe78aece41dc5ac0df9",
+          "tree": "52932b643bc05419435996655903044f798e9f3e",
+          "production_sha256": "c28ee34048328d66f356b38ba9f87e344d284f3778852bcd1c61ca5a455d1aea"
+        }
+      },
+      "finite_scope": {
+        "banks": 3,
+        "software_case_executions": 11,
+        "distinct_software_identities": 9,
+        "required_passes": 10,
+        "required_specific_actual_before_failure": 1,
+        "new_fixture_identities": 2,
+        "unchanged_historical_identities": 7,
+        "software_execution_by_reviewer": 0,
+        "official_games": 0,
+        "official_seeds": 0
+      },
+      "source_and_fixture_review": [
+        "Fresh immutable Git commit/tree and comparisons prove base60d2 to beforeaf161 adds only the two-case fixture, and before to fixede825 changes only AIPlayer.kt. Same fixture Gitblob0e111dd33416224293d127f4e48e7588830f0f8b in both; seven preexisting cases retain blobc0c6a376fb43a02b9b9d6fa4f3efd79ffc046c32.",
+        "Read both fixture cases and production change. Both public factories and equal frozen copies are covered; a renamed otherwise-equal profile and a changed configuration retaining id=v0 remain completed-branch controls. Explicit responders share evaluator/profile inputs and simulator decision resolver wiring. All responses/state checks and complete observation maps precede the specific intended baseline assertion.",
+        "Before2 expects exactly one actual assertion failure in the declared first case, with FROZEN_FACTORY_LEGACY_BINDING, AssertionFailedError suffix and no explicit-strategy/state-preservation clue. Its complete map must show legacy=true/completed=false, all four frozen factory/copy results false, and renamed controls false. Same-id altered-control map must also pass. Generic/compile failures, changed maps, extra failures/errors/skips do not qualify.",
+        "Fixed2 and unchanged7 require all pass. The declared total is11softwarecase executions,9distinct identities,10pass/1expected actual failure. It is not11passingcases, a 973rerun, full AI acceptance or a policy/gameplay result.",
+        "Actual retained original973 FrozenBaselineTest XML uses org.opentest4j.AssertionFailedError and the original receipt has the exact same version-catalog SHA as current Kotest6.2.1. Parser failure class is grounded in existing raw evidence, not a guessed exception. Independent synthetic check accepts this exact observed class while retaining marker/maps/state restrictions.",
+        "Independently fetched and checked28 immutable text bodies against all applicable authority/dependency/production/test pins. The remaining binary wrapper was read without mutation from existing recovered provenance;48462bytes SHA497c8c2a/Gitblobb1b8 match both gate and fresh immutable tree. No fresh remote binary decode claimed. All actual before/after pins are validated again before any bank by the gate."
+      ],
+      "process_and_semaphore_review": [
+        "Read the full exact ed3c source, unchanged ba7a gate and53165 workflow. Only owned_group_members, terminate_owned_group and run_capped function ASTs differ from retained67ba; one explanatory comment also changes. Same source pair, banks, failure predicates, XML identities, source observers, package procedure, caps and event guard remain unchanged.",
+        "Initial67ba PermissionError finding9e7188 is resolved. Scanner records incomplete enumeration/self-namespace/read/parse observations, excludes only proven group/session nonmatches or different namespaces, and treats vanished process entries as races. Candidate namespace errors cannot become absence. It preserves same-namespace innermost NSpid/NSpgid/NSsid mapping from the actual prior namespace correction.",
+        "Cleanup writes an initial incomplete record before scanning; stores observations, errors, signals and final decision during cleanup. Any incomplete observation stays sticky through later clean scans, preventing quiescent=true. Actual run_capped invokes cleanup on every terminal path and retains the cleanup JSON alongside logs. run_bank requires quiescence before copying XML and rejects incomplete output; unknown observation cannot become a passing bank.",
+        "On complete scans, known live original-group/session members receive bounded TERM/KILL and wait; normal wrapper exit with live members remains an explicit technical stop. Zombie/dead entries are nonwriting. This review addresses the declared owned-group boundary and does not certify arbitrary separately daemonized processes or whole-runtime behavior.",
+        "Read all four retained author live Python-only67ba checks, including the original orphan writer and the earlier failed7493 namespace assumption. These are preserved historical checks, not newly rerun or relabeled as ed3c results. Seven independent ed3c checks used only AST functions with in-memory fake proc/process/signaling interfaces; no child, actual proc access or signal occurred.",
+        "Pre-bank prerequisite uses ordinary authenticated APT metadata in owned cache/list paths, exact inn2 and inn2-inews2.7.2~20240212-1build3/amd64, declared Ubuntu24.04, bounded setup/metadata commands, downloaded package digest/size/header checks, extraction without installation/services/root commands, actual binary/library hashes, and upstream shlock rather than a custom locking substitute.",
+        "Independent public-primary read confirms Noble inn2 exact version and its matching inn2-inews dependency, and upstream shlock acquire/live-holder semantics. Noble filelist fetch was unavailable. Exact Noble binary/library layout and executable bytes remain prospective checks, not inspected facts. Missing package/path/link/semantics must stop before software banks; no package was downloaded/executed during this review.",
+        "Owned lock semantics use a separate new temporary lock held by the Python coordinator PID; checks acquire, reject existing live holder, and reacquire after verified owned removal. The real Gradle default machine-global lock is unchanged; GRADLE_LOCK_FILE overrides are rejected and slots1 required. Each bank rechecks binary hash/path, demands an actually observed owned-group lock holder, and rejects the known unlocked-fallback log. No assertion that earlier unlocked runs met this prerequisite is made.",
+        "Three1200-second software commands retain32MiBstdout/32MiBreport/128MiBartifact caps and512MiBfree-space preflight. Setup has300-second large commands and15-second metadata commands; shlock utility checks have10-second timeouts and retained output limits. Ubuntu24.04/Java21/just/one slot/max-workers1/in-process Kotlin remain explicit.120-minute job leaves time beyond the finite60-minute software command budget and bounded setup for artifact upload.",
+        "Before2 accepts exactly the intended FROZEN_FACTORY_LEGACY_BINDING AssertionFailedError only after complete state/control maps; no generic exception, compile failure, missing map, extra failure/error/skip, or cached/no-source test result qualifies. Fixed2 and unchanged7 require fresh workers/exits/exact case names. Raw expected failure remains a failure in the11-execution aggregate.",
+        "Controls including hidden workflow, exact before/after source pins, commands/logs/exits, cleanup and prerequisite receipts, full XML or clearly incomplete capped prefixes, errors and unattempted stages are retained. A technical failure stops the remaining finite banks and gives no automatic retry authority."
+      ],
+      "review_checks": {
+        "independent_ed3c_pure_checks": 7,
+        "author_ed3c_pure_checks_read": 10,
+        "author_67ba_live_python_checks_read_not_rerun": 4,
+        "reviewer_live_process_or_JVM_probes": 0,
+        "source_snapshot_and_XML_parser_prior_checks": {
+          "count": 10,
+          "source": "corrected0d95",
+          "unchanged_function_ASTs_in_current_source": [
+            "source_snapshot",
+            "observation_map",
+            "collect_xml"
+          ],
+          "not_claimed_new_ed3c_execution": true
+        }
+      },
+      "preserved_history": {
+        "initial_source_retention_gap": "685e ->0d95; original and finding82b retained",
+        "unissued_initial_PASS_draft": "6d8d75cb retained as explicitly not issued; missing-shlock inference withdrawn",
+        "old_success_path_orphan": "Manual b23 and Izzet inherited helper; original observations retained",
+        "failed_namespace_assumption": "74933 original failed Python check retained",
+        "held67ba_and_permission_error": "Original67ba unchanged; finding9e7188 and pure reproducer retained; corrected separately toed3c"
+      },
+      "final_release_prerequisites": [
+        "Root must review actual final control Git tree/parent and exact event. This reviewer grants no branch creation, PR, dispatch, rerun or experimental admission.",
+        "Only gate.ready_for_execution and gate.source_review attribution may be normalized for final activation; retain false/null reviewed gate and exact normalization diff. Any other source/gate/workflow/helper change requires review.",
+        "Confirm exact three-file-only control tree and before/fixed source object reachability, intended sole lab/izzet-legacy-factory-qualification-20260927 creationpush/zero-before/createdtrue/attempt1. Do not describe or merge the three-file control tree as a runtime.",
+        "Refresh branch absence, all prior runs/attempts, current main workflow watchers and open PR/ownership before release. Earlier75f8/.github35cfd80-header preflight is historical, not a live final release check.",
+        "If root releases one event, actual package/lock prerequisites and original artifacts still require independent source-bound review; no success, semaphore compliance or broad LEGACY/runtime/policy/gameplay admission is pre-certified."
+      ],
+      "primary_references": [
+        {
+          "url": "https://packages.ubuntu.com/eu/noble/inn2",
+          "supports": "Noble package version and exact matching inn2-inews dependency; not recovered file layout"
+        },
+        {
+          "url": "https://www.eyrie.org/~eagle/software/inn/docs/shlock.html",
+          "supports": "Upstream PID lock acquire/live-holder behavior"
+        }
+      ],
+      "support": {
+        "independent-visibility-successor-checks.json": {
+          "bytes": 5377,
+          "sha256": "172bc333123451535aab1d6b703e127bcc8a2a1f33b464f440fb064a850288c8"
+        },
+        "check_visibility_successor.py": {
+          "bytes": 5645,
+          "sha256": "7d69f6f3f06279bc09ca68bd1609c8dd39dfb4a4ea7d230bf77eeb9e9576e789"
+        },
+        "static-permission-observation-finding.json": {
+          "bytes": 1102,
+          "sha256": "9e7188fb4362c12feb87c4dc030b06e7242e87fd3b41da529cfdcf08be77ff1e"
+        },
+        "check_permission_observation.py": {
+          "bytes": 1995,
+          "sha256": "00b824ea024520ecb7039fe7f451740ce4320716d51da1694990605857a9848b"
+        },
+        "shared-helper-static-review-progress.json": {
+          "bytes": 1904,
+          "sha256": "4d9da0fe997866bce10943a05808eaabeef41177f6e5f32b9de4018c90de425f"
+        },
+        "independent-successor-checks.json": {
+          "bytes": 30352,
+          "sha256": "3ce57159da8c83141faab21b4d3aeba4cd55044833f9d58e09850641a437738e"
+        },
+        "actual-assertion-class-proof.json": {
+          "bytes": 2130,
+          "sha256": "c96fdffa58bd9d80a8b4d6f62790f76e42e38da34f382c7f9d66efc9d71f10df"
+        },
+        "immutable-source-bytes.json": {
+          "bytes": 1060524,
+          "sha256": "6d012ca1761d7d0a0936f358f61e93fbe72dbbfea5f6b5a96ee0e0e70fb2b5f7"
+        },
+        "immutable-gradle-jar-tree-proof.json": {
+          "bytes": 16011,
+          "sha256": "cc7edfb2364edde59351eaee4a9d74d71fa43bc1ae5df823ee9e8b13d4831c1e"
+        },
+        "recovered-wrapper-byte-check.json": {
+          "bytes": 412,
+          "sha256": "d9afdfd82342aa050c1fad4226ac3185505ca7334b5372d6429f0caee054a9f9"
+        },
+        "initial-retention-finding.json": {
+          "bytes": 1189,
+          "sha256": "82b226499c691608408b78b103748a0166b9f360a80e8781d441812dcfee546b"
+        },
+        "read-only-retrieval-setup-history.json": {
+          "bytes": 843,
+          "sha256": "01efceb26a7a9a264fb510f887a63f048c29be82ff7675f30e2d3a382a620be5"
+        }
+      },
+      "limits": [
+        "No source ref, control event, JVM/package execution, actual software fixture or official allocation was performed by this reviewer.",
+        "No GitHub approval, repository protection override, policy adoption or gameplay admission.",
+        "Source08 Ferocity resources and exhausted commands remain unchanged; this is a separate Izzet software control.",
+        "Outside973 work remains separate and was neither duplicated nor cancelled."
+      ],
+      "deck_performance_evidence_changed": false,
+      "author_support": {
+        "izzet-takeover/shared-receiving/legacy-factory-visibility-successor/successor-manifest.json": {
+          "bytes": 1727,
+          "sha256": "263d6323128d45e4f690411e2137b1a5c19a079b022a5726f198893c7452f4cb"
+        },
+        "izzet-takeover/shared-receiving/legacy-factory-visibility-successor/source.diff": {
+          "bytes": 8028,
+          "sha256": "7aa10fcb9af17cf17560eddf8847d718b8ae3f284191ce8d804be92b78f67126"
+        },
+        "izzet-takeover/shared-receiving/legacy-factory-visibility-successor/local-visibility-guard-checks.json": {
+          "bytes": 17380,
+          "sha256": "a5bcaf9304fcd8935640dac24920758415f60ecedb9aa7bd8cfd9bb5b6621faf"
+        },
+        "izzet-takeover/shared-receiving/legacy-factory-visibility-successor/check_visibility_guards.py": {
+          "bytes": 4383,
+          "sha256": "4d14c493792d4c8a3d91281847be732281dced319581fb5b161b447bd4b0a9d3"
+        },
+        "izzet-takeover/shared-receiving/legacy-factory-control/local-owned-process-checks.json": {
+          "bytes": 3697,
+          "sha256": "5015bd005c1fa7911c35cd50a13da27ac5c2feb95b3c7d9f1fe2cdc37aeaec06"
+        }
+      }
+    }
+  },
+  "source_candidate_review_sha256": "adf3df49e87313a48325d10ba71d58bcbbdd70e268944dd9fc31f5be923296f2",
+  "base_source": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+  "sources": {
+    "before": {
+      "head": "af16191eba3c93efa40f4ab28c2454b4b3c23d88",
+      "tree": "e9aba19e87a05fd6844b536d394b143f8e8a4235",
+      "production_sha256": "28e36e75806202a36c920256a7ac2dba0c318c147e1e2a09f16cef5564f056cf"
+    },
+    "fixed": {
+      "head": "e825589e1deff9de09f4ffe78aece41dc5ac0df9",
+      "tree": "52932b643bc05419435996655903044f798e9f3e",
+      "production_sha256": "c28ee34048328d66f356b38ba9f87e344d284f3778852bcd1c61ca5a455d1aea"
+    }
+  },
+  "production_path": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt",
+  "preserved_authority_sha256": {
+    "izzet-science/v0.7-control.md": "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01",
+    "izzet-science/opponents/veteran-beastrider-commander-clash-2025.txt": "c3ab6ee8e37a78219e7bbb7c6a75c634d78c1eb4965ab0db3abd5d853398b0be",
+    "izzet-science/v09-position1-bootstrap-gate.md": "8344ad7c543a42ac71ef9c999583ea65f1b44de57ed870e7480f91df46941257",
+    "izzet-science/v09-phase33-position1-execution-authorization-accepted.md": "3851d3c0405d3a7186de4f2161abf165a1ca38d12ff6a352a432d39fec0a7375",
+    "izzet-science/shared-priority-receiving/priority.json": "e9fbb30abbc13425c1675fa2cb6ba2bd1f8275e1f9b9fa6872a49c21cfd54643",
+    "izzet-science/shared-priority-receiving/cast-observer.json": "81973f3fd87739d5846244174aa426ba3790e7ebdcb2bf86977e70f7f21f4e5b",
+    "izzet-science/v09-position1-execution-adapter-accepted.md": "2802ef8475394ca8f3b889289dda6be5887e6506c348dc01a449b9db4eb03c01",
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/TableGameRunner.kt": "36c5348e3d59d569001c9b5d85db3f5ae89683d10eeab704ff6a8c1636835bf6",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/GameTestDriver.kt": "34cb7972a73c3cc90dddaf43749adcc6dd1bd8495c8b3e3dae23ec78fe9c5df0",
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/FrozenBaselineTest.kt": "82572b33bb741e03234c1b5c8ff963c6f0e3d663200888e514c27d4924bd702a",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt": "47f46c6f65c98f442237c58bdaf9d0bf01f206087ad7ddb5a3ae2e2c3ad68769",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MnemonicWallScenarioTest.kt": "3798d44c1b94ded74ef72a5268038f88bd49a41827bab2dfb8c9eff3a5101dd0",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt": "e17daa32352d5a297f92869d5eaea8e777a4ce23249241db2c9f704a8ae0a36a",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "a7a444f594bef0477230b39e7c8f822b0148ecb7c0e454fd0cb570433e57347f",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/GameSimulator.kt": "e82460f8bf5554dd938355a711fbec5031e61d20638610859067d87752ac418a",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/YesNoDecisionStrategy.kt": "8a6b0197a183b9f02d33cce8a710cc30ed298913df1a6b5572e3e3fefedea93e",
+    "ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt": "650deed7e9b3b9100ccfa69e73d20d0ee5bf601ed87c240b6d727f74c4b65a57",
+    "ai/build.gradle.kts": "74ce8babbcb6e594853351adb03d610c177080f3d898be252d136f6a6ce0b464"
+  },
+  "dependency_sha256": {
+    "gradle/libs.versions.toml": "c60de8fc02e2c4d3ff92ef418e3b0bbe9fada040a1c7f6c0656b152d89aa7cad",
+    "gradle/wrapper/gradle-wrapper.properties": "c94d41b634a5e0ff8a2f812023697b1337eebac18e9962610356a1793f72896d",
+    "gradle/wrapper/gradle-wrapper.jar": "497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7",
+    "gradlew": "a5a5c199ba02189ae8c46a334223371a20599d9c298ef65e7540ede4a3f72d59",
+    "settings.gradle.kts": "20bb45f9e99f9cd82df3e8aee01f06bbd116915ae99c4acc0b69a47f4a6a789b",
+    "justfile": "70ed255981a941b260b8eeba4acf90abf32956126ef9672f5cf6e0b5840167e3",
+    "scripts/test-class": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81",
+    "scripts/gradle-locked": "9e39342ad1826c8baf176f6e7b0c38664aad5a4a88cd6a90252dd619e4b829f1"
+  },
+  "resource_limits": {
+    "command_timeout_seconds": 1200,
+    "stdout_bytes": 33554432,
+    "test_result_bytes": 33554432,
+    "artifact_bytes": 134217728,
+    "minimum_free_bytes": 536870912
+  },
+  "banks": [
+    {
+      "stage": "before-AIPlayerLegacyYesNoStrategyTest",
+      "source_role": "before",
+      "scope": "same-input pre-fix regression with one specific expected assertion failure",
+      "module": "ai",
+      "class": "com.wingedsheep.ai.engine.AIPlayerLegacyYesNoStrategyTest",
+      "case_names": [
+        "frozen profile and equal copies retain legacy YesNo behavior through both public factories",
+        "changed configuration retaining the v0 id keeps completed YesNo behavior"
+      ],
+      "expected_cases": 2,
+      "test_source": "ai/src/test/kotlin/com/wingedsheep/ai/engine/AIPlayerLegacyYesNoStrategyTest.kt",
+      "test_source_git_blob": "0e111dd33416224293d127f4e48e7588830f0f8b",
+      "expected_failure_names": [
+        "frozen profile and equal copies retain legacy YesNo behavior through both public factories"
+      ],
+      "requires_observation_maps": true
+    },
+    {
+      "stage": "fixed-AIPlayerLegacyYesNoStrategyTest",
+      "source_role": "fixed",
+      "scope": "same-input fixed factory differential",
+      "module": "ai",
+      "class": "com.wingedsheep.ai.engine.AIPlayerLegacyYesNoStrategyTest",
+      "case_names": [
+        "frozen profile and equal copies retain legacy YesNo behavior through both public factories",
+        "changed configuration retaining the v0 id keeps completed YesNo behavior"
+      ],
+      "expected_cases": 2,
+      "test_source": "ai/src/test/kotlin/com/wingedsheep/ai/engine/AIPlayerLegacyYesNoStrategyTest.kt",
+      "test_source_git_blob": "0e111dd33416224293d127f4e48e7588830f0f8b",
+      "expected_failure_names": [],
+      "requires_observation_maps": true
+    },
+    {
+      "stage": "fixed-DecisionResponderCompletedBranchTest",
+      "source_role": "fixed",
+      "scope": "seven unchanged completed-branch controls",
+      "module": "ai",
+      "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+      "case_names": [
+        "exact one singleton auto-completes without a follow-up decision",
+        "exact one empty result can produce a superior if-you-dont branch without a follow-up",
+        "exact one no-candidate no-payoff acceptance is outcome-equivalent to declining",
+        "genuine up-to-one branch chooses a beneficial legal singleton",
+        "genuine up-to-one branch preserves a superior beneficial empty selection",
+        "genuine up-to-one branch declines when harmful singleton and empty equals decline",
+        "genuine up-to-one branch preserves the superior singleton among multiple candidates"
+      ],
+      "expected_cases": 7,
+      "test_source": "ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderCompletedBranchTest.kt",
+      "test_source_git_blob": "c0c6a376fb43a02b9b9d6fa4f3efd79ffc046c32",
+      "expected_failure_names": [],
+      "requires_observation_maps": false
+    }
+  ],
+  "software_case_executions": 11,
+  "unique_software_case_identities": 9,
+  "scope": [
+    "Exact frozen structural profile selects original legacy YesNo strategy; equal copies included; changed id=v0 configuration remains completed strategy.",
+    "Before and fixed use identical two-case test bodies; explicit legacy/completed responders install identical evaluator/profile inputs and simulator decisionResolver wiring.",
+    "Pre-fix first case must fail specifically at FROZEN_FACTORY_LEGACY_BINDING after complete maps, explicit controls and state checks; a compile/generic assertion failure is not evidence of the intended regression.",
+    "Only the first source/class has one prospectively declared expected assertion failure, preserved as an actual failure in raw XML. Fixed2 and unchanged7 require all pass.",
+    "No vanilla baseline/973/full-AI rerun, global policy equivalence, official seed access, allocation, gameplay, deck change or admission.",
+    "No retry authority; technical/resource/incomplete outputs stop remaining stages and remain incomplete."
+  ],
+  "build_semaphore": {
+    "runner": "ubuntu-24.04",
+    "architecture": "amd64",
+    "package_version": "2.7.2~20240212-1build3",
+    "packages": [
+      "inn2",
+      "inn2-inews"
+    ],
+    "package_filename_prefix": "pool/universe/i/inn2/",
+    "package_max_bytes": 8388608,
+    "setup_command_timeout_seconds": 300,
+    "upstream_binary": "usr/lib/news/bin/shlock",
+    "upstream_library_directory": "usr/lib/news",
+    "lock_slots": 1,
+    "lock_path": "existing scripts/gradle-locked default ~/.cache/argentum/gradle.lock; no override",
+    "reference": "https://www.eyrie.org/~eagle/software/inn/docs/shlock.html",
+    "disposition": "Missing prerequisite, failed semantics or absent actual owned lock observation stops before/within qualification; no unlocked fallback accepted."
+  }
+}
