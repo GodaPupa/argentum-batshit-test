@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[4]
 PREFIX = "docs/experiments/pest-control/monster-search-receiving"
 BANK_PATH = f"{PREFIX}/bank.json"
 FREEZE_PATH = f"{PREFIX}/freeze.json"
-BANK_SHA256 = "afcd93100cd0050083206167a9b6dbd63dd5226682ffc82a824ecb6d7fdfed77"
+BANK_SHA256 = "4795fae179accc2e5764657ef669834609d126b90ef332bd50cd9ca62e38e578"
 WORKFLOW = ".github/workflows/pest-monster-search-actor-receiving.yml"
 REPORT = ROOT / "build/reports/pest-monster-search-actor-receiving"
 
@@ -116,6 +116,15 @@ def collect() -> int:
         receipt["test_exit_code"] = rc
         if rc != "0":
             errors.append(f"Test command exited {rc}")
+        log_path = REPORT / "tests.log"
+        log = log_path.read_bytes()
+        receipt["test_log_sha256"] = digest(log)
+        task_lines = [line for line in log.decode("utf-8", errors="replace").splitlines()
+                      if re.match(r"^> Task :gym:test(?:\s|$)", line)]
+        receipt["gym_test_task_lines"] = task_lines
+        if len(task_lines) != 1 or any(marker in task_lines[0] for marker in
+                                       ("FROM-CACHE", "UP-TO-DATE", "SKIPPED", "NO-SOURCE")):
+            errors.append("Raw log does not prove one fresh :gym:test execution")
         expected = ROOT / "gym/build/test-results/test" / f'TEST-{bank["test_class"]}.xml'
         xml_paths = set((ROOT / "gym/build/test-results/test").glob("TEST-*.xml"))
         if xml_paths != {expected}:
