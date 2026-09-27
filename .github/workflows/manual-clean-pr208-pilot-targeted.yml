@@ -1,0 +1,67 @@
+name: Manual clean PR208 pilot boundary targeted receiving
+on:
+  push:
+    branches: ["manual/clean-pilot-boundary-receiving-20260927"]
+    paths:
+      - ".github/workflows/manual-clean-pr208-pilot-targeted.yml"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundaryTest.kt"
+      - "experiments/manual-transmission-phase2/clean-pr208-pilot-boundary-receiving-v1.json"
+
+permissions:
+  contents: read
+
+jobs:
+  exact-component:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind unchanged PR208 source
+        run: |
+          mkdir -p build/reports/manual-clean-pilot
+          {
+            git rev-parse HEAD
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundaryTest.kt
+            git status --porcelain
+          } > build/reports/manual-clean-pilot/source.txt
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt)" = "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundaryTest.kt)" = "b747ad5a1bcf6780b5c31d8b4244f364b4f4acd3"
+      - name: Execute three exact excluded fixtures fresh
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PhaseTwoPilotBoundaryTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/manual-clean-pilot/gradle.log
+      - name: Validate original JUnit names
+        run: |
+          python3 - <<'PY'
+          import glob,xml.etree.ElementTree as ET
+          paths=glob.glob("gym/build/test-results/test/TEST-*PhaseTwoPilotBoundaryTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          actual=[x.get("name") for x in root.findall(".//testcase")]
+          expected=[
+            "four masked mulligan seats and a priority action pass only through traced boundary",
+            "London free mulligan and later bottom cards are selected from only the actor's hand",
+            "invalid policy choice records integrity failure without silently passing or retrying",
+          ]
+          assert len(actual)==3 and sorted(actual)==sorted(expected), actual
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Preserve source, XML and failure log
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-clean-pilot-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/manual-clean-pilot/
+            gym/build/test-results/test/TEST-*PhaseTwoPilotBoundaryTest.xml
+            experiments/manual-transmission-phase2/clean-pr208-pilot-boundary-receiving-v1.json
+          if-no-files-found: error
+          retention-days: 90
