@@ -17,6 +17,7 @@ import com.wingedsheep.engine.handlers.effects.ZoneTransitionService
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ZoneKey
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -148,8 +149,17 @@ class SphinxStageEVisibleContinuationTraceTest : ScenarioTestBase() {
                 seat.resolveToQuestion()
                 val untap = seat.state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
                 untap.minSelections shouldBe 0
+                val paidLands = seat.state.getBattlefield(seat.actor).filter {
+                    name(seat.state, it) == "Island" &&
+                        seat.state.getEntity(it)!!.has<TappedComponent>()
+                }
+                paidLands.size shouldBe 2
+                untap.options.containsAll(paidLands) shouldBe true
+                (sphinx in seat.state.getHand(seat.actor)) shouldBe true
                 seat.advance(seat.proposed())
                 seat.state.pendingDecision shouldBe null
+                paidLands.all { !seat.state.getEntity(it)!!.has<TappedComponent>() } shouldBe true
+                (sphinx in seat.state.getHand(seat.actor)) shouldBe true
             }
         }
         listOf("closest-no-approach-v01", "serpico-terror-benchmark").forEach { identity ->
