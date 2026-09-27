@@ -1,0 +1,55 @@
+{
+  "schema": "manual-phase2-pilot-boundary-focused-receipt-v1",
+  "status": "COMPONENT_FIXTURE_PASS_ONLY",
+  "source_sha": "032fdc8f6fe4dcf29970905d0f36e39bed41f7b4",
+  "source_parent": "a8aceed95b25cb6811cc5a85e8bf8ed581d72bf1",
+  "workflow": {
+    "run_id": 36289923892,
+    "attempt": 1,
+    "job_id": 108537917998,
+    "conclusion": "success",
+    "targeted_command": "scripts/test-class PhaseTwoPilotBoundaryTest --info --stacktrace",
+    "build_summary": "BUILD SUCCESSFUL in 4m 58s"
+  },
+  "original_artifact": {
+    "id": 10921938825,
+    "name": "manual-transmission-phase2-pilot-boundary",
+    "bytes": 2187,
+    "sha256": "d5114d229d1df81b4e0dfc2f07330e954a38206f01212f04f78891dff1272c7e",
+    "restorable_base64_path": "experiments/manual-transmission-phase2/evidence/pilot-boundary-36289923892/original-artifact.zip.base64",
+    "base64_blob_sha": "2b2afdf66ed51d4de691c8e386ab880681b2238f",
+    "restore_rule": "base64 -d original-artifact.zip.base64 > original-artifact.zip; sha256sum must match"
+  },
+  "junit": {
+    "suite": "com.wingedsheep.gym.manual.PhaseTwoPilotBoundaryTest",
+    "cases": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "exact_names": [
+      "four masked mulligan seats and a priority action pass only through traced boundary",
+      "London free mulligan and later bottom cards are selected from only the actor's hand",
+      "invalid policy choice records integrity failure without silently passing or retrying"
+    ]
+  },
+  "source_sha256": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt": "1fda7d7962ac4eb01178200b995266470527d075ac4b6b51aa788db396356cf9",
+    "gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundaryTest.kt": "da4a1b4915bde4bb911153f0f9a2217fdfae4331574060d5937e6b3d0acc1a5e"
+  },
+  "source_blob_sha": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundaryTest.kt": "b747ad5a1bcf6780b5c31d8b4244f364b4f4acd3"
+  },
+  "predecessor_failure_receipt": "experiments/manual-transmission-phase2/evidence/pilot-boundary-36289569560/receipt.json",
+  "scope_limitations": [
+    "No frozen actual-deck mechanic or opponent pilot qualification",
+    "No Crew/Sport/Race strategic competence or complete parameterization admission",
+    "No global claim, canonical runner, independent source review or capability permit",
+    "Fixture observations are not matchup or deck-performance evidence"
+  ],
+  "official_counters": {
+    "capability_games": 0,
+    "primary_games": 0
+  },
+  "gameplay_authorized": false
+}
