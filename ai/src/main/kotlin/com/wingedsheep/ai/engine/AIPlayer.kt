@@ -259,6 +259,13 @@ class AIPlayer(
                 advisorRegistry = advisorRegistry,
                 budgetPolicy = profile.budgetPolicy,
                 intents = intents,
+                // Only the complete frozen reference configuration retains its original strategy.
+                // An id=v0 profile with changed settings is a different policy.
+                yesNoStrategy = if (profile == AiProfile.LEGACY_V0) {
+                    YesNoDecisionStrategy.LEGACY_SIMULATE_BOTH_V1
+                } else {
+                    YesNoDecisionStrategy.COMPLETED_BRANCH_V1
+                },
             )
 
             // Wire up the decision resolver so simulations can resolve non-trivial
