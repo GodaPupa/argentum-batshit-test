@@ -1,0 +1,129 @@
+{
+  "artifact": 10927361833,
+  "artifact_bytes": 328925,
+  "artifact_redownloaded": false,
+  "artifact_sha256": "a4697ddd9171509e31e42773db5ec1a4c7f1d2a3ee138e1aecb49677e92885e0",
+  "attempt": 1,
+  "collector_rows_independently_match": true,
+  "command_exit": 0,
+  "crc_clean": true,
+  "disposition": "ACCEPT_BOUNDED_COMPOSED_SOURCE_136_RECEIVING",
+  "errors": 0,
+  "failures": 0,
+  "fresh_cases": 136,
+  "fresh_classes": 16,
+  "fresh_tasks": [
+    ":ai:test",
+    ":game-server:test",
+    ":gym:test",
+    ":mtg-sets:2008-2016:tests:test",
+    ":mtg-sets:2017-2022:tests:test",
+    ":rules-engine:test"
+  ],
+  "gameplay_authorized": false,
+  "gate_head_prefix": "07525556",
+  "limits": [
+    "RetainedManual96 and shared40 bank only on composed runtime; prior failed/incomplete evidence remains unchanged.",
+    "No capability36 or primary864 gameplay, pilot/collector/replay/durability admission.",
+    "No main merge authority from this targeted receipt alone."
+  ],
+  "next_boundary": "Eligible to advance to one coherent broader integration gate with full CI and required Manual receiving bank; acceptance of this component does not satisfy that gate.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "original_artifact_review_count": 1,
+  "paired_unique_executors": 6,
+  "proposal_sha256": "9d2aea898f91895d4a56b211719e767ca5a3bf86d408a42346783fbaa7e2c3b1",
+  "raw_original_and_copied_xml_identical": true,
+  "reviewer": "/root/compatibility_review",
+  "rows": [
+    {
+      "cases": 5,
+      "class": "com.wingedsheep.engine.handlers.effects.library.AuthorizedLibrarySearchChoiceTest",
+      "xml_sha256": "2a1186de9cf26c70867c2582e86827ce2e8db15fc9e774d57f6aab78fc08ef8e"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.gameserver.session.AuthorizedSearchDecisionMaskingTest",
+      "xml_sha256": "b224ed0bec9b32374d8638d83a813f150bedc402874fed910c2ad0b13e4e401d"
+    },
+    {
+      "cases": 2,
+      "class": "com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest",
+      "xml_sha256": "48e875e423d3562d78d87a378ae6d780bd575ba3db16831416d44b103d44d003"
+    },
+    {
+      "cases": 28,
+      "class": "com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest",
+      "xml_sha256": "13dbf212346fb78a478d75fbb18cf8a8b27f9876b1eb9f420089f8c914108513"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.gym.actorinput.ActorPriorityObservationTest",
+      "xml_sha256": "9df9d34da4b36f166b88b6b9b78e0a7ea734e1064c542308e8c6969c48383e58"
+    },
+    {
+      "cases": 11,
+      "class": "com.wingedsheep.engine.event.BattlefieldEntrySnapshotTest",
+      "xml_sha256": "306bef1c5db54b804ed0be5b717c57a168efd2f4e7d05c34f183bd36bcb2f257"
+    },
+    {
+      "cases": 4,
+      "class": "com.wingedsheep.engine.handlers.effects.token.TokenBatchEntryHistoryTest",
+      "xml_sha256": "6a0f26f091e51f40f864e7b42d5536e76746997ca2e56792f73c99b62150ed47"
+    },
+    {
+      "cases": 6,
+      "class": "com.wingedsheep.engine.mechanics.layers.BattlefieldEntryProjectionTest",
+      "xml_sha256": "c105ae073afdc813ae85202f5e7c5513cd1e4baecb124f37803e317608b5506e"
+    },
+    {
+      "cases": 9,
+      "class": "com.wingedsheep.engine.scenarios.ActivationPriorityScenarioTest",
+      "xml_sha256": "1ed82ef6dbdd977649372792250f85f30815452a5d0caf6b75385e8d77e0c3af"
+    },
+    {
+      "cases": 16,
+      "class": "com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest",
+      "xml_sha256": "e632cfe0a3761bcbfc2c22aae445fcf0f49ffe9498b980f4c24ce3949f4d7c26"
+    },
+    {
+      "cases": 11,
+      "class": "com.wingedsheep.engine.scenarios.SelfEntersTappedOffStackEntryScenarioTest",
+      "xml_sha256": "b1ded0f026b520f226b13f73991486b5736cf1211b923302df3f3fc5eecdccb0"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.engine.scenarios.TokenCopyOfPlaneswalkerEntryScenarioTest",
+      "xml_sha256": "13a4032830e8743a546971c23cefd80937ec0ece239dea5724289f86ea3731f7"
+    },
+    {
+      "cases": 2,
+      "class": "com.wingedsheep.engine.scenarios.TokenCopyOfSagaEntryScenarioTest",
+      "xml_sha256": "4516d4afae40b3791a2eeff503a776b2071bcc4b3b5b51cd8b5f1d366410a938"
+    },
+    {
+      "cases": 25,
+      "class": "com.wingedsheep.engine.scenarios.PurphorosGodOfTheForgeScenarioTest",
+      "xml_sha256": "4acda49806c506e577549e6d32824879a47b884e24d1521169d49e2c68430f9f"
+    },
+    {
+      "cases": 10,
+      "class": "com.wingedsheep.engine.scenarios.AetherChannelerScenarioTest",
+      "xml_sha256": "8b4d9f4087a10aeafa50729fcb57bdd715f1f065dc844b0aa1889db38145490f"
+    },
+    {
+      "cases": 1,
+      "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+      "xml_sha256": "0baaf7020366cfe052a3f3d8e97f4a6a618cd502fe8f44b5d76c73feebfa6072"
+    }
+  ],
+  "run": 36306157237,
+  "schema": "manual-pr210-receiving-independent-original-artifact-review-v1",
+  "skipped": 0,
+  "source": "44c0be8b20221fe391c9513ea4668459375a6f0d",
+  "source_before_after_identical": true,
+  "source_tree": "7255b8b4b6869af203570783ab428b9878914a07",
+  "tests_rerun": false,
+  "verified_test_blobs": 16,
+  "zip_members": 38
+}
