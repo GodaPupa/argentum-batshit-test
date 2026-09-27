@@ -1,0 +1,27 @@
+{
+  "schema": "pest-c2-london-actor-seam-targeted-software-gate-v1",
+  "status": "PROSPECTIVE_TARGETED_SOFTWARE_RECEIVING_ONLY_NO_C2_OR_A2_OR_GAME_AUTHORITY",
+  "source_base": "b081c56fd9dfb165408ebe121a3fbabea29b0b62",
+  "branch": "pest/c2-pair-pilot-seam-20260927",
+  "source_blobs": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "25a166415fe29189802940fc76f6f283da686072",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorMulliganObservationTest.kt": "4a55adc2174995906876bc04f836f77eb05ce6f1"
+  },
+  "test_class": "com.wingedsheep.gym.actorinput.ActorMulliganObservationTest",
+  "expected_fresh_cases": [
+    "London actor follows both seats, then exposes exact own visible bottom handles",
+    "London projection rejects wrong actor and incomplete menu"
+  ],
+  "expected_count": 2,
+  "fixture_entropy": "0xC25101, deterministic nonexperimental software fixture; no official allocation or seed registry",
+  "assertions": [
+    "Both seats receive ordered complete KeepHand/TakeMulligan menus and the second actor is accepted despite first-seat engine priority during setup",
+    "Actual exact-one KeepHand, TakeMulligan and BottomCards engine transitions accept physical visible bottom handle",
+    "Wrong seat and truncated setup menu fail closed"
+  ],
+  "scope_limits": "This gate proves only setup actor projection. It does not validate frozen Pest/Monster policy equivalence, full pair pilots, priority or pending choices, C2/A2, exclusions, replay, admission or gameplay.",
+  "original_attempts_untouched": [
+    "36295765465 INCOMPLETE; artifact10923833171 audited once; original claim consumed; four reservations retired"
+  ],
+  "official_games": 0
+}
