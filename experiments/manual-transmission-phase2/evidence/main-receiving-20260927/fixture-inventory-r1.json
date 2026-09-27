@@ -4,7 +4,7 @@
   "immutable_source_tree": "7b0d6d041d6b119aae678ec47135c14e7efeaf4b",
   "manual_first_parent": "4762f8d763fecb32d2f042222c5383f74eee3479",
   "accepted_main_second_parent": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
-  "workflow_proposal_sha256": "c6c8be8bfa4b4776f1581e2a6a5d99a43c87a12be3dc244fc510c230abfa499c",
+  "workflow_proposal_sha256": "2c681a1644573546857e7251584d3d8e7b209b4e96b5d0cecaec5323a31f5f90",
   "classes": [
     {
       "module": "rules-engine",
@@ -117,6 +117,6 @@
       "purpose": "accepted AI action/order baseline control"
     }
   ],
-  "execution": "One reviewed workflow push on a separate gate branch; checkout fixed source commit. Fresh no-build-cache cleanTest + filtered test class tasks. No full CI, seeds, official game or capability admission.",
-  "evidence": "Per-command raw Gradle logs; all selected XML; source-binding JSON; XML count validation; raw SHA256 manifest; artifact retained on pass/fail. Compile failure stops later tests, without retries."
+  "execution": "One reviewed initial branch push directly at the gate workflow commit (all-zero before and run_attempt 1); checkout fixed source commit. Fresh no-build-cache cleanTest + filtered test class tasks. No full CI, seeds, official game or capability admission.",
+  "evidence": "Per-command raw Gradle logs; all selected XML; source-binding JSON; always source-after HEAD/tree/tracked-worktree check; XML count validation; raw SHA256 manifest; artifact retained on pass/fail. Compile failure stops later tests, without retries."
 }
