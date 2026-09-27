@@ -64,7 +64,8 @@
       "corrected_source": {
         "test_blob": "9f8cc16a624d45fe81c32e6be9b4e5b84b950458",
         "run": 36341300733,
-        "status": "PENDING_ORIGINAL_AUDIT"
+        "status": "AUTHOR_AUDITED_TWO_FRESH_P04_05_CASES_ONLY",
+        "audit": "65b04414:docs/experiments/pest-control/evidence/c2-p04-edict-36341300733-original-audit.json"
       }
     },
     "P03_02_P03_08": {
@@ -74,8 +75,15 @@
         "status": "INCOMPLETE_PRETEST_SIBLING_COMPILE",
         "audit": "d6324e01"
       },
-      "prospective_run": 36341313005,
-      "scope": "Crop-to-Weather response timing two seats; no policy equality or complete action coverage"
+      "prospective_run": 36343481675,
+      "scope": "Crop-to-Weather response timing two seats; no policy equality or complete action coverage",
+      "failed_original": {
+        "run": 36341313005,
+        "status": "INCOMPLETE_TWO_FRESH_FIXTURE_ASSERTIONS",
+        "audit": "7f7998a4",
+        "failure": "stack 3 includes Storm trigger; fixture assumed 2"
+      },
+      "corrected_test_blob": "3faf6a54fa5468824d51243de580106b78f2a6a9"
     }
   },
   "missing": "Complete exact reachable action and decision variants for all frozen mains, both actor seats and starts, including non-search looks, other scry/surveil, alternative costs, payment, triggers/order, attack/block/post-block priority, response/pass, random/cascade separation, raw-policy parity and complete own/public pilots. Map every accepted shared case by exact identity. Existing scoped cases cannot be summed into admission.",
