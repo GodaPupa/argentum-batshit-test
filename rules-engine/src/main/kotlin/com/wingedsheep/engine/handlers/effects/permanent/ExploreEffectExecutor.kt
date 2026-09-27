@@ -91,7 +91,8 @@ class ExploreEffectExecutor(
 
         val library = state.getLibrary(explorerId)
         if (library.isEmpty()) {
-            return EffectResult.success(state, listOf(exploredEvent(null)))
+            val (stateAfterCounter, counterEvents) = addPlusOneCounter(state, exploringCreatureId, context)
+            return EffectResult.success(stateAfterCounter, counterEvents + exploredEvent(null))
         }
 
         val topCardId = library.first()

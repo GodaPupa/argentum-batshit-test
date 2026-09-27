@@ -793,7 +793,14 @@ class CostHandler {
                 if (choices.discardChoices.size < atom.count) {
                     return CostPaymentResult.failure("Must choose ${atom.count} card(s) to discard")
                 }
-                choices.discardChoices.take(atom.count)
+                val selected = choices.discardChoices.take(atom.count)
+                val eligible = findMatchingCardsUnified(
+                    state, state.getZone(ZoneKey(controllerId, Zone.HAND)), atom.filter, controllerId
+                ).toSet()
+                if (selected.toSet().size != atom.count || selected.any { it !in eligible }) {
+                    return CostPaymentResult.failure("Discard choices must be distinct eligible cards in your hand")
+                }
+                selected
             }
             val result = ZoneTransitionService
                 .discardCards(workState, controllerId, toDiscard)
