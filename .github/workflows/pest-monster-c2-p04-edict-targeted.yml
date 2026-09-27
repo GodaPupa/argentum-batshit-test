@@ -1,0 +1,60 @@
+name: Pest Monster P04 opposing sacrifice
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-c2-p04-edict-targeted.yml"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterOpposingSacrificeReceivingTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-edict-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact test source
+        run: |
+          mkdir -p build/reports/pest-c2-p04-edict
+          {
+            git rev-parse HEAD
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterOpposingSacrificeReceivingTest.kt
+            git status --porcelain
+          } > build/reports/pest-c2-p04-edict/source.txt
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterOpposingSacrificeReceivingTest.kt)" = "9174cfaa5d4986c8251542267be7a8602b6a6dea"
+      - name: Execute fresh two-seat opposing-sacrifice fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterOpposingSacrificeReceivingTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/pest-c2-p04-edict/gradle.log
+      - name: Verify exact JUnit cases
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          paths=glob.glob("gym/build/test-results/test/TEST-*PestMonsterOpposingSacrificeReceivingTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          cases=root.findall(".//testcase")
+          assert sorted(c.get("name") for c in cases)==[
+              "P04-05 Pest seat 1 leaves Monster sacrifice to its own actor",
+              "P04-05 Pest seat 2 leaves Monster sacrifice to its own actor",
+          ], [c.get("name") for c in cases]
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-p04-edict-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-c2-p04-edict/
+            gym/build/test-results/test/TEST-*PestMonsterOpposingSacrificeReceivingTest.xml
+          if-no-files-found: error
+          retention-days: 90
