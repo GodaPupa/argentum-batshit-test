@@ -12,10 +12,10 @@ ROOT = Path(__file__).resolve().parents[1]
 OUT = ROOT / "build/reports/sphinx-stage-e-visible-trace"
 EXPECTED_BLOBS = {
     "sphinx-approach/STAGE_E_VISIBLE_CHOICE_SOURCE_SCOPE.json": "41a0a63842d8989366511fee3c1d611c1ce9c78c",
-    "sphinx-approach/STAGE_E_VISIBLE_CHOICE_TRACE_PROPOSAL.json": "d4ec11e0e6ea961648837d4332567d25da90934d",
+    "sphinx-approach/STAGE_E_VISIBLE_CHOICE_TRACE_PROPOSAL.json": "7b6361688d2dc2b1c34b014b79182475abc3d445",
     "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoice.kt": "c769710269303809a64f01ad06aa3487d2af1182",
     "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt": "f420e5b6e144ffc2692e9b146a44dbf461679f5d",
-    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoiceTraceTest.kt": "267cd3742c8b20d60a64043cd6ca9cc4907c8765",
+    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoiceTraceTest.kt": "0ee71be94915f92837cc786c1643eb6336022dea",
     "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorChoiceSupport.kt": "9b37061e1515e0927ddafe0906381f7281a95ef1",
     "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPublicCards.kt": "f69cedd6c6d7aa841fb1917a842febd13adbba46",
     "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "3e41a512f91358f763a194527258979755bab7b6",
@@ -68,7 +68,7 @@ def snapshot():
             raise ValueError(f"Frozen deck rows changed: {path}")
         decks[path] = actual
     proposal = json.loads((ROOT / "sphinx-approach/STAGE_E_VISIBLE_CHOICE_TRACE_PROPOSAL.json").read_text())
-    if proposal["trace_cases"] != CASES or proposal["attempt_record"]["traces_attempted"] != 0:
+    if proposal["trace_cases"] != CASES or proposal["attempt_record"]["traces_attempted"] != 2:
         raise ValueError("Reviewed trace case inventory changed")
     return {"head": head, "tree": tree, "requested_sha": os.environ["SPHINX_TRACE_SHA"],
             "blobs": blobs, "decks_sha256": decks}

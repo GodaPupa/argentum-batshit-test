@@ -49,8 +49,8 @@ class SphinxStageEVisibleChoiceTraceTest : ScenarioTestBase() {
         val actor = EntityId.of("stage-e-trace-actor")
         val other = EntityId.of("stage-e-trace-opponent")
         val initialized = GameInitializer(cardRegistry).initializeGame(GameConfig(
-            players = listOf(PlayerConfig("Actual frozen 60", Deck(names), actor),
-                PlayerConfig("Passive excluded seat", Deck(List(60) { "Island" }), other)),
+            players = listOf(PlayerConfig("Actual frozen 60", Deck(names), playerId = actor),
+                PlayerConfig("Passive excluded seat", Deck(List(60) { "Island" }), playerId = other)),
             startingHandSize = 7, skipMulligans = false, useHandSmoother = false,
             startingPlayerIndex = 0, seed = 0x5350_4849_4E58_0003L,
         ))
