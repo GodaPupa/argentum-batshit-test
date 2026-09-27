@@ -1,0 +1,141 @@
+{
+  "scope": "Complete connector-decoded testjob logs; result-line counts only, not XML counts or cached execution proof",
+  "correction": "Initial local parser also counted Gradle SKIPPED task headings. Prior output preserved separately; this parser excludes > Task headings before test-result matching. No source/test execution changed.",
+  "rows": [
+    {
+      "job": "job-108514788184.log",
+      "passes": 3785,
+      "skips": 0,
+      "failures": 0,
+      "task_lines": [
+        [
+          ":rules-engine:test",
+          ""
+        ]
+      ]
+    },
+    {
+      "job": "job-108514788195.log",
+      "passes": 556,
+      "skips": 4,
+      "failures": 0,
+      "task_lines": [
+        [
+          ":game-server:test",
+          ""
+        ]
+      ]
+    },
+    {
+      "job": "job-108514788216.log",
+      "passes": 4266,
+      "skips": 0,
+      "failures": 0,
+      "task_lines": [
+        [
+          ":mtg-sets:1993-1999:tests:test",
+          ""
+        ],
+        [
+          ":mtg-sets:2000-2002:tests:test",
+          ""
+        ],
+        [
+          ":mtg-sets:2003-2007:tests:test",
+          ""
+        ],
+        [
+          ":mtg-sets:2008-2016:tests:test",
+          ""
+        ],
+        [
+          ":mtg-sets:2017-2022:tests:test",
+          ""
+        ]
+      ]
+    },
+    {
+      "job": "job-108514788231.log",
+      "passes": 780,
+      "skips": 34,
+      "failures": 0,
+      "task_lines": [
+        [
+          ":ai:test",
+          ""
+        ],
+        [
+          ":mtg-sdk:test",
+          "FROM-CACHE"
+        ],
+        [
+          ":mtg-search:test",
+          "FROM-CACHE"
+        ],
+        [
+          ":mtg-sets:test",
+          "FROM-CACHE"
+        ]
+      ]
+    },
+    {
+      "job": "job-108514788233.log",
+      "passes": 3357,
+      "skips": 0,
+      "failures": 0,
+      "task_lines": [
+        [
+          ":mtg-sets:2023:tests:test",
+          ""
+        ],
+        [
+          ":mtg-sets:2024:tests:test",
+          ""
+        ]
+      ]
+    },
+    {
+      "job": "job-108514788234.log",
+      "passes": 2930,
+      "skips": 0,
+      "failures": 0,
+      "task_lines": [
+        [
+          ":mtg-sets:2025:tests:test",
+          ""
+        ],
+        [
+          ":mtg-sets:2026:tests:test",
+          ""
+        ]
+      ]
+    },
+    {
+      "job": "job-108514788252.log",
+      "passes": 123,
+      "skips": 1,
+      "failures": 0,
+      "task_lines": [
+        [
+          ":gym-server:test",
+          ""
+        ],
+        [
+          ":gym-trainer:test",
+          ""
+        ],
+        [
+          ":gym:test",
+          ""
+        ],
+        [
+          ":mtgish-tooling:test",
+          "FROM-CACHE"
+        ]
+      ]
+    }
+  ],
+  "passes": 15797,
+  "skips": 39,
+  "failures": 0
+}

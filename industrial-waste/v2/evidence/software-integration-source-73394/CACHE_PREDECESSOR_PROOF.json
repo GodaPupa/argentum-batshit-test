@@ -1,0 +1,136 @@
+{
+  "schema": "industrial-full-ci-cached-task-predecessor-proof-v1",
+  "at_utc": "2026-09-27T00:49:34.248583+00:00",
+  "status": "BOUNDED_SOFTWARE_PREDECESSOR_REUSE_SUPPORTED_PENDING_INDEPENDENT_REVIEW",
+  "current_run": 36281753254,
+  "current_head": "73394d7eabc7cc3dad609b9d416102a9ecce8e4f",
+  "current_actual_checkout": "f80ee01c1ec662fe87364551c843afb452abfc65",
+  "current_tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "cached_current_tasks": [
+    "mtg-search",
+    "mtg-sdk",
+    "mtg-sets",
+    "mtgish-tooling"
+  ],
+  "fresh_donor_run": 36270965658,
+  "fresh_donor_attempt": 1,
+  "fresh_donor_head": "94af8331e83c7b48cfa0cb61fd626591b4928462",
+  "fresh_donor_actual_checkout": "825ca5286ed4476f4b9b990fde3a54650d4c02ee",
+  "fresh_donor_tree": "686cef8ddcb2cd3291cb465cf780bd0cbd774754",
+  "donor_archive": {
+    "local": "industrial/audit-94af/decoded-job-logs.zip",
+    "durable_commit": "0de8a955b8f81f6ce48304bcde42eaa6116ae4e9",
+    "durable_path": "industrial-waste/v2/evidence/runtime-source-94af8331/decoded-job-logs.zip",
+    "bytes": 785532,
+    "sha256": "4754791ad0f42d5a815e56e55b2191e70d15ce11be52d8e0b23eade746a74b20",
+    "git_blob": "5609d09cca585f1870f1381705548feaf28514da",
+    "crc_pass": true
+  },
+  "donor_log_members": [
+    {
+      "member": "job-108484709923.log",
+      "bytes": 359913,
+      "sha256": "bee8608ee6f93d6226541930dfe3682cd582d47a70497a8e9db42afe968d5a31",
+      "fresh_task_lines": {
+        "mtg-search": [
+          ""
+        ],
+        "mtg-sdk": [
+          ""
+        ],
+        "mtg-sets": [
+          "",
+          ""
+        ]
+      },
+      "build_successful": true,
+      "jdk_observed": "Temurin-Hotspot_jdk/21.0.12-1/x64"
+    },
+    {
+      "member": "job-108484709824.log",
+      "bytes": 102411,
+      "sha256": "cb4b4f6a726288ee9913a7c2e304f78e0ed0901844800ca7cc5f2b9bc4cdcb00",
+      "fresh_task_lines": {
+        "mtgish-tooling": [
+          ""
+        ]
+      },
+      "build_successful": true,
+      "jdk_observed": "Temurin-Hotspot_jdk/21.0.12-1/x64"
+    }
+  ],
+  "donor_cases": {
+    "mtg-search": {
+      "PASSED": 163
+    },
+    "mtg-sdk": {
+      "PASSED": 525
+    },
+    "mtg-sets": {
+      "PASSED": 376
+    },
+    "mtgish-tooling": {
+      "PASSED": 144,
+      "SKIPPED": 3
+    }
+  },
+  "case_records_sha256": "3b402762dab141372c4e42ae4eb52fd927f1c403de6db512ffb3f6b6d5d13436",
+  "source_equivalence": {
+    "comparison": "Complete donor and current recursive Git trees, both untruncated; exact leaf comparison, not merge-base compare semantics",
+    "donor_entries": 29096,
+    "current_entries": 29136,
+    "total_changed_blob_paths": 43,
+    "merkle_bound_equal_roots": 35,
+    "merkle_bindings_file": "cache-relevant-input-merkle-bindings.json",
+    "all_relevant_tree_blob_modes_equal": true,
+    "changes_outside_closure": "Only engine implementation/test repairs, separate era scenario tests, card qualification workflow, manifests/evidence. Engine and era scenario test modules are not dependencies of the four cached tasks.",
+    "exact_equal_tree_and_blob_entries": 19734
+  },
+  "dependency_scope": {
+    "mtg-search": "Own source/tests; Kotlin/Kotest dependency declarations and common build logic. No engine/SDK project dependency.",
+    "mtg-sdk": "Own source/tests, kotlinx ecosystem, Kotlin reflect and Kotest declarations; CounterTypeClientMirrorTest additionally reads unchanged web-client/src/types/enums.ts.",
+    "mtg-sets": "Aggregator source/tests/resources, SDK, core and all nine era production src roots and their API dependency chain; snapshots/lint allowlist/source scans included. Separate era tests children are excluded from this task classpath. Generated-cards verification task is not invoked by :mtg-sets:test.",
+    "mtgish-tooling": "Own source/tests/resources plus live SDK source registry/symbol scans, unchanged main card definition roots and snapshot resources. No engine classpath/source read. Vendored fixtures are included. Three external IR/Scryfall data-dependent tests were explicitly skipped in donor and remain unqualified.",
+    "common": "Exact unchanged root build/settings, buildSrc, Gradle wrapper/config/version catalog, CI workflow/commands and justfile; observed donor/current Java home version21.0.12-1 matches. Kotlin2.4.0/Kotest6.2.1/kotlinx serialization1.11.0/classgraph4.8.184 declarations unchanged."
+  },
+  "skipped_cases": [
+    {
+      "module": "mtgish-tooling",
+      "class": "EmitterSmokeTest",
+      "name": "Portal renders a high rate of whole, well-formed cards",
+      "status": "SKIPPED",
+      "at": "2026-09-26T20:53:39.4611517Z",
+      "job_log": "job-108484709824.log"
+    },
+    {
+      "module": "mtgish-tooling",
+      "class": "DashboardTest",
+      "name": "Analyzer classifies a set's cards into a partition that sums to the whole",
+      "status": "SKIPPED",
+      "at": "2026-09-26T20:53:39.8835384Z",
+      "job_log": "job-108484709824.log"
+    },
+    {
+      "module": "mtgish-tooling",
+      "class": "DashboardTest",
+      "name": "cross-set index carries the blocked cards behind each ranked capability",
+      "status": "SKIPPED",
+      "at": "2026-09-26T20:53:39.8915588Z",
+      "job_log": "job-108484709824.log"
+    }
+  ],
+  "artifact_scope": {
+    "current_actions_artifacts": [],
+    "donor_actions_artifacts": [],
+    "scope": "CI workflows retained no uploaded Actions XML/artifact archive (actual API lists empty). Complete decoded API logs are durable; exact fresh identities/counts/failures/skips come from those logs. No XML or original logs-download ZIP is claimed."
+  },
+  "limitations": [
+    "Current cached tasks are not freshly executed, and no new run was dispatched.",
+    "No Gradle cache-key-to-producer mapping is emitted; this proves same-relevant-source-input predecessor evidence, not that a particular cache entry was produced by donor36270965658.",
+    "Dependency declarations/build inputs and observed JDK version are identical. This CI archive does not retain per-JAR compiled classpath or Java executable hashes, so no cross-run byte-for-byte external-binary or official loaded-runtime identity claim is made.",
+    "Three optional mtgish data-dependent skips remain skips and are not qualification.",
+    "This software regression reuse does not admit the changed complete gameplay runtime, replace fresh receiving220/135/32/20/runtime, or authorize any allocation."
+  ],
+  "official_allocations": 0,
+  "official_games": 0
+}

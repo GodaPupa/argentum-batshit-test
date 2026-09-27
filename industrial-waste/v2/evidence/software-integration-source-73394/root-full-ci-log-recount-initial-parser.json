@@ -1,0 +1,148 @@
+[
+  {
+    "job": "job-108514788184.log",
+    "tasks": [
+      [
+        ":rules-engine:test",
+        ""
+      ]
+    ],
+    "pass_lines": 3785,
+    "skip_lines": 14,
+    "failed_lines": 0,
+    "build_success": 1,
+    "build_failed": 0
+  },
+  {
+    "job": "job-108514788195.log",
+    "tasks": [
+      [
+        ":game-server:test",
+        ""
+      ]
+    ],
+    "pass_lines": 556,
+    "skip_lines": 22,
+    "failed_lines": 0,
+    "build_success": 1,
+    "build_failed": 0
+  },
+  {
+    "job": "job-108514788216.log",
+    "tasks": [
+      [
+        ":mtg-sets:1993-1999:tests:test",
+        ""
+      ],
+      [
+        ":mtg-sets:2000-2002:tests:test",
+        ""
+      ],
+      [
+        ":mtg-sets:2003-2007:tests:test",
+        ""
+      ],
+      [
+        ":mtg-sets:2008-2016:tests:test",
+        ""
+      ],
+      [
+        ":mtg-sets:2017-2022:tests:test",
+        ""
+      ]
+    ],
+    "pass_lines": 4266,
+    "skip_lines": 19,
+    "failed_lines": 0,
+    "build_success": 1,
+    "build_failed": 0
+  },
+  {
+    "job": "job-108514788231.log",
+    "tasks": [
+      [
+        ":ai:test",
+        ""
+      ],
+      [
+        ":mtg-sdk:test",
+        "FROM-CACHE"
+      ],
+      [
+        ":mtg-search:test",
+        "FROM-CACHE"
+      ],
+      [
+        ":mtg-sets:test",
+        "FROM-CACHE"
+      ]
+    ],
+    "pass_lines": 780,
+    "skip_lines": 50,
+    "failed_lines": 0,
+    "build_success": 1,
+    "build_failed": 0
+  },
+  {
+    "job": "job-108514788233.log",
+    "tasks": [
+      [
+        ":mtg-sets:2023:tests:test",
+        ""
+      ],
+      [
+        ":mtg-sets:2024:tests:test",
+        ""
+      ]
+    ],
+    "pass_lines": 3357,
+    "skip_lines": 16,
+    "failed_lines": 0,
+    "build_success": 1,
+    "build_failed": 0
+  },
+  {
+    "job": "job-108514788234.log",
+    "tasks": [
+      [
+        ":mtg-sets:2025:tests:test",
+        ""
+      ],
+      [
+        ":mtg-sets:2026:tests:test",
+        ""
+      ]
+    ],
+    "pass_lines": 2930,
+    "skip_lines": 16,
+    "failed_lines": 0,
+    "build_success": 1,
+    "build_failed": 0
+  },
+  {
+    "job": "job-108514788252.log",
+    "tasks": [
+      [
+        ":gym-server:test",
+        ""
+      ],
+      [
+        ":gym-trainer:test",
+        ""
+      ],
+      [
+        ":gym:test",
+        ""
+      ],
+      [
+        ":mtgish-tooling:test",
+        "FROM-CACHE"
+      ]
+    ],
+    "pass_lines": 123,
+    "skip_lines": 20,
+    "failed_lines": 0,
+    "build_success": 1,
+    "build_failed": 0
+  }
+]

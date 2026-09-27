@@ -1,0 +1,108 @@
+{
+  "schema": "industrial-pr204-root-software-and-integration-review-v1",
+  "at_utc": "2026-09-27T00:53:22.691331+00:00",
+  "reviewer": "root non-author coordinator",
+  "disposition": "ACCEPT_SCOPED_REPAIRED_COMPONENT_AND_ALLOW_NORMAL_EXPECTED_HEAD_RECEIVING_MERGE_SUBJECT_FINAL_LIVE_CHECK",
+  "head": "73394d7eabc7cc3dad609b9d416102a9ecce8e4f",
+  "tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "base": "e5a0facd17af60f099463f5ebe3e5e4afbe4bd0d",
+  "actual_testmerge": "f80ee01c1ec662fe87364551c843afb452abfc65",
+  "source_review_chain": {
+    "manual_source": "c0165ea1984ee36371a8bf88ca57b993fa04b66afd3b8173de4635524ab8952c",
+    "manual_dependency": "0dbe954a9f783bb4ec6c879fd1ff07813b7e0d399b2ccf7260a6b76b577537be",
+    "manual_assay": "f594ce9d2786de4058df15f2cef61131a005110549e4a60d25dd60ee7fcea16c",
+    "root_release": "ab7f7a7fc014eb7648be63cf2497fd029b57148d5012e6daf376d55a0060fb51",
+    "root_card_raw": "ee2090d144b29ad4b82c138acb19b35c01f95df954bff92280e151ac6eadb512"
+  },
+  "actual_delta_files": 35,
+  "card_result": {
+    "focused": 20,
+    "broad_unique": 154,
+    "focused_subset_of_broad": true,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0,
+    "snapshot_diff_bytes": 0
+  },
+  "assay": {
+    "VOW_agree": 70,
+    "LCI_agree": 54,
+    "divergences": 0,
+    "both_actual_exit": 0,
+    "exclusions_retained": true,
+    "full_bulk_not_retained": true
+  },
+  "full_ci": {
+    "run": 36281753254,
+    "status": "success",
+    "complete_decoded_test_job_logs": 7,
+    "complete_decoded_build_logs": 2,
+    "fresh_module_tasks": 15,
+    "current_result_lines": {
+      "passed": 15797,
+      "skipped": 39,
+      "failed": 0
+    },
+    "cached_tasks": [
+      ":mtg-sdk:test",
+      ":mtg-search:test",
+      ":mtg-sets:test",
+      ":mtgish-tooling:test"
+    ],
+    "original_XML_artifacts_available": false,
+    "actual_API_artifact_lists": [],
+    "claim": "Fresh line counts are not unique XML case counts. CI has no retained uploaded XML; decoded original job logs are the actual evidence."
+  },
+  "cache_reuse": {
+    "donor_run": 36270965658,
+    "donor_checkout": "825ca5286ed4476f4b9b990fde3a54650d4c02ee",
+    "donor_tree": "686cef8ddcb2cd3291cb465cf780bd0cbd774754",
+    "archive_sha256": "4754791ad0f42d5a815e56e55b2191e70d15ce11be52d8e0b23eade746a74b20",
+    "independently_verified_records": {
+      "mtg-search": {
+        "PASSED": 163
+      },
+      "mtg-sdk": {
+        "PASSED": 525
+      },
+      "mtg-sets": {
+        "PASSED": 376
+      },
+      "mtgish-tooling": {
+        "PASSED": 144,
+        "SKIPPED": 3
+      }
+    },
+    "relevant_merkle_roots_freshly_checked": 35,
+    "source_bodies_independently_rehashed_against_both_live_trees": 116,
+    "scope": "Same-relevant-input predecessor software regression support, not actual current cache producer identity or external binary equality. Optional three skips remain unqualified."
+  },
+  "read_only_parser_correction": "Initial root derived log recount included SKIPPED Gradle task headings; preserved initial JSON and corrected parser exclude them. No engine/test execution changed.",
+  "trigger_review": {
+    "all_76_current_workflow_bodies_git_blob_verified": true,
+    "only_new_card_workflow_diff_from_retained_inputs": "b527386ff72faf426bbddf4588b1059e537df5bd",
+    "canonical_push_workflows": 4,
+    "PR144_synchronize_workflows": 6,
+    "PR144_current_paths": 708,
+    "conservative_union_paths": 741,
+    "no_official_initialization_claim_entropy_browser_activation": true,
+    "scope": "Original deterministic receiving220/135/32/20/runtime plus CI/card/legacy-card/R0-static/guard software gates. Refuse official environment and official test remains guarded."
+  },
+  "repository_review_state": {
+    "PR204": "open/mergeable/clean",
+    "formal_github_reviews": [],
+    "inline_comments": [],
+    "rulesets": [],
+    "base_branch_protected": false,
+    "protection_endpoint_limitation": "Encoded branch-protection route rejected by connector; normal branch read reports protected:false. No administrative bypass will be used."
+  },
+  "conditions": [
+    "Final unchanged73394/e5/testmerge-tree and actual open PR ownership/concurrency check immediately before normal expected-head merge.",
+    "No force, admin bypass, fabricated review or unchanged duplicate dispatch.",
+    "Audit newly triggered source-specific receiving and runtime gates; this receipt does not accept their future results."
+  ],
+  "complete_R1_runtime_admitted": false,
+  "official_allocations": 0,
+  "deck_or_pilot_changes": false,
+  "deck_performance_evidence_changed": false
+}
