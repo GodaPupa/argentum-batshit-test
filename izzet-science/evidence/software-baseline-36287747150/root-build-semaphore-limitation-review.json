@@ -1,0 +1,27 @@
+{
+  "schema": "root-izzet-baseline-semaphore-limitation-review-v1",
+  "reviewer": "/root",
+  "verdict": "PASS_FACTUAL_LIMITATION_ADDENDUM",
+  "run": 36287747150,
+  "attempt": 1,
+  "artifact": 10921276738,
+  "original": {
+    "bytes": 246877,
+    "sha256": "457bff957829d1480e3cbbe2940a5eb70976962fa01c4f243ae9885ab56b033b"
+  },
+  "log": {
+    "member": "01-FrozenBaselineTest/command.log",
+    "bytes": 3546850,
+    "sha256": "8d7e99628c0199eda91b22d9edd3c7b27cbf30bfdf009826f153a7624850eae4",
+    "matches": [
+      {
+        "line": 3,
+        "text": "gradle-locked: 'shlock' not found; running ./gradlew unlocked"
+      }
+    ]
+  },
+  "corrects_review_sha256": "156528e0b335b14a49dc6608d519cb43fa2b7cf6d869abf8dc4f0556faab54f4",
+  "effect": "Actual just/wrapper routing and one fresh passing baseline remain observed, but wrapper ran Gradle without the prescribed semaphore. No semaphore-conformance or complete receiving acceptance is established. Any operational-compliance implication from earlier review is withdrawn; no retrospective waiver. Original source, logs, XML and consumed event remain unchanged.",
+  "authorship": "Root authored the prior raw artifact review; this is its factual limitation correction, not a second independent acceptance. Actual retained original ZIP was read again without a new download, test or event.",
+  "new_workflow_or_gameplay": 0
+}
