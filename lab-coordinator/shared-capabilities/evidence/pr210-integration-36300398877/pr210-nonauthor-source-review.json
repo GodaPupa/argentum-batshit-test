@@ -1,0 +1,49 @@
+{
+  "candidate": "5e0afe1f45bbbc02f2a581d483aa84f2d1c4b11c",
+  "candidate_tree": "c4f4d0f883aafb41e0a67610a4b165029c1ed740",
+  "component_acceptance_granted": false,
+  "execution_disposition": "HOLD_PENDING_INDEPENDENT_LAUNCHER_REVIEW",
+  "file_sha256": {
+    "Justfile": "6335545eb07c7c1b1ef12405be385bd89e86be352d1c42c141cfecb68f4795c3",
+    "proposal.json": "93d839f3dff85ca5b112ec5e026722d4c3c449743a02642724d25061e6beb0f3",
+    "qualify.py": "d5ea87b413ecc024303b90641d00846f2457f3c740d7843c05de5b5056c664a3"
+  },
+  "gameplay_authorized": false,
+  "immutable_engine_source": "208ceaa3dfd94f3584582274a03a24db145326d4",
+  "merge_authorized": false,
+  "official_games": 0,
+  "original_attempts_reclassified": false,
+  "original_gate_disposition": "INCOMPLETE",
+  "project_admission_granted": false,
+  "required_launcher_preconditions": [
+    "Immutable checkout of candidate5e0afe1f and EXPECTED_HEAD equal full candidate hash.",
+    "Successful bind before any test command.",
+    "UPDATE_SNAPSHOTS=0.",
+    "One prospective guarded execution attempt.",
+    "Capture actual command exit with pipefail.",
+    "Always retain and upload original logs and all module JUnit XML, including failure paths; collector sequential XML copies stop on first assertion failure.",
+    "Independent raw artifact review after execution before any acceptance."
+  ],
+  "reviewer": "/root/compatibility_review",
+  "reviewer_role": "non-author source reviewer; no source edits or runtime execution",
+  "runtime_tests_executed_by_reviewer": 0,
+  "schema": "pr210-supplement-independent-source-review-v1",
+  "source_delta_findings": [
+    "PendingDecision adds search proof types and optional default-null authorizedLibrarySearch field.",
+    "EffectContext adds transient default-null authorizedLibrarySearchCandidate field.",
+    "Five snapshot deltas are declared exact source-specific hashes; prior reviewed snapshot authority remains separate."
+  ],
+  "source_disposition": "ACCEPT_PROSPECTIVE_SUPPLEMENT_SOURCE_SCOPE",
+  "verified": {
+    "cases": 466,
+    "changed_files": 3,
+    "classes": 22,
+    "combat32_names_unchanged": true,
+    "distinct_mismatch_files": 7,
+    "frozen_manifests_unchanged": true,
+    "frozen_pin_references": 137,
+    "mismatch_occurrences": 8,
+    "provenance_separate4_names_unchanged": true,
+    "token_original16_names_unchanged": true
+  }
+}

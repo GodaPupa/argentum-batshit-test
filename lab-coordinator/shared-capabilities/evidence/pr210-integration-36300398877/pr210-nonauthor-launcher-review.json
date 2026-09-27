@@ -1,0 +1,26 @@
+{
+  "candidate": "5e0afe1f45bbbc02f2a581d483aa84f2d1c4b11c",
+  "candidate_tree": "c4f4d0f883aafb41e0a67610a4b165029c1ed740",
+  "defects": [
+    {
+      "issue": "GitHub run shell starts with errexit enabled. set -uo pipefail does not disable errexit. A failing just/tee pipeline exits before rc capture and exit.txt, losing the required actual command exit artifact.",
+      "location": "Execute exactly the original compatibility class union",
+      "required_change": "Explicitly disable errexit before pipeline (set +e), retain pipefail, immediately capture PIPESTATUS[0], write exit.txt, then exit rc."
+    }
+  ],
+  "disposition": "HOLD",
+  "gameplay_authorized": false,
+  "launcher_sha256": "a3463ff4f9084071f0299e26578c7888a03580073bc30be2ceb6b40f7810223f",
+  "original_attempts_reclassified": false,
+  "reviewer": "/root/compatibility_review",
+  "runtime_tests_executed": 0,
+  "schema": "pr210-supplement-independent-launcher-review-v1",
+  "verified": [
+    "Immutable candidate HEAD/tree and all three supplement hashes bound before execution.",
+    "Both exact historical comparison sources fetched.",
+    "One creation-push branch and attempt1 guard; read-only token.",
+    "UPDATE_SNAPSHOTS=0; unchanged exact22 class /466 case command from independently reviewed Justfile.",
+    "Original module XML and report folder upload uses always(), separately from collector copies."
+  ],
+  "workflow_dispatched": false
+}

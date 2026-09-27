@@ -1,0 +1,27 @@
+{
+  "candidate": "5e0afe1f45bbbc02f2a581d483aa84f2d1c4b11c",
+  "candidate_tree": "c4f4d0f883aafb41e0a67610a4b165029c1ed740",
+  "defects": [],
+  "disposition": "ACCEPT_FOR_ONE_PROSPECTIVE_SUPPLEMENTAL_RECEIVING_EXECUTION",
+  "gameplay_authorized": false,
+  "launcher_sha256": "7798b35d70d17baa7a2e841e793e8bb039c16d9b38f283db31039b428c7fae2a",
+  "limitations": [
+    "Independent original raw artifact review remains required before component acceptance.",
+    "No original attempt reclassification, merge authority, project admission or gameplay authority."
+  ],
+  "original_attempts_reclassified": false,
+  "previous_launcher_preserved": true,
+  "reviewer": "/root/compatibility_review",
+  "runtime_tests_executed": 0,
+  "schema": "pr210-supplement-independent-launcher-review-v1",
+  "supersedes_launcher_review_sha256": "4899bf74480dda206973ac897b9a18d74586681edb98754afe454d2d051a8b2f",
+  "verified": [
+    "Immutable candidate HEAD/tree and all three supplement hashes bound before execution.",
+    "Both exact historical comparison sources fetched.",
+    "One creation-push branch and attempt1 guard; read-only token.",
+    "UPDATE_SNAPSHOTS=0; unchanged exact22 class /466 case command from independently reviewed Justfile.",
+    "Original module XML and report folder upload uses always(), separately from collector copies."
+  ],
+  "verified_change": "Exactly one added set +e line before test pipeline, confirmed by removal recovering original reviewed launcher SHA256. Failed command now reaches immediate PIPESTATUS capture and exit.txt write.",
+  "workflow_dispatched": false
+}

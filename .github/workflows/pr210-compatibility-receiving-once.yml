@@ -1,0 +1,60 @@
+name: PR210 prospective exact compatibility receiving
+on:
+  push:
+    branches: ['shared/pr210-compatibility-receiving-once-20260927']
+permissions:
+  contents: read
+jobs:
+  receive:
+    if: github.event.before == '0000000000000000000000000000000000000000' && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      EXPECTED_HEAD: 5e0afe1f45bbbc02f2a581d483aa84f2d1c4b11c
+      UPDATE_SNAPSHOTS: '0'
+      GRADLE_LOCK_SLOTS: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 5e0afe1f45bbbc02f2a581d483aa84f2d1c4b11c
+          fetch-depth: 1
+      - name: Fetch only the two immutable comparison sources
+        run: git fetch --no-tags --depth=1 origin 208ceaa3dfd94f3584582274a03a24db145326d4 ff34ac8fa2efbd41f233e877cb2908c2cab5929a
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind the independently reviewed prospective supplement
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pr210-derived-compatibility
+          python - <<'PY'
+          import hashlib,pathlib,subprocess
+          expected={'proposal.json':'93d839f3dff85ca5b112ec5e026722d4c3c449743a02642724d25061e6beb0f3','qualify.py':'d5ea87b413ecc024303b90641d00846f2457f3c740d7843c05de5b5056c664a3','Justfile':'6335545eb07c7c1b1ef12405be385bd89e86be352d1c42c141cfecb68f4795c3'}
+          for name,digest in expected.items():
+              assert hashlib.sha256(pathlib.Path('lab-coordinator/shared-capabilities/pr210-compatibility',name).read_bytes()).hexdigest()==digest
+          assert subprocess.check_output(['git','rev-parse','HEAD^{tree}'],text=True).strip()=='c4f4d0f883aafb41e0a67610a4b165029c1ed740'
+          PY
+          python lab-coordinator/shared-capabilities/pr210-compatibility/qualify.py bind 2>&1 | tee build/reports/pr210-derived-compatibility/bind.log
+      - name: Execute exactly the original compatibility class union
+        run: |
+          set -uo pipefail
+          set +e
+          just --justfile lab-coordinator/shared-capabilities/pr210-compatibility/Justfile --working-directory . qualify 2>&1 | tee build/reports/pr210-derived-compatibility/tests.log
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > build/reports/pr210-derived-compatibility/exit.txt
+          exit "$rc"
+      - name: Reconcile source and complete raw case inventory
+        if: always()
+        run: python lab-coordinator/shared-capabilities/pr210-compatibility/qualify.py collect
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pr210-derived-compatibility-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pr210-derived-compatibility/
+            **/build/test-results/test/*.xml
+          if-no-files-found: error
+          retention-days: 90
