@@ -1,0 +1,24 @@
+{
+  "schema": "pest-c2-original-artifact-failure-audit-v1",
+  "status": "INCOMPLETE_TWO_FRESH_FIXTURE_ASSERTIONS_NO_RECEIVING_ACCEPTANCE",
+  "run": 36349063825,
+  "artifact": 10941469281,
+  "artifact_sha256": "e6287365ab612971290e8be9bdd19dedcaa188bfcdf04380e01598cb3aef0a1f",
+  "head": "50560eb1b993a82c869c560e0bacfeea47ba4a78",
+  "test_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterStirringsRemainderReceivingTest.kt",
+  "test_blob": "22c09f4fb1dff71ae9bc598e0c327b90e076bd7b",
+  "source_txt_sha256": "6436d01ee761ce6e8d72c8300a6999251289dfbfacaa65fa4a602ec7dfb25c0a",
+  "xml_sha256": "40209364d175088c6181af861f2dd1ee4de6b33d7a7810217afaf6e9727471ea",
+  "gradle_log_sha256": "186ea9c91062c4d263c642abb164f43b7bfa2a5bf5bd6e969e82db1c49ec14a9",
+  "zip_crc": "clean",
+  "tests": 2,
+  "failures": 2,
+  "errors": 0,
+  "skipped": 0,
+  "case_names": [
+    "P04-02 Monster seat 1 Stirrings selects and orders physical remainder",
+    "P04-02 Monster seat 2 Stirrings selects and orders physical remainder"
+  ],
+  "failure": "Both fail at fixture line 42: expected SelectCardsDecision options size 5, actual 3. Ancient Stirrings offers eligible colorless cards among five looked; the fixture wrongly equated full looked group with legal selectable subset. Both fail before selection/remainder assertions.",
+  "disposition": "Original attempt consumed; no accepted P04-02 Stirrings receiving or deck outcome. Prospective changed fixture must distinguish eligible options from all five looked physical cards and derive remainder from looked group, not selectable options."
+}
