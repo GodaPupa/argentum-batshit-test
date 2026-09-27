@@ -7,20 +7,21 @@
   "archived_mc10_diagnostic": "Raw and canonical fallback picks differed under the older sorted projection; this inventory does not amend that observation.",
   "fixed_test_class": "PestMonsterTronAuthorizedSearchReceivingTest",
   "cases": [
-    { "id": "MS01", "domain": "Expedition Map current whole-library search", "assertion": "Unique missing Tron piece has exact raw-versus-actor physical handle equality." },
-    { "id": "MS02", "domain": "Expedition Map current whole-library fallback", "assertion": "Reversed eligible physical handles retain verified raw offer order and exact legacy physical choice; MC10 remains archived." },
-    { "id": "MS03", "domain": "Paid Crop Rotation current whole-library search", "assertion": "Explicit sacrifice and subsequent missing-piece physical search choice remain distinct and legacy-equal." },
+    { "id": "MS01", "domain": "Expedition Map current whole-library search", "assertion": "Unique missing Tron piece has exact raw-versus-actor physical handle equality only with a current typed-proof witness; bare cardInfo cannot authorize it." },
+    { "id": "MS02", "domain": "Expedition Map current whole-library fallback", "assertion": "Reversed eligible physical handles retain verified raw offer order and exact legacy physical choice; bare actor input defers and MC10 remains archived." },
+    { "id": "MS03", "domain": "Paid Crop Rotation current whole-library search", "assertion": "Explicit sacrifice and subsequent proof-bound missing-piece physical search choice remain distinct and legacy-equal." },
     { "id": "MS04", "domain": "Cascade Crop Rotation public sacrifice", "assertion": "The non-Tron battlefield sacrifice selection remains a public choice, not a library search." },
-    { "id": "MS05", "domain": "Two-seat typed decision seam", "assertion": "Current Monster answer can be routed through the actor pair boundary; an absent policy answer fails without pass/default." }
+    { "id": "MS05", "domain": "Two-seat typed decision seam", "assertion": "Current proof-bound Monster answer can be routed through the actor pair boundary; an absent policy answer fails without pass/default." }
   ],
   "source_only_scope": [
     "No shared engine file, frozen deck, legacy advisor module or official runner was edited.",
-    "The accepted public policy calculation was copied as a separate actor dependency; exact equality still requires the bounded receiving run and independent review.",
+    "The reviewed public policy calculation was copied as a separate actor dependency; the legacy advisor does not call it. Exact equality still requires the bounded receiving run and independent review.",
+    "Map/Crop library search answers require a fresh trusted same-question witness generated from the shared typed search proof before ActorInput crosses to the pilot. cardInfo and sourceName alone do not grant search authority.",
     "The pair seam accepts detached ActorInput only for a current pending decision; it is not a full pair pilot or execution runner."
   ],
   "required_later_banks": [
     "Negative stale proof and changed physical-object generations on actual Map/Crop decisions, with fail-closed projection behavior.",
-    "Ancient Stirrings top-five look, choice and bottom order as a separate information domain.",
+    "Ancient Stirrings top-five look, choice and bottom order as a separate information domain; current actor path explicitly defers.",
     "Bojuka Bog targets and all remaining reachable Monster and Pest pending decisions.",
     "Both frozen profiles' London keep/bottom, complete priority action ranking, payment/target choices, combat and response windows.",
     "Pair replay, durability, collector and independent exact-source C2 receiving gate."
