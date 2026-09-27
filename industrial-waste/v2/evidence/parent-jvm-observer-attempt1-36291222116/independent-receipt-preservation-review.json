@@ -1,0 +1,123 @@
+{
+  "schema": "industrial-observer-independent-receipt-preservation-review-v1",
+  "reviewer": "/root/sphinx",
+  "verdict": "PASS_BOUNDED_RECEIPT_AND_BYTE_PRESERVATION",
+  "inputs": {
+    "receipt": {
+      "path": "industrial/executor-handoff/observer-attempt-01/RECEIPT.md",
+      "bytes": 4276,
+      "sha256": "a39cb083e856b44eb08b1484bf26c15ed1cbdfbf80a851049907a0b684741324"
+    },
+    "support_archive": {
+      "path": "industrial/executor-handoff/observer-attempt-01/review-support.zip",
+      "bytes": 50602,
+      "sha256": "b85a8a05301e8f16a1077786814ee0f76c0122f2c0afd4f067b6e0c51b3fabe1"
+    },
+    "support_index": {
+      "path": "industrial/executor-handoff/observer-attempt-01/review-support-index.json",
+      "bytes": 3813,
+      "sha256": "889654cad4249075e11e487bb32666fce490fe4e2ec499943b210d634ac0278f"
+    },
+    "prior_actual_review": {
+      "path": "sphinx-audit/industrial-observer-attempt01-review/independent-actual-artifact-review.json",
+      "bytes": 7907,
+      "sha256": "67edc681d787a8fd2fbb74d02ffa1cc49502c09941f8c90b0342114f24675689"
+    }
+  },
+  "checks": [
+    "Read the complete receipt; its21 unit cases,19 expected negative observations and separate one actual-parent probe agree with the independently audited original artifact.",
+    "Source2ced/tree d8c, run36291222116 attempt1 and artifact10921314614 match the completed actual-artifact review.",
+    "All13 support ZIP members have unique names, pass CRC, match the index size/SHA256 and are byte-identical to the actual local originals.",
+    "The failed first independent parser and its explicit correction are preserved; the final actual-artifact review remains unchanged.",
+    "The receipt accurately distinguishes recorded executable hashes from independently rehashed retained class/source/argument/snapshot bytes, and launch snapshots from loaded-runtime acceptance.",
+    "The original source manifest ready=false remains preserved history; this prose does not grant another event or modify the independently reviewed one-use release."
+  ],
+  "support_member_checks": [
+    {
+      "source_path": "industrial/executor-handoff/observer-attempt-01/artifacts.json",
+      "member": "author/artifacts.json",
+      "bytes": 975,
+      "sha256": "d60d350c427e79dd9cf8bf68c452041319bbc5949c3c6f885916e1f295b35c2f"
+    },
+    {
+      "source_path": "industrial/executor-handoff/observer-attempt-01/audit_original.py",
+      "member": "author/audit_original.py",
+      "bytes": 8641,
+      "sha256": "d66852d3399384ded59d3cfc429cdf44b5dc027381f1273abacbf1d9d377281b"
+    },
+    {
+      "source_path": "industrial/executor-handoff/observer-attempt-01/author-original-audit.json",
+      "member": "author/author-original-audit.json",
+      "bytes": 18729,
+      "sha256": "ca16c1fd545a0d890102d9a00479cd60ec6023b2f4a27f5c36e7c697b1d26d4d"
+    },
+    {
+      "source_path": "industrial/executor-handoff/observer-attempt-01/decoded-job-log.json",
+      "member": "author/decoded-job-log.json",
+      "bytes": 25867,
+      "sha256": "c3ebde7e4cd415364f7bd42557f11781ea8d0b83fed7185975911e0f644bbb70"
+    },
+    {
+      "source_path": "industrial/executor-handoff/observer-attempt-01/jobs.json",
+      "member": "author/jobs.json",
+      "bytes": 3928,
+      "sha256": "c1976c950c6c65de76e4a180e30ea7aa62e45da2c9385e6787feb6bcd23b686f"
+    },
+    {
+      "source_path": "industrial/executor-handoff/observer-attempt-01/live-tree.json",
+      "member": "author/live-tree.json",
+      "bytes": 3518,
+      "sha256": "ed7b409e13923aaedf3ab3aef76d2d03e77ffa06e6f5e1d044d4edd067da7751"
+    },
+    {
+      "source_path": "industrial/executor-handoff/observer-attempt-01/run.json",
+      "member": "author/run.json",
+      "bytes": 14532,
+      "sha256": "6f596e4605de4ea55be1d18f49c8bffc1ca61665b1b59474730d0ed41077e238"
+    },
+    {
+      "source_path": "sphinx-audit/industrial-observer-attempt01-review/audit_observer_original-v1-preserved-case-marker.py",
+      "member": "independent/audit_observer_original-v1-preserved-case-marker.py",
+      "bytes": 11956,
+      "sha256": "5a0107e75ed570446167a54f11d3fc72fde2b8e51ce3d33abcd5afac5187bf3e"
+    },
+    {
+      "source_path": "sphinx-audit/industrial-observer-attempt01-review/audit_observer_original.py",
+      "member": "independent/audit_observer_original.py",
+      "bytes": 12089,
+      "sha256": "433358678c7c9a1eb894ef8607b67a9dc819c433e8f2e8d544b67d4c7c7dfc28"
+    },
+    {
+      "source_path": "sphinx-audit/industrial-observer-attempt01-review/independent-actual-artifact-review.json",
+      "member": "independent/independent-actual-artifact-review.json",
+      "bytes": 7907,
+      "sha256": "67edc681d787a8fd2fbb74d02ffa1cc49502c09941f8c90b0342114f24675689"
+    },
+    {
+      "source_path": "sphinx-audit/industrial-observer-attempt01-review/independent-live-metadata.json",
+      "member": "independent/independent-live-metadata.json",
+      "bytes": 26415,
+      "sha256": "8e4632e1af544a55008ad440adebcd04a1612ce886997c55f163929550622ca8"
+    },
+    {
+      "source_path": "sphinx-audit/industrial-observer-attempt01-review/independent-original-byte-audit.json",
+      "member": "independent/independent-original-byte-audit.json",
+      "bytes": 94780,
+      "sha256": "a66b354ef2e1a36fe903760cba64cf77cb609e3333f3f80fa26a61607ec95766"
+    },
+    {
+      "source_path": "sphinx-audit/industrial-observer-attempt01-review/independent-parser-correction.json",
+      "member": "independent/independent-parser-correction.json",
+      "bytes": 828,
+      "sha256": "27f5e15f5a04ee7f87c3aeacb335c48e89b2e1c030513f1b5a9b382ce7403fa0"
+    }
+  ],
+  "limits": [
+    "The receipt global0/512 statement refers to existing project ledger disposition, not a new complete ledger census performed by this component review. This event performed zero official preparations, claims, initialization or games and does not reset project counters.",
+    "Review covers exact receipt/support preservation plus the separately pinned original actual-artifact review. It does not verify a future Git publication or authorize an event, canonical integration, whole-runtime/gameplay admission or GitHub approval.",
+    "Reviewer previously authored the independent artifact review; this rebind independently checks author packaging/prose rather than claiming a second independent review of the reviewer-authored report."
+  ],
+  "new_engine_or_fixture_execution": 0,
+  "new_gameplay": 0,
+  "deck_performance_evidence_changed": false
+}

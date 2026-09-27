@@ -1,0 +1,99 @@
+{
+  "schema": "industrial-parent-observer-independent-actual-artifact-review-v1",
+  "reviewer": "/root/sphinx",
+  "verdict": "PASS_BOUNDED_LAUNCH_SNAPSHOT_COMPONENT_EVIDENCE",
+  "scope": "Exact21 software unit fixtures plus one separate actual-parent Java probe. No full Industrial runtime, executing loaded-class identity, official executor, source-bound gameplay permit or R1 admission.",
+  "source": {
+    "commit": "2ced3a971197c1b8ad5d34306d964316c4bdff2b",
+    "tree": "d8c6fd234a6f5e61c813ed49ae8e54a75be5d0b4",
+    "workflow_event": "push",
+    "run": 36291222116,
+    "attempt": 1,
+    "artifact": 10921314614
+  },
+  "original": {
+    "path": "attachments/c498e47c-095f-4856-8a4f-db63eb415c14/industrial-observer-36291222116-original.zip",
+    "bytes": 93132,
+    "sha256": "0ceb157a4684a177f8a0a107586d7db0c2a0e1032a35e329e85a1c7f31caf69c"
+  },
+  "inputs": {
+    "independent_raw_audit": {
+      "path": "sphinx-audit/industrial-observer-attempt01-review/independent-original-byte-audit.json",
+      "bytes": 94780,
+      "sha256": "a66b354ef2e1a36fe903760cba64cf77cb609e3333f3f80fa26a61607ec95766"
+    },
+    "independent_audit_script": {
+      "path": "sphinx-audit/industrial-observer-attempt01-review/audit_observer_original.py",
+      "bytes": 12089,
+      "sha256": "433358678c7c9a1eb894ef8607b67a9dc819c433e8f2e8d544b67d4c7c7dfc28"
+    },
+    "independent_live_metadata": {
+      "path": "sphinx-audit/industrial-observer-attempt01-review/independent-live-metadata.json",
+      "bytes": 26415,
+      "sha256": "8e4632e1af544a55008ad440adebcd04a1612ce886997c55f163929550622ca8"
+    },
+    "author_audit": {
+      "path": "industrial/executor-handoff/observer-attempt-01/author-original-audit.json",
+      "bytes": 18729,
+      "sha256": "ca16c1fd545a0d890102d9a00479cd60ec6023b2f4a27f5c36e7c697b1d26d4d"
+    },
+    "prior_source_fixture_review": {
+      "path": "sphinx-audit/industrial-parent-observer-review/independent-source-fixture-review.json",
+      "bytes": 7610,
+      "sha256": "970fb51755fb26c09412fab1a601d5b03734dab6a89bc04373df1042bbe48552"
+    },
+    "prior_control_review": {
+      "path": "sphinx-audit/industrial-parent-observer-review/independent-control-source-review.json",
+      "bytes": 6139,
+      "sha256": "e777c33d32ff433a59e160e5ddd077c5ebaf062674b136bae3b42bae87f6e268"
+    },
+    "retained_parser_correction": {
+      "path": "sphinx-audit/industrial-observer-attempt01-review/independent-parser-correction.json",
+      "bytes": 828,
+      "sha256": "27f5e15f5a04ee7f87c3aeacb335c48e89b2e1c030513f1b5a9b382ce7403fa0"
+    }
+  },
+  "checks": [
+    "Fresh independent GitHub reads verify exact2ced source/d8c tree, push attempt1 success, one job and one original artifact whose API size/digest equals the retained93,132-byte ZIP.",
+    "Fully read both outer members and all340 unique nested members, every CRC, size and SHA256. Nested original176,091 bytes/25644c93 contains255,541 uncompressed bytes and exactly the indexed files, within declared member/per-file/aggregate limits.",
+    "All8 actual source/control files are retained before and after, including the hidden workflow and control manifest. Recomputed SHA256/Gitblob/size matches both captures, prior reviewed controls and fresh immutable Git tree entries. Both raw tracked/index statuses are empty and commit/tree are exact.",
+    "All21 raw unittest names equal the frozen manifest and parsed source identities, each reports ok, and the actual summary is21 tests/OK with no failures/errors/skips. Unit stdout is empty; raw stderr is preserved inside the artifact rather than invented in wrapper logs.",
+    "The retained19 expected negative observations have explicit failure results/intent and zero claims/engine initializations. The positive fake-procfs fixture retains two matching snapshots. The existing-attempt fixture retains its exact original failure bytes and intentionally creates no new result.",
+    "FIFO nonregular-input rejection is evidenced by retained FIFO type metadata and error result; inter-snapshot mutation preserves the first complete marker and fails later validation. All retained negative results match the author report without converting expected rejections into failed unit cases.",
+    "The separate actual-parent probe has explicit compiler/launcher commands, source/class bytes and zero compile/launch/outer exits without timeout. Actual captured command argv recomputes to the observed procfs command digest, both parent/ordered-classpath observations agree, and the canonical snapshot digest is independently reproduced.",
+    "The retained1,136-byte class has Java class major65 and hashes to the observed ordered entry. The Java source, argument file, expected-input hash, journal byte count and probe/result hashes all reconcile. Actual observation reports31,140 bytes read,4 entries and0.006195715s within its declared bounds.",
+    "Both outer commands report successful owned-descendant cleanup. Both compiler/launcher envelopes report direct-child reap and owned-session termination. These are retained results of the reviewed control, not a new external process survey.",
+    "The complete connector-decoded job log binds the source and actual qualifier command/pass result; live step metadata confirms execution. The artifact, source and explicit exit records support the bounded conclusion rather than workflow success alone."
+  ],
+  "actual_qualification_counts": {
+    "unit_fixtures": 21,
+    "unit_failures": 0,
+    "unit_errors": 0,
+    "unit_skips": 0,
+    "expected_negative_observation_fixtures": 19,
+    "matching_fake_procfs_fixture": 1,
+    "existing_attempt_preservation_fixture": 1,
+    "separate_actual_parent_probes": 1
+  },
+  "limits": [
+    "Actual JDK release text is retained and hash-checked as Temurin21.0.12.1; Java/Javac/Python executable hashes are only recorded and internally reconciled because those full binary bytes are not in this artifact. No independent binary rehash is claimed.",
+    "Two launch-byte snapshots do not prove which classes a future engine loaded, JDK/native/agent/classloader closure, in-flight immutability, or acceptance of an expected-runtime input.",
+    "The tiny probe uses one standalone compiled Java class. It is not an Industrial game worker or full-game/full-corpus resource calibration.",
+    "Owned cleanup and cooperative observation bounds were exercised in this finite component; this does not supply the missing prospective120-second/300-second official executor envelope.",
+    "No official prepare, claim, remote allocation, journal consumption or game occurred in the qualified control. Its zero counters do not reset or replace project execution ledgers.",
+    "This is a non-author artifact review, not a formal GitHub approval, canonical integration, whole-runtime acceptance or gameplay permit. Root retains publication/integration disposition."
+  ],
+  "preservation_notes": [
+    "Keep the unchanged original artifact and all340-member index; retain failed predecessor control5542 alongside corrected932 source/control review history.",
+    "Preserve the reviewer parser correction: an initial equality check omitted the author derived ORIGINAL_BYTES_PRESERVED sentinel for the deliberately non-overwriting fixture. The20 actual raw observation results already matched. The corrected check handles that sentinel separately and no source/test/artifact changed."
+  ],
+  "authorship": "Reviewer did not author the observer, unit fixtures or qualifier implementation. Reviewer previously performed source/control reviews and requested bounded retention/binding corrections; those roles are disclosed. This review independently rehashes the actual original artifact.",
+  "reviewer_execution": {
+    "repository_tests": 0,
+    "javac_or_JVM": 0,
+    "observer_or_probe": 0,
+    "workflow_events": 0,
+    "official_allocations": 0
+  },
+  "deck_performance_evidence_changed": false
+}
