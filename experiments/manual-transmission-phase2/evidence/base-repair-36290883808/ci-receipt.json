@@ -1,0 +1,109 @@
+{
+  "schema": "manual-phase2-pr209-ci-exact-head-receipt-r1",
+  "observed_at_utc": "2026-09-27T03:25:00Z",
+  "source": {
+    "pr": 209,
+    "head": "4762f8d763fecb32d2f042222c5383f74eee3479",
+    "base": "60a9e20b61f63c4d42772ca8d122aabe68aabe2f",
+    "draft": true,
+    "source_scope": "four-file accepted fixture and AI test expectation repair; no engine production edit"
+  },
+  "run": {
+    "id": 36290883808,
+    "attempt": 1,
+    "event": "pull_request",
+    "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36290883808",
+    "head_sha": "4762f8d763fecb32d2f042222c5383f74eee3479",
+    "status_at_observation": "in_progress",
+    "final_conclusion_at_observation": null
+  },
+  "jobs": {
+    "engine": {
+      "id": 108540603725,
+      "conclusion": "failure",
+      "module": "rules-engine",
+      "completed": 3777,
+      "failed": 37,
+      "raw_excerpt": "3777 tests completed, 37 failed"
+    },
+    "content": {
+      "id": 108540603743,
+      "conclusion": "success",
+      "raw_excerpt": [
+        "> Task :ai:test",
+        "BUILD SUCCESSFUL in 7m 2s"
+      ],
+      "ai_test_fresh": true,
+      "cache_claim": "ai:test did not report FROM-CACHE"
+    },
+    "scenarios_old": {
+      "id": 108540603784,
+      "conclusion": "failure",
+      "modules": {
+        "2000-2002": {
+          "completed": 607,
+          "failed": 12
+        },
+        "1993-1999": {
+          "completed": 698,
+          "failed": 24
+        },
+        "2003-2007": {
+          "completed": 1427,
+          "failed": 21
+        },
+        "2008-2016": {
+          "completed": 611,
+          "failed": 6
+        }
+      }
+    },
+    "scenarios_2023_24": {
+      "id": 108540603831,
+      "conclusion": "failure",
+      "modules": {
+        "2023": {
+          "completed": 1283,
+          "failed": 21
+        },
+        "2024": {
+          "completed": 2072,
+          "failed": 28
+        }
+      }
+    },
+    "scenarios_2025_26": {
+      "id": 108540603755,
+      "conclusion": "failure",
+      "modules": {
+        "2025": {
+          "completed": 1606,
+          "failed": 31
+        },
+        "2026": {
+          "completed": 1328,
+          "failed": 18
+        }
+      }
+    },
+    "frontend": {
+      "id": 108540603583,
+      "conclusion": "success"
+    },
+    "server": {
+      "id": 108540603800,
+      "conclusion": "success"
+    },
+    "tools": {
+      "id": 108540603751,
+      "status_at_observation": "in_progress",
+      "conclusion_at_observation": null
+    },
+    "coverage": {
+      "id": 108540604190,
+      "conclusion": "skipped"
+    }
+  },
+  "raw_log_endpoint_template": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/jobs/{job_id}/logs",
+  "interpretation": "This is CI evidence only. Failing jobs remain failing; no Manual qualification, capability admission, seed consumption, or gameplay. The source-bound integration diagnosis is separate."
+}
