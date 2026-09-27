@@ -1,0 +1,225 @@
+{
+  "schema": "sphinx-stage-e-reachable-pilot-path-inventory-candidate-v1",
+  "status": "SOURCE_BACKED_INVENTORY_IN_PROGRESS__NO_FIXTURE_EXECUTION_OR_GAMEPLAY_AUTHORITY",
+  "source_parent": "de1b13bcbf938fcdeae7508373fd23e704738b3b",
+  "receiver_base": "a0c5b995c2829c0b4069562b1f1eede8a820dd97",
+  "accepted_review": "6f1635128883eca131487babc6dcd9c7dbd4afab",
+  "geometry_disposition": "The 64-per-identity proposal in STAGE_E_WHOLE_PILOT_PROSPECTIVE_SCOPE.json was deferred by independent review. No 64×4 bank is frozen, admitted or executed. The existing 14×4 component budget remains unexecuted.",
+  "source_candidate": {
+    "path": "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEOpeningActor.kt",
+    "git_blob": "8be1831af807c77e0e45807eb248c1b99b172d28",
+    "initialized_binding": "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt",
+    "seat_git_blob": "67d65a5d3d7ca7bea2f585b372481358336e99db",
+    "current_functions": [
+      "sealed canonical opening actor binding",
+      "same land-count keep/mulligan heuristic for all four lists",
+      "current-hand London bottom order",
+      "offered basic-Island land play"
+    ],
+    "qualification": "UNCOMPILED_UNTESTED_SOURCE_CANDIDATE",
+    "limitation": "All typed resolution questions, spell action scheduling, ordinary pass/priority, mana-ability sequencing, combat and trusted whole-game runner still return unqualified or have no implementation. Source is not a pilot admission."
+  },
+  "common_paths": [
+    {
+      "id": "OP1",
+      "path": "London KeepHand/TakeMulligan",
+      "evidence": "gym/actorinput/ActorActionMenu.kt; rules-engine/core/GameAction.kt",
+      "actor_requirement": "current complete seven-card own hand and current resources; equal policy for every 60",
+      "source_state": "candidate authored; no fixture run"
+    },
+    {
+      "id": "OP2",
+      "path": "London BottomCards",
+      "evidence": "gym/actorinput/ActorActionMenu.kt; rules-engine/core/GameAction.kt",
+      "actor_requirement": "exact cardsToBottom, visible own hand, ordered card IDs",
+      "source_state": "candidate authored; no fixture run"
+    },
+    {
+      "id": "OP3",
+      "path": "PlayLand and priority/mana",
+      "evidence": "gym/actorinput/ActorLegalAction.kt; rules-engine/core/GameAction.kt",
+      "actor_requirement": "offer, current land-drop count, Island/Snow-Covered Island, basic blue payment, PassPriority, mana ability response",
+      "source_state": "offered land authored; pass and mana sequencing unqualified"
+    },
+    {
+      "id": "OP4",
+      "path": "CastSpell target and current payment",
+      "evidence": "gym/sphinx/SphinxStageEActorAdapter.kt; gym/actorinput/ActorChoiceSupport.kt",
+      "actor_requirement": "complete ranking of currently offered casts, target domain, payment, timing and interaction reserve",
+      "source_state": "narrow one-offer component only"
+    },
+    {
+      "id": "OP5",
+      "path": "Attack/block and damage assignment",
+      "evidence": "rules-engine/core/GameAction.kt; gym/actorinput/ActorChoiceSupport.kt",
+      "actor_requirement": "DeclareAttackers, DeclareBlockers, assign damage, post-block priority",
+      "source_state": "unqualified"
+    },
+    {
+      "id": "OP6",
+      "path": "typed question binding and semantic replay",
+      "evidence": "gym/actorinput/ActorChoiceSupport.kt; gym/actorinput/ActorInput.kt",
+      "actor_requirement": "question source/context/choice domain, exact SubmitDecision, response journal and replay",
+      "source_state": "generic materializer exists; no Stage-E pilot/runner"
+    }
+  ],
+  "card_paths": [
+    {
+      "id": "C01",
+      "cards": [
+        "Sphinx's Approach"
+      ],
+      "identities": [
+        "reconstructed-v01",
+        "reconstructed-hybrid"
+      ],
+      "source": "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/cards/SphinxsApproach.kt",
+      "scenario": "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SphinxsApproachScenarioTest.kt",
+      "reachable": "draw two; YesNoDecision May; SelectCardsDecision exactly four current graveyard copies; SelectCardsDecision library Sphinx choice including fail-to-find; source-to-exile atomicity",
+      "evidence_status": "typed question sequence verified in exact card scenario; actor response unqualified"
+    },
+    {
+      "id": "C02",
+      "cards": [
+        "Snap"
+      ],
+      "identities": [
+        "all four"
+      ],
+      "source": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/Snap.kt",
+      "scenario": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SnapScenarioTest.kt",
+      "reachable": "current creature target; SelectCardsDecision zero to two lands to untap after bounce",
+      "evidence_status": "typed selection verified in scenario; actor unqualified"
+    },
+    {
+      "id": "C03",
+      "cards": [
+        "Mental Note",
+        "Thought Scour"
+      ],
+      "identities": [
+        "all four"
+      ],
+      "source": [
+        "mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/MentalNote.kt",
+        "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/ThoughtScour.kt"
+      ],
+      "reachable": "self mill/draw threshold; Thought Scour target self or opponent from offered player domain",
+      "evidence_status": "definitions and narrow self-target component; opponent target policy unqualified"
+    },
+    {
+      "id": "C04",
+      "cards": [
+        "Counterspell",
+        "Spell Pierce",
+        "Dispel"
+      ],
+      "identities": [
+        "Counterspell in all four",
+        "Spell Pierce in first three",
+        "Dispel in benchmark"
+      ],
+      "source": [
+        "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/Counterspell.kt",
+        "mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dft/cards/SpellPierce.kt",
+        "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/Dispel.kt"
+      ],
+      "reachable": "stack spell target eligibility and current counterability; Spell Pierce unless-pays opens opponent's payment/decline decision; Dispel instant-only domain",
+      "evidence_status": "Counterspell one-offer adapter verified; others and opponent responses unqualified"
+    },
+    {
+      "id": "C05",
+      "cards": [
+        "Tolarian Terror",
+        "Cryptic Serpent",
+        "Goliath Sphinx"
+      ],
+      "identities": [
+        "hybrid Terror/Goliath",
+        "closest Terror/Serpent",
+        "benchmark Terror/Serpent",
+        "v01 Goliath"
+      ],
+      "source": [
+        "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dmu/cards/TolarianTerror.kt",
+        "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/akh/cards/CrypticSerpent.kt",
+        "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/GoliathSphinx.kt"
+      ],
+      "reachable": "graveyard instant/sorcery current-cost refresh, own main-phase threat timing, ward payment on opponent targeting Terror, creature combat",
+      "evidence_status": "definition paths identified; complete actor unqualified"
+    },
+    {
+      "id": "C06",
+      "cards": [
+        "Brainstorm",
+        "Ponder",
+        "Preordain"
+      ],
+      "identities": [
+        "closest and benchmark (Ponder/Brainstorm/Preordain)"
+      ],
+      "source": [
+        "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ice/cards/Brainstorm.kt",
+        "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lrw/cards/Ponder.kt",
+        "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m11/cards/Preordain.kt"
+      ],
+      "reachable": "Brainstorm choose exactly two hand cards and order top; Ponder look/reorder top three, May shuffle, draw; Preordain scry top/bottom/order, draw",
+      "evidence_status": "definition paths; exact typed decision traces remain to be pinned before case inventory"
+    },
+    {
+      "id": "C07",
+      "cards": [
+        "Lórien Revealed"
+      ],
+      "identities": [
+        "closest",
+        "benchmark"
+      ],
+      "source": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/LorienRevealed.kt",
+      "reachable": "five-mana draw-three cast or Islandcycling activation with discard/payment/library search/reveal/shuffle",
+      "evidence_status": "definition path; exact actor offer and typed search trace unqualified"
+    },
+    {
+      "id": "C08",
+      "cards": [
+        "Deem Inferior"
+      ],
+      "identities": [
+        "benchmark"
+      ],
+      "source": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DeemInferior.kt",
+      "scenario": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DeemInferiorScenarioTest.kt",
+      "reachable": "draws-this-turn cost reduction, current nonland permanent target, owner ChooseOptionDecision second-from-top versus bottom",
+      "evidence_status": "typed owner option verified; current actor and opponent response unqualified"
+    },
+    {
+      "id": "C09",
+      "cards": [
+        "Artful Dodge",
+        "Sleep of the Dead"
+      ],
+      "identities": [
+        "benchmark"
+      ],
+      "source": [
+        "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/ArtfulDodge.kt",
+        "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/thb/cards/SleepOfTheDead.kt"
+      ],
+      "reachable": "sorcery creature target and flashback alternative; tap target and escape alternative with three other graveyard cards exiled as cost",
+      "evidence_status": "definitions; alternative payment and exile selection still unqualified"
+    }
+  ],
+  "exclusion_or_unknown": [
+    "Frozen Stage-E opponent deck packages have not been selected; opponent-triggered question and target inventory is necessarily incomplete.",
+    "Card definitions establish possible paths but do not certify the exact actor projection/continuation shape; C06, C07, C09 require real typed trace before an immutable fixture bank.",
+    "No blanket yes/first-option policy or legal action index fallback may stand in for a reachable decision.",
+    "The first compiled source/fixture bank must be reviewed prospectively with exact numbered case IDs, source hashes and equal four-identity opportunity; case total is currently unset."
+  ],
+  "finite_bank": {
+    "new_distinct_checks_per_identity": null,
+    "total_new_distinct_checks": null,
+    "execution_attempts": 0,
+    "official_stage_e_seeds": 0,
+    "official_stage_e_games": 0
+  }
+}
