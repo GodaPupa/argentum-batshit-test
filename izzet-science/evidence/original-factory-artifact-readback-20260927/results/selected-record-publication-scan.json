@@ -1,0 +1,76 @@
+{
+  "scope": "44 selected exact original UTF8 records only; not the entire ZIP or complete omitted logs",
+  "patterns": {
+    "private_uploaded_handle": {
+      "paths": []
+    },
+    "github_credential": {
+      "paths": []
+    },
+    "aws_access_key": {
+      "paths": []
+    },
+    "private_key": {
+      "paths": []
+    },
+    "signed_url": {
+      "paths": []
+    }
+  },
+  "urls": [
+    {
+      "url": "https://bugs.launchpad.net/ubuntu/+filebug",
+      "paths": [
+        "build-semaphore/inn2-apt-metadata.txt",
+        "build-semaphore/inn2-inews-apt-metadata.txt",
+        "build-semaphore/prerequisite.json"
+      ]
+    },
+    {
+      "url": "https://www.eyrie.org/~eagle/software/inn/",
+      "paths": [
+        "build-semaphore/inn2-apt-metadata.txt",
+        "build-semaphore/inn2-inews-apt-metadata.txt",
+        "build-semaphore/prerequisite.json"
+      ]
+    },
+    {
+      "url": "https://www.ubuntu.com/",
+      "paths": [
+        "build-semaphore/os-release.txt"
+      ]
+    },
+    {
+      "url": "https://help.ubuntu.com/",
+      "paths": [
+        "build-semaphore/os-release.txt"
+      ]
+    },
+    {
+      "url": "https://bugs.launchpad.net/ubuntu/",
+      "paths": [
+        "build-semaphore/os-release.txt"
+      ]
+    },
+    {
+      "url": "https://www.ubuntu.com/legal/terms-and-policies/privacy-policy",
+      "paths": [
+        "build-semaphore/os-release.txt"
+      ]
+    },
+    {
+      "url": "https://packages.ubuntu.com/eu/noble/inn2",
+      "paths": [
+        "control/gate.json"
+      ]
+    },
+    {
+      "url": "https://www.eyrie.org/~eagle/software/inn/docs/shlock.html",
+      "paths": [
+        "control/gate.json"
+      ]
+    }
+  ],
+  "includes_only_project_sources_and_software_prerequisites": true,
+  "entire_original_archive_not_yet_approved": true
+}

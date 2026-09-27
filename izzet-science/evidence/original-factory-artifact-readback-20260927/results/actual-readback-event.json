@@ -1,0 +1,103 @@
+{
+  "schema": "readback-actual-event/v1",
+  "preparation_publication": {
+    "head": "4fb85eeb0b75596943dfdd826bba78487026e056",
+    "tree": "5ed07f1c8e3bed071a91ea912d050d23329588fd",
+    "at_utc": "2026-09-27 05:46:17 UTC"
+  },
+  "branch_creation": {
+    "at_utc": "2026-09-27 05:46:40 UTC",
+    "branch": "lab/izzet-factory-artifact-readback-20260927",
+    "head": "7e09c6622292bafb559f7bbe04fa777815e03b8d",
+    "tree": "b56995648c9917128e09baec19823963562b5915",
+    "source_review": "97a5bb411602224395f5d62dd16603d1d207c575",
+    "root_release": "a57cebf24ed3dd908cba85152d5d23096a224703"
+  },
+  "workflow": {
+    "id": 36298180451,
+    "head": "7e09c6622292bafb559f7bbe04fa777815e03b8d",
+    "event": "push",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-09-27T05:46:41Z",
+    "updated_at": "2026-09-27T05:46:58Z"
+  },
+  "jobs": [
+    {
+      "id": 108560805822,
+      "name": "exact-original-readback",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-09-27T05:46:44Z",
+      "completed_at": "2026-09-27T05:46:57Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-09-27T05:46:45Z",
+          "completed_at": "2026-09-27T05:46:45Z"
+        },
+        {
+          "name": "Checkout only the isolated readback controls",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-09-27T05:46:45Z",
+          "completed_at": "2026-09-27T05:46:46Z"
+        },
+        {
+          "name": "Read and relay the exact existing public artifact without execution",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-09-27T05:46:46Z",
+          "completed_at": "2026-09-27T05:46:56Z"
+        },
+        {
+          "name": "Post Checkout only the isolated readback controls",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-09-27T05:46:56Z",
+          "completed_at": "2026-09-27T05:46:56Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-09-27T05:46:56Z",
+          "completed_at": "2026-09-27T05:46:56Z"
+        }
+      ]
+    }
+  ],
+  "transport": {
+    "readback_count": 1,
+    "decoded_log_fetch_count": 1,
+    "original_connector_transfer_before_readback": 1,
+    "prior_materialization": "failed409 environment_offline; no local original bytes",
+    "original_identity": {
+      "artifact_id": 10923618567,
+      "original_run_id": 36295267824,
+      "original_attempt": 1,
+      "original_head": "a0fe959d2fa345b77513e199e2db046d52cf2d0f",
+      "zip_bytes": 1945147,
+      "zip_sha256": "a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5",
+      "base64_chars": 2593532,
+      "zip_chunks": 159,
+      "chunk_char_limit": 16384
+    },
+    "complete_reconstructed_original_in": "functions memory; not local disk",
+    "no_archive_code_executed": true,
+    "independent_semantic_review": "pending at receipt preparation",
+    "public_archive_review": "pending at receipt preparation"
+  },
+  "official_allocations": 0,
+  "official_games": 0,
+  "new_factory_case_executions_by_readback": 0,
+  "deck_performance_evidence_changed": false
+}

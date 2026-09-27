@@ -1,0 +1,10 @@
+{
+  "schema": "independent-audit-parser-correction/v1",
+  "initial_source_sha256": "d3a4e50e99d427b2b961bac1fb329cf5a5549a26a8e8fee4859d472f491635f4",
+  "initial_observation": "Error: single complete map IZZET_LEGACY_FACTORY_DIFFERENTIAL",
+  "diagnosis": "The initial independent parser anchored the observation marker against the complete XML string. The first marker starts immediately after the <system-out><![CDATA[ opening and therefore is not at a raw XML line boundary.",
+  "correction": "Extract the system-out CDATA body first, then match exactly one anchored complete marker line. This reproduces the data layer used by the original ElementTree collector without changing any original bytes or expected observations.",
+  "corrected_source_sha256": "07bf90b00618873efa851132d68dd0b495a6c4390259a3ad5288529eca49b589",
+  "corrected_result": "PASS on the exact same 44 raw record strings; no original transport, process, fixture, package or workflow was repeated.",
+  "original_record_mutations": 0
+}

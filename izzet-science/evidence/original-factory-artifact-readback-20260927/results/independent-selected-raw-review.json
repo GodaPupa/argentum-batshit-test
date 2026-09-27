@@ -1,0 +1,328 @@
+{
+  "schema": "izzet-original-factory-independent-selected-raw-review/v1",
+  "reviewer": "/root/sphinx, non-author of original factory production patch, cases and qualification collector",
+  "reviewed_at_utc": "2026-09-27T05:56:14Z",
+  "disposition": "PASS_BOUNDED_FACTORY_DIFFERENTIAL_AND_RECORDED_SEMAPHORE_COMPONENT",
+  "artifact": {
+    "run_id": 36295267824,
+    "job_id": 108552837325,
+    "attempt": 1,
+    "event": "push",
+    "control_head": "a0fe959d2fa345b77513e199e2db046d52cf2d0f",
+    "artifact_id": 10923618567,
+    "bytes": 1945147,
+    "sha256": "a8ea41fbe787b944d584fca6a33b78a6d88a01244fb1487c9f7d6f2224d2d1b5"
+  },
+  "receiving_transport": {
+    "run_id": 36298180451,
+    "job_id": 108560805822,
+    "attempt": 1,
+    "head": "7e09c6622292bafb559f7bbe04fa777815e03b8d",
+    "tree": "b56995648c9917128e09baec19823963562b5915",
+    "scope": "One separately reviewed read-only transport of the existing original; it executes no original fixture, package or JVM command.",
+    "root_integrity_receipt": {
+      "git_blob": "97f6089d7750ce118effef134e32a6c8b6009957",
+      "sha256": "131b6fee6ca4b35aac8c14f6a75cea4d2669d6dd69b17241484ba662594438c6"
+    },
+    "independent_scope": "This reviewer directly received and rehashed the exact 44 selected original UTF8 records, entire 63-member manifest and derived excerpt payload. Root independently reconstructed and hashed the whole binary ZIP and relay framing; the reviewed readback reported every member CRC/SHA/size. This review does not claim a second full ZIP decompression or complete-log read."
+  },
+  "exact_input_objects": {
+    "raw": {
+      "git_blob": "a63ff48364b69b5e2f8b1a2b16aeedf1ea7ec77f",
+      "bytes": 247341,
+      "sha256": "c6c10c64544682be4af9f083472cf4d6e5786cb4109c44fcebe5c5412660d80f"
+    },
+    "members": {
+      "git_blob": "73c4935409c8579e4e783ce0718db22ac7750417",
+      "bytes": 20687,
+      "sha256": "a13b89824b25598d250fd8fd811e8cddef917cd15cf1fc07e3bb8c18c497b97f"
+    },
+    "derived": {
+      "git_blob": "8926737b5ad3e1e198a093925ea3d779757ed050",
+      "bytes": 31229,
+      "sha256": "bab6e3f108e061129daa705e0cc43a07c1a1e61a9153dd79afb3dad64bc6456b"
+    },
+    "integrity": {
+      "git_blob": "97f6089d7750ce118effef134e32a6c8b6009957",
+      "bytes": 1619,
+      "sha256": "131b6fee6ca4b35aac8c14f6a75cea4d2669d6dd69b17241484ba662594438c6"
+    }
+  },
+  "actual_result": {
+    "executions": 11,
+    "distinct_case_identities": 9,
+    "passed": 10,
+    "preserved_expected_failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "unattempted_banks": 0,
+    "banks": [
+      {
+        "stage": "before-AIPlayerLegacyYesNoStrategyTest",
+        "source_role": "before",
+        "class": "com.wingedsheep.ai.engine.AIPlayerLegacyYesNoStrategyTest",
+        "cases": [
+          "frozen profile and equal copies retain legacy YesNo behavior through both public factories",
+          "changed configuration retaining the v0 id keeps completed YesNo behavior"
+        ],
+        "passed": 1,
+        "failed": 1,
+        "errors": 0,
+        "skipped": 0,
+        "exit_status": 1,
+        "xml_sha256": "1843f18f41ed6b7e55e70ba272cb61f6fb15273521b4d018f1d5e1ee771c22dd",
+        "xml_timestamp": "2026-09-27T04:52:09.053Z",
+        "started_ns": "1790484416583942652",
+        "finished_ns": "1790484747033037839",
+        "failure": {
+          "name": "frozen profile and equal copies retain legacy YesNo behavior through both public factories",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: FROZEN_FACTORY_LEGACY_BINDING\nexpected:<true> but was:<false>"
+        },
+        "maps": {
+          "differential": {
+            "explicitLegacy": true,
+            "explicitCompleted": false,
+            "renamedCompanion": false,
+            "renamedReusable": false,
+            "frozenCompanion": false,
+            "frozenReusable": false,
+            "equalCopyCompanion": false,
+            "equalCopyReusable": false
+          },
+          "same_id": {
+            "explicitLegacy": true,
+            "explicitCompleted": false,
+            "alteredCompanion": false,
+            "alteredReusable": false
+          }
+        }
+      },
+      {
+        "stage": "fixed-AIPlayerLegacyYesNoStrategyTest",
+        "source_role": "fixed",
+        "class": "com.wingedsheep.ai.engine.AIPlayerLegacyYesNoStrategyTest",
+        "cases": [
+          "frozen profile and equal copies retain legacy YesNo behavior through both public factories",
+          "changed configuration retaining the v0 id keeps completed YesNo behavior"
+        ],
+        "passed": 2,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "exit_status": 0,
+        "xml_sha256": "dc4cb0b6c65bb65aa684c5fa50f990973abe42ab74dd997683298db17b67dd50",
+        "xml_timestamp": "2026-09-27T04:57:03.024Z",
+        "started_ns": "1790484747218519867",
+        "finished_ns": "1790485040682596956",
+        "failure": null,
+        "maps": {
+          "differential": {
+            "explicitLegacy": true,
+            "explicitCompleted": false,
+            "renamedCompanion": false,
+            "renamedReusable": false,
+            "frozenCompanion": true,
+            "frozenReusable": true,
+            "equalCopyCompanion": true,
+            "equalCopyReusable": true
+          },
+          "same_id": {
+            "explicitLegacy": true,
+            "explicitCompleted": false,
+            "alteredCompanion": false,
+            "alteredReusable": false
+          }
+        }
+      },
+      {
+        "stage": "fixed-DecisionResponderCompletedBranchTest",
+        "source_role": "fixed",
+        "class": "com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest",
+        "cases": [
+          "exact one singleton auto-completes without a follow-up decision",
+          "exact one empty result can produce a superior if-you-dont branch without a follow-up",
+          "exact one no-candidate no-payoff acceptance is outcome-equivalent to declining",
+          "genuine up-to-one branch chooses a beneficial legal singleton",
+          "genuine up-to-one branch preserves a superior beneficial empty selection",
+          "genuine up-to-one branch declines when harmful singleton and empty equals decline",
+          "genuine up-to-one branch preserves the superior singleton among multiple candidates"
+        ],
+        "passed": 7,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "exit_status": 0,
+        "xml_sha256": "a4020f5a9256cf5ac92c1424cf9b6e8f07d43779346b7efe6133b35f6b33b688",
+        "xml_timestamp": "2026-09-27T04:57:37.897Z",
+        "started_ns": "1790485040865212899",
+        "finished_ns": "1790485075103371588",
+        "failure": null,
+        "maps": {}
+      }
+    ],
+    "conclusion": "The exact new factory test fails in the declared frozen-profile behavior on before af161 and passes with the same fixture on fixed e825; the altered same-id and renamed controls preserve completed behavior, and all seven preexisting completed-branch cases pass. The before failure remains an actual raw failure, not an eleventh pass."
+  },
+  "source_and_evidence_checks": [
+    "Independently recomputed UTF8 byte length, SHA256 and CRC32 for all44 selected records against the complete63-member inventory; exactly all raw_text_relayed entries are present, with no selected-record mismatch.",
+    "Original qualify.py, gate.json and hidden workflow bytes hash exactly to ed3c72a1,4b8a0774,53165b8e respectively and agree with the embedded original audit. The original exact source/bank/authority/dependency/resource/semaphore contract matches the separately retained immutable a0fe control.",
+    "All10 recorded source observations have the exact before/fixed heads and trees, clean status, no errors,18 exact authority SHA256 pins,8 exact dependency SHA256 pins,2 exact test Gitblobs and the source-specific production SHA256. Global and per-bank before/after maps are byte-stable. These are source observations, not an executing-classpath or loaded-runtime attestation.",
+    "Source-byte qualification is attributed to the retained independent2121e9c8 review of those exact pins. This artifact review does not falsely claim a new fetch of all28 text sources or a fresh binary-wrapper download.",
+    "Independently read all3 complete raw XML files and counted every case/failure/error/skip. Before first case has exactly org.opentest4j.AssertionFailedError and FROZEN_FACTORY_LEGACY_BINDING; it has neither explicit-strategy nor state-preservation failure marker. The second before case passes.",
+    "Complete raw differential maps in both source roles have explicitLegacy=true,explicitCompleted=false,renamedCompanion=false,renamedReusable=false. Four frozen/equal-copy public-factory observations change false to true. Both same-id maps retain alteredCompanion=false and alteredReusable=false.",
+    "All3 exact just test-class commands preserve --rerun,--no-build-cache,--no-daemon,updateSnapshots=false,max-workers1 and declared compiler/JVM options. Exit files are1,0,0; no technical limit/discarded stdout/incomplete XML. Raw XML suite timestamps and completion times fall inside the retained command windows; all original XML byte hashes and retention entries agree.",
+    "Exact readback-generated task/executor subsets from the original3 full logs show one fresh executor start/finish pair per bank and :ai:test execution without cached/no-source/skipped status. The third bank's :ai:testClasses UP-TO-DATE is compilation status and is not misreported as an unexecuted :ai:test. The full logs have not yet been independently read by this reviewer.",
+    "All3 commands retain actual default-lock holder observations whose process group matches their owned wrapper group and whose times fall inside command windows. Each separate cleanup record equals its command-embedded record and reports complete scans, empty live member lists, no errors/signals and quiescence before XML retention.",
+    "All17 cleanup records are retained:14 prerequisite commands plus3 banks. Their recorded scope is the declared owned process group/session, not an assertion that arbitrary independently daemonized processes were traced.",
+    "All3 software stages and the original aggregate are complete, with no audit errors or unattempted bank. Original labels requiring independent artifact review remain preserved; this disposition is a separate later record."
+  ],
+  "prerequisite": {
+    "disposition": "PASS_RECORDED_UPSTREAM_SHLOCK_PREREQUISITE_AND_PER_BANK_DEFAULT_LOCK_OBSERVATIONS",
+    "os": "Raw /etc/os-release reports Ubuntu24.04; dpkg metadata reports amd64.",
+    "commands": 14,
+    "all_exit_zero": true,
+    "all_output_complete": true,
+    "all_within_declared_limits": true,
+    "all_finished_before_first_software_bank": true,
+    "packages": [
+      {
+        "package": "inn2",
+        "version": "2.7.2~20240212-1build3",
+        "bytes": 1271362,
+        "sha256": "a5d37bb46d5328cff2bc68d1d4ae2bf8bf16ac2f01bdd9a8609df1e3667f1449",
+        "manifest_crc32": "89aba4f5",
+        "archive_bytes_independently_decompressed_by_this_reviewer": false
+      },
+      {
+        "package": "inn2-inews",
+        "version": "2.7.2~20240212-1build3",
+        "bytes": 131052,
+        "sha256": "a60a54dbdf3267eb5225e2b6a4b3a53f3cbe5ee4befd358fe748e0a070cf5391",
+        "manifest_crc32": "49d686df",
+        "archive_bytes_independently_decompressed_by_this_reviewer": false
+      }
+    ],
+    "package_boundary": "Two .deb member hashes/sizes agree with retained exact APT metadata and the original package receipts. Member hashing was performed by the reviewed readback; this reviewer did not re-extract these packages or execute them.",
+    "utility_checks": [
+      {
+        "label": "acquire owned test lock",
+        "exit_status": 0,
+        "stdout": "",
+        "stderr": "",
+        "lock_content": "      2666\n"
+      },
+      {
+        "label": "reject already live holder without overwrite",
+        "exit_status": 1,
+        "stdout": "",
+        "stderr": "",
+        "lock_content": "      2666\n"
+      },
+      {
+        "label": "reacquire after explicit owned release",
+        "exit_status": 0,
+        "stdout": "",
+        "stderr": "",
+        "lock_content": "      2666\n"
+      }
+    ],
+    "binary": {
+      "path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test/shlock-prerequisite/extracted/usr/lib/news/bin/shlock",
+      "bytes": 14640,
+      "sha256": "e595375f6b010a33689232367d05b788de129cb3693358928d8d20c60722b263"
+    },
+    "library_hash_entries": 9,
+    "default_lock": "/home/runner/.cache/argentum/gradle.lock",
+    "observed_bank_holders": [
+      {
+        "stage": "before-AIPlayerLegacyYesNoStrategyTest",
+        "observations": [
+          {
+            "holder_pid": 3040,
+            "owned_process_group": 3036,
+            "observed_ns": "1790484416838912011"
+          }
+        ],
+        "cleanup_group": 3036
+      },
+      {
+        "stage": "fixed-AIPlayerLegacyYesNoStrategyTest",
+        "observations": [
+          {
+            "holder_pid": 4859,
+            "owned_process_group": 4854,
+            "observed_ns": "1790484747467973500"
+          }
+        ],
+        "cleanup_group": 4854
+      },
+      {
+        "stage": "fixed-DecisionResponderCompletedBranchTest",
+        "observations": [
+          {
+            "holder_pid": 6614,
+            "owned_process_group": 6610,
+            "observed_ns": "1790485041118619295"
+          }
+        ],
+        "cleanup_group": 6610
+      }
+    ],
+    "executable_identity_limit": "Original receipt records actual resolved shlock path/binary/library hashes; source requires rechecking binary/path before each bank. This is not an independent memory image or loaded executable attestation.",
+    "java_limit": "The separately reviewed original outer job log records Temurin21 setup. This review does not infer broader executing-runtime admission from that setup record."
+  },
+  "publication_review": {
+    "selected_records": "PASS for the44 exact selected original records, member inventory, explicit derived excerpts, this review and its data-only support.",
+    "sensitivity_scope": "Read/scanned selected original text has no private uploaded-file handle, GitHub credential, AWS access key, private key, or signed URL pattern. Eight distinct URLs are public Ubuntu/INN documentation or package metadata. Records contain fixed project software source, case/trace output, hashes and ephemeral public-runner paths; no official seed vector, future confirmation material or unrelated private record was observed.",
+    "full_zip": "PENDING complete omitted-log public-content inspection. This disposition does not claim the3 omitted bank logs (7,134,827 bytes total) or other omitted log contents were scanned. Root is arranging same-byte decompression without a new original transport/event.",
+    "original_bytes_policy": "Preserve original ZIP/raw failure intact. Any later public subset must be explicitly labeled and cannot silently replace original evidence."
+  },
+  "audit_parser_history": {
+    "initial_failure": "Independent parser matched the marker against raw XML and therefore missed the first system-out CDATA line.",
+    "correction": "Extract original system-out CDATA, then apply the exact single-map predicate. The corrected pure-data check passed on unchanged original strings. Both parser versions and exact failure/correction note are retained.",
+    "software_reruns": 0,
+    "artifact_retransmissions": 0
+  },
+  "support": {
+    "independent-check-raw-records.js": {
+      "git_blob": "38276d0d600e71a3e286e622029fefda809af0a7",
+      "bytes": 15550,
+      "sha256": "07bf90b00618873efa851132d68dd0b495a6c4390259a3ad5288529eca49b589"
+    },
+    "independent-raw-record-checks.json": {
+      "git_blob": "29adc86d7b3f302e24a2a99f70192cc3fea6cabe",
+      "bytes": 61458,
+      "sha256": "7c9f9cc87562af78f37946b0a39ba448df357e762433930e4dc925d1d166bee4"
+    },
+    "selected-record-publication-scan.json": {
+      "git_blob": "f57661460f29b4f8b974833e1fba2fd6be4ab685",
+      "bytes": 1795,
+      "sha256": "8ebc6e33cee50ff7fd2e53885c0d2f65f176a83986190a423ad6aab8ba346727"
+    },
+    "initial-xml-parser.js": {
+      "git_blob": "e9715472ca45934d82c22f0a396964ecbcb373e5",
+      "bytes": 15427,
+      "sha256": "d3a4e50e99d427b2b961bac1fb329cf5a5549a26a8e8fee4859d472f491635f4"
+    },
+    "parser-correction-history.json": {
+      "git_blob": "02d60b4b7b633353d73f6b8b240e839128ee54af",
+      "bytes": 1007,
+      "sha256": "5215251f92399aa1d04babe4ef06f3996a6a987b3f9f62591e2ff2edf48d9625"
+    }
+  },
+  "material_limits": [
+    "No whole-runtime, full-AI, full-pilot, baseline973, interactive matchup, Position1, replay/durability, or official gameplay admission.",
+    "No general claim that the frozen pilot is globally equivalent follows from these finite case observations. The production patch remains subject to receiving integration and its governing policy disposition.",
+    "Workflow success alone was not used as proof; original before failure, fixed XML, complete maps and prerequisite/process records supply the bounded result.",
+    "The workspace remained offline. This reviewer performed only immutable Git reads and pure in-memory data parsing/hashing. No original source/process/test/package/codec/probe/workflow/claim was executed or retried.",
+    "No GitHub approval, branch update or merge is supplied by this review."
+  ],
+  "counters_for_this_software_attempt_only": {
+    "new_software_identities": 2,
+    "new_pilot_cases": 0,
+    "official_games": 0,
+    "official_seeds": 0,
+    "deck_changes": 0,
+    "deck_performance_evidence_changed": false
+  }
+}
