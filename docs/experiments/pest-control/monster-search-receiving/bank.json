@@ -1,0 +1,36 @@
+{
+  "case_count": 5,
+  "case_names": [
+    "MS01 Map missing-piece search chooses the identical physical offered card",
+    "MS02 Map fallback retains verified physical offer order despite reversed entity handles",
+    "MS03 paid Crop search chooses the identical missing-piece physical card",
+    "MS04 Cascade Crop public sacrifice stays separate from its later library search",
+    "MS05 pair seam requires a real actor response and validates the typed question"
+  ],
+  "games_authorized": false,
+  "official_seeds_drawn": 0,
+  "run_count_before_review": 0,
+  "schema": "pest-monster-search-actor-receiving-bank-v1",
+  "scope": "Single deterministic MS01-MS05 actor search and typed pair decision seam. Historical MC10 remains unchanged. Passing cases are software evidence only.",
+  "shared_source_base": "b3d4d2922f92e325f57ae7491b96068f8bf6a7b4",
+  "source_sha256": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "21d60a04da428312ede8aa05f29d16f0b7a3baa0a4a077fe47b9455857341912",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronPublicPolicy.kt": "7b99f88d02e287e6cd77997a04b89fa6e54500f9af3613f2b5f77c0d89a9c54d",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorAuthorizedLibrarySearch.kt": "ff11b24b7f4f7238239fb8f42a8b1d9e9b8dabd01022a345f51e1dc3f2850392",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorChoiceSupport.kt": "6adefd58499c0ec2610f078cd78696f4ba6b33b47c5043093a2e77f392c493a0",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorDecisionProjection.kt": "368c2f0fe1ac4f06942ec8b5095d94ecd6bbb0cb94273977271e9a007bf7808b",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPublicCards.kt": "186d1f5fc2d3d8be2754ff0a029dd1fdd58348422514fb06ce45690140aea748",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "8dc592010ef02fa9a2047af2ace050034af828575112c63b7d5145318091e010",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterPairDecisionBoundary.kt": "bcb91b6c0f2ab065ce4d3736ae981af1e09215f549e81764c60919fa4fa8737f",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterTronActorDecisions.kt": "2f7c7fd86663b2a9490e8de4f979e8aa33ecf1b2f84aff3125be542d31c5289b",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterVerifiedSearch.kt": "d9a1263dc66c7a2c15fb99dd125fc170f0be02bb858145945bc381f609975ef0",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterTronAuthorizedSearchReceivingTest.kt": "da6b12122a3e2f8733af92c6d4ff12d9d52630b0ebe8e3249be182c9b116ea22",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt": "850125a611fd414d2aaf8dd68aaf628a3ff74a6b961ee9d074e7c10496290202",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/GatherCardsExecutor.kt": "f4c6147bf3817753967af63cf69665a5db58c91de8410ca223194c9e27395e36",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/SelectFromCollectionExecutor.kt": "16fc3b3f39990aa8d1b0a238ec3fe98a9b683cfbdf3d07820a144f118dfb97f4",
+    "scripts/test-class": "17b9629bc4e1526107e432fa440208ea66588acdf4855ee50685df03223c5c81"
+  },
+  "status": "FROZEN_PROSPECTIVE_RECEIVING_ONLY",
+  "test_class": "com.wingedsheep.gym.pest.PestMonsterTronAuthorizedSearchReceivingTest",
+  "test_source_path": "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterTronAuthorizedSearchReceivingTest.kt"
+}
