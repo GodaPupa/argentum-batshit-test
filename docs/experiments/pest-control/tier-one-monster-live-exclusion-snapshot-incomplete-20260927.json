@@ -1,0 +1,466 @@
+{
+  "schema": "pest-monster-replacement-live-exclusion-snapshot-incomplete-v1",
+  "status": "SOURCE_BOUND_INCOMPLETE_FREEZE_RECONCILIATION_NO_ENTROPY_OR_C2_A2_AUTHORITY",
+  "snapshot_at_utc": "2026-09-27T03:19:03.498Z",
+  "live_ref_snapshot": {
+    "main": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+    "project_prefix": "refs/heads/pest-control/",
+    "project_ref_count": 152,
+    "lab_pest_prefix": "refs/heads/lab/pest",
+    "lab_pest_ref_count": 15,
+    "claim_prefix": "refs/heads/pest-control/official-attempts/",
+    "claim_refs": [
+      {
+        "ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+        "sha": "1c2e253ad7f5a7652304f7c9aaafc30e547a481e"
+      }
+    ],
+    "replacement_claim_observed": false,
+    "scope": "Single read-only ref-prefix observation. The 152 project branches include retained historical implementation branches; their mere existence is not a new seed assignment. Branch names alone do not prove all fixture or allocation identities."
+  },
+  "accepted_source_classes": {
+    "audit_ref": "d08cd906d39ad72e4214a1cafaea2b3ff0f7ee99",
+    "legacy_permanent_registry": 463,
+    "accepted_v2_calibration": 10,
+    "rejected_v2_candidate": 10,
+    "v2_smoke_fixture": 1,
+    "frozen_v2_qualification": 50,
+    "grixis_smoke": 4,
+    "grixis_replication": 12,
+    "legacy_unique": 550,
+    "terror_smoke": 4,
+    "terror_replication": 12,
+    "before_monster_unique": 566,
+    "retired_original_monster_four": 4,
+    "historical_unique": 570,
+    "postboard_b_declared_fixtures": 3,
+    "d08_known_minimum_unique": 573,
+    "independently_reviewed_monster_synthetic_fixtures": 9,
+    "accepted_known_minimum_unique": 582,
+    "review_ref": "638ff9c363e286a05ad3e26ce886e601c4540f4f",
+    "list_ref": "bf6e37348156c5c854b50fd0f529fec50bda3380",
+    "list_sha256": "f782048fc3a245bbd179c288869ef81eae268f80fa4bb68385c021ec1e7763b2",
+    "proof_scope": "d08 reconstructs legacy disjoint counts from pinned source/artifacts; 638ff9 verifies nine distinct Monster fixtures absent from all 573. These prove only the 582 minimum."
+  },
+  "bounded_current_source_sweep": {
+    "scope": "All 120 top-level gym/src/test/kotlin/com/wingedsheep/gym/PestControl*.kt files at the exact main ref were fetched once and searched for explicit seed literals/expression sites. Thirty-two files produced seed-related lines; nineteen finite relevant groups below were normalized as signed 64-bit values. This is a targeted negative-completeness audit, not a validated universal fixture parser.",
+    "files_read": 120,
+    "file_fetch_errors": 0,
+    "finite_groups": [
+      {
+        "class": "RNG_SCENARIO_FIXTURE",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlArtifactContractTest.kt",
+          "git_blob": "89b056e40d312b24d6a87789fc312126db070631",
+          "seed_lines": [
+            130,
+            320
+          ]
+        },
+        "normalized_signed_long_values": [
+          "175241927"
+        ],
+        "intersection_with_582": [
+          "175241927"
+        ]
+      },
+      {
+        "class": "VALIDATION_NEGATIVE_ATTEMPTED_SEED_LIST",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisArtifactContractTest.kt",
+          "git_blob": "fb8bf0670a1aba5d651006692b63b7c4d4d9094d",
+          "seed_lines": [
+            100
+          ]
+        },
+        "normalized_signed_long_values": [
+          "9100001",
+          "9100002",
+          "999"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_INITIALIZER_FOUR",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisAuthorizedInitializerTest.kt",
+          "git_blob": "a107c9b9a0eacf907f37622fa01c29d9bd84f360",
+          "seed_lines": [
+            23,
+            52,
+            72
+          ]
+        },
+        "normalized_signed_long_values": [
+          "9930001",
+          "9930002",
+          "9930003",
+          "9930004"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "VALIDATION_NEGATIVE_INITIALIZER",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisAuthorizedInitializerTest.kt",
+          "git_blob": "a107c9b9a0eacf907f37622fa01c29d9bd84f360",
+          "seed_lines": [
+            23,
+            52,
+            72
+          ]
+        },
+        "normalized_signed_long_values": [
+          "9940001",
+          "9950001"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_COMPOSED_FOUR",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisComposedValidationTest.kt",
+          "git_blob": "8a248d6bfe0f6b2c9950cc0586a29f5555ed0b4c",
+          "seed_lines": [
+            35
+          ]
+        },
+        "normalized_signed_long_values": [
+          "9980001",
+          "9980002",
+          "9980003",
+          "9980004"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_EXECUTION_FOUR",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisExecutionContractTest.kt",
+          "git_blob": "0ad83d8881fc58d15b916345916c62a5692b2642",
+          "seed_lines": [
+            10
+          ]
+        },
+        "normalized_signed_long_values": [
+          "7700001",
+          "7700002",
+          "7700003",
+          "7700004"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_GAME_ADAPTER",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisGameAdapterTest.kt",
+          "git_blob": "d784c2b1a47717c6bf73cd51d6229479887efcf3",
+          "seed_lines": [
+            84
+          ]
+        },
+        "normalized_signed_long_values": [
+          "9000001"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_VECTOR_PARSER",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisOfficialExecutionInputLoaderTest.kt",
+          "git_blob": "c132832391bc77ebce419deeac81d1c7ec8fa676",
+          "seed_lines": [
+            16
+          ]
+        },
+        "normalized_signed_long_values": [
+          "101",
+          "-202",
+          "303",
+          "-404"
+        ],
+        "intersection_with_582": [
+          "101",
+          "303"
+        ]
+      },
+      {
+        "class": "SYNTHETIC_INITIALIZATION_BOUNDARY",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisOfficialInitializationBoundaryTest.kt",
+          "git_blob": "4caee383aba419dec538816282646b7be79948e3",
+          "seed_lines": [
+            20
+          ]
+        },
+        "normalized_signed_long_values": [
+          "8800001"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_PRODUCTION_DRIVER",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisProductionDriverTest.kt",
+          "git_blob": "dc63eb997860fc378b508c5c0e9a6719d649f599",
+          "seed_lines": [
+            20
+          ]
+        },
+        "normalized_signed_long_values": [
+          "9970001"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_REPLICATION_INITIALIZER_1_TO_12",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneGrixisReplicationAuthorizedInitializerTest.kt",
+          "git_blob": "17768bde34a46f7d614030d4316e918bd7fab6c7",
+          "seed_lines": [
+            29
+          ]
+        },
+        "normalized_signed_long_values": [
+          "8880001",
+          "8880002",
+          "8880003",
+          "8880004",
+          "8880005",
+          "8880006",
+          "8880007",
+          "8880008",
+          "8880009",
+          "8880010",
+          "8880011",
+          "8880012"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "VALIDATION_NEGATIVE_ATTEMPTED_SEED_LIST",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorArtifactContractTest.kt",
+          "git_blob": "d175e05093ff4970d35149376c1c58abb100ceee",
+          "seed_lines": [
+            103
+          ]
+        },
+        "normalized_signed_long_values": [
+          "9300001",
+          "9300002",
+          "999"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_COORDINATOR_FOUR",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorAuthorizedExecutionCoordinatorTest.kt",
+          "git_blob": "30a342590d85dae05e7dc2876914319de3f51ee2",
+          "seed_lines": [
+            107
+          ]
+        },
+        "normalized_signed_long_values": [
+          "9970001",
+          "9970002",
+          "9970003",
+          "9970004"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_INITIALIZER_FOUR",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorAuthorizedInitializerTest.kt",
+          "git_blob": "4167650effc3403b3afe671bec332a06ed623e63",
+          "seed_lines": [
+            23
+          ]
+        },
+        "normalized_signed_long_values": [
+          "9930001",
+          "9930002",
+          "9930003",
+          "9930004"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_COMPOSED_FOUR",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorComposedValidationTest.kt",
+          "git_blob": "ac3bc4c098e4ce46f0cc11a1a6d994a68b171ec0",
+          "seed_lines": [
+            42
+          ]
+        },
+        "normalized_signed_long_values": [
+          "9112764595289718785",
+          "9112764595289718786",
+          "9112764595289718787",
+          "9112764595289718788"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_GAME_ADAPTER",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorGameAdapterTest.kt",
+          "git_blob": "a8c8ea7fb7bf014b8e8d5c872c650f28c430e1ee",
+          "seed_lines": [
+            84
+          ]
+        },
+        "normalized_signed_long_values": [
+          "9200001"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_INITIALIZATION_BOUNDARY",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonoBlueTerrorOfficialInitializationBoundaryTest.kt",
+          "git_blob": "797f33a26e2e7eff6486e9e46efdf4f9377cbea6",
+          "seed_lines": [
+            20
+          ]
+        },
+        "normalized_signed_long_values": [
+          "8900001"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "VALIDATION_NEGATIVE_ATTEMPTED_SEED_LIST",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlV2OfficialArtifactContractTest.kt",
+          "git_blob": "f0a23e91e79f861da79b8f99ab97d536c00cf7a1",
+          "seed_lines": [
+            44
+          ]
+        },
+        "normalized_signed_long_values": [
+          "1",
+          "2",
+          "999"
+        ],
+        "intersection_with_582": []
+      },
+      {
+        "class": "SYNTHETIC_GAME_ADAPTER",
+        "source": {
+          "ref": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+          "path": "gym/src/test/kotlin/com/wingedsheep/gym/PestControlV2OfficialGameAdapterTest.kt",
+          "git_blob": "9e9e75410eb9fda0a73fcaf15747edea2e908fbe",
+          "seed_lines": [
+            55
+          ]
+        },
+        "normalized_signed_long_values": [
+          "5000001"
+        ],
+        "intersection_with_582": []
+      }
+    ],
+    "arithmetic": {
+      "group_members_with_repeats": 58,
+      "unique_normalized_group_values": 51,
+      "intersection_with_accepted_582": [
+        "175241927",
+        "101",
+        "303"
+      ],
+      "unreviewed_new_distinct_count": 48,
+      "unreviewed_new_values": [
+        "-404",
+        "-202",
+        "1",
+        "2",
+        "999",
+        "5000001",
+        "7700001",
+        "7700002",
+        "7700003",
+        "7700004",
+        "8800001",
+        "8880001",
+        "8880002",
+        "8880003",
+        "8880004",
+        "8880005",
+        "8880006",
+        "8880007",
+        "8880008",
+        "8880009",
+        "8880010",
+        "8880011",
+        "8880012",
+        "8900001",
+        "9000001",
+        "9100001",
+        "9100002",
+        "9200001",
+        "9300001",
+        "9300002",
+        "9930001",
+        "9930002",
+        "9930003",
+        "9930004",
+        "9940001",
+        "9950001",
+        "9970001",
+        "9970002",
+        "9970003",
+        "9970004",
+        "9980001",
+        "9980002",
+        "9980003",
+        "9980004",
+        "9112764595289718785",
+        "9112764595289718786",
+        "9112764595289718787",
+        "9112764595289718788"
+      ],
+      "prospective_count_if_every_new_value_is_reviewed_and_excluded": 630
+    },
+    "important_classification": "Values 1, 2, 999, 9100001–9100002 and 9300001–9300002 occur in malformed-receipt validation; zero is a separate invalid-seed sentinel and is not counted as a valid exclusion member. Some fixtures initialize synthetic games, some are parser or refusal inputs. Their exact exclusion policy must be independently adjudicated without treating validation failures as official gameplay.",
+    "normalization": "Kotlin Long literal underscores removed, hex interpreted as signed 64-bit; 0x7E77_0B1E_3000_0001..4 normalize to 9112764595289718785..8788. Repeated identities from Grixis and Terror are counted once. No one-shot seed generator called."
+  },
+  "precise_unresolved_sources": [
+    "Accepted 582 list does not enumerate at least 48 distinct finite values in current PestControl gym test source; the review at 638ff9 explicitly accepted only a lower bound. No independent classification or complete sorted source-pinned union exists for the additional values.",
+    "The targeted sweep did not enumerate every possibly seed-bearing Pest source tree (notably other gym test names, ai tests, and card scenario tests) or non-source pending vector artifacts; absence of values there cannot be inferred from project branch names or current 582 content.",
+    "At actual production freeze, compare exact live accepted/rejected/quarantined/pending/claimed vectors and explicitly excluded fixtures against pinned artifacts and refs, adjudicate overlaps and class membership, and independently accept a complete manifest. Missing source, drift or unexplained overlap blocks a draw."
+  ],
+  "no_authority": {
+    "complete_live_manifest": false,
+    "production_freeze": false,
+    "C2": false,
+    "A2": false,
+    "seed": false,
+    "claim": false,
+    "official_games": 0,
+    "historical_quarantined_games": 81,
+    "original_claim_consumed": true,
+    "original_four_reservations_retired": true
+  }
+}
