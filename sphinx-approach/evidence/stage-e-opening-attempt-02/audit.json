@@ -1,0 +1,60 @@
+{
+  "schema": "sphinx-stage-e-opening-attempt-02-artifact-audit-v1",
+  "scope": "excluded deterministic opening receiving; no whole-pilot or gameplay admission",
+  "author_review_status": "AWAIT_NON_AUTHOR_ARTIFACT_REVIEW",
+  "source": {
+    "head": "135ed45dbd577e99f5a0e1f9078956d2d60e7a21",
+    "tree": "497b54063076c28ba42946453f0504176c0648db",
+    "fixture_blob": "1dab04171c5666844e1c64ac232d8f32a2333541",
+    "opening_actor_blob": "8be1831af807c77e0e45807eb248c1b99b172d28",
+    "opening_router_blob": "753595605db51df86ebf18c605b6ebab19b451ac",
+    "original_attempt_01_head": "8906fa84bbd07747085d9c79cc8a5d543e188c6f"
+  },
+  "review_before_execution": {
+    "scope_review": "292e192a6a0c54b1975f9f18f0482f65fc73dc42",
+    "initial_attempt_review": "fba3a636d22ef7f1032cdb1e04b1f627e91e0d74",
+    "syntax_correction_review": "2b97ce829232023b1ad91ed3f861740c3a462c80"
+  },
+  "workflow": {
+    "run_id": 36291507804,
+    "run_attempt": 1,
+    "job_id": 108542365513,
+    "conclusion": "success",
+    "artifact_id": 10922716477,
+    "artifact_zip_sha256": "f27c0cf2e9a849b2715c049a4f10a650286296d2ed31925b18c54fb5bd7b5da5",
+    "artifact_zip_bytes": 230456,
+    "raw_artifact_path": "sphinx-approach/evidence/stage-e-opening-attempt-02/raw-artifact.zip"
+  },
+  "raw_audit": {
+    "disposition": "AWAIT_NON_AUTHOR_ARTIFACT_REVIEW",
+    "test_exit_code": 0,
+    "source_before_equals_after": true,
+    "opening_cases": {
+      "expected": 32,
+      "actual": 32,
+      "case_ids": "O1–O8 each exactly once for each of four frozen 60s",
+      "xml_sha256": "a5af958d2c5859961c239d266ca7520b5df6028ec65f99a1e698ef3bea4d7ee6"
+    },
+    "initialized_seat_cases": {
+      "expected": 16,
+      "actual": 16,
+      "case_ids": "IB1–IB2 each of four 60s in both seats",
+      "xml_sha256": "881df3660155508a89ccdd175e6deab0b9fa813db5dbdc38ab074ed58a675632"
+    },
+    "distinct_total": 48,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "counters": {
+    "official_stage_e_seeds": 0,
+    "official_stage_e_games": 0,
+    "attempt1_technical_compile_failure_preserved": true
+  },
+  "limitations": [
+    "This author audit is not independent acceptance; collector opening_accepted false.",
+    "Only opening London routing/actor and offered basic-Island play tested, not ordinary PassPriority, spell ranking, typed effects, combat, opponent pilot, semantic replay or complete runner.",
+    "Original A–D raw bytes remain unavailable; no historical density rerun is authorized.",
+    "The original unexecuted 14×4 component budget remains unchanged."
+  ]
+}
