@@ -1,0 +1,53 @@
+{
+  "actual_test": {
+    "actionable": "46 executed",
+    "build": "BUILD SUCCESSFUL in 5m 56s",
+    "cases": 1,
+    "class": "com.wingedsheep.ai.arena.FrozenBaselineTest",
+    "command_exit": 0,
+    "complete_output": true,
+    "errors": 0,
+    "failures": 0,
+    "name": "LEGACY_V0 plays the frozen baseline game exactly as it always has",
+    "skips": 0,
+    "task": "ai:test",
+    "task_fresh_marker": "> Task :ai:test",
+    "xml_sha256": "78b3d1407d1a5bb358702ca830810a9d42f6faa727fe0f45628df01dcd4fac15"
+  },
+  "disposition": "PASS_EXACT_ONE_EXISTING_SOFTWARE_BASELINE_ONLY",
+  "limitations": [
+    "One exact preexisting vanilla fixture on prospective source; no claim that the full LEGACY policy equals the old branch.",
+    "Source disposition pertains to one baseline; full Izzet receiver and Position-1 gameplay remain unadmitted.",
+    "Raw review by a separate Work agent; final acceptance still requires receiving-source and full gate review."
+  ],
+  "original_prior_failures_preserved": "bff4de452a6fca076e3c42fe7c2590862c0c234d",
+  "original_run": {
+    "artifact_bytes": 246877,
+    "artifact_id": 10921276738,
+    "artifact_sha256": "457bff957829d1480e3cbbe2940a5eb70976962fa01c4f243ae9885ab56b033b",
+    "attempt": 1,
+    "conclusion": "success",
+    "control_head": "71a5bdf918a3e07ebb20c17a676877d406df2f17",
+    "id": 36287747150,
+    "source_head": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+    "source_tree": "1a903dc4862d32fdd029e73a916cc9659678db4d",
+    "zip_crc": "all_pass",
+    "zip_members": 10
+  },
+  "reviewed_utc": "2026-09-27T02:31:53.502609+00:00",
+  "reviewer": "/root/izzet_receiver, separate takeover from original source/control authors",
+  "schema": "izzet-software-baseline-raw-artifact-review-v1",
+  "scope": {
+    "deck_or_pilot_changed": false,
+    "full_receiving_cases_executed_here": 0,
+    "official_games": 0,
+    "seeds_consumed": 0,
+    "software_baseline_reconciled": 1
+  },
+  "source_integrity": {
+    "authority_content_pins_pass": 12,
+    "before_after_exact_equal": true,
+    "control_file_content_pins_pass": 3,
+    "tree_matches_git_object": true
+  }
+}
