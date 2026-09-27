@@ -1,0 +1,510 @@
+{
+  "schema": "manual-clean-four-guard-causal-closure-proposal-v1",
+  "status": "PROPOSED_SOURCE_AND_EVIDENCE_RECONCILIATION_INDEPENDENT_SCOPE_ADOPTION_PENDING",
+  "source": {
+    "head": "83f78b4b63264346347b40cee19f0459513cf40b",
+    "runtime_composition": "a333dc1e6b8c2e78961bbbe052ee01105e2f1264",
+    "shared_parent": "95fc01aac842aaf32133a95215e894ffb28e979a",
+    "manual_parent": "2e112cd8526fa89bf80c6de30172a5cc3f77f48a",
+    "ci_checkout_merge": "63c1d6ee53605653465abffeb1dc0de6d4caad6b",
+    "merge_difference": "29 evidence/status paths only; exact code/test/build source equivalence independently reviewed in CI index"
+  },
+  "detailed_index": {
+    "branch": "manual/clean-guard-supplement-proposal-20260927",
+    "file": "experiments/manual-transmission-phase2/clean-main-guard-detailed-stage-index.json",
+    "sha256": "d1c9f2265318020fc5e3b09318a12217be8226579e70e1e0a5fa16b97f878129",
+    "original_ci_run": 36328394171,
+    "cached_tooling_not_in_selected_banks": true
+  },
+  "original_guard_runs": {
+    "attacking_token": 36328394100,
+    "postboard_a": 36328394029,
+    "postboard_b": 36328394334,
+    "priority": 36328394062
+  },
+  "original_dispositions": "All four original clean guard runs remain INCOMPLETE_PRETEST; original ZIPs independently retained in main 76f4d0a6, no XML/cases from those runs.",
+  "scopes": [
+    {
+      "domain": "attacking_token",
+      "frozen_manifest": "lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json",
+      "frozen_manifest_sha256": "e1e01f033145ce3d70ed7174d38643f77ef7a091c804b8c4834ceb1c16be74e3",
+      "pin_count": 47,
+      "declared_deltas": [
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+          "frozen_expected_sha256": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1",
+          "candidate_sha256": "3afa085c67355cfb63e2c1758149ac53196cdfdc1fbb6dfebe62b3dd6f5856c1",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "GameEvent, TriggerMatcher",
+            "finding": "Optional entrySnapshot preserves captured entry characteristics and controller against later state; departing objects continue LKI handling. Unknown predicates are not converted into positive matches by negation.",
+            "causal_bank": "BattlefieldEntrySnapshotTest11 in independently accepted exact452 receiving96.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+          "frozen_expected_sha256": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
+          "candidate_sha256": "79daf6a2a45f58740388afe6cf17ac50608cf6f919054a07dbc3e676a1785d40",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ModalAndCloneContinuations, CoreAutoResumerModule, ModalAndCloneContinuationResumer, AuraTokenHostChooser, CreateTokenCopyOfTargetExecutor",
+            "finding": "Original beforeEntry checkpoint threads through copy/Aura continuation siblings; stripped executable frames are observation-only, live state remains execution state.",
+            "causal_bank": "TokenBatchEntryHistoryTest4 in accepted96: target/source/Aura serialized siblings and rejected absent checkpoint.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+          "frozen_expected_sha256": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4",
+          "candidate_sha256": "850125a611fd414d2aaf8dd68aaf628a3ff74a6b961ee9d074e7c10496290202",
+          "origin": "accepted_shared",
+          "accepted_shared_ref": "95fc01aa merged PR210; independently accepted full compatibility matrix efbde021, supplemental source5e0afe1f/run36304391327"
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+          "frozen_expected_sha256": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623",
+          "candidate_sha256": "57be760a6d451b07af762ecd40dd8abf9583f7c2adefdba50893ac2419c7c90e",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "TriggerDetector, TriggerMatcher, PredicateEvaluator, CostCalculator",
+            "finding": "HasCardType and IsSnow leaf support added without replacing existing leaves; live predicates use projected types, LKI/cast records use captured type lines.",
+            "causal_bank": null,
+            "remaining_evidence": "Original fullCI FixedCardTypePredicateTest12 XML independently indexed; no universal predicate or snow/cost support inferred from bounded receiving."
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+          "frozen_expected_sha256": "ab14c3d79c6bf842313b948af585642b80b96d40834925af5cfa75fda084c155",
+          "candidate_sha256": "a0302465cf32d461a3e6793cfc47408b7c19a040320b7da8db9f67d95d3103b7",
+          "origin": "accepted_shared",
+          "accepted_shared_ref": "95fc01aa merged PR210; independently accepted full compatibility matrix efbde021, supplemental source5e0afe1f/run36304391327"
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+          "frozen_expected_sha256": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+          "candidate_sha256": "2b69ea7a88b45747fc760b1a8964249d8fb8f69c7370a3df1c0a61d5b75bc225",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ModalAndCloneContinuations, CoreAutoResumerModule, ModalAndCloneContinuationResumer, AuraTokenHostChooser, CreateTokenCopyOfTargetExecutor",
+            "finding": "Original beforeEntry checkpoint threads through copy/Aura continuation siblings; stripped executable frames are observation-only, live state remains execution state.",
+            "causal_bank": "TokenBatchEntryHistoryTest4 in accepted96: target/source/Aura serialized siblings and rejected absent checkpoint.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+          "frozen_expected_sha256": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
+          "candidate_sha256": "44d762907ef10f2efc7ef72d0f704b252ad7099ba9e65673d888d373273da9b7",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ModalAndCloneContinuations, CoreAutoResumerModule, ModalAndCloneContinuationResumer, AuraTokenHostChooser, CreateTokenCopyOfTargetExecutor",
+            "finding": "Original beforeEntry checkpoint threads through copy/Aura continuation siblings; stripped executable frames are observation-only, live state remains execution state.",
+            "causal_bank": "TokenBatchEntryHistoryTest4 in accepted96: target/source/Aura serialized siblings and rejected absent checkpoint.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AuraTokenHostChooser.kt",
+          "frozen_expected_sha256": "1b4fcd1247790211b7d5aa48b0288babbd3724703348b0089c674d90e7c9321d",
+          "candidate_sha256": "8cb52ffcb8d37826e1ddd91f928e491f5b080ffe10f092056bf7340ef384fe25",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ModalAndCloneContinuations, CoreAutoResumerModule, ModalAndCloneContinuationResumer, AuraTokenHostChooser, CreateTokenCopyOfTargetExecutor",
+            "finding": "Original beforeEntry checkpoint threads through copy/Aura continuation siblings; stripped executable frames are observation-only, live state remains execution state.",
+            "causal_bank": "TokenBatchEntryHistoryTest4 in accepted96: target/source/Aura serialized siblings and rejected absent checkpoint.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt",
+          "frozen_expected_sha256": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38",
+          "candidate_sha256": "69f0721ceef29500768d87c90a50b41b23f591ca02c889f1ed3028887d26a893",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ModalAndCloneContinuations, CoreAutoResumerModule, ModalAndCloneContinuationResumer, AuraTokenHostChooser, CreateTokenCopyOfTargetExecutor",
+            "finding": "Original beforeEntry checkpoint threads through copy/Aura continuation siblings; stripped executable frames are observation-only, live state remains execution state.",
+            "causal_bank": "TokenBatchEntryHistoryTest4 in accepted96: target/source/Aura serialized siblings and rejected absent checkpoint.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt",
+          "frozen_expected_sha256": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1",
+          "candidate_sha256": "46cf44d673c2ee104de4eee2b3d93bab8376f60f23d3d2981fd2db0ddae240d6",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ZoneTransitionService, StackResolver, CreateTokenExecutor, TokenCreationReplacementHelper",
+            "finding": "Pre-placement state now feeds entry tap/untap evaluation instead of eventual entered-state aggregates; attacking/tapped choices otherwise retained.",
+            "causal_bank": "BattlefieldEntryProjectionTest6, SelfEntersTappedOffStackEntryScenarioTest11, Purphoros25 and token-copy fixtures in accepted96; unchanged token20 required on composed receiver.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt",
+          "frozen_expected_sha256": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a",
+          "candidate_sha256": "332894e7cc3727026129cd04b53fcc9319a6f15ae3a8ca5fa4c54ccc52bffa16",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ZoneTransitionService, StackResolver, CreateTokenExecutor, TokenCreationReplacementHelper",
+            "finding": "Pre-placement state now feeds entry tap/untap evaluation instead of eventual entered-state aggregates; attacking/tapped choices otherwise retained.",
+            "causal_bank": "BattlefieldEntryProjectionTest6, SelfEntersTappedOffStackEntryScenarioTest11, Purphoros25 and token-copy fixtures in accepted96; unchanged token20 required on composed receiver.",
+            "remaining_evidence": null
+          }
+        }
+      ],
+      "stage_index_ref": "clean-main-guard-detailed-stage-index.json",
+      "stage_count": 3,
+      "expected_cases": 20
+    },
+    {
+      "domain": "postboard_a",
+      "frozen_manifest": "docs/experiments/pest-control/tier-one-postboard-support-batch-a-receiving-sources.json",
+      "frozen_manifest_sha256": "9ea4953302aeeac2a0b539c6ddc369c6404e3a291ed8a131a7976068e95c67e7",
+      "pin_count": 24,
+      "declared_deltas": [
+        {
+          "path": "mtg-sets/src/test/resources/snapshots/cards/GRN.json",
+          "frozen_expected_sha256": "01c0352f5631bb2264af1e9aa42e85279dac483d7093ed7e1b57beff6a5fe5b9",
+          "candidate_sha256": "b75428335a5642a6a4a02579ca2b05908f3ac48f45933ba6cbf58dd413bf066d",
+          "origin": "accepted_shared",
+          "accepted_shared_ref": "95fc01aa merged PR210; independently accepted full compatibility matrix efbde021, supplemental source5e0afe1f/run36304391327"
+        },
+        {
+          "path": "mtg-sets/src/test/resources/snapshots/cards/IKO.json",
+          "frozen_expected_sha256": "192f313dda525e248ea08273c47ad17c58ddb382e0762652c99121eb8e8df204",
+          "candidate_sha256": "f803032fccbbd2e59535c243c87c727657d52f2cc3aaac073ea117f7d4a50046",
+          "origin": "accepted_shared",
+          "accepted_shared_ref": "95fc01aa merged PR210; independently accepted full compatibility matrix efbde021, supplemental source5e0afe1f/run36304391327"
+        },
+        {
+          "path": "mtg-sets/src/test/resources/snapshots/cards/SHM.json",
+          "frozen_expected_sha256": "bd54ea40b29985e202f1b8622cf5dcef83e71dbde6db6f71007fe954275b3b1b",
+          "candidate_sha256": "bf1704ac3e91089247644ed0df5a990fcd55e7a8da79467731291c202eac0fad",
+          "origin": "accepted_shared",
+          "accepted_shared_ref": "95fc01aa merged PR210; independently accepted full compatibility matrix efbde021, supplemental source5e0afe1f/run36304391327"
+        },
+        {
+          "path": "mtg-sets/src/test/resources/snapshots/cards/THS.json",
+          "frozen_expected_sha256": "8cd0c2797a4258e42b5ed86d6e1345cc2c0cb69fd70d26ba8256fff5375aaa42",
+          "candidate_sha256": "e971c568a871e1948579ec8132af774f60e4d6dde1b316cdac7206410748ceb6",
+          "origin": "reviewed_disjoint_composition",
+          "composition_ref": "a333dc1e:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/pr210-main-composition-r1.json",
+          "block_audit": {
+            "manual_added": [
+              "Purphoros, God of the Forge"
+            ],
+            "shared_added": [
+              "Burnished Hart"
+            ],
+            "joint_changes": [],
+            "mismatches": []
+          }
+        }
+      ],
+      "stage_index_ref": "clean-main-guard-detailed-stage-index.json",
+      "stage_count": 10,
+      "expected_cases": 371
+    },
+    {
+      "domain": "postboard_b",
+      "frozen_manifest": "docs/experiments/pest-control/tier-one-postboard-support-batch-b-shared-receiving-sources.json",
+      "frozen_manifest_sha256": "1b8d3bd9fd30e7e28def7e0c2bb77e243ce33d0792ebfa31664dcc5c8ad6ca19",
+      "pin_count": 36,
+      "declared_deltas": [
+        {
+          "path": "mtg-sets/src/test/resources/snapshots/cards/ICE.json",
+          "frozen_expected_sha256": "dd05c266d119537bd89d0454b2014f2ddd3888e90060ced4c5254ae497a1911f",
+          "candidate_sha256": "549318e94de2ee1c5ceb80a6b9548f425a4ccd13c30ab33e49a483f8fce4b92c",
+          "origin": "accepted_shared",
+          "accepted_shared_ref": "95fc01aa merged PR210; independently accepted full compatibility matrix efbde021, supplemental source5e0afe1f/run36304391327"
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt",
+          "frozen_expected_sha256": "4332fa35b5cb92292cdf66ab967e187b64cc81c7ae53545d2eda8b81a3d84e86",
+          "candidate_sha256": "65a9a76abbdc743787a861d07e8f0bc59d1d73777bf539fba2e7d9ee187c2cde",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "TriggerDetector, TriggerMatcher, PredicateEvaluator, CostCalculator",
+            "finding": "HasCardType and IsSnow leaf support added without replacing existing leaves; live predicates use projected types, LKI/cast records use captured type lines.",
+            "causal_bank": null,
+            "remaining_evidence": "Original fullCI FixedCardTypePredicateTest12 XML independently indexed; no universal predicate or snow/cost support inferred from bounded receiving."
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+          "frozen_expected_sha256": "cc64a43fb77f688624be550d07c8aa96baddd5bbe9a4d1727b166110f0e3f6ed",
+          "candidate_sha256": "6442ad13736594e9539060589154d5c84a421d106775044f5a31ef34025e09d1",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ZoneTransitionService, StackResolver, CreateTokenExecutor, TokenCreationReplacementHelper",
+            "finding": "Pre-placement state now feeds entry tap/untap evaluation instead of eventual entered-state aggregates; attacking/tapped choices otherwise retained.",
+            "causal_bank": "BattlefieldEntryProjectionTest6, SelfEntersTappedOffStackEntryScenarioTest11, Purphoros25 and token-copy fixtures in accepted96; unchanged token20 required on composed receiver.",
+            "remaining_evidence": null
+          }
+        }
+      ],
+      "stage_index_ref": "clean-main-guard-detailed-stage-index.json",
+      "stage_count": 11,
+      "expected_cases": 397
+    },
+    {
+      "domain": "priority",
+      "frozen_manifest": "lab-coordinator/shared-capabilities/priority-receiving-sources.json",
+      "frozen_manifest_sha256": "235cbb5790e59fe7f4d634542b16efcf59ddfb56721a18e948024618e2d4e957",
+      "pin_count": 250,
+      "declared_deltas": [
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+          "frozen_expected_sha256": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1",
+          "candidate_sha256": "3afa085c67355cfb63e2c1758149ac53196cdfdc1fbb6dfebe62b3dd6f5856c1",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "GameEvent, TriggerMatcher",
+            "finding": "Optional entrySnapshot preserves captured entry characteristics and controller against later state; departing objects continue LKI handling. Unknown predicates are not converted into positive matches by negation.",
+            "causal_bank": "BattlefieldEntrySnapshotTest11 in independently accepted exact452 receiving96.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+          "frozen_expected_sha256": "1e87d845aa1f284838bb6bea6cc6281f626e887e21f626fe302fe47eadeffdd4",
+          "candidate_sha256": "79daf6a2a45f58740388afe6cf17ac50608cf6f919054a07dbc3e676a1785d40",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ModalAndCloneContinuations, CoreAutoResumerModule, ModalAndCloneContinuationResumer, AuraTokenHostChooser, CreateTokenCopyOfTargetExecutor",
+            "finding": "Original beforeEntry checkpoint threads through copy/Aura continuation siblings; stripped executable frames are observation-only, live state remains execution state.",
+            "causal_bank": "TokenBatchEntryHistoryTest4 in accepted96: target/source/Aura serialized siblings and rejected absent checkpoint.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+          "frozen_expected_sha256": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4",
+          "candidate_sha256": "850125a611fd414d2aaf8dd68aaf628a3ff74a6b961ee9d074e7c10496290202",
+          "origin": "accepted_shared",
+          "accepted_shared_ref": "95fc01aa merged PR210; independently accepted full compatibility matrix efbde021, supplemental source5e0afe1f/run36304391327"
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+          "frozen_expected_sha256": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623",
+          "candidate_sha256": "57be760a6d451b07af762ecd40dd8abf9583f7c2adefdba50893ac2419c7c90e",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "TriggerDetector, TriggerMatcher, PredicateEvaluator, CostCalculator",
+            "finding": "HasCardType and IsSnow leaf support added without replacing existing leaves; live predicates use projected types, LKI/cast records use captured type lines.",
+            "causal_bank": null,
+            "remaining_evidence": "Original fullCI FixedCardTypePredicateTest12 XML independently indexed; no universal predicate or snow/cost support inferred from bounded receiving."
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+          "frozen_expected_sha256": "1401491fe5292ec746fd991fbcd89fe82914d1e07428bdae0487ed0487e0e517",
+          "candidate_sha256": "5c52485def4e572764580a507acf9365fa416a5abea43fb82208b7232d5f55cf",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "GameEvent, TriggerMatcher",
+            "finding": "Optional entrySnapshot preserves captured entry characteristics and controller against later state; departing objects continue LKI handling. Unknown predicates are not converted into positive matches by negation.",
+            "causal_bank": "BattlefieldEntrySnapshotTest11 in independently accepted exact452 receiving96.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+          "frozen_expected_sha256": "ab14c3d79c6bf842313b948af585642b80b96d40834925af5cfa75fda084c155",
+          "candidate_sha256": "a0302465cf32d461a3e6793cfc47408b7c19a040320b7da8db9f67d95d3103b7",
+          "origin": "accepted_shared",
+          "accepted_shared_ref": "95fc01aa merged PR210; independently accepted full compatibility matrix efbde021, supplemental source5e0afe1f/run36304391327"
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt",
+          "frozen_expected_sha256": "4332fa35b5cb92292cdf66ab967e187b64cc81c7ae53545d2eda8b81a3d84e86",
+          "candidate_sha256": "65a9a76abbdc743787a861d07e8f0bc59d1d73777bf539fba2e7d9ee187c2cde",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "TriggerDetector, TriggerMatcher, PredicateEvaluator, CostCalculator",
+            "finding": "HasCardType and IsSnow leaf support added without replacing existing leaves; live predicates use projected types, LKI/cast records use captured type lines.",
+            "causal_bank": null,
+            "remaining_evidence": "Original fullCI FixedCardTypePredicateTest12 XML independently indexed; no universal predicate or snow/cost support inferred from bounded receiving."
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+          "frozen_expected_sha256": "c0c50de6b7384bbf8e1e890e6aafe6733824e4f9a3c0e1b41fbacc20b9ca5529",
+          "candidate_sha256": "e9a4d97c63cf6e7940a0a3e7d39f86eba054b89e464c44f3cb708f3f3038e5ef",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "CastSpellHandler",
+            "finding": "Land rejection follows effective selected spell-face resolution; earlier morph/disguise branch remains separate.",
+            "causal_bank": "ManualTransmissionLandSpellGuardScenarioTest and TownLandSpellAdventureScenarioTest in accepted540.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt",
+          "frozen_expected_sha256": "d191e92ce6bf2c27d33f5ae9f80ff2b7ce8b0d94aa6493887c9739faea9292b3",
+          "candidate_sha256": "2b69ea7a88b45747fc760b1a8964249d8fb8f69c7370a3df1c0a61d5b75bc225",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ModalAndCloneContinuations, CoreAutoResumerModule, ModalAndCloneContinuationResumer, AuraTokenHostChooser, CreateTokenCopyOfTargetExecutor",
+            "finding": "Original beforeEntry checkpoint threads through copy/Aura continuation siblings; stripped executable frames are observation-only, live state remains execution state.",
+            "causal_bank": "TokenBatchEntryHistoryTest4 in accepted96: target/source/Aura serialized siblings and rejected absent checkpoint.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+          "frozen_expected_sha256": "7d546e8c590c9dbc541c50cd43cfd7436354a4b7be6108a882176cb0d3131190",
+          "candidate_sha256": "44d762907ef10f2efc7ef72d0f704b252ad7099ba9e65673d888d373273da9b7",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ModalAndCloneContinuations, CoreAutoResumerModule, ModalAndCloneContinuationResumer, AuraTokenHostChooser, CreateTokenCopyOfTargetExecutor",
+            "finding": "Original beforeEntry checkpoint threads through copy/Aura continuation siblings; stripped executable frames are observation-only, live state remains execution state.",
+            "causal_bank": "TokenBatchEntryHistoryTest4 in accepted96: target/source/Aura serialized siblings and rejected absent checkpoint.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+          "frozen_expected_sha256": "0b6b44e9598e10c86222f455c9fe3c6e13d6fdcdc75809bf0d88f343310ac4e7",
+          "candidate_sha256": "dd9d1ce6dc44731eb3cbf93fd5045c9cdd2a2316f3b5ab0fe1656a6db38597ae",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ZoneTransitionService, StackResolver, CreateTokenExecutor, TokenCreationReplacementHelper",
+            "finding": "Pre-placement state now feeds entry tap/untap evaluation instead of eventual entered-state aggregates; attacking/tapped choices otherwise retained.",
+            "causal_bank": "BattlefieldEntryProjectionTest6, SelfEntersTappedOffStackEntryScenarioTest11, Purphoros25 and token-copy fixtures in accepted96; unchanged token20 required on composed receiver.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/AuraTokenHostChooser.kt",
+          "frozen_expected_sha256": "1b4fcd1247790211b7d5aa48b0288babbd3724703348b0089c674d90e7c9321d",
+          "candidate_sha256": "8cb52ffcb8d37826e1ddd91f928e491f5b080ffe10f092056bf7340ef384fe25",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ModalAndCloneContinuations, CoreAutoResumerModule, ModalAndCloneContinuationResumer, AuraTokenHostChooser, CreateTokenCopyOfTargetExecutor",
+            "finding": "Original beforeEntry checkpoint threads through copy/Aura continuation siblings; stripped executable frames are observation-only, live state remains execution state.",
+            "causal_bank": "TokenBatchEntryHistoryTest4 in accepted96: target/source/Aura serialized siblings and rejected absent checkpoint.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt",
+          "frozen_expected_sha256": "21e171a049be9b361df00fd8ddceb4638b82dcd3549a16cfc994e434cdc66f38",
+          "candidate_sha256": "69f0721ceef29500768d87c90a50b41b23f591ca02c889f1ed3028887d26a893",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ModalAndCloneContinuations, CoreAutoResumerModule, ModalAndCloneContinuationResumer, AuraTokenHostChooser, CreateTokenCopyOfTargetExecutor",
+            "finding": "Original beforeEntry checkpoint threads through copy/Aura continuation siblings; stripped executable frames are observation-only, live state remains execution state.",
+            "causal_bank": "TokenBatchEntryHistoryTest4 in accepted96: target/source/Aura serialized siblings and rejected absent checkpoint.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt",
+          "frozen_expected_sha256": "73b714ca3613e9b31c1c6d749e2a481a045c9087f0d05b2f18d6dd1abd8dd6d1",
+          "candidate_sha256": "46cf44d673c2ee104de4eee2b3d93bab8376f60f23d3d2981fd2db0ddae240d6",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ZoneTransitionService, StackResolver, CreateTokenExecutor, TokenCreationReplacementHelper",
+            "finding": "Pre-placement state now feeds entry tap/untap evaluation instead of eventual entered-state aggregates; attacking/tapped choices otherwise retained.",
+            "causal_bank": "BattlefieldEntryProjectionTest6, SelfEntersTappedOffStackEntryScenarioTest11, Purphoros25 and token-copy fixtures in accepted96; unchanged token20 required on composed receiver.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt",
+          "frozen_expected_sha256": "cbcd4b4cf9d8a47c38babd9bb2bb4623f7c5cd77be6e4f53b825a9da1062aa1a",
+          "candidate_sha256": "332894e7cc3727026129cd04b53fcc9319a6f15ae3a8ca5fa4c54ccc52bffa16",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "ZoneTransitionService, StackResolver, CreateTokenExecutor, TokenCreationReplacementHelper",
+            "finding": "Pre-placement state now feeds entry tap/untap evaluation instead of eventual entered-state aggregates; attacking/tapped choices otherwise retained.",
+            "causal_bank": "BattlefieldEntryProjectionTest6, SelfEntersTappedOffStackEntryScenarioTest11, Purphoros25 and token-copy fixtures in accepted96; unchanged token20 required on composed receiver.",
+            "remaining_evidence": null
+          }
+        },
+        {
+          "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt",
+          "frozen_expected_sha256": "a9b6ba64f35215840ab117c0a11527526f903687d0b326925fa05d7f8be540ac",
+          "candidate_sha256": "14a1c9bbc3f3bee808e1714c82f2b2e21222a9ccac8e3832dbb9b64a1ff2bce1",
+          "origin": "reviewed_manual",
+          "causal_review": {
+            "review_ref": "6a22991a:experiments/manual-transmission-phase2/evidence/main-receiving-20260927/independent-compatibility-semantic-review.json",
+            "files_group": "TriggerDetector, TriggerMatcher, PredicateEvaluator, CostCalculator",
+            "finding": "HasCardType and IsSnow leaf support added without replacing existing leaves; live predicates use projected types, LKI/cast records use captured type lines.",
+            "causal_bank": null,
+            "remaining_evidence": "Original fullCI FixedCardTypePredicateTest12 XML independently indexed; no universal predicate or snow/cost support inferred from bounded receiving."
+          }
+        }
+      ],
+      "stage_index_ref": "clean-main-guard-detailed-stage-index.json",
+      "stage_count": 27,
+      "expected_cases": 220
+    }
+  ],
+  "manual_prior_receipts": {
+    "semantic_review": "6a22991a independent review is bounded design and causal mapping, not later runtime equivalence",
+    "source_equivalence": "6a22991a scoped adoption only to 2e112, not a333/83; new exact-source CI receiving shown here",
+    "original_index": "9f5b0726 original42classes/636 selected, causal96/540 retain separate original scopes",
+    "composed_receiving": "44c0be8b run36306157237 original10927361833 independent136 fresh",
+    "clean_capability": "83f78b4b run36328394098 original artifacts10935091312/10934468719 independent35classes540 fresh",
+    "clean_ci": "36328394171 original 17,641 entries, 53 skip, 146 cached passes; source-bound mapped banks all fresh"
+  },
+  "priority_rules_and_metadata": {
+    "rules_sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+    "rules_bytes": 977752,
+    "effective_date": "2026-09-25",
+    "source_audit_run": 36328394098,
+    "preserved_frozen_manifest_hashes": [
+      {
+        "path": "docs/experiments/pest-control/tier-one-postboard-engine-priority-shared-receiving-sources.json",
+        "sha256": "909a6134b7fb3f87abb793051e474febcdf19640a1c6b4e5033f5c37e1fbcfa3"
+      },
+      {
+        "path": "docs/experiments/pest-control/tier-one-postboard-engine-priority-sources.json",
+        "sha256": "dec18c6039d52df801f0ae32d0026f018d307f2fa449ca4a5f28c21b82634850"
+      },
+      {
+        "path": "docs/engine-priority-after-resolution-sources.json",
+        "sha256": "c77208379a7d4149fc9ce52212b2725d0663088a5f399780447304e9f0554251"
+      }
+    ],
+    "stage_count_authority": {
+      "path": "docs/experiments/pest-control/postboard-closure-evidence/remote-36247914108/audit-10907958672.json",
+      "sha256": "8425e86c1eb0dd4ad28d83301def3861e4a2214edcea08f0185168fe7025cf0d",
+      "scope": "Original 27 stages and 220 actual case counts only; no historical source acceptance transferred."
+    }
+  },
+  "nonduplication": "Postboard A/B share some classes; group case totals overlap. All receipt sums are per bank, never interpreted as unique independent games or additional tests.",
+  "no_authority": [
+    "Original failed guards cannot be reclassified.",
+    "Adoption is only exact-source supplemental receiving, no frozen manifest changes.",
+    "Manual pilots/replay/durable collector and independent capability admission remain; capability0/36 primary0/864.",
+    "No Pest C2/A2 or official seed/game authority."
+  ]
+}
