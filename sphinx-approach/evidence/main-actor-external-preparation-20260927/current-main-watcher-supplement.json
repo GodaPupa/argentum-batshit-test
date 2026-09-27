@@ -1,0 +1,706 @@
+{
+  "schema": "sphinx-external-control-current-main-watcher-supplement/v1",
+  "at_utc": "2026-09-27 03:01:53 UTC",
+  "reviewer": "/root/ferocity; factual source/event supplement, not independent control-author acceptance",
+  "current_main": "98dfe2b41cebcdb37565504887a8af233c60bf90",
+  "current_tree": "257f3396088e0969cee847f45d979659c176cb57",
+  "prior_main": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+  "complete_diff": [
+    "lab-coordinator/CURRENT_STATUS.md",
+    "lab-coordinator/NEXT_CHAT_HANDOFF.md"
+  ],
+  "github_tree_equal": "35cfd2ad7a79fe94f65259a2db90a781083fd2e7",
+  "full_body_Git_hash_checks": [
+    {
+      "path": ".github/workflows/argentum-test.yml",
+      "bytes": 1014,
+      "git_blob_sha1": "afae38832e76f886fec8f2a52eab2e6bc2378e9b",
+      "events": [
+        "workflow_dispatch",
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/attacking-token-defender-qualification.yml",
+      "bytes": 8710,
+      "git_blob_sha1": "110b8157b83edd04121611ea635f2da35661fcff",
+      "events": [
+        "push",
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/batshit-grixis-affinity-regression-replay.yml",
+      "bytes": 1997,
+      "git_blob_sha1": "b2bcbb3ef01019fafbc5b906b346023b66ff9383",
+      "events": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/batshit-grixis-policy-focused.yml",
+      "bytes": 843,
+      "git_blob_sha1": "5f035d75dc44d36676272624e83268f086d30c2d",
+      "events": [
+        "push",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/batshit-preboard-smoke.yml",
+      "bytes": 1116,
+      "git_blob_sha1": "8674b0659b6b90d3ab27645cdfbdc1d6e0ee61bf",
+      "events": [
+        "workflow_dispatch",
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/ci.yml",
+      "bytes": 10789,
+      "git_blob_sha1": "dbf5723efa463b87c94c1a1ea23c08d641c13e3a",
+      "events": [
+        "push",
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/deploy.yml",
+      "bytes": 3945,
+      "git_blob_sha1": "791ef4da0c6d862a3fcb37fca45f838aab4123a9",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/e2e-nightly.yml",
+      "bytes": 1488,
+      "git_blob_sha1": "a88257e93782b13f5f49fade7f9efa32e8218902",
+      "events": [
+        "schedule",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/engine-priority-after-resolution.yml",
+      "bytes": 10922,
+      "git_blob_sha1": "23de6ee2260e1761002d6b4b1c8f4e3fcc6c47a3",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/face-value-edh-r1-a-validation.yml",
+      "bytes": 525,
+      "git_blob_sha1": "4c8d3183078cdd1f7617ccdff8f4cd438f04d0c0",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/izzet-snapshot-rebless.yml",
+      "bytes": 1301,
+      "git_blob_sha1": "edf3c44b115e59fef4f36d08122ee14bbb5d6b4f",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/manual-transmission-elasticity.yml",
+      "bytes": 3569,
+      "git_blob_sha1": "6e975abdb3f9a515a1a03fa7581cc5e0744cecd7",
+      "events": [
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/manual-transmission-final-race-policy.yml",
+      "bytes": 925,
+      "git_blob_sha1": "84e945f2d5ccbf33de7a73dddf7ddc0deb0c7e82",
+      "events": [
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/manual-transmission.yml",
+      "bytes": 14410,
+      "git_blob_sha1": "a2bd03c4aeb62f51d4eba75d25610b704d69572d",
+      "events": [
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-admission-gate.yml",
+      "bytes": 982,
+      "git_blob_sha1": "f1dc3d744493c757c7d9d4f6a9cb2db23b6ae398",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-composed-validate.yml",
+      "bytes": 2413,
+      "git_blob_sha1": "a151f0023ab7836d3c8beafc2a08519a78e1069c",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-disabled-durability.yml",
+      "bytes": 1155,
+      "git_blob_sha1": "78e4c2b8c31e32217cb6c06a66b0e24deff71c53",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-disabled-runner.yml",
+      "bytes": 1140,
+      "git_blob_sha1": "088f344a2a5324242bdca8c2a268c680dafd037e",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute-v2.yml",
+      "bytes": 5458,
+      "git_blob_sha1": "3acfc524c1571ce9d3a69f77fd2f79c5ee0c59ce",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute-v3.yml",
+      "bytes": 4842,
+      "git_blob_sha1": "1046f8f3b3d5da2ae4543fe1b3b0c4373ac2cef1",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute-v4.yml",
+      "bytes": 4903,
+      "git_blob_sha1": "67f95415c7dd5de5af11125285ff45aa15003b47",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute-v5.yml",
+      "bytes": 4630,
+      "git_blob_sha1": "9dc92dbba28a0da268a5381d84760f32df5e6ce1",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute-v6.yml",
+      "bytes": 3960,
+      "git_blob_sha1": "4bf0f0988b77684b1c5d4716a6739e8d34b01786",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-execute.yml",
+      "bytes": 5057,
+      "git_blob_sha1": "fc152055789e6f8600eb6c64b720a87b1a669bdf",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-final-readiness.yml",
+      "bytes": 878,
+      "git_blob_sha1": "7ee46ccfee75afb4048e38ade7881ed56de09b73",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-official-loader-validate.yml",
+      "bytes": 1404,
+      "git_blob_sha1": "338d67afe95e23518571f7c0da07403dc9aaf06f",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-opaque-plan.yml",
+      "bytes": 852,
+      "git_blob_sha1": "310c3810e5571d65ce2c024d69b0c9a0337aa8fa",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-replication-artifact-validate.yml",
+      "bytes": 1859,
+      "git_blob_sha1": "1c50eb12460df3942dc3eb248f49202032117792",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-replication-execute.yml",
+      "bytes": 617,
+      "git_blob_sha1": "a593c8d22d495f8f263b9cb0bf9697322b61ae18",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-replication-freeze.yml",
+      "bytes": 3030,
+      "git_blob_sha1": "b27f52c3bed83d64957b1a06db1d8b83ba973b95",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-replication-production-freeze.yml",
+      "bytes": 606,
+      "git_blob_sha1": "e3b1e8f98d884940e8cc1b6234cf07a90b00ff25",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-salvage-11-artifact-validate.yml",
+      "bytes": 1906,
+      "git_blob_sha1": "a7cc6e303c4512e5a5d2ba6c4b2a610fe2a251ac",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-salvage-11-execute.yml",
+      "bytes": 631,
+      "git_blob_sha1": "d9ca022be1888f78d8a4fa8cda157974d885a530",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-grixis-smoke-freeze.yml",
+      "bytes": 1195,
+      "git_blob_sha1": "0201c763f3f7874e10c4141dd79b0718e24c9dc0",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-composed-validate.yml",
+      "bytes": 2579,
+      "git_blob_sha1": "0a9d80ee72d29ff1f9340faf736794d0d1738f53",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-official-execute.yml",
+      "bytes": 1821,
+      "git_blob_sha1": "84a1156452256333420b9d958373d8b24ca673d9",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-replication-artifact-validate.yml",
+      "bytes": 2309,
+      "git_blob_sha1": "294725de450e2107e8b5d7d9bf0d8999a96daa6d",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-replication-execution-stack-validate.yml",
+      "bytes": 1244,
+      "git_blob_sha1": "1756eff3f0771087636066df542cfe2caca9b84b",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-replication-freeze.yml",
+      "bytes": 4034,
+      "git_blob_sha1": "10472be5d659888a1dac221850cd0ed74a9ca2cf",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-replication-official-execute.yml",
+      "bytes": 2011,
+      "git_blob_sha1": "4ec5a5ce13431b9dbd96f08c52e823ee045a40de",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-replication-production-freeze.yml",
+      "bytes": 2261,
+      "git_blob_sha1": "06b29e68d8a55786d122cff73902566768f8589f",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-mono-blue-terror-smoke-freeze.yml",
+      "bytes": 2398,
+      "git_blob_sha1": "0a3b78357556fadf33f7a405f6805f77638cb6de",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-admission.yml",
+      "bytes": 1327,
+      "git_blob_sha1": "291ae9ad53d0f00ef42619190ced26b448e51b62",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-cascade.yml",
+      "bytes": 2158,
+      "git_blob_sha1": "43855020afd2c978af194946dd6b35ed65142035",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-execution-authorization.yml",
+      "bytes": 1652,
+      "git_blob_sha1": "d546ff1ca7bb2187c35b28527cde4c234b079f52",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml",
+      "bytes": 9775,
+      "git_blob_sha1": "6ac5a9e7822bec4c2fe9965d815e1bca6dfb8ae4",
+      "events": [
+        "workflow_dispatch",
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-one-shot-construction.yml",
+      "bytes": 4454,
+      "git_blob_sha1": "0b49353de002afba7cd35f2bff34400b2d071dcd",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-operational-stack.yml",
+      "bytes": 3609,
+      "git_blob_sha1": "1a992feb584eb3e76fea1bcea4e0c22bc4b3604e",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-policy.yml",
+      "bytes": 2224,
+      "git_blob_sha1": "7ab8b646fdb8697fd998d84e9e0af620673baf6c",
+      "events": [
+        "push",
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-prototype.yml",
+      "bytes": 3561,
+      "git_blob_sha1": "7fb1abe4f46a55fb69d8970ea83f5ed04f418288",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-readiness.yml",
+      "bytes": 1326,
+      "git_blob_sha1": "e2150e8b8a53716382fd76e042835eb28d5d0ebd",
+      "events": [
+        "push",
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-runner-construction.yml",
+      "bytes": 1308,
+      "git_blob_sha1": "f9bea79f1aa9beb6dff5e546d2cb3d30d7794f22",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-runner-preflight.yml",
+      "bytes": 1918,
+      "git_blob_sha1": "3a3f8362a3b75ddaa150eb578aeb7f67e8d0c598",
+      "events": [
+        "push",
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-smoke-freeze.yml",
+      "bytes": 6525,
+      "git_blob_sha1": "4229e14461e88903cf076f6c6e2c5b6660b1b1fe",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-smoke-production-freeze.yml",
+      "bytes": 3966,
+      "git_blob_sha1": "259889bcc69f52866ad27b2d412f58a7cde27120",
+      "events": [
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-monster-tron-support-closure.yml",
+      "bytes": 2400,
+      "git_blob_sha1": "05858247d6053a042b5b33da8bee42c6df57ef80",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-faerie-macabre.yml",
+      "bytes": 3973,
+      "git_blob_sha1": "d1602fbecf6c9a6ae04ec800280952ffe7897202",
+      "events": [
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-flashback-batch.yml",
+      "bytes": 6034,
+      "git_blob_sha1": "b254508cba25d2fa36679279342c5067f46828a8",
+      "events": [
+        "push",
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-jack-o-lantern.yml",
+      "bytes": 1768,
+      "git_blob_sha1": "ee3748bf79807d05b61363d1edaaae21ba58c4cf",
+      "events": [
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-kaerveks-torch.yml",
+      "bytes": 2533,
+      "git_blob_sha1": "caef49fb7010a9f8bf9adf4899b6c46b0b22fa59",
+      "events": [
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-relic.yml",
+      "bytes": 1721,
+      "git_blob_sha1": "b3d67e0d2f8f4e23113f291e4a3972586011b31d",
+      "events": [
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-spreading-seas.yml",
+      "bytes": 1766,
+      "git_blob_sha1": "02d209afa937bf3fee1a8e19a3bd6f2769953537",
+      "events": [
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-support-audit.yml",
+      "bytes": 1117,
+      "git_blob_sha1": "cda52da332cdfe8a171e7b1e5cf52a441cd18f12",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-support-batch-a.yml",
+      "bytes": 8098,
+      "git_blob_sha1": "6dd6fa46e7a06ca59044239b15884e1795f3f327",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-support-batch-b.yml",
+      "bytes": 8533,
+      "git_blob_sha1": "7464175332e1573903f1dfbd03335572bd6f0224",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-postboard-support-closure.yml",
+      "bytes": 5275,
+      "git_blob_sha1": "3ecfb967935e2f117b5da790a3445ad54b68cb5e",
+      "events": [
+        "push",
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-spy-admission.yml",
+      "bytes": 1193,
+      "git_blob_sha1": "1e545a01e5ce1ca2f3f4e0fb61f87c4db262e5e6",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-spy-support-batch-a.yml",
+      "bytes": 2124,
+      "git_blob_sha1": "638cd6603f55a1c2162fc638fcabcf0c4fdd547d",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-spy-support-batch-b.yml",
+      "bytes": 3428,
+      "git_blob_sha1": "7edf8456f57f5c8667744dd96326f01c725d15b2",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-tier-one-spy-support-batch-c.yml",
+      "bytes": 3794,
+      "git_blob_sha1": "3f5f6b369c315668e90df71637e9b24c190c58c4",
+      "events": [
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-execute.yml",
+      "bytes": 4480,
+      "git_blob_sha1": "5c1fed144431fba7464c3533ad5fb2083ad686af",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-freeze.yml",
+      "bytes": 943,
+      "git_blob_sha1": "87eae213412d4e6b5d94d7fab0de36f6b278ef00",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-qualification-execute.yml",
+      "bytes": 8240,
+      "git_blob_sha1": "706fc0a18d70b6b9b7d5cd2209373b8c9a69942e",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-qualification-freeze.yml",
+      "bytes": 2949,
+      "git_blob_sha1": "65bac07c2aeab2319130949fd9008f6b17c7a150",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-qualification-runner-validate.yml",
+      "bytes": 2951,
+      "git_blob_sha1": "03aa94903f443961a7073d4f20cd69330659967e",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-qualification-validate.yml",
+      "bytes": 3022,
+      "git_blob_sha1": "6abd8a75473c157c31c3cfb9bd62b1ea96ae286a",
+      "events": [
+        "pull_request",
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/pest-control-v2-smoke.yml",
+      "bytes": 934,
+      "git_blob_sha1": "62d1e3cdf6f257977dc004facf0fc8250e580a73",
+      "events": [
+        "workflow_dispatch"
+      ]
+    },
+    {
+      "path": ".github/workflows/shared-cast-observer-source-qualification.yml",
+      "bytes": 13634,
+      "git_blob_sha1": "3a87421538be64be3feb37c01a61f5664089b5d9",
+      "events": [
+        "push"
+      ]
+    },
+    {
+      "path": ".github/workflows/shared-current-combat-qualification.yml",
+      "bytes": 6625,
+      "git_blob_sha1": "c7f35a30f53e6161c36d176e99ba1f9f2d902c43",
+      "events": [
+        "push",
+        "pull_request"
+      ]
+    },
+    {
+      "path": ".github/workflows/shared-postblock-source-qualification.yml",
+      "bytes": 13402,
+      "git_blob_sha1": "6421a5ce32b11aba693148c1d404ffd9bbc0effa",
+      "events": [
+        "pull_request",
+        "push"
+      ]
+    }
+  ],
+  "workflow_run_watchers": [],
+  "workflow_call_watchers": [],
+  "events": [
+    "workflow_dispatch",
+    "push",
+    "pull_request",
+    "schedule"
+  ],
+  "new_control_branch_events": 0,
+  "recent_runs_since_utc": "2026-09-27T02:20:00Z",
+  "recent_runs_count": 11,
+  "recent_run_pages_complete": true,
+  "open_pr_count": 34,
+  "external_pilot_scope": {
+    "commit": "8874b62b2e05c36f02a65a3f35ca1f7901f6eb6c",
+    "tree": "914f236e1fea8583eda9a769db7a8d449a9cdab2",
+    "parent": "0d2924826be58a1fbe91953230fb035f49496557",
+    "committed_at": "2026-09-27T02:53:55Z",
+    "changed_files": [
+      {
+        "path": "sphinx-approach/STAGE_E_WHOLE_PILOT_PROSPECTIVE_SCOPE.json",
+        "status": "added",
+        "git_blob_sha1": "89a343e35be4b5ed4be6aa41dfab2fc739ee48b5"
+      }
+    ],
+    "runs": 0,
+    "ownership": "Not created by current root/Sphinx worker; preserve as external/preexisting, do not adopt or cancel."
+  },
+  "interpretation": "Prepared0377/tree062e remains exact historical-main22cf/ff34 software qualification. Newmain coordinator-doc bytes do not amend that source or create gameplay authority. Current-main receiving/required-check and merge disposition remain separate.",
+  "control_source_changes": 0,
+  "ref_or_event_created": false,
+  "official_games": 0
+}
