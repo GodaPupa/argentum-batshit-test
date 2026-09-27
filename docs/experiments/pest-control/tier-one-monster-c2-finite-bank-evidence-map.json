@@ -184,13 +184,20 @@
       "behavioral_artifact_sha256": "6ad35ae00bf1019e5ab839a9286adf540019ce5a719a515284012db0c1c0332f"
     },
     "P03_05_P04_01_Ent_typecycle": {
-      "status": "PROSPECTIVE_STATIC_PREFLIGHT_ONLY_NO_BEHAVIORAL_DISPATCH",
+      "status": "STATIC_PREFLIGHT_AUTHOR_AUDITED_BEHAVIORAL_RUN_PROSPECTIVE_NO_RECEIVING_ADMISSION",
       "fixture_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterEntTypecycleReceivingTest.kt",
       "fixture_blob": "3af410404a63957c20b6e31ac2a29c467aaec395",
       "preflight_workflow_path": ".github/workflows/pest-monster-c2-ent-typecycle-preflight.yml",
       "preflight_workflow_blob": "8d21163f32fd7c55d94b79af9b0a06f321eff9c6",
       "scope": "Two Monster seat placements: legal priority TypecycleCard, one-land payment/discard, current typed Forest offer projection and physical selected Forest to hand.",
-      "limitations": "No behavioral run, pilot policy selection/parity, complete P03-05 or P04-01, pair or gameplay admission."
+      "limitations": "No behavioral run, pilot policy selection/parity, complete P03-05 or P04-01, pair or gameplay admission.",
+      "preflight_run": 36357796467,
+      "preflight_artifact": 10943913840,
+      "preflight_audit": "docs/experiments/pest-control/evidence/c2-ent-preflight-36357796467-original-audit.json",
+      "preflight_artifact_sha256": "4ccc272d70a7e60bedfa80b2f44ab9e14c5f7f1b3b4e7aab6ffb8d30316e2dba",
+      "behavioral_workflow_path": ".github/workflows/pest-monster-c2-ent-typecycle-targeted.yml",
+      "behavioral_workflow_blob": "339a2cab50a1d800c9f5e1a1ddba372e24bd56d5",
+      "behavioral_status": "PROSPECTIVE_TWO_CASES_NOT_YET_EXECUTED"
     }
   },
   "missing": "Complete exact reachable action and decision variants for all frozen mains, both actor seats and starts, including non-search looks, other scry/surveil, alternative costs, payment, triggers/order, attack/block/post-block priority, response/pass, random/cascade separation, raw-policy parity and complete own/public pilots. Map every accepted shared case by exact identity. Existing scoped cases cannot be summed into admission.",
