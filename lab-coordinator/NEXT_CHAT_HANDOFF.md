@@ -7,3 +7,5 @@ Checkpoint: **2026-09-27, PR211 ownership corrected**. Read CURRENT_STATUS first
 3. **Independent action while validation waits:** finish Manual-only integration guards, Pest pair actor/inventory or another project receiver. No duplicate workflow launch or busy polling. Sphinx Ponder4 accepted only targeted; Industrial feasibility only; Ferocity calibration commands exhausted; Izzet scoped Opal3 accepted only evidence disposition, sequential payment unresolved.
 
 Preserve frozen protocols and amendments, original raw artifacts/reviews, source identities, attempted and retired reservations. Technical failures are INCOMPLETE rather than deck losses. Required project-specific compatibility and independent acceptance precede every official game. Update both files at the next milestone.
+
+Pest construction inventory branch `pest/c2-pair-receiving-inventory-20260927` head `d02c0ce3` is independently reviewed for construction only. Next convert five domains to exact source-bound reachable-choice enumeration, finite named cases/assertions and collector before a fixture; no acceptance or execution authority.
