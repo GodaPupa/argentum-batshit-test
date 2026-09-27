@@ -1,0 +1,63 @@
+{
+  "schema": "pr210-broad-content-failure-v2",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "pullRequest": 210,
+  "run": {
+    "id": 36293711687,
+    "attempt": 1,
+    "head": "caaf6f6c891ecfbbd1d3764b0b199d7a77c3aa70",
+    "syntheticMerge": "fdf17ec1f84b4fc797f495e25bd603585c71db1c",
+    "syntheticTree": "ac18cf79c254d612ec742bdbc00ccfaf087a1140",
+    "contentJobId": 108548524024,
+    "contentJobConclusion": "failure"
+  },
+  "artifact": {
+    "id": 10923765165,
+    "name": "ci-junit-content",
+    "path": "original-ci-junit-content.zip",
+    "bytes": 169425,
+    "sha256": "e6899e65598e85a17830246e4e73d2f22383fa734abf75bf597a735954aecbe0",
+    "gitBlob": "591db83233059d729622890bbae7253c48fc9621",
+    "crc": "clean",
+    "xmlMembers": 155
+  },
+  "jobLog": {
+    "path": "original-content-job.log",
+    "gitBlob": "4176b6f82e1870c74aeedb0ded02d53ec2c92900"
+  },
+  "failureSummary": {
+    "totalCases": 98,
+    "suites": [
+      {
+        "name": "CardDefinitionSnapshotTest",
+        "tests": 338,
+        "failures": 96,
+        "errors": 0,
+        "skipped": 0,
+        "reason": "Golden mismatch; exact structural difference remains to be collected and reviewed"
+      },
+      {
+        "name": "CardIntentAnalyzerTest",
+        "tests": 30,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "failedCase": "a basic-land tutor face is distinct from land typecycling"
+      },
+      {
+        "name": "PestControlAgentDecisionTest",
+        "tests": 86,
+        "failures": 1,
+        "errors": 0,
+        "skipped": 0,
+        "failedCase": "casts Sagu Wildling's Omen face for early mana development"
+      }
+    ],
+    "gradleTasks": [
+      ":mtg-sets:test",
+      ":ai:test"
+    ],
+    "buildConclusion": "failure"
+  },
+  "note": "Raw failure preserved before source repair or snapshot diagnosis. The original CI retained XML and logs but not fresh actual snapshots."
+}
