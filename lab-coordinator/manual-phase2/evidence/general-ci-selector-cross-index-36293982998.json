@@ -1,0 +1,665 @@
+{
+  "artifact_ids": [
+    10923855139,
+    10923671037,
+    10923651693,
+    10923641205,
+    10923097716,
+    10922879740,
+    10922868231
+  ],
+  "checkout_merge": "e62a3daa",
+  "disposition": "EXACT_CI_XML_SELECTOR_CROSS_INDEX_ONLY_NO_SOURCE_GUARD_OVERRIDE",
+  "group_sizes": {
+    "A": 10,
+    "B": 11,
+    "priority": 27
+  },
+  "limitations": [
+    "Original guard manifests remain source-bound and aborted before their own test step",
+    "CI XML proves tests occurred in general CI at a synthetic merge; task freshness and exact source comparisons require separate audit",
+    "Do not infer gameplay or capability admission"
+  ],
+  "run": 36293982998,
+  "run_head": "452faa13b460f5c998bb90ff1182ac416deb329c",
+  "selectors": [
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "AbundantMawScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.AbundantMawScenarioTest.xml",
+        "sha256": "f69f64fa1a2586ddb3c6efb08b2eb170c174564a2bbe9e6d216015bd8dddbc04",
+        "skipped": 0,
+        "tests": 2
+      }
+    },
+    {
+      "groups": [
+        "A",
+        "B"
+      ],
+      "selector": "CardDefinitionSnapshotTest",
+      "xml": {
+        "artifact": 10922868231,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+        "sha256": "a487adfe0c694e59e1850d693ff1681e700a6d5d6263480c41238afb2431d82f",
+        "skipped": 0,
+        "tests": 340
+      }
+    },
+    {
+      "groups": [
+        "A",
+        "B"
+      ],
+      "selector": "CardLintTest",
+      "xml": {
+        "artifact": 10922868231,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardLintTest.xml",
+        "sha256": "dbc382d7fc85271e31cd6d1065c7ddbbfc10f876cf758253982be7087264267f",
+        "skipped": 0,
+        "tests": 3
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "CastPrioritySbaTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CastPrioritySbaTest.xml",
+        "sha256": "f862bd0cd3e4b17b103a8e01e8d79aa0f24b2ee54c7ceff661e52943414302a1",
+        "skipped": 0,
+        "tests": 12
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "CastSpellEnumeratorModalAdditionalCostTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.CastSpellEnumeratorModalAdditionalCostTest.xml",
+        "sha256": "0308c97cf51241123952688f8596f2cbf391e481d0efe8a62eb218becbadd5f3",
+        "skipped": 0,
+        "tests": 2
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "CircleOfSolaceTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/2000-2002/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CircleOfSolaceTest.xml",
+        "sha256": "5c11da05ce1a188d588b99c7e46b4c4a276db1d7319bfa4f27591fab22a2a3da",
+        "skipped": 0,
+        "tests": 4
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "CleanupHandSizeDiscardDamageRemovalTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CleanupHandSizeDiscardDamageRemovalTest.xml",
+        "sha256": "0a1e667b8e6f8cd02d1f407324fee355ed81066f0ec46d87812d08f83d4a0988",
+        "skipped": 0,
+        "tests": 2
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "CommanderZoneChoiceCheckTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.sba.CommanderZoneChoiceCheckTest.xml",
+        "sha256": "e893ce69b828b4af7b1bf85b5e1569d2b4ad2a124ecb809ad0815c7fa65bc5a9",
+        "skipped": 0,
+        "tests": 17
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "ConditionalFlashGrantTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ConditionalFlashGrantTest.xml",
+        "sha256": "87207b713222d797c7018238a00b936a4c69f4db571b2b9c05d3250529aae69f",
+        "skipped": 0,
+        "tests": 9
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "ContinuationSystemTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ContinuationSystemTest.xml",
+        "sha256": "0406e6fad3ff18a22804d4f961cb55cf3f7869a74944375783807c2a4c436d93",
+        "skipped": 0,
+        "tests": 4
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "DeathTriggerTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DeathTriggerTest.xml",
+        "sha256": "d1ad7450cd357d9c127b917a5b977783fdffe354e482ac370bf1dd936135d20f",
+        "skipped": 0,
+        "tests": 4
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "DecisionResponderCompletedBranchTest",
+      "xml": {
+        "artifact": 10922868231,
+        "errors": 0,
+        "failures": 0,
+        "path": "ai/build/test-results/test/TEST-com.wingedsheep.ai.engine.DecisionResponderCompletedBranchTest.xml",
+        "sha256": "8902272980db31d0424eb6452e37ef0d52576317f3ae768e9a42c2affe177370",
+        "skipped": 0,
+        "tests": 7
+      }
+    },
+    {
+      "groups": [
+        "B"
+      ],
+      "selector": "FreeForAllLobbyTest",
+      "xml": {
+        "artifact": 10923641205,
+        "errors": 0,
+        "failures": 0,
+        "path": "game-server/build/test-results/test/TEST-com.wingedsheep.gameserver.FreeForAllLobbyTest.xml",
+        "sha256": "2d44ca97b3dc6e5afd196f829f830d72e869b82a860a73cd84679e650cb53208",
+        "skipped": 0,
+        "tests": 14
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "GrantNextSpellFreeCastTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.GrantNextSpellFreeCastTest.xml",
+        "sha256": "cf940951d18235b8aebbc701ab716c65d8f05f3d1b4c5c40094e8add3c29c08c",
+        "skipped": 0,
+        "tests": 8
+      }
+    },
+    {
+      "groups": [
+        "B"
+      ],
+      "selector": "GutShotScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.GutShotScenarioTest.xml",
+        "sha256": "ed4ac32c94cf8dc673b9c5d87eb4bc4e414723be8af66a8c11c7782e15cd01ef",
+        "skipped": 0,
+        "tests": 12
+      }
+    },
+    {
+      "groups": [
+        "B"
+      ],
+      "selector": "HydroblastScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/1993-1999/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.HydroblastScenarioTest.xml",
+        "sha256": "74a1e1a83409f7fbff7147db055bdd9f14713742b66914fbdc9ce6a537f4090c",
+        "skipped": 0,
+        "tests": 8
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "KrarksThumbScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/2003-2007/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.KrarksThumbScenarioTest.xml",
+        "sha256": "605d95918ffcca458bce26fc5591b9fa4f20607c587d303a5917ad07ecd238ac",
+        "skipped": 0,
+        "tests": 5
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "LeaveTheGameTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.LeaveTheGameTest.xml",
+        "sha256": "ec057d083c87e2078ea77e511736936c8b93183678bf02e5d8dbe9d374197dbb",
+        "skipped": 0,
+        "tests": 16
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "LegacySuspensionMigrationTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.state.LegacySuspensionMigrationTest.xml",
+        "sha256": "ccf5c174ea92e83ade977e66925598d6002db776ae534ec4551a9f463e170a12",
+        "skipped": 0,
+        "tests": 19
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "LegendRuleTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.LegendRuleTest.xml",
+        "sha256": "a2b12e3d529c5ef1449b0ec732d12e0bd051dc62c7357aaf6b7a73e957901434",
+        "skipped": 0,
+        "tests": 4
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "ModalPerModeAdditionalCostTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ModalPerModeAdditionalCostTest.xml",
+        "sha256": "f15ba8e3632da20488b3a5585257e6cf5f18cee79586c9ed84fcc759ec6eba34",
+        "skipped": 0,
+        "tests": 8
+      }
+    },
+    {
+      "groups": [
+        "A"
+      ],
+      "selector": "MurmuringMysticScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MurmuringMysticScenarioTest.xml",
+        "sha256": "b35ca408fab21be760a130ad4e9fbf19cba83fb6c9cbcdc9e4577dcd6c33de63",
+        "skipped": 0,
+        "tests": 5
+      }
+    },
+    {
+      "groups": [
+        "A"
+      ],
+      "selector": "NyleasDiscipleScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.NyleasDiscipleScenarioTest.xml",
+        "sha256": "65f75f0bd9abf5ae8490b030b526bdcbba8e36d811c9a0cd44dec87aa1df2085",
+        "skipped": 0,
+        "tests": 3
+      }
+    },
+    {
+      "groups": [
+        "A",
+        "B"
+      ],
+      "selector": "PestControlTierOneMonoBlueTerrorReadinessTest",
+      "xml": {
+        "artifact": 10923651693,
+        "errors": 0,
+        "failures": 0,
+        "path": "gym/build/test-results/test/TEST-com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReadinessTest.xml",
+        "sha256": "931082883a6ad74e349ed47bfeaa2ae89f87f51a574e6121b1b23f00c309ccba",
+        "skipped": 0,
+        "tests": 10
+      }
+    },
+    {
+      "groups": [
+        "A",
+        "B"
+      ],
+      "selector": "PestControlTierOnePostboardSupportAuditTest",
+      "xml": {
+        "artifact": 10923651693,
+        "errors": 0,
+        "failures": 0,
+        "path": "gym/build/test-results/test/TEST-com.wingedsheep.gym.PestControlTierOnePostboardSupportAuditTest.xml",
+        "sha256": "5a9602e2133dc9fe9b19326db6ef2886df2a84a18a1952012a88d1d5fe81f654",
+        "skipped": 0,
+        "tests": 1
+      }
+    },
+    {
+      "groups": [
+        "A",
+        "B"
+      ],
+      "selector": "PestControlTierOnePostboardSupportBatchATest",
+      "xml": {
+        "artifact": 10923651693,
+        "errors": 0,
+        "failures": 0,
+        "path": "gym/build/test-results/test/TEST-com.wingedsheep.gym.PestControlTierOnePostboardSupportBatchATest.xml",
+        "sha256": "7345d65995977364233090091cfffe6edcb473f9c5738046b10c49de4281e447",
+        "skipped": 0,
+        "tests": 1
+      }
+    },
+    {
+      "groups": [
+        "B"
+      ],
+      "selector": "PestControlTierOnePostboardSupportBatchBTest",
+      "xml": {
+        "artifact": 10923651693,
+        "errors": 0,
+        "failures": 0,
+        "path": "gym/build/test-results/test/TEST-com.wingedsheep.gym.PestControlTierOnePostboardSupportBatchBTest.xml",
+        "sha256": "70d57149fedff54ff9ee1aceb1b84e534f56d7df2adab709643b76813c46e50b",
+        "skipped": 0,
+        "tests": 1
+      }
+    },
+    {
+      "groups": [
+        "A",
+        "B"
+      ],
+      "selector": "PestControlTierOneSpyComboSupportBatchBTest",
+      "xml": {
+        "artifact": 10923651693,
+        "errors": 0,
+        "failures": 0,
+        "path": "gym/build/test-results/test/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchBTest.xml",
+        "sha256": "d67b444fb85c63a1b6ee2982acd46a0ddb042746ffb28d74c5b8eb5180be4785",
+        "skipped": 0,
+        "tests": 1
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "PrismariTheInspirationScenarioTest",
+      "xml": {
+        "artifact": 10923097716,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/2026/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PrismariTheInspirationScenarioTest.xml",
+        "sha256": "a2084de6c46c9988d81884c53f5ff7f42fc0551340afddaca607e37aca4b9ebb",
+        "skipped": 0,
+        "tests": 3
+      }
+    },
+    {
+      "groups": [
+        "B"
+      ],
+      "selector": "PyroblastScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/1993-1999/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PyroblastScenarioTest.xml",
+        "sha256": "9b53060904ebaac798e53576f40cad062ccd2dbac1670be062d9353aeba3d0ec",
+        "skipped": 0,
+        "tests": 8
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "RevealFromHandAdditionalCostTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RevealFromHandAdditionalCostTest.xml",
+        "sha256": "746bfe2ca90ff6561d0f83d55e043e602c7613d3c911d6c269991056d5722506",
+        "skipped": 0,
+        "tests": 10
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "ScarecrowScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/1993-1999/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ScarecrowScenarioTest.xml",
+        "sha256": "77a4ccfe9010814a2d8abb3090f726e88a703d2dec149725255b671bd3df1460",
+        "skipped": 0,
+        "tests": 4
+      }
+    },
+    {
+      "groups": [
+        "A"
+      ],
+      "selector": "SmashToSmithereensScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SmashToSmithereensScenarioTest.xml",
+        "sha256": "a233afef6c542d1f3ec1706b8abb758684b9d0a4457ee271a808a80cd915813d",
+        "skipped": 0,
+        "tests": 4
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "SpellQuellerScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SpellQuellerScenarioTest.xml",
+        "sha256": "a076abf2a524cf8be8f21cb5a89ea3b6b5e5b56c7e208e94c6ac93e12bb66ad0",
+        "skipped": 0,
+        "tests": 4
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "StackResolutionPriorityTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.StackResolutionPriorityTest.xml",
+        "sha256": "0bd4c76711d83d412348f0035b73956026806b653476bab14870ef979e73a77f",
+        "skipped": 0,
+        "tests": 17
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "StackWarTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.StackWarTest.xml",
+        "sha256": "be67aaf21f9d5ba659aaa189ee7fbb3059e2a6de538c9b0fd1856df3baf32695",
+        "skipped": 0,
+        "tests": 15
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "SuspensionTraceTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.state.SuspensionTraceTest.xml",
+        "sha256": "c48f72023758a12f532bb584ac0e19e17de7ac1c2a422f62466e88adc2ad45fd",
+        "skipped": 0,
+        "tests": 5
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "TaureanMaulerScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.TaureanMaulerScenarioTest.xml",
+        "sha256": "3c40135d068509f5457c1a4a053470f6c9375327551d8eb75636f4c51c11ff78",
+        "skipped": 0,
+        "tests": 3
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "TeamVsTeamTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TeamVsTeamTest.xml",
+        "sha256": "f450d264bac8b02556524314dd92462db62f300f9cfadc11559eea0ce72b5688",
+        "skipped": 0,
+        "tests": 14
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "TwoHeadedGiantTeamLossTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamLossTest.xml",
+        "sha256": "0eae4512075e2b6af3be2f84f8120d190b585af0aad6c3429aa3414bc2319f09",
+        "skipped": 0,
+        "tests": 10
+      }
+    },
+    {
+      "groups": [
+        "priority"
+      ],
+      "selector": "TwoHeadedGiantTeamPriorityTest",
+      "xml": {
+        "artifact": 10923855139,
+        "errors": 0,
+        "failures": 0,
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.TwoHeadedGiantTeamPriorityTest.xml",
+        "sha256": "a145629a1f7ba7155aa8da32f59b4287cce58ef5e219b32c6bd5c6a4b6164475",
+        "skipped": 0,
+        "tests": 12
+      }
+    },
+    {
+      "groups": [
+        "A"
+      ],
+      "selector": "UnexpectedFangsScenarioTest",
+      "xml": {
+        "artifact": 10923671037,
+        "errors": 0,
+        "failures": 0,
+        "path": "mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.UnexpectedFangsScenarioTest.xml",
+        "sha256": "9e2c88f0495abc43f1175beb5535ee28e0e482f311c6a8dc643c8f46cd2f888d",
+        "skipped": 0,
+        "tests": 5
+      }
+    }
+  ],
+  "unique_selectors": 42,
+  "xml_cases": 636
+}
