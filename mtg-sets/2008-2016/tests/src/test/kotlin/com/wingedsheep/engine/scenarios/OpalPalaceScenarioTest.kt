@@ -4,6 +4,7 @@ import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.identity.CommanderComponent
+import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.mtg.sets.definitions.c13.cards.OpalPalace
 import com.wingedsheep.sdk.core.Color
@@ -43,7 +44,7 @@ class OpalPalaceScenarioTest : ScenarioTestBase() {
             game.state.getEntity(commanderId)!!.get<CommanderComponent>()!!.castsFromCommandZone shouldBe 1
         }
 
-        test("a later hand cast uses only prior command-zone casts, and ordinary mana carries no rider") {
+        test("a later hand cast uses only prior command-zone casts") {
             val game = scenario()
                 .withPlayers("Commander", "Opponent")
                 .withFormat(Format.Commander())
@@ -64,15 +65,68 @@ class OpalPalaceScenarioTest : ScenarioTestBase() {
             counters(game, commanderId) shouldBe 2
             game.state.getEntity(commanderId)!!.get<CommanderComponent>()!!.castsFromCommandZone shouldBe 2
         }
+
+        test("Palace mana spent on a noncommander does not add counters") {
+            val game = scenario()
+                .withPlayers("Commander", "Opponent")
+                .withFormat(Format.Commander())
+                .withCardOnBattlefield(1, "Opal Palace")
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .withCardInCommandZone(1, "Grizzly Bears")
+                .withCardInHand(1, "Llanowar Elves")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+            val commanderId = game.state.getZone(game.player1Id, Zone.COMMAND).single()
+            game.state = game.state.updateEntity(commanderId) {
+                it.with(CommanderComponent(ownerId = game.player1Id))
+            }
+
+            tapForCommanderMana(game)
+            val cast = game.castSpell(1, "Llanowar Elves")
+            withClue("Noncommander cast paid with Palace mana: ${cast.error}") { cast.error shouldBe null }
+            game.resolveStack()
+            counters(game, game.findPermanent("Llanowar Elves")!!) shouldBe 0
+        }
+
+        test("two Palace mana spent on a first command-zone cast add two counters") {
+            val game = scenario()
+                .withPlayers("Commander", "Opponent")
+                .withFormat(Format.Commander())
+                .withCardOnBattlefield(1, "Opal Palace")
+                .withCardOnBattlefield(1, "Opal Palace")
+                .withLandsOnBattlefield(1, "Plains", 5)
+                .withCardInCommandZone(1, "Serra Angel")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+            val commanderId = game.state.getZone(game.player1Id, Zone.COMMAND).single()
+            game.state = game.state.updateEntity(commanderId) {
+                it.with(CommanderComponent(ownerId = game.player1Id))
+            }
+            val palaces = game.state.getBattlefield().filter { id ->
+                game.state.getEntity(id)?.get<CardComponent>()?.name == "Opal Palace"
+            }
+            palaces.size shouldBe 2
+            palaces.forEach { tapForCommanderMana(game, it, Color.WHITE) }
+
+            val cast = game.execute(CastSpell(game.player1Id, commanderId))
+            withClue("Two Palace mana must pay for the commander: ${cast.error}") { cast.error shouldBe null }
+            game.resolveStack()
+            counters(game, commanderId) shouldBe 2
+        }
     }
 
-    private fun tapForCommanderMana(game: TestGame) {
-        val palace = game.findPermanent("Opal Palace")!!
+    private fun tapForCommanderMana(
+        game: TestGame,
+        palace: com.wingedsheep.sdk.model.EntityId = game.findPermanent("Opal Palace")!!,
+        color: Color = Color.GREEN,
+    ) {
         val result = game.execute(ActivateAbility(
             playerId = game.player1Id,
             sourceId = palace,
             abilityId = OpalPalace.activatedAbilities[1].id,
-            manaColorChoice = Color.GREEN,
+            manaColorChoice = color,
         ))
         withClue("Paid commander-color mana ability: ${result.error}") { result.error shouldBe null }
     }
