@@ -1,0 +1,172 @@
+{
+  "schema": "sphinx-stage-e-whole-pilot-scope-proposal-v1",
+  "status": "PROSPECTIVE_SOURCE_GAP_AND_FIXTURE_DESIGN_ONLY__NO_EXECUTION_OR_SEED_AUTHORITY",
+  "date_utc": "2026-09-27",
+  "authority": {
+    "controlling_protocol": {
+      "path": "sphinx-approach/STAGE_E_RECONSTRUCTION_PLAN.md",
+      "sha256": "066a08b74350dcf20a03b917b2c122501b9d87cbca52e3273d216bc183a8ea43",
+      "readiness_gates": [
+        4,
+        5,
+        6,
+        7
+      ]
+    },
+    "existing_component_budget": {
+      "path": "sphinx-approach/STAGE_E_PILOT_FIXTURE_BUDGET.json",
+      "git_blob_sha": "160eda5fe3adbf35dfb770ef1fc305ee25ab48a9",
+      "checks_per_identity": 14,
+      "identities": 4,
+      "executed_checks": 0
+    },
+    "source_commit": "a0c5b995c2829c0b4069562b1f1eede8a820dd97",
+    "source_tree": "1ee5590bacf2f6507fff6487be9d3e20df8b5e40",
+    "evidence_only_commit": "0d2924826be58a1fbe91953230fb035f49496557",
+    "interpretation": "This proposal adds no amendment to the frozen protocol or to the unexecuted 14-per-identity component budget. Independent review and a separately frozen exact fixture inventory are prerequisites to any additional development exposure."
+  },
+  "frozen_identities": [
+    {
+      "id": "reconstructed-v01",
+      "rows_sha256": "274521097cc731ac5f5aa9b7645a20b13d4546fd73b17dbcd14af0b0a25c4486",
+      "specific_cards": [
+        "Sphinx's Approach",
+        "Goliath Sphinx"
+      ]
+    },
+    {
+      "id": "reconstructed-hybrid",
+      "rows_sha256": "f4cf2c64bb07847bd013e9984480f5b0fa76ac3a40dc5a47894a3609e9cb3b2e",
+      "specific_cards": [
+        "Sphinx's Approach",
+        "Goliath Sphinx",
+        "Tolarian Terror"
+      ]
+    },
+    {
+      "id": "closest-no-approach-v01",
+      "rows_sha256": "548998c77f5f688d793d36cdb9f21ae8b3b63963856875c4b84d82c271196a83",
+      "specific_cards": [
+        "Tolarian Terror",
+        "Cryptic Serpent",
+        "Lórien Revealed",
+        "Ponder",
+        "Brainstorm",
+        "Preordain"
+      ]
+    },
+    {
+      "id": "serpico-terror-benchmark",
+      "rows_sha256": "6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62",
+      "specific_cards": [
+        "Tolarian Terror",
+        "Cryptic Serpent",
+        "Deem Inferior",
+        "Lórien Revealed",
+        "Artful Dodge",
+        "Ponder",
+        "Preordain",
+        "Sleep of the Dead",
+        "Brainstorm",
+        "Dispel"
+      ]
+    }
+  ],
+  "existing_evidence": {
+    "receiving_999": {
+      "workflow_run": 36273602269,
+      "attempt": 1,
+      "control_commit": "5b92b8f28b4023420bd510ec354ceef6d763d99d",
+      "qualified_source": "a0c5b995c2829c0b4069562b1f1eede8a820dd97",
+      "artifact_id": 10916917146,
+      "raw_zip_sha256": "1894feb1549e9f9a5ede3ff710635772e5f392b7c4a93b8bcdf9a1019ab6da1c",
+      "distinct_classes": 69,
+      "distinct_cases": 999,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "scope": "Deterministic receiving mechanical gate only; it does not exercise complete four-identity pilots, matchup competence, collector, replay, admission or games."
+    },
+    "exact_card_426": {
+      "workflow_run": 36288852976,
+      "attempt": 1,
+      "source_commit": "0d2924826be58a1fbe91953230fb035f49496557",
+      "source_tree": "0ba385fd3f72ddbac1fee26cf31fd154d921b7ae",
+      "artifact_id": 10921009385,
+      "raw_zip_sha256": "557f28c7af48fdfcb6471b0c4da35debf58a3be930fbb452cddbe97a13040c40",
+      "xml_classes": 8,
+      "distinct_cases": 426,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "composition": [
+        "Approach 14",
+        "Snap 4",
+        "Goliath 3",
+        "card linter 44",
+        "serialization 8",
+        "move source 10",
+        "definition snapshot 340",
+        "card lint 3"
+      ],
+      "limits": "ZIP CRC and raw XML counts/uniqueness were audited; deterministic card tests and snapshots do not establish whole-pilot competence, initialized execution, semantic replay, or Stage-E gameplay. This evidence-only source tree differs from the receiving source solely by archived audit files."
+    },
+    "pr207_ci": {
+      "workflow_run": 36288852970,
+      "attempt": 1,
+      "conclusion": "success",
+      "limits": "Seven backend matrix jobs plus frontend/backend aggregate succeeded. Relevant Sphinx gym, engine and 2026 tasks ran; unrelated mtg-search:test and mtgish-tooling:test were FROM-CACHE. This is not a fresh-all-tests claim."
+    },
+    "initialized_adapter": {
+      "status": "partial",
+      "fact": "The actor adapter has 20 narrow component checks (five per identity); the seat binding has 16 initialized checks. They do not supply a whole-game decision policy or establish equivalent candidate/comparator pilot competence."
+    }
+  },
+  "current_source_gap": {
+    "adapter": "SphinxStageEActorAdapter currently chooses among four component CastSpell calls and returns unqualified/declines for other decision shapes and ordinary priority, mulligan, land, combat and payment behavior.",
+    "runner": "No trusted four-identity initialized runner, complete attempt journal, semantic replay or durable Stage-E collector is qualified.",
+    "protocol": "Opponents, matched allocation, sample size, endpoints and stopping rule remain unfrozen; no seed generation is authorized.",
+    "historical": "Original A–D machine-readable bytes remain missing. Historical reported outcomes are attribution-limited; this prospective pilot work does not replace or rerun A–D."
+  },
+  "proposed_equal_competence_scope": {
+    "rule": "Freeze an exact, finite fixture inventory and the source head before the first new fixture execution. Give all four identities the same predeclared total opportunity and the same common checks, plus identity-specific legal-card cases within equal reserved budgets. Preserve every executed failure and correction. Equal case counts alone do not establish competence; all reachable decision kinds and card-specific branches must pass for every identity.",
+    "bank_geometry_for_review_only": {
+      "new_distinct_checks_per_identity": 64,
+      "common_slots_per_identity": 32,
+      "identity_specific_slots_per_identity": 32,
+      "total_new_distinct_checks": 256,
+      "randomized_development_games": 0,
+      "official_seeds": 0,
+      "official_games": 0,
+      "execution_status": "NOT_FROZEN_OR_PERMITTED",
+      "change_rule": "Before any execution, publish the complete numbered 256-case bank and independently review whether every reachable path fits. If it does not, revise this proposal prospectively before exposure. Never add cases after viewing deck outcomes to favor one identity."
+    },
+    "common_decision_inventory": [
+      "Initialized London mulligan, bottoming, no-land and keep choices with only observable own/public information",
+      "Turn sequencing: land drop, offered mana and cost/payment choice, sorcery versus instant windows, priority pass and response",
+      "Current-offer binding: reject stale or invented casts and targets, legal Counterspell/Spell Pierce interaction and reserve",
+      "Mental Note and Thought Scour targets/draw/library exhaustion, current graveyard material and cleanup-independent legality",
+      "Snap target and two-land untap choices, temporary mana and own/opponent target availability",
+      "Combat attacks, blocks, damage races, summoning sickness, post-block priority and timeout/fail-closed behavior",
+      "Search, reorder, optional/May, target, serializable hidden-information projection and semantic replay of actual observations and choices"
+    ],
+    "card_specific_inventory": [
+      "Approach identities: optional Approach search choice, source-to-battlefield Goliath result, cost/payment and deployment timing",
+      "Hybrid: Approach/Terror competition using only offered legal decisions and refreshed graveyard-dependent Terror cost",
+      "Closest no-Approach: Terror/Serpent deployment, Lórien basic-landcycling, Ponder/Brainstorm/Preordain library choices and shuffle/reorder",
+      "Terror benchmark: same cantrip/threat behavior plus Deem Inferior, Artful Dodge flashback, Sleep of the Dead escape, Dispel and offered legal interaction"
+    ],
+    "acceptance": "Independent reviewer must bind source and exact frozen bank, inspect coverage against all four 60s and reachable decision kinds, then audit all raw runs, failures and replay. No deck quality result follows from these deterministic fixtures."
+  },
+  "next_authorized_work": [
+    "Review this proposal prospectively and resolve the 64-per-identity geometry before freezing any new fixture.",
+    "Implement the complete actor and runner on an isolated Sphinx receiver using accepted shared mainline components, without changing frozen deck rows.",
+    "Publish exact numbered fixture inventory and input/source hashes before first execution; separately admit it under the governing protocol.",
+    "Only after complete pilot, collector/replay and Stage-E opponent/allocation/endpoints/stopping freeze may the fresh Stage-E vector be created."
+  ],
+  "official_counters": {
+    "stage_e_seeds": 0,
+    "stage_e_games": 0,
+    "stage_e_outcome_exposures": 0
+  }
+}
