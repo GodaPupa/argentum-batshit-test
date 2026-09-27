@@ -1,0 +1,49 @@
+{
+  "schema": "izzet-receiving-973-independent-source-control-review-v1",
+  "reviewer": "root conductor; non-author of the Izzet receiving source and control",
+  "disposition": "PASS_BOUNDED_ONE_PROSPECTIVE_DETERMINISTIC_RECEIVING_CONTROL",
+  "exact_source": {
+    "commit": "60d2d6f6412d1f4e9238ca0c84755c34cd31f8d5",
+    "tree": "1a903dc4862d32fdd029e73a916cc9659678db4d"
+  },
+  "inert_control": {
+    "commit": "a46060d831a4bc7fb7655364b6718b69633b71c0",
+    "tree": "58fa6a32",
+    "paths": {
+      "workflow": {
+        "path": ".github/workflows/izzet-shared-receiving.yml",
+        "git_blob": "a588ba168bad03da8d3013aa982fdf15e8a09859"
+      },
+      "collector": {
+        "path": "izzet-receiving-qualification.py",
+        "git_blob": "1ab80bc51e1b3fe6557d52714cbee119dab7fe86"
+      },
+      "gate": {
+        "path": "receiving-gate.json",
+        "git_blob": "6135a43e6a22863fb7681276fb0d9d5d30d775a9"
+      }
+    }
+  },
+  "historical_control": {
+    "commit": "49677903b81afe8b3464f3ccf7fedc60002bdfcb",
+    "run": "36275982231",
+    "result": "969/973 passed, four actual fixture failures; one-shot consumed and preserved"
+  },
+  "source_review": [
+    "Compared 8b05 to 60d2 immutable diff: only three executable Kotlin test files change; no engine, AI production, deck, pilot, seed or protocol file changes. The remaining additions are preserved evidence and disclosed governance.",
+    "Independent Arcane/Wall source review at 60d2 names the five existing cases, target/trigger order and unchanged final assertions; exact five-case source qualification 36285812386 passed and preserves raw evidence 767d69e7.",
+    "FrozenBaselineTest executable edit changes only its one prefix 47e993c61a57ebbd to 634376c1259f8db7, after an independent 413-entry comparison found seven adjacent post-block priority pairs. Its exact one-case qualification 36287747150 passed with raw review 1af327bc. The unresolved effective default Yes/No strategy is explicitly excluded from this vanilla fixture's inference.",
+    "Verified the three changed Git blobs directly against immutable 60d2 files: 928eb60e3bb8a0758d933ecf5c0ccd41caee8ea3, a84b6853198d10c33fc34165bdfc69f98ea5171c, d4f8dc75c44334f82d5646eb15dceefbc2adde93."
+  ],
+  "control_review": [
+    "Read complete workflow and collector. Relative to consumed control 49677903, script only updates exact source/head tree constants; workflow only updates one-use branch name and immutable source ref. Runner allows branch creation push attempt1 only, checks clean separate three-file control checkout and exact immutable source, and has no dispatch or gameplay route.",
+    "Compared both full gate inventories: 87 unique classes and 973 unique class/name identities are exactly identical; all seven preserved authority hashes, eight dependency paths, bank scope/stage/module/counts remain identical. Only the three prospective test Git blob pins differ.",
+    "Collector clears only generated XML in the fresh owned source checkout, runs each original class via just test-class --rerun --no-build-cache, checks fresh task/worker and exact XML names/counts, copies raw XML/log/exits before evaluating failures, and checks source/dependency identities before and after. Any class failure makes overall qualification fail; no seed or game is touched.",
+    "Gate remains ready_for_execution=false and has no new source/control review binding. This review permits a separately source-bound one-time activation that changes only readiness/review fields and branch-creation identity; check live refs/triggers before push. The reviewer must audit actual original artifact before any receiving acceptance."
+  ],
+  "limitations": [
+    "This review grants one prospective software qualification attempt, not acceptance of the complete receiver, default Yes/No pilot strategy, Veteran Beastrider mechanics, 12-seed Position-1 execution or deck performance.",
+    "No JVM/fixture/game/entropy was executed by this review; old failed 973 and earlier c47 attempts remain visible.",
+    "This is an actual non-author technical review and not a formal GitHub approval."
+  ]
+}
