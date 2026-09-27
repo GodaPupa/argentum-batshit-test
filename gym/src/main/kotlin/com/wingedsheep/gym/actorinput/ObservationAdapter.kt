@@ -14,6 +14,8 @@ import com.wingedsheep.engine.state.components.stack.*
 import com.wingedsheep.engine.view.Visibility
 import com.wingedsheep.gym.contract.*
 import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.core.Phase
+import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
 
 /**
@@ -33,7 +35,20 @@ class ObservationAdapter(registry: CardRegistry) {
         policyRngState: Long,
     ): ActorInput {
         if (state.gameOver) fail(BoundaryFailure.TERMINAL_STATE, "Terminal states do not request pilot actions")
-        val expectedActor = state.pendingDecision?.playerId ?: state.priorityPlayerId
+        // London setup actions precede ordinary priority. The engine keeps priority on the
+        // starting player while each seat keeps and then bottoms in turn order.
+        val setupActor = if (state.pendingDecision == null &&
+            state.phase == Phase.BEGINNING && state.step == Step.UNTAP
+        ) {
+            state.turnOrder.firstOrNull {
+                state.getEntity(it)?.get<MulliganStateComponent>()?.hasKept == false
+            } ?: state.turnOrder.firstOrNull {
+                state.getEntity(it)?.get<MulliganStateComponent>()?.let { m ->
+                    m.hasKept && m.cardsToBottom > 0
+                } == true
+            }
+        } else null
+        val expectedActor = state.pendingDecision?.playerId ?: setupActor ?: state.priorityPlayerId
         if (actor != expectedActor || actor !in state.turnOrder) {
             fail(BoundaryFailure.WRONG_ACTOR, "Only the current decision/priority actor may observe")
         }
@@ -45,6 +60,19 @@ class ObservationAdapter(registry: CardRegistry) {
         }
         if (legalActions.any { it.action.playerId != actor }) {
             fail(BoundaryFailure.WRONG_ACTOR, "Legal action belongs to another actor")
+        }
+        if (setupActor != null) {
+            val mulligan = state.getEntity(actor)?.get<MulliganStateComponent>()
+                ?: fail(BoundaryFailure.INCOMPLETE_INPUT, "London actor lacks mulligan state")
+            val expectedTypes = if (!mulligan.hasKept) {
+                if (mulligan.canMulligan) listOf(KeepHand::class, TakeMulligan::class)
+                else listOf(KeepHand::class)
+            } else listOf(BottomCards::class)
+            if (legalActions.map { it.action::class } != expectedTypes ||
+                legalActions.any { it.action is BottomCards && it.action.cardIds.isNotEmpty() }
+            ) {
+                fail(BoundaryFailure.INCOMPLETE_INPUT, "Supply the complete London setup menu")
+            }
         }
         checkPublicMechanics(state)
 
