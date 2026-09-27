@@ -1,0 +1,35 @@
+{
+  "schema": "izzet-activation-pest-independent-preservation-review-v1",
+  "at_utc": "2026-09-27T01:42:38.613072+00:00",
+  "reviewer": "/root/pest",
+  "disposition": "PASS_EXACT_ACTIVATION_PACKET_PRESERVATION_ONLY",
+  "files": {
+    "activation-proof.zip": {
+      "bytes": 20894,
+      "sha256": "65b763353e90a7916eaf872d74aca7f2572b3ec90fd9aa1428a8155906630058"
+    },
+    "root-final-release-review.json": {
+      "bytes": 3154,
+      "sha256": "3126f952b526b201cd76b9fa437b8bb2fe7f72e3b231ca3a654df23126bbae1f"
+    },
+    "activation-record.json": {
+      "bytes": 3411,
+      "sha256": "e3695a49daeae22da911d38562340664c6d96bdce5f703ebbfd95971b1fa5cc1"
+    }
+  },
+  "checks": [
+    "Read all three proposed publication files and nine archive member JSONs; ZIP CRC, nine exact names, all manifest lengths/SHA256 verified.",
+    "Every archive member equals its original standalone file in scenario-sequence-control; root3154-byte review3126f952 remains unchanged.",
+    "Post-creation01:32:07UTC public metadata confirms evidence958/sourceaf/control588 exact refs; source/evidence0runs and exactly one pushattempt1 run36285812386 atcontrol588.",
+    "Activation-record accurately states IN_PROGRESS at historical cut and no result/qualification; current run status is intentionally outside this preservation review.",
+    "Preflight404s, creation receipts and immutable prepared refs are preserved in sequence. prepared-archive-remote ref_updated=false is pre-publication preparation metadata, followed by actual successful FF receipt and live958ref; no contradictory final claim.",
+    "Wrappers contain public GitHub metadata/404 responses; no signed artifact transport URLs or credential fields observed."
+  ],
+  "scope": [
+    "No source/control changes, new event, retry, dispatch or gameplay authorized.",
+    "Relies on separately preserved root3126f952 release review for already-consumed one-event authority; not a re-review or new source qualification.",
+    "No test or outcome evidence added by this activation packet. Root/owner must audit actual completed raw five-case output independently before qualification."
+  ],
+  "official_games": 0,
+  "deck_performance_evidence_changed": false
+}

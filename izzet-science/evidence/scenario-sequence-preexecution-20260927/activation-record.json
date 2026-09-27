@@ -1,0 +1,93 @@
+{
+  "schema": "izzet-five-existing-case-activation-v1",
+  "recorded_utc": "2026-09-27T01:33:03.723268+00:00",
+  "source": {
+    "branch": "lab/izzet-scenario-sequence-candidate-20260927",
+    "commit": "af8685ec97fd0f56195f25e7d3ca83c609fa018a",
+    "tree": "b46e165748abf32b2c8856052e5df3d8ffa910f9",
+    "observed_runs": 0
+  },
+  "preparation_evidence": {
+    "commit": "9585998803ec45d1f0e8b1c57f71da1b1d2c7c6c",
+    "tree": "1ab321dcc44cc667c66593418ac09bcd39e06341",
+    "observed_runs": 0
+  },
+  "control": {
+    "branch": "lab/izzet-scenario-sequence-qualification-20260927",
+    "commit": "58802ba41a246cfd6acfbb4cd6298daa61066ed4",
+    "tree": "99c8c9b409b6dbd08475f6f73fb4e7bca9a9d817",
+    "only_three_control_files": true,
+    "gate_sha256": "c876c57be7df20539a5d0acfeb6a19b10c1dcaebbad6176779468185df64276d"
+  },
+  "actual_run": {
+    "id": 36285812386,
+    "event": "push",
+    "attempt": 1,
+    "head_sha": "58802ba41a246cfd6acfbb4cd6298daa61066ed4",
+    "created_at": "2026-09-27T01:31:54Z",
+    "observed_status": "in_progress",
+    "observed_conclusion": null,
+    "observed_head_run_count": 1
+  },
+  "root_release_review_sha256": "3126f952b526b201cd76b9fa437b8bb2fe7f72e3b231ca3a654df23126bbae1f",
+  "proof_archive": {
+    "file": "activation-proof.zip",
+    "bytes": 20894,
+    "sha256": "65b763353e90a7916eaf872d74aca7f2572b3ec90fd9aa1428a8155906630058",
+    "members": [
+      {
+        "path": "root-final-release-review.json",
+        "bytes": 3154,
+        "sha256": "3126f952b526b201cd76b9fa437b8bb2fe7f72e3b231ca3a654df23126bbae1f"
+      },
+      {
+        "path": "root-live-source-control-check.json",
+        "bytes": 50044,
+        "sha256": "a2106bfb1b0f34c65f1451fc7117df8bcc433c20df0c1e44116452297b16d0d7"
+      },
+      {
+        "path": "root-trigger-byte-check.json",
+        "bytes": 41782,
+        "sha256": "05ededb84543d6fef11e108b3be7ee34f0088b660111eb24feba0a67826bd384"
+      },
+      {
+        "path": "immediate-activation-preflight.json",
+        "bytes": 3880,
+        "sha256": "b2a71592ba106abeda22bcec4f9cf47c8e7fec1b90733990e86b67ff26e91111"
+      },
+      {
+        "path": "archive-publication-receipt.json",
+        "bytes": 161,
+        "sha256": "0aad31566ba642e38c47f18ab55ad16470654eade0b74575427dd592d966998e"
+      },
+      {
+        "path": "source-publication-receipt.json",
+        "bytes": 204,
+        "sha256": "158c143b2780568f2ddfc236fe83f5cfc113520f8b51d76b018d16cf298b6ac0"
+      },
+      {
+        "path": "control-creation-receipt.json",
+        "bytes": 1060,
+        "sha256": "7bd9fd98079a08b50728527f8e9221afb6ccf17a1e71672b198081b7e66e4053"
+      },
+      {
+        "path": "post-creation-live-metadata.json",
+        "bytes": 37951,
+        "sha256": "368642f2475d89580ebae44028180f7be87635543d15b4d682fa60818a3b5df8"
+      },
+      {
+        "path": "prepared-archive-remote.json",
+        "bytes": 1165,
+        "sha256": "0f860e99c7113dae53afdebd2f96be4495c6db1999c2a4f41c6be379732110f8"
+      }
+    ]
+  },
+  "limits": [
+    "Actual sole branch-creation event is consumed; no push, manual retry or unchanged rerun authority",
+    "Observation only: no completion, artifact review or case pass claimed",
+    "Baseline/golden and production source unchanged; no973rerun",
+    "No official vector consumption, allocations, games, pilot changes or performance evidence"
+  ],
+  "official_games": 0,
+  "full_runtime_admitted": false
+}
