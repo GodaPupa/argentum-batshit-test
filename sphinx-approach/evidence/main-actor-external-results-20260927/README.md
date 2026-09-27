@@ -1,0 +1,20 @@
+# Original Sphinx external main actor qualification results
+
+Run **36290490623**, push attempt **1**, executed the two original actor banks under the one-creation release preserved at evidence commit `37ce6b015108040618f06eb071e168d6b01cda5a`. Both jobs completed successfully: shared actor job `108539489794` at 03:13:34 UTC and Sphinx actor job `108539489879` at 03:16:57 UTC on September 27, 2026. No job was rerun.
+
+The runtime checkout was exactly `22cf67791fda69a65d7e1eeb76c2ae369407cb01`, tree `3b4e50dd7a0fe484b796bb191bd848b048bea12b`, with ordered parents historical main `ff34ac8fa2efbd41f233e877cb2908c2cab5929a` and canonical Sphinx `8ed9787ad75b8bc6c2438a8c0b526ff822aa776e`. External controls were `0377a9639061b75bf04f01e466dee247963066b8`, tree `062e5624c74795d38bd937c299d3750b764a729f`, a normal canonical child with five changed control paths. The runtime and original canonical controls were unchanged. This receipt binds the observed software outcomes to that exact historical receiving composition; subsequent main documentation changes do not relabel its runtime source.
+
+| Original artifact | ID | Bytes | SHA-256 | Actual bank |
+|---|---:|---:|---|---|
+| shared-50-original.zip | 10922142148 | 419,121 | `11617efc668f25b4d443110d1679f2f9ad4c12e4c058ea19d40c89ebc8fd4d28` | 50 passed, zero failure/error/skip |
+| sphinx-136-original.zip | 10922675113 | 430,441 | `759fbcb77ef8dccc0d78cc954f28931e4138636cbd8e6024945ed6d1becb96c5` | 136 passed, zero failure/error/skip |
+
+The 50 shared case identities are included in the Sphinx 136. These are **136 distinct cases and 186 case executions**, not 186 distinct cases. Both original ZIP byte streams are retained intact, including binary test outputs, the hidden workflow, all 58 and 61 members respectively, and the original collector dispositions that still require independent review.
+
+The author raw audit checks whole and member hashes/CRC, eleven XML files and every actual case, fresh XML timestamps inside each recorded command window, one fresh Java 21 test worker per job, required `just test-class` routing with `--rerun`, no cached/skipped required `gym:test` task, successful command/collector exits, and all five original control bytes. Each job retains three binding observations with identical runtime/control identities and 75 actual runtime-path hashes. Those 75 Git blobs match the newly fetched complete immutable runtime tree; 60 SHA-256/size/blob identities also match the previously independently reviewed source-body proof. The fourteen main-only path identities and all eleven preserved source/authority files per binding attempt are retained and checked. These observed hashes are evidence about the actual checkout; no runtime was restored or executed during this audit.
+
+The two `.log.gz` files are complete connector-decoded job logs, compressed losslessly with a fixed gzip timestamp. They are identified separately from the original GitHub artifact ZIPs. Their decoded and compressed hashes are in `author-raw-audit.json`. The first local read-only audit accidentally used an intentionally filtered prior tree as though it were complete; its failed assertion and original script are preserved. Replacing that audit input with the full immutable tree resolved the audit setup issue without changing source, tests, commands or outcomes.
+
+Source review `c064c8d797dcfbfbb59c00119a97913f738a0e8af8794e450bda7d5488930dcf`, release `37ce6b0`, and preparation publication `b04272117db1ca04020821da99e24f5ba171647d` have separate scopes. `author-raw-audit.json` is a source-author audit; any nonauthor artifact review is separately attributed and preserved with this packet. No reviewer is presented as a GitHub approver or independent gameplay admitting authority.
+
+This result supplies the bounded external actor software evidence only. It does not rewrite the two original failed-closed PR175 binding checks, make their GitHub contexts green, authorize a main merge, accept whole pilots or a complete Stage-E runtime, allocate seeds, or admit gameplay. Official Stage-E games remain zero; no deck list, experiment allocation, or deck-performance evidence changed.

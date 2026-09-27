@@ -1,0 +1,39 @@
+{
+  "scope": "read-only audit parser setup; no source/test/event mutation",
+  "failures": [
+    {
+      "error": "KeyError: commit at independent Git commit metadata tree lookup",
+      "cause": "fresh immutable metadata uses Git database commit schema with top-level tree, not REST commit nested commit.tree",
+      "script_sha256": "3cf0905e6858be07b02a8524d594c2c504100f36b9ed039704ce63cb209b5c42",
+      "outcome": "correct parser to read actual schema; original script preserved"
+    },
+    {
+      "error": "KeyError: justfile comparing collector map to actual75 binding scope",
+      "cause": "collector retains additional original wrapper hashes outside external binder75",
+      "script_sha256": "919e5f69ee0559ed8f6c241eee46222f6d545bbf2b6f5032b00f3f2e258bd256",
+      "outcome": "compare overlap, explicitly account for additional wrapper hashes using retained original source records"
+    },
+    {
+      "error": "expected nonexistent successful Process completed with exit code0 line in connector decoded log",
+      "cause": "successful GHA steps do not necessarily emit that failure-style line; original test-exit-code and command JSON contain actual0; stepoutcomes and metadata success explicit",
+      "script_sha256": "b8befc4d1c4c798d5f3d03bdef35ac76e907f0b056f797bc464f8fedc908a35a",
+      "outcome": "keep log BUILD SUCCESSFUL and completion marker plus explicit retained exit0/step metadata; preserve prior parser"
+    },
+    {
+      "error": "expected child BUILD SUCCESSFUL and worker messages in GHA decoded log",
+      "cause": "control streams child directly to retained test-command.log, not runner stdout; full raw childlog already inspected separately",
+      "script_sha256": "f30de0e7065d8cae4140aaf27186c1ee32d2c0478fd80e762f92307fa2246e65",
+      "outcome": "verify decoded transportlosslessness and final jobcleanup marker; use retained childlog for actual worker/build assertions"
+    },
+    {
+      "error": "strict integer0 comparison on Sphinx collector exit field",
+      "script_sha256": "ae7d7abc66abea9fe6f7fb05d157f9e53a5230014f59b636dcd7d271780d2f5f",
+      "outcome": "inspect actual collector representation and normalize numeric exit for comparison; original bytes retained"
+    },
+    {
+      "error": "assumed archive-member-manifest.json name in optional preservation packet",
+      "script_sha256": "abf28a8a1d358e5c0bbbf003e0ac9b69af742f83be5db98e39ff4ad183dbe47c",
+      "outcome": "actual outer archive uses payload-manifest.json; read exact schema, verify all12payloadbytes and retain correction"
+    }
+  ]
+}
