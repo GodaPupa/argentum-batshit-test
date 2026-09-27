@@ -73,3 +73,14 @@ Workspace `/workspace/scratch/94f5141e9448`. Local disk repeatedly has zero free
 | Ferocity | `ferocity-takeover/checkpoint-refresh-20260927/continuity-refresh.json` SHA7b922607; prior625018 evidence | Existing checked empty ledgers/resource counters; no added calibration or gameplay. Large original evidence remains version-bound; do not reconstruct from metadata. |
 
 Publish completed source/evidence incrementally and update this record at meaningful checkpoints. Keep original failures and prior cuts. External workflows may continue after a response; the chat does not work continuously between invocations.
+
+
+## 2026-09-27 01:50 UTC execution advance
+
+- **Izzet:** consumed run `36285812386` completed SUCCESS on exact control `58802ba41a246cfd6acfbb4cd6298daa61066ed4`. Original artifact `10920303876`, GitHub/locally verified ZIP SHA-256 `a061f984897a77464c98b4ed3e0b9e6325d02edc562314a7bd4b8ff6379acacf`; raw XML: ArcaneDenialScenarioTest 3/3 and MnemonicWallScenarioTest 2/2, zero failures/errors/skips. Do not rerun. This closes only the two diagnosed fixture-sequencing failures; baseline trace and LEGACY_V0/default-YesNo equivalence remain separate blockers, and official Position-1 consumption remains zero.
+- **Manual:** reviewed 96-file source `60a9e20b61f63c4d42772ca8d122aabe68aabe2f` is now exposed through draft PR #206 against accepted receiver `ffbfaa383eba59ae7c129f651769fdf388caedb4`. Opening the PR initialized no gameplay. Priority run `36286644804` failed immediately on a stale exact-source manifest assertion for `PrismariTheInspirationScenarioTest.kt`; preserve it and diagnose prospectively rather than weakening the manifest. Capability/CI and other receiving jobs were still active at this cut.
+- **Industrial:** canonical remains `1261a25494d93f588efbcd1c1e5798b212a058c9`; all ten triggered receiving/regression workflows are complete SUCCESS. This is software integration only: R1 remains 0/512 and exact loaded-runtime/resource/durability/claim/admission closure is still required.
+- **Sphinx:** canonical remains `8ed9787ad75b8bc6c2438a8c0b526ff822aa776e`. PR175 actor/shared-actor runs failed before bank execution because the canonical binder correctly rejected 25 changed paths (canonical qualification paths plus main-only controls/evidence). Do not rerun unchanged failures or broaden the canonical allowlist. Build a separate exact-main receiving verifier with independent source review.
+- **Pest/Ferocity:** no official gameplay or calibration was consumed in this advance. Pest MC10 option-order/provenance and Ferocity exhausted calibration/scope44/offline-export admission remain their next gates.
+
+**Global counters at this cut:** zero new official games, zero newly consumed official gameplay allocations, zero exposed official outcomes; no deck-performance evidence changed.
