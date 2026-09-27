@@ -1,6 +1,6 @@
 # Argentum conductor handoff — exact next gates
 
-Checkpoint: **2026-09-27 10:40 UTC**. Read CURRENT_STATUS first. Accepted shared runtime is **95fc01aac842aaf32133a95215e894ffb28e979a** (PR210 merged). No official game/allocation has begun. Executor works; prior unpublished work lost during409 remains lost, never accepted.
+Checkpoint: **2026-09-27 10:50 UTC**. Read CURRENT_STATUS first. Accepted shared runtime is **95fc01aac842aaf32133a95215e894ffb28e979a** (PR210 merged). No official game/allocation has begun. Executor works; prior unpublished work lost during409 remains lost, never accepted.
 
 ## Immediate execution
 
@@ -18,4 +18,4 @@ Checkpoint: **2026-09-27 10:40 UTC**. Read CURRENT_STATUS first. Accepted shared
 - **Industrial:**1261a254 original10920296265 feasibility only; pinned successor runtime/launcher/preclaim/journal/replay/permit absent. Private-derived audit publication auto-review rejected, no workaround.
 - **Ferocity:**3a4f99a7 source08, ae22a206 resource-only/6976f653 bounded audit, zero calibration remaining. Original first16 untouched; broad mappedclosure20,275paths rejected. Resolve authorized resource/environment disposition and independent admission. D2max720,D3max240,SbeforeE,E/Cmax3000,Smax300practiceBO3,Pmax1500BO3.
 
-Active Opal workflow36313318743 (gate05632f4e), original artifact/review pending. Pest36312087906 accepted bounded10/10 actor component; original artifact/review retained. Opal36311784226 7/10 incomplete; original artifact/review retained main e4dcdc52. No new official games. Root owns coordinator/candidates. Non-author reviewer `/root/compatibility_review`; no overlapping source edits. Stop polling if only external jobs/infrastructure remain. No unchanged tests, consumed entropy, stale evidence promotion or self-review substitution.
+No active workflows. Opal36313318743 original INCOMPLETE despite raw selected3pass/7skipped; artifact/review preserved90fe1b44, separate independently adopted disposition accepts only3 selected fresh passes; seven skipped and original INCOMPLETE retained. Pest36312087906 accepted bounded10/10 actor component; original artifact/review retained. Opal36311784226 7/10 incomplete; original artifact/review retained main e4dcdc52. No new official games. Root owns coordinator/candidates. Non-author reviewer `/root/compatibility_review`; no overlapping source edits. Stop polling if only external jobs/infrastructure remain. No unchanged tests, consumed entropy, stale evidence promotion or self-review substitution.
