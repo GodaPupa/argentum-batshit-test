@@ -1,6 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseNumberDecision
+import com.wingedsheep.engine.core.ChooseOptionDecision
+import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.core.NumberChosenResponse
 import com.wingedsheep.engine.state.components.identity.CantBeCounteredComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
@@ -89,6 +91,16 @@ class ArcaneDenialScenarioTest : FunSpec({
 
         d.passPriorityUntil(Step.UPKEEP)
         d.activePlayer shouldBe caster
+
+        // Both delayed triggers have the same controller. Choose their stack order
+        // explicitly before expecting the draw-amount decision during resolution.
+        val order = d.pendingDecision as? ChooseOptionDecision
+            ?: error("Arcane Denial did not present its two-trigger ordering decision")
+        order.playerId shouldBe caster
+        order.options.size shouldBe 2
+        d.submitDecision(caster, OptionChosenResponse(order.id, 0)).error shouldBe null
+        d.pendingDecision shouldBe null
+        d.stackSize shouldBe 2
         d.resolveUntilDecisionOrEmpty()
 
         val decision = d.pendingDecision as? ChooseNumberDecision

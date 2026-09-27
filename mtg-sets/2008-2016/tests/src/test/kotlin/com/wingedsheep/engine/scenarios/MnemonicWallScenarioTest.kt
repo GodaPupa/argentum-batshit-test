@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ChooseTargetsDecision
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.roe.cards.MnemonicWall
@@ -30,13 +31,15 @@ class MnemonicWallScenarioTest : FunSpec({
         driver.castSpell(player, wall).isSuccess shouldBe true
         driver.bothPass()
 
-        // This engine asks the "may?" question before target selection for a targeted
-        // optional trigger. Saying "Yes" legitimately pauses again for the graveyard
-        // target, so a paused ExecutionResult is the expected outcome here.
-        val yes = driver.submitYesNo(player, true)
-        yes.isPaused shouldBe true
+        // The target is chosen when the trigger is put on the stack. Its optional
+        // return is decided only when that targeted trigger resolves.
+        val target = driver.pendingDecision as? ChooseTargetsDecision
+            ?: error("Mnemonic Wall did not request its graveyard target")
+        target.playerId shouldBe player
+        target.legalTargets[0] shouldBe listOf(bolt)
         driver.submitTargetSelection(player, listOf(bolt)).isSuccess shouldBe true
-        driver.bothPass()
+        driver.bothPass().isPaused shouldBe true
+        driver.submitYesNo(player, true).isSuccess shouldBe true
 
         driver.findPermanent(player, "Mnemonic Wall") shouldNotBe null
         driver.findCardInHand(player, "Lightning Bolt") shouldNotBe null
@@ -53,6 +56,12 @@ class MnemonicWallScenarioTest : FunSpec({
         driver.castSpell(player, wall).isSuccess shouldBe true
         driver.bothPass()
 
+        val target = driver.pendingDecision as? ChooseTargetsDecision
+            ?: error("Mnemonic Wall did not request its graveyard target")
+        target.playerId shouldBe player
+        target.legalTargets[0] shouldBe listOf(bolt)
+        driver.submitTargetSelection(player, listOf(bolt)).isSuccess shouldBe true
+        driver.bothPass().isPaused shouldBe true
         driver.submitYesNo(player, false).isSuccess shouldBe true
 
         driver.findPermanent(player, "Mnemonic Wall") shouldNotBe null
