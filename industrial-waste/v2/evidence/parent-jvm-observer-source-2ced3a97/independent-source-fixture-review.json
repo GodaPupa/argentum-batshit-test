@@ -1,0 +1,95 @@
+{
+  "schema": "industrial-parent-jvm-observer-independent-source-review-v1",
+  "reviewer": "/root/sphinx",
+  "at_utc": "2026-09-27T02:40:34.576240+00:00",
+  "role": "Non-author of the observer, prospective fixture bank and qualification proposal. Read-only source and fixture-design review.",
+  "disposition": "PASS_BOUNDED_SOURCE_AND_PROSPECTIVE_21_PLUS_1_BANK_REQUIRES_SEPARATE_ACTIVATION_AND_RAW_REVIEW",
+  "base_source": "1261a25494d93f588efbcd1c1e5798b212a058c9",
+  "base_tree": "7e635c7ff700094d840bb64fdba7699f724cf594",
+  "manifest": {
+    "path": "industrial/executor-handoff/observer-candidate/SOURCE_MANIFEST.json",
+    "bytes": 2637,
+    "sha256": "6103a5602c0abd7cd4565432d7c1001851caa3c7c125347a4feb7e786672769e"
+  },
+  "reviewed_files": [
+    {
+      "path": "tools/parent_jvm_observer.py",
+      "bytes": 13692,
+      "sha256": "5254c35da8870821b2bc843abec45c9f99a213a1c3add876904b1ae6a6dc98f9",
+      "git_blob_sha1": "f81988064511fa4015f593dcc169d9371136f765"
+    },
+    {
+      "path": "tools/test_parent_jvm_observer.py",
+      "bytes": 18121,
+      "sha256": "2747c340399940c902a3c83f0de965e6cffb7f9b6adf43994d5d31f986acff37",
+      "git_blob_sha1": "1b0255b72df923c543731e359cb4cc8f0e6f68b4"
+    },
+    {
+      "path": "QUALIFICATION_PROPOSAL.md",
+      "bytes": 8797,
+      "sha256": "6b260118bd2f75c9b608ec960c45bca2a6973d08375c17944fe93998af70f966",
+      "git_blob_sha1": "33e6675d1065a6ff9ce09100158043ce2e4b1a32"
+    }
+  ],
+  "independent_proof": {
+    "path": "sphinx-audit/industrial-parent-observer-review/independent-static-bindings.json",
+    "bytes": 2801,
+    "sha256": "d9fa77fdcf17e2bee449393c2dc3dded21e50902495c45c3dd0c1c34b3f59ee6"
+  },
+  "independent_dependency_input": {
+    "path": "sphinx-audit/industrial-parent-observer-review/independent-dependency-input.json",
+    "bytes": 14640,
+    "sha256": "e985bf163b1141d506626c5fc71134a43c24b1963d119086e7ac6ceb8af92462"
+  },
+  "scope": "Two isolated Python tools plus prospective documentation, using unchanged safe_child. No official executor or protocol wiring. This review is not an execution event, fixture pass, runtime admission or gameplay permit.",
+  "source_findings": [
+    "Reads actual CLI direct parent only; Python private fake-proc/parent/clock seams are test interfaces, not an admission/security authority.",
+    "Checks process lifetime via PID/start ticks/boot ID; hashes the kernel executable inode, expected raw command and explicit argument file; validates exact ordered entry identities and per-file bytes. Reads twice and compares both snapshots, with parent/lifetime rechecks.",
+    "Canonical disjoint repository/Gradle roots, path validation and symlink/nonregular rejection are explicit. Positive finite byte/entry/journal/time limits and per-file before/after metadata checks constrain observations.",
+    "Exclusive attempt/output files preserve intent, available partial journal and final typed error; an existing attempt is not overwritten. Fsync is local-file observation durability, not host/remote survival proof.",
+    "Module/proposal correctly limit successful output to two launch-byte snapshots. They explicitly exclude already-loaded-class identity, JDK/native/agent/classloader closure, in-flight immutability, authoritative expected-input acceptance and official execution."
+  ],
+  "fixture_review": {
+    "unit_count": 21,
+    "actual_parent_probe_count": 1,
+    "actual_passes_observed_by_reviewer": 0,
+    "negative_case_strength": "Tests exercise changed content and order, missing/duplicate/outside entries, symlink escape, wrong executable/command, direct-parent change and same-PID lifetime change, malformed argument encoding, between-snapshot mutation, missing/byte/time/journal bounds, missing/FIFO input, and exclusive-output preservation; they assert failed result scope and retained evidence.",
+    "actual_probe": "One embedded Java class independently constructs and launches a direct Python observer child from a known single-class classpath. Expected bytes/digests come from explicit generated files and argv, not the observer inventory implementation. It checks actual matched result and zero claims/initializations. JDK21 and observed versions must be bound by the later gate.",
+    "preservation": "Retained fixture-root mode preserves inputs, fake procfs, observations, actual source/class/arguments/logs/exits. FIFO case records its owned empty FIFO type before removing that pipe; no omitted bytes are claimed.",
+    "limits": "Static design review only; neither21 unit cases nor actual-parent probe was executed, and neither is an engine/performance/capacity experiment."
+  },
+  "corrected_prefreeze_findings": {
+    "P01": "Fixed with O_NOFOLLOW|O_NONBLOCK and regular-file check before bounded input read; new explicit FIFO negative case preserves intent/result.",
+    "P02": "Probe commands launch owned sessions, use waitid(WNOWAIT) to keep child PID unreaped until killpg, then wait; Java child-forced-termination path also waits. No signal targets an unrelated process.",
+    "history": {
+      "path": "sphinx-audit/industrial-parent-observer-review/prefreeze-findings.json",
+      "bytes": 2942,
+      "sha256": "0cbe59fd0e39f5272337e2314b3e3e77aa616bc23b96d8ab8c7b64cf11ade79a"
+    },
+    "history_limit": "Initial draft read preceded preserved-copy capture; record explicitly says P01 was already fixed in that preserved observer copy. No false attribution to a frozen hash."
+  },
+  "guidance": "AGENTS/CONTRIBUTING/add-feature/verify retained texts match exact1261 Git blobs. No card/SDK/engine/server/client surface changes; no SDK catalog or Assay execution is inferred or required from these isolated Python observer files. Any later engine-receiving change keeps its own gates.",
+  "activation_boundary": {
+    "allowed_next": "Root may prepare and independently review an exact isolated qualification source/control/event route for the declared21 unit cases and one separate tiny Java probe.",
+    "not_allowed_by_this_record": "No current workflow/branch/dispatch/fixture/JVM/gameplay launch. Do not flip ready_for_qualification merely because this source review passes; final exact gate/source/version/resource/artifact and event checks remain root-owned.",
+    "intended_commands": [
+      "timeout --signal=TERM --kill-after=5s 60s python3 tools/test_parent_jvm_observer.py -v",
+      "timeout --signal=TERM --kill-after=5s 60s python3 tools/test_parent_jvm_observer.py --actual-jvm-probe"
+    ],
+    "required_gate_properties": [
+      "Fresh create-once canonical owned fixture directory and exact source/dependency/manifest hashes, clean source identity, actual Python and JDK21 versions.",
+      "Second command only after a clean exact21-case first result, full separate exits/stdout/stderr and partial artifacts on failures; no masking or automatic retry.",
+      "Owned whole-command timeout and final artifact retention with only this bank/probe, no inherited Gradle or experimental workflow.",
+      "Independent actual raw artifact disposition after execution; no component result promoted to whole-runtime admission."
+    ]
+  },
+  "remaining_scientific_gaps": [
+    "Accepted complete executing-runtime identity and lifecycle/handoff before irreversible consumption",
+    "Whole512 resource/watchdog/persistence envelope",
+    "Source-bound gameplay permit, exclusive claim/consumption and per-action durability",
+    "Complete receiving scope and qualified pilots/metrics/replay where required"
+  ],
+  "engine_commands_executed": 0,
+  "official_allocations_or_outcomes": 0,
+  "deck_performance_evidence_changed": false
+}
