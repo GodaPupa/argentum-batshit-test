@@ -202,6 +202,14 @@
       "behavioral_artifact": 10945155475,
       "behavioral_audit": "docs/experiments/pest-control/evidence/c2-ent-36358329363-original-audit.json",
       "behavioral_artifact_sha256": "3b42a7b1ddbfb878fcc881d03006c1ee1e06d1434476978067c3f9545fb332d7"
+    },
+    "P03_04_P04_01_Map_activation": {
+      "status": "PROSPECTIVE_COMPILE_ONLY_PREFLIGHT_NO_RECEIVING_ADMISSION",
+      "fixture_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterMapActivationReceivingTest.kt",
+      "fixture_blob": "1c734782f97192683254581d5383d1150437feae",
+      "preflight_workflow_path": ".github/workflows/pest-monster-c2-map-activation-preflight.yml",
+      "scope": "Two Monster seat placements: priority Expedition Map activation, mana/tap/sacrifice execution, current authorized land search offer, physical selected Tower to hand. Exactly two declared cases; compile-only preflight first.",
+      "limitations": "No behavioral result, raw policy parity, complete P03-04/P04-01, pair or gameplay admission."
     }
   },
   "missing": "Complete exact reachable action and decision variants for all frozen mains, both actor seats and starts, including non-search looks, other scry/surveil, alternative costs, payment, triggers/order, attack/block/post-block priority, response/pass, random/cascade separation, raw-policy parity and complete own/public pilots. Map every accepted shared case by exact identity. Existing scoped cases cannot be summed into admission.",
