@@ -97,6 +97,48 @@ internal class SphinxStageEAcceptedTransitionJournal(
         return Accepted(result.state, memory, json.encodeToString(record))
     }
 
+    /** Accepts and journals the immediately following Ponder shuffle response exactly once. */
+    fun acceptPonderShuffle(
+        state: GameState,
+        input: ActorInput,
+        epoch: ActorEpoch,
+        pilot: SphinxStageEInitializedSeat,
+        memory: SphinxStageEPonderMemory,
+        proposal: ActorProposal,
+    ): Accepted {
+        input.verifyBinding(epoch, pilot.actorId)
+        val question = input.decision as? YesNoDecision
+            ?: error("Expected the actor's Ponder shuffle question")
+        val raw = state.pendingDecision as? YesNoDecision
+            ?: error("Current engine has no Ponder shuffle suspension")
+        val current = adapter.build(state, pilot.actorId,
+            completeActorLegalActions(state, pilot.actorId, enumerator),
+            epoch, input.policyRngState)
+        require(current.canonicalJson() == input.canonicalJson() &&
+            raw.id == question.id && raw.playerId == pilot.actorId &&
+            raw.context.sourceId == question.context.sourceId &&
+            question.context.sourceName == "Ponder" &&
+            question.prompt.contains("shuffle", ignoreCase = true)) {
+            "Current engine projection differs from the sealed Ponder shuffle question"
+        }
+        val expected = pilot.decidePonderShuffle(input, epoch, memory)
+            as? SphinxStageEAdapterResult.Proposed
+            ?: error("Ponder memory does not qualify this continuation")
+        require(proposal == expected.proposal && proposal.inputBindingHash == input.bindingHash) {
+            "Shuffle proposal differs from bound accepted memory"
+        }
+        val action = proposal.action as? SubmitDecision
+            ?: error("Ponder shuffle must submit the typed response")
+        require(action.playerId == pilot.actorId && action.response.decisionId == question.id)
+        val preHash = stateHash(state)
+        val result = processor.process(state, action).result
+        require(result.error == null) { "Engine rejected the Ponder shuffle: ${result.error}" }
+        val record = Record(input.bindingHash, epoch.sourceVersion, epoch.trialId, epoch.step,
+            question.id, preHash, json.encodeToString(action), stateHash(result.state))
+        // The memory is deliberately not returned after this one accepted continuation.
+        return Accepted(result.state, memory, json.encodeToString(record))
+    }
+
     /** Replays the same accepted physical action from the recorded prestate; fail closed on drift. */
     fun replay(preState: GameState, recordJson: String): GameState {
         val record = json.decodeFromString<Record>(recordJson)
