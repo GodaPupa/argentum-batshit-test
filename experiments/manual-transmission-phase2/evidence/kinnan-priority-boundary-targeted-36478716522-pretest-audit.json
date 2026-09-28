@@ -1,0 +1,24 @@
+{
+  "schema": "manual-canonical-kinnan-boundary-pretest-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36478716522,
+  "artifact_id": null,
+  "head": "5228109fb74045d2c688e78f3f119872192117af",
+  "conclusion": "INCOMPLETE_PRETEST_SOURCE_BINDING",
+  "behavioral_cases": 0,
+  "audit": [
+    "GitHub job completed failure before behavioral execution.",
+    "Source-binding step failed; behavioral test step was skipped.",
+    "No artifact was produced because the bind step exited before source.txt could be retained.",
+    "All substantive pinned blobs at head match their declared values."
+  ],
+  "diagnosis": {
+    "declared_parent": "294036d6a1d8f0ab1a7cb8f5c65f0aca80a436ff",
+    "actual_parent": "cd65b91a6828bd5d5c81e7d8e789fd3b07061ee1",
+    "intervening_change": "Add exact Kinnan mechanics qualification",
+    "significance": "The parent advance adds KinnanBonderProdigyScenarioTest and therefore introduces a prerequisite mechanics qualification; do not bypass it by merely changing the parent pin."
+  },
+  "disposition": "PRESERVE_ZERO_CASE_PRETEST_INCOMPLETE_NEVER_RERUN_UNCHANGED",
+  "next_gate": "Qualify exact Kinnan printed mechanics under a separately source-bound original before any changed-source four-seat boundary successor.",
+  "official_counters_delta": 0
+}
