@@ -1,0 +1,52 @@
+name: Izzet real sequential Opal Palace payment preflight
+on:
+  push:
+    branches: ["izzet/opal-sequential-real-payment-20260928"]
+    paths:
+      - ".github/workflows/izzet-opal-sequential-real-preflight.yml"
+permissions:
+  contents: read
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact fixture, card and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/izzet-opal-sequential-real-preflight
+          test "$(git rev-parse HEAD^)" = "7dbba3b2bd52e74eba31ba5119ca85dd63a0f24a"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceSequentialRealPaymentTest.kt)" = "9af8ea09deaaeaed72c3bb020a4ef552429429bd"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = "544a440160528f4a08211109936a55e263c39d19"
+          test -x gradlew
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceSequentialRealPaymentTest.kt
+            git hash-object .github/workflows/izzet-opal-sequential-real-preflight.yml
+            git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt
+            git status --porcelain
+          } > build/reports/izzet-opal-sequential-real-preflight/source.txt
+      - name: Compile without behavioral execution
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :mtg-sets:2008-2016:tests:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/izzet-opal-sequential-real-preflight/compile.log
+          test ! -e mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.OpalPalaceSequentialRealPaymentTest.xml
+      - name: Retain original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-opal-sequential-real-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/izzet-opal-sequential-real-preflight/
+          if-no-files-found: error
+          retention-days: 90
