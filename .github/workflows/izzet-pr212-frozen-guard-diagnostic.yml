@@ -1,0 +1,61 @@
+name: Izzet PR212 exact frozen compatibility source diagnostic
+on:
+  push:
+    branches: ["izzet/pr212-compat-guard-diagnostic-20260928"]
+    paths:
+      - ".github/workflows/izzet-pr212-frozen-guard-diagnostic.yml"
+permissions:
+  contents: read
+jobs:
+  source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - name: Bind PR212 source and diagnose both unchanged guard manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/izzet-pr212-guard-diagnostic
+          test "$(git rev-parse HEAD^)" = "4865a7e0d2fa0766a32ca46fb049fefa2c8fb769"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt)" = "524d7917056d09558ddde1426f1e6f3a81d00810"
+          test "$(git hash-object lab-coordinator/shared-capabilities/current-combat-receiving.json)" = "bb3246061aee837ff37ead67fd903bca268b021e"
+          test "$(git hash-object lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json)" = "24fcfc9e21cc55eeac1bf4e608a47fe7c227c165"
+          test -z "$(git status --porcelain)"
+          python3 - <<'PY'
+          import hashlib,json,pathlib,subprocess
+          manifests=[
+            "lab-coordinator/shared-capabilities/current-combat-receiving.json",
+            "lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json",
+          ]
+          rows=[]
+          for raw in manifests:
+              path=pathlib.Path(raw); manifest=json.loads(path.read_bytes())
+              drift=[]
+              for name,expected in sorted(manifest["source_files_sha256"].items()):
+                  actual=hashlib.sha256(pathlib.Path(name).read_bytes()).hexdigest()
+                  if actual!=expected:
+                      drift.append({"path":name,"expected_sha256":expected,"actual_sha256":actual})
+              rows.append({"manifest":raw,"manifest_sha256":hashlib.sha256(path.read_bytes()).hexdigest(),
+                  "receiving_base":manifest["receiving_base"],"pinned_files":len(manifest["source_files_sha256"]),
+                  "drift":drift})
+          out=pathlib.Path("build/reports/izzet-pr212-guard-diagnostic")
+          (out/"exact-source-drift.json").write_text(json.dumps({
+              "schema":"izzet-pr212-frozen-guard-diagnostic-v1",
+              "head":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
+              "parent":subprocess.check_output(["git","rev-parse","HEAD^"],text=True).strip(),
+              "source_only":True,"behavioral_cases":0,
+              "frozen_manifests_modified":False,"guards":rows,
+              "disposition":"DIAGNOSTIC_ONLY_NOT_COMPATIBILITY_ACCEPTANCE"},indent=2)+"\n")
+          PY
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt; git hash-object .github/workflows/izzet-pr212-frozen-guard-diagnostic.yml; git status --porcelain; } > build/reports/izzet-pr212-guard-diagnostic/source.txt
+      - name: Retain original diagnosis
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-pr212-guard-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/izzet-pr212-guard-diagnostic/
+          if-no-files-found: error
+          retention-days: 90
