@@ -1,0 +1,35 @@
+{
+  "schema": "industrial-r1-runtime-capture-independent-review-v1",
+  "date_utc": "2026-09-28",
+  "original": {
+    "run": 36487027776,
+    "artifact": 10999897562,
+    "sha256": "a5a485ad2f043b362598ed203e298343fec26fe86d57d5012efaff8c8aa97222",
+    "head": "e0e302de70b4a13935cf76cbb4f30b3845fafc5e"
+  },
+  "decision": "ADOPT_CAPTURE_IMPLEMENTATION_SLICE_ONLY",
+  "result": {
+    "tests": 5,
+    "failures": 0
+  },
+  "findings": [
+    "Archive/directory inventory construction successfully feeds the accepted canonical manifest validator.",
+    "Duplicate ZIP member, path traversal, multi-release archive pending explicit policy, and loader mismatch fail closed."
+  ],
+  "remaining": [
+    "actual isolated qualified-build capture",
+    "complete resolved dependency/build graph",
+    "all ordered launcher/worker process paths",
+    "JDK/native/Python/shell/just closure",
+    "generated/hidden class policy",
+    "lifetime immutability and authenticated worker attestation",
+    "independent exact expected-manifest adoption"
+  ],
+  "authority": {
+    "expected_manifest": false,
+    "worker": false,
+    "claim": false,
+    "r1": false,
+    "official_counters": 0
+  }
+}
