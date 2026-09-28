@@ -1,0 +1,28 @@
+{
+  "schema": "manual-pact-negation-dependency-qualification-v1",
+  "date_utc": "2026-09-28",
+  "decision": "ACCEPTED_EXACT_THREE_REQUIRED_PACT_BEHAVIORS",
+  "evidence": [
+    {
+      "run": 36492197672,
+      "accepted": [
+        "counter real spell + schedule exactly one next-upkeep debt",
+        "pay {3}{U}{U} debt with five Islands"
+      ],
+      "failed_fixture_consumed": true
+    },
+    {
+      "run": 36493029741,
+      "accepted": [
+        "decline payable next-upkeep debt => controller loses"
+      ]
+    }
+  ],
+  "source_blob": "c786551484cfb001eea9fc2b05e14ea23fd63bf9",
+  "limits": [
+    "Pact mechanics dependency only.",
+    "No full Manual gear/opponent pilot competence, replay/collector/durability or capability admission."
+  ],
+  "next_gate": "Re-run only the previously unaccepted four-seat R3-P boundary cases on a changed dependency-qualified source; prior four-seat attempts never reached strategic choice.",
+  "official_counters_delta": 0
+}
