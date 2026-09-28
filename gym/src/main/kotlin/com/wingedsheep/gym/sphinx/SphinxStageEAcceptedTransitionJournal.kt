@@ -47,6 +47,8 @@ internal class SphinxStageEAcceptedTransitionJournal(
         val recordJson: String,
     )
 
+    data class ShuffleAccepted(val state: GameState, val recordJson: String)
+
     private val json = Json {
         serializersModule = engineSerializersModule
         encodeDefaults = true
@@ -105,7 +107,7 @@ internal class SphinxStageEAcceptedTransitionJournal(
         pilot: SphinxStageEInitializedSeat,
         memory: SphinxStageEPonderMemory,
         proposal: ActorProposal,
-    ): Accepted {
+    ): ShuffleAccepted {
         input.verifyBinding(epoch, pilot.actorId)
         val question = input.decision as? YesNoDecision
             ?: error("Expected the actor's Ponder shuffle question")
@@ -135,8 +137,7 @@ internal class SphinxStageEAcceptedTransitionJournal(
         require(result.error == null) { "Engine rejected the Ponder shuffle: ${result.error}" }
         val record = Record(input.bindingHash, epoch.sourceVersion, epoch.trialId, epoch.step,
             question.id, preHash, json.encodeToString(action), stateHash(result.state))
-        // The memory is deliberately not returned after this one accepted continuation.
-        return Accepted(result.state, memory, json.encodeToString(record))
+        return ShuffleAccepted(result.state, json.encodeToString(record))
     }
 
     /** Replays the same accepted physical action from the recorded prestate; fail closed on drift. */
