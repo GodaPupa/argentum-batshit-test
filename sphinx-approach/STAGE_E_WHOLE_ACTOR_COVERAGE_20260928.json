@@ -1,0 +1,44 @@
+{
+  "schema": "sphinx-stage-e-whole-actor-coverage-inventory-v1",
+  "date_utc": "2026-09-28",
+  "status": "PROSPECTIVE_SOURCE_AND_GAP_INVENTORY_NO_FIXTURE_EXECUTION",
+  "parent": "3775fb2bec314a37caadbb36476fd3eed543068a",
+  "governing_review": {
+    "branch": "review/sphinx-whole-pilot-scope-20260927",
+    "commit": "6f1635128883eca131487babc6dcd9c7dbd4afab",
+    "disposition": "ACCEPT_SOURCE_GAP_AND_EQUAL_COMPETENCE_RULE__DEFER_NUMERIC_FIXTURE_GEOMETRY"
+  },
+  "composition": {
+    "source_path": "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt",
+    "rule": "Route only previously qualified seams when the current actor input makes the route unambiguous; otherwise return Unqualified.",
+    "already_qualified_routes": [
+      "opening keep/mulligan/bottom/basic-Island land via SphinxStageEOpeningActor candidate surface",
+      "visible typed resolution choices via SphinxStageEVisibleChoice",
+      "Ponder shuffle only with accepted SphinxStageEPonderMemory",
+      "single current setup-draw cast offer for Mental Note/Thought Scour/Brainstorm/Ponder/Preordain/Lórien Revealed",
+      "single current deployment cast offer for Tolarian Terror/Cryptic Serpent/Goliath Sphinx",
+      "single current Counterspell offer through the existing public-target component"
+    ]
+  },
+  "explicitly_uncovered": [
+    "ranking among multiple simultaneous cast offers",
+    "Sphinx's Approach cast-mode choice between setup/deployment lines",
+    "Spell Pierce and Dispel response/payment policy",
+    "Snap target plus two-land untap continuation",
+    "Deem Inferior target/timing",
+    "Artful Dodge flashback",
+    "Sleep of the Dead escape",
+    "ordinary priority pass/response scheduling when no routed action is selected",
+    "combat attacks, blocks, assignments and post-block priority",
+    "Lórien landcycling activation/search path distinct from ordinary cast",
+    "all remaining alternate-cost/mana-source/trigger-order surfaces",
+    "trusted whole-game runner, durable attempt journal, semantic full replay and collector",
+    "opponent packages/allocation/endpoints/stopping freeze"
+  ],
+  "fixture_rule": "Do not freeze or execute a new whole-pilot bank until this uncovered inventory is reconciled against all four frozen 60s and an independent review adopts the smallest complete equal-opportunity inventory.",
+  "official_counters": {
+    "seeds": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}
