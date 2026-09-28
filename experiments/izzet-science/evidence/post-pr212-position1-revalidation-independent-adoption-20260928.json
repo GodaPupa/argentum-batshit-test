@@ -1,0 +1,26 @@
+{
+  "schema": "izzet-post-pr212-position1-revalidation-independent-adoption-v1",
+  "date_utc": "2026-09-28",
+  "original": {
+    "run": 36486793144,
+    "artifact": 11000047495,
+    "sha256": "b0ade85389131c644f63b5c8ddbcab4525b821143a3e82cf8b269232090540b4",
+    "head": "e80e9c6692b6738079c09f710a8193603eb4c630"
+  },
+  "decision": "ADOPT_ZERO_SEED_REVALIDATION_RESULT_ONLY",
+  "findings": [
+    "Historical authority commit and nine named authority blobs matched exactly.",
+    "Current adopted handler/receipts/review blobs matched exactly.",
+    "Phase31/32/33 zero-consumption state and Phase33 position1-only/positions2-12 rejection semantics reconciled.",
+    "The validator did not fetch/read/print the quarantined seed vector."
+  ],
+  "counters": {
+    "seed_values_read": false,
+    "seed_values_printed": false,
+    "seeds_consumed": 0,
+    "games_initialized": 0,
+    "outcomes_exposed": 0
+  },
+  "next_gate": "Complete remaining current-runtime Izzet mechanics, commander lifecycle/damage, full own/opponent pilots, collector/replay/durability and an independent post-runtime Position-1 execution admission. This record alone does not authorize a game.",
+  "gameplay_authorized": false
+}
