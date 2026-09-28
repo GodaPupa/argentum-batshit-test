@@ -1,0 +1,45 @@
+name: Industrial loaded JVM manifest capture static preflight
+on:
+  push:
+    branches: ["industrial-waste/r1-launcher-source-pins-20260927"]
+    paths:
+      - ".github/workflows/industrial-loaded-jvm-manifest-preflight.yml"
+permissions:
+  contents: read
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/industrial-loaded-jvm-manifest-preflight
+          test "$(git rev-parse HEAD^)" = "a49c1b596c7f7ccea47d83fa213624b76eb9be65"
+          test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2LoadedJvmIdentity.kt)" = "83e0a0b3190cc72d3d3c8f789293455ff2d42f12"
+          test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2LoadedJvmManifestCaptureTest.kt)" = "fdb40ec66ac23661d1c9852edfcf936a212ba2ec"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2LoadedJvmIdentity.kt; git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2LoadedJvmManifestCaptureTest.kt; git hash-object .github/workflows/industrial-loaded-jvm-manifest-preflight.yml; git status --porcelain; } > build/reports/industrial-loaded-jvm-manifest-preflight/source.txt
+      - name: Compile only without executing behavioral cases
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :ai:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/industrial-loaded-jvm-manifest-preflight/compile.log
+          test -f ai/build/classes/kotlin/test/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2LoadedJvmManifestCaptureTest.class
+          test ! -e ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2LoadedJvmManifestCaptureTest.xml
+      - name: Upload original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-loaded-jvm-manifest-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/industrial-loaded-jvm-manifest-preflight/
+          if-no-files-found: error
+          retention-days: 90
