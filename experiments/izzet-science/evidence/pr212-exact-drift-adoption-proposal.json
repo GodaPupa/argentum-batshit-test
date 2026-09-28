@@ -1,0 +1,48 @@
+{
+  "schema": "pr212-exact-drift-adoption-proposal-v1",
+  "status": "AUTHOR_ANALYSIS_INDEPENDENT_REVIEW_REQUIRED_NOT_EXECUTION_AUTHORITY",
+  "runtime": "4865a7e0d2fa0766a32ca46fb049fefa2c8fb769",
+  "pr": 212,
+  "original_guard_failures": "Remain INCOMPLETE; no reclassification, replacement or unchanged dispatch",
+  "unchanged_manifests": [
+    "lab-coordinator/shared-capabilities/current-combat-receiving.json",
+    "lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json"
+  ],
+  "comparisons": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+      "expected_sha256": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4",
+      "expected_bytes_ref": "d097c9eff09dd402dfacb644351bfb9d62f35aff",
+      "actual_sha256": "850125a611fd414d2aaf8dd68aaf628a3ff74a6b961ee9d074e7c10496290202",
+      "actual_blob": "d3c80ae6077571db17292e34a447dc4329a6f62d",
+      "diff": "--- frozen-c350956d\n+++ PR212-850125a6\n@@ -159,6 +159,36 @@\n      * [DecisionValidators.validateTargets].\n      */\n     val differentControllers: Boolean = false\n+)\n+\n+/** A resolved scope; it describes permitted search access, never absolute library positions. */\n+@Serializable\n+sealed interface ResolvedLibrarySearchPortion {\n+    @Serializable\n+    @SerialName(\"Whole\")\n+    data object Whole : ResolvedLibrarySearchPortion\n+\n+    @Serializable\n+    @SerialName(\"Top\")\n+    data class Top(val count: Int) : ResolvedLibrarySearchPortion\n+}\n+\n+/**\n+ * Proof for exactly one pending SelectCards question from a direct authorized library search.\n+ * Only the chooser's current decision may expose these same offered physical handles in order.\n+ */\n+@Serializable\n+data class AuthorizedLibrarySearchChoice(\n+    val decisionId: String,\n+    val chooserId: EntityId,\n+    val actorId: EntityId,\n+    val libraryOwner: EntityId,\n+    val portion: ResolvedLibrarySearchPortion,\n+    val sourceOrigin: com.wingedsheep.engine.state.ObjectRef,\n+    val resolutionKey: String,\n+    val offeredHandles: List<EntityId>,\n+    /** Card object generations at the current offer; a leave/reenter invalidates this question. */\n+    val offeredObjects: List<com.wingedsheep.engine.state.ObjectRef>,\n )\n \n /**\n@@ -247,7 +277,9 @@\n      */\n     val maxTotalPower: Int? = null,\n     /** Conditional lower minimums for decisions like \"discard two unless one is a creature\". */\n-    val conditionalMinimums: List<ConditionalSelectionMinimum> = emptyList()\n+    val conditionalMinimums: List<ConditionalSelectionMinimum> = emptyList(),\n+    /** One-question search-order proof; absent from ordinary and derived collection choices. */\n+    val authorizedLibrarySearch: AuthorizedLibrarySearchChoice? = null,\n ) : PendingDecision\n \n @Serializable\n"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+      "expected_sha256": "ab14c3d79c6bf842313b948af585642b80b96d40834925af5cfa75fda084c155",
+      "expected_bytes_ref": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+      "actual_sha256": "a0302465cf32d461a3e6793cfc47408b7c19a040320b7da8db9f67d95d3103b7",
+      "actual_blob": "65f554f5f1d0c3a6ef6fec85236fc464127e0df9",
+      "changes": [
+        "import kotlinx.serialization.Transient",
+        "@Transient val authorizedLibrarySearchCandidate: AuthorizedLibrarySearchCandidate? = null, immediately after pipeline field; comment specifies immediate Gather-to-Select handoff only"
+      ]
+    }
+  ],
+  "finding": "Exact frozen PendingDecision bytes differ only by ResolvedLibrarySearchPortion/AuthorizedLibrarySearchChoice declarations and optional SelectCardsDecision.authorizedLibrarySearch default-null field. Combat declarations unchanged. EffectContext adds only transient default-null authorized search candidate and import. This is an author structural finding, not independently accepted serialization or receiving equivalence.",
+  "required_review": [
+    "Independently reproduce both before/after hashes and inspect complete diffs",
+    "Review default-null serialization, copy and suspended token/combat behavior with the current search-provenance implementation",
+    "Explicitly adopt or reject a separate source-equivalence supplement for PR212 exact runtime; older Manual adoption does not apply",
+    "If adopted, bind all original non-drift files, unchanged exact 32 current-combat and 16+4 token/event cases, collector and workflow in a prospective changed-source receiving execution",
+    "Audit resulting originals once and obtain independent compatibility/shared adoption before PR212 merge"
+  ],
+  "not_authorized": [
+    "editing frozen manifests",
+    "substitution by unrelated CI",
+    "guard rerun before adopted source authority",
+    "PR212 merge",
+    "gameplay"
+  ],
+  "official_counters_changed": false
+}
