@@ -1,0 +1,44 @@
+{
+  "schema": "pr212-exact-compat-independent-execution-source-review-v1",
+  "reviewer": "/root/pr212_independent_review",
+  "independence": "Reviewer did not author runtime, proposal, supplement, wrapper or workflow.",
+  "reviewed_candidate_commit": "6b08cfc729d484fd87b313e13bc12a454a44ffda",
+  "runtime": "4865a7e0d2fa0766a32ca46fb049fefa2c8fb769",
+  "decision": "ADOPT_ONLY_PROSPECTIVE_EXACT_RUNTIME_FROZEN_RECEIVING_EXECUTION",
+  "execution_authorized": true,
+  "execution_scope": "32+16+4_EXCLUDED_RECEIVING_ONLY",
+  "supplement_sha256": "1746d8b98f126b5c36edd3fc8f04f93410319eb1808dd24738db7b7c65cdd8f1",
+  "wrapper_sha256": "ec808d8c2d6f4af6e26219a1f17b28acec8e034af9d0b1000db81cbb66cf6426",
+  "workflow_sha256": "197197e58bcbc8efddd85a95a8a24585deda62f5a4e13d39c67c7fe227d5bb78",
+  "source_review_commit": "d222605143aabbbc6ba70aa298e6fdaf5f722a0d",
+  "finding": "The exact two-file source substitutions are sufficiently equivalent for the bounded purpose of prospectively executing unchanged frozen combat32 and token16 plus separate entry-event4 receiving. This is execution-source adoption, not receiving-result, runtime/shared acceptance or general serialized byte/ABI equivalence.",
+  "independent_checks": [
+    "Fetched and read complete three candidate files. Independently reproduced their SHA256 digests. Prior complete before/after review reproduced both substitution hashes and verified 64 unique manifest-bound runtime files: only the two declared differences, 62 unchanged.",
+    "Independently reproduced both unchanged manifest hashes and all five reviewed search-provenance context hashes in supplement.",
+    "Git comparison runtime to initial candidate showed only three added supplemental files, ahead one/behind zero; correction comparison adds only wrapper/workflow changes. Product, test, manifests, collector and authority bytes remain runtime-identical.",
+    "Corrected wrapper hardcodes exact five supplemental paths. It enforces permit-only final change, review-only immediately preceding change and reviewed_candidate_commit equal HEAD^^, permit parent equal HEAD^, runtime ancestry, clean tree and SHA256 of every supplemental file except self permit.",
+    "Review authorizes hashes of exact supplement/wrapper/workflow; supplement pins preserved manifests, only two before/after substitutions and five source context files. Wrapper verifies union64, substitution2, all other source hashes and authority files before execution.",
+    "Uses just test-class through frozen launcher, short first class name plus remaining fully qualified selectors. Pinned setup-just installed. --rerun-tasks and --no-build-cache request fresh execution; no Gradle raw invocation.",
+    "Exact preserved four combat stages32 run together; token stages14,2,4 run separately. XML and command exits retained immediately per stage before subsequent task. Frozen collector validates exits, stage sets, class/count/unique identities, errors/skips and XML hashes; wrapper additionally compares all frozen case-name sets.",
+    "Workflow triggers only exact branch and permit path. No permit is present or created by this review. Upload is always enabled; original evidence remains subject to independent artifact audit.",
+    "Prior requested corrections are resolved; no remaining source-level blocker to this bounded prospective execution was found."
+  ],
+  "permit_requirements": [
+    "Next commit must add only experiments/izzet-science/pr212-compat-execution-permit.json as child of this independent review commit.",
+    "Permit runtime and execution_scope must match this review, parent must equal review commit, allowed_changed_paths must equal hardcoded five-file set, and sha256 must bind exact four non-permit files including this review.",
+    "Permit author must verify exact branch head and candidate/review/permit chain before dispatch; no intervening source or workflow edits are authorized by this review."
+  ],
+  "limits": [
+    "At most the authorized original prospective receiving execution; no automatic or unchanged reruns. Technical failures remain INCOMPLETE and require diagnosis.",
+    "Original failed frozen guards remain consumed INCOMPLETE and are neither replaced nor reclassified.",
+    "Fresh resulting original ZIP/XML, task freshness, runtime/source/workflow provenance, exact case identities and command exits must be audited once and independently adopted before any shared compatibility acceptance.",
+    "No runtime/shared-result adoption, PR212 merge, project admission, official seed, claim, allocation or gameplay.",
+    "Do not sum or broaden overlapping bank evidence. Scope remains combat32, original token16 and separate entry4.",
+    "Default-null/transient analysis does not certify general wire byte identity, backward old-reader compatibility for non-null proof, binary ABI or complete search semantics. Additional search serialization diagnostics remain separately qualified."
+  ],
+  "runtime_accepted": false,
+  "shared_result_adoption": false,
+  "merge_authorized": false,
+  "gameplay_authorized": false,
+  "official_counters_changed": false
+}
