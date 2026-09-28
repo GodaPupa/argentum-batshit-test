@@ -1,0 +1,70 @@
+name: Pest Monster London Forest certificate receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-london-forest-targeted.yml"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/PestMonsterLondonForestCertificate.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterLondonForestCertificateTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-forest-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact preflighted London source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-london-forest
+          test "$(git rev-parse HEAD^)" = "1260a0ab98b386150b3c58cc1cc4daffdfcd83c7"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/PestMonsterLondonForestCertificate.kt)" = "8ba646f1c9edd256e8b8915f8da22788cf1ab8ab"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterLondonForestCertificateTest.kt)" = "805b722b5f0fa35df2fec3f0420c3a80395605d4"
+          test "$(git rev-parse 1260a0ab98b386150b3c58cc1cc4daffdfcd83c7:gym/src/main/kotlin/com/wingedsheep/gym/actorinput/PestMonsterLondonForestCertificate.kt)" = "8ba646f1c9edd256e8b8915f8da22788cf1ab8ab"
+          test "$(git rev-parse 1260a0ab98b386150b3c58cc1cc4daffdfcd83c7:gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterLondonForestCertificateTest.kt)" = "805b722b5f0fa35df2fec3f0420c3a80395605d4"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/PestMonsterLondonForestCertificate.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterLondonForestCertificateTest.kt
+            git hash-object .github/workflows/pest-monster-london-forest-targeted.yml
+            git status --porcelain
+          } > build/reports/pest-london-forest/source.txt
+      - name: Execute two fresh London Forest certificate fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterLondonForestCertificateTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/pest-london-forest/gradle.log
+      - name: Verify exact JUnit cases
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          paths=glob.glob("gym/build/test-results/test/TEST-*PestMonsterLondonForestCertificateTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          cases=root.findall(".//testcase")
+          expected=[f"London Monster seat {seat} Forest existence ignores hidden library order" for seat in (1,2)]
+          assert sorted(c.get("name") for c in cases)==sorted(expected), [c.get("name") for c in cases]
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-london-forest-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-london-forest/
+            gym/build/test-results/test/TEST-*PestMonsterLondonForestCertificateTest.xml
+          if-no-files-found: error
+          retention-days: 90
