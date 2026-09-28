@@ -1,0 +1,28 @@
+{
+  "run": 36451928444,
+  "artifact": 10983662752,
+  "source": "a905d0f287951c6251d3b7bb7ba4b31e16f1fddd",
+  "parent": "b5e8296ca46bae3b1e2f321a0e5fbde504a0d6ca",
+  "zip_sha256": "3f1fec02a45926db708f6982f78ee9579d2d59a0ec5098342758faa2ac9a25ff",
+  "zip_crc": "PASS",
+  "source_txt_sha256": "383a75941332f49b895b0cf4a73672ccb64d5bbcfcdd50ec7ddd0bd36776886f",
+  "source_blob": "d368f88f777df8472889d872600723d3412c2575",
+  "test_blob": "e5301bbef9f1dea654e0122a58382adddb5cf458",
+  "workflow_blob": "b411ef87961405099eb2e8dd3428bb13d53a5709",
+  "test_log_sha256": "38109b835442331fc35391e8d618478c77b758226f22101ede4179dd4bfc9684",
+  "xml_sha256": "b7cf22620c0cab84ffdf0e0502fe2202eb717eb4e9b2def317d129d2dfb61127",
+  "freshness": "Direct Python unittest execution on exact checkout, two tests, no cache or skip mechanism",
+  "xml": {
+    "suite": "LoadedJvmManifestAuthorityTests",
+    "tests": 2,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "test_missing_or_unreviewed_expected_manifest_refuses_preclaim_authority",
+      "test_exact_independently_reviewed_manifest_shape_is_required"
+    ]
+  },
+  "disposition": "SCOPED_FAIL_CLOSED_MANIFEST_REVIEW_BINDING_ACCEPTED",
+  "limits": "Synthetic binding behavior only. Incomplete eight-class capture does not supply a complete expected manifest; independent adoption, prepared worker, combined receiving, claim and R1 permit remain absent."
+}
