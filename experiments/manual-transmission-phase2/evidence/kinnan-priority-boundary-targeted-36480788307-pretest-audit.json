@@ -1,0 +1,21 @@
+{
+  "schema": "manual-kinnan-qualified-boundary-pretest-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36480788307,
+  "artifact_id": null,
+  "head": "f7c97f42d0c059d1ad51ef55932b6139afdf9bf9",
+  "disposition": "INCOMPLETE_PRETEST_WORKFLOW_SYNTAX",
+  "behavioral_cases": 0,
+  "diagnosis": "Source-binding shell line contained a literal backslash-n between the Kinnan card hash check and Kinnan qualification-test hash check; bash `test` received too many arguments. Behavioral step was skipped and no artifact uploaded.",
+  "source_binding": {
+    "parent": "cbb73c0b337af62871360d644c2a8921030a60ab",
+    "kinnan_card": "14907968026b2f307bd792ccd22481788ac3d2e5",
+    "kinnan_qualification_test": "2eeea62b0cb87d231aebaeaf5119f959f1a7ca2b",
+    "priority_policy": "8fec7b06ed4d20ac138b4f0d0500fc6d39926d4e",
+    "boundary_fixture": "c76561e4c156d0476c2ab9637e2c8658eb892255",
+    "masked_boundary": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "telemetry": "44608301d535a2114073d80c06d5ca0480c40043"
+  },
+  "next": "Correct workflow syntax only, repin to this failed head, execute the same four declared cases once.",
+  "official_counters_delta": 0
+}
