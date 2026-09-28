@@ -1,0 +1,22 @@
+{
+  "run": 36383215678,
+  "artifact": 10953751344,
+  "head": "4ef0a02756b64d3dc7d8f3f28c4540cd1fa814b0",
+  "parent": "ab63f8f3bb7f44ff9eba2a6dfbe3859d9ff237b2",
+  "zip_sha256": "d2d2ebc620fe4a90350e8c992506686d52b3bd0236b91a1860eadb9f8c6ce133",
+  "xml_sha256": "c3078a8bade9c4dec410129295bf647aa2821798f3a400b7ded3e406e1a8059f",
+  "crc": "clean",
+  "source_fixture_blob": "9af8ea09deaaeaed72c3bb020a4ef552429429bd",
+  "workflow_blob": "79f65a899ec6348b06ead2ba6baa8a1bb2836806",
+  "card_blob": "544a440160528f4a08211109936a55e263c39d19",
+  "freshness": "43 executed Gradle tasks; --rerun-tasks --no-build-cache",
+  "xml": {
+    "tests": 1,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "cause": "At test line 65 after second physical Palace activation, expected restricted CommanderCastEntryCounters rider entries 2, actual 1. Both activation.error assertions passed. The first restricted mana may have been consumed for the second generic {1} cost despite explicit physical Plains payment; payment ordering/selection requires source diagnosis.",
+  "disposition": "INCOMPLETE_REAL_PAYMENT_MECHANIC",
+  "authority": "No sequential two-Palace acceptance; aggregation-only evidence cannot substitute. Do not change fixture expectation or rerun unchanged."
+}
