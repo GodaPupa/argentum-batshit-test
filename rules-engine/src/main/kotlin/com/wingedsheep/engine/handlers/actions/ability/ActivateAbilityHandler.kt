@@ -1290,26 +1290,40 @@ class ActivateAbilityHandler(
                     // pool + sources, so ignoring the pool here made a legal activation fail
                     // ("Selected mana sources cannot pay this ability's cost") or over-tap lands.
                     // The reduced [manaPool] flows into payAbilityCost and is persisted afterward.
-                    val partialResult = manaPool.payPartial(manaCost, executeAbilityContext)
-                    manaPool = partialResult.newPool
-                    val remainingCost = partialResult.remainingCost
-                    if (!remainingCost.isEmpty() || manaXValue > 0) {
-                        // Solve the remainder against the chosen sources only (non-chosen excluded),
-                        // matching CastPaymentProcessor.explicitPay so we never tap more than needed.
-                        // The client's auto-tap preview is computed against the full cost and may
-                        // over-select; excluding the rest keeps validation and execution in sync.
-                        val chosen = action.paymentStrategy.manaAbilitiesToActivate.toSet()
-                        val excluded = manaSolver.findAvailableManaSources(currentState, action.playerId)
-                            .map { it.entityId }
-                            .filter { it !in chosen }
-                            .toSet() + selfExcludedSources
-                        val solution = manaSolver.solve(
-                            currentState, action.playerId, remainingCost, manaXValue, excludeSources = excluded, xManaRestriction = ability.xManaRestriction
-                        ) ?: return ExecutionResult.error(state, "Selected mana sources cannot pay this ability's cost")
-                        for (source in solution.sources) {
+                    val chosen = action.paymentStrategy.manaAbilitiesToActivate.toSet()
+                    val excluded = manaSolver.findAvailableManaSources(currentState, action.playerId)
+                        .map { it.entityId }
+                        .filter { it !in chosen }
+                        .toSet() + selfExcludedSources
+                    // If the selected physical sources cover this cost, do not consume floating
+                    // rider-bearing mana first. In particular a second Opal Palace activation
+                    // must not spend the first Palace's commander-cast rider when a chosen Plains
+                    // can pay its {1}. Keep the existing pool-first fallback for partial choices.
+                    val selectedOnly = if (chosen.isNotEmpty() &&
+                        manaPool.restrictedMana.any { it.riders.isNotEmpty() })
+                        manaSolver.solve(currentState, action.playerId, manaCost, manaXValue,
+                            excludeSources = excluded, xManaRestriction = ability.xManaRestriction)
+                    else null
+                    if (selectedOnly != null) {
+                        for (source in selectedOnly.sources) {
                             val (tappedState, tapEvent) = tap(currentState, source.entityId)
                             currentState = tappedState
                             tapEvent?.let(events::add)
+                        }
+                    } else {
+                        val partialResult = manaPool.payPartial(manaCost, executeAbilityContext)
+                        manaPool = partialResult.newPool
+                        val remainingCost = partialResult.remainingCost
+                        if (!remainingCost.isEmpty() || manaXValue > 0) {
+                            val solution = manaSolver.solve(
+                                currentState, action.playerId, remainingCost, manaXValue,
+                                excludeSources = excluded, xManaRestriction = ability.xManaRestriction
+                            ) ?: return ExecutionResult.error(state, "Selected mana sources cannot pay this ability's cost")
+                            for (source in solution.sources) {
+                                val (tappedState, tapEvent) = tap(currentState, source.entityId)
+                                currentState = tappedState
+                                tapEvent?.let(events::add)
+                            }
                         }
                     }
                 }
