@@ -1,0 +1,29 @@
+{
+  "schema": "manual-pact-negation-targeted-36492197672-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36492197672,
+  "artifact_id": 11001641790,
+  "artifact_sha256": "bb847f59b1bdd2a20ae3a6a24947316e04089536d56b3931e481c6d6c750ccce",
+  "head": "af45c3ce4ffe1711f419bab2f72c62dae7cf50ca",
+  "source_binding": "clean",
+  "freshness": "43 actionable tasks executed through just test-class with --rerun-tasks --no-build-cache",
+  "xml": {
+    "tests": 3,
+    "passes": 2,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "accepted": [
+    "Pact counters a real spell and schedules exactly one next-upkeep debt",
+    "Pact next-upkeep debt can be paid with five Islands"
+  ],
+  "incomplete": {
+    "case": "Pact unpaid next-upkeep debt loses the controller",
+    "failure": "Fixture expected a YesNoDecision after reaching the Pact upkeep with zero available mana; no decision was present.",
+    "diagnosis": "The no-mana construction cannot exercise an explicit decline choice. It does not falsify the unpaid-loss mechanic."
+  },
+  "disposition": "ACCEPT_TWO_SCOPED_BEHAVIORS__ONE_FIXTURE_INCOMPLETE",
+  "next_gate": "Change only unpaid case construction to supply a payable {3}{U}{U} position, then explicitly decline the YesNoDecision and verify loss. Preserve first two accepted cases as consumed and do not rerun them unchanged.",
+  "official_counters_delta": 0
+}
