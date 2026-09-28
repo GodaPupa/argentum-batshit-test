@@ -1,0 +1,51 @@
+name: Manual Phase 2 public opponent axes targeted receiving
+on:
+  push:
+    branches: ["manual/clean-pilot-boundary-receiving-20260927"]
+    paths:
+      - ".github/workflows/manual-phase2-public-opponent-axes-targeted.yml"
+permissions:
+  contents: read
+jobs:
+  targeted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact compiled source and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/manual-phase2-public-opponent-axes-targeted
+          test "$(git rev-parse HEAD^)" = "bf66598de52f2be4aa61053d21c8f5c9d2f81d32"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPublicOpponentAxes.kt)" = "8372b475e77849127439060902a06b0b2da8fdf2"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPublicOpponentAxesTest.kt)" = "bab12ac38ea784ce7ca7f133169ff4257d88e363"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPublicOpponentAxes.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPublicOpponentAxesTest.kt
+            git hash-object .github/workflows/manual-phase2-public-opponent-axes-targeted.yml
+            git status --porcelain
+          } > build/reports/manual-phase2-public-opponent-axes-targeted/source.txt
+      - name: Execute three fresh public-axis fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:test --tests 'com.wingedsheep.gym.manual.ManualPhaseTwoPublicOpponentAxesTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/manual-phase2-public-opponent-axes-targeted/test.log
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoPublicOpponentAxesTest.xml build/reports/manual-phase2-public-opponent-axes-targeted/
+      - name: Retain original evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-phase2-public-opponent-axes-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/manual-phase2-public-opponent-axes-targeted/
+          if-no-files-found: error
+          retention-days: 90
