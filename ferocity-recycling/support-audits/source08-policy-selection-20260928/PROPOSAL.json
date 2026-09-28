@@ -1,0 +1,54 @@
+{
+  "schema": "ferocity-source08-first-cell-policy-selection-proposal-v1",
+  "date_utc": "2026-09-28",
+  "status": "PROSPECTIVE_POLICY_BINDING_REQUIRES_INDEPENDENT_ARCHIVE_REVIEW",
+  "exact_source08": {
+    "commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+    "full_tree_receipt": "ferocity-recycling/support-audits/source08-full-tree-20260928/original-audit.json",
+    "observed_inputs": 20275,
+    "matched_inputs": 20275
+  },
+  "historical_first_cell_policy_archive": {
+    "path": "ferocity-recycling/evidence/build/publication-M1-source-audits/08-historical-first-cell-policy.zip",
+    "git_blob": "6703d6913a321771563ff200ca99cd65f7c04cd0",
+    "evidence_ref": "ferocity-recycling/source08-evidence-20260926"
+  },
+  "resource_authority": {
+    "disposition": "ADOPT_INCOMPLETE_CALIBRATION_WITH_HARD_PRODUCTION_STOPS",
+    "adoption_commit": "ae22a206594beecbb7fbcf08b0e5b1b963e7fe42",
+    "clarification_path": "ferocity-recycling/support-audits/source08-resource-disposition-clarification-20260927/CLARIFICATION.md",
+    "production_limits": {
+      "per_child_free_space_mib": 768,
+      "per_file_mib": 128,
+      "heap_gib": 2,
+      "external_wall_seconds": 300
+    },
+    "preserved_history": {
+      "supervisor_claims": 3,
+      "writer_jvms": 1,
+      "reader_jvms": 0,
+      "new_calibration_commands": 0
+    }
+  },
+  "required_independent_review": [
+    "Extract and inventory the historical first-cell-policy archive without executing it.",
+    "Identify the exact two policy-map objects and their hashes expected by the frozen D2 first cell.",
+    "Bind those objects to source08 and the six-file protocol map.",
+    "Confirm no policy choice is reconstructed from later outcomes or changed after source08.",
+    "Publish an adoption or rejection record before any export, seed allocation, claim, JVM or game."
+  ],
+  "explicit_non_authority": [
+    "No archive execution.",
+    "No export plan execution.",
+    "No new calibration command.",
+    "No D2 admission.",
+    "No seed, claim, JVM or game."
+  ],
+  "counters": {
+    "new_calibration_commands": 0,
+    "new_jvms": 0,
+    "seeds_consumed": 0,
+    "D2_games": 0
+  }
+}
