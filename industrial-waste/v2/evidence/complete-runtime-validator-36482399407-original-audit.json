@@ -1,0 +1,40 @@
+{
+  "schema": "industrial-r1-complete-runtime-validator-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36482399407,
+  "artifact_id": 10997215486,
+  "artifact_sha256": "30f31b17a01ae82c25f08441c23e5002b8f208b540aaa591f9cc680e8d0468b4",
+  "head": "e250de60d89b1c405b824b8a8f5bc7e0bfe6b9e5",
+  "parent": "85784bce8b4428af8bf8ecf49672eaf0996c8cae",
+  "pins": {
+    "validator": "be1f53184c9bda880539dc589a921cef130cd1a3",
+    "budget": "7c2d7dd70d9e6ed88000a45dec3285972ecea8f0",
+    "test": "7fe5f26092bb933336331feba6afe8857d5b7fe5",
+    "workflow": "6a4c8bc077bc40e431f18a0826fa3f17b58451c2"
+  },
+  "result": {
+    "cases": 15,
+    "failures": 0,
+    "errors": 0
+  },
+  "disposition": "ACCEPTED_DETERMINISTIC_COMPLETE_RUNTIME_VALIDATOR_AND_ATTESTATION_SCHEMA_ONLY",
+  "accepted_scope": [
+    "strict duplicate-key/unknown-field rejection",
+    "canonical path/digest/length validation",
+    "dependency-edge and ordered process-path validation",
+    "inventory duplicate/shadow and declared-loader validation",
+    "forbidden environment and dynamic-loading policy rejection",
+    "wrong-worker/replayed/stale prepared-worker attestation rejection"
+  ],
+  "limits": [
+    "No complete expected manifest has been generated or adopted.",
+    "No build/dependency graph has been inventoried from a qualified isolated build.",
+    "No worker attestation channel authenticity/lifetime enforcement is accepted.",
+    "No combined receiving, claim, R1 permit, allocation, action, outcome or deck conclusion."
+  ],
+  "official_counters_delta": {
+    "allocations": 0,
+    "actions": 0,
+    "outcomes": 0
+  }
+}
