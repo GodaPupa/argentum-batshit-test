@@ -1,0 +1,71 @@
+{
+  "schema": "pr212-exact-drift-independent-source-review-v1",
+  "reviewer": "/root/pr212_independent_review",
+  "independence": "Separate reviewer agent; did not author the proposal or runtime changes.",
+  "proposal": {
+    "commit": "00d79d7d4c069237727c4b95143ac6ae11dd2791",
+    "path": "experiments/izzet-science/evidence/pr212-exact-drift-adoption-proposal.json",
+    "blob": "419fb25a9235723fcafde2f1a7b8f6aa1de81d90"
+  },
+  "runtime": "4865a7e0d2fa0766a32ca46fb049fefa2c8fb769",
+  "decision": "CONDITIONALLY_RECOMMEND_PROSPECTIVE_EXACT_RUNTIME_SOURCE_SUPPLEMENT_NOT_EXECUTION_OR_RUNTIME_ADOPTION",
+  "hash_reproduction": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+      "before_ref": "d097c9eff09dd402dfacb644351bfb9d62f35aff",
+      "before_blob": "16cd51fbfbb0e8778f72e6cee5d7a5fb953c8961",
+      "before_sha256": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4",
+      "after_blob": "d3c80ae6077571db17292e34a447dc4329a6f62d",
+      "after_sha256": "850125a611fd414d2aaf8dd68aaf628a3ff74a6b961ee9d074e7c10496290202",
+      "independently_reproduced": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+      "before_ref": "77c7aad0bb2ded2c0372087d94f66ccbde0f7d09",
+      "before_blob": "2b74ab35bafca868e87a936c23acc29ceea4d525",
+      "before_sha256": "ab14c3d79c6bf842313b948af585642b80b96d40834925af5cfa75fda084c155",
+      "after_blob": "65f554f5f1d0c3a6ef6fec85236fc464127e0df9",
+      "after_sha256": "a0302465cf32d461a3e6793cfc47408b7c19a040320b7da8db9f67d95d3103b7",
+      "independently_reproduced": true
+    }
+  ],
+  "method": "Fetched complete UTF-8 files through GitHub connector; independently SHA-256 hashed exact returned bytes and generated complete unified diffs using Python hashlib/difflib. Fetched and hashed all 64 unique source_files_sha256 paths in both frozen manifests: exactly the two proposed differences; other 62 match. No tests, workflow dispatch, artifact download or original rerun.",
+  "complete_diff_findings": [
+    "PendingDecision adds only resolved Whole/Top search portion, AuthorizedLibrarySearchChoice and nullable default-null SelectCardsDecision.authorizedLibrarySearch. Existing combat and target decision declarations unchanged.",
+    "EffectContext adds only kotlinx.serialization.Transient import and default-null transient AuthorizedLibrarySearchCandidate property after pipeline. No existing property removed or modified."
+  ],
+  "serialization_and_copy": [
+    "Nullable default enables old SelectCards payloads without proof to decode as absent; ordinary decisions construct absent proof. This is directional source compatibility, not byte identity for every encoder configuration or old-reader compatibility with non-null proof. encodeDefaults/explicitNulls can affect nullable wire output.",
+    "Transient candidate is excluded from serialized EffectContext and resets to null on deserialization. Kotlin data-class copy retains it unless explicitly cleared: Transient alone is not a copy boundary. Adding constructor properties also changes generated component/copy/equality/hash APIs; source-scoped receiving is warranted, not unrestricted ABI equivalence.",
+    "At exact runtime CompositeEffectExecutor clears candidate on entry, keeps currentContext candidate-free, pre-pushes candidate-free EffectContinuation, lends a local candidate only to immediately following SelectFromCollectionEffect and revokes it on every step. Nested/non-Select/suspended paths do not retain that candidate in composite frames.",
+    "GatherCardsExecutor mints candidates only from actual AuthorizedLibrarySearch with captured origin/resolution and unique object refs. SelectFromCollectionExecutor checks requested order mode, plain direct collection, chooser, source origin/resolution, exact handles and object generations, collection equality and current permitted library order; serialized proof belongs to exactly its generated pending decision. Its continuation stores objectReferences/collections, not the candidate.",
+    "Token continuation declarations, resumer, entry-event provenance, decision validation and combat source files all match frozen hashes. Reviewed token prepared count/actual controller/recipient tail paths: existing context and collections are retained; new candidate is not token state. No source delta alters token counts, chosen defender tail, entry events or combat budgets. Runtime round-trip equivalence remains unproven until receiving."
+  ],
+  "reviewed_search_context": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/AuthorizedLibrarySearchCandidate.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/CompositeEffectExecutor.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/GatherCardsExecutor.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/SelectFromCollectionExecutor.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EffectExecutorRegistry.kt"
+  ],
+  "governance": [
+    "Frozen manifests require prospective source qualification and independent artifact review; collector source review expressly does not grant engine/combined-runtime/gameplay admission.",
+    "Existing qualification workflows compare frozen hashes literally; unchanged execution still fails by design. This review does not modify or waive their guards.",
+    "A separate narrowly scoped supplement is technically justified for these exact two substitutions and exact runtime only, but must itself bind prospective source/workflow authority before execution. No blanket shared adoption or inheritance from older Manual runtime.",
+    "No new executable supplement/workflow was presented for independent review; therefore this report records source findings and conditional recommendation, not permission to dispatch. Shared/compatibility adoption and receiving acceptance remain absent."
+  ],
+  "required_prospective_receiving": [
+    "Bind exact runtime4865a7e0d2fa0766a32ca46fb049fefa2c8fb769; preserve original manifests byte-for-byte; declare only these two before/after substitutions in a separate prospective supplement with this review and exact proposal identity.",
+    "Bind all remaining 62 original files unchanged, all authority/budget/test/support/build files, collector hash2c158a62f1898dcc7cb3c00a3cf2497a42d87e3a4e3a2a1e37926b2a4483352f, source context used by this review and exact prospective workflow/collector wrapper bytes. Record receiving HEAD/tree and runtime relationship; fail closed on any extra drift.",
+    "Execute unchanged complete current-combat 4-stage32 bank, plus token14+Dalkovan2 and separate entry-event4 bank, with exact class/module/case identities and per-stage exits; preserve raw XML immediately before subsequent same-task invocations replace it. No cache-only or unrelated-CI substitution.",
+    "Retain serialization/replay coverage already frozen: legacy serialized combat assignment; TD06 doubled batch, TD10 exact pending/replay, TD11 as-enters copy tail, TD12/13 prepared replacement and EP03/04 serialized provenance. Separately validate old missing/default-null SelectCards decoding, proof-bearing Whole/Top round-trip, transient candidate reset and copy/continuation clearing if not already source-bound by reviewed search-provenance evidence; these are additional diagnostics, never replacements for frozen banks.",
+    "Audit each resulting original once with source/provenance, exact case identities, fresh execution, raw ZIP/XML hashes, zero missing/extra/duplicate/skipped/error cases; obtain independent shared/compatibility adoption before PR212 merge."
+  ],
+  "original_guard_failures": "Remain INCOMPLETE, unmodified and unreclassified. No unchanged rerun.",
+  "runtime_accepted": false,
+  "shared_adoption": false,
+  "execution_authorized": false,
+  "merge_authorized": false,
+  "gameplay_authorized": false,
+  "official_counters_changed": false
+}
