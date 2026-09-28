@@ -1,0 +1,28 @@
+name: Sphinx four-deck whole-actor surface inventory
+on:
+  push:
+    branches: ["sphinx/whole-actor-surface-inventory-20260928"]
+    paths: [".github/workflows/sphinx-four-deck-surface-inventory.yml"]
+permissions: {contents: read}
+jobs:
+  static-surface:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - name: Bind exact map validator and parent
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-four-deck-surface
+          test "$(git rev-parse HEAD^)" = "b27fd29053004f1ee9e70e3dd7936097f002aa69"
+          test "$(git hash-object sphinx-approach/STAGE_E_FOUR_DECK_OWN_CARD_SURFACE_MAP_20260928.json)" = "9843e04c36c08d16aad2edbc0f7cca4c4023016e"
+          test "$(git hash-object sphinx-approach/validate_four_deck_surface_inventory.py)" = "8774f85c402bcb2c661d0ff54dd37751f7373e74"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object sphinx-approach/STAGE_E_FOUR_DECK_OWN_CARD_SURFACE_MAP_20260928.json; git hash-object sphinx-approach/validate_four_deck_surface_inventory.py; git hash-object .github/workflows/sphinx-four-deck-surface-inventory.yml; } > build/reports/sphinx-four-deck-surface/source.txt
+      - run: python3 sphinx-approach/validate_four_deck_surface_inventory.py | tee build/reports/sphinx-four-deck-surface/test.log
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-four-deck-surface-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-four-deck-surface/
+          if-no-files-found: error
+          retention-days: 90
