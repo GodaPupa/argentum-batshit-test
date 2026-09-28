@@ -1,0 +1,100 @@
+{
+  "schema": "ferocity-first-cell-admission-manifest-hold-v1",
+  "date_utc": "2026-09-28",
+  "status": "HOLD_INCOMPLETE_NON_EXECUTING",
+  "purpose": "Bind every currently exact first-cell identity without creating execution authority. Any unresolved field fails closed.",
+  "source08": {
+    "commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "tree": "56c6b8dd46dc112cdb70db496fd09d0c3e915e8a6",
+    "full_tree_reconciliation": "20275/20275"
+  },
+  "governing_protocols": {
+    "active_contract": {
+      "branch": "ferocity-recycling/archetype-research",
+      "git_blob": "ae2e29d944c521caa90b0015222e499b09e657b6"
+    },
+    "reconciliation_amendment": {
+      "branch": "ferocity-recycling/archetype-research",
+      "git_blob": "5467771693e1d784d2f62733947964b5457467a4"
+    },
+    "research_protocol": {
+      "branch": "ferocity-recycling/archetype-research",
+      "git_blob": "3052d59eb326d71a1ee9e43963ff4bd4ab548baf"
+    },
+    "m1_archive_manifest": {
+      "branch": "ferocity-recycling/source08-evidence-20260926",
+      "git_blob": "05174b960875500e529092810e0e1e249fd18a71",
+      "source_manifest_sha256": "41283f68392d7792131eff26877a67a5905ca254dbdeee5529da7f8c17094199"
+    }
+  },
+  "first_cell": {
+    "candidate": {
+      "id": "A3-F4",
+      "deck_sha256": "c72947c48bc45f2b31352a662a99e75dfc0f8ede72ecccc69b574a568eae6ba4"
+    },
+    "no_ferocity": {
+      "id": "A3-N0",
+      "deck_sha256": "9aa9d3133f29b5793d66e9941da65d5c74d551f2d670b162f547ad0c1ae79298"
+    },
+    "opponent": {
+      "id": "grixis_affinity_barba94_20260924",
+      "source_json_blob": "00a58600bb18a820ea6390355ca7b84c19b2c6ff",
+      "import_text_sha256": "dbd456ae67d86dbdc84d17bd98c8a16ec9d9861c451ae465ff1f0aef74a1fe5d",
+      "source_status": "source_archived_not_engine_admitted"
+    },
+    "allocation": {
+      "total_games": 16,
+      "games_per_list": 8,
+      "play_per_list": 4,
+      "draw_per_list": 4,
+      "seed_values_generated_or_consumed": false
+    }
+  },
+  "policy_identity": {
+    "decision": "ADOPT_M1_ACTIVE_RED_POLICY_IDENTITY",
+    "red": {
+      "name": "red-madness-v0.2",
+      "source_freeze_sha256": "2a888ed51153693f7aa1340d68410e362527f6576e2f3629a357d349ed25dddb",
+      "active_pilot_sha256": "6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5"
+    },
+    "artifact_control": {
+      "active_pilot_sha256": "3f92f97465ae3c39ce4d31b57a8f4215a802412510f251857059d4101c377251",
+      "source08_byte_identity": "accepted"
+    }
+  },
+  "protocol_caps": {
+    "submitted_actions_per_game": 6000,
+    "complete_turns_per_game": 150,
+    "wall_time_seconds": 300,
+    "wall_time_excludes": "external CI scheduling",
+    "cap_outcome": "unresolved technical outcome, never legal draw/loss"
+  },
+  "archived_candidate_evidence": {
+    "first_cell_policy_plan_sha256": "ebaae440116912aa50c2c0fa8f4bbf7fc9e354ecdf60d71ad1afdd39788b47a6",
+    "offline_export_effective_protocol_sha256": "3d1af913e1e03cc9c87b2aad07f9adce290520344d6de2d90d8ad72b055d30ca",
+    "resource_boundary_05_plan_freeze_sha256": "94300cc5d33c33fd9bb41af69c0f252de2e2d3532c7d500835f3db6db9a31bfc",
+    "resource_boundary_05_source_freeze_sha256": "168a3ee08ce68c1480cb3141b6ab8540aadb6277b848752e17910d0d7f8d4082",
+    "resource_boundary_06_plan_freeze_sha256": "92c968e18f182d3ceffeeab17eed7d0652a7a9f6cdd4c6d17e6e3ee12208aab7",
+    "resource_boundary_06_source_freeze_sha256": "9dc8871b483bb4abb13a88e9ed5b677c4479a2cafc2386f8c57931aba29a9bc8",
+    "note": "These exact members are preserved inside the M1 publication archive but are not direct live source paths in the source08 evidence branch. Their presence/digests do not choose which historical resource/runtime candidate is current authority."
+  },
+  "unresolved_required_bindings": [
+    "independently adopted exact first-cell Grixis engine/pilot qualification",
+    "exact runner source identity selected for this D2 cell",
+    "exact trace schema identity selected for this D2 cell",
+    "exact runtime/export bundle identity selected for this D2 cell",
+    "exact current cap/resource implementation authority and source digest, not merely historical archived candidates",
+    "complete receiving/admission proof tying all selected identities together",
+    "independent review of the completed admission manifest"
+  ],
+  "prohibited_until_resolved": [
+    "new JVM",
+    "seed generation or consumption",
+    "allocation claim",
+    "D2 game initialization",
+    "calibration or policy reconstruction from outcomes"
+  ],
+  "decision": "HOLD_NO_D2_AUTHORITY",
+  "next_gate": "Recover or independently reconstruct only from authoritative preserved evidence the exact runner/trace/bundle/resource receiving bindings and Grixis engine/pilot qualification; complete this manifest without changing the frozen deck/opponent/policy identities; then independently review before any entropy/JVM/game.",
+  "official_counters_delta": 0
+}
