@@ -17,12 +17,15 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/ferocity-policy-byte-binding
-          test "$(git rev-parse HEAD^)" = "c9945566ef04ebaf17d3f973772348831700cb16"
-          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/bind_source08_policy_bytes.py)" = "5633ac2a803810e27ef3c008ca3ad98bef6ed8c2"
+          test "$(git rev-parse HEAD^)" = "e00615500775e5ff21f08bf994f9d5969ac4128e"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/bind_source08_policy_bytes.py)" = "625ccb1eaac035075b447d55cba1d45c8f7820dd"
           test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/BYTE_BINDING_BUDGET.json)" = "780b7f141875d16a8648781aff935aa5da3ff1a7"
           { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/bind_source08_policy_bytes.py; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/BYTE_BINDING_BUDGET.json; git hash-object .github/workflows/ferocity-source08-policy-binding.yml; git status --porcelain; } > build/reports/ferocity-policy-byte-binding/source.txt
-      - name: Compare frozen pilot bytes to exact source08
-        run: python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/bind_source08_policy_bytes.py | tee build/reports/ferocity-policy-byte-binding/test.log
+      - name: Diagnose all frozen policy bytes against exact source08
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/bind_source08_policy_bytes.py | tee build/reports/ferocity-policy-byte-binding/test.log
       - name: Preserve original binding evidence
         if: always()
         uses: actions/upload-artifact@v7
