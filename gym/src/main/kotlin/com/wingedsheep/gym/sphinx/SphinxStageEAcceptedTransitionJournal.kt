@@ -47,7 +47,11 @@ internal class SphinxStageEAcceptedTransitionJournal(
         val recordJson: String,
     )
 
-    private val json = Json { serializersModule = engineSerializersModule; encodeDefaults = true }
+    private val json = Json {
+        serializersModule = engineSerializersModule
+        encodeDefaults = true
+        allowStructuredMapKeys = true
+    }
 
     fun acceptPonderReorder(
         state: GameState,
