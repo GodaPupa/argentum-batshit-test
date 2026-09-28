@@ -1,0 +1,46 @@
+name: Manual canonical Kinnan mechanics targeted
+on:
+  push:
+    branches: ["manual/clean-pilot-boundary-receiving-20260927"]
+    paths: [".github/workflows/manual-kinnan-mechanics-targeted.yml"]
+permissions:
+  contents: read
+jobs:
+  three-declared-mechanics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind canonical Kinnan source test and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/manual-kinnan-mechanics-targeted
+          test "$(git rev-parse HEAD^)" = "5228109fb74045d2c688e78f3f119872192117af"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/KinnanBonderProdigy.kt)" = "14907968026b2f307bd792ccd22481788ac3d2e5"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KinnanBonderProdigyScenarioTest.kt)" = "2eeea62b0cb87d231aebaeaf5119f959f1a7ca2b"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/KinnanBonderProdigy.kt; git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KinnanBonderProdigyScenarioTest.kt; git hash-object .github/workflows/manual-kinnan-mechanics-targeted.yml; git status --porcelain; } > build/reports/manual-kinnan-mechanics-targeted/source.txt
+      - name: Execute exactly three canonical Kinnan mechanics cases
+        shell: bash
+        run: |
+          set -o pipefail
+          just test-class KinnanBonderProdigyScenarioTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/manual-kinnan-mechanics-targeted/test.log
+      - name: Retain exact XML
+        if: always()
+        run: cp mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.KinnanBonderProdigyScenarioTest.xml build/reports/manual-kinnan-mechanics-targeted/ 2>/dev/null || true
+      - name: Retain original behavioral evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-kinnan-mechanics-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/manual-kinnan-mechanics-targeted/
+          if-no-files-found: error
+          retention-days: 90
