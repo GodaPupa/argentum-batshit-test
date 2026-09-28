@@ -1,0 +1,30 @@
+{
+  "schema": "industrial-r1-complete-runtime-validator-budget-v1",
+  "status": "PROSPECTIVE_DETERMINISTIC_NON_CORPUS_ONLY",
+  "accepted_boundary_review": "09951b4f71e9af9ab9f9e8fe2090c9fafb8ea4b0",
+  "cases": [
+    "valid canonical tiny manifest",
+    "unknown top-level field rejected",
+    "duplicate JSON key rejected",
+    "malformed sha256 rejected",
+    "duplicate build-input path rejected",
+    "unknown dependency edge rejected",
+    "noncontiguous process ordinal rejected",
+    "duplicate archive member rejected",
+    "duplicate same-loader class binary rejected",
+    "undeclared loader rejected",
+    "forbidden environment influence rejected",
+    "agent/dynamic attach/runtime compilation rejected",
+    "wrong-worker attestation rejected",
+    "replayed nonce rejected",
+    "stale attestation sequence rejected"
+  ],
+  "official_counters": 0,
+  "limits": [
+    "No expected manifest generation/adoption",
+    "No worker launch",
+    "No claim",
+    "No R1 allocation",
+    "No official corpus read"
+  ]
+}
