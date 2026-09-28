@@ -1,0 +1,50 @@
+{
+  "schema": "ferocity-source08-policy-byte-binding-36488979347-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36488979347,
+  "artifact_id": 11000646213,
+  "artifact_sha256": "105b5d09ac586f4882fa637a2b56a18ec482af68c32a08847373b84d8cd64c01",
+  "head": "93acc8338cfbf9c3bc67ccc546107e1e66f4de76",
+  "source_binding": "clean",
+  "result": "DIAGNOSTIC_COMPLETE",
+  "matched_members": 5,
+  "total_members": 8,
+  "exact_matches": [
+    "ArtifactControlPilot.kt",
+    "ArtifactCombatPlanner.kt",
+    "ActorPublicCards.kt",
+    "ActorChoiceSupport.kt",
+    "FirstCellCanonicalFixturePool.kt"
+  ],
+  "divergences": {
+    "ArtifactControlPolicyTest.kt": {
+      "archive": "4cbe939d64505a4a31b87a5357e76a57914d5ac7867fe268ea37338bee29ada5",
+      "source08": "4c49ef65ca6bbe6697cbee0a31413f4a5b1c1d2b0b5e7faac8fbc1ac8f86c0f4"
+    },
+    "RedMadnessPilot.kt": {
+      "archive": "bfafcdf95f35035462cec6959dcb554fbc9b4fd17083252027bb68aeca8c843e",
+      "source08": "6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5"
+    },
+    "RedMadnessPilotScenarioTest.kt": {
+      "archive": "df97c95e45612875f180dd12007f2cb1ece17d99fb49b0b50674f313d8d63632",
+      "source08": "fd712e765d3f9b670c2397db4c40c95a1daa9230deaf7e33e3460648796d9089"
+    }
+  },
+  "scoped_disposition": {
+    "artifact_control_pilot_source08_identity": "ACCEPTED_EXACT_BYTE_IDENTITY",
+    "red_madness_pilot_source08_identity": "REJECTED_EXACT_BYTE_IDENTITY_MISMATCH",
+    "historical_test_bank_identity": "PARTIAL_DIVERGENCE_REQUIRES_SEPARATE_GOVERNING_DISPOSITION"
+  },
+  "counters": {
+    "new_jvms": 0,
+    "new_entropy": 0,
+    "new_games": 0,
+    "new_calibration_commands": 0
+  },
+  "limits": [
+    "Diagnostic and byte-identity scope only.",
+    "No historical Red Madness policy is reconstructed or substituted.",
+    "No policy execution/export/runtime bundle/D2 admission.",
+    "D2 remains blocked until the frozen Red policy identity is lawfully resolved."
+  ]
+}
