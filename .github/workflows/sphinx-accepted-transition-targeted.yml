@@ -1,0 +1,50 @@
+name: Sphinx accepted Ponder transition and replay targeted
+on:
+  push:
+    branches: ["sphinx/accepted-transition-journal-20260928"]
+    paths:
+      - ".github/workflows/sphinx-accepted-transition-targeted.yml"
+permissions:
+  contents: read
+jobs:
+  two-declared-traces:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact unchanged journal, fixture, and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-accepted-transition-targeted
+          test "$(git rev-parse HEAD^)" = "1aaff3cb45311cd30e50940b9865679b1f881c4b"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt)" = "0931c82bf48d7e2f1639ba2995e55ff9320b7251"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt)" = "4a8fda7c17eb0febe67df0f18ce98ba617677953"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt; git hash-object .github/workflows/sphinx-accepted-transition-targeted.yml; git status --porcelain; } > build/reports/sphinx-accepted-transition-targeted/source.txt
+      - name: Execute only two new accepted-transition traces
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:test --tests 'com.wingedsheep.gym.sphinx.SphinxStageEAcceptedTransitionJournalTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-accepted-transition-targeted/test.log
+      - name: Preserve original exact XML
+        if: always()
+        shell: bash
+        run: |
+          if test -f gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEAcceptedTransitionJournalTest.xml; then
+            cp gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEAcceptedTransitionJournalTest.xml build/reports/sphinx-accepted-transition-targeted/
+          fi
+      - name: Upload original result
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-accepted-transition-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-accepted-transition-targeted/
+          if-no-files-found: error
+          retention-days: 90
