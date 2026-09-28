@@ -126,7 +126,7 @@ class PestMonsterLondonSecondLandTest : ScenarioTestBase() {
                         }
                         val chooser = discard.playerId
                         val choiceView = adapter.build(env.state, chooser, emptyList(),
-                            epoch.copy(step = index + 2), 0xC25380L + seat)
+                            epoch.copy(step = (index + 2).toLong()), 0xC25380L + seat)
                         val visible = choiceView.decision.shouldBeInstanceOf<SelectCardsDecision>()
                         val ownIds = choiceView.observation.zones.single {
                             it.ownerId == chooser && it.zoneType == Zone.HAND
