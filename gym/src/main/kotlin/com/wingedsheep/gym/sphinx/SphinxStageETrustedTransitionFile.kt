@@ -68,7 +68,7 @@ internal class SphinxStageETrustedTransitionFile private constructor(private val
         val bytes = Files.readAllBytes(path)
         if (bytes.isEmpty()) return emptyList()
         require(bytes.last() == '\n'.code.toByte()) { "Torn trusted transition journal" }
-        val lines = bytes.toString(StandardCharsets.UTF_8).trimEnd('\n').split('\n')
+        val lines = bytes.toString(StandardCharsets.UTF_8).dropLast(1).split('\n')
         var previous = "0".repeat(64)
         return lines.mapIndexed { index, raw ->
             val line = json.decodeFromString<Line>(raw)
