@@ -1,0 +1,74 @@
+name: Pest Monster London loaded main receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-london-loaded-main-targeted.yml"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBinding.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBindingTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-loaded-main-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact preflighted London source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-london-loaded-main
+          test "$(git rev-parse HEAD^)" = "e45fb2098b04a5fae5eaa63cff44dd7c3b5208be"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBinding.kt)" = "6c0ae894219822a48307d5847ca5e4e4aa9e23f1"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBindingTest.kt)" = "bb6f6b9e11aa4956deb0328ce020f8fd3ea9b52a"
+          test "$(git rev-parse e45fb2098b04a5fae5eaa63cff44dd7c3b5208be:gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBinding.kt)" = "6c0ae894219822a48307d5847ca5e4e4aa9e23f1"
+          test "$(git rev-parse e45fb2098b04a5fae5eaa63cff44dd7c3b5208be:gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBindingTest.kt)" = "bb6f6b9e11aa4956deb0328ce020f8fd3ea9b52a"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBinding.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBindingTest.kt
+            git hash-object .github/workflows/pest-monster-london-loaded-main-targeted.yml
+            git status --porcelain
+          } > build/reports/pest-london-loaded-main/source.txt
+      - name: Execute four fresh loaded-main construction fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterLondonLoadedMainBindingTest --rerun-tasks --no-build-cache 2>&1 | tee build/reports/pest-london-loaded-main/gradle.log
+      - name: Verify exact four JUnit cases
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          p = Path('gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonLoadedMainBindingTest.xml')
+          root = ET.parse(p).getroot()
+          expected = {f'London runner seat {seat} {outcome}' for seat in (1, 2) for outcome in (
+              'binds loaded Monster main before policy', 'rejects changed loaded Monster main')}
+          cases = root.findall('testcase')
+          assert root.attrib['tests'] == '4' and len(cases) == 4
+          assert all(root.attrib[k] == '0' for k in ('failures', 'errors', 'skipped'))
+          assert {case.attrib['name'] for case in cases} == expected
+          assert all(case.attrib['classname'] == 'com.wingedsheep.gym.matchup.PestMonsterLondonLoadedMainBindingTest' for case in cases)
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-london-loaded-main-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-london-loaded-main/
+            gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonLoadedMainBindingTest.xml
+          if-no-files-found: error
+          retention-days: 90
