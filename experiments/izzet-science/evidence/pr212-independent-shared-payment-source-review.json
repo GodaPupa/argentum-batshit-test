@@ -1,0 +1,55 @@
+{
+  "schema": "pr212-independent-shared-payment-source-review-v1",
+  "reviewer": "/root/pr212_independent_review",
+  "independence": "Reviewer did not author payment repair, proposal or receiving wrapper.",
+  "pr": 212,
+  "base": "3d16b53b3715b9703f3ae664b155ec779fee8440",
+  "head": "4865a7e0d2fa0766a32ca46fb049fefa2c8fb769",
+  "decision": "HOLD_SHARED_ACCEPTANCE_SOURCE_CORRECTION_OR_COUNTEREVIDENCE_REQUIRED",
+  "production_path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+  "before_sha256": "9ae281988e9ced26d699e776976c8ccd74b7fdb93d0f8509e54c87ccef855aac",
+  "after_sha256": "26fdf78091d4a6dc74f48dcc6710244a3cf27319c37e96b543e7c50526e3c7fc",
+  "method": "Fetched complete exact before/after handler through GitHub connector; independently SHA256 hashed and generated full diff. Compared exact commits (only handler production delta and one evidence file). Read explicit validation, context construction, execution, cost stripping/writeback and exact-runtime ManaSolver.solve semantics. No behavior run, artifact download or prior evidence re-audit.",
+  "positive_findings": [
+    "New branch is restricted to Explicit with nonempty selected set and at least one floating restricted-mana entry carrying riders. It solves full reduced cost against available selected sources only, retaining self-source exclusion and X restriction.",
+    "When selected full-cost solve fails or predicate is false, previous payPartial-with-ability-context then selected-remainder solve persists. Error returns original state; outer cost failure similarly rolls local effects back.",
+    "For selected ordinary Plains paying generic one, full solve succeeds and untouched local pool preserves prior rider mana through unchanged cost stripping and writeback. This explains the narrow intended Palace behavior.",
+    "Nonexplicit auto payment is unchanged. Convoke/waterbend reductions precede both routes; ordinary no-rider explicit fallback remains structurally unchanged."
+  ],
+  "blocking_findings": [
+    {
+      "id": "P212-SOURCE-01",
+      "severity": "shared acceptance blocker",
+      "location": "ActivateAbilityHandler.kt selectedOnly manaSolver.solve (around lines1304-1310); ManaSolver.kt solve default spellContext and restriction filtering",
+      "finding": "New selectedOnly full-cost solve omits spellContext=executeAbilityContext. ManaSolver defaults it to null, explicitly admitting source restrictions and per-color restrictions without checking payment eligibility. Explicit validation checks source existence/untapped only and skips general canPayAbilityCostWithSources. The later Explicit cost strip removes mana deduction, so there is no subsequent contextual eligibility check.",
+      "source_traced_counterexample": "Ability costs generic mana; pool already contains usable rider-bearing mana; chosen untapped mana source can produce enough mana but only for a different payment category. Base would spend eligible floating pool and need not tap that source. New branch can solve using context-free restricted source, tap it and preserve pool, effectively accepting ineligible payment. This is source-derived, not an executed fixture.",
+      "required": "Pass actual activation payment context to selected-only solve and ensure selected source availability/per-color filtering uses it. Review the fallback's same preexisting omission without claiming it fixed. Bind focused legal/illegal restricted-source receiving for the changed branch and preserve atomic failure/fallback semantics."
+    },
+    {
+      "id": "P212-SOURCE-02",
+      "severity": "shared acceptance blocker",
+      "location": "ActivateAbilityHandler.kt selectedOnly.sources loop and Explicit stripManaCost; ManaSolver.kt ManaSolution fields",
+      "finding": "New branch applies only tap state/event and discards solution production/excess/bonus accounting and source activation side effects. This is inherited Explicit machinery but newly exercised when floating pool formerly covered the cost. ManaSolver explicitly reports remainingBonusMana (including excess from multi-mana sources). A selected source producing two mana for a one-mana activation now taps while floating rider pool is preserved, but no returned excess is added. Activation-event handling present in autoTapForManaCost is likewise absent.",
+      "source_traced_counterexample": "With one usable floating rider mana, explicitly choose an eligible source producing two colorless mana to pay generic one. Base pool-first needs no tap; new full-source route taps source and leaves no represented excess from its production. This is source-derived, not an executed fixture.",
+      "required": "Either implement correct selected-source payment application (excess, restrictions/provenance and relevant activation effects) or constrain new preference to a demonstrably safe supported subset and fail/fallback outside it. Add prospective deterministic coverage for multi-mana excess and relevant source side effects, not merely basic Plains."
+    }
+  ],
+  "scope_notes": [
+    "Predicate sees any rider-bearing pool entry, not specifically one that payPartial would otherwise consume. This can change selected-source priority even with other ordinary floating mana; define and test this intended explicit-choice policy.",
+    "Full selected solve can reuse preexisting Explicit limitations; inheriting them does not establish correctness for newly preferred source choices.",
+    "Existing physical Palace1/1 and payment33 receipts are consumed narrow evidence, not exhaustive coverage of new branch. No artifacts were re-downloaded and no originals rerun."
+  ],
+  "integration_requirements": [
+    "Resolve source blockers via exact changed-source repair or concrete source-bound counterevidence; independently review resulting diff. Current 32+16+4 run may finish and be audited for its original4865 scope but cannot qualify a later repaired runtime automatically.",
+    "Independently audit/adopt prospective exact-runtime combat32, token16 and event4 original evidence separately. Those banks address shared structural compatibility; they do not exercise every payment semantic above.",
+    "Retain original canonical CI36386986896 receipt at exact PR evidence path. It reports17387 XML tests,52 skips,0 failures/errors across seven matrix artifacts; cache-enabled CI does not prove all cases freshly executed. Do not claim17387 fresh passes or convert52 skips to passes.",
+    "Verify exact CI source identity: receipt cites bc233c48662632737c893d5e2d361ae44331b3f3 while PR head4865 includes evidence addition; preserve explicit source-equivalence mapping rather than silently relabeling runtime. No unrelated SpyB/C substitution.",
+    "After scoped source correction and receiving, require independent shared integration/compatibility adoption plus canonical CI disposition before any separately authorized merge. No green-CI-only acceptance."
+  ],
+  "original_guard_failures": "Remain INCOMPLETE; no reclassification or unchanged rerun.",
+  "runtime_accepted": false,
+  "shared_adoption": false,
+  "merge_authorized": false,
+  "gameplay_authorized": false,
+  "official_counters_changed": false
+}
