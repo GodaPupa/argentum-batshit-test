@@ -1,0 +1,49 @@
+name: Pest corrected real Tower Ent action two-seat
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-real-action-corrected-targeted.yml"
+permissions:
+  contents: read
+jobs:
+  two-seat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind changed source, cards and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-real-action-corrected-targeted
+          test "$(git rev-parse HEAD^)" = "38fdc471f74ec6148215d01ba0f33fa2997be239"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonRealTransitionTest.kt)" = "560998a8deb6c989d783961b4a2d5ebbf0219366"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasTower.kt)" = "8f280147686880fd921acc43b49f8bb5d5234431"
+          test "$(git hash-object mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/GenerousEnt.kt)" = "eb2dc664f794b69442d479525537404ba4201875"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonRealTransitionTest.kt; git hash-object .github/workflows/pest-monster-real-action-corrected-targeted.yml; git status --porcelain; } > build/reports/pest-real-action-corrected-targeted/source.txt
+      - name: Execute exactly two legal action fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:test --tests 'com.wingedsheep.gym.matchup.PestMonsterLondonRealTransitionTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/pest-real-action-corrected-targeted/test.log
+      - name: Retain original XML
+        if: always()
+        shell: bash
+        run: |
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonRealTransitionTest.xml build/reports/pest-real-action-corrected-targeted/ 2>/dev/null || true
+      - name: Upload original evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-real-action-corrected-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-real-action-corrected-targeted/
+          if-no-files-found: error
+          retention-days: 90
