@@ -10,6 +10,7 @@ import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.gym.GameEnvironment
+import com.wingedsheep.gym.actorinput.ObservationAdapter
 import com.wingedsheep.gym.actorinput.ActorEpoch
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.Deck
@@ -25,7 +26,7 @@ class PestMonsterLondonRealTransitionTest : ScenarioTestBase() {
     private val main = PestControlTierOneMonsterTronAdmission.mainCounts.flatMap { (name, count) ->
         List(count) { name }
     }
-    private val bridge = PestMonsterLondonSetupBridge(cardRegistry)
+    private val adapter = ObservationAdapter(cardRegistry)
     private val fillers = listOf("Rooftop Percher", "Boulderbranch Golem", "Bramble Wurm",
         "Ancient Stirrings", "Crop Rotation")
 
@@ -44,8 +45,9 @@ class PestMonsterLondonRealTransitionTest : ScenarioTestBase() {
                 val (opening, _) = knownOpening(env.state, actor)
                 env.restore(opening, env.playerIds)
                 val epoch = ActorEpoch("monster-real-transition-v1", "seat-$seat", 0)
-                val setup = bridge.project(env.state, actor, epoch, 0xC25380L + seat)
-                val own = setup.input.observation.zones.single {
+                val input = adapter.build(env.state, actor, emptyList(), epoch, 0xC25380L + seat)
+                input.verifyBinding(epoch, actor)
+                val own = input.observation.zones.single {
                     it.ownerId == actor && it.zoneType == Zone.HAND
                 }
                 val tower = own.cards.single { it.name == "Urza's Tower" }.entityId
