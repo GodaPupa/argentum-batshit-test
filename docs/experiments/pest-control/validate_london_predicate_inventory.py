@@ -7,7 +7,7 @@ def main():
  assert subprocess.check_output(["git","hash-object","ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt"],text=True).strip()==EXPECTED_SOURCE
  for token in REQUIRED: assert token in source,token
  inv=json.loads(pathlib.Path("docs/experiments/pest-control/tier-one-monster-london-raw-predicate-inventory-20260928.json").read_text())
- assert len(inv["predicate_axes"])==10
+ assert len(inv["predicate_axes"])==11
  out=pathlib.Path("build/reports/pest-london-predicate-inventory");out.mkdir(parents=True,exist_ok=True)
  (out/"result.json").write_text(json.dumps({"source_blob":EXPECTED_SOURCE,"axes":[x["id"] for x in inv["predicate_axes"]],"result":"STATIC_INVENTORY_RECONCILED","behavioral_cases":0,"official_counters":0},indent=2)+"\n")
  print("PEST_LONDON_RAW_PREDICATE_INVENTORY_PASS")
