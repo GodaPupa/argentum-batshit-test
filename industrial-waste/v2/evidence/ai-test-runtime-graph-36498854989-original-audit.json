@@ -1,0 +1,33 @@
+{
+  "schema": "industrial-r1-ai-test-runtime-graph-36498854989-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36498854989,
+  "job_id": 109184665848,
+  "artifact_id": 11004373452,
+  "artifact_sha256": "59cfbc9afa4be8ec70f6da3c05cde57994ec6bff125d3bb2234042f495a9b6a2",
+  "head": "411868c36bf49f2d545d1169fa247196eb94cd90",
+  "parent": "b07a7952cc82674bf14e2c456347cf858e416063",
+  "pins": {
+    "capture_script": "11c508239884ffa8578b3c7742340972684b16b0",
+    "budget": "32815c24198b7d38404e57fb5ee7dcd1b9385737",
+    "workflow": "9fb44329ebdee10ee7345a6f995df23cf7b16be7"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "fresh_seed_free_build": "passed",
+    "nested_build_guard": "passed",
+    "official_seed_files_read": false
+  },
+  "failure": {
+    "step": "Capture AI test runtime graph and ordered classpath",
+    "class": "INFRASTRUCTURE_CONFIGURATION_CACHE_INCOMPATIBILITY",
+    "message": "Configuration cache rejected execution-time Project access while resolving :ai:testRuntimeClasspath from the diagnostic init task.",
+    "cause": "The repository enables Gradle configuration cache, while this one-shot diagnostic init task intentionally inspects Project/configuration objects during task execution."
+  },
+  "decision": "INCOMPLETE_DIAGNOSTIC_CONFIGURATION_CACHE",
+  "authority_granted": [],
+  "successor_rule": "Preserve this original. Disable configuration cache only for the diagnostic Gradle subprocess, leaving the governing fresh just build unchanged; re-pin changed script/workflow. Do not rerun this head unchanged.",
+  "official_counters_delta": 0
+}
