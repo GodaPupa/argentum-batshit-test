@@ -113,7 +113,7 @@ class PestMonsterLondonSecondLandTest : ScenarioTestBase() {
                         reachedSecondMain = true
                         break
                     }
-                    check(env.state.pendingDecision == null) { "Unexpected decision while advancing real turns" }
+                    check(env.state.pendingDecision == null) { "Unexpected decision while advancing real turns: ${env.state.pendingDecision!!::class.simpleName} at ${env.state.phase}/${env.state.step}" }
                     val legal = env.legalActions()
                     val progress = legal.firstOrNull { it.action is PassPriority }
                         ?: legal.firstOrNull {
