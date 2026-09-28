@@ -1,4 +1,4 @@
-name: Manual R3-P real four-seat boundary static preflight
+name: Manual canonical Kinnan + R3-P four-seat boundary static preflight
 on:
   push:
     branches: ["manual/clean-pilot-boundary-receiving-20260927"]
@@ -18,18 +18,19 @@ jobs:
           distribution: temurin
           java-version: "21"
       - uses: gradle/actions/setup-gradle@v6
-      - name: Bind prospective source fixture boundary and parent
+      - name: Bind canonical Kinnan strategic source fixture boundary and parent
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p build/reports/manual-priority-boundary-preflight
-          test "$(git rev-parse HEAD^)" = "a852b8a36b2aea649ac6946b034bc6489e7171bb"
+          test "$(git rev-parse HEAD^)" = "1d9fdb4fe92371869937a55a69ed4ac602f785fb"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/KinnanBonderProdigy.kt)" = "14907968026b2f307bd792ccd22481788ac3d2e5"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityConservationPolicy.kt)" = "8fec7b06ed4d20ac138b4f0d0500fc6d39926d4e"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityBoundaryTest.kt)" = "c76561e4c156d0476c2ab9637e2c8658eb892255"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt)" = "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt)" = "44608301d535a2114073d80c06d5ca0480c40043"
-          { git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt; git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityConservationPolicy.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityBoundaryTest.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt; git hash-object experiments/manual-transmission-phase2/priority-boundary-receiving-budget.json; git hash-object .github/workflows/manual-priority-boundary-preflight.yml; git status --porcelain; } > build/reports/manual-priority-boundary-preflight/source.txt
-      - name: Compile four prospective real boundary traces without execution
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/KinnanBonderProdigy.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityConservationPolicy.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityBoundaryTest.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt; git hash-object experiments/manual-transmission-phase2/priority-boundary-receiving-budget.json; git hash-object .github/workflows/manual-priority-boundary-preflight.yml; git status --porcelain; } > build/reports/manual-priority-boundary-preflight/source.txt
+      - name: Compile canonical Kinnan and four prospective real boundary traces without execution
         shell: bash
         run: |
           set -o pipefail
@@ -38,7 +39,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: manual-priority-boundary-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          name: manual-kinnan-priority-boundary-preflight-${{ github.run_id }}-${{ github.run_attempt }}
           path: build/reports/manual-priority-boundary-preflight/
           if-no-files-found: error
           retention-days: 90
