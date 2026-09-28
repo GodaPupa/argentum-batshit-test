@@ -1,0 +1,26 @@
+{
+  "run_id": 36387274962,
+  "artifact_id": 10954303861,
+  "head": "622a94e8efbd77dd3c22948a477b96d9042d6c27",
+  "parent": "41ab053eac93e4aec9e6ca062143f1cf6143ff2c",
+  "test_blob": "6c4b08f08d887be464256c1961c38f57eb843f3e",
+  "workflow_blob": "9c44b697c0b47dc7f9d0802523b39758f7214942",
+  "zip_sha256": "1c4892413ebdc646a1b541ee88230cd154b571a439774b62f28454dd2b1fe732",
+  "zip_crc": "clean",
+  "freshness": "48 executed Gradle tasks; no cached test",
+  "xml": {
+    "suite": "PestMonsterLondonRealTransitionTest",
+    "tests": 2,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "names": [
+      "Monster seat 1 submits actual legal Tower land and Ent cycling",
+      "Monster seat 2 submits actual legal Tower land and Ent cycling"
+    ],
+    "failure": "IllegalStateException: No lawful priority pass en route to opening action at line 72"
+  },
+  "disposition": "INCOMPLETE fixture priority/turn-navigation failure; zero Tower/Ent action acceptance and zero gameplay evidence",
+  "raw": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36387274962",
+  "diagnosis": "Test submitWhenLegal assumes every pre-action state has PassPriority; after skipMulligans, GameEnvironment may require a turn/phase or pending-action transition. Must inspect exact legal action/state and use lawful advancement; never rerun unchanged."
+}
