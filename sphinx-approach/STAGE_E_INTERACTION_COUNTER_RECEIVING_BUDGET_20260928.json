@@ -1,0 +1,35 @@
+{
+  "schema": "sphinx-stage-e-interaction-counter-receiving-budget-v1",
+  "date_utc": "2026-09-28",
+  "basis": {
+    "four_deck_surface_map": "sphinx-approach/STAGE_E_FOUR_DECK_OWN_CARD_SURFACE_MAP_20260928.json",
+    "parent_surface_inventory_run": 36488233307,
+    "own_surface_matrix_run": 36492588750
+  },
+  "prospective_scope": {
+    "cards": [
+      "Spell Pierce",
+      "Dispel"
+    ],
+    "eligible_identity_rule": "exercise each frozen 60 only with the one of these identities actually present in that 60",
+    "component_change": "permit the already-qualified public offered-spell counter-target ranking seam to accept Spell Pierce or Dispel in addition to Counterspell; do not change ranking",
+    "whole_actor_change": "route the current single cast offer for Spell Pierce or Dispel to the same offered-public-counter component",
+    "real_engine_requirement": "each case must use the actual registered card definition, actual legal target enumeration, actual canonical payment projection and a real opposing spell on the stack"
+  },
+  "required_cases": [
+    "each Spell Pierce-containing frozen 60 casts real Spell Pierce at an actually offered opposing noncreature spell",
+    "the Dispel-containing frozen 60 casts real Dispel at an actually offered opposing instant spell",
+    "proposal target must be exactly the real offered stack spell entity",
+    "no hidden opponent hand or future library information is introduced"
+  ],
+  "excluded": [
+    "opponent Spell Pierce unless-pay-2 payment policy",
+    "ordinary priority scheduling beyond the exact current response window",
+    "multiple counter offers or ranking among multiple castable own cards",
+    "Snap, Sphinx's Approach, Artful Dodge, Deem Inferior, Lórien cycling or Sleep escape",
+    "whole-pilot, opponent package, collector, replay/durability or Stage-E admission",
+    "Stage-E seed generation or gameplay"
+  ],
+  "acceptance": "Fresh source-bound real-engine targeted run passes every prospectively declared case. Acceptance is limited to current-cast receiving/routing and public offered-target selection for these two identities.",
+  "official_counters_delta": 0
+}
