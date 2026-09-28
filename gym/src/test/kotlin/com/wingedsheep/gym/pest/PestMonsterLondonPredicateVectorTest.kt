@@ -23,6 +23,11 @@ class PestMonsterLondonPredicateVectorTest : FunSpec({
         val hand = listOf(
             PestLondonCardFacts("f1","Forest",true,0,colorsProduced=setOf('G')),
             PestLondonCardFacts("o1","Other",false,2,colorsRequired=setOf('G'),deterministicDevelopmentPayable=null),
+            PestLondonCardFacts("o2","Other",false,3,deterministicDevelopmentPayable=false),
+            PestLondonCardFacts("o3","Other",false,3,deterministicDevelopmentPayable=false),
+            PestLondonCardFacts("o4","Other",false,3,deterministicDevelopmentPayable=false),
+            PestLondonCardFacts("o5","Other",false,3,deterministicDevelopmentPayable=false),
+            PestLondonCardFacts("o6","Other",false,3,deterministicDevelopmentPayable=false),
         )
         val v = PestMonsterLondonPredicateVectorExtractor.extract(deck, hand, 0)
         v.developmentFunctional shouldBe null
