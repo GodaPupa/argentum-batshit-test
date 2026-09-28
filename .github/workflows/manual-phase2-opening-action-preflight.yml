@@ -1,0 +1,43 @@
+name: Manual Phase 2 first executable action static preflight
+on:
+  push:
+    branches: ["manual/clean-pilot-boundary-receiving-20260927"]
+    paths:
+      - ".github/workflows/manual-phase2-opening-action-preflight.yml"
+permissions:
+  contents: read
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact prospective policy and fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/manual-opening-action-preflight
+          test "$(git rev-parse HEAD^)" = "f339e4e5278714cdc29ac8aa7dc20d055290361b"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningActionPolicy.kt)" = "bd58d1b166a86a8d6e076f4dd2e8f34f533e2a6e"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningActionPolicyTest.kt)" = "b031ac163f0ecf5ab4ccaa3fe7674e054618272e"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningActionPolicy.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningActionPolicyTest.kt; git hash-object .github/workflows/manual-phase2-opening-action-preflight.yml; git status --porcelain; } > build/reports/manual-opening-action-preflight/source.txt
+      - name: Compile test source without executing cases
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/manual-opening-action-preflight/compile.log
+      - name: Retain original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-opening-action-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/manual-opening-action-preflight/
+          if-no-files-found: error
+          retention-days: 90
