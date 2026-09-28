@@ -1,0 +1,23 @@
+{
+  "schema": "pest-london-planning-certificate-independent-review-v1",
+  "date_utc": "2026-09-28",
+  "candidate_head": "75708d3d6632872e7e6969be8e3b2755a4459d18",
+  "source_blob": "db7cec32006acc157a4b47163cf14c41f358eaa0",
+  "scope_blob": "4c0a59457c7f6160b4c7cb19a14eeb75dfcf3dac",
+  "decision": "ACCEPT_LAWFUL_CERTIFICATE_SOURCE_ONLY__NO_PARITY_BANK_YET",
+  "information_review": "Every current certificate field is a count derived only from the exact submitted 60-card multiset minus visible own-hand names. No library entity id/order, GameState or RNG input exists.",
+  "raw_predicates_not_yet_represented": [
+    "one-land typed-cycling target-filter existence together with cycling-not-prevented and sole-land payment",
+    "land-play legality and deterministic entry-tapped/choice/copy semantics",
+    "turn-three deterministic land-plan permutations",
+    "ManaSolver castability of every cheap early spell under resulting land plans",
+    "mandatory additional-cost payability, including selection costs such as Crop Rotation/Bone Shards shapes",
+    "colorFunctional branch: early-spell set, colored mismatch and castableEarly thresholds",
+    "bottom targetLands branch, expensive-spell CMC ordering, duplicate physical handles and protected land/acquisition pair",
+    "both seats/starts and exact physical action/card equality"
+  ],
+  "finite_bank_rule": "Do not enumerate arbitrary hands. First implement a trusted pure feature extractor reproducing the raw controller branch predicates from submitted list + visible/public state/card definitions, then enumerate unique reachable predicate vectors and representative physical-handle permutations. That predicate-vector set is the smallest defensible finite equivalence bank.",
+  "next_gate": "Implement source-bound predicate-vector extractor and prove equality to raw controller on generated non-official reachable openings before freezing exhaustive parity.",
+  "gameplay_authorized": false,
+  "official_counters": 0
+}
