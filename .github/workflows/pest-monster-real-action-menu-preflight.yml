@@ -1,0 +1,46 @@
+name: Pest complete-action-menu correction static preflight
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-real-action-menu-preflight.yml"
+permissions:
+  contents: read
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact changed fixture, menu and cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-real-action-menu-preflight
+          test "$(git rev-parse HEAD^)" = "11032090916e0fd378e4429c749341507232ee8e"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonRealTransitionTest.kt)" = "6c4b08f08d887be464256c1961c38f57eb843f3e"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasTower.kt)" = "8f280147686880fd921acc43b49f8bb5d5234431"
+          test "$(git hash-object mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/GenerousEnt.kt)" = "eb2dc664f794b69442d479525537404ba4201875"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonRealTransitionTest.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt; git hash-object .github/workflows/pest-monster-real-action-menu-preflight.yml; git status --porcelain; } > build/reports/pest-real-action-menu-preflight/source.txt
+      - name: Compile only
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/pest-real-action-menu-preflight/compile.log
+          test -f gym/build/classes/kotlin/test/com/wingedsheep/gym/matchup/PestMonsterLondonRealTransitionTest.class
+          test ! -e gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonRealTransitionTest.xml
+      - name: Upload original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-real-action-menu-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-real-action-menu-preflight/
+          if-no-files-found: error
+          retention-days: 90
