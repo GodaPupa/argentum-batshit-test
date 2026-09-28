@@ -11,7 +11,10 @@ import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.artifacts.result.UnresolvedDependencyResult
 
 gradle.projectsEvaluated {
-    def p = rootProject.project(":ai")
+    def p = rootProject.findProject(":ai")
+    if (p == null) {
+        return
+    }
     p.tasks.register("industrialR1CaptureTestRuntime") {
         doLast {
             def cfg = p.configurations.getByName("testRuntimeClasspath")
