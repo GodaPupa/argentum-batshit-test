@@ -1,0 +1,112 @@
+{
+  "schema": "pest-monster-london-raw-predicate-inventory-v1",
+  "status": "PROSPECTIVE_STATIC_DESIGN_ONLY",
+  "raw_controller": {
+    "path": "ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt",
+    "git_blob": "4f020ea225729ee70725787794586ca5102b699c",
+    "routines": [
+      "decideMulligan",
+      "hasPayableEarlyDevelopmentLine",
+      "guaranteedSecondLandAccess",
+      "decideCardsToBottom"
+    ]
+  },
+  "predicate_axes": [
+    {
+      "id": "M0",
+      "name": "hand_size_le_5_or_mulligans_ge_2",
+      "effect": "forced keep shortcut"
+    },
+    {
+      "id": "M1",
+      "name": "physical_land_count",
+      "domain": [
+        "0",
+        "1",
+        "2..5",
+        "6+"
+      ]
+    },
+    {
+      "id": "M2",
+      "name": "one_land_guaranteed_second_land_access",
+      "inputs": [
+        "land play legal",
+        "typed cycling in hand",
+        "cycling not prevented",
+        "sole land enters untapped",
+        "typed search filter",
+        "remaining submitted-list target count > 0",
+        "cycle payable solely with sole land"
+      ]
+    },
+    {
+      "id": "M3",
+      "name": "early_spell_set",
+      "definition": "nonland own-hand cards with manaValue <= min(3, max(1, landCount))"
+    },
+    {
+      "id": "M4",
+      "name": "color_functional",
+      "definition": "earlySpells nonempty && (coloredMismatch < 3 || castableEarly >= 2)"
+    },
+    {
+      "id": "M5",
+      "name": "development_functional",
+      "definition": "exists early spell with at least one real legal deterministic land plan whose cast is ManaSolver-payable and additional costs are payable"
+    },
+    {
+      "id": "B0",
+      "name": "target_lands",
+      "definition": "keptHandSize <=5 ? 2 : 3"
+    },
+    {
+      "id": "B1",
+      "name": "protected_land_acquisition_pair",
+      "definition": "one-land keep protected physical land plus physical acquisition card"
+    },
+    {
+      "id": "B2",
+      "name": "excess_land_bottom_order",
+      "definition": "physical excess lands before spells"
+    },
+    {
+      "id": "B3",
+      "name": "spell_bottom_order",
+      "definition": "descending mana value then deterministic physical handle"
+    },
+    {
+      "id": "B4",
+      "name": "fallback_physical_handle_order",
+      "definition": "remaining physical handles when planned categories insufficient"
+    }
+  ],
+  "equivalence_key": [
+    "seat/start",
+    "mulligans_taken",
+    "hand_size",
+    "M1",
+    "M2",
+    "M3 multiset by card definition",
+    "M4",
+    "M5",
+    "B0",
+    "B1 presence",
+    "duplicate physical-handle multiplicities"
+  ],
+  "required_physical_permutations": [
+    "same-name duplicate handles",
+    "hidden-library permutation preserving remaining submitted-list multiset",
+    "protected land/acquisition handle swap where legal"
+  ],
+  "non_equivalence": [
+    "different real legal action menu",
+    "different deterministic land-entry semantics",
+    "different ManaSolver result",
+    "different additional-cost domain",
+    "different cycling-prevention state"
+  ],
+  "next_gate": "Implement a source-bound extractor that computes this vector from submitted 60 + lawful own/public current state/card definitions, then compare vector/result to frozen raw controller on generated non-official reachable openings. Only unique reachable vectors plus required physical permutations become the exhaustive bank.",
+  "gameplay_authorized": false,
+  "official_counters": 0
+}
