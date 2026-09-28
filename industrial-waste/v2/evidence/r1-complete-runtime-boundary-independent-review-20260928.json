@@ -1,0 +1,48 @@
+{
+  "schema": "industrial-r1-complete-runtime-boundary-independent-review-v1",
+  "date_utc": "2026-09-28",
+  "reviewer_role": "independent_receiving_review",
+  "proposal": {
+    "branch": "industrial-waste/r1-complete-boundary-proposal-20260929",
+    "path": "industrial-waste/v2/R1_COMPLETE_RUNTIME_BOUNDARY_PROPOSAL.md",
+    "git_blob": "a2161dda29fec1ac9e59f8a9e6b2c37b4d5a09cc",
+    "declared_parent_source": "4a8b31bc7c87e3331272758a764aaa442b6ca63c"
+  },
+  "frozen_authority_reviewed": {
+    "protocol_path": "industrial-waste/v2/protocol-v2-r1.json",
+    "protocol_git_blob": "08267f0ae1688ab93bc6ea57b431e6a36acf33ff",
+    "runtime_contract_path": "industrial-waste/v2/r1-runtime-composition-contract.json",
+    "runtime_contract_git_blob": "de141cba7d3b5af04dae22787be5b102a01d0b35"
+  },
+  "decision": "ACCEPTED_PROSPECTIVE_COMPLETE_RUNTIME_BOUNDARY_SUPPLEMENT_ONLY",
+  "findings": [
+    "The proposal preserves every frozen R1 execution gate and does not alter deck rows, ordering corpus, sample size, allocation order, metrics, margins, caps, stop rules or no-retry semantics.",
+    "It correctly rejects observed/sampled loaded-class lists as a completeness argument and requires expected authority to derive from independently qualified immutable build artifacts and complete dependency closure.",
+    "It binds build inputs, resolved dependency graphs, ordered process classpaths/module paths, complete directory/archive inventories, resources, generated classes, JDK, OS/container/native identity, Python/shell/launcher chain and allowed environment rather than only source filenames or a small selected class list.",
+    "It explicitly separates expected-manifest authority from prepared-worker attestation, combined receiving, exclusive claim, execution authorization and official initialization.",
+    "It preserves fail-closed treatment of unknown loaders, agents, generated or hidden classes, duplicate/shadowed binaries, multi-release ambiguity, extension paths, later mutation and replayed or stale worker attestations.",
+    "It requires deterministic non-corpus receiving fixtures plus independent review before any manifest, worker or R1 authority can be accepted.",
+    "The additional complete-boundary requirements are stricter implementation detail for the frozen exact-runtime requirement; they do not relax or redesign the experiment."
+  ],
+  "required_next_gates": [
+    "Atomically implement the versioned canonical complete-manifest schema, dependency/build graph and inventory verifier, sealed launch/lifetime policy, prepared-worker attestation channel and Python admission receiver.",
+    "Qualify that combined implementation with deterministic fail-closed fixtures under the repository's required build/verify path.",
+    "Independently review the implementation and its exact source pins.",
+    "Generate a candidate complete expected manifest from an isolated seed-free qualified build and immutable verified input store.",
+    "Independently review and adopt the exact candidate manifest digest and complete graph/loader/platform provenance.",
+    "Qualify the prepared worker against the adopted authority and complete combined receiving/runtime/payment/metrics/journal/replay/artifact gates.",
+    "Only after separate preclaim acceptance and exact R1 execution authorization may the existing claim and 512-allocation execution path be evaluated."
+  ],
+  "explicit_non_authority": [
+    "No expected manifest is adopted by this review.",
+    "No implementation source is qualified by this review.",
+    "No prepared-worker or launcher identity is accepted by this review.",
+    "No combined receiving, claim, R1 permit, allocation, seed, initialization, action, outcome or deck conclusion is authorized.",
+    "The rejected eight-class capture remains incomplete candidate evidence only."
+  ],
+  "official_counters_delta": {
+    "allocations_initialized": 0,
+    "actions_submitted": 0,
+    "comparative_outcomes_exposed": 0
+  }
+}
