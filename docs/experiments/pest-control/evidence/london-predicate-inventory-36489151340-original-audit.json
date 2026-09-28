@@ -1,0 +1,14 @@
+{
+  "schema": "pest-london-predicate-inventory-run3-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36489151340,
+  "artifact_id": 11000226497,
+  "artifact_sha256": "de795fe00a1440e27acd68528721f802c20f4c0e58fd3af8ea5ca185460564b2",
+  "head": "7890c28aba8acb541707952890c324b6943d2459",
+  "source_binding": "clean",
+  "behavioral_cases": 0,
+  "failure": "Static validator hardcoded len(predicate_axes)==10 while the reviewed inventory contains 11 axes: M0-M5 and B0-B4.",
+  "disposition": "INCOMPLETE_STATIC_VALIDATOR_FIXTURE",
+  "next_gate": "Change only the exact axis-count assertion to 11, preserve pipefail/source pins, and rerun the same static reconciliation once.",
+  "official_counters_delta": 0
+}
