@@ -1,0 +1,44 @@
+name: Sphinx consumed accepted transition static preflight
+on:
+  push:
+    branches: ["sphinx/accepted-transition-journal-20260928"]
+    paths:
+      - ".github/workflows/sphinx-consumed-transition-preflight.yml"
+permissions:
+  contents: read
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact trusted transition, durable file and two-case fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-consumed-transition-preflight
+          test "$(git rev-parse HEAD^)" = "e7a46731cd4b73a2ad47e7d464de2b4a91aef8c1"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt)" = "ff29172b39ab9fb8099cba265e706530691de90f"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageETrustedTransitionFile.kt)" = "6671a492891d6dc41db6dcc6de6244918872c611"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt)" = "d57d8f2f0407f3f7b6a8a3f561d53d832f28cb20"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageETrustedTransitionFile.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt; git hash-object .github/workflows/sphinx-consumed-transition-preflight.yml; git status --porcelain; } > build/reports/sphinx-consumed-transition-preflight/source.txt
+      - name: Compile durable journal fixture with zero behavioral cases
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-consumed-transition-preflight/compile.log
+      - name: Preserve original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-consumed-transition-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-consumed-transition-preflight/
+          if-no-files-found: error
+          retention-days: 90
