@@ -20,11 +20,14 @@ def main():
  for p,h in EXPECTED.items():
   data=subprocess.check_output(["git","show",f"{REF}:{p}"])
   got=hashlib.sha256(data).hexdigest();actual[p]=got
-  if got!=h: raise SystemExit(f"mismatch {p} {got} != {h}")
+  # Differences are the subject of this changed-source diagnostic; record all of them.
+  actual[p]=got
  result={"schema":"ferocity-source08-policy-byte-binding-v1","source08":REF,"expected":EXPECTED,"actual":actual,
- "artifact_policy":{"pilot":EXPECTED["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ArtifactControlPilot.kt"],"bank":EXPECTED["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ArtifactControlPolicyTest.kt"]},
- "red_policy":{"pilot":EXPECTED["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilot.kt"],"bank":EXPECTED["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilotScenarioTest.kt"]},
- "new_jvms":0,"new_entropy":0,"new_games":0,"new_calibration_commands":0,"result":"PASS_REQUIRES_INDEPENDENT_ADOPTION"}
+ "matches":{p:(actual[p]==h) for p,h in EXPECTED.items()},
+ "differences":{p:{"archive":h,"source08":actual[p]} for p,h in EXPECTED.items() if actual[p]!=h},
+ "artifact_policy":{"pilot_archive":EXPECTED["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ArtifactControlPilot.kt"],"pilot_source08":actual["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ArtifactControlPilot.kt"],"bank_archive":EXPECTED["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ArtifactControlPolicyTest.kt"],"bank_source08":actual["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ArtifactControlPolicyTest.kt"]},
+ "red_policy":{"pilot_archive":EXPECTED["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilot.kt"],"pilot_source08":actual["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilot.kt"],"bank_archive":EXPECTED["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilotScenarioTest.kt"],"bank_source08":actual["gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilotScenarioTest.kt"]},
+ "new_jvms":0,"new_entropy":0,"new_games":0,"new_calibration_commands":0,"result":"DIAGNOSTIC_COMPLETE_REQUIRES_INDEPENDENT_DISPOSITION"}
  (out/"result.json").write_text(json.dumps(result,indent=2)+"\n")
- print("FEROCITY_SOURCE08_POLICY_BYTE_BINDING_PASS")
+ print(json.dumps({"differences":result["differences"],"matched":sum(result["matches"].values()),"total":len(EXPECTED)},indent=2))
 if __name__=="__main__":main()
