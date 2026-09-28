@@ -1,0 +1,53 @@
+name: Pest Tower Ent raw keep parity targeted
+on:
+  push:
+    branches: ["pest/london-raw-keep-parity-20260928"]
+    paths:
+      - ".github/workflows/pest-london-typecycle-keep-targeted.yml"
+permissions:
+  contents: read
+jobs:
+  eight-declared-openings:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact changed actor, frozen raw comparator and both banks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-typecycle-keep-targeted
+          test "$(git rev-parse HEAD^)" = "40faa2cbac33b48067481a95ae39bd1e676c8696"
+          test "$(git hash-object ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt)" = "4f020ea2406e9bd6a87ec389685b48f15df4c5a3"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonKeepPolicy.kt)" = "c2ada4e08786b57a924a201565f09b31082208a7"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonRawKeepParityTest.kt)" = "73275bc0cb4086e1c6beaacd8fa1feb1a394fa38"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonRawTypecycleKeepParityTest.kt)" = "62640f9a042691a6c306be1f608052de62ba1c21"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonKeepPolicy.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonRawKeepParityTest.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonRawTypecycleKeepParityTest.kt; git hash-object .github/workflows/pest-london-typecycle-keep-targeted.yml; git status --porcelain; } > build/reports/pest-typecycle-keep-targeted/source.txt
+      - name: Execute exact eight changed-source parity cases
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:test --tests 'com.wingedsheep.gym.matchup.PestMonsterLondonRawKeepParityTest' --tests 'com.wingedsheep.gym.matchup.PestMonsterLondonRawTypecycleKeepParityTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/pest-typecycle-keep-targeted/test.log
+      - name: Retain both original exact XML files
+        if: always()
+        shell: bash
+        run: |
+          for klass in PestMonsterLondonRawKeepParityTest PestMonsterLondonRawTypecycleKeepParityTest; do
+            file="gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.${klass}.xml"
+            if test -f "$file"; then cp "$file" build/reports/pest-typecycle-keep-targeted/; fi
+          done
+      - name: Upload original targeted evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-typecycle-keep-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-typecycle-keep-targeted/
+          if-no-files-found: error
+          retention-days: 90
