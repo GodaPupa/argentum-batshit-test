@@ -1,0 +1,30 @@
+{
+  "schema": "industrial-r1-seed-free-ai-test-runtime-graph-budget-v1",
+  "date_utc": "2026-09-28",
+  "parent_capture": "industrial-waste/v2/evidence/seed-free-build-output-capture-36492735133-original-audit.json",
+  "governing_boundary": "industrial-waste/v2/R1_COMPLETE_RUNTIME_BOUNDARY_PROPOSAL.md",
+  "build_action": "just test-class IndustrialWasteV2RegistryAuditTest --rerun-tasks --no-build-cache --console=plain",
+  "capture_scope": [
+    "exact ordered :ai:testRuntimeClasspath entries after the fresh seed-free build",
+    "resolved Gradle component and dependency edges for :ai:testRuntimeClasspath",
+    "exact byte digest or canonical directory inventory for every ordered classpath entry",
+    "exact byte digest/inventory for every resolved artifact exposed by that configuration",
+    "source commit/tree"
+  ],
+  "forbidden": [
+    "official seed/vector/order consumption",
+    "allocation or game initialization",
+    "claim creation",
+    "expected-manifest adoption",
+    "prepared-worker attestation",
+    "R1 permit"
+  ],
+  "explicit_non_authority": [
+    "does not capture Gradle launcher/daemon or test-worker implementation closure",
+    "does not capture JDK/native/OS/Python/shell/just closure",
+    "does not resolve generated/hidden-class or lifetime immutability policy",
+    "does not itself constitute a complete runtime manifest"
+  ],
+  "next_gate": "Audit this original once. If clean, adopt only the :ai:testRuntimeClasspath graph/order/byte provenance slice, then extend capture to the separately missing launcher/test-worker/platform/toolchain closures before constructing any complete expected-manifest candidate.",
+  "official_counters": 0
+}
