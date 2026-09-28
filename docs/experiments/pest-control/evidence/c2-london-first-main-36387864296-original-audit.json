@@ -1,0 +1,24 @@
+{
+  "run_id": 36387864296,
+  "artifact_id": 10955247732,
+  "head": "15e011942c5e026672b9a1433b82befc126319cf",
+  "parent": "38a6e49e0e41ab69736c69f9397da3be129250f9",
+  "test_blob": "32da167dd4c77b588841b645d292ca186c02a450",
+  "workflow_blob": "7406ce1c59ada6853f0a4cdb3bb34e7a710ea03c",
+  "zip_sha256": "22e0ed92280bb56e81fcb23489a7838af3433213e86667af0ce15f35250c42b0",
+  "crc": "clean",
+  "freshness": "48 executed Gradle tasks, no cache",
+  "xml": {
+    "tests": 2,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "names": [
+      "Monster seat 1 submits actual legal Tower land and Ent cycling",
+      "Monster seat 2 submits actual legal Tower land and Ent cycling"
+    ],
+    "locus": "line83 second submitWhenLegal call; no matching CycleCard and eventually no PassPriority"
+  },
+  "diagnosis": "Both Tower land submissions reached accepted battlefield assertion at line82, but the Ent search is TypecycleCard, not CycleCard; fixture asks for wrong action class. Subsequent navigation reaches no pass. No complete two-action case passed.",
+  "disposition": "INCOMPLETE fixture type mismatch; partial land assertion is not separately accepted evidence; no Forest arrival/turn/payment/parity/gameplay."
+}
