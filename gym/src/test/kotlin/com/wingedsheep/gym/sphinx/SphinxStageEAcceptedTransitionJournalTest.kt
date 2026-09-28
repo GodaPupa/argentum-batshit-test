@@ -170,7 +170,7 @@ class SphinxStageEAcceptedTransitionJournalTest : ScenarioTestBase() {
                 reopened.replay(before, journal) shouldBe seat.state
                 val rawJournal = Files.readString(journalPath)
                 Files.writeString(journalPath,
-                    rawJournal.replaceFirst("\\"index\\":0", "\\"index\\":7"))
+                    rawJournal.replaceFirst("0".repeat(64), "1".repeat(64)))
                 shouldThrow<IllegalArgumentException> {
                     SphinxStageETrustedTransitionFile.reopen(journalPath)
                 }
