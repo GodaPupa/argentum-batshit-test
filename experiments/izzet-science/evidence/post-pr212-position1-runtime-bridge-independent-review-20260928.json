@@ -1,0 +1,26 @@
+{
+  "schema": "izzet-post-pr212-position1-runtime-bridge-independent-review-v1",
+  "date_utc": "2026-09-28",
+  "proposal_blob": "59078fc66cbdaa271331362b0326f4f9c9fd72dc",
+  "historical_blobs": {
+    "control": "297ad4fe8f52f2cbeaaa6a17356f68f9c0f1fc1f",
+    "phase31": "62c60e3d988ec55c0d29a38b90f6193ec3f36910",
+    "phase32": "2df8c6971ff5c539717c0877510cc267db1af473",
+    "phase33": "82770b1420f9738b2ee2cbd1e345382ee5d0f5ab"
+  },
+  "adopted_handler_blob": "524d7917056d09558ddde1426f1e6f3a81d00810",
+  "compatibility_run": 36474121083,
+  "compatibility_cases": 52,
+  "decision": "ACCEPT_ZERO_SEED_DETERMINISTIC_REVALIDATION_PATH_ONLY",
+  "findings": [
+    "Historical card control, vector/assignment freeze, Phase-32 loader/readiness and Phase-33 position-1-only authorization remain byte-identical on the historical authority branch.",
+    "The adopted shared handler change does not alter the frozen card list, seed vector, assignment, opponent, runner or authorization documents; it changes shared runtime behavior and therefore requires deterministic runtime revalidation before execution.",
+    "Phase 31/32/33 explicitly preserve raw seed quarantine and zero consumption; revalidation can compare identities/digests without reading raw seed values.",
+    "Positions 2-12 remain explicitly unauthorized."
+  ],
+  "next_gate": "Run a source-bound zero-seed validator that compares historical authority blobs/digests, current adopted handler/receipts, runner/registry identities and position1-only semantics without fetching or printing the quarantined vector.",
+  "position1_reauthorized": false,
+  "positions_2_12_authorized": false,
+  "seeds_consumed": 0,
+  "games": 0
+}
