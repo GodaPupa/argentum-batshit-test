@@ -19,12 +19,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/manual-pact-preflight
-          test "$(git rev-parse HEAD^)" = "5814390ee330f07e24a623123644bc69d21b4bcb"
+          test "$(git rev-parse HEAD^)" = "8f06271fdb997f935a99bdbdb2f9a36930be1e38"
           test "$(git hash-object mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt)" = "c786551484cfb001eea9fc2b05e14ea23fd63bf9"
           test "$(git hash-object mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationScenarioTest.kt)" = "f3f2315ba698327ef2e930bf2990c44a888e7b38"
           { git rev-parse HEAD; git rev-parse HEAD^; git hash-object mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt; git hash-object mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationScenarioTest.kt; git hash-object .github/workflows/manual-pact-negation-preflight.yml; } > build/reports/manual-pact-preflight/source.txt
-      - name: Compile Pact source and prospective bank without executing cases
-        run: just test-class PactOfNegationScenarioTest --dry-run 2>&1 | tee build/reports/manual-pact-preflight/compile.log
+      - name: Compile Pact source and prospective bank without executing cases through locked Gradle
+        run: scripts/gradle-locked :mtg-sets:2003-2007:tests:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/manual-pact-preflight/compile.log
       - if: always()
         uses: actions/upload-artifact@v7
         with:
