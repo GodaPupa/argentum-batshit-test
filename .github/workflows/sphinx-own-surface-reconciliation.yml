@@ -1,0 +1,37 @@
+name: Sphinx four-deck own-surface reconciliation
+on:
+  push:
+    branches: ["sphinx/whole-actor-composition-20260928"]
+    paths: [".github/workflows/sphinx-own-surface-reconciliation.yml"]
+permissions: {contents: read}
+jobs:
+  static-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - name: Bind exact reconciler budget decks and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-own-surface-matrix
+          test "$(git rev-parse HEAD^)" = "2bd7281b9c071e054ac9dcca86d1518393ac3aa8"
+          test "$(git hash-object sphinx-approach/reconcile_whole_actor_own_surfaces.py)" = "d1a7ac39bbae614569463959b64a1e6cabded15f"
+          test "$(git hash-object sphinx-approach/STAGE_E_OWN_SURFACE_RECONCILIATION_BUDGET_20260928.json)" = "2d1f276ecd8b98183e51f876375fba405b34a0e9"
+          test "$(git hash-object sphinx-approach/decks/reconstructed-v01.csv)" = "e2f0abbc9f99be97b2562a18ae248d70cbefc0e1"
+          test "$(git hash-object sphinx-approach/decks/reconstructed-hybrid.csv)" = "7f76c94e4fbc24acdc982039aa248a1fa9485cd4"
+          test "$(git hash-object sphinx-approach/decks/closest-no-approach-v01.csv)" = "16f429ef50b2699d60be66de4a39681d9aa2d00e"
+          test "$(git hash-object sphinx-approach/decks/serpico-terror-benchmark.csv)" = "da2f0d8d1e7a6d464567f765483d0145ae3726dd"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object sphinx-approach/reconcile_whole_actor_own_surfaces.py; git hash-object sphinx-approach/STAGE_E_OWN_SURFACE_RECONCILIATION_BUDGET_20260928.json; git hash-object sphinx-approach/decks/reconstructed-v01.csv; git hash-object sphinx-approach/decks/reconstructed-hybrid.csv; git hash-object sphinx-approach/decks/closest-no-approach-v01.csv; git hash-object sphinx-approach/decks/serpico-terror-benchmark.csv; git hash-object .github/workflows/sphinx-own-surface-reconciliation.yml; } > build/reports/sphinx-own-surface-matrix/source.txt
+      - name: Reconcile unsupported own-card surfaces across exact four frozen 60s
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 sphinx-approach/reconcile_whole_actor_own_surfaces.py | tee build/reports/sphinx-own-surface-matrix/test.log
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-own-surface-reconciliation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-own-surface-matrix/
+          if-no-files-found: error
+          retention-days: 90
