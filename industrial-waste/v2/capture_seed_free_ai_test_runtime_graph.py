@@ -115,7 +115,7 @@ def main():
     raw = OUT / "raw-gradle-graph.json"
     init.write_text(textwrap.dedent(INIT))
     subprocess.run([
-        "./gradlew", "-I", str(init), "--no-daemon", "--console=plain",
+        "./gradlew", "-I", str(init), "--no-daemon", "--no-configuration-cache", "--console=plain",
         f"-Dindustrial.capture.out={raw}",
         ":ai:industrialR1CaptureTestRuntime"
     ], cwd=ROOT, check=True)
