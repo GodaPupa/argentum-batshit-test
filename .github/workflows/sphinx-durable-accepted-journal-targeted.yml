@@ -1,0 +1,49 @@
+name: Sphinx durable accepted Ponder two-action journal targeted
+on:
+  push:
+    branches: ["sphinx/accepted-transition-journal-20260928"]
+    paths:
+      - ".github/workflows/sphinx-durable-accepted-journal-targeted.yml"
+permissions:
+  contents: read
+jobs:
+  two-declared-traces:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind trusted transition, durable file, exact fixture and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-durable-journal-targeted
+          test "$(git rev-parse HEAD^)" = "1baf956738baf7c190b4bd1b999c0fbdbf31ab1e"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt)" = "ff29172b39ab9fb8099cba265e706530691de90f"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageETrustedTransitionFile.kt)" = "a7fcf072d30ec5d87216a533027dfa2b4eb46756"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt)" = "1c6b9d36a839aef350bfbc2143f08eab10fce706"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageETrustedTransitionFile.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt; git hash-object .github/workflows/sphinx-durable-accepted-journal-targeted.yml; git status --porcelain; } > build/reports/sphinx-durable-journal-targeted/source.txt
+      - name: Execute exactly two fresh durable transition traces
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:test --tests 'com.wingedsheep.gym.sphinx.SphinxStageEAcceptedTransitionJournalTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-durable-journal-targeted/test.log
+      - name: Preserve original exact XML
+        if: always()
+        shell: bash
+        run: |
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEAcceptedTransitionJournalTest.xml build/reports/sphinx-durable-journal-targeted/ 2>/dev/null || true
+      - name: Upload original targeted evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-durable-journal-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-durable-journal-targeted/
+          if-no-files-found: error
+          retention-days: 90
