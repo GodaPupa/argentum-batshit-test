@@ -1,0 +1,45 @@
+name: Sphinx equal accepted setup cast static preflight
+on:
+  push:
+    branches: ["sphinx/accepted-transition-journal-20260928"]
+    paths: [".github/workflows/sphinx-accepted-cast-preflight.yml"]
+permissions:
+  contents: read
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source fixture adapter and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-accepted-cast-preflight
+          test "$(git rev-parse HEAD^)" = "a60d4065dca9cbaeb13c09000da4e834af145040"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedCastJournal.kt)" = "54768cf75923f476e9a3e713d20c43bdf35e6750"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedCastJournalTest.kt)" = "e8b3c99393eb152f395c88901e758110b72bad80"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageETrustedTransitionFile.kt)" = "6671a492891d6dc41db6dcc6de6244918872c611"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt)" = "93ec8d40ab07b3b703e6e45b5324ac103e45d81b"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt)" = "8260f3bd7a3fd0ee403803122cd2bd1bd183a854"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedCastJournal.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedCastJournalTest.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageETrustedTransitionFile.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt; git hash-object sphinx-approach/ACCEPTED_CAST_RECEIVING_BUDGET.json; git hash-object .github/workflows/sphinx-accepted-cast-preflight.yml; git status --porcelain; } > build/reports/sphinx-accepted-cast-preflight/source.txt
+      - name: Compile four equal prospective traces without behavior
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-accepted-cast-preflight/compile.log
+      - name: Retain original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-accepted-cast-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-accepted-cast-preflight/
+          if-no-files-found: error
+          retention-days: 90
