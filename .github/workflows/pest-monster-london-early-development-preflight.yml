@@ -1,0 +1,62 @@
+name: Pest Monster London conditional next-turn payment static preflight
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-london-early-development-preflight.yml"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonTypecyclingPlan.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonEarlyDevelopmentTest.kt"
+permissions:
+  contents: read
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source, fixture, card, and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-london-early-development-preflight
+          test "$(git rev-parse HEAD^)" = "74510753948e321eac762d7d7d570f1fd5e53f06"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonTypecyclingPlan.kt)" = "8adf7684a58e67374cd814323815f1887ad66e1a"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonEarlyDevelopmentTest.kt)" = "9c39ea80ddb7e783e93b5d7070dde2c7f54cbb62"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSetupBridge.kt)" = "3dfaf5a1a560e8f5c30ab34de1c2583656832251"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/PestMonsterLondonForestCertificate.kt)" = "8ba646f1c9edd256e8b8915f8da22788cf1ab8ab"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasTower.kt)" = "8f280147686880fd921acc43b49f8bb5d5234431"
+          test "$(git hash-object mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/GenerousEnt.kt)" = "eb2dc664f794b69442d479525537404ba4201875"
+          test -x gradlew
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonTypecyclingPlan.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonEarlyDevelopmentTest.kt
+            git hash-object .github/workflows/pest-monster-london-early-development-preflight.yml
+            git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasTower.kt
+            git hash-object mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/GenerousEnt.kt
+            git status --porcelain
+          } > build/reports/pest-london-early-development-preflight/source.txt
+      - name: Compile without behavioral execution
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/pest-london-early-development-preflight/compile.log
+          test -f gym/build/classes/kotlin/main/com/wingedsheep/gym/matchup/PestMonsterLondonEarlyDevelopmentPlanner.class
+          test -f gym/build/classes/kotlin/test/com/wingedsheep/gym/matchup/PestMonsterLondonEarlyDevelopmentTest.class
+          test ! -e gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonEarlyDevelopmentTest.xml
+      - name: Retain original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-london-early-development-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-london-early-development-preflight/
+          if-no-files-found: error
+          retention-days: 90

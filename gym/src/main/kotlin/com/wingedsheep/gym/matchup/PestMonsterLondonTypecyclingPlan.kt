@@ -51,3 +51,32 @@ internal object PestMonsterLondonTypecyclingPlanner {
         return PestMonsterLondonTypecyclingPlan(soleLand, ent)
     }
 }
+
+/**
+ * Conditional early-development certificate, not a simulation of future game state. After a
+ * legal first-turn Tower drop and {1} Ent Forestcycling payment, an uncontested next turn can
+ * play the symbolic Forest. Tower then supplies one colorless and Forest one green. A hidden
+ * physical library target, future draw, opponent action, and spell choice are not represented.
+ */
+internal data class PestMonsterLondonTowerForestNextTurn(
+    val firstLandId: EntityId,
+    val acquisitionCardId: EntityId,
+    val secondLandName: String = "Forest",
+    val availableMana: List<String> = listOf("{C}", "{G}"),
+)
+
+internal object PestMonsterLondonEarlyDevelopmentPlanner {
+    fun conditionalTowerForestNextTurn(setup: PestMonsterLondonSetup):
+        PestMonsterLondonTowerForestNextTurn? {
+        val first = PestMonsterLondonTypecyclingPlanner.firstTwoDrops(setup) ?: return null
+        val ownHand = setup.input.observation.zones.single {
+            it.ownerId == setup.input.actorId && it.zoneType == Zone.HAND
+        }
+        val physicalTower = ownHand.cards.single { it.entityId == first.firstLandId }
+        if (physicalTower.name != "Urza's Tower") return null
+        return PestMonsterLondonTowerForestNextTurn(
+            firstLandId = first.firstLandId,
+            acquisitionCardId = first.acquisitionCardId,
+        )
+    }
+}
