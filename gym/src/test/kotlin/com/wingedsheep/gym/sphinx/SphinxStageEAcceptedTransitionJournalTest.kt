@@ -117,7 +117,7 @@ class SphinxStageEAcceptedTransitionJournalTest : ScenarioTestBase() {
 
     init {
         listOf(false, true).forEach { shouldShuffle ->
-            test("accepted physical Ponder reorder and shuffle journal/replay shuffle=$shouldShuffle") {
+            test("durable accepted Ponder reorder and shuffle replay shuffle=$shouldShuffle") {
                 val seat = setup("closest-no-approach-v01", "Ponder", 5)
                 val library = seat.state.getLibrary(seat.actor)
                 val top = if (shouldShuffle) {
@@ -160,6 +160,20 @@ class SphinxStageEAcceptedTransitionJournalTest : ScenarioTestBase() {
                         acceptedShuffle.recordJson)
                 }
                 seat.state.pendingDecision shouldBe null
+                val journalPath = Files.createTempDirectory("stage-e-trusted-ponder-")
+                    .resolve("accepted.jsonl")
+                val durable = SphinxStageETrustedTransitionFile.create(journalPath)
+                durable.append(accepted.recordJson)
+                durable.append(acceptedShuffle.recordJson)
+                val reopened = SphinxStageETrustedTransitionFile.reopen(journalPath)
+                reopened.records().size shouldBe 2
+                reopened.replay(before, journal) shouldBe seat.state
+                val rawJournal = Files.readString(journalPath)
+                Files.writeString(journalPath,
+                    rawJournal.replaceFirst("\\"index\\":0", "\\"index\\":7"))
+                shouldThrow<IllegalArgumentException> {
+                    SphinxStageETrustedTransitionFile.reopen(journalPath)
+                }
             }
         }
     }
