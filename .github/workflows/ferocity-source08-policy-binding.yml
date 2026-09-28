@@ -1,0 +1,33 @@
+name: Ferocity source08 frozen policy byte binding
+on:
+  push:
+    branches: ["ferocity/source08-policy-byte-binding-20260928"]
+    paths: [".github/workflows/ferocity-source08-policy-binding.yml"]
+permissions:
+  contents: read
+jobs:
+  bind-policy-bytes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact review source budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/ferocity-policy-byte-binding
+          test "$(git rev-parse HEAD^)" = "c9945566ef04ebaf17d3f973772348831700cb16"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/bind_source08_policy_bytes.py)" = "5633ac2a803810e27ef3c008ca3ad98bef6ed8c2"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/BYTE_BINDING_BUDGET.json)" = "780b7f141875d16a8648781aff935aa5da3ff1a7"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/bind_source08_policy_bytes.py; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/BYTE_BINDING_BUDGET.json; git hash-object .github/workflows/ferocity-source08-policy-binding.yml; git status --porcelain; } > build/reports/ferocity-policy-byte-binding/source.txt
+      - name: Compare frozen pilot bytes to exact source08
+        run: python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/bind_source08_policy_bytes.py | tee build/reports/ferocity-policy-byte-binding/test.log
+      - name: Preserve original binding evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-source08-policy-binding-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-policy-byte-binding/
+          if-no-files-found: error
+          retention-days: 90
