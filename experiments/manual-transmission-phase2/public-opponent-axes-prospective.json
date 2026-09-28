@@ -1,0 +1,17 @@
+{
+  "schema": "manual-phase2-public-opponent-axes-prospective-v1",
+  "status": "STATIC_PREFLIGHT_PENDING_NO_PILOT_OR_GAME_AUTHORITY",
+  "parent": "51fc718bd2c983a30a3fdcfe566fcc7693777579",
+  "source": {
+    "path": "gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPublicOpponentAxes.kt",
+    "blob": "8372b475e77849127439060902a06b0b2da8fdf2"
+  },
+  "test": {
+    "path": "gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPublicOpponentAxesTest.kt",
+    "blob": "471ce30b6aa643dded28e347034d7ecf09b24e2c"
+  },
+  "workflow": ".github/workflows/manual-phase2-public-opponent-axes-preflight.yml",
+  "authority": "experiments/manual-transmission/policies/RACE-FINAL-R1.md and exact opponent source-freeze.json identities; Phase 2 protocol-r1.json retains same-hardware gears and four-seat preconditions.",
+  "scope": "Prospective exact public commander name to seven frozen Race overlay axes; code fails closed on incomplete or unknown identity.",
+  "limitations": "Static compilation only; no action choice, strategic competence, gear/opponent pilots, admission, seed or gameplay."
+}
