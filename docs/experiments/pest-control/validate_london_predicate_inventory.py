@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import json,pathlib,subprocess
 EXPECTED_SOURCE="4f020ea2406e9bd6a87ec389685b48f15df4c5a3"
-REQUIRED=["fun decideMulligan(","hasPayableEarlyDevelopmentLine(","guaranteedSecondLandAccess(","override fun chooseBottomCards(","coloredMismatch < 3 || castableEarly >= 2","keptHandSize <= 5"]
+REQUIRED=["fun decideMulligan(","hasPayableEarlyDevelopmentLine(","guaranteedSecondLandAccess(","override fun chooseBottomCards(","coloredMismatch < 3 || castableEarly >= 2","message.hand.size - count <= 5"]
 def main():
  source=pathlib.Path("ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt").read_text()
  assert subprocess.check_output(["git","hash-object","ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt"],text=True).strip()==EXPECTED_SOURCE
