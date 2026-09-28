@@ -1,6 +1,6 @@
 package com.wingedsheep.gym.matchup
 
-import com.wingedsheep.engine.core.CycleCard
+import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.core.GameConfig
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.PlayLand
@@ -80,7 +80,7 @@ class PestMonsterLondonRealTransitionTest : ScenarioTestBase() {
                 }
                 submitWhenLegal { it is PlayLand && it.playerId == actor && it.cardId == tower }
                 (tower in env.state.getBattlefield()) shouldBe true
-                submitWhenLegal { it is CycleCard && it.playerId == actor && it.cardId == ent }
+                submitWhenLegal { it is TypecycleCard && it.playerId == actor && it.cardId == ent }
                 (ent in env.state.getHand(actor)) shouldBe false
                 (tower in env.state.getBattlefield()) shouldBe true
             }
