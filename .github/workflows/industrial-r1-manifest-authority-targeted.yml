@@ -1,0 +1,89 @@
+name: Industrial R1 expected loaded manifest authority exact two cases
+on:
+  push:
+    branches: ["industrial-waste/r1-launcher-source-pins-20260927"]
+    paths:
+      - ".github/workflows/industrial-r1-manifest-authority-targeted.yml"
+permissions:
+  contents: read
+jobs:
+  exact-two:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - name: Bind exact source, test, workflow and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/industrial-r1-manifest-authority-targeted
+          test "$(git rev-parse HEAD^)" = "b5e8296ca46bae3b1e2f321a0e5fbde504a0d6ca"
+          test "$(git hash-object industrial-waste/v2/r1_execute.py)" = "d368f88f777df8472889d872600723d3412c2575"
+          test "$(git hash-object industrial-waste/v2/test_r1_execute.py)" = "e5301bbef9f1dea654e0122a58382adddb5cf458"
+          test -z "$(git status --porcelain)"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object industrial-waste/v2/r1_execute.py; git hash-object industrial-waste/v2/test_r1_execute.py; git hash-object .github/workflows/industrial-r1-manifest-authority-targeted.yml; git status --porcelain; } > build/reports/industrial-r1-manifest-authority-targeted/source.txt
+      - name: Execute exact fresh fail-closed binding cases
+        shell: bash
+        env:
+          PYTHONPATH: tools:industrial-waste/v2
+        run: |
+          set -o pipefail
+          python3 - <<'PY' 2>&1 | tee build/reports/industrial-r1-manifest-authority-targeted/test.log
+          import datetime
+          import pathlib
+          import sys
+          import unittest
+          import xml.etree.ElementTree as ET
+          names = (
+              "test_missing_or_unreviewed_expected_manifest_refuses_preclaim_authority",
+              "test_exact_independently_reviewed_manifest_shape_is_required",
+          )
+          class RecordingResult(unittest.TextTestResult):
+              def startTest(self, test):
+                  super().startTest(test)
+                  self.current = test._testMethodName
+              def addSuccess(self, test):
+                  super().addSuccess(test)
+                  outcomes[self.current] = ("pass", "")
+              def addFailure(self, test, err):
+                  super().addFailure(test, err)
+                  outcomes[self.current] = ("failure", self._exc_info_to_string(err, test))
+              def addError(self, test, err):
+                  super().addError(test, err)
+                  outcomes[self.current] = ("error", self._exc_info_to_string(err, test))
+              def addSkip(self, test, reason):
+                  super().addSkip(test, reason)
+                  outcomes[self.current] = ("skipped", reason)
+          outcomes = {}
+          suite = unittest.TestSuite(
+              unittest.defaultTestLoader.loadTestsFromName(
+                  "test_r1_execute.LoadedJvmManifestAuthorityTests." + name)
+              for name in names
+          )
+          result = unittest.TextTestRunner(verbosity=2, resultclass=RecordingResult).run(suite)
+          root = ET.Element("testsuite", name="LoadedJvmManifestAuthorityTests",
+                            tests=str(result.testsRun),
+                            failures=str(len(result.failures)),
+                            errors=str(len(result.errors)),
+                            skipped=str(len(result.skipped)),
+                            timestamp=datetime.datetime.now(datetime.timezone.utc).isoformat())
+          for name in names:
+              case = ET.SubElement(root, "testcase",
+                  classname="test_r1_execute.LoadedJvmManifestAuthorityTests", name=name)
+              status, detail = outcomes.get(name, ("error", "case not executed"))
+              if status != "pass":
+                  ET.SubElement(case, status).text = detail
+          out = pathlib.Path("build/reports/industrial-r1-manifest-authority-targeted/TEST-LoadedJvmManifestAuthorityTests.xml")
+          ET.ElementTree(root).write(out, encoding="utf-8", xml_declaration=True)
+          assert result.testsRun == 2 and set(outcomes) == set(names) and result.wasSuccessful(), outcomes
+          PY
+      - name: Upload original scoped evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-r1-manifest-authority-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/industrial-r1-manifest-authority-targeted/
+          if-no-files-found: error
+          retention-days: 90
