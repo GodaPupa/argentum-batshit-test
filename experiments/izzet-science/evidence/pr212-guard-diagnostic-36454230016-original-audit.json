@@ -1,0 +1,24 @@
+{
+  "schema": "izzet-pr212-guard-diagnostic-original-audit-v1",
+  "run": 36454230016,
+  "artifact": 10984627257,
+  "head": "74db7cfb7822746b8cd9854d27852c880d0521ae",
+  "parent": "4865a7e0d2fa0766a32ca46fb049fefa2c8fb769",
+  "zip_sha256": "f185115a28ff360c189973e60e7270df6c668df4c9a9770c6dc503132f8ac21b",
+  "source_txt_sha256": "b4a0a4faef278d3e82ab3cf6c9647476f8b2f1cecf2958eff64549557c887fe8",
+  "drift_json_sha256": "9c3e43267f9ff7bd0932917c157ebcb9089f4d5139a1552545d5570be09b0b4f",
+  "zip_crc": "PASS",
+  "behavioral_cases": 0,
+  "frozen_manifests_modified": false,
+  "drift": {
+    "current_combat": [
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt"
+    ],
+    "attacking_token_defender": [
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt"
+    ]
+  },
+  "disposition": "SOURCE_DRIFT_DIAGNOSTIC_ONLY",
+  "limitations": "Original frozen guards remain INCOMPLETE at source binding. No compatibility acceptance, manifest change, PR212 merge or gameplay admission."
+}
