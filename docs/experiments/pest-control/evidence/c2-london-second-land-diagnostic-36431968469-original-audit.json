@@ -1,0 +1,23 @@
+{
+  "run": 36431968469,
+  "artifact": 10973519352,
+  "source": "3754423a5ea2cf6e01ddd42555ecfaa796feb143",
+  "parent": "daa3382822a525739513cac522aeff7ebdc48aa2",
+  "zip_sha256": "845dd34101ab8d27593f0195a855bca53adfd2980e4ffdc9a5be9cfb3eac4a76",
+  "crc": "PASS",
+  "test_blob": "fb88b6975b29ade6efaaf90c2c7c69896f8f1eb4",
+  "workflow_blob": "29e7c8ef7d7f056a0e6c0b0f70b3eb2634bdca2b",
+  "menu_blob": "7af655daf3e6a94333255e0c7396ff64bc652bce",
+  "tower_blob": "8f280147686880fd921acc43b49f8bb5d5234431",
+  "ent_blob": "eb2dc664f794b69442d479525537404ba4201875",
+  "freshness": "48 actionable tasks executed; selected :gym:test --rerun-tasks --no-build-cache; no FROM-CACHE",
+  "cases": [
+    "Monster seat 1 advances through opponent turn and plays acquired Forest",
+    "Monster seat 2 advances through opponent turn and plays acquired Forest"
+  ],
+  "results": "0 pass, 2 fixture diagnostic failures, 0 errors/skips",
+  "exact_exception": "IllegalStateException: Unexpected decision while advancing real turns: SelectCardsDecision at ENDING/CLEANUP",
+  "diagnosis": "CleanupPhaseManager creates a hand-size discard selection for the active seat after the opponent's draw. The fixture assumed no pending decisions and stopped before opponent's own-hand discard; the original artifact does not record the pending player ID, prompt or legal action menu. Source-bound manager specifies activePlayer and a fixed-count selection from own hand.",
+  "disposition": "INCOMPLETE_DIAGNOSTIC",
+  "limits": "No second-land behavior or gameplay result; preserve raw original and do not rerun unchanged."
+}
