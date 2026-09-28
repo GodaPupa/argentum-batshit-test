@@ -14,6 +14,8 @@ import com.wingedsheep.gym.GameEnvironment
 import com.wingedsheep.gym.actorinput.ObservationAdapter
 import com.wingedsheep.gym.actorinput.completeActorLegalActions
 import com.wingedsheep.gym.actorinput.ActorEpoch
+import com.wingedsheep.sdk.core.Phase
+import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
@@ -46,7 +48,8 @@ class PestMonsterLondonRealTransitionTest : ScenarioTestBase() {
                 ))
                 val actor = env.playerIds[seat]
                 val (opening, _) = knownOpening(env.state, actor)
-                env.restore(opening, env.playerIds)
+                // Trusted fixture enters the first main phase; this does not qualify turn advancement.
+                env.restore(opening.copy(phase = Phase.PRECOMBAT_MAIN, step = Step.PRECOMBAT_MAIN), env.playerIds)
                 val epoch = ActorEpoch("monster-real-transition-v1", "seat-$seat", 0)
                 val input = adapter.build(env.state, actor,
                     completeActorLegalActions(env.state, actor, enumerator), epoch, 0xC25380L + seat)
