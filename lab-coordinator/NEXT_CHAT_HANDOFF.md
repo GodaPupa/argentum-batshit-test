@@ -252,3 +252,22 @@ Starting from live main `09951b4f71e9af9ab9f9e8fe2090c9fafb8ea4b0`; no consumed 
 - **Ferocity:** legitimate complete source08 checkout/policy/runtime/resource closure and independent D2 admission remain; no workaround or new calibration authority.
 
 Exact next: audit Manual `36478716522` once when complete. Independently decide shared PR212 compatibility only from the adopted 52-case result plus governing source review; do not merge on green tests alone. Advance another executable lane while Manual runs.
+
+
+---
+
+## Live continuation — 2026-09-28 regular-chat execution burst 2
+
+Regular chat actively executed repository work; no consumed behavioral original was rerun. All six official seed/claim/allocation/game counters remain zero.
+
+- **Izzet PR212 exact-runtime receiving closed narrowly:** original `36474121083` / `10994119100` independently audited/adopted as **52/52 fresh exact-runtime compatibility cases** (combat32 + token16 + entry4), zero failures/errors/skips. Receipt `experiments/izzet-science/evidence/pr212-exact-compat-36474121083-independent-adoption.json`.
+- **Izzet shared handler adoption:** sequential physical two-Palace payment `36386202245` = 1/1, payment regression `36386230388` = 33/33, broad PR212 CI `36386986896` = 17,387 reported tests / zero failures-errors, independent 64-binding source review, and fresh 52/52 exact-runtime receiving reconcile. Shared-only adoption receipt `experiments/izzet-science/evidence/pr212-shared-explicit-rider-payment-adoption-20260928.json`. Exact reviewed handler blob `524d7917056d09558ddde1426f1e6f3a81d00810` integrated into current main at commit `813355495811341ebd917a32c2293ce61034b309`. This closes the shared repair gate only; no Izzet pilot/lifecycle/Position-1/seed/gameplay authority. Historical PR212 remains DRAFT/HOLD/unmerged and stale rather than being merged wholesale.
+- **Sphinx accepted-cast receiving:** original `36474182779` / `10993166137` audited once, exact **4/4** fresh accepted setup-cast/durable-replay traces pass across all four frozen prospective identities. Receipt `sphinx-approach/evidence/accepted-cast-targeted-36474182779-original-audit.json`. Whole pilot/runner/Stage-E admission remains open.
+- **Manual canonical Kinnan static preflight:** `36477633277` / `10994820513` audited once static-only; compile clean, zero behavior. Receipt `experiments/manual-transmission-phase2/evidence/kinnan-priority-boundary-preflight-36477633277-original-audit.json`.
+- **Manual attempted boundary successor:** `36478716522` at `5228109f` stopped in source binding before tests, produced no artifact and zero behavioral cases. Exact diagnosis: declared parent `294036d6`, actual parent `cd65b91a`; the intervening commit adds `KinnanBonderProdigyScenarioTest`, a substantive prerequisite. PRETEST INCOMPLETE receipt `experiments/manual-transmission-phase2/evidence/kinnan-priority-boundary-targeted-36478716522-pretest-audit.json`; never rerun unchanged.
+- **Manual lawful prerequisite now active:** exact three-case Kinnan printed-mechanics qualification source-pinned at branch head `cbb73c0b337af62871360d644c2a8921030a60ab`; original run **`36479478275` in progress**. Audit its first artifact exactly once. Only after clean Kinnan mechanics qualification may a changed-source four-seat R3-P boundary successor be pinned and executed.
+- **Industrial:** accepted prospective complete-runtime-boundary review remains implementation authority only. No complete expected manifest, prepared worker, combined receiving or R1 permit yet.
+- **Pest:** bounded keep8/8 and bottom8/8 remain scoped; full lawful London universe/pair/C2-A2/exclusions/replay remain.
+- **Ferocity:** complete source08 checkout/policy/runtime/resource authority and independent D2 admission remain unresolved; no workaround/calibration expansion.
+
+Exact next: audit Manual `36479478275` once when complete. If clean, source-pin a changed four-seat boundary successor against that accepted Kinnan mechanics source. Check current-main Izzet integration CI before treating the shared repair as integration-stable. Continue another executable lane while external workflows run.
