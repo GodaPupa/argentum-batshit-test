@@ -18,6 +18,7 @@ internal object SphinxStageEWholeActor {
         "Mental Note", "Thought Scour", "Brainstorm", "Ponder", "Preordain", "Lórien Revealed",
     )
     private val deployments = setOf("Tolarian Terror", "Cryptic Serpent", "Goliath Sphinx")
+    private val interactionCounters = setOf("Counterspell", "Spell Pierce", "Dispel")
 
     fun decide(
         input: ActorInput,
@@ -58,7 +59,7 @@ internal object SphinxStageEWholeActor {
             ?: return unqualified(input, "Current cast card is not identifiable in own hand")
 
         val call = when (card.name) {
-            "Counterspell" -> SphinxStageEComponentCall.COUNTERSPELL
+            in interactionCounters -> SphinxStageEComponentCall.COUNTERSPELL
             in setupDraws -> SphinxStageEComponentCall.SETUP_DRAW
             in deployments -> SphinxStageEComponentCall.DEPLOYMENT
             else -> return unqualified(input, "No reviewed component routing for ${card.name}")
