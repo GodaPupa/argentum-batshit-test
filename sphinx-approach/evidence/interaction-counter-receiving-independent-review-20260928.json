@@ -1,0 +1,29 @@
+{
+  "schema": "sphinx-stage-e-interaction-counter-receiving-independent-review-v1",
+  "date_utc": "2026-09-28",
+  "reviewed_receipt": "sphinx-approach/evidence/interaction-counter-receiving-36498748088-original-audit.json",
+  "reviewed_run": 36498748088,
+  "reviewed_artifact": 11004806887,
+  "source_pins": {
+    "pilot_component": "bdedb10bcfa4f78ef2fbb29853fce96755d45c27",
+    "whole_actor": "63a5a294b7fcea8b6f8d9218f1ddfb64140c2894",
+    "actor_adapter": "8260f3bd7a3fd0ee403803122cd2bd1bd183a854",
+    "budget": "e829dce98a881384a0c0e350221526054f3de779"
+  },
+  "findings": [
+    "The pilot-component decision rule is unchanged except that the accepted card-name guard now admits Counterspell, Spell Pierce and Dispel.",
+    "The whole actor routes exactly those interaction-counter identities to the same COUNTERSPELL component call.",
+    "The actor adapter source is unchanged for this run.",
+    "The four real-engine cases correspond exactly to identity occurrence in the four frozen own 60s: three Spell Pierce, one Dispel.",
+    "The fixture stops before Spell Pierce's separately governed opponent unless-pay decision."
+  ],
+  "decision": "ADOPT_CURRENT_RESPONSE_COUNTER_RECEIVING_SCOPE_ONLY",
+  "limits": [
+    "No opponent unless-pay policy.",
+    "No general priority scheduling or multi-offer ranking.",
+    "No competence for remaining own-card gaps.",
+    "No opponent package, whole runner, replay/collector/durability or Stage-E admission.",
+    "No seeds or gameplay."
+  ],
+  "official_counters_delta": 0
+}
