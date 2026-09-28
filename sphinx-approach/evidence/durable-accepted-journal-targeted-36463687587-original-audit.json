@@ -1,0 +1,27 @@
+{
+  "schema": "sphinx-durable-accepted-journal-original-audit-v1",
+  "run": 36463687587,
+  "artifact": 10988464765,
+  "head": "48043597c997ff91dd3c1899df31bc98bee43fef",
+  "parent": "1baf956738baf7c190b4bd1b999c0fbdbf31ab1e",
+  "transition_source_blob": "ff29172b39ab9fb8099cba265e706530691de90f",
+  "durable_source_blob": "a7fcf072d30ec5d87216a533027dfa2b4eb46756",
+  "test_blob": "1c6b9d36a839aef350bfbc2143f08eab10fce706",
+  "workflow_blob": "394cec56e568f76a5fc6ba277e6f44e689438cc9",
+  "zip_sha256": "3c3ccb29e0b6cbdd4d2d554942a496bb6e7e528873f92ae0802a78e202d4fb97",
+  "source_txt_sha256": "b4b132fdda38e5c4b55fac35ff40eb131565567f680037e80f9a6778bc32f8c9",
+  "xml_sha256": "adb6832cfd4b441088c62f70d95b409a4be0d5efeb0dcccbfeee75cc75277967",
+  "zip_crc": "PASS",
+  "freshness": "48 executed tasks; --rerun-tasks --no-build-cache",
+  "tests": 2,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "cases": [
+    "durable accepted Ponder reorder and shuffle replay shuffle=false",
+    "durable accepted Ponder reorder and shuffle replay shuffle=true"
+  ],
+  "disposition": "SCOPED_TWO_DURABLE_PONDER_TRACES_ACCEPTED",
+  "scope": "Both traces execute create-new file, append and force two accepted Ponder records, reopen, verify hash chain, replay both physical actions, reject altered chain and prestate drift.",
+  "limitations": "No process-crash/power-loss or concurrent-writer qualification; no independent runner review, general memory consumption, remaining decisions, whole pilots, Stage-E freeze or gameplay admission."
+}
