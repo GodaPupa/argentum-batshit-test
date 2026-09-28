@@ -1,0 +1,20 @@
+{
+  "schema": "ferocity-source08-policy-byte-binding-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36487988999,
+  "artifact_id": 10999244491,
+  "artifact_sha256": "a1397bc5e61a25f907aefccabc2239b03f7597adc385c42b4012baf78c902043",
+  "head": "b1cfa77dc56bd87d93020023580a0fbd0ec8f2fb",
+  "parent": "c9945566ef04ebaf17d3f973772348831700cb16",
+  "source_binding": "clean",
+  "failure": "Historical archive expected ArtifactControlPolicyTest.kt SHA256 4cbe939d64505a4a31b87a5357e76a57914d5ac7867fe268ea37338bee29ada5 but exact source08 bytes hash to 4c49ef65ca6bbe6697cbee0a31413f4a5b1c1d2b0b5e7faac8fbc1ac8f86c0f4.",
+  "disposition": "INCOMPLETE_POLICY_BYTE_BINDING",
+  "counters": {
+    "new_jvms": 0,
+    "new_entropy": 0,
+    "new_games": 0,
+    "new_calibration_commands": 0
+  },
+  "note": "Workflow appeared green only because the failing Python command was piped through tee without pipefail. No policy identity is adopted from this attempt.",
+  "next_gate": "Run a changed non-executing diagnostic that records match/diff for every archived policy/support member against exact source08; then determine whether frozen pilot source can be adopted with historical bank divergence explicitly preserved."
+}
