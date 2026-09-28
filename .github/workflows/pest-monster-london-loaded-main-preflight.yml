@@ -1,0 +1,58 @@
+name: Pest Monster London loaded main static preflight
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-london-loaded-main-preflight.yml"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBinding.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBindingTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind prospective source and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-london-loaded-main-preflight
+          test "$(git rev-parse HEAD^)" = "82aaebdd86a02dcf300093e4fde04ead884db260"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBinding.kt)" = "6c0ae894219822a48307d5847ca5e4e4aa9e23f1"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBindingTest.kt)" = "bb6f6b9e11aa4956deb0328ce020f8fd3ea9b52a"
+          test -x gradlew
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBinding.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBindingTest.kt
+            git hash-object .github/workflows/pest-monster-london-loaded-main-preflight.yml
+            git status --porcelain
+          } > build/reports/pest-london-loaded-main-preflight/source.txt
+      - name: Compile without executing behavioral cases
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/pest-london-loaded-main-preflight/compile.log
+          test -f gym/build/classes/kotlin/main/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBinding.class
+          test -f gym/build/classes/kotlin/test/com/wingedsheep/gym/matchup/PestMonsterLondonLoadedMainBindingTest.class
+          test ! -e gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonLoadedMainBindingTest.xml
+      - name: Retain original compile evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-london-loaded-main-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-london-loaded-main-preflight/
+          if-no-files-found: error
+          retention-days: 90
