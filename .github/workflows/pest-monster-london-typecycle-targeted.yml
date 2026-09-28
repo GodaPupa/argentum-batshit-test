@@ -1,0 +1,60 @@
+name: Pest Monster London typecycling first-payment targeted receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-london-typecycle-targeted.yml"
+permissions:
+  contents: read
+jobs:
+  targeted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact preflighted source, fixture and cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-london-typecycle-targeted
+          test "$(git rev-parse HEAD^)" = "3541b2010634a97b271abd1af1e1ab82dea803c7"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonTypecyclingPlan.kt)" = "5845a9eb777b4f4e38e4d78ebaab2b17aab48ae7"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonTypecyclingPlanTest.kt)" = "6bb869a6120e2d32f89318a3d41bbfdc5c4e30d6"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSetupBridge.kt)" = "3dfaf5a1a560e8f5c30ab34de1c2583656832251"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/PestMonsterLondonForestCertificate.kt)" = "8ba646f1c9edd256e8b8915f8da22788cf1ab8ab"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/BojukaBog.kt)" = "aa9212f8c45a68f302a7529fdee75faa442338a0"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasTower.kt)" = "8f280147686880fd921acc43b49f8bb5d5234431"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasMine.kt)" = "547d70da182bb8bb864ddfd5097f16550c63e1fc"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasPowerPlant.kt)" = "f2c4e2b0347b0c2366b9d1e5d971aca82de90ea2"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/HauntedFengraf.kt)" = "6c23dceac8d9fcad932da84502e3917573bdeda5"
+          test "$(git hash-object mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/otj/cards/ConduitPylons.kt)" = "f4e4f9ac3c0032176cc9d7bf793389e0401469de"
+          test "$(git hash-object mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/GenerousEnt.kt)" = "eb2dc664f794b69442d479525537404ba4201875"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonTypecyclingPlan.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonTypecyclingPlanTest.kt
+            git hash-object .github/workflows/pest-monster-london-typecycle-targeted.yml
+            git status --porcelain
+          } > build/reports/pest-london-typecycle-targeted/source.txt
+      - name: Execute four first-payment fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:test --tests 'com.wingedsheep.gym.matchup.PestMonsterLondonTypecyclingPlanTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/pest-london-typecycle-targeted/test.log
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonTypecyclingPlanTest.xml build/reports/pest-london-typecycle-targeted/
+      - name: Retain original evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-london-typecycle-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-london-typecycle-targeted/
+          if-no-files-found: error
+          retention-days: 90
