@@ -1,0 +1,40 @@
+{
+  "schema": "sphinx-stage-e-four-deck-own-card-surface-map-v1",
+  "status": "PROSPECTIVE_STATIC_EQUAL_SURFACE_INVENTORY",
+  "source_head": "aa0717052b07639919d8db33724c906214d69437",
+  "whole_actor_blob": "690d557970cb443edcc1d81ba98bb25932769e18",
+  "coverage_blob": "101fdc617ec59582476ce15ec12594bdbdc14537",
+  "classification": {
+    "Island": "OPENING_LAND",
+    "Snow-Covered Island": "OPENING_LAND",
+    "Counterspell": "ROUTED_COUNTERSPELL",
+    "Mental Note": "ROUTED_SETUP_DRAW",
+    "Thought Scour": "ROUTED_SETUP_DRAW_SELF_ONLY",
+    "Brainstorm": "ROUTED_SETUP_DRAW_VISIBLE_CHOICE",
+    "Lórien Revealed": "ROUTED_SETUP_DRAW__CYCLING_UNCOVERED",
+    "Sphinx's Approach": "ROUTED_DEPLOYMENT__MODE_AND_PAYMENT_SURFACES_REMAIN",
+    "Ponder": "ROUTED_SETUP_DRAW__TRUSTED_MEMORY",
+    "Preordain": "ROUTED_SETUP_DRAW_VISIBLE_CHOICE",
+    "Tolarian Terror": "ROUTED_DEPLOYMENT",
+    "Cryptic Serpent": "ROUTED_DEPLOYMENT",
+    "Goliath Sphinx": "ROUTED_DEPLOYMENT",
+    "Spell Pierce": "UNCOVERED_RESPONSE_AND_PAYMENT",
+    "Dispel": "UNCOVERED_RESPONSE",
+    "Snap": "UNCOVERED_TARGET_AND_UNTAP",
+    "Deem Inferior": "UNCOVERED_TIMING_AND_TARGET",
+    "Artful Dodge": "UNCOVERED_FLASHBACK",
+    "Sleep of the Dead": "UNCOVERED_ESCAPE"
+  },
+  "global_uncovered": [
+    "ordinary priority scheduling",
+    "combat declarations/assignments",
+    "multiple-cast ranking",
+    "alternate-cost and mana-source choices",
+    "trigger ordering",
+    "whole runner/replay/collector",
+    "opponent package surfaces"
+  ],
+  "rule": "All four frozen deck CSVs must contain only classified identities. Unsupported surfaces remain explicit and equal-opportunity qualification must exercise every identity that can reach them; no deck-specific omission.",
+  "gameplay_authorized": false,
+  "official_counters": 0
+}
