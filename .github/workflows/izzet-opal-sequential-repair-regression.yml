@@ -1,0 +1,48 @@
+name: Shared explicit rider-payment targeted regression
+on:
+  push:
+    branches: ["izzet/opal-sequential-real-payment-20260928"]
+    paths:
+      - ".github/workflows/izzet-opal-sequential-repair-regression.yml"
+permissions:
+  contents: read
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind repaired handler and original regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/izzet-opal-sequential-repair-regression
+          test "$(git rev-parse HEAD^)" = "aea99287cd46a8b9804d05f2ac98a61592f6973d"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt)" = "524d7917056d09558ddde1426f1e6f3a81d00810"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt; git hash-object mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ExplicitManaPaymentColorTest.kt; git hash-object rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CostPaymentServiceTest.kt; git hash-object .github/workflows/izzet-opal-sequential-repair-regression.yml; git status --porcelain; } > build/reports/izzet-opal-sequential-repair-regression/source.txt
+      - name: Execute explicit mana and generic cost regression classes
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :mtg-sets:2000-2002:tests:test --tests 'com.wingedsheep.engine.scenarios.ExplicitManaPaymentColorTest' :rules-engine:test --tests 'com.wingedsheep.engine.scenarios.CostPaymentServiceTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/izzet-opal-sequential-repair-regression/test.log
+      - name: Retain original XML
+        if: always()
+        shell: bash
+        run: |
+          cp mtg-sets/2000-2002/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ExplicitManaPaymentColorTest.xml build/reports/izzet-opal-sequential-repair-regression/ 2>/dev/null || true
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CostPaymentServiceTest.xml build/reports/izzet-opal-sequential-repair-regression/ 2>/dev/null || true
+      - name: Upload original regression evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-opal-sequential-repair-regression-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/izzet-opal-sequential-repair-regression/
+          if-no-files-found: error
+          retention-days: 90
