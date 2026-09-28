@@ -294,3 +294,14 @@ Starting from the prior regular-chat checkpoint, execution advanced all six lane
 Independent review requests for Industrial, Izzet, Pest, Sphinx and Ferocity were atomically queued on main commit `da3ca8ff115a688f45aaf169ecc8ca45a2f32242`.
 
 Exact next: audit Manual `36483894776` once when complete. Continue independent review/implementation closures for the other five; no official game starts until its project-specific admission gate actually passes.
+
+
+## 2026-09-28 takeover execution checkpoint — Pest + Manual originals dispositioned
+
+- Pest original `36494423958` / artifact `11001898998` was audited exactly once and recorded as `INCOMPLETE_FIXTURE_FORCED_KEEP_CONFLICT`; the original must not be rerun unchanged. Receipt: `docs/experiments/pest-control/evidence/london-predicate-vector-36494423958-original-audit.json`.
+- Pest changed-source successor `36496673330` / artifact `11003274088` / digest `sha256:16cbe8246a469c34bef3990ff17db89289db8662000d0cc8d45dae88fb47fd91` passed 4/4 fresh boundary cases. Audit receipt: `docs/experiments/pest-control/evidence/london-predicate-vector-36496673330-original-audit.json`. Independent information-scope adoption: `docs/experiments/pest-control/evidence/london-predicate-vector-information-scope-independent-review-20260928.json`. Accepted only for the exact own/public predicate-vector information boundary; complete eleven-axis London/raw-controller parity remains open.
+- Manual original `36493909753` / artifact `11002558009` was audited exactly once and recorded as `INCOMPLETE_OBSERVATION_SOURCE_IDENTITY_INTEGRATION`; the original must not be rerun unchanged. Receipt: `experiments/manual-transmission-phase2/evidence/priority-boundary-36493909753-original-audit.json`.
+- Manual changed-source successor `36496677717` / artifact `11003613141` / digest `sha256:5d3e86b1b5a09f5250a84cbbd91def9b3d56d6674dfe84326df9e7ebbdf118c3` passed all four fresh SPORT/RACE protected/unprotected R3-P traces after the narrow public CastSpell source-identity mapping. Audit receipt: `experiments/manual-transmission-phase2/evidence/priority-boundary-36496677717-original-audit.json`. Accepted only for those four declared R3-P boundary/replay traces; complete CRUISE/SPORT/RACE, opponent policies, collector/durability and capability admission remain open.
+- PR211 and PR212 remain HOLD/unmerged. No official seed, claim, allocation or gameplay counter was advanced by these actions.
+- Pest next gate: prospectively freeze unique reachable eleven-axis predicate vectors plus required physical permutations and compare lawful actor output to the frozen raw controller.
+- Manual next gate: complete the remaining executable CRUISE/SPORT/RACE and opponent-strategic decision surfaces, then whole-pilot/replay/collector qualification before any capability admission.
