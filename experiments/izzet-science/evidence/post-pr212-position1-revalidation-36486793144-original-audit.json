@@ -1,0 +1,28 @@
+{
+  "schema": "izzet-post-pr212-position1-zero-seed-revalidation-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36486793144,
+  "artifact_id": 11000047495,
+  "artifact_sha256": "b0ade85389131c644f63b5c8ddbcab4525b821143a3e82cf8b269232090540b4",
+  "head": "e80e9c6692b6738079c09f710a8193603eb4c630",
+  "parent": "523dfb86b370995bf35e5c1937ef5dc81d727333",
+  "pins": {
+    "validator": "bd1ebfcee727c7d9f664723228b0ed7b95927c58",
+    "budget": "9428643d854326187f23c0b2543a0f1d08723d92",
+    "workflow": "03cfec48fa8046bc0b2de23908168597f94fff91"
+  },
+  "disposition": "ACCEPTED_ZERO_SEED_POSITION1_RUNTIME_REVALIDATION",
+  "result": "PASS",
+  "position1_only": true,
+  "positions_2_12_authorized": false,
+  "seed_values_read": false,
+  "seed_values_printed": false,
+  "seeds_consumed": 0,
+  "games_initialized": 0,
+  "outcomes_exposed": 0,
+  "limits": [
+    "Revalidates historical identity/authorization under the adopted runtime only.",
+    "Does not itself authorize seed consumption/game initialization; independent post-runtime execution authorization remains required.",
+    "Remaining Izzet pilot/mechanics/replay/durability gates remain separate."
+  ]
+}
