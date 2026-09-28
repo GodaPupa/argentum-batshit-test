@@ -1,0 +1,19 @@
+{
+  "run": 36431112892,
+  "artifact": 10973423196,
+  "source": "47a76a3b9d94b88277229c2768fd0c6f7d3e1428",
+  "parent": "103b38e66daad44400abfbaf516fc03672ab7335",
+  "zip_sha256": "3e29736cb9b74d8024cb51531eec4fc5e2e67d568073a41078545a89905b86c3",
+  "crc": "PASS",
+  "test_blob": "12ac18c07512926f5736bf03493e32174a555a50",
+  "workflow_blob": "36fbe860802d5f33094ff150c6d9b3871a865943",
+  "freshness": "48 actionable tasks executed; --rerun-tasks --no-build-cache; two XML cases",
+  "cases": [
+    "Monster seat 1 advances through opponent turn and plays acquired Forest",
+    "Monster seat 2 advances through opponent turn and plays acquired Forest"
+  ],
+  "results": "0 pass, 2 fixture failures, 0 errors/skips",
+  "failure": "Both at PestMonsterLondonSecondLandTest.kt:116: fixture asserted no pending decision during actual turn advancement; original XML does not identify decision kind. Forest own-hand arrival was already separately accepted, but this run grants no turn/second-land result.",
+  "disposition": "INCOMPLETE_FIXTURE_DIAGNOSTIC_REQUIRED",
+  "limits": "Not a deck loss; no turn/second land/payment/London parity/pair/C2/A2 or gameplay authority."
+}
