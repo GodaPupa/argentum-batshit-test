@@ -1,0 +1,44 @@
+{
+  "run": 36466003324,
+  "attempt": 1,
+  "artifact": 10989024607,
+  "source": "9bf7c6e83dd74cc48fe671ef9c74fd5ccf5ba650",
+  "parent": "ad35e4e389544f26a97dcb49c1ba04e3790899a8",
+  "zip_sha256": "fd422c2fc447093929841d6f269e3215ea8e5f3f53794d5c75544f0819b69ea9",
+  "zip_crc": "PASS",
+  "pins": {
+    "trusted_transition": "ff29172b39ab9fb8099cba265e706530691de90f",
+    "durable_journal": "6671a492891d6dc41db6dcc6de6244918872c611",
+    "fixture": "d57d8f2f0407f3f7b6a8a3f561d53d832f28cb20",
+    "workflow": "bfbe4beee3790f775a97f39753074707e7c51b7a"
+  },
+  "source_txt_sha256": "f85de6d200fc67d32ba4f5b781eee48802408563d4ce22585157ef428b729752",
+  "xml_sha256": "f83680c6fc666a5ee0dbc7dab595a4bfa0bb694d5809e0d3c9da84976ca01dcc",
+  "test_log_sha256": "07041590dc1bb679c4230e7ab300fe06a1054c0f64e5335aadb5ace93eeda7bb",
+  "freshness": "48 actionable tasks executed; gym:test executed; --rerun-tasks --no-build-cache; no FROM-CACHE",
+  "cases": [
+    {
+      "name": "consumed accepted Ponder journal continuity and replay shuffle=false",
+      "result": "PASS"
+    },
+    {
+      "name": "consumed accepted Ponder journal continuity and replay shuffle=true",
+      "result": "PASS"
+    }
+  ],
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "audit_count": 1,
+  "disposition": "ACCEPTED_SCOPED_RECEIVING",
+  "scope": "Exactly two Ponder traces reject duplicate reorder/shuffle append and altered prestate continuity without appending invalid records; valid records reopen and replay, tampered chain rejects. Existing create-only/fsync behavior retained.",
+  "not_established": [
+    "whole accepted-memory lifecycle",
+    "all reachable decisions",
+    "whole-pilot competence",
+    "whole-runner competence",
+    "Stage-E freeze/admission",
+    "official seed/allocation/gameplay authority"
+  ],
+  "official_counters_changed": false
+}
