@@ -1,0 +1,50 @@
+name: Sphinx structured-key accepted Ponder transition targeted
+on:
+  push:
+    branches: ["sphinx/accepted-transition-journal-20260928"]
+    paths:
+      - ".github/workflows/sphinx-structured-key-targeted.yml"
+permissions:
+  contents: read
+jobs:
+  two-declared-traces:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind changed serializer and unchanged two-trace fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-structured-key-targeted
+          test "$(git rev-parse HEAD^)" = "e507bdc4d8c4f9354bcb3c28d956ed3ecc141626"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt)" = "39da11cc7ad37a340d4f7d383bad9cab57c9811e"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt)" = "29c0060b374cb7697a5250c87c5ea41ad3abd7a1"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt; git hash-object .github/workflows/sphinx-structured-key-targeted.yml; git status --porcelain; } > build/reports/sphinx-structured-key-targeted/source.txt
+      - name: Execute only two changed-source accepted-transition traces
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:test --tests 'com.wingedsheep.gym.sphinx.SphinxStageEAcceptedTransitionJournalTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-structured-key-targeted/test.log
+      - name: Preserve exact original XML
+        if: always()
+        shell: bash
+        run: |
+          if test -f gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEAcceptedTransitionJournalTest.xml; then
+            cp gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEAcceptedTransitionJournalTest.xml build/reports/sphinx-structured-key-targeted/
+          fi
+      - name: Upload original changed-source result
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-structured-key-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-structured-key-targeted/
+          if-no-files-found: error
+          retention-days: 90
