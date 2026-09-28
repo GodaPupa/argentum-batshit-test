@@ -1,0 +1,56 @@
+{
+  "schema": "industrial-r1-seed-free-build-output-capture-36492735133-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36492735133,
+  "artifact_id": 11002106646,
+  "artifact_sha256": "c6fa44f3d3565ad2f5ea76c2fc6eaa0fb01fe37ae33c51c619fe4d2b7e70e255",
+  "head": "f03e719b0c412ada86d9a1976c8ea593d2991302",
+  "parent": "3a6b5d9b9431b4ed5ffe2c013c9f3c9df55c79d6",
+  "pins": {
+    "capture_script": "0d3c82426f81233ff599fa50d42dce0bae872107",
+    "budget": "2964e1a3870d9da1e81a519af42ada0f5ceecd5a",
+    "workflow": "c6825c9fe4b38e621eca645257587146da6b0ebf"
+  },
+  "result": {
+    "compiled_kotlin_main_roots": 15,
+    "exact_files": 27668,
+    "roots": [
+      "ai",
+      "buildSrc",
+      "mtg-sdk",
+      "mtg-sets/1993-1999",
+      "mtg-sets/2000-2002",
+      "mtg-sets/2003-2007",
+      "mtg-sets/2008-2016",
+      "mtg-sets/2017-2022",
+      "mtg-sets/2023",
+      "mtg-sets/2024",
+      "mtg-sets/2025",
+      "mtg-sets/2026",
+      "mtg-sets",
+      "mtg-sets/core",
+      "rules-engine"
+    ],
+    "java": "Temurin 21.0.12.1+1",
+    "python": "3.12.3",
+    "bash": "5.2.21",
+    "just": "1.58.0",
+    "seed_files_read": false
+  },
+  "decision": "ACCEPTED_SEED_FREE_ACTUAL_BUILD_OUTPUT_CAPTURE_SLICE_ONLY",
+  "missing_for_complete_expected_manifest": [
+    "resolved external dependency/build-tool graph and artifact bytes",
+    "ordered Gradle launcher/test-worker/runtime classpaths and module paths",
+    "complete archive/resource inventories outside compiled Kotlin main directories",
+    "JDK image/modules/executables/native-library closure",
+    "Python stdlib/import closure and shell/launcher executable bytes",
+    "generated/hidden class policy and loader topology",
+    "immutable store/lifetime enforcement and authenticated prepared-worker attestation",
+    "independent adoption of an exact complete expected-manifest digest"
+  ],
+  "official_counters": {
+    "allocations": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}
