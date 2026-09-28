@@ -1,0 +1,44 @@
+name: Pest Tower Ent raw physical bottom static preflight
+on:
+  push:
+    branches: ["pest/london-raw-keep-parity-20260928"]
+    paths:
+      - ".github/workflows/pest-london-typecycle-bottom-preflight.yml"
+permissions:
+  contents: read
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind raw controller, sealed bottom actor and new exact fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-typecycle-bottom-preflight
+          test "$(git rev-parse HEAD^)" = "d30b868d2805335af1d6be92fdc47f1b4d7cf84f"
+          test "$(git hash-object ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt)" = "4f020ea2406e9bd6a87ec389685b48f15df4c5a3"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonBottomPolicy.kt)" = "d88e28bd46425a4c74d2a54348aa1c16f6f8ad6c"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonRawTypecycleBottomParityTest.kt)" = "2385bd2f225307ccd78fa08e084d6c9cd61b8610"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonBottomPolicy.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonRawTypecycleBottomParityTest.kt; git hash-object .github/workflows/pest-london-typecycle-bottom-preflight.yml; git status --porcelain; } > build/reports/pest-typecycle-bottom-preflight/source.txt
+      - name: Compile changed fixture without behavior
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/pest-typecycle-bottom-preflight/compile.log
+      - name: Preserve original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-typecycle-bottom-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-typecycle-bottom-preflight/
+          if-no-files-found: error
+          retention-days: 90
