@@ -1,0 +1,34 @@
+name: Izzet post-PR212 position1 zero-seed revalidation
+on:
+  push:
+    branches: ["izzet/post-pr212-position1-revalidation-20260928"]
+    paths: [".github/workflows/izzet-post-pr212-position1-revalidation.yml"]
+permissions:
+  contents: read
+jobs:
+  deterministic-zero-seed:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Bind exact revalidator budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/izzet-position1-revalidation
+          test "$(git rev-parse HEAD^)" = "523dfb86b370995bf35e5c1937ef5dc81d727333"
+          test "$(git hash-object experiments/izzet-science/post_pr212_position1_revalidate.py)" = "bd1ebfcee727c7d9f664723228b0ed7b95927c58"
+          test "$(git hash-object experiments/izzet-science/post-pr212-position1-revalidation-budget.json)" = "9428643d854326187f23c0b2543a0f1d08723d92"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object experiments/izzet-science/post_pr212_position1_revalidate.py; git hash-object experiments/izzet-science/post-pr212-position1-revalidation-budget.json; git hash-object .github/workflows/izzet-post-pr212-position1-revalidation.yml; git status --porcelain; } > build/reports/izzet-position1-revalidation/source.txt
+      - name: Execute exact zero-seed identity revalidation
+        run: python3 experiments/izzet-science/post_pr212_position1_revalidate.py | tee build/reports/izzet-position1-revalidation/test.log
+      - name: Preserve original revalidation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-position1-revalidation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/izzet-position1-revalidation/
+          if-no-files-found: error
+          retention-days: 90
