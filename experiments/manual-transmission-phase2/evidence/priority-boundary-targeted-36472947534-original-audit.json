@@ -1,0 +1,31 @@
+{
+  "schema": "manual-real-boundary-original-audit-v1",
+  "run": 36472947534,
+  "artifact": 10992048979,
+  "head": "0b83e981acced30b22d3f714330d67172d13898e",
+  "parent": "2fac08cfea02ba5ec4a65a27d66ccbc8680fa08f",
+  "audit_count": 1,
+  "zip_sha256": "622291cdd620ec287a99790c985f66e617b3379bb0d30200689d290aa86ef687",
+  "crc": "PASS",
+  "source_pins": "PASS",
+  "workflow_blob": "ade145d6e1f6ead9d293c6a56fdc8bbb91a9b6d1",
+  "xml_sha256": "2a2be2e423c00bc737f097ba0c3532e829e9b1036eaa104c94b3d6ec2b7dd5b2",
+  "source_sha256": "1568292ffc5045c8627bc8451e715ad990cc98ce34bd7b7788b2ba789058a2cc",
+  "log_sha256": "a3916acb10efb4a13964eecc23b36c4922a7cce892ad53bfa896e21ee1b1c78e",
+  "fresh_tasks": 48,
+  "case_names": [
+    "SPORT real helper priority boundary and replay protected=false",
+    "SPORT real helper priority boundary and replay protected=true",
+    "RACE real helper priority boundary and replay protected=false",
+    "RACE real helper priority boundary and replay protected=true"
+  ],
+  "tests": 4,
+  "failures": 4,
+  "errors": 0,
+  "skipped": 0,
+  "disposition": "INCOMPLETE_INITIALIZER_REGISTRY_BOUNDARY",
+  "cause": "All four stop at GameInitializer.initializeGame line197, fixture line31: IllegalArgumentException Card not found in registry: Kinnan, Bonder Prodigy. No strategic boundary or replay reached.",
+  "next": "Inspect exact fixture registry and accepted Manual card registration; correct only missing real-card registration if supported, preflight changed fixture. No unchanged rerun.",
+  "raw_original": "Original immutable artifact10992048979 retained90days; local untouchedZIP retained. No modifications.",
+  "official_counters": 0
+}
