@@ -20,8 +20,8 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/industrial-ai-test-runtime-graph
-          test "$(git rev-parse HEAD^)" = "e2490dd98978dee5c47f1d03f715c6d30c5e1452"
-          test "$(git hash-object industrial-waste/v2/capture_seed_free_ai_test_runtime_graph.py)" = "a487b27925d58eee197391fd8c3bb2c28da71e23"
+          test "$(git rev-parse HEAD^)" = "b07a7952cc82674bf14e2c456347cf858e416063"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_ai_test_runtime_graph.py)" = "11c508239884ffa8578b3c7742340972684b16b0"
           test "$(git hash-object industrial-waste/v2/r1-seed-free-ai-test-runtime-graph-budget.json)" = "32815c24198b7d38404e57fb5ee7dcd1b9385737"
           { git rev-parse HEAD; git rev-parse HEAD^; git hash-object industrial-waste/v2/capture_seed_free_ai_test_runtime_graph.py; git hash-object industrial-waste/v2/r1-seed-free-ai-test-runtime-graph-budget.json; git hash-object .github/workflows/industrial-ai-test-runtime-graph-capture.yml; git status --porcelain; } > build/reports/industrial-ai-test-runtime-graph/source.txt
       - name: Produce fresh deterministic non-corpus build outputs
