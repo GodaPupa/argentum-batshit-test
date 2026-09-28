@@ -1,0 +1,50 @@
+name: Pest real Ent Forest selection and own-hand arrival two-seat
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-real-forest-arrival-targeted.yml"
+permissions:
+  contents: read
+jobs:
+  two-seat:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source, menu, cards and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-real-forest-arrival-targeted
+          test "$(git rev-parse HEAD^)" = "596d21f878bef32de2dc208d374bf2130c718427"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonForestArrivalTest.kt)" = "dcb9f7292d80f7318f67aba2884bf527c38080a2"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt)" = "7af655daf3e6a94333255e0c7396ff64bc652bce"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasTower.kt)" = "8f280147686880fd921acc43b49f8bb5d5234431"
+          test "$(git hash-object mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/GenerousEnt.kt)" = "eb2dc664f794b69442d479525537404ba4201875"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonForestArrivalTest.kt; git hash-object .github/workflows/pest-monster-real-forest-arrival-targeted.yml; git status --porcelain; } > build/reports/pest-real-forest-arrival-targeted/source.txt
+      - name: Execute exactly two real Forest selection and arrival cases
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:test --tests 'com.wingedsheep.gym.matchup.PestMonsterLondonForestArrivalTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/pest-real-forest-arrival-targeted/test.log
+      - name: Retain original XML
+        if: always()
+        shell: bash
+        run: |
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonForestArrivalTest.xml build/reports/pest-real-forest-arrival-targeted/ 2>/dev/null || true
+      - name: Upload original evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-real-forest-arrival-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-real-forest-arrival-targeted/
+          if-no-files-found: error
+          retention-days: 90
