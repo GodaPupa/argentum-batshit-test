@@ -1,0 +1,66 @@
+name: Pest Monster Map activation receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-c2-map-activation-targeted.yml"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterMapActivationReceivingTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-map-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact preflighted Map source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-c2-map
+          test "$(git rev-parse HEAD^)" = "b7b50b4b15cb1cd0ea9e55ab2a362789a476a21e"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterMapActivationReceivingTest.kt)" = "1c734782f97192683254581d5383d1150437feae"
+          test "$(git rev-parse b7b50b4b15cb1cd0ea9e55ab2a362789a476a21e:gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterMapActivationReceivingTest.kt)" = "1c734782f97192683254581d5383d1150437feae"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterMapActivationReceivingTest.kt
+            git hash-object .github/workflows/pest-monster-c2-map-activation-targeted.yml
+            git status --porcelain
+          } > build/reports/pest-c2-map/source.txt
+      - name: Execute two fresh Map activation fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterMapActivationReceivingTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/pest-c2-map/gradle.log
+      - name: Verify exact JUnit cases
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          paths=glob.glob("gym/build/test-results/test/TEST-*PestMonsterMapActivationReceivingTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          cases=root.findall(".//testcase")
+          expected=[f"P03-04 Monster seat {seat} Map pays sacrifices and selects offered Tower" for seat in (1,2)]
+          assert sorted(c.get("name") for c in cases)==sorted(expected), [c.get("name") for c in cases]
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-map-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-c2-map/
+            gym/build/test-results/test/TEST-*PestMonsterMapActivationReceivingTest.xml
+          if-no-files-found: error
+          retention-days: 90
