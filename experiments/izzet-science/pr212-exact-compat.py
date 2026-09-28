@@ -18,11 +18,22 @@ def bind():
     subprocess.run(['git','merge-base','--is-ancestor',runtime,'HEAD'],check=True)
     assert not git('status','--porcelain')
     changed = set(git('diff','--name-only',runtime,'HEAD').splitlines())
-    assert changed == set(permit['allowed_changed_paths']), changed
+    allowed = {
+        'experiments/izzet-science/pr212-exact-runtime-supplement.json',
+        'experiments/izzet-science/pr212-exact-compat.py',
+        '.github/workflows/pr212-exact-compat-supplement.yml',
+        'experiments/izzet-science/evidence/pr212-exact-compat-execution-source-review.json',
+        str(PERMIT),
+    }
+    assert changed == allowed == set(permit['allowed_changed_paths']), changed
+    assert permit['review_path'] == 'experiments/izzet-science/evidence/pr212-exact-compat-execution-source-review.json'
+    assert set(git('diff','--name-only','HEAD^','HEAD').splitlines()) == {str(PERMIT)}
     assert set(permit['sha256']) == changed - {str(PERMIT)}
     for p,h in permit['sha256'].items(): assert sha(ROOT/p)==h,p
     review = json.loads((ROOT / permit['review_path']).read_text())
     assert review['execution_authorized'] is True
+    assert review['reviewed_candidate_commit'] == git('rev-parse','HEAD^^')
+    assert set(git('diff','--name-only','HEAD^^','HEAD^').splitlines()) == {permit['review_path']}
     assert review['runtime'] == runtime
     assert review['supplement_sha256'] == sha(SUPPLEMENT)
     assert review['wrapper_sha256'] == sha(pathlib.Path(__file__))
@@ -67,11 +78,8 @@ def execute(manifests):
         folder.mkdir(parents=True,exist_ok=False)
         groups=[manifest['stages']] if index==0 else [[s] for s in manifest['stages']]
         for group in groups:
-            command=['./gradlew']
-            modules=list(dict.fromkeys(s['module'] for s in group))
-            assert len(modules)==1
-            command += [':'+modules[0].replace('/',':')+':test']
-            for stage in group: command += ['--tests',stage['class']]
+            command=['just','test-class',group[0]['class'].split('.')[-1]]
+            for stage in group[1:]: command += ['--tests',stage['class']]
             command += ['--rerun-tasks','--no-build-cache','--console=plain','--max-workers=1',
                 '-PkotlinCompileParallelism=1','-Pkotlin.compiler.execution.strategy=in-process',
                 '-Dorg.gradle.jvmargs=-Xmx4g']
