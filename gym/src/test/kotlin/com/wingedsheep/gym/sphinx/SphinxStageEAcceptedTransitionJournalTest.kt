@@ -136,7 +136,7 @@ class SphinxStageEAcceptedTransitionJournalTest : ScenarioTestBase() {
                 val reorder = seat.pilot.decideVisibleChoice(reorderInput, reorderInput.epoch)
                     .shouldBeInstanceOf<SphinxStageEAdapterResult.Proposed>().proposal
                 val before = seat.state
-                val journal = SphinxStageEAcceptedTransitionJournal(actionProcessor)
+                val journal = SphinxStageEAcceptedTransitionJournal(actionProcessor, cardRegistry)
                 val accepted = journal.acceptPonderReorder(
                     before, reorderInput, reorderInput.epoch, seat.pilot, reorder)
                 seat.state = accepted.state
