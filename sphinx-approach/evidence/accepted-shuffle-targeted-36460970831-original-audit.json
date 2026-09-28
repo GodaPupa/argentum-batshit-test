@@ -1,0 +1,25 @@
+{
+  "schema": "sphinx-accepted-shuffle-original-audit-v1",
+  "run": 36460970831,
+  "artifact": 10987337028,
+  "head": "48ba6eace3994c7f67ec2e41028824bfaa66a14e",
+  "parent": "6e369fe939ff967061f8f5f93876b341871cf4b4",
+  "source_blob": "ff29172b39ab9fb8099cba265e706530691de90f",
+  "test_blob": "a485f1faed6e647963b570e752560da238c5e686",
+  "workflow_blob": "21221836f5535eea9458af52d94bea7b0bb71665",
+  "zip_sha256": "7f1ab7560e97380af5f614995e2bb122477e4ec0e68e979a2e8fa84c995cd1ae",
+  "source_txt_sha256": "235e657adda5a17836cc7e84fd140080d92acde9e5ca7c35ed608d1ef53867cd",
+  "xml_sha256": "24d25c86e44383f62afae2ef020b463d1c882f00a72ae4409b9941ddaa724b14",
+  "zip_crc": "PASS",
+  "freshness": "48 executed tasks; --rerun-tasks --no-build-cache",
+  "tests": 2,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "cases": [
+    "accepted physical Ponder reorder and shuffle journal/replay shuffle=false",
+    "accepted physical Ponder reorder and shuffle journal/replay shuffle=true"
+  ],
+  "disposition": "SCOPED_TWO_PONDER_REORDER_SHUFFLE_ACCEPTED_TRANSITION_REPLAY_CASES",
+  "limitations": "Trusted accepted transition and replay of immediate Ponder reorder/shuffle only; no durable whole journal, complete receiving or pilot, Stage-E freeze or gameplay authority."
+}
