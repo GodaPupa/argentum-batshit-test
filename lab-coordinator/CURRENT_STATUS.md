@@ -1,3 +1,17 @@
+## Live continuation — 2026-09-28
+
+Starting main: `8cdcf2a495dae988154f762f793df10ccc763667`. All six official seed/claim/allocation/game counters remain zero. PR211 and PR212 remain DRAFT/HOLD/UNMERGED.
+
+- **Sphinx consumed original:** `36463687587` / `10988464765` audited exactly once, SHA256 `3c3ccb29e0b6cbdd4d2d554942a496bb6e7e528873f92ae0802a78e202d4fb97`; CRC/source/parent/workflow/XML/freshness reconcile, exact two durable Ponder traces pass. Receipt `34413067fdce8ecbd49594ac9363745514d1b4d1:sphinx-approach/evidence/durable-accepted-journal-targeted-36463687587-original-audit.json`. Only create-only/fsync/reopen/replay/tamper scope; no crash durability, whole pilot/runner or Stage-E authority. Do not redownload/rerun.
+- **Sphinx next executable seam:** trusted same-actor journal now rejects repeated decision consumption and discontinuous source/trial/step/pre-post state chains, including reopen validation. Durable source `6671a492`, changed two-trace fixture `d57d8f2f`. Static original `36465149013` / `10988933404` audited once, SHA256 `8d38e2e5af69bda1002d66f607c81577eef905da751a92bcf49a4a42a2257cf7`, 29 fresh compile tasks, zero behavioral cases; receipt `ad35e4e389544f26a97dcb49c1ba04e3790899a8`. Exact behavioral original **`36466003324` in progress** at `sphinx/accepted-transition-journal-20260928` head `9bf7c6e83dd74cc48fe671ef9c74fd5ccf5ba650`. Audit original artifact once on completion for exactly two consumed accepted Ponder continuity/replay shuffle=false/true traces. No unchanged duplicate dispatch.
+- **Manual dependency recovery:** clean branch head `98047f6bffd1ee1736a26f6ff453d88952994b58`, durable source inventory `experiments/manual-transmission-phase2/evidence/r3-source-recovery-20260928.json`. D3WZ Library archive `libfile_d95dc3920b5081918affb6e0dfb9113d` / `file_00000000c4ec822f85cd8ac6c76359ad`, ZIP SHA256 `310f2d533d18bc470053d0670c163042fa081d201c4562d113c00ddfaf82ef02`, CRC clean. Recovers development/access_routes/recovery/ability_windows/reachable_states/selfprotect/R3 mulligan/Kinnan source bytes. No script or historical experiment executed. Development explicitly identifies a restricted benchmark, NOT Cruise/Sport/qualified Race; do not promote its priority table. race_mulligan.py and run_d3n_shorikai_helper.py still missing from this archive; exact D3N and D2EFGH Library materialization timed out, no bytes/no retry. Next: frozen-authority comparison and actual masked strategic implementation/qualification; archival recovery is not acceptance.
+- **Pest:** bounded keep8/8 and physical-bottom8/8 receipts remain consumed/scoped; complete lawful London decision/bottom universe, pair pilots, C2/A2/exclusions/replay still block. No detached certificate added.
+- **Izzet:** PR212 exact PendingDecision/EffectContext source-drift adoption remains open. Existing Manual equivalence adoption explicitly excludes later runtimes and cannot authorize PR212; no guard rerun or manifest weakening.
+- **Industrial:** complete independently reviewed expected runtime universe remains prerequisite; prior incomplete eight-class capture not promoted. **Ferocity:** source08 offline/runtime/resource independent D2 authority remains blocked; no calibration/reconstruction workaround.
+
+
+---
+
 # Argentum six-project critical path
 
 Checkpoint 2026-09-27. Frozen protocols/amendments control. **All fresh official game/allocation counters remain zero.** Shared PR210 merged `95fc01aa`; component acceptance does not grant gameplay admission.
