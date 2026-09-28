@@ -6,9 +6,13 @@ import com.wingedsheep.engine.core.SubmitDecision
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.core.engineSerializersModule
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.legalactions.LegalActionEnumerator
+import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.gym.actorinput.ActorEpoch
 import com.wingedsheep.gym.actorinput.ActorInput
 import com.wingedsheep.gym.actorinput.ActorProposal
+import com.wingedsheep.gym.actorinput.ObservationAdapter
+import com.wingedsheep.gym.actorinput.completeActorLegalActions
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -20,7 +24,11 @@ import java.security.MessageDigest
  * The caller must durably retain [Accepted.recordJson] with the raw game attempt journal.
  * This is not a complete Stage-E runner, replay/admission receipt, or official allocation.
  */
-internal class SphinxStageEAcceptedTransitionJournal(private val processor: ActionProcessor) {
+internal class SphinxStageEAcceptedTransitionJournal(
+    private val processor: ActionProcessor, registry: CardRegistry,
+) {
+    private val adapter = ObservationAdapter(registry)
+    private val enumerator = LegalActionEnumerator.create(registry)
     @Serializable
     data class Record(
         val inputBindingHash: String,
@@ -51,8 +59,21 @@ internal class SphinxStageEAcceptedTransitionJournal(private val processor: Acti
         input.verifyBinding(epoch, pilot.actorId)
         val question = input.decision as? ReorderLibraryDecision
             ?: error("Expected the actor's Ponder reorder question")
-        require(state.pendingDecision == question && question.playerId == pilot.actorId &&
-            question.context.sourceName == "Ponder") { "Current engine suspension differs from the sealed question" }
+        val raw = state.pendingDecision as? ReorderLibraryDecision
+            ?: error("Current engine has no Ponder reorder suspension")
+        // The actor's question deliberately sanitizes source metadata and card summaries, so
+        // structural equality with the raw suspension is neither valid nor safe. Reproject the
+        // current state and require byte-identical sealed actor input instead.
+        val current = adapter.build(state, pilot.actorId,
+            completeActorLegalActions(state, pilot.actorId, enumerator),
+            epoch, input.policyRngState)
+        require(current.canonicalJson() == input.canonicalJson() &&
+            raw.id == question.id && raw.playerId == pilot.actorId &&
+            raw.context.sourceId == question.context.sourceId &&
+            raw.cards.toSet() == question.cards.toSet() &&
+            question.context.sourceName == "Ponder") {
+            "Current engine projection differs from the sealed Ponder question"
+        }
         require(proposal.inputBindingHash == input.bindingHash) { "Stale Ponder proposal" }
         val action = proposal.action as? SubmitDecision
             ?: error("Ponder reorder must submit the typed response")
