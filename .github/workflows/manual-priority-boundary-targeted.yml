@@ -18,12 +18,13 @@ jobs:
           distribution: temurin
           java-version: "21"
       - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
       - name: Bind prospective source fixture boundary and parent
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p build/reports/manual-priority-boundary-targeted
-          test "$(git rev-parse HEAD^)" = "f7c97f42d0c059d1ad51ef55932b6139afdf9bf9"
+          test "$(git rev-parse HEAD^)" = "88cee0a246c7e35088505442ab440962c9402aa5"
           test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/KinnanBonderProdigy.kt)" = "14907968026b2f307bd792ccd22481788ac3d2e5"
           test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KinnanBonderProdigyScenarioTest.kt)" = "2eeea62b0cb87d231aebaeaf5119f959f1a7ca2b"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityConservationPolicy.kt)" = "8fec7b06ed4d20ac138b4f0d0500fc6d39926d4e"
