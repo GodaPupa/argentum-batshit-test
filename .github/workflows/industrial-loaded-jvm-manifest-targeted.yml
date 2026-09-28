@@ -1,0 +1,49 @@
+name: Industrial actual loaded JVM manifest capture one-case
+on:
+  push:
+    branches: ["industrial-waste/r1-launcher-source-pins-20260927"]
+    paths:
+      - ".github/workflows/industrial-loaded-jvm-manifest-targeted.yml"
+permissions:
+  contents: read
+jobs:
+  three-case:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/industrial-loaded-jvm-manifest-targeted
+          test "$(git rev-parse HEAD^)" = "815f35085320ce793a9833b47299a19ed5d7e222"
+          test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2LoadedJvmIdentity.kt)" = "83e0a0b3190cc72d3d3c8f789293455ff2d42f12"
+          test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2LoadedJvmManifestCaptureTest.kt)" = "fdb40ec66ac23661d1c9852edfcf936a212ba2ec"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2LoadedJvmIdentity.kt; git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2LoadedJvmManifestCaptureTest.kt; git hash-object .github/workflows/industrial-loaded-jvm-manifest-targeted.yml; git status --porcelain; } > build/reports/industrial-loaded-jvm-manifest-targeted/source.txt
+      - name: Execute one actual loaded JVM manifest capture case
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :ai:test --tests 'com.wingedsheep.ai.industrialwaste.IndustrialWasteV2LoadedJvmManifestCaptureTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/industrial-loaded-jvm-manifest-targeted/test.log
+      - name: Retain original XML
+        if: always()
+        shell: bash
+        run: |
+          cp ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2LoadedJvmManifestCaptureTest.xml build/reports/industrial-loaded-jvm-manifest-targeted/ 2>/dev/null || true
+          cp build/reports/industrial-loaded-jvm-manifest/loaded-classes.tsv build/reports/industrial-loaded-jvm-manifest-targeted/ 2>/dev/null || true
+      - name: Upload original behavioral evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-loaded-jvm-manifest-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/industrial-loaded-jvm-manifest-targeted/
+          if-no-files-found: error
+          retention-days: 90
