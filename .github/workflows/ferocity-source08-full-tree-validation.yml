@@ -1,0 +1,72 @@
+name: Ferocity source08 exact full-tree validation
+on:
+  push:
+    branches: ["ferocity/source08-full-tree-validation-20260928"]
+    paths: [".github/workflows/ferocity-source08-full-tree-validation.yml"]
+permissions:
+  contents: read
+jobs:
+  validate-observed-map:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Reconcile exact source08 tree against preserved observed compiled-input map
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-source08-full-tree
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = "705e06c91dbf708c641c2a8e081f22e5a1f9fba2"
+          SOURCE=3a4f99a7653839506e96d19e6639f58d9e8c5ced
+          test "$(git rev-parse "$SOURCE^{tree}")" = "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"
+          git worktree add --detach /tmp/source08 "$SOURCE"
+          cat ferocity-recycling/evidence/source08-takeover/original-10914678223-part-{00..11}.bin > /tmp/source08-original.zip
+          echo "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816  /tmp/source08-original.zip" | sha256sum -c -
+          python3 - <<'PY'
+          import hashlib, json, pathlib, zipfile
+          out=pathlib.Path("build/reports/ferocity-source08-full-tree")
+          root=pathlib.Path("/tmp/source08")
+          with zipfile.ZipFile("/tmp/source08-original.zip") as z:
+              raw=z.read("qualification/compiled-inputs-before.json")
+          assert hashlib.sha256(raw).hexdigest()=="36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908"
+          observed=json.loads(raw)
+          missing=[]; mismatch=[]; matched=0
+          for rel, expected in observed.items():
+              p=root/rel
+              if not p.is_file():
+                  missing.append(rel); continue
+              got=hashlib.sha256(p.read_bytes()).hexdigest()
+              if got != expected:
+                  mismatch.append({"path":rel,"expected":expected,"actual":got})
+              else:
+                  matched += 1
+          report={
+            "schema":"ferocity-source08-full-tree-observed-map-validation-v1",
+            "source":"3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+            "tree":"56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+            "observed_map_sha256":hashlib.sha256(raw).hexdigest(),
+            "observed_entries":len(observed),
+            "matched_files":matched,
+            "missing_count":len(missing),
+            "mismatch_count":len(mismatch),
+            "missing":missing,
+            "mismatches":mismatch,
+            "status":"FULL_TREE_MATCH" if not missing and not mismatch else "INCOMPLETE_EXACT_DIAGNOSTIC",
+            "new_jvms":0,"new_exports":0,"new_entropy":0,"new_games":0
+          }
+          (out/"result.json").write_text(json.dumps(report,indent=2,sort_keys=True)+"\n")
+          print(json.dumps({k:report[k] for k in ("observed_entries","matched_files","missing_count","mismatch_count","status")}))
+          PY
+          git -C /tmp/source08 status --porcelain > "$OUT/source08-status.txt"
+          git rev-parse HEAD HEAD^ > "$OUT/workflow-source.txt"
+      - name: Preserve exact diagnostic
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-source08-full-tree-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-source08-full-tree/
+          if-no-files-found: error
+          retention-days: 90
