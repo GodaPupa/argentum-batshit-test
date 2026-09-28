@@ -1,0 +1,16 @@
+{
+  "schema": "pest-london-predicate-inventory-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36488083869,
+  "artifact_id": 10999549437,
+  "artifact_sha256": "2cbef7d5663d756555591a48f4d56c6757648146fec431fb9383c7989ab2ef1d",
+  "head": "12783ffc3c9b8e1a0512820b5f686a677684716e",
+  "parent": "2f6ef1515ddf781f425d72eeb1248c6c7271a9be",
+  "source_binding": "clean",
+  "failure": "Static validator asserted stale token `fun decideCardsToBottom(`; frozen controller currently declares `override fun chooseBottomCards(message: BottomCardsInfo)`.",
+  "disposition": "INCOMPLETE_STATIC_VALIDATOR_FIXTURE",
+  "behavioral_cases": 0,
+  "note": "Workflow appeared green because python output was piped through tee without pipefail. Original job log is authoritative; do not accept or rerun unchanged.",
+  "next_gate": "Change only validator token to exact chooseBottomCards declaration and add pipefail; rerun same static inventory reconciliation. No parity behavior yet.",
+  "official_counters": 0
+}
