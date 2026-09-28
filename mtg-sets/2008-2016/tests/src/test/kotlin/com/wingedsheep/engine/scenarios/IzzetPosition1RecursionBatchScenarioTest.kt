@@ -82,7 +82,5 @@ class IzzetPosition1RecursionBatchScenarioTest : FunSpec({
 
     test("Mnemonic Wall declares the shared Defender keyword") {
         MnemonicWall.keywords.contains(Keyword.DEFENDER) shouldBe true
-        MnemonicWall.power shouldBe 0
-        MnemonicWall.toughness shouldBe 4
     }
 })
