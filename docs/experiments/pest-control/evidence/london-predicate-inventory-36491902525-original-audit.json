@@ -1,0 +1,36 @@
+{
+  "schema": "pest-london-predicate-inventory-36491902525-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36491902525,
+  "artifact_id": 11000539732,
+  "artifact_sha256": "e8061068ab6470ab1af11ceb27f9998c3569e1882325f97c7dda038e59a8af8c",
+  "head": "8f6d062f5105c7e84c264bdbcac3b8ab56945531",
+  "parent": "ab3e6d1d41823784323fc0e9c76ea893cda1370a",
+  "pins": {
+    "raw_controller": "4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+    "inventory": "538520e791cecc307ddad022824a197650cb2826",
+    "validator": "022ca663779d4314754a2809230103e2414a6598",
+    "workflow": "59f145242ba0a487ae7f7c629918b775a3150252"
+  },
+  "decision": "ACCEPTED_STATIC_RAW_PREDICATE_INVENTORY",
+  "axes": [
+    "M0",
+    "M1",
+    "M2",
+    "M3",
+    "M4",
+    "M5",
+    "B0",
+    "B1",
+    "B2",
+    "B3",
+    "B4"
+  ],
+  "behavioral_cases": 0,
+  "next_gate": "Implement a lawful own/public submitted-60 predicate-vector extractor, generate only unique reachable vectors plus required physical permutations, and compare extractor result to frozen raw controller before pair/C2-A2 admission.",
+  "limits": [
+    "No London parity accepted from static reconciliation.",
+    "No pair pilot, C2/A2, replay/durability, seed or gameplay authority."
+  ],
+  "official_counters_delta": 0
+}
