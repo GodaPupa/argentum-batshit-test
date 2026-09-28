@@ -1,0 +1,44 @@
+{
+  "schema": "manual-phase2-imported-strategic-source-inventory-v1",
+  "status": "READ_ONLY_SOURCE_DISCOVERY_NOT_PILOT_ADMISSION",
+  "frozen_hardware": "Manual Transmission v0.7",
+  "hardware_sha256": "6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111",
+  "archives": [
+    {
+      "library_file_id": "libfile_d95dc3920b5081918affb6e0dfb9113d",
+      "name": "Manual_Transmission_D3WZ_Active_Kinnan_Bundle.zip",
+      "sha256": "310f2d533d18bc470053d0670c163042fa081d201c4562d113c00ddfaf82ef02",
+      "zip_crc": "clean",
+      "entries": 42,
+      "source_members": {
+        "manual_transmission_d3wz_bundle/race_mulligan_r3.py": "b8f48cd5fa5535af939e49361823868544e61dfe072e9e4d4c4028d44ce0fbb8",
+        "manual_transmission_d3wz_bundle/access_routes.py": "c2eb0d8db4c735f1c29c26e40226b2bcb06240b642b5f1d1c63cd15b194a1dcf"
+      },
+      "scope": "Historical bounded Race R3 opening and D3-W/X/Y/Z Kinnan model source, not a four-seat real-engine strategic pilot."
+    },
+    {
+      "library_file_id": "libfile_9dd83d7955c48191b4c9b83ab08e184b",
+      "name": "Manual_Transmission_D3Y4_ACAD_Kinnan_Corrected_Bundle.zip",
+      "sha256": "592cdf025f52f5b66fa2bee22520ad6e068c32fa6f5448d3678f8b44774293f7",
+      "zip_crc": "clean",
+      "member_manifest": "24/24 SHA256SUMS.json members reconcile; no unlisted files",
+      "source_members": {
+        "manual_transmission_d3y4_terminal/run_d3y4_legal_kinnan_helper.py": "b32273d48acf97df2ce6d325fc34abbe26381f80f2a77260a5eb2c51eec05a29",
+        "manual_transmission_d3y4_terminal/test_d3y4.py": "5b712730be21818e51b3062c23257a1fbdf0105499d3c79dd623fe41f06b3495"
+      },
+      "scope": "Corrected bounded pre-loop Kinnan interaction and terminal topology diagnostics, not matchup games or a full opponent pilot."
+    }
+  ],
+  "specific_observations": [
+    "R3 opening source contains should_keep_r3: forced keep at attempt>=3; functional gate; early accelerator/access or velocity+protection; later functional development. This is a bounded historical model and does not establish exact PhaseTwoPilotPolicy behavior.",
+    "Corrected Kinnan source permits only pre-loop windows; no response inside the Pili-Pala mana-ability loop. It imports additional /mnt/data/d3w_joint modules absent from these two selected archives.",
+    "The R3 script imports race_mulligan.py, which is not in the selected D3WZ archive; full dependency closure remains open."
+  ],
+  "next_gate": "Resolve exact missing dependencies and source/protocol mapping, then prospectively implement and qualify Cruise/Sport/Race and four opponent pilots on masked real-engine observations; independently review before PR211 HOLD can change.",
+  "official_counts": {
+    "capability": "0/36",
+    "primary": "0/864"
+  },
+  "tests_executed": 0,
+  "gameplay_authorized": false
+}
