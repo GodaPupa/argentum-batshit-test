@@ -1,20 +1,21 @@
 {
   "schema": "manual-phase2-public-opponent-axes-prospective-v1",
-  "status": "STATIC_PREFLIGHT_AUDITED_BEHAVIORAL_UNEXECUTED",
-  "parent": "51fc718bd2c983a30a3fdcfe566fcc7693777579",
+  "status": "PROSPECTIVE_CHANGED_TEST_STATIC_PREFLIGHT_PENDING",
+  "parent": "5301e5682c0ac1c71ef4e1bf61d6c69600fbf97e",
   "source": {
     "path": "gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPublicOpponentAxes.kt",
     "blob": "8372b475e77849127439060902a06b0b2da8fdf2"
   },
   "test": {
     "path": "gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPublicOpponentAxesTest.kt",
-    "blob": "471ce30b6aa643dded28e347034d7ecf09b24e2c"
+    "blob": "bab12ac38ea784ce7ca7f133169ff4257d88e363"
   },
   "workflow": ".github/workflows/manual-phase2-public-opponent-axes-preflight.yml",
   "authority": "experiments/manual-transmission/policies/RACE-FINAL-R1.md and exact opponent source-freeze.json identities; Phase 2 protocol-r1.json retains same-hardware gears and four-seat preconditions.",
-  "scope": "Prospective exact public commander name to seven frozen Race overlay axes; code fails closed on incomplete or unknown identity.",
-  "limitations": "Static compilation only; no action choice, strategic competence, gear/opponent pilots, admission, seed or gameplay.",
-  "preflight": {
+  "scope": "Prospective four-seat masked observation commander-to-axis integration; previous two pure mapping cases remain in changed test source.",
+  "limitations": "No behavioral execution yet for changed test, no action choice, gears/opponent competence, seed or gameplay.",
+  "preflight": null,
+  "previous_preflight": {
     "run": 36373029183,
     "artifact": 10950475323,
     "artifact_sha256": "3f7a7f226e501032022319f91fd8e6a935ee66a194ab9f5c4d87fbf123b70847",
