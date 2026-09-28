@@ -1,0 +1,33 @@
+{
+  "schema": "industrial-r1-runtime-capture-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36487027776,
+  "artifact_id": 10999897562,
+  "artifact_sha256": "a5a485ad2f043b362598ed203e298343fec26fe86d57d5012efaff8c8aa97222",
+  "head": "e0e302de70b4a13935cf76cbb4f30b3845fafc5e",
+  "parent": "5aea01b836cd70a99086a0efe00734fb7aac1bed",
+  "pins": {
+    "capture": "2904e89dbf55398f7c24d824d35a5bb3aa365b9c",
+    "test": "b116521c64025488d81742d6b80e5be0d53578e7",
+    "budget": "fd90e88936ea4099aff8468dcd34f1117657db5b",
+    "workflow": "d76d73d76955871235e82309cb4bb0a9ee99cd28"
+  },
+  "result": {
+    "tests": 5,
+    "failures": 0,
+    "errors": 0
+  },
+  "disposition": "ACCEPTED_DETERMINISTIC_RUNTIME_CAPTURE_IMPLEMENTATION_SLICE_ONLY",
+  "accepted_scope": [
+    "archive/directory byte inventory construction",
+    "duplicate ZIP member rejection",
+    "path traversal rejection",
+    "multi-release fail-closed pending policy",
+    "loader/node mismatch rejection"
+  ],
+  "limits": [
+    "No qualified isolated build was inventoried.",
+    "No actual expected manifest generated/adopted.",
+    "No JDK/native/Python closure, prepared worker, combined receiving, claim or R1 permit."
+  ]
+}
