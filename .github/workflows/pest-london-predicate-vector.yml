@@ -20,9 +20,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/pest-london-predicate-vector
-          test "$(git rev-parse HEAD^)" = "f4909418ddc8161f657dff11b2a303df35049f7d"
+          test "$(git rev-parse HEAD^)" = "5b5ff6b5b0eb921124566de982a90d7a52d54705"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt)" = "bb8e2247dc64a64403094c691d83b8eed53048bd"
-          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVectorTest.kt)" = "74a2a3ed150c8dbf50f1c31b2bb663f2eda9d520"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVectorTest.kt)" = "0bf1a6d922d7aa9b5803a1c1188ebca1173c5343"
           test "$(git hash-object docs/experiments/pest-control/london-predicate-vector-receiving-budget.json)" = "d9a20c5d08d8481a98115b731e650dc31fd71253"
           { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVectorTest.kt; git hash-object docs/experiments/pest-control/london-predicate-vector-receiving-budget.json; git hash-object .github/workflows/pest-london-predicate-vector.yml; git status --porcelain; } > build/reports/pest-london-predicate-vector/source.txt
       - name: Execute exactly four information-boundary vector cases
