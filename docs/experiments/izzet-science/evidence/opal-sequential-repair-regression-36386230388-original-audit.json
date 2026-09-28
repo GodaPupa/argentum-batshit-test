@@ -1,0 +1,31 @@
+{
+  "run": 36386230388,
+  "artifact": 10954762641,
+  "source": "8f960c29af402fd69b10d787912774046e38b92e",
+  "parent": "aea99287cd46a8b9804d05f2ac98a61592f6973d",
+  "zip_sha256": "5993b4f36c5138ebbf156350212718469c47b0c5b59161736a52a0bdfe49627a",
+  "xml_sha256": {
+    "ExplicitManaPaymentColorTest": "bff9f925afeaf39c99e5ae66198d5fb6ce4f925e897b5f3f28d39520115983d9",
+    "CostPaymentServiceTest": "4425f7d2292a401370401fe8214a5a6193e394085ba021c710c74ed31fb898a6"
+  },
+  "crc": "clean",
+  "handler_blob": "524d7917056d09558ddde1426f1e6f3a81d00810",
+  "workflow_blob": "e20c7bc3e0a6c1a444ce2c13cd8c5a5bd4b0f7f1",
+  "freshness": "47 executed Gradle tasks; two selected test tasks executed --rerun-tasks --no-build-cache",
+  "xml": {
+    "ExplicitManaPaymentColorTest": {
+      "tests": 4,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "CostPaymentServiceTest": {
+      "tests": 29,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "disposition": "ACCEPTED_SCOPED_SHARED_PAYMENT_REGRESSION_33_CASES_ONLY",
+  "limits": "Original tests cover explicit color and generic cost service, not full shared integration, unrelated cards or project gameplay. PR212 draft/HOLD pending canonical CI and independent acceptance; PR211 untouched."
+}
