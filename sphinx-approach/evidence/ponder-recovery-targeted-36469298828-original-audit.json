@@ -1,0 +1,46 @@
+{
+  "run": 36469298828,
+  "artifact": 10990743377,
+  "head": "2e41c91b828d8064187c800717728d25517c7bd2",
+  "parent": "8525d0d6aef37b3bd01ecac00ad4daee7579738d",
+  "zip_sha256": "5b6069e22f651e98f3435a569467906d028ce3efafcf0492352ae14162fd77de",
+  "crc": "PASS",
+  "pins": {
+    "session": "e80e943e7d04164f4ca2fd033e6de6a34c15a653",
+    "budget": "5bb7404a16cf080628097ddc6b5cd86357b4c2cd",
+    "transition": "63efac3d9321d658f9590ffbab689a187516487c",
+    "durable": "6671a492891d6dc41db6dcc6de6244918872c611",
+    "fixture": "af65cfc46768bcb0fbf1226ca454db7c9f51934f",
+    "workflow": "d346eecb739d8b2752862f67e4c4e5130ef45fc2"
+  },
+  "xml_sha256": "f2fed64641d63f40b2616035856ee976d0c0967e93a18169f4dd8f87df25fdfb",
+  "source_txt_sha256": "0d4f61196ee9a7573587ceac71be8f35b583a8880114110e96175860b5a5b9b8",
+  "test_log_sha256": "8dd93c40c5ea758f0f791945cc2aba83d1e702657ce8219e5ec047611fd1a3cf",
+  "freshness": "48 actionable tasks executed; gym:test fresh, no FROM-CACHE; --rerun-tasks --no-build-cache",
+  "cases": [
+    {
+      "name": "trusted Ponder memory recovery and one-shot consumption shuffle=false",
+      "result": "PASS"
+    },
+    {
+      "name": "trusted Ponder memory recovery and one-shot consumption shuffle=true",
+      "result": "PASS"
+    }
+  ],
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "audit_count": 1,
+  "disposition": "ACCEPTED_SCOPED_RECEIVING",
+  "scope": "Two actual Ponder traces reconstruct identical accepted visible memory after reopening one record, reject changed prestate, accept and consume shuffle, reject repeat memory in live and reopened completed session, and reproduce final state.",
+  "not_established": [
+    "IO-failure injection or process-crash recovery",
+    "other reachable decisions",
+    "whole accepted-transition runner",
+    "equal whole-pilot competence",
+    "Stage-E freeze/admission",
+    "official seed/allocation/gameplay authority"
+  ],
+  "next": "Integrate canonical accepted-transition handling for remaining reachable decisions and equal whole-pilot runner/replay under prospective equal budget; do not reinterpret these two traces as general runner admission",
+  "official_counters_changed": false
+}
