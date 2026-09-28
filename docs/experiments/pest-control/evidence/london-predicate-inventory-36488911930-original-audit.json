@@ -1,0 +1,15 @@
+{
+  "schema": "pest-london-predicate-inventory-corrected-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36488911930,
+  "artifact_id": 11001260327,
+  "artifact_sha256": "1485562dcdd806280f23a0440089d6ddfe77e8a89d685066dd19aebea6572a9c",
+  "head": "00e4ad922fae7d36501555f9f6657c09d8ee3de0",
+  "parent": "1788138cbc19a6b3012036f70ec680f117632a2b",
+  "source_binding": "clean",
+  "behavioral_cases": 0,
+  "failure": "Static validator expected token `keptHandSize <= 5`; exact raw controller expresses the same branch as `message.hand.size - count <= 5`.",
+  "disposition": "INCOMPLETE_STATIC_VALIDATOR_FIXTURE",
+  "next_gate": "Change only this exact token; retain pipefail; rerun static reconciliation once. No parity behavior.",
+  "official_counters": 0
+}
