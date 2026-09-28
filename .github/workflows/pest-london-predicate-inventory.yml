@@ -14,11 +14,15 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/pest-london-predicate-inventory
-          test "$(git rev-parse HEAD^)" = "2f6ef1515ddf781f425d72eeb1248c6c7271a9be"
+          test "$(git rev-parse HEAD^)" = "1788138cbc19a6b3012036f70ec680f117632a2b"
           test "$(git hash-object docs/experiments/pest-control/tier-one-monster-london-raw-predicate-inventory-20260928.json)" = "538520e791cecc307ddad022824a197650cb2826"
-          test "$(git hash-object docs/experiments/pest-control/validate_london_predicate_inventory.py)" = "8ae34e96a3bb42d5817a45910a61abc3138a7bc5"
+          test "$(git hash-object docs/experiments/pest-control/validate_london_predicate_inventory.py)" = "574692281525360da82c929bfcf3d0398ebaf781"
           { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt; git hash-object docs/experiments/pest-control/tier-one-monster-london-raw-predicate-inventory-20260928.json; git hash-object docs/experiments/pest-control/validate_london_predicate_inventory.py; git hash-object .github/workflows/pest-london-predicate-inventory.yml; } > build/reports/pest-london-predicate-inventory/source.txt
-      - run: python3 docs/experiments/pest-control/validate_london_predicate_inventory.py | tee build/reports/pest-london-predicate-inventory/test.log
+      - name: Run corrected static inventory validator
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 docs/experiments/pest-control/validate_london_predicate_inventory.py | tee build/reports/pest-london-predicate-inventory/test.log
       - if: always()
         uses: actions/upload-artifact@v7
         with:
