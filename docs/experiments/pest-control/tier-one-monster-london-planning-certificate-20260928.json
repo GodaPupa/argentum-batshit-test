@@ -1,0 +1,45 @@
+{
+  "schema": "pest-monster-london-planning-certificate-prospective-v1",
+  "date_utc": "2026-09-28",
+  "status": "SOURCE_ONLY_REQUIRES_INDEPENDENT_REVIEW_BEFORE_PARITY_EXECUTION",
+  "parent": "197f514a2cac20da3a1b43d7ebcdddd96beb7be5",
+  "authority": [
+    "docs/experiments/pest-control/tier-one-monster-c2-london-policy-parity-gap.json",
+    "docs/experiments/pest-control/tier-one-monster-c2-exact-main-source-map.json"
+  ],
+  "information_boundary": {
+    "permitted_inputs": [
+      "exact submitted own 60-card multiset",
+      "currently visible own hand names"
+    ],
+    "forbidden_inputs": [
+      "library entity IDs",
+      "library order",
+      "future draws",
+      "opponent hidden cards",
+      "GameState",
+      "RNG state"
+    ],
+    "actor_output": "derived own-list existence/count facts only"
+  },
+  "intended_use": [
+    "Replace hidden-library scans with submitted-list-minus-visible-hand derivations.",
+    "Support prospectively reviewed equivalence classes for keep/mulligan and bottom policy.",
+    "Preserve hidden-library permutation invariance by construction."
+  ],
+  "not_yet_established": [
+    "Raw-controller keep equivalence for every reachable opening",
+    "Raw-controller physical-bottom equivalence",
+    "Correct early-development simulation for Map/Crop/Stirrings/typecycle interactions",
+    "pair-pilot competence",
+    "C2/A2",
+    "exclusions/replay",
+    "gameplay admission"
+  ],
+  "next_review": [
+    "Independently review whether every field is derivable from lawful own/public information.",
+    "Map raw-controller future-development predicates to the smallest complete finite equivalence classes.",
+    "Only then freeze and execute an exhaustive equivalence-class parity bank."
+  ],
+  "official_counters": 0
+}
