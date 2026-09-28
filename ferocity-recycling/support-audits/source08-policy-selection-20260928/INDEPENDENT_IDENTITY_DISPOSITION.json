@@ -1,0 +1,31 @@
+{
+  "schema": "ferocity-source08-policy-identity-independent-disposition-v1",
+  "date_utc": "2026-09-28",
+  "basis": {
+    "exact_source08": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "full_tree_match": "20275/20275",
+    "archive_inventory_run": 36486873009,
+    "byte_diagnostic_run": 36488979347
+  },
+  "decision": "PARTIAL_IDENTITY_ONLY_HOLD_D2",
+  "findings": [
+    "The archived Artifact Control pilot is byte-identical to exact source08 and may retain that identity for later receiving.",
+    "The archived Red Madness pilot is not byte-identical to exact source08; exact source08 cannot silently stand in for the frozen archived Red pilot.",
+    "Shared ActorPublicCards, ActorChoiceSupport, ArtifactCombatPlanner and FirstCellCanonicalFixturePool match exactly.",
+    "Historical policy-test divergence is evidence-version divergence, not a gameplay result."
+  ],
+  "required_next_gate": [
+    "Locate the frozen authority that selects whether D2 Red uses the archived RedMadnessPilot bytes or source08 RedMadnessPilot bytes.",
+    "Bind that authority to the exact pilot digest without executing it.",
+    "If archived Red is authoritative, qualify its sealed runtime/bundle path separately; if source08 Red is authoritative, independently justify the historical archive divergence before admission.",
+    "Only after policy/runtime/bundle/resource receiving closes may independent D2 admission be considered."
+  ],
+  "prohibited": [
+    "no calibration",
+    "no new JVM",
+    "no seed",
+    "no game",
+    "no policy reconstruction from outcomes"
+  ],
+  "official_counters_delta": 0
+}
