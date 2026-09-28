@@ -289,3 +289,35 @@ Starting from the prior regular-chat checkpoint, execution advanced all six lane
 Independent review requests for Industrial, Izzet, Pest, Sphinx and Ferocity were atomically queued on main commit `da3ca8ff115a688f45aaf169ecc8ca45a2f32242`.
 
 Exact next: audit Manual `36483894776` once when complete. Continue independent review/implementation closures for the other five; no official game starts until its project-specific admission gate actually passes.
+
+
+## 2026-09-28 takeover execution checkpoint — consumed originals and successful successors
+
+LIVE MAIN AFTER THIS TURN MUST BE REFRESHED BEFORE ACTING. The following originals are already consumed and MUST NOT be audited or rerun again unchanged.
+
+### Pest Control
+- Consumed original: run `36494423958`, artifact `11001898998`, digest `sha256:b6ec73b7f266743d722d64f99bf1b2c8b9c592fa05c8b3381393d034dc3e08bd`.
+- Exact disposition: `INCOMPLETE_FIXTURE_FORCED_KEEP_CONFLICT` because the two-card unknown-M5 fixture itself satisfied the source forced-keep predicate. Receipt: `docs/experiments/pest-control/evidence/london-predicate-vector-36494423958-original-audit.json`.
+- Changed-source successor: run `36496673330`, artifact `11003274088`, digest `sha256:16cbe8246a469c34bef3990ff17db89289db8662000d0cc8d45dae88fb47fd91`, head `8ffba73d5f723840526ecea8d4a4274a9d7816c2`. Fresh 4/4 pass.
+- Accepted scope only: lawful own/public predicate-vector information boundary. Original audit: `docs/experiments/pest-control/evidence/london-predicate-vector-36496673330-original-audit.json`. Independent scope adoption: `docs/experiments/pest-control/evidence/london-predicate-vector-information-scope-independent-review-20260928.json`.
+- NOT accepted: complete eleven-axis London parity, frozen-raw controller parity, pair pilots, C2/A2, exclusion universe, replay/durability or gameplay.
+- Next gate: prospectively freeze UNIQUE REACHABLE eleven-axis predicate vectors plus required physical permutations and compare lawful actor outputs to the frozen raw controller. Do not replay prior bounded banks.
+
+### Manual Transmission
+- Consumed original: run `36493909753`, artifact `11002558009`, digest `sha256:3a9de2688c26d28b3c2c84825c879ca2e531461fff64b5ee1e7bddb18c7c2c73`.
+- Exact disposition: `INCOMPLETE_OBSERVATION_SOURCE_IDENTITY_INTEGRATION`; protected traces could not identify physical Offer/Pact because the enumerated public action view exposed no CastSpell source entity. Receipt: `experiments/manual-transmission-phase2/evidence/priority-boundary-36493909753-original-audit.json`.
+- Minimal changed-source correction: public observation maps `CastSpell.cardId` to `sourceEntityId`; no broader strategic policy was added.
+- Changed-source successor: run `36496677717`, artifact `11003613141`, digest `sha256:5d3e86b1b5a09f5250a84cbbd91def9b3d56d6674dfe84326df9e7ebbdf118c3`, head `26039a64462db1beeec005195dc9cdb6befd62b4`. Fresh 4/4 pass: SPORT/RACE × protected/unprotected.
+- Accepted scope only: those four declared R3-P four-seat boundary/replay traces. Receipt: `experiments/manual-transmission-phase2/evidence/priority-boundary-36496677717-original-audit.json`.
+- NOT accepted: complete CRUISE/SPORT/RACE, opponent strategic competence, whole-pilot, collector/durability, capability admission, 36 capability games or 864 primary games.
+- Next gate: inventory and implement remaining executable gear decisions and all exact opponent strategic policies; then payment/runtime/future-debt, replay/collector/durability and independent capability admission.
+
+### Other lanes remain fail-closed
+- Izzet: current runtime registry diagnostic still has 51 missing required identities; prioritize the smallest reusable batches and separately qualify mechanics, commander lifecycle/damage/event ledger and own/opponent pilots. Position 1 only remains the surviving historical authority; no seeds have been read or consumed.
+- Industrial Waste v2: seed-free build-output capture is accepted only as build-output provenance. Next critical gate is complete resolved dependency/build graph plus ordered launcher/worker classpath/module-path and archive/toolchain/native/Python/shell closure before any expected-manifest adoption or worker qualification.
+- Sphinx's Approach: four frozen own 60s and own-card gap inventory exist, but whole-pilot competence remains incomplete and opponent packages/allocation/endpoints/stopping are intentionally not yet frozen. Do not manufacture an opponent bank or Stage-E seeds.
+- Ferocity Recycling: active Red v0.2 policy identity is resolved; next gate remains the NON-EXECUTING first-cell admission manifest. Bind exact archived resource/runner/trace/bundle identities only from preserved evidence; do not guess missing archived values and do not launch the 16-game D2 cell early.
+
+PR211 and PR212 remain HOLD/unmerged unless newer live GitHub proves a protocol-authorized change. PR212's useful shared handler repair is already separately integrated; never merge the stale branch wholesale.
+
+All official seed / claim / allocation / gameplay counters remain zero at this checkpoint. Always refresh live GitHub and search current status/receipts before any retry.
