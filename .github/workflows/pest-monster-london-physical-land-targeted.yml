@@ -1,0 +1,74 @@
+name: Pest Monster London physical land plan receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-london-physical-land-targeted.yml"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonPhysicalLandPlans.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonPhysicalLandPlansTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-physical-land-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact preflighted source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-london-physical-land
+          test "$(git rev-parse HEAD^)" = "32ee6afa74e3d8e6fc15680545dfccd48b3bcfdb"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonPhysicalLandPlans.kt)" = "8e97078fd4fef858ba44f047c178650f6f90b8d7"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonPhysicalLandPlansTest.kt)" = "e69c2ca93ea1566de9d028820a30fc1c7eac8263"
+          test "$(git rev-parse 32ee6afa74e3d8e6fc15680545dfccd48b3bcfdb:gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonPhysicalLandPlans.kt)" = "8e97078fd4fef858ba44f047c178650f6f90b8d7"
+          test "$(git rev-parse 32ee6afa74e3d8e6fc15680545dfccd48b3bcfdb:gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonPhysicalLandPlansTest.kt)" = "e69c2ca93ea1566de9d028820a30fc1c7eac8263"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonPhysicalLandPlans.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonPhysicalLandPlansTest.kt
+            git hash-object .github/workflows/pest-monster-london-physical-land-targeted.yml
+            git status --porcelain
+          } > build/reports/pest-london-physical-land/source.txt
+      - name: Execute four fresh physical-land fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterLondonPhysicalLandPlansTest --rerun-tasks --no-build-cache 2>&1 | tee build/reports/pest-london-physical-land/gradle.log
+      - name: Verify exact four JUnit cases
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          p = Path('gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonPhysicalLandPlansTest.xml')
+          root = ET.parse(p).getroot()
+          expected = {f'London physical land plan seat {seat} {suffix}' for seat in (1, 2) for suffix in (
+              'uses only own visible handles', 'rejects altered hand order')}
+          cases = root.findall('testcase')
+          assert root.attrib['tests'] == '4' and len(cases) == 4
+          assert all(root.attrib[k] == '0' for k in ('failures', 'errors', 'skipped'))
+          assert {case.attrib['name'] for case in cases} == expected
+          assert all(case.attrib['classname'] == 'com.wingedsheep.gym.matchup.PestMonsterLondonPhysicalLandPlansTest' for case in cases)
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-london-physical-land-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-london-physical-land/
+            gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonPhysicalLandPlansTest.xml
+          if-no-files-found: error
+          retention-days: 90
