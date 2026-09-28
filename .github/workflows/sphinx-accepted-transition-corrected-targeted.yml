@@ -1,0 +1,50 @@
+name: Sphinx corrected accepted Ponder transition and replay targeted
+on:
+  push:
+    branches: ["sphinx/accepted-transition-journal-20260928"]
+    paths:
+      - ".github/workflows/sphinx-accepted-transition-corrected-targeted.yml"
+permissions:
+  contents: read
+jobs:
+  two-declared-traces:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind corrected projection source, fixture and prior failure
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-transition-corrected-targeted
+          test "$(git rev-parse HEAD^)" = "11adacb67027588dae19e6fd330776b34416d084"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt)" = "cba32ed847cef96f2f7039e8902591364bb809bb"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt)" = "29c0060b374cb7697a5250c87c5ea41ad3abd7a1"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt; git hash-object .github/workflows/sphinx-accepted-transition-corrected-targeted.yml; git status --porcelain; } > build/reports/sphinx-transition-corrected-targeted/source.txt
+      - name: Execute only two changed-source accepted-transition traces
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:test --tests 'com.wingedsheep.gym.sphinx.SphinxStageEAcceptedTransitionJournalTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-transition-corrected-targeted/test.log
+      - name: Preserve exact original XML
+        if: always()
+        shell: bash
+        run: |
+          if test -f gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEAcceptedTransitionJournalTest.xml; then
+            cp gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEAcceptedTransitionJournalTest.xml build/reports/sphinx-transition-corrected-targeted/
+          fi
+      - name: Upload original changed-source result
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-transition-corrected-targeted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-transition-corrected-targeted/
+          if-no-files-found: error
+          retention-days: 90
