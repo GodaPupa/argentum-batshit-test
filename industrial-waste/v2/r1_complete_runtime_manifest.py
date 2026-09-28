@@ -135,8 +135,8 @@ def validate_manifest(manifest: dict[str,Any], *, require_self_digest=True) -> d
     platform=manifest.get("platform")
     if not isinstance(platform,dict): raise ValueError("platform object")
     _exact_keys(platform,PLATFORM_KEYS,"platform")
-    for k in PLATFORM_KEYS: _digest(platform.get(k),f"platform.{k}")
-    if not isinstance(platform.get("architecture"),str): raise ValueError("architecture")
+    for k in PLATFORM_KEYS - {"architecture"}: _digest(platform.get(k),f"platform.{k}")
+    if not isinstance(platform.get("architecture"),str) or not platform["architecture"]: raise ValueError("architecture")
 
     launch=manifest.get("launch")
     if not isinstance(launch,dict): raise ValueError("launch object")
