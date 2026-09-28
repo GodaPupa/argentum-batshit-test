@@ -113,7 +113,34 @@ class PestMonsterLondonSecondLandTest : ScenarioTestBase() {
                         reachedSecondMain = true
                         break
                     }
-                    check(env.state.pendingDecision == null) { "Unexpected decision while advancing real turns: ${env.state.pendingDecision!!::class.simpleName} at ${env.state.phase}/${env.state.step}" }
+                    val pending = env.state.pendingDecision
+                    if (pending != null) {
+                        // Cleanup hand-size selection belongs to its active seat. Construct that
+                        // seat's own masked view; the Monster policy never sees opponent hand IDs.
+                        val discard = pending as? SelectCardsDecision
+                            ?: error("Unexpected decision kind during turn advancement")
+                        check(env.state.phase == Phase.ENDING && env.state.step == Step.CLEANUP &&
+                            discard.playerId == env.state.activePlayerId &&
+                            discard.prompt.startsWith("Discard down to ")) {
+                            "Unexpected non-cleanup selection during turn advancement"
+                        }
+                        val chooser = discard.playerId
+                        val choiceView = adapter.build(env.state, chooser, emptyList(),
+                            epoch.copy(step = index + 2), 0xC25380L + seat)
+                        val visible = choiceView.decision.shouldBeInstanceOf<SelectCardsDecision>()
+                        val ownIds = choiceView.observation.zones.single {
+                            it.ownerId == chooser && it.zoneType == Zone.HAND
+                        }.cards.map { it.entityId }.toSet()
+                        val selected = visible.options.filter { it in ownIds }.take(visible.minSelections)
+                        check(visible.minSelections == visible.maxSelections &&
+                            selected.size == visible.minSelections) {
+                            "Cleanup discard not available from choosing seat's own hand"
+                        }
+                        env.stepExactlyOne(SubmitDecision(chooser,
+                            CardsSelectedResponse(visible.id, selected)))
+                        env.lastRejection shouldBe null
+                        continue
+                    }
                     val legal = env.legalActions()
                     val progress = legal.firstOrNull { it.action is PassPriority }
                         ?: legal.firstOrNull {

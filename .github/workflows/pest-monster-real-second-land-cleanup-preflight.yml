@@ -1,0 +1,46 @@
+name: Pest real cleanup-discard turn fixture static preflight
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-real-second-land-cleanup-preflight.yml"
+permissions:
+  contents: read
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact changed fixture, menu and cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-real-second-land-cleanup-preflight
+          test "$(git rev-parse HEAD^)" = "9dfe143e40bee1d77bf1ac426830cd04fb92cc93"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSecondLandTest.kt)" = "5f68706196c3a001df3b7e69e2bb7b9911d25406"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/atq/cards/UrzasTower.kt)" = "8f280147686880fd921acc43b49f8bb5d5234431"
+          test "$(git hash-object mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/GenerousEnt.kt)" = "eb2dc664f794b69442d479525537404ba4201875"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSecondLandTest.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt; git hash-object .github/workflows/pest-monster-real-second-land-cleanup-preflight.yml; git status --porcelain; } > build/reports/pest-real-second-land-cleanup-preflight/source.txt
+      - name: Compile only
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/pest-real-second-land-cleanup-preflight/compile.log
+          test -f gym/build/classes/kotlin/test/com/wingedsheep/gym/matchup/PestMonsterLondonSecondLandTest.class
+          test ! -e gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonSecondLandTest.xml
+      - name: Upload original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-real-second-land-cleanup-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-real-second-land-cleanup-preflight/
+          if-no-files-found: error
+          retention-days: 90
