@@ -1,0 +1,39 @@
+{
+  "schema": "pr212-exact-runtime-source-supplement-v1",
+  "status": "PROSPECTIVE_REQUIRES_INDEPENDENT_EXECUTION_SOURCE_ADOPTION",
+  "runtime": "4865a7e0d2fa0766a32ca46fb049fefa2c8fb769",
+  "independent_source_review": {
+    "commit": "d222605143aabbbc6ba70aa298e6fdaf5f722a0d",
+    "path": "experiments/izzet-science/evidence/pr212-exact-drift-independent-source-review.json"
+  },
+  "manifest_sha256": {
+    "lab-coordinator/shared-capabilities/current-combat-receiving.json": "dbadcc20e29857aefc3014b3dae493bc419c2ff11ebb15cd228a5046dc717b43",
+    "lab-coordinator/shared-capabilities/attacking-token-defender-receiving.json": "e1e01f033145ce3d70ed7174d38643f77ef7a091c804b8c4834ceb1c16be74e3"
+  },
+  "substitutions": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt": {
+      "before": "c350956d4a65bc9f2b164450eea8424bc12162aa3aa34a21737931cc8222c0e4",
+      "after": "850125a611fd414d2aaf8dd68aaf628a3ff74a6b961ee9d074e7c10496290202"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt": {
+      "before": "ab14c3d79c6bf842313b948af585642b80b96d40834925af5cfa75fda084c155",
+      "after": "a0302465cf32d461a3e6793cfc47408b7c19a040320b7da8db9f67d95d3103b7"
+    }
+  },
+  "reviewed_context_sha256": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/AuthorizedLibrarySearchCandidate.kt": "c472507470de5625a3913b24beffecd1de45dfbd6c748c4f0595eca6df572dee",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/CompositeEffectExecutor.kt": "9d5edcf858f9c4196ce8fc2ed3e1cbbd9093014ff24aaa3b74b6e04281338929",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/GatherCardsExecutor.kt": "f4c6147bf3817753967af63cf69665a5db58c91de8410ca223194c9e27395e36",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/SelectFromCollectionExecutor.kt": "16fc3b3f39990aa8d1b0a238ec3fe98a9b683cfbdf3d07820a144f118dfb97f4",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EffectExecutorRegistry.kt": "f0189ae03248fd12f872bdf63cd792b1c0efe3c74a2cb01ca7bcdc25f2303673"
+  },
+  "scope": "Only prospective unchanged frozen combat32 and token16 plus separate event4 receiving at exact runtime; no general wire/ABI equivalence",
+  "original_failed_guards": "Consumed INCOMPLETE; this is a separately source-bound successor, no reclassification",
+  "limits": [
+    "No runtime/shared adoption until fresh originals independently audited and adopted",
+    "No PR212 merge",
+    "No project admission or official seeds/claims/allocations/games",
+    "Search serialization diagnostics remain separate if not already qualified"
+  ],
+  "official_counters": 0
+}

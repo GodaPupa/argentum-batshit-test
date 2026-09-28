@@ -1,0 +1,30 @@
+name: PR212 exact-runtime prospective compatibility supplement
+on:
+  push:
+    branches: ["izzet/pr212-exact-runtime-compat-20260928"]
+    paths: ["experiments/izzet-science/pr212-compat-execution-permit.json"]
+permissions:
+  contents: read
+jobs:
+  frozen-receiving:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind independently reviewed supplement and execute frozen partitions
+        run: python3 experiments/izzet-science/pr212-exact-compat.py
+      - name: Retain original source and per-partition raw evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pr212-exact-compat-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pr212-exact-compat/
+          if-no-files-found: error
+          retention-days: 90
