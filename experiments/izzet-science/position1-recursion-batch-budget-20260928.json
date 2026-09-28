@@ -1,0 +1,33 @@
+{
+  "schema": "izzet-position1-recursion-batch-budget-v1",
+  "date_utc": "2026-09-28",
+  "parent_diagnostics": [
+    "experiments/izzet-science/evidence/position1-registry-reinventory-36492493859-original-audit.json",
+    "experiments/izzet-science/evidence/position1-missing-source-tree-static-reconciliation-20260928.json"
+  ],
+  "cards": [
+    "Archaeomancer",
+    "Mnemonic Wall"
+  ],
+  "reason": "Both are required current-runtime Position-1 identities and share the already-existing owned instant/sorcery graveyard ETB primitive; this is the smallest reusable missing-card pair with one mechanic shape.",
+  "implementation_scope": [
+    "canonical mana cost, color identity, type line and P/T",
+    "ETB target restricted to an instant or sorcery card owned by the controller in that controller's graveyard",
+    "move selected target to controller hand on resolution",
+    "Mnemonic Wall declares the shared Defender keyword"
+  ],
+  "required_tests": [
+    "Archaeomancer real cast/ETB returns own instant",
+    "Archaeomancer target set excludes opponent graveyard card",
+    "Mnemonic Wall real cast/ETB returns own sorcery",
+    "Mnemonic Wall definition declares Defender"
+  ],
+  "excluded": [
+    "any other of the 49 remaining missing identities",
+    "pilot policy, commander lifecycle/damage/event ledger",
+    "Position-1 execution admission or seed authority",
+    "positions 2-12",
+    "gameplay"
+  ],
+  "official_counters_delta": 0
+}
