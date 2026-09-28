@@ -1,0 +1,74 @@
+name: Pest Monster London setup bridge receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-london-setup-bridge-targeted.yml"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSetupBridge.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSetupBridgeTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-bridge-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact preflighted bridge source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-london-setup-bridge
+          test "$(git rev-parse HEAD^)" = "fff6c8ea092c42e63bbc770ad718a9fb961bf200"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSetupBridge.kt)" = "3dfaf5a1a560e8f5c30ab34de1c2583656832251"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSetupBridgeTest.kt)" = "8443b15e67f74a32900ec0d94d8f0529907fe6d0"
+          test "$(git rev-parse fff6c8ea092c42e63bbc770ad718a9fb961bf200:gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSetupBridge.kt)" = "3dfaf5a1a560e8f5c30ab34de1c2583656832251"
+          test "$(git rev-parse fff6c8ea092c42e63bbc770ad718a9fb961bf200:gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSetupBridgeTest.kt)" = "8443b15e67f74a32900ec0d94d8f0529907fe6d0"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSetupBridge.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/matchup/PestMonsterLondonSetupBridgeTest.kt
+            git hash-object .github/workflows/pest-monster-london-setup-bridge-targeted.yml
+            git status --porcelain
+          } > build/reports/pest-london-setup-bridge/source.txt
+      - name: Execute four fresh bridge construction fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterLondonSetupBridgeTest --rerun-tasks --no-build-cache 2>&1 | tee build/reports/pest-london-setup-bridge/gradle.log
+      - name: Verify exact four JUnit cases
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          p = Path('gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonSetupBridgeTest.xml')
+          root = ET.parse(p).getroot()
+          expected = {f'London setup bridge seat {seat} {suffix}' for seat in (1, 2) for suffix in (
+              'carries own order without hidden library handles', 'rejects changed loaded main')}
+          cases = root.findall('testcase')
+          assert root.attrib['tests'] == '4' and len(cases) == 4
+          assert all(root.attrib[k] == '0' for k in ('failures', 'errors', 'skipped'))
+          assert {case.attrib['name'] for case in cases} == expected
+          assert all(case.attrib['classname'] == 'com.wingedsheep.gym.matchup.PestMonsterLondonSetupBridgeTest' for case in cases)
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-london-setup-bridge-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-london-setup-bridge/
+            gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonSetupBridgeTest.xml
+          if-no-files-found: error
+          retention-days: 90
