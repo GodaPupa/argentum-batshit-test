@@ -6,6 +6,7 @@ import com.wingedsheep.engine.core.BatchYesNoResponse
 import com.wingedsheep.engine.core.BudgetModalDecision
 import com.wingedsheep.engine.core.BudgetModalResponse
 import com.wingedsheep.engine.core.CardsSelectedResponse
+import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.ChooseColorDecision
 import com.wingedsheep.engine.core.ChooseModeDecision
 import com.wingedsheep.engine.core.ChooseNumberDecision
@@ -403,7 +404,7 @@ class ObservationBuilder(
             kind = la.actionType,
             description = la.description,
             affordable = la.affordable,
-            sourceEntityId = null,
+            sourceEntityId = (la.action as? CastSpell)?.cardId,
             targetEntityIds = la.validTargets ?: emptyList(),
             manaCost = la.manaCostString,
             hasXCost = la.hasXCost,
