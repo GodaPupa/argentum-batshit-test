@@ -1,0 +1,34 @@
+name: Ferocity frozen first-cell policy archive inventory
+on:
+  push:
+    branches: ["ferocity/source08-policy-archive-review-20260928"]
+    paths: [".github/workflows/ferocity-policy-archive-review.yml"]
+permissions:
+  contents: read
+jobs:
+  archive-inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Bind exact archive-review source budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/ferocity-policy-archive-review
+          test "$(git rev-parse HEAD^)" = "f903594f8da010bf8f00f06dd0a7cd41f418eb37"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/archive_review.py)" = "2b45cf54c40f44c084eaa4d96bf4d77f0f2fa765"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/ARCHIVE_REVIEW_BUDGET.json)" = "35563640cab1d915af98e2a6d0f94ddfaa755f57"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/archive_review.py; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/ARCHIVE_REVIEW_BUDGET.json; git hash-object .github/workflows/ferocity-policy-archive-review.yml; git status --porcelain; } > build/reports/ferocity-policy-archive-review/source.txt
+      - name: Inventory exact frozen archive without execution
+        run: python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/archive_review.py | tee build/reports/ferocity-policy-archive-review/test.log
+      - name: Preserve original archive-review evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-policy-archive-review-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-policy-archive-review/
+          if-no-files-found: error
+          retention-days: 90
