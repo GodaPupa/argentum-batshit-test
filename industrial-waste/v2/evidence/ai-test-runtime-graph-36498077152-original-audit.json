@@ -1,0 +1,32 @@
+{
+  "schema": "industrial-r1-ai-test-runtime-graph-36498077152-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36498077152,
+  "job_id": 109182209439,
+  "artifact_id": 11003703498,
+  "artifact_sha256": "d5f77da71cd963c01cda521f623a250aecfba8bbac3f77fbebee96a079f35e46",
+  "head": "fe4e6f8fa1575a5ef1bb8fb796e753dc53225759",
+  "parent": "e2490dd98978dee5c47f1d03f715c6d30c5e1452",
+  "pins": {
+    "capture_script": "a487b27925d58eee197391fd8c3bb2c28da71e23",
+    "budget": "32815c24198b7d38404e57fb5ee7dcd1b9385737",
+    "workflow": "638eaefa63c607ec37e4224827f04f67400be326"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "fresh_seed_free_build": "passed",
+    "official_seed_files_read": false
+  },
+  "failure": {
+    "step": "Capture AI test runtime graph and ordered classpath",
+    "class": "INFRASTRUCTURE_GRADLE_INIT_SCOPE",
+    "message": "Project with path ':ai' could not be found in project ':buildSrc'.",
+    "cause": "The init script's projectsEvaluated callback executes for the nested buildSrc build as well as the root build and unconditionally resolves rootProject.project(':ai')."
+  },
+  "decision": "INCOMPLETE_GRADLE_INIT_NESTED_BUILD_SCOPE",
+  "authority_granted": [],
+  "successor_rule": "Preserve this original. Change only the init-script callback to no-op for builds whose root does not contain project ':ai'; re-pin changed script/workflow and rerun the changed-source capture. Do not rerun this head unchanged.",
+  "official_counters_delta": 0
+}
