@@ -1,0 +1,38 @@
+name: Industrial complete runtime capture slice targeted
+on:
+  push:
+    branches: ["industrial-waste/r1-manifest-capture-20260928"]
+    paths: [".github/workflows/industrial-runtime-capture-targeted.yml"]
+permissions:
+  contents: read
+jobs:
+  deterministic-capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - name: Bind exact capture validator bank and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/industrial-runtime-capture
+          test "$(git rev-parse HEAD^)" = "5aea01b836cd70a99086a0efe00734fb7aac1bed"
+          test "$(git hash-object industrial-waste/v2/r1_complete_runtime_capture.py)" = "2904e89dbf55398f7c24d824d35a5bb3aa365b9c"
+          test "$(git hash-object industrial-waste/v2/test_r1_complete_runtime_capture.py)" = "b116521c64025488d81742d6b80e5be0d53578e7"
+          test "$(git hash-object industrial-waste/v2/r1-manifest-capture-budget.json)" = "fd90e88936ea4099aff8468dcd34f1117657db5b"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object industrial-waste/v2/r1_complete_runtime_capture.py; git hash-object industrial-waste/v2/test_r1_complete_runtime_capture.py; git hash-object industrial-waste/v2/r1-manifest-capture-budget.json; git hash-object .github/workflows/industrial-runtime-capture-targeted.yml; git status --porcelain; } > build/reports/industrial-runtime-capture/source.txt
+      - name: Execute exact deterministic capture slice bank
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 industrial-waste/v2/test_r1_complete_runtime_capture.py 2>&1 | tee build/reports/industrial-runtime-capture/test.log
+      - name: Preserve original capture evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-runtime-capture-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/industrial-runtime-capture/
+          if-no-files-found: error
+          retention-days: 90
