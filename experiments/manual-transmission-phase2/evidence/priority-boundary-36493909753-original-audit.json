@@ -1,0 +1,62 @@
+{
+  "schema": "manual-priority-boundary-36493909753-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36493909753,
+  "artifact_id": 11002558009,
+  "artifact_sha256": "3a9de2688c26d28b3c2c84825c879ca2e531461fff64b5ee1e7bddb18c7c2c73",
+  "head": "c9b1c0d7ad5696c36fc826b1550687efee369126",
+  "parent": "760424636bce3e007c070f6953fd5de25036bd02",
+  "pins": {
+    "kinnan": "14907968026b2f307bd792ccd22481788ac3d2e5",
+    "kinnan_test": "2eeea62b0cb87d231aebaeaf5119f959f1a7ca2b",
+    "nec_set": "abd90862c9207fcd120e1a5984b2e5bd3ffe98b1",
+    "shorikai": "43a869fce6dba351b2e2c4d981123c419fc94cc7",
+    "tokens": "e0cf9e74b126aa103f7d2a35fe4d43c9f5c4ff34",
+    "shorikai_test": "f1de9ae1ca8e41d205d48eaacafd14eb806af5a1",
+    "pact": "c786551484cfb001eea9fc2b05e14ea23fd63bf9",
+    "policy": "8fec7b06ed4d20ac138b4f0d0500fc6d39926d4e",
+    "test": "c76561e4c156d0476c2ab9637e2c8658eb892255",
+    "boundary": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "telemetry": "44608301d535a2114073d80c06d5ca0480c40043",
+    "budget": "d8c8e98f932675b1ea8440b2809f4b3b6e1d8035",
+    "workflow": "4001bab3cc81b7d912709d977017c6a80d651058"
+  },
+  "integrity": {
+    "zip_crc": "clean",
+    "xml_parse": "clean",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "source_binding": "passed"
+  },
+  "xml": {
+    "tests": 4,
+    "passes": 2,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "passed": [
+      "SPORT protected=false",
+      "RACE protected=false"
+    ],
+    "failed": [
+      "SPORT protected=true",
+      "RACE protected=true"
+    ],
+    "failure": "No qualified public protection answer"
+  },
+  "diagnosis": "INCOMPLETE integration: ObservationBuilder maps enumerated legal actions to LegalActionView with sourceEntityId=null. The protected R3-P policy lawfully identifies physical Offer/Pact by matching visible hand entity IDs to this public field, so both protected traces cannot identify any answer; pass-only traces do not require source identity.",
+  "decision": "INCOMPLETE_OBSERVATION_SOURCE_IDENTITY_INTEGRATION",
+  "successor_rule": "Preserve this original. Apply the narrow changed-source observation mapping for CastSpell.cardId, bind that source in the successor workflow, and rerun only the changed-source four-case bank.",
+  "authority_granted": [
+    "exact two unprotected SPORT/RACE traces reached and passed within this excluded fixture only"
+  ],
+  "not_granted": [
+    "protected R3-P competence",
+    "complete SPORT",
+    "complete RACE",
+    "CRUISE",
+    "opponent competence",
+    "capability admission",
+    "gameplay"
+  ],
+  "official_counters_delta": 0
+}
