@@ -35,6 +35,7 @@ internal class SphinxStageEAcceptedTransitionJournal(
         val sourceVersion: String,
         val trialId: String,
         val actorStep: Long,
+        val policyRngState: Long,
         val decisionId: String,
         val preStateSha256: String,
         val actionJson: String,
@@ -94,7 +95,7 @@ internal class SphinxStageEAcceptedTransitionJournal(
             continuation.context.sourceName == "Ponder" &&
             continuation.id != question.id) { "Ponder continuation belongs to another source or actor" }
         val memory = pilot.rememberAcceptedPonderReorder(input, epoch, proposal)
-        val record = Record(input.bindingHash, epoch.sourceVersion, epoch.trialId, epoch.step,
+        val record = Record(input.bindingHash, epoch.sourceVersion, epoch.trialId, epoch.step, input.policyRngState,
             question.id, preHash, json.encodeToString(action), stateHash(result.state))
         return Accepted(result.state, memory, json.encodeToString(record))
     }
@@ -135,9 +136,26 @@ internal class SphinxStageEAcceptedTransitionJournal(
         val preHash = stateHash(state)
         val result = processor.process(state, action).result
         require(result.error == null) { "Engine rejected the Ponder shuffle: ${result.error}" }
-        val record = Record(input.bindingHash, epoch.sourceVersion, epoch.trialId, epoch.step,
+        val record = Record(input.bindingHash, epoch.sourceVersion, epoch.trialId, epoch.step, input.policyRngState,
             question.id, preHash, json.encodeToString(action), stateHash(result.state))
         return ShuffleAccepted(result.state, json.encodeToString(record))
+    }
+
+    /** Trusted recovery: reconstruct only the previously sealed visible input and accepted memory. */
+    fun recoverPonderMemory(preState: GameState, recordJson: String,
+                            pilot: SphinxStageEInitializedSeat): Accepted {
+        val record = json.decodeFromString<Record>(recordJson)
+        require(stateHash(preState) == record.preStateSha256) { "Ponder recovery prestate drift" }
+        val epoch = ActorEpoch(record.sourceVersion, record.trialId, record.actorStep)
+        val input = adapter.build(preState, pilot.actorId,
+            completeActorLegalActions(preState, pilot.actorId, enumerator),
+            epoch, record.policyRngState)
+        require(input.bindingHash == record.inputBindingHash) { "Recovered actor input drift" }
+        val proposal = pilot.decideVisibleChoice(input, epoch)
+            as? SphinxStageEAdapterResult.Proposed ?: error("Recovered Ponder choice is unqualified")
+        val accepted = acceptPonderReorder(preState, input, epoch, pilot, proposal.proposal)
+        require(accepted.recordJson == recordJson) { "Recovered accepted Ponder record drift" }
+        return accepted
     }
 
     /** Replays the same accepted physical action from the recorded prestate; fail closed on drift. */

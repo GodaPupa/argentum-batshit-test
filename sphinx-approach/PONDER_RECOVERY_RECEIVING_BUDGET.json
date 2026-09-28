@@ -1,0 +1,42 @@
+{
+  "schema": "sphinx-trusted-ponder-recovery-budget-v1",
+  "status": "PROSPECTIVE_EXCLUDED_SOFTWARE_TRACES",
+  "authority": "STAGE_E_RECONSTRUCTION_PLAN.md gates 4 and 5; trusted accepted-memory/replay prerequisite, not whole-pilot qualification",
+  "cases": [
+    {
+      "name": "trusted Ponder memory recovery and one-shot consumption shuffle=false",
+      "identity": "closest-no-approach-v01",
+      "checks": [
+        "real accepted reorder",
+        "reopen after reorder reconstructs same sealed visible memory and shuffle proposal",
+        "wrong prestate rejects recovery",
+        "accepted shuffle consumes memory in live and reopened session",
+        "replay after both records reproduces exact state"
+      ]
+    },
+    {
+      "name": "trusted Ponder memory recovery and one-shot consumption shuffle=true",
+      "identity": "closest-no-approach-v01",
+      "checks": [
+        "real accepted reorder",
+        "reopen after reorder reconstructs same sealed visible memory and shuffle proposal",
+        "wrong prestate rejects recovery",
+        "accepted shuffle consumes memory in live and reopened session",
+        "replay after both records reproduces exact state"
+      ]
+    }
+  ],
+  "distinct_traces": 2,
+  "official_seeds": 0,
+  "official_games": 0,
+  "development_games": 0,
+  "scope": "Ponder exists in this frozen comparator; this receiving gate is not evidence for other identity competence or equal whole pilots. Same two traces required after any diagnosed source correction; no case removed or replaced.",
+  "failure_rule": "Technical failures INCOMPLETE; retain originals; no unchanged rerun",
+  "preflight": "Compile only, no behavioral case; separately source-pin behavioral execution after original preflight audit",
+  "excluded_fixture_initializer": "Retains existing excluded constructed seed 0x535048494e580007, never official seed; source/fixture changed prospective replay gate, no historical experiment rerun",
+  "not_granted": [
+    "whole-pilot/runner",
+    "Stage-E freeze/admission",
+    "official seed/allocation/gameplay"
+  ]
+}
