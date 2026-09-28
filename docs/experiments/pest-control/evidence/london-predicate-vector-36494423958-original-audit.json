@@ -1,0 +1,35 @@
+{
+  "schema": "pest-london-predicate-vector-36494423958-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36494423958,
+  "artifact_id": 11001898998,
+  "artifact_sha256": "b6ec73b7f266743d722d64f99bf1b2c8b9c592fa05c8b3381393d034dc3e08bd",
+  "head": "f49c470a4f62f5e9e40c252ad1e37eeb8e70043f",
+  "parent": "f4909418ddc8161f657dff11b2a303df35049f7d",
+  "pins": {
+    "vector_source": "bb8e2247dc64a64403094c691d83b8eed53048bd",
+    "test": "74a2a3ed150c8dbf50f1c31b2bb663f2eda9d520",
+    "budget": "d9a20c5d08d8481a98115b731e650dc31fd71253",
+    "workflow": "8b00e8739527ed4b76b4478e74f047cea06709e9"
+  },
+  "integrity": {
+    "zip_crc": "clean",
+    "xml_parse": "clean",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "source_binding": "passed"
+  },
+  "xml": {
+    "tests": 4,
+    "passes": 3,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "failing_case": "unknown development evidence fails closed",
+    "failure": "expected false but was true at PestMonsterLondonPredicateVectorTest.kt:29"
+  },
+  "diagnosis": "INCOMPLETE fixture contradiction: the failing two-card fixture itself satisfies source M0 forcedKeep (hand.size <= 5), while the same frozen test bank separately asserts forced keep may qualify without M5. This original therefore does not establish an M5 behavioral mismatch.",
+  "decision": "INCOMPLETE_FIXTURE_FORCED_KEEP_CONFLICT",
+  "successor_rule": "Preserve this original. Use a changed fixture outside forced-keep conditions while retaining unknown M5, re-pin exact changed test/workflow, and do not rerun this original unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
