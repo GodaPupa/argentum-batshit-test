@@ -1,0 +1,34 @@
+{
+  "schema": "industrial-waste-v2-r1-loaded-jvm-class-set-review-proposal-v1",
+  "status": "AUTHOR_COMPLETENESS_REVIEW_REJECTS_EIGHT_CLASS_SET_INCOMPLETE_INDEPENDENT_ADOPTION_PENDING",
+  "source": "9456743551b530f922077668b3cbd272fdf77ce5",
+  "capture": {
+    "run": 36447086739,
+    "artifact": 10980769986,
+    "receipt": "industrial-waste/v2/evidence/loaded-jvm-r1-class-set-36447086739-original-audit.json",
+    "tsv_sha256": "d5ea125bc85833115d007e80277d11e4166b3ad5bdebf35325d872f1d48ae79e"
+  },
+  "decision": "The eight captured class bytes are real in this test runner but do not cover the exact official worker/runtime boundary. They cannot be adopted as the complete expected manifest.",
+  "source_bound_gaps": [
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2AllocationRunner.kt",
+      "evidence": "The captured AllocationRunner class is accompanied by separately compiled IndustrialWasteV2AllocationInput, IndustrialWasteV2QuietCheckpointObservation, IndustrialWasteV2AllocationReplay and IndustrialWasteV2AllocationTrace declarations used by the runner; none appears in the eight rows."
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2FullHorizonRunner.kt",
+      "evidence": "The worker uses GameSimulator, AIPlayer, DecisionResponder, CardAdvisorRegistry and other engine components whose loaded bytes and code sources are outside the eight rows."
+    },
+    {
+      "path": "industrial-waste/v2/r1_execute.py",
+      "evidence": "Source pins for gradlew/scripts/test-class/scripts/gradle-locked and Python validation are checked, but the code explicitly says source checks do not establish loaded JVM identity; no accepted expected loaded-byte manifest or prepared-worker attestation is verified."
+    },
+    {
+      "path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2R1OfficialExecutionTest.kt",
+      "evidence": "Official worker admits and loops allocations via the Python authority; it does not call IndustrialWasteV2LoadedJvmIdentity.verify against an accepted expected manifest at prepared-worker start."
+    }
+  ],
+  "next_executable_gate": "Prospectively define the complete class/code-source boundary, bind an independently reviewed expected manifest into published runtime authority, then verify actual loaded bytes in the prepared worker before any admission/initialization; qualify fail-closed mismatches and combined receiving. Preserve original eight-row capture as candidate data only.",
+  "independent_review": "NOT_PERFORMED; author review cannot satisfy the frozen independent acceptance requirement",
+  "claim_or_permit_authorized": false,
+  "official_allocations": 0
+}
