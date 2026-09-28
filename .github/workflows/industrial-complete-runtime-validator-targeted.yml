@@ -1,0 +1,38 @@
+name: Industrial complete runtime validator targeted
+on:
+  push:
+    branches: ["industrial-waste/r1-complete-boundary-impl-20260928"]
+    paths: [".github/workflows/industrial-complete-runtime-validator-targeted.yml"]
+permissions:
+  contents: read
+jobs:
+  deterministic-non-corpus:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - name: Bind reviewed boundary implementation and exact deterministic bank
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/industrial-complete-runtime-validator
+          test "$(git rev-parse HEAD^)" = "85784bce8b4428af8bf8ecf49672eaf0996c8cae"
+          test "$(git hash-object industrial-waste/v2/r1_complete_runtime_manifest.py)" = "be1f53184c9bda880539dc589a921cef130cd1a3"
+          test "$(git hash-object industrial-waste/v2/r1-complete-runtime-validator-budget.json)" = "7c2d7dd70d9e6ed88000a45dec3285972ecea8f0"
+          test "$(git hash-object industrial-waste/v2/test_r1_complete_runtime_manifest.py)" = "7fe5f26092bb933336331feba6afe8857d5b7fe5"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object industrial-waste/v2/r1_complete_runtime_manifest.py; git hash-object industrial-waste/v2/r1-complete-runtime-validator-budget.json; git hash-object industrial-waste/v2/test_r1_complete_runtime_manifest.py; git hash-object .github/workflows/industrial-complete-runtime-validator-targeted.yml; git status --porcelain; } > build/reports/industrial-complete-runtime-validator/source.txt
+      - name: Execute exact 15-case deterministic fail-closed bank
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 industrial-waste/v2/test_r1_complete_runtime_manifest.py 2>&1 | tee build/reports/industrial-complete-runtime-validator/test.log
+      - name: Preserve original validator evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-complete-runtime-validator-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/industrial-complete-runtime-validator/
+          if-no-files-found: error
+          retention-days: 90
