@@ -49,8 +49,8 @@ class ManualPhaseTwoOpeningActionPolicyTest : FunSpec({
                 PhaseTwoPilotChoice.Action(7)
         }
     }
-    test("unqualified second land or spell fork fails closed") {
-        val another = landAction.copy(actionId = 9, sourceEntityId = EntityId.of("another-land"))
+    test("ambiguous duplicate physical land offer fails closed") {
+        val another = landAction.copy(actionId = 9, sourceEntityId = land)
         val view = observation(listOf(pass, landAction, another))
         shouldThrow<IllegalArgumentException> {
             ManualPhaseTwoOpeningActionPolicy(ManualPhaseTwoPilotRole.RACE).choose(
