@@ -1,0 +1,30 @@
+{
+  "schema": "manual-opening-action-targeted-original-audit-v1",
+  "run": 36454703925,
+  "artifact": 10985496904,
+  "head": "2a844af2af3e561d5527a52b24cc1287b846fac4",
+  "parent": "79c886db4745f97fd47b2e26183601493f75bdfc",
+  "source_blob": "bd58d1b166a86a8d6e076f4dd2e8f34f533e2a6e",
+  "test_blob": "b031ac163f0ecf5ab4ccaa3fe7674e054618272e",
+  "workflow_blob": "b45043ec8bec278ecdcfc3482cce13e47e867c9a",
+  "zip_sha256": "d82c7f9f3d8127841dc511ba36bd12c03b8a357114073f72fe28da9cfd0ed03c",
+  "source_txt_sha256": "b9a861cde50934e78ee84415713aa03f8ad4b2b1c07cc018d9e80e454bfcfc1e",
+  "xml_sha256": "ff94930fadd78e6f15b3ffe736b2bde3a713b1a25f4bcff724d9ba1dc37261c1",
+  "test_log_sha256": "39bc16416253c56b1859cec795d376b475f61acc4cb3e5e0e7ada43d5aebc579",
+  "zip_crc": "PASS",
+  "freshness": "48 executed tasks; --rerun-tasks --no-build-cache; six XML cases",
+  "tests": 6,
+  "failures": 0,
+  "errors": 0,
+  "skipped": 0,
+  "cases": [
+    "CRUISE chooses the unique own physical land action before pass",
+    "SPORT chooses the unique own physical land action before pass",
+    "RACE chooses the unique own physical land action before pass",
+    "OPPONENT chooses the unique own physical land action before pass",
+    "ambiguous duplicate physical land offer fails closed",
+    "hidden own hand cannot drive a physical action"
+  ],
+  "disposition": "SCOPED_OPENING_ACTION_DECISIONS_ACCEPTED",
+  "limitations": "Excluded fixed observations and one unique own-hand land fork only; not complete strategic gear/opponent policy, actual boundary integration, capability admission or gameplay."
+}
