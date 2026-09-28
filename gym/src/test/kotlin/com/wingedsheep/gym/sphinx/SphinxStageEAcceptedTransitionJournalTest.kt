@@ -37,6 +37,7 @@ import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import java.nio.file.Files
 import java.nio.file.Path
+import kotlinx.serialization.json.Json
 
 /** Two prospective real-engine accepted-transition/replay traces. Prior memory bank is not rerun. */
 class SphinxStageEAcceptedTransitionJournalTest : ScenarioTestBase() {
@@ -117,7 +118,7 @@ class SphinxStageEAcceptedTransitionJournalTest : ScenarioTestBase() {
 
     init {
         listOf(false, true).forEach { shouldShuffle ->
-            test("durable accepted Ponder reorder and shuffle replay shuffle=$shouldShuffle") {
+            test("consumed accepted Ponder journal continuity and replay shuffle=$shouldShuffle") {
                 val seat = setup("closest-no-approach-v01", "Ponder", 5)
                 val library = seat.state.getLibrary(seat.actor)
                 val top = if (shouldShuffle) {
@@ -163,8 +164,20 @@ class SphinxStageEAcceptedTransitionJournalTest : ScenarioTestBase() {
                 val journalPath = Files.createTempDirectory("stage-e-trusted-ponder-")
                     .resolve("accepted.jsonl")
                 val durable = SphinxStageETrustedTransitionFile.create(journalPath)
+                shouldThrow<java.nio.file.FileAlreadyExistsException> {
+                    SphinxStageETrustedTransitionFile.create(journalPath)
+                }
                 durable.append(accepted.recordJson)
+                shouldThrow<IllegalArgumentException> { durable.append(accepted.recordJson) }
+                val shuffleRecord = Json.decodeFromString<SphinxStageEAcceptedTransitionJournal.Record>(
+                    acceptedShuffle.recordJson)
+                val discontinuous = Json.encodeToString(
+                    SphinxStageEAcceptedTransitionJournal.Record.serializer(),
+                    shuffleRecord.copy(preStateSha256 = "0".repeat(64)))
+                shouldThrow<IllegalArgumentException> { durable.append(discontinuous) }
+                durable.records().size shouldBe 1
                 durable.append(acceptedShuffle.recordJson)
+                shouldThrow<IllegalArgumentException> { durable.append(acceptedShuffle.recordJson) }
                 val reopened = SphinxStageETrustedTransitionFile.reopen(journalPath)
                 reopened.records().size shouldBe 2
                 reopened.replay(before, journal) shouldBe seat.state
