@@ -1,0 +1,55 @@
+{
+  "schema": "pr212-shared-explicit-rider-payment-adoption-v1",
+  "date_utc": "2026-09-28",
+  "decision": "ACCEPT_SHARED_HANDLER_REPAIR_EXACT_BLOB_ONLY",
+  "reviewed_handler": {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+    "git_blob": "524d7917056d09558ddde1426f1e6f3a81d00810",
+    "pr": 212,
+    "pr_head": "4865a7e0d2fa0766a32ca46fb049fefa2c8fb769"
+  },
+  "evidence": {
+    "sequential_payment": {
+      "run": 36386202245,
+      "cases": 1,
+      "failures": 0,
+      "receipt_commit": "d91a4bd7e3d111b7d983d1d8de5847e5579858cb"
+    },
+    "targeted_regression": {
+      "run": 36386230388,
+      "cases": 33,
+      "failures": 0,
+      "receipt_commit": "987e7a0276f87fb45eaa74c576ddd9eaec6a688e"
+    },
+    "canonical_ci": {
+      "run": 36386986896,
+      "reported_tests": 17387,
+      "failures": 0,
+      "errors": 0,
+      "skips": 52,
+      "note": "cache-enabled matrix is integration evidence, not sole freshness authority"
+    },
+    "independent_source_review": {
+      "commit": "d222605143aabbbc6ba70aa298e6fdaf5f722a0d",
+      "verified_manifest_bindings": 64,
+      "declared_substitutions": 2
+    },
+    "exact_runtime_receiving": {
+      "run": 36474121083,
+      "artifact": 10994119100,
+      "zip_sha256": "2d59e5673dbf51778d26ccecdfd3ed324ab8314dac8abccacd0329dcb394023c",
+      "cases": 52,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "receipt": "experiments/izzet-science/evidence/pr212-exact-compat-36474121083-independent-adoption.json"
+    }
+  },
+  "finding": "The exact one-file handler repair is accepted as shared engine behavior for preserving rider-bearing floating mana when explicitly selected physical sources can fully pay an ability cost. The prior frozen guard source-binding failures remain INCOMPLETE; the prospective exact-runtime receiving closes that compatibility gap without reclassifying them.",
+  "limits": [
+    "Shared engine repair adoption only.",
+    "No Izzet deck/card changes, pilot competence, commander lifecycle, Position-1 admission, seed consumption or gameplay authority.",
+    "PR212 historical branch is 89 commits behind current main and remains unmerged; current-main integration must preserve exact reviewed handler blob."
+  ],
+  "official_counters_delta": 0
+}
