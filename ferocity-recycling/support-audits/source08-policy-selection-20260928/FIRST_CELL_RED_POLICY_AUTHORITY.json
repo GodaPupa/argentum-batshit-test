@@ -1,0 +1,53 @@
+{
+  "schema": "ferocity-first-cell-red-policy-authority-disposition-v1",
+  "date_utc": "2026-09-28",
+  "governing_sources": {
+    "active_contract": {
+      "path": "ferocity-recycling/protocols/ACTIVE_CONTRACT.json",
+      "branch": "ferocity-recycling/archetype-research",
+      "git_blob": "ae2e29d944c521caa90b0015222e499b09e657b6"
+    },
+    "reconciliation": {
+      "path": "ferocity-recycling/protocols/RECONCILIATION_AMENDMENT.md",
+      "git_blob": "5467771693e1d784d2f62733947964b5457467a4"
+    },
+    "m1_readme": {
+      "path": "ferocity-recycling/evidence/build/publication-M1-source-audits/README.md",
+      "branch": "ferocity-recycling/source08-evidence-20260926",
+      "git_blob": "499dfb33f8c7c41b309e76516aaa7a86559adebe"
+    },
+    "m1_manifest": {
+      "path": "ferocity-recycling/evidence/build/publication-M1-source-audits/MANIFEST.json",
+      "git_blob": "05174b960875500e529092810e0e1e249fd18a71"
+    }
+  },
+  "decision": "ADOPT_M1_ACTIVE_RED_POLICY_IDENTITY",
+  "red_policy": {
+    "name": "red-madness-v0.2",
+    "source_freeze_sha256": "2a888ed51153693f7aa1340d68410e362527f6576e2f3629a357d349ed25dddb",
+    "active_RedMadnessPilot_sha256": "6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5",
+    "historical_before_RedMadnessPilot_sha256": "bfafcdf95f35035462cec6959dcb554fbc9b4fd17083252027bb68aeca8c843e",
+    "interpretation": "The M1 publication README explicitly identifies red-madness-v0.2 and the 6ddd... pilot as the M1 source-bound active Red policy. The bfaf... member is stored under before/ in historical provenance and is not substituted as active policy."
+  },
+  "artifact_control": {
+    "active_ArtifactControlPilot_sha256": "3f92f97465ae3c39ce4d31b57a8f4215a802412510f251857059d4101c377251",
+    "source08_byte_identity": "accepted"
+  },
+  "m1_source_manifest_sha256": "41283f68392d7792131eff26877a67a5905ca254dbdeee5529da7f8c17094199",
+  "prior_diagnostic": {
+    "run": 36488979347,
+    "note": "5/8 archive members matched exact source08. The apparent Red mismatch was historical-before versus active-successor provenance, now resolved by the M1 publication metadata."
+  },
+  "limits": [
+    "This resolves pilot identity only; it does not execute either pilot.",
+    "No export/runtime bundle/resource receiving or D2 admission is granted.",
+    "No seed, claim, JVM or game is authorized.",
+    "Red v0.2 remains subject to the documented consumed D1 revision count and current exact receiving/admission gates."
+  ],
+  "next_gate": "Bind active Red v0.2 digest, ArtifactControl digest, exact first-cell deck/opponent hashes, source08 tree, resource limits, runner/trace/bundle identities into a non-executing first-cell admission manifest; independently review it before any entropy/JVM/game.",
+  "official_counters": {
+    "new_jvms": 0,
+    "seeds_consumed": 0,
+    "D2_games": 0
+  }
+}
