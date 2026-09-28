@@ -1,0 +1,36 @@
+{
+  "schema": "pest-c2-targeted-original-artifact-audit-v1",
+  "status": "AUTHOR_AUDITED_FOUR_FRESH_SCOPED_CONSTRUCTION_CASES_ONLY",
+  "run": 36367697745,
+  "artifact": 10947789011,
+  "artifact_sha256": "a68eaa2ccf0a667d8675351c3c019be3194d9230354b78fa79cc0b158f4e14c4",
+  "head": "1a023810378c132481ee79a82675c0df1a2ff619",
+  "parent": "e45fb2098b04a5fae5eaa63cff44dd7c3b5208be",
+  "source_blob": "6c0ae894219822a48307d5847ca5e4e4aa9e23f1",
+  "test_blob": "bb6f6b9e11aa4956deb0328ce020f8fd3ea9b52a",
+  "workflow_blob": "a9af806a82d1b05becea332242bda5bbb09234fc",
+  "source_txt_sha256": "151e693bd78908e890e5a7b852b2dea116ca3d6f5311dca93c79ae3f6b0a989f",
+  "gradle_log_sha256": "e683cc99051232f7f01492d336e15b8797feb0a2a20e03a40b82e61cd2108b9f",
+  "xml_sha256": "4814b70d107b2843986f5bf59b8757b60627981f1a5b8619052e744bc018eee5",
+  "zip_crc": "clean",
+  "zip_entries": [
+    "build/reports/pest-london-loaded-main/gradle.log",
+    "gym/build/test-results/test/TEST-com.wingedsheep.gym.matchup.PestMonsterLondonLoadedMainBindingTest.xml",
+    "build/reports/pest-london-loaded-main/source.txt"
+  ],
+  "freshness": "Gradle :gym:test executed under --rerun-tasks --no-build-cache, 48 actionable tasks executed; XML timestamp 2026-09-28T01:56:24.057Z, original artifact created 2026-09-28T01:56:36Z.",
+  "results": {
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "London runner seat 1 binds loaded Monster main before policy",
+      "London runner seat 1 rejects changed loaded Monster main",
+      "London runner seat 2 binds loaded Monster main before policy",
+      "London runner seat 2 rejects changed loaded Monster main"
+    ]
+  },
+  "scope": "Two Monster seat construction fixtures verify loaded opening library plus hand exactly matches frozen 60-card Monster main, and two changed-main fixtures fail closed.",
+  "limitations": "No actor-runner integration, future resource/payment planning, raw keep/bottom choice equivalence, own/public pair, C2/A2, exclusions, seed, claim, allocation or gameplay admission. Independent adoption pending."
+}
