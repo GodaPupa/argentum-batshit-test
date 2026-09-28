@@ -47,6 +47,7 @@ internal class SphinxStageETrustedTransitionFile private constructor(private val
     fun append(recordJson: String) {
         require(recordJson.isNotBlank() && !recordJson.contains('\n'))
         val prior = records()
+        validateSequence(prior.map { it.first } + recordJson)
         val previous = prior.lastOrNull()?.second ?: "0".repeat(64)
         val index = prior.size
         val hash = digest("$index:$previous:$recordJson")
@@ -55,7 +56,7 @@ internal class SphinxStageETrustedTransitionFile private constructor(private val
         FileChannel.open(path, StandardOpenOption.WRITE, StandardOpenOption.APPEND).use { channel ->
             channel.lock().use {
                 // Refuse a concurrent writer or bytes added since verification.
-                require(records().size == index) { "Trusted transition journal changed during append" }
+                require(records() == prior) { "Trusted transition journal changed during append" }
                 val data = ByteBuffer.wrap(bytes)
                 while (data.hasRemaining()) channel.write(data)
                 channel.force(true)
@@ -70,7 +71,7 @@ internal class SphinxStageETrustedTransitionFile private constructor(private val
         require(bytes.last() == '\n'.code.toByte()) { "Torn trusted transition journal" }
         val lines = bytes.toString(StandardCharsets.UTF_8).dropLast(1).split('\n')
         var previous = "0".repeat(64)
-        return lines.mapIndexed { index, raw ->
+        val verified = lines.mapIndexed { index, raw ->
             val line = json.decodeFromString<Line>(raw)
             require(line.index == index && line.previousSha256 == previous &&
                 line.sha256 == digest("$index:$previous:${line.recordJson}")) {
@@ -78,6 +79,32 @@ internal class SphinxStageETrustedTransitionFile private constructor(private val
             }
             previous = line.sha256
             line.recordJson to line.sha256
+        }
+        validateSequence(verified.map { it.first })
+        return verified
+    }
+
+    /** Single-actor accepted Ponder sequence: reuse and discontinuous state chains fail closed. */
+    private fun validateSequence(records: List<String>) {
+        val decoded = records.map {
+            json.decodeFromString<SphinxStageEAcceptedTransitionJournal.Record>(it)
+        }
+        require(decoded.map { it.decisionId }.distinct().size == decoded.size) {
+            "Accepted decision already consumed by this journal"
+        }
+        val hash = Regex("[0-9a-f]{64}")
+        require(decoded.all {
+            it.decisionId.isNotBlank() && it.sourceVersion.isNotBlank() &&
+                it.trialId.isNotBlank() && it.actorStep >= 0 &&
+                hash.matches(it.inputBindingHash) && hash.matches(it.preStateSha256) &&
+                hash.matches(it.postStateSha256)
+        }) { "Incomplete accepted transition binding" }
+        decoded.zipWithNext().forEach { (before, after) ->
+            require(before.sourceVersion == after.sourceVersion &&
+                before.trialId == after.trialId && after.actorStep > before.actorStep &&
+                before.postStateSha256 == after.preStateSha256) {
+                "Accepted transition source, epoch or state continuity drift"
+            }
         }
     }
 
