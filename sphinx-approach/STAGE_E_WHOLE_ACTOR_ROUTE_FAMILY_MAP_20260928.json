@@ -1,0 +1,222 @@
+{
+  "schema": "sphinx-stage-e-whole-actor-route-family-map-v1",
+  "date_utc": "2026-09-28",
+  "status": "PROSPECTIVE_ROUTE_TAXONOMY_REQUIRES_INDEPENDENT_REVIEW_BEFORE_BEHAVIORAL_BUDGET",
+  "controlling_sources": {
+    "reconstruction_plan": "sphinx-approach/STAGE_E_RECONSTRUCTION_PLAN.md",
+    "pilot_budget": "sphinx-approach/STAGE_E_PILOT_FIXTURE_BUDGET.json",
+    "whole_actor_review": "sphinx-approach/STAGE_E_WHOLE_ACTOR_INDEPENDENT_REVIEW_20260928.json",
+    "own_surface_audit": "sphinx-approach/evidence/own-surface-reconciliation-36492588750-original-audit.json"
+  },
+  "identities": [
+    "reconstructed-v01",
+    "reconstructed-hybrid",
+    "closest-no-approach-v01",
+    "serpico-terror-benchmark"
+  ],
+  "route_taxonomy": [
+    {
+      "id": "APPROACH_MODE",
+      "reason": "Sphinx's Approach cast/payment/search/deployment and graveyard-payment surface",
+      "applicable": [
+        "reconstructed-v01",
+        "reconstructed-hybrid"
+      ],
+      "excluded": {
+        "closest-no-approach-v01": "frozen 60 contains zero Sphinx's Approach",
+        "serpico-terror-benchmark": "frozen 60 contains zero Sphinx's Approach"
+      },
+      "current_status": "UNQUALIFIED_WHOLE_ROUTE",
+      "allowed_information": "own/public current state plus already-qualified accepted-memory/journal seams; no hidden opponent hand or future library order"
+    },
+    {
+      "id": "SNAP",
+      "reason": "Snap target, resolution and untap-choice surface",
+      "applicable": [
+        "reconstructed-v01",
+        "reconstructed-hybrid",
+        "closest-no-approach-v01"
+      ],
+      "excluded": {
+        "serpico-terror-benchmark": "frozen 60 contains zero Snap"
+      },
+      "current_status": "UNQUALIFIED_WHOLE_ROUTE",
+      "allowed_information": "offered public legal targets and actor-owned current resources only"
+    },
+    {
+      "id": "SPELL_PIERCE",
+      "reason": "Spell Pierce target/payment-response priority surface",
+      "applicable": [
+        "reconstructed-v01",
+        "reconstructed-hybrid",
+        "closest-no-approach-v01"
+      ],
+      "excluded": {
+        "serpico-terror-benchmark": "frozen 60 contains zero Spell Pierce"
+      },
+      "current_status": "UNQUALIFIED_WHOLE_ROUTE",
+      "allowed_information": "public stack/targets, own hand/resources and actual offered decisions only"
+    },
+    {
+      "id": "DISPEL",
+      "reason": "Dispel instant-target response surface",
+      "applicable": [
+        "serpico-terror-benchmark"
+      ],
+      "excluded": {
+        "reconstructed-v01": "frozen 60 contains zero Dispel",
+        "reconstructed-hybrid": "frozen 60 contains zero Dispel",
+        "closest-no-approach-v01": "frozen 60 contains zero Dispel"
+      },
+      "current_status": "UNQUALIFIED_WHOLE_ROUTE",
+      "allowed_information": "public stack/target facts only"
+    },
+    {
+      "id": "LORIEN_CYCLING",
+      "reason": "Lórien Revealed islandcycling versus normal-cast/current-mana surface",
+      "applicable": [
+        "closest-no-approach-v01",
+        "serpico-terror-benchmark"
+      ],
+      "excluded": {
+        "reconstructed-v01": "frozen 60 contains zero Lórien Revealed",
+        "reconstructed-hybrid": "frozen 60 contains zero Lórien Revealed"
+      },
+      "current_status": "UNQUALIFIED_WHOLE_ROUTE",
+      "allowed_information": "own hand/current mana and submitted own-list existence facts; no library order"
+    },
+    {
+      "id": "ARTFUL_DODGE_FLASHBACK",
+      "reason": "Artful Dodge target plus flashback/recast surface",
+      "applicable": [
+        "serpico-terror-benchmark"
+      ],
+      "excluded": {
+        "reconstructed-v01": "frozen 60 contains zero Artful Dodge",
+        "reconstructed-hybrid": "frozen 60 contains zero Artful Dodge",
+        "closest-no-approach-v01": "frozen 60 contains zero Artful Dodge"
+      },
+      "current_status": "UNQUALIFIED_WHOLE_ROUTE",
+      "allowed_information": "own/public current zones, current target legality and actual offered flashback action"
+    },
+    {
+      "id": "DEEM_INFERIOR",
+      "reason": "Deem Inferior target/timing/threshold surface",
+      "applicable": [
+        "serpico-terror-benchmark"
+      ],
+      "excluded": {
+        "reconstructed-v01": "frozen 60 contains zero Deem Inferior",
+        "reconstructed-hybrid": "frozen 60 contains zero Deem Inferior",
+        "closest-no-approach-v01": "frozen 60 contains zero Deem Inferior"
+      },
+      "current_status": "UNQUALIFIED_WHOLE_ROUTE",
+      "allowed_information": "public target facts and own current resources only"
+    },
+    {
+      "id": "SLEEP_ESCAPE",
+      "reason": "Sleep of the Dead target plus escape/additional-cost surface",
+      "applicable": [
+        "serpico-terror-benchmark"
+      ],
+      "excluded": {
+        "reconstructed-v01": "frozen 60 contains zero Sleep of the Dead",
+        "reconstructed-hybrid": "frozen 60 contains zero Sleep of the Dead",
+        "closest-no-approach-v01": "frozen 60 contains zero Sleep of the Dead"
+      },
+      "current_status": "UNQUALIFIED_WHOLE_ROUTE",
+      "allowed_information": "own graveyard/public target/current cost facts only"
+    },
+    {
+      "id": "MULTIPLE_CAST_RANKING",
+      "reason": "choose among simultaneous legal cast offers without architecture-specific favoritism",
+      "applicable": [
+        "reconstructed-v01",
+        "reconstructed-hybrid",
+        "closest-no-approach-v01",
+        "serpico-terror-benchmark"
+      ],
+      "excluded": {},
+      "current_status": "UNQUALIFIED_GLOBAL_ROUTE",
+      "allowed_information": "same sealed ActorInput/menu and own submitted list for every identity"
+    },
+    {
+      "id": "ORDINARY_PRIORITY",
+      "reason": "pass/respond timing outside card-specific decision seams",
+      "applicable": [
+        "reconstructed-v01",
+        "reconstructed-hybrid",
+        "closest-no-approach-v01",
+        "serpico-terror-benchmark"
+      ],
+      "excluded": {},
+      "current_status": "UNQUALIFIED_GLOBAL_ROUTE",
+      "allowed_information": "public stack/phase/priority plus own current legal menu/resources"
+    },
+    {
+      "id": "COMBAT_DECLARATION_ASSIGNMENT",
+      "reason": "attack/block/declaration/assignment surface",
+      "applicable": [
+        "reconstructed-v01",
+        "reconstructed-hybrid",
+        "closest-no-approach-v01",
+        "serpico-terror-benchmark"
+      ],
+      "excluded": {},
+      "current_status": "UNQUALIFIED_GLOBAL_ROUTE",
+      "allowed_information": "public battlefield/combat state plus own current legal offers"
+    },
+    {
+      "id": "ALTERNATE_COST_MANA_SOURCE",
+      "reason": "alternate cost and actual mana-source selection when basic-blue projection is insufficient",
+      "applicable": [
+        "reconstructed-v01",
+        "reconstructed-hybrid",
+        "closest-no-approach-v01",
+        "serpico-terror-benchmark"
+      ],
+      "excluded": {},
+      "current_status": "UNQUALIFIED_GLOBAL_ROUTE",
+      "allowed_information": "current offered cost/payment facts and own resources only"
+    },
+    {
+      "id": "TRIGGER_ORDERING",
+      "reason": "actor-owned simultaneous trigger ordering",
+      "applicable": [
+        "reconstructed-v01",
+        "reconstructed-hybrid",
+        "closest-no-approach-v01",
+        "serpico-terror-benchmark"
+      ],
+      "excluded": {},
+      "current_status": "UNQUALIFIED_GLOBAL_ROUTE",
+      "allowed_information": "projected actor-owned trigger-order question only"
+    },
+    {
+      "id": "RUNNER_REPLAY_COLLECTOR",
+      "reason": "whole-run accepted-action scheduling, durable replay and collector equivalence",
+      "applicable": [
+        "reconstructed-v01",
+        "reconstructed-hybrid",
+        "closest-no-approach-v01",
+        "serpico-terror-benchmark"
+      ],
+      "excluded": {},
+      "current_status": "UNQUALIFIED_ACCEPTANCE_ROUTE",
+      "allowed_information": "qualified actor outputs plus trusted runtime/journal metadata; not a strategy input"
+    }
+  ],
+  "invariants": [
+    "Route IDs and reason taxonomy are identical across all four identities.",
+    "Per-identity exclusions are permitted only when immutable frozen deck rows make the card surface absent.",
+    "No numeric fixture quota, game count, opponent package, sample size, endpoint or stopping rule is selected by this map.",
+    "No route may silently pass when uncovered; whole actor must return Unqualified.",
+    "No deck identity may receive a favorable extra strategy surface unavailable to another identity except card-presence applicability."
+  ],
+  "next_gate": "Independent source/coverage review of this route taxonomy and applicability matrix. Only after acceptance may a numeric equal-opportunity deterministic behavioral budget be frozen.",
+  "official_counters": {
+    "seeds": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}
