@@ -14,9 +14,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/pest-london-predicate-inventory
-          test "$(git rev-parse HEAD^)" = "518b49614a20259d97f9d5a79f9119f5d58a3b78"
+          test "$(git rev-parse HEAD^)" = "ab3e6d1d41823784323fc0e9c76ea893cda1370a"
           test "$(git hash-object docs/experiments/pest-control/tier-one-monster-london-raw-predicate-inventory-20260928.json)" = "538520e791cecc307ddad022824a197650cb2826"
-          test "$(git hash-object docs/experiments/pest-control/validate_london_predicate_inventory.py)" = "598c3efedb86ea0639ac2235f1eb6a8a5f0147bc"
+          test "$(git hash-object docs/experiments/pest-control/validate_london_predicate_inventory.py)" = "022ca663779d4314754a2809230103e2414a6598"
           { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt; git hash-object docs/experiments/pest-control/tier-one-monster-london-raw-predicate-inventory-20260928.json; git hash-object docs/experiments/pest-control/validate_london_predicate_inventory.py; git hash-object .github/workflows/pest-london-predicate-inventory.yml; } > build/reports/pest-london-predicate-inventory/source.txt
       - name: Run corrected static inventory validator
         shell: bash
