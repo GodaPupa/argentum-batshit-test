@@ -1,0 +1,27 @@
+{
+  "schema": "ferocity-source08-policy-archive-review-budget-v1",
+  "archive_blob": "6703d6913a321771563ff200ca99cd65f7c04cd0",
+  "archive_path": "ferocity-recycling/evidence/build/publication-M1-source-audits/08-historical-first-cell-policy.zip",
+  "actions": [
+    "fetch exact historical branch",
+    "verify exact blob",
+    "read ZIP bytes",
+    "CRC/inventory/hash every member",
+    "parse small UTF-8 JSON/text only"
+  ],
+  "forbidden": [
+    "execute member",
+    "launch JVM",
+    "export bundle",
+    "read entropy",
+    "consume seed",
+    "start game",
+    "new calibration command"
+  ],
+  "counters": {
+    "jvms": 0,
+    "entropy": 0,
+    "games": 0,
+    "calibration_commands": 0
+  }
+}
