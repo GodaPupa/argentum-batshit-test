@@ -1,0 +1,23 @@
+{
+  "schema": "industrial-r1-seed-free-build-output-capture-budget-v1",
+  "date_utc": "2026-09-28",
+  "parent_capture_receipt": "industrial-waste/v2/evidence/runtime-capture-36487027776-original-audit.json",
+  "independent_capture_review": "industrial-waste/v2/evidence/runtime-capture-independent-review-20260928.json",
+  "build_action": "just test-class IndustrialWasteV2RegistryAuditTest --rerun-tasks --no-build-cache",
+  "capture_scope": [
+    "all produced **/build/classes/kotlin/main regular files",
+    "source commit/tree",
+    "java/python/bash/just/platform identity"
+  ],
+  "forbidden": [
+    "official seed/vector read",
+    "allocation initialization",
+    "game initialization",
+    "expected-manifest adoption",
+    "worker attestation",
+    "claim",
+    "R1 permit"
+  ],
+  "next_gate": "Independently review captured roots/file bytes and enumerate missing complete dependency/process/JDK-native/Python closure before any expected-manifest candidate.",
+  "official_counters": 0
+}
