@@ -1,0 +1,64 @@
+{
+  "schema": "izzet-v09-post-pr212-position1-runtime-bridge-proposal-v1",
+  "date_utc": "2026-09-28",
+  "status": "PROSPECTIVE_REVALIDATION_ONLY_NO_SEED_EXPOSURE",
+  "historical_authority": {
+    "branch": "mayhem/izzet-science",
+    "control": {
+      "path": "izzet-science/v0.7-control.md",
+      "git_blob": "297ad4fe8f52f2cbeaaa6a17356f68f9c0f1fc1f",
+      "sha256": "726f5e9458b46dda30b33a6ce9f3c3237b25d6e11b81dac85308c3065c108a01"
+    },
+    "phase31": {
+      "path": "izzet-science/v09-phase31-seed-vector-freeze-accepted.md",
+      "git_blob": "62c60e3d988ec55c0d29a38b90f6193ec3f36910",
+      "vector_sha256": "5d8f9f758ed87286efb0ca07b74cec652a44304158e867f4c1aa6fc8a3bb824f",
+      "assignment_sha256": "b2da95af015d1acd84bebd6794acad5c8a81530ccae74f41e6f925ef301e5be3"
+    },
+    "phase32": {
+      "path": "izzet-science/v09-phase32-execution-readiness-accepted.md",
+      "git_blob": "2df8c6971ff5c539717c0877510cc267db1af473",
+      "quarantine_artifact_id": 10627816776
+    },
+    "phase33": {
+      "path": "izzet-science/v09-phase33-position1-execution-authorization-accepted.md",
+      "git_blob": "82770b1420f9738b2ee2cbd1e345382ee5d0f5ab",
+      "authorized_positions": [
+        1
+      ]
+    }
+  },
+  "new_shared_runtime": {
+    "exact_handler_path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+    "exact_handler_git_blob": "524d7917056d09558ddde1426f1e6f3a81d00810",
+    "shared_adoption_path": "experiments/izzet-science/evidence/pr212-shared-explicit-rider-payment-adoption-20260928.json",
+    "shared_adoption_git_blob": "ed1542653fd2170b03644130582c362c06415115",
+    "exact_runtime_receiving_path": "experiments/izzet-science/evidence/pr212-exact-compat-36474121083-independent-adoption.json",
+    "exact_runtime_receiving_git_blob": "23bed58598fbba712e54c29389271a9310169e4d",
+    "exact_runtime_receiving_cases": 52
+  },
+  "proposed_revalidation": [
+    "Verify exact historical control/vector/assignment/quarantine/runner/opponent identities without revealing a seed.",
+    "Verify the only newly adopted shared behavior is the exact reviewed ActivateAbilityHandler blob and that its fresh exact-runtime compatibility bank passed 52/52.",
+    "Re-run only deterministic execution-readiness and position-1 authorization identity checks that can be performed without seed disclosure or game initialization.",
+    "Require an independent result review before re-authorizing position 1 under the post-PR212 runtime."
+  ],
+  "fail_closed": [
+    "Any historical freeze byte mismatch",
+    "Any runtime source beyond the adopted exact shared handler change",
+    "Any attempt to reveal or consume a seed during revalidation",
+    "Any change to deck, opponent, vector, assignment, order, runner or outcome contract"
+  ],
+  "explicit_non_authority": [
+    "This proposal does not consume or expose position-1 seed.",
+    "This proposal does not initialize a game.",
+    "Positions 2-12 remain unauthorized.",
+    "No outcome-conditioned protocol change is permitted."
+  ],
+  "counters": {
+    "seeds_generated_historical": 12,
+    "seeds_consumed": 0,
+    "games_initialized": 0,
+    "outcomes_exposed": 0
+  }
+}
