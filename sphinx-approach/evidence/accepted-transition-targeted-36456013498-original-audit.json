@@ -1,0 +1,28 @@
+{
+  "schema": "sphinx-accepted-transition-targeted-original-audit-v1",
+  "run": 36456013498,
+  "artifact": 10984849943,
+  "head": "aa62cde6e28e1df735bbd9af6048b8036e3f130b",
+  "parent": "1aaff3cb45311cd30e50940b9865679b1f881c4b",
+  "source_blob": "0931c82bf48d7e2f1639ba2995e55ff9320b7251",
+  "test_blob": "4a8fda7c17eb0febe67df0f18ce98ba617677953",
+  "workflow_blob": "d490b06f24727b01fa752ff6bb868cb749f9793d",
+  "zip_sha256": "3c675be8ed351982e8363144a36ca882e5f0d918cbb0d6c79fbf09114cfd052f",
+  "source_txt_sha256": "c72e79da0552873cdd54525d7ab9eb096a2e02b70e1dafb59f003a1bcd2299b8",
+  "xml_sha256": "daf859160af763f0b06b3520ee8b988df003d02081ce17924e9f2aaee74d2a4d",
+  "test_log_sha256": "1cd5bf64794225db8360d85e13239bec6dd70d5d5f8ee53fdda65d882e150ced",
+  "zip_crc": "PASS",
+  "freshness": "48 executed tasks; --rerun-tasks --no-build-cache",
+  "tests": 2,
+  "failures": 2,
+  "errors": 0,
+  "skipped": 0,
+  "failed_cases": [
+    "accepted physical Ponder reorder journals and replays shuffle=false",
+    "accepted physical Ponder reorder journals and replays shuffle=true"
+  ],
+  "failure": "IllegalArgumentException at SphinxStageEAcceptedTransitionJournal.kt:54: Current engine suspension differs from the sealed question",
+  "diagnosis": "The actor-facing typed question is sanitized by ActorDecisionProjection (source name/card info/ability identity) and cannot be structurally equated to the raw engine PendingDecision. The runner must reproject the current state and bind exact sealed actor input, then compare invariant decision ID/actor/source/options while the engine validates the typed response.",
+  "disposition": "INCOMPLETE_FIXTURE_INTEGRATION",
+  "limitations": "Zero accepted transition/replay cases; not deck/gameplay evidence; no unchanged rerun."
+}
