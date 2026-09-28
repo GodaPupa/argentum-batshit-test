@@ -23,17 +23,22 @@ internal object PestMonsterLondonKeepPolicy {
         if (hand.size != 7 || mulligansTaken != 0) return null
         val lands = hand.cards.filter { "LAND" in it.types }
         if (lands.isEmpty()) return false
-        // A separate real-engine receipt established green Ancient Stirrings payment from a
-        // Forest. Other land entries and additional-cost spells need their own actor development
-        // policy before this function can answer them.
-        if (lands.size != 2 || lands.map { it.name }.toSet() !=
-            setOf("Forest", "Urza's Tower") ||
+        // The real-engine receiving receipts established both a direct Forest-funded
+        // Stirrings cast and Tower -> Ent typecycling -> Forest -> Stirrings. Only these
+        // deterministic development lines are answered here; all other entries/costs remain
+        // unqualified. The typecycling plan consumes only the Boolean printed-Forest fact.
+        val direct = lands.size == 2 &&
+            lands.map { it.name }.toSet() == setOf("Forest", "Urza's Tower")
+        val cycled = lands.size == 1 &&
+            lands.single().name == "Urza's Tower" &&
+            PestMonsterLondonTypecyclingPlanner.firstTwoDrops(setup) != null
+        if ((!direct && !cycled) ||
             hand.cards.none { it.name == "Ancient Stirrings" }) return null
         val early = hand.cards.filter { "LAND" !in it.types && it.manaCost.isNotBlank() &&
             it.manaValue <= 2 }
         val greenCompatible = early.count { card ->
             Regex("\\{([WUBRG])\\}").findAll(card.manaCost)
-                .all { it.groupValues[1] == "G" }
+                .all { direct && it.groupValues[1] == "G" }
         }
         val colorFunctional = early.isNotEmpty() &&
             (early.size - greenCompatible < 3 || greenCompatible >= 2)
