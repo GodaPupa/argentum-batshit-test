@@ -1,0 +1,44 @@
+name: Manual R3-P real four-seat boundary static preflight
+on:
+  push:
+    branches: ["manual/clean-pilot-boundary-receiving-20260927"]
+    paths: [".github/workflows/manual-priority-boundary-preflight.yml"]
+permissions:
+  contents: read
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind prospective source fixture boundary and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/manual-priority-boundary-preflight
+          test "$(git rev-parse HEAD^)" = "a852b8a36b2aea649ac6946b034bc6489e7171bb"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityConservationPolicy.kt)" = "8fec7b06ed4d20ac138b4f0d0500fc6d39926d4e"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityBoundaryTest.kt)" = "c76561e4c156d0476c2ab9637e2c8658eb892255"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt)" = "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt)" = "44608301d535a2114073d80c06d5ca0480c40043"
+          { git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt; git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityConservationPolicy.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityBoundaryTest.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt; git hash-object experiments/manual-transmission-phase2/priority-boundary-receiving-budget.json; git hash-object .github/workflows/manual-priority-boundary-preflight.yml; git status --porcelain; } > build/reports/manual-priority-boundary-preflight/source.txt
+      - name: Compile four prospective real boundary traces without execution
+        shell: bash
+        run: |
+          set -o pipefail
+          ./gradlew :gym:compileTestKotlin --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/manual-priority-boundary-preflight/compile.log
+      - name: Retain original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-priority-boundary-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/manual-priority-boundary-preflight/
+          if-no-files-found: error
+          retention-days: 90
