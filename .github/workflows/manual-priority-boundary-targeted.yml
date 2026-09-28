@@ -1,4 +1,4 @@
-name: Manual R3-P real four-seat boundary targeted
+name: Manual canonical Kinnan + R3-P four-seat boundary targeted
 on:
   push:
     branches: ["manual/clean-pilot-boundary-receiving-20260927"]
@@ -23,18 +23,19 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/manual-priority-boundary-targeted
-          test "$(git rev-parse HEAD^)" = "2fac08cfea02ba5ec4a65a27d66ccbc8680fa08f"
+          test "$(git rev-parse HEAD^)" = "294036d6a1d8f0ab1a7cb8f5c65f0aca80a436ff"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/KinnanBonderProdigy.kt)" = "14907968026b2f307bd792ccd22481788ac3d2e5"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityConservationPolicy.kt)" = "8fec7b06ed4d20ac138b4f0d0500fc6d39926d4e"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityBoundaryTest.kt)" = "c76561e4c156d0476c2ab9637e2c8658eb892255"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt)" = "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt)" = "44608301d535a2114073d80c06d5ca0480c40043"
           test "$(git hash-object experiments/manual-transmission-phase2/priority-boundary-receiving-budget.json)" = "d8c8e98f932675b1ea8440b2809f4b3b6e1d8035"
-          { git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt; git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityConservationPolicy.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityBoundaryTest.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt; git hash-object experiments/manual-transmission-phase2/priority-boundary-receiving-budget.json; git hash-object .github/workflows/manual-priority-boundary-targeted.yml; git status --porcelain; } > build/reports/manual-priority-boundary-targeted/source.txt
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/KinnanBonderProdigy.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityConservationPolicy.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityBoundaryTest.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt; git hash-object experiments/manual-transmission-phase2/priority-boundary-receiving-budget.json; git hash-object .github/workflows/manual-priority-boundary-targeted.yml; git status --porcelain; } > build/reports/manual-priority-boundary-targeted/source.txt
       - name: Execute exactly four fresh declared real boundary replay traces
         shell: bash
         run: |
           set -o pipefail
-          ./gradlew :gym:test --tests 'com.wingedsheep.gym.manual.ManualPhaseTwoPriorityBoundaryTest' --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/manual-priority-boundary-targeted/test.log
+          just test-class ManualPhaseTwoPriorityBoundaryTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/manual-priority-boundary-targeted/test.log
       - name: Retain exact XML
         if: always()
         shell: bash
