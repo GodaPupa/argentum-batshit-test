@@ -1,0 +1,66 @@
+name: Pest Monster Crop sacrifice receiving
+on:
+  push:
+    branches: ["pest/c2-pair-pilot-seam-20260927"]
+    paths:
+      - ".github/workflows/pest-monster-c2-crop-sacrifice-targeted.yml"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterCropSacrificeReceivingTest.kt"
+
+permissions:
+  contents: read
+
+jobs:
+  prospective-crop-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact preflighted Crop source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-c2-crop
+          test "$(git rev-parse HEAD^)" = "ec016cea60d531066fe3e7f2528fb860d1b38d3f"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterCropSacrificeReceivingTest.kt)" = "79479e1463b615117c4ef1c2e5e4752fed29f524"
+          test "$(git rev-parse ec016cea60d531066fe3e7f2528fb860d1b38d3f:gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterCropSacrificeReceivingTest.kt)" = "79479e1463b615117c4ef1c2e5e4752fed29f524"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestMonsterCropSacrificeReceivingTest.kt
+            git hash-object .github/workflows/pest-monster-c2-crop-sacrifice-targeted.yml
+            git status --porcelain
+          } > build/reports/pest-c2-crop/source.txt
+      - name: Execute two fresh Crop sacrifice fixtures
+        shell: bash
+        run: |
+          set -o pipefail
+          scripts/test-class PestMonsterCropSacrificeReceivingTest --rerun-tasks --info --stacktrace 2>&1 | tee build/reports/pest-c2-crop/gradle.log
+      - name: Verify exact JUnit cases
+        run: |
+          python3 - <<'PY'
+          import glob, xml.etree.ElementTree as ET
+          paths=glob.glob("gym/build/test-results/test/TEST-*PestMonsterCropSacrificeReceivingTest.xml")
+          assert len(paths)==1, paths
+          root=ET.parse(paths[0]).getroot()
+          cases=root.findall(".//testcase")
+          expected=[f"P03-03 Monster seat {seat} Crop sacrifices physical Forest and selects Tower" for seat in (1,2)]
+          assert sorted(c.get("name") for c in cases)==sorted(expected), [c.get("name") for c in cases]
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          PY
+      - name: Retain original result and failure evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-crop-original-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-c2-crop/
+            gym/build/test-results/test/TEST-*PestMonsterCropSacrificeReceivingTest.xml
+          if-no-files-found: error
+          retention-days: 90
