@@ -15,6 +15,8 @@ import com.wingedsheep.sdk.scripting.TimingRule
 import com.wingedsheep.sdk.scripting.TriggerBinding
 import com.wingedsheep.sdk.model.CardDefinition.Companion.doubleFacedPermanent
 import com.wingedsheep.sdk.scripting.CanOnlyBlockCreaturesWith
+import com.wingedsheep.sdk.scripting.CrewSaddleCharacteristic
+import com.wingedsheep.sdk.scripting.CrewSaddleContribution
 import com.wingedsheep.sdk.scripting.effects.BecomeCreatureEffect
 import com.wingedsheep.sdk.scripting.effects.MayEffect
 import com.wingedsheep.sdk.scripting.effects.SearchDestination
@@ -701,6 +703,20 @@ object PredefinedTokens {
         }
     }
 
+    /** Pilot token — 1/1 colorless Pilot; contributes power +2 while crewing Vehicles. */
+    val Pilot = card("Pilot") {
+        typeLine = "Creature — Pilot"
+        power = 1
+        toughness = 1
+        oracleText = "This token crews Vehicles as though its power were 2 greater."
+        staticAbility {
+            ability = CrewSaddleContribution(
+                characteristic = CrewSaddleCharacteristic.POWER,
+                modifier = 2
+            )
+        }
+    }
+
     /**
      * Vehicle token — the 3/2 colorless Vehicle artifact token with crew 1 that Aetherdrift's
      * Pilots hand out (Mu Yanling, Wind Rider; Chandra, Spark Hunter; …).
@@ -985,6 +1001,7 @@ object PredefinedTokens {
         Mutagen,
         Frog,
         Pest,
+        Pilot,
         Vehicle,
         TheVoid,
         Redwing,
