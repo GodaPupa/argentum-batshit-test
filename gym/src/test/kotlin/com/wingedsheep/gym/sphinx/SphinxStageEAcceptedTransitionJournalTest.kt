@@ -117,7 +117,7 @@ class SphinxStageEAcceptedTransitionJournalTest : ScenarioTestBase() {
 
     init {
         listOf(false, true).forEach { shouldShuffle ->
-            test("accepted physical Ponder reorder journals and replays shuffle=$shouldShuffle") {
+            test("accepted physical Ponder reorder and shuffle journal/replay shuffle=$shouldShuffle") {
                 val seat = setup("closest-no-approach-v01", "Ponder", 5)
                 val library = seat.state.getLibrary(seat.actor)
                 val top = if (shouldShuffle) {
@@ -150,7 +150,15 @@ class SphinxStageEAcceptedTransitionJournalTest : ScenarioTestBase() {
                     .shouldBeInstanceOf<SphinxStageEAdapterResult.Proposed>().proposal
                 val submitted = answer.action.shouldBeInstanceOf<SubmitDecision>()
                 submitted.response.shouldBeInstanceOf<YesNoResponse>().choice shouldBe shouldShuffle
-                seat.advance(submitted)
+                val beforeShuffle = seat.state
+                val acceptedShuffle = journal.acceptPonderShuffle(
+                    beforeShuffle, shuffleInput, shuffleInput.epoch, seat.pilot, accepted.memory, answer)
+                seat.state = acceptedShuffle.state
+                journal.replay(beforeShuffle, acceptedShuffle.recordJson) shouldBe acceptedShuffle.state
+                shouldThrow<IllegalArgumentException> {
+                    journal.replay(beforeShuffle.copy(turnNumber = beforeShuffle.turnNumber + 1),
+                        acceptedShuffle.recordJson)
+                }
                 seat.state.pendingDecision shouldBe null
             }
         }
