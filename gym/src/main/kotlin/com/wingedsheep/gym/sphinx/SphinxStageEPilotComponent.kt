@@ -195,7 +195,7 @@ object SphinxStageEPilotComponent {
     /** Targets are selected only from the offered public stack choices. */
     fun chooseCounterspell(input: SphinxStageEPolicyInput): SphinxStageEPolicyChoice {
         current(input)
-        require(input.offer.cardName == "Counterspell")
+        require(input.offer.cardName in setOf("Counterspell", "Spell Pierce", "Dispel"))
         val payable = chooseCurrentCast(input)
         if (payable.actionId == null) return payable
         val target = input.offer.legalTargets
