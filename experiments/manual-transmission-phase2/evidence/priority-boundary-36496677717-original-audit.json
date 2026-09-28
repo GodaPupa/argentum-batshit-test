@@ -1,0 +1,60 @@
+{
+  "schema": "manual-priority-boundary-36496677717-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36496677717,
+  "artifact_id": 11003613141,
+  "artifact_sha256": "5d3e86b1b5a09f5250a84cbbd91def9b3d56d6674dfe84326df9e7ebbdf118c3",
+  "head": "26039a64462db1beeec005195dc9cdb6befd62b4",
+  "parent": "bc68cbdff37cd4d655b752f114d6ac48a7de80be",
+  "pins": {
+    "kinnan": "14907968026b2f307bd792ccd22481788ac3d2e5",
+    "kinnan_test": "2eeea62b0cb87d231aebaeaf5119f959f1a7ca2b",
+    "neon_dynasty_commander_set": "abd90862c9207fcd120e1a5984b2e5bd3ffe98b1",
+    "shorikai": "43a869fce6dba351b2e2c4d981123c419fc94cc7",
+    "tokens": "e0cf9e74b126aa103f7d2a35fe4d43c9f5c4ff34",
+    "shorikai_test": "f1de9ae1ca8e41d205d48eaacafd14eb806af5a1",
+    "pact": "c786551484cfb001eea9fc2b05e14ea23fd63bf9",
+    "policy": "8fec7b06ed4d20ac138b4f0d0500fc6d39926d4e",
+    "test": "c76561e4c156d0476c2ab9637e2c8658eb892255",
+    "boundary": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "observation_builder": "2074ffaa08128ade94c2bc1aafb3c9aa73a8946b",
+    "telemetry": "44608301d535a2114073d80c06d5ca0480c40043",
+    "budget": "d8c8e98f932675b1ea8440b2809f4b3b6e1d8035",
+    "workflow": "6cc6abfd379e102ae8be989c89db0f43fcf5b5f4"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "just test-class ManualPhaseTwoPriorityBoundaryTest --rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "xml": {
+    "tests": 4,
+    "passes": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "SPORT protected=false",
+      "SPORT protected=true",
+      "RACE protected=false",
+      "RACE protected=true"
+    ]
+  },
+  "decision": "ACCEPTED_R3P_FOUR_SEAT_PRIORITY_BOUNDARY_SCOPE_ONLY",
+  "accepted_scope": [
+    "SPORT R3-P four-seat real helper priority trace without protection",
+    "SPORT R3-P four-seat real helper priority trace with qualified public protection answer",
+    "RACE R3-P four-seat real helper priority trace without protection",
+    "RACE R3-P four-seat real helper priority trace with qualified public protection answer",
+    "semantic replay for exactly those four declared traces"
+  ],
+  "limits": [
+    "Does not establish complete SPORT, complete RACE, or any CRUISE policy.",
+    "Does not establish opponent strategic competence, whole-pilot competence, collector/durability, or capability admission.",
+    "Does not authorize 36 capability games or 864 primary games."
+  ],
+  "next_gate": "Mechanically inventory and complete the remaining executable CRUISE/SPORT/RACE decision surfaces and opponent strategic policies on the qualified receiving runtime, then qualify whole-pilot/replay/collector before capability admission.",
+  "official_counters_delta": 0
+}
