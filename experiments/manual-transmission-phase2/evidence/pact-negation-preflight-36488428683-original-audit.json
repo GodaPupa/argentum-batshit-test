@@ -1,0 +1,30 @@
+{
+  "schema": "manual-pact-negation-preflight-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36488428683,
+  "artifact_id": 11000715778,
+  "artifact_sha256": "902525778dcdd938c7b08be487d507f30bb306a16effee8b7f18147b79efd600",
+  "head": "c34bd5458526e6b8de7c7fe184d734b522dda6a1",
+  "parent": "8f06271fdb997f935a99bdbdb2f9a36930be1e38",
+  "pins": {
+    "pact_source": "c786551484cfb001eea9fc2b05e14ea23fd63bf9",
+    "prospective_test": "f3f2315ba698327ef2e930bf2990c44a888e7b38",
+    "workflow": "0a391fb92545bb9561869ee8f8a9446863a3990c"
+  },
+  "compile": {
+    "locked_wrapper_note": "scripts/gradle-locked reported shlock unavailable and invoked ./gradlew unlocked; exact invocation retained transparently",
+    "task": ":mtg-sets:2003-2007:tests:compileTestKotlin",
+    "executed_tasks": 27,
+    "result": "BUILD SUCCESSFUL"
+  },
+  "behavioral_cases": 0,
+  "decision": "ACCEPTED_COMPILE_ONLY",
+  "limits": [
+    "No Pact counter behavior accepted.",
+    "No delayed next-upkeep debt behavior accepted.",
+    "Placeholder prospective test bodies cannot count as behavior.",
+    "No Manual four-seat/gear/opponent/capability authority."
+  ],
+  "next_gate": "Replace placeholder prospective cases with real engine traces for counter, paid next-upkeep debt, and unpaid-loss path; source-pin and execute exactly those behavioral cases.",
+  "official_counters_delta": 0
+}
