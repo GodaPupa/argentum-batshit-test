@@ -437,5 +437,56 @@ class LauncherSourceBindingTests(unittest.TestCase):
                 (root / path).write_bytes(original)
 
 
+class LoadedJvmManifestAuthorityTests(unittest.TestCase):
+    """Synthetic published-binding shape only; no worker, claim or allocation."""
+
+    def fixture(self, root, *, review_status="ACCEPTED_COMPLETE_R1_LOADED_JVM_WORKER_BOUNDARY"):
+        source = "a" * 40
+        manifest = {"schema": "industrial-waste-v2-r1-expected-loaded-jvm-manifest-v1",
+            "source_commit": source, "loaded_class_sha256": {"example.Worker": "b" * 64}}
+        manifest_path = root / "manifest.json"
+        manifest_path.write_text(json.dumps(manifest))
+        digest = runner.sha(manifest_path)
+        review = {"status": review_status, "manifest_sha256": digest,
+            "source_commit": source, "reviewed_class_names": ["example.Worker"]}
+        review_path = root / "review.json"
+        review_path.write_text(json.dumps(review))
+        runtime = {"source_commit": source,
+            "loaded_jvm_expected_manifest": {"path": "manifest.json", "sha256": digest},
+            "loaded_jvm_independent_review": {"path": "review.json", "sha256": runner.sha(review_path)}}
+        return runtime
+
+    def test_missing_or_unreviewed_expected_manifest_refuses_preclaim_authority(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            with self.assertRaisesRegex(ValueError, "bindings required"):
+                runner.verify_loaded_jvm_manifest_authority(root, {"source_commit": "a" * 40}, Mock())
+            runtime = self.fixture(root, review_status="AUTHOR_CANDIDATE_ONLY")
+            with patch.object(runner, "verify_published_binding"):
+                with self.assertRaisesRegex(ValueError, "independent loaded JVM"):
+                    runner.verify_loaded_jvm_manifest_authority(root, runtime, Mock())
+
+    def test_exact_independently_reviewed_manifest_shape_is_required(self):
+        with tempfile.TemporaryDirectory() as raw:
+            root = Path(raw)
+            runtime = self.fixture(root)
+            with patch.object(runner, "verify_published_binding") as published:
+                self.assertEqual(runner.verify_loaded_jvm_manifest_authority(root, runtime, Mock()),
+                    {"example.Worker": "b" * 64})
+                self.assertEqual(published.call_count, 2)
+                review_path = root / "review.json"
+                review = json.loads(review_path.read_text())
+                review["reviewed_class_names"] = ["example.Other"]
+                review_path.write_text(json.dumps(review))
+                with self.assertRaisesRegex(ValueError, "independent loaded JVM"):
+                    runner.verify_loaded_jvm_manifest_authority(root, runtime, Mock())
+                manifest_path = root / "manifest.json"
+                manifest = json.loads(manifest_path.read_text())
+                manifest["loaded_class_sha256"]["example.Worker"] = "not-a-digest"
+                manifest_path.write_text(json.dumps(manifest))
+                with self.assertRaisesRegex(ValueError, "exact class-byte"):
+                    runner.verify_loaded_jvm_manifest_authority(root, runtime, Mock())
+
+
 if __name__ == "__main__":
     unittest.main()

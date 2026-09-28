@@ -1,0 +1,39 @@
+name: Industrial R1 expected loaded manifest authority static preflight
+on:
+  push:
+    branches: ["industrial-waste/r1-launcher-source-pins-20260927"]
+    paths:
+      - ".github/workflows/industrial-r1-manifest-authority-preflight.yml"
+permissions:
+  contents: read
+jobs:
+  compile-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - name: Bind exact changed source, test and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/industrial-r1-manifest-authority-preflight
+          test "$(git rev-parse HEAD^)" = "86b9d05fdc40f252243df0769a38a10c85f65efe"
+          test "$(git hash-object industrial-waste/v2/r1_execute.py)" = "d368f88f777df8472889d872600723d3412c2575"
+          test "$(git hash-object industrial-waste/v2/test_r1_execute.py)" = "e5301bbef9f1dea654e0122a58382adddb5cf458"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object industrial-waste/v2/r1_execute.py; git hash-object industrial-waste/v2/test_r1_execute.py; git hash-object .github/workflows/industrial-r1-manifest-authority-preflight.yml; git status --porcelain; } > build/reports/industrial-r1-manifest-authority-preflight/source.txt
+      - name: Compile Python syntax only
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 -m py_compile industrial-waste/v2/r1_execute.py industrial-waste/v2/test_r1_execute.py 2>&1 | tee build/reports/industrial-r1-manifest-authority-preflight/compile.log
+          test ! -s build/reports/industrial-r1-manifest-authority-preflight/compile.log
+      - name: Upload original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-r1-manifest-authority-preflight-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/industrial-r1-manifest-authority-preflight/
+          if-no-files-found: error
+          retention-days: 90

@@ -251,6 +251,37 @@ def verify_checkpoint_clarification(root, runtime, api):
         raise ValueError("checkpoint clarification cannot modify the frozen original protocol")
 
 
+def verify_loaded_jvm_manifest_authority(root, runtime, api):
+    """Require separately published expected bytes and independent completeness review.
+
+    This is a preclaim authority check only. The prepared JVM worker must still verify its
+    actually loaded classes against these bytes before it can initialize an allocation.
+    """
+    binding = runtime.get("loaded_jvm_expected_manifest")
+    review_binding = runtime.get("loaded_jvm_independent_review")
+    if not isinstance(binding, dict) or not isinstance(review_binding, dict):
+        raise ValueError("accepted loaded JVM manifest and independent review bindings required")
+    verify_published_binding(root, binding, api)
+    verify_published_binding(root, review_binding, api)
+    manifest = read(repo_path(root, binding["path"]))
+    review = read(repo_path(root, review_binding["path"]))
+    if (manifest.get("schema") != "industrial-waste-v2-r1-expected-loaded-jvm-manifest-v1"
+            or manifest.get("source_commit") != runtime.get("source_commit")):
+        raise ValueError("loaded JVM manifest schema or qualified source mismatch")
+    classes = manifest.get("loaded_class_sha256")
+    if (not isinstance(classes, dict) or not classes or
+            any(not isinstance(name, str) or not name or
+                not isinstance(digest, str) or re.fullmatch(r"[0-9a-f]{64}", digest) is None
+                for name, digest in classes.items())):
+        raise ValueError("loaded JVM manifest lacks exact class-byte digest set")
+    if (review.get("status") != "ACCEPTED_COMPLETE_R1_LOADED_JVM_WORKER_BOUNDARY"
+            or review.get("manifest_sha256") != binding["sha256"]
+            or review.get("source_commit") != runtime["source_commit"]
+            or review.get("reviewed_class_names") != sorted(classes)):
+        raise ValueError("independent loaded JVM class-set acceptance is incomplete")
+    return classes
+
+
 def validate_authority(root, session, *, require_publication=True):
     if session.get("protocol_id") != PROTOCOL_ID:
         raise ValueError("session protocol drift")
@@ -324,6 +355,7 @@ def validate_authority(root, session, *, require_publication=True):
             or qualification.get("combined_source_qualification") != "PASS"
             or qualification.get("independent_review") != "ACCEPTED"):
         raise ValueError("receiving-project combined-source qualification and independent review are incomplete")
+    verify_loaded_jvm_manifest_authority(root, runtime, api)
     if runtime.get("remaining_runtime_bindings") != []:
         raise ValueError("runtime declares missing bindings")
     api.assert_live_unchanged()
