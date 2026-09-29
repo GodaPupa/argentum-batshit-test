@@ -21,7 +21,7 @@ jobs:
           set -euo pipefail
           OUT=build/reports/sphinx-multicast-unique-proposal
           mkdir -p "$OUT"
-          test "$(git rev-parse HEAD^)" = "18f399468fec6ba44bcf51e4d3bd4309e136833c"
+          test "$(git rev-parse HEAD^)" = "c21fae0a5df7a1dcfecd2b04f5282d3315200c23"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "6fec3a563ef9c7392d8f5aa6795edbb64b93096b"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEMultiCastDiscriminatorReceivingTest.kt)" = "6b794b196d4ff65ab3a7fff5f14febb8f310ab35"
           test "$(git hash-object sphinx-approach/STAGE_E_MULTICAST_UNIQUE_PROPOSAL_BUDGET_20260929.json)" = "94877f7601c2afd63dcd0103ae4d513da4720511"
@@ -45,6 +45,9 @@ jobs:
         run: |
           set -o pipefail
           just test-class SphinxStageEMultiCastDiscriminatorReceivingTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-multicast-unique-proposal/multicast.log
+          xml="$(find . -path '*/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEMultiCastDiscriminatorReceivingTest.xml' -type f -print -quit)"
+          test -n "$xml" && test -s "$xml"
+          cp "$xml" build/reports/sphinx-multicast-unique-proposal/
       - name: Regress accepted Approach whole-actor receiving
         shell: bash
         run: |
