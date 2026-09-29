@@ -1,0 +1,30 @@
+{
+  "schema": "sphinx-stage-e-deem-inferior-receiving-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "four_deck_surface_map": "sphinx-approach/STAGE_E_FOUR_DECK_OWN_CARD_SURFACE_MAP_20260928.json",
+    "engine_card_blob": "0f4393ab92247e2498f6c9475007bdd601d6f4f3",
+    "engine_scenario_blob": "b1c67b541313e28f1d897ac138f6e4cc85ff487e"
+  },
+  "prospective_scope": {
+    "identity": "serpico-terror-benchmark",
+    "copies": 2,
+    "actor_rule": "only when Deem Inferior is the sole current cast offer and the real target domain contains exactly one opposing nonland permanent",
+    "timing": "actor precombat main with real priority",
+    "continuation": "stop at the real target-owner ChooseOptionDecision; opponent placement policy is not inherited by the Sphinx actor"
+  },
+  "required_cases": [
+    "real registered Deem Inferior appears as the sole current cast offer from the frozen benchmark 60",
+    "canonical actor adapter sees exactly one opposing nonland permanent target",
+    "whole actor routes the cast to the unique-target Deem seam",
+    "real engine cast reaches the target owner's second-from-top-or-bottom choice"
+  ],
+  "excluded": [
+    "multiple Deem targets",
+    "ranking Deem against another cast",
+    "target-owner placement strategy",
+    "ordinary priority scheduling beyond this current actor window",
+    "whole-pilot/opponent-package/collector/replay/Stage-E admission/gameplay"
+  ],
+  "official_counters_delta": 0
+}
