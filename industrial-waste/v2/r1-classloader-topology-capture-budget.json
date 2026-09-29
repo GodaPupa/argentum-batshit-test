@@ -1,0 +1,26 @@
+{
+  "schema": "industrial-r1-classloader-topology-capture-budget-v1",
+  "date_utc": "2026-09-29",
+  "authority": "SEED_FREE_CAPTURE_ONLY",
+  "required": [
+    "actual Gradle-daemon context/system loader chain and java.class.path",
+    "actual :ai test-worker context/system loader chain and ordered java.class.path",
+    "representative code-source/loader bindings for Industrial runner, engine fixture, Kotlin and Kotest classes",
+    "wrapper/Gradle/JDK identifiers retained alongside the capture"
+  ],
+  "accepted_dependencies": [
+    "gradle implementation closure run 36510141811",
+    "ai testRuntimeClasspath capture run 36503229016",
+    "toolchain byte closure run 36505080847",
+    "OS/Python closure run 36505731714"
+  ],
+  "excluded": [
+    "official corpus",
+    "expected-manifest adoption",
+    "prepared-worker attestation",
+    "claim",
+    "allocation",
+    "gameplay"
+  ],
+  "official_counters_delta": 0
+}
