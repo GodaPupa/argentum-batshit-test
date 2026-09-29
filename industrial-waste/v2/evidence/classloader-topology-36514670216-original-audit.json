@@ -1,0 +1,34 @@
+{
+  "schema": "industrial-r1-classloader-topology-36514670216-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36514670216,
+  "artifact_id": 11010148538,
+  "artifact_sha256": "f4b92f1f954a961ccf9937a4efd89ee27c066beac1bb59e2bf3dc68c436229aa",
+  "head": "5cb767b701bac21cace4c245bb1154aa95be7cd4",
+  "parent": "ee40bffc29f973a722073954679dfb9eefee4905",
+  "pins": {
+    "worker_probe": "eee28d377387df5b07cb00c9adc111e975d14188",
+    "budget": "8bd543dff47a888c54e8c5132a9c4d0e336acdc3",
+    "daemon_probe": "4cda6059d86b2393b0144dca2fb496fcb7817221",
+    "workflow": "5e390930abf46d0e6ab753ae3cdc0a9f08265d39"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "official_seed_files_read": false
+  },
+  "result": {
+    "daemon_probe": "FAILED_PRE_CAPTURE",
+    "worker_probe": "SKIPPED",
+    "behavioral_cases": 0
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_GRADLE_CONFIGURATION_CACHE_SCRIPT_CAPTURE",
+    "detail": "The init-script task referenced the Gradle script object at execution time via gradle.rootProject/gradle.gradleVersion, which Gradle 9.6.1 configuration cache rejects before any topology output or worker test.",
+    "runtime_inference": "NONE"
+  },
+  "successor_rule": "Preserve this original. Capture project directory and Gradle version as configuration-time scalar values and use only those values inside doLast; re-pin the changed daemon probe/workflow. Do not rerun unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
