@@ -1,0 +1,32 @@
+{
+  "schema": "pest-monster-london-raw-m5-probe-36514833875-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36514833875,
+  "artifact_id": 11011080126,
+  "artifact_sha256": "ddda652aef49f96dd21d193d5f954e1c32919e88cee708952c2ad26ddbba46ac",
+  "head": "a5bf98d313f0685f9545bc3439135c8b3f8d1dbc",
+  "parent": "b88569d594395313af7e3ca01110f91038831491",
+  "pins": {
+    "raw_controller": "4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+    "test": "3b9a1fce320b53737607145f3c5f079a3da3e19d",
+    "budget": "02b98ef40a036044ef788a76a22cbffb7605f6bd",
+    "workflow": "be443b817a983e6836289d4ba6266ece72330acf"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed"
+  },
+  "result": {
+    "behavioral_cases_executed": 0,
+    "compile_failure": "PestMonsterLondonRawM5ProbeTest.kt:35 constructor lambda bound to trailing insightSink; gameStateProvider omitted"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_TEST_CONSTRUCTOR_ARGUMENT_BINDING",
+    "detail": "Probe fixture used a trailing lambda instead of the existing named gameStateProvider argument. Compilation stopped before any reflection or raw M5 predicate execution.",
+    "behavior_inference": "NONE"
+  },
+  "successor_rule": "Preserve this original. Change only the probe constructor call to named gameStateProvider = { game.state }, re-pin changed test/workflow, and execute the same six atoms as a changed-source successor.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
