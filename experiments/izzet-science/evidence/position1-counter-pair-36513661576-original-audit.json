@@ -1,0 +1,37 @@
+{
+  "schema": "izzet-position1-counter-pair-36513661576-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36513661576,
+  "artifact_id": 11009629364,
+  "artifact_sha256": "a6d242ee1595022d29bfb034d8ed97e251ca5cd0249e1b12274ea3842ba1fa67",
+  "head": "87fce2fdf3c785f717ae366e6333ff163ffa5206",
+  "parent": "ddf694f5af43dc7e62dd036d2fda2483945d8088",
+  "pins": {
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "arcane_test": "0046c1bbaef6c037be51b796c1cb9b7349e4598e",
+    "memory_lapse_test": "e7e60d5a68e4b8d5f2f016a88364b3b25413853b",
+    "budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694",
+    "stack_effects": "71d6aba8ec11f2d597e9168c1b4b2512e8599881",
+    "counter_executor": "a46651a83da18774daa93a110ae9b0d62481f3c9",
+    "stack_resolver": "a46aed0092806245462dbd881fab327d838de4e7",
+    "workflow": "ffc10d234f78b7b6e1c8aed759251cd0c6acb636"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed"
+  },
+  "result": {
+    "behavioral_cases_executed": 0,
+    "compile_failure": "StackEffects.kt:201 'when' expression must be exhaustive; CounterDestination.LibraryTop branch absent"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_SHARED_COUNTER_DESCRIPTION_EXHAUSTIVENESS",
+    "detail": "The first API repair introduced CounterDestination.LibraryTop and wired it into CounterEffectExecutor/StackResolver, but the SDK CounterEffect.description when-expression was not extended. Compilation stopped before Arcane Denial or Memory Lapse behavioral cases.",
+    "behavior_inference": "NONE"
+  },
+  "successor_rule": "Preserve this original. Add only the missing LibraryTop description branch in CounterEffect.description, re-pin the changed shared SDK source/workflow, and execute the same six-case bank as a changed-source successor. Do not rerun unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
