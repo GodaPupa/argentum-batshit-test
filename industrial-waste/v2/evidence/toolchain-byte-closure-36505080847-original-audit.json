@@ -1,0 +1,52 @@
+{
+  "schema": "industrial-r1-seed-free-toolchain-byte-closure-36505080847-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36505080847,
+  "artifact_id": 11006268919,
+  "artifact_sha256": "84bc6032a96bb4185c7300c1d1986182b40a94643e60ed352cfa30d40dd30532",
+  "head": "3de9b0fac5b219abece9d8ecbbbed58720cea0c2",
+  "parent": "e89b885a9ebb0be98fa9fdc208b1491d1bd517aa",
+  "pins": {
+    "capture_script": "6f7f805ada44105efb0062c52901d189e6d43b4f",
+    "budget": "e658528f267728bfcdbd8af5fd2ab65fa14e24a1",
+    "workflow": "b0c78e8e07afeba79d74b95860b4e4a4e13a3897"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "official_seed_files_read": false
+  },
+  "result": {
+    "source_tree": "e4032700e532682828008ac2c4162d11ebc76c46",
+    "jdk_node_count": 542,
+    "jdk_canonical_inventory_sha256": "5a8390e39121c6b14c30881518b4d91dfc62c94c45926cf0da5c47a24f088f58",
+    "executables": {
+      "java": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+      "python3": "e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+      "bash": "bc5945feb8bd26203ebfafea5ce1878bb2e32cb8fb50ab7ae395cfb1e1aaaef1",
+      "just": "3ad66571feae522db2cad31b9613bf21035b8a06d2738d6fc8fe6089856f2042"
+    },
+    "gradle_wrapper": {
+      "script": "a5a5c199ba02189ae8c46a334223371a20599d9c298ef65e7540ede4a3f72d59",
+      "jar": "497c8c2a7e5031f6aa847f88104aa80a93532ec32ee17bdb8d1d2f67a194a9c7"
+    }
+  },
+  "decision": "ACCEPTED_SEED_FREE_TOOLCHAIN_BYTE_CLOSURE_SLICE_ONLY",
+  "remaining": [
+    "OS dynamic-loader/system shared-library closure outside JAVA_HOME",
+    "Python standard-library/import closure",
+    "Gradle launcher/daemon/test-worker implementation classpaths beyond the already accepted :ai:testRuntimeClasspath",
+    "generated/hidden class policy and loader topology",
+    "immutable store/lifetime enforcement",
+    "authenticated prepared-worker attestation",
+    "complete expected-manifest adoption"
+  ],
+  "authority": {
+    "expected_manifest": false,
+    "prepared_worker": false,
+    "claim": false,
+    "r1": false
+  },
+  "official_counters_delta": 0
+}
