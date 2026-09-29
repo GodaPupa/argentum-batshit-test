@@ -1,0 +1,45 @@
+name: Pest London M5 atomic bank
+on:
+  push:
+    branches: ["pest/london-predicate-vector-20260928"]
+    paths: [".github/workflows/pest-london-m5-atomic-bank.yml"]
+permissions: {contents: read}
+jobs:
+  freeze:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - name: Bind exact atomic generator budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-london-m5-atomic-bank
+          test "$(git rev-parse HEAD^)" = "35f4febfd74eabb494ab022834e45c6ca66a593f"
+          test "$(git hash-object docs/experiments/pest-control/generate_london_m5_atomic_bank.py)" = "7b90dba88e76e167b28b6050d5af5f1c3ff3b800"
+          test "$(git hash-object docs/experiments/pest-control/london-m5-atomic-bank-budget-20260929.json)" = "0fe998e0134648ee7852d5e52a6ddecc2d886d18"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object docs/experiments/pest-control/generate_london_m5_atomic_bank.py; git hash-object docs/experiments/pest-control/london-m5-atomic-bank-budget-20260929.json; git hash-object .github/workflows/pest-london-m5-atomic-bank.yml; git status --porcelain; } > build/reports/pest-london-m5-atomic-bank/source.txt
+      - name: Generate atomic M5 comparator bank
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 docs/experiments/pest-control/generate_london_m5_atomic_bank.py > build/reports/pest-london-m5-atomic-bank/atomic-bank.json
+          python3 - <<'PY'
+          import json
+          p="build/reports/pest-london-m5-atomic-bank/atomic-bank.json"
+          x=json.load(open(p))
+          print({k:x[k] for k in ["reachable_seven_card_name_multisets","unique_m5_input_signatures","unique_atomic_development_questions","atomic_bank_sha256","signature_to_atoms_sha256","truth_assigned"]})
+          assert x["reachable_seven_card_name_multisets"]==882297
+          assert x["unique_m5_input_signatures"]==79972
+          assert x["truth_assigned"] is False
+          assert x["unique_atomic_development_questions"]>0
+          PY
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-london-m5-atomic-bank-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-london-m5-atomic-bank/
+          if-no-files-found: error
+          retention-days: 90
