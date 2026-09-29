@@ -1,0 +1,39 @@
+{
+  "schema": "sphinx-stage-e-sleep-escape-receiving-36526320848-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36526320848,
+  "artifact_id": 11014078832,
+  "artifact_sha256": "144de240673fd001697c26d061c003aae5f575104cbee398ac0711a9510e977b",
+  "head": "4f9ff7f27cf994aa8c86634fb207ce7a8f177ca1",
+  "parent": "5e77645105b3ff0f46a5dd9a7d0f584ae84f6519",
+  "pins": {
+    "budget": "058d5d314c635783c6acd6c2288a0bc3237c02f5",
+    "payment_projection": "73ee259bac39fecf8fd2d47cad57f5ccb0ff911b",
+    "payment_test": "63659b89b0bfee55e13f9392a1a59dfc560b276e",
+    "pilot": "a783d5e2fc15acf2f17581c930ef33f72c30d7eb",
+    "actor_adapter": "0c77037507e07c912cc034af5be067b13d301d0b",
+    "whole_actor": "90271284f6eb8f0c389e460b394467a3adc6b872",
+    "receiving_test": "1e0823c033cd37314e086f16cb89069d99160883",
+    "benchmark_deck": "da2f0d8d1e7a6d464567f765483d0145ae3726dd",
+    "sleep_definition": "96d3609ed36d495ca53b00eff316b156f87c2f6c",
+    "sleep_engine_scenario": "52b3886dc31fc1f62234a83a27591aed8891c907",
+    "workflow": "6b1c5cdbfca9bb17ae3ed986dad636cc4403d6ba"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache"
+  },
+  "result": {
+    "behavioral_cases_executed": 0,
+    "compile_failure": "SphinxStageESleepEscapeReceivingTest.kt:56-57 unresolved reference PlayerConfig"
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_RECEIVING_FIXTURE_IMPORT_BINDING",
+    "detail": "The prior adapter AdditionalCostPayment import is corrected and gym main compilation succeeds. Test compilation then fails because the new bounded Sleep receiving fixture uses PlayerConfig without importing com.wingedsheep.engine.core.PlayerConfig. No payment, engine-scenario, receiving or escape-policy inference is taken from this original."
+  },
+  "decision": "INCOMPLETE_NO_SLEEP_ESCAPE_ACCEPTANCE",
+  "successor": "Preserve this original. Add only import com.wingedsheep.engine.core.PlayerConfig to the receiving fixture, re-pin the changed fixture/workflow parent, and rerun the exact frozen bank with all production/card/engine bytes unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
