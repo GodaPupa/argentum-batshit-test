@@ -1,5 +1,6 @@
 package com.wingedsheep.gym.actorinput
 
+import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
@@ -10,6 +11,7 @@ import com.wingedsheep.engine.state.components.identity.CantBeCounteredComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.FaceDownComponent
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
@@ -20,7 +22,7 @@ import com.wingedsheep.sdk.model.EntityId
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
-/** Ten fixed shared projection checks. These do not run a pilot or experimental game. */
+/** Eleven fixed shared projection checks. These do not run a pilot or experimental game. */
 class ActorSpellPaymentProjectionTest : ScenarioTestBase() {
     private val adapter = ObservationAdapter(cardRegistry)
     private val enumerator = LegalActionEnumerator.create(cardRegistry)
@@ -223,6 +225,48 @@ class ActorSpellPaymentProjectionTest : ScenarioTestBase() {
             projected.totalMana shouldBe null
             projected.blueRemainingAfterPayment shouldBe null
             projected.tappedSourceIds shouldBe emptyList()
+        }
+
+        test("SP11 explicit Artful Dodge flashback projects the same basic-blue payment as the real cast") {
+            val game = scenario()
+                .withPlayers("Player", "Opponent")
+                .withCardInGraveyard(1, "Artful Dodge")
+                .withLandsOnBattlefield(1, "Island", 1)
+                .withCardOnBattlefield(1, "Savannah Lions")
+                .withActivePlayer(1)
+                .withPriorityPlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+            val spellId = game.findCardsInGraveyard(1, "Artful Dodge").single()
+            val creature = game.findPermanent("Savannah Lions")!!
+            val before = game.state
+            val offered = input(before).legalActions.single {
+                (it.action as? CastSpell)?.let { cast ->
+                    cast.cardId == spellId &&
+                        cast.useAlternativeCost &&
+                        cast.alternativeCostType == AlternativeCostType.FLASHBACK
+                } == true
+            }
+            val projected = offered.basicBluePayment!!
+            projected.status shouldBe ActorBasicBluePaymentStatus.PLANNED
+            projected.availableBlueMana shouldBe 1
+            projected.totalMana shouldBe 1
+            projected.blueRemainingAfterPayment shouldBe 0
+            projected.tappedSourceIds.size shouldBe 1
+            game.state shouldBe before
+
+            val cast = (offered.action as CastSpell).copy(
+                targets = listOf(ChosenTarget.Permanent(creature))
+            )
+            game.execute(cast).error shouldBe null
+            val tapped = before.getBattlefield(game.player1Id).filter {
+                before.getEntity(it)?.has<TappedComponent>() == false &&
+                    game.state.getEntity(it)?.has<TappedComponent>() == true
+            }.sortedBy { it.value }
+            tapped shouldBe projected.tappedSourceIds
+            val pool = game.state.getEntity(game.player1Id)!!.get<ManaPoolComponent>()!!
+            pool.blue shouldBe projected.bluePoolAfterPayment
+            game.state.stack shouldBe listOf(spellId)
         }
     }
 }
