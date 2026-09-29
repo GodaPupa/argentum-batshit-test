@@ -1,0 +1,41 @@
+{
+  "schema": "izzet-position1-frantic-search-36505896464-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36505896464,
+  "artifact_id": 11007174462,
+  "artifact_sha256": "396242917412591dcdfdb3e116a7283fb3ba7735a25f93d808974abd2bf785a5",
+  "head": "a77d0814472454935f4549683a19bd9f382236b7",
+  "parent": "22eec40f93ba8da82b0678bc8ee8af0f8116984f",
+  "pins": {
+    "frantic_search": "6c3ad836867f9789894e5da5aeb35ab6d0dbc906",
+    "test": "46fa3c80e3ca7abb03841ce749192e5727b369d9",
+    "budget": "ed0a88a7341ad003079b7e6e7b5c7fd9b7d6b99c",
+    "workflow": "f91c2bbc575a0021aa15c01d041f31e1c11671bf"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "tests": 3,
+    "passes": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "decision": "ACCEPTED_POSITION1_FRANTIC_SEARCH_MECHANICS_COMPONENT_ONLY",
+  "accepted_scope": [
+    "draw two occurs before mandatory discard-two choice",
+    "discard-two resolves before land-untap choice",
+    "up to three lands across either player may be selected",
+    "choosing zero lands is legal and leaves the land tapped"
+  ],
+  "limits": [
+    "No whole Izzet pilot, action ranking, other missing-card support, PDH commander lifecycle/damage/event ledger, Position-1 execution admission, seed or gameplay authority."
+  ],
+  "next_gate": "Continue current-runtime registry reinventory and the smallest reusable missing-card/mechanic batches; separately close PDH lifecycle/pilot/replay admission.",
+  "official_counters_delta": 0
+}
