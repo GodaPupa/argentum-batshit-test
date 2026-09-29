@@ -1,5 +1,6 @@
 package com.wingedsheep.gym.sphinx
 
+import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.gym.actorinput.ActorBasicBluePaymentStatus
@@ -38,7 +39,9 @@ class SphinxStageEOwnDeck private constructor(val sha256: String, internal val c
 }
 
 /** A caller selects an already-existing component function; this adapter does not rank actions. */
-enum class SphinxStageEComponentCall { CURRENT_CAST, SETUP_DRAW, DEPLOYMENT, COUNTERSPELL, SNAP, DEEM_INFERIOR }
+enum class SphinxStageEComponentCall {
+    CURRENT_CAST, SETUP_DRAW, DEPLOYMENT, COUNTERSPELL, SNAP, DEEM_INFERIOR, ARTFUL_DODGE_FLASHBACK
+}
 
 sealed interface SphinxStageEAdapterResult {
     data class Proposed(val proposal: ActorProposal, val reason: String) : SphinxStageEAdapterResult
@@ -74,8 +77,20 @@ object SphinxStageEActorAdapter {
             val cast = legal.action as? CastSpell ?: unsupported("This component seam only represents a current CastSpell")
             require(cast.playerId == input.actorId)
             val ownHand = ownZone(input, Zone.HAND)
-            val card = ownHand.singleOrNull { it.entityId == cast.cardId }
-                ?: unsupported("The cast is not a card in the actor's currently visible hand")
+            val card = if (componentCall == SphinxStageEComponentCall.ARTFUL_DODGE_FLASHBACK) {
+                if (!cast.useAlternativeCost || cast.alternativeCostType != AlternativeCostType.FLASHBACK) {
+                    unsupported("Artful Dodge receiving requires the real FLASHBACK alternative-cost action")
+                }
+                val graveyard = ownZone(input, Zone.GRAVEYARD)
+                graveyard.singleOrNull { it.entityId == cast.cardId }
+                    ?: unsupported("The flashback cast is not a currently visible graveyard card")
+            } else {
+                ownHand.singleOrNull { it.entityId == cast.cardId }
+                    ?: unsupported("The cast is not a card in the actor's currently visible hand")
+            }
+            if (componentCall == SphinxStageEComponentCall.ARTFUL_DODGE_FLASHBACK && card.name != "Artful Dodge") {
+                unsupported("Only Artful Dodge is qualified by the flashback receiving seam")
+            }
             if (card.name !in ownDeck.cards) unsupported("An acquired card outside the frozen own list needs qualification")
             val payment = legal.basicBluePayment ?: unsupported("Current canonical payment projection is absent")
             if (payment.status == ActorBasicBluePaymentStatus.UNSUPPORTED) unsupported(payment.reason)
@@ -98,6 +113,8 @@ object SphinxStageEActorAdapter {
                 SphinxStageEComponentCall.COUNTERSPELL -> SphinxStageEPilotComponent.chooseCounterspell(policyInput)
                 SphinxStageEComponentCall.SNAP -> SphinxStageEPilotComponent.chooseSnap(policyInput)
                 SphinxStageEComponentCall.DEEM_INFERIOR -> SphinxStageEPilotComponent.chooseDeemInferior(policyInput)
+                SphinxStageEComponentCall.ARTFUL_DODGE_FLASHBACK ->
+                    SphinxStageEPilotComponent.chooseArtfulDodgeFlashback(policyInput)
             }
             if (choice.actionId == null) return SphinxStageEAdapterResult.Declined(input.bindingHash, choice.reason)
             require(choice.actionId == offerId) { "Component returned a different current offer" }
