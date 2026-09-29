@@ -1,0 +1,38 @@
+name: Industrial seed-free toolchain byte closure
+on:
+  push:
+    branches: ["industrial-waste/r1-manifest-capture-20260928"]
+    paths: [".github/workflows/industrial-toolchain-byte-closure.yml"]
+permissions: {contents: read}
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact toolchain capture budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/industrial-toolchain-closure
+          test "$(git rev-parse HEAD^)" = "e89b885a9ebb0be98fa9fdc208b1491d1bd517aa"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_toolchain_byte_closure.py)" = "6f7f805ada44105efb0062c52901d189e6d43b4f"
+          test "$(git hash-object industrial-waste/v2/r1-seed-free-toolchain-byte-closure-budget.json)" = "e658528f267728bfcdbd8af5fd2ab65fa14e24a1"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object industrial-waste/v2/capture_seed_free_toolchain_byte_closure.py; git hash-object industrial-waste/v2/r1-seed-free-toolchain-byte-closure-budget.json; git hash-object .github/workflows/industrial-toolchain-byte-closure.yml; git status --porcelain; } > build/reports/industrial-toolchain-closure/source.txt
+      - name: Capture seed-free toolchain bytes
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 industrial-waste/v2/capture_seed_free_toolchain_byte_closure.py 2>&1 | tee build/reports/industrial-toolchain-closure/run.log
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-toolchain-byte-closure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/industrial-toolchain-closure/
+          if-no-files-found: error
+          retention-days: 90
