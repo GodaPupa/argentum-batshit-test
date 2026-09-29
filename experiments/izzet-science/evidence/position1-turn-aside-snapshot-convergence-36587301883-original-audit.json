@@ -1,0 +1,106 @@
+{
+  "schema": "izzet-position1-turn-aside-snapshot-convergence-36587301883-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36587301883,
+  "artifact_id": 11042273431,
+  "artifact_sha256": "9b1b8e8f9e9a44c924c5e85898c02357768c5c604fdfa74a8996283cd105f191",
+  "pre_materialization_head": "a946043504e0807b5dcc0a0428639984d761d3e4",
+  "materialized_snapshot_commit": "393777a38d814287df1e9e16c79b85216c29703c",
+  "parent_main": "a3937be2e518b2b6cd66b4e9adedb095e9f9530a",
+  "pins": {
+    "budget": "ab8a3fa6e7193aa2b8ded2b50cd680042f245e99",
+    "turn_aside": "96a656b7fdd77ae10045d523e281eb34f5cb711e",
+    "semantic_fixture": "0eec9947e43bb43a9c3bbe9d90a33626a243cf3f",
+    "workflow": "b5955a4d6da280eef81012d4ecc07eb6419b8710",
+    "consumed_semantic_audit": "f33d7e88d5732ef7a266da95d47671b4d1f020f9",
+    "consumed_v2_incomplete_audit": "position1-turn-aside-snapshot-reconcile-v2-36586020448-original-audit.json"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "workflow_conclusion": "success",
+    "snapshot_and_cardlint": "success; fresh --rerun-tasks --no-build-cache",
+    "semantic_rerun": "not performed; prior clean 3/3 Turn Aside semantic original consumed by reference only",
+    "generated_originals_preserved": [
+      "ALL",
+      "HML",
+      "M13",
+      "ROE",
+      "SOM",
+      "ULG"
+    ],
+    "generated_patches_preserved": true,
+    "materialized_commit_contains_exactly_six_snapshot_files": true,
+    "materialized_blobs_match_binding": true
+  },
+  "exact_snapshot_reconciliation": {
+    "ALL": {
+      "base_blob": "0a92b0df2784fb5b91a9c275f0b1fbdb89b159e1",
+      "generated_blob": "22995091d0d3b38394665babfb808201f92a9de0",
+      "added": [
+        "Arcane Denial"
+      ],
+      "unchanged_existing_records": 4
+    },
+    "HML": {
+      "base_blob": "c169b062c569a6a3b7eebb057812a27cf4b849b0",
+      "generated_blob": "8b5c7709a7ed61a6ceded8c996381e48d99182f6",
+      "added": [
+        "Memory Lapse"
+      ],
+      "unchanged_existing_records": 5
+    },
+    "M13": {
+      "base_blob": "5414bc0eca9b15c3036c017842b5771157fe7c59",
+      "generated_blob": "a5b38542699ea6ce9df09bd8734d9a9266033bd8",
+      "added": [
+        "Archaeomancer"
+      ],
+      "unchanged_existing_records": 22
+    },
+    "ROE": {
+      "base_blob": "0e7b2fd35a00e9a0457371d1121e1129f26611fa",
+      "generated_blob": "7c1d1892ff6cb236e2e65550b1e45b186ae06972",
+      "added": [
+        "Mnemonic Wall"
+      ],
+      "unchanged_existing_records": 67
+    },
+    "SOM": {
+      "base_blob": "2996ec679538e38b70f4ac5b1546b0ffca63463d",
+      "generated_blob": "58c3b678ced10c4fd55a0e7a1bb1fbeffcc66e3c",
+      "added": [
+        "Turn Aside"
+      ],
+      "unchanged_existing_records": 84
+    },
+    "ULG": {
+      "base_blob": "e73f3fd6a781b52a3af3b7735f2e0b2565e0cfea",
+      "generated_blob": "1a82f68a88acc62a6bb1fff80a55a92e18a246ce",
+      "added": [
+        "Frantic Search",
+        "Snap"
+      ],
+      "unchanged_existing_records": 57
+    }
+  },
+  "decision": "ACCEPTED_EXACT_SIX_SNAPSHOT_CONVERGENCE",
+  "accepted_scope": [
+    "The six generated snapshot files are exactly the predeclared reconciliation and change no pre-existing snapshot record.",
+    "ULG snapshot debt is resolved prospectively as exactly Frantic Search plus Snap, both already accepted mainline card definitions.",
+    "The reconciled snapshots may be adopted to main together with the already-clean Turn Aside card definition and semantic fixture."
+  ],
+  "limits": [
+    "No whole Izzet Position-1 action ranking or pilot competence.",
+    "No commander lifecycle/damage/event-ledger authority.",
+    "No replay/durability/collector admission beyond the scoped card/snapshot gate.",
+    "No seed, allocation or gameplay authority."
+  ],
+  "next_gate": "Adopt exact Turn Aside card/test bytes and the six reconciled snapshot blobs to main. Then continue the smallest missing Position-1 mechanics/whole-pilot gates under the current registry inventory.",
+  "authority_granted": [
+    "exact Turn Aside card/snapshot component adoption to main",
+    "exact six reconciled snapshot blobs"
+  ],
+  "official_counters_delta": 0
+}
