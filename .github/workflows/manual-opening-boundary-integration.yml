@@ -20,12 +20,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/manual-opening-boundary-integration
-          test "$(git rev-parse HEAD^)" = "03cb270a456158c92d332b447c412b28d732821b"
+          test "$(git rev-parse HEAD^)" = "7aa7b8e00154dc4e1aebdd717e9d82027030ef79"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/contract/ObservationBuilder.kt)" = "fc9012e32185f3419ac1a6e56dcab06929aeed8d"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningActionPolicy.kt)" = "bd58d1b166a86a8d6e076f4dd2e8f34f533e2a6e"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt)" = "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt)" = "44608301d535a2114073d80c06d5ca0480c40043"
-          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningBoundaryIntegrationTest.kt)" = "fc5806419c31c1049e7dd044ee95845cc4188475"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningBoundaryIntegrationTest.kt)" = "8f71cc189903437189c306d72d76576b2d4a6d2b"
           test "$(git hash-object experiments/manual-transmission-phase2/opening-boundary-integration-budget.json)" = "7c115d24bd0b340282881dd52a5c6e6427297db7"
           { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/contract/ObservationBuilder.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningActionPolicy.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningBoundaryIntegrationTest.kt; git hash-object experiments/manual-transmission-phase2/opening-boundary-integration-budget.json; git hash-object .github/workflows/manual-opening-boundary-integration.yml; git status --porcelain; } > build/reports/manual-opening-boundary-integration/source.txt
       - name: Execute four real masked opening boundary traces
