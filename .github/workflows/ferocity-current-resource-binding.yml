@@ -1,0 +1,35 @@
+name: Ferocity current source08 resource binding capture
+on:
+  push:
+    branches: ["ferocity/current-resource-binding-hash-20260929"]
+    paths: [".github/workflows/ferocity-current-resource-binding.yml"]
+permissions: {contents: read}
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - name: Bind exact source08 capture budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/ferocity-current-resource-binding
+          test "$(git rev-parse HEAD^)" = "fc68c7e4ebbe8d1eab49719c2f848d0000ed6cf2"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/capture_current_source08_resource_binding.py)" = "ee38a8d6f387c751b9677f6dc8e589f929858d3f"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_RESOURCE_BINDING_BUDGET.json)" = "e6e0c4df596b9c2d433570a2311d953522f63df9"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/capture_current_source08_resource_binding.py; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_RESOURCE_BINDING_BUDGET.json; git hash-object .github/workflows/ferocity-current-resource-binding.yml; git status --porcelain; } > build/reports/ferocity-current-resource-binding/source.txt
+      - name: Capture exact current source08 resource bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/capture_current_source08_resource_binding.py | tee build/reports/ferocity-current-resource-binding/run.log
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-current-resource-binding-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-current-resource-binding/
+          if-no-files-found: error
+          retention-days: 90
