@@ -15,14 +15,14 @@ jobs:
         with: {distribution: temurin, java-version: "21"}
       - uses: gradle/actions/setup-gradle@v6
       - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
-      - name: Bind changed observation source fixture and parent
+      - name: Bind corrected PlayLand boundary source fixture and parent
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p build/reports/manual-opening-boundary-integration
-          test "$(git rev-parse HEAD^)" = "7aa7b8e00154dc4e1aebdd717e9d82027030ef79"
+          test "$(git rev-parse HEAD^)" = "dcda97897225c7a064014f74a1258488ac778077"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/contract/ObservationBuilder.kt)" = "fc9012e32185f3419ac1a6e56dcab06929aeed8d"
-          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningActionPolicy.kt)" = "bd58d1b166a86a8d6e076f4dd2e8f34f533e2a6e"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningActionPolicy.kt)" = "386abff9f86495f099677ac9006cc0f37a2efb13"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt)" = "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt)" = "44608301d535a2114073d80c06d5ca0480c40043"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningBoundaryIntegrationTest.kt)" = "8f71cc189903437189c306d72d76576b2d4a6d2b"
