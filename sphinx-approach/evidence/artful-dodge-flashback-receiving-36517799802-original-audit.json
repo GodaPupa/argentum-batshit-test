@@ -1,0 +1,51 @@
+{
+  "schema": "sphinx-stage-e-artful-dodge-flashback-receiving-36517799802-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36517799802,
+  "artifact_id": 11011976474,
+  "artifact_sha256": "960b8745b1c9202d944286b26b34e7dcfdf57d3d01918d0dd86d833b7d8adac4",
+  "head": "451849be31921e7d0b49dec51240e298342f0ae8",
+  "parent": "88e8a31651ea76c38cd64c239327426ad4dd5532",
+  "pins": {
+    "pilot": "762d1f99980e5ecf54d1cda182a9a94e1a573280",
+    "actor_adapter": "1f0f3241190990fe9069540ae639d276d423ce72",
+    "whole_actor": "bc2e6019bfaa3bb652b74d2a001cc84aabb963d1",
+    "test": "97fc1e087ffd4a03dea5d70e5a3d4e0a3543ef0c",
+    "budget": "9932eaea3bfff98fbb8ad11953b3445f445a1066",
+    "frozen_benchmark_deck": "da2f0d8d1e7a6d464567f765483d0145ae3726dd",
+    "artful_dodge_definition": "5ccf13532c94f7f13e9a396eef60ae0617590825",
+    "existing_engine_scenario": "414803dd9d69a058e51d8194842a5b406984ab4c",
+    "workflow": "e6decd58ef04ed14bf88c0abfc2cda90e555287d"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "tests": 1,
+    "passes": 0,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "failure_line": "SphinxStageEArtfulDodgeFlashbackReceivingTest.kt:164",
+    "failure": "Whole actor returned Unqualified because the canonical basic-blue payment projection reported that it requires a current hand-cast offer outside a pending decision."
+  },
+  "diagnostic_facts_reached_before_failure": [
+    "The real benchmark initialization and frozen list binding completed.",
+    "The real LegalActionEnumerator exposed exactly one CastSpell in the prepared actor-main window.",
+    "That offered action was the physical Artful Dodge moved to the actor graveyard.",
+    "The offered action had useAlternativeCost=true and alternativeCostType=FLASHBACK.",
+    "Execution stopped before an accepted actor proposal; no target-selection or resolution claim is made."
+  ],
+  "diagnosis": {
+    "disposition": "INCOMPLETE_FLASHBACK_PAYMENT_PROJECTION",
+    "detail": "The new graveyard/FLASHBACK routing reached the shared canonical payment projection. That projection remains intentionally scoped to current hand casts and returned UNSUPPORTED; the adapter correctly failed closed.",
+    "engine_flashback_inference": "Only the already-asserted legal-action exposure is established by this original; target choice and exile-on-resolution remain unproven here."
+  },
+  "successor_rule": "Preserve this original. Extend only the canonical payment projection needed for the exact current FLASHBACK CastSpell while retaining source-zone/actor/action binding and fail-closed behavior for other alternate costs; pin that changed projection and rerun the same AD1 bank. Do not weaken the Sphinx adapter or broaden generic alternate-cost policy.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
