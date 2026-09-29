@@ -1,0 +1,57 @@
+{
+  "schema": "industrial-r1-supplemental-hermetic-design-independent-review-v1",
+  "date_utc": "2026-09-29",
+  "reviewed_request_commit": "6232406cc8a4c4a5fea39efcd41b6c412e094bc0",
+  "reviewed_proposal_commit": "757286d9b2078bb962f410f7515d5b638e11b2ac",
+  "reviewed_proposal_path": "industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_LAUNCH_DESIGN_20260929.json",
+  "basis": {
+    "complete_runtime_preflight": "industrial-waste/v2/evidence/complete-runtime-candidate-construction-preflight-20260929.json",
+    "complete_runtime_preflight_blob": "21f9134f168c734098e65db38da4ecdd010088e1",
+    "preflight_decision": "HOLD_NO_SEMANTICALLY_COMPLETE_EXPECTED_MANIFEST_FROM_36524059703"
+  },
+  "independent_review": {
+    "archive_member_inventory": {
+      "disposition": "CLOSED_BY_DESIGN",
+      "reason": "The proposal requires ordered archive identity plus every member and standalone runtime-directory entry, explicitly includes resources/generated/synthetic payloads, captures duplicate visibility under effective classpath order, and fails closed on unreadable or unenumerated inputs."
+    },
+    "complete_build_inputs": {
+      "disposition": "CLOSED_BY_DESIGN",
+      "reason": "The proposal captures settings/included builds, all participating build scripts, buildSrc/convention plugins, wrapper/distribution identity, catalogs/locks/verification/repositories, compiler/plugin artifacts and flags, toolchain, generators and allowlisted semantic environment inputs; uncaptured dynamic inputs fail closed."
+    },
+    "immutable_os_image_identity": {
+      "disposition": "CLOSED_BY_DESIGN",
+      "reason": "The proposal requires a predeclared immutable image digest plus architecture and exact Java identity before launch, and supplements it with OS/runtime/Python closure and observable locale/timezone/encoding inputs."
+    },
+    "complete_process_launch_path": {
+      "disposition": "CLOSED_BY_DESIGN",
+      "reason": "The proposal captures the launcher-to-daemon-to-worker topology, executable hashes, canonical argv, working directories, environment, daemon/worker classpaths, JVM arguments, system properties and immutable mount mapping, with fail-closed rejection of unexpected mutations."
+    },
+    "generated_hidden_class_policy": {
+      "disposition": "CLOSED_BY_DESIGN_WITH_POLICY_SELECTION",
+      "selected_policy": "PINNED_GENERATOR_INPUTS",
+      "reason": "A Kotlin/Gradle/Kotest/JVM execution boundary cannot safely assume elimination of generated or VM-hidden classes. The proposal already defines the stricter accepted alternative: bind generator implementations and semantic inputs, census generated classes by loader/origin and byte hash when retrievable, and require deterministic repeat comparison or a separately validator-approved equivalence rule where VM-hidden names are nondeterministic. No generated/hidden family may be silently excluded."
+    }
+  },
+  "decision": "ACCEPT_DESIGN_ONLY",
+  "accepted_scope": [
+    "The proposed supplemental hermetic capture design addresses all five blocking completeness boundaries recorded by the accepted preflight.",
+    "The generated/hidden-class policy for the future capture is PINNED_GENERATOR_INPUTS.",
+    "A future capture may be designed and dispatched only after its immutable platform image, exact workflow/source bytes, expected output schema and preservation paths are predeclared and source-bound."
+  ],
+  "still_required_before_any_manifest_or_r1_authority": [
+    "Predeclare immutable platform/container image by digest and exact architecture/JDK executable identity.",
+    "Implement the single-source supplemental capture without weakening any fail-closed rule.",
+    "Execute exactly one fresh capture from the accepted design and preserve raw original evidence.",
+    "Independently audit the original artifact for source/parent binding, completeness, archive/member/build/platform/process/generated-class coverage, ZIP digest/CRC and freshness.",
+    "Construct and prospectively validate a complete candidate expected manifest only from preserved accepted bytes.",
+    "Independently adopt the exact candidate manifest and combined receiving implementation before prepared-worker or Python admission evaluation.",
+    "Keep R1 permit, exclusive claim, allocation, seed and gameplay gates separate."
+  ],
+  "explicit_non_authority": [
+    "No runtime capture has been executed by this review.",
+    "No expected manifest is accepted.",
+    "No prepared-worker, combined-receiving or execution permit is accepted.",
+    "No claim, seed, allocation, game initialization or gameplay is authorized."
+  ],
+  "official_counters_delta": 0
+}
