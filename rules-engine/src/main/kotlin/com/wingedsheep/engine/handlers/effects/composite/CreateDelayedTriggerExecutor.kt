@@ -19,6 +19,7 @@ import com.wingedsheep.sdk.scripting.effects.CreateTokenEffect
 import com.wingedsheep.sdk.scripting.effects.DelayedTriggerExpiry
 import com.wingedsheep.sdk.scripting.effects.DelayedTriggerTiming
 import com.wingedsheep.sdk.scripting.effects.DealDamagePerEntityInZoneEffect
+import com.wingedsheep.sdk.scripting.effects.DrawUpToEffect
 import com.wingedsheep.sdk.scripting.effects.Effect
 import com.wingedsheep.sdk.scripting.effects.DestroyAllEquipmentOnTargetEffect
 import com.wingedsheep.sdk.scripting.effects.FlipCoinEffect
@@ -401,6 +402,15 @@ class CreateDelayedTriggerExecutor : EffectExecutor<CreateDelayedTriggerEffect> 
                     collectionName = null,
                     damageSource = resolvedSource ?: effect.damageSource
                 )
+            }
+            is DrawUpToEffect -> {
+                // A delayed "target spell's controller may draw" instruction cannot resolve
+                // TargetController after that spell leaves the stack. Freeze the player now,
+                // while the originating spell/ability context and target still exist.
+                val resolvedPlayer = context.resolvePlayerTarget(effect.target, state)
+                if (resolvedPlayer != null) {
+                    effect.copy(target = EffectTarget.SpecificEntity(resolvedPlayer))
+                } else effect
             }
             is CompositeEffect -> effect.copy(
                 effects = effect.effects.map { resolveContextTargets(it, context, state) }
