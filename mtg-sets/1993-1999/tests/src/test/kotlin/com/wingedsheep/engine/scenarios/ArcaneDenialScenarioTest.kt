@@ -6,7 +6,6 @@ import com.wingedsheep.engine.core.NumberChosenResponse
 import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.state.components.identity.CantBeCounteredComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
-import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.all.cards.ArcaneDenial
@@ -19,7 +18,6 @@ import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.types.shouldBeInstanceOf
 
 class ArcaneDenialScenarioTest : FunSpec({
 
@@ -110,29 +108,7 @@ class ArcaneDenialScenarioTest : FunSpec({
         }
         (casterDraw >= 0) shouldBe true
         d.submitDecision(caster, OptionChosenResponse(ordering.id, casterDraw)).error shouldBe null
-        d.stackSize shouldBe 2
-        val topTrigger = d.state.getTopOfStack()
-            ?.let { d.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>() }
-            ?: error("Arcane Denial trigger ordering did not leave a triggered ability on top")
-        val topDrawUpTo = topTrigger.effect.shouldBeInstanceOf<DrawUpToEffect>()
-        topDrawUpTo.target shouldBe EffectTarget.SpecificEntity(victim)
-        val victimLibraryBefore = d.state.getLibrary(victim).size
-        val casterLibraryBefore = d.state.getLibrary(caster).size
-        (victimLibraryBefore > 0) shouldBe true
-        val priorityAfterOrder = d.priorityPlayer
-        val pendingAfterOrder = d.pendingDecision?.let { it::class.simpleName } ?: "null"
-        val firstPass = d.bothPass()
-        val pendingAfterPass = d.pendingDecision?.let { it::class.simpleName } ?: "null"
-        val topAfterPass = d.state.getTopOfStack()
-            ?.let { d.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>()?.effect?.let { effect -> effect::class.simpleName } }
-            ?: "null"
-        error(
-            "IZZET_POST_ORDER_PRIORITY_DIAGNOSTIC " +
-                "target=${topDrawUpTo.target} victimLibraryBefore=$victimLibraryBefore casterLibraryBefore=$casterLibraryBefore " +
-                "priorityAfterOrder=$priorityAfterOrder pendingAfterOrder=$pendingAfterOrder " +
-                "firstPassError=${firstPass.error} priorityAfterPass=${d.priorityPlayer} " +
-                "pendingAfterPass=$pendingAfterPass stackAfterPass=${d.stackSize} topAfterPass=$topAfterPass"
-        )
+        d.resolveUntilDecisionOrEmpty()
 
         val decision = d.pendingDecision as? ChooseNumberDecision
             ?: error("Arcane Denial did not present the draw-up-to-two decision")
