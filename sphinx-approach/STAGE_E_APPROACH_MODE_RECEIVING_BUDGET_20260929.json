@@ -1,0 +1,37 @@
+{
+  "schema": "sphinx-stage-e-approach-mode-receiving-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "prior_sleep_acceptance_commit": "b167bac1dc17c18e7b05cd6340a36201e435ba8f",
+    "approach_card_definition": "4a14fab93b6db0847b5312eaf93fdcab0184e4b7",
+    "approach_engine_scenarios": "ca3baa6052906595140a1bd1da9ac3a2a648f11d",
+    "visible_choice_source": "3ffb0c200de6f2e1f554f7296fe343a27788ba6c",
+    "whole_actor_source": "90271284f6eb8f0c389e460b394467a3adc6b872",
+    "initialized_seat_source": "93ec8d40ab07b3b703e6e45b5324ac103e45d81b",
+    "reconstructed_v01_deck": "e2f0abbc9f99be97b2562a18ae248d70cbefc0e1",
+    "reconstructed_hybrid_deck": "7f76c94e4fbc24acdc982039aa248a1fa9485cd4"
+  },
+  "scope": "Qualify the current whole actor on the real mid-resolution Sphinx's Approach choice sequence without changing production policy: May exile/search, choose exactly four from five visible own graveyard copies, then choose the offered Goliath Sphinx library-search result.",
+  "required_cases": [
+    "reconstructed-v01 exact initialized 60",
+    "reconstructed-hybrid exact initialized 60"
+  ],
+  "per_case_requirements": [
+    "bind the exact frozen initialized seat before any action",
+    "prepare one real Sphinx's Approach in hand, three real Islands on battlefield, five other real Approach copies in the actor graveyard, and preserve a Goliath Sphinx in library behind two safe Island draws",
+    "cast the real Approach and reach the real actor-owned resolution YesNoDecision after mandatory draw two",
+    "whole actor answers yes using only current visible graveyard count plus frozen own-list Sphinx accounting",
+    "with five eligible graveyard copies the real engine exposes exact-four SelectCardsDecision and whole actor chooses exactly four offered physical copies",
+    "the subsequent real Sphinx search decision is answered with an actually offered Goliath Sphinx",
+    "resolution leaves the source plus exactly four paid copies in exile, exactly one unselected Approach in graveyard, a real Goliath Sphinx on battlefield, empty stack and no pending decision"
+  ],
+  "excluded": [
+    "three-copy infeasibility, decline and empty-search mechanics already covered by the unchanged engine scenario bank",
+    "ranking Approach against another simultaneous cast",
+    "ordinary priority scheduling outside the bounded resolution",
+    "combat policy",
+    "opponent package",
+    "collector/replay/Stage-E gameplay authority"
+  ],
+  "official_counters_delta": 0
+}
