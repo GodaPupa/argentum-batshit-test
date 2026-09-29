@@ -1,0 +1,37 @@
+{
+  "schema": "izzet-position1-counter-pair-36513982124-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36513982124,
+  "artifact_id": 11009513415,
+  "artifact_sha256": "c9c9e5444636390f893b0683346565a43414ec5dcb126af750b588e33b9a26bb",
+  "head": "c4399d9108499538f2b2e3b89a691a2cfae22987",
+  "parent": "1a4ac5a459756a712890df006789255aaa7f876c",
+  "pins": {
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "arcane_test": "0046c1bbaef6c037be51b796c1cb9b7349e4598e",
+    "memory_lapse_test": "e7e60d5a68e4b8d5f2f016a88364b3b25413853b",
+    "stack_effects": "8ad94eec5fc9f88cb7920e911a8fc173749d7db7",
+    "counter_executor": "a46651a83da18774daa93a110ae9b0d62481f3c9",
+    "stack_resolver": "a46aed0092806245462dbd881fab327d838de4e7",
+    "budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694",
+    "workflow": "cf9dd602a5f6cd71230c0b6d1eea9f7bfccb1ab3"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed"
+  },
+  "result": {
+    "behavioral_cases_executed": 0,
+    "compile_failure": "ManaPaymentContinuationResumer.kt:589 non-exhaustive CounterDestination when; LibraryTop branch absent"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_UNPAID_COUNTER_DESTINATION_EXHAUSTIVENESS",
+    "detail": "LibraryTop is now described and routed by the direct CounterEffect executor, but the generic unpaid-counter-cost continuation did not handle the new destination. Compilation stopped before Arcane Denial or Memory Lapse behavior.",
+    "behavior_inference": "NONE"
+  },
+  "successor_rule": "Preserve this original. Add only the LibraryTop branch in counterForUnpaidCost using StackResolver.counterSpellToLibraryTop, re-pin changed shared source/workflow, and execute the same bank as changed-source successor.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
