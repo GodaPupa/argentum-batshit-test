@@ -1,0 +1,44 @@
+{
+  "schema": "sphinx-stage-e-artful-dodge-flashback-payment-receiving-36518759522-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36518759522,
+  "artifact_id": 11011993395,
+  "artifact_sha256": "d9ba0aa7caf5ec0aeaadf0cc1905ec1c7554d5175518c2d4ab5470e987f2a956",
+  "head": "86597c9aec07449ddd362f9968cc62461e3e472c",
+  "parent": "9246b26b8b50ee8e2c27818b8784c3b39fd23e6b",
+  "pins": {
+    "payment_projection": "0d5ba2699618e3a5118be1aeb3cf38c485fd581b",
+    "payment_test": "1fcba753f8b0788adc7fd49981ba7a2962cb1dbb",
+    "payment_budget": "b17ff7d73d1389356bb16b13065010459fd85257",
+    "pilot": "762d1f99980e5ecf54d1cda182a9a94e1a573280",
+    "actor_adapter": "1f0f3241190990fe9069540ae639d276d423ce72",
+    "whole_actor": "bc2e6019bfaa3bb652b74d2a001cc84aabb963d1",
+    "receiving_test": "97fc1e087ffd4a03dea5d70e5a3d4e0a3543ef0c",
+    "receiving_budget": "9932eaea3bfff98fbb8ad11953b3445f445a1066",
+    "benchmark_deck": "da2f0d8d1e7a6d464567f765483d0145ae3726dd",
+    "artful_dodge_definition": "5ccf13532c94f7f13e9a396eef60ae0617590825",
+    "engine_scenario": "414803dd9d69a058e51d8194842a5b406984ab4c",
+    "workflow": "3aa2bdb6fa210f565cf4822040b386419753043f"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "receiving_xml_parse": "clean",
+    "payment_log_complete": true,
+    "payment_xml_preserved": false
+  },
+  "observed_behavior": {
+    "shared_payment_log": {"tests": 11, "passes": 11, "failures": 0},
+    "receiving_xml": {"tests": 1, "passes": 1, "failures": 0, "errors": 0, "skipped": 0},
+    "ad1": "real graveyard Artful Dodge FLASHBACK offer selected the sole actor-controlled Cryptic Serpent target and resolved to exile"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_SHARED_PAYMENT_XML_PRESERVATION",
+    "detail": "Both behavioral commands succeeded, but the second gym test-class invocation replaced the gym test-results directory before the final Preserve XML step, so the shared ActorSpellPaymentProjectionTest XML is absent from the original artifact."
+  },
+  "decision": "HOLD_FORMAL_FLASHBACK_ACCEPTANCE_PENDING_PRESERVATION_SUCCESSOR",
+  "successor_rule": "Preserve this original. Change only workflow preservation: copy and fail-closed verify the payment XML immediately after the payment test, before running AD1; keep every behavioral source/test/budget byte unchanged and rerun once.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
