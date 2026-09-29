@@ -1,0 +1,55 @@
+{
+  "schema": "industrial-r1-ai-test-runtime-graph-36503229016-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36503229016,
+  "artifact_id": 11006054822,
+  "artifact_sha256": "85f51e12db75e4ae6527aa2d418bcaa23748d79dc1cc2dd552d03696cad7d13d",
+  "head": "b4f5b0d88f62a66e146efc224d5c96273bce4bf1",
+  "parent": "eca7170980f6ba6805c78812e14eb582ecb824fa",
+  "pins": {
+    "capture_script": "a893c4e446be60da616cdd51714b4ed337274ef3",
+    "budget": "32815c24198b7d38404e57fb5ee7dcd1b9385737",
+    "workflow": "5056b001f32989ad1bd0eb78133b2aa2218eb94c"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "fresh_build": "IndustrialWasteV2RegistryAuditTest --rerun-tasks --no-build-cache",
+    "build_result": "PASS",
+    "capture_result": "PASS"
+  },
+  "result": {
+    "schema": "industrial-r1-seed-free-ai-test-runtime-graph-capture-v1",
+    "source_tree": "2936c31431c98a100611a7a2685f9c46cf8d8c0c",
+    "gradle_project": ":ai",
+    "configuration": "testRuntimeClasspath",
+    "ordered_classpath_entries": 51,
+    "components": 72,
+    "dependencies": 221,
+    "unresolved_dependencies": 0,
+    "resolved_artifacts": 51,
+    "official_seed_files_read": false
+  },
+  "decision": "ACCEPTED_AI_TEST_RUNTIME_GRAPH_SLICE_ONLY",
+  "missing": [
+    "Gradle launcher and daemon implementation classpaths",
+    "Gradle test-worker implementation classpath outside :ai:testRuntimeClasspath",
+    "JDK image/modules/executables/native closure",
+    "OS/container/native dynamic-loader closure",
+    "Python stdlib/import closure",
+    "shell/just/launcher executable closure",
+    "generated/hidden class policy and loader topology",
+    "immutable store/lifetime enforcement",
+    "authenticated prepared-worker attestation",
+    "complete expected-manifest adoption"
+  ],
+  "next_gate": "Combine this accepted ordered :ai:testRuntimeClasspath/dependency/artifact slice with the accepted build-output provenance and implement the next seed-free launcher/worker/toolchain closure slice under the complete-runtime manifest schema; independently review before any expected-manifest or worker admission.",
+  "authority": {
+    "expected_manifest": false,
+    "prepared_worker": false,
+    "claim": false,
+    "r1": false
+  },
+  "official_counters_delta": 0
+}
