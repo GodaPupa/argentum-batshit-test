@@ -1,0 +1,36 @@
+{
+  "schema": "ferocity-resource06-development-admission-byte-compare-36507049610-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36507049610,
+  "artifact_id": 11007079136,
+  "artifact_sha256": "7e3ed46975276687b2d919e124d6b5cd3d1594464dfae6b544c1cbe55a7af819",
+  "head": "e629e98f468c0f850b069fa05477c535a7c58d33",
+  "parent": "9a89043e0186b0e365ccc2a7207def0bd9c5753e",
+  "pins": {
+    "selected_archive_git_blob": "6703d6913a321771563ff200ca99cd65f7c04cd0",
+    "current_development_admission_git_blob": "c64afaf0dac73fe4a73e47a58ababa60a5888064",
+    "comparator": "a79428c322403b9091527a794da4d32c02a6417c",
+    "budget": "d0ef9a46e065ca5e154dce255daa609bd3eab133"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "jvm_started": false,
+    "seed_or_entropy_files_read": false,
+    "game_initialized": false
+  },
+  "observed_archive_directory": {
+    "members": 16,
+    "contains_development_admission": false,
+    "scope": "policy-development FIRST_CELL_POLICY_PLAN / source-freeze / red-madness / shared-actor-utilities files only"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_WRONG_ARCHIVE_SELECTOR",
+    "detail": "The selected 08-historical-first-cell-policy.zip does not contain FerocityDevelopmentAdmission.kt, so the comparator failed at member discovery before any archived/current byte comparison.",
+    "equivalence_inference": "NONE"
+  },
+  "successor_rule": "Preserve this original. Identify the exact preserved Resource06 archive or member from publication evidence, bind that archive/member prospectively, and run a changed-source direct byte comparison. Do not rerun this original unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
