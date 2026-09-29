@@ -251,6 +251,33 @@ object SphinxStageEPilotComponent {
         )
     }
 
+    /**
+     * Sleep of the Dead escape is admitted only by the receiving adapter's exact visible-graveyard
+     * ESCAPE validation, at actor-main timing, when exactly one opposing permanent is offered.
+     * The three-card escape payment is selected by the adapter only when the legal action exposes
+     * exactly three eligible other graveyard cards, so this component introduces no graveyard ranking.
+     */
+    fun chooseSleepEscape(input: SphinxStageEPolicyInput): SphinxStageEPolicyChoice {
+        require(input.offer.epoch == input.facts.epoch) { "stale cast offer" }
+        require(input.offer.cardName == "Sleep of the Dead")
+        if (!input.offer.affordable || input.offer.totalMana > input.facts.availableBlueMana) {
+            return SphinxStageEPolicyChoice(reason = "current escape offer is not payable")
+        }
+        if (input.facts.window != SphinxStageEWindow.ACTOR_MAIN) {
+            return SphinxStageEPolicyChoice(reason = "Sleep escape waits for actor main phase")
+        }
+        val target = input.offer.legalTargets.singleOrNull {
+            it.kind == SphinxStageETargetKind.PERMANENT && !it.controlledByActor
+        } ?: return SphinxStageEPolicyChoice(
+            reason = "Sleep escape requires one reviewed opposing permanent target"
+        )
+        return SphinxStageEPolicyChoice(
+            input.offer.id,
+            target.id,
+            "unique offered Sleep escape target"
+        )
+    }
+
     /** Targets are selected only from the offered public stack choices. */
     fun chooseCounterspell(input: SphinxStageEPolicyInput): SphinxStageEPolicyChoice {
         current(input)
