@@ -1,0 +1,79 @@
+name: Sphinx Approach mode receiving
+on:
+  push:
+    branches: ["sphinx/approach-mode-receiving-20260929"]
+    paths: [".github/workflows/sphinx-approach-mode-receiving.yml"]
+permissions: {contents: read}
+jobs:
+  engine-and-receiving:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact Approach mode sources budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-approach-mode-receiving
+          test "$(git rev-parse HEAD^)" = "6eb45bace4353ecea37e4b5862b7616a4f1c74ba"
+          test "$(git hash-object sphinx-approach/STAGE_E_APPROACH_MODE_RECEIVING_BUDGET_20260929.json)" = "ac552bde7d6000a08992d11df988682b67b9b7e6"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEApproachModeReceivingTest.kt)" = "9a050c5fc5a5ce01afbf5f24a91fb208b5d83ed4"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoice.kt)" = "3ffb0c200de6f2e1f554f7296fe343a27788ba6c"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "90271284f6eb8f0c389e460b394467a3adc6b872"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt)" = "93ec8d40ab07b3b703e6e45b5324ac103e45d81b"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt)" = "3e41a512f91358f763a194527258979755bab7b6"
+          test "$(git hash-object mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/cards/SphinxsApproach.kt)" = "4a14fab93b6db0847b5312eaf93fdcab0184e4b7"
+          test "$(git hash-object mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SphinxsApproachScenarioTest.kt)" = "ca3baa6052906595140a1bd1da9ac3a2a648f11d"
+          test "$(git hash-object sphinx-approach/decks/reconstructed-v01.csv)" = "e2f0abbc9f99be97b2562a18ae248d70cbefc0e1"
+          test "$(git hash-object sphinx-approach/decks/reconstructed-hybrid.csv)" = "7f76c94e4fbc24acdc982039aa248a1fa9485cd4"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object sphinx-approach/STAGE_E_APPROACH_MODE_RECEIVING_BUDGET_20260929.json
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEApproachModeReceivingTest.kt
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoice.kt
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt
+            git hash-object mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fra/cards/SphinxsApproach.kt
+            git hash-object mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SphinxsApproachScenarioTest.kt
+            git hash-object sphinx-approach/decks/reconstructed-v01.csv
+            git hash-object sphinx-approach/decks/reconstructed-hybrid.csv
+            git hash-object .github/workflows/sphinx-approach-mode-receiving.yml
+            git status --porcelain
+          } > build/reports/sphinx-approach-mode-receiving/source.txt
+      - name: Run and preserve unchanged Approach engine scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class SphinxsApproachScenarioTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-approach-mode-receiving/engine.log
+          xml="$(find . -path '*/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest.xml' -type f -print -quit)"
+          test -n "$xml" && test -s "$xml"
+          cp "$xml" build/reports/sphinx-approach-mode-receiving/
+      - name: Run and preserve frozen whole-actor Approach mode receiving
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class SphinxStageEApproachModeReceivingTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-approach-mode-receiving/receiving.log
+          xml="$(find . -path '*/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEApproachModeReceivingTest.xml' -type f -print -quit)"
+          test -n "$xml" && test -s "$xml"
+          cp "$xml" build/reports/sphinx-approach-mode-receiving/
+      - name: Verify both XML originals
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s build/reports/sphinx-approach-mode-receiving/TEST-com.wingedsheep.engine.scenarios.SphinxsApproachScenarioTest.xml
+          test -s build/reports/sphinx-approach-mode-receiving/TEST-com.wingedsheep.gym.sphinx.SphinxStageEApproachModeReceivingTest.xml
+      - name: Preserve exact original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-approach-mode-receiving-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-approach-mode-receiving/
+          if-no-files-found: error
+          retention-days: 90
