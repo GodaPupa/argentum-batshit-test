@@ -52,7 +52,7 @@ class SphinxStageESnapReceivingTest : ScenarioTestBase() {
                 val actor = EntityId.of("snap-$identity-actor")
                 val opponent = EntityId.of("snap-$identity-opponent")
                 val ownNames = own.cards.flatMap { (card, count) -> List(count) { card } }
-                val oppNames = List(59) { "Island" } + "Tolarian Terror"
+                val oppNames = List(59) { "Island" } + "Grizzly Bears"
                 val initialized = GameInitializer(cardRegistry).initializeGame(GameConfig(
                     players = listOf(
                         PlayerConfig("Actual frozen 60", Deck(ownNames), playerId = actor),
@@ -87,8 +87,8 @@ class SphinxStageESnapReceivingTest : ScenarioTestBase() {
                     state = ZoneTransitionService.moveToZone(state, it, Zone.BATTLEFIELD,
                         ZoneEntryOptions(controllerId = actor)).state
                 }
-                val terror = (state.getHand(opponent) + state.getLibrary(opponent)).first { name(state, it) == "Tolarian Terror" }
-                state = ZoneTransitionService.moveToZone(state, terror, Zone.BATTLEFIELD,
+                val targetCreature = (state.getHand(opponent) + state.getLibrary(opponent)).first { name(state, it) == "Grizzly Bears" }
+                state = ZoneTransitionService.moveToZone(state, targetCreature, Zone.BATTLEFIELD,
                     ZoneEntryOptions(controllerId = opponent)).state
                 state = state.copy(phase = Phase.PRECOMBAT_MAIN, step = Step.PRECOMBAT_MAIN,
                     activePlayerId = actor, priorityPlayerId = actor)
@@ -113,7 +113,7 @@ class SphinxStageESnapReceivingTest : ScenarioTestBase() {
                     .shouldBeInstanceOf<SphinxStageEAdapterResult.Proposed>()
                 advance(choice.proposal.action)
                 actorIslands.all { state.getEntity(it)!!.has<TappedComponent>() == false } shouldBe true
-                state.getHand(opponent).contains(terror) shouldBe true
+                state.getHand(opponent).contains(targetCreature) shouldBe true
             }
         }
     }
