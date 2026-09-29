@@ -1,0 +1,46 @@
+name: Izzet Position-1 changed-runtime registry reinventory after Frantic Search
+on:
+  push:
+    branches: ["izzet/position1-registry-reinventory-frantic-20260929"]
+    paths: [".github/workflows/izzet-position1-registry-reinventory-frantic-20260929.yml"]
+permissions: {contents: read}
+jobs:
+  fifty-five-identities:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact changed-runtime diagnostic bank and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/izzet-position1-registry-reinventory
+          test "$(git rev-parse HEAD^)" = "c4bd8022156aef076205078c644ceab2e10380e4"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt)" = "197a99e6c17885bb70511916893d3a33de217feb"
+          test "$(git hash-object experiments/izzet-science/POSITION1_REGISTRY_REINVENTORY_BUDGET_20260928.json)" = "93573c6e365aba4af1b9dfa094adb88553a08dbc"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m13/cards/Archaeomancer.kt)" = "cc5b2951943c875982036f9b7506072ea65d9db6"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/MnemonicWall.kt)" = "dcfca24f1918f79092b7f3274ee454614d15d03e"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/Snap.kt)" = "15c15b39609e97796a110c5228e84265a60cc45d"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/FranticSearch.kt)" = "6c3ad836867f9789894e5da5aeb35ab6d0dbc906"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt; git hash-object experiments/izzet-science/POSITION1_REGISTRY_REINVENTORY_BUDGET_20260928.json; git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/FranticSearch.kt; git hash-object .github/workflows/izzet-position1-registry-reinventory-frantic-20260929.yml; git status --porcelain; } > build/reports/izzet-position1-registry-reinventory/source.txt
+      - name: Execute exact 55 registry identities against changed runtime
+        shell: bash
+        run: |
+          set -o pipefail
+          just test-class IzzetPosition1RegistryInventoryTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/izzet-position1-registry-reinventory/test.log
+      - name: Retain exact XML
+        if: always()
+        run: cp gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml build/reports/izzet-position1-registry-reinventory/ 2>/dev/null || true
+      - name: Preserve original diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-position1-registry-reinventory-frantic-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/izzet-position1-registry-reinventory/
+          if-no-files-found: error
+          retention-days: 90
