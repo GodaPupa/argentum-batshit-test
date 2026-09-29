@@ -1,0 +1,44 @@
+{
+  "schema": "izzet-position1-registry-reinventory-36510279539-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36510279539,
+  "artifact_id": 11008583927,
+  "artifact_sha256": "c6bde9d116d5812fbf07d82e8d98eee0f41e2608553b8fabcb8b75778e913ff6",
+  "head": "7b547471b6bb5a1bd44223ffc6f2476d94ad8fde",
+  "parent": "c4bd8022156aef076205078c644ceab2e10380e4",
+  "pins": {
+    "test": "197a99e6c17885bb70511916893d3a33de217feb",
+    "budget": "93573c6e365aba4af1b9dfa094adb88553a08dbc",
+    "frantic_search": "6c3ad836867f9789894e5da5aeb35ab6d0dbc906",
+    "workflow": "99a3cf01db34d83e30b6300a7a91389212bf3691"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "identities": 55,
+    "registered": 8,
+    "missing": 47,
+    "registered_names": [
+      "Archaeomancer",
+      "Frantic Search",
+      "Kaervek's Torch",
+      "Mnemonic Wall",
+      "Murmuring Mystic",
+      "Snap",
+      "Bonder's Ornament",
+      "Nyxborn Hydra"
+    ]
+  },
+  "decision": "ACCEPTED_CHANGED_RUNTIME_REGISTRY_DIAGNOSTIC_8_PRESENT_47_MISSING",
+  "interpretation": "The workflow failure is the predeclared diagnostic signal that 47 exact identities remain absent; Frantic Search is now present in the changed runtime. Registry presence is not semantic or pilot competence.",
+  "limits": [
+    "No whole Position-1 pilot, opponent competence, PDH lifecycle/damage/event ledger, seed or gameplay authority."
+  ],
+  "next_gate": "Continue the smallest reusable missing-card/mechanic batches and independently close PDH lifecycle/pilot/replay admission.",
+  "official_counters_delta": 0
+}
