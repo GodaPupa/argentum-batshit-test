@@ -41,11 +41,12 @@
   "historical_resource06_not_current": {
     "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt",
     "archived_resource06_git_blob": "df6b3eeec2db72f125c130c5a5173b52c44b9a8d",
-    "archived_resource06_sha256": "ed75e5d32a9eccf90a0379d62716a0a7b695b7196a82f32972df88a03b8b881f",
+    "archived_resource06_sha256": "66278d8eabc90ee0be9edaaeb6a2379efa3260e42d8f92a93c8436c6f48020bb",
     "source08_git_blob": "c64afaf0dac73fe4a73e47a58ababa60a5888064",
-    "disposition": "DIFFERS__DO_NOT_PROMOTE_ARCHIVED_RESOURCE06_ADMISSION_SOURCE"
+    "disposition": "DIFFERS__DO_NOT_PROMOTE_ARCHIVED_RESOURCE06_ADMISSION_SOURCE",
+    "source08_sha256": "ed75e5d32a9eccf90a0379d62716a0a7b695b7196a82f32972df88a03b8b881f"
   },
-  "decision": "ACCEPT_EXACT_CURRENT_RUNNER_TRACE_REPLAY_BYTE_IDENTITY_CANDIDATES_ONLY",
+  "decision": "ACCEPT_CURRENT_RUNNER_TRACE_REPLAY_RESOURCE_AND_PRIORITY_BINDINGS__HOLD_FOR_BUNDLE_AND_RED_RECEIVING",
   "limits": [
     "Git-blob equality establishes exact bytes for the five named runner/trace/replay files only.",
     "This does not independently adopt them as complete D2 authority.",
@@ -53,6 +54,11 @@
     "MisterTwin Red engine/runtime/pilot qualification, runtime/export bundle, complete receiving and independent admission remain open.",
     "No JVM, entropy, seed, allocation or game authority."
   ],
-  "next_gate": "Independently review the exact current source08 DevelopmentAdmission/resource files and current bundle/qualification receipts; then bind the byte-identical runner/trace/replay identities with those current authorities into a completed non-executing first-cell admission manifest.",
-  "official_counters_delta": 0
+  "next_gate": "Qualify current no-game offline bundle production and MisterTwin Red v0.2 engine/runtime/pilot receiving; then independently review the completed non-executing first-cell manifest.",
+  "official_counters_delta": 0,
+  "current_resource_byte_binding_run": 36505469415,
+  "current_priority_observation_run": 36511240177,
+  "current_priority_observation_result": "4/4 PASS",
+  "development_admission_semantic_diff_run": 36510479750,
+  "development_admission_semantic_diff": "current source08 adds FerocityPriorityObservationTest required count 4; independently satisfied by run 36511240177"
 }
