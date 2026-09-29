@@ -1,5 +1,6 @@
 package com.wingedsheep.gym.actorinput
 
+import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.handlers.CostHandler
 import com.wingedsheep.engine.handlers.actions.spell.CastPaymentProcessor
@@ -18,9 +19,10 @@ import com.wingedsheep.sdk.model.EntityId
 import kotlinx.serialization.Serializable
 
 /**
- * A projection of the canonical automatic payment for a plain hand cast funded entirely by
- * unrestricted blue floating mana and ordinary one-blue basic lands. This is deliberately a
- * named representation domain, not a claim that other payments are unreachable or qualified.
+ * A projection of the canonical automatic payment for either a plain hand cast or an explicit
+ * FLASHBACK graveyard cast funded entirely by unrestricted blue floating mana and ordinary
+ * one-blue basic lands. This is deliberately a named representation domain, not a claim that
+ * other payments, zones or alternative costs are unreachable or qualified.
  */
 @Serializable
 data class ActorBasicBluePayment(
@@ -51,14 +53,29 @@ internal class ActorBasicBluePaymentProjector(registry: CardRegistry) {
     fun project(state: GameState, offered: LegalAction): ActorBasicBluePayment? {
         val action = offered.action as? CastSpell ?: return null
         fun unsupported(reason: String) = ActorBasicBluePayment(ActorBasicBluePaymentStatus.UNSUPPORTED, reason)
-        if (state.pendingDecision != null || action.cardId !in state.getHand(action.playerId)) {
-            return unsupported("This projection requires a current hand-cast offer outside a pending decision")
+        if (state.pendingDecision != null) {
+            return unsupported("This projection requires a current cast offer outside a pending decision")
+        }
+        val simpleHandCast = action.cardId in state.getHand(action.playerId) &&
+            action.copy(targets = emptyList()) == CastSpell(action.playerId, action.cardId)
+        val simpleFlashbackCast = action.cardId in state.getGraveyard(action.playerId) &&
+            action.useAlternativeCost &&
+            action.alternativeCostType == AlternativeCostType.FLASHBACK &&
+            action.copy(targets = emptyList()) == CastSpell(
+                action.playerId,
+                action.cardId,
+                useAlternativeCost = true,
+                alternativeCostType = AlternativeCostType.FLASHBACK,
+            )
+        if (!simpleHandCast && !simpleFlashbackCast) {
+            return unsupported(
+                "This projection requires a current plain hand cast or explicit FLASHBACK graveyard cast"
+            )
         }
         if (state.getBattlefield().any { state.getEntity(it)?.has<FaceDownComponent>() == true }) {
             return unsupported("Payment projection with a concealed battlefield source needs canonical qualification")
         }
-        if (action.copy(targets = emptyList()) != CastSpell(action.playerId, action.cardId) ||
-            offered.hasXCost || offered.additionalCostInfo != null || offered.additionalLifeCost != 0 ||
+        if (offered.hasXCost || offered.additionalCostInfo != null || offered.additionalLifeCost != 0 ||
             offered.hasConvoke || offered.hasDelve || offered.hasHarmonize || offered.hasTapForGeneric ||
             offered.tapForPower || offered.requiresForage || offered.modalEnumeration != null ||
             offered.manaCostPerExtraTarget != null || offered.requiresDamageDistribution) {
