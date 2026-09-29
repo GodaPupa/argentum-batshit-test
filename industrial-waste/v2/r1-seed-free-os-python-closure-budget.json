@@ -1,0 +1,24 @@
+{
+  "schema": "industrial-r1-seed-free-os-python-closure-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "ai_test_runtime_graph_run": 36503229016,
+    "toolchain_byte_closure_run": 36505080847
+  },
+  "scope": [
+    "recursively resolve ldd dependencies for java, libjvm, python3, bash and just",
+    "hash every resolved dynamic dependency and separately hash the external-to-JAVA_HOME subset",
+    "hash the Python standard-library tree excluding site-packages, dist-packages and generated __pycache__",
+    "record canonical digests, exact paths, byte sizes and source commit/tree"
+  ],
+  "forbidden": [
+    "official seed files",
+    "allocations",
+    "game initialization",
+    "outcomes",
+    "prepared-worker claim"
+  ],
+  "acceptance": "Fresh source-bound seed-free capture completes, every enumerated file hashes successfully, artifact ZIP is clean, and the retained capture reports zero official counters.",
+  "authority_if_clean": "OS/Python closure slice only; not a complete expected manifest or worker admission.",
+  "official_counters_delta": 0
+}
