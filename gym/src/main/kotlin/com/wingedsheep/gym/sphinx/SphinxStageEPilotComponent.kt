@@ -192,6 +192,22 @@ object SphinxStageEPilotComponent {
         }
     }
 
+    /**
+     * Snap is admitted only when the real legal-action domain contains exactly one opposing
+     * permanent target. This is a unique-target seam, not a general creature-removal ranking rule.
+     * The post-bounce land choice remains a separate visible typed decision.
+     */
+    fun chooseSnap(input: SphinxStageEPolicyInput): SphinxStageEPolicyChoice {
+        current(input)
+        require(input.offer.cardName == "Snap")
+        val payable = chooseCurrentCast(input)
+        if (payable.actionId == null) return payable
+        val target = input.offer.legalTargets.singleOrNull {
+            it.kind == SphinxStageETargetKind.PERMANENT && !it.controlledByActor
+        } ?: return SphinxStageEPolicyChoice(reason = "Snap requires one reviewed opposing permanent target")
+        return SphinxStageEPolicyChoice(input.offer.id, target.id, "unique offered Snap target")
+    }
+
     /** Targets are selected only from the offered public stack choices. */
     fun chooseCounterspell(input: SphinxStageEPolicyInput): SphinxStageEPolicyChoice {
         current(input)
