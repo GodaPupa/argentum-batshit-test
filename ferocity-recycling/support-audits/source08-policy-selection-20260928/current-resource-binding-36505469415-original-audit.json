@@ -1,0 +1,73 @@
+{
+  "schema": "ferocity-current-source08-resource-binding-36505469415-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36505469415,
+  "artifact_id": 11006913406,
+  "artifact_sha256": "0d9178b1b60ff535b96df202afcd072c7e4e76d118a70c0105d94fbbcacce25c",
+  "head": "72f1939d6347a9c0164227b1a428d691bb172a25",
+  "parent": "fc68c7e4ebbe8d1eab49719c2f848d0000ed6cf2",
+  "pins": {
+    "capture_script": "ee38a8d6f387c751b9677f6dc8e589f929858d3f",
+    "budget": "e6e0c4df596b9c2d433570a2311d953522f63df9",
+    "workflow": "8a789b51f863c92b2320c1281628f5b6319278dd"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "seed_or_entropy_files_read": false,
+    "jvm_started": false,
+    "game_initialized": false
+  },
+  "result": {
+    "source08_commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "source08_tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+    "files": 7,
+    "exact_files": [
+      [
+        "FerocityDevelopmentAdmission.kt",
+        "c64afaf0dac73fe4a73e47a58ababa60a5888064",
+        "ed75e5d32a9eccf90a0379d62716a0a7b695b7196a82f32972df88a03b8b881f"
+      ],
+      [
+        "FerocityDevelopmentCli.kt",
+        "8ba7a3de0a8405ca68548c52bb5796b95fcb677e",
+        "a451f50e965fe83ea31394dc41d94bb502e3f217c79935ecc7d77db009e10410"
+      ],
+      [
+        "FerocityFreshReplay.kt",
+        "3d04fbdaa9d75ec9ebc2bf756d0a7c78897d78e1",
+        "3582b124753198423ba233d137e06eae3b069af17b459c0fa6b77211e97a85e6"
+      ],
+      [
+        "FerocityResourceLimits.kt",
+        "eee67fe73a16ddba35f15814eb3357f212620557",
+        "25aa01cb775495e63a75dd135f7c37f1d70acb4524da6d607e5cd7ab3bdcdbcb"
+      ],
+      [
+        "FerocityReplayFileGuard.kt",
+        "cb514c6860b0193c350141323ee20bab739bfc2e",
+        "8a68cb40797c521c68ae1cdf4d4673d8be416e80ae39ac338eb0435dfd1fdbf6"
+      ],
+      [
+        "FerocityResourceBoundaryTest.kt",
+        "fc9a0b1a79fe4cffe2bd391b5f12077279ae4f9f",
+        "7bf9380a61fec05b06439acc1e7dd35d7d976e4173c814edb1afc88f8aab3d83"
+      ],
+      [
+        "FerocityJournalResourceProbe.kt",
+        "9c35919c54e5560fb82c5286fb28bc3b5c10bb12",
+        "4713dfae0e1e7f075d5863a26b144eb37d97e8ebc4dca7c9e6add3f15a598f09"
+      ]
+    ]
+  },
+  "decision": "ACCEPTED_CURRENT_SOURCE08_RESOURCE_BYTE_BINDINGS_ONLY",
+  "reconciliation_note": "This capture establishes current source08 Git-blob and SHA-256 identities. A prior archival reconciliation recorded a different archived Resource06 Git blob alongside the same claimed SHA-256 for DevelopmentAdmission; that inconsistency must be resolved by direct archive-member byte comparison before any archival/current equivalence claim.",
+  "limits": [
+    "Byte identity capture is not D2 admission.",
+    "Current bundle/qualification receipts, Red engine/runtime/pilot qualification and complete receiving remain open.",
+    "No JVM, entropy, seed, allocation or game authority."
+  ],
+  "next_gate": "Directly compare the preserved Resource06 archive member to current source08 bytes and independently review current DevelopmentAdmission/resource semantics; then bind only reconciled current authorities into the non-executing first-cell manifest.",
+  "official_counters_delta": 0
+}
