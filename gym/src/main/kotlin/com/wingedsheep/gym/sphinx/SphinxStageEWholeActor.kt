@@ -57,10 +57,10 @@ internal object SphinxStageEWholeActor {
         } ?: return unqualified(input, "Current own hand is unavailable")
         if (hand.size != hand.cards.size) return unqualified(input, "Current own hand is incomplete")
         val handCard = hand.cards.singleOrNull { it.entityId == cast.cardId }
-        val flashbackCard = if (
+        val graveyardAlternativeCard = if (
             handCard == null &&
             cast.useAlternativeCost &&
-            cast.alternativeCostType == AlternativeCostType.FLASHBACK
+            cast.alternativeCostType in setOf(AlternativeCostType.FLASHBACK, AlternativeCostType.ESCAPE)
         ) {
             val graveyard = input.observation.zones.singleOrNull {
                 it.ownerId == pilot.actorId && it.zoneType == Zone.GRAVEYARD
@@ -70,14 +70,25 @@ internal object SphinxStageEWholeActor {
             }
             graveyard.cards.singleOrNull { it.entityId == cast.cardId }
         } else null
-        val card = handCard ?: flashbackCard
+        val card = handCard ?: graveyardAlternativeCard
             ?: return unqualified(input, "Current cast card is not identifiable in reviewed own zones")
 
-        val call = if (flashbackCard != null) {
-            if (card.name != "Artful Dodge") {
-                return unqualified(input, "Only Artful Dodge flashback has reviewed graveyard routing")
+        val call = if (graveyardAlternativeCard != null) {
+            when (cast.alternativeCostType) {
+                AlternativeCostType.FLASHBACK -> {
+                    if (card.name != "Artful Dodge") {
+                        return unqualified(input, "Only Artful Dodge flashback has reviewed graveyard routing")
+                    }
+                    SphinxStageEComponentCall.ARTFUL_DODGE_FLASHBACK
+                }
+                AlternativeCostType.ESCAPE -> {
+                    if (card.name != "Sleep of the Dead") {
+                        return unqualified(input, "Only Sleep of the Dead escape has reviewed graveyard routing")
+                    }
+                    SphinxStageEComponentCall.SLEEP_ESCAPE
+                }
+                else -> return unqualified(input, "Unreviewed graveyard alternative-cost routing")
             }
-            SphinxStageEComponentCall.ARTFUL_DODGE_FLASHBACK
         } else when (card.name) {
             in interactionCounters -> SphinxStageEComponentCall.COUNTERSPELL
             in setupDraws -> SphinxStageEComponentCall.SETUP_DRAW
