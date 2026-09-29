@@ -1,0 +1,42 @@
+{
+  "schema": "pest-london-raw-m5-probe-36515849993-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36515849993,
+  "artifact_id": 11010788082,
+  "artifact_sha256": "a730511387b5bb1e8d802ed995c3dd5f44e075df4cd3c2b2785f8dc99c95524d",
+  "head": "33ff4bec157b24305823c0fa84a1f3d9ba4746c2",
+  "parent": "2e7d4cdcad0c3ae46d7538a6fce08328c908c702",
+  "pins": {
+    "raw_controller": "4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+    "probe_test": "22f98951d7e057c0be3e052dc960239a047c4bb5",
+    "budget": "02b98ef40a036044ef788a76a22cbffb7605f6bd",
+    "workflow": "300321d171698616a5aa184423e46676f3a7d8f4"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "tests": 1,
+    "passes": 0,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_REFLECTION_ENTITY_ID_VALUE_CLASS_UNBOXING",
+    "failure": "java.lang.IllegalArgumentException: argument type mismatch",
+    "location": "PestMonsterLondonRawM5ProbeTest.kt:44",
+    "interpretation": [
+      "The unique JVM-prefix lookup reached the intended private hasPayableEarlyDevelopmentLine method.",
+      "Its Kotlin EntityId cardId parameter is a @JvmInline value class backed by String, so Java reflection expects the unboxed backing value rather than the EntityId wrapper."
+    ]
+  },
+  "decision": "INCOMPLETE_NO_M5_BEHAVIORAL_INFERENCE",
+  "successor": "Change only the reflective cardId argument from the EntityId wrapper to spell.value, re-pin the changed probe/workflow, and execute the same six frozen representative atoms.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
