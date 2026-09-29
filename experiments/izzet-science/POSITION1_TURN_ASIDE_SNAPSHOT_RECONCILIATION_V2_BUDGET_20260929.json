@@ -1,0 +1,86 @@
+{
+  "schema": "izzet-position1-turn-aside-snapshot-reconciliation-v2-budget-v1",
+  "date_utc": "2026-09-29",
+  "base_main": "ad0c1394f145c41ef3dc2c34258a45a08dcc3503",
+  "consumed_behavior_original": {
+    "run_id": 36550162966,
+    "artifact_id": 11024690655,
+    "artifact_sha256": "8cd84b5ed31bb2fb5e0260b59880f36b372de437ae0fec42d6e364ef4bf328dd",
+    "audit_path": "experiments/izzet-science/evidence/position1-turn-aside-36550162966-original-audit.json",
+    "semantic_result": "3/3 clean",
+    "rule": "Do not rerun the unchanged semantic bank."
+  },
+  "consumed_failed_snapshot_original": {
+    "run_id": 36551571086,
+    "artifact_id": 11024592245,
+    "artifact_sha256": "a05dbc040b191814820db6d967da7304ab501384a5d5c7895917a93e86061a9a",
+    "audit_path": "experiments/izzet-science/evidence/position1-turn-aside-snapshot-reconcile-36551571086-original-audit.json",
+    "audit_blob": "47579e47ac419da537faf26dec7c9d9e18fdb091",
+    "observed_changed_snapshot_paths": [
+      "ALL",
+      "HML",
+      "M13",
+      "ROE",
+      "SOM"
+    ],
+    "rule": "Treat the earlier unpreserved ULG delta as unexplained and outside Turn Aside acceptance scope."
+  },
+  "exact_changed_snapshot_paths": [
+    "mtg-sets/src/test/resources/snapshots/cards/ALL.json",
+    "mtg-sets/src/test/resources/snapshots/cards/HML.json",
+    "mtg-sets/src/test/resources/snapshots/cards/M13.json",
+    "mtg-sets/src/test/resources/snapshots/cards/ROE.json",
+    "mtg-sets/src/test/resources/snapshots/cards/SOM.json"
+  ],
+  "exact_unchanged_snapshot_paths": [
+    "mtg-sets/src/test/resources/snapshots/cards/ULG.json"
+  ],
+  "reconciliation": {
+    "ALL": {
+      "base_snapshot_blob": "0a92b0df2784fb5b91a9c275f0b1fbdb89b159e1",
+      "expected_single_added_record": "Arcane Denial",
+      "accepted_card_blob": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9"
+    },
+    "HML": {
+      "base_snapshot_blob": "c169b062c569a6a3b7eebb057812a27cf4b849b0",
+      "expected_single_added_record": "Memory Lapse",
+      "accepted_card_blob": "e07d873bfccc9634cc0121fe988003e5af1e3fbc"
+    },
+    "M13": {
+      "base_snapshot_blob": "5414bc0eca9b15c3036c017842b5771157fe7c59",
+      "expected_single_added_record": "Archaeomancer",
+      "accepted_card_blob": "cc5b2951943c875982036f9b7506072ea65d9db6"
+    },
+    "ROE": {
+      "base_snapshot_blob": "0e7b2fd35a00e9a0457371d1121e1129f26611fa",
+      "expected_single_added_record": "Mnemonic Wall",
+      "accepted_card_blob": "dcfca24f1918f79092b7f3274ee454614d15d03e"
+    },
+    "SOM": {
+      "base_snapshot_blob": "2996ec679538e38b70f4ac5b1546b0ffca63463d",
+      "expected_single_added_record": "Turn Aside",
+      "accepted_card_blob": "96a656b7fdd77ae10045d523e281eb34f5cb711e"
+    },
+    "ULG": {
+      "base_snapshot_blob": "e73f3fd6a781b52a3af3b7735f2e0b2565e0cfea",
+      "required_result": "byte-identical and absent from git diff"
+    }
+  },
+  "acceptance": [
+    "fresh full CardDefinitionSnapshotTest and CardLintTest",
+    "generated changed-file set exactly ALL/HML/M13/ROE/SOM",
+    "ULG remains byte-identical to the bound base snapshot",
+    "each changed snapshot adds exactly its one predeclared accepted card record",
+    "no existing record changes or disappears",
+    "preserve all five generated originals, patches, binding metadata and source binding"
+  ],
+  "excluded": [
+    "Turn Aside semantic rerun",
+    "attributing the earlier unpreserved ULG delta to Snap",
+    "shared engine changes",
+    "whole Position-1 pilot/action ranking",
+    "PDH lifecycle/damage/event ledger",
+    "seed/allocation/gameplay"
+  ],
+  "official_counters_delta": 0
+}
