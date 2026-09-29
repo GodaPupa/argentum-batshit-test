@@ -94,6 +94,15 @@ sealed interface CounterDestination {
     @SerialName("CounterDestination.Hand")
     @Serializable
     data object Hand : CounterDestination
+
+    /**
+     * Spell is put on top of its owner's library instead of their graveyard (Memory Lapse).
+     * This remains a genuine counter and therefore still respects can't-be-countered and emits
+     * SpellCounteredEvent. Counter-time exile riders (flashback-style replacements) still win.
+     */
+    @SerialName("CounterDestination.LibraryTop")
+    @Serializable
+    data object LibraryTop : CounterDestination
 }
 
 /**
