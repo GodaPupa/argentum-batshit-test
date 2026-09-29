@@ -1,0 +1,46 @@
+{
+  "schema": "izzet-position1-counter-pair-36523837118-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36523837118,
+  "artifact_id": 11014325795,
+  "artifact_sha256": "64e24f4f9740dbe7b2db5a86fe24947da8506c48844aa8cd5bc51bc1d4fb5266",
+  "head": "175535d80f3fb2bbe80194d4ea16e02ada2da08a",
+  "parent": "4b424c1b788ca962837815e8a53e926960fbe433",
+  "pins": {
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "arcane_test": "7a0f20375e9838fade93fda7ea855c0caae3928c",
+    "memory_lapse_test": "e7e60d5a68e4b8d5f2f016a88364b3b25413853b",
+    "budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694",
+    "stack_effects": "8ad94eec5fc9f88cb7920e911a8fc173749d7db7",
+    "counter_executor": "a46651a83da18774daa93a110ae9b0d62481f3c9",
+    "stack_resolver": "a46aed0092806245462dbd881fab327d838de4e7",
+    "mana_payment_resumer": "30966ffbfa84801761c6f98a33a2adecee627da9",
+    "delayed_trigger_executor": "36cb0af0ce66def8baa0adae50d60ab06b22ddcf",
+    "workflow": "3cb5d0a9ee5117d0bea6ef71ef7f18875bf5e859"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache"
+  },
+  "result": {
+    "arcane_denial": {"tests": 3, "passes": 2, "failures": 1, "errors": 0, "skipped": 0},
+    "memory_lapse": "not_run_after_first_class_failure",
+    "failure_line": 121
+  },
+  "diagnostic_facts": [
+    "The effect-bound simultaneous-trigger ordering choice was accepted.",
+    "Immediately after ordering, the fixture assertion stackSize == 2 passed.",
+    "The top stack object's TriggeredAbilityOnStackComponent existed and its effect was DrawUpToEffect.",
+    "After resolveUntilDecisionOrEmpty, no ChooseNumberDecision was pending."
+  ],
+  "diagnosis": {
+    "classification": "INCOMPLETE_POST_ORDER_PRIORITY_OR_HELPER_ADVANCEMENT",
+    "detail": "Stack placement and top-trigger identity are now bound. The remaining unknown is the exact priority/pending-decision state after ordering and the result of the first attempted priority pass. No card or engine mechanics defect is inferred from this original."
+  },
+  "decision": "INCOMPLETE_COUNTER_PAIR_BANK_NOT_ACCEPTED",
+  "successor": "Preserve this original. Change only diagnostic telemetry in the Arcane Denial fixture to capture post-order priorityPlayerId, pendingDecision type, the first bothPass result/error, and the resulting stack/pending state. Do not modify card or engine mechanics.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
