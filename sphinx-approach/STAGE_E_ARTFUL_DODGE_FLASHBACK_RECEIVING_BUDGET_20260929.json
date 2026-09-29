@@ -1,0 +1,36 @@
+{
+  "schema": "sphinx-stage-e-artful-dodge-flashback-receiving-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "parent_deem_acceptance_head": "84d3a8f00c4eead9332820d59ad035859a81e5e5",
+    "frozen_benchmark_deck_blob": "da2f0d8d1e7a6d464567f765483d0145ae3726dd",
+    "engine_card_blob": "5ccf13532c94f7f13e9a396eef60ae0617590825",
+    "engine_scenario_blob": "414803dd9d69a058e51d8194842a5b406984ab4c"
+  },
+  "prospective_scope": {
+    "identity": "serpico-terror-benchmark",
+    "copies": 2,
+    "zone": "graveyard",
+    "alternative_cost_type": "FLASHBACK",
+    "actor_rule": "only when the real Artful Dodge flashback is the sole current CastSpell offer and the real target domain contains exactly one actor-controlled creature",
+    "timing": "actor precombat main with real priority",
+    "continuation": "execute the real cast, resolve normally, and require the real flashback exile replacement; stop before combat policy"
+  },
+  "required_case": [
+    "real registered Artful Dodge exists in the frozen benchmark 60",
+    "real LegalActionEnumerator exposes exactly one current CastSpell and it is Artful Dodge with useAlternativeCost=true and alternativeCostType=FLASHBACK",
+    "whole actor identifies the cast from the complete visible graveyard rather than pretending it is in hand",
+    "adapter accepts only the exact FLASHBACK action and exactly one offered actor-controlled permanent target",
+    "real engine resolves the cast and Artful Dodge is in exile"
+  ],
+  "excluded": [
+    "normal hand cast of Artful Dodge",
+    "multiple creature target ranking",
+    "ranking Artful Dodge against another cast",
+    "combat attacker or blocker choices",
+    "general flashback or alternate-cost policy",
+    "ordinary priority scheduling beyond this bounded actor window",
+    "whole-pilot/opponent-package/collector/replay/Stage-E admission/gameplay"
+  ],
+  "official_counters_delta": 0
+}
