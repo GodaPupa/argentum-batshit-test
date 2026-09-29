@@ -1,0 +1,44 @@
+{
+  "schema": "industrial-r1-composite-runtime-capture-budget-v1",
+  "date_utc": "2026-09-29",
+  "purpose": "Re-execute the already-accepted seed-free runtime capture mechanisms on one exact source head so their outputs can be compared and later assembled under the independently accepted complete-runtime validator.",
+  "source_branch_base": "industrial-waste/r1-manifest-capture-20260928",
+  "source_base_head": "79d7c1c4c366d6c42c7c2a4a6816c108e6f91e0a",
+  "frozen_capture_sources": {
+    "build_output": "0d3c82426f81233ff599fa50d42dce0bae872107",
+    "ai_test_runtime_graph": "a893c4e446be60da616cdd51714b4ed337274ef3",
+    "toolchain_byte_closure": "6f7f805ada44105efb0062c52901d189e6d43b4f",
+    "os_python_closure": "556fb2fa493d16baddb9cdc61ef5e444584ddc9a",
+    "gradle_implementation_closure": "a30880f96ba68a80f99c0bd8b6fd14e284ecb323",
+    "topology_worker_test": "eee28d377387df5b07cb00c9adc111e975d14188",
+    "topology_daemon_script": "c423780611cc1b892a6fe7b3972f43aec35dc1a2",
+    "complete_runtime_validator": "be1f53184c9bda880539dc589a921cef130cd1a3"
+  },
+  "required_outputs": [
+    "build-output.json",
+    "ai-test-runtime-graph.json",
+    "toolchain-byte-closure.json",
+    "os-python-closure.json",
+    "gradle-implementation-closure.json",
+    "daemon-context-loaders.tsv",
+    "daemon-system-loaders.tsv",
+    "daemon-classpath.tsv",
+    "daemon-runtime.txt",
+    "worker-context-loaders.tsv",
+    "worker-system-loaders.tsv",
+    "worker-classpath.tsv",
+    "worker-code-sources.tsv",
+    "worker-runtime.txt",
+    "slice-binding.json",
+    "source.txt"
+  ],
+  "invariants": [
+    "Every JSON capture that declares source_commit/source_tree must equal the composite workflow HEAD/tree.",
+    "All required outputs must be present and non-empty before artifact publication.",
+    "No official seed, ordering, allocation, claim, game initialization, action, outcome, or deck conclusion may be read or produced.",
+    "The composite is candidate provenance only; it does not adopt an expected manifest or prepared-worker authority.",
+    "Behavioral capture implementations remain byte-identical to their already-accepted versions."
+  ],
+  "next_gate": "Independently audit the original composite artifact. If the single-source bindings and payloads are clean, build a candidate complete manifest from this one-head evidence and validate it with the accepted complete-runtime validator before any adoption review.",
+  "official_counters_delta": 0
+}
