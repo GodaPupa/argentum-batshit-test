@@ -1,0 +1,48 @@
+name: Manual Phase 2 real opening boundary integration
+on:
+  push:
+    branches: ["manual/clean-pilot-boundary-receiving-20260927"]
+    paths: [".github/workflows/manual-opening-boundary-integration.yml"]
+permissions: {contents: read}
+jobs:
+  four-roles:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind changed observation source fixture and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/manual-opening-boundary-integration
+          test "$(git rev-parse HEAD^)" = "03cb270a456158c92d332b447c412b28d732821b"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/contract/ObservationBuilder.kt)" = "fc9012e32185f3419ac1a6e56dcab06929aeed8d"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningActionPolicy.kt)" = "bd58d1b166a86a8d6e076f4dd2e8f34f533e2a6e"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt)" = "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt)" = "44608301d535a2114073d80c06d5ca0480c40043"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningBoundaryIntegrationTest.kt)" = "fc5806419c31c1049e7dd044ee95845cc4188475"
+          test "$(git hash-object experiments/manual-transmission-phase2/opening-boundary-integration-budget.json)" = "7c115d24bd0b340282881dd52a5c6e6427297db7"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/contract/ObservationBuilder.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningActionPolicy.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningBoundaryIntegrationTest.kt; git hash-object experiments/manual-transmission-phase2/opening-boundary-integration-budget.json; git hash-object .github/workflows/manual-opening-boundary-integration.yml; git status --porcelain; } > build/reports/manual-opening-boundary-integration/source.txt
+      - name: Execute four real masked opening boundary traces
+        shell: bash
+        run: |
+          set -o pipefail
+          just test-class ManualPhaseTwoOpeningBoundaryIntegrationTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/manual-opening-boundary-integration/test.log
+      - name: Preserve XML
+        if: always()
+        shell: bash
+        run: |
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoOpeningBoundaryIntegrationTest.xml build/reports/manual-opening-boundary-integration/ 2>/dev/null || true
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-opening-boundary-integration-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/manual-opening-boundary-integration/
+          if-no-files-found: error
+          retention-days: 90
