@@ -1,0 +1,34 @@
+{
+  "schema": "izzet-position1-counter-pair-36511731878-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36511731878,
+  "artifact_id": 11009104714,
+  "artifact_sha256": "f94f1dd53b4d99f43d9e5d850b66f7e4b27c53b0d69f602033e9b99a4210988c",
+  "head": "c1d15e2e54ec795136ce032d411b7c6096d5406d",
+  "parent": "fa1cd146aa58e1ac3dedf0888f316653be582e5b",
+  "pins": {
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "arcane_test": "0046c1bbaef6c037be51b796c1cb9b7349e4598e",
+    "memory_lapse_test": "e7e60d5a68e4b8d5f2f016a88364b3b25413853b",
+    "budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694",
+    "workflow": "469b07e790e8920bc0581d3393cff3279517bb12"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed"
+  },
+  "result": {
+    "behavioral_cases_executed": 0,
+    "compile_failure": "MemoryLapse.kt:24 unresolved reference CounterDestination.LibraryTop"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_COUNTER_DESTINATION_API_INTEGRATION",
+    "detail": "The counter-pair bank stopped during Kotlin compilation before either card's behavioral bank could execute. Memory Lapse references a CounterDestination.LibraryTop API member that is absent from the current SDK.",
+    "behavior_inference": "NONE"
+  },
+  "successor_rule": "Preserve this original. Resolve the current CounterDestination API and change only Memory Lapse's destination implementation/source needed to express top-of-owner-library semantics; re-pin changed source/workflow and do not rerun unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
