@@ -1,0 +1,45 @@
+{
+  "schema": "industrial-r1-os-python-closure-36505731714-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36505731714,
+  "artifact_id": 11006998757,
+  "artifact_sha256": "a950b0feeae06ee8c6f3595c1d1eef554b0b2f5ec278d86565f7fb5d21a3519c",
+  "head": "a1a0f212a59013829f5674ec5214081333209c86",
+  "parent": "95b5b4541928f61e1fe14460ff0fad3f7c51752f",
+  "pins": {
+    "capture_script": "556fb2fa493d16baddb9cdc61ef5e444584ddc9a",
+    "budget": "0b0e58d465257661ffb0580d01f38f9c45054fe8",
+    "workflow": "80aaafbc3df8a9374f4c745bf04a5bff6d12e038"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "official_seed_files_read": false
+  },
+  "result": {
+    "authority": "CANDIDATE_OS_PYTHON_CLOSURE_SLICE_ONLY",
+    "source_tree": "e830cbf4a242c9c8249c46dfc5e8183565f2b639",
+    "dynamic_nodes": 15,
+    "external_dynamic_nodes": 12,
+    "dynamic_canonical_sha256": "f49d74ee86418101398ffef330f03059a31810df9248ee7a596f81abd48b006d",
+    "external_dynamic_canonical_sha256": "ad429ece921012b3e4f7d41aa1737df9df8b28c924fb4daefbe452f884c706f2",
+    "python_stdlib_nodes": 643,
+    "python_stdlib_canonical_sha256": "106c458dc25695bf15dd65cc2b186a9d269a38da71068cd758a03ef962cf8595",
+    "python_version": "3.12.3",
+    "official_counters": {
+      "allocations": 0,
+      "games": 0,
+      "outcomes": 0
+    }
+  },
+  "decision": "ACCEPTED_SEED_FREE_OS_PYTHON_CLOSURE_SLICE_ONLY",
+  "limits": [
+    "Gradle launcher/daemon/test-worker implementation classpaths remain open.",
+    "Generated/hidden class policy and loader topology remain open.",
+    "Immutable store/lifetime enforcement and authenticated prepared-worker attestation remain open.",
+    "No complete expected manifest, claim or R1 permit."
+  ],
+  "next_gate": "Capture Gradle launcher/daemon/test-worker implementation closure, then combine accepted build-output, :ai:testRuntimeClasspath, toolchain, OS and Python slices under the complete-runtime validator.",
+  "official_counters_delta": 0
+}
