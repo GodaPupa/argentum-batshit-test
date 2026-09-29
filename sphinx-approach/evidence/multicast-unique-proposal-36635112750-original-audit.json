@@ -1,0 +1,50 @@
+{
+  "schema": "sphinx-stage-e-multicast-unique-proposal-36635112750-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36635112750,
+  "artifact_id": 11064616013,
+  "artifact_sha256": "9ddd8a17b194424d11cea4e6f71918dda1d8687bc37ee099774c7270c676671a",
+  "head": "c8cab198e9767a5346fad54e23c8a19d23c03bfb",
+  "parent": "18f399468fec6ba44bcf51e4d3bd4309e136833c",
+  "pins": {
+    "whole_actor": "6fec3a563ef9c7392d8f5aa6795edbb64b93096b",
+    "multicast_test": "6b794b196d4ff65ab3a7fff5f14febb8f310ab35",
+    "budget": "94877f7601c2afd63dcd0103ae4d513da4720511",
+    "approach_regression_test": "a8abd8687e05abdc7845d4a2309e20c5864b164e",
+    "reconstructed_v01": "e2f0abbc9f99be97b2562a18ae248d70cbefc0e1",
+    "reconstructed_hybrid": "7f76c94e4fbc24acdc982039aa248a1fa9485cd4",
+    "workflow": "c7da2f2542afc9fbe73f5113906349ed720a2bf9"
+  },
+  "integrity": {
+    "workflow_conclusion": "success",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "multicast_log_sha256": "29e5efe82455946a76cd1a357acc5d360edca1e51339b22c3da13d7f63491e1b",
+    "approach_regression_xml_sha256": "08e7e71e605948da5a02da4cee94b375767616a7ab2bf4fed172aaebf25a9109"
+  },
+  "observed_behavior": {
+    "multicast_log": [
+      "MU1 unique existing component proposal survives a real two-cast window PASSED",
+      "MU2 two accepted physical casts remain explicitly unqualified PASSED",
+      "BUILD SUCCESSFUL"
+    ],
+    "approach_regression_xml": {
+      "tests": 2,
+      "passes": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "preservation_defect": "The workflow executed the multicast bank first and the Approach regression second, then copied JUnit XML only after both runs. The second Gradle test invocation replaced the gym test-results directory, so the original artifact contains the Approach regression XML but not the multicast-bank XML.",
+  "decision": "INCOMPLETE_EVIDENCE_PRESERVATION_GAP",
+  "interpretation": [
+    "The behavioral log records both multicast cases passing, but the prospective budget required preserved exact XML evidence for the two-case bank.",
+    "No behavioral failure or deck loss is inferred.",
+    "This original is consumed and must not be rerun unchanged."
+  ],
+  "next_gate": "Issue a minimally changed workflow successor that copies the multicast XML immediately after its test invocation, then runs and preserves the unchanged Approach regression XML. Keep behavior source/test/budget/deck bytes unchanged.",
+  "official_counters_delta": 0
+}
