@@ -20,10 +20,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/industrial-classloader-topology
-          test "$(git rev-parse HEAD^)" = "ee40bffc29f973a722073954679dfb9eefee4905"
+          test "$(git rev-parse HEAD^)" = "87b0038c07bcf4dc0a1a5ce90e823a8c208ba820"
           test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ClassloaderTopologyCaptureTest.kt)" = "eee28d377387df5b07cb00c9adc111e975d14188"
           test "$(git hash-object industrial-waste/v2/r1-classloader-topology-capture-budget.json)" = "8bd543dff47a888c54e8c5132a9c4d0e336acdc3"
-          test "$(git hash-object industrial-waste/v2/capture_gradle_daemon_topology.gradle)" = "4cda6059d86b2393b0144dca2fb496fcb7817221"
+          test "$(git hash-object industrial-waste/v2/capture_gradle_daemon_topology.gradle)" = "925339a4e1b6f88d4c15237780e6ad81d631d93a"
           { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ClassloaderTopologyCaptureTest.kt; git hash-object industrial-waste/v2/r1-classloader-topology-capture-budget.json; git hash-object industrial-waste/v2/capture_gradle_daemon_topology.gradle; git hash-object .github/workflows/industrial-classloader-topology-capture.yml; git status --porcelain; } > build/reports/industrial-classloader-topology/source.txt
       - name: Capture actual Gradle daemon topology
         shell: bash
