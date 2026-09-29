@@ -3198,6 +3198,63 @@ class StackResolver(
      * @param controllerId The player who gains permission to cast the exiled card.
      * @return ExecutionResult with a boolean flag indicating if the spell was actually countered.
      */
+    /**
+     * Counter a spell and put it on top of its owner's library (Memory Lapse).
+     * The library's top is index 0, matching DrawCardPrimitive. A counter-time
+     * AfterResolveDestinationComponent (for example flashback exile) takes precedence.
+     */
+    fun counterSpellToLibraryTop(state: GameState, spellId: EntityId): ExecutionResult {
+        if (spellId !in state.stack) {
+            return ExecutionResult.error(state, "Spell not on stack: $spellId")
+        }
+
+        val container = state.getEntity(spellId)
+            ?: return ExecutionResult.error(state, "Spell not found: $spellId")
+        val cardComponent = container.get<CardComponent>()
+
+        if (container.has<CantBeCounteredComponent>() || isGrantedCantBeCountered(state, spellId)) {
+            return ExecutionResult.success(state)
+        }
+
+        val spellComponent = container.get<SpellOnStackComponent>()
+        val ownerId = cardComponent?.ownerId
+            ?: spellComponent?.casterId
+            ?: return ExecutionResult.error(state, "Cannot determine spell owner")
+
+        var newState = state.removeFromStack(spellId)
+        val riderOnCounter = container.get<AfterResolveDestinationComponent>()
+            ?.takeIf { !it.onlyIfResolved }
+        val destZone = riderOnCounter?.zone ?: Zone.LIBRARY
+        val destKey = ZoneKey(ownerId, destZone)
+        newState = if (destZone == Zone.LIBRARY) {
+            newState.insertIntoZone(destKey, spellId, 0)
+        } else {
+            newState.addToZone(destKey, spellId)
+        }
+        val destinationObject = newState.objectRef(spellId)
+
+        newState = newState.updateEntity(spellId) { c ->
+            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+        }
+        newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
+
+        return ExecutionResult.success(
+            newState,
+            listOf(
+                SpellCounteredEvent(spellId, cardComponent?.name ?: "Unknown"),
+                ZoneChangeEvent(
+                    spellId,
+                    cardComponent?.name ?: "Unknown",
+                    Zone.STACK,
+                    destZone,
+                    ownerId,
+                    oldObject = state.objectRef(spellId),
+                    newObject = destinationObject
+                )
+            )
+        )
+    }
+
     fun counterSpellToExile(
         state: GameState,
         spellId: EntityId,
