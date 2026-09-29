@@ -1,0 +1,37 @@
+{
+  "schema": "sphinx-stage-e-sleep-escape-receiving-36525813399-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36525813399,
+  "artifact_id": 11015110107,
+  "artifact_sha256": "9dc8e299b192475a11f7d0858b80ff7458f19c7d4c14e366973f4eb3eab2315f",
+  "head": "42ac4c992738f99710730d935918963908381b59",
+  "parent": "f0a0cb60468c2c1986e0fd2099d935b21da9b6b9",
+  "pins": {
+    "budget": "058d5d314c635783c6acd6c2288a0bc3237c02f5",
+    "payment_projection": "73ee259bac39fecf8fd2d47cad57f5ccb0ff911b",
+    "payment_test": "63659b89b0bfee55e13f9392a1a59dfc560b276e",
+    "pilot": "a783d5e2fc15acf2f17581c930ef33f72c30d7eb",
+    "actor_adapter": "c88581277abe9ac8bf9db143a91c9ef648bda40a",
+    "whole_actor": "90271284f6eb8f0c389e460b394467a3adc6b872",
+    "receiving_test": "1e0823c033cd37314e086f16cb89069d99160883",
+    "benchmark_deck": "da2f0d8d1e7a6d464567f765483d0145ae3726dd",
+    "sleep_definition": "96d3609ed36d495ca53b00eff316b156f87c2f6c",
+    "sleep_engine_scenario": "52b3886dc31fc1f62234a83a27591aed8891c907"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "source_binding": "passed"
+  },
+  "result": {
+    "behavioral_cases_executed": 0,
+    "compile_failure": "SphinxStageEActorAdapter.kt:163 unresolved reference AdditionalCostPayment"
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_ADAPTER_IMPORT_BINDING",
+    "detail": "The bounded Sleep ESCAPE source reached gym compilation, but the adapter's new AdditionalCostPayment use lacked the corresponding SDK import. No payment, engine scenario, receiving behavior or policy inference is taken from this original."
+  },
+  "decision": "INCOMPLETE_NO_SLEEP_ESCAPE_ACCEPTANCE",
+  "successor": "Preserve this original. Add only import com.wingedsheep.sdk.scripting.AdditionalCostPayment to the changed adapter, re-pin adapter/workflow parent, and rerun the exact frozen bank with all other source bytes unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
