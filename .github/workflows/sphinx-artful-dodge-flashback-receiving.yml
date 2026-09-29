@@ -1,0 +1,50 @@
+name: Sphinx Artful Dodge flashback receiving
+on:
+  push:
+    branches: ["sphinx/artful-dodge-flashback-receiving-20260929"]
+    paths: [".github/workflows/sphinx-artful-dodge-flashback-receiving.yml"]
+permissions: {contents: read}
+jobs:
+  one-case:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact Artful flashback receiving sources budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-artful-dodge-flashback-receiving
+          test "$(git rev-parse HEAD^)" = "88e8a31651ea76c38cd64c239327426ad4dd5532"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt)" = "762d1f99980e5ecf54d1cda182a9a94e1a573280"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt)" = "1f0f3241190990fe9069540ae639d276d423ce72"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "bc2e6019bfaa3bb652b74d2a001cc84aabb963d1"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEArtfulDodgeFlashbackReceivingTest.kt)" = "97fc1e087ffd4a03dea5d70e5a3d4e0a3543ef0c"
+          test "$(git hash-object sphinx-approach/STAGE_E_ARTFUL_DODGE_FLASHBACK_RECEIVING_BUDGET_20260929.json)" = "9932eaea3bfff98fbb8ad11953b3445f445a1066"
+          test "$(git hash-object sphinx-approach/decks/serpico-terror-benchmark.csv)" = "da2f0d8d1e7a6d464567f765483d0145ae3726dd"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/ArtfulDodge.kt)" = "5ccf13532c94f7f13e9a396eef60ae0617590825"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArtfulDodgeScenarioTest.kt)" = "414803dd9d69a058e51d8194842a5b406984ab4c"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEArtfulDodgeFlashbackReceivingTest.kt; git hash-object sphinx-approach/STAGE_E_ARTFUL_DODGE_FLASHBACK_RECEIVING_BUDGET_20260929.json; git hash-object sphinx-approach/decks/serpico-terror-benchmark.csv; git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/ArtfulDodge.kt; git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArtfulDodgeScenarioTest.kt; git hash-object .github/workflows/sphinx-artful-dodge-flashback-receiving.yml; git status --porcelain; } > build/reports/sphinx-artful-dodge-flashback-receiving/source.txt
+      - name: Run one fresh real Artful Dodge flashback receiving case
+        shell: bash
+        run: |
+          set -o pipefail
+          just test-class SphinxStageEArtfulDodgeFlashbackReceivingTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-artful-dodge-flashback-receiving/test.log
+      - name: Preserve XML
+        if: always()
+        shell: bash
+        run: |
+          find . -path '*/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEArtfulDodgeFlashbackReceivingTest.xml' -type f -exec cp {} build/reports/sphinx-artful-dodge-flashback-receiving/ \; || true
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-artful-dodge-flashback-receiving-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-artful-dodge-flashback-receiving/
+          if-no-files-found: error
+          retention-days: 90
