@@ -1,0 +1,67 @@
+{
+  "schema": "izzet-position1-turn-aside-snapshot-reconcile-v2-36586020448-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36586020448,
+  "artifact_id": 11041557902,
+  "artifact_sha256": "7267d2bbb382e05511da253f68a2e3208d8365f809ed4e341c2c29ae96213fe9",
+  "head": "6fff7f34a916ab9c41941ca2ec04113a239c2d44",
+  "parent_main": "ad0c1394f145c41ef3dc2c34258a45a08dcc3503",
+  "pins": {
+    "turn_aside": "96a656b7fdd77ae10045d523e281eb34f5cb711e",
+    "semantic_test": "0eec9947e43bb43a9c3bbe9d90a33626a243cf3f",
+    "budget": "f0388189c5d32f11b710e6258b96c46eca61ced1",
+    "prior_snapshot_audit": "47579e47ac419da537faf26dec7c9d9e18fdb091",
+    "workflow": "893bb72b4bfa6407e0830ab55c706e9d4b9ec79c"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "full_snapshot_and_cardlint_build": "success; 38 actionable tasks executed",
+    "behavior_rerun": "not performed; prior Turn Aside semantic original remains 3/3 clean",
+    "generated_originals_preserved": [
+      "ALL",
+      "HML",
+      "M13",
+      "ROE",
+      "SOM",
+      "ULG"
+    ],
+    "generated_patches_preserved": true
+  },
+  "observed_snapshot_delta": {
+    "ALL": [
+      "Arcane Denial"
+    ],
+    "HML": [
+      "Memory Lapse"
+    ],
+    "M13": [
+      "Archaeomancer"
+    ],
+    "ROE": [
+      "Mnemonic Wall"
+    ],
+    "SOM": [
+      "Turn Aside"
+    ],
+    "ULG": [
+      "Frantic Search",
+      "Snap"
+    ]
+  },
+  "provenance_notes": {
+    "frantic_search_main_adoption_commit": "5f99dc9933f664f06185fb652491af059c52c588",
+    "frantic_search_blob": "6c3ad836867f9789894e5da5aeb35ab6d0dbc906",
+    "snap_main_adoption_commit": "36ad836d5e8fb69e1e2be8e1329fe30b0de5b158",
+    "snap_blob": "15c15b39609e97796a110c5228e84265a60cc45d"
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_EXACT_FIVE_CONTRACT_REFUTED_BY_PRESERVED_ULG_SNAPSHOT_DEBT",
+    "detail": "The predeclared five-path contract was false in this fresh run. ULG changed and the preserved patch proves the delta is exactly two already-present mainline card definitions: Frantic Search and Snap. This is pre-existing snapshot debt, not a Turn Aside semantic change. Because the exact v2 contract required ULG to remain byte-identical, this original cannot be accepted as the reconciliation gate despite the clean full snapshot/CardLint build."
+  },
+  "decision": "INCOMPLETE_NO_TURN_ASIDE_ADOPTION_FROM_THIS_ORIGINAL",
+  "successor": "Preserve this original. Run one prospectively exact convergence gate that stages the six generated snapshot deltas and predeclares ULG as exactly Frantic Search plus Snap, binds their accepted mainline source bytes, reruns fresh full snapshot/CardLint only, requires zero post-regeneration snapshot drift, and preserves/commits the exact reconciled snapshots only if every existing record remains unchanged and only the predeclared records are added. Do not rerun the unchanged Turn Aside semantic bank.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
