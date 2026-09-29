@@ -41,7 +41,7 @@ class PestMonsterLondonRawM5ProbeTest : ScenarioTestBase() {
         val developmentMethod = controller.javaClass.declaredMethods.single {
             it.name.startsWith("hasPayableEarlyDevelopmentLine")
         }.apply { isAccessible = true }
-        val value = developmentMethod.invoke(controller, game.state, hand, spell, guaranteed) as Boolean
+        val value = developmentMethod.invoke(controller, game.state, hand, spell.value, guaranteed) as Boolean
         return (guaranteed != null) to value
     }
 
