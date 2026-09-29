@@ -1,0 +1,36 @@
+{
+  "schema": "izzet-position1-current-runtime-registry-reinventory-after-turnaside-v1",
+  "date_utc": "2026-09-29",
+  "parent_main": "6184ccf3582274cf5981130015d6311940fc707b",
+  "historical_inventory": {
+    "branch": "mayhem/izzet-science",
+    "path": "izzet-science/position1-engine-gap-inventory.json",
+    "blob": "273df3b6c0e292f8dc01e48380e7bc5338e69f1d",
+    "identities": 55
+  },
+  "exact_test_blob": "197a99e6c17885bb70511916893d3a33de217feb",
+  "prior_accepted_registry_audit": "experiments/izzet-science/evidence/position1-registry-reinventory-36548682456-original-audit.json",
+  "prior_result": {
+    "registered": 10,
+    "missing": 45
+  },
+  "turn_aside_adoption": {
+    "receipt": "experiments/izzet-science/evidence/position1-turn-aside-main-adoption-20260929.json",
+    "receipt_blob": "d7d2fd0c4b475b8e57f4174091613e14695b6ffe",
+    "card_blob": "96a656b7fdd77ae10045d523e281eb34f5cb711e"
+  },
+  "interpretation": "This is a zero-seed registry-presence diagnostic against current main. Individual failed cases are predeclared absence signals, not game losses and not mechanics failures.",
+  "acceptance": [
+    "source/parent binding passes",
+    "exact unchanged 55-case test executes fresh with --rerun-tasks --no-build-cache",
+    "XML is preserved and parsed into registered/missing identity lists",
+    "Turn Aside is expected to be registered after its accepted main adoption; any different observed result remains diagnostic evidence and fails closed"
+  ],
+  "prohibited": [
+    "mechanics competence inference from registry presence",
+    "whole-pilot/opponent competence",
+    "PDH lifecycle/damage/event ledger",
+    "seed/allocation/gameplay"
+  ],
+  "official_counters_delta": 0
+}
