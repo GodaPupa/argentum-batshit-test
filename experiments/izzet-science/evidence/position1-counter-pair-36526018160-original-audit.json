@@ -1,0 +1,43 @@
+{
+  "schema": "izzet-position1-counter-pair-36526018160-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36526018160,
+  "artifact_id": 11015215214,
+  "artifact_sha256": "275198304ee577466b5649e2cc482e63ac8f0b1ed561350deeb369e7d04956ab",
+  "head": "79c663b68f296dd60b64dcec4149c675f4649dac",
+  "parent": "968884ed8b3978cfffa06b5e7e4ac11882968edd",
+  "pins": {
+    "arcane_test": "75e076ad15e7323f2d7aec0341132fbdba3cc3fe",
+    "workflow": "feb9af53b9d5b81bf432775bb7879f83e4f0e403",
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_failure_message_surfaced": true
+  },
+  "result": {
+    "arcane_denial": {"tests": 3, "passes": 2, "failures": 1, "errors": 0, "skipped": 0},
+    "memory_lapse": "not_run_after_first_class_failure",
+    "diagnostic": {
+      "priority_after_order": "e1",
+      "pending_after_order": null,
+      "both_pass_error": null,
+      "priority_after_both_pass": "e1",
+      "pending_after_both_pass": null,
+      "stack_after_both_pass": 1,
+      "top_after_both_pass": "DrawCardsEffect"
+    }
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_DRAW_UP_TO_TRIGGER_RESOLUTION_WITHOUT_DECISION",
+    "detail": "The ordered top trigger is already proven to carry DrawUpToEffect, and normal priority exists after ordering. A complete two-player priority pass succeeds, removes that top trigger, leaves the one-card DrawCardsEffect trigger, and surfaces no ChooseNumberDecision. Before changing core resolution, bind the exact DrawUpTo target and target-player library size immediately before resolution."
+  },
+  "decision": "INCOMPLETE_COUNTER_PAIR_BANK_NOT_ACCEPTED",
+  "successor": "Preserve this original. Change only diagnostic telemetry to assert/report the top DrawUpToEffect target plus victim/caster library sizes before bothPass. If target is SpecificEntity(victim) and victim library is nonzero, the next justified gate is the triggered-ability DrawUpTo pause propagation path; otherwise repair only the fixture/state mismatch.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
