@@ -20,10 +20,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/izzet-position1-counter-pair
-          test "$(git rev-parse HEAD^)" = "968884ed8b3978cfffa06b5e7e4ac11882968edd"
+          test "$(git rev-parse HEAD^)" = "70827f6c0362ba28342b5a20c5049956dc3bca1b"
           test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt)" = "b80ac4364d27398cffde16e5f6d6a41eb0792ea9"
           test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/hml/cards/MemoryLapse.kt)" = "e07d873bfccc9634cc0121fe988003e5af1e3fbc"
-          test "$(git hash-object mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt)" = "75e076ad15e7323f2d7aec0341132fbdba3cc3fe"
+          test "$(git hash-object mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt)" = "5f0e4827fbfcbd853bf4ff29c1443157cd5895c0"
           test "$(git hash-object mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MemoryLapseScenarioTest.kt)" = "e7e60d5a68e4b8d5f2f016a88364b3b25413853b"
           test "$(git hash-object experiments/izzet-science/position1-counter-pair-mechanics-budget-20260929.json)" = "ddff4a73db3efe5dd04698f700ac5e796e6bf694"
           test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/StackEffects.kt)" = "8ad94eec5fc9f88cb7920e911a8fc173749d7db7"
