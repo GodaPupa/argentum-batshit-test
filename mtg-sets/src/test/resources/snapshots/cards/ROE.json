@@ -1863,6 +1863,51 @@
     ]
 }
 
+// Mnemonic Wall
+{
+    "name": "Mnemonic Wall",
+    "manaCost": "{4}{U}",
+    "typeLine": "Creature — Wall",
+    "oracleText": "Defender\nWhen this creature enters, return target instant or sorcery card from your graveyard to your hand.",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 4
+    },
+    "keywords": [
+        "DEFENDER"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "MoveToZone",
+                    "target": {
+                        "type": "BoundVariable",
+                        "name": "target instant or sorcery card from your graveyard"
+                    },
+                    "destination": "Hand"
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "filter": {
+                        "baseFilter": "instant|sorcery own:you",
+                        "zone": "Graveyard"
+                    },
+                    "id": "target instant or sorcery card from your graveyard"
+                }
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Nema Siltlurker
 {
     "name": "Nema Siltlurker",
