@@ -1,0 +1,43 @@
+{
+  "schema": "ferocity-resource06-development-admission-byte-compare-36508708052-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36508708052,
+  "artifact_id": 11007724885,
+  "artifact_sha256": "8c18687fa93787b8045e3b57885fe01cfb3835a5f23fb54d8b0a65b4c85bc239",
+  "head": "ea062addf489d521e2d48c158d37f6c94a0a98df",
+  "parent": "3913db5b852e299e8e0e96944e5f6ce582490121",
+  "pins": {
+    "resource06_archive_git_blob": "a0fb48835413d80149331a7775e17820435cad7b",
+    "resource06_member": "ferocity-recycling/runtime-audits/development-admission/resource-boundary-06/FerocityDevelopmentAdmission.kt.before",
+    "current_development_admission_git_blob": "c64afaf0dac73fe4a73e47a58ababa60a5888064",
+    "comparator": "cb10994db493ca22c26a178f772f55da1044a7bc",
+    "budget": "dc49d72c66922f04ec00d129639834253c282dfd",
+    "workflow": "bb39231e6fe5ac05afcc10387815dbef68eea7df"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "seed_or_entropy_files_read": false,
+    "jvm_started": false,
+    "game_initialized": false
+  },
+  "result": {
+    "archive_member_bytes": 39841,
+    "archive_member_git_blob": "df6b3eeec2db72f125c130c5a5173b52c44b9a8d",
+    "archive_member_sha256": "66278d8eabc90ee0be9edaaeb6a2379efa3260e42d8f92a93c8436c6f48020bb",
+    "current_bytes": 39885,
+    "current_git_blob": "c64afaf0dac73fe4a73e47a58ababa60a5888064",
+    "current_sha256": "ed75e5d32a9eccf90a0379d62716a0a7b695b7196a82f32972df88a03b8b881f",
+    "byte_identical": false
+  },
+  "decision": "ACCEPTED_DIRECT_COMPARISON__ARCHIVED_RESOURCE06_AND_CURRENT_SOURCE08_ARE_NOT_BYTE_IDENTICAL",
+  "interpretation": [
+    "The prior archival claim that Resource06 DevelopmentAdmission had current source08 SHA-256 ed75e5d... is disproven by direct preserved-member hashing.",
+    "The actual Resource06 member is 39,841 bytes / Git blob df6b3eee... / SHA-256 66278d8e..., while current source08 is 39,885 bytes / Git blob c64afaf0... / SHA-256 ed75e5d....",
+    "No current D2 authority is inherited from Resource06 merely by historical provenance."
+  ],
+  "next_gate": "Perform a source diff and independent semantic review of the exact archived Resource06 member versus current source08 DevelopmentAdmission; adopt only explicitly justified current behavior and bind the reconciled current resource/runner/trace/bundle authorities into the non-executing first-cell admission manifest.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
