@@ -41,11 +41,11 @@ internal class ManualPhaseTwoUniqueCommanderCastPolicy(
         val animar = command.cards.singleOrNull { it.name == "Animar, Soul of Elements" }
             ?: throw IllegalArgumentException("Exact Animar command identity is absent")
 
-        val nonPass = observation.legalActions.filter {
-            it.affordable && it.kind != "PassPriority"
+        val strategic = observation.legalActions.filter {
+            it.affordable && it.kind != "PassPriority" && !it.isManaAbility
         }
-        require(nonPass.size == 1) { "Competing strategic action fork" }
-        val cast = nonPass.single()
+        require(strategic.size == 1) { "Competing strategic action fork" }
+        val cast = strategic.single()
         require(cast.kind == "CastSpell" && cast.sourceEntityId == animar.entityId) {
             "Sole action is not the physical Animar command-zone cast"
         }
