@@ -1,0 +1,31 @@
+{
+  "schema": "izzet-position1-counter-pair-main-adoption-budget-v1",
+  "date_utc": "2026-09-29",
+  "base_main": "411b78b1a4de44ea08ea3e0812901514ad0f81a9",
+  "accepted_original": {
+    "run_id": 36528552346,
+    "artifact_id": 11016140646,
+    "audit": "experiments/izzet-science/evidence/position1-counter-pair-36528552346-original-audit.json",
+    "qualified_head": "866355c647e6501ca6e0be164040087047d7af4b"
+  },
+  "overlap_review": {
+    "merge_base": "de3fc70b594854da31e3ad0956705c43bafaf271",
+    "post_fork_main_paths_overlapping_qualified_paths": 0,
+    "rule": "Adopt only exact accepted blobs; do not merge the historical branch."
+  },
+  "scope": "Revalidate the exact accepted Arcane Denial / Memory Lapse shared-engine and card/test blobs on the current main composition before any main adoption.",
+  "required_cases": [
+    "DrawUpTo SpecificEntity player regression",
+    "Arcane Denial exact three semantic cases",
+    "Memory Lapse exact three semantic cases"
+  ],
+  "excluded": [
+    "whole Position-1 pilot",
+    "action ranking",
+    "commander lifecycle/damage",
+    "opponent package",
+    "collector/replay/durability",
+    "seed/allocation/gameplay"
+  ],
+  "official_counters_delta": 0
+}

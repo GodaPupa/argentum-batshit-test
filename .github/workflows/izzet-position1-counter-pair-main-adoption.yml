@@ -1,0 +1,125 @@
+name: Izzet Position-1 counter pair current-main adoption revalidation
+on:
+  push:
+    branches: ["izzet/position1-counter-pair-main-adoption-20260929"]
+    paths:
+      - ".github/workflows/izzet-position1-counter-pair-main-adoption.yml"
+      - "experiments/izzet-science/position1-counter-pair-main-adoption-budget-20260929.json"
+      - "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/StackEffects.kt"
+      - "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt"
+      - "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/hml/cards/MemoryLapse.kt"
+      - "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt"
+      - "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MemoryLapseScenarioTest.kt"
+      - "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ManaPaymentContinuationResumer.kt"
+      - "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/CreateDelayedTriggerExecutor.kt"
+      - "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/drawing/DrawUpToExecutor.kt"
+      - "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/CounterEffectExecutor.kt"
+      - "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt"
+      - "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/drawing/DrawUpToSpecificEntityPlayerTest.kt"
+permissions: {contents: read}
+jobs:
+  revalidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind current main parent and exact accepted blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/izzet-position1-main-adoption
+          test "$(git rev-parse HEAD^)" = "411b78b1a4de44ea08ea3e0812901514ad0f81a9"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/StackEffects.kt)" = "8ad94eec5fc9f88cb7920e911a8fc173749d7db7"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt)" = "b80ac4364d27398cffde16e5f6d6a41eb0792ea9"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/hml/cards/MemoryLapse.kt)" = "e07d873bfccc9634cc0121fe988003e5af1e3fbc"
+          test "$(git hash-object mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt)" = "3d559542025a5415a2b0aebf7a4c5f39870278de"
+          test "$(git hash-object mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MemoryLapseScenarioTest.kt)" = "e7e60d5a68e4b8d5f2f016a88364b3b25413853b"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ManaPaymentContinuationResumer.kt)" = "30966ffbfa84801761c6f98a33a2adecee627da9"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/CreateDelayedTriggerExecutor.kt)" = "36cb0af0ce66def8baa0adae50d60ab06b22ddcf"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/drawing/DrawUpToExecutor.kt)" = "053337d3aafbe24a1d05fe414733fda4f5888f34"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/CounterEffectExecutor.kt)" = "a46651a83da18774daa93a110ae9b0d62481f3c9"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt)" = "a46aed0092806245462dbd881fab327d838de4e7"
+          test "$(git hash-object rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/drawing/DrawUpToSpecificEntityPlayerTest.kt)" = "b13b1f5c5ff13b9e854ce1973dbb72b29938777e"
+          test "$(git hash-object experiments/izzet-science/position1-counter-pair-main-adoption-budget-20260929.json)" = "fc374f55dc07fd84b27b4e657b9df6dd6bfea567"
+          python3 - <<'PY'
+          import subprocess
+          expected=[".github/workflows/izzet-position1-counter-pair-main-adoption.yml","experiments/izzet-science/position1-counter-pair-main-adoption-budget-20260929.json","mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/StackEffects.kt","mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt","mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/hml/cards/MemoryLapse.kt","mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt","mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MemoryLapseScenarioTest.kt","rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ManaPaymentContinuationResumer.kt","rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/CreateDelayedTriggerExecutor.kt","rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/drawing/DrawUpToExecutor.kt","rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/CounterEffectExecutor.kt","rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt","rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/drawing/DrawUpToSpecificEntityPlayerTest.kt"]
+          got=sorted(subprocess.check_output(["git","diff","--name-only","HEAD^..HEAD"],text=True).splitlines())
+          assert got == expected, (got, expected)
+          assert subprocess.check_output(["git","status","--porcelain"],text=True) == ""
+          PY
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/StackEffects.kt
+            git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt
+            git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/hml/cards/MemoryLapse.kt
+            git hash-object mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt
+            git hash-object mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MemoryLapseScenarioTest.kt
+            git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ManaPaymentContinuationResumer.kt
+            git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/CreateDelayedTriggerExecutor.kt
+            git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/drawing/DrawUpToExecutor.kt
+            git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/CounterEffectExecutor.kt
+            git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
+            git hash-object rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/drawing/DrawUpToSpecificEntityPlayerTest.kt
+            git hash-object experiments/izzet-science/position1-counter-pair-main-adoption-budget-20260929.json
+            git hash-object .github/workflows/izzet-position1-counter-pair-main-adoption.yml
+          } > build/reports/izzet-position1-main-adoption/source.txt
+      - name: Fresh DrawUpTo SpecificEntity regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class DrawUpToSpecificEntityPlayerTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/izzet-position1-main-adoption/draw-up-to.log
+          xml="$(find . -path '*/build/test-results/test/TEST-com.wingedsheep.engine.handlers.effects.drawing.DrawUpToSpecificEntityPlayerTest.xml' -type f -print -quit)"
+          test -n "$xml" && test -s "$xml"
+          cp "$xml" build/reports/izzet-position1-main-adoption/
+      - name: Fresh Arcane Denial semantic bank
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class ArcaneDenialScenarioTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/izzet-position1-main-adoption/arcane.log
+          xml="$(find . -path '*/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest.xml' -type f -print -quit)"
+          test -n "$xml" && test -s "$xml"
+          cp "$xml" build/reports/izzet-position1-main-adoption/
+      - name: Fresh Memory Lapse semantic bank
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class MemoryLapseScenarioTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/izzet-position1-main-adoption/lapse.log
+          xml="$(find . -path '*/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MemoryLapseScenarioTest.xml' -type f -print -quit)"
+          test -n "$xml" && test -s "$xml"
+          cp "$xml" build/reports/izzet-position1-main-adoption/
+      - name: Verify exact seven behavioral cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import pathlib, xml.etree.ElementTree as ET
+          root=pathlib.Path("build/reports/izzet-position1-main-adoption")
+          expected={
+            "TEST-com.wingedsheep.engine.handlers.effects.drawing.DrawUpToSpecificEntityPlayerTest.xml":1,
+            "TEST-com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest.xml":3,
+            "TEST-com.wingedsheep.engine.scenarios.MemoryLapseScenarioTest.xml":3,
+          }
+          for name,n in expected.items():
+            p=root/name
+            assert p.is_file() and p.stat().st_size
+            x=ET.parse(p).getroot()
+            assert int(x.attrib["tests"])==n
+            assert int(x.attrib.get("failures","0"))==0
+            assert int(x.attrib.get("errors","0"))==0
+            assert int(x.attrib.get("skipped","0"))==0
+          PY
+      - name: Preserve exact original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-position1-main-adoption-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/izzet-position1-main-adoption/
+          if-no-files-found: error
+          retention-days: 90

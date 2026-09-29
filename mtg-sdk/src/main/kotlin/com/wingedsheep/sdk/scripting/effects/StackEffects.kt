@@ -94,6 +94,15 @@ sealed interface CounterDestination {
     @SerialName("CounterDestination.Hand")
     @Serializable
     data object Hand : CounterDestination
+
+    /**
+     * Spell is put on top of its owner's library instead of their graveyard (Memory Lapse).
+     * This remains a genuine counter and therefore still respects can't-be-countered and emits
+     * SpellCounteredEvent. Counter-time exile riders (flashback-style replacements) still win.
+     */
+    @SerialName("CounterDestination.LibraryTop")
+    @Serializable
+    data object LibraryTop : CounterDestination
 }
 
 /**
@@ -206,6 +215,13 @@ data class CounterEffect(
                             append(". If countered, put it into its owner's hand")
                         } else {
                             append(". If that spell is countered this way, put it into its owner's hand instead of into that player's graveyard")
+                        }
+                    }
+                    CounterDestination.LibraryTop -> {
+                        if (condition is CounterCondition.UnlessPaysMana || condition is CounterCondition.UnlessPaysDynamic) {
+                            append(". If countered, put it on top of its owner's library")
+                        } else {
+                            append(". If that spell is countered this way, put it on top of its owner's library instead of into that player's graveyard")
                         }
                     }
                 }
