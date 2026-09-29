@@ -1,0 +1,23 @@
+{
+  "schema": "industrial-r1-gradle-implementation-closure-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "accepted_ai_runtime_graph_run": 36503229016,
+    "accepted_os_python_run": 36505731714,
+    "complete_runtime_validator_run": 36482399407
+  },
+  "scope": "Capture every jar beneath the actual wrapper-selected Gradle home plus repository wrapper bytes as a conservative seed-free launcher/daemon/test-worker implementation closure.",
+  "acceptance": [
+    "actual Gradle home/version is discovered by the wrapper itself",
+    "all recursively present Gradle implementation jars are hashed and canonically digested",
+    "wrapper jar/properties/script bytes are hashed",
+    "no seed/entropy/game data is read"
+  ],
+  "prohibited": [
+    "claiming precise classloader order from the conservative jar set",
+    "expected-manifest adoption",
+    "prepared-worker admission",
+    "claim/allocation/R1/gameplay"
+  ],
+  "official_counters_delta": 0
+}
