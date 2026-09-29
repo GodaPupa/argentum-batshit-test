@@ -1,0 +1,63 @@
+name: Sphinx Sleep of the Dead escape receiving
+on:
+  push:
+    branches: ["sphinx/sleep-of-the-dead-escape-receiving-20260929"]
+    paths: [".github/workflows/sphinx-sleep-escape-receiving.yml"]
+permissions: {contents: read}
+jobs:
+  payment-engine-receiving:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact Sleep escape bank and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/sphinx-sleep-escape-receiving
+          test "$(git rev-parse HEAD^)" = "f0a0cb60468c2c1986e0fd2099d935b21da9b6b9"
+          test "$(git hash-object sphinx-approach/STAGE_E_SLEEP_ESCAPE_RECEIVING_BUDGET_20260929.json)" = "058d5d314c635783c6acd6c2288a0bc3237c02f5"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorBasicBluePayment.kt)" = "73ee259bac39fecf8fd2d47cad57f5ccb0ff911b"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt)" = "63659b89b0bfee55e13f9392a1a59dfc560b276e"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt)" = "a783d5e2fc15acf2f17581c930ef33f72c30d7eb"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt)" = "c88581277abe9ac8bf9db143a91c9ef648bda40a"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "90271284f6eb8f0c389e460b394467a3adc6b872"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageESleepEscapeReceivingTest.kt)" = "1e0823c033cd37314e086f16cb89069d99160883"
+          test "$(git hash-object sphinx-approach/decks/serpico-terror-benchmark.csv)" = "da2f0d8d1e7a6d464567f765483d0145ae3726dd"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/thb/cards/SleepOfTheDead.kt)" = "96d3609ed36d495ca53b00eff316b156f87c2f6c"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SleepOfTheDeadScenarioTest.kt)" = "52b3886dc31fc1f62234a83a27591aed8891c907"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object sphinx-approach/STAGE_E_SLEEP_ESCAPE_RECEIVING_BUDGET_20260929.json; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorBasicBluePayment.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageESleepEscapeReceivingTest.kt; git hash-object sphinx-approach/decks/serpico-terror-benchmark.csv; git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/thb/cards/SleepOfTheDead.kt; git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SleepOfTheDeadScenarioTest.kt; git hash-object .github/workflows/sphinx-sleep-escape-receiving.yml; git status --porcelain; } > build/reports/sphinx-sleep-escape-receiving/source.txt
+      - name: Run shared basic-blue projection bank
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class ActorSpellPaymentProjectionTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-sleep-escape-receiving/payment.log
+          find . -path '*/build/test-results/test/TEST-com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest.xml' -type f -exec cp {} build/reports/sphinx-sleep-escape-receiving/ \;
+          test -s build/reports/sphinx-sleep-escape-receiving/TEST-com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest.xml
+      - name: Run unchanged Sleep engine scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class SleepOfTheDeadScenarioTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-sleep-escape-receiving/engine.log
+          find . -path '*/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SleepOfTheDeadScenarioTest.xml' -type f -exec cp {} build/reports/sphinx-sleep-escape-receiving/ \;
+          test -s build/reports/sphinx-sleep-escape-receiving/TEST-com.wingedsheep.engine.scenarios.SleepOfTheDeadScenarioTest.xml
+      - name: Run frozen benchmark Sleep escape receiving case
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class SphinxStageESleepEscapeReceivingTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-sleep-escape-receiving/receiving.log
+          find . -path '*/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageESleepEscapeReceivingTest.xml' -type f -exec cp {} build/reports/sphinx-sleep-escape-receiving/ \;
+          test -s build/reports/sphinx-sleep-escape-receiving/TEST-com.wingedsheep.gym.sphinx.SphinxStageESleepEscapeReceivingTest.xml
+      - name: Preserve exact original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-sleep-escape-receiving-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-sleep-escape-receiving/
+          if-no-files-found: error
+          retention-days: 90
