@@ -1,0 +1,70 @@
+{
+  "schema": "izzet-position1-turn-aside-snapshot-convergence-budget-v1",
+  "date_utc": "2026-09-29",
+  "base_main": "a3937be2e518b2b6cd66b4e9adedb095e9f9530a",
+  "behavior_authority": {
+    "run_id": 36550162966,
+    "artifact_id": 11024690655,
+    "semantic_result": "3/3 clean",
+    "rule": "consume by reference only; do not rerun"
+  },
+  "preserved_diagnostics": [
+    {
+      "run_id": 36551571086,
+      "artifact_id": 11024592245,
+      "disposition": "incomplete"
+    },
+    {
+      "run_id": 36586020448,
+      "artifact_id": 11041557902,
+      "disposition": "incomplete but preserved exact six-file delta"
+    }
+  ],
+  "expected_snapshot_delta": {
+    "ALL": [
+      "Arcane Denial"
+    ],
+    "HML": [
+      "Memory Lapse"
+    ],
+    "M13": [
+      "Archaeomancer"
+    ],
+    "ROE": [
+      "Mnemonic Wall"
+    ],
+    "SOM": [
+      "Turn Aside"
+    ],
+    "ULG": [
+      "Frantic Search",
+      "Snap"
+    ]
+  },
+  "accepted_source_blobs": {
+    "Arcane Denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "Memory Lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "Archaeomancer": "cc5b2951943c875982036f9b7506072ea65d9db6",
+    "Mnemonic Wall": "dcfca24f1918f79092b7f3274ee454614d15d03e",
+    "Turn Aside": "96a656b7fdd77ae10045d523e281eb34f5cb711e",
+    "Frantic Search": "6c3ad836867f9789894e5da5aeb35ab6d0dbc906",
+    "Snap": "15c15b39609e97796a110c5228e84265a60cc45d"
+  },
+  "acceptance": [
+    "fresh full CardDefinitionSnapshotTest and CardLintTest with --rerun-tasks --no-build-cache",
+    "pre-commit generated changed-file set exactly ALL/HML/M13/ROE/SOM/ULG",
+    "each changed snapshot adds exactly its predeclared accepted record set",
+    "no baseline record changes or disappears",
+    "generated snapshots and patches preserved",
+    "commit exactly the six generated snapshot files to the convergence branch after all checks pass",
+    "post-commit working tree clean"
+  ],
+  "excluded": [
+    "Turn Aside semantic rerun",
+    "shared engine changes",
+    "whole Position-1 pilot/action ranking",
+    "commander lifecycle/damage/event ledger",
+    "seed/allocation/gameplay"
+  ],
+  "official_counters_delta": 0
+}
