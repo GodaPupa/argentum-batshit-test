@@ -1,0 +1,84 @@
+{
+  "schema": "industrial-classloader-topology-36517997210-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36517997210,
+  "artifact_id": 11011483399,
+  "artifact_sha256": "5a4600ff9807048a74c1aad9bc6c13ebd7faa091a75d164b4522e96adef1eeea",
+  "head": "79d7c1c4c366d6c42c7c2a4a6816c108e6f91e0a",
+  "parent": "9290b592633582979ff7760f9fc7340621e15cc3",
+  "pins": {
+    "worker_probe": "eee28d377387df5b07cb00c9adc111e975d14188",
+    "budget": "8bd543dff47a888c54e8c5132a9c4d0e336acdc3",
+    "daemon_capture_script": "c423780611cc1b892a6fe7b3972f43aec35dc1a2",
+    "workflow": "c977224ab8057c7e9d9aa734739bd23b464335b4"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "worker_xml_parse": "clean",
+    "workflow_conclusion": "success",
+    "worker_tests": 1,
+    "worker_passes": 1,
+    "worker_failures": 0,
+    "worker_errors": 0,
+    "worker_skipped": 0
+  },
+  "preserved_payload": {
+    "daemon": [
+      "daemon-context-loaders.tsv",
+      "daemon-system-loaders.tsv",
+      "daemon-classpath.tsv",
+      "daemon-runtime.txt"
+    ],
+    "worker": [
+      "worker-context-loaders.tsv",
+      "worker-system-loaders.tsv",
+      "worker-classpath.tsv",
+      "worker-code-sources.tsv",
+      "worker-runtime.txt"
+    ],
+    "row_counts": {
+      "daemon_context_loader_rows": 4,
+      "daemon_system_loader_rows": 3,
+      "daemon_classpath_rows": 1,
+      "worker_context_loader_rows": 3,
+      "worker_system_loader_rows": 3,
+      "worker_classpath_rows": 56,
+      "worker_code_source_rows": 7
+    }
+  },
+  "runtime_observations": {
+    "gradle_version": "9.6.1",
+    "daemon_java_version": "21.0.12.1",
+    "worker_java_version": "21.0.12.1",
+    "java_home": "/usr/lib/jvm/temurin-21-jdk-amd64",
+    "java_vm_name": "OpenJDK 64-Bit Server VM",
+    "daemon_classpath_entry": "gradle-daemon-main-9.6.1.jar",
+    "worker_representative_bindings": [
+      "IndustrialWasteV2AllocationRunner -> ai/build/classes/kotlin/test via AppClassLoader",
+      "IndustrialWasteV2FullHorizonRunner -> ai/build/classes/kotlin/test via AppClassLoader",
+      "IndustrialWasteV2R1OfficialExecutionTest -> ai/build/classes/kotlin/test via AppClassLoader",
+      "GameTestDriver -> rules-engine-test-fixtures.jar via AppClassLoader",
+      "kotlin.Unit -> kotlin-stdlib-2.4.0.jar via AppClassLoader",
+      "Kotest FunSpec -> kotest-framework-engine-jvm-6.2.1.jar via AppClassLoader"
+    ]
+  },
+  "decision": "ACCEPT_COMPLETE_SEED_FREE_DAEMON_AND_WORKER_TOPOLOGY_CAPTURE_SLICE",
+  "accepted_scope": [
+    "The exact run preserves actual Gradle-daemon context/system loader chains, daemon java.class.path and daemon runtime identifiers.",
+    "The exact run preserves actual :ai test-worker context/system loader chains, ordered 56-entry java.class.path, worker runtime identifiers and seven representative class-to-loader/code-source bindings.",
+    "The predecessor preservation gap is closed because every required worker-* payload is present and nonempty in the original artifact."
+  ],
+  "authority_withheld": [
+    "combined complete-runtime expected-manifest adoption",
+    "prepared-worker attestation",
+    "R1 execution authority",
+    "claim",
+    "allocation",
+    "seed generation",
+    "gameplay"
+  ],
+  "next_gate": "Combine this accepted topology slice with the already accepted Gradle implementation closure, :ai testRuntimeClasspath capture, toolchain-byte closure and OS/Python closure under the complete-runtime validator. Only a separately reviewed exact manifest/validator may advance prepared-worker or R1 authority.",
+  "official_counters_delta": 0
+}
