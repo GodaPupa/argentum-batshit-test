@@ -1,0 +1,43 @@
+{
+  "schema": "ferocity-resource06-development-admission-semantic-diff-36510479750-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36510479750,
+  "artifact_id": 11008148701,
+  "artifact_sha256": "30bc8cfb8e9428024df99c7de33778cb2725ac364a811b5bbc6f694af1c0631a",
+  "head": "6fc71d133807f594d475253b737e00cde13bb23d",
+  "parent": "31506ae908f7c658e4178d3ab2fe401279d1a77e",
+  "pins": {
+    "resource06_archive": "a0fb48835413d80149331a7775e17820435cad7b",
+    "current_development_admission": "c64afaf0dac73fe4a73e47a58ababa60a5888064",
+    "diff_script": "72c6a528f04d79d8ddb87c9da675b0bd1c9b5d03",
+    "budget": "4bce366338ea28357ffe7c67c51f1342b07803c0",
+    "workflow": "804de976c4f6167482547ea5a17267db766b1dd6"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "jvm_started": false,
+    "seed_or_entropy_files_read": false,
+    "game_initialized": false
+  },
+  "result": {
+    "classification": "EXECUTABLE_TEXT_DIFFERS",
+    "archive_member_sha256": "66278d8eabc90ee0be9edaaeb6a2379efa3260e42d8f92a93c8436c6f48020bb",
+    "current_sha256": "ed75e5d32a9eccf90a0379d62716a0a7b695b7196a82f32972df88a03b8b881f",
+    "meaningful_change_hunks": 1,
+    "meaningful_change": {
+      "tag": "insert",
+      "current_line": "\"FerocityPriorityObservationTest\" to 4,"
+    }
+  },
+  "decision": "ACCEPTED_SEMANTIC_DIFF__CURRENT_SOURCE08_ADDS_PRIORITY_OBSERVATION_ADMISSION_REQUIREMENT",
+  "interpretation": [
+    "Archived Resource06 and current source08 differ in exactly one normalized executable hunk.",
+    "Current source08 adds FerocityPriorityObservationTest with required class count 4 to requiredDevelopmentClassCounts.",
+    "This is an admission/qualification requirement change; it is not safe to inherit Resource06 admission authority without independently satisfying the added current requirement."
+  ],
+  "next_gate": "Bind and independently qualify the exact current FerocityPriorityObservationTest four-case requirement, then reconcile current source08 resource/runner/trace/bundle authorities into the non-executing first-cell admission manifest.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
