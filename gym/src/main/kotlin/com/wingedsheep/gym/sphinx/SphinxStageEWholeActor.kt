@@ -1,5 +1,6 @@
 package com.wingedsheep.gym.sphinx
 
+import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.gym.actorinput.ActorEpoch
@@ -55,10 +56,29 @@ internal object SphinxStageEWholeActor {
             it.ownerId == pilot.actorId && it.zoneType == Zone.HAND
         } ?: return unqualified(input, "Current own hand is unavailable")
         if (hand.size != hand.cards.size) return unqualified(input, "Current own hand is incomplete")
-        val card = hand.cards.singleOrNull { it.entityId == cast.cardId }
-            ?: return unqualified(input, "Current cast card is not identifiable in own hand")
+        val handCard = hand.cards.singleOrNull { it.entityId == cast.cardId }
+        val flashbackCard = if (
+            handCard == null &&
+            cast.useAlternativeCost &&
+            cast.alternativeCostType == AlternativeCostType.FLASHBACK
+        ) {
+            val graveyard = input.observation.zones.singleOrNull {
+                it.ownerId == pilot.actorId && it.zoneType == Zone.GRAVEYARD
+            } ?: return unqualified(input, "Current own graveyard is unavailable")
+            if (graveyard.size != graveyard.cards.size) {
+                return unqualified(input, "Current own graveyard is incomplete")
+            }
+            graveyard.cards.singleOrNull { it.entityId == cast.cardId }
+        } else null
+        val card = handCard ?: flashbackCard
+            ?: return unqualified(input, "Current cast card is not identifiable in reviewed own zones")
 
-        val call = when (card.name) {
+        val call = if (flashbackCard != null) {
+            if (card.name != "Artful Dodge") {
+                return unqualified(input, "Only Artful Dodge flashback has reviewed graveyard routing")
+            }
+            SphinxStageEComponentCall.ARTFUL_DODGE_FLASHBACK
+        } else when (card.name) {
             in interactionCounters -> SphinxStageEComponentCall.COUNTERSPELL
             in setupDraws -> SphinxStageEComponentCall.SETUP_DRAW
             in deployments -> SphinxStageEComponentCall.DEPLOYMENT
