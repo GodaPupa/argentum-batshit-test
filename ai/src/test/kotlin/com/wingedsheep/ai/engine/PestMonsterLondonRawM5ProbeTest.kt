@@ -34,12 +34,12 @@ class PestMonsterLondonRawM5ProbeTest : ScenarioTestBase() {
         val cards = summaries(game, hand)
         val controller = EngineAiPlayerController(cardRegistry, game.player1Id, gameStateProvider = { game.state })
         val guaranteedMethod = controller.javaClass.declaredMethods.single {
-            it.name == "guaranteedSecondLandAccess"
+            it.name.startsWith("guaranteedSecondLandAccess")
         }.apply { isAccessible = true }
         val guaranteed = guaranteedMethod.invoke(controller, hand, cards)
         val spell = hand.single { cards.getValue(it).name == spellName }
         val developmentMethod = controller.javaClass.declaredMethods.single {
-            it.name == "hasPayableEarlyDevelopmentLine"
+            it.name.startsWith("hasPayableEarlyDevelopmentLine")
         }.apply { isAccessible = true }
         val value = developmentMethod.invoke(controller, game.state, hand, spell, guaranteed) as Boolean
         return (guaranteed != null) to value
