@@ -1,0 +1,88 @@
+{
+  "schema": "izzet-position1-counter-pair-main-adoption-36532096568-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36532096568,
+  "artifact_id": 11016956858,
+  "artifact_sha256": "4c954470ffdd56b6d10fded1481b563349b652b41b2a8b3623898522a6c49101",
+  "revalidation_head": "ca7221a376fd3a7a6acf8dcdd165603dfb769b15",
+  "revalidation_parent": "411b78b1a4de44ea08ea3e0812901514ad0f81a9",
+  "adoption_base_main": "438bbb1337b0d05aec520360f2ebd6b27b69d3e0",
+  "adoption_base_delta_from_revalidation_parent": {
+    "commits": 1,
+    "paths": [
+      "sphinx-approach/evidence/approach-mode-receiving-36531284127-original-audit.json"
+    ],
+    "overlaps_adopted_paths": false
+  },
+  "workflow_blob": "4247d0d52b4fd288962028cdec00b697f6164605",
+  "budget_blob": "fc374f55dc07fd84b27b4e657b9df6dd6bfea567",
+  "adopted_blobs": {
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/StackEffects.kt": "8ad94eec5fc9f88cb7920e911a8fc173749d7db7",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/hml/cards/MemoryLapse.kt": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt": "3d559542025a5415a2b0aebf7a4c5f39870278de",
+    "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MemoryLapseScenarioTest.kt": "e7e60d5a68e4b8d5f2f016a88364b3b25413853b",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ManaPaymentContinuationResumer.kt": "30966ffbfa84801761c6f98a33a2adecee627da9",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/CreateDelayedTriggerExecutor.kt": "36cb0af0ce66def8baa0adae50d60ab06b22ddcf",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/drawing/DrawUpToExecutor.kt": "053337d3aafbe24a1d05fe414733fda4f5888f34",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/CounterEffectExecutor.kt": "a46651a83da18774daa93a110ae9b0d62481f3c9",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": "a46aed0092806245462dbd881fab327d838de4e7",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/drawing/DrawUpToSpecificEntityPlayerTest.kt": "b13b1f5c5ff13b9e854ce1973dbb72b29938777e"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_parent_workflow_binding": "passed",
+    "exact_changed_path_set_binding": "passed",
+    "checkout_status": "clean",
+    "freshness": "three behavioral tasks executed with --rerun-tasks --no-build-cache; no test task was FROM-CACHE",
+    "xml_parse": "clean",
+    "xml_originals_preserved": 3
+  },
+  "result": {
+    "draw_up_to_specific_entity": {
+      "tests": 1,
+      "passes": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "arcane_denial": {
+      "tests": 3,
+      "passes": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "memory_lapse": {
+      "tests": 3,
+      "passes": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "total": {
+      "tests": 7,
+      "passes": 7,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "decision": "ACCEPTED_EXACT_POSITION1_COUNTER_PAIR_CURRENT_MAIN_ADOPTION",
+  "accepted_scope": [
+    "Adopt exactly the independently qualified shared-engine, Arcane Denial, Memory Lapse and focused regression blobs listed in adopted_blobs onto current main.",
+    "The adopted bytes reproduce the accepted historical counter-pair behavior on the current-main composition with seven fresh behavioral cases.",
+    "The one post-revalidation-parent main change is Sphinx evidence only and has no path overlap with the adopted Izzet bytes."
+  ],
+  "limits": [
+    "No whole Position-1 pilot or action-ranking authority.",
+    "No commander lifecycle/damage, opponent, collector/replay/durability, seed, allocation or gameplay authority.",
+    "No authority for PR211 or PR212 and no implication that either draft PR should merge."
+  ],
+  "next_gate": "Run a fresh changed-runtime Position-1 registry reinventory from the newly adopted main, then continue the smallest remaining missing mechanics/pilot/lifecycle gates.",
+  "authority_granted": [
+    "exact current-main adoption of the accepted Arcane Denial / Memory Lapse counter-pair mechanics and focused DrawUpTo repair"
+  ],
+  "official_counters_delta": 0
+}

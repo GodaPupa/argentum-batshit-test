@@ -591,6 +591,7 @@ class ManaPaymentContinuationResumer(
                 state, spellEntityId, grantFreeCast = false, controllerId = controllerId
             )
             CounterDestination.Hand -> services.stackResolver.counterSpellToHand(state, spellEntityId)
+            CounterDestination.LibraryTop -> services.stackResolver.counterSpellToLibraryTop(state, spellEntityId)
             CounterDestination.Graveyard -> services.stackResolver.counterSpellOrAbility(state, spellEntityId)
         }
         return checkForMore(result.newState, precedingEvents + result.events)
