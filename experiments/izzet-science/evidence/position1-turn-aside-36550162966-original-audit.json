@@ -1,0 +1,55 @@
+{
+  "schema": "izzet-position1-turn-aside-36550162966-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36550162966,
+  "artifact_id": 11024690655,
+  "artifact_sha256": "8cd84b5ed31bb2fb5e0260b59880f36b372de437ae0fec42d6e364ef4bf328dd",
+  "head": "d3b460a4722d873a8c22954ad718d7987521eaa2",
+  "parent": "5dcba2567e8b29bde9bcb9bb44a834f2052e52d3",
+  "pins": {
+    "turn_aside": "96a656b7fdd77ae10045d523e281eb34f5cb711e",
+    "semantic_test": "0eec9947e43bb43a9c3bbe9d90a33626a243cf3f",
+    "budget": "4907751d3a30c1245cacc05fd85292fca570b589",
+    "object_filter": "3c3793b2f27022f4c0a3c2693c44baa7a176f6a0",
+    "card_predicate": "6b7457a59d266a5d8b431a74ecefe6d3e7c1e1c9",
+    "target_filter": "0d0a1fd4b8975bac4d05b7a44883eef376ffb4a3",
+    "counter_executor": "a46651a83da18774daa93a110ae9b0d62481f3c9",
+    "stack_effects": "8ad94eec5fc9f88cb7920e911a8fc173749d7db7",
+    "workflow": "dd3704edf5b020f4581e23b44fa3fbb494920b0f"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "scenario_freshness": "TurnAsideScenarioTest executed with --rerun-tasks --no-build-cache",
+    "semantic_xml_parse": "clean",
+    "snapshot_and_cardlint_build": "success; 38 actionable tasks executed",
+    "card_lint": "three CardLintTest cases passed",
+    "snapshot_containment": "failed after successful regeneration"
+  },
+  "result": {
+    "turn_aside_semantics": {
+      "tests": 3,
+      "passes": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "generated_snapshot_changed_paths": [
+      "mtg-sets/src/test/resources/snapshots/cards/ALL.json",
+      "mtg-sets/src/test/resources/snapshots/cards/HML.json",
+      "mtg-sets/src/test/resources/snapshots/cards/M13.json",
+      "mtg-sets/src/test/resources/snapshots/cards/ROE.json",
+      "mtg-sets/src/test/resources/snapshots/cards/SOM.json",
+      "mtg-sets/src/test/resources/snapshots/cards/ULG.json"
+    ]
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_SNAPSHOT_CONTAINMENT_AFTER_CLEAN_BEHAVIOR",
+    "detail": "The exact Turn Aside behavior bank passed 3/3 and the full snapshot/CardLint build succeeded, but the predeclared one-file containment rule failed because corpus regeneration also surfaced five previously adopted Izzet card snapshot deltas (ALL/HML/M13/ROE/ULG). Generated SOM bytes were not preserved by the failed containment step, so this original alone does not close snapshot qualification."
+  },
+  "decision": "INCOMPLETE_NO_TURN_ASIDE_ADOPTION_FROM_THIS_ORIGINAL",
+  "successor": "Preserve this original. Do not rerun its unchanged semantic bank. Run a snapshot-only successor that binds the same Turn Aside card/test bytes, prospectively binds the exact six changed snapshot paths, proves each file adds exactly its already-accepted corresponding card and changes no existing card tree, and preserves all six generated originals for independent audit.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
