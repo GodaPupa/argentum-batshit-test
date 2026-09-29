@@ -32,7 +32,7 @@ class PestMonsterLondonRawM5ProbeTest : ScenarioTestBase() {
     private fun rawAtom(game: TestGame, spellName: String): Pair<Boolean, Boolean> {
         val hand = game.state.getHand(game.player1Id)
         val cards = summaries(game, hand)
-        val controller = EngineAiPlayerController(cardRegistry, game.player1Id) { game.state }
+        val controller = EngineAiPlayerController(cardRegistry, game.player1Id, gameStateProvider = { game.state })
         val guaranteedMethod = controller.javaClass.declaredMethods.single {
             it.name == "guaranteedSecondLandAccess"
         }.apply { isAccessible = true }
