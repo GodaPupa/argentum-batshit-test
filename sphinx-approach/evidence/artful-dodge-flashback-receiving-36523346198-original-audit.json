@@ -1,0 +1,63 @@
+{
+  "schema": "sphinx-stage-e-artful-dodge-flashback-payment-receiving-36523346198-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36523346198,
+  "artifact_id": 11013632188,
+  "artifact_sha256": "3a40f19beae43f88cd25d63b5ca0f1ccd1c554035d54a13c1a5b8244ce600cd5",
+  "head": "55fbe37c7cf1a8085b69928d593f6641203748b1",
+  "parent": "86597c9aec07449ddd362f9968cc62461e3e472c",
+  "pins": {
+    "payment_projection": "0d5ba2699618e3a5118be1aeb3cf38c485fd581b",
+    "payment_test": "1fcba753f8b0788adc7fd49981ba7a2962cb1dbb",
+    "payment_budget": "b17ff7d73d1389356bb16b13065010459fd85257",
+    "pilot": "762d1f99980e5ecf54d1cda182a9a94e1a573280",
+    "actor_adapter": "1f0f3241190990fe9069540ae639d276d423ce72",
+    "whole_actor": "bc2e6019bfaa3bb652b74d2a001cc84aabb963d1",
+    "receiving_test": "97fc1e087ffd4a03dea5d70e5a3d4e0a3543ef0c",
+    "receiving_budget": "9932eaea3bfff98fbb8ad11953b3445f445a1066",
+    "benchmark_deck": "da2f0d8d1e7a6d464567f765483d0145ae3726dd",
+    "artful_dodge_definition": "5ccf13532c94f7f13e9a396eef60ae0617590825",
+    "engine_scenario": "414803dd9d69a058e51d8194842a5b406984ab4c",
+    "workflow": "d0f2c273fb21fe92467a0a9921da83f387b93b7d"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "payment_xml_parse": "clean",
+    "receiving_xml_parse": "clean",
+    "payment_xml_preserved": true,
+    "freshness": "--rerun-tasks --no-build-cache"
+  },
+  "result": {
+    "shared_payment_projection": {
+      "tests": 11,
+      "passes": 11,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "artful_dodge_receiving": {
+      "tests": 1,
+      "passes": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "decision": "ACCEPTED_ARTFUL_DODGE_FLASHBACK_PAYMENT_AND_RECEIVING",
+  "accepted_scope": [
+    "The canonical basic-blue payment projection accepts the exact real Artful Dodge FLASHBACK legal action and agrees with the real cast on payment.",
+    "The Sphinx whole actor routes the sole real graveyard Artful Dodge FLASHBACK offer without treating it as a hand cast.",
+    "The adapter selects the sole legal actor-controlled Cryptic Serpent target.",
+    "The real engine cast resolves and the physical Artful Dodge reaches exile.",
+    "Both the shared payment bank XML and AD1 receiving XML are preserved in the exact original artifact."
+  ],
+  "limits": [
+    "No non-FLASHBACK alternate-cost policy.",
+    "No multiple-target or multiple-cast ranking.",
+    "No combat policy, Sleep of the Dead escape, ordinary priority scheduling, opponent package, collector, replay or Stage-E gameplay authority."
+  ],
+  "next_gate": "Qualify the next uncovered frozen own-card surface, preferably Sleep of the Dead escape, then continue ordinary priority/combat/multi-action ranking before whole-pilot and Stage-E freeze.",
+  "official_counters_delta": 0
+}
