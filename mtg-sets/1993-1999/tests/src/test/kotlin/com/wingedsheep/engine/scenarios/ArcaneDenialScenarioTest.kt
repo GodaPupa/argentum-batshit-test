@@ -6,6 +6,7 @@ import com.wingedsheep.engine.core.NumberChosenResponse
 import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.state.components.identity.CantBeCounteredComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.all.cards.ArcaneDenial
@@ -18,6 +19,7 @@ import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import io.kotest.assertions.withClue
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 
 class ArcaneDenialScenarioTest : FunSpec({
 
@@ -108,6 +110,11 @@ class ArcaneDenialScenarioTest : FunSpec({
         }
         (casterDraw >= 0) shouldBe true
         d.submitDecision(caster, OptionChosenResponse(ordering.id, casterDraw)).error shouldBe null
+        d.stackSize shouldBe 2
+        val topTrigger = d.state.getTopOfStack()
+            ?.let { d.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>() }
+            ?: error("Arcane Denial trigger ordering did not leave a triggered ability on top")
+        topTrigger.effect.shouldBeInstanceOf<DrawUpToEffect>()
         d.resolveUntilDecisionOrEmpty()
 
         val decision = d.pendingDecision as? ChooseNumberDecision
