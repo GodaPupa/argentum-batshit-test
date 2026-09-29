@@ -5,7 +5,7 @@ on:
     paths: [".github/workflows/sphinx-artful-dodge-flashback-receiving.yml"]
 permissions: {contents: read}
 jobs:
-  one-case:
+  payment-and-receiving:
     runs-on: ubuntu-latest
     timeout-minutes: 75
     steps:
@@ -20,7 +20,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/sphinx-artful-dodge-flashback-receiving
-          test "$(git rev-parse HEAD^)" = "88e8a31651ea76c38cd64c239327426ad4dd5532"
+          test "$(git rev-parse HEAD^)" = "9246b26b8b50ee8e2c27818b8784c3b39fd23e6b"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorBasicBluePayment.kt)" = "0d5ba2699618e3a5118be1aeb3cf38c485fd581b"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt)" = "1fcba753f8b0788adc7fd49981ba7a2962cb1dbb"
+          test "$(git hash-object sphinx-approach/STAGE_E_ARTFUL_DODGE_FLASHBACK_PAYMENT_SUCCESSOR_BUDGET_20260929.json)" = "b17ff7d73d1389356bb16b13065010459fd85257"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt)" = "762d1f99980e5ecf54d1cda182a9a94e1a573280"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt)" = "1f0f3241190990fe9069540ae639d276d423ce72"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "bc2e6019bfaa3bb652b74d2a001cc84aabb963d1"
@@ -29,8 +32,13 @@ jobs:
           test "$(git hash-object sphinx-approach/decks/serpico-terror-benchmark.csv)" = "da2f0d8d1e7a6d464567f765483d0145ae3726dd"
           test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/ArtfulDodge.kt)" = "5ccf13532c94f7f13e9a396eef60ae0617590825"
           test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArtfulDodgeScenarioTest.kt)" = "414803dd9d69a058e51d8194842a5b406984ab4c"
-          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEArtfulDodgeFlashbackReceivingTest.kt; git hash-object sphinx-approach/STAGE_E_ARTFUL_DODGE_FLASHBACK_RECEIVING_BUDGET_20260929.json; git hash-object sphinx-approach/decks/serpico-terror-benchmark.csv; git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/ArtfulDodge.kt; git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArtfulDodgeScenarioTest.kt; git hash-object .github/workflows/sphinx-artful-dodge-flashback-receiving.yml; git status --porcelain; } > build/reports/sphinx-artful-dodge-flashback-receiving/source.txt
-      - name: Run one fresh real Artful Dodge flashback receiving case
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorBasicBluePayment.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt; git hash-object sphinx-approach/STAGE_E_ARTFUL_DODGE_FLASHBACK_PAYMENT_SUCCESSOR_BUDGET_20260929.json; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEArtfulDodgeFlashbackReceivingTest.kt; git hash-object sphinx-approach/STAGE_E_ARTFUL_DODGE_FLASHBACK_RECEIVING_BUDGET_20260929.json; git hash-object sphinx-approach/decks/serpico-terror-benchmark.csv; git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dka/cards/ArtfulDodge.kt; git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArtfulDodgeScenarioTest.kt; git hash-object .github/workflows/sphinx-artful-dodge-flashback-receiving.yml; git status --porcelain; } > build/reports/sphinx-artful-dodge-flashback-receiving/source.txt
+      - name: Run shared flashback payment projection bank
+        shell: bash
+        run: |
+          set -o pipefail
+          just test-class ActorSpellPaymentProjectionTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-artful-dodge-flashback-receiving/payment.log
+      - name: Run unchanged real Artful Dodge flashback receiving case
         shell: bash
         run: |
           set -o pipefail
@@ -39,6 +47,7 @@ jobs:
         if: always()
         shell: bash
         run: |
+          find . -path '*/build/test-results/test/TEST-com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest.xml' -type f -exec cp {} build/reports/sphinx-artful-dodge-flashback-receiving/ \; || true
           find . -path '*/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.SphinxStageEArtfulDodgeFlashbackReceivingTest.xml' -type f -exec cp {} build/reports/sphinx-artful-dodge-flashback-receiving/ \; || true
       - name: Preserve original
         if: always()
