@@ -1,7 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ChooseNumberDecision
+import com.wingedsheep.engine.core.ChooseOptionDecision
 import com.wingedsheep.engine.core.NumberChosenResponse
+import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.state.components.identity.CantBeCounteredComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
@@ -89,6 +91,14 @@ class ArcaneDenialScenarioTest : FunSpec({
 
         d.passPriorityUntil(Step.UPKEEP)
         d.activePlayer shouldBe caster
+
+        // Arcane Denial creates two simultaneous delayed triggers controlled by the caster.
+        // CR 603.3b requires that player to order them before either can resolve.
+        val ordering = d.pendingDecision as? ChooseOptionDecision
+            ?: error("Arcane Denial did not present simultaneous-trigger ordering")
+        ordering.playerId shouldBe caster
+        ordering.options.size shouldBe 2
+        d.submitDecision(caster, OptionChosenResponse(ordering.id, 0)).error shouldBe null
         d.resolveUntilDecisionOrEmpty()
 
         val decision = d.pendingDecision as? ChooseNumberDecision
