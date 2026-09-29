@@ -20,7 +20,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/industrial-classloader-topology
-          test "$(git rev-parse HEAD^)" = "af3babe2091cfb6c4e2e5ae6125ef5a47e441bc2"
+          test "$(git rev-parse HEAD^)" = "9290b592633582979ff7760f9fc7340621e15cc3"
           test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ClassloaderTopologyCaptureTest.kt)" = "eee28d377387df5b07cb00c9adc111e975d14188"
           test "$(git hash-object industrial-waste/v2/r1-classloader-topology-capture-budget.json)" = "8bd543dff47a888c54e8c5132a9c4d0e336acdc3"
           test "$(git hash-object industrial-waste/v2/capture_gradle_daemon_topology.gradle)" = "c423780611cc1b892a6fe7b3972f43aec35dc1a2"
@@ -42,6 +42,16 @@ jobs:
         run: |
           set -o pipefail
           just test-class IndustrialWasteV2ClassloaderTopologyCaptureTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/industrial-classloader-topology/worker.log
+      - name: Preserve and require actual AI test-worker topology payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in worker-context-loaders.tsv worker-system-loaders.tsv worker-classpath.tsv worker-code-sources.tsv worker-runtime.txt; do
+            source_path="ai/build/reports/industrial-classloader-topology/$f"
+            test -s "$source_path"
+            cp "$source_path" "build/reports/industrial-classloader-topology/$f"
+            test -s "build/reports/industrial-classloader-topology/$f"
+          done
       - name: Preserve XML
         if: always()
         shell: bash
