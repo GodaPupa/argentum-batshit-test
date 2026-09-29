@@ -20,7 +20,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/sphinx-artful-dodge-flashback-receiving
-          test "$(git rev-parse HEAD^)" = "9246b26b8b50ee8e2c27818b8784c3b39fd23e6b"
+          test "$(git rev-parse HEAD^)" = "86597c9aec07449ddd362f9968cc62461e3e472c"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorBasicBluePayment.kt)" = "0d5ba2699618e3a5118be1aeb3cf38c485fd581b"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt)" = "1fcba753f8b0788adc7fd49981ba7a2962cb1dbb"
           test "$(git hash-object sphinx-approach/STAGE_E_ARTFUL_DODGE_FLASHBACK_PAYMENT_SUCCESSOR_BUDGET_20260929.json)" = "b17ff7d73d1389356bb16b13065010459fd85257"
@@ -36,8 +36,10 @@ jobs:
       - name: Run shared flashback payment projection bank
         shell: bash
         run: |
-          set -o pipefail
+          set -euo pipefail
           just test-class ActorSpellPaymentProjectionTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-artful-dodge-flashback-receiving/payment.log
+          find . -path '*/build/test-results/test/TEST-com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest.xml' -type f -exec cp {} build/reports/sphinx-artful-dodge-flashback-receiving/ \;
+          test -s build/reports/sphinx-artful-dodge-flashback-receiving/TEST-com.wingedsheep.gym.actorinput.ActorSpellPaymentProjectionTest.xml
       - name: Run unchanged real Artful Dodge flashback receiving case
         shell: bash
         run: |
