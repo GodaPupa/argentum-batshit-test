@@ -20,10 +20,10 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/sphinx-snap-receiving
-          test "$(git rev-parse HEAD^)" = "c9c29c46b7c40d43fd475aabfca098099021fdfb"
+          test "$(git rev-parse HEAD^)" = "f6dda707882302242114e24883e3368a8a6a0b12"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt)" = "20865204fec378f37045c54993ac1a85c3acac00"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt)" = "095a2e8d32dd96d62960128eebcd17b09e8f4bb2"
-          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageESnapReceivingTest.kt)" = "ba526e0720792ebd89da345a2bd87a852eeffb86"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageESnapReceivingTest.kt)" = "a7debf8bae06782cdef5b860b8e5aaad1cb15647"
           test "$(git hash-object sphinx-approach/STAGE_E_SNAP_RECEIVING_BUDGET_20260928.json)" = "8ea3cdca7c700f9caaf378215ae0963a70d71281"
           { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageESnapReceivingTest.kt; git hash-object sphinx-approach/STAGE_E_SNAP_RECEIVING_BUDGET_20260928.json; git hash-object .github/workflows/sphinx-snap-receiving.yml; git status --porcelain; } > build/reports/sphinx-snap-receiving/source.txt
       - name: Run three fresh real Snap receiving traces
