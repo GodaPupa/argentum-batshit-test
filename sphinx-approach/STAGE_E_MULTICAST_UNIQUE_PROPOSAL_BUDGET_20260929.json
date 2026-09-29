@@ -1,0 +1,50 @@
+{
+  "schema": "sphinx-stage-e-multicast-unique-proposal-budget-v1",
+  "date_utc": "2026-09-29",
+  "parent_source": "965945fea21551550760019377db1bba76085703",
+  "candidate_source_commit": "8af9a3708e27424477e1e60b8cc659d46c34813b",
+  "candidate_whole_actor_blob": "6fec3a563ef9c7392d8f5aa6795edbb64b93096b",
+  "scope": "BOUNDED_MULTI_CAST_DISCRIMINATION_ONLY",
+  "cases": [
+    {
+      "id": "MU1",
+      "identity": "reconstructed-hybrid",
+      "fixture_seed": "0x53504D554C540001",
+      "state": "actor main phase; exactly two Islands; Counterspell, Mental Note and Tolarian Terror visible in hand; five visible instant/sorcery cards in own graveyard so Tolarian Terror is payable",
+      "required": [
+        "Mental Note is a real legal cast but its existing setup component declines to preserve the visible Counterspell reserve",
+        "Tolarian Terror is a real legal cast and its existing deployment component proposes at actor-main timing",
+        "the whole actor returns exactly the existing Tolarian Terror component proposal without changing target/payment/policy RNG"
+      ]
+    },
+    {
+      "id": "MU2",
+      "identity": "reconstructed-v01",
+      "fixture_seed": "0x53504D554C540002",
+      "state": "actor main phase; exactly two Islands; two physical Mental Note cards visible in hand and no visible interaction reserve",
+      "required": [
+        "both Mental Note physical casts are real legal casts",
+        "both existing setup components independently propose",
+        "the whole actor remains Unqualified with the exact multiple-accepted-offers reason and does not choose between them"
+      ]
+    }
+  ],
+  "acceptance": [
+    "fresh execution with --rerun-tasks --no-build-cache",
+    "exact two tests, zero failures/errors/skips",
+    "source, parent, deck and workflow pins match",
+    "MU1 returns one proposal only because every current CastSpell is routed through an already-qualified component and exactly one component proposes",
+    "MU2 proves two accepted proposals still fail closed"
+  ],
+  "prohibited": [
+    "no general spell ranking",
+    "no ranking between two accepted casts",
+    "no new card component policy",
+    "no combat policy",
+    "no opponent package",
+    "no collector/replay/durability or Stage-E freeze/admission",
+    "no official seed/allocation/gameplay authority"
+  ],
+  "fixture_seeds_are_software_only_and_excluded_from_official_stage_e_seeds": true,
+  "official_counters_delta": 0
+}
