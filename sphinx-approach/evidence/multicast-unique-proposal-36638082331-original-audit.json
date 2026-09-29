@@ -1,0 +1,64 @@
+{
+  "schema": "sphinx-stage-e-multicast-unique-proposal-36638082331-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36638082331,
+  "artifact_id": 11065448788,
+  "artifact_sha256": "65d57201e9c27f474e0b27a0ccfd26da1689542d2b9abf48b7a270c6ba15b5a4",
+  "head": "d76d4224788abbffc3e4ea74ff77625b266e2c86",
+  "parent": "c21fae0a5df7a1dcfecd2b04f5282d3315200c23",
+  "behavior_source_parent": "18f399468fec6ba44bcf51e4d3bd4309e136833c",
+  "pins": {
+    "whole_actor": "6fec3a563ef9c7392d8f5aa6795edbb64b93096b",
+    "multicast_test": "6b794b196d4ff65ab3a7fff5f14febb8f310ab35",
+    "budget": "94877f7601c2afd63dcd0103ae4d513da4720511",
+    "approach_regression_test": "a8abd8687e05abdc7845d4a2309e20c5864b164e",
+    "reconstructed_v01": "e2f0abbc9f99be97b2562a18ae248d70cbefc0e1",
+    "reconstructed_hybrid": "7f76c94e4fbc24acdc982039aa248a1fa9485cd4",
+    "workflow": "a6d93dbd2be47a0f371e68a7b97befb3724b22a6"
+  },
+  "integrity": {
+    "workflow_conclusion": "success",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "multicast_xml_sha256": "36bbf059a769fde61669b593bfcc0589f80ff0042f21994a36b2cd8a79489b4a",
+    "approach_regression_xml_sha256": "da1b17e9af240adeb2bce57e497e6f212021be39d69d09e05b39064c42b63618",
+    "multicast_log_sha256": "4e78d535d3d7d897cc529043eea4ca122f848390b5d829a19b4d0bf8954b8ca8",
+    "approach_regression_log_sha256": "affd44cde2498f69fe407d6da60c7e74e84eee00a2f299235e225b38463a74ca"
+  },
+  "result": {
+    "multicast_unique_proposal": {
+      "tests": 2,
+      "passes": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "MU1 unique existing component proposal survives a real two-cast window",
+        "MU2 two accepted physical casts remain explicitly unqualified"
+      ]
+    },
+    "approach_regression": {
+      "tests": 2,
+      "passes": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "decision": "ACCEPTED_BOUNDED_MULTI_CAST_UNIQUE_PROPOSAL_DISCRIMINATOR",
+  "accepted_scope": [
+    "When a real current multi-cast window contains only already-qualified routed identities and exactly one existing component proposes while the others decline, the whole actor may return that unchanged proposal.",
+    "When two physical current casts independently produce accepted proposals, the whole actor remains explicitly Unqualified and does not choose between them.",
+    "The previously accepted real Sphinx's Approach May/payment/search receiving remains clean under the changed whole-actor source."
+  ],
+  "limits": [
+    "No ranking between two accepted casts.",
+    "No general multi-spell ranking or sequencing policy.",
+    "No new card component policy, combat policy, opponent package, collector, replay, durability, Stage-E freeze/admission, seed, allocation or gameplay authority.",
+    "The prior original run 36635112750 remains consumed INCOMPLETE for evidence-preservation reasons and must not be rerun unchanged."
+  ],
+  "next_gate": "Advance the next uncovered whole-pilot strategic surface, preferably ordinary pass/priority scheduling or combat decisions, then qualify collector/replay/durability before prospective Stage-E freeze/admission.",
+  "official_counters_delta": 0
+}
