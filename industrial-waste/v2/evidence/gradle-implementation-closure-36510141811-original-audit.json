@@ -1,0 +1,39 @@
+{
+  "schema": "industrial-r1-gradle-implementation-closure-36510141811-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36510141811,
+  "artifact_id": 11008408268,
+  "artifact_sha256": "cca1ea4dd63645b1b9d070b3a94846d9fe5bf6ee4cb5492f670a2c2c0748d159",
+  "head": "104220c4711278c1081b951602b021dd332b6403",
+  "parent": "2eb5b4c5f97f34d64325b1fa43b8c25a8a4bf62f",
+  "pins": {
+    "capture_script": "a30880f96ba68a80f99c0bd8b6fd14e284ecb323",
+    "budget": "ecdb0894b9dccdce7dd48988d348d714f2a4edfb",
+    "workflow": "f0c3ef93de9a5db67d5498e7fa93d58721699d6a"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "official_seed_files_read": false
+  },
+  "result": {
+    "gradle_version": "9.6.1",
+    "implementation_jars": 341,
+    "implementation_jars_sha256": "2b87233b779e024bee65e0a9342f18ba2100cd549dafc3c2276d85f49bc44a57",
+    "wrapper_files_sha256": "39643fbd812a687cf6efee6284dbcab38a5f5f65606ab0b41a7ed255bdc05116",
+    "source_tree": "3e15264f9b1df7f62c2661d5e914c0b0e6a07fb0"
+  },
+  "decision": "ACCEPTED_CONSERVATIVE_GRADLE_IMPLEMENTATION_CLOSURE_SLICE_ONLY",
+  "accepted_scope": [
+    "all 341 jar bytes recursively beneath the actual wrapper-selected Gradle 9.6.1 home",
+    "repository gradle-wrapper.jar, gradle-wrapper.properties and gradlew byte bindings"
+  ],
+  "limits": [
+    "Does not establish exact launcher/daemon/test-worker classloader ordering or parent topology.",
+    "Generated/hidden class policy, immutable store/lifetime enforcement, authenticated prepared-worker attestation and complete expected-manifest adoption remain open.",
+    "No claim/allocation/R1/gameplay authority."
+  ],
+  "next_gate": "Capture precise Gradle launcher/daemon/test-worker classloader topology or independently justify a conservative closure policy, then combine all accepted runtime slices under the complete-runtime validator.",
+  "official_counters_delta": 0
+}
