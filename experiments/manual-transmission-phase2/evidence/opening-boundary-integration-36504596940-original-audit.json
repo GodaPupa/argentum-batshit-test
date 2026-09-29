@@ -1,0 +1,38 @@
+{
+  "schema": "manual-opening-boundary-integration-36504596940-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36504596940,
+  "artifact_id": 11006578088,
+  "artifact_sha256": "37b79fa30e06329c95aaa6c1c37528da8c4e390589ca226831cf0c8b94165939",
+  "head": "71fa5c9c198dcdb9b1cc67dad8766c192b4c23ca",
+  "pins": {
+    "observation_builder": "fc9012e32185f3419ac1a6e56dcab06929aeed8d",
+    "opening_policy": "bd58d1b166a86a8d6e076f4dd2e8f34f533e2a6e",
+    "boundary": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "telemetry": "44608301d535a2114073d80c06d5ca0480c40043",
+    "test": "fc5806419c31c1049e7dd044ee95845cc4188475",
+    "budget": "7c115d24bd0b340282881dd52a5c6e6427297db7"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "tests": 4,
+    "passes": 0,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0,
+    "common_failure": "Exact engine source SHA required"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_FIXTURE_PROVENANCE_FIELD",
+    "detail": "The excluded fixture passed the literal label opening-boundary-integration-v1 to PhaseTwoTelemetryAdapter.engineSourceSha, which requires a 40-hex exact source SHA. Every role failed in adapter construction before the policy or PlayLand integration ran.",
+    "policy_or_engine_failure_inferred": false
+  },
+  "successor_rule": "Preserve this original. Change only the fixture engineSourceSha argument to the exact 40-hex changed observation-source commit ac9125d5f3c3a70c990261549a9c62b910e99ad0, re-pin test/workflow/parent, and do not rerun this original unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
