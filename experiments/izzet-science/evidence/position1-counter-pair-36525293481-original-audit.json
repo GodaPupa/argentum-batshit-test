@@ -1,0 +1,39 @@
+{
+  "schema": "izzet-position1-counter-pair-36525293481-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36525293481,
+  "artifact_id": 11013694600,
+  "artifact_sha256": "087708385df1fa59d08ef33982e8791124e99ac28838f9417f9d5329bd757159",
+  "head": "968884ed8b3978cfffa06b5e7e4ac11882968edd",
+  "parent": "407aa4a2d5eebc7214d567f0609a50369c797527",
+  "pins": {
+    "arcane_test": "75e076ad15e7323f2d7aec0341132fbdba3cc3fe",
+    "workflow": "28e3fa8322ffda5f59ca447cc45625ff4cbc4f9f",
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache"
+  },
+  "result": {
+    "arcane_denial": {"tests": 3, "passes": 2, "failures": 1, "errors": 0, "skipped": 0},
+    "memory_lapse": "not_run_after_first_class_failure",
+    "failure_line": 125
+  },
+  "diagnostic_facts": [
+    "The existing stackSize == 2 and top DrawUpToEffect assertions were reached before the deliberate diagnostic stop.",
+    "The fixture executed one bothPass call before the deliberate diagnostic stop.",
+    "The ordinary GitHub console suppressed the deliberate exception message containing priority/pending/stack telemetry."
+  ],
+  "diagnosis": {
+    "classification": "INCOMPLETE_DIAGNOSTIC_PAYLOAD_NOT_SURFACED_IN_CONSOLE",
+    "detail": "No mechanics inference is taken from the hidden diagnostic message. The exact XML failure message must be surfaced without changing card, engine, or fixture semantics."
+  },
+  "decision": "INCOMPLETE_COUNTER_PAIR_BANK_NOT_ACCEPTED",
+  "successor": "Preserve this original. Change only workflow reporting to parse and print the preserved ArcaneDenialScenarioTest XML failure message after the test step, then rerun the unchanged diagnostic fixture once.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
