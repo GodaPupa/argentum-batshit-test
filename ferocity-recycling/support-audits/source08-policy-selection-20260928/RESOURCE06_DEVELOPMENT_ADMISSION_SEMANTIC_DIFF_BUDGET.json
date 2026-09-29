@@ -1,0 +1,23 @@
+{
+  "schema": "ferocity-resource06-development-admission-semantic-diff-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "direct_byte_compare_run": 36508708052,
+    "archive_git_blob": "a0fb48835413d80149331a7775e17820435cad7b",
+    "archive_member": "ferocity-recycling/runtime-audits/development-admission/resource-boundary-06/FerocityDevelopmentAdmission.kt.before",
+    "current_git_blob": "c64afaf0dac73fe4a73e47a58ababa60a5888064"
+  },
+  "scope": "Classify exact archived Resource06 versus current source08 DevelopmentAdmission differences, separating comment/whitespace-only differences from executable text changes.",
+  "acceptance": [
+    "re-hash both exact inputs",
+    "produce deterministic unified diff",
+    "produce normalized executable-line change hunks",
+    "start no JVM and read no seed/entropy/game data"
+  ],
+  "prohibited": [
+    "D2 admission",
+    "behavioral equivalence claim beyond observed normalized text",
+    "gameplay"
+  ],
+  "official_counters_delta": 0
+}
