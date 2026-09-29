@@ -1,0 +1,23 @@
+{
+  "schema": "manual-phase2-unique-animar-command-cast-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "real_opening_boundary_run": 36506712994,
+    "race_overlay_router_run": 36504294463
+  },
+  "scope": "Real four-seat masked same-hardware commander deployment seam for Cruise/Sport/Race only when Animar is the sole affordable non-pass action.",
+  "required_cases": [
+    "CRUISE chooses the real physical command-zone Animar CastSpell when it is the sole affordable non-pass action",
+    "SPORT chooses the same bounded real cast",
+    "RACE chooses the same bounded real cast",
+    "trace replays exactly through the PhaseTwoTelemetryAdapter boundary"
+  ],
+  "excluded": [
+    "opponent policy",
+    "ranking against a land/spell/ability fork",
+    "targeted commander casts",
+    "mulligan/payment-debt/collector/durability/capability admission",
+    "official games"
+  ],
+  "official_counters_delta": 0
+}
