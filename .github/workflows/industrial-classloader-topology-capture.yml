@@ -20,16 +20,23 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/industrial-classloader-topology
-          test "$(git rev-parse HEAD^)" = "effd565d9f2d7cd6712f93c2d0878fb0de0fa1ac"
+          test "$(git rev-parse HEAD^)" = "af3babe2091cfb6c4e2e5ae6125ef5a47e441bc2"
           test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ClassloaderTopologyCaptureTest.kt)" = "eee28d377387df5b07cb00c9adc111e975d14188"
           test "$(git hash-object industrial-waste/v2/r1-classloader-topology-capture-budget.json)" = "8bd543dff47a888c54e8c5132a9c4d0e336acdc3"
-          test "$(git hash-object industrial-waste/v2/capture_gradle_daemon_topology.gradle)" = "ae44e4fbac17aabf2219aa5a868cd8164517d6c1"
+          test "$(git hash-object industrial-waste/v2/capture_gradle_daemon_topology.gradle)" = "c423780611cc1b892a6fe7b3972f43aec35dc1a2"
           { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ClassloaderTopologyCaptureTest.kt; git hash-object industrial-waste/v2/r1-classloader-topology-capture-budget.json; git hash-object industrial-waste/v2/capture_gradle_daemon_topology.gradle; git hash-object .github/workflows/industrial-classloader-topology-capture.yml; git status --porcelain; } > build/reports/industrial-classloader-topology/source.txt
       - name: Capture actual Gradle daemon topology
         shell: bash
         run: |
           set -o pipefail
           ./gradlew -I industrial-waste/v2/capture_gradle_daemon_topology.gradle help --no-build-cache --console=plain 2>&1 | tee build/reports/industrial-classloader-topology/daemon.log
+      - name: Require preserved Gradle daemon topology payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in daemon-context-loaders.tsv daemon-system-loaders.tsv daemon-classpath.tsv daemon-runtime.txt; do
+            test -s "build/reports/industrial-classloader-topology/$f"
+          done
       - name: Capture actual AI test-worker topology
         shell: bash
         run: |
