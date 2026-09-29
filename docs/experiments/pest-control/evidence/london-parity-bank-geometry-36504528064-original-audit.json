@@ -1,0 +1,42 @@
+{
+  "schema": "pest-london-parity-bank-geometry-36504528064-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36504528064,
+  "artifact_id": 11006837515,
+  "artifact_sha256": "6cc6001c34056dbf85a70c1b1484264e7d70ea0dc8869bbe07b0003cf2b3b0d9",
+  "head": "bc25a60370bad4a1219b8c8ef1475132560b8949",
+  "parent": "a38e0c06417689dac1cfd8a08441233165f9a21d",
+  "pins": {
+    "bank": "d90d80b6a6c12820eab36d1efb2c565cecba4909",
+    "vector": "bb8e2247dc64a64403094c691d83b8eed53048bd",
+    "test": "b77bd057c55091158f76fe27840228495888485a",
+    "budget": "a64d293bf26ef9663065b043025269c0f8295a4c",
+    "workflow": "b5756ba10b480440bce16d7b828c704465fd3b6d"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "tests": 4,
+    "passes": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "decision": "ACCEPTED_PARITY_BANK_GEOMETRY_ONLY",
+  "accepted_scope": [
+    "physical handle renaming preserves logical eleven-axis equivalence",
+    "same-name physical order variants remain distinct required physical permutations",
+    "M5 true/false cannot collapse",
+    "seat/start/mulligan context cannot collapse"
+  ],
+  "limits": [
+    "No reachable-vector enumeration, raw-controller decision comparison, London parity, pair/C2-A2, replay or gameplay authority."
+  ],
+  "next_gate": "Combine the accepted 882,297-hand denominator with lawful predicate extraction across prospectively frozen mulligan/bottom contexts, group using this geometry, retain required physical permutations, and compare exact decisions to the frozen raw controller.",
+  "official_counters_delta": 0
+}
