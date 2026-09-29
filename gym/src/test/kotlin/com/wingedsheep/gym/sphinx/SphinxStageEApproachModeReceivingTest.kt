@@ -44,7 +44,7 @@ class SphinxStageEApproachModeReceivingTest : ScenarioTestBase() {
     private fun runCase(identity: String) {
         val bytes = Files.readAllBytes(root.resolve("sphinx-approach/decks/$identity.csv"))
         val own = SphinxStageEOwnDeck.fromFrozenCsv(bytes)
-        (own.cards["Sphinx's Approach"] ?: 0) >= 6 shouldBe true
+        ((own.cards["Sphinx's Approach"] ?: 0) >= 6) shouldBe true
         (own.cards["Goliath Sphinx"] ?: 0) shouldBe 2
 
         val actor = EntityId.of("approach-mode-actor-$identity")
@@ -147,7 +147,7 @@ class SphinxStageEApproachModeReceivingTest : ScenarioTestBase() {
 
         val search = state.pendingDecision.shouldBeInstanceOf<SelectCardsDecision>()
         search.context.sourceName shouldBe "Sphinx's Approach"
-        search.minSelections in 0..1 shouldBe true
+        (search.minSelections in 0..1) shouldBe true
         search.maxSelections shouldBe 1
         search.options.isNotEmpty() shouldBe true
         search.options.all { name(state, it) == "Goliath Sphinx" } shouldBe true

@@ -20,9 +20,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/sphinx-approach-mode-receiving
-          test "$(git rev-parse HEAD^)" = "6eb45bace4353ecea37e4b5862b7616a4f1c74ba"
+          test "$(git rev-parse HEAD^)" = "3048f8d51814dea5bf0de476b79736f35d9002b2"
           test "$(git hash-object sphinx-approach/STAGE_E_APPROACH_MODE_RECEIVING_BUDGET_20260929.json)" = "ac552bde7d6000a08992d11df988682b67b9b7e6"
-          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEApproachModeReceivingTest.kt)" = "9a050c5fc5a5ce01afbf5f24a91fb208b5d83ed4"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEApproachModeReceivingTest.kt)" = "a8abd8687e05abdc7845d4a2309e20c5864b164e"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEVisibleChoice.kt)" = "3ffb0c200de6f2e1f554f7296fe343a27788ba6c"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "90271284f6eb8f0c389e460b394467a3adc6b872"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEInitializedSeat.kt)" = "93ec8d40ab07b3b703e6e45b5324ac103e45d81b"
