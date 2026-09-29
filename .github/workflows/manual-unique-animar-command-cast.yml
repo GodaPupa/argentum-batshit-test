@@ -20,8 +20,8 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/manual-unique-animar-command-cast
-          test "$(git rev-parse HEAD^)" = "d6ac0a10e2ec5c09e1367e280ed1ce4668a32959"
-          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoUniqueCommanderCastPolicy.kt)" = "84865774955a30fc4821142583fff9346b61a211"
+          test "$(git rev-parse HEAD^)" = "328cc3d3aba0f39fd733db65565b8bca99269464"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoUniqueCommanderCastPolicy.kt)" = "0b408d285989c8c789e829f2b580ac4930ec963c"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoUniqueCommanderCastIntegrationTest.kt)" = "6bb31807a1554a56ed7246a068b1a82b0727199c"
           test "$(git hash-object experiments/manual-transmission-phase2/unique-animar-command-cast-budget.json)" = "a77e5ca32379f3bca4430f47ac6d4e726a1475c9"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoPilotBoundary.kt)" = "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb"
