@@ -1,0 +1,46 @@
+{
+  "schema": "izzet-position1-counter-pair-36522798236-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36522798236,
+  "artifact_id": 11012834150,
+  "artifact_sha256": "402f00c66900af9c89707af9cf26eddde5697013dc03a8e87ce74163b52f6589",
+  "head": "06195b132e46f63dba2ae98a477a4559da08cb25",
+  "parent": "59e9a8f78778f9f2c5e80a2d37bdc5a11fc8c397",
+  "pins": {
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "arcane_test": "3d559542025a5415a2b0aebf7a4c5f39870278de",
+    "memory_lapse_test": "e7e60d5a68e4b8d5f2f016a88364b3b25413853b",
+    "budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694",
+    "stack_effects": "8ad94eec5fc9f88cb7920e911a8fc173749d7db7",
+    "counter_executor": "a46651a83da18774daa93a110ae9b0d62481f3c9",
+    "stack_resolver": "a46aed0092806245462dbd881fab327d838de4e7",
+    "mana_payment_resumer": "30966ffbfa84801761c6f98a33a2adecee627da9",
+    "delayed_trigger_executor": "36cb0af0ce66def8baa0adae50d60ab06b22ddcf",
+    "workflow": "5bf573102074d19c1930a27c034e6d3304079e24"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "arcane_denial": {"tests": 3, "passes": 2, "failures": 1, "errors": 0, "skipped": 0},
+    "memory_lapse": "not_run_after_first_class_failure"
+  },
+  "observations": [
+    "The exact trigger-order identity selection was accepted by the engine and both previously passing Arcane Denial cases remain passing.",
+    "The next-upkeep case still reaches no ChooseNumberDecision after the fixture asks resolveUntilDecisionOrEmpty to advance the ordered delayed triggers.",
+    "The failure moved from line 105 in the blind-order predecessor to line 114 after the effect-bound ordering selection."
+  ],
+  "diagnosis": {
+    "classification": "INCOMPLETE_POST_ORDER_TRIGGER_RESOLUTION_SURFACE",
+    "interpretation": "The original does not establish whether the remaining issue is stack placement/order, helper advancement semantics, or delayed DrawUpTo resolution. No further engine defect is inferred without observing the post-order stack/decision state."
+  },
+  "decision": "INCOMPLETE_COUNTER_PAIR_BANK_NOT_ACCEPTED",
+  "successor": "Preserve this original. Add only diagnostic assertions/telemetry in the Arcane Denial fixture immediately after trigger-order submission to bind stack size/order and pending-decision state before further resolution; do not change card or engine mechanics until that state is known.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
