@@ -178,7 +178,7 @@ class PestMonsterLondonM5AtomicComparatorTest : ScenarioTestBase() {
                 put("raw_controller_blob", "4f020ea2406e9bd6a87ec389685b48f15df4c5a3")
                 put("atomic_bank_sha256", bank.getValue("atomic_bank_sha256").jsonPrimitive.content)
                 put("signature_to_atoms_sha256", bank.getValue("signature_to_atoms_sha256").jsonPrimitive.content)
-                put("mismatch_samples", buildJsonArray { mismatches.take(20).forEach { add(it) } })
+                put("mismatch_samples", buildJsonArray { mismatches.take(20).forEach { add(kotlinx.serialization.json.JsonPrimitive(it)) } })
             }
             Files.writeString(report.resolve("comparison-summary.json"), summary.toString() + "\n")
 

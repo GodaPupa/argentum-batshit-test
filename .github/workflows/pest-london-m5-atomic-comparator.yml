@@ -20,9 +20,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/pest-london-m5-atomic-comparator
-          test "$(git rev-parse HEAD^)" = "36ef16935fa0db5ba37378f7455af083dfb752c6"
+          test "$(git rev-parse HEAD^)" = "3151dd123eb0859089ce94ea6f013c00380fc187"
           test "$(git hash-object ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt)" = "4f020ea2406e9bd6a87ec389685b48f15df4c5a3"
-          test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/engine/PestMonsterLondonM5AtomicComparatorTest.kt)" = "4c3928caacb86e369711b301dc1779604a788e1b"
+          test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/engine/PestMonsterLondonM5AtomicComparatorTest.kt)" = "4ace1feecb25ea4c6304d1a0f25573485ce89470"
           test "$(git hash-object docs/experiments/pest-control/london-m5-atomic-comparator-budget-20260929.json)" = "58ca1ab7501fa6dbc89477f693ac2b26f8c9742d"
           test "$(git hash-object docs/experiments/pest-control/generate_london_m5_atomic_bank.py)" = "7b90dba88e76e167b28b6050d5af5f1c3ff3b800"
           test "$(git hash-object docs/experiments/pest-control/london-m5-atomic-bank-budget-20260929.json)" = "0fe998e0134648ee7852d5e52a6ddecc2d886d18"
