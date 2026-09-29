@@ -1,0 +1,50 @@
+{
+  "schema": "sphinx-stage-e-artful-dodge-flashback-payment-successor-budget-v1",
+  "date_utc": "2026-09-29",
+  "predecessor_original": {
+    "run_id": 36517799802,
+    "artifact_id": 11011976474,
+    "artifact_sha256": "960b8745b1c9202d944286b26b34e7dcfdf57d3d01918d0dd86d833b7d8adac4",
+    "disposition": "INCOMPLETE_FLASHBACK_PAYMENT_PROJECTION",
+    "audit_commit": "c932efcdff909de0456519701606facb1cad70b7"
+  },
+  "changed_scope": {
+    "projector_path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorBasicBluePayment.kt",
+    "projector_git_blob": "0d5ba2699618e3a5118be1aeb3cf38c485fd581b",
+    "shared_projection_test_path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt",
+    "shared_projection_test_git_blob": "1fcba753f8b0788adc7fd49981ba7a2962cb1dbb"
+  },
+  "unchanged_sphinx_scope": {
+    "pilot_git_blob": "762d1f99980e5ecf54d1cda182a9a94e1a573280",
+    "actor_adapter_git_blob": "1f0f3241190990fe9069540ae639d276d423ce72",
+    "whole_actor_git_blob": "bc2e6019bfaa3bb652b74d2a001cc84aabb963d1",
+    "artful_receiving_test_git_blob": "97fc1e087ffd4a03dea5d70e5a3d4e0a3543ef0c",
+    "original_receiving_budget_git_blob": "9932eaea3bfff98fbb8ad11953b3445f445a1066",
+    "benchmark_deck_git_blob": "da2f0d8d1e7a6d464567f765483d0145ae3726dd",
+    "artful_definition_git_blob": "5ccf13532c94f7f13e9a396eef60ae0617590825",
+    "existing_engine_scenario_git_blob": "414803dd9d69a058e51d8194842a5b406984ab4c"
+  },
+  "required_shared_projection_case": [
+    "The real legal-action enumerator exposes the physical graveyard Artful Dodge as useAlternativeCost=true and alternativeCostType=FLASHBACK.",
+    "The canonical payment projection accepts that exact explicit FLASHBACK action only within its plain basic-blue representation.",
+    "With one untapped Island and no floating mana, the projection reports PLANNED, availableBlueMana=1, totalMana=1 and blueRemainingAfterPayment=0.",
+    "Executing that same action with the real creature target taps exactly the projected source and leaves the projected blue pool."
+  ],
+  "required_sphinx_case": [
+    "Rerun the unchanged AD1 receiving fixture.",
+    "Whole actor must route the real graveyard FLASHBACK offer without treating it as a hand cast.",
+    "The adapter must select the sole legal actor-controlled creature target.",
+    "The real engine cast must resolve and Artful Dodge must reach exile."
+  ],
+  "excluded": [
+    "any non-FLASHBACK alternative cost",
+    "FLASHBACK from a zone other than the actor graveyard",
+    "general graveyard-cast policy",
+    "multiple-target or multiple-cast ranking",
+    "combat policy",
+    "Sleep of the Dead escape",
+    "ordinary priority scheduling",
+    "whole-pilot/opponent-package/collector/replay/Stage-E admission/gameplay"
+  ],
+  "official_counters_delta": 0
+}
