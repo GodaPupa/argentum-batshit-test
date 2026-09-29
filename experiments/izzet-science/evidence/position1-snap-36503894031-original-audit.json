@@ -1,0 +1,41 @@
+{
+  "schema": "izzet-position1-snap-36503894031-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36503894031,
+  "artifact_id": 11006766601,
+  "artifact_sha256": "1124d77f7e51fc249123f077ca34d5c939fd01f9fa2a1ad52384eb206e9d4d9c",
+  "head": "620d0df69266b69a90ca729e6a47eaac418bf306",
+  "parent": "fdccce8950ec4bba2a419e59ed4886321e4bf0ce",
+  "pins": {
+    "snap": "15c15b39609e97796a110c5228e84265a60cc45d",
+    "test": "edb7dead06d3c94d467116da93c72eb901d55def",
+    "budget": "fa5036f45da95416b7859fef5da80daeba02674c",
+    "workflow": "bd460fdb8533fcb5d135ee0258e823faec89b1b3"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "tests": 4,
+    "passes": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "accepted_scope": [
+    "Snap bounces the legal creature target before the non-target land selection",
+    "the resolution choice may include either player's lands",
+    "controller may choose zero or one land",
+    "illegal sole creature target prevents the entire spell effect including the land-untap continuation"
+  ],
+  "decision": "ACCEPTED_POSITION1_SNAP_MECHANICS_COMPONENT_ONLY",
+  "limits": [
+    "No whole Izzet pilot, other missing-card support, commander lifecycle/damage, Position-1 execution admission, seed authority or gameplay."
+  ],
+  "next_gate": "Continue the smallest high-reuse Position-1 missing identity/mechanic batches and separately close commander/pilot/replay admission.",
+  "official_counters_delta": 0
+}
