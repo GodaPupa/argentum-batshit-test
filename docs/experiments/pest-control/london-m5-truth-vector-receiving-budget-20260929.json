@@ -1,0 +1,34 @@
+{
+  "schema": "pest-monster-london-m5-truth-vector-receiving-budget-v1",
+  "date_utc": "2026-09-29",
+  "parent_main": "6184ccf3582274cf5981130015d6311940fc707b",
+  "accepted_truth_original": {
+    "run_id": 36531232867,
+    "artifact_id": 11016925265,
+    "artifact_sha256": "cd16753d52704ab31904531cf94e4390c7ceabacd382d09deb66afc155951528",
+    "truth_bank_sha256": "8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f",
+    "rows": 6850,
+    "audit_path": "docs/experiments/pest-control/evidence/london-m5-atomic-comparator-36531232867-original-audit.json",
+    "audit_blob": "f8b0e9129e6c811a40b600d3666d01a8c90b0d9f"
+  },
+  "accepted_vector_boundary": {
+    "source_blob": "bb8e2247dc64a64403094c691d83b8eed53048bd",
+    "audit_path": "docs/experiments/pest-control/evidence/london-predicate-vector-36496673330-original-audit.json",
+    "audit_blob": "3cd8cf75468927625f51f85e4644a525f7486091"
+  },
+  "receiving_rule": "Key truth only by exact physical land-name multiset + accepted M2 flag + early spell identity. Missing keys remain null/unknown. No hidden library identity/order, opponent hidden state or RNG.",
+  "acceptance": [
+    "consume the already-audited truth artifact by exact artifact SHA-256; do not rerun the raw 6850 comparator",
+    "verify truth-bank SHA-256 and exactly 6850 unique atom rows",
+    "for every atom, the receiving seam binds its truth and the accepted predicate-vector extractor reconstructs exactly that M5 value",
+    "an unbanked key remains null and fails closed",
+    "fresh exact receiving tests pass and original XML/source are preserved"
+  ],
+  "prohibited": [
+    "raw-controller rerun or change",
+    "keep/bottom parity claim beyond the accepted predicate-vector boundary",
+    "pair/C2-A2 admission",
+    "seed/allocation/gameplay"
+  ],
+  "official_counters_delta": 0
+}
