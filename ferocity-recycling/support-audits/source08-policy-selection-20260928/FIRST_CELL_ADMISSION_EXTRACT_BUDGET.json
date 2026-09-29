@@ -1,0 +1,30 @@
+{
+  "schema": "ferocity-first-cell-admission-preserved-evidence-extract-budget-v1",
+  "date_utc": "2026-09-28",
+  "purpose": "Recover exact preserved runner/trace/bundle/resource candidate bytes needed to resolve FIRST_CELL_ADMISSION_MANIFEST_HOLD without execution.",
+  "source_archive_manifest": {
+    "path": "ferocity-recycling/evidence/build/publication-M1-source-audits/MANIFEST.json",
+    "git_blob": "05174b960875500e529092810e0e1e249fd18a71"
+  },
+  "allowed_archives": [
+    "02-offline-export-resource-successor-01.zip",
+    "04-resource-boundary-05.zip",
+    "05-resource-boundary-06.zip",
+    "08-historical-first-cell-policy.zip"
+  ],
+  "constraints": [
+    "read only the exact allowlisted non-seed members",
+    "verify archive SHA-256 and ZIP CRC",
+    "verify each extracted member SHA-256 against publication MANIFEST",
+    "no JVM, no seed/entropy file read, no game initialization, no policy execution"
+  ],
+  "not_granted": [
+    "D2 admission",
+    "runner selection",
+    "resource candidate adoption",
+    "seed authority",
+    "new JVM",
+    "gameplay"
+  ],
+  "official_counters_delta": 0
+}
