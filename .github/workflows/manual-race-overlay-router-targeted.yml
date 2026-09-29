@@ -1,0 +1,44 @@
+name: Manual Phase 2 Race overlay router receiving
+on:
+  push:
+    branches: ["manual/clean-pilot-boundary-receiving-20260927"]
+    paths: [".github/workflows/manual-race-overlay-router-targeted.yml"]
+permissions: {contents: read}
+jobs:
+  three-cases:
+    runs-on: ubuntu-latest
+    timeout-minutes: 75
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact Race router fixture budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/manual-race-overlay-router
+          test "$(git rev-parse HEAD^)" = "e9fec68d36b4f7373e23c0613627e6621c36c383"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoRaceOverlayRouter.kt)" = "600f783b0891249343cb57e91847ea714758f515"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoRaceOverlayRouterTest.kt)" = "cab7be6b4f1d45eb91435c6270e314f180e91cf2"
+          test "$(git hash-object experiments/manual-transmission-phase2/race-overlay-router-budget-20260928.json)" = "472dde680716157ab1ab46bd793aa717e2d78924"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoRaceOverlayRouter.kt; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoRaceOverlayRouterTest.kt; git hash-object experiments/manual-transmission-phase2/race-overlay-router-budget-20260928.json; git hash-object .github/workflows/manual-race-overlay-router-targeted.yml; git status --porcelain; } > build/reports/manual-race-overlay-router/source.txt
+      - name: Run three fresh Race composition cases
+        shell: bash
+        run: |
+          set -o pipefail
+          just test-class ManualPhaseTwoRaceOverlayRouterTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/manual-race-overlay-router/test.log
+      - name: Preserve XML
+        if: always()
+        shell: bash
+        run: cp gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoRaceOverlayRouterTest.xml build/reports/manual-race-overlay-router/ 2>/dev/null || true
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-race-overlay-router-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/manual-race-overlay-router/
+          if-no-files-found: error
+          retention-days: 90
