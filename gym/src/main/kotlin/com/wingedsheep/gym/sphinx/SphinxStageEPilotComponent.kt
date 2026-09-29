@@ -224,6 +224,33 @@ object SphinxStageEPilotComponent {
         return SphinxStageEPolicyChoice(input.offer.id, target.id, "unique offered Deem Inferior target")
     }
 
+    /**
+     * Artful Dodge flashback is admitted only by the receiving adapter's real graveyard/FLASHBACK
+     * validation, in the actor's main phase, when exactly one actor-controlled permanent is in the
+     * legal target domain. This policy does not authorize hand casts, combat choices, or generic
+     * alternate-cost play.
+     */
+    fun chooseArtfulDodgeFlashback(input: SphinxStageEPolicyInput): SphinxStageEPolicyChoice {
+        require(input.offer.epoch == input.facts.epoch) { "stale cast offer" }
+        require(input.offer.cardName == "Artful Dodge")
+        if (!input.offer.affordable || input.offer.totalMana > input.facts.availableBlueMana) {
+            return SphinxStageEPolicyChoice(reason = "current flashback offer is not payable")
+        }
+        if (input.facts.window != SphinxStageEWindow.ACTOR_MAIN) {
+            return SphinxStageEPolicyChoice(reason = "Artful Dodge flashback waits for actor main phase")
+        }
+        val target = input.offer.legalTargets.singleOrNull {
+            it.kind == SphinxStageETargetKind.PERMANENT && it.controlledByActor
+        } ?: return SphinxStageEPolicyChoice(
+            reason = "Artful Dodge flashback requires one reviewed actor-controlled permanent target"
+        )
+        return SphinxStageEPolicyChoice(
+            input.offer.id,
+            target.id,
+            "unique offered Artful Dodge flashback target"
+        )
+    }
+
     /** Targets are selected only from the offered public stack choices. */
     fun chooseCounterspell(input: SphinxStageEPolicyInput): SphinxStageEPolicyChoice {
         current(input)
