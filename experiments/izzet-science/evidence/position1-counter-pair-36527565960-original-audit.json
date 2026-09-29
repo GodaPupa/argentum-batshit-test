@@ -1,0 +1,42 @@
+{
+  "schema": "izzet-position1-counter-pair-36527565960-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36527565960,
+  "artifact_id": 11015078442,
+  "artifact_sha256": "e4d0404256413194f346f8b0544dc4ef09129e0733462fdebe4b9ce01523828c",
+  "head": "cffc5b70663a3de6119ecdfaf9bd328bb494d96c",
+  "parent": "28cbea4b490afd721af22bc04023049ba104951c",
+  "pins": {
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "arcane_test": "3d559542025a5415a2b0aebf7a4c5f39870278de",
+    "memory_lapse_test": "e7e60d5a68e4b8d5f2f016a88364b3b25413853b",
+    "draw_up_to_executor": "053337d3aafbe24a1d05fe414733fda4f5888f34",
+    "draw_up_to_regression": "b13b1f5c5ff13b9e854ce1973dbb72b29938777e",
+    "repair_budget": "650ff14ebcf1a8b6ba86a66544cb09c464fd90eb",
+    "workflow": "7faf24cb14b86014175755fddb6a6179dc99bef0"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "focused_xml_parse": "clean",
+    "memory_lapse_xml_parse": "clean",
+    "arcane_xml_preserved": false,
+    "console_arcane_three_passes_observed": true,
+    "workflow_conclusion": "success"
+  },
+  "result": {
+    "draw_up_to_regression": {"tests": 1, "passes": 1, "failures": 0, "errors": 0, "skipped": 0},
+    "arcane_denial_console": {"tests": 3, "passes": 3, "failures": 0},
+    "memory_lapse": {"tests": 3, "passes": 3, "failures": 0, "errors": 0, "skipped": 0}
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_ARCANE_XML_PRESERVATION",
+    "detail": "The focused state-aware DrawUpTo regression and all three Memory Lapse cases are preserved cleanly, and the GitHub console shows all three Arcane Denial cases passed. However, the later Memory Lapse Gradle invocation replaced the module test-results directory before the workflow's final XML copy, so the exact original artifact contains no ArcaneDenialScenarioTest XML. The paired test step also used pipefail without -e, so future evidence must fail immediately on the first class failure."
+  },
+  "decision": "INCOMPLETE_NO_COUNTER_PAIR_ACCEPTANCE_FROM_THIS_ORIGINAL",
+  "successor": "Preserve this original. Change workflow only: use set -euo pipefail, copy and require Arcane XML immediately after the Arcane class finishes and before Memory Lapse starts, then copy and require Memory Lapse XML immediately after its class. Keep every source/test/budget byte unchanged and rerun once.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
