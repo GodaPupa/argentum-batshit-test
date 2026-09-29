@@ -30,9 +30,11 @@ internal class ManualPhaseTwoOpeningActionPolicy(
             "Physical own hand is incomplete for $role"
         }
         val ownLands = hand.cards.filter { "LAND" in it.types }.map { it.entityId }.toSet()
+        // PlayLand is a known non-target engine action. Its generic LegalAction targetCount/minTargets
+        // fields currently retain the shared constructor default, so physical land identity—not those
+        // generic cardinality fields—is the reviewed public boundary for this seam.
         val landActions = observation.legalActions.filter {
-            it.kind == "PlayLand" && it.affordable && it.sourceEntityId in ownLands &&
-                it.minTargets == 0 && it.maxTargets == 0
+            it.kind == "PlayLand" && it.affordable && it.sourceEntityId in ownLands
         }
         if (observation.phase.isMainPhase && observation.activePlayerId == actor &&
             landActions.size == 1) {
