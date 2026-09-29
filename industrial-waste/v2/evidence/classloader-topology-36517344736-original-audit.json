@@ -1,0 +1,67 @@
+{
+  "schema": "industrial-classloader-topology-36517344736-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36517344736,
+  "artifact_id": 11012010686,
+  "artifact_sha256": "b85d3ebc134f1a937189dcb9871fb2e02079a29f57624a11b8a2b59c314a5d59",
+  "head": "9290b592633582979ff7760f9fc7340621e15cc3",
+  "parent": "af3babe2091cfb6c4e2e5ae6125ef5a47e441bc2",
+  "pins": {
+    "worker_probe": "eee28d377387df5b07cb00c9adc111e975d14188",
+    "budget": "8bd543dff47a888c54e8c5132a9c4d0e336acdc3",
+    "daemon_capture_script": "c423780611cc1b892a6fe7b3972f43aec35dc1a2",
+    "workflow": "bf8db513fd8291db7047091ad343d59e2181e1a6"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "worker_xml_parse": "clean",
+    "workflow_conclusion": "success"
+  },
+  "daemon_capture": {
+    "accepted": true,
+    "files": [
+      "daemon-context-loaders.tsv",
+      "daemon-system-loaders.tsv",
+      "daemon-classpath.tsv",
+      "daemon-runtime.txt"
+    ],
+    "gradle_version": "9.6.1",
+    "java_version": "21.0.12.1",
+    "java_vm_name": "OpenJDK 64-Bit Server VM",
+    "classpath_entry": "gradle-daemon-main-9.6.1.jar"
+  },
+  "worker_execution": {
+    "tests": 1,
+    "passes": 1,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "preservation_gap": {
+    "classification": "INCOMPLETE_WORKER_TOPOLOGY_FILES_NOT_IN_ORIGINAL",
+    "missing": [
+      "worker-context-loaders.tsv",
+      "worker-system-loaders.tsv",
+      "worker-classpath.tsv",
+      "worker-code-sources.tsv",
+      "worker-runtime.txt"
+    ],
+    "cause": "The :ai test writes build/reports/industrial-classloader-topology relative to the ai project working directory, while artifact upload preserves the repository-root build/reports directory."
+  },
+  "decision": "ACCEPT_DAEMON_CAPTURE_SLICE_ONLY_COMPLETE_TOPOLOGY_STILL_INCOMPLETE",
+  "successor": "Copy the five worker-* files from ai/build/reports/industrial-classloader-topology into the preserved root report directory and fail closed on their nonempty presence; rerun with worker/test/script/budget semantics unchanged.",
+  "authority_granted": [
+    "seed-free Gradle daemon loader/runtime capture slice"
+  ],
+  "authority_withheld": [
+    "complete daemon+worker topology closure",
+    "expected-manifest adoption",
+    "prepared-worker attestation",
+    "claim",
+    "allocation",
+    "gameplay"
+  ],
+  "official_counters_delta": 0
+}
