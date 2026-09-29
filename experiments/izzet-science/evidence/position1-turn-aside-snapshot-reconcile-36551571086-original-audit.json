@@ -1,0 +1,69 @@
+{
+  "schema": "izzet-position1-turn-aside-snapshot-reconcile-36551571086-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36551571086,
+  "artifact_id": 11024592245,
+  "artifact_sha256": "a05dbc040b191814820db6d967da7304ab501384a5d5c7895917a93e86061a9a",
+  "head": "24cc0d3f4cce4bc9c8f2bd2b1e1617225dd78b13",
+  "parent": "799973561604747460e31521295e97ac8f9a6864",
+  "pins": {
+    "turn_aside": "96a656b7fdd77ae10045d523e281eb34f5cb711e",
+    "semantic_test": "0eec9947e43bb43a9c3bbe9d90a33626a243cf3f",
+    "consumed_behavior_audit": "f33d7e88d5732ef7a266da95d47671b4d1f020f9",
+    "budget": "f1f463de8102bd8046bba1f6291c5aa9da376f01",
+    "workflow": "ab7a71b5ccfe7be5c63338bb2412fde7cb558de0"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "parent_binding": "passed",
+    "behavior_rerun": "not performed; prior clean 3/3 original was consumed by reference only",
+    "snapshot_and_cardlint_build": "success; 38 actionable tasks executed",
+    "card_lint": "all reported CardLintTest cases passed",
+    "preserved_generated_originals": [
+      "ALL",
+      "HML",
+      "M13",
+      "ROE",
+      "SOM"
+    ],
+    "missing_predeclared_generated_originals": [
+      "ULG"
+    ]
+  },
+  "result": {
+    "workflow_conclusion": "failure",
+    "predeclared_changed_snapshot_paths": [
+      "ALL",
+      "HML",
+      "M13",
+      "ROE",
+      "SOM",
+      "ULG"
+    ],
+    "observed_changed_snapshot_paths": [
+      "ALL",
+      "HML",
+      "M13",
+      "ROE",
+      "SOM"
+    ],
+    "missing_predeclared_path": "ULG",
+    "independently_preserved_patch_shape": {
+      "ALL": "single Arcane Denial record insertion only",
+      "HML": "single Memory Lapse record insertion only",
+      "M13": "single Archaeomancer record insertion only",
+      "ROE": "single Mnemonic Wall record insertion only",
+      "SOM": "single Turn Aside record insertion only"
+    }
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_RECONCILIATION_CONTRACT_MISMATCH",
+    "detail": "Fresh snapshot-only reconciliation did not reproduce the earlier unpreserved ULG delta. The successor's six-path contract therefore failed before binding.json creation. The five preserved generated patches are limited to the expected accepted records, while no ULG generated original exists in this run. The earlier failed Turn Aside original proved only that ULG changed in that earlier environment; it did not preserve the ULG bytes and therefore does not justify attributing that delta to Snap."
+  },
+  "decision": "INCOMPLETE_NO_TURN_ASIDE_ADOPTION_FROM_THIS_ORIGINAL",
+  "successor": "Preserve this original. Do not rerun the unchanged Turn Aside semantic bank. Prospectively diagnose the ULG discrepancy under fresh isolated snapshot generation, keeping Turn Aside behavior frozen. If ULG remains unchanged, qualify a corrected exact-five snapshot reconciliation and track any Snap discovery/registration defect separately rather than importing an unpreserved ULG assumption into Turn Aside.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
