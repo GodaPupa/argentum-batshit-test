@@ -1,0 +1,38 @@
+{
+  "schema": "pest-monster-london-raw-m5-probe-36515294304-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36515294304,
+  "artifact_id": 11011031281,
+  "artifact_sha256": "a68f307cf8daa912f4e841b886c8e23c5c3479130420137f648aab9fff59a96d",
+  "head": "9265ee3a4a72c65b68a68b10b36ea04fe94b6b3e",
+  "parent": "4493bca3ec7ddb9c481ee231273d5e0b979e3408",
+  "pins": {
+    "raw_controller": "4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+    "test": "6d5b2853a7ca1ce091bc9be7385cf4cd01aaaae1",
+    "budget": "02b98ef40a036044ef788a76a22cbffb7605f6bd",
+    "workflow": "e212f5d1a32d492d462f40f613c3dc007acd0d5d"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "xml_parse": "clean",
+    "freshness": "--rerun-tasks --no-build-cache"
+  },
+  "result": {
+    "tests": 1,
+    "passes": 0,
+    "failures": 1,
+    "errors": 0,
+    "behavioral_atoms_completed": 0,
+    "failure": "NoSuchElementException during reflective private-method lookup"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_REFLECTION_JVM_NAME_BINDING",
+    "detail": "The corrected controller constructor reached the test body. Exact JVM method-name matching failed before raw predicate invocation; private methods involving Kotlin value-class signatures may be JVM-mangled.",
+    "m5_inference": "NONE"
+  },
+  "successor_rule": "Preserve this original. Change only reflection lookup from exact name equality to a unique startsWith match for the two frozen private predicate names; re-pin changed test/workflow and execute the same six atoms.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
