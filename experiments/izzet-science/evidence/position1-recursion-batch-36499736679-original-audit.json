@@ -1,0 +1,43 @@
+{
+  "schema": "izzet-position1-recursion-batch-36499736679-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36499736679,
+  "artifact_id": 11004768827,
+  "artifact_sha256": "b199ace90ed451b16f3280182c574b8d02370fe46e67be0f85c27ad069c485d9",
+  "head": "e905b8f66336bc1d4ee906f79c041179c22be3aa",
+  "parent": "0054a78e3fde10ab7ef26a03a70d2a1f163dc546",
+  "pins": {
+    "budget": "b4ba919bb333dc9532caca126fdbc4d6c8069f8e",
+    "archaeomancer": "cc5b2951943c875982036f9b7506072ea65d9db6",
+    "mnemonic_wall": "dcfca24f1918f79092b7f3274ee454614d15d03e",
+    "test": "e54b924543b5ec8098ca322896d8ef15f3435352",
+    "workflow": "598e5d460f65a550f6c422831ecb542a644b01ba"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "tests": 4,
+    "passes": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "cases": [
+      "Archaeomancer ETB returns an own instant",
+      "Archaeomancer cannot target an opponent graveyard instant",
+      "Mnemonic Wall ETB returns an own sorcery",
+      "Mnemonic Wall declares the shared Defender keyword"
+    ]
+  },
+  "decision": "ACCEPTED_POSITION1_RECURSION_COMPONENT_BATCH_ONLY",
+  "limits": [
+    "Accepts only the exact four Archaeomancer/Mnemonic Wall mechanics/registration cases.",
+    "Does not establish remaining missing identity support, whole pilot competence, commander lifecycle/damage, collector/replay/durability, Position-1 execution admission, seed authority, or gameplay."
+  ],
+  "next_gate": "Continue smallest high-reuse missing card/mechanic batches under the current-runtime Position-1 requirement set; separately close commander lifecycle/damage and pilot/runner/replay admission.",
+  "official_counters_delta": 0
+}
