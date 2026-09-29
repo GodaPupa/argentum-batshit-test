@@ -20,7 +20,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/izzet-position1-counter-pair
-          test "$(git rev-parse HEAD^)" = "15508c85a6d5c0be8f769153b98438de06b47afa"
+          test "$(git rev-parse HEAD^)" = "66aa576948e166c6d9c83dc7ca44d51da03e447c"
           test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt)" = "b80ac4364d27398cffde16e5f6d6a41eb0792ea9"
           test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/hml/cards/MemoryLapse.kt)" = "e07d873bfccc9634cc0121fe988003e5af1e3fbc"
           test "$(git hash-object mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArcaneDenialScenarioTest.kt)" = "0046c1bbaef6c037be51b796c1cb9b7349e4598e"
