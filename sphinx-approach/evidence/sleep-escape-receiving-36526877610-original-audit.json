@@ -1,0 +1,53 @@
+{
+  "schema": "sphinx-stage-e-sleep-escape-payment-engine-receiving-36526877610-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36526877610,
+  "artifact_id": 11014349629,
+  "artifact_sha256": "891a877cb53227ec8d9f2876463c1432393fbf168933f0d6447cc790f14237ae",
+  "head": "e0e05ab6a4b89d1e3cb1b45fb736545f160e7be5",
+  "parent": "12863a5fdf7fb455ba92c9e661b7f2d89c127e5f",
+  "pins": {
+    "budget": "058d5d314c635783c6acd6c2288a0bc3237c02f5",
+    "payment_projection": "73ee259bac39fecf8fd2d47cad57f5ccb0ff911b",
+    "payment_test": "63659b89b0bfee55e13f9392a1a59dfc560b276e",
+    "pilot": "a783d5e2fc15acf2f17581c930ef33f72c30d7eb",
+    "actor_adapter": "0c77037507e07c912cc034af5be067b13d301d0b",
+    "whole_actor": "90271284f6eb8f0c389e460b394467a3adc6b872",
+    "receiving_test": "0168e3aee4ddf50a8ef34478577fc9ca86f56566",
+    "benchmark_deck": "da2f0d8d1e7a6d464567f765483d0145ae3726dd",
+    "sleep_definition": "96d3609ed36d495ca53b00eff316b156f87c2f6c",
+    "sleep_engine_scenario": "52b3886dc31fc1f62234a83a27591aed8891c907",
+    "workflow": "39e27f079711ff68ec763378b638900d962555f1"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "payment_xml_parse": "clean",
+    "engine_xml_parse": "clean",
+    "receiving_xml_parse": "clean",
+    "freshness": "--rerun-tasks --no-build-cache"
+  },
+  "result": {
+    "shared_payment_projection": {"tests": 12, "passes": 12, "failures": 0, "errors": 0, "skipped": 0},
+    "sleep_engine_scenarios": {"tests": 2, "passes": 2, "failures": 0, "errors": 0, "skipped": 0},
+    "sleep_receiving": {"tests": 1, "passes": 1, "failures": 0, "errors": 0, "skipped": 0}
+  },
+  "decision": "ACCEPTED_SLEEP_OF_THE_DEAD_ESCAPE_PAYMENT_ENGINE_AND_RECEIVING",
+  "accepted_scope": [
+    "The shared payment projection accepts the exact Sleep of the Dead ESCAPE action and preserves its exact three-card additional payment while projecting the real basic-blue mana payment.",
+    "The unchanged engine scenarios prove escaped Sleep exiles exactly three other graveyard cards, resolves back to graveyard, taps its target, and applies then expires the affected controller's next-untap suppression.",
+    "The frozen serpico-terror benchmark exposes exactly the bounded real ESCAPE cast, the Sphinx whole actor selects the unique opposing Grizzly Bears target and the exact three visible graveyard fuel cards, and the real cast resolves with those fuel cards in exile.",
+    "All three XML suites are preserved and clean in the exact original artifact."
+  ],
+  "limits": [
+    "No general ESCAPE or alternate-cost policy beyond this exact bounded Sleep surface.",
+    "No multiple-target or multiple-cast ranking.",
+    "No ordinary priority scheduling, combat policy, opponent package, collector/replay or Stage-E gameplay authority."
+  ],
+  "next_gate": "Advance the next uncovered frozen Stage-E surface: ordinary priority scheduling, combat decisions, Approach-mode receiving, or bounded multi-cast ranking, preserving fail-closed behavior and separate whole-pilot/collector/replay admission.",
+  "authority_granted": [
+    "bounded Sleep of the Dead ESCAPE payment and receiving surface"
+  ],
+  "official_counters_delta": 0
+}
