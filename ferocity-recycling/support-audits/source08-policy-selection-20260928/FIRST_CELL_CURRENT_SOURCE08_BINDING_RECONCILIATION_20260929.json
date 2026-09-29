@@ -1,0 +1,58 @@
+{
+  "schema": "ferocity-first-cell-current-source08-binding-reconciliation-v1",
+  "date_utc": "2026-09-29",
+  "exact_source08": {
+    "commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"
+  },
+  "preserved_extraction_run": 36504408568,
+  "exact_byte_identity_by_git_blob": [
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityTrialRunner.kt",
+      "source08_git_blob": "899689a7b5235318782bbc645d69debdd8eeee7f",
+      "archive_git_blob": "899689a7b5235318782bbc645d69debdd8eeee7f",
+      "sha256": "0f940004e38b5fa991dab86d0692f1a6dd2e526f86fc3e0fae833fe7c9c76da8"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityTrialJournal.kt",
+      "source08_git_blob": "e7bafcdded98eee00f3934df53bfc13e5899c86d",
+      "archive_git_blob": "e7bafcdded98eee00f3934df53bfc13e5899c86d",
+      "sha256": "750d7429fcf94022e197f94f9d813877155148d47bcae06ee514650728f6200c"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityTrialReplay.kt",
+      "source08_git_blob": "cb8d4b182f47ff17389ff1bc024a8f1ac2eaa46e",
+      "archive_git_blob": "cb8d4b182f47ff17389ff1bc024a8f1ac2eaa46e",
+      "sha256": "bd8e519780c8dbd543bad83374c84ff11db5dd8f28efaee28caa7636d24be1ba"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityJournalRecords.kt",
+      "source08_git_blob": "e96c6e8d3fda0fd4a92f1e45c2cda66f9157ea3c",
+      "archive_git_blob": "e96c6e8d3fda0fd4a92f1e45c2cda66f9157ea3c",
+      "sha256": "41a9bb5266fd95bd8ebeb886a94d69e9e39aaab945eb28555810dbdcba984145"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityJournalCodec.kt",
+      "source08_git_blob": "ae9590dd6dbbf330695b1caf4208a60c943a4fd1",
+      "archive_git_blob": "ae9590dd6dbbf330695b1caf4208a60c943a4fd1",
+      "sha256": "5c3e70fea5aeeb0f1b64b216cd0dd5133785388706c56fdbbc27b768ed855042"
+    }
+  ],
+  "historical_resource06_not_current": {
+    "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt",
+    "archived_resource06_git_blob": "df6b3eeec2db72f125c130c5a5173b52c44b9a8d",
+    "archived_resource06_sha256": "ed75e5d32a9eccf90a0379d62716a0a7b695b7196a82f32972df88a03b8b881f",
+    "source08_git_blob": "c64afaf0dac73fe4a73e47a58ababa60a5888064",
+    "disposition": "DIFFERS__DO_NOT_PROMOTE_ARCHIVED_RESOURCE06_ADMISSION_SOURCE"
+  },
+  "decision": "ACCEPT_EXACT_CURRENT_RUNNER_TRACE_REPLAY_BYTE_IDENTITY_CANDIDATES_ONLY",
+  "limits": [
+    "Git-blob equality establishes exact bytes for the five named runner/trace/replay files only.",
+    "This does not independently adopt them as complete D2 authority.",
+    "Current source08 admission/resource implementation must be reviewed from its own exact bytes; archived resource06 cannot substitute.",
+    "MisterTwin Red engine/runtime/pilot qualification, runtime/export bundle, complete receiving and independent admission remain open.",
+    "No JVM, entropy, seed, allocation or game authority."
+  ],
+  "next_gate": "Independently review the exact current source08 DevelopmentAdmission/resource files and current bundle/qualification receipts; then bind the byte-identical runner/trace/replay identities with those current authorities into a completed non-executing first-cell admission manifest.",
+  "official_counters_delta": 0
+}
