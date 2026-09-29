@@ -38,7 +38,7 @@ class SphinxStageEOwnDeck private constructor(val sha256: String, internal val c
 }
 
 /** A caller selects an already-existing component function; this adapter does not rank actions. */
-enum class SphinxStageEComponentCall { CURRENT_CAST, SETUP_DRAW, DEPLOYMENT, COUNTERSPELL, SNAP }
+enum class SphinxStageEComponentCall { CURRENT_CAST, SETUP_DRAW, DEPLOYMENT, COUNTERSPELL, SNAP, DEEM_INFERIOR }
 
 sealed interface SphinxStageEAdapterResult {
     data class Proposed(val proposal: ActorProposal, val reason: String) : SphinxStageEAdapterResult
@@ -97,6 +97,7 @@ object SphinxStageEActorAdapter {
                 SphinxStageEComponentCall.DEPLOYMENT -> SphinxStageEPilotComponent.chooseDeployment(policyInput)
                 SphinxStageEComponentCall.COUNTERSPELL -> SphinxStageEPilotComponent.chooseCounterspell(policyInput)
                 SphinxStageEComponentCall.SNAP -> SphinxStageEPilotComponent.chooseSnap(policyInput)
+                SphinxStageEComponentCall.DEEM_INFERIOR -> SphinxStageEPilotComponent.chooseDeemInferior(policyInput)
             }
             if (choice.actionId == null) return SphinxStageEAdapterResult.Declined(input.bindingHash, choice.reason)
             require(choice.actionId == offerId) { "Component returned a different current offer" }
