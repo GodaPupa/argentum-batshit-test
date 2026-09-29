@@ -1,0 +1,38 @@
+{
+  "schema": "manual-unique-animar-command-cast-36510719813-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36510719813,
+  "artifact_id": 11008114436,
+  "artifact_sha256": "4b3fdfc99a9309c01b64d1a4da107bcdaf43c1418d28adccb9abd7dc3caf45c3",
+  "head": "c821194804b34ce8014e02dea88156d56818a37d",
+  "parent": "10e281867c20857faa0640f85bd16e34199db300",
+  "pins": {
+    "policy": "84865774955a30fc4821142583fff9346b61a211",
+    "test": "dbce1e049a35416f8803e1aab0d2186d955c6e78",
+    "budget": "a77e5ca32379f3bca4430f47ac6d4e726a1475c9",
+    "workflow": "a9651133f13b2734ea4456b63edef409f070095d"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "tests": 3,
+    "passes": 0,
+    "failures": 3,
+    "errors": 0,
+    "skipped": 0,
+    "common_failure": "PhaseTwoTelemetryAdapter constructor requirement at line 82"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_FIXTURE_MANUAL_SEAT_OUT_OF_RANGE",
+    "detail": "The fixture passed manualSeat=100+roleIndex, while PhaseTwoTelemetryAdapter requires manualSeat in 0..3. Every case failed during adapter construction before policy invocation or action submission.",
+    "policy_or_engine_failure_inferred": false
+  },
+  "successor_rule": "Preserve this original. Change only the excluded fixture manualSeat argument to a valid predeclared 0..3 value and re-pin the changed test/workflow. Do not rerun this original unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
