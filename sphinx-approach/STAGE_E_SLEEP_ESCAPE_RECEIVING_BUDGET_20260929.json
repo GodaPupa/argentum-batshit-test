@@ -1,0 +1,48 @@
+{
+  "schema": "sphinx-stage-e-sleep-escape-receiving-budget-v1",
+  "date_utc": "2026-09-29",
+  "predecessor_acceptance": {
+    "run_id": 36523346198,
+    "audit_commit": "239dde41d75d703502df8e1aa6b4922bf9ba2378",
+    "decision": "ACCEPTED_ARTFUL_DODGE_FLASHBACK_PAYMENT_AND_RECEIVING"
+  },
+  "changed_scope": {
+    "payment_projection": "73ee259bac39fecf8fd2d47cad57f5ccb0ff911b",
+    "payment_test": "63659b89b0bfee55e13f9392a1a59dfc560b276e",
+    "pilot": "a783d5e2fc15acf2f17581c930ef33f72c30d7eb",
+    "actor_adapter": "c88581277abe9ac8bf9db143a91c9ef648bda40a",
+    "whole_actor": "90271284f6eb8f0c389e460b394467a3adc6b872",
+    "receiving_test": "1e0823c033cd37314e086f16cb89069d99160883"
+  },
+  "frozen_sources": {
+    "benchmark_deck": "da2f0d8d1e7a6d464567f765483d0145ae3726dd",
+    "sleep_definition": "96d3609ed36d495ca53b00eff316b156f87c2f6c",
+    "sleep_engine_scenario": "52b3886dc31fc1f62234a83a27591aed8891c907"
+  },
+  "required_shared_projection_case": [
+    "The real legal-action enumerator exposes Sleep of the Dead from the actor graveyard with useAlternativeCost=true and alternativeCostType=ESCAPE.",
+    "The offer carries costType=ExileFromGraveyard with exactly three currently visible other graveyard candidates and exileMinCount=exileMaxCount=3.",
+    "The canonical payment projection accepts only this exact Sleep ESCAPE shape in the ordinary basic-blue representation.",
+    "With three untapped Islands and no floating mana, projected totalMana=3, blueRemainingAfterPayment=0 and the real cast taps exactly those projected sources."
+  ],
+  "required_receiving_case": [
+    "The frozen serpico-terror-benchmark contains exactly two Sleep of the Dead.",
+    "The prepared actor-main state exposes exactly one CastSpell: the physical graveyard Sleep ESCAPE action.",
+    "Exactly three eligible other actor-graveyard cards are offered, so no graveyard-card ranking is introduced.",
+    "Exactly one opposing creature target is offered.",
+    "The whole actor proposes the real ESCAPE action with those three cards in AdditionalCostPayment and the unique opposing target.",
+    "The real engine cast pays the additional cost, resolves, returns Sleep to the graveyard, taps the target and applies the one-untap restriction."
+  ],
+  "excluded": [
+    "generic Escape policy",
+    "more than three eligible escape-payment candidates",
+    "multiple creature target ranking",
+    "multiple current cast ranking",
+    "non-basic-blue payment sources",
+    "non-Sleep alternative costs",
+    "combat policy",
+    "ordinary priority scheduling beyond this bounded cast window",
+    "opponent package, collector, replay, Stage-E freeze or gameplay authority"
+  ],
+  "official_counters_delta": 0
+}
