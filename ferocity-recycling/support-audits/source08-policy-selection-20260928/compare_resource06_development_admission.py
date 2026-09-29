@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 import hashlib, json, pathlib, zipfile
 
-archive=pathlib.Path("ferocity-recycling/evidence/build/publication-M1-source-audits/08-historical-first-cell-policy.zip")
+archive=pathlib.Path("ferocity-recycling/evidence/build/publication-M1-source-audits/05-resource-boundary-06.zip")
+member="ferocity-recycling/runtime-audits/development-admission/resource-boundary-06/FerocityDevelopmentAdmission.kt.before"
 current=pathlib.Path("gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt")
 assert archive.is_file() and current.is_file()
 
@@ -12,15 +13,14 @@ def git_blob(b):
 with zipfile.ZipFile(archive) as z:
     bad=z.testzip()
     assert bad is None, bad
-    matches=[n for n in z.namelist() if n.endswith("/FerocityDevelopmentAdmission.kt") or n=="FerocityDevelopmentAdmission.kt"]
-    assert len(matches)==1, matches
-    member=matches[0]
+    names=z.namelist()
+    assert member in names, names
     archived=z.read(member)
 
 live=current.read_bytes()
 out={
- "schema":"ferocity-resource06-development-admission-direct-byte-comparison-v1",
- "archive_git_blob":"6703d6913a321771563ff200ca99cd65f7c04cd0",
+ "schema":"ferocity-resource06-development-admission-direct-byte-comparison-v2",
+ "archive_git_blob":"a0fb48835413d80149331a7775e17820435cad7b",
  "archive_member":member,
  "archive_member_bytes":len(archived),
  "archive_member_git_blob":git_blob(archived),
