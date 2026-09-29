@@ -1,0 +1,51 @@
+{
+  "schema": "izzet-position1-counter-pair-36515462991-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36515462991,
+  "artifact_id": 11010807339,
+  "artifact_sha256": "397a00dced33ed137dd6679cfbc91081518490bd16bb2e6ab40419406b63b6e5",
+  "head": "6fbafb157525928b47f123c4375aee95ff32a86b",
+  "parent": "66aa576948e166c6d9c83dc7ca44d51da03e447c",
+  "pins": {
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "arcane_test": "0046c1bbaef6c037be51b796c1cb9b7349e4598e",
+    "lapse_test": "e7e60d5a68e4b8d5f2f016a88364b3b25413853b",
+    "budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694",
+    "stack_effects": "8ad94eec5fc9f88cb7920e911a8fc173749d7db7",
+    "counter_executor": "a46651a83da18774daa93a110ae9b0d62481f3c9",
+    "stack_resolver": "a46aed0092806245462dbd881fab327d838de4e7",
+    "mana_payment_resumer": "30966ffbfa84801761c6f98a33a2adecee627da9",
+    "workflow": "892b303d04e70f82fd4cbccddf59930b901c5812"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "arcane_denial": {
+      "tests": 3,
+      "passes": 1,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0
+    },
+    "memory_lapse": "not_run_after_first_class_failure"
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_ARCANE_DENIAL_DELAYED_TARGET_CONTROLLER_NOT_FROZEN",
+    "observed": [
+      "The stored DrawUpToEffect target remained EffectTarget.TargetController instead of SpecificEntity(victim).",
+      "At the next upkeep no victim 0..2 draw decision was produced after the target spell had left the stack.",
+      "The uncounterable-target case still scheduled the two delayed abilities."
+    ],
+    "cause": "CreateDelayedTriggerExecutor recursively bakes several context-dependent effect targets but has no DrawUpToEffect arm; TargetController requires state-aware resolution while the target spell is still on the stack."
+  },
+  "decision": "INCOMPLETE_NO_COUNTER_PAIR_ACCEPTANCE",
+  "successor": "Add the narrow scheduling-time bake for DrawUpToEffect player targets using state-aware resolution, pin that shared executor in the workflow, and rerun the exact six predeclared mechanics cases with historical card/test bytes unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
