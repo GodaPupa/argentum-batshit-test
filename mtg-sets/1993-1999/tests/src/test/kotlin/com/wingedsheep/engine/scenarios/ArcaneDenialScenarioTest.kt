@@ -115,7 +115,19 @@ class ArcaneDenialScenarioTest : FunSpec({
             ?.let { d.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>() }
             ?: error("Arcane Denial trigger ordering did not leave a triggered ability on top")
         topTrigger.effect.shouldBeInstanceOf<DrawUpToEffect>()
-        d.resolveUntilDecisionOrEmpty()
+        val priorityAfterOrder = d.priorityPlayer
+        val pendingAfterOrder = d.pendingDecision?.let { it::class.simpleName } ?: "null"
+        val firstPass = d.bothPass()
+        val pendingAfterPass = d.pendingDecision?.let { it::class.simpleName } ?: "null"
+        val topAfterPass = d.state.getTopOfStack()
+            ?.let { d.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>()?.effect?.let { effect -> effect::class.simpleName } }
+            ?: "null"
+        error(
+            "IZZET_POST_ORDER_PRIORITY_DIAGNOSTIC " +
+                "priorityAfterOrder=$priorityAfterOrder pendingAfterOrder=$pendingAfterOrder " +
+                "firstPassError=${firstPass.error} priorityAfterPass=${d.priorityPlayer} " +
+                "pendingAfterPass=$pendingAfterPass stackAfterPass=${d.stackSize} topAfterPass=$topAfterPass"
+        )
 
         val decision = d.pendingDecision as? ChooseNumberDecision
             ?: error("Arcane Denial did not present the draw-up-to-two decision")
