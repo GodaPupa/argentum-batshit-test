@@ -114,7 +114,11 @@ class ArcaneDenialScenarioTest : FunSpec({
         val topTrigger = d.state.getTopOfStack()
             ?.let { d.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>() }
             ?: error("Arcane Denial trigger ordering did not leave a triggered ability on top")
-        topTrigger.effect.shouldBeInstanceOf<DrawUpToEffect>()
+        val topDrawUpTo = topTrigger.effect.shouldBeInstanceOf<DrawUpToEffect>()
+        topDrawUpTo.target shouldBe EffectTarget.SpecificEntity(victim)
+        val victimLibraryBefore = d.state.getLibrary(victim).size
+        val casterLibraryBefore = d.state.getLibrary(caster).size
+        (victimLibraryBefore > 0) shouldBe true
         val priorityAfterOrder = d.priorityPlayer
         val pendingAfterOrder = d.pendingDecision?.let { it::class.simpleName } ?: "null"
         val firstPass = d.bothPass()
@@ -124,6 +128,7 @@ class ArcaneDenialScenarioTest : FunSpec({
             ?: "null"
         error(
             "IZZET_POST_ORDER_PRIORITY_DIAGNOSTIC " +
+                "target=${topDrawUpTo.target} victimLibraryBefore=$victimLibraryBefore casterLibraryBefore=$casterLibraryBefore " +
                 "priorityAfterOrder=$priorityAfterOrder pendingAfterOrder=$pendingAfterOrder " +
                 "firstPassError=${firstPass.error} priorityAfterPass=${d.priorityPlayer} " +
                 "pendingAfterPass=$pendingAfterPass stackAfterPass=${d.stackSize} topAfterPass=$topAfterPass"
