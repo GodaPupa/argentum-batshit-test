@@ -1,0 +1,40 @@
+{
+  "schema": "manual-phase2-race-overlay-router-36504294463-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36504294463,
+  "artifact_id": 11006392843,
+  "artifact_sha256": "237dff4f25a5dd7d2aff821d33d439213cd7558af95fbf42c90278f2921d7405",
+  "head": "d401144f06b27dd8ab8661560742b706ab5970bd",
+  "parent": "e9fec68d36b4f7373e23c0613627e6621c36c383",
+  "pins": {
+    "router": "600f783b0891249343cb57e91847ea714758f515",
+    "test": "cab7be6b4f1d45eb91435c6270e314f180e91cf2",
+    "budget": "472dde680716157ab1ab46bd793aa717e2d78924",
+    "workflow": "58a9b42ebada3915c5d03e4ca6a6a49831c667b8"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "tests": 3,
+    "passes": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "decision": "ACCEPTED_RACE_OVERLAY_COMPOSITION_ROUTER_ONLY",
+  "accepted_scope": [
+    "masked four-seat public commander axes bind Blue Farm to R3-BF, RogSi to R3-RS and Kinnan to R3-KB",
+    "Cruise rejects inheritance of Race-only opponent overlays",
+    "Sport rejects inheritance of Race-only opponent overlays"
+  ],
+  "limits": [
+    "No action-selection competence, complete Race policy, Cruise/Sport completion, opponent pilot competence, collector/replay/durability, capability admission or gameplay."
+  ],
+  "next_gate": "Bind the accepted Race overlay identities to executable action seams only where their exact required card/mechanic dependencies are qualified; continue real opening-boundary integration and remaining gear/opponent surfaces.",
+  "official_counters_delta": 0
+}
