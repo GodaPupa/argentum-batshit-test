@@ -1,0 +1,38 @@
+name: Industrial seed-free Gradle implementation closure
+on:
+  push:
+    branches: ["industrial-waste/r1-manifest-capture-20260928"]
+    paths: [".github/workflows/industrial-gradle-implementation-closure.yml"]
+permissions: {contents: read}
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact Gradle closure capture and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/industrial-gradle-implementation-closure
+          test "$(git rev-parse HEAD^)" = "2eb5b4c5f97f34d64325b1fa43b8c25a8a4bf62f"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_gradle_implementation_closure.py)" = "a30880f96ba68a80f99c0bd8b6fd14e284ecb323"
+          test "$(git hash-object industrial-waste/v2/r1-seed-free-gradle-implementation-closure-budget.json)" = "ecdb0894b9dccdce7dd48988d348d714f2a4edfb"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object industrial-waste/v2/capture_seed_free_gradle_implementation_closure.py; git hash-object industrial-waste/v2/r1-seed-free-gradle-implementation-closure-budget.json; git hash-object .github/workflows/industrial-gradle-implementation-closure.yml; git status --porcelain; } > build/reports/industrial-gradle-implementation-closure/source.txt
+      - name: Capture actual wrapper Gradle implementation bytes
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 industrial-waste/v2/capture_seed_free_gradle_implementation_closure.py 2>&1 | tee build/reports/industrial-gradle-implementation-closure/capture.json
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-gradle-implementation-closure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/industrial-gradle-implementation-closure/
+          if-no-files-found: error
+          retention-days: 90
