@@ -1,0 +1,39 @@
+{
+  "schema": "sphinx-stage-e-snap-receiving-36504060776-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36504060776,
+  "artifact_id": 11007006689,
+  "artifact_sha256": "9106565477cd94b8497c905702b1e879782e511b74a6ddd6cbdfa0f1cf429848",
+  "head": "abf05ae05f3cdf647b3525a1d3bb9906bc47f296",
+  "parent": "c9c29c46b7c40d43fd475aabfca098099021fdfb",
+  "pins": {
+    "adapter": "20865204fec378f37045c54993ac1a85c3acac00",
+    "pilot": "095a2e8d32dd96d62960128eebcd17b09e8f4bb2",
+    "test": "ba526e0720792ebd89da345a2bd87a852eeffb86",
+    "budget": "8ea3cdca7c700f9caaf378215ae0963a70d71281",
+    "workflow": "15c95aa03d145defcfeb1dfb38b3003b8fb31e8f"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "tests": 3,
+    "passes": 0,
+    "failures": 3,
+    "errors": 0,
+    "skipped": 0,
+    "common_failure": "expected pending SelectCardsDecision was null"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_FIXTURE_WARD_DEPENDENCY",
+    "detail": "Every declared fixture used Tolarian Terror as the sole opposing creature. Tolarian Terror has Ward {2}. The two-land fixture pays Snap's {1}{U} and does not qualify or pay the intervening Ward {2}, so the spell does not reach the declared post-bounce land-selection continuation.",
+    "behavior_inference": "No Snap actor-policy or deck-performance failure is inferred."
+  },
+  "successor_rule": "Preserve this original. Change only the excluded fixture target to a wardless registered creature while retaining the exact three frozen own identities, unique-target condition, Snap source, actor/policy sources and land-untap continuation. Re-pin the changed test/workflow and do not rerun this original unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
