@@ -208,6 +208,22 @@ object SphinxStageEPilotComponent {
         return SphinxStageEPolicyChoice(input.offer.id, target.id, "unique offered Snap target")
     }
 
+    /**
+     * Deem Inferior is admitted only when the real legal-action domain contains exactly one
+     * opposing permanent target. This is a unique-target receiving seam, not a general removal
+     * ranking rule; the target owner's later library-placement choice belongs to that opponent.
+     */
+    fun chooseDeemInferior(input: SphinxStageEPolicyInput): SphinxStageEPolicyChoice {
+        current(input)
+        require(input.offer.cardName == "Deem Inferior")
+        val payable = chooseCurrentCast(input)
+        if (payable.actionId == null) return payable
+        val target = input.offer.legalTargets.singleOrNull {
+            it.kind == SphinxStageETargetKind.PERMANENT && !it.controlledByActor
+        } ?: return SphinxStageEPolicyChoice(reason = "Deem Inferior requires one reviewed opposing permanent target")
+        return SphinxStageEPolicyChoice(input.offer.id, target.id, "unique offered Deem Inferior target")
+    }
+
     /** Targets are selected only from the offered public stack choices. */
     fun chooseCounterspell(input: SphinxStageEPolicyInput): SphinxStageEPolicyChoice {
         current(input)
