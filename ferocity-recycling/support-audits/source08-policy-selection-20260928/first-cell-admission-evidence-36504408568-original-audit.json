@@ -1,0 +1,56 @@
+{
+  "schema": "ferocity-first-cell-admission-evidence-extract-36504408568-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36504408568,
+  "artifact_id": 11006766841,
+  "artifact_sha256": "e4ccddbb777685718e49857806dc818cd568b1efd0917995625507469803c506",
+  "head": "fe944c070a8b0a267ac9efc15034a3d3ae2c8ad3",
+  "parent": "98b749d7b03d2b7fd96024be3ab4875d2143f2f0",
+  "pins": {
+    "extractor": "441422f34f048e1990415943074a324313a746de",
+    "budget": "0725c4917b015c15a13c7a5e1af7ad7cff8efb87",
+    "publication_manifest": "05174b960875500e529092810e0e1e249fd18a71",
+    "workflow": "156bf9e9519f04d99b98e0e135dde3faebd4666a"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "source_archive_crc": "clean",
+    "member_sha256_matches_publication_manifest": true
+  },
+  "result": {
+    "archives": 4,
+    "allowlisted_members": 20,
+    "seed_or_entropy_files_read": false,
+    "jvm_started": false,
+    "game_initialized": false
+  },
+  "recovered_exact_candidate_bindings": {
+    "historical_runner_sha256": "0f940004e38b5fa991dab86d0692f1a6dd2e526f86fc3e0fae833fe7c9c76da8",
+    "historical_trial_journal_sha256": "750d7429fcf94022e197f94f9d813877155148d47bcae06ee514650728f6200c",
+    "historical_trial_replay_sha256": "bd8e519780c8dbd543bad83374c84ff11db5dd8f28efaee28caa7636d24be1ba",
+    "historical_journal_records_sha256": "41a9bb5266fd95bd8ebeb886a94d69e9e39aaab945eb28555810dbdcba984145",
+    "historical_journal_codec_sha256": "5c3e70fea5aeeb0f1b64b216cd0dd5133785388706c56fdbbc27b768ed855042",
+    "resource05_source_freeze_sha256": "168a3ee08ce68c1480cb3141b6ab8540aadb6277b848752e17910d0d7f8d4082",
+    "resource06_source_freeze_sha256": "9dc8871b483bb4abb13a88e9ed5b677c4479a2cafc2386f8c57931aba29a9bc8",
+    "resource06_admission_source_sha256": "ed75e5d32a9eccf90a0379d62716a0a7b695b7196a82f32972df88a03b8b881f",
+    "verified_caps": {
+      "actions": 6000,
+      "completed_player_turns": 150,
+      "in_process_milliseconds": 300000,
+      "parent_wall_seconds": 300,
+      "production_java_heap_argument": "-Xmx2048m"
+    },
+    "first_cell_policy_plan_sha256": "ebaae440116912aa50c2c0fa8f4bbf7fc9e354ecdf60d71ad1afdd39788b47a6"
+  },
+  "decision": "ACCEPTED_PRESERVED_BINDING_RECOVERY_ONLY",
+  "limits": [
+    "Recovered bytes are historical/source candidates, not automatic current D2 authority.",
+    "No runner, trace, resource or bundle candidate is selected as current merely by archival presence.",
+    "Grixis engine/pilot qualification, complete receiving composition and independent final admission remain unresolved.",
+    "No new JVM, seed, allocation or game authority."
+  ],
+  "next_gate": "Reconcile the recovered resource06/runner/journal/replay candidates against the exact current source08 tree and preserved qualification receipts; bind only byte-identical or independently adopted current identities into the non-executing first-cell admission manifest, then independently review.",
+  "official_counters_delta": 0
+}
