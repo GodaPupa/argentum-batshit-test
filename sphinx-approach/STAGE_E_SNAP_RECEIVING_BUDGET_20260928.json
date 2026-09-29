@@ -1,0 +1,30 @@
+{
+  "schema": "sphinx-stage-e-snap-receiving-budget-v1",
+  "date_utc": "2026-09-28",
+  "status": "PROSPECTIVE_REAL_ENGINE_THREE_IDENTITY_BANK",
+  "basis": {
+    "own_surface_reconciliation_run": 36492588750,
+    "card_mechanics_source": "mtg-sets/1993-1999/.../Snap.kt",
+    "existing_visible_choice": "Snap SelectCardsDecision up to two lands"
+  },
+  "eligible_identities": [
+    "reconstructed-v01",
+    "reconstructed-hybrid",
+    "closest-no-approach-v01"
+  ],
+  "scope": [
+    "real registered Snap CastSpell offer",
+    "exactly one offered opposing creature target; no target ranking beyond uniqueness",
+    "real resolution bounce",
+    "real SelectCardsDecision chooses currently tapped own lands only, up to two",
+    "actor-visible/public information only"
+  ],
+  "excluded": [
+    "multiple creature target ranking",
+    "benchmark identity, which contains zero Snap",
+    "ordinary priority scheduling beyond fixture resolution",
+    "whole-pilot, opponent package, collector/replay/durability, Stage-E admission or seeds"
+  ],
+  "acceptance": "All three source-bound real-engine identity cases pass fresh with exact raw XML; component acceptance remains Snap-only.",
+  "official_counters_delta": 0
+}
