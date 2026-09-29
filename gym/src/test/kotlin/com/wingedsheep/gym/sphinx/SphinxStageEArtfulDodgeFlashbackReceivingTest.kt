@@ -13,6 +13,7 @@ import com.wingedsheep.engine.handlers.effects.ZoneTransitionService
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.gym.actorinput.ActorEpoch
 import com.wingedsheep.gym.actorinput.ObservationAdapter
@@ -115,8 +116,7 @@ class SphinxStageEArtfulDodgeFlashbackReceivingTest : ScenarioTestBase() {
             cast.cardId shouldBe artful
             cast.useAlternativeCost shouldBe true
             cast.alternativeCostType shouldBe AlternativeCostType.FLASHBACK
-            cast.targets.size shouldBe 1
-            cast.targets.single().entityId shouldBe creature
+            cast.targets shouldBe listOf(ChosenTarget.Permanent(creature))
             advance(cast)
 
             repeat(6) {
