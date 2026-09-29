@@ -1,0 +1,39 @@
+{
+  "schema": "industrial-r1-single-source-composite-runtime-capture-independent-review-v1",
+  "date_utc": "2026-09-29",
+  "reviewed_run_id": 36524059703,
+  "reviewed_artifact_id": 11013639040,
+  "reviewed_artifact_sha256": "bcea7354f8468c9951525e8ffac87c50d1c507eade59750e6fc44e8ed912dfa2",
+  "source_commit": "de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+  "source_tree": "d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+  "budget_blob": "b5324d715afa15f44eba1b841b53b7da74dcca53",
+  "original_audit": "industrial-waste/v2/evidence/composite-runtime-capture-36524059703-original-audit.json",
+  "review_basis": [
+    "The downloaded artifact SHA-256 exactly matches GitHub's recorded digest.",
+    "ZIP CRC validation is clean and the artifact contains 23 members.",
+    "slice-binding.json binds 15 non-empty payloads; every declared length and SHA-256 was independently recomputed and matched.",
+    "build-output, AI test runtime graph, toolchain, OS/Python and Gradle implementation captures all bind to the same exact source commit and tree.",
+    "The worker topology XML parses cleanly and records one test, one pass, zero failures/errors/skips.",
+    "The build-output capture contains 27,668 files across the declared compiled-output roots.",
+    "The AI test runtime graph preserves an ordered 51-entry classpath, 51 resolved artifacts and 221 dependency edges.",
+    "The toolchain slice records a 542-node JDK closure; the composite additionally preserves actual daemon and worker loader/classpath/code-source topology.",
+    "Every JSON slice records official_seed_files_read=false and zero official allocation/game/outcome counters."
+  ],
+  "declared_remaining_boundaries": [
+    "The constituent captures still explicitly defer immutable-store/lifetime enforcement and authenticated prepared-worker attestation.",
+    "This composite does not itself canonicalize all payload data into the complete-runtime validator's expected-manifest schema.",
+    "The composite binding is candidate provenance and does not adopt its own observed values as authority.",
+    "Expected-manifest review/adoption and prepared-worker/combined-receiving/R1 authorization remain separate gates."
+  ],
+  "decision": "ACCEPT_SINGLE_SOURCE_COMPOSITE_CAPTURE_FOR_CANDIDATE_MANIFEST_CONSTRUCTION_ONLY",
+  "authority": {
+    "candidate_manifest_construction": true,
+    "expected_manifest_adopted": false,
+    "prepared_worker": false,
+    "combined_receiving": false,
+    "r1_permit": false,
+    "seed_or_allocation_or_gameplay": false
+  },
+  "next_gate": "Construct a versioned canonical candidate complete expected manifest from the exact preserved 36524059703 artifact, validate it with the independently accepted complete-runtime validator, preserve that candidate and validator receipt, and require a separate independent adoption review.",
+  "official_counters_delta": 0
+}
