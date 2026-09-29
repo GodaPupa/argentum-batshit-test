@@ -22,6 +22,7 @@ import com.wingedsheep.engine.core.NumberChosenResponse
 import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.core.OrderObjectsDecision
 import com.wingedsheep.engine.core.PendingDecision
+import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.core.ReorderLibraryDecision
 import com.wingedsheep.engine.core.SearchLibraryDecision
 import com.wingedsheep.engine.core.SelectCardsDecision
@@ -404,7 +405,11 @@ class ObservationBuilder(
             kind = la.actionType,
             description = la.description,
             affordable = la.affordable,
-            sourceEntityId = (la.action as? CastSpell)?.cardId,
+            sourceEntityId = when (val action = la.action) {
+                is CastSpell -> action.cardId
+                is PlayLand -> action.cardId
+                else -> null
+            },
             targetEntityIds = la.validTargets ?: emptyList(),
             manaCost = la.manaCostString,
             hasXCost = la.hasXCost,
