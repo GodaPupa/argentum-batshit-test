@@ -46,12 +46,52 @@ internal object SphinxStageEWholeActor {
 
         val casts = input.legalActions.withIndex().filter { it.value.action is CastSpell }
         if (casts.isEmpty()) return unqualified(input, "No already-qualified whole-actor action")
-        if (casts.size != 1) {
-            return unqualified(input, "Multiple current cast offers require a reviewed ranking policy")
+
+        if (casts.size == 1) {
+            val only = casts.single()
+            return decideRoutedCast(
+                input, epoch, pilot, only.index, only.value.action as CastSpell,
+            )
         }
 
-        val indexed = casts.single()
-        val cast = indexed.value.action as CastSpell
+        val routed = casts.map { indexed ->
+            decideRoutedCast(
+                input, epoch, pilot, indexed.index, indexed.value.action as CastSpell,
+            )
+        }
+        routed.filterIsInstance<SphinxStageEAdapterResult.Unqualified>().firstOrNull()?.let {
+            return unqualified(
+                input,
+                "Multi-cast window includes an unqualified cast: ${it.requirement}",
+            )
+        }
+        val proposed = routed.filterIsInstance<SphinxStageEAdapterResult.Proposed>()
+        return when {
+            proposed.size == 1 -> proposed.single()
+            proposed.size > 1 -> unqualified(
+                input,
+                "Multiple accepted current cast offers require a reviewed ranking policy",
+            )
+            routed.all { it is SphinxStageEAdapterResult.Declined } ->
+                SphinxStageEAdapterResult.Declined(
+                    input.bindingHash,
+                    "All reviewed current cast components decline this multi-cast window",
+                )
+            else -> unqualified(input, "Multi-cast window did not reduce to one reviewed proposal")
+        }
+    }
+
+    /**
+     * Route one current cast only through already-qualified component seams.
+     * Multi-cast handling may compare these component dispositions, but it never changes them.
+     */
+    private fun decideRoutedCast(
+        input: ActorInput,
+        epoch: ActorEpoch,
+        pilot: SphinxStageEInitializedSeat,
+        offerIndex: Int,
+        cast: CastSpell,
+    ): SphinxStageEAdapterResult {
         val hand = input.observation.zones.singleOrNull {
             it.ownerId == pilot.actorId && it.zoneType == Zone.HAND
         } ?: return unqualified(input, "Current own hand is unavailable")
@@ -96,7 +136,7 @@ internal object SphinxStageEWholeActor {
             "Deem Inferior" -> SphinxStageEComponentCall.DEEM_INFERIOR
             else -> return unqualified(input, "No reviewed component routing for ${card.name}")
         }
-        return pilot.decideCurrentCast(input, epoch, indexed.index, call)
+        return pilot.decideCurrentCast(input, epoch, offerIndex, call)
     }
 
     private fun unqualified(input: ActorInput, reason: String) =
