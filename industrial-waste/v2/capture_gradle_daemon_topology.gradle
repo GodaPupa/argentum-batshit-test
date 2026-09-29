@@ -1,35 +1,31 @@
-gradle.projectsEvaluated {
-    gradle.rootProject.tasks.register("industrialCaptureDaemonTopology") {
-        doLast {
-            def output = new File(industrialRootPath, "build/reports/industrial-classloader-topology")
-            output.mkdirs()
-            def chain = { ClassLoader start ->
-                def rows = []
-                def loader = start
-                def ordinal = 0
-                while (loader != null) {
-                    rows << "${ordinal}\t${loader.getClass().getName()}\t${loader.getName() ?: ""}"
-                    ordinal++
-                    loader = loader.getParent()
-                }
-                rows << "${ordinal}\tBOOTSTRAP\t"
-                rows
-            }
-            def context = chain(Thread.currentThread().getContextClassLoader())
-            def system = chain(ClassLoader.getSystemClassLoader())
-            new File(output, "daemon-context-loaders.tsv").text =
-                "ordinal\tclass\tname\n" + context.join("\n") + "\n"
-            new File(output, "daemon-system-loaders.tsv").text =
-                "ordinal\tclass\tname\n" + system.join("\n") + "\n"
-            def cp = System.getProperty("java.class.path").split(java.io.File.pathSeparator).findAll { !it.isBlank() }
-            new File(output, "daemon-classpath.tsv").text =
-                "ordinal\tpath\n" + cp.withIndex().collect { p, i -> "${i}\t${new File(p).getCanonicalPath()}" }.join("\n") + "\n"
-            new File(output, "daemon-runtime.txt").text = [
-                "gradle.version=" + industrialGradleVersion,
-                "java.version=" + System.getProperty("java.version"),
-                "java.home=" + System.getProperty("java.home"),
-                "java.vm.name=" + System.getProperty("java.vm.name"),
-            ].join("\n") + "\n"
-        }
+def output = new File(".", "build/reports/industrial-classloader-topology").canonicalFile
+output.mkdirs()
+
+def chain = { ClassLoader start ->
+    def rows = []
+    def loader = start
+    def ordinal = 0
+    while (loader != null) {
+        rows << "${ordinal}\t${loader.getClass().getName()}\t${loader.getName() ?: ""}"
+        ordinal++
+        loader = loader.getParent()
     }
+    rows << "${ordinal}\tBOOTSTRAP\t"
+    rows
 }
+
+def context = chain(Thread.currentThread().getContextClassLoader())
+def system = chain(ClassLoader.getSystemClassLoader())
+new File(output, "daemon-context-loaders.tsv").text =
+    "ordinal\tclass\tname\n" + context.join("\n") + "\n"
+new File(output, "daemon-system-loaders.tsv").text =
+    "ordinal\tclass\tname\n" + system.join("\n") + "\n"
+def cp = System.getProperty("java.class.path").split(java.io.File.pathSeparator).findAll { !it.isBlank() }
+new File(output, "daemon-classpath.tsv").text =
+    "ordinal\tpath\n" + cp.withIndex().collect { p, i -> "${i}\t${new File(p).getCanonicalPath()}" }.join("\n") + "\n"
+new File(output, "daemon-runtime.txt").text = [
+    "gradle.version=" + org.gradle.util.GradleVersion.current().version,
+    "java.version=" + System.getProperty("java.version"),
+    "java.home=" + System.getProperty("java.home"),
+    "java.vm.name=" + System.getProperty("java.vm.name"),
+].join("\n") + "\n"
