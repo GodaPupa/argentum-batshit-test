@@ -1,0 +1,26 @@
+{
+  "schema": "izzet-position1-counter-pair-36515190672-pretest-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36515190672,
+  "artifact_id": null,
+  "artifact_sha256": null,
+  "head": "f7d5cc4ecb5fc2de1e400caa9c8c4d50abae2bfe",
+  "parent": "15508c85a6d5c0be8f769153b98438de06b47afa",
+  "pins": {
+    "continuation": "30966ffbfa84801761c6f98a33a2adecee627da9",
+    "workflow": "503f6d092ef737e2f8a0d6aad0528591eb819f11"
+  },
+  "integrity": {
+    "source_binding": "FAILED_SHELL_PARSE",
+    "behavioral_cases_executed": 0,
+    "artifact_uploaded": false
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_PRETEST_WORKFLOW_LITERAL_NEWLINE_ESCAPE",
+    "detail": "The workflow repin emitted literal characters \\\\n between the StackResolver and ManaPaymentContinuationResumer binding commands, causing shell exit 2 before source.txt was written or tests ran.",
+    "behavior_inference": "NONE"
+  },
+  "successor_rule": "Preserve this original. Replace the literal escaped newline with a real YAML shell newline only; keep source commits unchanged, re-pin the workflow parent, and execute the same bank.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
