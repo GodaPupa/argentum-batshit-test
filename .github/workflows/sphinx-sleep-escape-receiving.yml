@@ -20,12 +20,12 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/sphinx-sleep-escape-receiving
-          test "$(git rev-parse HEAD^)" = "f0a0cb60468c2c1986e0fd2099d935b21da9b6b9"
+          test "$(git rev-parse HEAD^)" = "5e77645105b3ff0f46a5dd9a7d0f584ae84f6519"
           test "$(git hash-object sphinx-approach/STAGE_E_SLEEP_ESCAPE_RECEIVING_BUDGET_20260929.json)" = "058d5d314c635783c6acd6c2288a0bc3237c02f5"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorBasicBluePayment.kt)" = "73ee259bac39fecf8fd2d47cad57f5ccb0ff911b"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorSpellPaymentProjectionTest.kt)" = "63659b89b0bfee55e13f9392a1a59dfc560b276e"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt)" = "a783d5e2fc15acf2f17581c930ef33f72c30d7eb"
-          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt)" = "c88581277abe9ac8bf9db143a91c9ef648bda40a"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt)" = "0c77037507e07c912cc034af5be067b13d301d0b"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "90271284f6eb8f0c389e460b394467a3adc6b872"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageESleepEscapeReceivingTest.kt)" = "1e0823c033cd37314e086f16cb89069d99160883"
           test "$(git hash-object sphinx-approach/decks/serpico-terror-benchmark.csv)" = "da2f0d8d1e7a6d464567f765483d0145ae3726dd"
