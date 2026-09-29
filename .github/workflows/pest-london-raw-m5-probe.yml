@@ -20,9 +20,9 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p build/reports/pest-london-raw-m5-probe
-          test "$(git rev-parse HEAD^)" = "4493bca3ec7ddb9c481ee231273d5e0b979e3408"
+          test "$(git rev-parse HEAD^)" = "2e7d4cdcad0c3ae46d7538a6fce08328c908c702"
           test "$(git hash-object ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt)" = "4f020ea2406e9bd6a87ec389685b48f15df4c5a3"
-          test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/engine/PestMonsterLondonRawM5ProbeTest.kt)" = "6d5b2853a7ca1ce091bc9be7385cf4cd01aaaae1"
+          test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/engine/PestMonsterLondonRawM5ProbeTest.kt)" = "22f98951d7e057c0be3e052dc960239a047c4bb5"
           test "$(git hash-object docs/experiments/pest-control/london-raw-m5-probe-budget-20260929.json)" = "02b98ef40a036044ef788a76a22cbffb7605f6bd"
           { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt; git hash-object ai/src/test/kotlin/com/wingedsheep/ai/engine/PestMonsterLondonRawM5ProbeTest.kt; git hash-object docs/experiments/pest-control/london-raw-m5-probe-budget-20260929.json; git hash-object .github/workflows/pest-london-raw-m5-probe.yml; git status --porcelain; } > build/reports/pest-london-raw-m5-probe/source.txt
       - name: Execute six raw M5 representative atoms
