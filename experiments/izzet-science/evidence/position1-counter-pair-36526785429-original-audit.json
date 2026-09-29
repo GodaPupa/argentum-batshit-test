@@ -1,0 +1,46 @@
+{
+  "schema": "izzet-position1-counter-pair-36526785429-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36526785429,
+  "artifact_id": 11015002026,
+  "artifact_sha256": "8405f8aede9551762e166bbd600229904b76a3fd68fb0eca558488f87b67a5ac",
+  "head": "7fd540ef11ae4bfd6f15de5ad393b8be201e46a4",
+  "parent": "70827f6c0362ba28342b5a20c5049956dc3bca1b",
+  "pins": {
+    "arcane_test": "5f0e4827fbfcbd853bf4ff29c1443157cd5895c0",
+    "workflow": "88d8b0569529364b9c08439296b6b00c4d677bb8",
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_failure_message_surfaced": true
+  },
+  "result": {
+    "arcane_denial": {"tests": 3, "passes": 2, "failures": 1, "errors": 0, "skipped": 0},
+    "memory_lapse": "not_run_after_first_class_failure",
+    "diagnostic": {
+      "draw_up_to_target": "SpecificEntity(e0)",
+      "victim_library_before": 33,
+      "caster_library_before": 33,
+      "priority_after_order": "e1",
+      "pending_after_order": null,
+      "both_pass_error": null,
+      "priority_after_both_pass": "e1",
+      "pending_after_both_pass": null,
+      "stack_after_both_pass": 1,
+      "top_after_both_pass": "DrawCardsEffect"
+    }
+  },
+  "diagnosis": {
+    "classification": "CONFIRMED_TRIGGERED_DRAW_UP_TO_PAUSE_PROPAGATION_DEFECT",
+    "detail": "The top ordered ability is DrawUpToEffect targeting the victim, the victim has 33 library cards, and normal priority resolution succeeds without a ChooseNumberDecision while consuming that ability. Empty-library, target-binding, trigger-ordering and priority-restoration explanations are excluded by the observed state."
+  },
+  "decision": "INCOMPLETE_COUNTER_PAIR_BANK_NOT_ACCEPTED",
+  "successor": "Preserve this original. Qualify the smallest shared engine repair that makes a triggered DrawUpToEffect propagate its resolution decision pause without changing ordinary DrawUpTo semantics. Add a focused engine regression case, pin the changed shared source, and rerun the exact Arcane/Memory Lapse bank.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
