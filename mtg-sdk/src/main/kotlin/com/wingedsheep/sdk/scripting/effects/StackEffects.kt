@@ -217,6 +217,13 @@ data class CounterEffect(
                             append(". If that spell is countered this way, put it into its owner's hand instead of into that player's graveyard")
                         }
                     }
+                    CounterDestination.LibraryTop -> {
+                        if (condition is CounterCondition.UnlessPaysMana || condition is CounterCondition.UnlessPaysDynamic) {
+                            append(". If countered, put it on top of its owner's library")
+                        } else {
+                            append(". If that spell is countered this way, put it on top of its owner's library instead of into that player's graveyard")
+                        }
+                    }
                 }
             }
         }
