@@ -1,0 +1,60 @@
+{
+  "schema": "izzet-position1-counter-pair-36517852262-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36517852262,
+  "artifact_id": 11011408276,
+  "artifact_sha256": "08b1bca25f8f55246e547505ff3fe7f2d12eb8283f7c6d745cd998d3fdaee871",
+  "head": "f9e88dd86ff3c5d960731d343ce797c2f06f1890",
+  "parent": "18834b7eb976f83c5523c5ae45fade09598522ad",
+  "pins": {
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "arcane_test": "2eb6001b67a20bf55f0f68dc8ad8183ba70db48d",
+    "memory_lapse_test": "e7e60d5a68e4b8d5f2f016a88364b3b25413853b",
+    "budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694",
+    "stack_effects": "8ad94eec5fc9f88cb7920e911a8fc173749d7db7",
+    "counter_executor": "a46651a83da18774daa93a110ae9b0d62481f3c9",
+    "stack_resolver": "a46aed0092806245462dbd881fab327d838de4e7",
+    "mana_payment_resumer": "30966ffbfa84801761c6f98a33a2adecee627da9",
+    "delayed_trigger_executor": "36cb0af0ce66def8baa0adae50d60ab06b22ddcf",
+    "workflow": "a7a60f4e448ec35b68d8a2e373b64cc6214dcda7"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean",
+    "preserved_members": [
+      "TEST-com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest.xml",
+      "arcane.log",
+      "source.txt"
+    ]
+  },
+  "result": {
+    "arcane_denial": {
+      "tests": 3,
+      "passes": 2,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "memory_lapse": "not_run_after_first_class_failure"
+  },
+  "observations": [
+    "The target-freezing case still passes.",
+    "The uncounterable-target case still passes.",
+    "The fixture now answers the simultaneous-trigger ordering question, but it submits option index 0 without selecting by effect identity.",
+    "TriggerProcessor states that the first chosen trigger resolves last; Arcane Denial schedules DrawUpTo before DrawCards, so a blind index-0 selection does not intentionally put DrawUpTo on top.",
+    "The next-upkeep case then reaches line 105 with no ChooseNumberDecision."
+  ],
+  "diagnosis": {
+    "classification": "INCOMPLETE_TEST_FIXTURE_TRIGGER_ORDER_IDENTITY_NOT_BOUND",
+    "evidence": "ArcaneDenialScenarioTest.kt chooses OptionChosenResponse(ordering.id, 0), while TriggerProcessor labels the ordering prompt 'first chosen resolves last'. The test fails at line 105 expecting the draw-up-to-two decision.",
+    "mechanics_interpretation": "No new Arcane Denial engine defect is established by this original. The successor must bind the ordering choice to the one-card delayed trigger by option text so DrawUpTo remains topmost and resolves first."
+  },
+  "decision": "INCOMPLETE_COUNTER_PAIR_BANK_NOT_ACCEPTED",
+  "successor": "Change only the Arcane Denial fixture ordering selection from blind index 0 to the unique option describing the caster's one-card draw, assert uniqueness, then rerun the same semantic cases with all engine/card bytes unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
