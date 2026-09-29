@@ -1,0 +1,154 @@
+name: Izzet Position-1 Turn Aside Snapshot Reconciliation v2
+
+on:
+  push:
+    branches: ["izzet/position1-turn-aside-snapshot-reconcile-v2-20260929"]
+    paths:
+      - "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/TurnAside.kt"
+      - "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TurnAsideScenarioTest.kt"
+      - "experiments/izzet-science/POSITION1_TURN_ASIDE_SNAPSHOT_RECONCILIATION_V2_BUDGET_20260929.json"
+      - ".github/workflows/izzet-position1-turn-aside-snapshot-reconciliation-v2.yml"
+
+permissions: {contents: read}
+
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+
+      - name: Bind corrected five-snapshot reconciliation sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/izzet-turn-aside-snapshot-reconcile-v2/generated
+          BASE="ad0c1394f145c41ef3dc2c34258a45a08dcc3503"
+          git merge-base --is-ancestor "$BASE" HEAD
+          python3 - <<'PY'
+          import subprocess
+          base="ad0c1394f145c41ef3dc2c34258a45a08dcc3503"
+          expected=sorted([
+            ".github/workflows/izzet-position1-turn-aside-snapshot-reconciliation-v2.yml",
+            "experiments/izzet-science/POSITION1_TURN_ASIDE_SNAPSHOT_RECONCILIATION_V2_BUDGET_20260929.json",
+            "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/TurnAside.kt",
+            "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TurnAsideScenarioTest.kt",
+          ])
+          changed=sorted(subprocess.check_output(["git","diff","--name-only",base+"...HEAD"],text=True).splitlines())
+          assert changed==expected,(changed,expected)
+          PY
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/TurnAside.kt)" = "96a656b7fdd77ae10045d523e281eb34f5cb711e"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TurnAsideScenarioTest.kt)" = "0eec9947e43bb43a9c3bbe9d90a33626a243cf3f"
+          test "$(git hash-object experiments/izzet-science/POSITION1_TURN_ASIDE_SNAPSHOT_RECONCILIATION_V2_BUDGET_20260929.json)" = "f0388189c5d32f11b710e6258b96c46eca61ced1"
+          test "$(git hash-object experiments/izzet-science/evidence/position1-turn-aside-36550162966-original-audit.json)" = "f33d7e88d5732ef7a266da95d47671b4d1f020f9"
+          test "$(git hash-object experiments/izzet-science/evidence/position1-turn-aside-snapshot-reconcile-36551571086-original-audit.json)" = "47579e47ac419da537faf26dec7c9d9e18fdb091"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/ALL.json)" = "0a92b0df2784fb5b91a9c275f0b1fbdb89b159e1"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/HML.json)" = "c169b062c569a6a3b7eebb057812a27cf4b849b0"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/M13.json)" = "5414bc0eca9b15c3036c017842b5771157fe7c59"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/ROE.json)" = "0e7b2fd35a00e9a0457371d1121e1129f26611fa"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/SOM.json)" = "2996ec679538e38b70f4ac5b1546b0ffca63463d"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/ULG.json)" = "e73f3fd6a781b52a3af3b7735f2e0b2565e0cfea"
+          {
+            git rev-parse HEAD
+            printf '%s\n' "$BASE"
+            git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/TurnAside.kt
+            git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TurnAsideScenarioTest.kt
+            git hash-object experiments/izzet-science/POSITION1_TURN_ASIDE_SNAPSHOT_RECONCILIATION_V2_BUDGET_20260929.json
+            git hash-object experiments/izzet-science/evidence/position1-turn-aside-snapshot-reconcile-36551571086-original-audit.json
+            git hash-object .github/workflows/izzet-position1-turn-aside-snapshot-reconciliation-v2.yml
+          } > build/reports/izzet-turn-aside-snapshot-reconcile-v2/source.txt
+          test -z "$(git status --porcelain)"
+
+      - name: Fresh corpus snapshot generation and CardLint
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:test --tests '*CardDefinitionSnapshotTest' --tests '*CardLintTest' -DupdateSnapshots=true --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/izzet-turn-aside-snapshot-reconcile-v2/snapshot-lint.log
+
+      - name: Prove exact five-card reconciliation and unchanged ULG
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, pathlib, re, subprocess
+          expected_paths=[
+            "mtg-sets/src/test/resources/snapshots/cards/ALL.json",
+            "mtg-sets/src/test/resources/snapshots/cards/HML.json",
+            "mtg-sets/src/test/resources/snapshots/cards/M13.json",
+            "mtg-sets/src/test/resources/snapshots/cards/ROE.json",
+            "mtg-sets/src/test/resources/snapshots/cards/SOM.json",
+          ]
+          expected_added={
+            "ALL":"Arcane Denial",
+            "HML":"Memory Lapse",
+            "M13":"Archaeomancer",
+            "ROE":"Mnemonic Wall",
+            "SOM":"Turn Aside",
+          }
+          out=pathlib.Path("build/reports/izzet-turn-aside-snapshot-reconcile-v2")
+          gen=out/"generated"
+          changed=sorted(subprocess.check_output(["git","diff","--name-only"],text=True).splitlines())
+          (out/"changed-paths.txt").write_text("\n".join(changed)+"\n")
+          prefix="mtg-sets/src/test/resources/snapshots/cards/"
+          for path in changed:
+              if path.startswith(prefix) and path.endswith(".json"):
+                  code=pathlib.Path(path).stem
+                  (gen/f"{code}.json").write_bytes(pathlib.Path(path).read_bytes())
+                  (gen/f"{code}.patch").write_bytes(subprocess.check_output(["git","diff","--",path]))
+          assert changed == sorted(expected_paths), (changed, expected_paths)
+          assert subprocess.check_output(["git","hash-object","mtg-sets/src/test/resources/snapshots/cards/ULG.json"],text=True).strip()=="e73f3fd6a781b52a3af3b7735f2e0b2565e0cfea"
+          def records(text):
+              out={}
+              for block in re.split(r'\n\n(?=// )', text.strip()):
+                  heading, body=block.split('\n',1)
+                  assert heading.startswith("// "), heading
+                  name=heading[3:]
+                  assert name not in out, name
+                  out[name]=(body,json.loads(body))
+              return out
+          bindings={}
+          for path in expected_paths:
+              code=pathlib.Path(path).stem
+              before=subprocess.check_output(["git","show","HEAD:"+path],text=True)
+              after=pathlib.Path(path).read_text()
+              old,new=records(before),records(after)
+              added=set(new)-set(old)
+              removed=set(old)-set(new)
+              assert added == {expected_added[code]}, (code, added)
+              assert not removed, (code, removed)
+              assert all(old[n] == new[n] for n in old), f"{code}: existing card tree changed"
+              bindings[code]={
+                  "path":path,
+                  "base_blob":subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip(),
+                  "sha256":hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest(),
+                  "added_record":expected_added[code],
+                  "unchanged_existing_records":len(old),
+              }
+          pathlib.Path(out/"binding.json").write_text(json.dumps({
+              "changed_paths":changed,
+              "snapshots":bindings,
+              "ulg":{
+                  "path":"mtg-sets/src/test/resources/snapshots/cards/ULG.json",
+                  "base_blob":"e73f3fd6a781b52a3af3b7735f2e0b2565e0cfea",
+                  "changed":False,
+              }
+          },indent=2)+"\n")
+          PY
+          git diff --check
+
+      - name: Preserve exact original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-position1-turn-aside-snapshot-reconcile-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/izzet-turn-aside-snapshot-reconcile-v2/
+          if-no-files-found: error
+          retention-days: 90
