@@ -1,0 +1,24 @@
+{
+  "schema": "industrial-r1-seed-free-toolchain-byte-closure-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "accepted_runtime_graph_run": 36503229016,
+    "accepted_runtime_graph_receipt": "industrial-waste/v2/evidence/ai-test-runtime-graph-36503229016-original-audit.json"
+  },
+  "scope": [
+    "complete JAVA_HOME directory/file/symlink inventory with SHA-256 for every regular file",
+    "resolved Java, Python3, Bash and just executable bytes",
+    "Gradle wrapper script and wrapper-JAR bytes"
+  ],
+  "failure_rule": "Any missing/special JDK node or executable is INCOMPLETE; preserve original and change source only after diagnosis.",
+  "not_granted": [
+    "OS native closure outside JAVA_HOME",
+    "Python stdlib closure",
+    "Gradle worker/daemon closure",
+    "prepared-worker attestation",
+    "expected manifest",
+    "claim",
+    "R1 gameplay"
+  ],
+  "official_counters_delta": 0
+}
