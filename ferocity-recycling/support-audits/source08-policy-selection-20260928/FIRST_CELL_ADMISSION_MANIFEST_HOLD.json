@@ -5,7 +5,7 @@
   "purpose": "Bind every currently exact first-cell identity without creating execution authority. Any unresolved field fails closed.",
   "source08": {
     "commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
-    "tree": "56c6b8dd46dc112cdb70db496fd09d0c3e915e8a6",
+    "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
     "full_tree_reconciliation": "20275/20275"
   },
   "governing_protocols": {
@@ -37,9 +37,9 @@
       "deck_sha256": "9aa9d3133f29b5793d66e9941da65d5c74d551f2d670b162f547ad0c1ae79298"
     },
     "opponent": {
-      "id": "grixis_affinity_barba94_20260924",
-      "source_json_blob": "00a58600bb18a820ea6390355ca7b84c19b2c6ff",
-      "import_text_sha256": "dbd456ae67d86dbdc84d17bd98c8a16ec9d9861c451ae465ff1f0aef74a1fe5d",
+      "id": "mono_red_madness_mistertwin_20260924",
+      "source_json_blob": "4d3d91da6973f8c5b1c44af357b163691849e1b1",
+      "import_text_sha256": "f189138565fa46d30c6982ae437ee1c03fc4c1a9ee760f379cb443af2e875497",
       "source_status": "source_archived_not_engine_admitted"
     },
     "allocation": {
@@ -79,7 +79,7 @@
     "note": "These exact members are preserved inside the M1 publication archive but are not direct live source paths in the source08 evidence branch. Their presence/digests do not choose which historical resource/runtime candidate is current authority."
   },
   "unresolved_required_bindings": [
-    "independently adopted exact first-cell Grixis engine/pilot qualification",
+    "independently adopted exact first-cell MisterTwin Red engine/runtime/pilot qualification tied to active red-madness-v0.2",
     "exact runner source identity selected for this D2 cell",
     "exact trace schema identity selected for this D2 cell",
     "exact runtime/export bundle identity selected for this D2 cell",
@@ -95,6 +95,16 @@
     "calibration or policy reconstruction from outcomes"
   ],
   "decision": "HOLD_NO_D2_AUTHORITY",
-  "next_gate": "Recover or independently reconstruct only from authoritative preserved evidence the exact runner/trace/bundle/resource receiving bindings and Grixis engine/pilot qualification; complete this manifest without changing the frozen deck/opponent/policy identities; then independently review before any entropy/JVM/game.",
-  "official_counters_delta": 0
+  "next_gate": "Recover or independently reconstruct only from authoritative preserved evidence the exact runner/trace/bundle/resource receiving bindings and MisterTwin Red engine/runtime/pilot qualification; complete this corrected manifest without changing the frozen A3-F4/A3-N0/Red policy identities; then independently review before any entropy/JVM/game.",
+  "official_counters_delta": 0,
+  "correction": {
+    "date_utc": "2026-09-29",
+    "reason": "Frozen source08 CURRENT_STATUS authority states the first scheduled cell is A3-F4/A3-N0 versus MisterTwin Red; the prior Grixis binding was not authoritative for the first cell. Source08 tree spelling also corrected to the exact preserved tree.",
+    "authority": [
+      "ferocity-recycling/CURRENT_STATUS.md @ ferocity-recycling/source08-evidence-20260926",
+      "ferocity-recycling/decks/benchmarks/mono_red_madness_mistertwin_20260924.json @ ferocity-recycling/source08-evidence-20260926",
+      "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_RED_POLICY_AUTHORITY.json"
+    ],
+    "grixis_disposition": "Retained as an archived close comparator/benchmark identity, not the frozen first D2 cell opponent."
+  }
 }
