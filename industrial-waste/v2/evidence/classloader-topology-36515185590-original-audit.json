@@ -1,0 +1,33 @@
+{
+  "schema": "industrial-r1-classloader-topology-36515185590-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36515185590,
+  "artifact_id": 11009404729,
+  "artifact_sha256": "9625ec44a0a354d4e08e5a7714ea19b168c5dc6a4fc151bead41aebc22b0e74f",
+  "head": "f1411f2bf45c20e3a1e5eefa1ca8125d45e2452c",
+  "parent": "87b0038c07bcf4dc0a1a5ce90e823a8c208ba820",
+  "pins": {
+    "worker_probe": "eee28d377387df5b07cb00c9adc111e975d14188",
+    "budget": "8bd543dff47a888c54e8c5132a9c4d0e336acdc3",
+    "daemon_probe": "925339a4e1b6f88d4c15237780e6ad81d631d93a",
+    "workflow": "ffd1854f2f66a0af5f0c63d0684d3d4db0310aef"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "official_seed_files_read": false
+  },
+  "result": {
+    "daemon_probe": "FAILED_PRE_CAPTURE",
+    "worker_probe": "SKIPPED"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_GRADLE_INIT_SCRIPT_SCOPE",
+    "detail": "Configuration-cache script-object access was removed, but Groovy resolved industrialRootPath as an unknown task property inside doLast. No daemon topology was emitted and the worker probe did not run.",
+    "runtime_inference": "NONE"
+  },
+  "successor_rule": "Preserve this original. Move daemon topology capture to init-script configuration time (no custom task execution closure), invoke a harmless Gradle help task, retain the unchanged worker probe, and re-pin workflow/source.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
