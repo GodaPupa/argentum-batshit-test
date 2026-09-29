@@ -1,0 +1,46 @@
+{
+  "schema": "izzet-position1-registry-reinventory-36505622544-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36505622544,
+  "artifact_id": 11007234174,
+  "artifact_sha256": "8ecec145216cd41af866d6335e804bb50a88a89a5b9e27c5c49e14ca52d706bd",
+  "head": "e3cde7741f6ad79c98c9d9a88665de4333ab578c",
+  "parent": "558ef3bcda6a5d6487dd4888365be4ea6739e139",
+  "pins": {
+    "test": "197a99e6c17885bb70511916893d3a33de217feb",
+    "budget": "93573c6e365aba4af1b9dfa094adb88553a08dbc",
+    "archaeomancer": "cc5b2951943c875982036f9b7506072ea65d9db6",
+    "mnemonic_wall": "dcfca24f1918f79092b7f3274ee454614d15d03e",
+    "snap": "15c15b39609e97796a110c5228e84265a60cc45d",
+    "workflow": "d9324be1b0c75183a7d76aca01c03370726728e2"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "identities": 55,
+    "registered": 7,
+    "missing": 48,
+    "registered_names": [
+      "Archaeomancer",
+      "Kaervek's Torch",
+      "Mnemonic Wall",
+      "Murmuring Mystic",
+      "Snap",
+      "Bonder's Ornament",
+      "Nyxborn Hydra"
+    ]
+  },
+  "decision": "ACCEPTED_CHANGED_RUNTIME_REGISTRY_DIAGNOSTIC_7_PRESENT_48_MISSING",
+  "interpretation": "Workflow failure is the predeclared diagnostic signal that 48 exact identities remain absent; it is not a technical execution failure. Presence establishes registry availability only, not semantic or pilot competence.",
+  "limits": [
+    "Frantic Search was not part of this changed runtime and remains absent in this diagnostic despite its separately accepted mechanics run.",
+    "No whole Position-1 pilot, opponent competence, lifecycle/damage/event ledger, seed or gameplay authority."
+  ],
+  "next_gate": "Adopt only separately accepted component sources into the current runtime, re-inventory after changed source, and continue smallest reusable missing-card batches plus independent pilot/lifecycle/replay qualification.",
+  "official_counters_delta": 0
+}
