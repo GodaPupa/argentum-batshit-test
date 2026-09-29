@@ -1,0 +1,159 @@
+name: Industrial single-source composite runtime capture
+on:
+  push:
+    branches: ["industrial-waste/r1-composite-runtime-capture-20260929"]
+    paths: [".github/workflows/industrial-composite-runtime-capture.yml"]
+permissions: {contents: read}
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+
+      - name: Bind exact accepted capture implementations budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/industrial-composite-runtime-capture
+          test "$(git rev-parse HEAD^)" = "2c4a400aade88bb498aa5f95502f51ca8c6dd241"
+          test "$(git hash-object industrial-waste/v2/r1-composite-runtime-capture-budget-20260929.json)" = "b5324d715afa15f44eba1b841b53b7da74dcca53"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_build_slice.py)" = "0d3c82426f81233ff599fa50d42dce0bae872107"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_ai_test_runtime_graph.py)" = "a893c4e446be60da616cdd51714b4ed337274ef3"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_toolchain_byte_closure.py)" = "6f7f805ada44105efb0062c52901d189e6d43b4f"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_os_python_closure.py)" = "556fb2fa493d16baddb9cdc61ef5e444584ddc9a"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_gradle_implementation_closure.py)" = "a30880f96ba68a80f99c0bd8b6fd14e284ecb323"
+          test "$(git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ClassloaderTopologyCaptureTest.kt)" = "eee28d377387df5b07cb00c9adc111e975d14188"
+          test "$(git hash-object industrial-waste/v2/capture_gradle_daemon_topology.gradle)" = "c423780611cc1b892a6fe7b3972f43aec35dc1a2"
+          test "$(git hash-object industrial-waste/v2/r1_complete_runtime_manifest.py)" = "be1f53184c9bda880539dc589a921cef130cd1a3"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git rev-parse 'HEAD^{tree}'
+            git hash-object industrial-waste/v2/r1-composite-runtime-capture-budget-20260929.json
+            git hash-object industrial-waste/v2/capture_seed_free_build_slice.py
+            git hash-object industrial-waste/v2/capture_seed_free_ai_test_runtime_graph.py
+            git hash-object industrial-waste/v2/capture_seed_free_toolchain_byte_closure.py
+            git hash-object industrial-waste/v2/capture_seed_free_os_python_closure.py
+            git hash-object industrial-waste/v2/capture_seed_free_gradle_implementation_closure.py
+            git hash-object ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2ClassloaderTopologyCaptureTest.kt
+            git hash-object industrial-waste/v2/capture_gradle_daemon_topology.gradle
+            git hash-object industrial-waste/v2/r1_complete_runtime_manifest.py
+            git hash-object .github/workflows/industrial-composite-runtime-capture.yml
+            git status --porcelain
+          } > build/reports/industrial-composite-runtime-capture/source.txt
+
+      - name: Produce one fresh deterministic non-corpus build
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class IndustrialWasteV2RegistryAuditTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/industrial-composite-runtime-capture/build.log
+
+      - name: Capture build-output and AI runtime graph from the same head
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 industrial-waste/v2/capture_seed_free_build_slice.py 2>&1 | tee build/reports/industrial-composite-runtime-capture/build-capture.log
+          test -s build/reports/industrial-seed-free-build-capture/capture.json
+          cp build/reports/industrial-seed-free-build-capture/capture.json build/reports/industrial-composite-runtime-capture/build-output.json
+          python3 industrial-waste/v2/capture_seed_free_ai_test_runtime_graph.py 2>&1 | tee build/reports/industrial-composite-runtime-capture/runtime-graph.log
+          test -s build/reports/industrial-ai-test-runtime-graph/capture.json
+          cp build/reports/industrial-ai-test-runtime-graph/capture.json build/reports/industrial-composite-runtime-capture/ai-test-runtime-graph.json
+
+      - name: Capture toolchain OS Python and Gradle implementation from the same head
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 industrial-waste/v2/capture_seed_free_toolchain_byte_closure.py 2>&1 | tee build/reports/industrial-composite-runtime-capture/toolchain.log
+          test -s build/reports/industrial-toolchain-closure/capture.json
+          cp build/reports/industrial-toolchain-closure/capture.json build/reports/industrial-composite-runtime-capture/toolchain-byte-closure.json
+          python3 industrial-waste/v2/capture_seed_free_os_python_closure.py > build/reports/industrial-composite-runtime-capture/os-python-closure.json
+          test -s build/reports/industrial-composite-runtime-capture/os-python-closure.json
+          python3 industrial-waste/v2/capture_seed_free_gradle_implementation_closure.py > build/reports/industrial-composite-runtime-capture/gradle-implementation-closure.json
+          test -s build/reports/industrial-composite-runtime-capture/gradle-implementation-closure.json
+
+      - name: Capture Gradle daemon and AI test-worker topology from the same head
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./gradlew -I industrial-waste/v2/capture_gradle_daemon_topology.gradle help --no-build-cache --console=plain 2>&1 | tee build/reports/industrial-composite-runtime-capture/daemon.log
+          for f in daemon-context-loaders.tsv daemon-system-loaders.tsv daemon-classpath.tsv daemon-runtime.txt; do
+            test -s "build/reports/industrial-classloader-topology/$f"
+            cp "build/reports/industrial-classloader-topology/$f" "build/reports/industrial-composite-runtime-capture/$f"
+          done
+          just test-class IndustrialWasteV2ClassloaderTopologyCaptureTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/industrial-composite-runtime-capture/worker.log
+          for f in worker-context-loaders.tsv worker-system-loaders.tsv worker-classpath.tsv worker-code-sources.tsv worker-runtime.txt; do
+            test -s "ai/build/reports/industrial-classloader-topology/$f"
+            cp "ai/build/reports/industrial-classloader-topology/$f" "build/reports/industrial-composite-runtime-capture/$f"
+          done
+          find . -path '*/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ClassloaderTopologyCaptureTest.xml' -type f -exec cp {} build/reports/industrial-composite-runtime-capture/ \;
+          test -s build/reports/industrial-composite-runtime-capture/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ClassloaderTopologyCaptureTest.xml
+
+      - name: Bind every slice to the exact same source and emit candidate slice binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          root=pathlib.Path("build/reports/industrial-composite-runtime-capture")
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip()
+          json_files=[
+            "build-output.json",
+            "ai-test-runtime-graph.json",
+            "toolchain-byte-closure.json",
+            "os-python-closure.json",
+            "gradle-implementation-closure.json",
+          ]
+          for name in json_files:
+              data=json.loads((root/name).read_text())
+              if data.get("source_commit") != head:
+                  raise SystemExit(f"{name}: source_commit mismatch")
+              if data.get("source_tree") != tree:
+                  raise SystemExit(f"{name}: source_tree mismatch")
+              if data.get("official_seed_files_read") is not False:
+                  raise SystemExit(f"{name}: official seed read invariant violated")
+              counters=data.get("official_counters",{})
+              if any(counters.get(k,0) != 0 for k in counters):
+                  raise SystemExit(f"{name}: official counter invariant violated")
+          payloads=json_files + [
+            "daemon-context-loaders.tsv","daemon-system-loaders.tsv","daemon-classpath.tsv","daemon-runtime.txt",
+            "worker-context-loaders.tsv","worker-system-loaders.tsv","worker-classpath.tsv","worker-code-sources.tsv","worker-runtime.txt",
+            "TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ClassloaderTopologyCaptureTest.xml",
+          ]
+          rows=[]
+          for name in payloads:
+              p=root/name
+              if not p.is_file() or p.stat().st_size == 0:
+                  raise SystemExit(f"missing composite payload: {name}")
+              rows.append({"path":name,"length":p.stat().st_size,"sha256":hashlib.sha256(p.read_bytes()).hexdigest()})
+          binding={
+            "schema":"industrial-r1-single-source-runtime-slice-binding-v1",
+            "source_commit":head,
+            "source_tree":tree,
+            "payloads":rows,
+            "payload_count":len(rows),
+            "official_seed_files_read":False,
+            "official_counters_delta":0,
+            "authority":"CANDIDATE_SINGLE_SOURCE_COMPOSITE_CAPTURE_ONLY",
+            "expected_manifest_adopted":False,
+            "prepared_worker_authority":False,
+            "r1_authority":False,
+          }
+          (root/"slice-binding.json").write_text(json.dumps(binding,sort_keys=True,indent=2)+"\n")
+          PY
+          test -s build/reports/industrial-composite-runtime-capture/slice-binding.json
+
+      - name: Preserve exact composite original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-composite-runtime-capture-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/industrial-composite-runtime-capture/
+          if-no-files-found: error
+          retention-days: 90
