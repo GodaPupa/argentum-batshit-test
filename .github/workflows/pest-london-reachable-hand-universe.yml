@@ -1,0 +1,36 @@
+name: Pest exhaustive London reachable hand universe
+on:
+  push:
+    branches: ["pest/london-predicate-vector-20260928"]
+    paths: [".github/workflows/pest-london-reachable-hand-universe.yml"]
+permissions: {contents: read}
+jobs:
+  universe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - name: Bind exact frozen Monster source map generator budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/pest-london-reachable-hand-universe
+          test "$(git rev-parse HEAD^)" = "aa56dbba32db67d681c966b30cdf519b18bec919"
+          test "$(git hash-object docs/experiments/pest-control/tier-one-monster-c2-exact-main-source-map.json)" = "cd1eefdb98c5c8a8e43064548af7d68e480e4192"
+          test "$(git hash-object docs/experiments/pest-control/generate_london_reachable_hand_universe.py)" = "beb0507201a91069c01293358cf2da6caa63d42e"
+          test "$(git hash-object docs/experiments/pest-control/london-reachable-hand-universe-budget.json)" = "f0343e8c06c5ec4e3093891f013697b86006a308"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object docs/experiments/pest-control/tier-one-monster-c2-exact-main-source-map.json; git hash-object docs/experiments/pest-control/generate_london_reachable_hand_universe.py; git hash-object docs/experiments/pest-control/london-reachable-hand-universe-budget.json; git hash-object .github/workflows/pest-london-reachable-hand-universe.yml; git status --porcelain; } > build/reports/pest-london-reachable-hand-universe/source.txt
+      - name: Enumerate exact reachable seven-card name-multiset universe
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 docs/experiments/pest-control/generate_london_reachable_hand_universe.py | tee build/reports/pest-london-reachable-hand-universe/universe.json
+      - name: Preserve original static evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-london-reachable-hand-universe-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-london-reachable-hand-universe/
+          if-no-files-found: error
+          retention-days: 90
