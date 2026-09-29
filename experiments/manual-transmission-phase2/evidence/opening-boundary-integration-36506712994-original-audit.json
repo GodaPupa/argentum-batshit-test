@@ -1,0 +1,46 @@
+{
+  "schema": "manual-opening-boundary-integration-36506712994-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36506712994,
+  "artifact_id": 11007756742,
+  "artifact_sha256": "24418f65716a1a484a0f308f44ed4d1c4698535f6777d58ea5b03af7430790a9",
+  "head": "fb74476b652cc10c6809318b234075c945948de5",
+  "parent": "dcda97897225c7a064014f74a1258488ac778077",
+  "pins": {
+    "observation_builder": "fc9012e32185f3419ac1a6e56dcab06929aeed8d",
+    "opening_policy": "386abff9f86495f099677ac9006cc0f37a2efb13",
+    "boundary": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "telemetry": "44608301d535a2114073d80c06d5ca0480c40043",
+    "test": "8f71cc189903437189c306d72d76576b2d4a6d2b",
+    "budget": "7c115d24bd0b340282881dd52a5c6e6427297db7",
+    "workflow": "6216d8ee727f2c3de608632386543d789f4d3608"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean"
+  },
+  "result": {
+    "tests": 4,
+    "passes": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "decision": "ACCEPTED_REAL_MASKED_PLAYLAND_OPENING_BOUNDARY_ALL_FOUR_ROLES_ONLY",
+  "accepted_scope": [
+    "CRUISE, SPORT, RACE and OPPONENT each consume the real masked four-seat observation and choose the unique affordable physical own-hand PlayLand action.",
+    "Each declared trace replays through the bound PhaseTwoPilotBoundary/telemetry seam.",
+    "The corrected policy identifies known non-target PlayLand by kind, affordability and physical source identity without relying on generic target-cardinality defaults."
+  ],
+  "limits": [
+    "No broader CRUISE/SPORT/RACE strategic action ranking.",
+    "No opponent strategic pilot competence beyond this exact opening land seam.",
+    "No mulligan/payment/future-debt/collector/durability/capability admission.",
+    "No 36 capability games or 864 primary games."
+  ],
+  "next_gate": "Advance the next unqualified real four-seat strategic decision surfaces for Cruise/Sport/Race/opponents, then whole-pilot/replay/collector/durability qualification before independent capability admission.",
+  "official_counters_delta": 0
+}
