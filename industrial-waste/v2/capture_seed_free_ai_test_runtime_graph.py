@@ -21,7 +21,7 @@ gradle.projectsEvaluated {
             def orderedFiles = cfg.files.toList().collect { it.absolutePath }
             def rr = cfg.incoming.resolutionResult
             def components = rr.allComponents.collect { c ->
-                [id: c.id.displayName, reason: c.selectionReason.description]
+                [id: c.id.displayName, reasons: c.selectionReason.descriptions.collect { it.description }.sort()]
             }.sort { a,b -> a.id <=> b.id }
             def dependencies = rr.allDependencies.collect { d ->
                 def row = [from: d.from.id.displayName, requested: d.requested.displayName]
