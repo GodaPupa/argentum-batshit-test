@@ -1,0 +1,76 @@
+{
+  "schema": "izzet-position1-counter-pair-36528552346-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36528552346,
+  "artifact_id": 11016140646,
+  "artifact_sha256": "98acb80e9964c74465ce65b743336a875e9124a864ef22242215d5b43931fce9",
+  "head": "866355c647e6501ca6e0be164040087047d7af4b",
+  "parent": "cffc5b70663a3de6119ecdfaf9bd328bb494d96c",
+  "pins": {
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "arcane_test": "3d559542025a5415a2b0aebf7a4c5f39870278de",
+    "memory_lapse_test": "e7e60d5a68e4b8d5f2f016a88364b3b25413853b",
+    "counter_stack_effects": "8ad94eec5fc9f88cb7920e911a8fc173749d7db7",
+    "counter_executor": "a46651a83da18774daa93a110ae9b0d62481f3c9",
+    "stack_resolver": "a46aed0092806245462dbd881fab327d838de4e7",
+    "payment_continuation": "30966ffbfa84801761c6f98a33a2adecee627da9",
+    "delayed_trigger_executor": "36cb0af0ce66def8baa0adae50d60ab06b22ddcf",
+    "draw_up_to_executor": "053337d3aafbe24a1d05fe414733fda4f5888f34",
+    "draw_up_to_regression": "b13b1f5c5ff13b9e854ce1973dbb72b29938777e",
+    "mechanics_budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694",
+    "draw_up_to_repair_budget": "650ff14ebcf1a8b6ba86a66544cb09c464fd90eb",
+    "workflow": "d6593795934b48d48dc1a5758f2e107459a3f758"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "checkout_status": "clean",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "draw_up_to_xml_parse": "clean",
+    "arcane_xml_parse": "clean",
+    "memory_lapse_xml_parse": "clean",
+    "all_three_xml_originals_preserved": true,
+    "workflow_conclusion": "success"
+  },
+  "result": {
+    "draw_up_to_regression": {
+      "tests": 1,
+      "passes": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "arcane_denial": {
+      "tests": 3,
+      "passes": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "memory_lapse": {
+      "tests": 3,
+      "passes": 3,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "decision": "ACCEPTED_EXACT_HISTORICAL_POSITION1_COUNTER_PAIR_MECHANICS",
+  "accepted_scope": [
+    "The state-aware SpecificEntity DrawUpTo path pauses for the specified player's draw-count decision on a nonempty library.",
+    "Arcane Denial passes the exact three declared semantic cases, including delayed target-controller draw choice, caster draw, and the uncounterable-target delayed-draw behavior.",
+    "Memory Lapse passes the exact three declared semantic cases, including top-of-owner-library destination and precedence of an existing counter-time exile rider.",
+    "This successor changes only evidence preservation relative to run 36527565960 and preserves all three fresh XML originals."
+  ],
+  "limits": [
+    "No whole Position-1 pilot, action-ranking, opponent, collector/replay/durability, lifecycle, seed, allocation, claim, or gameplay authority.",
+    "No claim that these exact historical qualified bytes have already been adopted into the current main runtime."
+  ],
+  "next_gate": "Perform a separate narrow adoption/reconciliation of the exact qualified counter-pair runtime/card bytes into current main, then re-inventory Position-1 before any broader pilot or gameplay gate.",
+  "authority_granted": [
+    "exact bounded historical Arcane Denial / Memory Lapse counter-pair mechanics bank"
+  ],
+  "official_counters_delta": 0
+}

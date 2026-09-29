@@ -1,0 +1,49 @@
+{
+  "schema": "sphinx-stage-e-approach-mode-receiving-36529094082-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36529094082,
+  "artifact_id": 11015792489,
+  "artifact_sha256": "4b9b8d4e6c0c4e6b899fd16cb1f3dea58f59e2b8996389cbe853f980d15c7844",
+  "head": "3048f8d51814dea5bf0de476b79736f35d9002b2",
+  "parent": "6eb45bace4353ecea37e4b5862b7616a4f1c74ba",
+  "pins": {
+    "budget": "ac552bde7d6000a08992d11df988682b67b9b7e6",
+    "receiving_test": "9a050c5fc5a5ce01afbf5f24a91fb208b5d83ed4",
+    "visible_choice": "3ffb0c200de6f2e1f554f7296fe343a27788ba6c",
+    "whole_actor": "90271284f6eb8f0c389e460b394467a3adc6b872",
+    "initialized_seat": "93ec8d40ab07b3b703e6e45b5324ac103e45d81b",
+    "observation_adapter": "3e41a512f91358f763a194527258979755bab7b6",
+    "approach_definition": "4a14fab93b6db0847b5312eaf93fdcab0184e4b7",
+    "approach_engine_test": "ca3baa6052906595140a1bd1da9ac3a2a648f11d",
+    "reconstructed_v01": "e2f0abbc9f99be97b2562a18ae248d70cbefc0e1",
+    "reconstructed_hybrid": "7f76c94e4fbc24acdc982039aa248a1fa9485cd4",
+    "workflow": "004a9a2ab3f28b525030d698a920dfff5e5626e2"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "engine_xml_parse": "clean",
+    "engine_freshness": "--rerun-tasks --no-build-cache",
+    "receiving_xml_preserved": false,
+    "workflow_conclusion": "failure"
+  },
+  "result": {
+    "unchanged_approach_engine_scenarios": {
+      "tests": 14,
+      "passes": 14,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "whole_actor_receiving": "not_run_due_test_fixture_compile_failure"
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_APPROACH_RECEIVING_FIXTURE_COMPILE_FAILURE",
+    "detail": "The unchanged Sphinx's Approach engine bank is clean 14/14, but the frozen whole-actor receiving fixture did not compile. Two Kotest assertions rely on ambiguous infix/comparison precedence: the >= 6 assertion and the 'in 0..1' assertion. No receiving XML exists, so no Approach-mode receiving authority is granted."
+  },
+  "decision": "INCOMPLETE_NO_APPROACH_MODE_RECEIVING_ACCEPTANCE_FROM_THIS_ORIGINAL",
+  "successor": "Preserve this original. Apply only parentheses to the two fixture assertions so their Boolean expressions are explicit, repin the receiving-test/workflow source binding with all production policy, card, deck and budget bytes unchanged, then run one fresh successor bank.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}

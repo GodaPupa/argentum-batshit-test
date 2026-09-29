@@ -1,0 +1,41 @@
+{
+  "schema": "pest-monster-london-m5-atomic-comparator-36528403507-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36528403507,
+  "artifact_id": 11015413655,
+  "artifact_sha256": "9ea52e048b5856f989c2b593acc362160b5782af7408c92238b86762ce8cadb0",
+  "head": "3151dd123eb0859089ce94ea6f013c00380fc187",
+  "parent": "36ef16935fa0db5ba37378f7455af083dfb752c6",
+  "pins": {
+    "raw_controller": "4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+    "comparator_test": "4c3928caacb86e369711b301dc1779604a788e1b",
+    "comparator_budget": "58ca1ab7501fa6dbc89477f693ac2b26f8c9742d",
+    "atomic_bank_generator": "7b90dba88e76e167b28b6050d5af5f1c3ff3b800",
+    "atomic_bank_budget": "0fe998e0134648ee7852d5e52a6ddecc2d886d18",
+    "submitted_monster_source_map": "cd1eefdb98c5c8a8e43064548af7d68e480e4192",
+    "workflow": "a5d99f09ea15414ff570fbf7c6465d6f461490fa"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "accepted_atomic_bank_regenerated": true,
+    "atomic_bank_sha256": "8825cb587a6337d8173a9d93c642a1d979617ef053833fb849362e18a519a49b",
+    "signature_to_atoms_sha256": "51ffc25991361eaa3bc8f457583eabb964d07442a4205b022ec890b134aac645",
+    "reachable_seven_card_name_multisets": 882297,
+    "unique_m5_signatures": 79972,
+    "unique_atomic_questions": 6850,
+    "comparator_xml_preserved": false,
+    "comparison_summary_preserved": false,
+    "truth_bank_preserved": false,
+    "workflow_conclusion": "failure"
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_COMPARATOR_FIXTURE_COMPILE_FAILURE",
+    "detail": "The raw-versus-certificate comparator never executed. Kotlin test compilation failed in PestMonsterLondonM5AtomicComparatorTest.kt at the mismatch_samples JSON-array construction because a String was supplied where this kotlinx.serialization version requires a JsonElement. The artifact therefore contains no behavioral comparator XML, comparison summary, or truth bank; the empty truth-bank.sha256 is only the always-preserved placeholder."
+  },
+  "decision": "INCOMPLETE_NO_M5_EQUIVALENCE_ACCEPTANCE_FROM_THIS_ORIGINAL",
+  "successor": "Preserve this original. Apply only the fixture-level JsonElement construction correction, repin the comparator-test/workflow source binding while leaving the frozen raw controller, budgets, generator and submitted Monster source map unchanged, then run one fresh successor bank.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
