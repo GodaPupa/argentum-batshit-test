@@ -1,0 +1,156 @@
+name: Izzet Position-1 Turn Aside Snapshot Convergence
+
+on:
+  push:
+    branches: ["izzet/position1-turn-aside-snapshot-convergence-20260929"]
+    paths:
+      - "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/TurnAside.kt"
+      - "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TurnAsideScenarioTest.kt"
+      - "experiments/izzet-science/POSITION1_TURN_ASIDE_SNAPSHOT_CONVERGENCE_BUDGET_20260929.json"
+      - ".github/workflows/izzet-position1-turn-aside-snapshot-convergence.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  converge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: gradle/actions/setup-gradle@v6
+
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+
+      - name: Bind exact convergence source
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/izzet-turn-aside-snapshot-convergence
+          mkdir -p "$OUT/generated"
+          BASE="a3937be2e518b2b6cd66b4e9adedb095e9f9530a"
+          git merge-base --is-ancestor "$BASE" HEAD
+          test "$(git hash-object experiments/izzet-science/POSITION1_TURN_ASIDE_SNAPSHOT_CONVERGENCE_BUDGET_20260929.json)" = "ab8a3fa6e7193aa2b8ded2b50cd680042f245e99"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/TurnAside.kt)" = "96a656b7fdd77ae10045d523e281eb34f5cb711e"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TurnAsideScenarioTest.kt)" = "0eec9947e43bb43a9c3bbe9d90a33626a243cf3f"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt)" = "b80ac4364d27398cffde16e5f6d6a41eb0792ea9"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/hml/cards/MemoryLapse.kt)" = "e07d873bfccc9634cc0121fe988003e5af1e3fbc"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m13/cards/Archaeomancer.kt)" = "cc5b2951943c875982036f9b7506072ea65d9db6"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/MnemonicWall.kt)" = "dcfca24f1918f79092b7f3274ee454614d15d03e"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/FranticSearch.kt)" = "6c3ad836867f9789894e5da5aeb35ab6d0dbc906"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/Snap.kt)" = "15c15b39609e97796a110c5228e84265a60cc45d"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/ALL.json)" = "0a92b0df2784fb5b91a9c275f0b1fbdb89b159e1"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/HML.json)" = "c169b062c569a6a3b7eebb057812a27cf4b849b0"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/M13.json)" = "5414bc0eca9b15c3036c017842b5771157fe7c59"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/ROE.json)" = "0e7b2fd35a00e9a0457371d1121e1129f26611fa"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/SOM.json)" = "2996ec679538e38b70f4ac5b1546b0ffca63463d"
+          test "$(git hash-object mtg-sets/src/test/resources/snapshots/cards/ULG.json)" = "e73f3fd6a781b52a3af3b7735f2e0b2565e0cfea"
+          {
+            echo "pre_materialization_head=$(git rev-parse HEAD)"
+            echo "base_main=$BASE"
+            echo "budget=$(git hash-object experiments/izzet-science/POSITION1_TURN_ASIDE_SNAPSHOT_CONVERGENCE_BUDGET_20260929.json)"
+            echo "turn_aside=$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/TurnAside.kt)"
+            echo "semantic_fixture=$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TurnAsideScenarioTest.kt)"
+            echo "workflow=$(git hash-object .github/workflows/izzet-position1-turn-aside-snapshot-convergence.yml)"
+          } > "$OUT/source.txt"
+          test -z "$(git status --porcelain)"
+
+      - name: Fresh full snapshot generation and CardLint
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:test --tests '*CardDefinitionSnapshotTest' --tests '*CardLintTest' -DupdateSnapshots=true --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/izzet-turn-aside-snapshot-convergence/snapshot-lint.log
+
+      - name: Prove exact predeclared snapshot delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, pathlib, re, subprocess
+          out=pathlib.Path("build/reports/izzet-turn-aside-snapshot-convergence")
+          gen=out/"generated"
+          expected_paths=[
+            "mtg-sets/src/test/resources/snapshots/cards/ALL.json",
+            "mtg-sets/src/test/resources/snapshots/cards/HML.json",
+            "mtg-sets/src/test/resources/snapshots/cards/M13.json",
+            "mtg-sets/src/test/resources/snapshots/cards/ROE.json",
+            "mtg-sets/src/test/resources/snapshots/cards/SOM.json",
+            "mtg-sets/src/test/resources/snapshots/cards/ULG.json",
+          ]
+          expected_added={
+            "ALL":{"Arcane Denial"},
+            "HML":{"Memory Lapse"},
+            "M13":{"Archaeomancer"},
+            "ROE":{"Mnemonic Wall"},
+            "SOM":{"Turn Aside"},
+            "ULG":{"Frantic Search","Snap"},
+          }
+          changed=sorted(subprocess.check_output(["git","diff","--name-only"],text=True).splitlines())
+          (out/"changed-paths.txt").write_text("\n".join(changed)+"\n")
+          for path in changed:
+              if path.startswith("mtg-sets/src/test/resources/snapshots/cards/") and path.endswith(".json"):
+                  code=pathlib.Path(path).stem
+                  (gen/f"{code}.json").write_bytes(pathlib.Path(path).read_bytes())
+                  (gen/f"{code}.patch").write_bytes(subprocess.check_output(["git","diff","--",path]))
+          assert changed==sorted(expected_paths),(changed,expected_paths)
+          def records(text):
+              result={}
+              for block in re.split(r'\n\n(?=// )', text.strip()):
+                  heading,body=block.split("\n",1)
+                  assert heading.startswith("// "),heading
+                  name=heading[3:]
+                  assert name not in result,name
+                  result[name]=(body,json.loads(body))
+              return result
+          bindings={}
+          for path in expected_paths:
+              code=pathlib.Path(path).stem
+              old=records(subprocess.check_output(["git","show","HEAD:"+path],text=True))
+              new=records(pathlib.Path(path).read_text())
+              added=set(new)-set(old)
+              removed=set(old)-set(new)
+              assert added==expected_added[code],(code,added,expected_added[code])
+              assert not removed,(code,removed)
+              assert all(old[n]==new[n] for n in old),f"{code}: baseline record changed"
+              bindings[code]={
+                "path":path,
+                "base_blob":subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip(),
+                "generated_git_blob":subprocess.check_output(["git","hash-object",path],text=True).strip(),
+                "generated_sha256":hashlib.sha256(pathlib.Path(path).read_bytes()).hexdigest(),
+                "added_records":sorted(added),
+                "unchanged_existing_records":len(old),
+              }
+          (out/"binding.json").write_text(json.dumps({"changed_paths":changed,"snapshots":bindings},indent=2)+"\n")
+          PY
+          git diff --check
+
+      - name: Materialize exact reconciled snapshots on branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/izzet-turn-aside-snapshot-convergence
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add             mtg-sets/src/test/resources/snapshots/cards/ALL.json             mtg-sets/src/test/resources/snapshots/cards/HML.json             mtg-sets/src/test/resources/snapshots/cards/M13.json             mtg-sets/src/test/resources/snapshots/cards/ROE.json             mtg-sets/src/test/resources/snapshots/cards/SOM.json             mtg-sets/src/test/resources/snapshots/cards/ULG.json
+          test "$(git diff --cached --name-only | wc -l)" -eq 6
+          git commit -m "Materialize accepted Izzet snapshot reconciliation"
+          git push origin HEAD:"izzet/position1-turn-aside-snapshot-convergence-20260929"
+          git rev-parse HEAD > "$OUT/materialized-commit.txt"
+          test -z "$(git status --porcelain)"
+
+      - name: Preserve exact original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-position1-turn-aside-snapshot-convergence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/izzet-turn-aside-snapshot-convergence/
+          if-no-files-found: error
+          retention-days: 90
