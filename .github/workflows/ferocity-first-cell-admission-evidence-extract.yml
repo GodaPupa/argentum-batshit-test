@@ -1,0 +1,36 @@
+name: Ferocity first-cell preserved admission evidence extraction
+on:
+  push:
+    branches: ["ferocity/first-cell-admission-evidence-extract-20260928"]
+    paths: [".github/workflows/ferocity-first-cell-admission-evidence-extract.yml"]
+permissions: {contents: read}
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - name: Bind exact extractor budget manifest and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/ferocity-first-cell-admission-extract
+          test "$(git rev-parse HEAD^)" = "98b749d7b03d2b7fd96024be3ab4875d2143f2f0"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/extract_first_cell_admission_evidence.py)" = "441422f34f048e1990415943074a324313a746de"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_ADMISSION_EXTRACT_BUDGET.json)" = "0725c4917b015c15a13c7a5e1af7ad7cff8efb87"
+          test "$(git hash-object ferocity-recycling/evidence/build/publication-M1-source-audits/MANIFEST.json)" = "05174b960875500e529092810e0e1e249fd18a71"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/extract_first_cell_admission_evidence.py; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_ADMISSION_EXTRACT_BUDGET.json; git hash-object ferocity-recycling/evidence/build/publication-M1-source-audits/MANIFEST.json; git hash-object .github/workflows/ferocity-first-cell-admission-evidence-extract.yml; git status --porcelain; } > build/reports/ferocity-first-cell-admission-extract/source.txt
+      - name: Extract exact allowlisted preserved evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/extract_first_cell_admission_evidence.py | tee build/reports/ferocity-first-cell-admission-extract/run.log
+      - name: Preserve original extraction evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-first-cell-admission-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-first-cell-admission-extract/
+          if-no-files-found: error
+          retention-days: 90
