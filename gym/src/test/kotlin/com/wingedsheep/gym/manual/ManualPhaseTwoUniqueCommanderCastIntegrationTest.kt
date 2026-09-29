@@ -74,7 +74,7 @@ class ManualPhaseTwoUniqueCommanderCastIntegrationTest : ScenarioTestBase() {
                 }
 
                 val adapter = PhaseTwoTelemetryAdapter(
-                    opening, actionProcessor, "ac9125d5f3c3a70c990261549a9c62b910e99ad0", seats, 100 + roleIndex
+                    opening, actionProcessor, "ac9125d5f3c3a70c990261549a9c62b910e99ad0", seats, roleIndex
                 )
                 fun act(action: GameAction) { adapter.process(action).error shouldBe null }
                 seats.forEach { act(KeepHand(it)) }
