@@ -1,0 +1,37 @@
+name: Ferocity Resource06 DevelopmentAdmission semantic diff
+on:
+  push:
+    branches: ["ferocity/resource06-byte-compare-20260929"]
+    paths: [".github/workflows/ferocity-resource06-semantic-diff.yml"]
+permissions: {contents: read}
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - name: Bind exact semantic diff inputs and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/ferocity-resource06-semantic-diff
+          test "$(git rev-parse HEAD^)" = "31506ae908f7c658e4178d3ab2fe401279d1a77e"
+          test "$(git hash-object ferocity-recycling/evidence/build/publication-M1-source-audits/05-resource-boundary-06.zip)" = "a0fb48835413d80149331a7775e17820435cad7b"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt)" = "c64afaf0dac73fe4a73e47a58ababa60a5888064"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/diff_resource06_development_admission.py)" = "72c6a528f04d79d8ddb87c9da675b0bd1c9b5d03"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/RESOURCE06_DEVELOPMENT_ADMISSION_SEMANTIC_DIFF_BUDGET.json)" = "4bce366338ea28357ffe7c67c51f1342b07803c0"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ferocity-recycling/evidence/build/publication-M1-source-audits/05-resource-boundary-06.zip; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/diff_resource06_development_admission.py; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/RESOURCE06_DEVELOPMENT_ADMISSION_SEMANTIC_DIFF_BUDGET.json; git hash-object .github/workflows/ferocity-resource06-semantic-diff.yml; git status --porcelain; } > build/reports/ferocity-resource06-semantic-diff/source.txt
+      - name: Produce deterministic semantic diff
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/diff_resource06_development_admission.py 2>&1 | tee build/reports/ferocity-resource06-semantic-diff/diff.json
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-resource06-semantic-diff-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-resource06-semantic-diff/
+          if-no-files-found: error
+          retention-days: 90
