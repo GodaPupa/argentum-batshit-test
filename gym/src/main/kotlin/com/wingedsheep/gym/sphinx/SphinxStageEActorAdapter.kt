@@ -13,6 +13,7 @@ import com.wingedsheep.gym.contract.StackItemKind
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import java.security.MessageDigest
 
 /** The actor may know its own submitted list. No library entity IDs or order are provided. */
