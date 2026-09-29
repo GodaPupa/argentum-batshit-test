@@ -98,7 +98,16 @@ class ArcaneDenialScenarioTest : FunSpec({
             ?: error("Arcane Denial did not present simultaneous-trigger ordering")
         ordering.playerId shouldBe caster
         ordering.options.size shouldBe 2
-        d.submitDecision(caster, OptionChosenResponse(ordering.id, 0)).error shouldBe null
+        // The first chosen trigger is placed lower and resolves last. Choose the caster's
+        // one-card draw first so the victim's DrawUpTo trigger is topmost and resolves first.
+        val casterDraw = ordering.options.indexOfFirst {
+            it.contains("Draw a card", ignoreCase = true)
+        }
+        casterDraw shouldBe ordering.options.indexOfLast {
+            it.contains("Draw a card", ignoreCase = true)
+        }
+        (casterDraw >= 0) shouldBe true
+        d.submitDecision(caster, OptionChosenResponse(ordering.id, casterDraw)).error shouldBe null
         d.resolveUntilDecisionOrEmpty()
 
         val decision = d.pendingDecision as? ChooseNumberDecision
