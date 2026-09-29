@@ -19,6 +19,7 @@ import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.CardLayout
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 
@@ -268,5 +269,60 @@ class ActorSpellPaymentProjectionTest : ScenarioTestBase() {
             pool.blue shouldBe projected.bluePoolAfterPayment
             game.state.stack shouldBe listOf(spellId)
         }
+
+        test("SP12 exact Sleep escape projects mana and preserves the real three-card additional payment") {
+            val game = scenario()
+                .withPlayers("Player", "Opponent")
+                .withCardInGraveyard(1, "Sleep of the Dead")
+                .withCardInGraveyard(1, "Island")
+                .withCardInGraveyard(1, "Island")
+                .withCardInGraveyard(1, "Island")
+                .withLandsOnBattlefield(1, "Island", 3)
+                .withCardOnBattlefield(2, "Grizzly Bears")
+                .withActivePlayer(1)
+                .withPriorityPlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+            val spellId = game.findCardsInGraveyard(1, "Sleep of the Dead").single()
+            val target = game.findPermanent("Grizzly Bears")!!
+            val fuel = game.state.getGraveyard(game.player1Id)
+                .filter { id -> game.state.getEntity(id)?.get<CardComponent>()?.name == "Island" }
+                .sortedBy { it.value }
+            fuel.size shouldBe 3
+            val before = game.state
+            val offered = input(before).legalActions.single {
+                (it.action as? CastSpell)?.let { cast ->
+                    cast.cardId == spellId &&
+                        cast.useAlternativeCost &&
+                        cast.alternativeCostType == AlternativeCostType.ESCAPE
+                } == true
+            }
+            offered.additionalCostInfo!!.costType shouldBe "ExileFromGraveyard"
+            offered.additionalCostInfo!!.exileMinCount shouldBe 3
+            offered.additionalCostInfo!!.exileMaxCount shouldBe 3
+            offered.additionalCostInfo!!.validExileTargets.sortedBy { it.value } shouldBe fuel
+            val projected = offered.basicBluePayment!!
+            projected.status shouldBe ActorBasicBluePaymentStatus.PLANNED
+            projected.availableBlueMana shouldBe 3
+            projected.totalMana shouldBe 3
+            projected.blueRemainingAfterPayment shouldBe 0
+            projected.tappedSourceIds.size shouldBe 3
+            game.state shouldBe before
+
+            val cast = (offered.action as CastSpell).copy(
+                targets = listOf(ChosenTarget.Permanent(target)),
+                additionalCostPayment = AdditionalCostPayment(exiledCards = fuel),
+            )
+            game.execute(cast).error shouldBe null
+            val tapped = before.getBattlefield(game.player1Id).filter {
+                before.getEntity(it)?.has<TappedComponent>() == false &&
+                    game.state.getEntity(it)?.has<TappedComponent>() == true
+            }.sortedBy { it.value }
+            tapped shouldBe projected.tappedSourceIds
+            val pool = game.state.getEntity(game.player1Id)!!.get<ManaPoolComponent>()!!
+            pool.blue shouldBe projected.bluePoolAfterPayment
+            game.state.stack shouldBe listOf(spellId)
+        }
+
     }
 }
