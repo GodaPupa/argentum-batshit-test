@@ -1,0 +1,51 @@
+{
+  "schema": "industrial-classloader-topology-36515467404-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36515467404,
+  "artifact_id": 11011186081,
+  "artifact_sha256": "d995cf5523b0fc23390a843473f7d60334f0f8edeabce6addb26423372be884c",
+  "head": "2fac0fd4a5f0366de0d556f2ac6acb0b2a14ff77",
+  "parent": "effd565d9f2d7cd6712f93c2d0878fb0de0fa1ac",
+  "pins": {
+    "worker_probe": "eee28d377387df5b07cb00c9adc111e975d14188",
+    "budget": "8bd543dff47a888c54e8c5132a9c4d0e336acdc3",
+    "daemon_capture_script": "ae44e4fbac17aabf2219aa5a868cd8164517d6c1",
+    "workflow": "c6fdf3b8ff99b92c1353543a0f31d10725b6182f"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "worker_xml_parse": "clean",
+    "workflow_conclusion": "success"
+  },
+  "result": {
+    "worker_tests": 1,
+    "worker_passes": 1,
+    "worker_failures": 0,
+    "daemon_help_command": "success",
+    "artifact_members": [
+      "TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2ClassloaderTopologyCaptureTest.xml",
+      "daemon.log",
+      "source.txt",
+      "worker.log"
+    ],
+    "missing_required_daemon_payload": [
+      "daemon-context-loaders.tsv",
+      "daemon-system-loaders.tsv",
+      "daemon-classpath.tsv",
+      "daemon-runtime.txt"
+    ]
+  },
+  "diagnosis": {
+    "classification": "INCOMPLETE_DAEMON_TOPOLOGY_OUTPUT_NOT_PRESERVED",
+    "interpretation": [
+      "A green workflow is insufficient because none of the daemon topology/runtime payload files is present in the preserved original.",
+      "The configuration-time script used new File(\".\", ...), so its output location was not proven to be the checkout-root artifact path."
+    ]
+  },
+  "decision": "INCOMPLETE_WORKER_ONLY_NO_DAEMON_TOPOLOGY_CLOSURE",
+  "successor": "Bind daemon output to settings.settingsDir and make the workflow fail closed unless all four expected daemon payload files exist and are non-empty before accepting the worker probe.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
