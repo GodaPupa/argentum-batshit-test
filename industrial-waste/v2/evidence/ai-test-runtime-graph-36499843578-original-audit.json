@@ -1,0 +1,36 @@
+{
+  "schema": "industrial-r1-ai-test-runtime-graph-36499843578-original-audit-v1",
+  "date_utc": "2026-09-28",
+  "run_id": 36499843578,
+  "artifact_id": 11004664452,
+  "artifact_sha256": "4c70cdcaf042eb6399872c13ec5cb5b0c0a39a4604070dcd5fd79064faefc1d5",
+  "head": "cc3344eacb40634b9466eb9830b1e50f9600044e",
+  "parent": "7eb7ee4bf559022ea6ab6427cc6f8ce44cdb0c11",
+  "pins": {
+    "capture_script": "430d6ef4ed7020c867ed54a17cb99d482db7a1c5",
+    "budget": "32815c24198b7d38404e57fb5ee7dcd1b9385737",
+    "workflow": "ec9c6eecd610abad5c317a8ff720a7abcb744946"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed"
+  },
+  "build_phase": {
+    "result": "PASS",
+    "task": "IndustrialWasteV2RegistryAuditTest",
+    "actionable_tasks": 46,
+    "all_executed": true
+  },
+  "capture_phase": {
+    "result": "INCOMPLETE",
+    "task": ":ai:industrialR1CaptureTestRuntime",
+    "failure": "No such property: description for ComponentSelectionReason; Gradle 9.6.1 exposes descriptions",
+    "init_script_line": 17
+  },
+  "decision": "INCOMPLETE_CAPTURE_API_INTEGRATION",
+  "interpretation": "The qualified seed-free build completed; failure occurred only in the prospective runtime-graph capture init script before producing the intended runtime graph. It is infrastructure/capture failure, not an Industrial deck result.",
+  "successor_rule": "Preserve this original. Change only the capture's ComponentSelectionReason serialization to the current Gradle descriptions API, re-pin source/workflow/parent, and run as a changed-source successor. Do not rerun this original unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
