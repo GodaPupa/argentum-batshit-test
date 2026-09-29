@@ -1,0 +1,58 @@
+{
+  "schema": "izzet-position1-counter-pair-36517341176-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36517341176,
+  "artifact_id": 11012115206,
+  "artifact_sha256": "e213276dbc139729a52ded06ff9fa3409092a0ee6d010dd9a7a138c7833b84a2",
+  "head": "fbf15a6031d7fcefd84774de289e5ea21f4bae3d",
+  "parent": "103be19d8a9d850ae6e7caf9cc4e75397c7a6121",
+  "pins": {
+    "arcane_denial": "b80ac4364d27398cffde16e5f6d6a41eb0792ea9",
+    "memory_lapse": "e07d873bfccc9634cc0121fe988003e5af1e3fbc",
+    "arcane_test": "0046c1bbaef6c037be51b796c1cb9b7349e4598e",
+    "memory_lapse_test": "e7e60d5a68e4b8d5f2f016a88364b3b25413853b",
+    "budget": "ddff4a73db3efe5dd04698f700ac5e796e6bf694",
+    "stack_effects": "8ad94eec5fc9f88cb7920e911a8fc173749d7db7",
+    "counter_executor": "a46651a83da18774daa93a110ae9b0d62481f3c9",
+    "stack_resolver": "a46aed0092806245462dbd881fab327d838de4e7",
+    "mana_payment_resumer": "30966ffbfa84801761c6f98a33a2adecee627da9",
+    "delayed_trigger_executor": "36cb0af0ce66def8baa0adae50d60ab06b22ddcf",
+    "workflow": "3c60a278390da2a242c3d54c3024700df73d4abf"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "xml_parse": "clean",
+    "preserved_members": [
+      "TEST-com.wingedsheep.engine.scenarios.ArcaneDenialScenarioTest.xml",
+      "arcane.log",
+      "source.txt"
+    ]
+  },
+  "result": {
+    "arcane_denial": {
+      "tests": 3,
+      "passes": 2,
+      "failures": 1,
+      "errors": 0,
+      "skipped": 0
+    },
+    "memory_lapse": "not_run_after_first_class_failure"
+  },
+  "observations": [
+    "The target-freezing case now passes and proves the delayed DrawUpToEffect stores EffectTarget.SpecificEntity(victim) before the countered spell leaves the stack.",
+    "The uncounterable-target case passes and still schedules Arcane Denial's two independent delayed draw abilities.",
+    "The next-upkeep case fails only because the fixture expects ChooseNumberDecision immediately while the engine first presents the existing simultaneous-trigger ChooseOptionDecision required to order Arcane Denial's two delayed triggers."
+  ],
+  "diagnosis": {
+    "classification": "INCOMPLETE_TEST_FIXTURE_OMITS_SIMULTANEOUS_TRIGGER_ORDERING",
+    "evidence": "ArcaneDenialScenarioTest.kt:95 reports no draw-up-to decision after entering upkeep; TriggerProcessor.presentTriggerOrdering requires the common controller to order multiple simultaneous triggers and explicitly says first chosen resolves last.",
+    "mechanics_interpretation": "No additional target-binding engine defect is established by this failure. The repaired scheduling-time target freeze is directly validated by the first passing case."
+  },
+  "decision": "INCOMPLETE_COUNTER_PAIR_BANK_NOT_ACCEPTED",
+  "successor": "Change only the Arcane Denial scenario fixture so the next-upkeep case answers the engine-required ChooseOptionDecision for the two simultaneous delayed triggers before resolving toward ChooseNumberDecision; preserve the card definitions and target-freezing engine repair, re-pin exact changed test/workflow bytes, and rerun the same semantic cases.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
