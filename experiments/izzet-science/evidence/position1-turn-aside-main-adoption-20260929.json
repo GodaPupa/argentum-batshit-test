@@ -1,0 +1,30 @@
+{
+  "schema": "izzet-position1-turn-aside-main-adoption-v1",
+  "date_utc": "2026-09-29",
+  "parent_main": "415fc1333dc10c918c65ca8fa8cd1fd29dfd515e",
+  "authority": {
+    "convergence_audit": "experiments/izzet-science/evidence/position1-turn-aside-snapshot-convergence-36587301883-original-audit.json",
+    "convergence_run": 36587301883,
+    "convergence_artifact": 11042273431,
+    "convergence_artifact_sha256": "9b1b8e8f9e9a44c924c5e85898c02357768c5c604fdfa74a8996283cd105f191",
+    "prior_semantic_run": 36550162966,
+    "prior_semantic_result": "3/3 clean"
+  },
+  "adopted_blobs": {
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/som/cards/TurnAside.kt": "96a656b7fdd77ae10045d523e281eb34f5cb711e",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TurnAsideScenarioTest.kt": "0eec9947e43bb43a9c3bbe9d90a33626a243cf3f",
+    "mtg-sets/src/test/resources/snapshots/cards/ALL.json": "22995091d0d3b38394665babfb808201f92a9de0",
+    "mtg-sets/src/test/resources/snapshots/cards/HML.json": "8b5c7709a7ed61a6ceded8c996381e48d99182f6",
+    "mtg-sets/src/test/resources/snapshots/cards/M13.json": "a5b38542699ea6ce9df09bd8734d9a9266033bd8",
+    "mtg-sets/src/test/resources/snapshots/cards/ROE.json": "7c1d1892ff6cb236e2e65550b1e45b186ae06972",
+    "mtg-sets/src/test/resources/snapshots/cards/SOM.json": "58c3b678ced10c4fd55a0e7a1bb1fbeffcc66e3c",
+    "mtg-sets/src/test/resources/snapshots/cards/ULG.json": "1a82f68a88acc62a6bb1fff80a55a92e18a246ce"
+  },
+  "decision": "ADOPT_EXACT_ACCEPTED_TURN_ASIDE_AND_RECONCILED_SNAPSHOTS_TO_MAIN",
+  "limits": [
+    "No convergence workflow or budget is promoted as runtime authority.",
+    "No whole Position-1 pilot/action ranking, commander lifecycle/damage/event ledger, replay/durability, seed, allocation or gameplay authority."
+  ],
+  "next_gate": "Freshly re-inventory the Position-1 registry from main after this adoption and advance the smallest remaining mechanics/whole-pilot gate.",
+  "official_counters_delta": 0
+}

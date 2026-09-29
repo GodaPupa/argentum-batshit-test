@@ -1,3 +1,64 @@
+// Arcane Denial
+{
+    "name": "Arcane Denial",
+    "manaCost": "{1}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Counter target spell. Its controller may draw up to two cards at the beginning of the next turn's upkeep.\nYou draw a card at the beginning of the next turn's upkeep.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                {
+                    "type": "CreateDelayedTrigger",
+                    "step": "UPKEEP",
+                    "effect": {
+                        "type": "DrawUpTo",
+                        "maxCards": 2,
+                        "target": "TargetController"
+                    },
+                    "timing": "NextTurn"
+                },
+                {
+                    "type": "CreateDelayedTrigger",
+                    "step": "UPKEEP",
+                    "effect": {
+                        "type": "DrawCards",
+                        "count": {
+                            "type": "Fixed",
+                            "amount": 1
+                        }
+                    },
+                    "timing": "NextTurn"
+                },
+                "Counter"
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": {},
+                    "zone": "Stack"
+                },
+                "id": "target"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "22b",
+        "artist": "Richard Kane Ferguson",
+        "rulings": [
+            {
+                "date": "2007-09-16",
+                "text": "The controller of the countered spell chooses whether to draw zero, one, or two cards when the delayed ability resolves."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Deadly Insect
 {
     "name": "Deadly Insect",
