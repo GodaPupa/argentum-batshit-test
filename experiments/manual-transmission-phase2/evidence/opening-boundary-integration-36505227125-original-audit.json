@@ -1,0 +1,41 @@
+{
+  "schema": "manual-opening-boundary-integration-36505227125-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36505227125,
+  "artifact_id": 11006279903,
+  "artifact_sha256": "6d43ed2fa57e0094676b0ec1a4915b7d490cb52bc8562959e960a543e871a8fb",
+  "head": "ca5c49d4db45e88ae6cc09bf5b410a99957f6c57",
+  "parent": "7aa7b8e00154dc4e1aebdd717e9d82027030ef79",
+  "pins": {
+    "observation_builder": "fc9012e32185f3419ac1a6e56dcab06929aeed8d",
+    "opening_policy": "bd58d1b166a86a8d6e076f4dd2e8f34f533e2a6e",
+    "boundary": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "telemetry": "44608301d535a2114073d80c06d5ca0480c40043",
+    "test": "8f71cc189903437189c306d72d76576b2d4a6d2b",
+    "budget": "7c115d24bd0b340282881dd52a5c6e6427297db7",
+    "workflow": "bd57b982b5bd02ba1243b82ecd2d59dd903b2be6"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "xml_parse": "clean",
+    "freshness": "--rerun-tasks --no-build-cache"
+  },
+  "result": {
+    "tests": 4,
+    "passes": 0,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0,
+    "common_failure": "Unqualified <ROLE> strategic action fork"
+  },
+  "diagnosis": {
+    "disposition": "INCOMPLETE_PLAYLAND_TARGET_CARDINALITY_CONTRACT",
+    "detail": "The real engine exposes the physical PlayLand with sourceEntityId correctly, but LegalAction's generic default targetCount/minTargets is 1 even for non-target PlayLand actions. ManualPhaseTwoOpeningActionPolicy required minTargets==0 && maxTargets==0, so the real land offer was excluded and all four roles failed closed before action submission.",
+    "policy_or_engine_failure_inferred": false
+  },
+  "successor_rule": "Preserve this original. Change only the opening policy's PlayLand identification to rely on kind=PlayLand, affordability and physical own-hand source identity; do not infer target cardinality from generic LegalAction defaults for this known non-target action. Re-pin changed source/test/workflow and do not rerun this original unchanged.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
