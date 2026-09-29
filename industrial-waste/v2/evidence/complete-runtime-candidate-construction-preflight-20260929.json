@@ -1,0 +1,57 @@
+{
+  "schema": "industrial-r1-complete-runtime-candidate-construction-preflight-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "composite_run_id": 36524059703,
+    "composite_artifact_id": 11013639040,
+    "composite_artifact_sha256": "bcea7354f8468c9951525e8ffac87c50d1c507eade59750e6fc44e8ed912dfa2",
+    "source_commit": "de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+    "source_tree": "d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+    "composite_independent_review_commit": "c9e325dcca1756052d2bf08f1f67a7ab0d4981ea",
+    "complete_runtime_validator_blob": "be1f53184c9bda880539dc589a921cef130cd1a3",
+    "boundary_proposal_blob": "a2161dda29fec1ac9e59f8a9e6b2c37b4d5a09cc"
+  },
+  "review": {
+    "artifact_member_count": 23,
+    "bound_payload_count": 15,
+    "candidate_manifest_construction_attempted": true,
+    "validator_shape_understood": true,
+    "semantically_complete_manifest_derivable_from_preserved_artifact": false
+  },
+  "blocking_gaps": [
+    {
+      "boundary": "archive_member_inventory",
+      "evidence": "The artifact preserves whole-byte hashes for the 51 resolved :ai runtime artifacts and 341 Gradle implementation jars, but not every member of those archives.",
+      "requirement": "R1_COMPLETE_RUNTIME_BOUNDARY_PROPOSAL requires every archive member, including classes/resources/generated/synthetic entries and duplicate/shadow handling."
+    },
+    {
+      "boundary": "complete_build_inputs",
+      "evidence": "The composite binds the capture implementations and produced runtime slices but does not preserve the complete settings/included-build/buildSrc/version-catalog/lock/verification/repository/compiler-plugin/flag input universe required by the proposal.",
+      "requirement": "Manifest build_inputs cannot be populated completely from the preserved artifact without consulting uncaptured bytes."
+    },
+    {
+      "boundary": "immutable_os_image_identity",
+      "evidence": "os-python-closure.json preserves dynamic-library and Python closure digests but does not provide an immutable OS/container image SHA-256 identity.",
+      "requirement": "The manifest validator requires platform.os_image_digest and the proposal requires exact OS/container image identity."
+    },
+    {
+      "boundary": "complete_process_launch_path",
+      "evidence": "Actual daemon and test-worker topology is preserved, while the exact launcher/bootstrap process path, complete canonical command/environment and immutable mount mapping are not captured as a complete expected universe.",
+      "requirement": "The proposal requires ordered effective launcher/Gradle/worker paths and exact command, working directory and allowed environment."
+    },
+    {
+      "boundary": "generated_hidden_class_policy",
+      "evidence": "No independently adopted proof establishes either ELIMINATED or PINNED_GENERATOR_INPUTS for JVM/Kotlin/framework generated or hidden classes.",
+      "requirement": "The validator requires one of those generated_class_policy values and the boundary proposal explicitly forbids silently excluding generated/hidden classes."
+    }
+  ],
+  "decision": "HOLD_NO_SEMANTICALLY_COMPLETE_EXPECTED_MANIFEST_FROM_36524059703",
+  "interpretation": [
+    "The accepted composite remains valid candidate provenance for all slices it actually captured.",
+    "Passing r1_complete_runtime_manifest.py with placeholder, substituted or repurposed digests would be schema conformance only and would violate the reviewed completeness boundary.",
+    "No expected-manifest digest is adopted and no prepared-worker, combined-receiving, R1 permit, claim, seed, allocation or gameplay authority follows."
+  ],
+  "next_gate": "Prospectively specify and independently review a supplemental hermetic capture/launch design that closes archive-member inventories, complete build-input bytes, immutable OS/container identity, launcher path/environment/mounts and generated-class provenance. Only after that design is accepted should a fresh single-source composite be executed and a complete candidate manifest constructed.",
+  "authority_granted": [],
+  "official_counters_delta": 0
+}
