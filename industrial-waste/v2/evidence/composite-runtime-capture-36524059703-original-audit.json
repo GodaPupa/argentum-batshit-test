@@ -1,0 +1,81 @@
+{
+  "schema": "industrial-r1-single-source-composite-runtime-capture-36524059703-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36524059703,
+  "artifact_id": 11013639040,
+  "artifact_sha256": "bcea7354f8468c9951525e8ffac87c50d1c507eade59750e6fc44e8ed912dfa2",
+  "head": "de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+  "parent": "2c4a400aade88bb498aa5f95502f51ca8c6dd241",
+  "source_tree": "d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+  "pins": {
+    "budget": "b5324d715afa15f44eba1b841b53b7da74dcca53",
+    "build_capture": "0d3c82426f81233ff599fa50d42dce0bae872107",
+    "ai_runtime_graph_capture": "a893c4e446be60da616cdd51714b4ed337274ef3",
+    "toolchain_capture": "6f7f805ada44105efb0062c52901d189e6d43b4f",
+    "os_python_capture": "556fb2fa493d16baddb9cdc61ef5e444584ddc9a",
+    "gradle_implementation_capture": "a30880f96ba68a80f99c0bd8b6fd14e284ecb323",
+    "worker_topology_test": "eee28d377387df5b07cb00c9adc111e975d14188",
+    "daemon_topology_capture": "c423780611cc1b892a6fe7b3972f43aec35dc1a2",
+    "complete_runtime_validator": "be1f53184c9bda880539dc589a921cef130cd1a3",
+    "workflow": "0299a0f4036a7a7daef471f0af66563c9a841619"
+  },
+  "integrity": {
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "artifact_member_count": 23,
+    "source_binding": "passed",
+    "single_source_commit_binding": true,
+    "single_source_tree_binding": true,
+    "bound_payload_count": 15,
+    "bound_payload_lengths_match": true,
+    "bound_payload_sha256_match": true,
+    "worker_xml_parse": "clean",
+    "worker_tests": 1,
+    "worker_passes": 1,
+    "worker_failures": 0,
+    "worker_errors": 0
+  },
+  "captured_slices": {
+    "build_output": {
+      "file_count": 27668,
+      "payload_sha256": "32b42241be73a8fcbc0b3a9e5be33aeb05096f0344de70412076c3d7f82e0615"
+    },
+    "ai_test_runtime_graph": {
+      "payload_sha256": "196819ee25c2d4efb91e0f2e33af0a050eb882f5991dfededaf38c9723599b4a"
+    },
+    "toolchain_byte_closure": {
+      "payload_sha256": "2a8a17383d415b8def1dc4cf31395e32cf01742c334e76b4bce59974af7acd6a"
+    },
+    "os_python_closure": {
+      "payload_sha256": "14475eb9f5467ac548cf8a64e392a22538d06ed997e8747230b081699aefc1ab"
+    },
+    "gradle_implementation_closure": {
+      "payload_sha256": "b2f858d3f1e137046c167519d72ac9ce255c2849c8146aedc4739c3f69127101"
+    },
+    "daemon_worker_topology": {
+      "worker_classpath_sha256": "56ecead03210941cc9ad93af5ea6765a600b13524e1ef3f4d1661c8d39bbc2dc",
+      "worker_code_sources_sha256": "383d956759bf4ad8bbc86fad747b5d2909f2e06bb49e9501404b076c193e3e87"
+    }
+  },
+  "invariants": {
+    "official_seed_files_read": false,
+    "official_counters_delta": 0,
+    "expected_manifest_adopted": false,
+    "prepared_worker_authority": false,
+    "r1_authority": false
+  },
+  "decision": "ACCEPTED_SINGLE_SOURCE_COMPOSITE_RUNTIME_CAPTURE_CANDIDATE_ONLY",
+  "accepted_scope": [
+    "One fresh non-corpus head produced the build-output, AI test runtime graph, toolchain, OS/Python, Gradle implementation and daemon/worker topology evidence in one preserved artifact.",
+    "Every JSON slice is bound to source commit de27e189e7597bdf48f213a40a0bbf1b70f63c1a and tree d62e3fbd59dd78cc444c09b26673ae1bf3a848ab.",
+    "The composite binding cryptographically binds 15 required payloads and preserves zero official execution counters."
+  ],
+  "limits": [
+    "This is not a canonical complete expected manifest.",
+    "No expected-manifest digest is adopted.",
+    "No prepared-worker attestation channel or lifetime enforcement is accepted.",
+    "No combined receiving, claim, R1 permit, seed, allocation, gameplay, outcome or deck conclusion is authorized."
+  ],
+  "next_gate": "Independently review this single-source composition and its declared not-captured boundaries. If clean, build a canonical candidate expected manifest from this exact artifact under the accepted complete-runtime validator, then review that exact manifest separately before any adoption.",
+  "official_counters_delta": 0
+}
