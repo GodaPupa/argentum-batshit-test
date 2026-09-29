@@ -1,0 +1,37 @@
+name: Ferocity Resource06 DevelopmentAdmission byte comparison
+on:
+  push:
+    branches: ["ferocity/resource06-byte-compare-20260929"]
+    paths: [".github/workflows/ferocity-resource06-byte-compare.yml"]
+permissions: {contents: read}
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - name: Bind exact archive comparison source budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/ferocity-resource06-byte-compare
+          test "$(git rev-parse HEAD^)" = "9a89043e0186b0e365ccc2a7207def0bd9c5753e"
+          test "$(git hash-object ferocity-recycling/evidence/build/publication-M1-source-audits/08-historical-first-cell-policy.zip)" = "6703d6913a321771563ff200ca99cd65f7c04cd0"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt)" = "c64afaf0dac73fe4a73e47a58ababa60a5888064"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/compare_resource06_development_admission.py)" = "a79428c322403b9091527a794da4d32c02a6417c"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/RESOURCE06_DEVELOPMENT_ADMISSION_BYTE_COMPARE_BUDGET.json)" = "d0ef9a46e065ca5e154dce255daa609bd3eab133"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ferocity-recycling/evidence/build/publication-M1-source-audits/08-historical-first-cell-policy.zip; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/compare_resource06_development_admission.py; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/RESOURCE06_DEVELOPMENT_ADMISSION_BYTE_COMPARE_BUDGET.json; git hash-object .github/workflows/ferocity-resource06-byte-compare.yml; git status --porcelain; } > build/reports/ferocity-resource06-byte-compare/source.txt
+      - name: Compare preserved archive member and current source08 bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/compare_resource06_development_admission.py | tee build/reports/ferocity-resource06-byte-compare/comparison.json
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-resource06-byte-compare-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-resource06-byte-compare/
+          if-no-files-found: error
+          retention-days: 90
