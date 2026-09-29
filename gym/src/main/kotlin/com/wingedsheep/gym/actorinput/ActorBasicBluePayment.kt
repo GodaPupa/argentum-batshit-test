@@ -67,15 +67,37 @@ internal class ActorBasicBluePaymentProjector(registry: CardRegistry) {
                 useAlternativeCost = true,
                 alternativeCostType = AlternativeCostType.FLASHBACK,
             )
-        if (!simpleHandCast && !simpleFlashbackCast) {
-            return unsupported(
-                "This projection requires a current plain hand cast or explicit FLASHBACK graveyard cast"
+        val simpleSleepEscapeCast = action.cardId in state.getGraveyard(action.playerId) &&
+            state.getEntity(action.cardId)?.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name == "Sleep of the Dead" &&
+            action.useAlternativeCost &&
+            action.alternativeCostType == AlternativeCostType.ESCAPE &&
+            action.copy(targets = emptyList()) == CastSpell(
+                action.playerId,
+                action.cardId,
+                useAlternativeCost = true,
+                alternativeCostType = AlternativeCostType.ESCAPE,
             )
+        if (!simpleHandCast && !simpleFlashbackCast && !simpleSleepEscapeCast) {
+            return unsupported(
+                "This projection requires a current plain hand cast, explicit FLASHBACK graveyard cast, or exact Sleep of the Dead ESCAPE cast"
+            )
+        }
+        if (simpleSleepEscapeCast) {
+            val info = offered.additionalCostInfo
+                ?: return unsupported("Sleep of the Dead escape requires its current exile-three additional-cost offer")
+            val graveyard = state.getGraveyard(action.playerId).toSet()
+            if (info.costType != "ExileFromGraveyard" ||
+                info.exileMinCount != 3 || info.exileMaxCount != 3 ||
+                info.validExileTargets.size != 3 ||
+                info.validExileTargets.distinct().size != 3 ||
+                info.validExileTargets.any { it == action.cardId || it !in graveyard }) {
+                return unsupported("Sleep of the Dead escape requires exactly three currently offered other graveyard cards")
+            }
         }
         if (state.getBattlefield().any { state.getEntity(it)?.has<FaceDownComponent>() == true }) {
             return unsupported("Payment projection with a concealed battlefield source needs canonical qualification")
         }
-        if (offered.hasXCost || offered.additionalCostInfo != null || offered.additionalLifeCost != 0 ||
+        if (offered.hasXCost || (offered.additionalCostInfo != null && !simpleSleepEscapeCast) || offered.additionalLifeCost != 0 ||
             offered.hasConvoke || offered.hasDelve || offered.hasHarmonize || offered.hasTapForGeneric ||
             offered.tapForPower || offered.requiresForage || offered.modalEnumeration != null ||
             offered.manaCostPerExtraTarget != null || offered.requiresDamageDistribution) {
