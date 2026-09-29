@@ -1,0 +1,32 @@
+{
+  "schema": "izzet-position1-draw-up-to-specific-player-repair-budget-v1",
+  "date_utc": "2026-09-29",
+  "predecessor": {
+    "run_id": 36526785429,
+    "artifact_id": 11015002026,
+    "artifact_sha256": "8405f8aede9551762e166bbd600229904b76a3fd68fb0eca558488f87b67a5ac",
+    "head": "7fd540ef11ae4bfd6f15de5ad393b8be201e46a4",
+    "audit_path": "experiments/izzet-science/evidence/position1-counter-pair-36526785429-original-audit.json",
+    "classification": "CONFIRMED_TRIGGERED_DRAW_UP_TO_PAUSE_PROPAGATION_DEFECT"
+  },
+  "changed_scope": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/drawing/DrawUpToExecutor.kt: resolve the DrawUpTo player through the existing state-aware EffectContext resolver",
+    "add one focused rules-engine regression proving EffectTarget.SpecificEntity(player) with a nonempty library produces that player's ChooseNumberDecision",
+    "restore ArcaneDenialScenarioTest from diagnostic telemetry to the already-reviewed effect-bound semantic case"
+  ],
+  "acceptance": [
+    "focused SpecificEntity DrawUpTo regression passes fresh",
+    "Arcane Denial three semantic cases pass fresh",
+    "Memory Lapse three semantic cases pass fresh",
+    "card definitions and all unrelated engine sources remain byte-identical",
+    "official counters remain zero"
+  ],
+  "prohibited": [
+    "Arcane Denial or Memory Lapse card-definition changes",
+    "counter destination changes",
+    "trigger-order changes",
+    "general decision-handler changes",
+    "gameplay or official corpus execution"
+  ],
+  "official_counters_delta": 0
+}
