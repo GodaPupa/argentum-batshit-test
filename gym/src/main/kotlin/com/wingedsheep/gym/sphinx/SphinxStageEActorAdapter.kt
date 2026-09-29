@@ -40,7 +40,7 @@ class SphinxStageEOwnDeck private constructor(val sha256: String, internal val c
 
 /** A caller selects an already-existing component function; this adapter does not rank actions. */
 enum class SphinxStageEComponentCall {
-    CURRENT_CAST, SETUP_DRAW, DEPLOYMENT, COUNTERSPELL, SNAP, DEEM_INFERIOR, ARTFUL_DODGE_FLASHBACK
+    CURRENT_CAST, SETUP_DRAW, DEPLOYMENT, COUNTERSPELL, SNAP, DEEM_INFERIOR, ARTFUL_DODGE_FLASHBACK, SLEEP_ESCAPE
 }
 
 sealed interface SphinxStageEAdapterResult {
@@ -77,13 +77,20 @@ object SphinxStageEActorAdapter {
             val cast = legal.action as? CastSpell ?: unsupported("This component seam only represents a current CastSpell")
             require(cast.playerId == input.actorId)
             val ownHand = ownZone(input, Zone.HAND)
-            val card = if (componentCall == SphinxStageEComponentCall.ARTFUL_DODGE_FLASHBACK) {
-                if (!cast.useAlternativeCost || cast.alternativeCostType != AlternativeCostType.FLASHBACK) {
-                    unsupported("Artful Dodge receiving requires the real FLASHBACK alternative-cost action")
+            val graveyardAlternative = componentCall == SphinxStageEComponentCall.ARTFUL_DODGE_FLASHBACK ||
+                componentCall == SphinxStageEComponentCall.SLEEP_ESCAPE
+            val card = if (graveyardAlternative) {
+                val expectedAlternative = when (componentCall) {
+                    SphinxStageEComponentCall.ARTFUL_DODGE_FLASHBACK -> AlternativeCostType.FLASHBACK
+                    SphinxStageEComponentCall.SLEEP_ESCAPE -> AlternativeCostType.ESCAPE
+                    else -> error("unreachable graveyard alternative")
+                }
+                if (!cast.useAlternativeCost || cast.alternativeCostType != expectedAlternative) {
+                    unsupported("Reviewed graveyard receiving requires the exact alternative-cost action")
                 }
                 val graveyard = ownZone(input, Zone.GRAVEYARD)
                 graveyard.singleOrNull { it.entityId == cast.cardId }
-                    ?: unsupported("The flashback cast is not a currently visible graveyard card")
+                    ?: unsupported("The alternative-cost cast is not a currently visible graveyard card")
             } else {
                 ownHand.singleOrNull { it.entityId == cast.cardId }
                     ?: unsupported("The cast is not a card in the actor's currently visible hand")
@@ -91,7 +98,24 @@ object SphinxStageEActorAdapter {
             if (componentCall == SphinxStageEComponentCall.ARTFUL_DODGE_FLASHBACK && card.name != "Artful Dodge") {
                 unsupported("Only Artful Dodge is qualified by the flashback receiving seam")
             }
+            if (componentCall == SphinxStageEComponentCall.SLEEP_ESCAPE && card.name != "Sleep of the Dead") {
+                unsupported("Only Sleep of the Dead is qualified by the escape receiving seam")
+            }
             if (card.name !in ownDeck.cards) unsupported("An acquired card outside the frozen own list needs qualification")
+            val escapeFuel = if (componentCall == SphinxStageEComponentCall.SLEEP_ESCAPE) {
+                val info = legal.additionalCostInfo
+                    ?: unsupported("Sleep escape requires the real exile-three additional-cost offer")
+                val graveyardIds = ownZone(input, Zone.GRAVEYARD).map { it.entityId }.toSet()
+                if (info.costType != "ExileFromGraveyard" ||
+                    info.exileMinCount != 3 || info.exileMaxCount != 3 ||
+                    info.validExileTargets.size != 3 ||
+                    info.validExileTargets.distinct().size != 3 ||
+                    info.validExileTargets.any { it == cast.cardId || it !in graveyardIds }) {
+                    unsupported("Sleep escape requires exactly three visible offered other graveyard cards")
+                }
+                info.validExileTargets.sortedBy { it.value }
+            } else emptyList()
+
             val payment = legal.basicBluePayment ?: unsupported("Current canonical payment projection is absent")
             if (payment.status == ActorBasicBluePaymentStatus.UNSUPPORTED) unsupported(payment.reason)
             val available = payment.availableBlueMana ?: unsupported("Current blue mana is absent from the payment projection")
@@ -115,6 +139,8 @@ object SphinxStageEActorAdapter {
                 SphinxStageEComponentCall.DEEM_INFERIOR -> SphinxStageEPilotComponent.chooseDeemInferior(policyInput)
                 SphinxStageEComponentCall.ARTFUL_DODGE_FLASHBACK ->
                     SphinxStageEPilotComponent.chooseArtfulDodgeFlashback(policyInput)
+                SphinxStageEComponentCall.SLEEP_ESCAPE ->
+                    SphinxStageEPilotComponent.chooseSleepEscape(policyInput)
             }
             if (choice.actionId == null) return SphinxStageEAdapterResult.Declined(input.bindingHash, choice.reason)
             require(choice.actionId == offerId) { "Component returned a different current offer" }
@@ -131,7 +157,12 @@ object SphinxStageEActorAdapter {
                     SphinxStageETargetKind.PERMANENT -> ChosenTarget.Permanent(id)
                 }
             }
-            val action = cast.copy(targets = listOfNotNull(chosen))
+            val action = cast.copy(
+                targets = listOfNotNull(chosen),
+                additionalCostPayment = if (componentCall == SphinxStageEComponentCall.SLEEP_ESCAPE) {
+                    AdditionalCostPayment(exiledCards = escapeFuel)
+                } else cast.additionalCostPayment,
+            )
             SphinxStageEAdapterResult.Proposed(
                 ActorProposal(input.bindingHash, action, input.policyRngState), choice.reason)
         } catch (failure: Unqualified) {
