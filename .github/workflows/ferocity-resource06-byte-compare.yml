@@ -11,18 +11,18 @@ jobs:
     steps:
       - uses: actions/checkout@v6
         with: {fetch-depth: 2}
-      - name: Bind exact archive comparison source budget and parent
+      - name: Bind corrected Resource06 archive member source budget and parent
         shell: bash
         run: |
           set -euo pipefail
           mkdir -p build/reports/ferocity-resource06-byte-compare
-          test "$(git rev-parse HEAD^)" = "9a89043e0186b0e365ccc2a7207def0bd9c5753e"
-          test "$(git hash-object ferocity-recycling/evidence/build/publication-M1-source-audits/08-historical-first-cell-policy.zip)" = "6703d6913a321771563ff200ca99cd65f7c04cd0"
+          test "$(git rev-parse HEAD^)" = "3913db5b852e299e8e0e96944e5f6ce582490121"
+          test "$(git hash-object ferocity-recycling/evidence/build/publication-M1-source-audits/05-resource-boundary-06.zip)" = "a0fb48835413d80149331a7775e17820435cad7b"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt)" = "c64afaf0dac73fe4a73e47a58ababa60a5888064"
-          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/compare_resource06_development_admission.py)" = "a79428c322403b9091527a794da4d32c02a6417c"
-          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/RESOURCE06_DEVELOPMENT_ADMISSION_BYTE_COMPARE_BUDGET.json)" = "d0ef9a46e065ca5e154dce255daa609bd3eab133"
-          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ferocity-recycling/evidence/build/publication-M1-source-audits/08-historical-first-cell-policy.zip; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/compare_resource06_development_admission.py; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/RESOURCE06_DEVELOPMENT_ADMISSION_BYTE_COMPARE_BUDGET.json; git hash-object .github/workflows/ferocity-resource06-byte-compare.yml; git status --porcelain; } > build/reports/ferocity-resource06-byte-compare/source.txt
-      - name: Compare preserved archive member and current source08 bytes
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/compare_resource06_development_admission.py)" = "cb10994db493ca22c26a178f772f55da1044a7bc"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/RESOURCE06_DEVELOPMENT_ADMISSION_BYTE_COMPARE_BUDGET.json)" = "dc49d72c66922f04ec00d129639834253c282dfd"
+          { git rev-parse HEAD; git rev-parse HEAD^; git hash-object ferocity-recycling/evidence/build/publication-M1-source-audits/05-resource-boundary-06.zip; git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/compare_resource06_development_admission.py; git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/RESOURCE06_DEVELOPMENT_ADMISSION_BYTE_COMPARE_BUDGET.json; git hash-object .github/workflows/ferocity-resource06-byte-compare.yml; git status --porcelain; } > build/reports/ferocity-resource06-byte-compare/source.txt
+      - name: Compare exact Resource06 member and current source08 bytes
         shell: bash
         run: |
           set -euo pipefail
