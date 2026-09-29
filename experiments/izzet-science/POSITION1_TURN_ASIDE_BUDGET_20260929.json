@@ -1,0 +1,40 @@
+{
+  "schema": "izzet-position1-turn-aside-qualification-budget-v1",
+  "date_utc": "2026-09-29",
+  "base_main": "5dcba2567e8b29bde9bcb9bb44a834f2052e52d3",
+  "registry_diagnostic": {
+    "run_id": 36548682456,
+    "artifact_id": 11023797482,
+    "audit": "experiments/izzet-science/evidence/position1-registry-reinventory-36548682456-original-audit.json",
+    "finding": "Turn Aside is one of 45 exact missing Position-1 identities."
+  },
+  "rationale": "Turn Aside is the smallest current missing Izzet identity that reuses the already-qualified counter path and an already-existing TargetsMatching stack predicate; no shared engine source change is proposed.",
+  "oracle": {
+    "name": "Turn Aside",
+    "set": "SOM",
+    "collector_number": "49",
+    "mana_cost": "{U}",
+    "type_line": "Instant",
+    "text": "Counter target spell that targets a permanent you control."
+  },
+  "reused_primitives": {
+    "object_filter": "3c3793b2f27022f4c0a3c2693c44baa7a176f6a0",
+    "card_predicate": "6b7457a59d266a5d8b431a74ecefe6d3e7c1e1c9",
+    "target_filter": "0d0a1fd4b8975bac4d05b7a44883eef376ffb4a3",
+    "counter_executor": "a46651a83da18774daa93a110ae9b0d62481f3c9",
+    "stack_effects": "8ad94eec5fc9f88cb7920e911a8fc173749d7db7"
+  },
+  "required_cases": [
+    "counter a spell targeting a permanent controlled by Turn Aside's caster",
+    "reject a spell targeting only a permanent Turn Aside's caster does not control",
+    "reject a spell targeting a player rather than a permanent"
+  ],
+  "snapshot_rule": "Regenerate card snapshots and require the only generated file delta to be SOM.json with exactly one new Turn Aside record and no existing record changes.",
+  "excluded": [
+    "new shared engine primitive",
+    "whole Position-1 pilot or action ranking",
+    "PDH lifecycle/damage/event ledger",
+    "seed/allocation/gameplay"
+  ],
+  "official_counters_delta": 0
+}
