@@ -1,0 +1,45 @@
+{
+  "schema": "ferocity-first-cell-current-authority-binding-independent-review-v1",
+  "date_utc": "2026-09-29",
+  "reviewed_commit": "37b55800f0bc052d238d0d2a51dfa15ea5bc591e",
+  "reviewed_path": "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_CURRENT_AUTHORITY_BINDING_20260929.json",
+  "reviewed_blob": "02ad0d076d886992d299d7a510538fe9a2a67f23",
+  "decision": "ACCEPT_NON_EXECUTING_CURRENT_AUTHORITY_BINDING",
+  "verification": {
+    "offline_bundle_acceptance_commit": "f6a2546ff4fffc010a4de9bf957484d637b58bf1",
+    "offline_bundle_audit_blob": "a7d394d95b75dbde1252a3e134386ab37f203bd3",
+    "offline_bundle_run": 36655704566,
+    "offline_bundle_artifact": 11071913791,
+    "offline_bundle_sha256": "abc31a66ca4fc15602dfa861af83119c4418a9cc0cf9bc39bb01b2c7034d42ba",
+    "offline_bundle_definition_count": 36,
+    "red_acceptance_commit": "92222d5ad63b02e515d551c000106a48d865e66e",
+    "red_audit_blob": "1de6a34bb30721a2b7175a730a71f5932315886d",
+    "red_run": 36649260154,
+    "red_artifact": 11069667883,
+    "red_tests": 24,
+    "red_passes": 24,
+    "same_source08_commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "same_source08_tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+    "active_red_pilot_sha256": "6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5"
+  },
+  "findings": [
+    "The binding does not broaden either accepted original: offline bundle authority remains no-game artifact authority and Red v0.2 remains bounded receiving authority.",
+    "Both accepted authorities are pinned to the same exact source08 commit and tree.",
+    "The first-cell candidate/control/opponent identities are explicit and immutable in the reviewed binding.",
+    "The binding preserves the accepted requirement for a separate final FerocityDevelopmentAdmission verification before entropy.",
+    "No consumed original is rerun, replaced or reinterpreted as gameplay authority."
+  ],
+  "accepted_scope": [
+    "The exact accepted 36-definition source08 bundle and exact accepted 24/24 MisterTwin Red v0.2 receiving may now be consumed together by a separately predeclared final non-game FerocityDevelopmentAdmission verifier.",
+    "This review closes the current-authority-binding gate only."
+  ],
+  "explicit_non_authority": [
+    "No D2 execution permit.",
+    "No runner/replay permit.",
+    "No entropy read.",
+    "No seed or allocation.",
+    "No game initialization, gameplay or outcome exposure."
+  ],
+  "next_gate": "Construct and independently review the exact final FerocityDevelopmentAdmission verifier/budget against this accepted binding; only then execute that verifier as a no-game gate. Official gameplay remains frozen.",
+  "official_counters_delta": 0
+}
