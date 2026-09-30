@@ -1,0 +1,35 @@
+{
+  "schema":"industrial-r1-hermetic-platform-binding-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_commit":"a7db8d53bb22d60aeec30074c17961aa59d0d445",
+  "reviewed_path":"industrial-waste/v2/R1_HERMETIC_PLATFORM_BINDING_20260930.json",
+  "reviewed_blob":"04fee894097da34c1cee8eba4b6806f6b26a1544",
+  "decision":"ACCEPT_IMMUTABLE_PLATFORM_INPUT_AUTHORITY_FOR_SUPPLEMENTAL_CAPTURE_IMPLEMENTATION_ONLY",
+  "review":{
+    "accepted_original_binding":"PASS",
+    "exact_image_digest":"PASS",
+    "linux_amd64_architecture":"PASS",
+    "single_java21_candidate_bound":"PASS",
+    "java_path_bytes_hash_version":"PASS",
+    "bash_git_python_sha256sum_pins":"PASS",
+    "no_setup_java_or_package_install":"PASS",
+    "accepted_design_fail_closed_rules_preserved":"PASS",
+    "sealed_launch_not_inferred":"PASS",
+    "official_counters_zero":"PASS"
+  },
+  "accepted_scope":[
+    "The exact digest-pinned platform and Java/tool identities may be used as immutable inputs when implementing the already-accepted supplemental hermetic capture design.",
+    "A capture implementation may now be constructed and independently reviewed against these pins."
+  ],
+  "still_required":[
+    "Implement complete archive/member inventory, complete build-input capture, full process launch path capture and PINNED_GENERATOR_INPUTS evidence without weakening fail-closed behavior.",
+    "Independently review exact capture source/workflow/output schema before dispatch.",
+    "Execute exactly one fresh supplemental capture and audit its original before any expected-manifest construction."
+  ],
+  "explicit_non_authority":[
+    "No supplemental capture execution.",
+    "No sealed launch, expected manifest, prepared worker, R1 permit, claim, seed, allocation or gameplay authority."
+  ],
+  "next_gate":"Implement the source-bound supplemental hermetic capture against the accepted platform binding and submit the implementation bytes to independent review before dispatch.",
+  "official_counters_delta":0
+}
