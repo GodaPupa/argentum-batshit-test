@@ -1,0 +1,42 @@
+{
+  "schema":"industrial-r1-vm-hidden-equivalence-implementation-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"b47fe588227c0ac3b6f8090569b3bd7ca8d939fd",
+  "budget_blob":"a592567f8973b56d01ccbd1d63fd656eef067ac8",
+  "capture_source_blob":"45a894db8676c3b338c94d6f3a3d3330ae10d1da",
+  "gradle_probe_blob":"ef3a56e80afc5002e66a05b4f5cf3635eb604c21",
+  "store_bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+  "workflow_blob":"1c270740c22360effe098be1903826e838a05e7f",
+  "design_review_blob":"be901d70c9f354293fec13912fb7530876d4888f",
+  "accepted_store":{
+    "artifact_id":11105215706,
+    "outer_artifact_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649",
+    "archive_sha256":"a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3",
+    "manifest_sha256":"b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4",
+    "files":1339
+  },
+  "decision":"ACCEPT_VM_HIDDEN_EQUIVALENCE_IMPLEMENTATION_FOR_ONE_FRESH_SUPPLEMENTAL_CAPTURE_ORIGINAL",
+  "review":{
+    "fixed_worker_scope_unchanged":"PASS",
+    "two_offline_launches_unchanged":"PASS",
+    "runtime_graph_exact_comparison_unchanged":"PASS",
+    "raw_class_census_preserved":"PASS",
+    "generated_hidden_classification_matches_reviewed_design":"PASS",
+    "unique_generated_hidden_family_set_exact":"PASS",
+    "non_vm_generated_multiset_exact":"PASS",
+    "vm_lookup_define_unique_family_set_exact":"PASS",
+    "vm_lookup_define_raw_multiplicity_delta_preserved":"PASS",
+    "no_family_silent_exclusion":"PASS",
+    "platform_source_store_generator_pins_unchanged":"PASS",
+    "official_seed_claim_allocation_game_prohibition":"PASS"
+  },
+  "accepted_scope":[
+    "Create exactly one marker-only execution commit on industrial/r1-vm-hidden-equivalence-execute-20260930.",
+    "Execute one fresh supplemental hermetic capture original under the accepted v5 immutable store and reviewed VM-hidden equivalence validator."
+  ],
+  "explicit_non_authority":[
+    "No expected manifest, prepared worker, sealed R1 launch, permit, official seed, claim, allocation, game or outcome authority."
+  ],
+  "next_gate":"Dispatch the one fresh successor capture and independently audit its complete original once.",
+  "official_counters_delta":0
+}
