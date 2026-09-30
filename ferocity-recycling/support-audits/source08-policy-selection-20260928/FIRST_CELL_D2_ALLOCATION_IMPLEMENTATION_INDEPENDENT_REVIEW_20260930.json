@@ -1,0 +1,39 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-implementation-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"81429afb4498e9ea78ef79adfe641aeec27d7092",
+  "workflow_blob":"1570c7c01901ec800b6a76edb8d4ad961687d086",
+  "budget_blob":"1799ab01e03f8c901eadd741ca03f845c870c2fe",
+  "verify_acceptance_blob":"e82c9cf587e2cedfa7e819606851af0e18c3089d",
+  "restore_helper_blob":"dd001c437f627b1615ccb590f2331589d4161f72",
+  "accepted_manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+  "decision":"ACCEPT_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL",
+  "review":{
+    "accepted_verify_only_prerequisite":"PASS",
+    "fixed_16_allocation_identity_contract":"PASS",
+    "fixed_48_stream_entropy_contract":"PASS",
+    "zero_replacements_and_no_reroll":"PASS",
+    "single_allocate_invocation_only":"PASS",
+    "run_one_surface_absent":"PASS",
+    "journal_and_game_initialization_absent":"PASS",
+    "exact_manifest_runtime_java_python_binding":"PASS",
+    "preexisting_ledger_fail_closed":"PASS",
+    "failed_allocation_preservation":"PASS",
+    "seed_values_not_logged_or_interpreted":"PASS"
+  },
+  "accepted_scope":[
+    "Create exactly one marker-only execution commit and invoke FerocityDevelopmentCli allocate exactly once against the accepted manifest.",
+    "A clean original may establish only a durable D2-first-cell seed ledger with 16 fixed allocation identities and 48 independent streams; it does not create a game claim."
+  ],
+  "official_state_if_clean":{
+    "claims":0,
+    "allocations":16,
+    "seed_streams":48,
+    "games":0,
+    "outcomes":0
+  },
+  "explicit_non_authority":[
+    "No run-one, trial claim, journal, game initialization, gameplay, outcome exposure, evaluation allocation or confirmation allocation."
+  ],
+  "next_gate":"Dispatch exactly one allocation original. Audit it once before binding any ledger to a one-row runner/claim/replay gate."
+}
