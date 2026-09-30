@@ -1,0 +1,79 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-budget-v1",
+  "date_utc":"2026-09-30",
+  "accepted_verify_only":{
+    "run_id":36709748908,
+    "artifact_id":11094176040,
+    "acceptance_commit":"dcac440597e226c2762181cd3634c8ecea9538e4",
+    "acceptance_blob":"e82c9cf587e2cedfa7e819606851af0e18c3089d",
+    "decision":"ACCEPTED_FINAL_DEVELOPMENT_VERIFY_ONLY_INPUT_ADMISSION"
+  },
+  "accepted_manifest":{
+    "source_artifact_id":11093470964,
+    "source_artifact_sha256":"12406295c2c96b9d6e09519517edeb57c6557a25440a7184877f4431157cdadf",
+    "manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+    "cell_id":"D2-FIRST-A3-RED",
+    "logical_source_commit":"3a4f99a7653839506e96d19e6639f58d9e8c5ced"
+  },
+  "runtime":{
+    "container_image":"mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880",
+    "accepted_path_token":"36655120463",
+    "java_path":"/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java",
+    "java_sha256":"2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "python_path":"/usr/local/python/3.14.2/bin/python3.14",
+    "python_sha256":"4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601",
+    "classpath_sha256":"3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415"
+  },
+  "operation":{
+    "entrypoint":"com.wingedsheep.gym.ferocity.FerocityDevelopmentCli",
+    "cli_operation":"allocate",
+    "allowed_invocations":1,
+    "fixed_ledger_directory":"ferocity-recycling/allocations/D2-first-cell",
+    "expected_status":"LEDGER_DURABLE_NO_GAME",
+    "allocation_identities":16,
+    "independent_random_streams":48,
+    "entropy":"java.security.SecureRandom/independent-nextLong/v1",
+    "replacements_authorized":0
+  },
+  "preconditions":[
+    "Exact accepted manifest rehashes before Java.",
+    "Exact source08 runtime has 2159 restored files and 56 ordered classpath entries.",
+    "Exact accepted Java and Python executable hashes match.",
+    "D2-first-cell allocation directory does not exist.",
+    "D2-first-cell development journal directory does not exist.",
+    "D2-first-cell process supervisor directory does not exist."
+  ],
+  "required_success_evidence":[
+    "CLI exits zero and emits LEDGER_DURABLE_NO_GAME.",
+    "Returned ledgerSha256 equals the byte SHA-256 of the newly created ledger.json.",
+    "ALLOCATION_INTENT.json is durable and declares this exact admission SHA, D2-FIRST-A3-RED, exactly 16 fixed allocation IDs, entropyCalls 48, and replacementsAuthorized 0.",
+    "The exact ledger and allocation intent are preserved without printing or interpreting individual seed values.",
+    "No development journal, trial claim, process-supervision claim, game initialization, gameplay, or outcome exposure occurs."
+  ],
+  "failure_rules":[
+    "Any prelaunch pin mismatch aborts before Java.",
+    "If the fixed allocation directory already exists, stop; never delete, reset, rename, or reroll it.",
+    "After the allocate invocation begins, preserve any ALLOCATION_INTENT.json, ledger.json, or ALLOCATION_FAILURE.json exactly as written.",
+    "A failed or colliding allocation is consumed unresolved and must not be replaced by another entropy draw.",
+    "Do not invoke allocate more than once and do not invoke run-one in this gate."
+  ],
+  "prohibited":[
+    "no run-one",
+    "no FerocityTrialRunner",
+    "no game initializer",
+    "no journal claim",
+    "no outcome read",
+    "no seed-value logging or semantic interpretation",
+    "no replacement allocation",
+    "no evaluation or confirmation allocation material"
+  ],
+  "authority_if_clean":"D2_FIRST_CELL_FIXED_LEDGER_DURABLE_NO_GAME",
+  "expected_official_state_if_clean":{
+    "claims":0,
+    "allocations":16,
+    "seed_streams":48,
+    "games":0,
+    "outcomes":0
+  },
+  "next_gate":"Independently audit the single allocation original. Only if clean may the exact durable ledger be bound into a separately prospectively reviewed one-row runner/claim/replay gate; no game may initialize merely because allocation succeeded."
+}
