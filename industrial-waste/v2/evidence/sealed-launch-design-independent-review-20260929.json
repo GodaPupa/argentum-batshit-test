@@ -1,0 +1,44 @@
+{
+  "schema": "industrial-r1-sealed-launch-design-independent-review-v1",
+  "date_utc": "2026-09-29",
+  "reviewed_commit": "f99815cac161bdbeed688d9ced1e6c6c11ecdbec",
+  "reviewed_blob": "88e3a874b2454ac4d261d68d92217aa31ac24fae",
+  "decision": "REJECT_WITH_EXACT_GAPS",
+  "accepted_principles": [
+    "exact immutable image/tool identity",
+    "network none",
+    "read-only root filesystem",
+    "capabilities dropped and no-new-privileges",
+    "no Docker socket inside the inner capture container",
+    "read-only authoritative source input",
+    "new output-only writable bind mount"
+  ],
+  "blocking_gaps": [
+    {
+      "id": "BUILD_WORKSPACE",
+      "gap": "The design mounts the exact source read-only and declares only /tmp, /run and /out writable. The supplemental capture must perform a qualification build, so Gradle/Kotlin need a writable build workspace. Writing into /src is prohibited and the design does not define a verified source-derived workspace.",
+      "required_fix": "Add an ephemeral writable /work filesystem. Copy the exact read-only source input into /work/source, verify the copy against a canonical source inventory before execution, build only there, and verify the immutable /src input remains unchanged."
+    },
+    {
+      "id": "VERIFIED_DEPENDENCY_STORE",
+      "gap": "Network is correctly disabled, but the design does not mount the accepted design's required immutable verified Gradle/compiler/plugin/runtime dependency store. A fresh Gradle build cannot rely on undeclared host caches or network fallback.",
+      "required_fix": "Predeclare a separately captured and independently accepted dependency/tool input store by canonical manifest digest, mount it read-only at /inputs, populate any writable Gradle cache only from those verified bytes, and force offline/no-fallback resolution."
+    },
+    {
+      "id": "TMP_EXECUTION_POLICY",
+      "gap": "The proposed /tmp tmpfs is noexec. JVM/Gradle/Kotlin/native tooling can legitimately materialize native helper libraries or launch artifacts in temporary/build storage. A noexec failure would be infrastructure ambiguity rather than a meaningful capture result.",
+      "required_fix": "Keep /tmp and /work nosuid,nodev but permit execution where the pinned toolchain requires it; rely on exact image/tool hashes, read-only inputs, network-none, capability dropping and process/source lifetime validation rather than a blanket noexec assumption."
+    },
+    {
+      "id": "OFFLINE_STORE_LIFETIME",
+      "gap": "The design checks launch mounts but does not yet require the actual capture to prove every resolved build/runtime artifact came from the accepted read-only store.",
+      "required_fix": "Actual capture must emit the ordered resolved dependency graph and map every artifact byte to the accepted store manifest; any external, missing, dynamically changed or unverified artifact fails before runtime capture."
+    }
+  ],
+  "non_authority": [
+    "No sealed launch is accepted.",
+    "No runtime capture, expected manifest, prepared worker, R1 permit, claim, seed, allocation or game authority."
+  ],
+  "next_gate": "Revise the sealed launch design with immutable /src and /inputs plus ephemeral verified /work, explicit offline resolution, and complete dependency-store provenance; independently review the revised design before launch qualification.",
+  "official_counters_delta": 0
+}
