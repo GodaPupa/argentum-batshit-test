@@ -1,0 +1,44 @@
+{
+  "schema":"izzet-position1-whisperer-of-the-wilds-qualification-budget-v1",
+  "date_utc":"2026-09-30",
+  "parent_main":"96d6da744aa9051ce4064f1e768f10228e81744b",
+  "basis":{
+    "post_llanowar_registry_audit_path":"experiments/izzet-science/evidence/position1-registry-reinventory-llanowar-36737814720-original-audit.json",
+    "post_llanowar_registry_audit_blob":"0dc69de23f551170c961c29a42e6c5d086a8cddc",
+    "missing_identity":"Whisperer of the Wilds",
+    "selection_reason":"smallest high-reuse missing Position-1 identity that composes the already-qualified tap-mana path with the engine's existing YouControl(power>=4) activation restriction; no new rules primitive"
+  },
+  "candidate":{
+    "source_path":"mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/frf/cards/WhispererOfTheWilds.kt",
+    "source_blob":"931c5141a31ca6e01d617e63635fed545f379dec",
+    "test_path":"mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WhispererOfTheWildsScenarioTest.kt",
+    "test_blob":"370cbc8ef8b8933e1f2004dd83dfdb133acdbeaa",
+    "set_snapshot":"mtg-sets/src/test/resources/snapshots/cards/FRF.json"
+  },
+  "reused_primitives":{
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Conditions.kt":"9f8c8aa9c93e83ecc7b7b2327b168beb374d808e",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ActivationRestriction.kt":"875765c53aca391964a36dd513372e15125d1bfd",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaEffects.kt":"ce3a338dc502068662da0b21884005b5eec1a52a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/mana/AddManaExecutor.kt":"b4e9cfa79933f564f54ea63ac60191c882084728",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/frf/cards/FeralKrushok.kt":"3b4ca917e1efa0d764f7c604da80e805f7ccdbbc",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/frf/FateReforgedSet.kt":"8254a1bffb4b4ac3926ce2e334589006a589a09b"
+  },
+  "acceptance":[
+    "fresh WhispererOfTheWildsScenarioTest executes exactly three deterministic cases with zero failures/errors/skips",
+    "basic tap ability adds exactly one green mana",
+    "ferocious tap ability is illegal without a controlled power-4-or-greater creature",
+    "ferocious tap ability adds exactly two green mana when the existing ferocious condition is satisfied",
+    "card lint passes",
+    "snapshot regeneration changes only ALL.json and FRF.json and adds exactly one new Whisperer of the Wilds record while preserving every existing record byte-for-byte",
+    "all candidate and reused primitive Git blobs match the prospective pins"
+  ],
+  "prohibited":[
+    "no inference that Ilysian Caryatid Leafkin Druid or any other missing mana creature is qualified",
+    "no whole Position-1 pilot/action-ranking or opponent competence",
+    "no commander lifecycle/damage/event-ledger authority",
+    "no seed allocation claim or gameplay"
+  ],
+  "authority_if_clean":"BOUNDED_WHISPERER_OF_THE_WILDS_DETERMINISTIC_MECHANICS_CANDIDATE_ONLY",
+  "next_gate":"Audit the fresh original once. If clean, adopt only Whisperer definition/test/snapshots into current runtime authority and then freshly re-inventory the frozen Position-1 registry.",
+  "official_counters_delta":0
+}
