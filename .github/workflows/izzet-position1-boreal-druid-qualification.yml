@@ -1,7 +1,7 @@
 name: Izzet Position-1 Boreal Druid Qualification
 on:
   push:
-    branches: ["izzet/position1-boreal-druid-20260930"]
+    branches: ["izzet/position1-boreal-druid-pin-repair-20260930"]
     paths:
       - "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/csp/cards/BorealDruid.kt"
       - "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BorealDruidScenarioTest.kt"
@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v6
-        with: {fetch-depth: 5}
+        with: {fetch-depth: 7}
       - uses: actions/setup-java@v5
         with: {distribution: temurin, java-version: "21"}
       - uses: gradle/actions/setup-gradle@v6
@@ -25,22 +25,22 @@ jobs:
           set -euo pipefail
           OUT=build/reports/izzet-boreal-druid
           mkdir -p "$OUT"
-          test "$(git rev-parse HEAD~4)" = "5a42df45d1a7a57d0e0e308e7ef13067dc0d2dde"
+          test "$(git rev-parse HEAD~6)" = "5a42df45d1a7a57d0e0e308e7ef13067dc0d2dde"\n          test "$(git rev-parse HEAD~2)" = "15ae61f8b571be39065966f4433055dbe8de87f9"
           test "$(git hash-object mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/csp/cards/BorealDruid.kt)" = "73c1d53e5c331d4809482698fdff7d4f55cb22c9"
           test "$(git hash-object mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BorealDruidScenarioTest.kt)" = "1ed9a4c472f1f497de6bea12a3d17e9fce3bd710"
-          test "$(git hash-object experiments/izzet-science/POSITION1_BOREAL_DRUID_BUDGET_20260930.json)" = "2dd751f4e2a8e5ad6630c31be62a40df3cf2951a"
+          test "$(git hash-object experiments/izzet-science/POSITION1_BOREAL_DRUID_BUDGET_20260930.json)" = "e4ea62b56cd7bb15351d74654c7c7ed299cb3063"
           test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Effects.kt)" = "1904846d3b5ad489224784b5d9687c68f8b207ee"
           test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaEffects.kt)" = "ce3a338dc502068662da0b21884005b5eec1a52a"
           test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/mana/AddColorlessManaExecutor.kt)" = "7c394962561083925c90ec508caf545c6b9fd138"
           test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/player/PlayerComponents.kt)" = "3a375f2d1a53976acf587bfa2f23f9e290add040"
-          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wth/cards/MindStone.kt)" = "8df40683f099a0e890bbc505f67cbfb360744e52d"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wth/cards/MindStone.kt)" = "8df40683f099a0e890bbc505f67cbfb360744e52"
           test "$(git hash-object mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/csp/ColdsnapSet.kt)" = "5b1b600a765f2a8d65785126efcd1f430fbffc7c"
           {
             git rev-parse HEAD
             git rev-parse HEAD^
             git rev-parse HEAD^^
             git rev-parse HEAD~3
-            git rev-parse HEAD~4
+            git rev-parse HEAD~4\n            git rev-parse HEAD~5\n            git rev-parse HEAD~6
             git hash-object mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/csp/cards/BorealDruid.kt
             git hash-object mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BorealDruidScenarioTest.kt
             git hash-object experiments/izzet-science/POSITION1_BOREAL_DRUID_BUDGET_20260930.json
