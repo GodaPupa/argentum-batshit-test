@@ -1,0 +1,56 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-path-repair-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"bc63ac914f49b462b393859b55a58bdc564b7be8",
+  "workflow_blob":"d1c5e39b63553f4c7c849fb4bb66d4d5b923722c",
+  "budget_blob":"1799ab01e03f8c901eadd741ca03f845c870c2fe",
+  "verify_acceptance_blob":"e82c9cf587e2cedfa7e819606851af0e18c3089d",
+  "restore_helper_blob":"dd001c437f627b1615ccb590f2331589d4161f72",
+  "accepted_manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+  "failed_preallocation_original":{
+    "run_id":36726029721,
+    "artifact_id":11103875973,
+    "artifact_sha256":"6b92de08d7e9a308a7f9b931884d0a9572244d2275b06482acc32e8576494622",
+    "failure_stage":"Restore exact source08 runtime and Java without executing Java",
+    "allocation_invocation_executed":false,
+    "entropy_consumed":false,
+    "ledger_created":false,
+    "games_initialized":0,
+    "observed_classpath_sha256":"8b86bb272d4ea6f08b93bd306970b4370e12bb108c8653d27cd792949c752931",
+    "accepted_classpath_sha256":"3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415"
+  },
+  "diagnosis":{
+    "rows":56,
+    "semantic_row_content_equal":true,
+    "only_difference":"absolute path prefix",
+    "observed_prefix":"/__w/_temp/ferocity-source08-runtime-36655120463/",
+    "accepted_prefix":"/home/runner/work/_temp/ferocity-source08-runtime-36655120463/",
+    "canonical_rewrite_reproduces_accepted_sha256":true
+  },
+  "decision":"ACCEPT_PATH_ONLY_REPAIRED_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL",
+  "review":{
+    "accepted_verify_only_prerequisite":"PASS",
+    "restore_helper_unchanged":"PASS",
+    "runtime_member_and_hash_content_unchanged":"PASS",
+    "java_identity_unchanged":"PASS",
+    "classpath_order_and_entry_hashes_unchanged":"PASS",
+    "repair_changes_only_container_alias_to_preaccepted_absolute_prefix":"PASS",
+    "all_56_rewritten_paths_must_exist_before_allocation":"PASS",
+    "rewritten_classpath_must_hash_to_exact_accepted_3615e99e":"PASS",
+    "fixed_16_allocation_identity_contract":"PASS",
+    "fixed_48_stream_entropy_contract":"PASS",
+    "zero_replacements_no_reroll":"PASS",
+    "run_one_and_gameplay_absent":"PASS"
+  },
+  "accepted_scope":[
+    "Create exactly one v2 marker-only execution commit and retry the D2 allocation gate after path-only normalization.",
+    "If and only if all preallocation checks pass, FerocityDevelopmentCli allocate may be invoked once against the exact accepted manifest."
+  ],
+  "official_state_before_successor":{"claims":0,"allocations":0,"seed_streams":0,"games":0,"outcomes":0},
+  "official_state_if_clean":{"claims":0,"allocations":16,"seed_streams":48,"games":0,"outcomes":0},
+  "explicit_non_authority":[
+    "No run-one, trial claim, development journal, game initialization, gameplay, outcome exposure, evaluation allocation or confirmation allocation."
+  ],
+  "next_gate":"Dispatch one v2 allocation original and audit it once before any one-row claim/runner/replay gate.",
+  "official_counters_delta":0
+}
