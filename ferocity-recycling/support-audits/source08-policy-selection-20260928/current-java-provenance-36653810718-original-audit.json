@@ -1,0 +1,54 @@
+{
+  "schema": "ferocity-current-source08-java-provenance-36653810718-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36653810718,
+  "artifact_id": 11071457936,
+  "artifact_sha256": "aa63f34c10887ae0b1c2b0dfaf4b9cf305b4f1a698142d0b4a9f7bd74832d372",
+  "head": "ca9f795b012cd42d7a0c52b918de62323d961529",
+  "pins": {
+    "publication_manifest": "262f78d820ac8834d796d3cc634bf45bbb155cf6",
+    "budget_v2": "851fe4d6c661d13f94da57138c5d1e3689623471",
+    "parser": "15afc5797050897adc6dc3e443efbba60f558e91",
+    "workflow": "0e92cfa821b5bbedecfbbe79f5b5e2dd7f0ea04a"
+  },
+  "integrity": {
+    "workflow_conclusion": "success",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "reassembled_source08_gym_artifact_id": 10914678223,
+    "reassembled_source08_gym_bytes": 95124680,
+    "reassembled_source08_gym_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "reassembled_parts": 12,
+    "java_started": false,
+    "gradle_started": false,
+    "exporter_started": false,
+    "seed_or_entropy_read": false,
+    "allocation_read": false,
+    "game_initialized": false
+  },
+  "result": {
+    "scanned_members": 8,
+    "recorded_provenance_matches": 21881,
+    "distribution": "Eclipse Temurin",
+    "java_version": "21.0.12.1+1",
+    "archive_url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz",
+    "java_executable_path": "/home/runner/work/_temp/ferocity-tools/jdk-21.0.12.1+1/bin/java",
+    "java_executable_sha256": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "jdk_provenance_member_sha256": "b738694800f518c42284487c4422c65677ee0c50a96d83a92eaad39ae9bf620b",
+    "runtime_archive_receipt_member_sha256": "1dd2e960d9de93ad59a2439a14ef5345faa6bc572b9e8db3d3b886e18f8b1d49"
+  },
+  "decision": "ACCEPTED_RECORDED_SOURCE08_JAVA_PROVENANCE_RECOVERY_ONLY",
+  "accepted_scope": [
+    "The exact preserved source08 gym artifact was losslessly reassembled from the publication manifest and its 12 verified parts.",
+    "The preserved runtime receipt records Eclipse Temurin 21.0.12.1+1 and exact Java executable SHA-256 2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d.",
+    "The preserved JDK provenance record identifies the exact Adoptium release asset URL for x64 Linux."
+  ],
+  "limits": [
+    "Recorded provenance recovery is not independent distribution-byte verification.",
+    "No Java executable was run or independently downloaded by this gate.",
+    "No runtime/export bundle, Red receiving, D2 admission, seed, allocation or gameplay authority."
+  ],
+  "next_gate": "Independently verify the exact immutable Adoptium release asset digest and the extracted bin/java bytes without executing Java. If both match the preserved source08 identities, bind architecture/distribution/executable provenance into the current runtime export plan.",
+  "official_counters_delta": 0
+}
