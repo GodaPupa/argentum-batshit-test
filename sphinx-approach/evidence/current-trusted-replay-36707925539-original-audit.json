@@ -1,0 +1,47 @@
+{
+  "schema":"sphinx-current-trusted-replay-36707925539-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36707925539,
+  "job_id":109862516182,
+  "artifact_id":11093660700,
+  "artifact_sha256":"5b6b742de626dde953a9fd10e412c25310e833ee4425fbd3844a8afde060595d",
+  "head":"02d338b3eb3626a5c40c0187c65cbe39201a95fe",
+  "parent":"6230822e5b3a5bd53d1e3afd376a1e8fc45772b2",
+  "pins":{
+    "budget_blob":"151a64cdd6767a3a4442e5732680e81c79cdd59d",
+    "workflow_blob":"74a5424a8cd2be948582a20ddf7e85033b3f1ad9",
+    "whole_actor_blob":"0e5a21429c367355c0951c7a3a367495a96a161d",
+    "journal_blob":"63efac3d9321d658f9590ffbab689a187516487c",
+    "trusted_transition_file_blob":"6671a492891d6dc41db6dcc6de6244918872c611"
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":12,
+    "source_parent_binding":"passed",
+    "fresh_xml_preserved_per_class":true,
+    "summary_sha256":"7ac6b6d70e7ad749890ff0104a90ada3a87a17628a4afb45d1be1eaa9d010f29"
+  },
+  "results":{
+    "SphinxStageEAcceptedTransitionJournalTest":{"tests":2,"xml_sha256":"7d0be30d26f9d984fcd52d45cdd97093b9b45f07f8e7c68c5f103a8f7c437352"},
+    "SphinxStageEForcedEmptyBlockersReceivingTest":{"tests":2,"xml_sha256":"3b694d3851020256e0a32fe08bcff9fddc4fc94903c110552cf3fa1731b3d537"},
+    "SphinxStageEForcedEmptyAttackersReceivingTest":{"tests":2,"xml_sha256":"3a89aab25842bbab0062cf157b8db460f70b704d78ae2da0b7f637b780f2e06f"},
+    "SphinxStageEUniquePassPriorityReceivingTest":{"tests":2,"xml_sha256":"eb543c6ce963cbedff4e2490a4780119afb6c6a8fbe86b2e401bbb1588773e07"},
+    "SphinxStageEMultiCastDiscriminatorReceivingTest":{"tests":2,"xml_sha256":"fd3f862ec590bad0d4c1c6404911bb79132eedfc87b44a3c6c4eb6d814fafca6"}
+  },
+  "decision":"ACCEPTED_CURRENT_TRUSTED_ACCEPTED_TRANSITION_REPLAY_SUBSTRATE_ONLY",
+  "accepted_scope":[
+    "Current-source durable Ponder reorder/shuffle accepted-transition journaling and replay is qualified for exactly the two preserved traces.",
+    "Create-new, durable append/force, reopen, hash-chain/state-continuity replay and drift rejection are covered by the accepted replay tests.",
+    "Forced-empty attackers/blockers, unique-pass and bounded multi-cast discriminator regressions remain clean on the same source."
+  ],
+  "limits":[
+    "No nonempty attacker/blocker ranking or mandatory-blocker policy.",
+    "No multiple-cast ranking beyond the accepted discriminator.",
+    "No general whole-game collector/runner, opponent package, Stage-E admission, seed, allocation or gameplay authority.",
+    "Run 36707925539 is consumed."
+  ],
+  "next_gate":"Qualify the smallest remaining nonempty whole-actor action-selection surface, then bind accepted action-selection plus this replay substrate into collector/runner and prospective Stage-E freeze gates.",
+  "official_counters_delta":0
+}
