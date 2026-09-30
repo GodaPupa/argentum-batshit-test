@@ -185,6 +185,14 @@ def main():
     second=run_gradle("second-offline-repeat",True,OUT/"classload-2.log",OUT/"runtime-2.json",gradle_home)
     graph2=json.loads((OUT/"runtime-2.json").read_text())
     assert graph1["ordered_files"]==graph2["ordered_files"] and graph1["components"]==graph2["components"] and graph1["dependencies"]==graph2["dependencies"]
+    for raw in graph2["ordered_files"]:
+        rp=pathlib.Path(raw).resolve()
+        assert rp.is_relative_to(ROOT) or rp.is_relative_to(gradle_home), ("runtime entry outside source/store",rp)
+    for label in ("first-network-populate","second-offline-repeat"):
+        proc_rows=json.loads((OUT/f"{label}-processes.json").read_text())
+        workers=[r for r in proc_rows if any("Gradle Test Executor" in a for a in r["argv"])]
+        assert workers, ("missing captured Gradle test worker",label)
+        assert all(r["exe"]==str(JAVA) and r["exe_sha256"]==EXPECTED["java"] for r in workers), ("unexpected test-worker Java",label,workers)
     store_after=file_inventory(store_root,exclude_names=frozenset({"daemon","workers","notifications","fileHashes","file-changes","buildOutputCleanup"}))
     (OUT/"store-after-offline.json").write_bytes(canonical(store_after))
     class1,d1=parse_classlog(OUT/"classload-1.log"); class2,d2=parse_classlog(OUT/"classload-2.log")
