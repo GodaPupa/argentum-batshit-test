@@ -1,0 +1,53 @@
+{
+  "schema":"sphinx-stage-e-forced-empty-blockers-36697931056-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36697931056,
+  "artifact_id":11088587978,
+  "artifact_sha256":"5a9c1b5414ef2aa6dde9434b1ae3f99f050a329efaa7c1bbd81ca0b1796b83c2",
+  "head":"b4d9257f82763294947acfb18aacdf7e19469da9",
+  "parent":"e3baa890419e14b1a01563fb0f43ae9ed0dd2f12",
+  "accepted_parent_receipt_commit":"44cc8b5242b37f141ef2c179e4770d08e5403567",
+  "pins":{
+    "whole_actor":"0e5a21429c367355c0951c7a3a367495a96a161d",
+    "forced_empty_blockers_test":"027fc80a3a67f39c02949eba8eeabf1bfe81526b",
+    "forced_empty_attackers_test":"4c2fdbc3c408822dda64216c3ad91882bd81b6c1",
+    "unique_pass_test":"d7a141cf2be33dd5eed826aa7bb52460c66a5209",
+    "multicast_test":"6b794b196d4ff65ab3a7fff5f14febb8f310ab35",
+    "budget":"b2991f4715f64cb9f267bb38a56fe46ee0e47f07",
+    "workflow":"be3bdb540f78c9b5f640a2fa02460d2b1f27bc93"
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "zip_members":9,
+    "full_history_parent_binding":"passed",
+    "source_binding":"passed",
+    "freshness":"--rerun-tasks --no-build-cache on all four preserved banks",
+    "source_record_sha256":"f481b3ffb741db45469b5ad7c9d75ae41ce1704d029d2310727cff2569f8aa68",
+    "forced_empty_blockers_xml_sha256":"0f0ac8c30f6fed0dcc7d7503bfd5c6b892703fd0d7822ec681af4d50bb7121f6",
+    "forced_empty_attackers_xml_sha256":"c02d8c899e645576c21fec1069a8ceabb21679755a6533cf8bb0fdd5a855376a",
+    "unique_pass_xml_sha256":"08d048b3996b8e92b34165dd31edf1072f668be15adb75cc509fcf50e06c7d6b",
+    "multicast_xml_sha256":"a478749d5a5b5e3095dda8e123ebe379bf020f95594478032f2880a376203b1c"
+  },
+  "result":{
+    "forced_empty_blockers":{"tests":2,"passes":2,"failures":0,"errors":0,"skipped":0},
+    "forced_empty_attackers_regression":{"tests":2,"passes":2,"failures":0,"errors":0,"skipped":0},
+    "unique_pass_regression":{"tests":2,"passes":2,"failures":0,"errors":0,"skipped":0},
+    "multicast_discriminator_regression":{"tests":2,"passes":2,"failures":0,"errors":0,"skipped":0}
+  },
+  "decision":"ACCEPTED_BOUNDED_FORCED_EMPTY_BLOCKERS_SEAM",
+  "accepted_scope":[
+    "For each frozen reconstructed Stage-E actor, when the real block-declaration menu has one legal DeclareBlockers action, validBlockers is exactly empty and mandatory blocker assignments are null or empty, the whole actor may propose DeclareBlockers(actor, emptyMap()).",
+    "The real engine accepts that exact proposal.",
+    "Previously accepted forced-empty attackers, unique-pass priority and bounded multi-cast discriminator seams remain clean."
+  ],
+  "limits":[
+    "No blocker selection when a valid blocker exists.",
+    "No mandatory blocker assignment, blocker ordering or combat-damage assignment.",
+    "No nonempty attacker ranking or broader pass-vs-cast authority.",
+    "No trusted runner/replay, Stage-E freeze/admission, seed, allocation or gameplay authority."
+  ],
+  "next_gate":"Advance the smallest remaining nonempty combat/action-selection surface or trusted runner/replay boundary without broadening the accepted multi-cast/pass limits.",
+  "official_counters_delta":0
+}
