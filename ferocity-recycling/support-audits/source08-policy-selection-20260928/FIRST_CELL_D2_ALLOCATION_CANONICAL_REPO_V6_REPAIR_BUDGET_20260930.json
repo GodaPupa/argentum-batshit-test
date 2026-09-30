@@ -1,0 +1,35 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-canonical-repo-v6-repair-budget-v1",
+  "date_utc":"2026-09-30",
+  "status":"PROSPECTIVE_PREALLOCATION_PATH_REPAIR_REVIEW_REQUIRED",
+  "basis":{
+    "accepted_allocation_budget_blob":"1799ab01e03f8c901eadd741ca03f845c870c2fe",
+    "accepted_verify_only_audit_blob":"e82c9cf587e2cedfa7e819606851af0e18c3089d",
+    "v5_run":36746049068,
+    "v5_audit_blob":"9feb5ed2e191b1585ef8f078b66b1adaed734778",
+    "v5_decision":"INCOMPLETE_PREALLOCATION_REPOSITORY_PATH_BLOCKER_NO_ENTROPY"
+  },
+  "only_authorized_change":{
+    "problem":"Job-level /home/runner/work paths are translated to /__w paths in the container environment, causing manifest repositoryPath verification to fail before allocate.",
+    "repair":"Use shell-local literal /home/runner/work/argentum-batshit-test/argentum-batshit-test and /home/runner/work/_temp values exactly as the already successful verify-only workflow did.",
+    "runtime_restore":"Pass the shell-local historical runner-temp literal directly to the accepted source08 restore helper and require the accepted classpath/Java hashes without remapping through job-level path variables."
+  },
+  "unchanged":[
+    "manifest SHA-256 44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+    "manifest source artifact 11093470964 and exact artifact SHA-256",
+    "source08 runtime/JDK restore helper and path token",
+    "one CLI allocate invocation maximum",
+    "16 fixed allocation identities and 48 independent streams",
+    "zero replacements and no reroll semantics",
+    "no run-one, trial claim, journal, game initialization, gameplay or outcome interpretation"
+  ],
+  "acceptance":[
+    "The exact canonical repository copy exists physically at the manifest repositoryPath and its HEAD equals the execution head.",
+    "The exact restored runtime/JDK/classpath exist physically at the accepted /home/runner/work/_temp paths and rehash cleanly.",
+    "All preallocation D2 allocation/journal/supervisor paths are absent before Java.",
+    "Only then may the one allocate invocation begin."
+  ],
+  "authority_if_clean":"IMPLEMENTATION_REPAIR_ONLY_FOR_ONE_FRESH_D2_ALLOCATION_ORIGINAL",
+  "next_gate":"Independently review exact v6 workflow/repair bytes before a marker-only dispatch.",
+  "official_counters_delta_before_execution":0
+}
