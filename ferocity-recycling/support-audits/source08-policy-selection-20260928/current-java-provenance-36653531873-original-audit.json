@@ -1,0 +1,48 @@
+{
+  "schema": "ferocity-current-source08-java-provenance-36653531873-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36653531873,
+  "job_id": 109692790274,
+  "artifact_id": 11070959699,
+  "artifact_sha256": "a6e469b61a1cbe16ab14b57469a26376ff7b8f4fbd879647140d8ec1180f4a08",
+  "head": "ebe690386ae92ba511a160fff208b2b9291d1586",
+  "parent": "db69c240708a5531af67f1b71b3de8f8e2cbc0f3",
+  "pins": {
+    "wrong_selected_archive_git_blob": "0db1ebd5259f858da7c391ed2e8ee623c2c39ae2",
+    "budget": "fa3d189553afdaf448f64b394c1be2c96ea532c2",
+    "parser": "014859696db40392948a27959526c8ded0f423c8",
+    "workflow": "f43276a666bf9c89b5e307a38fc5db1e40e61b94"
+  },
+  "integrity": {
+    "workflow_conclusion": "failure",
+    "source_binding_step": "passed",
+    "java_started": false,
+    "gradle_started": false,
+    "exporter_started": false,
+    "seed_or_entropy_read": false,
+    "game_initialized": false
+  },
+  "failure": {
+    "class": "TECHNICAL_WRONG_ARCHIVE_SELECTOR",
+    "observed_sha256": "e9556416312109b839d36bf1e894314d8d93a04701470de2c9bf74df4033b06a",
+    "expected_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "cause": "The selected repository file original-artifact-10915032554.zip is the smaller priority artifact, not the source08 gym artifact 10914678223 whose runtime receipt carries the Java/runtime provenance.",
+    "behavioral_evidence_exposed": false
+  },
+  "correct_source": {
+    "publication_manifest": "ferocity-recycling/evidence/source08-takeover/publication-manifest.json",
+    "publication_manifest_git_blob": "262f78d820ac8834d796d3cc634bf45bbb155cf6",
+    "artifact_id": 10914678223,
+    "artifact_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "artifact_bytes": 95124680,
+    "parts": 12
+  },
+  "decision": "INCOMPLETE_TECHNICAL_WRONG_ARCHIVE_SELECTOR",
+  "interpretation": [
+    "No Java provenance conclusion is drawn from this original.",
+    "No experiment, policy, runtime or admission failure is inferred.",
+    "This original is consumed and must not be rerun unchanged."
+  ],
+  "next_gate": "Use the exact lossless publication manifest to verify and reassemble artifact 10914678223 from its 12 repository parts, verify the full original digest, then inspect only receipt/text metadata under a new budget.",
+  "official_counters_delta": 0
+}
