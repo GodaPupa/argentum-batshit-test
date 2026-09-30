@@ -1,0 +1,45 @@
+{
+  "schema":"ferocity-final-development-verify-only-36709748908-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36709748908,
+  "job_id":109868423971,
+  "artifact_id":11094176040,
+  "artifact_sha256":"cdc5a9879685da722b585df013c1266c7fe795827e890f8058577a5d16898856",
+  "head":"ea8c0503aa9c300a919ae33a5383b9c25a8455a2",
+  "manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":10,
+    "exact_runtime_restore":"passed",
+    "runtime_files":2159,
+    "classpath_entries":56,
+    "java_executable_sha256":"2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "java_invocations":1,
+    "operation":"verify"
+  },
+  "result":{
+    "status":"VERIFIED_INPUTS_NO_ENTROPY_NO_GAME",
+    "allocation_created":false,
+    "entropy_read":false,
+    "ledger_created":false,
+    "trial_claim_created":false,
+    "journal_created":false,
+    "game_initialized":false,
+    "outcomes_exposed":0,
+    "official_counters_delta":0
+  },
+  "decision":"ACCEPTED_FINAL_DEVELOPMENT_VERIFY_ONLY_INPUT_ADMISSION",
+  "accepted_scope":[
+    "The exact repaired canonical D2-first-cell manifest passes the existing FerocityDevelopmentAdmission verifier against the exact accepted source08 runtime, Java, qualification, definition-bundle, policy, coverage and watchdog authorities.",
+    "The verify-only CLI operation establishes VERIFIED_INPUTS_NO_ENTROPY_NO_GAME for manifest 44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d."
+  ],
+  "limits":[
+    "No entropy, official seed ledger, allocation, run-one claim, gameplay or outcome authority was exercised by this original.",
+    "Allocation remains a distinct prospective gate and must use the exact accepted manifest with zero replacements and no reroll semantics.",
+    "Run 36709748908 is consumed and must not be rerun or replaced."
+  ],
+  "next_gate":"Prospectively freeze and independently review the one fixed D2-first-cell allocation operation against this exact accepted manifest, including exclusive fixed ledger path, 16 declared allocations / 48 independent streams, zero replacements, no-reroll preservation and no game initialization; only then may one allocation original consume entropy.",
+  "official_counters_delta":0
+}
