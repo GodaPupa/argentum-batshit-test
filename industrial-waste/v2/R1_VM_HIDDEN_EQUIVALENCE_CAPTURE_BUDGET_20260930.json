@@ -1,0 +1,40 @@
+{
+  "schema":"industrial-r1-vm-hidden-equivalence-capture-budget-v1",
+  "date_utc":"2026-09-30",
+  "accepted_design_commit":"b33ac944d6b9c2f22f05b6dfcbc21ec453d36bb5",
+  "accepted_design_blob":"e0830a9e1ceb3f6232847de7d0b9d93cb7997867",
+  "design_review_commit":"02fd788e004a023b5bb90e0386afd745c2bce3da",
+  "blocked_original":{
+    "run_id":36731156370,
+    "artifact_id":11105538326,
+    "artifact_sha256":"20126edf15bcb1bf42953c231164926cf4e851e662fc8c460ae26558b198e03e",
+    "audit_commit":"af96a692ca006abf224c94d7cc79c9e3ec201853"
+  },
+  "accepted_store":{
+    "artifact_id":11105215706,
+    "outer_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649",
+    "archive_sha256":"a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3",
+    "manifest_sha256":"b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4",
+    "files":1339
+  },
+  "allowed_change":"Repeat-equivalence validator and evidence fields only.",
+  "required_behavior":[
+    "Both Gradle launches remain network-disabled --offline.",
+    "Exact fixed IndustrialWasteV2FrozenResponderEquivalenceTest remains 10/10 on each repeat.",
+    "Runtime graph remains exactly repeat-identical.",
+    "Generated/hidden unique normalized family sets must be exactly equal.",
+    "Non-VM generated normalized-family multiplicities must be exactly equal.",
+    "For __JVM_LookupDefineClass__ only, normalized family sets must be exactly equal while raw multiplicity may vary and must be preserved as an explicit delta.",
+    "All platform/source/store/runtime/generator pins remain unchanged."
+  ],
+  "prohibited":[
+    "no exclusion of a generated family after classification",
+    "no network during capture",
+    "no package install/setup-java",
+    "no official seed read",
+    "no claim/allocation/gameplay",
+    "no expected manifest or R1 permit"
+  ],
+  "authority_if_clean":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY",
+  "official_counters_delta":0
+}
