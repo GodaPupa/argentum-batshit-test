@@ -1,0 +1,76 @@
+name: Industrial R1 supplemental hermetic capture
+on:
+  push:
+    branches: ["industrial/r1-supplemental-hermetic-current-execute-20260930"]
+    paths:
+      - "industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_EXECUTION_MARKER_20260930.json"
+permissions: {contents: read}
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      ARGENTUM_DECLARED_IMAGE: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact independently reviewed implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(uname -m)" = "x86_64"
+          REVIEW=industrial-waste/v2/evidence/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+          MARKER=industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_EXECUTION_MARKER_20260930.json
+          /usr/bin/python3.10 - "$REVIEW" "$MARKER" <<'PY'
+          import json,pathlib,subprocess,sys
+          review=json.loads(pathlib.Path(sys.argv[1]).read_text())
+          marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
+          assert review["decision"]=="ACCEPT_IMPLEMENTATION_FOR_ONE_FRESH_SUPPLEMENTAL_CAPTURE_ORIGINAL"
+          assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
+          assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
+          changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
+          assert changed==[sys.argv[2]],changed
+          for field,path in {
+            "budget_blob":"industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_IMPLEMENTATION_BUDGET_20260930.json",
+            "capture_source_blob":"industrial-waste/v2/capture_supplemental_hermetic_r1.py",
+            "gradle_probe_blob":"industrial-waste/v2/r1-supplemental-hermetic-capture.init.gradle",
+            "workflow_blob":".github/workflows/industrial-r1-supplemental-hermetic-capture-20260930.yml",
+          }.items():
+              actual=subprocess.check_output(["git","hash-object",path],text=True).strip()
+              assert actual==review[field],(field,actual,review[field])
+          assert subprocess.call(["git","merge-base","--is-ancestor","de27e189e7597bdf48f213a40a0bbf1b70f63c1a","HEAD"])==0
+          assert subprocess.check_output(["git","rev-parse","de27e189e7597bdf48f213a40a0bbf1b70f63c1a^{tree}"],text=True).strip()=="d62e3fbd59dd78cc444c09b26673ae1bf3a848ab"
+          PY
+      - name: Execute single supplemental capture original
+        shell: bash
+        run: |
+          set -euo pipefail
+          /usr/bin/python3.10 industrial-waste/v2/capture_supplemental_hermetic_r1.py | tee build-industrial-r1-supplemental-hermetic.log
+          /usr/bin/python3.10 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path("build/reports/industrial-r1-supplemental-hermetic/summary.json")
+          r=json.loads(p.read_text())
+          assert r["authority"]=="SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY"
+          assert r["class_census"]["equal"] is True
+          assert r["fixed_worker"]=={"class":"com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest","tests":10,"failures":0,"errors":0,"skipped":0}
+          assert r["official_seed_files_read"] is False
+          assert r["official_counters"]=={"claims":0,"allocations":0,"games":0,"outcomes":0}
+          PY
+      - name: Preserve complete supplemental original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-r1-supplemental-hermetic-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/industrial-r1-supplemental-hermetic/
+            build-industrial-r1-supplemental-hermetic.log
+            industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_IMPLEMENTATION_BUDGET_20260930.json
+            industrial-waste/v2/evidence/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+            industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_EXECUTION_MARKER_20260930.json
+          if-no-files-found: error
+          retention-days: 90
