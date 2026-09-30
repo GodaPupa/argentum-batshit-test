@@ -17,15 +17,15 @@ jobs:
           set -euo pipefail
           OUT=build/reports/ferocity-current-java-provenance
           mkdir -p "$OUT"
-          test "$(git rev-parse HEAD^)" = "db69c240708a5531af67f1b71b3de8f8e2cbc0f3"
-          test "$(git hash-object ferocity-recycling/evidence/source08-takeover/priority08/original-artifact-10915032554.zip)" = "0db1ebd5259f858da7c391ed2e8ee623c2c39ae2"
-          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_JAVA_PROVENANCE_RECOVERY_BUDGET.json)" = "fa3d189553afdaf448f64b394c1be2c96ea532c2"
-          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/recover_current_source08_java_provenance.py)" = "014859696db40392948a27959526c8ded0f423c8"
+          test "$(git rev-parse HEAD^)" = "748ae2dcab2dd68d67d3fb33a7828b0737b2c569"
+          test "$(git hash-object ferocity-recycling/evidence/source08-takeover/publication-manifest.json)" = "262f78d820ac8834d796d3cc634bf45bbb155cf6"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_JAVA_PROVENANCE_RECOVERY_BUDGET_V2.json)" = "851fe4d6c661d13f94da57138c5d1e3689623471"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/recover_current_source08_java_provenance.py)" = "15afc5797050897adc6dc3e443efbba60f558e91"
           {
             git rev-parse HEAD
             git rev-parse HEAD^
-            git hash-object ferocity-recycling/evidence/source08-takeover/priority08/original-artifact-10915032554.zip
-            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_JAVA_PROVENANCE_RECOVERY_BUDGET.json
+            git hash-object ferocity-recycling/evidence/source08-takeover/publication-manifest.json
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_JAVA_PROVENANCE_RECOVERY_BUDGET_V2.json
             git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/recover_current_source08_java_provenance.py
             git hash-object .github/workflows/ferocity-current-java-provenance-recovery.yml
             git status --porcelain
