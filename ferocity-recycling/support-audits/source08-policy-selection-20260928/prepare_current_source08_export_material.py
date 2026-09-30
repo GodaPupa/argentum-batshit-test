@@ -26,9 +26,10 @@ assert budget["java"]["asset_sha256"] == JDK_SHA
 report = root / "build/reports/ferocity-export-plan-assembly"
 report.mkdir(parents=True, exist_ok=True)
 runner_temp = pathlib.Path(os.environ["RUNNER_TEMP"]).resolve()
-restore_root = runner_temp / f"ferocity-source08-runtime-{os.environ.get('GITHUB_RUN_ID','local')}"
-jdk_parent = runner_temp / f"ferocity-source08-jdk-{os.environ.get('GITHUB_RUN_ID','local')}"
-export_output = runner_temp / f"ferocity-first-cell-export-output-{os.environ.get('GITHUB_RUN_ID','local')}"
+path_token = os.environ.get("FEROCITY_ACCEPTED_PATH_TOKEN", os.environ.get("GITHUB_RUN_ID", "local"))
+restore_root = runner_temp / f"ferocity-source08-runtime-{path_token}"
+jdk_parent = runner_temp / f"ferocity-source08-jdk-{path_token}"
+export_output = runner_temp / f"ferocity-first-cell-export-output-{path_token}"
 for p in (restore_root, jdk_parent, export_output):
     assert not p.exists(), p
 
@@ -54,7 +55,7 @@ def safe_rel(name: str) -> pathlib.PurePosixPath:
 publication = json.loads((evidence / "publication-manifest.json").read_text())
 artifact = next(row for row in publication["originals"] if row["id"] == 10914678223)
 assert artifact["sha256"] == ORIGINAL_SHA and artifact["bytes"] == ORIGINAL_BYTES and len(artifact["parts"]) == 12
-original_path = runner_temp / f"ferocity-source08-gym-{os.environ.get('GITHUB_RUN_ID','local')}.zip"
+original_path = runner_temp / f"ferocity-source08-gym-{path_token}.zip"
 whole = hashlib.sha256()
 written = 0
 part_receipts = []
@@ -95,7 +96,7 @@ try:
     restore_root.mkdir()
     expected_members = {row["path"]: row for row in runtime_receipt["archive"]["members"]}
     observed_members = {}
-    runtime_tmp = runner_temp / f"ferocity-source08-runtime-{os.environ.get('GITHUB_RUN_ID','local')}.tar.gz"
+    runtime_tmp = runner_temp / f"ferocity-source08-runtime-{path_token}.tar.gz"
     runtime_tmp.write_bytes(runtime_bytes)
     try:
         with tarfile.open(runtime_tmp, "r:gz") as tf:
@@ -152,7 +153,7 @@ try:
     class_path_sha = file_sha(class_path_path)
 
     # Restore the independently accepted exact Temurin distribution without running it.
-    jdk_archive = runner_temp / f"temurin-21.0.12.1-1-{os.environ.get('GITHUB_RUN_ID','local')}.tar.gz"
+    jdk_archive = runner_temp / f"temurin-21.0.12.1-1-{path_token}.tar.gz"
     h = hashlib.sha256(); count = 0
     request = urllib.request.Request(JDK_URL, headers={"User-Agent": "Argentum-Ferocity-Export-Plan/1.0"})
     with urllib.request.urlopen(request, timeout=120) as response, jdk_archive.open("xb") as out:
