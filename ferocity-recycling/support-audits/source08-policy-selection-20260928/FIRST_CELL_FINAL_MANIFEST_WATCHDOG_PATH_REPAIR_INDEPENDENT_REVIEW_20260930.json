@@ -1,0 +1,32 @@
+{
+  "schema":"ferocity-final-manifest-watchdog-path-repair-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"a23faf2eae97ed1e4b7adcf5a6e61abe1e12fdc6",
+  "budget_blob":"1c126b48736eefe2a1bf834222cdc96cfa4add7e",
+  "repair_script_blob":"2906d723a5af46742dd96534765212faeb15dace",
+  "workflow_blob":"0f5ded7428c1b85fdad981228a77c503331a23fa",
+  "source_manifest_artifact":11077287825,
+  "source_manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+  "verify_blocker_run":36697783768,
+  "decision":"ACCEPT_PATH_ONLY_MANIFEST_REPAIR_FOR_ONE_NON_EXECUTING_ORIGINAL",
+  "review":{
+    "accepted_manifest_original_exact_digest":"PASS",
+    "accepted_watchdog_source_bytes_unchanged":"PASS",
+    "accepted_author_receipt_path_exact":"PASS_watchdog/source/trial_watchdog.py",
+    "allowed_manifest_change_count":"PASS_1",
+    "only_changed_field":"PASS_watchdog.source.path",
+    "additional_materialization_is_same_source_bytes":"PASS",
+    "all_other_manifest_semantics_unchanged":"PASS",
+    "no_java_gradle_entropy_allocation_game":"PASS",
+    "marker_only_execution_separation":"PASS"
+  },
+  "accepted_scope":[
+    "Create one marker-only execution branch and produce one non-executing repaired canonical manifest artifact from the already-accepted construction original."
+  ],
+  "explicit_non_authority":[
+    "No verify-only Java invocation yet.",
+    "No VerifiedFerocityDevelopment capability, allocation, seed, ledger, claim, journal, game or outcome authority."
+  ],
+  "next_gate":"Execute the one non-executing repair original, audit its exact manifest delta and materialized source bytes, then independently adopt the repaired manifest for one fresh verify-only gate.",
+  "official_counters_delta":0
+}
