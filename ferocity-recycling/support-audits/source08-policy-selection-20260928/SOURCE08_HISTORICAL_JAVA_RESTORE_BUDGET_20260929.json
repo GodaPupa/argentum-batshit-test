@@ -17,25 +17,28 @@
     "sha256": "ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94",
     "github_release_asset_id": 521122372
   },
-  "scope": "DOWNLOAD_VERIFY_EXTRACT_AND_HASH_JAVA_BINARY_ONLY",
+  "scope": "DOWNLOAD_VERIFY_AND_READ_EXACT_JAVA_MEMBER_ONLY",
   "operation": [
     "download only the exact immutable official release asset URL",
-    "verify archive byte length and SHA-256 before extraction",
-    "list archive names and reject absolute/traversal paths or symlink/hardlink entries",
-    "extract into a new temporary directory",
-    "locate exactly one top-level JDK directory and its bin/java regular file",
-    "hash bin/java and compare to the historical source08 Java executable SHA-256",
-    "do not execute java or any extracted binary"
+    "verify archive byte length and SHA-256 before opening the tar payload",
+    "enumerate tar headers only and reject absolute/traversal member names",
+    "locate exactly one regular-file member ending /bin/java",
+    "read only that single bin/java member payload, preserve its byte length and SHA-256, and compare it to the historical source08 Java executable SHA-256",
+    "do not extract or read any other JDK member payload and do not execute java or any downloaded content"
   ],
   "acceptance": [
     "official archive size and SHA-256 exact",
-    "safe archive topology",
-    "extracted bin/java SHA-256 exactly equals historical 2a207f5e...",
+    "safe member-name topology",
+    "exactly one regular */bin/java member",
+    "bin/java SHA-256 exactly equals historical 2a207f5e...",
+    "no other JDK member payload read",
     "no JVM started, no Gradle/export/game/seed/entropy activity"
   ],
   "prohibited": [
     "no java -version",
-    "no execution of any downloaded/extracted binary",
+    "no archive-wide extraction",
+    "no payload read other than the exact bin/java member",
+    "no execution of downloaded content",
     "no exporter or plan assembly",
     "no official seed/allocation/gameplay"
   ],
