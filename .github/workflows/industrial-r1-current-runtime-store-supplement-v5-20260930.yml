@@ -1,0 +1,113 @@
+name: Industrial R1 current-runtime dependency store supplement v5
+on:
+  push:
+    branches: ["industrial/r1-current-runtime-store-supplement-v5-execute-20260930"]
+    paths:
+      - "industrial-waste/v2/R1_CURRENT_RUNTIME_STORE_SUPPLEMENT_V5_EXECUTION_MARKER_20260930.json"
+permissions:
+  contents: read
+  actions: read
+jobs:
+  construct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+
+      - name: Bind exact independently reviewed store-successor implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          REVIEW=industrial-waste/v2/evidence/R1_CURRENT_RUNTIME_STORE_SUPPLEMENT_V5_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+          MARKER=industrial-waste/v2/R1_CURRENT_RUNTIME_STORE_SUPPLEMENT_V5_EXECUTION_MARKER_20260930.json
+          /usr/bin/python3.10 - "$REVIEW" "$MARKER" <<'PY'
+          import json,pathlib,subprocess,sys
+          review=json.loads(pathlib.Path(sys.argv[1]).read_text())
+          marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
+          assert review["decision"]=="ACCEPT_IMPLEMENTATION_FOR_ONE_CURRENT_RUNTIME_STORE_SUPPLEMENT_V5_ORIGINAL"
+          assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
+          assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
+          changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
+          assert changed==[sys.argv[2]],changed
+          for field,path in {
+            "budget_blob":"industrial-waste/v2/R1_CURRENT_RUNTIME_STORE_SUPPLEMENT_V5_BUDGET_20260930.json",
+            "constructor_blob":"industrial-waste/v2/construct_r1_current_runtime_store_successor_v5.py",
+            "bootstrap_blob":"industrial-waste/v2/r1-dependency-store-bootstrap.init.gradle",
+            "runtime_probe_blob":"industrial-waste/v2/r1-supplemental-hermetic-capture.init.gradle",
+            "workflow_blob":".github/workflows/industrial-r1-current-runtime-store-supplement-v5-20260930.yml",
+          }.items():
+              actual=subprocess.check_output(["git","hash-object",path],text=True).strip()
+              assert actual==review[field],(field,actual,review[field])
+          assert marker["accepted_store_artifact"]==11080705894
+          assert marker["official_counters_delta"]==0
+          PY
+          test "$(uname -m)" = "x86_64"
+          test "$(git rev-parse de27e189e7597bdf48f213a40a0bbf1b70f63c1a^{tree})" = "d62e3fbd59dd78cc444c09b26673ae1bf3a848ab"
+          git merge-base --is-ancestor de27e189e7597bdf48f213a40a0bbf1b70f63c1a HEAD
+
+      - name: Materialize exact accepted 1272-file base store
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          INPUT="$RUNNER_TEMP/industrial-r1-current-runtime-store-v5-input"
+          test ! -e "$INPUT"
+          mkdir -p "$INPUT"
+          curl -L --fail --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11080705894/zip" \
+            -o "$INPUT/original.zip"
+          echo "1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b  $INPUT/original.zip" | sha256sum -c -
+          unzip -t "$INPUT/original.zip" >/dev/null
+          unzip -p "$INPUT/original.zip" build/reports/industrial-r1-dependency-store/immutable-gradle-input-store.tar.gz > "$INPUT/base-store.tar.gz"
+          unzip -p "$INPUT/original.zip" build/reports/industrial-r1-dependency-store/store-manifest.json > "$INPUT/base-manifest.json"
+          echo "b686ca26e715ba965a9156c455a6fba8c0f80f8d55883fc9b85285d4bb0b0b23  $INPUT/base-store.tar.gz" | sha256sum -c -
+          echo "8e427eb24c5c3043dab37abb681b0d3caf5243f4cb9357e1d196a92523ae9c0e  $INPUT/base-manifest.json" | sha256sum -c -
+          chmod 0444 "$INPUT/base-store.tar.gz" "$INPUT/base-manifest.json"
+          printf '%s\n' "$INPUT/base-store.tar.gz" > "$RUNNER_TEMP/industrial-v5-base-store.path"
+          printf '%s\n' "$INPUT/base-manifest.json" > "$RUNNER_TEMP/industrial-v5-base-manifest.path"
+
+      - name: Construct network supplement and prove clean offline runtime resolution
+        shell: bash
+        run: |
+          set -euo pipefail
+          ARGENTUM_BASE_STORE_ARCHIVE="$(cat "$RUNNER_TEMP/industrial-v5-base-store.path")" \
+          ARGENTUM_BASE_STORE_MANIFEST="$(cat "$RUNNER_TEMP/industrial-v5-base-manifest.path")" \
+            /usr/bin/python3.10 industrial-waste/v2/construct_r1_current_runtime_store_successor_v5.py \
+            | tee build-industrial-r1-current-runtime-store-supplement-v5.log
+          /usr/bin/python3.10 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path("build/reports/industrial-r1-current-runtime-store-supplement-v5/summary.json").read_text())
+          assert r["authority"]=="IMMUTABLE_CURRENT_RUNTIME_DEPENDENCY_STORE_SUCCESSOR_CANDIDATE_FOR_INDEPENDENT_REVIEW_ONLY"
+          assert r["accepted_base_store"]["artifact_id"]==11080705894
+          assert len(r["target_coordinates"])==8
+          assert r["unresolved_dependencies"]==0
+          assert r["online"]["returncode"]==0 and r["offline"]["returncode"]==0
+          assert r["successor_store_files"]>=1272
+          assert r["removed_files"]==0
+          assert r["tests_executed"]==0
+          assert r["official_seed_files_read"] is False
+          assert r["official_counters"]=={"claims":0,"allocations":0,"games":0,"outcomes":0}
+          PY
+
+      - name: Preserve exact store-successor original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-r1-current-runtime-store-supplement-v5-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/industrial-r1-current-runtime-store-supplement-v5/
+            build-industrial-r1-current-runtime-store-supplement-v5.log
+            industrial-waste/v2/R1_CURRENT_RUNTIME_STORE_SUPPLEMENT_V5_BUDGET_20260930.json
+            industrial-waste/v2/evidence/R1_CURRENT_RUNTIME_STORE_SUPPLEMENT_V5_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+            industrial-waste/v2/R1_CURRENT_RUNTIME_STORE_SUPPLEMENT_V5_EXECUTION_MARKER_20260930.json
+          if-no-files-found: error
+          retention-days: 90
