@@ -5,6 +5,10 @@ import hashlib,json,os,pathlib,re,shutil,subprocess,sys,sysconfig,tarfile,thread
 ROOT=pathlib.Path(".").resolve()
 OUT=ROOT/"build/reports/industrial-r1-supplemental-hermetic"
 INIT=ROOT/"industrial-waste/v2/r1-supplemental-hermetic-capture.init.gradle"
+BOOTSTRAP=ROOT/"industrial-waste/v2/r1-dependency-store-bootstrap.init.gradle"
+STORE_ARCHIVE_SHA="b686ca26e715ba965a9156c455a6fba8c0f80f8d55883fc9b85285d4bb0b0b23"
+STORE_MANIFEST_SHA="8e427eb24c5c3043dab37abb681b0d3caf5243f4cb9357e1d196a92523ae9c0e"
+STORE_FILES=1272
 SOURCE="de27e189e7597bdf48f213a40a0bbf1b70f63c1a"
 SOURCE_TREE="d62e3fbd59dd78cc444c09b26673ae1bf3a848ab"
 JAVA=pathlib.Path("/usr/lib/jvm/temurin-21-jdk-amd64/bin/java")
@@ -92,7 +96,7 @@ def process_row(pid:int):
 def run_gradle(label:str,offline:bool,classlog:pathlib.Path,graph:pathlib.Path,gradle_home:pathlib.Path):
     argv=["./gradlew","--no-daemon","--no-build-cache","--no-configuration-cache","--rerun-tasks","--console=plain"]
     if offline: argv.append("--offline")
-    argv += ["-I",str(INIT),f"-Dindustrial.classlog={classlog}",f"-Dindustrial.runtime.out={graph}",":ai:test",":ai:industrialR1CaptureRuntime"]
+    argv += ["-I",str(BOOTSTRAP),"-I",str(INIT),f"-Dindustrial.classlog={classlog}",f"-Dindustrial.runtime.out={graph}",":ai:test",":ai:industrialR1CaptureRuntime"]
     log=OUT/f"{label}.log"
     env=os.environ.copy(); env["JAVA_HOME"]=str(JAVA.parent.parent); env["GRADLE_USER_HOME"]=str(gradle_home)
     with log.open("wb") as out:
@@ -110,6 +114,50 @@ def run_gradle(label:str,offline:bool,classlog:pathlib.Path,graph:pathlib.Path,g
     (OUT/f"{label}-processes.json").write_bytes(canonical(sorted(seen.values(),key=lambda x:(x["start_ticks"],x["pid"]))))
     if rc: raise RuntimeError(f"{label} Gradle failed rc={rc}; see {log}")
     return {"argv":argv,"returncode":rc,"processes":len(seen),"log_sha256":sha_file(log)}
+
+def restore_accepted_store(archive:pathlib.Path, manifest_path:pathlib.Path, target:pathlib.Path):
+    assert archive.is_file() and sha_file(archive)==STORE_ARCHIVE_SHA
+    assert manifest_path.is_file() and sha_file(manifest_path)==STORE_MANIFEST_SHA
+    manifest=json.loads(manifest_path.read_text())
+    rows=manifest["files"]
+    assert len(rows)==STORE_FILES
+    expected={r["path"]:(r["bytes"],r["sha256"]) for r in rows}
+    assert len(expected)==STORE_FILES
+    assert all(p.startswith("wrapper/dists/") or p.startswith("caches/modules-2/") for p in expected)
+    if target.exists(): raise RuntimeError("writable Gradle home already exists")
+    target.mkdir(parents=True)
+    seen=set()
+    with tarfile.open(archive,"r:gz") as tf:
+        for member in tf.getmembers():
+            if member.isdir(): continue
+            if not member.isfile(): raise RuntimeError("non-file dependency-store member: "+member.name)
+            rel=pathlib.PurePosixPath(member.name)
+            if rel.is_absolute() or ".." in rel.parts or "." in rel.parts:
+                raise RuntimeError("unsafe dependency-store path: "+member.name)
+            name=rel.as_posix()
+            if name not in expected or name in seen: raise RuntimeError("unexpected/duplicate dependency-store member: "+name)
+            data=tf.extractfile(member).read()
+            size,digest=expected[name]
+            if len(data)!=size or hashlib.sha256(data).hexdigest()!=digest:
+                raise RuntimeError("dependency-store member mismatch: "+name)
+            out=target.joinpath(*rel.parts)
+            out.parent.mkdir(parents=True,exist_ok=True)
+            out.write_bytes(data)
+            os.chmod(out,member.mode & 0o777)
+            seen.add(name)
+    if seen!=set(expected): raise RuntimeError("dependency-store archive missing manifest members")
+    restored=file_inventory(target)
+    actual={r["path"]:(r["bytes"],r["sha256"]) for r in restored if r["kind"]=="file"}
+    if actual!=expected: raise RuntimeError("restored dependency-store differs from accepted manifest")
+    receipt={"schema":"industrial-r1-accepted-dependency-store-restore-v1",
+             "source_artifact_id":11080705894,
+             "outer_artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b",
+             "archive_sha256":STORE_ARCHIVE_SHA,"manifest_sha256":STORE_MANIFEST_SHA,
+             "files":len(seen),"writable_gradle_home":str(target),
+             "input_archive_read_only":not os.access(archive,os.W_OK),
+             "input_manifest_read_only":not os.access(manifest_path,os.W_OK)}
+    (OUT/"accepted-dependency-store-restore.json").write_bytes(canonical(receipt))
+    return expected,receipt
 
 def parse_classlog(path:pathlib.Path):
     rows=[]
@@ -174,9 +222,13 @@ def main():
     platform={"declared_image":os.environ["ARGENTUM_DECLARED_IMAGE"],"declared_arch":"linux/amd64","tools":{k:{"path":str(p),"sha256":sha_file(p)} for k,p in tools.items()},"os_release_sha256":sha_file(pathlib.Path("/etc/os-release")),"mountinfo_sha256":hashlib.sha256(pathlib.Path("/proc/self/mountinfo").read_bytes()).hexdigest(),"environment":{k:os.environ[k] for k in ALLOW_ENV if k in os.environ}}
     (OUT/"platform.json").write_bytes(canonical(platform))
     inputs=repo_inputs(); (OUT/"tracked-build-inputs.json").write_bytes(canonical(inputs))
+    store_archive=pathlib.Path(os.environ["ARGENTUM_DEPENDENCY_STORE_ARCHIVE"]).resolve(strict=True)
+    store_manifest=pathlib.Path(os.environ["ARGENTUM_DEPENDENCY_STORE_MANIFEST"]).resolve(strict=True)
+    assert not os.access(store_archive,os.W_OK) and not os.access(store_manifest,os.W_OK)
+    assert sha_file(BOOTSTRAP)=="e2181fa92f04c14f1bbb724d9d0f4240ccc1b856"
     gradle_home=pathlib.Path(os.environ["RUNNER_TEMP"]).resolve()/"industrial-r1-hermetic-gradle-home"
-    if gradle_home.exists(): raise RuntimeError("GRADLE_USER_HOME already exists")
-    first=run_gradle("first-network-populate",False,OUT/"classload-1.log",OUT/"runtime-1.json",gradle_home)
+    accepted_store,store_receipt=restore_accepted_store(store_archive,store_manifest,gradle_home)
+    first=run_gradle("first-offline-from-accepted-store",True,OUT/"classload-1.log",OUT/"runtime-1.json",gradle_home)
     graph1=json.loads((OUT/"runtime-1.json").read_text())
     assert not [d for d in graph1["dependencies"] if d.get("selected") is None]
     store_root=gradle_home
@@ -188,7 +240,7 @@ def main():
     for raw in graph2["ordered_files"]:
         rp=pathlib.Path(raw).resolve()
         assert rp.is_relative_to(ROOT) or rp.is_relative_to(gradle_home), ("runtime entry outside source/store",rp)
-    for label in ("first-network-populate","second-offline-repeat"):
+    for label in ("first-offline-from-accepted-store","second-offline-repeat"):
         proc_rows=json.loads((OUT/f"{label}-processes.json").read_text())
         workers=[r for r in proc_rows if any("Gradle Test Executor" in a for a in r["argv"])]
         assert workers, ("missing captured Gradle test worker",label)
@@ -216,11 +268,13 @@ def main():
     xml=ROOT/"ai/build/test-results/test/TEST-com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest.xml"
     suite=ET.parse(xml).getroot(); assert int(suite.attrib["tests"])==10 and all(int(suite.attrib[k])==0 for k in ("failures","errors","skipped"))
     shutil.copy2(xml,OUT/xml.name)
-    preserve=[p for p in store_root.rglob("*") if p.is_file() and ("modules-2" in p.parts or "wrapper" in p.parts)]
-    with tarfile.open(OUT/"immutable-input-store.tar.gz","w:gz") as tf:
-        for p in sorted(preserve): tf.add(p,arcname=p.relative_to(store_root).as_posix(),recursive=False)
-    store_tar_sha=sha_file(OUT/"immutable-input-store.tar.gz")
-    summary={"schema":"industrial-r1-supplemental-hermetic-capture-v1","logical_source_commit":SOURCE,"logical_source_tree":SOURCE_TREE,"observed_head":cmd("git","rev-parse","HEAD"),"platform":platform,"tracked_input_count":len(inputs),"runtime_classpath_entries":len(entries),"runtime_visible_member_keys":len(first_visible),"first_launch":first,"offline_repeat":second,"class_census":{"first_sha256":d1,"second_sha256":d2,"equal":True,"hidden_first":sum(r["hidden"] for r in class1),"hidden_second":sum(r["hidden"] for r in class2),"policy":"PINNED_GENERATOR_INPUTS_REPEAT_NORMALIZED_EQUIVALENCE"},"immutable_store":{"archive":"immutable-input-store.tar.gz","sha256":store_tar_sha,"files":len(preserve)},"fixed_worker":{"class":TEST,"tests":10,"failures":0,"errors":0,"skipped":0},"official_seed_files_read":False,"official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},"authority":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY"}
+    for raw in graph2["ordered_files"]:
+        rp=pathlib.Path(raw).resolve()
+        if rp.is_relative_to(gradle_home/"caches/modules-2"):
+            rel=rp.relative_to(gradle_home).as_posix()
+            if rel not in accepted_store or sha_file(rp)!=accepted_store[rel][1]:
+                raise RuntimeError("resolved dependency is not exact accepted store byte: "+rel)
+    summary={"schema":"industrial-r1-supplemental-hermetic-capture-v2","logical_source_commit":SOURCE,"logical_source_tree":SOURCE_TREE,"observed_head":cmd("git","rev-parse","HEAD"),"platform":platform,"tracked_input_count":len(inputs),"runtime_classpath_entries":len(entries),"runtime_visible_member_keys":len(first_visible),"first_launch":first,"offline_repeat":second,"class_census":{"first_sha256":d1,"second_sha256":d2,"equal":True,"hidden_first":sum(r["hidden"] for r in class1),"hidden_second":sum(r["hidden"] for r in class2),"policy":"PINNED_GENERATOR_INPUTS_REPEAT_NORMALIZED_EQUIVALENCE"},"immutable_store":{"source_artifact_id":11080705894,"outer_artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b","archive_sha256":STORE_ARCHIVE_SHA,"manifest_sha256":STORE_MANIFEST_SHA,"files":STORE_FILES,"mode":"VERIFIED_READ_ONLY_INPUT_RECONSTRUCTED_TO_WRITABLE_GRADLE_HOME","bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856"},"fixed_worker":{"class":TEST,"tests":10,"failures":0,"errors":0,"skipped":0},"official_seed_files_read":False,"official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},"authority":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY"}
     (OUT/"summary.json").write_bytes(canonical(summary))
     manifest=[]
     for p in sorted(x for x in OUT.rglob("*") if x.is_file() and x.name!="artifact-manifest.json"):
