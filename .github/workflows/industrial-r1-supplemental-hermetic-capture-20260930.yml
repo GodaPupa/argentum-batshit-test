@@ -28,7 +28,7 @@ jobs:
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           test "$(uname -m)" = "x86_64"
           REVIEW=industrial-waste/v2/evidence/R1_SUPPLEMENTAL_HERMETIC_VM_HIDDEN_SUCCESSOR_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
-          MARKER=industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CURRENT_STORE_V5_EXECUTION_MARKER_20260930.json
+          MARKER=industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_VM_HIDDEN_SUCCESSOR_EXECUTION_MARKER_20260930.json
           /usr/bin/python3.10 - "$REVIEW" "$MARKER" <<'PY'
           import json,pathlib,subprocess,sys
           review=json.loads(pathlib.Path(sys.argv[1]).read_text())
@@ -122,6 +122,6 @@ jobs:
             build-industrial-r1-supplemental-hermetic.log
             industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_VM_HIDDEN_SUCCESSOR_BUDGET_20260930.json
             industrial-waste/v2/evidence/R1_SUPPLEMENTAL_HERMETIC_VM_HIDDEN_SUCCESSOR_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
-            industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CURRENT_STORE_V5_EXECUTION_MARKER_20260930.json
+            industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_VM_HIDDEN_SUCCESSOR_EXECUTION_MARKER_20260930.json
           if-no-files-found: error
           retention-days: 90
