@@ -1,0 +1,116 @@
+name: Pest current pair Phase U exact 692 M5 atoms
+on:
+  push:
+    branches: ["pest/current-pair-phase-u-unbanked-m5-execute-20260930"]
+    paths:
+      - "docs/experiments/pest-control/CURRENT_PAIR_PHASE_U_UNBANKED_M5_EXECUTION_MARKER_20260930.json"
+permissions:
+  contents: read
+  actions: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+
+      - name: Bind exact independently reviewed Phase U implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          REVIEW=docs/experiments/pest-control/CURRENT_PAIR_PHASE_U_UNBANKED_M5_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+          MARKER=docs/experiments/pest-control/CURRENT_PAIR_PHASE_U_UNBANKED_M5_EXECUTION_MARKER_20260930.json
+          python3 - "$REVIEW" "$MARKER" <<'PY'
+          import json,pathlib,subprocess,sys
+          review=json.loads(pathlib.Path(sys.argv[1]).read_text())
+          marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
+          assert review["decision"]=="ACCEPT_PHASE_U_IMPLEMENTATION_FOR_ONE_692_ATOM_ORIGINAL"
+          assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
+          assert subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).strip()==sys.argv[2]
+          assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
+          for field,path in {
+            "budget_blob":"docs/experiments/pest-control/CURRENT_PAIR_PHASE_U_UNBANKED_M5_BUDGET_20260930.json",
+            "constructor_blob":"scripts/experiments/pest-control/construct_pest_phase_u_unbanked_m5_worklist.py",
+            "comparator_blob":"ai/src/test/kotlin/com/wingedsheep/ai/engine/PestCurrentPairPhaseUUnbankedM5ComparatorTest.kt",
+            "workflow_blob":".github/workflows/pest-current-pair-phase-u-unbanked-m5-20260930.yml",
+          }.items():
+              actual=subprocess.check_output(["git","hash-object",path],text=True).strip()
+              assert actual==review[field],(field,actual,review[field])
+          assert subprocess.check_output(["git","hash-object","ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt"],text=True).strip()=="4f020ea2406e9bd6a87ec389685b48f15df4c5a3"
+          assert subprocess.check_output(["git","hash-object","gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlPreboardContract.kt"],text=True).strip()=="e8a4347063d7d1424a5f90e5fdd9b0cc3b104de3"
+          assert marker["official_counters_delta"]==0
+          PY
+
+      - name: Consume exact accepted static bank unknown closure
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          OUT=build/reports/pest-current-pair-phase-u
+          mkdir -p "$OUT"
+          curl -L --fail --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11080047971/zip" \
+            -o "$OUT/static-bank-original.zip"
+          echo "75d387fbcc39073ab2e18e491e7f3d510bc0bb225044c4ef94bd3238a8e81cf5  $OUT/static-bank-original.zip" | sha256sum -c -
+          unzip -t "$OUT/static-bank-original.zip" >/dev/null
+          unzip -p "$OUT/static-bank-original.zip" build/reports/pest-current-pair-keep-bottom-bank/unbanked-atoms.json > "$OUT/unbanked-atoms.json"
+          echo "a00aef9df49106a2611079ece2824bf4e97d40c7e89207b16bc1a9e05d7ae287  $OUT/unbanked-atoms.json" | sha256sum -c -
+
+      - name: Construct exact deterministic 692-atom worklist
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/construct_pest_phase_u_unbanked_m5_worklist.py | tee build/reports/pest-current-pair-phase-u/worklist.log
+          echo "2174410ee36dc0e74d0d7f4335606de7236aa845ef43bab409259a3056133738  build/reports/pest-current-pair-phase-u/pest-unbanked-m5-worklist.json" | sha256sum -c -
+
+      - name: Execute exact Phase U raw versus atom-only comparison
+        shell: bash
+        run: |
+          set -o pipefail
+          just test-class PestCurrentPairPhaseUUnbankedM5ComparatorTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/pest-current-pair-phase-u/test.log
+
+      - name: Verify and preserve exact Phase U original
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/pest-current-pair-phase-u
+          XML=ai/build/test-results/test/TEST-com.wingedsheep.ai.engine.PestCurrentPairPhaseUUnbankedM5ComparatorTest.xml
+          cp "$XML" "$OUT/" 2>/dev/null || true
+          cp ai/build/reports/pest-current-pair-phase-u/comparison-summary.json "$OUT/" 2>/dev/null || true
+          cp ai/build/reports/pest-current-pair-phase-u/truth-supplement.json "$OUT/" 2>/dev/null || true
+          if [ -s "$OUT/comparison-summary.json" ] && [ -s "$OUT/truth-supplement.json" ]; then
+            python3 - <<'PY'
+          import json,pathlib
+          out=pathlib.Path("build/reports/pest-current-pair-phase-u")
+          s=json.loads((out/"comparison-summary.json").read_text())
+          t=json.loads((out/"truth-supplement.json").read_text())
+          assert s["atoms"]==692 and s["mismatches"]==0
+          assert s["raw_controller_blob"]=="4f020ea2406e9bd6a87ec389685b48f15df4c5a3"
+          assert s["worklist_sha256"]=="2174410ee36dc0e74d0d7f4335606de7236aa845ef43bab409259a3056133738"
+          assert t["schema"]=="pest-current-pair-phase-u-m5-truth-supplement-v1"
+          assert len(t["rows"])==692
+          assert t["source_unbanked_atoms_sha256"]=="a00aef9df49106a2611079ece2824bf4e97d40c7e89207b16bc1a9e05d7ae287"
+          PY
+          fi
+
+      - name: Upload exact Phase U evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-current-pair-phase-u-unbanked-m5-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-current-pair-phase-u/
+            docs/experiments/pest-control/CURRENT_PAIR_PHASE_U_UNBANKED_M5_BUDGET_20260930.json
+            docs/experiments/pest-control/CURRENT_PAIR_PHASE_U_UNBANKED_M5_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+            docs/experiments/pest-control/CURRENT_PAIR_PHASE_U_UNBANKED_M5_EXECUTION_MARKER_20260930.json
+          if-no-files-found: error
+          retention-days: 90
