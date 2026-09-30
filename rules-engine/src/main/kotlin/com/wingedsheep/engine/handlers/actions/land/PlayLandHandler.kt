@@ -282,6 +282,7 @@ class PlayLandHandler(
             ) ?: return ExecutionResult.error(state, "Card has no back face to play")
         }
 
+        val beforeBattlefieldEntry = newState
         newState = com.wingedsheep.engine.handlers.effects.BattlefieldEntry
             .place(newState, action.playerId, action.cardId)
         val enteredObject = newState.objectRef(action.cardId)
@@ -334,7 +335,7 @@ class PlayLandHandler(
         // below (permission-forced, shock-land "pay or tapped", conditional tapped duals). The
         // land is on the battlefield with its controller set, so the filter resolves correctly.
         val landEntersUntapped = com.wingedsheep.engine.handlers.effects.EnterUntappedReplacements
-            .entersUntapped(newState, action.cardId, action.playerId)
+            .entersUntapped(newState, action.cardId, action.playerId, beforeBattlefieldEntry)
 
         // A may-play permission with landEntersTapped=true forces the played land
         // tapped regardless of the card's own ETB script — Lightstall Inquisitor's
@@ -619,7 +620,7 @@ class PlayLandHandler(
         // is a no-op).
         if (!landEntersUntapped &&
             com.wingedsheep.engine.handlers.effects.EnterTappedReplacements
-                .entersTapped(newState, action.cardId, action.playerId)
+                .entersTapped(newState, action.cardId, action.playerId, beforeBattlefieldEntry)
         ) {
             newState = newState.updateEntity(action.cardId) { c -> c.with(TappedComponent) }
         }

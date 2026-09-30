@@ -155,7 +155,7 @@ class CreatePredefinedTokenExecutor(
             // replacements (Dauntless Dismantler taps an opponent's artifact token).
             newState = com.wingedsheep.engine.handlers.effects.EnterTappedReplacements
                 .applyCreatedTokenEntryTap(
-                    newState, tokenId, tokenControllerId, definedTapped = effect.tapped,
+                    newState, tokenId, tokenControllerId, definedTapped = effect.tapped, beforeEntry = state,
                 )
         }
 

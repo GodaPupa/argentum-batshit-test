@@ -1,0 +1,20 @@
+{
+  "schema": "manual-phase2-main-receiving-conflict-resolution-r1",
+  "first_parent_manual_pr209": "4762f8d763fecb32d2f042222c5383f74eee3479",
+  "second_parent_accepted_main": "ff34ac8fa2efbd41f233e877cb2908c2cab5929a",
+  "merge_base": "77357a966bd9c405baf8d28e6bb5880ecf4846c5",
+  "method": "Read-only git merge-tree with explicit merge base; retain the Manual additions at five textual engine conflicts and both parties' compatible automatic merges.",
+  "conflicts": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": "Retain Manual's entrySnapshot on ZoneChangeEvent alongside accepted main's entryTriggersAlreadyProcessed; these fields describe different event provenance.",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt": "Retain Manual's beforeEntry on the paused token-copy continuation alongside main's attackingDefenders and createdTokens; the state is used only for entry predicate evaluation.",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt": "Forward that beforeEntry through the resumed copy-target executor invocation.",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt": "Retain beforeEntry input, pass it to entry-tap preview, and carry it through the remaining-token continuation. The accepted main logic around each call is retained.",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt": "Pass the pre-entry state to entry-tap preview for token batches while retaining accepted main's token creation flow.",
+    "docs/experiments/pest-control/tier-one-postboard-support-batch-a-receiving-sources.json": "Retain accepted main's current Pest manifest at its canonical path. Preserve Manual first parent's distinct prospective Purphoros receiving manifest byte-identically in the Manual evidence archive; their source-file hash maps and status histories disagree and must not be silently combined."
+  },
+  "pest_canonical_main_sha256": "9ea4953302aeeac2a0b539c6ddc369c6404e3a291ed8a131a7976068e95c67e7",
+  "pest_manual_archived_sha256": "fba39988cc8fae4cdd8462f718bb386902065cbf975e73dd4600ca1ae665b573",
+  "pest_manual_archive": "experiments/manual-transmission-phase2/evidence/main-receiving-20260927/pest-support-receiving-source-manifest-at-4762.json",
+  "preservation_proof": "All 121 preexisting Manual Phase 2 experiment paths match the first parent's exact Git blob identities. PR209's four repair paths also match the first parent's exact blobs.",
+  "qualification": "Prospective source integration only. Local JDK is 17 and the CI contract uses 21; no local JVM result, admission, seed, or game is claimed. Targeted deterministic gate and independent source review precede any full CI acceptance."
+}

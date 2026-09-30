@@ -1,0 +1,74 @@
+{
+  "schema": "manual-phase2-prospective-card-component-v1",
+  "status": "SOURCE_REVIEWED_PENDING_ACTUAL_TARGETED_QUALIFICATION",
+  "card": "Aether Channeler",
+  "canonical_printing": "DMU 42",
+  "companion_printing": "BLC 160",
+  "accepted_project_base": "c6bfd808850d46010e077153f294dd01c7a8450f",
+  "accepted_base_tree": "1364d71cf7fb54e406c91d7b843a22482b998007",
+  "source_files": {
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dmu/cards/AetherChanneler.kt": "f394214a72f1586d8e6603d5180b3c60d9aef4d0c5f749634c2aaef78df3fad5",
+    "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blc/cards/AetherChannelerReprint.kt": "c387b7c4210d5fe6c8bf59bb9efbea536764ef57ef32c56231d8c7cfee3869bd",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AetherChannelerScenarioTest.kt": "fb4c15deb5f11184724be44b978f59a27adf714e24964cbc069594fd7c5040c7"
+  },
+  "sources": {
+    "experiments/manual-transmission-phase2/sources/aether-channeler-r1/dmu-42.json": "68a90ed4e716f790d09193cdcd9ca87f41d83e399dde664963bc85a3047c16a9",
+    "experiments/manual-transmission-phase2/sources/aether-channeler-r1/blc-160.json": "a0541eb896cc55f630d3943694aefa41ade7f94ea62ac1f158321390dfac317f",
+    "experiments/manual-transmission-phase2/sources/aether-channeler-r1/rulings.json": "6959514f6cea4012b6cceb5fe573de3433c3927da3183236a64ab122bc02ef10",
+    "experiments/manual-transmission-phase2/sources/aether-channeler-r1/printings.json": "cc5e8b138e8c083cb3e8a3af2b34c89293a8b449f00dfe3d22257f6afe31070e",
+    "experiments/manual-transmission-phase2/sources/aether-channeler-r1/token-search.json": "f294c39fae3b2a34cfcea081bccd7940ce8bb5dbbe3439d0e9b9d188019f3fb5",
+    "experiments/manual-transmission-phase2/sources/aether-channeler-r1/reverification.json": "2c38f5829bf69a38efd642608ccd103761452feebfb6665dd8a76132f179001b",
+    "experiments/manual-transmission-phase2/sources/aether-channeler-r1/remote-refs.json": "23444404c7bbc7d2d8d573358b80c7c17f083214137e6525f3a1c75a769c6ef5",
+    "experiments/manual-transmission-phase2/sources/aether-channeler-r1/same-path-source-audit.json": "235ffea17644806e87ef2c976b0ce52ceb9ee40bdca68e5fa6709280febc6eac"
+  },
+  "exact_source_review": {
+    "reviewer": "independent Ferocity coordinator",
+    "disposition": "ACCEPT_FOR_TARGETED_QUALIFICATION",
+    "card_sha256": "f394214a72f1586d8e6603d5180b3c60d9aef4d0c5f749634c2aaef78df3fad5",
+    "test_sha256": "fb4c15deb5f11184724be44b978f59a27adf714e24964cbc069594fd7c5040c7",
+    "tests_executed_by_reviewer": false,
+    "corrected_finding": "The receiving GameTestDriver has no seeded initMirrorMatch overload. Fixture now uses exact GameInitializer/GameConfig directly with fixed excluded seed and state seat identifiers; no shared helper change."
+  },
+  "mechanics": [
+    "Top-level modal enters-the-battlefield trigger announces its single mode and any target before stacking.",
+    "Bird mode creates exactly one white 1/1 Bird with flying.",
+    "Bounce mode targets another nonland permanent by entity identity and returns it to its owner.",
+    "Draw mode draws exactly one card.",
+    "Target or source removal responses retain the announced mode and ordinary independent-trigger resolution."
+  ],
+  "prospective_exact_cases": 10,
+  "existing_modal_compatibility_cases": 2,
+  "fixture_seed_hex": "0x414554484552",
+  "fixture_scope": "EXCLUDED_FIXED_DETERMINISTIC_CARD_SCENARIOS_NOT_PHASE2_GAMES",
+  "replay": "Every submitted cast, priority pass and decision reprocesses the full serialized before-state and compares error, full state and ordered events.",
+  "shared_engine_changes": false,
+  "build_dependency_changes": false,
+  "expected_generated_card_tree_delta": {
+    "path": "mtg-sets/src/test/resources/snapshots/cards/DMU.json",
+    "new_record": "Aether Channeler",
+    "all_preexisting_records": "byte-identical",
+    "blc_printing_in_card_tree_snapshot": false
+  },
+  "qualification_remaining": [
+    "Actual Kotlin exact-card plus existing modal-trigger cases.",
+    "Ordinary snapshot generation and independent exact-byte review; no authored snapshot.",
+    "Corpus lint and metadata/printing gate.",
+    "Assay parse/explain/draftability/differential findings and classification.",
+    "Combined ETB batch broader build, replay, current capability source/inventory and all required integration checks.",
+    "Independent accepted-source receipt before resolved-identity counter changes."
+  ],
+  "batch_rule": "Keep focused Aether qualification available while preparing Purphoros from existing primitives; one broader ETB batch acceptance boundary.",
+  "hardware": "Manual Transmission v0.7",
+  "hardware_disposition": "KEEP_V07",
+  "deck_changes": false,
+  "official_counters": {
+    "capability_completed": 0,
+    "capability_frozen_scope": 36,
+    "primary_completed": 0,
+    "primary_frozen_scope": 864,
+    "official_initializations": 0,
+    "official_outcomes_exposed": 0
+  },
+  "gameplay_authorized": false,
+  "identity_promoted_as_resolved": false
+}

@@ -463,7 +463,7 @@ class EngineAiPlayerController(
             .updateEntity(landId) { it.with(ControllerComponent(playerId)) }
         simulated = BattlefieldEntry.place(simulated, playerId, landId)
 
-        val entersUntapped = EnterUntappedReplacements.entersUntapped(simulated, landId, playerId)
+        val entersUntapped = EnterUntappedReplacements.entersUntapped(simulated, landId, playerId, beforeEntry = state)
         if (!entersUntapped) {
             val selfForcesTapped = definition.script.replacementEffects
                 .filterIsInstance<EntersTapped>()
@@ -479,7 +479,7 @@ class EngineAiPlayerController(
                         )
                     }
                 }
-            val globallyForcedTapped = EnterTappedReplacements.entersTapped(simulated, landId, playerId)
+            val globallyForcedTapped = EnterTappedReplacements.entersTapped(simulated, landId, playerId, beforeEntry = state)
             if (selfForcesTapped || globallyForcedTapped) {
                 simulated = simulated.updateEntity(landId) { it.with(TappedComponent) }
             }

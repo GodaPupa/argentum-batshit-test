@@ -171,7 +171,7 @@ object TokenFromDefinition {
         // (Authority of the Consuls taps an opponent's minted creature token). Passing the self
         // enters-tapped result lets an "enters untapped" replacement override it per CR 614.
         newState = EnterTappedReplacements.applyCreatedTokenEntryTap(
-            newState, tokenId, controllerId, definedTapped = enteredTapped,
+            newState, tokenId, controllerId, definedTapped = enteredTapped, beforeEntry = state,
         )
 
         // As-enters: the token's own + global "enters with counters" (CR 614).

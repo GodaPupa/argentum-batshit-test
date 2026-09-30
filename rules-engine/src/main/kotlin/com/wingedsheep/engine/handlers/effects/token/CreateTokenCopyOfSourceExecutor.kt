@@ -65,6 +65,8 @@ class CreateTokenCopyOfSourceExecutor(
         context: EffectContext,
         controllerId: EntityId,
         count: Int,
+        // Do not let a previously entered sibling change this batch's entry predicates.
+        beforeEntry: GameState = state.copy(continuationStack = emptyList()),
     ): EffectResult {
         val sourceId = context.sourceId
             ?: return EffectResult.success(state)
@@ -132,7 +134,7 @@ class CreateTokenCopyOfSourceExecutor(
             // A token copy honors global "[filter] enter tapped" replacements (Authority of the
             // Consuls / Dauntless Dismantler on an opponent's token copy).
             newState = com.wingedsheep.engine.handlers.effects.EnterTappedReplacements
-                .applyCreatedTokenEntryTap(newState, tokenId, controllerId)
+                .applyCreatedTokenEntryTap(newState, tokenId, controllerId, beforeEntry = beforeEntry)
 
             // As-enters "enters with counters" (CR 614.1c): the copied card's own EntersWithCounters
             // (a copy of a creature that "enters with a +1/+1 counter") plus global grants from other
@@ -159,6 +161,7 @@ class CreateTokenCopyOfSourceExecutor(
                             context = context,
                             controllerId = controllerId,
                             remaining = remaining,
+                            beforeEntry = beforeEntry,
                         )
                     )
                 }
