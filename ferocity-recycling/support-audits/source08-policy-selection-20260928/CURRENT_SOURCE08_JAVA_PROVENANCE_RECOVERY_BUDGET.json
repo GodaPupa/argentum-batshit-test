@@ -1,0 +1,33 @@
+{
+  "schema": "ferocity-current-source08-java-provenance-recovery-budget-v1",
+  "date_utc": "2026-09-29",
+  "source08_commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "source08_tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+  "preserved_artifact_path": "ferocity-recycling/evidence/source08-takeover/priority08/original-artifact-10915032554.zip",
+  "preserved_artifact_git_blob": "0db1ebd5259f858da7c391ed2e8ee623c2c39ae2",
+  "preserved_artifact_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+  "scope": "READ_ONLY_ARCHIVE_METADATA_RECOVERY_ONLY",
+  "required": [
+    "verify exact preserved ZIP SHA-256 before reading members",
+    "read archive members only with Python zipfile; no extraction to executable locations",
+    "search JSON and text receipt members for Java/JDK/executable/distribution/toolchain/runtime identity fields",
+    "emit exact member name, key path or line, value and member SHA-256 for every match",
+    "start no JVM and invoke no Java/Gradle/exporter/game command",
+    "read no seed, entropy, allocation, trial journal or outcome data"
+  ],
+  "acceptance": [
+    "source/archive/script/workflow pins pass",
+    "ZIP CRC is clean",
+    "machine-readable provenance-candidates.json is preserved",
+    "at least one exact Java executable or Java distribution identity is recovered from preserved receipt bytes; otherwise disposition remains HOLD"
+  ],
+  "prohibited": [
+    "no Java execution",
+    "no exporter",
+    "no bundle production",
+    "no entropy or seeds",
+    "no allocation or game initialization",
+    "no inference that a recorded Java path/version equals independently bound Java bytes"
+  ],
+  "official_counters_delta": 0
+}
