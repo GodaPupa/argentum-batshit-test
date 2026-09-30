@@ -1,0 +1,27 @@
+{
+  "schema":"sphinx-stage-e-forced-empty-blockers-binding-repair-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"65f4bb9eea6a0b4cc48dfa7d7303489616c50ee4",
+  "workflow_blob":"be3bdb540f78c9b5f640a2fa02460d2b1f27bc93",
+  "budget_blob":"b2991f4715f64cb9f267bb38a56fe46ee0e47f07",
+  "superseded_preflight_run":36675768477,
+  "decision":"ACCEPT_FULL_HISTORY_BINDING_REPAIR_FOR_ONE_FRESH_ORIGINAL",
+  "review":{
+    "change_scope":"PASS_CHECKOUT_HISTORY_ONLY",
+    "accepted_parent_receipt_unchanged":"44cc8b5242b37f141ef2c179e4770d08e5403567",
+    "whole_actor_blob_unchanged":"0e5a21429c367355c0951c7a3a367495a96a161d",
+    "new_test_blob_unchanged":"027fc80a3a67f39c02949eba8eeabf1bfe81526b",
+    "regression_blobs_unchanged":"PASS",
+    "budget_unchanged":"PASS",
+    "behavioral_execution_in_failed_run":0,
+    "official_counters_delta":0
+  },
+  "accepted_scope":[
+    "Create one v2 execution branch and marker and dispatch exactly one fresh forced-empty-blockers original."
+  ],
+  "explicit_non_authority":[
+    "No nonempty blocker selection, mandatory blocker assignment, runner/replay, Stage-E admission, seed, allocation or gameplay authority."
+  ],
+  "next_gate":"Dispatch the fresh v2 original and audit it once if clean.",
+  "official_counters_delta":0
+}
