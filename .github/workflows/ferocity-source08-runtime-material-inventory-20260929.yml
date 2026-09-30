@@ -1,0 +1,104 @@
+name: Ferocity source08 original runtime-material directory inventory
+on:
+  push:
+    branches: ["ferocity/source08-runtime-material-inventory-20260929"]
+    paths: [".github/workflows/ferocity-source08-runtime-material-inventory-20260929.yml"]
+permissions: {contents: read}
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 5}
+      - name: Bind exact preserved original and inventory budget
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-source08-runtime-material-inventory
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = "793e93a809c5dd869b2f7fb89e681b82f1a17c62"
+          git merge-base --is-ancestor a49d348dfe0f35a49e934b8c1219e6c63db5e2ba HEAD
+          test "$(git hash-object ferocity-recycling/evidence/source08-takeover/publication-manifest.json)" = "262f78d820ac8834d796d3cc634bf45bbb155cf6"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/SOURCE08_ORIGINAL_RUNTIME_MATERIAL_INVENTORY_BUDGET_20260929.json)" = "ab2b32c49557b777c63f2fbf9d6ff85d97423ef5"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object ferocity-recycling/evidence/source08-takeover/publication-manifest.json
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/SOURCE08_ORIGINAL_RUNTIME_MATERIAL_INVENTORY_BUDGET_20260929.json
+            git hash-object .github/workflows/ferocity-source08-runtime-material-inventory-20260929.yml
+            git status --porcelain
+          } > "$OUT/source.txt"
+      - name: Reassemble original and inspect central directory only
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-source08-runtime-material-inventory
+          python3 - <<'PY'
+          import hashlib, json, pathlib, zipfile
+          root=pathlib.Path(".")
+          out=pathlib.Path("build/reports/ferocity-source08-runtime-material-inventory")
+          manifest=json.loads((root/"ferocity-recycling/evidence/source08-takeover/publication-manifest.json").read_text())
+          original=next(x for x in manifest["originals"] if x["id"]==10914678223)
+          assert original["sha256"]=="9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816"
+          assert len(original["parts"])==12
+          target=pathlib.Path("/tmp/ferocity-source08-original-10914678223.zip")
+          h=hashlib.sha256()
+          with target.open("xb") as dst:
+              for part in original["parts"]:
+                  p=root/"ferocity-recycling/evidence/source08-takeover"/part["path"]
+                  data=p.read_bytes()
+                  assert len(data)==part["bytes"]
+                  assert hashlib.sha256(data).hexdigest()==part["sha256"]
+                  assert dst.tell()==part["offset"]
+                  dst.write(data); h.update(data)
+          assert target.stat().st_size==original["bytes"]
+          assert h.hexdigest()==original["sha256"]
+
+          terms=("classpath","runtime","java","compiled-input","source","receipt",
+                 "qualification","environment","toolchain","manifest","path")
+          rows=[]
+          candidates=[]
+          with zipfile.ZipFile(target,"r") as z:
+              for i,info in enumerate(z.infolist()):
+                  row={
+                    "index":i,
+                    "name":info.filename,
+                    "is_dir":info.is_dir(),
+                    "file_size":info.file_size,
+                    "compress_size":info.compress_size,
+                    "crc32":f"{info.CRC:08x}",
+                    "compress_type":info.compress_type,
+                  }
+                  rows.append(row)
+                  low=info.filename.lower()
+                  if any(t in low for t in terms):
+                      candidates.append(row)
+          result={
+            "schema":"ferocity-source08-original-runtime-material-directory-inventory-v1",
+            "artifact_id":10914678223,
+            "archive_sha256":h.hexdigest(),
+            "archive_bytes":target.stat().st_size,
+            "member_count":len(rows),
+            "candidate_count":len(candidates),
+            "members":rows,
+            "candidates":candidates,
+            "member_payloads_read":False,
+            "jvm_started":False,
+            "export_executed":False,
+            "official_entropy_read":False,
+            "games_initialized":0,
+            "authority":"INVENTORY_ONLY_FOR_NEXT_EXPLICIT_RUNTIME_MATERIAL_SELECTION"
+          }
+          (out/"inventory.json").write_text(json.dumps(result,indent=2)+"\n")
+          (out/"candidate-names.txt").write_text("".join(x["name"]+"\n" for x in candidates))
+          print(json.dumps({k:result[k] for k in ("member_count","candidate_count","authority")},indent=2))
+          PY
+      - name: Preserve directory inventory original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-source08-runtime-material-inventory-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-source08-runtime-material-inventory/
+          if-no-files-found: error
+          retention-days: 90
