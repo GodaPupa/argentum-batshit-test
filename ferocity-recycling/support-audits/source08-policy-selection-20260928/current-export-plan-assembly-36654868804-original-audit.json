@@ -1,0 +1,44 @@
+{
+  "schema": "ferocity-current-source08-export-plan-assembly-36654868804-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36654868804,
+  "job_id": 109696915106,
+  "artifact_id": 11071888377,
+  "artifact_sha256": "b7e3f8ae0f7e3ebddc74d65c3777df18296184c712631b1da8c4a358ad2d0864",
+  "head": "dbe0d001ae8ada6de8685a6c82f9bd618fd17940",
+  "parent": "eb09f1da9b3f4bd576db5694bb9376578ca759e1",
+  "pins": {
+    "budget": "130772e1bf8c14c9c143cb7514a35af62ff3d3b6",
+    "material_constructor": "b08e3b90aad2979e192e82e80edeed0316df7575",
+    "plan_assembler": "1f0bb7bb71a4dc5cb5b61bcaf01f8359c6e426b4",
+    "exporter_validator": "c0657160a7b299a9d4a4eded6d1cebdeeb96e6c2"
+  },
+  "integrity": {
+    "workflow_conclusion": "failure",
+    "artifact_digest_match": true,
+    "source_binding_step": "passed",
+    "java_started": false,
+    "gradle_started": false,
+    "definition_export_started": false,
+    "seed_or_entropy_read": false,
+    "allocation_read": false,
+    "game_initialized": false
+  },
+  "failure": {
+    "class": "TECHNICAL_JDK_SYMLINK_PRECHECK",
+    "step": "Restore exact runtime and JDK bytes and emit material",
+    "exception": "AssertionError",
+    "cause": "The material constructor rejected every JDK symlink whose link target contained '..' before Python tarfile's secure data filter could resolve and validate the target. Legitimate in-tree relative symlinks are therefore rejected even when they cannot escape the restored JDK root.",
+    "plan_assembler_started": false,
+    "behavioral_evidence_exposed": false
+  },
+  "decision": "INCOMPLETE_TECHNICAL_JDK_SYMLINK_PRECHECK",
+  "interpretation": [
+    "The failure occurred during byte restoration before plan assembly.",
+    "No Java, Gradle, exporter, entropy, allocation or game process ran.",
+    "No Ferocity policy, runtime, deck or admission failure is inferred.",
+    "This original is consumed and must not be rerun unchanged."
+  ],
+  "next_gate": "Replace the syntactic '..' rejection with resolved-in-root symlink validation (and Python secure extraction), use deterministic external restore paths suitable for exact later replay, repin the constructor/workflow/parent, and dispatch one successor under the unchanged plan-assembly authority.",
+  "official_counters_delta": 0
+}
