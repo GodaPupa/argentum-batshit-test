@@ -1,0 +1,36 @@
+{
+  "schema": "industrial-r1-hermetic-java-tools-platform-probe-36649910892-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36649910892,
+  "job_id": 109681401136,
+  "artifact_id": null,
+  "head": "45ef478fb5560da8bc4c872a127c7e614f972c6b",
+  "parent": "27f5d05c6aa2a7c58fe18683ed554c9f1669118d",
+  "candidate": {
+    "image": "catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "architecture": "linux/amd64"
+  },
+  "result": {
+    "workflow_conclusion": "failure",
+    "exact_image_digest_pull": "success",
+    "container_initialization": "success",
+    "checkout": "success",
+    "source_binding_step": "failure",
+    "platform_probe_step": "skipped",
+    "artifact_uploaded": false,
+    "technical_cause": "The workflow used fetch-depth 5. The declared Industrial source commit de27e189e7597bdf48f213a40a0bbf1b70f63c1a was not present in the shallow object graph, so git merge-base --is-ancestor failed with 'Not a valid commit name' before any platform qualification logic ran.",
+    "observed_container_environment_only": {
+      "JAVA_HOME_21_X64_declared_by_image": "/usr/lib/jvm/temurin-21-jdk-amd64",
+      "note": "This environment observation is not platform acceptance because the bound probe body was skipped."
+    }
+  },
+  "decision": "INCOMPLETE_PRETEST_SHALLOW_SOURCE_ANCESTRY",
+  "interpretation": [
+    "No platform qualification decision is made for the Java-tools image.",
+    "No Java executable hash/version evidence was accepted.",
+    "No Gradle/project test/runtime capture, expected manifest, claim, allocation, seed or game was executed.",
+    "This original is consumed and must not be rerun unchanged."
+  ],
+  "successor_scope": "Keep the exact immutable image digest, accepted design/review, source commit/tree, budgets, capture-script pins and platform probe logic unchanged. Change only checkout history depth to full history so the declared source commit can be bound.",
+  "official_counters_delta": 0
+}
