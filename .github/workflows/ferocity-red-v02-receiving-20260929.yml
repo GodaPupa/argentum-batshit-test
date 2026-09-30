@@ -1,0 +1,82 @@
+name: Ferocity first-cell Red v0.2 receiving
+on:
+  push:
+    branches: ["ferocity/red-v02-receiving-successor-20260929"]
+    paths: [".github/workflows/ferocity-red-v02-receiving-20260929.yml"]
+permissions: {contents: read}
+jobs:
+  twenty-four-cases:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 3}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact source08 Red v0.2 receiving inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-red-v02-receiving
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = "e3562d08205a4c2f2c6cc59e84a4e00ce48f2417"
+          test "$(git rev-parse HEAD^^)" = "3a4f99a7653839506e96d19e6639f58d9e8c5ced"
+          test "$(git rev-parse HEAD^^{tree})" = "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilot.kt)" = "b7cf8736b92de0a56859f9ca7dd3bba497535200"
+          test "$(sha256sum gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilot.kt | awk '{print $1}')" = "6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilotScenarioTest.kt)" = "5db973421a5ccabeba6c0b679cb3ca14bbe90987"
+          test "$(git hash-object ferocity-recycling/decks/benchmarks/mono_red_madness_mistertwin_20260924.json)" = "4d3d91da6973f8c5b1c44af357b163691849e1b1"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_RED_V02_RECEIVING_BUDGET_20260929.json)" = "ecba46e63ea3a0147769a3bab40899f4f2d14a93"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git rev-parse HEAD^^
+            git rev-parse HEAD^^{tree}
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilot.kt
+            sha256sum gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilot.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilotScenarioTest.kt
+            git hash-object ferocity-recycling/decks/benchmarks/mono_red_madness_mistertwin_20260924.json
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_RED_V02_RECEIVING_BUDGET_20260929.json
+            git hash-object .github/workflows/ferocity-red-v02-receiving-20260929.yml
+            git status --porcelain
+          } > "$OUT/source.txt"
+      - name: Execute unchanged active Red v0.2 receiving bank
+        shell: bash
+        run: |
+          set -o pipefail
+          just test-class RedMadnessPilotScenarioTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/ferocity-red-v02-receiving/test.log
+      - name: Preserve and validate exact XML
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-red-v02-receiving
+          xml="$(find . -path '*/build/test-results/test/TEST-com.wingedsheep.gym.ferocity.RedMadnessPilotScenarioTest.xml' -type f -print -quit)"
+          test -n "$xml" && test -s "$xml"
+          cp "$xml" "$OUT/"
+          python3 - <<'PY'
+          import json, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path("build/reports/ferocity-red-v02-receiving")
+          xml=out/"TEST-com.wingedsheep.gym.ferocity.RedMadnessPilotScenarioTest.xml"
+          root=ET.parse(xml).getroot()
+          summary={
+            "tests": int(root.attrib.get("tests","0")),
+            "failures": int(root.attrib.get("failures","0")),
+            "errors": int(root.attrib.get("errors","0")),
+            "skipped": int(root.attrib.get("skipped","0")),
+            "cases": [c.attrib["name"] for c in root.findall("testcase")],
+          }
+          assert summary["tests"]==24, summary
+          assert summary["failures"]==0 and summary["errors"]==0 and summary["skipped"]==0, summary
+          (out/"summary.json").write_text(json.dumps(summary,indent=2)+"\n")
+          PY
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-red-v02-receiving-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-red-v02-receiving/
+          if-no-files-found: error
+          retention-days: 90
