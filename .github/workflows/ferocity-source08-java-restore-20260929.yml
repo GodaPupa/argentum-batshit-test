@@ -1,0 +1,109 @@
+name: Ferocity source08 historical Java byte restoration
+on:
+  push:
+    branches: ["ferocity/source08-java-restore-20260929"]
+    paths: [".github/workflows/ferocity-source08-java-restore-20260929.yml"]
+permissions: {contents: read}
+jobs:
+  java-bytes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 5}
+      - name: Bind exact historical Java restoration budget
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-source08-java-restore
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = "9fe594c3ee790cf3c3448110ccc4269443341046"
+          git merge-base --is-ancestor 1e04b18ea4dc219ba4dc879e1af9d02c83359537 HEAD
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/SOURCE08_HISTORICAL_JAVA_RESTORE_BUDGET_20260929.json)" = "00dddcb65e80145beab5b3129daa6251ba9c7485"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/SOURCE08_HISTORICAL_JAVA_RESTORE_BUDGET_20260929.json
+            git hash-object .github/workflows/ferocity-source08-java-restore-20260929.yml
+            git status --porcelain
+          } > "$OUT/source.txt"
+      - name: Verify official Temurin archive and exact bin/java member
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-source08-java-restore
+          python3 - <<'PY'
+          import hashlib, json, pathlib, tarfile, urllib.request
+          out=pathlib.Path("build/reports/ferocity-source08-java-restore")
+          url="https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz"
+          expected_archive_size=207473347
+          expected_archive_sha="ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94"
+          expected_java_sha="2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d"
+          archive=pathlib.Path("/tmp/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz")
+          req=urllib.request.Request(url,headers={"User-Agent":"Argentum-Ferocity-Historical-Java-Restore/1.0"})
+          h=hashlib.sha256(); total=0
+          with urllib.request.urlopen(req,timeout=60) as src, archive.open("xb") as dst:
+              while True:
+                  chunk=src.read(1024*1024)
+                  if not chunk: break
+                  dst.write(chunk); h.update(chunk); total+=len(chunk)
+          archive_sha=h.hexdigest()
+          assert total==expected_archive_size,(total,expected_archive_size)
+          assert archive_sha==expected_archive_sha,(archive_sha,expected_archive_sha)
+
+          members=[]
+          java_members=[]
+          with tarfile.open(archive,"r:gz") as tf:
+              for m in tf.getmembers():
+                  name=m.name
+                  p=pathlib.PurePosixPath(name)
+                  assert not p.is_absolute() and ".." not in p.parts,name
+                  members.append({"name":name,"size":m.size,"type":m.type.decode("latin1") if isinstance(m.type,bytes) else str(m.type)})
+                  if name.endswith("/bin/java") and m.isfile():
+                      java_members.append(m)
+              assert len(java_members)==1,[m.name for m in java_members]
+              jm=java_members[0]
+              stream=tf.extractfile(jm)
+              assert stream is not None
+              jh=hashlib.sha256(); java_bytes=0
+              while True:
+                  chunk=stream.read(1024*1024)
+                  if not chunk: break
+                  jh.update(chunk); java_bytes+=len(chunk)
+          java_sha=jh.hexdigest()
+          assert java_sha==expected_java_sha,(java_sha,expected_java_sha)
+          result={
+            "schema":"ferocity-source08-historical-java-restore-v1",
+            "official_release":{
+              "repository":"adoptium/temurin21-binaries",
+              "tag":"jdk-21.0.12.1+1",
+              "asset":"OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz",
+              "asset_id":521122372,
+              "url":url,
+              "bytes":total,
+              "sha256":archive_sha
+            },
+            "tar_member_count":len(members),
+            "java_member":java_members[0].name,
+            "java_member_bytes":java_bytes,
+            "java_member_sha256":java_sha,
+            "historical_java_sha256_match":True,
+            "other_member_payloads_read":False,
+            "jvm_started":False,
+            "gradle_started":False,
+            "export_executed":False,
+            "official_entropy_read":False,
+            "games_initialized":0,
+            "authority":"EXACT_HISTORICAL_JAVA_BYTES_RESTORABLE_FROM_IMMUTABLE_OFFICIAL_RELEASE"
+          }
+          (out/"java-restore.json").write_text(json.dumps(result,indent=2)+"\n")
+          print(json.dumps({k:result[k] for k in ("java_member","java_member_bytes","java_member_sha256","authority")},indent=2))
+          PY
+      - name: Preserve Java restoration evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-source08-java-restore-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-source08-java-restore/
+          if-no-files-found: error
+          retention-days: 90
