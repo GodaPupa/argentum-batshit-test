@@ -1,7 +1,7 @@
 name: Izzet Position-1 Llanowar Visionary Qualification
 on:
   push:
-    branches: ["izzet/position1-llanowar-visionary-20260930"]
+    branches: ["izzet/position1-llanowar-visionary-snapshot-contract-execute-20260930"]
     paths:
       - "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m21/cards/LlanowarVisionary.kt"
       - "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LlanowarVisionaryScenarioTest.kt"
@@ -14,7 +14,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v6
-        with: {fetch-depth: 5}
+        with: {fetch-depth: 0}
       - uses: actions/setup-java@v5
         with: {distribution: temurin, java-version: "21"}
       - uses: gradle/actions/setup-gradle@v6
@@ -25,7 +25,19 @@ jobs:
           set -euo pipefail
           OUT=build/reports/izzet-llanowar-visionary
           mkdir -p "$OUT"
-          test "$(git rev-parse HEAD~4)" = "e28f27e4ce3f84dca511b49f9cc4005f1cbb6ed9"
+          MARKER=experiments/izzet-science/POSITION1_LLANOWAR_VISIONARY_SNAPSHOT_CONTRACT_EXECUTION_MARKER_20260930.json
+          git merge-base --is-ancestor e28f27e4ce3f84dca511b49f9cc4005f1cbb6ed9 HEAD
+          test "$(git diff --name-only HEAD^ HEAD)" = "$MARKER"
+          python3 - "$MARKER" <<'PY'
+          import json,pathlib,subprocess,sys
+          marker=json.loads(pathlib.Path(sys.argv[1]).read_text())
+          assert marker["authorization"]=="ONE_FRESH_LLANOWAR_VISIONARY_QUALIFICATION_ORIGINAL"
+          assert marker["workflow_blob"]==subprocess.check_output(["git","hash-object",".github/workflows/izzet-position1-llanowar-visionary-qualification.yml"],text=True).strip()
+          assert marker["repair_budget_blob"]==subprocess.check_output(["git","hash-object","experiments/izzet-science/POSITION1_LLANOWAR_VISIONARY_SNAPSHOT_CONTRACT_REPAIR_BUDGET_20260930.json"],text=True).strip()
+          assert marker["source_blob"]=="2cc1f07b325b4b7b5358418aa0aefc0ccabe430b"
+          assert marker["test_blob"]=="7378eacb4e0d4ac7fe1292e73fc5d94ee9cf5ece"
+          assert marker["official_counters_delta"]==0
+          PY
           test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m21/cards/LlanowarVisionary.kt)" = "2cc1f07b325b4b7b5358418aa0aefc0ccabe430b"
           test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LlanowarVisionaryScenarioTest.kt)" = "7378eacb4e0d4ac7fe1292e73fc5d94ee9cf5ece"
           test "$(git hash-object experiments/izzet-science/POSITION1_LLANOWAR_VISIONARY_BUDGET_20260930.json)" = "2986c682c32c5fe493eee5fd4bfaae867e174925"
@@ -63,7 +75,6 @@ jobs:
           python3 - <<'PY'
           import json,pathlib,re,subprocess,hashlib
           targets=[
-            "mtg-sets/src/test/resources/snapshots/cards/ALL.json",
             "mtg-sets/src/test/resources/snapshots/cards/M21.json",
           ]
           changed=subprocess.check_output(["git","diff","--name-only"],text=True).splitlines()
