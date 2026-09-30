@@ -1,0 +1,48 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-vm-hidden-repair-v2-implementation-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"c133fcf7d67cc2d2f3f0154bdc7d5ebfb9793af3",
+  "capture_source_blob":"552e015982889d8aac926911eef2c316c22db90c",
+  "budget_blob":"3413e81adff840f23d3b6a1536ec34d8b027ea67",
+  "equivalence_rule_blob":"1deabad835da6808372add3feabd5fc514b31864",
+  "equivalence_rule_review_blob":"277eadf0cf975669e8718e4aa955bd7945c175a8",
+  "gradle_probe_blob":"ef3a56e80afc5002e66a05b4f5cf3635eb604c21",
+  "store_bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+  "workflow_blob":"d432d61d2de3073deb4694a1f9c20113fb49b667",
+  "superseded_incomplete_original":{
+    "run_id":36744469981,
+    "artifact_id":11111534840,
+    "head":"94118b159fcf0baff15b9d94d59df8b43fe14c20",
+    "classification":"INCOMPLETE_VALIDATOR_NAMEERROR_AFTER_OFFLINE_REPEATS",
+    "cause":"generated_hidden_repeat_equivalence was called but not defined",
+    "accepted_behavioral_authority":false
+  },
+  "decision":"ACCEPT_VM_HIDDEN_REPAIR_V2_IMPLEMENTATION_FOR_ONE_FRESH_SUPPLEMENTAL_CAPTURE_ORIGINAL",
+  "review":{
+    "change_is_validator_repair_only":"PASS",
+    "missing_helper_now_defined":"PASS",
+    "generated_hidden_membership_matches_accepted_rule":"PASS",
+    "normalized_family_set_exact":"PASS",
+    "non_vm_multiplicity_exact":"PASS",
+    "vm_lookupdefine_family_set_exact":"PASS",
+    "vm_lookupdefine_multiplicity_deltas_preserved":"PASS",
+    "logical_source_unchanged":"PASS",
+    "platform_unchanged":"PASS",
+    "accepted_store_unchanged":"PASS",
+    "fixed_worker_unchanged_10_cases":"PASS",
+    "two_offline_launches_unchanged":"PASS",
+    "raw_class_logs_and_censuses_preserved":"PASS",
+    "distinct_successor_branch_and_marker":"PASS",
+    "official_seed_claim_allocation_game_prohibited":"PASS"
+  },
+  "accepted_scope":[
+    "Create exactly one marker-only v2 execution successor and run one fresh supplemental hermetic capture against the same accepted source/platform/store/worker.",
+    "A successful capture remains evidence for independent review only and does not auto-adopt an expected manifest."
+  ],
+  "explicit_non_authority":[
+    "Run 36744469981 remains incomplete and is not reinterpreted.",
+    "No expected manifest, prepared worker, sealed launch, R1 permit, claim, seed, allocation, game or outcome authority."
+  ],
+  "next_gate":"Dispatch one fresh repaired successor original, then audit it once for all five completeness boundaries and the accepted VM-hidden repeat-equivalence rule.",
+  "official_counters_delta":0
+}
