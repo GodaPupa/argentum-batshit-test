@@ -55,9 +55,9 @@ jobs:
           assert "allocate" in budget["prohibited_operations"] and "run-one" in budget["prohibited_operations"]
           assert marker["authorization"]=="ONE_VERIFY_ONLY_ORIGINAL"
           PY
-          test ! -e "$TARGET/ferocity-recycling/allocations/D2-first-cell"
-          test ! -e "$TARGET/ferocity-recycling/evidence/development/D2-first-cell"
-          test ! -e "$TARGET/ferocity-recycling/evidence/process/development/D2-first-cell"
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+          test ! -e ferocity-recycling/evidence/process/development/D2-first-cell
           {
             git rev-parse HEAD
             git rev-parse HEAD^
@@ -171,7 +171,7 @@ jobs:
           JAVA="$(sed -n '1p' "$OUT/launch.txt")"
           CP="$(sed -n '2p' "$OUT/launch.txt")"
           set +e
-          "$JAVA" -Xmx2048m -cp "$CP"             com.wingedsheep.gym.ferocity.FerocityDevelopmentCli             verify "$GITHUB_WORKSPACE" "$MANIFEST" "$MANIFEST_SHA"             > "$OUT/verify.stdout" 2> "$OUT/verify.stderr"
+          "$JAVA" -Xmx2048m -cp "$CP"             com.wingedsheep.gym.ferocity.FerocityDevelopmentCli             verify "$TARGET" "$MANIFEST" "$MANIFEST_SHA"             > "$OUT/verify.stdout" 2> "$OUT/verify.stderr"
           status=$?
           set -e
           printf '%s\n' "$status" > "$OUT/verify-exit-status.txt"
@@ -186,9 +186,9 @@ jobs:
           assert r["allocations"]==16
           assert r["logicalSourceCommit"]=="3a4f99a7653839506e96d19e6639f58d9e8c5ced"
           PY
-          test ! -e ferocity-recycling/allocations/D2-first-cell
-          test ! -e ferocity-recycling/evidence/development/D2-first-cell
-          test ! -e ferocity-recycling/evidence/process/development/D2-first-cell
+          test ! -e "$TARGET/ferocity-recycling/allocations/D2-first-cell"
+          test ! -e "$TARGET/ferocity-recycling/evidence/development/D2-first-cell"
+          test ! -e "$TARGET/ferocity-recycling/evidence/process/development/D2-first-cell"
           python3 - <<'PY'
           import hashlib,json,pathlib
           out=pathlib.Path("build/reports/ferocity-final-development-verify")
