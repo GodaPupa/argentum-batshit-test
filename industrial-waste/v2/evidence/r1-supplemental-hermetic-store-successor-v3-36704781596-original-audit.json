@@ -1,0 +1,55 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-store-successor-v3-36704781596-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36704781596,
+  "job_id":109852350771,
+  "artifact_id":11090869763,
+  "artifact_sha256":"6ff26e7a65b54c21be7b71f30d562927f6726708a18a885e67b9a0d3bbec90fe",
+  "head":"d43833e5ecff32f9f577a296e024a3ed13c156a9",
+  "reviewed_implementation_commit":"97e807d2f2cfb014c53d9a06219258bf3e50132e",
+  "implementation_review_commit":"f98adc690d6dce3dec76d8650cc8fe7147c795d7",
+  "integrity":{
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "zip_members":9,
+    "source_workflow_review_marker_binding":"passed",
+    "platform_sha256":"05e3d3f4d674f4897624a3d686b91c4578e114613d335ccad984cc95db84e45d",
+    "dependency_store_restore_sha256":"5e71b168321c37364240f880124d1e05adf904ca8a2095349e720ea034b33874",
+    "tracked_build_inputs_sha256":"4a3104bbec05a068ddb911f93c6d0ed43542d8a996a704c2f19254a4f13cd737"
+  },
+  "accepted_store_restore":{
+    "source_artifact_id":11080705894,
+    "outer_artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b",
+    "archive_sha256":"b686ca26e715ba965a9156c455a6fba8c0f80f8d55883fc9b85285d4bb0b0b23",
+    "manifest_sha256":"8e427eb24c5c3043dab37abb681b0d3caf5243f4cb9357e1d196a92523ae9c0e",
+    "files":1272,
+    "source_inputs_read_only":true
+  },
+  "execution":{
+    "first_gradle_launcher_started":true,
+    "gradle_daemon_started":true,
+    "gradle_test_worker_started":false,
+    "fixed_worker_tests_executed":0,
+    "first_launch_offline":true,
+    "launcher_java_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+    "daemon_java_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d"
+  },
+  "failure":{
+    "classification":"INCOMPLETE_PREFLIGHT_INIT_SCRIPT_NESTED_BUILD_SCOPE",
+    "stage":"first offline Gradle configuration before :ai:test execution",
+    "cause":"The init script's projectsEvaluated callback also ran for a Gradle build root without :ai and unconditionally failed with 'missing :ai project'. The top-level settings do include :ai.",
+    "behavioral_failure":false
+  },
+  "decision":"INCOMPLETE_NO_SUPPLEMENTAL_CAPTURE_AUTHORITY_NESTED_BUILD_SCOPE_BLOCKER",
+  "accepted_scope":[
+    "The exact accepted dependency store reconstructs successfully and the first launch remains genuinely offline under the accepted image and Java bytes.",
+    "The launcher and single-use daemon process identities are preserved as pre-worker evidence."
+  ],
+  "limits":[
+    "No test worker, fixed-worker behavior, runtime graph, class census, repeat equivalence or supplemental capture authority.",
+    "Do not rerun this implementation unchanged.",
+    "No expected manifest, sealed launch, claim, allocation, seed or gameplay authority."
+  ],
+  "next_gate":"Scope the init-script :ai lookup to the actual top-level argentum-engine build while retaining fail-closed :ai presence there; independently review the exact v4 source/workflow and dispatch one fresh original.",
+  "official_counters_delta":0
+}
