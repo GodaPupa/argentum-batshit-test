@@ -1,0 +1,54 @@
+{
+  "schema":"industrial-r1-immutable-dependency-store-budget-v1",
+  "date_utc":"2026-09-30",
+  "logical_source_commit":"de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+  "logical_source_tree":"d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+  "failed_capture_run":36670017150,
+  "failed_capture_artifact":11078195062,
+  "failure_classification":"INCOMPLETE_PREFLIGHT_DEPENDENCY_STORE_RESOLUTION",
+  "accepted_platform":{
+    "image":"catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "architecture":"linux/amd64",
+    "java_path":"/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+    "java_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+    "python_path":"/usr/bin/python3.10",
+    "python_sha256":"7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86"
+  },
+  "gradle":{
+    "wrapper_version":"9.6.1",
+    "wrapper_properties_blob":"a9db11550c6202b666ed9c44cafdc6726fd5b264",
+    "buildsrc_build_blob":"6f476b8598831073d79a9cee7cc3c43a721650b1",
+    "buildsrc_settings_blob":"705bfb5e577139e4a0f0c38abfc3749dcf26e12a",
+    "version_catalog_blob":"1c9d36482bf902b332df50bd2d2332f4d6ad623a"
+  },
+  "construction_scope":[
+    "start with a nonexistent dedicated GRADLE_USER_HOME",
+    "use one reviewed init script that prepends Maven Central while retaining Gradle Plugin Portal for settings plugin resolution and buildscript resolution",
+    "run exactly :ai:testClasses with --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks; do not run any test task",
+    "preserve only wrapper/dists and caches/modules-2 as immutable external dependency/tool input bytes",
+    "produce a canonical per-file size/SHA-256 manifest and deterministic store archive",
+    "extract that archive into a second nonexistent GRADLE_USER_HOME",
+    "remove project-local .gradle state, then require the same :ai:testClasses invocation to succeed with --offline using the same reviewed init script",
+    "preserve network and offline logs, command vectors, source binding and store manifest"
+  ],
+  "acceptance":[
+    "network construction exits zero without executing tests",
+    "immutable store archive and canonical manifest are produced",
+    "second clean Gradle home is reconstructed only from the immutable store archive",
+    "offline :ai:testClasses exits zero",
+    "no test task or project behavioral test is executed",
+    "no official seed/allocation/claim/game/outcome file is read or created",
+    "all official counters remain zero"
+  ],
+  "prohibited":[
+    "no setup-java or package installation",
+    "no :test or specific behavioral test execution",
+    "no supplemental runtime capture in this gate",
+    "no expected-manifest construction",
+    "no prepared-worker or sealed-launch authority",
+    "no official seed read, claim, allocation, game initialization, gameplay or outcome interpretation"
+  ],
+  "authority_if_clean":"IMMUTABLE_GRADLE_9_6_1_DEPENDENCY_STORE_CANDIDATE_FOR_INDEPENDENT_REVIEW_ONLY",
+  "next_gate":"Audit the single construction original for exact source/platform/init/workflow binding, archive/manifest integrity and clean offline reconstruction. Only if independently accepted may the exact store be mounted/imported by a fresh supplemental hermetic capture successor.",
+  "official_counters_delta":0
+}
