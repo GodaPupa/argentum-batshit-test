@@ -1,0 +1,59 @@
+{
+  "schema":"ferocity-final-development-verify-only-execution-budget-v4",
+  "date_utc":"2026-09-30",
+  "accepted_repaired_manifest_audit_commit":"ee784dc18eb7e581c350415d4dc2425226503a98",
+  "manifest_original":{
+    "run":36709134371,
+    "artifact":11093470964,
+    "artifact_sha256":"12406295c2c96b9d6e09519517edeb57c6557a25440a7184877f4431157cdadf",
+    "manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+    "repository_relative_path":"ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json",
+    "materialized_prefix":"build/reports/ferocity-final-manifest-watchdog-path-repair/materialized"
+  },
+  "logical_source":{
+    "commit":"3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "compiled_input_tree_sha256":"663af924957ed0d67af8cd594a8abcd6c1e404ea8181acda3fcbac28b6961fd3"
+  },
+  "runtime_restore":{
+    "helper_blob":"dd001c437f627b1615ccb590f2331589d4161f72",
+    "accepted_path_token":"36655120463",
+    "runner_temp":"/home/runner/work/_temp",
+    "runtime_prefix":"/home/runner/work/_temp/ferocity-source08-runtime-36655120463",
+    "java_executable":"/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java",
+    "java_sha256":"2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "classpath_sha256":"3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415"
+  },
+  "execution_platform":{
+    "image":"mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880",
+    "repository_path":"/home/runner/work/argentum-batshit-test/argentum-batshit-test",
+    "watchdog_python":"/usr/local/python/3.14.2/bin/python3.14",
+    "watchdog_python_sha256":"4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601"
+  },
+  "permitted_java":{
+    "count":1,
+    "entrypoint":"com.wingedsheep.gym.ferocity.FerocityDevelopmentCli",
+    "operation":"verify",
+    "heap":"-Xmx2048m",
+    "required_status":"VERIFIED_INPUTS_NO_ENTROPY_NO_GAME"
+  },
+  "preconditions":[
+    "download only repaired manifest artifact 11093470964 and require exact whole-ZIP SHA-256 plus clean ZIP CRC",
+    "materialize its exact repaired materialized tree including watchdog/source/trial_watchdog.py",
+    "restore exact source08 runtime/JDK bytes and require exact classpath/Java hashes",
+    "require current watchdog Python exact path/SHA",
+    "require no D2 allocation, journal or process-run roots before Java",
+    "bind manifest SHA-256 44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d immediately before Java"
+  ],
+  "postconditions":[
+    "require CLI status VERIFIED_INPUTS_NO_ENTROPY_NO_GAME with repaired admission SHA",
+    "preserve stdout/stderr/exit code and post hashes",
+    "require no D2 allocation, ledger, journal, supervisor run claim, game or outcome side effects"
+  ],
+  "prohibited":[
+    "no allocate","no run-one","no SecureRandom or official seed generation","no ledger or allocation creation",
+    "no trial claim or development journal creation","no game initialization gameplay or outcome exposure",
+    "no automatic allocation after successful verify"
+  ],
+  "authority_if_clean":"VERIFIED_CURRENT_FEROCITY_DEVELOPMENT_INPUTS_NO_ENTROPY_NO_GAME_ONLY",
+  "official_counters_delta":0
+}
