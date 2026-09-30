@@ -1,0 +1,77 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-current-store-v5-36731156370-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36731156370,
+  "job_id":109940808443,
+  "artifact_id":11105538326,
+  "artifact_sha256":"20126edf15bcb1bf42953c231164926cf4e851e662fc8c460ae26558b198e03e",
+  "head":"7775ed59456d632ee00a788291136338c9e2e17e",
+  "integrity":{
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":17,
+    "source_review_marker_binding":"passed",
+    "accepted_store_materialization":"passed",
+    "accepted_store_artifact":11105215706,
+    "accepted_store_files":1339,
+    "network_disabled_capture":true
+  },
+  "execution":{
+    "first_offline_build":"SUCCESS",
+    "second_offline_repeat":"SUCCESS",
+    "fixed_worker_class":"com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest",
+    "first_fixed_worker":{"tests":10,"passes":10,"failures":0,"errors":0,"skipped":0},
+    "second_fixed_worker":{"tests":10,"passes":10,"failures":0,"errors":0,"skipped":0},
+    "runtime_graph_equal":true,
+    "unresolved_dependencies":0,
+    "fixed_worker_started":true,
+    "official_seed_files_read":false
+  },
+  "generated_hidden_repeat_analysis":{
+    "first_classload_rows":77009,
+    "second_classload_rows":77008,
+    "first_generated_or_hidden_rows":49283,
+    "second_generated_or_hidden_rows":49284,
+    "unique_generated_or_hidden_families_first":15145,
+    "unique_generated_or_hidden_families_second":15145,
+    "unique_generated_or_hidden_family_sets_equal":true,
+    "non_vm_generated_rows_first":48808,
+    "non_vm_generated_rows_second":48808,
+    "non_vm_generated_multiplicity_equal":true,
+    "vm_lookup_define_rows_first":475,
+    "vm_lookup_define_rows_second":476,
+    "vm_lookup_define_unique_family_sets_equal":true,
+    "only_generated_multiplicity_delta":{
+      "normalized_name":"java.lang.invoke.LambdaForm$MH/0x<HIDDEN>",
+      "source":"__JVM_LookupDefineClass__",
+      "first_count_delta":0,
+      "second_count_delta":1
+    },
+    "ordinary_lazy_load_differences":[
+      {"only_first":"org.gradle.util.internal.GFileUtils","source":"gradle-base-services-9.6.1.jar"},
+      {"only_first":"java.io.UncheckedIOException","source":"jrt:/java.base"}
+    ]
+  },
+  "failure":{
+    "classification":"INCOMPLETE_REPEAT_EQUIVALENCE_TOO_STRICT_FOR_VM_HIDDEN_MULTIPLICITY",
+    "assertion":"generated/hidden normalized census differs",
+    "first_digest":"81e607e0c0db2dce11a3278d1f71a9c17630421524241e3cc070e4025f70c859",
+    "second_digest":"f29b9a0c07255a7a09b1917a4a9c08121bf2e4d50a2c733f62cf474db7853d17",
+    "behavioral_failure":false
+  },
+  "decision":"INCOMPLETE_NO_SUPPLEMENTAL_CAPTURE_AUTHORITY_VM_HIDDEN_REPEAT_EQUIVALENCE_BLOCKER",
+  "accepted_scope":[
+    "The accepted v5 dependency store resolves the complete current ai test runtime offline and both fresh fixed worker runs pass 10/10.",
+    "The ordered runtime graph is repeat-identical.",
+    "Every unique generated/hidden normalized family is present in both repeats and all non-VM generated family multiplicities are repeat-identical.",
+    "The only generated-family multiplicity drift is one additional JVM-internal LambdaForm$MH hidden helper in the repeat."
+  ],
+  "limits":[
+    "No complete supplemental hermetic capture authority because the predeclared repeat-equivalence assertion failed.",
+    "No expected manifest, prepared worker, R1 permit, seed, claim, allocation or gameplay authority.",
+    "Do not rerun this implementation unchanged."
+  ],
+  "next_gate":"Prospectively define and independently review the explicit VM-hidden equivalence rule permitted by the accepted PINNED_GENERATOR_INPUTS policy: exact unique normalized generated/hidden family-set equality; exact multiplicity for non-VM-generated families; VM __JVM_LookupDefineClass__ multiplicity may vary only when its normalized family set is identical and all generator/runtime/tool inputs remain byte-identical. Then implement and dispatch one fresh successor capture.",
+  "official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},
+  "official_counters_delta":0
+}
