@@ -1,0 +1,96 @@
+name: Ferocity D2 first-row accepted-ledger runner and fresh replay
+on:
+  push:
+    branches: ["ferocity/d2-first-row-runner-replay-execute-20260930"]
+    paths:
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_ROW_RUNNER_REPLAY_EXECUTION_MARKER_20260930.json"
+permissions:
+  contents: read
+  actions: read
+jobs:
+  first-row:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    container:
+      image: mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880
+    env:
+      EXACT_REPO: /home/runner/work/argentum-batshit-test/argentum-batshit-test
+      EXACT_RUNNER_TEMP: /home/runner/work/_temp
+      FEROCITY_ACCEPTED_PATH_TOKEN: "36655120463"
+      PYTHON_EXACT: /usr/local/python/3.14.2/bin/python3.14
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact independent review and execution marker
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_ROW_RUNNER_REPLAY_INDEPENDENT_REVIEW_20260930.json
+          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_ROW_RUNNER_REPLAY_EXECUTION_MARKER_20260930.json
+          "$PYTHON_EXACT" - "$REVIEW" "$MARKER" <<'PY'
+          import json,pathlib,subprocess,sys
+          r=json.loads(pathlib.Path(sys.argv[1]).read_text()); m=json.loads(pathlib.Path(sys.argv[2]).read_text())
+          assert r["decision"]=="ACCEPT_ONE_FIRST_ROW_RUNNER_CLAIM_FRESH_REPLAY_ORIGINAL"
+          assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==r["reviewed_implementation_commit"]
+          assert m["independent_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
+          assert m["reviewed_implementation_commit"]==r["reviewed_implementation_commit"]
+          assert m["accepted_allocation_audit_commit"]=="49ee93ee46eecd5ed46353c30df1670dd23ecf29"
+          assert m["allocation_id"]=="FEROCITY_RECYCLING/v0.1/D2/A3-F4/mono_red_madness_mistertwin_20260924/play/1"
+          assert m["allocate_authorized"] is False and m["replacement_authorized"] is False
+          changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
+          assert changed==[sys.argv[2]],changed
+          PY
+      - name: Rehydrate exact accepted manifest runtime and consumed allocation
+        shell: bash
+        env: {GH_TOKEN: "${{ github.token }}"}
+        run: |
+          set -euo pipefail
+          cd "$EXACT_REPO"
+          curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11093470964/zip" -o "$EXACT_RUNNER_TEMP/manifest.zip"
+          echo "12406295c2c96b9d6e09519517edeb57c6557a25440a7184877f4431157cdadf  $EXACT_RUNNER_TEMP/manifest.zip" | sha256sum -c -
+          unzip -t "$EXACT_RUNNER_TEMP/manifest.zip" >/dev/null
+          mkdir "$EXACT_RUNNER_TEMP/manifest-material"
+          unzip -q "$EXACT_RUNNER_TEMP/manifest.zip" -d "$EXACT_RUNNER_TEMP/manifest-material"
+          cp -a "$EXACT_RUNNER_TEMP/manifest-material/build/reports/ferocity-final-manifest-watchdog-path-repair/materialized/." "$EXACT_REPO/"
+          echo "44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d  $EXACT_REPO/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json" | sha256sum -c -
+          RUNNER_TEMP="$EXACT_RUNNER_TEMP" FEROCITY_ACCEPTED_PATH_TOKEN="$FEROCITY_ACCEPTED_PATH_TOKEN"             "$PYTHON_EXACT" ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py
+          curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11114289057/zip" -o "$EXACT_RUNNER_TEMP/allocation-original.zip"
+          echo "5b1d4cf7232bed9cb0065c28a215264a7c28450b2d298ba0d1dc785ab34a3fef  $EXACT_RUNNER_TEMP/allocation-original.zip" | sha256sum -c -
+          unzip -t "$EXACT_RUNNER_TEMP/allocation-original.zip" >/dev/null
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          mkdir -p ferocity-recycling/allocations/D2-first-cell
+          unzip -p "$EXACT_RUNNER_TEMP/allocation-original.zip" allocation/ALLOCATION_INTENT.json > ferocity-recycling/allocations/D2-first-cell/ALLOCATION_INTENT.json
+          unzip -p "$EXACT_RUNNER_TEMP/allocation-original.zip" allocation/ledger.json > ferocity-recycling/allocations/D2-first-cell/ledger.json
+          echo "0bf7a24c0fd83159acca1fb3358968af999494374892c82c72bae7796b39d72d  ferocity-recycling/allocations/D2-first-cell/ALLOCATION_INTENT.json" | sha256sum -c -
+          echo "356a989ee1522947c66c053d9c596d6d3c185d934553fcde39602e34a7ce5f12  ferocity-recycling/allocations/D2-first-cell/ledger.json" | sha256sum -c -
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+          test ! -e ferocity-recycling/evidence/process/development/D2-first-cell
+      - name: Execute exactly one accepted row and fresh read-only replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd "$EXACT_REPO"
+          "$PYTHON_EXACT" ferocity-recycling/support-audits/source08-policy-selection-20260928/run_first_row_and_fresh_replay.py
+      - name: Preserve complete first-row original
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          DEST="$GITHUB_WORKSPACE/build/reports/ferocity-d2-first-row-preserved"
+          mkdir -p "$DEST"
+          cp -a "$EXACT_REPO/build/reports/ferocity-d2-first-row-runner-replay" "$DEST/" 2>/dev/null || true
+          cp -a "$EXACT_REPO/ferocity-recycling/evidence/development/D2-first-cell" "$DEST/journal" 2>/dev/null || true
+          cp -a "$EXACT_REPO/ferocity-recycling/evidence/process/development/D2-first-cell" "$DEST/supervisor" 2>/dev/null || true
+          cp ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_ROW_RUNNER_REPLAY_BUDGET_20260930.json "$DEST/"
+          cp ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_ROW_RUNNER_REPLAY_INDEPENDENT_REVIEW_20260930.json "$DEST/"
+          cp ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_ROW_RUNNER_REPLAY_EXECUTION_MARKER_20260930.json "$DEST/"
+          sha256sum "$EXACT_REPO/ferocity-recycling/allocations/D2-first-cell/ALLOCATION_INTENT.json"                     "$EXACT_REPO/ferocity-recycling/allocations/D2-first-cell/ledger.json" > "$DEST/accepted-allocation-hashes.txt"
+      - name: Upload first-row original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-d2-first-row-runner-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-d2-first-row-preserved/
+          if-no-files-found: error
+          retention-days: 90
