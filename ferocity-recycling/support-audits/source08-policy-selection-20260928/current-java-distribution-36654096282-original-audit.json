@@ -1,0 +1,65 @@
+{
+  "schema": "ferocity-current-source08-java-distribution-36654096282-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36654096282,
+  "job_id": 109694509824,
+  "artifact_id": 11071837363,
+  "artifact_sha256": "c5307246b52dbb6a527ffe35608dcd8fdd313f5114e203147b9ae23b51759889",
+  "head": "032fb142e12b00882380336cb6328e77bbe5b422",
+  "pins": {
+    "budget": "f8146645929270d4a8ddb2b064e419c38f8d96d5",
+    "verifier": "3b58515c2dea5627132ce984ef568b5826f6d2b6",
+    "workflow": "66d526d3c3105a8cf7e8b8c395d92e0f211537d9",
+    "recorded_provenance_audit_commit": "08a3e67705fcde79431c3e211c52896c8d322db3"
+  },
+  "integrity": {
+    "workflow_conclusion": "success",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "java_started": false,
+    "gradle_started": false,
+    "exporter_started": false,
+    "seed_or_entropy_read": false,
+    "allocation_read": false,
+    "game_initialized": false
+  },
+  "verified_public_distribution": {
+    "repository": "adoptium/temurin21-binaries",
+    "tag": "jdk-21.0.12.1+1",
+    "asset_id": 521122372,
+    "asset_name": "OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz",
+    "asset_bytes": 207473347,
+    "asset_sha256": "ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94",
+    "release_metadata_sha256": "45243982d647b3b900a569dc40968fcf729369f7ae1c5564c130a959f94c0f39"
+  },
+  "verified_java": {
+    "archive_member": "jdk-21.0.12.1+1/bin/java",
+    "bytes": 12328,
+    "sha256": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "matches_preserved_source08_receipt": true
+  },
+  "verified_release": {
+    "member": "jdk-21.0.12.1+1/release",
+    "sha256": "ebbd70bf00bab6d39addf51969c5ff244030b86b29de400b9fb10612ebd3ceec",
+    "IMPLEMENTOR": "Eclipse Adoptium",
+    "IMPLEMENTOR_VERSION": "Temurin-21.0.12.1+1",
+    "JAVA_VERSION": "21.0.12.1",
+    "JAVA_RUNTIME_VERSION": "21.0.12.1+1-LTS",
+    "OS_ARCH": "x86_64",
+    "OS_NAME": "Linux"
+  },
+  "decision": "ACCEPTED_EXACT_SOURCE08_JAVA_DISTRIBUTION_AND_EXECUTABLE_BYTE_PROVENANCE",
+  "accepted_scope": [
+    "The exact public Eclipse Temurin 21.0.12.1+1 x86_64 Linux release asset is independently bound by its GitHub release-asset SHA-256.",
+    "The exact bin/java bytes inside that immutable release asset match the Java executable SHA-256 recorded by the preserved source08 runtime receipt.",
+    "Current source08 Java distribution, architecture and Java executable byte provenance are now exact enough to populate the prospective no-game runtime/export plan."
+  ],
+  "limits": [
+    "No Java was executed by this verification.",
+    "No runtime restore, definition export, Red v0.2 receiving, final D2 admission, seed, allocation or gameplay authority.",
+    "The exact runtime restore recipe and export workflow/budget still require construction and review."
+  ],
+  "next_gate": "Bind this exact Temurin asset/executable provenance with the accepted source08 56-entry runtime archive, exporter/getter/assembler identities and no-game restrictions into an exact runtime-restore/export workflow and prospective budget; review before dispatch.",
+  "official_counters_delta": 0
+}
