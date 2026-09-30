@@ -1,0 +1,46 @@
+{
+  "schema":"sphinx-stage-e-forced-empty-blockers-budget-v1",
+  "date_utc":"2026-09-30",
+  "accepted_parent_receipt_commit":"44cc8b5242b37f141ef2c179e4770d08e5403567",
+  "accepted_parent_decision":"ACCEPTED_BOUNDED_FORCED_EMPTY_ATTACKERS_SEAM",
+  "whole_actor_blob":"0e5a21429c367355c0951c7a3a367495a96a161d",
+  "new_test_blob":"027fc80a3a67f39c02949eba8eeabf1bfe81526b",
+  "regression_blobs":{
+    "forced_empty_attackers":"4c2fdbc3c408822dda64216c3ad91882bd81b6c1",
+    "unique_pass":"d7a141cf2be33dd5eed826aa7bb52460c66a5209",
+    "multicast_discriminator":"6b794b196d4ff65ab3a7fff5f14febb8f310ab35"
+  },
+  "new_scope":[
+    "exactly two reconstructed Stage-E actors",
+    "real engine combat block-declaration menu",
+    "sole current legal action is DeclareBlockers",
+    "validBlockers is exactly empty",
+    "mandatoryBlockerAssignments is null or empty",
+    "proposal is exact DeclareBlockers(actor, emptyMap())",
+    "real engine accepts the proposal"
+  ],
+  "acceptance":{
+    "forced_empty_blockers_tests":2,
+    "forced_empty_attackers_regression":2,
+    "unique_pass_regression":2,
+    "multicast_discriminator_regression":2,
+    "failures":0,
+    "errors":0,
+    "skipped":0
+  },
+  "limits":[
+    "no blocker selection when a valid blocker exists",
+    "no mandatory blocker assignment policy",
+    "no blocker ordering or combat damage assignment",
+    "no nonempty attacker ranking",
+    "no pass-vs-cast ranking beyond already accepted seams",
+    "no opponent package, trusted runner/replay, Stage-E freeze/admission, seed, allocation or gameplay authority"
+  ],
+  "prohibited":[
+    "no Ponder recovery rerun",
+    "no official seed read or allocation",
+    "no gameplay outcome inference"
+  ],
+  "authority_if_clean":"BOUNDED_FORCED_EMPTY_BLOCKERS_SEAM_ONLY",
+  "official_counters_delta":0
+}
