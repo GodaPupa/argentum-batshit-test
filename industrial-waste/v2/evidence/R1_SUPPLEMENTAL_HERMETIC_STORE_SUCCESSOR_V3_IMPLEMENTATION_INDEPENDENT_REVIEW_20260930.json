@@ -1,0 +1,50 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-store-successor-v3-implementation-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"97e807d2f2cfb014c53d9a06219258bf3e50132e",
+  "budget_blob":"624a04ef9d5b6411684e5e54aec23bc3b0c0b818",
+  "capture_source_blob":"9c79dc360e8c0ff92f81ce632a692f7ddbb298a0",
+  "gradle_probe_blob":"95468279461451829b4060c34aacb161f24c9d71",
+  "store_bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+  "workflow_blob":"9c78b5fd3b169dfd394898e6194c5939ccac7b7f",
+  "accepted_store":{
+    "run_id":36676489843,
+    "artifact_id":11080705894,
+    "outer_artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b",
+    "archive_sha256":"b686ca26e715ba965a9156c455a6fba8c0f80f8d55883fc9b85285d4bb0b0b23",
+    "manifest_sha256":"8e427eb24c5c3043dab37abb681b0d3caf5243f4cb9357e1d196a92523ae9c0e",
+    "files":1272
+  },
+  "superseded_incomplete_run":{
+    "run_id":36703769170,
+    "classification":"INCOMPLETE_PREFLIGHT_INIT_SCRIPT_ROOT_PROJECT_SCOPE",
+    "test_worker_reached":false,
+    "audit_commit":"2480c3669283f1b4f832604186c6f2a125bac07b"
+  },
+  "decision":"ACCEPT_STORE_BACKED_V3_IMPLEMENTATION_FOR_ONE_FRESH_SUPPLEMENTAL_CAPTURE_ORIGINAL",
+  "review":{
+    "functional_change":"PASS_ROOTPROJECT_LOOKUP_NOW_USES_GRADLE_ROOT_PROJECT",
+    "settings_contains_ai_project":"PASS",
+    "capture_source_unchanged_from_v2":"PASS",
+    "accepted_store_unchanged":"PASS",
+    "accepted_platform_unchanged":"PASS",
+    "both_gradle_invocations_offline":"PASS",
+    "fixed_worker_filter_and_scope_unchanged":"PASS",
+    "runtime_graph_member_visibility_process_and_class_census_capture_unchanged":"PASS",
+    "official_seed_claim_allocation_game_prohibition":"PASS",
+    "distinct_v3_execution_branch_and_marker":"PASS"
+  },
+  "findings":[
+    "The predecessor restored the accepted 1272-file store and launched Gradle offline under the accepted Java bytes, but failed during init-script configuration because rootProject was resolved in init-script scope.",
+    "The repository settings explicitly include :ai. The successor changes only that lookup to gradle.rootProject.findProject(\":ai\").",
+    "No fixed-worker code, capture source, store, platform, class-census policy or official-safety boundary is broadened."
+  ],
+  "accepted_scope":[
+    "Create exactly one v3 marker-only execution branch from this review and dispatch one fresh store-backed supplemental capture original."
+  ],
+  "explicit_non_authority":[
+    "No expected manifest, prepared worker, sealed R1 launch, permit, official seed, claim, allocation, game or outcome authority."
+  ],
+  "next_gate":"Dispatch one fresh v3 store-backed supplemental capture original and independently audit it once if complete.",
+  "official_counters_delta":0
+}
