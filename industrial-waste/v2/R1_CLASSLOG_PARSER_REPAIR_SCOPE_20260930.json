@@ -1,0 +1,26 @@
+{
+  "schema": "industrial-r1-classlog-parser-repair-scope-v1",
+  "date_utc": "2026-09-30",
+  "parent_audit_commit": "162491baa8a1317db9347680d8f698eacf35afde",
+  "consumed_original_run": 36749369682,
+  "consumed_original_artifact": 11113993601,
+  "original_disposition": "INCOMPLETE_CLASSLOG_PARSER_EMPTY_CENSUS",
+  "scope": "COLLECTOR_PARSER_ONLY_NO_EXPERIMENT_EXECUTION",
+  "original_capture_blob": "552e015982889d8aac926911eef2c316c22db90c",
+  "repaired_capture_blob": "a661462176e8ebf8ac4a6730106f1a913dad3638",
+  "repaired_capture_sha256": "6e51dcae1c11f4ab99d4a1920ddf2b3be6c0ff0d85193e53acc1c0e30b6df7fb",
+  "permitted_source_delta": [
+    "Correct parse_classlog raw-regex escaping and require nonempty class/source fields.",
+    "Reject empty or noise-only class-load logs.",
+    "Reject malformed tagged lines instead of silently dropping them.",
+    "Decode UTF-8 strictly instead of replacing corrupt bytes."
+  ],
+  "unchanged": ["All source outside parse_classlog", "Accepted generated/hidden family and VM multiplicity equivalence rule", "Fixed 10-case worker", "Accepted 1339-file dependency store", "Platform/tool pins", "All old artifacts, receipts and workflows"],
+  "synthetic_regression_cases": ["standard record", "hidden normalization", "duplicate multiplicity and non-VM inequality", "non-classload noise", "empty log", "noise-only log", "malformed tagged line", "empty source", "invalid UTF-8", "accepted VM multiplicity tolerance"],
+  "author_local_validation": {"tests":10,"failures":0,"errors":0,"skipped":0,"independent_review":false,"capture_main_invoked":false,"java_or_gradle_invoked":false,"official_seed_material_read":false},
+  "execution_status": "BLOCKED_PENDING_INDEPENDENT_EXACT_REPAIR_AND_SUCCESSOR_WORKFLOW_REVIEW",
+  "next_gate": "Independent review of this exact source delta and synthetic suite; prospectively bind one new successor workflow and its runtime/build-entry preflight before any capture execution.",
+  "future_successor_limit": {"originals":1,"offline_launches":2,"fixed_worker_cases_per_launch":10,"unchanged_original_reruns":0,"official_seeds":0,"claims":0,"allocations":0,"games":0,"outcomes":0},
+  "prohibited": ["No acceptance by re-parsing the consumed original", "No original rerun", "No expected-manifest or sealed-launch or R1 permit authority from local tests", "No changed VM equivalence tolerance"],
+  "official_counters_delta": 0
+}
