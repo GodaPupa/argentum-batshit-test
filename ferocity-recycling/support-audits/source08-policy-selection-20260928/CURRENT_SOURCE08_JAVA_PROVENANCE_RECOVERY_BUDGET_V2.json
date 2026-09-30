@@ -1,0 +1,45 @@
+{
+  "schema": "ferocity-current-source08-java-provenance-recovery-budget-v2",
+  "date_utc": "2026-09-29",
+  "source08_commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "source08_tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+  "publication_manifest_path": "ferocity-recycling/evidence/source08-takeover/publication-manifest.json",
+  "publication_manifest_git_blob": "262f78d820ac8834d796d3cc634bf45bbb155cf6",
+  "artifact_id": 10914678223,
+  "artifact_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+  "artifact_bytes": 95124680,
+  "artifact_parts": 12,
+  "scope": "READ_ONLY_REASSEMBLED_ARCHIVE_METADATA_RECOVERY_ONLY",
+  "required": [
+    "read the exact artifact entry for id 10914678223 from publication-manifest.json",
+    "verify every part path, offset, byte length, Git blob identity and SHA-256 against the manifest before concatenation",
+    "reassemble to a temporary non-executable file only and verify exact original byte length and SHA-256",
+    "verify ZIP CRC before reading members",
+    "search only UTF-8 JSON/text/log/markdown/properties receipt members for Java/JDK/executable/distribution/toolchain/runtime identity fields",
+    "emit exact member name, locator, value and member SHA-256 for every match",
+    "delete the temporary reassembled ZIP after inspection",
+    "start no JVM and invoke no Java/Gradle/exporter/game command",
+    "read no seed, entropy, allocation, trial journal or outcome data"
+  ],
+  "acceptance": [
+    "source/publication-manifest/parser/workflow pins pass",
+    "all 12 part hashes/lengths/offsets pass",
+    "full reassembled ZIP digest and length match",
+    "ZIP CRC is clean",
+    "machine-readable provenance-candidates.json is preserved",
+    "at least one exact recorded Java executable or distribution identity is recovered; otherwise disposition remains HOLD"
+  ],
+  "prohibited": [
+    "no Java execution",
+    "no Gradle",
+    "no exporter or bundle production",
+    "no entropy or seeds",
+    "no allocation or game initialization",
+    "no inference that recorded Java path/version is independently bound executable bytes"
+  ],
+  "predecessors": [
+    {"run_id": 36652714379, "disposition": "INCOMPLETE_TECHNICAL_PATH_RESOLUTION"},
+    {"run_id": 36653531873, "disposition": "INCOMPLETE_TECHNICAL_WRONG_ARCHIVE_SELECTOR"}
+  ],
+  "official_counters_delta": 0
+}
