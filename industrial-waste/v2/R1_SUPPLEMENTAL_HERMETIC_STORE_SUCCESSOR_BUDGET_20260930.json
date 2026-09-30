@@ -1,0 +1,55 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-store-successor-budget-v1",
+  "date_utc":"2026-09-30",
+  "logical_source_commit":"de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+  "logical_source_tree":"d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+  "superseded_incomplete_capture":{
+    "run_id":36670017150,
+    "classification":"INCOMPLETE_PREFLIGHT_DEPENDENCY_STORE_RESOLUTION",
+    "behavioral_worker_reached":false
+  },
+  "accepted_platform":{
+    "image":"catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "architecture":"linux/amd64",
+    "java_path":"/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+    "java_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+    "python_path":"/usr/bin/python3.10",
+    "python_sha256":"7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86"
+  },
+  "accepted_dependency_store":{
+    "run_id":36676489843,
+    "artifact_id":11080705894,
+    "outer_artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b",
+    "store_archive_sha256":"b686ca26e715ba965a9156c455a6fba8c0f80f8d55883fc9b85285d4bb0b0b23",
+    "store_manifest_sha256":"8e427eb24c5c3043dab37abb681b0d3caf5243f4cb9357e1d196a92523ae9c0e",
+    "files":1272,
+    "bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+    "accepted_audit_commit":"66a88c8357cf5a9cff937027ae2be33864a9e6e4",
+    "authority":"ACCEPTED_IMMUTABLE_GRADLE_9_6_1_DEPENDENCY_TOOL_STORE"
+  },
+  "execution_requirements":[
+    "download the exact accepted dependency-store artifact by immutable artifact id and require whole-ZIP SHA-256 and ZIP CRC",
+    "extract only the accepted store archive and canonical store manifest, require their exact SHA-256 values, and make both source inputs read-only before the capture script starts",
+    "reconstruct one new writable GRADLE_USER_HOME only from the 1272 exact accepted store files, rejecting links, devices, extra paths, missing paths, size drift or hash drift",
+    "bind the exact accepted repository bootstrap init script as an explicit external build input",
+    "run both Gradle capture invocations with --offline; no network-population invocation is permitted",
+    "require identical resolved runtime graph and normalized generated/hidden class census across the two offline runs",
+    "require every resolved external modules-2 runtime artifact to rehash to the corresponding accepted store manifest row",
+    "preserve complete runtime archive/directory member inventory, duplicate visibility, process topology, JDK/Python/dynamic-library closure, class-load logs, fixed-worker XML and all receipts"
+  ],
+  "fixed_worker":{
+    "class":"com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest",
+    "expected_tests":10,
+    "scope":"fixed mechanical equivalence controls only"
+  },
+  "prohibited":[
+    "no dependency resolution network access during either capture Gradle invocation",
+    "no package installation or setup-java",
+    "no official seed or allocation file read",
+    "no expected-manifest adoption",
+    "no prepared-worker or sealed-launch authority",
+    "no claim, allocation, official game initialization, gameplay result or outcome interpretation"
+  ],
+  "authority_if_clean":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY",
+  "official_counters_delta":0
+}
