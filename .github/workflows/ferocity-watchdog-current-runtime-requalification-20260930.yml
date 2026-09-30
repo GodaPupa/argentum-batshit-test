@@ -2,9 +2,9 @@ name: Ferocity watchdog current-runtime requalification
 on:
   push:
     branches:
-      - ferocity/watchdog-current-runtime-requalification-execute-20260930
+      - ferocity/watchdog-current-runtime-requalification-execute-v2-20260930
     paths:
-      - ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_20260930.json
+      - ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_V2_20260930.json
 
 permissions:
   contents: read
@@ -38,7 +38,7 @@ jobs:
           implementation=subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()
           assert review["reviewed_implementation_commit"] == implementation
           changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
-          assert changed == ["ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_20260930.json"], changed
+          assert changed == ["ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_V2_20260930.json"], changed
           files={
             "reviewed_harness_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/run_watchdog_current_runtime_requalification.py",
             "reviewed_budget_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_BUDGET_20260930.json",
@@ -107,6 +107,6 @@ jobs:
             ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_PLAN_INDEPENDENT_REVIEW_20260930.json
             ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_BUDGET_20260930.json
             ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
-            ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_V2_20260930.json
           if-no-files-found: error
           retention-days: 90
