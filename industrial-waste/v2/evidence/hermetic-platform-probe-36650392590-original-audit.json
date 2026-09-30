@@ -1,0 +1,59 @@
+{
+  "schema":"industrial-r1-hermetic-platform-probe-36650392590-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36650392590,
+  "job_id":109682921610,
+  "artifact_id":11070053761,
+  "artifact_sha256":"afac474f45524a9bcf234617d00e6d11c8b624f2f801b48781ebf4ac2ce41ef2",
+  "head":"266dc93baba8cd5accd7adca02e75eb0f7dc1fdc",
+  "parent":"27f5d05c6aa2a7c58fe18683ed554c9f1669118d",
+  "source_commit":"de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+  "source_tree":"d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+  "pins":{
+    "workflow_blob":"32818ef792091a4589fd70e73fb42233089a8e95",
+    "platform_budget_v2_blob":"98771023ad62bef29ca4097623883f373b52b683",
+    "accepted_design_blob":"2d23710bc63b7b29d4be97acd4f3927cf23f2d00",
+    "accepted_design_review_blob":"93163d9ea12ca7dc1182d306f8b293158677c0fa"
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_files":10,
+    "checkout_clean":true,
+    "source_workflow_parent_binding":"passed"
+  },
+  "platform":{
+    "image":"catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "architecture":"linux/amd64",
+    "machine":"x86_64",
+    "java21_candidates":1,
+    "java21_path":"/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+    "java21_bytes":12328,
+    "java21_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+    "java21_version":"Temurin 21.0.12+8 LTS",
+    "bash_sha256":"59474588a312b6b6e73e5a42a59bf71e62b55416b6c9d5e4a6e1c630c2a9ecd4",
+    "git_sha256":"011fb1c28096c72e25688e56793f20b33e68f7f1065489f745763f19b6e9f516",
+    "python3_sha256":"7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86",
+    "sha256sum_sha256":"b88ea413571562a591268213d736121fada5ba14330bfcc74b8d9f14e4018ddf"
+  },
+  "safety":{
+    "project_build_or_gradle_invoked":false,
+    "official_seed_files_read":false,
+    "claims":0,
+    "allocations":0,
+    "games":0,
+    "outcomes":0
+  },
+  "decision":"ACCEPTED_IMMUTABLE_PLATFORM_AND_TOOL_IDENTITY_CANDIDATE_ONLY",
+  "accepted_scope":[
+    "The exact digest-pinned linux/amd64 image and in-image Java 21 candidate are bound for subsequent sealed-launch construction.",
+    "The exact shell/Git/Python/hash-tool identities and observable OS/mount/environment facts are preserved."
+  ],
+  "limits":[
+    "No sealed launch, runtime capture, expected manifest, prepared worker, R1 permit, claim, allocation, seed or gameplay authority.",
+    "The supplemental capture still requires a separately reviewed immutable source/dependency-store launch implementation."
+  ],
+  "next_gate":"Bind this accepted platform identity into the supplemental hermetic launch design with immutable source and dependency inputs, then independently review the exact launch implementation before one fresh supplemental capture.",
+  "official_counters_delta":0
+}
