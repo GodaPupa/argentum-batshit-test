@@ -36,7 +36,7 @@
     "required_status":"VERIFIED_INPUTS_NO_ENTROPY_NO_GAME"
   },
   "preconditions":[
-    "copy the checked-out exact execution head to the manifest's exact canonical repository path without symlinks",
+    "require the manifest's exact canonical repository path to be either the same physical checked-out workspace inode or, if absent, a newly created physical copy without symlinks",
     "materialize only the exact accepted manifest artifact materialized tree after whole-ZIP SHA-256 and CRC verification",
     "restore exact source08 runtime and Temurin bytes with path token 36655120463 and require exact classpath/Java hashes",
     "require the current watchdog Python exact path and SHA-256",
