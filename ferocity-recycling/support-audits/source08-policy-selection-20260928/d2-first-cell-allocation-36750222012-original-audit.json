@@ -1,0 +1,51 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-36750222012-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36750222012,
+  "job_id":110006626109,
+  "artifact_id":null,
+  "head":"9f7d96050c9815635a7745f733f8d7d5ffeac10c",
+  "reviewed_implementation_commit":"fd2ad9e6c6468d88b80143bfa9c3dc644f06b4c8",
+  "implementation_review_commit":"6f42884fbc2b57524bd920c3bae94d2fcc2f96a2",
+  "accepted_manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+  "integrity":{
+    "workflow_conclusion":"failure",
+    "binding_step":"passed",
+    "materialization_step":"failed_before_manifest_download_or_allocation",
+    "runtime_restore_step_executed":false,
+    "allocation_step_executed":false,
+    "preservation_step_executed_but_no_output_root_created":true,
+    "artifact_upload":"failed_no_files"
+  },
+  "failure":{
+    "classification":"INCOMPLETE_PREALLOCATION_SHELL_LITERAL_NEWLINE_SYNTAX",
+    "stage":"Materialize exact accepted manifest into canonical repository path",
+    "observed":"EXACT_RUNNER_TEMP_LITERAL assignment line contained literal backslash-n text joining the next JAVA_EXACT_LITERAL assignment",
+    "shell_error":"EXACT_RUNNER_TEMP_LITERAL: unbound variable",
+    "behavioral_failure":false,
+    "allocation_method_entered":false,
+    "secure_random_constructed":false
+  },
+  "official_state":{
+    "entropy_consumed":false,
+    "allocation_intent_created":false,
+    "ledger_created":false,
+    "claims":0,
+    "allocations":0,
+    "seed_streams":0,
+    "games":0,
+    "outcomes":0
+  },
+  "decision":"INCOMPLETE_PREALLOCATION_SHELL_LITERAL_BLOCKER_NO_ENTROPY",
+  "accepted_scope":[
+    "The independently reviewed v6 binding step passed and retained the exact accepted manifest/allocation contract.",
+    "No allocation authority was consumed because the workflow failed before runtime restore and before the allocate step."
+  ],
+  "limits":[
+    "No allocation, entropy, seed ledger, claim, journal, game initialization, gameplay or outcome authority.",
+    "Do not rerun v6 unchanged.",
+    "No behavioral inference may be drawn from this infrastructure-only failure."
+  ],
+  "next_gate":"Construct a reviewed v7 successor changing only the literal escaped-newline shell declarations to real separate assignment lines in materialization/preservation, preserve the accepted canonical repository/runtime/JDK/manifest and one-shot allocation semantics unchanged, then dispatch one fresh allocation original.",
+  "official_counters_delta":0
+}
