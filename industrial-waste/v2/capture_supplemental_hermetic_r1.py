@@ -225,7 +225,7 @@ def main():
     store_archive=pathlib.Path(os.environ["ARGENTUM_DEPENDENCY_STORE_ARCHIVE"]).resolve(strict=True)
     store_manifest=pathlib.Path(os.environ["ARGENTUM_DEPENDENCY_STORE_MANIFEST"]).resolve(strict=True)
     assert (store_archive.stat().st_mode & 0o222)==0 and (store_manifest.stat().st_mode & 0o222)==0
-    assert sha_file(BOOTSTRAP)=="e2181fa92f04c14f1bbb724d9d0f4240ccc1b856"
+    assert sha_file(BOOTSTRAP)=="a95c3e90b63b072c03f3159446d64db6085a7c48d5085e33e404aba61a8186b7"
     gradle_home=pathlib.Path(os.environ["RUNNER_TEMP"]).resolve()/"industrial-r1-hermetic-gradle-home"
     accepted_store,store_receipt=restore_accepted_store(store_archive,store_manifest,gradle_home)
     first=run_gradle("first-offline-from-accepted-store",True,OUT/"classload-1.log",OUT/"runtime-1.json",gradle_home)
@@ -280,5 +280,5 @@ def main():
     for p in sorted(x for x in OUT.rglob("*") if x.is_file() and x.name!="artifact-manifest.json"):
         manifest.append({"path":p.relative_to(OUT).as_posix(),"bytes":p.stat().st_size,"sha256":sha_file(p)})
     (OUT/"artifact-manifest.json").write_bytes(canonical(manifest))
-    print(json.dumps({"authority":summary["authority"],"runtime_entries":len(entries),"tracked_inputs":len(inputs),"class_census_equal":True,"store_files":len(preserve),"official_games":0},sort_keys=True))
+    print(json.dumps({"authority":summary["authority"],"runtime_entries":len(entries),"tracked_inputs":len(inputs),"class_census_equal":True,"store_files":len(accepted_store),"official_games":0},sort_keys=True))
 if __name__=="__main__": main()
