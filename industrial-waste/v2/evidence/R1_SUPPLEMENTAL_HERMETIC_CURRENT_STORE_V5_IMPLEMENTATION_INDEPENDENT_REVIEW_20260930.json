@@ -1,0 +1,41 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-current-store-v5-implementation-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"fb0306a223c2fd45f1b0f721410993416d16d76a",
+  "budget_blob":"2e86589ce6d81dcb55b2624239c3fc10aaa28bda",
+  "capture_source_blob":"0b9df5a6469b7018c684efa50c62b044939870f1",
+  "gradle_probe_blob":"ef3a56e80afc5002e66a05b4f5cf3635eb604c21",
+  "store_bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+  "workflow_blob":"915913ac86db9961e649343ab2543d814b40004a",
+  "accepted_store":{
+    "run_id":36729847167,
+    "artifact_id":11105215706,
+    "outer_artifact_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649",
+    "archive_sha256":"a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3",
+    "manifest_sha256":"b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4",
+    "files":1339,
+    "audit_commit":"a525e2dd879e71c71d7d455ebff51bf746bd054f"
+  },
+  "decision":"ACCEPT_CURRENT_STORE_V5_IMPLEMENTATION_FOR_ONE_FRESH_SUPPLEMENTAL_CAPTURE_ORIGINAL",
+  "review":{
+    "capture_design_semantics_unchanged":"PASS",
+    "only_dependency_store_authority_updated":"PASS",
+    "accepted_store_outer_archive_manifest_and_count_exact":"PASS",
+    "no_stale_1272_store_identifiers":"PASS",
+    "digest_pinned_platform_unchanged":"PASS",
+    "both_gradle_invocations_offline":"PASS",
+    "fixed_worker_exact_10_case_scope":"PASS",
+    "runtime_graph_and_class_census_repeat_equivalence":"PASS",
+    "resolved_external_artifacts_must_rehash_to_accepted_store":"PASS",
+    "network_package_install_setup_java_forbidden":"PASS",
+    "official_seed_claim_allocation_game_prohibition":"PASS"
+  },
+  "accepted_scope":[
+    "Create one marker-only execution branch and dispatch one fresh supplemental hermetic capture against the exact accepted v5 dependency store."
+  ],
+  "explicit_non_authority":[
+    "No expected manifest, prepared worker, sealed R1 launch, permit, official seed, claim, allocation, game or outcome authority."
+  ],
+  "next_gate":"Dispatch one fresh current-store-v5 supplemental capture original and independently audit it once if complete.",
+  "official_counters_delta":0
+}
