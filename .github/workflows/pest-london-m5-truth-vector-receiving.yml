@@ -23,7 +23,9 @@ jobs:
           set -euo pipefail
           OUT=build/reports/pest-london-m5-truth-receiving
           mkdir -p "$OUT"
-          test "$(git rev-parse HEAD^)" = "45bd364facec9c0eeeabadc612afde05700198ae"\n          test "$(git rev-parse HEAD^^)" = "95c3f2baeac19a811928a53816edea08a0d83624"
+          test "$(git rev-parse HEAD^)" = "22abc2de2389c614aa9c0a27da5c46ce52e0f38f"
+          test "$(git rev-parse HEAD^^)" = "45bd364facec9c0eeeabadc612afde05700198ae"
+          test "$(git rev-parse HEAD^^^)" = "95c3f2baeac19a811928a53816edea08a0d83624"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt)" = "bb8e2247dc64a64403094c691d83b8eed53048bd"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceiving.kt)" = "1936f537b737fb1b839e53fae0a727aab7a0f0ab"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceivingTest.kt)" = "6261fcc2bdfda526de12feac421dfcc842fbaf77"
