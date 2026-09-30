@@ -1,0 +1,95 @@
+{
+  "schema": "ferocity-current-source08-export-plan-assembly-budget-v1",
+  "date_utc": "2026-09-29",
+  "scope": "RESTORE_AND_ASSEMBLE_EXPORT_PLAN_ONLY_NO_JAVA_EXECUTION",
+  "source08": {
+    "commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+    "compiled_inputs_artifact_member": "qualification/compiled-inputs-before.json",
+    "compiled_inputs_sha256": "36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908",
+    "compiled_inputs_canonical_sha256": "663af924957ed0d67af8cd594a8abcd6c1e404ea8181acda3fcbac28b6961fd3"
+  },
+  "runtime": {
+    "original_artifact_id": 10914678223,
+    "original_artifact_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "publication_manifest_git_blob": "262f78d820ac8834d796d3cc634bf45bbb155cf6",
+    "runtime_receipt_member": "qualification/observed-gym-runtime/runtime-archive-receipt.json",
+    "runtime_receipt_sha256": "1dd2e960d9de93ad59a2439a14ef5345faa6bc572b9e8db3d3b886e18f8b1d49",
+    "runtime_archive_member": "qualification/observed-gym-runtime/runtime-files.tar.gz",
+    "runtime_archive_sha256": "0e9ea0c6c3f2e29230148d330b6b7961aeba1fa44985876b90f68bc8ca7e28d5",
+    "ordered_classpath_entries": 56,
+    "runtime_files": 2159
+  },
+  "java": {
+    "accepted_distribution_run": 36654096282,
+    "asset_id": 521122372,
+    "asset_url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz",
+    "asset_bytes": 207473347,
+    "asset_sha256": "ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94",
+    "java_member_sha256": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "architecture": "x86_64"
+  },
+  "export_sources": {
+    "exporter_sha256": "29d753603a7b25a6410d834060872146c799ec0c4008b6ab978007aa55b57b69",
+    "assembler_sha256": "e0e29897920dcd6043a3ea86511466046dfbd6b313db564f2c987370ab8b60f3",
+    "finite_java_exporter_sha256": "81a646d61fc44cc675c562d8a83accfe63588f1cd9fe0940e5a24f8c4d7cec6f",
+    "getters_sha256": "bfdd39f056dc4501c7bd1e54b78d02b778f8aecedc1803a534da47bb2085e39d"
+  },
+  "serializer": {
+    "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityJournalCodec.kt",
+    "sha256": "5c3e70fea5aeeb0f1b64b216cd0dd5133785388706c56fdbbc27b768ed855042"
+  },
+  "policies": {
+    "artifact-control": {
+      "version": "artifact-control-source08",
+      "files": {
+        "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ArtifactControlPilot.kt": "3f92f97465ae3c39ce4d31b57a8f4215a802412510f251857059d4101c377251",
+        "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ActorPublicCards.kt": "78aca8e15df0914ae64c422b4f7a9df0d20da3c92e769e7c1be55fa3d3dda2f2",
+        "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ActorChoiceSupport.kt": "46336b46aded04033164b11d490ccb6ad455f6942f96b9486dc8074a6f81cc57",
+        "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ArtifactCombatPlanner.kt": "72ba6cd82c049bc9bc04b499785f343e2e67d392c2570d48f7198b85b37cf193"
+      }
+    },
+    "red-madness": {
+      "version": "red-madness-v0.2",
+      "files": {
+        "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilot.kt": "6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5",
+        "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ActorPublicCards.kt": "78aca8e15df0914ae64c422b4f7a9df0d20da3c92e769e7c1be55fa3d3dda2f2",
+        "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ActorChoiceSupport.kt": "46336b46aded04033164b11d490ccb6ad455f6942f96b9486dc8074a6f81cc57",
+        "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/ArtifactCombatPlanner.kt": "72ba6cd82c049bc9bc04b499785f343e2e67d392c2570d48f7198b85b37cf193"
+      }
+    }
+  },
+  "protocol_files": {
+    "ferocity-recycling/protocols/FIRST_CELL_RESOURCE_AMENDMENT.md": "356f4c06c9c944334f59856e0f336de8510b7b88c29bda9cdbd3c2d9851ba765",
+    "ferocity-recycling/protocols/ACTIVE_CONTRACT.json": "8d0551bb3fc5e4a9492540412fec17284bb8311d3501d0baf014da3969cc15d4",
+    "ferocity-recycling/PROTOCOL.md": "69a4018e9831fbd2d163ee441752d387adc4f8af9354b18f88285f4fe9a01699",
+    "ferocity-recycling/protocols/RESEARCH_PROTOCOL.md": "ab663b6b5f3d4761469bb2a9fcfd73a0bffd74efd9bfdb80b2de94640b59cee5",
+    "ferocity-recycling/protocols/RECONCILIATION_AMENDMENT.md": "2829d4623e142cdf427339b4e19f8bc8f96747410eeccb1abe1287986b35458f",
+    "ferocity-recycling/protocols/initial-search-manifest.json": "ef75f5cec859dcc9f765de0feacb7cb7696037f4c7035d4b68b6bdfccee1c87d"
+  },
+  "required_actions": [
+    "losslessly reassemble and verify the accepted source08 gym artifact from its publication-manifest parts",
+    "verify and restore the exact runtime-files.tar.gz into a fresh external runtime directory",
+    "reconstruct exactly 56 FerocityRuntimePathPin-compatible classpath rows and verify all 2159 archived files",
+    "copy the exact compiled-input map into a temporary repository build path without modifying any compiled source",
+    "download and verify the already accepted Temurin release asset, restore the JDK externally and verify bin/java bytes",
+    "construct exact export material and run the reviewed Python plan assembler only",
+    "preserve the generated export plan/material/assembly receipt and all restore receipts"
+  ],
+  "prohibited": [
+    "do not execute java or javac",
+    "do not run Gradle",
+    "do not run export_first_cell.py",
+    "do not create a definition bundle",
+    "do not read entropy, official seeds, allocation state, journals or outcomes",
+    "do not initialize a game"
+  ],
+  "acceptance": [
+    "all exact source/runtime/java/policy/protocol pins pass",
+    "plan assembler validates the material and emits PLAN_READY_FOR_REVIEW",
+    "no Java/Gradle/exporter/game process is started",
+    "original artifact preserves generated plan and exact SHA-256"
+  ],
+  "authority_if_clean": "Prospective exact no-game export plan ready for independent review only; no export or D2 authority.",
+  "official_counters_delta": 0
+}
