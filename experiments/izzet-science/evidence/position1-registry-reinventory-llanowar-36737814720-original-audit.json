@@ -1,0 +1,52 @@
+{
+  "schema":"izzet-position1-registry-reinventory-llanowar-36737814720-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36737814720,
+  "job_id":109964028253,
+  "artifact_id":11108461417,
+  "artifact_sha256":"3b167d8da86a4f6800aea3bad4693a4fec26419508da80a466df88cc34c75205",
+  "head":"e5d9f20c1f679a7d2556849ade54d6d8692aaac0",
+  "parent_main":"96d6da744aa9051ce4064f1e768f10228e81744b",
+  "pins":{
+    "diagnostic_test":"197a99e6c17885bb70511916893d3a33de217feb",
+    "budget":"2883006f7a6e3f6ca8a2690bc2b96915b125817a",
+    "workflow":"5490a071e3b23f77627799725665b928e17fb844",
+    "llanowar_source":"2cc1f07b325b4b7b5358418aa0aefc0ccabe430b",
+    "llanowar_test":"7378eacb4e0d4ac7fe1292e73fc5d94ee9cf5ece",
+    "m21_snapshot":"0f864c1593cd5eb3678559abc12299c0fae8a88d"
+  },
+  "integrity":{
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":4,
+    "source_binding":"passed",
+    "freshness":"--rerun-tasks --no-build-cache",
+    "xml_sha256":"f17517a068dbe499a38a20212ee8da376eadf683374dcf2e76264f0a39e2f202",
+    "summary_sha256":"4f5e43e665b6e0224b05c1a2d225a31135b4465a6146d107a5e0813436eaa450",
+    "source_record_sha256":"5f0aa09f2f4c7933d20992e820343c4859e9ca29b83f4db0e4d79bc94270bdb2",
+    "test_log_sha256":"723eee637f0c25f24a3cda8a295a67bf9186cd7d786b97264527e184e8904786"
+  },
+  "result":{
+    "identities":55,
+    "registered":13,
+    "missing":42,
+    "failures":42,
+    "errors":0,
+    "skipped":0,
+    "llanowar_visionary_registered":true,
+    "registered_names":["Arcane Denial","Archaeomancer","Bonder's Ornament","Boreal Druid","Frantic Search","Kaervek's Torch","Llanowar Visionary","Memory Lapse","Mnemonic Wall","Murmuring Mystic","Nyxborn Hydra","Snap","Turn Aside"]
+  },
+  "classification":"EXPECTED_REGISTRY_ABSENCE_DIAGNOSTIC_NOT_BEHAVIORAL_FAILURE",
+  "decision":"ACCEPTED_POST_LLANOWAR_POSITION1_REGISTRY_DIAGNOSTIC",
+  "accepted_scope":[
+    "Llanowar Visionary is present in current runtime after its separately accepted mechanics adoption.",
+    "Exactly 13 of the frozen 55 Position-1 identities are registered and 42 remain absent."
+  ],
+  "limits":[
+    "Registry presence is not mechanics competence.",
+    "Missing identities are not behavioral failures.",
+    "No whole Position-1 pilot, opponent, commander lifecycle/damage/event-ledger, replay, seed, allocation or gameplay authority."
+  ],
+  "next_gate":"Choose the smallest requirement-driven missing identity/mechanic batch with maximal reuse of already-qualified primitives, qualify deterministic mechanics before adoption, and re-inventory only after accepted adoption.",
+  "official_counters_delta":0
+}
