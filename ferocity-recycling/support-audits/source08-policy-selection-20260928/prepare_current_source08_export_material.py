@@ -163,12 +163,17 @@ try:
     assert count == JDK_BYTES and h.hexdigest() == JDK_SHA
     jdk_parent.mkdir()
     try:
+        import posixpath
         with tarfile.open(jdk_archive, "r:gz") as tf:
             for member in tf.getmembers():
-                safe_rel(member.name)
+                member_path = safe_rel(member.name)
                 if member.issym() or member.islnk():
                     target = pathlib.PurePosixPath(member.linkname)
-                    assert not target.is_absolute() and ".." not in target.parts
+                    assert not target.is_absolute()
+                    normalized = pathlib.PurePosixPath(
+                        posixpath.normpath(str(member_path.parent / target))
+                    )
+                    assert not normalized.is_absolute() and ".." not in normalized.parts
             tf.extractall(jdk_parent, filter="data")
     finally:
         jdk_archive.unlink(missing_ok=True)
