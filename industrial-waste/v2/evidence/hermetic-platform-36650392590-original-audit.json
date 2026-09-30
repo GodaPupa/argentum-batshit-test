@@ -1,0 +1,71 @@
+{
+  "schema":"industrial-r1-hermetic-platform-36650392590-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36650392590,
+  "job_id":109682921610,
+  "artifact_id":11070053761,
+  "artifact_sha256":"afac474f45524a9bcf234617d00e6d11c8b624f2f801b48781ebf4ac2ce41ef2",
+  "head":"266dc93baba8cd5accd7adca02e75eb0f7dc1fdc",
+  "parent":"27f5d05c6aa2a7c58fe18683ed554c9f1669118d",
+  "accepted_source":{
+    "commit":"de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+    "tree":"d62e3fbd59dd78cc444c09b26673ae1bf3a848ab"
+  },
+  "pins":{
+    "workflow_blob":"32818ef792091a4589fd70e73fb42233089a8e95",
+    "design_blob":"2d23710bc63b7b29d4be97acd4f3927cf23f2d00",
+    "design_review_blob":"93163d9ea12ca7dc1182d306f8b293158677c0fa",
+    "platform_budget_v1_blob":"b631ba7a6edd8dd0dacbd13ddb87494dad4d1f5a",
+    "platform_budget_v2_blob":"98771023ad62bef29ca4097623883f373b52b683"
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":10,
+    "source_parent_workflow_binding":"passed",
+    "checkout_clean":true
+  },
+  "platform":{
+    "declared_image":"catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "declared_image_digest":"sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "declared_arch":"linux/amd64",
+    "machine":"x86_64",
+    "java21_candidates":1,
+    "java21":{
+      "path":"/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+      "bytes":12328,
+      "sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+      "version":"Temurin 21.0.12+8 LTS"
+    },
+    "tools":{
+      "bash":{"path":"/usr/bin/bash","sha256":"59474588a312b6b6e73e5a42a59bf71e62b55416b6c9d5e4a6e1c630c2a9ecd4"},
+      "git":{"path":"/usr/bin/git","sha256":"011fb1c28096c72e25688e56793f20b33e68f7f1065489f745763f19b6e9f516"},
+      "python3":{"path":"/usr/bin/python3.10","sha256":"7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86"},
+      "sha256sum":{"path":"/usr/bin/sha256sum","sha256":"b88ea413571562a591268213d736121fada5ba14330bfcc74b8d9f14e4018ddf"}
+    },
+    "os_release_sha256":"594d5ddd35aedb47f00d9c34d140017907a5b9f93c975aba125fc924daac5c07",
+    "mountinfo_sha256":"bd0e91b2904b433ae30ebfd3455e465eb38d19eb91a77c9cc8a07bdae742ae4c",
+    "environment_allowlist_sha256":"c55b6ef17638a8b1bc4cab18036b95adc5caaf92e1f29aedef3a2a1eedf7f821"
+  },
+  "zero_official_invariants":{
+    "project_build_or_gradle_invoked":false,
+    "official_seed_files_read":false,
+    "claims":0,
+    "allocations":0,
+    "games":0,
+    "outcomes":0
+  },
+  "decision":"ACCEPTED_IMMUTABLE_PLATFORM_CANDIDATE_IDENTITY_ONLY",
+  "accepted_scope":[
+    "The exact digest-pinned linux/amd64 image and the single in-image Temurin Java 21 executable identity are accepted as immutable platform inputs for the next Industrial supplemental-capture implementation/review gate.",
+    "The observed Bash, Git, Python and sha256sum executable identities and platform observation digests are accepted as supporting platform pins."
+  ],
+  "limits":[
+    "No sealed launch, runtime capture, expected manifest, prepared-worker, R1 permit, claim, seed, allocation or gameplay authority.",
+    "Presence of Java 21 alone is not execution admission.",
+    "Run 36650392590 is consumed and must not be rerun or replaced."
+  ],
+  "next_gate":"Construct the exact immutable platform binding for the accepted supplemental hermetic capture design, independently review that binding, then implement the single-source capture without weakening any fail-closed rule.",
+  "official_counters_delta":0
+}
