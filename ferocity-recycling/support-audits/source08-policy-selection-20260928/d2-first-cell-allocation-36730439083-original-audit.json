@@ -1,0 +1,52 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-36730439083-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36730439083,
+  "job_id":109938287404,
+  "artifact_id":11105591587,
+  "artifact_sha256":"5ce28e1c339d0fa1ab3886e1864c1d10fa20d199250d9fa74f881d9a38651193",
+  "head":"08f43ac72ed51df665cb61e19536e46dafcad85b",
+  "manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+  "integrity":{
+    "workflow_conclusion":"failure",
+    "artifact_digest_match":true,
+    "source_review_marker_binding":"passed",
+    "accepted_manifest_materialization":"passed",
+    "source08_runtime_restore":"passed_before_path_check",
+    "runtime_files":2159,
+    "classpath_entries":56,
+    "java_executable_sha256":"2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d"
+  },
+  "failure":{
+    "classification":"INCOMPLETE_PREALLOCATION_HISTORICAL_CLASSPATH_PATH_NOT_MATERIALIZED",
+    "stage":"Restore exact source08 runtime and Java without executing Java",
+    "observed_runtime_prefix":"/__w/_temp/ferocity-source08-runtime-36655120463/",
+    "accepted_manifest_prefix":"/home/runner/work/_temp/ferocity-source08-runtime-36655120463/",
+    "first_missing_rewritten_path":"/home/runner/work/_temp/ferocity-source08-runtime-36655120463/classpath/000/runtime",
+    "semantic_classpath_content_changed":false,
+    "allocation_invocation_executed":false,
+    "behavioral_failure":false
+  },
+  "official_state":{
+    "entropy_consumed":false,
+    "ledger_created":false,
+    "allocation_intent_created":false,
+    "claims":0,
+    "allocations":0,
+    "seed_streams":0,
+    "games":0,
+    "outcomes":0
+  },
+  "decision":"INCOMPLETE_PREALLOCATION_PATH_MATERIALIZATION_BLOCKER_NO_ENTROPY",
+  "accepted_scope":[
+    "The exact accepted manifest and source08 runtime/JDK restore remain valid through semantic 56-entry classpath reconstruction.",
+    "The v3 allocation implementation correctly stopped before allocate because the historical absolute runtime paths did not physically exist inside the container."
+  ],
+  "limits":[
+    "No allocation authority was consumed.",
+    "Do not rerun v3 unchanged.",
+    "No entropy, seed ledger, run-one, claim, journal, game initialization, gameplay or outcome authority."
+  ],
+  "next_gate":"Implement a reviewed preallocation-only v4 repair that materializes the exact restored runtime/JDK bytes as real non-symlink files/directories at the already accepted /home/runner/work/_temp paths, verifies all 56 path pins and exact classpath digest, and only then permits the single allocate invocation.",
+  "official_counters_delta":0
+}
