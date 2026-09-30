@@ -1,0 +1,66 @@
+{
+  "schema": "ferocity-source08-runtime-metadata-extract-36650539067-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36650539067,
+  "artifact_id": 11069459125,
+  "artifact_sha256": "cf99f907b25da4dae1afa357628862a067fa4f08f0bee6c64a523103ee4f1de6",
+  "head": "d5b3b210af46a1a8faa238d043ceba1683ec235c",
+  "parent": "a09f7474426fbc8fd82ed556e7f43185be409e72",
+  "pins": {
+    "directory_inventory_receipt_commit": "2ccf276957c87e825547e644fc18174aa11a3390",
+    "publication_manifest": "262f78d820ac8834d796d3cc634bf45bbb155cf6",
+    "budget": "0e9f51805873285d669d73e98c011806d77eb419"
+  },
+  "integrity": {
+    "workflow_conclusion": "success",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "reassembled_original_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "opened_member_count": 3,
+    "forbidden_members_opened": 0,
+    "jvm_started": false,
+    "export_executed": false,
+    "official_entropy_read": false,
+    "games_initialized": 0
+  },
+  "result": {
+    "runtime_classpath_manifest": {
+      "member": "qualification/runtime-classpath-observation/manifest.json",
+      "sha256": "74537901801ab9bae84907ce83c66e19cf08d67230a57ef5195ff43f64ed3f72",
+      "ordered_classpath_count": 56
+    },
+    "runtime_archive_receipt": {
+      "member": "qualification/observed-gym-runtime/runtime-archive-receipt.json",
+      "sha256": "1dd2e960d9de93ad59a2439a14ef5345faa6bc572b9e8db3d3b886e18f8b1d49",
+      "runtime_archive_path": "qualification/observed-gym-runtime/runtime-files.tar.gz",
+      "runtime_archive_bytes": 92698282,
+      "runtime_archive_sha256": "0e9ea0c6c3f2e29230148d330b6b7961aeba1fa44985876b90f68bc8ca7e28d5",
+      "java_executable": "/home/runner/work/_temp/ferocity-tools/jdk-21.0.12.1+1/bin/java",
+      "java_executable_sha256": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+      "worker_argument_file_sha256": "3a0926ba60077345af4e118e8ed32efb235b9c4b78d104fe24646dffb20c58e5"
+    },
+    "qualification_receipt": {
+      "member": "qualification/receipt.json",
+      "sha256": "d898102510976b4791410e43fd9d71b61c4b6044763366e2438e3383fb212e27",
+      "status": "PASS",
+      "source_commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+      "source_tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+      "compiled_inputs_before_sha256": "36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908",
+      "compiled_inputs_after_sha256": "36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908",
+      "java_version": "Temurin 21.0.12.1+1"
+    }
+  },
+  "decision": "ACCEPTED_EXACT_SOURCE08_RUNTIME_METADATA_BYTES_ONLY",
+  "accepted_scope": [
+    "The exact preserved source08 original contains a 56-entry ordered runtime classpath manifest, a runtime archive receipt and a qualification receipt at the recorded byte digests.",
+    "The metadata binds the historical Java 21.0.12.1+1 executable hash, runtime archive hash/size and unchanged compiled-input-map digest.",
+    "Only the three prospectively allowlisted JSON members were opened."
+  ],
+  "limits": [
+    "The runtime tarball, compiled-input maps and all trace/seed/log/XML/source-archive payloads remain unopened by this gate.",
+    "No runtime restoration, Java restoration, export-plan assembly, exporter execution, first-cell/D2 admission, seed, allocation or gameplay authority."
+  ],
+  "next_gate": "Restore and independently verify only the exact runtime archive plus compiled-input map and the exact historical Temurin 21.0.12.1+1 Java executable bytes; then assemble the prospectively reviewed offline export plan without executing the exporter.",
+  "official_counters_delta": 0
+}
