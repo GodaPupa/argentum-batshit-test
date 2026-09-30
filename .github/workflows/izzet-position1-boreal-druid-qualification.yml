@@ -1,12 +1,9 @@
 name: Izzet Position-1 Boreal Druid Qualification
 on:
   push:
-    branches: ["izzet/position1-boreal-druid-pin-repair-20260930"]
+    branches: ["izzet/position1-boreal-druid-snapshot-contract-execute-20260930"]
     paths:
-      - "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/csp/cards/BorealDruid.kt"
-      - "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BorealDruidScenarioTest.kt"
-      - "experiments/izzet-science/POSITION1_BOREAL_DRUID_BUDGET_20260930.json"
-      - ".github/workflows/izzet-position1-boreal-druid-qualification.yml"
+      - "experiments/izzet-science/POSITION1_BOREAL_DRUID_SNAPSHOT_CONTRACT_EXECUTION_MARKER_20260930.json"
 permissions: {contents: read}
 jobs:
   qualify:
@@ -25,10 +22,19 @@ jobs:
           set -euo pipefail
           OUT=build/reports/izzet-boreal-druid
           mkdir -p "$OUT"
-          test "$(git rev-parse HEAD~7)" = "5a42df45d1a7a57d0e0e308e7ef13067dc0d2dde"
-          test "$(git rev-parse HEAD~3)" = "15ae61f8b571be39065966f4433055dbe8de87f9"
-          test "$(git rev-parse HEAD~2)" = "7caacebdbd314e6d6038ec80bdb2b34fdcfb6d6b"
-          test "$(git rev-parse HEAD^)" = "776c0dd5e4c5a4c8681f42e159bab5e8a40d779d"
+          MARKER=experiments/izzet-science/POSITION1_BOREAL_DRUID_SNAPSHOT_CONTRACT_EXECUTION_MARKER_20260930.json
+          git merge-base --is-ancestor 5a42df45d1a7a57d0e0e308e7ef13067dc0d2dde HEAD
+          test "$(git diff --name-only HEAD^ HEAD)" = "$MARKER"
+          python3 - "$MARKER" <<'PY'
+          import json,pathlib,subprocess,sys
+          marker=json.loads(pathlib.Path(sys.argv[1]).read_text())
+          assert marker["authorization"]=="ONE_FRESH_BOREAL_DRUID_QUALIFICATION_ORIGINAL"
+          assert marker["workflow_blob"]==subprocess.check_output(["git","hash-object",".github/workflows/izzet-position1-boreal-druid-qualification.yml"],text=True).strip()
+          assert marker["budget_blob"]==subprocess.check_output(["git","hash-object","experiments/izzet-science/POSITION1_BOREAL_DRUID_BUDGET_20260930.json"],text=True).strip()
+          assert marker["source_blob"]=="73c1d53e5c331d4809482698fdff7d4f55cb22c9"
+          assert marker["test_blob"]=="1ed9a4c472f1f497de6bea12a3d17e9fce3bd710"
+          assert marker["official_counters_delta"]==0
+          PY
           test "$(git hash-object mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/csp/cards/BorealDruid.kt)" = "73c1d53e5c331d4809482698fdff7d4f55cb22c9"
           test "$(git hash-object mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BorealDruidScenarioTest.kt)" = "1ed9a4c472f1f497de6bea12a3d17e9fce3bd710"
           test "$(git hash-object experiments/izzet-science/POSITION1_BOREAL_DRUID_BUDGET_20260930.json)" = "e4ea62b56cd7bb15351d74654c7c7ed299cb3063"
@@ -74,7 +80,6 @@ jobs:
           python3 - <<'PY'
           import json, pathlib, re, subprocess, hashlib
           targets=[
-            "mtg-sets/src/test/resources/snapshots/cards/ALL.json",
             "mtg-sets/src/test/resources/snapshots/cards/CSP.json",
           ]
           changed=subprocess.check_output(["git","diff","--name-only"],text=True).splitlines()
