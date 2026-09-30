@@ -1,0 +1,54 @@
+{
+  "schema": "ferocity-first-cell-red-v02-receiving-36649260154-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36649260154,
+  "artifact_id": 11069667883,
+  "artifact_sha256": "044445eb09a6d7d5a469e212314fccee0eabd6d27a8829f1e95a07d9ce5a67d4",
+  "head": "7d733d60cf8e7bfbcc59b8da1117d166bd42efa2",
+  "parent": "e3562d08205a4c2f2c6cc59e84a4e00ce48f2417",
+  "source08": {
+    "commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"
+  },
+  "pins": {
+    "pilot_blob": "b7cf8736b92de0a56859f9ca7dd3bba497535200",
+    "pilot_sha256": "6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5",
+    "scenario_bank": "5db973421a5ccabeba6c0b679cb3ca14bbe90987",
+    "opponent_source": "4d3d91da6973f8c5b1c44af357b163691849e1b1",
+    "budget": "ecba46e63ea3a0147769a3bab40899f4f2d14a93",
+    "workflow": "590a4c0e8c292eb288b36738d106ac3e3ebbb1cd"
+  },
+  "integrity": {
+    "workflow_conclusion": "success",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "just test-class RedMadnessPilotScenarioTest --rerun-tasks --no-build-cache --console=plain",
+    "xml_parse": "clean",
+    "xml_sha256": "a381604a0f01292d3faa3c3a1020632544d6a3ec9e1afb0d311f559e95c5c48e",
+    "summary_sha256": "ffed5c0660b4f69a54d0c4d0b3be949f0c45d2b83d2189502e1f620299a3ca22",
+    "test_log_sha256": "004eda4fc829ce34fecdd332e20b0e4b26a34a7f9cb4807037e2813a244475ca",
+    "source_binding_sha256": "6a4413ccbc2478556ec60ded9c17686c215852fdb9ca45bf04eb3fcb80b71aa1",
+    "diagnostic_note": "The source.txt collection block still prints git rev-parse HEAD^^{tree}, which peels the budget-parent tree and therefore records f1414938... as a diagnostic line. The governing fail-closed assertion immediately above uses the corrected unambiguous HEAD~2^{tree} expression and required exact source08 tree 56c6b8dd...; GitHub commit metadata independently confirms that tree. The stale diagnostic print did not weaken or bypass the assertion."
+  },
+  "result": {
+    "tests": 24,
+    "passes": 24,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "decision": "ACCEPTED_BOUNDED_CURRENT_SOURCE08_RED_V02_RECEIVING",
+  "accepted_scope": [
+    "The unchanged active red-madness-v0.2 pilot passes all 24 fixed real-engine receiving scenarios on exact source08.",
+    "The bank covers the predeclared mulligan, mana, burn/removal, discard/madness, Snacker, Plot, Brew/Gift, Fireblast, Dart, attack and block surfaces represented by the unchanged scenario bank.",
+    "The MisterTwin source snapshot and adopted active pilot bytes are source-bound to this original."
+  ],
+  "limits": [
+    "No offline definition-bundle authority follows.",
+    "No complete first-cell/D2 admission, runner admission, entropy, seed, allocation, game initialization or outcome authority.",
+    "The two predecessor technical runs 36648533489 and 36649034876 remain consumed INCOMPLETE and must not be rerun unchanged."
+  ],
+  "next_gate": "Close current source08 no-game offline definition bundle production/runtime evidence, then construct the non-executing first-cell admission manifest from current accepted authorities and independently review it before any D2 allocation.",
+  "official_counters_delta": 0
+}
