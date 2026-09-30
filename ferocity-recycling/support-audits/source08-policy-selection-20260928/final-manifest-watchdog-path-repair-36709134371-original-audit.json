@@ -1,0 +1,44 @@
+{
+  "schema":"ferocity-final-manifest-watchdog-path-repair-36709134371-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36709134371,
+  "job_id":109866439977,
+  "artifact_id":11093470964,
+  "artifact_sha256":"12406295c2c96b9d6e09519517edeb57c6557a25440a7184877f4431157cdadf",
+  "head":"93c9108d0b3b43b7aac0540dd6708d1ccebac8e6",
+  "source_manifest_artifact":11077287825,
+  "source_manifest_artifact_sha256":"6cc1ed84aa9fd6b17ddcdce7a1054bbc856124b16dd6b1ecce1fe9d04f9ceb80",
+  "old_manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+  "new_manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+  "repair_receipt_sha256":"439550e590218f481781414d6e1c9fbf15ae2d29a41f1d08d9fa2f76d8da39f2",
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "materialized_members":29,
+    "all_original_verifier_inputs_preserved":true,
+    "watchdog_source_sha256":"803a03aae3f63ffb114d9a8b56d4bf108b2f5f71f051057e204220f5f52adb37"
+  },
+  "manifest_delta":[{
+    "field":"watchdog.source.path",
+    "before":"ferocity-recycling/evidence/admission/D2-first-cell-current/watchdog/source/trial_watchdog.py",
+    "after":"watchdog/source/trial_watchdog.py"
+  }],
+  "side_effects":{
+    "java_started":false,"gradle_started":false,"entropy_read":false,"allocation_read":false,
+    "ledger_created":false,"trial_claim_created":false,"game_initialized":false,"outcomes_exposed":0
+  },
+  "decision":"ACCEPTED_REPAIRED_CANONICAL_FEROCITY_MANIFEST_CANDIDATE_FOR_VERIFY_ONLY_GATE",
+  "accepted_scope":[
+    "The repaired canonical manifest differs from the previously accepted candidate only in watchdog.source.path.",
+    "The exact accepted watchdog source bytes are additionally materialized at the author-receipt-owned repository-relative path watchdog/source/trial_watchdog.py.",
+    "All other accepted qualification, runtime, Java, definition bundle, inline token, policy, coverage, deck and watchdog receipt identities remain unchanged."
+  ],
+  "limits":[
+    "No verify-only Java execution was performed by this repair.",
+    "No VerifiedFerocityDevelopment capability, allocation, entropy, seed, ledger, claim, journal, game or outcome authority.",
+    "Run 36709134371 is consumed."
+  ],
+  "next_gate":"Independently adopt manifest 44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d for exactly one fresh FerocityDevelopmentCli verify invocation with allocate/run-one forbidden.",
+  "official_counters_delta":0
+}
