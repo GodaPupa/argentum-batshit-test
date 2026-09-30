@@ -1,0 +1,59 @@
+{
+  "schema":"industrial-r1-current-runtime-store-supplement-v5-36729847167-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36729847167,
+  "job_id":109936232153,
+  "artifact_id":11105215706,
+  "artifact_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649",
+  "head":"ef8f6f842bc6a71c2624a5dffc87c81f66fc8971",
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":13,
+    "source_review_marker_binding":"passed",
+    "accepted_base_store_artifact":11080705894,
+    "accepted_base_store_files":1272
+  },
+  "result":{
+    "target_coordinates":8,
+    "online_resolution_returncode":0,
+    "offline_reconstruction_returncode":0,
+    "unresolved_dependencies":0,
+    "base_store_files":1272,
+    "successor_store_files":1339,
+    "added_files":67,
+    "changed_metadata_files":4,
+    "removed_files":0,
+    "normalized_runtime_graph_sha256":"6d89b424ff0b2fc83bc63f8f4a2d400563e6d84b1ebe96c4874ca76a78b599fb",
+    "base_to_successor_delta_sha256":"983276e0e2572bb659e5c4f834dd0fb7e4ceca144a10367b1aa2f1020c31a6c5",
+    "store_manifest_sha256":"b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4",
+    "store_archive_sha256":"a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3",
+    "store_archive_bytes":370324981,
+    "tests_executed":0,
+    "official_seed_files_read":false
+  },
+  "target_coordinates":[
+    "community.flock.kotlinx.rgxgen:kotlin-rgxgen:0.0.6",
+    "io.github.java-diff-utils:java-diff-utils:4.16",
+    "io.github.pdvrieze.xmlutil:serialization:0.91.3",
+    "net.bytebuddy:byte-buddy-agent:1.17.6",
+    "net.bytebuddy:byte-buddy:1.17.6",
+    "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.11.0",
+    "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0",
+    "org.jetbrains.kotlinx:kotlinx-io-core:0.8.2"
+  ],
+  "official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},
+  "decision":"ACCEPTED_IMMUTABLE_CURRENT_RUNTIME_DEPENDENCY_STORE_SUCCESSOR_V5",
+  "accepted_scope":[
+    "The exact accepted 1272-file store is extended without removal to a 1339-file immutable successor that resolves the current :ai:testRuntimeClasspath with all eight previously missing coordinates present.",
+    "The exact successor reconstructs from its deterministic archive into a clean second Gradle home and resolves an identical normalized runtime graph with --offline.",
+    "The successor archive and canonical manifest may be used as the read-only dependency-store input of the next separately reviewed supplemental hermetic capture."
+  ],
+  "limits":[
+    "This gate executed no behavioral test or fixed worker.",
+    "No supplemental runtime capture, expected manifest, prepared worker, R1 permit, seed, claim, allocation or gameplay authority follows automatically."
+  ],
+  "next_gate":"Bind artifact 11105215706 / archive a282721e... / manifest b5e458d3... into a new network-disabled supplemental hermetic capture successor and independently review that implementation before dispatch.",
+  "official_counters_delta":0
+}
