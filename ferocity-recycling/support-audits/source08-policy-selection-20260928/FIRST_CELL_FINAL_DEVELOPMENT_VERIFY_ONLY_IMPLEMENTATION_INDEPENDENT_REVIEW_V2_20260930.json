@@ -1,0 +1,43 @@
+{
+  "schema":"ferocity-final-development-verify-only-implementation-independent-review-v2",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"4cd41c1a4a5c92a126fd535208f92b81d128d7db",
+  "budget_blob":"0ee53e1dbc463899272a2964b7122c4cce3d3a63",
+  "restore_helper_blob":"dd001c437f627b1615ccb590f2331589d4161f72",
+  "workflow_blob":"6f8f067d0ffed469fe8760e8634de986ea4d6613",
+  "accepted_manifest_review_commit":"274e660066d80781bbfb58b381a7c429a18e312a",
+  "manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+  "superseded_preflight_run":{
+    "run_id":36671000046,
+    "head":"5b16cfbe95745ca0820a6ed9cd85c03c6fef8204",
+    "failure_stage":"Create exact canonical repository copy and materialize accepted manifest original",
+    "cause":"EXACT_REPO already existed because the digest-pinned container exposes the checked-out workspace at the accepted canonical repository path.",
+    "java_invocations":0,
+    "behavioral_verify_reached":false,
+    "official_counters_delta":0
+  },
+  "decision":"ACCEPT_REPAIRED_IMPLEMENTATION_FOR_ONE_VERIFY_ONLY_JAVA_ORIGINAL",
+  "review":{
+    "change_scope":"PASS_PATH_WORKSPACE_PREFLIGHT_ONLY",
+    "accepted_manifest_unchanged":"PASS",
+    "accepted_runtime_jdk_authority_unchanged":"PASS",
+    "exact_repository_path_unchanged":"PASS",
+    "existing_exact_repo_requires_same_device_inode_as_checkout":"PASS",
+    "existing_exact_repo_requires_nonsymlink_canonical_path":"PASS",
+    "absent_exact_repo_still_uses_physical_copy":"PASS",
+    "single_java_entrypoint_verify_only":"PASS",
+    "no_allocate_or_run_one":"PASS",
+    "pre_post_D2_state_absence_assertions":"PASS",
+    "workflow_structure_and_shell_heredoc_guard":"PASS"
+  },
+  "accepted_scope":[
+    "Create one v2 marker-only execution branch from this review and dispatch exactly one fresh verify-only Java original.",
+    "The failed run 36671000046 is infrastructure-only and consumed no behavioral verify authority."
+  ],
+  "explicit_non_authority":[
+    "No allocate or run-one.",
+    "No entropy, seed, ledger, allocation, claim, journal, game initialization, gameplay or outcome authority."
+  ],
+  "next_gate":"Dispatch one v2 verify-only original and audit source/workflow/manifest/runtime/JDK/watchdog bindings plus the zero-side-effect result exactly once.",
+  "official_counters_delta":0
+}
