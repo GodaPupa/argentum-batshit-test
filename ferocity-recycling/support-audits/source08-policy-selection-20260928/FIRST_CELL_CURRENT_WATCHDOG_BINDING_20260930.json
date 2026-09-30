@@ -1,0 +1,55 @@
+{
+  "schema":"ferocity-final-manifest-current-watchdog-binding-v1",
+  "date_utc":"2026-09-30",
+  "superseded_blocker":{
+    "audit_commit":"c42ad478bfaa0dbb219d9dbd75200338aecf8342",
+    "decision":"HOLD_ACCEPTED_WATCHDOG_PYTHON_IDENTITY_UNAVAILABLE_ON_CURRENT_RUNNER",
+    "blocker":"historical accepted Python path/bytes unavailable on current runner"
+  },
+  "current_authority":{
+    "acceptance_commit":"ba08f5a42a8dfe4ed0ef767aa71a1192295134c8",
+    "run_id":36661350925,
+    "artifact_id":11074268074,
+    "artifact_sha256":"c436b7df09091a001df6ecdad25a909c2ce7f4bb100d7ddb6f6020a1e4c4dedf",
+    "audit_path":"ferocity-recycling/support-audits/source08-policy-selection-20260928/watchdog-current-runtime-36661350925-original-audit.json",
+    "decision":"ACCEPTED_CURRENT_RUNTIME_FIXED_PROCESS_WATCHDOG_EVIDENCE_ONLY",
+    "container_image":"mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880",
+    "python_executable":"/usr/local/python/3.14.2/bin/python3.14",
+    "python_executable_sha256":"4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601",
+    "watchdog_source_sha256":"803a03aae3f63ffb114d9a8b56d4bf108b2f5f71f051057e204220f5f52adb37",
+    "acceptance_sha256":"b1d779398aff49d6c4075d9c055c197a165fac7b415052e3731ae908c46244c1",
+    "run_receipt_sha256":"d9c98fac0ab2db9be7da54fefa7e383cdd82937078c81308faa6202a572a9042",
+    "author_receipt_sha256":"077447186d7979210bc58dae40701661663c7c467706ac4b6de00f34805f6e48",
+    "process_claim_sha256":"cd03cc4c456bc3be73d5c95b2823ea182c447b09719d7e0d910a36735cad79e5",
+    "fixed_cases":{"executed":13,"passed":13,"failed":0,"errors":0,"skipped":0}
+  },
+  "manifest_construction_authority":{
+    "budget_commit":"8caa6facf195172687f62e4ef4ab8dee622a05f2",
+    "budget_blob":"79c2ea76d5ca10efd8d5335f066a4de61977ed92",
+    "independent_review_blob":"112cba5b81f70f8342bbe4e70143a39a94c4414d",
+    "decision":"ACCEPT_DESIGN_ONLY_NON_EXECUTING_MANIFEST_CONSTRUCTION"
+  },
+  "binding_checks":{
+    "same_source08_watchdog_bytes":true,
+    "same_fixed_case_geometry_9_plus_4":true,
+    "current_python_identity_freshly_qualified":true,
+    "current_container_digest_pinned":true,
+    "source_guard_unchanged":true,
+    "java_started":false,
+    "gradle_started":false,
+    "entropy_read":false,
+    "allocation_read":false,
+    "game_initialized":false
+  },
+  "decision":"ACCEPT_CURRENT_WATCHDOG_COMPONENT_FOR_NON_EXECUTING_MANIFEST_CONSTRUCTION",
+  "accepted_scope":[
+    "Replace only the historical nonportable watchdog/Python evidence component in final manifest construction with the exact current-runtime accepted package.",
+    "All source08 qualification, runtime/JDK, bundle, inline-token, Red v0.2, deck, protocol and coverage requirements remain unchanged and independently required."
+  ],
+  "explicit_non_authority":[
+    "No completed FerocityDevelopmentManifest is accepted.",
+    "No verify-only Java dispatch, allocation, entropy, seed, ledger, official trial claim, journal, game initialization, gameplay or outcome exposure."
+  ],
+  "next_gate":"Implement the already-authorized non-executing final manifest constructor/materializer using this current watchdog package and the other accepted authorities; produce one canonical manifest candidate for independent review before Java verify.",
+  "official_counters_delta":0
+}
