@@ -1,0 +1,42 @@
+{
+  "schema":"izzet-position1-llanowar-visionary-qualification-budget-v1",
+  "date_utc":"2026-09-30",
+  "parent_main":"e28f27e4ce3f84dca511b49f9cc4005f1cbb6ed9",
+  "basis":{
+    "post_boreal_registry_run":36697164995,
+    "post_boreal_registered":12,
+    "post_boreal_missing":43,
+    "missing_identity":"Llanowar Visionary",
+    "selection_reason":"smallest requirement-driven green-ramp Position-1 identity using already qualified general ETB-draw and tap-for-green primitives; advances opposing Position-1 actor without new engine mechanics"
+  },
+  "candidate":{
+    "source_path":"mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m21/cards/LlanowarVisionary.kt",
+    "source_blob":"2cc1f07b325b4b7b5358418aa0aefc0ccabe430b",
+    "test_path":"mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LlanowarVisionaryScenarioTest.kt",
+    "test_blob":"7378eacb4e0d4ac7fe1292e73fc5d94ee9cf5ece",
+    "set_snapshot":"mtg-sets/src/test/resources/snapshots/cards/M21.json"
+  },
+  "reused_primitives":{
+    "elvish_visionary_definition_blob":"5331cf565a1407d77e70c987ce2d4f120748ddc7",
+    "llanowar_elves_definition_blob":"e0b1fa2f73dbe52e5eb0e3e21c35d55d40df249d",
+    "mana_effects_blob":"ce3a338dc502068662da0b21884005b5eec1a52a",
+    "effects_facade_blob":"1904846d3b5ad489224784b5d9687c68f8b207ee"
+  },
+  "acceptance":[
+    "fresh LlanowarVisionaryScenarioTest executes exactly two deterministic real-engine cases with zero failures/errors/skips",
+    "casting and resolving Llanowar Visionary produces exactly one ETB draw while placing the creature on the battlefield",
+    "activating its mana ability taps the permanent and adds exactly one green mana and zero colorless mana",
+    "card lint passes",
+    "snapshot regeneration changes only ALL.json and M21.json and adds exactly one Llanowar Visionary record while preserving every existing record byte-for-byte",
+    "all candidate and reused primitive Git blobs match the prospectively pinned identities"
+  ],
+  "prohibited":[
+    "no inference that Ilysian Caryatid Leafkin Druid Whisperer of the Wilds or any other missing mana creature is qualified",
+    "no whole Position-1 pilot/action-ranking or opponent competence",
+    "no commander lifecycle/damage/event-ledger authority",
+    "no seed allocation or gameplay"
+  ],
+  "authority_if_clean":"BOUNDED_LLANOWAR_VISIONARY_DETERMINISTIC_MECHANICS_CANDIDATE_ONLY",
+  "next_gate":"Audit the fresh original once. If clean, adopt only the exact Llanowar Visionary definition/test/generated M21+ALL snapshot delta, then freshly re-inventory Position-1 before another requirement-driven identity.",
+  "official_counters_delta":0
+}
