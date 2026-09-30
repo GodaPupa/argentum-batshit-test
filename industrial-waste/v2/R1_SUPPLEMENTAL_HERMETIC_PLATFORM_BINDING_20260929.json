@@ -1,0 +1,30 @@
+{
+  "schema": "industrial-r1-supplemental-hermetic-platform-binding-v1",
+  "date_utc": "2026-09-29",
+  "status": "PREDECLARED_IMMUTABLE_PLATFORM_FOR_IMPLEMENTATION_REVIEW",
+  "accepted_design_commit": "09c48e7442f6de8f13f50243bd5aece0f102ec8d",
+  "design_path": "industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_LAUNCH_DESIGN_20260929.json",
+  "container": {
+    "image": "mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880",
+    "repository": "mcr.microsoft.com/devcontainers/universal",
+    "tag_for_human_reference_only": "linux",
+    "oci_index_digest": "sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880",
+    "architecture": "x86_64",
+    "os_family": "Ubuntu",
+    "external_registry_authority": "https://mcr.microsoft.com/en-us/artifact/mar/devcontainers/universal/tag/linux",
+    "registry_observed_utc_date": "2026-09-29"
+  },
+  "execution_constraints": [
+    "The GitHub Actions job must declare this exact image including the sha256 digest; a mutable tag alone is forbidden.",
+    "No setup-java action, apt install, SDKMAN install, package upgrade or dynamic tool installation may mutate the execution toolchain before capture.",
+    "The capture must hash the actual java, python3, bash and git executables visible inside the container before any build/test launch.",
+    "The capture must record /etc/os-release, uname facts, architecture, mount table and the GitHub host/runner metadata that are observable from inside the container.",
+    "The capture must reject JAVA_TOOL_OPTIONS, JDK_JAVA_OPTIONS, _JAVA_OPTIONS, CLASSPATH, PYTHONPATH, JAVA_OPTS and GRADLE_OPTS.",
+    "The host kernel and GitHub runner are supplemental observed facts, not substitutes for the immutable container-image digest.",
+    "The workflow must use repository Gradle wrapper/build sources and may not install a different Gradle/JDK/Python."
+  ],
+  "generated_hidden_policy": "PINNED_GENERATOR_INPUTS",
+  "execution_authorized": false,
+  "next_gate": "Implement the exact supplemental capture source/workflow against this digest-pinned container and independently review all capture bytes and fail-closed rules before dispatch.",
+  "official_counters_delta": 0
+}
