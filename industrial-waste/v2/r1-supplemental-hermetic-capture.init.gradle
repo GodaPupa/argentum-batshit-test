@@ -4,8 +4,10 @@ import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.artifacts.result.UnresolvedDependencyResult
 
 gradle.projectsEvaluated {
-    def p = gradle.rootProject.findProject(":ai")
-    if (p == null) throw new GradleException("missing :ai project")
+    def root = gradle.rootProject
+    if (root.name != "argentum-engine") return
+    def p = root.findProject(":ai")
+    if (p == null) throw new GradleException("missing :ai project in argentum-engine")
     p.tasks.withType(Test).configureEach { t ->
         if (t.path == ":ai:test") {
             t.filter.includeTestsMatching("com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest")
