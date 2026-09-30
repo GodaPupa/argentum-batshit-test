@@ -1,0 +1,118 @@
+{
+  "schema": "industrial-r1-sealed-launch-design-v1",
+  "date_utc": "2026-09-29",
+  "status": "PROPOSED_REQUIRES_INDEPENDENT_REVIEW",
+  "basis": {
+    "accepted_hermetic_design": "industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_LAUNCH_DESIGN_20260929.json",
+    "accepted_hermetic_design_blob": "2d23710bc63b7b29d4be97acd4f3927cf23f2d00",
+    "design_review_blob": "93163d9ea12ca7dc1182d306f8b293158677c0fa",
+    "platform_identity_audit_commit": "2961aa3068447e7e92ed81f34d44a121fa4aefcc",
+    "platform_run": 36650392590,
+    "platform_artifact": 11070053761,
+    "platform_artifact_sha256": "afac474f45524a9bcf234617d00e6d11c8b624f2f801b48781ebf4ac2ce41ef2"
+  },
+  "platform": {
+    "image": "catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "architecture": "linux/amd64",
+    "java21_path": "/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+    "java21_sha256": "11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+    "python3_sha256": "7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86",
+    "git_sha256": "011fb1c28096c72e25688e56793f20b33e68f7f1065489f745763f19b6e9f516",
+    "bash_sha256": "59474588a312b6b6e73e5a42a59bf71e62b55416b6c9d5e4a6e1c630c2a9ecd4",
+    "sha256sum_sha256": "b88ea413571562a591268213d736121fada5ba14330bfcc74b8d9f14e4018ddf"
+  },
+  "outer_host_role": "GitHub runner is transport/orchestration only. It may invoke Docker and copy the sealed output after exit; it is not runtime authority.",
+  "inner_launch": {
+    "docker_options": [
+      "--rm",
+      "--network=none",
+      "--read-only",
+      "--cap-drop=ALL",
+      "--security-opt=no-new-privileges",
+      "--pids-limit=512",
+      "--platform=linux/amd64",
+      "--tmpfs=/tmp:rw,noexec,nosuid,nodev,size=512m",
+      "--tmpfs=/run:rw,noexec,nosuid,nodev,size=64m",
+      "--mount=type=bind,src=<EXACT_CHECKOUT>,dst=/src,readonly",
+      "--mount=type=bind,src=<NEW_OUTPUT>,dst=/out",
+      "--workdir=/src"
+    ],
+    "explicit_environment": {
+      "HOME": "/tmp/home",
+      "LANG": "C.UTF-8",
+      "LC_ALL": "C.UTF-8",
+      "TZ": "UTC",
+      "JAVA_HOME": "/usr/lib/jvm/temurin-21-jdk-amd64",
+      "PATH": "/usr/lib/jvm/temurin-21-jdk-amd64/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "GRADLE_USER_HOME": "/tmp/gradle-home",
+      "ARGENTUM_SEALED_LAUNCH": "1"
+    },
+    "forbidden_mounts": [
+      "/run/docker.sock",
+      "/var/run/docker.sock",
+      "/__w",
+      "/__e",
+      "/__t",
+      "/github/home",
+      "/github/workflow"
+    ],
+    "forbidden_environment_prefixes": [
+      "JAVA_TOOL_OPTIONS",
+      "JDK_JAVA_OPTIONS",
+      "_JAVA_OPTIONS",
+      "CLASSPATH",
+      "PYTHONPATH"
+    ],
+    "source_mode": "read-only exact checkout",
+    "output_mode": "new empty writable directory only",
+    "network_mode": "none"
+  },
+  "launch_qualification": {
+    "project_execution": false,
+    "inside_container_checks": [
+      "image Java/Python/Git/Bash/hash executable bytes match accepted platform identity",
+      "source mount is read-only and exact expected source/implementation commit",
+      "output mount is the only declared writable bind mount",
+      "no Docker socket mount exists",
+      "network namespace contains loopback only and no default route",
+      "effective capabilities are empty",
+      "NoNewPrivs is 1",
+      "root filesystem rejects an attempted write outside /tmp, /run and /out",
+      "source mount rejects an attempted write",
+      "output mount accepts create/fsync/remove test",
+      "environment equals the declared launch environment plus an independently reviewed minimal image-internal allowlist",
+      "process tree contains only the qualification shell/process and container runtime necessities"
+    ],
+    "preserve": [
+      "exact docker argv",
+      "docker image inspect RepoDigests/config digest",
+      "inner /proc/self/mountinfo",
+      "inner /proc/self/status",
+      "inner environment",
+      "inner process table",
+      "inner network interfaces/routes",
+      "tool byte hashes",
+      "read-only/write tests",
+      "source and output path identities"
+    ]
+  },
+  "capture_successor_requirements": [
+    "launch qualification must be independently audited clean first",
+    "actual supplemental capture implementation/source/workflow bytes must be separately pinned",
+    "actual capture uses the exact same accepted image digest and sealed launch controls",
+    "actual capture may write only to /out and tmpfs scratch",
+    "source/runtime/build inputs remain immutable for process lifetime",
+    "no claim/admit/seed/game path is reachable from the capture command"
+  ],
+  "prohibitions": [
+    "no actual runtime capture in launch qualification",
+    "no package installation or setup-java inside the sealed image",
+    "no Docker socket passed to inner container",
+    "no network access",
+    "no writable source checkout",
+    "no expected manifest acceptance",
+    "no prepared-worker/R1 permit/claim/seed/allocation/gameplay"
+  ],
+  "decision_requested": "ACCEPT_SEALED_LAUNCH_DESIGN_ONLY or REJECT_WITH_EXACT_GAPS",
+  "official_counters_delta": 0
+}
