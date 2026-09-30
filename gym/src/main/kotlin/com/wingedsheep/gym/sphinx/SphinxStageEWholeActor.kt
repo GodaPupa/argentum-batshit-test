@@ -2,7 +2,9 @@ package com.wingedsheep.gym.sphinx
 
 import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.YesNoDecision
+import com.wingedsheep.gym.actorinput.ActorChoiceSupport
 import com.wingedsheep.gym.actorinput.ActorEpoch
 import com.wingedsheep.gym.actorinput.ActorInput
 import com.wingedsheep.sdk.core.Zone
@@ -45,7 +47,16 @@ internal object SphinxStageEWholeActor {
         }
 
         val casts = input.legalActions.withIndex().filter { it.value.action is CastSpell }
-        if (casts.isEmpty()) return unqualified(input, "No already-qualified whole-actor action")
+        if (casts.isEmpty()) {
+            val sole = input.legalActions.singleOrNull()?.action
+            if (sole is PassPriority) {
+                return SphinxStageEAdapterResult.Proposed(
+                    ActorChoiceSupport.proposal(input, sole),
+                    "sole current legal action is pass priority",
+                )
+            }
+            return unqualified(input, "No already-qualified whole-actor action")
+        }
 
         if (casts.size == 1) {
             val only = casts.single()
