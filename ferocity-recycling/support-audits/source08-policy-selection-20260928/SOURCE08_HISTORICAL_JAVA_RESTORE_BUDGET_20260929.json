@@ -1,0 +1,44 @@
+{
+  "schema": "ferocity-source08-historical-java-restore-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "runtime_metadata_receipt_commit": "1e04b18ea4dc219ba4dc879e1af9d02c83359537",
+    "source08_commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "historical_java_version": "Temurin 21.0.12.1+1",
+    "historical_java_path": "/home/runner/work/_temp/ferocity-tools/jdk-21.0.12.1+1/bin/java",
+    "historical_java_sha256": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d"
+  },
+  "official_release_asset": {
+    "repository": "adoptium/temurin21-binaries",
+    "tag": "jdk-21.0.12.1+1",
+    "name": "OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz",
+    "url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz",
+    "bytes": 207473347,
+    "sha256": "ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94",
+    "github_release_asset_id": 521122372
+  },
+  "scope": "DOWNLOAD_VERIFY_EXTRACT_AND_HASH_JAVA_BINARY_ONLY",
+  "operation": [
+    "download only the exact immutable official release asset URL",
+    "verify archive byte length and SHA-256 before extraction",
+    "list archive names and reject absolute/traversal paths or symlink/hardlink entries",
+    "extract into a new temporary directory",
+    "locate exactly one top-level JDK directory and its bin/java regular file",
+    "hash bin/java and compare to the historical source08 Java executable SHA-256",
+    "do not execute java or any extracted binary"
+  ],
+  "acceptance": [
+    "official archive size and SHA-256 exact",
+    "safe archive topology",
+    "extracted bin/java SHA-256 exactly equals historical 2a207f5e...",
+    "no JVM started, no Gradle/export/game/seed/entropy activity"
+  ],
+  "prohibited": [
+    "no java -version",
+    "no execution of any downloaded/extracted binary",
+    "no exporter or plan assembly",
+    "no official seed/allocation/gameplay"
+  ],
+  "authority_if_clean": "EXACT_HISTORICAL_JAVA_BYTES_RESTORABLE_FROM_IMMUTABLE_OFFICIAL_RELEASE",
+  "official_counters_delta": 0
+}
