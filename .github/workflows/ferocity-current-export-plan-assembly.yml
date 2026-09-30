@@ -1,0 +1,96 @@
+name: Ferocity current source08 export plan assembly
+on:
+  push:
+    branches: ["ferocity/current-java-provenance-recovery-20260929"]
+    paths: [".github/workflows/ferocity-current-export-plan-assembly.yml"]
+permissions: {contents: read}
+jobs:
+  assemble:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact restore plan sources and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-export-plan-assembly
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = "eb09f1da9b3f4bd576db5694bb9376578ca759e1"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_EXPORT_PLAN_ASSEMBLY_BUDGET.json)" = "130772e1bf8c14c9c143cb7514a35af62ff3d3b6"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py)" = "b08e3b90aad2979e192e82e80edeed0316df7575"
+          test "$(git hash-object ferocity-recycling/tools/first-cell-export/plan-assembly/assemble_export_plan.py)" = "1f0bb7bb71a4dc5cb5b61bcaf01f8359c6e426b4"
+          test "$(git hash-object ferocity-recycling/tools/first-cell-export/export_first_cell.py)" = "c0657160a7b299a9d4a4eded6d1cebdeeb96e6c2"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_EXPORT_PLAN_ASSEMBLY_BUDGET.json
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py
+            git hash-object ferocity-recycling/tools/first-cell-export/plan-assembly/assemble_export_plan.py
+            git hash-object ferocity-recycling/tools/first-cell-export/export_first_cell.py
+            git hash-object .github/workflows/ferocity-current-export-plan-assembly.yml
+            git status --porcelain
+          } > "$OUT/source.txt"
+      - name: Restore exact runtime and JDK bytes and emit material
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py \
+            | tee build/reports/ferocity-export-plan-assembly/prepare.log
+      - name: Assemble and validate exact export plan without executing Java
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT="$GITHUB_WORKSPACE/build/reports/ferocity-export-plan-assembly"
+          MATERIAL="$OUT/material.json"
+          MATERIAL_SHA="$(cat "$OUT/material-sha256.txt")"
+          PLAN_DIR="$RUNNER_TEMP/ferocity-export-plan-$GITHUB_RUN_ID"
+          python3 ferocity-recycling/tools/first-cell-export/plan-assembly/assemble_export_plan.py \
+            --material "$MATERIAL" \
+            --material-sha256 "$MATERIAL_SHA" \
+            --output "$PLAN_DIR" \
+            | tee "$OUT/assembly.log"
+          test -s "$PLAN_DIR/export-plan.json"
+          test -s "$PLAN_DIR/material.json"
+          test -s "$PLAN_DIR/PLAN_ASSEMBLY_RECEIPT.json"
+          cp "$PLAN_DIR/export-plan.json" "$OUT/export-plan.json"
+          cp "$PLAN_DIR/PLAN_ASSEMBLY_RECEIPT.json" "$OUT/PLAN_ASSEMBLY_RECEIPT.json"
+          sha256sum "$OUT/export-plan.json" "$OUT/material.json" "$OUT/class-path.json" "$OUT/compiled-inputs-source08.json" \
+            > "$OUT/output-sha256.txt"
+      - name: Assert no execution authority was exercised
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib
+          out=pathlib.Path("build/reports/ferocity-export-plan-assembly")
+          restore=json.loads((out/"restore-receipt.json").read_text())
+          receipt=json.loads((out/"PLAN_ASSEMBLY_RECEIPT.json").read_text())
+          assert restore["javaStarted"] is False
+          assert restore["gradleStarted"] is False
+          assert restore["exporterStarted"] is False
+          assert restore["seedOrEntropyRead"] is False
+          assert restore["allocationRead"] is False
+          assert restore["gameInitialized"] is False
+          assert receipt["scope"] == "OFFLINE_PLAN_ASSEMBLY_NO_EXPORT_NO_GAME_NO_ENTROPY"
+          assert receipt["exportExecuted"] if "exportExecuted" in receipt else True
+          assert receipt["games"] == 0 and receipt["allocatedSeeds"] == 0
+          (out/"authority.json").write_text(json.dumps({
+            "javaExecuted": False,
+            "gradleExecuted": False,
+            "definitionExportExecuted": False,
+            "entropyRead": False,
+            "allocationCreated": False,
+            "gameInitialized": False,
+            "authority": "PLAN_READY_FOR_REVIEW_ONLY"
+          }, indent=2)+"\n")
+          PY
+      - name: Preserve original plan-assembly evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-current-export-plan-assembly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-export-plan-assembly/
+          if-no-files-found: error
+          retention-days: 90
