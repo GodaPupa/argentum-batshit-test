@@ -1,0 +1,48 @@
+{
+  "schema": "industrial-r1-hermetic-platform-probe-36649328864-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36649328864,
+  "job_id": 109679552547,
+  "artifact_id": 11069234619,
+  "artifact_sha256": "07704a4187ad8c544f2cb7ecaa5c51f1659780fa0ad21deba29d0a67148679be",
+  "head": "b0827b8d0e0dd5411e845d6b0975511d88f548ad",
+  "parent": "041c921874df2fb9c2acb373ee1fa44753c99dd3",
+  "source_commit": "de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+  "source_tree": "d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+  "candidate": {
+    "image": "catthehacker/ubuntu@sha256:5dff02975654f16f1d1ab6fd04ff88e326a30f39eba177d85d3b4945e6fde62f",
+    "architecture": "linux/amd64"
+  },
+  "integrity": {
+    "workflow_conclusion": "failure",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "container_initialization": "success",
+    "exact_image_digest_pull": "success",
+    "source_binding": "passed",
+    "checkout_status": "clean",
+    "platform_probe_body_started": true,
+    "project_gradle_or_test_execution": false,
+    "official_seed_or_game_execution": false,
+    "source_binding_sha256": "d825c792e4c49dd494d4ae25d1a559584f89ebccc922e834ddc9e59d2c43f7c8",
+    "os_release_sha256": "89bc2f84cb8ef5a07cecc87c98c229335b3e9491fb5c53382b903da3f0fe7bc2",
+    "mountinfo_sha256": "b7f38650b457dc09a5bea18e78fe85c0bd7c6affd242c129333e7aa0ed371110"
+  },
+  "result": {
+    "decision_point_reached": "immutable in-image Java 21 discovery",
+    "java21_candidate_count": 0,
+    "failure": "no immutable in-image Java 21 candidate"
+  },
+  "decision": "REJECT_PLATFORM_CANDIDATE_NO_IN_IMAGE_JAVA21",
+  "interpretation": [
+    "The exact pinned image is a valid immutable linux/amd64 container candidate and source binding is clean, but it cannot satisfy the accepted hermetic-capture platform requirement because Java 21 is absent.",
+    "Installing or downloading Java into this image would violate the predeclared probe and weaken immutable platform identity, so this candidate is rejected rather than repaired in place."
+  ],
+  "limits": [
+    "No Industrial supplemental runtime capture was executed.",
+    "No expected manifest, prepared-worker, R1 permit, claim, seed, allocation or game authority.",
+    "Earlier ownership-pretest runs 36648858769 and 36649095679 remain consumed INCOMPLETE."
+  ],
+  "next_gate": "Predeclare a new immutable linux/amd64 image digest that already contains Java 21 plus the required shell/Git/Python hashing tools, then run a new platform qualification candidate. A new image is a changed candidate, not an unchanged rerun.",
+  "official_counters_delta": 0
+}
