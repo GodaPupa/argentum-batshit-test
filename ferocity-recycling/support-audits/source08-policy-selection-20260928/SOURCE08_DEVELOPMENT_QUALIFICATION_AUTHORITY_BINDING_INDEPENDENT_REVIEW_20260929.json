@@ -1,0 +1,51 @@
+{
+  "schema": "ferocity-source08-development-qualification-authority-binding-independent-review-v1",
+  "date_utc": "2026-09-29",
+  "reviewed_commit": "d1a735ae5cfa459c00b913c90d185950564559c0",
+  "reviewed_path": "ferocity-recycling/support-audits/source08-policy-selection-20260928/SOURCE08_DEVELOPMENT_QUALIFICATION_AUTHORITY_BINDING_20260929.json",
+  "reviewed_blob": "38b30565af22ae3adc2c9576c248c30df183a491",
+  "decision": "ACCEPT_PRESERVED_QUALIFICATION_AUTHORITY_FOR_MANIFEST_CONSTRUCTION",
+  "independent_recheck": {
+    "artifact_id": 10914678223,
+    "artifact_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "artifact_sha256_recomputed": true,
+    "zip_crc": "clean",
+    "zip_members": 28,
+    "receipt_sha256": "d898102510976b4791410e43fd9d71b61c4b6044763366e2438e3383fb212e27",
+    "compiled_inputs_sha256": "36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908",
+    "compiled_inputs_before_after_equal": true,
+    "validator_sha256": "07b1e71a0f8b1fdafe5c4419ca2baf5920e6194605220fe278ad9eb96be39a2c",
+    "build_log_sha256": "d861b23a56ea82cb750bb0a46d16e565127d554e0eb141ed3609e75a96216c7f",
+    "receipt_status": "PASS",
+    "batch_tests": 182,
+    "batch_failures": 0,
+    "batch_errors": 0,
+    "batch_skipped": 0
+  },
+  "source_verifier_cross_check": {
+    "required_class_count": 11,
+    "required_test_assertions": 162,
+    "all_required_classes_present_exactly_once": true,
+    "all_required_counts_match_FerocityDevelopmentAdmission": true,
+    "all_required_xml_failures_errors_skips_zero": true,
+    "receipt_runner_matches_archived_validator": true
+  },
+  "findings": [
+    "The preserved source08 gym original was already source-bound by the takeover deterministic artifact audit; this review independently rehashed the exact original ZIP and its admission-critical members.",
+    "The single fresh gym batch contains every class required by requiredDevelopmentClassCounts with the exact expected counts.",
+    "The receipt binds the same validator digest as both runner_sha256 and archived_runner_sha256, and the before/after compiled-input maps are byte-identical.",
+    "No qualification rerun is needed or authorized to construct the final manifest gate; the exact preserved members must be materialized byte-for-byte from the consumed original.",
+    "The additional 20 passing assertions in BloodActivation, Diagnostics and WickedRole are preserved context and do not substitute for any required class."
+  ],
+  "accepted_scope": [
+    "Artifact 10914678223 is accepted as the exact preserved qualification-member authority for the future current FerocityDevelopmentManifest construction path.",
+    "The future manifest may bind the receipt, compiled-input map, validator, build log and XMLs from this original without rerunning qualification."
+  ],
+  "explicit_non_authority": [
+    "No final FerocityDevelopmentManifest is accepted.",
+    "No Java verify invocation has run.",
+    "No allocation, entropy, seed, ledger, claim, journal, game or outcome authority."
+  ],
+  "next_gate": "Materialize the exact allowlisted qualification members together with the accepted current definition bundle and inline-token admission, then construct the complete current manifest including coverage and watchdog bindings for independent review.",
+  "official_counters_delta": 0
+}
