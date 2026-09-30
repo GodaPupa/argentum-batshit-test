@@ -131,14 +131,21 @@ class PestMonsterLondonM5TruthReceivingTest : FunSpec({
     }
 
     test("truth lookup misses remain unknown and fail closed") {
+        // Keep this miss fixture outside M0 forced-keep scope. The accepted predicate-vector
+        // boundary explicitly permits forced keep without M5 evidence; this case isolates the
+        // receiving contract's separate requirement that an unbanked non-forced M5 stays unknown.
         val hand = listOf(
             PestLondonCardFacts("f1", "Forest", true, 0, colorsProduced = setOf('G')),
             PestLondonCardFacts("u1", "Unbanked Spell", false, 1),
+            PestLondonCardFacts("x1", "Receiving High-Cost Filler", false, 6),
+            PestLondonCardFacts("x2", "Receiving High-Cost Filler", false, 6),
+            PestLondonCardFacts("x3", "Receiving High-Cost Filler", false, 6),
+            PestLondonCardFacts("x4", "Receiving High-Cost Filler", false, 6),
         )
         val bound = receiver.bind(hand, false)
         bound.single { it.id == "u1" }.deterministicDevelopmentPayable shouldBe null
         val vector = PestMonsterLondonPredicateVectorExtractor.extract(
-            submittedDeck = mapOf("Forest" to 1, "Unbanked Spell" to 1, "Receiving Filler" to 58),
+            submittedDeck = mapOf("Forest" to 1, "Unbanked Spell" to 1, "Receiving High-Cost Filler" to 4, "Receiving Filler" to 54),
             hand = bound,
             mulliganCount = 0,
         )
