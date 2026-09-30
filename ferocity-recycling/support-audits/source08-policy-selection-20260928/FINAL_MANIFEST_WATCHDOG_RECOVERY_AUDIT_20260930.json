@@ -1,0 +1,48 @@
+{
+  "schema":"ferocity-final-manifest-watchdog-recovery-audit-v1",
+  "date_utc":"2026-09-30",
+  "decision":"HOLD_ACCEPTED_WATCHDOG_PYTHON_IDENTITY_UNAVAILABLE_ON_CURRENT_RUNNER",
+  "source_commit":"87e4094805fbd362cd036745174b6514a435f870",
+  "original":{
+    "run_id":36658579145,
+    "artifact_id":11072259581,
+    "artifact_sha256":"becda8799b9729b9f414a8c828c1ee675af1906479d1068fec556cf231c1d461",
+    "zip_crc_clean":true,
+    "recovery_schema":"ferocity-source08-watchdog-runtime-recovery-v2"
+  },
+  "preserved_watchdog":{
+    "acceptance_sha256":"71eacdddb46c48ba7c3856391d0ebef175cf7a2d9e247b15b293c789fbcce27a",
+    "run_receipt_sha256":"d595b0c28041325378786eb39537073a7c029a993472e9d80c5b363b0bbb176d",
+    "author_receipt_sha256":"168a3ee08ce68c1480cb3141b6ab8540aadb6277b848752e17910d0d7f8d4082",
+    "process_claim_sha256":"f9c8d6c0b33473b3856e990c2adbda50fedd1c4b67affe28982c2066e4a82fc2",
+    "source_sha256":"803a03aae3f63ffb114d9a8b56d4bf108b2f5f71f051057e204220f5f52adb37",
+    "fixed_process_cases":{"executed":13,"passed":13,"failed":0,"errors":0,"skipped":0},
+    "accepted_python":{
+      "path":"/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3.12",
+      "sha256":"fa67443527ed9647f760d807e2a38f26340757123e643c4639cf273ed15d5ea7"
+    }
+  },
+  "current_runner":{
+    "accepted_path_exists":false,
+    "workflow_python_path":"/usr/bin/python3.12",
+    "workflow_python_sha256":"e50d468e8b0adfb05733f5b87b3cff34829c4a8c1aea50c865aa8bdfe4bb150f",
+    "accepted_python_bytes_match":false
+  },
+  "audit_findings":[
+    "The successor recovery original completed successfully with zero Java, Gradle, entropy, allocation or game activity.",
+    "The preserved watchdog acceptance remains internally 13/13 clean; the blocker is runtime identity, not watchdog behavior.",
+    "The historical accepted Python executable path is absent on the current GitHub runner and the current Python bytes differ.",
+    "FerocityDevelopmentAdmission would therefore reject this historical watchdog binding before any game path.",
+    "The historical author receipt is referenced by exact SHA-256 but is external to the watchdog35 actual-evidence ZIP; it must also be located or superseded."
+  ],
+  "accepted_scope":[
+    "Accept the recovery result as evidence that the historical watchdog package cannot be consumed unchanged on the current runner.",
+    "A successor may requalify the unchanged source08 watchdog and its exact 13 fixed process/resource cases under a predeclared runtime whose Python executable is stable and will also be used by final verify."
+  ],
+  "explicit_non_authority":[
+    "No final D2 verification authority.",
+    "No allocation, entropy, seed, claim, journal, game initialization, gameplay or outcome authority."
+  ],
+  "next_gate":"Predeclare and independently review a current-runtime watchdog requalification using the unchanged source08 watchdog plus exactly the same 9 process and 4 resource fixed cases. Execute it without Java/gameplay, audit the original, then bind its Python identity into final manifest assembly.",
+  "official_counters_delta":0
+}
