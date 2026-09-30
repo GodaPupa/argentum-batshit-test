@@ -1,0 +1,86 @@
+name: Ferocity current final development manifest construction
+on:
+  push:
+    branches: ["ferocity/final-development-manifest-current-execute-20260930"]
+    paths:
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_MANIFEST_CURRENT_EXECUTION_MARKER_20260930.json"
+permissions:
+  contents: read
+  actions: read
+jobs:
+  construct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact reviewed non-executing construction
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-final-development-manifest
+          test ! -e "$OUT"
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_MANIFEST_CURRENT_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+          python3 - "$REVIEW" <<'PY'
+          import json,pathlib,subprocess,sys
+          review=json.loads(pathlib.Path(sys.argv[1]).read_text())
+          assert review["decision"]=="ACCEPT_IMPLEMENTATION_FOR_ONE_NON_EXECUTING_MANIFEST_CONSTRUCTION_ORIGINAL"
+          assert subprocess.check_output(["git","rev-parse","HEAD^"],text=True).strip()==review["review_commit"]
+          assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
+          changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
+          assert changed==["ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_MANIFEST_CURRENT_EXECUTION_MARKER_20260930.json"],changed
+          for field,path in {
+            "constructor_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/construct_current_final_development_manifest.py",
+            "budget_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_MANIFEST_CURRENT_BUDGET_20260930.json",
+            "workflow_blob":".github/workflows/ferocity-final-development-manifest-current-20260930.yml",
+          }.items():
+              actual=subprocess.check_output(["git","hash-object",path],text=True).strip()
+              assert actual==review[field],(field,actual,review[field])
+          PY
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+      - name: Retrieve exact consumed current authorities
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/ferocity-final-manifest-inputs
+          curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11071913791/zip"             -o build/ferocity-final-manifest-inputs/offline.zip
+          echo "94ec8d2ee12f929316c39ce0c69fbf9e5ad869a3b4ecedaa48faa2f8280b7ee6  build/ferocity-final-manifest-inputs/offline.zip" | sha256sum -c -
+          unzip -t build/ferocity-final-manifest-inputs/offline.zip >/dev/null
+          curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11074268074/zip"             -o build/ferocity-final-manifest-inputs/watchdog.zip
+          echo "c436b7df09091a001df6ecdad25a909c2ce7f4bb100d7ddb6f6020a1e4c4dedf  build/ferocity-final-manifest-inputs/watchdog.zip" | sha256sum -c -
+          unzip -t build/ferocity-final-manifest-inputs/watchdog.zip >/dev/null
+      - name: Construct exact current canonical manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/construct_current_final_development_manifest.py             --offline build/ferocity-final-manifest-inputs/offline.zip             --watchdog build/ferocity-final-manifest-inputs/watchdog.zip             | tee build/ferocity-final-manifest-construction.log
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path("build/reports/ferocity-final-development-manifest/construction-receipt.json").read_text())
+          assert r["status"]=="CANONICAL_MANIFEST_CANDIDATE_READY_FOR_INDEPENDENT_REVIEW_ONLY"
+          assert r["manifest"]["coverage_keys"]==55
+          assert r["manifest"]["qualification_classes"]==14
+          assert r["manifest"]["classpath_entries"]==56
+          assert r["manifest"]["definitions"]==36
+          for k in ("java_started","gradle_started","entropy_read","allocation_read","ledger_created","trial_claim_created","game_initialized"):
+              assert r[k] is False,(k,r[k])
+          assert r["outcomes_exposed"]==0 and r["official_counters_delta"]==0
+          PY
+      - name: Preserve single non-executing construction original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-final-development-manifest-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/ferocity-final-development-manifest/
+            build/ferocity-final-manifest-construction.log
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_MANIFEST_CURRENT_BUDGET_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_MANIFEST_CURRENT_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_MANIFEST_CURRENT_EXECUTION_MARKER_20260930.json
+          if-no-files-found: error
+          retention-days: 90
