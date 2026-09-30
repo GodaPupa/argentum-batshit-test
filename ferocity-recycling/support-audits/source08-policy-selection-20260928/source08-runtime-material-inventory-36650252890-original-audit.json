@@ -1,0 +1,51 @@
+{
+  "schema": "ferocity-source08-runtime-material-directory-inventory-36650252890-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36650252890,
+  "artifact_id": 11070132791,
+  "artifact_sha256": "9f611a58919cf0544b02240d32d09d98c427a136d496f960cdb2375fd7fcf283",
+  "head": "69fdf36150bdba463fe7e0b8fde70c95cfb98da7",
+  "parent": "793e93a809c5dd869b2f7fb89e681b82f1a17c62",
+  "pins": {
+    "publication_manifest": "262f78d820ac8834d796d3cc634bf45bbb155cf6",
+    "budget": "ab2b32c49557b777c63f2fbf9d6ff85d97423ef5",
+    "workflow": "e60179a6d53ce855069bcc5fab0813fd4fdda0ad"
+  },
+  "integrity": {
+    "workflow_conclusion": "success",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "reassembled_original_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "member_payloads_read": false,
+    "jvm_started": false,
+    "export_executed": false,
+    "official_entropy_read": false,
+    "games_initialized": 0
+  },
+  "result": {
+    "original_artifact_id": 10914678223,
+    "archive_bytes": 95124680,
+    "member_count": 28,
+    "candidate_count": 24,
+    "runtime_material_candidates": [
+      "qualification/compiled-inputs-before.json",
+      "qualification/compiled-inputs-after.json",
+      "qualification/observed-gym-runtime/runtime-archive-receipt.json",
+      "qualification/observed-gym-runtime/runtime-files.tar.gz",
+      "qualification/runtime-classpath-observation/manifest.json",
+      "qualification/receipt.json"
+    ]
+  },
+  "decision": "ACCEPTED_DIRECTORY_INVENTORY_ONLY",
+  "accepted_scope": [
+    "The exact preserved source08 deterministic original contains the named runtime/classpath/compiled-input metadata and runtime archive entries.",
+    "This gate establishes names and ZIP-directory metadata only; no archived member payload was read."
+  ],
+  "limits": [
+    "No runtime metadata content, classpath, Java identity, runtime archive content, export plan, offline bundle or D2 authority is accepted.",
+    "No entropy, seed, allocation or gameplay authority."
+  ],
+  "next_gate": "Prospectively extract only the explicit metadata JSON members needed to identify the preserved classpath/Java/runtime bindings. Keep runtime-files.tar.gz and trace/game/seed payloads unopened.",
+  "official_counters_delta": 0
+}
