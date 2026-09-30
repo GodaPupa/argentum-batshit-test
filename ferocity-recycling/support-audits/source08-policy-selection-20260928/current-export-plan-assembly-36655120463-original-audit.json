@@ -1,0 +1,84 @@
+{
+  "schema": "ferocity-current-source08-export-plan-assembly-36655120463-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36655120463,
+  "job_id": 109697692143,
+  "artifact_id": 11071774468,
+  "artifact_sha256": "4a7b10491a164d211a7aac6897d105fd73176c8a15a0fd1f6971ea0957f7e6cf",
+  "head": "d2719829ee494ce17b4ad0f5f8080fdd1f039d68",
+  "parent": "4e2aa905e4552d4d86e2eb726421f154e8c1c9b0",
+  "pins": {
+    "budget": "130772e1bf8c14c9c143cb7514a35af62ff3d3b6",
+    "material_constructor": "19360240d66503bed16db5a28753c39172355a63",
+    "plan_assembler": "1f0bb7bb71a4dc5cb5b61bcaf01f8359c6e426b4",
+    "exporter_validator": "c0657160a7b299a9d4a4eded6d1cebdeeb96e6c2",
+    "workflow": "bd99110326030b6d1ca85b0700fb67079944fb99"
+  },
+  "integrity": {
+    "workflow_conclusion": "success",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "java_executed": false,
+    "gradle_executed": false,
+    "definition_export_executed": false,
+    "entropy_read": false,
+    "allocation_created": false,
+    "game_initialized": false
+  },
+  "restored_authority": {
+    "source08_original_artifact_id": 10914678223,
+    "source08_original_artifact_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "source08_original_parts": 12,
+    "runtime_archive_sha256": "0e9ea0c6c3f2e29230148d330b6b7961aeba1fa44985876b90f68bc8ca7e28d5",
+    "runtime_receipt_sha256": "1dd2e960d9de93ad59a2439a14ef5345faa6bc572b9e8db3d3b886e18f8b1d49",
+    "runtime_files": 2159,
+    "classpath_entries": 56,
+    "compiled_inputs_file_sha256": "36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908",
+    "compiled_inputs_canonical_sha256": "663af924957ed0d67af8cd594a8abcd6c1e404ea8181acda3fcbac28b6961fd3",
+    "temurin_distribution_sha256": "ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94",
+    "java_executable_sha256": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d"
+  },
+  "outputs": {
+    "export_plan_sha256": "3706ce1ef2276694bd3eebee66b3924bbec627841dec085ef35a0819c37b237b",
+    "material_sha256": "4bbac9ebf1dabd0e37486e461d967895fd62a89cb2c476ce607c20fa07ce2c53",
+    "classpath_json_sha256": "3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415",
+    "plan_assembly_receipt_sha256": "1a90fed01627aebc0fde70363085fd1493375c33392828028e883aaf769dd4d4",
+    "restore_receipt_sha256": "9ce5f1602d065f92f8dc99f81dade49b22b94d843036aa8c457d26e014bc5052",
+    "authority_receipt_sha256": "44c36c898cf902c2fb3bb18d7cf029c30d246e5c7b992c91ef3a96db6a644285"
+  },
+  "derived_plan": {
+    "scope": "FEROCITY_FIRST_CELL_OFFLINE_EXPORT",
+    "source_commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "source_tree_sha256": "663af924957ed0d67af8cd594a8abcd6c1e404ea8181acda3fcbac28b6961fd3",
+    "serializer_sha256": "5c3e70fea5aeeb0f1b64b216cd0dd5133785388706c56fdbbc27b768ed855042",
+    "artifact_control_policy_sha256": "3e1009a0dbfbe83c8ca1f4bbf47860b0c57fda321d8b3d16427f8d9105846993",
+    "red_madness_policy_sha256": "65a256739f8484804a4c44a7081fd6e330cf70a350a29b005b5063008d3932a8",
+    "protocol_sha256": "b23496e6c183078a148cdd6c07bd57000670b15f074ffadd110fd5ef41879f2b",
+    "java_executable": "/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java",
+    "runtime_root_prefix": "/home/runner/work/_temp/ferocity-source08-runtime-36655120463"
+  },
+  "independent_recomputation": {
+    "compiled_source_tree_digest_matches": true,
+    "artifact_control_policy_digest_matches": true,
+    "red_madness_policy_digest_matches": true,
+    "protocol_digest_matches": true,
+    "serializer_pin_matches": true,
+    "canonical_classpath_digest_matches": true
+  },
+  "decision": "ACCEPTED_EXACT_NO_GAME_EXPORT_PLAN_ASSEMBLY_READY_FOR_INDEPENDENT_REVIEW",
+  "accepted_scope": [
+    "Exact source08 runtime/JDK/source/policy/protocol bytes can be restored and reduced by the reviewed Python assembler to one deterministic offline-export plan.",
+    "The generated plan is internally consistent with the exact compiled-input map and 56-entry classpath.",
+    "The plan assembly process exercised no Java, Gradle, definition export, entropy, allocation or gameplay."
+  ],
+  "limits": [
+    "The generated plan has not yet been independently adopted for execution.",
+    "The absolute runtime and Java paths embedded in the accepted plan must be recreated exactly for any future execution.",
+    "No definition bundle exists yet.",
+    "MisterTwin Red v0.2 runtime receiving remains separate and open.",
+    "No final D2 admission, seed, allocation or gameplay authority."
+  ],
+  "next_gate": "Independently review the exact plan/material/restore evidence and execution reproducibility. Only if accepted may a separately source-bound no-game export/reload original be dispatched using the exact accepted plan and paths.",
+  "official_counters_delta": 0
+}
