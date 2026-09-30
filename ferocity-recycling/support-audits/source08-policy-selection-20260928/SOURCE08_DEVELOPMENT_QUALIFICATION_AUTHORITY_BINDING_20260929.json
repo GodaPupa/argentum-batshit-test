@@ -1,0 +1,123 @@
+{
+  "schema": "ferocity-source08-development-qualification-authority-binding-v1",
+  "date_utc": "2026-09-29",
+  "status": "BOUND_PRESERVED_QUALIFICATION_AUTHORITY_FOR_MANIFEST_CONSTRUCTION",
+  "source08": {
+    "commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"
+  },
+  "preserved_original": {
+    "run_id": 36268324461,
+    "artifact_id": 10914678223,
+    "artifact_name": "ferocity-recycling-gym-36268324461-1",
+    "artifact_bytes": 95124680,
+    "artifact_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "zip_crc": "clean",
+    "zip_members": 28,
+    "transport_reassembly_path": "ferocity-recycling/evidence/source08-takeover/reassembly-10914678223.json",
+    "transport_reassembly_blob": "cb1900ac7b196a3287a806b804032cad60134dc3"
+  },
+  "prior_independent_authorities": {
+    "deterministic_artifact_audit_path": "ferocity-recycling/evidence/source08-takeover/deterministic-artifact-audit.json",
+    "deterministic_artifact_audit_blob": "0cb6eabc3a7b96cbb012f26a810d794694c01a95",
+    "runtime_peer_review_path": "ferocity-recycling/evidence/source08-takeover/priority08/root-observed-runtime-peer-review.json",
+    "runtime_peer_review_blob": "fe4f20e38cfe98e67d213a6191d242b199923321",
+    "runtime_peer_review_decision": "ACCEPT_ARCHIVAL_BYTE_BINDING_ONLY"
+  },
+  "qualification": {
+    "scope": "DETERMINISTIC_BUILD_CARD_AND_FIXED_POLICY_FIXTURES_ONLY",
+    "receipt_path_in_original": "qualification/receipt.json",
+    "receipt_sha256": "d898102510976b4791410e43fd9d71b61c4b6044763366e2438e3383fb212e27",
+    "status": "PASS",
+    "compiled_inputs_before_path_in_original": "qualification/compiled-inputs-before.json",
+    "compiled_inputs_after_path_in_original": "qualification/compiled-inputs-after.json",
+    "compiled_inputs_sha256": "36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908",
+    "compiled_inputs_equal_before_after": true,
+    "compiled_input_entries": 20275,
+    "validator_path_in_original": "qualification/validator-attempt.py",
+    "validator_sha256": "07b1e71a0f8b1fdafe5c4419ca2baf5920e6194605220fe278ad9eb96be39a2c",
+    "runner_sha256": "07b1e71a0f8b1fdafe5c4419ca2baf5920e6194605220fe278ad9eb96be39a2c",
+    "archived_runner_sha256": "07b1e71a0f8b1fdafe5c4419ca2baf5920e6194605220fe278ad9eb96be39a2c",
+    "build_log_path_in_original": "qualification/batch-01-gym/build.log",
+    "build_log_sha256": "d861b23a56ea82cb750bb0a46d16e565127d554e0eb141ed3609e75a96216c7f",
+    "batch_totals": {
+      "tests": 182,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "required_development_classes": {
+    "FerocityObservationBoundaryTest": {
+      "tests": 28,
+      "xml_sha256": "3e23b6759fcb221253227ac063032f6272fe39dc6a8ad1de6e8bea6f52798158"
+    },
+    "FerocityStackSourceObservationTest": {
+      "tests": 12,
+      "xml_sha256": "441aee26837e578fc67390c46e6d519b901036d1e880aabab162ee7936af6453"
+    },
+    "FerocityTriggerOrderObservationTest": {
+      "tests": 6,
+      "xml_sha256": "9c5e9025f071c61164067bafedf77e2a63a9acb7bd615db5b5abe16ee206702a"
+    },
+    "FerocityPriorityObservationTest": {
+      "tests": 4,
+      "xml_sha256": "8f59c291cbc38fa1ebd86e548ee9a7907cbd0c8138ee9d35700ef20c58e2b0a5"
+    },
+    "FerocityTrialJournalTest": {
+      "tests": 20,
+      "xml_sha256": "4ce918d234fee2982520509c1558bc4bbfa33d47f09c16bb6f32554d58dcfe01"
+    },
+    "FerocityCardDefinitionBundleTest": {
+      "tests": 16,
+      "xml_sha256": "cf6d9460ef79be6d3c0f2a3a4db23918140cdd4f311cf9b96f64978a605158b1"
+    },
+    "FerocityInlineTokenProvenanceTest": {
+      "tests": 12,
+      "xml_sha256": "3c6759ec348bd110a86d78bca2a87d795d6c692590697524ef6238c67f576dea"
+    },
+    "ArtifactControlPolicyTest": {
+      "tests": 24,
+      "xml_sha256": "9881be410a356f72b25379fdfd64ce9bb7d4fba20c425df11d0b835987c20626"
+    },
+    "RedMadnessPilotScenarioTest": {
+      "tests": 24,
+      "xml_sha256": "453d39278d8d10b5d80c253f299cbdc969bd88559d8ed8d9907ddda49e0649b2"
+    },
+    "FerocityDevelopmentAdmissionTest": {
+      "tests": 14,
+      "xml_sha256": "6370add77a2a78af8c4e477c4b65cd53322f71c6e680ac91687140ab13ced985"
+    },
+    "FerocityResourceBoundaryTest": {
+      "tests": 2,
+      "xml_sha256": "65003efbba15351f63671a0b52d6d82282caa256a83f1a8f1998a6659d272f0e"
+    }
+  },
+  "additional_passing_classes_in_same_batch": {
+    "FerocityBloodActivationTest": 6,
+    "FerocityDiagnosticsTest": 12,
+    "FerocityWickedRoleSourceTest": 2
+  },
+  "binding_checks": {
+    "exact_artifact_sha256_recomputed": true,
+    "zip_crc_recomputed_clean": true,
+    "receipt_sha256_matches_prior_audit": true,
+    "compiled_inputs_before_after_equal": true,
+    "all_required_class_counts_match_source08_verifier": true,
+    "all_required_xml_totals_clean": true,
+    "validator_digest_matches_receipt_runner_digest": true,
+    "single_preserved_build_log_bound_to_all_required_classes": true
+  },
+  "accepted_scope_if_reviewed_clean": [
+    "The source08 original artifact 10914678223 is the preserved qualification evidence source for constructing the final FerocityDevelopmentManifest qualification gate.",
+    "The exact receipt, compiled-input map, validator, build log and required XML identities may be materialized from this original without rerunning qualification tests.",
+    "This binding does not itself create a FerocityDevelopmentManifest or execute its verifier."
+  ],
+  "explicit_non_authority": [
+    "No new tests or JVM qualification run.",
+    "No entropy read, allocation, seed, ledger, trial claim, game initialization, gameplay or outcome exposure.",
+    "No final D2 verification or execution authority."
+  ],
+  "next_gate": "Independently review this qualification-authority binding, then materialize only the exact allowlisted qualification members plus the accepted current bundle/inline-token bytes into the verify-only manifest construction path.",
+  "official_counters_delta": 0
+}
