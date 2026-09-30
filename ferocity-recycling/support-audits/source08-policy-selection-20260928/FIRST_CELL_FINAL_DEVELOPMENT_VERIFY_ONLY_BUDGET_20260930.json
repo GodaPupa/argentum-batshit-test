@@ -1,0 +1,63 @@
+{
+  "schema":"ferocity-final-development-verify-only-execution-budget-v1",
+  "date_utc":"2026-09-30",
+  "accepted_manifest_review_commit":"274e660066d80781bbfb58b381a7c429a18e312a",
+  "manifest_original":{
+    "run":36669474548,
+    "artifact":11077287825,
+    "artifact_sha256":"6cc1ed84aa9fd6b17ddcdce7a1054bbc856124b16dd6b1ecce1fe9d04f9ceb80",
+    "manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+    "repository_relative_path":"ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
+  },
+  "logical_source":{
+    "commit":"3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "compiled_input_tree_sha256":"663af924957ed0d67af8cd594a8abcd6c1e404ea8181acda3fcbac28b6961fd3"
+  },
+  "runtime_restore":{
+    "helper_blob":"dd001c437f627b1615ccb590f2331589d4161f72",
+    "accepted_path_token":"36655120463",
+    "runner_temp":"/home/runner/work/_temp",
+    "runtime_prefix":"/home/runner/work/_temp/ferocity-source08-runtime-36655120463",
+    "java_executable":"/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java",
+    "java_sha256":"2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "classpath_sha256":"3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415"
+  },
+  "execution_platform":{
+    "image":"mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880",
+    "repository_path":"/home/runner/work/argentum-batshit-test/argentum-batshit-test",
+    "watchdog_python":"/usr/local/python/3.14.2/bin/python3.14",
+    "watchdog_python_sha256":"4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601"
+  },
+  "permitted_java":{
+    "count":1,
+    "entrypoint":"com.wingedsheep.gym.ferocity.FerocityDevelopmentCli",
+    "operation":"verify",
+    "heap":"-Xmx2048m",
+    "required_status":"VERIFIED_INPUTS_NO_ENTROPY_NO_GAME"
+  },
+  "preconditions":[
+    "copy the checked-out exact execution head to the manifest's exact canonical repository path without symlinks",
+    "materialize only the exact accepted manifest artifact materialized tree after whole-ZIP SHA-256 and CRC verification",
+    "restore exact source08 runtime and Temurin bytes with path token 36655120463 and require exact classpath/Java hashes",
+    "require the current watchdog Python exact path and SHA-256",
+    "require no D2 allocation, journal or process-run evidence roots before Java",
+    "bind exact manifest SHA-256 immediately before Java"
+  ],
+  "postconditions":[
+    "parse exact CLI JSON and require status VERIFIED_INPUTS_NO_ENTROPY_NO_GAME",
+    "preserve stdout/stderr and exit code",
+    "require no D2 allocation, ledger, journal, supervisor run claim, game or outcome side effects",
+    "rehash manifest/runtime/Java/watchdog Python after verify"
+  ],
+  "prohibited":[
+    "no FerocityDevelopmentCli allocate",
+    "no FerocityDevelopmentCli run-one",
+    "no SecureRandom or official seed generation",
+    "no ledger or allocation creation",
+    "no trial claim or development journal creation",
+    "no game initialization, gameplay or outcome exposure",
+    "no automatic allocation after successful verify"
+  ],
+  "authority_if_clean":"VERIFIED_CURRENT_FEROCITY_DEVELOPMENT_INPUTS_NO_ENTROPY_NO_GAME_ONLY",
+  "official_counters_delta":0
+}
