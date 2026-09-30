@@ -2,6 +2,7 @@ package com.wingedsheep.gym.sphinx
 
 import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.gym.actorinput.ActorChoiceSupport
@@ -48,7 +49,19 @@ internal object SphinxStageEWholeActor {
 
         val casts = input.legalActions.withIndex().filter { it.value.action is CastSpell }
         if (casts.isEmpty()) {
-            val sole = input.legalActions.singleOrNull()?.action
+            val soleLegal = input.legalActions.singleOrNull()
+            val sole = soleLegal?.action
+            if (
+                sole is DeclareAttackers &&
+                soleLegal.validAttackers?.isEmpty() == true &&
+                soleLegal.mandatoryAttackers.isNullOrEmpty()
+            ) {
+                val forced = DeclareAttackers(pilot.actorId, emptyMap())
+                return SphinxStageEAdapterResult.Proposed(
+                    ActorChoiceSupport.proposal(input, forced),
+                    "declare no attackers when the reviewed combat menu has no valid attackers",
+                )
+            }
             if (sole is PassPriority) {
                 return SphinxStageEAdapterResult.Proposed(
                     ActorChoiceSupport.proposal(input, sole),
