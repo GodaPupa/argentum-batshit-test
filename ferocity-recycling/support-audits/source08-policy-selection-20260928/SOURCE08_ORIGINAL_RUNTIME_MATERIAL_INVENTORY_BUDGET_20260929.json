@@ -1,0 +1,54 @@
+{
+  "schema": "ferocity-source08-original-runtime-material-inventory-budget-v1",
+  "date_utc": "2026-09-29",
+  "preserved_original": {
+    "artifact_id": 10914678223,
+    "run_id": 36268324461,
+    "sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "parts_glob": "ferocity-recycling/evidence/source08-takeover/original-10914678223-part-*.bin",
+    "source_commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "source_tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"
+  },
+  "scope": "READ_ONLY_MEMBER_INVENTORY_OF_ALREADY_PRESERVED_ORIGINAL",
+  "operation": [
+    "reassemble the already-preserved ZIP parts in a temporary path",
+    "verify exact original ZIP SHA-256 and CRC",
+    "enumerate every ZIP member in archive order",
+    "record member name, size, compressed size, CRC, compression method and SHA-256 of member bytes",
+    "flag candidate runtime-material names by a fixed lexical filter only",
+    "do not execute, import, deserialize or semantically interpret member content"
+  ],
+  "candidate_name_terms": [
+    "classpath",
+    "runtime",
+    "java",
+    "compiled-input",
+    "source",
+    "receipt",
+    "qualification",
+    "environment",
+    "toolchain",
+    "manifest",
+    "path"
+  ],
+  "acceptance": [
+    "exact source/parent and part set binding",
+    "reassembled archive SHA-256 equals the preserved original digest",
+    "ZIP CRC clean",
+    "complete member count and ordered inventory preserved",
+    "all member digests computed as raw bytes without execution",
+    "no JVM, Gradle, exporter, game initializer, entropy or seed file access"
+  ],
+  "prohibited": [
+    "no member execution",
+    "no Java or Kotlin invocation",
+    "no Gradle",
+    "no offline export",
+    "no plan assembly",
+    "no entropy/seed allocation",
+    "no game initialization",
+    "no D2 admission"
+  ],
+  "authority_if_clean": "INVENTORY_ONLY_FOR_NEXT_EXPLICIT_RUNTIME_MATERIAL_SELECTION",
+  "official_counters_delta": 0
+}
