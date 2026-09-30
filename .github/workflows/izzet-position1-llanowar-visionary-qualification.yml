@@ -1,12 +1,12 @@
 name: Izzet Position-1 Llanowar Visionary Qualification
 on:
   push:
-    branches: ["izzet/position1-llanowar-visionary-snapshot-contract-execute-v2-20260930"]
+    branches: ["izzet/position1-llanowar-visionary-snapshot-contract-execute-v3-20260930"]
     paths:
       - "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m21/cards/LlanowarVisionary.kt"
       - "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LlanowarVisionaryScenarioTest.kt"
       - "experiments/izzet-science/POSITION1_LLANOWAR_VISIONARY_BUDGET_20260930.json"
-      - ".github/workflows/izzet-position1-llanowar-visionary-qualification.yml"\n      - "experiments/izzet-science/POSITION1_LLANOWAR_VISIONARY_SNAPSHOT_CONTRACT_EXECUTION_MARKER_V2_20260930.json"
+      - ".github/workflows/izzet-position1-llanowar-visionary-qualification.yml"\n      - "experiments/izzet-science/POSITION1_LLANOWAR_VISIONARY_SNAPSHOT_CONTRACT_EXECUTION_MARKER_V3_20260930.json"
 permissions: {contents: read}
 jobs:
   qualify:
