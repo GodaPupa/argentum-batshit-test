@@ -1,0 +1,41 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-capture-implementation-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"8351f9e7faed410b8b7f8bfe80de05b0264569a8",
+  "budget_blob":"d27b7ab0af1096ee4360bd2c797b1c49dee6b123",
+  "capture_source_blob":"9a7f077ae180fb9c769280fe3b15e5a9fcf3efe7",
+  "gradle_probe_blob":"176eb792f22201dcb68e6963ce38589e43f84380",
+  "workflow_blob":"2895438f3026e00088a33026d625aaf2090b057d",
+  "decision":"ACCEPT_IMPLEMENTATION_FOR_ONE_FRESH_SUPPLEMENTAL_CAPTURE_ORIGINAL",
+  "review":{
+    "exact_bound_platform_before_gradle":"PASS",
+    "complete_tracked_checkout_byte_inventory":"PASS_CONSERVATIVE_OVERAPPROXIMATION",
+    "dependency_and_wrapper_store_preservation":"PASS_CANDIDATE_STORE_ONLY",
+    "offline_repeat_from_same_store":"PASS_REQUIRED",
+    "runtime_archive_and_directory_member_inventory":"PASS",
+    "duplicate_visibility_under_ordered_classpath":"PASS",
+    "launcher_daemon_test_worker_process_capture":"PASS",
+    "test_worker_exact_java_identity":"PASS",
+    "jdk_python_dynamic_library_closure":"PASS",
+    "generated_hidden_policy":"PASS_PINNED_GENERATOR_INPUTS_WITH_NORMALIZED_REPEAT_EQUIVALENCE",
+    "fixed_nonofficial_worker_probe":"PASS",
+    "official_seed_claim_allocation_game_prohibition":"PASS"
+  },
+  "findings":[
+    "The first fixed-worker invocation is permitted only to populate and capture the candidate dependency/tool input store; it grants no hermetic launch authority.",
+    "The second invocation is forced --offline and must resolve the identical runtime graph from the same captured store. A successful capture remains evidence for independent review, not sealed-launch authority.",
+    "All ordered runtime archives/directories are recursively enumerated by member bytes; duplicate member names within one archive fail and cross-entry visibility is recorded.",
+    "Generated/hidden classes are not silently omitted: raw class-load logs are preserved twice, generator/runtime/build inputs are pinned, and normalized hidden-family census must repeat exactly.",
+    "Process sampling must actually observe a Gradle Test Executor using the exact accepted Java bytes or the capture fails.",
+    "The store archive and broad tracked-input inventory intentionally over-approximate required inputs; independent artifact review must still decide whether completeness is sufficient for the later sealed launch."
+  ],
+  "accepted_scope":[
+    "Create one execution branch from this review and exactly one marker-only dispatch of the supplemental capture.",
+    "Treat any resulting success as SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY."
+  ],
+  "explicit_non_authority":[
+    "No expected manifest, prepared worker, sealed R1 launch, permit, claim, allocation, official seed or gameplay authority."
+  ],
+  "next_gate":"Dispatch one fresh supplemental capture original and independently audit its artifact for platform/source/workflow binding, archive/build/store/process/generated-class completeness, freshness, ZIP integrity and zero official counters.",
+  "official_counters_delta":0
+}
