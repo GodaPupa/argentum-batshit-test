@@ -1,0 +1,63 @@
+{
+  "schema":"ferocity-watchdog-current-runtime-requalification-36661350925-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36661350925,
+  "job_id":109716610796,
+  "artifact_id":11074268074,
+  "artifact_sha256":"c436b7df09091a001df6ecdad25a909c2ce7f4bb100d7ddb6f6020a1e4c4dedf",
+  "head":"db343bb5a1c2c8319deebe72d685f27133562408",
+  "parent":"1756fa092f12c29a3de240e7d0b5c52b804ab5ca",
+  "pins":{
+    "workflow_blob":"675ab43bd64df7239656f81879460591ecaca2df",
+    "repair_v3_review_blob":"abe7d29359d5fab4459c422f25e2066583ac8350",
+    "execution_marker_v3_blob":"93fbd919090a42f999d9f1c3367cf75c28afed93",
+    "watchdog_source_sha256":"803a03aae3f63ffb114d9a8b56d4bf108b2f5f71f051057e204220f5f52adb37"
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":14,
+    "source_workflow_parent_binding":"passed",
+    "source_guard_unchanged":true,
+    "summary_sha256":"3ab8f3b3e6a713c14cca00a29a8ed783b26a875716a0e04c4ff291814359cce5",
+    "acceptance_sha256":"b1d779398aff49d6c4075d9c055c197a165fac7b415052e3731ae908c46244c1",
+    "author_receipt_sha256":"077447186d7979210bc58dae40701661663c7c467706ac4b6de00f34805f6e48",
+    "run_receipt_sha256":"d9c98fac0ab2db9be7da54fefa7e383cdd82937078c81308faa6202a572a9042",
+    "platform_sha256":"8a849c213e0675b470fee06c85f3b8d60d0a4b0d22b225ce3ebe31327527305e",
+    "process_claim_sha256":"cd03cc4c456bc3be73d5c95b2823ea182c447b09719d7e0d910a36735cad79e5",
+    "unittest_log_sha256":"8e891390e0d4ed21b4e5d6777c24a1e48539fddf8c8eac807e41d77a066e9284"
+  },
+  "platform":{
+    "container_image":"mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880",
+    "architecture":"x86_64",
+    "python_executable":"/usr/local/python/3.14.2/bin/python3.14",
+    "python_executable_sha256":"4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601"
+  },
+  "result":{
+    "tests":13,
+    "passes":13,
+    "failures":0,
+    "errors":0,
+    "skipped":0,
+    "java_started":false,
+    "gradle_started":false,
+    "entropy_read":false,
+    "allocation_read":false,
+    "game_initialized":false
+  },
+  "decision":"ACCEPTED_CURRENT_RUNTIME_FIXED_PROCESS_WATCHDOG_EVIDENCE_ONLY",
+  "accepted_scope":[
+    "The unchanged source08 watchdog source passes exactly the reviewed 9 process plus 4 resource fixed cases in the digest-pinned current container.",
+    "The exact current Python executable path and bytes are bound by the preserved platform and process-claim evidence.",
+    "The preserved normal-exit PROCESS_SUPERVISION_ONLY claim, author receipt, run receipt and acceptance package are suitable as watchdog evidence inputs for the separately reviewed final Ferocity manifest construction path."
+  ],
+  "limits":[
+    "No FerocityDevelopmentManifest is accepted by this audit.",
+    "No final D2 verify, allocation, seed, ledger, trial claim, development journal, game initialization, gameplay or outcome authority.",
+    "The infrastructure-only failed runs 36659188861 and 36659514781 remain nonbehavioral preflight failures and are not behavioral evidence.",
+    "This successful original is consumed and must not be rerun or replaced."
+  ],
+  "next_gate":"Bind this accepted watchdog package into the non-executing final FerocityDevelopmentManifest construction path together with the already accepted qualification, runtime, Java, bundle, inline-token and Red v0.2 authorities; independently review the resulting canonical manifest before any Java verify.",
+  "official_counters_delta":0
+}
