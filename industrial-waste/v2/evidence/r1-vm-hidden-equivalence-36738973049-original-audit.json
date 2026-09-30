@@ -1,0 +1,76 @@
+{
+  "schema":"industrial-r1-vm-hidden-equivalence-36738973049-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36738973049,
+  "job_id":109967977586,
+  "artifact_id":11109228876,
+  "artifact_sha256":"4eb82862cfe8ba0537614b5b5623777f48a88232e6754703d51c39ab7d65eaf8",
+  "head":"7b92aae4077dc493961cc5a6f6f8912f6b7a1e69",
+  "pins":{
+    "implementation_review_commit":"2f73b481a09c26f41374f81ad12fcd456966b0cf",
+    "implementation_review_blob":"499e4c8df45f3e3812a259d656470fa4c9533f7c",
+    "reviewed_implementation_commit":"b47fe588227c0ac3b6f8090569b3bd7ca8d939fd",
+    "workflow":"1c270740c22360effe098be1903826e838a05e7f",
+    "budget":"a592567f8973b56d01ccbd1d63fd656eef067ac8",
+    "capture_source":"45a894db8676c3b338c94d6f3a3d3330ae10d1da",
+    "accepted_store_artifact":11105215706,
+    "accepted_store_outer_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649",
+    "accepted_store_archive_sha256":"a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3",
+    "accepted_store_manifest_sha256":"b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4"
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "zip_members":28,
+    "artifact_manifest_members":23,
+    "artifact_manifest_rehash":"clean",
+    "source_review_marker_binding":"passed",
+    "accepted_store_materialization":"passed"
+  },
+  "execution":{
+    "first_offline_build":"SUCCESS",
+    "second_offline_repeat":"SUCCESS",
+    "fixed_worker_class":"com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest",
+    "first_fixed_worker":{"tests":10,"passes":10,"failures":0,"errors":0,"skipped":0},
+    "second_fixed_worker":{"tests":10,"passes":10,"failures":0,"errors":0,"skipped":0},
+    "runtime_graph_equal":true,
+    "runtime_graph_sha256":"f10d9bfd3db0f71b8fe2c46ae6bdbaab7a6c0305f0847054c47ce26d152cbec5",
+    "runtime_classpath_entries":51,
+    "runtime_visible_member_keys":44719,
+    "tracked_input_count":27953,
+    "official_seed_files_read":false
+  },
+  "generated_hidden_equivalence":{
+    "policy":"PINNED_GENERATOR_INPUTS_VM_HIDDEN_SET_EQUIVALENCE_V1",
+    "generated_hidden_unique_families":15145,
+    "generated_hidden_unique_family_set_equal":true,
+    "generated_hidden_unique_family_sha256":"fd4157679c50318f0f11789570922e880841d1ec8c871cc4d833087c8241c3be",
+    "non_vm_generated_multiplicity_equal":true,
+    "non_vm_generated_multiset_sha256":"ab9358f0f304d113132ee792edffe0205400ef5a635be3d6f5fbee6babf7b468",
+    "vm_lookup_define_unique_family_set_equal":true,
+    "vm_lookup_define_unique_family_sha256":"aa6bcf0e11d3a9434d1e5b5c2e98a8d526cf38c1241bc31e64e2f3d39974e2e1",
+    "vm_lookup_define_multiplicity_delta":[
+      {"normalized_name":"java.lang.invoke.LambdaForm$MH/0x<HIDDEN>","first_count":365,"second_count":366,"source":"__JVM_LookupDefineClass__"}
+    ]
+  },
+  "platform":{
+    "image":"catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "arch":"linux/amd64",
+    "java_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d"
+  },
+  "official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},
+  "decision":"ACCEPTED_SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_EXPECTED_MANIFEST_CONSTRUCTION_ONLY",
+  "accepted_scope":[
+    "The reviewed VM-hidden equivalence rule closes the sole v5 repeat-equivalence blocker without excluding any generated family.",
+    "The exact store-backed supplemental hermetic capture is accepted as complete preserved evidence for candidate expected-manifest construction.",
+    "Both fresh offline fixed-worker runs pass 10/10 and the ordered runtime graph is repeat-identical under the accepted immutable platform/store/source pins."
+  ],
+  "limits":[
+    "No expected manifest is yet accepted.",
+    "No prepared worker, sealed R1 launch, execution permit, official seed, claim, allocation, game or outcome authority.",
+    "Run 36738973049 is consumed and must not be rerun or replaced."
+  ],
+  "next_gate":"Construct a complete candidate R1 expected manifest only from this preserved accepted original and prior accepted immutable source/platform/store authorities, validate it prospectively, then independently adopt the exact manifest before any prepared-worker or sealed-launch gate.",
+  "official_counters_delta":0
+}
