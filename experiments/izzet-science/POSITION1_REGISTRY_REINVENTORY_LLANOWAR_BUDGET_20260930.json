@@ -1,0 +1,33 @@
+{
+  "schema":"izzet-position1-registry-reinventory-llanowar-budget-v1",
+  "date_utc":"2026-09-30",
+  "parent_main":"96d6da744aa9051ce4064f1e768f10228e81744b",
+  "purpose":"Zero-seed registry-only re-inventory of the frozen 55 Position-1 identities after separately accepted Boreal Druid and Llanowar Visionary mechanics/snapshot adoption.",
+  "diagnostic_test_blob":"undefined",
+  "accepted_boreal_registry_audit":{
+    "run_id":36697164995,
+    "review_commit":"ba34bd8bdf6dbaacb7d9c52cbf4e4138d2f8fa19",
+    "registered":12,
+    "missing":43
+  },
+  "accepted_llanowar_mechanics":{
+    "run_id":36729664246,
+    "review_commit":"c4ce3439a1208f7b27e3912138fb7d4e225feb6b",
+    "source_blob":"2cc1f07b325b4b7b5358418aa0aefc0ccabe430b",
+    "scenario_test_blob":"7378eacb4e0d4ac7fe1292e73fc5d94ee9cf5ece",
+    "adopted_snapshot_blob":"0f864c1593cd5eb3678559abc12299c0fae8a88d"
+  },
+  "acceptance":[
+    "freshly execute the exact 55-name registry inventory against current main-derived runtime",
+    "preserve exact XML, build log, source record and parsed registered/missing lists",
+    "require Llanowar Visionary to be registered after its accepted adoption",
+    "treat all remaining missing names as expected registry-absence diagnostics, not behavioral failures"
+  ],
+  "prohibited":[
+    "no mechanics competence inferred from registry presence",
+    "no implementation of missing cards in this diagnostic",
+    "no whole-pilot, opponent, commander lifecycle/damage/event-ledger, replay, seed, allocation or gameplay authority"
+  ],
+  "authority_if_clean":"POST_LLANOWAR_POSITION1_REGISTRY_DIAGNOSTIC_ONLY",
+  "official_counters_delta":0
+}
