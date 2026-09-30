@@ -1,9 +1,9 @@
 name: Ferocity current final development verify-only gate
 on:
   push:
-    branches: ["ferocity/final-development-verify-only-current-execute-20260930"]
+    branches: ["ferocity/final-development-verify-only-current-execute-v2-20260930"]
     paths:
-      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_EXECUTION_MARKER_20260930.json"
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_EXECUTION_MARKER_V2_20260930.json"
 permissions:
   contents: read
   actions: read
@@ -28,13 +28,13 @@ jobs:
         run: |
           set -euo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_IMPLEMENTATION_INDEPENDENT_REVIEW_V2_20260930.json
           MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_EXECUTION_MARKER_20260930.json
           "$PYTHON_EXACT" - "$REVIEW" "$MARKER" <<'PY'
           import json,pathlib,subprocess,sys
           review=json.loads(pathlib.Path(sys.argv[1]).read_text())
           marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
-          assert review["decision"]=="ACCEPT_IMPLEMENTATION_FOR_ONE_VERIFY_ONLY_JAVA_ORIGINAL"
+          assert review["decision"]=="ACCEPT_REPAIRED_IMPLEMENTATION_FOR_ONE_VERIFY_ONLY_JAVA_ORIGINAL"
           assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
           assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
           changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
@@ -54,9 +54,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          test ! -e "$EXACT_REPO"
           mkdir -p "$(dirname "$EXACT_REPO")" "$EXACT_RUNNER_TEMP"
-          cp -a "$GITHUB_WORKSPACE" "$EXACT_REPO"
+          if [ -e "$EXACT_REPO" ]; then
+            test -d "$EXACT_REPO/.git"
+            test "$(readlink -f "$EXACT_REPO")" = "$EXACT_REPO"
+            test "$(stat -Lc '%d:%i' "$EXACT_REPO")" = "$(stat -Lc '%d:%i' "$GITHUB_WORKSPACE")"
+          else
+            cp -a "$GITHUB_WORKSPACE" "$EXACT_REPO"
+          fi
           git config --global --add safe.directory "$EXACT_REPO"
           cd "$EXACT_REPO"
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
