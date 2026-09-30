@@ -1,0 +1,124 @@
+name: Industrial hermetic platform probe
+on:
+  push:
+    branches: ["industrial/r1-hermetic-platform-probe-successor-20260929"]
+    paths: [".github/workflows/industrial-r1-hermetic-platform-probe-20260929.yml"]
+permissions: {contents: read}
+jobs:
+  platform:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: catthehacker/ubuntu@sha256:5dff02975654f16f1d1ab6fd04ff88e326a30f39eba177d85d3b4945e6fde62f
+      options: --platform linux/amd64
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 5}
+      - name: Bind exact accepted design source and immutable platform probe
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/industrial-hermetic-platform-probe
+          mkdir -p "$OUT"
+          test "$(uname -m)" = "x86_64"
+          test "$(git rev-parse HEAD^)" = "041c921874df2fb9c2acb373ee1fa44753c99dd3"
+          git merge-base --is-ancestor de27e189e7597bdf48f213a40a0bbf1b70f63c1a HEAD
+          test "$(git rev-parse de27e189e7597bdf48f213a40a0bbf1b70f63c1a^{tree})" = "d62e3fbd59dd78cc444c09b26673ae1bf3a848ab"
+          test "$(git hash-object industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_LAUNCH_DESIGN_20260929.json)" = "2d23710bc63b7b29d4be97acd4f3927cf23f2d00"
+          test "$(git hash-object industrial-waste/v2/evidence/supplemental-hermetic-design-independent-review-20260929.json)" = "93163d9ea12ca7dc1182d306f8b293158677c0fa"
+          test "$(git hash-object industrial-waste/v2/R1_HERMETIC_PLATFORM_PROBE_BUDGET_20260929.json)" = "b631ba7a6edd8dd0dacbd13ddb87494dad4d1f5a"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_build_slice.py)" = "0d3c82426f81233ff599fa50d42dce0bae872107"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_ai_test_runtime_graph.py)" = "a893c4e446be60da616cdd51714b4ed337274ef3"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_toolchain_byte_closure.py)" = "6f7f805ada44105efb0062c52901d189e6d43b4f"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_os_python_closure.py)" = "556fb2fa493d16baddb9cdc61ef5e444584ddc9a"
+          test "$(git hash-object industrial-waste/v2/capture_seed_free_gradle_implementation_closure.py)" = "a30880f96ba68a80f99c0bd8b6fd14e284ecb323"
+          diff_names="$(git diff --name-only de27e189e7597bdf48f213a40a0bbf1b70f63c1a..HEAD | sort)"
+          expected="$(printf '%s\n'             '.github/workflows/industrial-r1-hermetic-platform-probe-20260929.yml'             'industrial-waste/v2/R1_HERMETIC_PLATFORM_PROBE_BUDGET_20260929.json'             'industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_LAUNCH_DESIGN_20260929.json'             'industrial-waste/v2/evidence/supplemental-hermetic-design-independent-review-20260929.json' | sort)"
+          test "$diff_names" = "$expected"
+          git status --porcelain > "$OUT/checkout-status.txt"
+          test ! -s "$OUT/checkout-status.txt"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git rev-parse de27e189e7597bdf48f213a40a0bbf1b70f63c1a
+            git rev-parse de27e189e7597bdf48f213a40a0bbf1b70f63c1a^{tree}
+            git hash-object industrial-waste/v2/R1_SUPPLEMENTAL_HERMETIC_CAPTURE_LAUNCH_DESIGN_20260929.json
+            git hash-object industrial-waste/v2/evidence/supplemental-hermetic-design-independent-review-20260929.json
+            git hash-object industrial-waste/v2/R1_HERMETIC_PLATFORM_PROBE_BUDGET_20260929.json
+            git hash-object .github/workflows/industrial-r1-hermetic-platform-probe-20260929.yml
+          } > "$OUT/source.txt"
+      - name: Qualify immutable in-image platform only
+        shell: bash
+        env:
+          ARGENTUM_DECLARED_IMAGE: catthehacker/ubuntu@sha256:5dff02975654f16f1d1ab6fd04ff88e326a30f39eba177d85d3b4945e6fde62f
+          ARGENTUM_DECLARED_IMAGE_DIGEST: sha256:5dff02975654f16f1d1ab6fd04ff88e326a30f39eba177d85d3b4945e6fde62f
+          ARGENTUM_DECLARED_ARCH: linux/amd64
+        run: |
+          set -euo pipefail
+          OUT=build/reports/industrial-hermetic-platform-probe
+          for x in bash git python3 sha256sum; do command -v "$x" >/dev/null; done
+          uname -a > "$OUT/uname.txt"
+          cat /etc/os-release > "$OUT/os-release.txt"
+          (locale || true) > "$OUT/locale.txt"
+          (readlink -f /etc/localtime || true) > "$OUT/timezone.txt"
+          cat /proc/self/mountinfo > "$OUT/mountinfo.txt"
+          ps -eo pid,ppid,user,comm,args --forest > "$OUT/process-tree.txt"
+          env | grep -E '^(CI|GITHUB_ACTIONS|RUNNER_ARCH|RUNNER_OS|LANG|LANGUAGE|LC_|TZ|HOME|PATH|JAVA_HOME|JAVA_HOME_[A-Z0-9_]+)=' | sort > "$OUT/environment-allowlist.txt"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,platform,shutil,subprocess
+          out=pathlib.Path("build/reports/industrial-hermetic-platform-probe")
+          def sha(p):
+              h=hashlib.sha256()
+              with open(p,"rb") as f:
+                  for c in iter(lambda:f.read(1024*1024),b""): h.update(c)
+              return h.hexdigest()
+          def exe(name):
+              raw=shutil.which(name)
+              if not raw: raise SystemExit("missing executable: "+name)
+              p=pathlib.Path(raw); rp=p.resolve(strict=True)
+              return {"name":name,"path":str(p),"resolved_path":str(rp),"bytes":rp.stat().st_size,"sha256":sha(rp)}
+          java_candidates={}
+          for key,value in sorted(os.environ.items()):
+              if key=="JAVA_HOME" or key.startswith("JAVA_HOME_"):
+                  p=pathlib.Path(value)/"bin/java"
+                  if p.is_file():
+                      rp=p.resolve()
+                      ver=subprocess.run([str(rp),"-version"],text=True,capture_output=True)
+                      java_candidates[str(rp)]={"env":key,"path":str(rp),"sha256":sha(rp),"version":(ver.stderr or ver.stdout).strip()}
+          default=shutil.which("java")
+          if default:
+              rp=pathlib.Path(default).resolve()
+              ver=subprocess.run([str(rp),"-version"],text=True,capture_output=True)
+              java_candidates.setdefault(str(rp),{"env":"PATH_DEFAULT","path":str(rp),"sha256":sha(rp),"version":(ver.stderr or ver.stdout).strip()})
+          java21=[v for v in java_candidates.values() if 'version "21' in v["version"] or 'openjdk version "21' in v["version"]]
+          if not java21:
+              raise SystemExit("no immutable in-image Java 21 candidate")
+          result={
+            "schema":"industrial-r1-hermetic-platform-probe-v1",
+            "declared_image":os.environ["ARGENTUM_DECLARED_IMAGE"],
+            "declared_image_digest":os.environ["ARGENTUM_DECLARED_IMAGE_DIGEST"],
+            "declared_arch":os.environ["ARGENTUM_DECLARED_ARCH"],
+            "machine":platform.machine(),
+            "platform":platform.platform(),
+            "tools":[exe(x) for x in ("bash","git","python3","sha256sum")],
+            "java_candidates":list(java_candidates.values()),
+            "java21_candidates":java21,
+            "os_release_sha256":sha("/etc/os-release"),
+            "mountinfo_sha256":sha(out/"mountinfo.txt"),
+            "environment_allowlist_sha256":sha(out/"environment-allowlist.txt"),
+            "project_build_or_gradle_invoked":False,
+            "official_seed_files_read":False,
+            "official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},
+            "authority":"PLATFORM_CANDIDATE_FOR_INDEPENDENT_REVIEW_ONLY"
+          }
+          (out/"platform.json").write_text(json.dumps(result,sort_keys=True,indent=2)+"\n")
+          print(json.dumps({"java21_candidates":len(java21),"authority":result["authority"]},indent=2))
+          PY
+      - name: Preserve platform qualification original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-hermetic-platform-probe-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/industrial-hermetic-platform-probe/
+          if-no-files-found: error
+          retention-days: 90
