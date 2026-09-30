@@ -1,0 +1,34 @@
+{
+  "schema":"industrial-r1-vm-hidden-repeat-equivalence-design-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_commit":"b33ac944d6b9c2f22f05b6dfcbc21ec453d36bb5",
+  "reviewed_blob":"e0830a9e1ceb3f6232847de7d0b9d93cb7997867",
+  "decision":"ACCEPT_VM_HIDDEN_REPEAT_EQUIVALENCE_DESIGN_ONLY",
+  "review":{
+    "consistent_with_PINNED_GENERATOR_INPUTS_policy":"PASS",
+    "unique_generated_hidden_family_set_exact":"PASS",
+    "non_vm_generated_multiplicity_exact":"PASS",
+    "vm_lookup_define_family_set_exact":"PASS",
+    "vm_lookup_define_multiplicity_variation_explicit_and_preserved":"PASS",
+    "ordinary_lazy_loads_not_misclassified_as_generated":"PASS",
+    "all_runtime_generator_inputs_remain_independently_exact":"PASS",
+    "raw_census_and_delta_preservation":"PASS",
+    "fail_closed_on_new_or_missing_family":"PASS"
+  },
+  "findings":[
+    "Run 36731156370 demonstrated exact unique generated/hidden family equality and exact non-VM generated multiplicities; its only generated multiplicity drift was one extra JVM-internal LambdaForm$MH lookup-defined helper.",
+    "The original design expressly requires deterministic repeat comparison or a separately validator-approved equivalence rule for VM-hidden classes whose names are nondeterministic.",
+    "Set equality for lookup-defined VM-hidden normalized families does not waive source/runtime/generator identity: all those inputs remain independently byte-pinned and any family-set change fails.",
+    "Ordinary GFileUtils and UncheckedIOException lazy-load differences are preserved but correctly excluded from a generated/hidden-class criterion."
+  ],
+  "accepted_scope":[
+    "Implement exactly the reviewed classification and three-part repeat comparison in the existing supplemental capture validator.",
+    "Preserve raw class logs/censuses plus full and scoped digests and multiplicity delta evidence."
+  ],
+  "explicit_non_authority":[
+    "No capture has passed under this rule.",
+    "No expected manifest, prepared worker, sealed launch, R1 permit, seed, claim, allocation or gameplay authority."
+  ],
+  "next_gate":"Implement the exact rule without changing fixed-worker, store, source, platform or offline-launch scope; independently review implementation bytes before one fresh successor capture.",
+  "official_counters_delta":0
+}
