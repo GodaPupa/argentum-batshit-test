@@ -1,0 +1,28 @@
+{
+  "schema": "industrial-r1-hermetic-platform-probe-36648858769-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36648858769,
+  "job_id": 109678088633,
+  "artifact_id": null,
+  "head": "2fea7570676cc56c965d0e01dd9d690102eeacc8",
+  "parent": "041c921874df2fb9c2acb373ee1fa44753c99dd3",
+  "declared_image": "catthehacker/ubuntu@sha256:5dff02975654f16f1d1ab6fd04ff88e326a30f39eba177d85d3b4945e6fde62f",
+  "result": {
+    "workflow_conclusion": "failure",
+    "container_initialization": "success",
+    "exact_image_digest_pull": "success",
+    "source_binding_step": "failure",
+    "platform_probe_step": "skipped",
+    "artifact_uploaded": false,
+    "technical_cause": "Git inside the job container rejected the mounted workspace as dubious ownership before source binding; safe.directory was not configured for the container user."
+  },
+  "decision": "INCOMPLETE_PRETEST_CONTAINER_SAFE_DIRECTORY",
+  "interpretation": [
+    "The immutable image digest was successfully pulled and the container started on linux/amd64.",
+    "No platform identities were accepted because the probe body never ran.",
+    "No Gradle/project JVM, expected manifest, claim, allocation, seed or game was executed.",
+    "This original is consumed and must not be rerun unchanged."
+  ],
+  "successor_scope": "Create a new branch from the unchanged platform budget commit and add only an explicit Git safe.directory bootstrap before source-binding commands; preserve image digest, source, design, review, capture-script pins and probe logic.",
+  "official_counters_delta": 0
+}
