@@ -3,6 +3,7 @@ package com.wingedsheep.gym.sphinx
 import com.wingedsheep.engine.core.AlternativeCostType
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.DeclareAttackers
+import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.PassPriority
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.gym.actorinput.ActorChoiceSupport
@@ -60,6 +61,17 @@ internal object SphinxStageEWholeActor {
                 return SphinxStageEAdapterResult.Proposed(
                     ActorChoiceSupport.proposal(input, forced),
                     "declare no attackers when the reviewed combat menu has no valid attackers",
+                )
+            }
+            if (
+                sole is DeclareBlockers &&
+                soleLegal.validBlockers?.isEmpty() == true &&
+                soleLegal.mandatoryBlockerAssignments.isNullOrEmpty()
+            ) {
+                val forced = DeclareBlockers(pilot.actorId, emptyMap())
+                return SphinxStageEAdapterResult.Proposed(
+                    ActorChoiceSupport.proposal(input, forced),
+                    "declare no blockers when the reviewed combat menu has no valid blockers",
                 )
             }
             if (sole is PassPriority) {
