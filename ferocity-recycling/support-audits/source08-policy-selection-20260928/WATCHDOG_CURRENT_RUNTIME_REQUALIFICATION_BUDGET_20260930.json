@@ -1,0 +1,42 @@
+{
+  "schema":"ferocity-watchdog-current-runtime-requalification-budget-v1",
+  "date_utc":"2026-09-30",
+  "source08_commit":"3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "container_image":"mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880",
+  "fixed_cases":{"process":9,"resource":4,"total":13},
+  "allowed_operations":[
+    "checkout the exact reviewed execution head",
+    "hash the unchanged source08 watchdog and its two fixed-test sources",
+    "resolve and hash the container Python executable",
+    "run exactly unittest discovery pattern test_trial_watchdog*.py under the two dedicated temporary fixture roots",
+    "preserve generated fixed-process evidence and self-contained author/run/acceptance receipts",
+    "upload the resulting no-game evidence artifact"
+  ],
+  "prohibited_operations":[
+    "java",
+    "gradle",
+    "FerocityDevelopmentCli",
+    "FerocityDevelopmentAdmission.verify",
+    "allocate",
+    "run-one",
+    "SecureRandom",
+    "official seed read",
+    "ledger creation",
+    "development journal creation",
+    "game initialization",
+    "gameplay",
+    "outcome exposure"
+  ],
+  "acceptance":{
+    "tests":13,
+    "passes":13,
+    "failures":0,
+    "errors":0,
+    "skipped":0,
+    "source_guard_unchanged":true,
+    "official_counters_delta":0
+  },
+  "authority_if_clean":"CURRENT_RUNTIME_FIXED_PROCESS_WATCHDOG_EVIDENCE_ONLY",
+  "next_gate":"Audit the one fresh original for exact reviewed source/workflow/container binding, 13/13 fixed cases, generated claim/Python identity, source guard, ZIP digest/CRC and zero-game invariants. If clean, bind only that exact package into final manifest assembly.",
+  "official_counters_delta":0
+}
