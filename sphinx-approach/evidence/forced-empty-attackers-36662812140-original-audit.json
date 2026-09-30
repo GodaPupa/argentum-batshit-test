@@ -1,0 +1,55 @@
+{
+  "schema":"sphinx-stage-e-forced-empty-attackers-36662812140-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36662812140,
+  "artifact_id":11074679903,
+  "artifact_sha256":"6427a7fcc85bec1918d496902fb8cffe8d8fb4a4090d733a5b0f3bb1c3ca6918",
+  "head":"9ab59f5ecfc37cad6ec40e896ac4acff9395d759",
+  "parent":"23f764d9a851dbcf425cee259b87f970e2991aa7",
+  "accepted_parent":"d5a6fa73f95552632ab5171da9ca38035a707fb6",
+  "pins":{
+    "whole_actor":"08ce654878257d469d5af5a1b72e7fd0186bc674",
+    "forced_empty_test":"4c2fdbc3c408822dda64216c3ad91882bd81b6c1",
+    "budget":"5903d672ff9c35597df70382e7a7e3337d421340",
+    "workflow":"73732754074a217e0921862aefc062c749cebc65",
+    "unique_pass_test":"d7a141cf2be33dd5eed826aa7bb52460c66a5209",
+    "multicast_test":"6b794b196d4ff65ab3a7fff5f14febb8f310ab35"
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "zip_members":8,
+    "source_binding":"passed",
+    "parent_binding":"passed",
+    "workflow_binding":"passed",
+    "freshness":"--rerun-tasks --no-build-cache on all three preserved banks",
+    "forced_empty_xml_sha256":"23f02f31af3f740479bf01914fd00666d439a2f2f32ac5565367ff48d88eaf69",
+    "unique_pass_xml_sha256":"1eb55e6a5f803aa961105c049c71190336093f843752706f5339496a3d4d3e15",
+    "multicast_xml_sha256":"40e0b219ae1b81a5d4cc2c18a6c28223d65cc3b52e5f920b6b8fb9d28d1cddfd",
+    "combat_log_sha256":"ddc2cd6c7e5ad276e9eac11a32070600522316568c9acb8cf41e887459a41bfc",
+    "unique_pass_log_sha256":"468a3ac00e1884850e80a18ea4cc8912fa6ed052a683618fd7f8d1ad1d452c4f",
+    "multicast_log_sha256":"7d288f1708a95baf3d17b35407c2d3f0bac1130c6e07d46f2ed56c565bb6aec3",
+    "source_record_sha256":"cb52c010975c04f8e91aca2bab5c6c0a30bb06606844fefb8563da5610b20907",
+    "summary_sha256":"013e6593173eb55d5ba969ac20bd6c5c7cfe1008e3edd6010ea9bae8eced0eaf"
+  },
+  "result":{
+    "forced_empty_attackers":{"tests":2,"passes":2,"failures":0,"errors":0,"skipped":0},
+    "unique_pass_regression":{"tests":2,"passes":2,"failures":0,"errors":0,"skipped":0},
+    "multicast_discriminator_regression":{"tests":2,"passes":2,"failures":0,"errors":0,"skipped":0}
+  },
+  "decision":"ACCEPTED_BOUNDED_FORCED_EMPTY_ATTACKERS_SEAM",
+  "accepted_scope":[
+    "For each frozen reconstructed Stage-E actor, when the exact current DeclareAttackers menu contains one canonical declaration action with zero valid attackers and no mandatory attackers, the whole actor may propose DeclareAttackers(actor, emptyMap()).",
+    "The proposal preserves the input binding and policy RNG state and is accepted by the real engine.",
+    "The previously accepted sole-pass priority seam and bounded multi-cast discriminator remain clean."
+  ],
+  "limits":[
+    "No attacker selection when any valid attacker exists.",
+    "No defending-player choice, blocker selection/order, combat-damage assignment or post-combat action ranking.",
+    "No opponent package, collector, replay, durability, Stage-E freeze/admission, seed, allocation or gameplay authority.",
+    "Run 36662812140 is consumed and must not be rerun or replaced."
+  ],
+  "next_gate":"Advance the smallest remaining combat/block or trusted runner/replay surface, preserving the explicit multi-cast and pass-ranking limits, then continue toward prospective Stage-E freeze/admission.",
+  "official_counters_delta":0
+}
