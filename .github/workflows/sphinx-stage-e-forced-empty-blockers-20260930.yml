@@ -1,8 +1,8 @@
 name: Sphinx Stage-E forced-empty blockers receiving
 on:
   push:
-    branches: ["sphinx/forced-empty-blockers-20260930"]
-    paths: [".github/workflows/sphinx-stage-e-forced-empty-blockers-20260930.yml"]
+    branches: ["sphinx/forced-empty-blockers-binding-execute-20260930"]
+    paths: ["sphinx-approach/STAGE_E_FORCED_EMPTY_BLOCKERS_EXECUTION_MARKER_20260930.json"]
 permissions: {contents: read}
 jobs:
   receiving:
@@ -21,13 +21,23 @@ jobs:
           set -euo pipefail
           OUT=build/reports/sphinx-stage-e-forced-empty-blockers
           mkdir -p "$OUT"
-          test "$(git rev-parse HEAD~4)" = "44cc8b5242b37f141ef2c179e4770d08e5403567"
+          MARKER=sphinx-approach/STAGE_E_FORCED_EMPTY_BLOCKERS_EXECUTION_MARKER_20260930.json
+          git merge-base --is-ancestor 44cc8b5242b37f141ef2c179e4770d08e5403567 HEAD
+          test "$(git diff --name-only HEAD^ HEAD)" = "$MARKER"
+          python3 - "$MARKER" <<'PY'
+          import json,pathlib,subprocess,sys
+          marker=json.loads(pathlib.Path(sys.argv[1]).read_text())
+          assert marker["authorization"]=="ONE_FRESH_FORCED_EMPTY_BLOCKERS_ORIGINAL"
+          assert marker["workflow_blob"]==subprocess.check_output(["git","hash-object",".github/workflows/sphinx-stage-e-forced-empty-blockers-20260930.yml"],text=True).strip()
+          assert marker["budget_blob"]==subprocess.check_output(["git","hash-object","sphinx-approach/STAGE_E_FORCED_EMPTY_BLOCKERS_BUDGET_20260930.json"],text=True).strip()
+          assert marker["official_counters_delta"]==0
+          PY
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "0e5a21429c367355c0951c7a3a367495a96a161d"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEForcedEmptyBlockersReceivingTest.kt)" = "027fc80a3a67f39c02949eba8eeabf1bfe81526b"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEForcedEmptyAttackersReceivingTest.kt)" = "4c2fdbc3c408822dda64216c3ad91882bd81b6c1"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEUniquePassPriorityReceivingTest.kt)" = "d7a141cf2be33dd5eed826aa7bb52460c66a5209"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEMultiCastDiscriminatorReceivingTest.kt)" = "6b794b196d4ff65ab3a7fff5f14febb8f310ab35"
-          test "$(git hash-object sphinx-approach/STAGE_E_FORCED_EMPTY_BLOCKERS_BUDGET_20260930.json)" = "5c5280a3a3385c83915623c1c89413640c79218c"
+          test "$(git hash-object sphinx-approach/STAGE_E_FORCED_EMPTY_BLOCKERS_BUDGET_20260930.json)" = "b2991f4715f64cb9f267bb38a56fe46ee0e47f07"
           {
             git rev-parse HEAD
             git rev-parse HEAD^
