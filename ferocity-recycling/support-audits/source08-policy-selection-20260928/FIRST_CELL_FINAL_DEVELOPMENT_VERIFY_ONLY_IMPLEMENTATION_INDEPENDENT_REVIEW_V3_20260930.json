@@ -1,0 +1,50 @@
+{
+  "schema":"ferocity-final-development-verify-only-implementation-independent-review-v3",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"29f0159b112841ea8c88f147bb81a4c94799f900",
+  "budget_blob":"0ee53e1dbc463899272a2964b7122c4cce3d3a63",
+  "restore_helper_blob":"dd001c437f627b1615ccb590f2331589d4161f72",
+  "workflow_blob":"409fb6b9ecfa266170874c87c38740de6d93caeb",
+  "accepted_manifest_review_commit":"274e660066d80781bbfb58b381a7c429a18e312a",
+  "manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+  "superseded_preflight_run":{
+    "run_id":36675634048,
+    "artifact_id":11080136511,
+    "artifact_sha256":"030ea121ed2aad68fa4c3049dd4c3cf509f33ecbe74505d1366e4c94d719e65b",
+    "failure_stage":"Restore exact source08 runtime and Java without executing Java",
+    "classification":"INCOMPLETE_PREFLIGHT_CLASSPATH_PATH_TRANSLATION",
+    "java_invocations":0,
+    "behavioral_verify_reached":false,
+    "restored_runtime_files":2159,
+    "restored_classpath_entries":56,
+    "accepted_java_sha256_matched":true,
+    "observed_classpath_file_sha256":"8b86bb272d4ea6f08b93bd306970b4370e12bb108c8653d27cd792949c752931",
+    "expected_classpath_file_sha256":"3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415",
+    "exact_delta":"All restored classpath paths used /__w/_temp instead of the manifest-frozen /home/runner/work/_temp prefix; entry counts and bound payload identities were otherwise preserved."
+  },
+  "decision":"ACCEPT_LITERAL_PATH_IMPLEMENTATION_FOR_ONE_VERIFY_ONLY_JAVA_ORIGINAL",
+  "review":{
+    "change_scope":"PASS_WORKFLOW_LITERAL_PATH_CONSTRUCTION_ONLY",
+    "accepted_manifest_unchanged":"PASS",
+    "restore_helper_unchanged":"PASS",
+    "runtime_jdk_authority_unchanged":"PASS",
+    "container_digest_unchanged":"PASS",
+    "literal_repository_path_constructed_inside_shell":"PASS",
+    "literal_runner_temp_constructed_inside_shell":"PASS",
+    "literal_java_path_constructed_inside_shell":"PASS",
+    "runner_injected_path_translation_bypassed":"PASS",
+    "single_java_entrypoint_verify_only":"PASS",
+    "no_allocate_or_run_one":"PASS",
+    "pre_post_D2_state_absence_assertions":"PASS"
+  },
+  "accepted_scope":[
+    "Create one v3 marker-only execution branch from this review and dispatch exactly one fresh verify-only Java original.",
+    "Runs 36671000046 and 36675634048 remain infrastructure/preflight only and consumed no behavioral verify authority."
+  ],
+  "explicit_non_authority":[
+    "No allocate or run-one.",
+    "No entropy, seed, ledger, allocation, claim, journal, game initialization, gameplay or outcome authority."
+  ],
+  "next_gate":"Dispatch one v3 verify-only original and audit source/workflow/manifest/runtime/JDK/watchdog bindings plus zero-side-effect result exactly once.",
+  "official_counters_delta":0
+}
