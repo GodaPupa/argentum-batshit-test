@@ -1,0 +1,13 @@
+beforeSettings { settings ->
+    settings.pluginManagement.repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+
+allprojects {
+    buildscript.repositories {
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
