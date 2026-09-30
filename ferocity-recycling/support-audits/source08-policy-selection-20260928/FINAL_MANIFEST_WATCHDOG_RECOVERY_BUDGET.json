@@ -1,0 +1,11 @@
+{
+  "schema":"ferocity-final-manifest-watchdog-recovery-budget-v1",
+  "date_utc":"2026-09-29",
+  "source08_commit":"3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+  "watchdog_archive_sha256":"86272408a5d4ea48e7cefcb20ad6833ee5889c452d0a5c5b7af7c3c1c9784e0f",
+  "acceptance_sha256":"71eacdddb46c48ba7c3856391d0ebef175cf7a2d9e247b15b293c789fbcce27a",
+  "run_receipt_sha256":"d595b0c28041325378786eb39537073a7c029a993472e9d80c5b363b0bbb176d",
+  "allowed_operations":["read committed source08 watchdog archive","verify ZIP/JSON/source hashes","observe exact accepted Python path if present","write recovery report","upload recovery report"],
+  "forbidden_operations":["java","gradle","FerocityDevelopmentCli","allocate","run-one","SecureRandom","ledger creation","journal creation","game initialization","gameplay"],
+  "official_counters_delta":0
+}
