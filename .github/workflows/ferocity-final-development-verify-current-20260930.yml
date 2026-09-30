@@ -1,0 +1,204 @@
+name: Ferocity current final development verify-only gate
+on:
+  push:
+    branches: ["ferocity/final-development-verify-current-execute-20260930"]
+    paths:
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_EXECUTION_MARKER_20260930.json"
+
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container:
+      image: mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Bind exact reviewed verify-only implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          OUT=build/reports/ferocity-final-development-verify
+          test ! -e "$OUT"
+          mkdir -p "$OUT"
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+          BUDGET=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_BUDGET_20260930.json
+          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_EXECUTION_MARKER_20260930.json
+          python3 - "$REVIEW" "$BUDGET" "$MARKER" <<'PY'
+          import json,pathlib,subprocess,sys
+          review=json.loads(pathlib.Path(sys.argv[1]).read_text())
+          budget=json.loads(pathlib.Path(sys.argv[2]).read_text())
+          marker=json.loads(pathlib.Path(sys.argv[3]).read_text())
+          assert review["decision"]=="ACCEPT_IMPLEMENTATION_FOR_ONE_VERIFY_ONLY_ORIGINAL"
+          assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
+          assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
+          changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
+          assert changed==[sys.argv[3]],changed
+          for field,path in {
+            "budget_blob":sys.argv[2],
+            "workflow_blob":".github/workflows/ferocity-final-development-verify-current-20260930.yml",
+            "runtime_restore_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py",
+            "manifest_review_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_MANIFEST_CURRENT_INDEPENDENT_REVIEW_20260930.json",
+            "development_admission_blob":"gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt",
+            "development_cli_blob":"gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentCli.kt",
+          }.items():
+              actual=subprocess.check_output(["git","hash-object",path],text=True).strip()
+              assert review[field]==actual,(field,actual,review[field])
+          assert budget["official_counters_delta"]==0
+          assert "allocate" in budget["prohibited_operations"] and "run-one" in budget["prohibited_operations"]
+          assert marker["authorization"]=="ONE_VERIFY_ONLY_ORIGINAL"
+          PY
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+          test ! -e ferocity-recycling/evidence/process/development/D2-first-cell
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git rev-parse HEAD^^
+            git hash-object "$REVIEW"
+            git hash-object "$BUDGET"
+            git hash-object "$MARKER"
+            git hash-object .github/workflows/ferocity-final-development-verify-current-20260930.yml
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentAdmission.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ferocity/FerocityDevelopmentCli.kt
+            git status --porcelain
+          } > "$OUT/source.txt"
+
+      - name: Materialize exact accepted manifest original
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-final-development-verify
+          INPUT=build/ferocity-final-development-verify-input
+          mkdir -p "$INPUT"
+          curl -L --fail --retry 3             -H "Authorization: Bearer $GH_TOKEN"             -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11077287825/zip"             -o "$INPUT/manifest-original.zip"
+          echo "6cc1ed84aa9fd6b17ddcdce7a1054bbc856124b16dd6b1ecce1fe9d04f9ceb80  $INPUT/manifest-original.zip" | sha256sum -c -
+          unzip -t "$INPUT/manifest-original.zip" > "$OUT/manifest-zip-crc.txt"
+          mkdir -p "$INPUT/unpacked"
+          unzip -q "$INPUT/manifest-original.zip" -d "$INPUT/unpacked"
+          MATERIALIZED="$INPUT/unpacked/build/reports/ferocity-final-development-manifest/materialized"
+          test -d "$MATERIALIZED/ferocity-recycling/evidence/admission/D2-first-cell-current"
+          test ! -e ferocity-recycling/evidence/admission/D2-first-cell-current
+          cp -a "$MATERIALIZED/." "$GITHUB_WORKSPACE/"
+          MANIFEST=ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json
+          echo "86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc  $MANIFEST" | sha256sum -c -
+          cp "$INPUT/unpacked/build/reports/ferocity-final-development-manifest/construction-receipt.json" "$OUT/accepted-construction-receipt.json"
+          cp "$INPUT/unpacked/build/reports/ferocity-final-development-manifest/coverage-derivation.json" "$OUT/accepted-coverage-derivation.json"
+
+      - name: Restore exact source08 runtime and Java without execution
+        shell: bash
+        env:
+          FEROCITY_ACCEPTED_PATH_TOKEN: "36655120463"
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-final-development-verify
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py             | tee "$OUT/runtime-restore.log"
+          RESTORE=build/reports/ferocity-export-plan-assembly/restore-receipt.json
+          cp "$RESTORE" "$OUT/runtime-restore-receipt.json"
+          echo "3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415  build/reports/ferocity-export-plan-assembly/class-path.json" | sha256sum -c -
+          cmp -s             build/reports/ferocity-export-plan-assembly/class-path.json             ferocity-recycling/evidence/admission/D2-first-cell-current/runtime/class-path.json
+          JAVA=/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java
+          test -f "$JAVA"
+          echo "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d  $JAVA" | sha256sum -c -
+          PYTHON="$(readlink -f "$(command -v python3)")"
+          test "$PYTHON" = "/usr/local/python/3.14.2/bin/python3.14"
+          echo "4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601  $PYTHON" | sha256sum -c -
+          python3 - "$RESTORE" <<'PY'
+          import json,sys
+          r=json.load(open(sys.argv[1]))
+          assert r["javaStarted"] is False
+          assert r["gradleStarted"] is False
+          assert r["exporterStarted"] is False
+          assert r["seedOrEntropyRead"] is False
+          assert r["allocationRead"] is False
+          assert r["gameInitialized"] is False
+          assert r["runtime"]["classpathEntries"]==56
+          assert r["java"]["javaExecutableSha256"]=="2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d"
+          PY
+
+      - name: Execute exactly one verify-only Java gate
+        shell: bash
+        run: |
+          set -uo pipefail
+          OUT=build/reports/ferocity-final-development-verify
+          MANIFEST="$GITHUB_WORKSPACE/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
+          MANIFEST_SHA=86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc
+          python3 - "$MANIFEST" "$OUT/launch.txt" <<'PY'
+          import json,os,pathlib,sys
+          m=json.load(open(sys.argv[1]))
+          assert m["source"]["javaExecutable"]=="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"
+          assert len(m["source"]["classPath"])==56
+          cp=os.pathsep.join(x["path"] for x in m["source"]["classPath"])
+          pathlib.Path(sys.argv[2]).write_text(m["source"]["javaExecutable"]+"\n"+cp+"\n")
+          PY
+          JAVA="$(sed -n '1p' "$OUT/launch.txt")"
+          CP="$(sed -n '2p' "$OUT/launch.txt")"
+          set +e
+          "$JAVA" -Xmx2048m -cp "$CP"             com.wingedsheep.gym.ferocity.FerocityDevelopmentCli             verify "$GITHUB_WORKSPACE" "$MANIFEST" "$MANIFEST_SHA"             > "$OUT/verify.stdout" 2> "$OUT/verify.stderr"
+          status=$?
+          set -e
+          printf '%s\n' "$status" > "$OUT/verify-exit-status.txt"
+          test "$status" -eq 0
+          python3 - "$OUT/verify.stdout" <<'PY'
+          import json,sys
+          text=open(sys.argv[1]).read().strip()
+          r=json.loads(text)
+          assert r["status"]=="VERIFIED_INPUTS_NO_ENTROPY_NO_GAME"
+          assert r["admissionSha256"]=="86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc"
+          assert r["cellId"]=="D2-FIRST-A3-RED"
+          assert r["allocations"]==16
+          assert r["logicalSourceCommit"]=="3a4f99a7653839506e96d19e6639f58d9e8c5ced"
+          PY
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+          test ! -e ferocity-recycling/evidence/process/development/D2-first-cell
+          python3 - <<'PY'
+          import hashlib,json,pathlib
+          out=pathlib.Path("build/reports/ferocity-final-development-verify")
+          def sha(p):
+              return hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest()
+          summary={
+            "schema":"ferocity-final-development-verify-current-summary-v1",
+            "status":"VERIFIED_INPUTS_NO_ENTROPY_NO_GAME",
+            "manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+            "java_executable_sha256":"2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+            "classpath_sha256":"3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415",
+            "python_executable_sha256":"4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601",
+            "verify_stdout_sha256":sha(out/"verify.stdout"),
+            "returncode":0,
+            "entropy_read":False,
+            "ledger_created":False,
+            "allocation_created":False,
+            "trial_claim_created":False,
+            "journal_created":False,
+            "game_initialized":False,
+            "outcomes_exposed":0,
+            "official_counters_delta":0,
+            "allocation_authorized":False,
+            "gameplay_authorized":False
+          }
+          (out/"summary.json").write_text(json.dumps(summary,sort_keys=True,indent=2)+"\n")
+          PY
+
+      - name: Preserve verify-only original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-final-development-verify-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/ferocity-final-development-verify/
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_BUDGET_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_EXECUTION_MARKER_20260930.json
+          if-no-files-found: error
+          retention-days: 90
