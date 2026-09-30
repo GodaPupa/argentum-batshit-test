@@ -1,0 +1,49 @@
+{
+  "schema":"ferocity-final-development-verify-only-36697783768-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36697783768,
+  "job_id":109829790786,
+  "artifact_id":11088487200,
+  "artifact_sha256":"108f3525097831803497782892e99e7832d2213b4f1e770d98fe5b3d3fac41d1",
+  "head":"429c285c2f9f0cb73d5f728f0afed3c6518e82a3",
+  "manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+  "integrity":{
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "materialized_manifest_digest_match":true,
+    "exact_runtime_restore":"passed",
+    "runtime_files":2159,
+    "classpath_entries":56,
+    "java_executable_sha256":"2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "verify_only_java_started":true
+  },
+  "failure":{
+    "classification":"VERIFY_REJECTED_WATCHDOG_SOURCE_PATH_BINDING",
+    "exception":"java.lang.IllegalArgumentException: Watchdog source is not the tested author boundary",
+    "verifier_location":"FerocityDevelopmentAdmission.kt:528",
+    "manifest_watchdog_source_path":"ferocity-recycling/evidence/admission/D2-first-cell-current/watchdog/source/trial_watchdog.py",
+    "accepted_author_owned_source_path":"watchdog/source/trial_watchdog.py",
+    "watchdog_source_sha256":"803a03aae3f63ffb114d9a8b56d4bf108b2f5f71f051057e204220f5f52adb37",
+    "behavioral_game_failure":false
+  },
+  "side_effects":{
+    "allocation_created":false,
+    "ledger_created":false,
+    "trial_claim_created":false,
+    "journal_created":false,
+    "game_initialized":false,
+    "outcomes_exposed":0
+  },
+  "decision":"HOLD_VERIFY_ONLY_WATCHDOG_SOURCE_PATH_BINDING_MISMATCH",
+  "accepted_scope":[
+    "The exact accepted source08 runtime/JDK and canonical manifest bytes can be restored to the frozen paths and the verify-only Java entrypoint is reachable.",
+    "The verifier correctly rejects the manifest because its watchdog source path string differs from the exact accepted author-receipt path."
+  ],
+  "limits":[
+    "No VerifiedFerocityDevelopment capability was produced.",
+    "No allocation, entropy, seed, ledger, run-one, game or outcome authority.",
+    "Do not rerun manifest 86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc unchanged."
+  ],
+  "next_gate":"Construct a non-executing successor manifest from accepted artifact 11077287825 that changes only watchdog.source.path to watchdog/source/trial_watchdog.py and materializes the same exact watchdog source bytes at that repository-relative path; independently review the new canonical manifest before one fresh verify-only invocation.",
+  "official_counters_delta":0
+}
