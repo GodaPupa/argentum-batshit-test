@@ -1,0 +1,46 @@
+{
+  "schema": "sphinx-stage-e-unique-pass-priority-budget-v1",
+  "date_utc": "2026-09-29",
+  "parent_authority_commit": "fecc132822a63fe0c7572c255725f37ef61f1be5",
+  "candidate_source_commit": "5ef41bec468fdfc66fc16fb5ce8db9a7796597bf",
+  "candidate_whole_actor_blob": "dd9c493db93b0664ad07ceef97a9bbbc20943091",
+  "scope": "BOUNDED_SOLE_PASS_PRIORITY_ONLY",
+  "cases": [
+    {
+      "id": "UP1",
+      "identity": "reconstructed-v01",
+      "fixture_seed": "0x5350504153530001",
+      "required": [
+        "after real initialization/keeps, opponent is active and actor owns priority with zero battlefield mana",
+        "the complete current legal-action set contains exactly one action and it is PassPriority for the actor",
+        "the whole actor returns the canonical unchanged PassPriority proposal with unchanged policy RNG"
+      ]
+    },
+    {
+      "id": "UP2",
+      "identity": "reconstructed-hybrid",
+      "fixture_seed": "0x5350504153530002",
+      "required": [
+        "same exact sole-action boundary on the second frozen Approach identity",
+        "no hidden library identity/order is needed",
+        "the pass seam is unavailable whenever any second legal action exists"
+      ]
+    }
+  ],
+  "acceptance": [
+    "fresh source-bound execution with --rerun-tasks --no-build-cache",
+    "exactly two tests, zero failures/errors/skips",
+    "both frozen deck blobs unchanged",
+    "accepted multicast receiving regression remains 2/2 clean on the changed whole-actor source"
+  ],
+  "prohibited": [
+    "no pass-vs-cast ranking",
+    "no pass after a reviewed cast component declines",
+    "no combat policy",
+    "no opponent package",
+    "no collector/replay/durability or Stage-E freeze/admission",
+    "no official seed/allocation/gameplay authority"
+  ],
+  "fixture_seeds_are_software_only_and_excluded_from_official_stage_e_seeds": true,
+  "official_counters_delta": 0
+}
