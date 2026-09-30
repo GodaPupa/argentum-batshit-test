@@ -1,0 +1,55 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-vm-hidden-successor-budget-v1",
+  "date_utc":"2026-09-30",
+  "logical_source_commit":"de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+  "logical_source_tree":"d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+  "basis":{
+    "incomplete_v5_capture_run":36731156370,
+    "incomplete_v5_audit_commit":"af96a692ca006abf224c94d7cc79c9e3ec201853",
+    "accepted_vm_hidden_rule_commit":"b547f34c8ea1d8129076cfe88f02d6a8f8b4d80a",
+    "accepted_vm_hidden_rule_blob":"1deabad835da6808372add3feabd5fc514b31864",
+    "accepted_vm_hidden_rule_review_blob":"277eadf0cf975669e8718e4aa955bd7945c175a8"
+  },
+  "accepted_platform":{
+    "image":"catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "architecture":"linux/amd64",
+    "java_path":"/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+    "java_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+    "python_path":"/usr/bin/python3.10",
+    "python_sha256":"7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86"
+  },
+  "accepted_dependency_store":{
+    "run_id":36729847167,
+    "artifact_id":11105215706,
+    "outer_artifact_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649",
+    "store_archive_sha256":"a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3",
+    "store_manifest_sha256":"b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4",
+    "files":1339
+  },
+  "only_authorized_behavioral_change":{
+    "from":"strict equality of the complete normalized class-load multiset",
+    "to":"accepted generated/hidden equivalence rule: exact normalized family-set equality, exact non-VM generated/hidden multiplicity, and VM __JVM_LookupDefineClass__ multiplicity tolerance only with exact family-set equality",
+    "rule_path":"industrial-waste/v2/R1_VM_HIDDEN_REPEAT_EQUIVALENCE_RULE_20260930.json"
+  },
+  "execution_requirements":[
+    "Use the same exact accepted platform, source, v5 dependency store, Gradle probe, store bootstrap, fixed worker and two offline launches as the v5 capture.",
+    "Preserve both complete raw class-load logs and complete parsed class-census rows.",
+    "Require generated/hidden equivalence according to the independently accepted rule.",
+    "Require identical ordered runtime graph/components/dependencies across repeats.",
+    "Require every external modules-2 runtime byte to rehash to the accepted dependency store.",
+    "Require the fixed IndustrialWasteV2FrozenResponderEquivalenceTest to pass 10/10 in both repeats.",
+    "Preserve complete runtime member, build input, platform, process, generated/hidden and worker evidence."
+  ],
+  "prohibited":[
+    "no change to logical source or fixed worker",
+    "no network during either Gradle capture launch",
+    "no package installation or setup-java",
+    "no broad tolerance for non-VM generated/hidden multiplicity drift",
+    "no expected-manifest adoption in this gate",
+    "no prepared-worker/R1 permit",
+    "no official seed read, claim, allocation, game initialization, gameplay or outcome interpretation"
+  ],
+  "authority_if_clean":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY",
+  "next_gate":"Independently audit the single fresh successor original. Only if every completeness boundary and the accepted VM-hidden rule pass may a candidate expected manifest be constructed prospectively.",
+  "official_counters_delta":0
+}
