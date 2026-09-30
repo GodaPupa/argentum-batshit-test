@@ -1,0 +1,112 @@
+name: Ferocity watchdog current-runtime requalification
+on:
+  push:
+    branches:
+      - ferocity/watchdog-current-runtime-requalification-execute-20260930
+    paths:
+      - ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_20260930.json
+
+permissions:
+  contents: read
+
+jobs:
+  requalify:
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880
+    timeout-minutes: 20
+    env:
+      FEROCITY_CONTAINER_IMAGE: mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880
+    steps:
+      - name: Checkout reviewed execution head
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+
+      - name: Bind exact independent implementation review
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          root=pathlib.Path(".")
+          review_path=root/"ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json"
+          review=json.loads(review_path.read_text())
+          assert review["decision"] == "ACCEPT_IMPLEMENTATION_FOR_ONE_FRESH_FIXED_PROCESS_ORIGINAL"
+          head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
+          parent=subprocess.check_output(["git","rev-parse","HEAD^"],text=True).strip()
+          implementation=subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()
+          assert review["reviewed_implementation_commit"] == implementation
+          changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
+          assert changed == ["ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_20260930.json"], changed
+          files={
+            "reviewed_harness_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/run_watchdog_current_runtime_requalification.py",
+            "reviewed_budget_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_BUDGET_20260930.json",
+            "reviewed_workflow_blob":".github/workflows/ferocity-watchdog-current-runtime-requalification-20260930.yml",
+          }
+          for field,path in files.items():
+              blob=subprocess.check_output(["git","hash-object",path],text=True).strip()
+              assert review[field] == blob, (field, review[field], blob)
+          static={
+            "ferocity-recycling/tools/trial_watchdog.py":"2a236b9aa682c0f34b2a526033f58327fe7b99dd",
+            "ferocity-recycling/tools/tests/test_trial_watchdog.py":"304b99ac28527f519252e21820b92fdad9503cbc",
+            "ferocity-recycling/tools/tests/test_trial_watchdog_resources.py":"c2260d5ea3ca925a7cc863fc0d71d7839c61657c",
+          }
+          for path,expected in static.items():
+              actual=subprocess.check_output(["git","hash-object",path],text=True).strip()
+              assert actual == expected, (path,actual,expected)
+          plan=json.loads((root/"ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_PLAN_20260930.json").read_text())
+          plan_review=json.loads((root/"ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_PLAN_INDEPENDENT_REVIEW_20260930.json").read_text())
+          budget=json.loads((root/"ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_BUDGET_20260930.json").read_text())
+          assert plan["official_counters_delta"] == 0
+          assert plan_review["decision"] == "ACCEPT_FIXED_PROCESS_REQUALIFICATION_DESIGN_ONLY"
+          assert budget["official_counters_delta"] == 0
+          assert "java" in budget["prohibited_operations"]
+          assert "allocate" in budget["prohibited_operations"]
+          assert "gameplay" in budget["prohibited_operations"]
+          assert parent != implementation and head != parent
+          PY
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+
+      - name: Run exactly 13 fixed watchdog process and resource cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/run_watchdog_current_runtime_requalification.py | tee build-watchdog-current-runtime-requalification.log
+
+      - name: Assert zero-game result
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+          python3 - <<'PY'
+          import json, pathlib
+          p=pathlib.Path("build/reports/ferocity-watchdog-current-runtime-requalification/summary.json")
+          r=json.loads(p.read_text())
+          assert r["status"] == "PASS"
+          assert r["tests"] == 13 and r["passes"] == 13
+          assert r["source_guard_unchanged"] is True
+          assert r["java_started"] is False
+          assert r["gradle_started"] is False
+          assert r["entropy_read"] is False
+          assert r["allocation_read"] is False
+          assert r["game_initialized"] is False
+          assert r["official_counters_delta"] == 0
+          PY
+
+      - name: Preserve exact fixed-process original
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ferocity-watchdog-current-runtime-requalification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/ferocity-watchdog-current-runtime-requalification/
+            build-watchdog-current-runtime-requalification.log
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_PLAN_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_PLAN_INDEPENDENT_REVIEW_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_BUDGET_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_20260930.json
+          if-no-files-found: error
+          retention-days: 90
