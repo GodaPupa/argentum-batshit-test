@@ -1,0 +1,42 @@
+{
+  "schema":"izzet-position1-registry-reinventory-boreal-36697164995-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36697164995,
+  "artifact_id":11087469847,
+  "artifact_sha256":"34aa392fab8844e558e0fffa0ad069fe89d9f0d5c39caab27f6b613351d334f3",
+  "head":"4b501b1053d0b56e8658d32e8772ec69c1e030e2",
+  "parent_main":"e28f27e4ce3f84dca511b49f9cc4005f1cbb6ed9",
+  "integrity":{
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "zip_members":4,
+    "source_binding":"passed",
+    "freshness":"--rerun-tasks --no-build-cache",
+    "xml_sha256":"40fb631eda32772c9bdb6a55487b71d345fee8f74bd092fb6708ff8cc061797a",
+    "summary_sha256":"597f5e461cf0b618857de4b0e32c795c6f8edcbfa71329995f055a31b436288e",
+    "source_record_sha256":"370e8c960b6531138c5f0318d6ee2cd21b7f3b588c3270506037ea5bc03568a0"
+  },
+  "result":{
+    "identities":55,
+    "registered":12,
+    "missing":43,
+    "failures":43,
+    "errors":0,
+    "skipped":0,
+    "boreal_druid_registered":true,
+    "registered_names":["Arcane Denial","Archaeomancer","Bonder's Ornament","Boreal Druid","Frantic Search","Kaervek's Torch","Memory Lapse","Mnemonic Wall","Murmuring Mystic","Nyxborn Hydra","Snap","Turn Aside"]
+  },
+  "classification":"EXPECTED_REGISTRY_ABSENCE_DIAGNOSTIC_NOT_BEHAVIORAL_FAILURE",
+  "decision":"ACCEPTED_POST_BOREAL_POSITION1_REGISTRY_DIAGNOSTIC",
+  "accepted_scope":[
+    "Boreal Druid is present in current runtime after its separately accepted mechanics adoption.",
+    "Exactly 12 of the frozen 55 Position-1 identities are registered and 43 remain absent."
+  ],
+  "limits":[
+    "Registry presence is not mechanics competence.",
+    "Missing identities are not behavioral failures.",
+    "No whole Position-1 pilot, opponent, commander lifecycle/damage/event-ledger, replay, seed, allocation or gameplay authority."
+  ],
+  "next_gate":"Choose the smallest requirement-driven missing identity or mechanic batch and qualify deterministic mechanics before adoption; re-inventory again only after an accepted adoption.",
+  "official_counters_delta":0
+}
