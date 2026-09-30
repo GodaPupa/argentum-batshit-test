@@ -1,0 +1,53 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-36670017150-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36670017150,
+  "artifact_id":11078195062,
+  "artifact_sha256":"7c00d83fedcc90e70b06d41a9163b0316777eee4eacece417cadb9caf84da746",
+  "head":"f8466dd6808ec52bfaa0548defb2c55c8edbf3cb",
+  "reviewed_implementation_commit":"8351f9e7faed410b8b7f8bfe80de05b0264569a8",
+  "implementation_review_commit":"6b638fa8dfaee482259b4f7d662514db17f35b6e",
+  "integrity":{
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "zip_members":8,
+    "source_workflow_review_marker_binding":"passed"
+  },
+  "execution":{
+    "platform_binding":"passed",
+    "tracked_input_inventory_written":true,
+    "first_gradle_launcher_started":true,
+    "gradle_daemon_started":true,
+    "gradle_test_worker_started":false,
+    "fixed_worker_tests_executed":0,
+    "runtime_graph_emitted":false,
+    "offline_repeat_started":false,
+    "class_census_started":false,
+    "immutable_input_store_emitted":false
+  },
+  "failure":{
+    "classification":"INCOMPLETE_PREFLIGHT_DEPENDENCY_STORE_RESOLUTION",
+    "stage":"first-network-populate before :ai test-worker execution",
+    "cause":"Fresh exact-platform Gradle configuration could not resolve buildSrc Kotlin 2.3.21 dependencies from the project's configured plugin repository path. Missing kotlin-stdlib, kotlin-gradle-plugin transitive BOM and kotlin-gradle-plugin-api prevented buildSrc configuration.",
+    "behavioral_failure":false
+  },
+  "observed_processes":{
+    "count":2,
+    "exact_java_path":"/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+    "exact_java_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+    "gradle_test_executor_observed":false
+  },
+  "decision":"INCOMPLETE_NO_SUPPLEMENTAL_CAPTURE_AUTHORITY_DEPENDENCY_STORE_BLOCKER",
+  "accepted_scope":[
+    "The exact accepted platform/source/workflow preflight reached Gradle launcher and daemon under the intended Java bytes.",
+    "The failure identifies an uncaptured dependency-store prerequisite before the reviewed supplemental capture can execute."
+  ],
+  "limits":[
+    "No supplemental hermetic capture original was established.",
+    "No fixed worker behavior, runtime graph, offline repeat, archive/member completeness or generated-class result is accepted.",
+    "Do not rerun 36670017150 unchanged.",
+    "No expected manifest, sealed launch, claim, allocation, seed or gameplay authority."
+  ],
+  "next_gate":"Construct and independently review an immutable dependency/tool input store for the exact logical source and Gradle 9.6.1 build, then use that accepted read-only store for a fresh supplemental capture successor under the already accepted platform.",
+  "official_counters_delta":0
+}
