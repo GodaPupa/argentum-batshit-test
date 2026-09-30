@@ -1,0 +1,39 @@
+{
+  "schema":"ferocity-final-development-verify-only-implementation-independent-review-v4",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"39b8f5070d46756a98d640ba6f22291e3356f483",
+  "budget_blob":"085298bda577e26dbaa5cec41296597b15e14bb3",
+  "restore_helper_blob":"dd001c437f627b1615ccb590f2331589d4161f72",
+  "workflow_blob":"8ae3523faeda3a55197c3f5fd3a2f356fcb46c10",
+  "accepted_repaired_manifest_audit_commit":"ee784dc18eb7e581c350415d4dc2425226503a98",
+  "manifest_artifact_id":11093470964,
+  "manifest_artifact_sha256":"12406295c2c96b9d6e09519517edeb57c6557a25440a7184877f4431157cdadf",
+  "manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+  "superseded_verify_run":{
+    "run_id":36697783768,
+    "classification":"VERIFY_REJECTED_WATCHDOG_SOURCE_PATH_BINDING",
+    "audit_commit":"3a10e1b684ef734efee3becccbc2066fb0b03830"
+  },
+  "decision":"ACCEPT_REPAIRED_MANIFEST_IMPLEMENTATION_FOR_ONE_VERIFY_ONLY_JAVA_ORIGINAL",
+  "review":{
+    "change_scope":"PASS_MANIFEST_ARTIFACT_AND_SHA_ONLY",
+    "repaired_manifest_independently_audited":"PASS",
+    "runtime_restore_helper_unchanged":"PASS",
+    "runtime_jdk_authority_unchanged":"PASS",
+    "container_digest_unchanged":"PASS",
+    "exact_repository_and_runner_temp_paths_unchanged":"PASS",
+    "single_java_entrypoint_verify_only":"PASS",
+    "no_allocate_or_run_one":"PASS",
+    "pre_post_D2_state_absence_assertions":"PASS",
+    "successful_verify_does_not_auto_allocate":"PASS"
+  },
+  "accepted_scope":[
+    "Create one v4 marker-only execution branch and dispatch exactly one fresh verify-only Java original against manifest 44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d."
+  ],
+  "explicit_non_authority":[
+    "No allocate or run-one.",
+    "No entropy, seed, ledger, allocation, claim, journal, game initialization, gameplay or outcome authority."
+  ],
+  "next_gate":"Dispatch one v4 verify-only original and audit source/workflow/manifest/runtime/JDK/watchdog bindings plus zero-side-effect result exactly once.",
+  "official_counters_delta":0
+}
