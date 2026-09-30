@@ -1,0 +1,120 @@
+name: Ferocity source08 runtime metadata extract
+on:
+  push:
+    branches: ["ferocity/source08-runtime-metadata-extract-20260929"]
+    paths: [".github/workflows/ferocity-source08-runtime-metadata-extract-20260929.yml"]
+permissions: {contents: read}
+jobs:
+  extract:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 5}
+      - name: Bind exact preserved original and extraction budget
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-source08-runtime-metadata-extract
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = "a09f7474426fbc8fd82ed556e7f43185be409e72"
+          git merge-base --is-ancestor 2ccf276957c87e825547e644fc18174aa11a3390 HEAD
+          test "$(git hash-object ferocity-recycling/evidence/source08-takeover/publication-manifest.json)" = "262f78d820ac8834d796d3cc634bf45bbb155cf6"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/SOURCE08_RUNTIME_METADATA_EXTRACT_BUDGET_20260929.json)" = "0e9f51805873285d669d73e98c011806d77eb419"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object ferocity-recycling/evidence/source08-takeover/publication-manifest.json
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/SOURCE08_RUNTIME_METADATA_EXTRACT_BUDGET_20260929.json
+            git hash-object .github/workflows/ferocity-source08-runtime-metadata-extract-20260929.yml
+            git status --porcelain
+          } > "$OUT/source.txt"
+      - name: Extract exactly three allowlisted metadata members
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-source08-runtime-metadata-extract
+          python3 - <<'PY'
+          import hashlib, json, pathlib, zipfile, shutil
+          root=pathlib.Path(".")
+          out=pathlib.Path("build/reports/ferocity-source08-runtime-metadata-extract")
+          pub=json.loads((root/"ferocity-recycling/evidence/source08-takeover/publication-manifest.json").read_text())
+          original=next(x for x in pub["originals"] if x["id"]==10914678223)
+          target=pathlib.Path("/tmp/ferocity-source08-original-10914678223.zip")
+          h=hashlib.sha256()
+          with target.open("xb") as dst:
+              for part in original["parts"]:
+                  p=root/"ferocity-recycling/evidence/source08-takeover"/part["path"]
+                  data=p.read_bytes()
+                  assert len(data)==part["bytes"]
+                  assert hashlib.sha256(data).hexdigest()==part["sha256"]
+                  assert dst.tell()==part["offset"]
+                  dst.write(data); h.update(data)
+          assert h.hexdigest()=="9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816"
+
+          allowed=[
+            "qualification/runtime-classpath-observation/manifest.json",
+            "qualification/observed-gym-runtime/runtime-archive-receipt.json",
+            "qualification/receipt.json",
+          ]
+          result={
+            "schema":"ferocity-source08-runtime-metadata-extract-v1",
+            "artifact_id":10914678223,
+            "archive_sha256":h.hexdigest(),
+            "opened_members":[],
+            "forbidden_members_opened":[],
+            "jvm_started":False,
+            "export_executed":False,
+            "official_entropy_read":False,
+            "games_initialized":0,
+            "authority":"METADATA_BYTES_ONLY_FOR_PROSPECTIVE_EXPORT_PLAN_CONSTRUCTION",
+          }
+          def structural(obj, prefix="$", rows=None):
+              if rows is None: rows=[]
+              if isinstance(obj,dict):
+                  for k,v in obj.items():
+                      p=f"{prefix}.{k}"
+                      low=k.lower()
+                      if any(t in low for t in ("java","classpath","runtime","source","path","toolchain","commit","tree","sha")):
+                          rows.append({"path":p,"type":type(v).__name__,
+                                       "value":v if isinstance(v,(str,int,float,bool,type(None))) else None})
+                      structural(v,p,rows)
+              elif isinstance(obj,list):
+                  for i,v in enumerate(obj[:20000]):
+                      structural(v,f"{prefix}[{i}]",rows)
+              return rows
+
+          with zipfile.ZipFile(target,"r") as z:
+              names=set(z.namelist())
+              assert all(x in names for x in allowed)
+              for member in allowed:
+                  raw=z.read(member)
+                  obj=json.loads(raw)
+                  dest=out/pathlib.Path(member).name.replace(".json","-extracted.json")
+                  dest.write_bytes(raw)
+                  row={
+                    "member":member,
+                    "bytes":len(raw),
+                    "sha256":hashlib.sha256(raw).hexdigest(),
+                    "top_level_type":type(obj).__name__,
+                    "top_level_keys":sorted(obj.keys()) if isinstance(obj,dict) else None,
+                    "relevant_fields":structural(obj),
+                  }
+                  result["opened_members"].append(row)
+          assert [x["member"] for x in result["opened_members"]]==allowed
+          (out/"extraction.json").write_text(json.dumps(result,indent=2)+"\n")
+          print(json.dumps({
+            "opened_members":[{"member":x["member"],"bytes":x["bytes"],"sha256":x["sha256"],
+                               "relevant_field_count":len(x["relevant_fields"])}
+                              for x in result["opened_members"]],
+            "authority":result["authority"]
+          },indent=2))
+          PY
+      - name: Preserve exact metadata extraction original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-source08-runtime-metadata-extract-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-source08-runtime-metadata-extract/
+          if-no-files-found: error
+          retention-days: 90
