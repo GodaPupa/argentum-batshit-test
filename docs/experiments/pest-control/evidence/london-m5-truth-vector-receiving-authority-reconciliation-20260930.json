@@ -1,0 +1,36 @@
+{
+  "schema":"pest-london-m5-truth-vector-receiving-authority-reconciliation-v1",
+  "date_utc":"2026-09-30",
+  "authoritative_acceptance":{
+    "run_id":36661970209,
+    "acceptance_commit":"5d8d2e117a2b5ad16e7bb43868f72951c54e83a7",
+    "audit_blob":"4e832bb686a44fe1411c374c2457f3242d1e717b",
+    "decision":"ACCEPTED_M5_TRUTH_VECTOR_RECEIVING_FAIL_CLOSED"
+  },
+  "later_redundant_success":{
+    "run_id":36670367930,
+    "artifact_id":11077976673,
+    "artifact_sha256":"0a34f2a0ef1aaed8fddcd1b433c58933162b2f400979f5f48dd6128d0507ae7f",
+    "acceptance_branch_commit":"f112eac859e6676e3da89afce73ac49cdfe3c08e",
+    "audit_blob":"dbb5ff3eefdfab0f60417b6b3fcad92c87f53cc1",
+    "observed_result":"2/2 PASS with the same 6850-row truth bank and same receiver/test semantics",
+    "authority_disposition":"PRESERVED_REDUNDANT_NO_NEW_EXPERIMENTAL_AUTHORITY"
+  },
+  "reason":[
+    "The first clean repaired receiving original 36661970209 was already explicitly accepted as the sole repaired behavioral original.",
+    "The later successful 36670367930 duplicated the same accepted receiving question after authority had already been established.",
+    "Prospective one-shot discipline forbids counting or consuming the later success as an additional gate crossing."
+  ],
+  "effective_scope":[
+    "All 6850 accepted atomic M5 truths bind into the lawful predicate-vector seam by the accepted public key.",
+    "A missing non-forced truth remains null/unknown and fails closed.",
+    "The accepted forced-keep exception remains unchanged."
+  ],
+  "limits":[
+    "No additional confidence, sample count, parity scope or gameplay authority is claimed from run 36670367930.",
+    "No complete keep/bottom parity, pair pilot, C2/A2 admission, seed, allocation, claim or gameplay authority."
+  ],
+  "decision":"RETAIN_36661970209_AS_SOLE_M5_RECEIVING_AUTHORITY",
+  "next_gate":"Use only the 36661970209 accepted receiving authority in the remaining pair/C2-A2 prospective admission package and independently close the still-open keep/bottom and pair requirements before any seed or gameplay action.",
+  "official_counters_delta":0
+}
