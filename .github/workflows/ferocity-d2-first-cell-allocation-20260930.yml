@@ -1,9 +1,9 @@
 name: Ferocity D2 first-cell one-shot allocation
 on:
   push:
-    branches: ["ferocity/d2-first-cell-allocation-execute-v4-20260930"]
+    branches: ["ferocity/d2-first-cell-allocation-execute-v5-20260930"]
     paths:
-      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V4_20260930.json"
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V5_20260930.json"
 permissions:
   contents: read
   actions: read
@@ -29,13 +29,13 @@ jobs:
         run: |
           set -euo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_PATH_MATERIALIZATION_V4_INDEPENDENT_REVIEW_20260930.json
-          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V4_20260930.json
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_MARKER_BINDING_V5_INDEPENDENT_REVIEW_20260930.json
+          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V5_20260930.json
           "$PYTHON_EXACT" - "$REVIEW" "$MARKER" <<'PY'
           import json,pathlib,subprocess,sys
           review=json.loads(pathlib.Path(sys.argv[1]).read_text())
           marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
-          assert review["decision"]=="ACCEPT_PATH_MATERIALIZATION_V4_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL"
+          assert review["decision"]=="ACCEPT_MARKER_BINDING_V5_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL"
           assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
           assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
           changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
@@ -48,7 +48,7 @@ jobs:
           }.items():
               actual=subprocess.check_output(["git","hash-object",path],text=True).strip()
               assert actual==review[field],(field,actual,review[field])
-          assert marker["manifest_sha256"]=="44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d"
+          assert marker["accepted_manifest_sha256"]=="44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d"
           PY
           echo "4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601  $PYTHON_EXACT" | sha256sum -c -
 
