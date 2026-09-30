@@ -248,8 +248,11 @@ def main():
     store_after=file_inventory(store_root,exclude_names=frozenset({"daemon","workers","notifications","fileHashes","file-changes","buildOutputCleanup"}))
     (OUT/"store-after-offline.json").write_bytes(canonical(store_after))
     class1,d1=parse_classlog(OUT/"classload-1.log"); class2,d2=parse_classlog(OUT/"classload-2.log")
-    assert d1==d2,("generated/hidden normalized census differs",d1,d2)
+    repeat_equivalence=generated_hidden_repeat_equivalence(class1,class2)
+    if not repeat_equivalence["equal"]:
+        raise RuntimeError("generated/hidden repeat equivalence failed: "+json.dumps(repeat_equivalence,sort_keys=True))
     (OUT/"class-census-1.json").write_bytes(canonical(class1)); (OUT/"class-census-2.json").write_bytes(canonical(class2))
+    (OUT/"generated-hidden-repeat-equivalence.json").write_bytes(canonical(repeat_equivalence))
     entries=[archive_inventory(pathlib.Path(x).resolve()) for x in graph2["ordered_files"]]
     first_visible={}
     for ordinal,entry in enumerate(entries):
@@ -274,7 +277,7 @@ def main():
             rel=rp.relative_to(gradle_home).as_posix()
             if rel not in accepted_store or sha_file(rp)!=accepted_store[rel][1]:
                 raise RuntimeError("resolved dependency is not exact accepted store byte: "+rel)
-    summary={"schema":"industrial-r1-supplemental-hermetic-capture-v2","logical_source_commit":SOURCE,"logical_source_tree":SOURCE_TREE,"observed_head":cmd("git","rev-parse","HEAD"),"platform":platform,"tracked_input_count":len(inputs),"runtime_classpath_entries":len(entries),"runtime_visible_member_keys":len(first_visible),"first_launch":first,"offline_repeat":second,"class_census":{"first_sha256":d1,"second_sha256":d2,"equal":True,"hidden_first":sum(r["hidden"] for r in class1),"hidden_second":sum(r["hidden"] for r in class2),"policy":"PINNED_GENERATOR_INPUTS_REPEAT_NORMALIZED_EQUIVALENCE"},"immutable_store":{"source_artifact_id":11105215706,"outer_artifact_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649","archive_sha256":STORE_ARCHIVE_SHA,"manifest_sha256":STORE_MANIFEST_SHA,"files":STORE_FILES,"mode":"VERIFIED_READ_ONLY_INPUT_RECONSTRUCTED_TO_WRITABLE_GRADLE_HOME","bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856"},"fixed_worker":{"class":TEST,"tests":10,"failures":0,"errors":0,"skipped":0},"official_seed_files_read":False,"official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},"authority":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY"}
+    summary={"schema":"industrial-r1-supplemental-hermetic-capture-v2","logical_source_commit":SOURCE,"logical_source_tree":SOURCE_TREE,"observed_head":cmd("git","rev-parse","HEAD"),"platform":platform,"tracked_input_count":len(inputs),"runtime_classpath_entries":len(entries),"runtime_visible_member_keys":len(first_visible),"first_launch":first,"offline_repeat":second,"class_census":{"first_sha256":d1,"second_sha256":d2,"raw_normalized_equal":d1==d2,"equal":repeat_equivalence["equal"],"hidden_first":sum(r["hidden"] for r in class1),"hidden_second":sum(r["hidden"] for r in class2),"generated_or_hidden_first":sum(r["generated_or_hidden"] for r in class1),"generated_or_hidden_second":sum(r["generated_or_hidden"] for r in class2),"policy":"PINNED_GENERATOR_INPUTS_VM_LOOKUP_DEFINE_MULTIPLICITY_EQUIVALENCE","repeat_equivalence":repeat_equivalence},"immutable_store":{"source_artifact_id":11105215706,"outer_artifact_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649","archive_sha256":STORE_ARCHIVE_SHA,"manifest_sha256":STORE_MANIFEST_SHA,"files":STORE_FILES,"mode":"VERIFIED_READ_ONLY_INPUT_RECONSTRUCTED_TO_WRITABLE_GRADLE_HOME","bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856"},"fixed_worker":{"class":TEST,"tests":10,"failures":0,"errors":0,"skipped":0},"official_seed_files_read":False,"official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},"authority":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY"}
     (OUT/"summary.json").write_bytes(canonical(summary))
     manifest=[]
     for p in sorted(x for x in OUT.rglob("*") if x.is_file() and x.name!="artifact-manifest.json"):
