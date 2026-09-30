@@ -1,0 +1,43 @@
+name: Ferocity current source08 Java distribution verification
+on:
+  push:
+    branches: ["ferocity/current-java-provenance-recovery-20260929"]
+    paths: [".github/workflows/ferocity-current-java-distribution-verification.yml"]
+permissions: {contents: read}
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - name: Bind exact Java distribution verifier budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-current-java-distribution
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = "3c3aba2eb19d05b1964f4ea938fd2070517661a0"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_JAVA_DISTRIBUTION_VERIFY_BUDGET.json)" = "f8146645929270d4a8ddb2b064e419c38f8d96d5"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/verify_current_source08_java_distribution.py)" = "3b58515c2dea5627132ce984ef568b5826f6d2b6"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_JAVA_DISTRIBUTION_VERIFY_BUDGET.json
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/verify_current_source08_java_distribution.py
+            git hash-object .github/workflows/ferocity-current-java-distribution-verification.yml
+            git status --porcelain
+          } > "$OUT/source.txt"
+      - name: Verify exact public Temurin archive and recorded source08 java bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/verify_current_source08_java_distribution.py | tee build/reports/ferocity-current-java-distribution/run.log
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-current-java-distribution-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-current-java-distribution/
+          if-no-files-found: error
+          retention-days: 90
