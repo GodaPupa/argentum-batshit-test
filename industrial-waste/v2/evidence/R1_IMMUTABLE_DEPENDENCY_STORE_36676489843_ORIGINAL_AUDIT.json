@@ -1,0 +1,35 @@
+{
+  "schema":"industrial-r1-immutable-dependency-store-36676489843-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36676489843,
+  "artifact_id":11080705894,
+  "artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b",
+  "head":"bf8242719a1c9e9e784701d28f37384f8032b92d",
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "store_archive_sha256":"b686ca26e715ba965a9156c455a6fba8c0f80f8d55883fc9b85285d4bb0b0b23",
+    "store_archive_bytes":360561540,
+    "store_manifest_sha256":"8e427eb24c5c3043dab37abb681b0d3caf5243f4cb9357e1d196a92523ae9c0e",
+    "store_files":1272,
+    "manifest_vs_archive_files":1272,
+    "manifest_vs_archive_mismatches":0,
+    "unsafe_or_nonfile_archive_members":0,
+    "network_testClasses_returncode":0,
+    "offline_reconstruction_testClasses_returncode":0,
+    "tests_executed":0
+  },
+  "decision":"ACCEPTED_IMMUTABLE_GRADLE_9_6_1_DEPENDENCY_TOOL_STORE",
+  "accepted_scope":[
+    "The exact 360561540-byte archive is an immutable external Gradle 9.6.1 wrapper/dependency input store for logical Industrial source de27e189e7597bdf48f213a40a0bbf1b70f63c1a.",
+    "Exactly 1272 files under wrapper/dists and caches/modules-2 match the canonical size/SHA-256 manifest.",
+    "A second clean Gradle home reconstructed only from the archive completed :ai:testClasses with --offline."
+  ],
+  "limits":[
+    "No behavioral test authority.",
+    "No supplemental capture, expected-manifest, prepared-worker, sealed-launch, permit, seed, claim, allocation, game or outcome authority."
+  ],
+  "next_gate":"Use this exact store as read-only input to a separately reviewed supplemental hermetic capture successor; reconstruct a writable Gradle home only from verified store bytes and require offline resolution.",
+  "official_counters_delta":0
+}
