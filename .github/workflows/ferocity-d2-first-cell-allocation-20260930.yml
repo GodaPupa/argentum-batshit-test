@@ -1,9 +1,9 @@
 name: Ferocity D2 first-cell one-shot allocation
 on:
   push:
-    branches: ["ferocity/d2-first-cell-allocation-execute-v2-20260930"]
+    branches: ["ferocity/d2-first-cell-allocation-execute-v3-20260930"]
     paths:
-      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V2_20260930.json"
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V3_20260930.json"
 permissions:
   contents: read
   actions: read
@@ -29,13 +29,13 @@ jobs:
         run: |
           set -euo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_PATH_REPAIR_INDEPENDENT_REVIEW_20260930.json
-          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_20260930.json
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_MARKER_REPAIR_V3_INDEPENDENT_REVIEW_20260930.json
+          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V3_20260930.json
           "$PYTHON_EXACT" - "$REVIEW" "$MARKER" <<'PY'
           import json,pathlib,subprocess,sys
           review=json.loads(pathlib.Path(sys.argv[1]).read_text())
           marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
-          assert review["decision"]=="ACCEPT_PATH_ONLY_REPAIRED_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL"
+          assert review["decision"]=="ACCEPT_MARKER_REPAIRED_V3_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL"
           assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
           assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
           changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
