@@ -1,5 +1,7 @@
 import groovy.json.JsonOutput
 import org.gradle.api.tasks.testing.Test
+import org.gradle.api.artifacts.result.ResolvedDependencyResult
+import org.gradle.api.artifacts.result.UnresolvedDependencyResult
 
 gradle.projectsEvaluated {
     def p = rootProject.findProject(":ai")
@@ -26,8 +28,9 @@ gradle.projectsEvaluated {
                     [id: c.id.displayName, reasons: c.selectionReason.descriptions.collect { it.description }.sort()]
                 }.sort { a,b -> a.id <=> b.id },
                 dependencies: rr.allDependencies.collect { d ->
-                    [from: d.from.id.displayName, requested: d.requested.displayName, selected:
-                        d.hasProperty("selected") ? d.selected.id.displayName : null]
+                    d instanceof ResolvedDependencyResult ?
+                        [from: d.from.id.displayName, requested: d.requested.displayName, selected: d.selected.id.displayName, failure: null] :
+                        [from: d.from.id.displayName, requested: d.requested.displayName, selected: null, failure: (d instanceof UnresolvedDependencyResult ? d.failure?.message : "unknown")]
                 }.sort { a,b -> (a.from <=> b.from) ?: (a.requested <=> b.requested) },
             ]
             def target = new File(System.getProperty("industrial.runtime.out"))
