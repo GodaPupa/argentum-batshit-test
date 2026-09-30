@@ -1,5 +1,5 @@
 {
-  "schema": "ferocity-source08-original-runtime-material-inventory-budget-v1",
+  "schema": "ferocity-source08-original-runtime-material-inventory-budget-v2",
   "date_utc": "2026-09-29",
   "preserved_original": {
     "artifact_id": 10914678223,
@@ -9,14 +9,14 @@
     "source_commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
     "source_tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"
   },
-  "scope": "READ_ONLY_MEMBER_INVENTORY_OF_ALREADY_PRESERVED_ORIGINAL",
+  "scope": "READ_ONLY_ZIP_DIRECTORY_INVENTORY_OF_ALREADY_PRESERVED_ORIGINAL",
   "operation": [
     "reassemble the already-preserved ZIP parts in a temporary path",
-    "verify exact original ZIP SHA-256 and CRC",
-    "enumerate every ZIP member in archive order",
-    "record member name, size, compressed size, CRC, compression method and SHA-256 of member bytes",
+    "verify exact original ZIP SHA-256",
+    "open only the ZIP central directory",
+    "record every member name in archive order plus directory flag, uncompressed size, compressed size, CRC and compression method from central-directory metadata",
     "flag candidate runtime-material names by a fixed lexical filter only",
-    "do not execute, import, deserialize or semantically interpret member content"
+    "do not read, hash, extract, execute, import, deserialize or semantically interpret any member payload"
   ],
   "candidate_name_terms": [
     "classpath",
@@ -32,20 +32,21 @@
     "path"
   ],
   "acceptance": [
-    "exact source/parent and part set binding",
+    "exact source/parent/publication-manifest/budget binding",
     "reassembled archive SHA-256 equals the preserved original digest",
-    "ZIP CRC clean",
-    "complete member count and ordered inventory preserved",
-    "all member digests computed as raw bytes without execution",
+    "central-directory inventory opens successfully",
+    "complete ordered member-name inventory preserved",
+    "no archive member payload is opened",
     "no JVM, Gradle, exporter, game initializer, entropy or seed file access"
   ],
   "prohibited": [
+    "no archive member payload reads",
     "no member execution",
     "no Java or Kotlin invocation",
     "no Gradle",
     "no offline export",
     "no plan assembly",
-    "no entropy/seed allocation",
+    "no entropy/seed allocation or payload inspection",
     "no game initialization",
     "no D2 admission"
   ],
