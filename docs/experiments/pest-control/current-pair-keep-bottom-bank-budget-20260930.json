@@ -1,0 +1,38 @@
+{
+  "schema":"pest-current-pair-keep-bottom-bank-construction-budget-v1",
+  "date_utc":"2026-09-30",
+  "current_integration_commit":"4aea7faa72ffd783051d66ed3d7c1e976663f7f4",
+  "frozen_mains":{
+    "pest":{"sha256":"7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5","source_blob":"e8a4347063d7d1424a5f90e5fdd9b0cc3b104de3"},
+    "monster":{"sha256":"79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f","source_blob":"e854685633cd7157929a59715deb289d45c1e341"}
+  },
+  "frozen_raw_oracle":{"path":"ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt","blob":"4f020ea2406e9bd6a87ec389685b48f15df4c5a3","routines":["decideMulligan","chooseBottomCards"]},
+  "lawful_boundary":{"vector_blob":"bb8e2247dc64a64403094c691d83b8eed53048bd","receiver_blob":"1936f537b737fb1b839e53fae0a727aab7a0f0ab","m5_receiving_receipt_blob":"4e832bb686a44fe1411c374c2457f3242d1e717b"},
+  "accepted_truth_original":{"run":36531232867,"artifact":11016925265,"artifact_sha256":"cd16753d52704ab31904531cf94e4390c7ceabacd382d09deb66afc155951528","truth_bank_sha256":"8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f","rows":6850},
+  "accepted_geometry":{"source_blob":"d90d80b6a6c12820eab36d1efb2c565cecba4909","monster_reachable_name_multisets":882297,"monster_denominator_receipt_blob":"2f2333d67077fc54309a4d21b72a26d72a53aa6a"},
+  "contexts":{
+    "seats":[0,1],
+    "on_play":[false,true],
+    "mulligans_taken":[0,1,2],
+    "rule":"seat, start and mulligan context remain explicit keys even where the frozen raw routine is context-invariant"
+  },
+  "construction_scope":[
+    "enumerate every reachable seven-card name multiset for each exact 60 by bounded card counts; no RNG",
+    "reproduce the accepted Monster denominator exactly and construct the previously-unfrozen Pest denominator",
+    "derive M0-M4 and bottom-order sensitivity only from submitted-list and visible-hand facts",
+    "look up M5 only by the already-accepted exact public atom key; absent atoms remain null/unknown",
+    "retain seat/start/mulligan contexts explicitly",
+    "compress physical bottom coverage only by accepted handle-renaming symmetry; preserve a deterministic count/hash specification for distinct land order and equal-CMC spell-order classes",
+    "emit the complete set/hash of unbanked public M5 atom keys before any keep/bottom parity execution"
+  ],
+  "prohibited":[
+    "no raw M5 comparator rerun",
+    "no assumed truth for an unbanked atom",
+    "no keep/bottom parity claim from construction alone",
+    "no historical narrow case promoted to whole-pair authority",
+    "no seed, allocation, claim or gameplay"
+  ],
+  "authority_if_clean":"CURRENT_PAIR_KEEP_BOTTOM_BANK_CONSTRUCTION_ONLY",
+  "next_gate":"Independently audit the constructed finite bank geometry and unbanked-atom closure. If Pest has unbanked non-forced M5 atoms, qualify those public atoms prospectively before any whole-bank keep/bottom parity run; otherwise freeze the exact comparator bank.",
+  "official_counters_delta":0
+}
