@@ -1,0 +1,42 @@
+{
+  "schema":"ferocity-final-development-verify-current-implementation-v2-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"39ec42968f8d35d59fee1eb19a41c8b09d1ef8cc",
+  "budget_blob":"6f8676ac2e21d6026f0ad64cefe6f9e523584070",
+  "workflow_blob":"19f88f920199c6da9cc64374ea542e13dcd7ed98",
+  "runtime_restore_blob":"dd001c437f627b1615ccb590f2331589d4161f72",
+  "manifest_review_blob":"98ef7d5456c969c89534d2bf514ac9a1948875b4",
+  "development_admission_blob":"c64afaf0dac73fe4a73e47a58ababa60a5888064",
+  "development_cli_blob":"8ba7a3de0a8405ca68548c52bb5796b95fcb677e",
+  "superseded_pre_java_run":{
+    "run_id":36670323172,
+    "artifact_id":11076764618,
+    "cause":"Container workspace /__w absolute paths differed from the accepted manifest's frozen /home/runner/work paths, changing only path-bearing classpath JSON.",
+    "java_verify_started":false,
+    "behavioral_verify_original_consumed":false
+  },
+  "decision":"ACCEPT_IMPLEMENTATION_FOR_ONE_VERIFY_ONLY_ORIGINAL",
+  "review":{
+    "repair_scope":"PASS_ABSOLUTE_PATH_STAGING_ONLY",
+    "manifest_bytes_unchanged":"PASS",
+    "runtime_and_jdk_bytes_unchanged":"PASS",
+    "watchdog_container_and_python_identity_unchanged":"PASS",
+    "real_non_symlink_repository_staged_at_manifest_path":"PASS",
+    "runtime_restore_RUNNER_TEMP_matches_manifest_path":"PASS",
+    "classpath_compared_to_manifest_bound_bytes_before_java":"PASS",
+    "single_java_launch":"PASS",
+    "java_operation_verify_only":"PASS",
+    "allocate_and_run_one_absent":"PASS",
+    "pre_post_D2_state_absence_asserted_at_frozen_repository":"PASS",
+    "no_retry_after_java_start":"PASS"
+  },
+  "accepted_scope":[
+    "Create one v2 execution branch from this review and one v2 marker-only trigger commit.",
+    "Execute exactly one verify-only Java original against the unchanged accepted manifest."
+  ],
+  "explicit_non_authority":[
+    "No allocation, entropy, seed, ledger, claim, journal, game initialization, gameplay or outcome authority."
+  ],
+  "next_gate":"Dispatch one v2 verify-only original. Audit it exactly once before any separately reviewed allocation gate.",
+  "official_counters_delta":0
+}
