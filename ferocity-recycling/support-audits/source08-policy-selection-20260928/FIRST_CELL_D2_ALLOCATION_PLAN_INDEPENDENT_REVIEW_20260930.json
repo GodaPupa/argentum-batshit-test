@@ -1,0 +1,41 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-plan-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_commit":"a323080d5cd826bb24f12142647448b8addd799a",
+  "reviewed_path":"ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_PLAN_20260930.json",
+  "reviewed_blob":"ba0c6368929a4ce83e421a9f6fa1323e750ce409",
+  "decision":"ACCEPT_ONE_TIME_D2_FIRST_CELL_ALLOCATION_DESIGN_ONLY",
+  "review":{
+    "accepted_verify_only_input_admission":"PASS",
+    "exact_manifest_binding":"PASS",
+    "single_fixed_ledger_directory":"PASS",
+    "fixed_16_allocation_rows":"PASS",
+    "exact_48_independent_stream_requirement":"PASS",
+    "durable_allocation_intent_before_entropy":"PASS",
+    "existing_directory_blocks_before_entropy":"PASS",
+    "zero_replacements":"PASS",
+    "no_reroll_on_failure_or_collision":"PASS",
+    "run_one_separate":"PASS",
+    "no_game_initialization_in_allocation":"PASS",
+    "failure_bytes_preserved":"PASS"
+  },
+  "source_cross_check":{
+    "allocator_source_blob":"c64afaf0dac73fe4a73e47a58ababa60a5888064",
+    "cli_source_blob":"8ba7a3de0a8405ca68548c52bb5796b95fcb677e",
+    "secure_random_location":"VerifiedFerocityDevelopment.allocate only after recheck and fixed-directory reservation",
+    "row_geometry":"2 decks x 2 seats x 4 indices = 16 rows",
+    "streams":"gameSeed + candidatePolicySeed + redPolicySeed = 48 total",
+    "validation":"validateFerocityDevelopmentLedger requires exact allocation order and 48 globally distinct streams"
+  },
+  "accepted_scope":[
+    "Implement one source-bound allocation-only workflow against manifest 44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d.",
+    "The implementation must recreate the exact accepted runtime/manifest inputs, execute only CLI allocate once, and preserve the resulting durable ledger or failure bytes."
+  ],
+  "explicit_non_authority":[
+    "No entropy was consumed by this review.",
+    "No ledger, allocation, run-one claim, journal, game, gameplay or outcome authority has yet been exercised.",
+    "No retry or replacement allocation is authorized."
+  ],
+  "next_gate":"Implement the exact allocation-only workflow and execution budget, independently review their source/workflow bytes, then dispatch exactly one allocation original if the review is clean.",
+  "official_counters_delta":0
+}
