@@ -1,0 +1,47 @@
+{
+  "schema": "ferocity-first-cell-red-v02-receiving-budget-v1",
+  "date_utc": "2026-09-29",
+  "source08": {
+    "commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"
+  },
+  "active_policy": {
+    "name": "red-madness-v0.2",
+    "policy_source_freeze_sha256": "2a888ed51153693f7aa1340d68410e362527f6576e2f3629a357d349ed25dddb",
+    "pilot_path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilot.kt",
+    "pilot_git_blob": "b7cf8736b92de0a56859f9ca7dd3bba497535200",
+    "pilot_sha256": "6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5"
+  },
+  "scenario_bank": {
+    "path": "gym/src/test/kotlin/com/wingedsheep/gym/ferocity/RedMadnessPilotScenarioTest.kt",
+    "git_blob": "5db973421a5ccabeba6c0b679cb3ca14bbe90987",
+    "expected_tests": 24,
+    "scope": "unchanged fixed real-engine receiving scenarios for the active Red v0.2 policy"
+  },
+  "opponent_source": {
+    "path": "ferocity-recycling/decks/benchmarks/mono_red_madness_mistertwin_20260924.json",
+    "git_blob": "4d3d91da6973f8c5b1c44af357b163691849e1b1",
+    "id": "mono_red_madness_mistertwin_20260924",
+    "import_text_sha256": "f189138565fa46d30c6982ae437ee1c03fc4c1a9ee760f379cb443af2e875497"
+  },
+  "acceptance": [
+    "source08 commit/tree and exact source blobs match",
+    "active pilot SHA-256 matches the independently adopted v0.2 identity",
+    "fresh just test-class RedMadnessPilotScenarioTest --rerun-tasks --no-build-cache",
+    "exactly 24 JUnit cases, zero failures/errors/skips",
+    "original XML, logs and source bindings are preserved"
+  ],
+  "interpretation_if_clean": [
+    "Accept only the bounded current source08 Red v0.2 pilot/engine receiving scope exercised by the unchanged 24-case bank.",
+    "Do not infer complete D2 admission, offline definition bundle authority, runner admission, seed allocation or gameplay authority."
+  ],
+  "prohibited": [
+    "no policy edits",
+    "no scenario edits",
+    "no official entropy or seed consumption",
+    "no D2 allocation or game initialization",
+    "no calibration or outcome-guided reconstruction"
+  ],
+  "software_fixture_rng_is_not_official_experiment_entropy": true,
+  "official_counters_delta": 0
+}
