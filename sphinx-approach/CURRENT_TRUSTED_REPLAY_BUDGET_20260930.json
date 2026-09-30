@@ -1,0 +1,36 @@
+{
+  "schema":"sphinx-stage-e-current-trusted-replay-budget-v1",
+  "date_utc":"2026-09-30",
+  "accepted_parent_commit":"bbcb15f085c9ff1fcac25608505ce8d23906abd9",
+  "accepted_forced_empty_blockers_run":36697931056,
+  "purpose":"Freshly qualify the current-source trusted accepted-transition journal/replay substrate without broadening action-selection authority.",
+  "pins":{
+    "whole_actor_blob":"0e5a21429c367355c0951c7a3a367495a96a161d",
+    "accepted_transition_journal_blob":"63efac3d9321d658f9590ffbab689a187516487c",
+    "trusted_transition_file_blob":"6671a492891d6dc41db6dcc6de6244918872c611",
+    "current_replay_test_blob":"d57d8f2f0407f3f7b6a8a3f561d53d832f28cb20",
+    "forced_empty_blockers_test_blob":"027fc80a3a67f39c02949eba8eeabf1bfe81526b",
+    "forced_empty_attackers_test_blob":"4c2fdbc3c408822dda64216c3ad91882bd81b6c1",
+    "unique_pass_test_blob":"d7a141cf2be33dd5eed826aa7bb52460c66a5209",
+    "multicast_discriminator_test_blob":"6b794b196d4ff65ab3a7fff5f14febb8f310ab35"
+  },
+  "historical_scope":{
+    "prior_durable_replay_audit":"sphinx-approach/evidence/durable-accepted-journal-targeted-36463687587-original-audit.json",
+    "prior_audit_blob":"0af612ed1013558c9d123bc473c8f368a786ae17",
+    "note":"Prior evidence is historical scope only; current journal/trusted-file bytes differ and require fresh qualification."
+  },
+  "acceptance":[
+    "SphinxStageEAcceptedTransitionJournalTest executes 2/2 real-engine durable Ponder reorder+shuffle journal/replay traces cleanly on current source",
+    "create-new, append+force, reopen, hash-chain verification, state-continuity replay and drift rejection remain exercised",
+    "forced-empty blockers, forced-empty attackers, unique-pass priority and bounded multi-cast discriminator regressions remain clean",
+    "all XML/log/source evidence is preserved from one fresh source-bound run"
+  ],
+  "limits":[
+    "no nonempty attacker or blocker ranking",
+    "no multiple-cast ranking beyond the existing discriminator limit",
+    "no general whole-game runner or collector authority",
+    "no opponent package, Stage-E admission, seed, allocation or official gameplay"
+  ],
+  "authority_if_clean":"CURRENT_TRUSTED_ACCEPTED_TRANSITION_REPLAY_SUBSTRATE_ONLY",
+  "official_counters_delta":0
+}
