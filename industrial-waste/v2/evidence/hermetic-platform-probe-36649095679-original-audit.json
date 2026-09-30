@@ -1,0 +1,27 @@
+{
+  "schema": "industrial-r1-hermetic-platform-probe-36649095679-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36649095679,
+  "job_id": 109678820264,
+  "artifact_id": null,
+  "head": "4b5502931589f67aa0a05b1aa12e23a55865ee3d",
+  "parent": "041c921874df2fb9c2acb373ee1fa44753c99dd3",
+  "declared_image": "catthehacker/ubuntu@sha256:5dff02975654f16f1d1ab6fd04ff88e326a30f39eba177d85d3b4945e6fde62f",
+  "result": {
+    "workflow_conclusion": "failure",
+    "container_initialization": "success",
+    "exact_image_digest_pull": "success",
+    "source_binding_step": "failure",
+    "platform_probe_step": "skipped",
+    "artifact_uploaded": false,
+    "technical_cause": "The intended safe.directory bootstrap was absent from the committed successor workflow text, so Git again rejected the mounted workspace as dubious ownership before source binding."
+  },
+  "decision": "INCOMPLETE_PRETEST_SAFE_DIRECTORY_FIX_NOT_APPLIED",
+  "interpretation": [
+    "No platform probe body ran and no platform identity was accepted.",
+    "No build, project JVM, manifest, claim, allocation, seed or game was executed.",
+    "The original is consumed and must not be rerun unchanged."
+  ],
+  "successor_scope": "Create a new branch from the unchanged platform budget commit and insert the explicit git config --global --add safe.directory $GITHUB_WORKSPACE command before any Git source-binding command; preserve every other platform/design/source pin and probe instruction.",
+  "official_counters_delta": 0
+}
