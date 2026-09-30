@@ -1,0 +1,77 @@
+{
+  "schema":"ferocity-final-development-verify-current-budget-v1",
+  "date_utc":"2026-09-30",
+  "status":"PROSPECTIVE_ONE_VERIFY_ONLY_JAVA_ORIGINAL",
+  "accepted_manifest":{
+    "run_id":36669474548,
+    "artifact_id":11077287825,
+    "artifact_sha256":"6cc1ed84aa9fd6b17ddcdce7a1054bbc856124b16dd6b1ecce1fe9d04f9ceb80",
+    "manifest_path":"ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json",
+    "manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+    "independent_review_commit":"274e660066d80781bbfb58b381a7c429a18e312a",
+    "independent_review_blob":"98ef7d5456c969c89534d2bf514ac9a1948875b4"
+  },
+  "source08":{
+    "commit":"3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "compiled_inputs_sha256":"36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908",
+    "compiled_inputs_canonical_sha256":"663af924957ed0d67af8cd594a8abcd6c1e404ea8181acda3fcbac28b6961fd3"
+  },
+  "runtime_restore":{
+    "script_blob":"dd001c437f627b1615ccb590f2331589d4161f72",
+    "path_token":"36655120463",
+    "runtime_archive_sha256":"0e9ea0c6c3f2e29230148d330b6b7961aeba1fa44985876b90f68bc8ca7e28d5",
+    "classpath_sha256":"3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415",
+    "classpath_entries":56,
+    "jdk_distribution_sha256":"ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94",
+    "java_path":"/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java",
+    "java_sha256":"2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d"
+  },
+  "watchdog_runtime":{
+    "container":"mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880",
+    "python_path":"/usr/local/python/3.14.2/bin/python3.14",
+    "python_sha256":"4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601",
+    "accepted_watchdog_run":36661350925,
+    "accepted_watchdog_artifact":11074268074
+  },
+  "exact_verifier":{
+    "FerocityDevelopmentAdmission_blob":"c64afaf0dac73fe4a73e47a58ababa60a5888064",
+    "FerocityDevelopmentCli_blob":"8ba7a3de0a8405ca68548c52bb5796b95fcb677e",
+    "operation":"verify",
+    "expected_status":"VERIFIED_INPUTS_NO_ENTROPY_NO_GAME"
+  },
+  "allowed_operations":[
+    "checkout the exact reviewed execution head",
+    "materialize the already-consumed accepted manifest original by immutable artifact ID and exact whole-ZIP SHA-256",
+    "restore the exact accepted source08 runtime and Temurin distribution without executing Java",
+    "verify restored class-path bytes equal the manifest-bound accepted class-path file",
+    "verify current watchdog Python path and bytes equal the accepted current-runtime identity",
+    "invoke the exact accepted Java executable once with FerocityDevelopmentCli operation verify against manifest SHA-256 86d6d0ed...",
+    "preserve stdout stderr command/runtime/source receipts and pre/post D2 side-effect census"
+  ],
+  "prohibited_operations":[
+    "allocate",
+    "run-one",
+    "SecureRandom or official entropy generation",
+    "official seed creation or read",
+    "ledger creation",
+    "allocation reservation",
+    "trial claim creation",
+    "development journal creation",
+    "game initialization",
+    "FerocityTrialRunner",
+    "gameplay",
+    "outcome exposure",
+    "automatic retry after Java starts"
+  ],
+  "acceptance":[
+    "exact manifest artifact digest and ZIP CRC pass",
+    "all manifest materialized inputs are copied byte-for-byte",
+    "exact runtime/JDK restoration passes with no Java before the designated verify launch",
+    "FerocityDevelopmentCli verify exits zero and emits VERIFIED_INPUTS_NO_ENTROPY_NO_GAME for D2-FIRST-A3-RED",
+    "manifest admissionSha256 equals 86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+    "no ledger, allocation, trial claim, journal, game or outcome side effect exists after verify"
+  ],
+  "authority_if_clean":"VERIFIED_CURRENT_D2_INPUTS_NO_ENTROPY_NO_GAME_ONLY",
+  "next_gate":"Audit the single verify-only original exactly once. A clean verify still does not allocate; independently review the subsequent allocation gate before any entropy generation.",
+  "official_counters_delta":0
+}
