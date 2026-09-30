@@ -1,0 +1,109 @@
+{
+  "schema": "ferocity-final-development-manifest-construction-budget-v1",
+  "date_utc": "2026-09-29",
+  "status": "PROSPECTIVE_NON_EXECUTING_MANIFEST_CONSTRUCTION",
+  "basis": {
+    "verify_only_design_review_commit": "f3574aef4325075960d4209ae849a33125c98c92",
+    "qualification_authority_review_commit": "598844cd7d6c9c3dad2d0915114abc12587431a4",
+    "source08_commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "source08_tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"
+  },
+  "source08_qualification_original": {
+    "artifact_id": 10914678223,
+    "artifact_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "transport_parts": 12,
+    "receipt_sha256": "d898102510976b4791410e43fd9d71b61c4b6044763366e2438e3383fb212e27",
+    "compiled_inputs_sha256": "36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908",
+    "compiled_inputs_canonical_sha256": "663af924957ed0d67af8cd594a8abcd6c1e404ea8181acda3fcbac28b6961fd3",
+    "validator_sha256": "07b1e71a0f8b1fdafe5c4419ca2baf5920e6194605220fe278ad9eb96be39a2c",
+    "build_log_sha256": "d861b23a56ea82cb750bb0a46d16e565127d554e0eb141ed3609e75a96216c7f",
+    "batch_tests": 182,
+    "required_tests": 162
+  },
+  "current_bundle_original": {
+    "run_id": 36655704566,
+    "artifact_id": 11071913791,
+    "artifact_sha256": "94ec8d2ee12f929316c39ce0c69fbf9e5ad869a3b4ecedaa48faa2f8280b7ee6",
+    "zip_crc": "clean",
+    "zip_members": 29,
+    "definition_bundle": {
+      "path": "export-output/definition-bundle.json",
+      "sha256": "abc31a66ca4fc15602dfa861af83119c4418a9cc0cf9bc39bb01b2c7034d42ba",
+      "definitions": 36,
+      "registry_bindings": 68
+    },
+    "inline_token_admission": {
+      "path": "export-output/inline-token-admission.json",
+      "sha256": "16f8532a53a15a24c1b7318f3915e7c4d85b203e365f6348d99ade2e82b7535f"
+    },
+    "artifact_validation_pins": {
+      "path": "export-output/artifact-validation-pins.json",
+      "sha256": "5976fe19a06b1d3113a36e65c9181bd9c7a314edeb0db7faad1fac4c2c94e0ac"
+    },
+    "accepted_classpath": {
+      "path": "prelaunch/class-path.json",
+      "sha256": "3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415",
+      "entries": 56
+    }
+  },
+  "accepted_java": {
+    "distribution_sha256": "ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94",
+    "java_executable_sha256": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "architecture": "x86_64",
+    "distribution": "Temurin 21.0.12.1+1"
+  },
+  "exact_verifier": {
+    "FerocityDevelopmentAdmission.kt_blob": "c64afaf0dac73fe4a73e47a58ababa60a5888064",
+    "FerocityDevelopmentCli.kt_blob": "8ba7a3de0a8405ca68548c52bb5796b95fcb677e",
+    "FerocityDevelopmentAdmissionTest.kt_blob": "256aeb99753b7b8f71165f146c1801979ee03e09",
+    "operation": "verify",
+    "success_status": "VERIFIED_INPUTS_NO_ENTROPY_NO_GAME"
+  },
+  "construction_steps": [
+    "Reassemble the exact source08 qualification original from the already committed 12 transport parts and require artifact SHA-256 plus ZIP CRC before reading members.",
+    "Extract only qualification/receipt.json, compiled-inputs-before.json, validator-attempt.py, batch-01-gym/build.log and the exact required XML members into a fixed evidence directory inside the checked-out repository.",
+    "Acquire the exact accepted current offline-export artifact by immutable artifact ID and require its whole-ZIP SHA-256 plus ZIP CRC before extracting only definition-bundle.json, inline-token-admission.json, artifact-validation-pins.json and class-path.json.",
+    "Restore the exact accepted source08 runtime and exact Temurin executable using the already accepted runtime/JDK restoration authorities; no setup-java or replacement runtime.",
+    "Construct exactly one canonical FerocityDevelopmentManifest whose source/deck/protocol/policy/card-definition/classpath/qualification/watchdog fields satisfy the existing source08 verifier.",
+    "Do not invoke FerocityDevelopmentCli, SecureRandom, allocate, run-one, GameInitializer or FerocityTrialRunner during construction.",
+    "Emit the canonical manifest, its SHA-256, a complete materialization receipt, dependency/coverage derivation receipt and a source-bound construction receipt."
+  ],
+  "required_manifest_fixed_contract": {
+    "cell_id": "D2-FIRST-A3-RED",
+    "stage": "DEVELOPMENT",
+    "rules_mode": "VERIFIED_TEXT_PRERELEASE",
+    "candidate": "A3-F4",
+    "control": "A3-N0",
+    "opponent": "mono_red_madness_mistertwin_20260924",
+    "red_policy": "red-madness-v0.2",
+    "allocation_count": 16,
+    "replacements_authorized": 0,
+    "max_submitted_actions": 6000,
+    "max_completed_player_turns": 150,
+    "max_runtime_millis": 300000
+  },
+  "fail_closed": [
+    "Any artifact, member, runtime, Java, source, protocol, deck, policy or classpath digest mismatch aborts construction.",
+    "Any missing coverage key or any coverage reference not backed by a preserved passing qualification class aborts construction.",
+    "Any attempt to use a live card-definition fallback, mutable runtime substitution or regenerated qualification evidence aborts construction.",
+    "Any ledger/allocation/journal/game side effect invalidates the construction attempt."
+  ],
+  "preservation": [
+    "whole source08 qualification ZIP digest and CRC result",
+    "whole current bundle ZIP digest and CRC result",
+    "all extracted member digests",
+    "runtime and Java restoration receipts",
+    "canonical manifest bytes and SHA-256",
+    "coverage derivation",
+    "watchdog binding",
+    "pre/post absence of D2 ledger and journal roots"
+  ],
+  "authority_if_clean": "COMPLETE_CURRENT_FEROCITY_DEVELOPMENT_MANIFEST_CANDIDATE_READY_FOR_INDEPENDENT_REVIEW_ONLY",
+  "explicit_non_authority": [
+    "No Java verify dispatch.",
+    "No D2 allocation or execution permit.",
+    "No entropy, seed, ledger, claim, journal, game initialization, gameplay or outcome exposure."
+  ],
+  "next_gate": "Implement the exact no-game manifest constructor/materializer against this budget, execute it once, preserve the original construction artifact, and independently audit the resulting canonical manifest before any Java verify.",
+  "official_counters_delta": 0
+}
