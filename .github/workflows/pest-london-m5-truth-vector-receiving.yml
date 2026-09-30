@@ -1,7 +1,7 @@
 name: Pest London M5 truth to predicate-vector receiving
 on:
   push:
-    branches: ["pest/london-m5-truth-vector-receiving-20260929"]
+    branches: ["pest/london-m5-truth-vector-receiving-successor-20260930"]
     paths: [".github/workflows/pest-london-m5-truth-vector-receiving.yml"]
 permissions:
   contents: read
@@ -23,10 +23,10 @@ jobs:
           set -euo pipefail
           OUT=build/reports/pest-london-m5-truth-receiving
           mkdir -p "$OUT"
-          test "$(git rev-parse HEAD^)" = "6184ccf3582274cf5981130015d6311940fc707b"
+          test "$(git rev-parse HEAD^)" = "45bd364facec9c0eeeabadc612afde05700198ae"\n          test "$(git rev-parse HEAD^^)" = "95c3f2baeac19a811928a53816edea08a0d83624"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt)" = "bb8e2247dc64a64403094c691d83b8eed53048bd"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceiving.kt)" = "1936f537b737fb1b839e53fae0a727aab7a0f0ab"
-          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceivingTest.kt)" = "1de0a33f82f4ac8e308520c68d615b8d1c5fb795"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceivingTest.kt)" = "6261fcc2bdfda526de12feac421dfcc842fbaf77"
           test "$(git hash-object docs/experiments/pest-control/london-m5-truth-vector-receiving-budget-20260929.json)" = "9a65b890f2444f335ef3c403bc3066608d4231a0"
           test "$(git hash-object docs/experiments/pest-control/evidence/london-m5-atomic-comparator-36531232867-original-audit.json)" = "f8b0e9129e6c811a40b600d3666d01a8c90b0d9f"
           test "$(git hash-object docs/experiments/pest-control/evidence/london-predicate-vector-36496673330-original-audit.json)" = "3cd8cf75468927625f51f85e4644a525f7486091"
