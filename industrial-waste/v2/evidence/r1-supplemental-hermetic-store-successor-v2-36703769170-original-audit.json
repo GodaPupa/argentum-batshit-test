@@ -1,0 +1,57 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-store-successor-v2-36703769170-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36703769170,
+  "job_id":109849076740,
+  "artifact_id":11091595655,
+  "artifact_sha256":"700568ce34be4194b04d50c9fb99e35eaed64d015d6ce987d48563024b3f666c",
+  "head":"6dcf36c53c0b2db2e9ee95e7676cb524b928cab9",
+  "reviewed_implementation_commit":"3864d546b85598175b26111e1b17d893e0aa11d2",
+  "implementation_review_commit":"f2b66f887652b7df7090e1b1d90b4d838f5d88da",
+  "integrity":{
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "zip_members":9,
+    "source_workflow_review_marker_binding":"passed"
+  },
+  "accepted_store_restore":{
+    "receipt_sha256":"5e71b168321c37364240f880124d1e05adf904ca8a2095349e720ea034b33874",
+    "outer_artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b",
+    "archive_sha256":"b686ca26e715ba965a9156c455a6fba8c0f80f8d55883fc9b85285d4bb0b0b23",
+    "manifest_sha256":"8e427eb24c5c3043dab37abb681b0d3caf5243f4cb9357e1d196a92523ae9c0e",
+    "files":1272,
+    "source_inputs_read_only":true
+  },
+  "execution":{
+    "platform_binding":"passed",
+    "tracked_input_inventory_written":true,
+    "first_gradle_launcher_started":true,
+    "gradle_daemon_started":true,
+    "gradle_test_worker_started":false,
+    "fixed_worker_tests_executed":0,
+    "runtime_graph_emitted":false,
+    "offline_repeat_started":false,
+    "class_census_started":false,
+    "first_launch_offline":true,
+    "launcher_java_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+    "daemon_java_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d"
+  },
+  "failure":{
+    "classification":"INCOMPLETE_PREFLIGHT_INIT_SCRIPT_ROOT_PROJECT_SCOPE",
+    "stage":"first offline Gradle configuration before :ai:test execution",
+    "cause":"r1-supplemental-hermetic-capture.init.gradle used rootProject.findProject(\":ai\") from init-script scope. The build settings explicitly include :ai, but this lookup returned null and raised missing :ai project before task execution.",
+    "behavioral_failure":false
+  },
+  "decision":"INCOMPLETE_NO_SUPPLEMENTAL_CAPTURE_AUTHORITY_INIT_SCRIPT_SCOPE_BLOCKER",
+  "accepted_scope":[
+    "The exact accepted dependency store reconstructs successfully and the first launch is genuinely offline under the accepted image/Java bytes.",
+    "The Gradle launcher and single-use daemon process identities are preserved as pre-worker evidence."
+  ],
+  "limits":[
+    "No test worker, fixed-worker behavior, runtime graph, class census, offline-repeat equivalence or supplemental capture authority.",
+    "Do not rerun this implementation unchanged.",
+    "No expected manifest, sealed launch, claim, allocation, seed or gameplay authority."
+  ],
+  "next_gate":"Change only the init-script project lookup to the Gradle-owned root project, independently review that exact source/workflow successor, then dispatch one fresh store-backed supplemental capture original.",
+  "official_counters_delta":0
+}
