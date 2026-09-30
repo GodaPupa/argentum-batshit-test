@@ -1,0 +1,48 @@
+{
+  "schema":"sphinx-stage-e-current-trusted-replay-36724539740-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36724539740,
+  "job_id":109917903909,
+  "artifact_id":11102810551,
+  "artifact_sha256":"90e24182e6635a17b59f06afd0d7bcdeb21973d81253a14d2e7e22f277d21f25",
+  "head":"aff9935cd95af5f55e3f681f1643ade707758710",
+  "parent":"02d338b3eb3626a5c40c0187c65cbe39201a95fe",
+  "accepted_parent":"bbcb15f085c9ff1fcac25608505ce8d23906abd9",
+  "pins":{
+    "budget":"151a64cdd6767a3a4442e5732680e81c79cdd59d",
+    "whole_actor":"0e5a21429c367355c0951c7a3a367495a96a161d",
+    "accepted_transition_journal":"63efac3d9321d658f9590ffbab689a187516487c",
+    "trusted_transition_file":"6671a492891d6dc41db6dcc6de6244918872c611",
+    "replay_test":"d57d8f2f0407f3f7b6a8a3f561d53d832f28cb20",
+    "workflow":"6e436663a8266d1b2e86584ed787608d590ff61a"
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":12,
+    "source_parent_binding":"passed",
+    "freshness":"all five classes executed with --rerun-tasks --no-build-cache and preserved immediately",
+    "replay_xml_sha256":"4a20a834eec43891f9125b7fdb59e25c9a32ce2792f8ff8ec050b88e875c635b"
+  },
+  "result":{
+    "accepted_transition_journal":{"tests":2,"passes":2,"failures":0,"errors":0,"skipped":0},
+    "forced_empty_blockers_regression":{"tests":2,"passes":2},
+    "forced_empty_attackers_regression":{"tests":2,"passes":2},
+    "unique_pass_priority_regression":{"tests":2,"passes":2},
+    "multicast_discriminator_regression":{"tests":2,"passes":2}
+  },
+  "decision":"ACCEPTED_CURRENT_TRUSTED_ACCEPTED_TRANSITION_REPLAY_SUBSTRATE_ONLY",
+  "accepted_scope":[
+    "Current-source durable accepted-transition files support create-new, append+force, reopen, hash-chain verification, state-continuity replay and drift rejection for the two accepted real-engine Ponder reorder/shuffle traces.",
+    "The already-accepted forced-empty blockers/attackers, unique-pass priority and bounded multi-cast discriminator seams remain clean."
+  ],
+  "limits":[
+    "No nonempty attacker or blocker ranking.",
+    "No multiple-cast ranking beyond the accepted discriminator.",
+    "No general whole-game runner, collector, opponent package, Stage-E freeze/admission, seed, allocation or official gameplay authority.",
+    "Run 36724539740 is consumed and must not be rerun or replaced."
+  ],
+  "next_gate":"Advance the smallest remaining whole-actor action-selection surface or construct the separately reviewed trusted whole-game runner/collector boundary required before prospective Stage-E freeze.",
+  "official_counters_delta":0
+}
