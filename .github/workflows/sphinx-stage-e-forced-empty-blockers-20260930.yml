@@ -1,0 +1,63 @@
+name: Sphinx Stage-E forced-empty blockers receiving
+on:
+  push:
+    branches: ["sphinx/forced-empty-blockers-20260930"]
+    paths: [".github/workflows/sphinx-stage-e-forced-empty-blockers-20260930.yml"]
+permissions: {contents: read}
+jobs:
+  receiving:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 5}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact bounded source and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/sphinx-stage-e-forced-empty-blockers
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD~4)" = "44cc8b5242b37f141ef2c179e4770d08e5403567"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "0e5a21429c367355c0951c7a3a367495a96a161d"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEForcedEmptyBlockersReceivingTest.kt)" = "027fc80a3a67f39c02949eba8eeabf1bfe81526b"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEForcedEmptyAttackersReceivingTest.kt)" = "4c2fdbc3c408822dda64216c3ad91882bd81b6c1"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEUniquePassPriorityReceivingTest.kt)" = "d7a141cf2be33dd5eed826aa7bb52460c66a5209"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEMultiCastDiscriminatorReceivingTest.kt)" = "6b794b196d4ff65ab3a7fff5f14febb8f310ab35"
+          test "$(git hash-object sphinx-approach/STAGE_E_FORCED_EMPTY_BLOCKERS_BUDGET_20260930.json)" = "5c5280a3a3385c83915623c1c89413640c79218c"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git rev-parse HEAD~2
+            git rev-parse HEAD~3
+            git rev-parse HEAD~4
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEForcedEmptyBlockersReceivingTest.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEForcedEmptyAttackersReceivingTest.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEUniquePassPriorityReceivingTest.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEMultiCastDiscriminatorReceivingTest.kt
+            git hash-object sphinx-approach/STAGE_E_FORCED_EMPTY_BLOCKERS_BUDGET_20260930.json
+            git hash-object .github/workflows/sphinx-stage-e-forced-empty-blockers-20260930.yml
+            git status --porcelain
+          } > "$OUT/source.txt"
+      - name: Execute exact bounded new seam and accepted regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/sphinx-stage-e-forced-empty-blockers
+          for cls in             SphinxStageEForcedEmptyBlockersReceivingTest             SphinxStageEForcedEmptyAttackersReceivingTest             SphinxStageEUniquePassPriorityReceivingTest             SphinxStageEMultiCastDiscriminatorReceivingTest
+          do
+            just test-class "$cls" --rerun-tasks --no-build-cache --console=plain 2>&1 | tee "$OUT/$cls.log"
+            cp "gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.$cls.xml" "$OUT/$cls.xml"
+          done
+      - name: Preserve exact receiving original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-stage-e-forced-empty-blockers-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-stage-e-forced-empty-blockers/
+          if-no-files-found: error
+          retention-days: 90
