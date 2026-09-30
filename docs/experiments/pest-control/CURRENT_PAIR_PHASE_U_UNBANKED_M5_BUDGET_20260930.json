@@ -1,0 +1,45 @@
+{
+  "schema":"pest-current-pair-phase-u-unbanked-m5-budget-v1",
+  "date_utc":"2026-09-30",
+  "behavioral_design_review_commit":"2b9aced72398da74378646139b3a399e2e207485",
+  "accepted_static_bank":{
+    "run":36677360891,
+    "artifact":11080047971,
+    "artifact_sha256":"75d387fbcc39073ab2e18e491e7f3d510bc0bb225044c4ef94bd3238a8e81cf5",
+    "unbanked_atoms_sha256":"a00aef9df49106a2611079ece2824bf4e97d40c7e89207b16bc1a9e05d7ae287",
+    "pest_atoms":692,
+    "monster_atoms":0,
+    "audit_commit":"09f1d7977f322f291f70f76536ffabaa04f5858e"
+  },
+  "frozen_inputs":{
+    "pest_main_sha256":"7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "pest_source_blob":"e8a4347063d7d1424a5f90e5fdd9b0cc3b104de3",
+    "raw_controller_blob":"4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+    "worklist_constructor_blob":"f4491eea9cca71b62e179ca34b1ef4b2004acd92",
+    "comparator_test_blob":"9ee17e3afceb094e5f0465c36ed6be7017aabf06",
+    "expected_worklist_sha256":"2174410ee36dc0e74d0d7f4335606de7236aa845ef43bab409259a3056133738"
+  },
+  "scope":[
+    "consume the exact accepted static-bank artifact and extract only the frozen unbanked-atoms.json",
+    "construct exactly one deterministic real seven-card Pest representative for each of the 692 exact atom keys",
+    "for each atom compare the frozen raw controller M2/M5 result on that real representative to an atom-only certificate built only from the atom physical lands, early spell and M2 Generous Ent fact",
+    "emit a 692-row truth supplement only if every raw/certificate comparison agrees and both sides reproduce the frozen M2 flag"
+  ],
+  "acceptance":[
+    "worklist has exactly 692 unique atom rows and exact SHA-256 2174410ee36dc0e74d0d7f4335606de7236aa845ef43bab409259a3056133738",
+    "one fresh comparator test executes with --rerun-tasks --no-build-cache",
+    "692 atoms compared, zero mismatches",
+    "truth supplement contains exactly the frozen 692 atoms and assigns truth only after zero mismatches",
+    "original XML, worklist, comparison summary, truth supplement and source bindings are preserved"
+  ],
+  "prohibited":[
+    "no rerun of the consumed 6850 Monster raw M5 comparator",
+    "no keep/mulligan or bottom-card decision",
+    "no default truth for a missing atom",
+    "no hidden library identity/order input to the certificate",
+    "no seed, allocation, claim, game initialization or gameplay"
+  ],
+  "authority_if_clean":"PEST_692_M5_ATOM_TRUTH_SUPPLEMENT_CANDIDATE_ONLY",
+  "next_gate":"Audit the Phase U original exactly once. If clean, accept only the 692-row M5 truth supplement, rebind it into the lawful M5 receiver, then freeze Phase B finite keep-bottom comparison.",
+  "official_counters_delta":0
+}
