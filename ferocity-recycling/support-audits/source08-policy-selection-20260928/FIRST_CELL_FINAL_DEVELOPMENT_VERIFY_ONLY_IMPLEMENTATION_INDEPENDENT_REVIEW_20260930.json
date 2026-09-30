@@ -1,0 +1,41 @@
+{
+  "schema":"ferocity-final-development-verify-only-implementation-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"e90a9bffb4d722a0655c08f65f07997befe568cb",
+  "budget_blob":"35beac604ad5b9c0d8c6f7d6dc91792bc4047244",
+  "restore_helper_blob":"dd001c437f627b1615ccb590f2331589d4161f72",
+  "workflow_blob":"748769bd9f0b59a5cefbc871c03bc1cd45d562d8",
+  "accepted_manifest_review_commit":"274e660066d80781bbfb58b381a7c429a18e312a",
+  "manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+  "decision":"ACCEPT_IMPLEMENTATION_FOR_ONE_VERIFY_ONLY_JAVA_ORIGINAL",
+  "review":{
+    "exact_digest_pinned_watchdog_container":"PASS",
+    "exact_current_watchdog_python_path_and_bytes":"PASS",
+    "exact_manifest_artifact_whole_zip_binding":"PASS",
+    "canonical_repository_path_recreated_without_symlink":"PASS",
+    "source08_runtime_and_jdk_restore_exact_path_token":"PASS",
+    "exact_java_and_classpath_hash_preconditions":"PASS",
+    "single_java_entrypoint_and_operation_verify_only":"PASS",
+    "no_allocate_or_run_one":"PASS",
+    "pre_post_D2_state_absence_assertions":"PASS",
+    "post_verify_input_rehash":"PASS",
+    "successful_verify_not_chained_to_allocation":"PASS"
+  },
+  "findings":[
+    "The workflow recreates the manifest's exact canonical repository path as a physical copy, so the unchanged source08 verifier's no-alias repository check remains meaningful.",
+    "The accepted source08 restoration helper reconstructs the exact 56-entry runtime and exact Temurin Java path token before any Java invocation; its downloaded JDK archive is accepted only by exact byte count and SHA-256.",
+    "The only Java command permitted by the workflow is FerocityDevelopmentCli verify with the exact accepted manifest SHA-256.",
+    "The current watchdog Python executable is independently rehashed before and after verify inside the exact digest-pinned current watchdog container.",
+    "A successful result can establish only VERIFIED_INPUTS_NO_ENTROPY_NO_GAME. Allocation remains a separate future protocol gate."
+  ],
+  "accepted_scope":[
+    "Create one marker-only execution branch and dispatch exactly one verify-only Java original.",
+    "Audit its artifact exactly once before any allocation decision."
+  ],
+  "explicit_non_authority":[
+    "No allocate or run-one.",
+    "No entropy, official seed, ledger, allocation, claim, journal, game initialization, gameplay or outcome authority."
+  ],
+  "next_gate":"Dispatch one verify-only original and audit exact source/workflow/manifest/runtime/Java/watchdog binding plus zero-side-effect result.",
+  "official_counters_delta":0
+}
