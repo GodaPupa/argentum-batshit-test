@@ -1,0 +1,34 @@
+{
+  "schema":"ferocity-watchdog-current-runtime-requalification-plan-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_commit":"1cdc8562d11fc76dea52a56db3805b7134b73640",
+  "decision":"ACCEPT_FIXED_PROCESS_REQUALIFICATION_DESIGN_ONLY",
+  "checks":{
+    "unchanged_source08_watchdog":"PASS",
+    "exact_9_process_plus_4_resource_case_scope":"PASS",
+    "digest_pinned_container":"PASS",
+    "python_identity_binding":"PASS",
+    "source_before_after_guard":"PASS",
+    "self_contained_verifier_evidence_package":"PASS",
+    "java_gradle_excluded":"PASS",
+    "entropy_allocation_game_excluded":"PASS",
+    "execution_separated_from_implementation_review":"PASS"
+  },
+  "findings":[
+    "The historical 13/13 watchdog behavior need not be weakened or reinterpreted; only its nonportable Python runtime identity must be refreshed.",
+    "Running exactly the unchanged source08 9 process fixtures plus 4 resource fixtures is a bounded behavioral requalification, not research gameplay.",
+    "The digest-pinned container removes the ubuntu-latest Python drift that blocked direct reuse of the historical package.",
+    "The final D2 verifier must use the exact same container digest and exact requalified Python path/bytes; requalification alone does not grant D2 authority.",
+    "The implementation must preserve a normal-exit PROCESS_SUPERVISION_ONLY claim and bind it through author/run/acceptance receipts exactly as the existing verifier expects."
+  ],
+  "accepted_scope":[
+    "Implement the exact plan on a non-executing implementation branch.",
+    "The workflow trigger must name a separate execution branch so implementation bytes can be reviewed before any tests run."
+  ],
+  "explicit_non_authority":[
+    "No watchdog requalification has executed.",
+    "No final D2 verify, Java, Gradle, entropy, allocation, game initialization, gameplay or outcome exposure is authorized."
+  ],
+  "next_gate":"Implement the harness, budget and execution-branch workflow; independently review their exact Git blobs and fail-closed rules before creating the execution trigger commit.",
+  "official_counters_delta":0
+}
