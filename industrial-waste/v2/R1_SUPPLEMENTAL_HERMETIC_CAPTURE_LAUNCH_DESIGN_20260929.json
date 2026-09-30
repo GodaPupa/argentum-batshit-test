@@ -1,0 +1,124 @@
+{
+  "schema": "industrial-r1-supplemental-hermetic-capture-launch-design-v1",
+  "date_utc": "2026-09-29",
+  "status": "PROPOSED_NON_EXECUTING_REVIEW_REQUIRED",
+  "basis": {
+    "complete_runtime_preflight": "industrial-waste/v2/evidence/complete-runtime-candidate-construction-preflight-20260929.json",
+    "complete_runtime_preflight_blob": "21f9134f168c734098e65db38da4ecdd010088e1",
+    "accepted_composite_run": 36524059703,
+    "accepted_composite_artifact": 11013639040,
+    "accepted_composite_digest": "bcea7354f8468c9951525e8ffac87c50d1c507eade59750e6fc44e8ed912dfa2",
+    "source_commit": "de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+    "source_tree": "d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+    "validator_blob": "be1f53184c9bda880539dc589a921cef130cd1a3",
+    "boundary_proposal_blob": "a2161dda29fec1ac9e59f8a9e6b2c37b4d5a09cc"
+  },
+  "objective": "Close exactly the five uncaptured completeness boundaries before constructing any new R1 expected manifest.",
+  "closure_design": {
+    "archive_member_inventory": {
+      "requirement": "Enumerate every entry of every ordered runtime archive, not just resolved class-bearing artifacts.",
+      "capture": [
+        "ordered effective classpath entry index and immutable whole-archive SHA-256",
+        "for every archive: normalized member path, entry type, compression method, uncompressed size, compressed size when applicable, CRC when applicable, and SHA-256 of uncompressed member bytes",
+        "duplicate member paths across archives with first-visible/shadowed disposition under effective classpath order",
+        "directories, resources, service descriptors, META-INF entries, generated/synthetic class files and non-class payloads",
+        "standalone runtime directories recursively with relative path, file type, size and SHA-256"
+      ],
+      "fail_closed": "Any unreadable archive, duplicate whose visibility cannot be resolved, missing member digest or unenumerated runtime directory blocks the capture."
+    },
+    "complete_build_inputs": {
+      "requirement": "Bind the complete source-to-runtime build input universe used to produce the captured runtime.",
+      "capture": [
+        "settings.gradle/settings.gradle.kts and every included build declaration",
+        "all build.gradle/build.gradle.kts files participating in the build graph",
+        "buildSrc and convention/plugin source trees",
+        "gradle wrapper properties plus exact Gradle distribution SHA-256",
+        "version catalogs, dependency lockfiles, dependency-verification metadata and repository declarations",
+        "compiler/plugin coordinates and exact resolved artifacts",
+        "effective Kotlin/JVM/compiler flags and toolchain selection",
+        "generated-source/resource inputs and generators",
+        "explicit allowlisted environment/build properties that affect resolution or compilation"
+      ],
+      "fail_closed": "Any dynamically consulted build input outside the captured inventory blocks manifest construction."
+    },
+    "immutable_platform_identity": {
+      "requirement": "Execute the supplemental capture only inside a predeclared immutable container/VM image addressed by digest.",
+      "pre_execution_binding": [
+        "image reference plus immutable image digest",
+        "architecture",
+        "Java executable path and SHA-256",
+        "kernel/host interface facts required by the boundary proposal",
+        "filesystem/mount mode assumptions"
+      ],
+      "supplemental_capture": [
+        "os-release/runtime library identities",
+        "Python executable and closure identities already required by prior evidence",
+        "locale/timezone/encoding inputs if observable by the runtime"
+      ],
+      "fail_closed": "A mutable tag without immutable digest, or image/Java mismatch at runtime, aborts before build/test launch."
+    },
+    "complete_process_launch_path": {
+      "requirement": "Preserve the ordered launcher-to-daemon-to-worker path and exact process-visible inputs.",
+      "capture": [
+        "launcher executable/script bytes and SHA-256",
+        "canonical argv vector for launcher, Gradle daemon and test worker",
+        "working directory for each process",
+        "exact allowlisted environment key/value map after redaction-safe normalization; unexpected keys fail unless explicitly non-semantic",
+        "ordered classpath/module-path for daemon and worker",
+        "JVM args/system properties",
+        "mount mapping with source identity, target path and read/write mode",
+        "parent-child process topology with executable hashes"
+      ],
+      "fail_closed": "Unexpected process, executable, mount, environment input, argv mutation or classpath mutation blocks acceptance."
+    },
+    "generated_hidden_class_policy": {
+      "requirement": "The independent review must choose exactly one policy accepted by the existing validator: ELIMINATED or PINNED_GENERATOR_INPUTS.",
+      "eliminated": {
+        "condition": "Demonstrate that no generated/hidden runtime classes relevant to the tested boundary are created.",
+        "evidence": "instrumented class-definition census plus repeat run proving zero generated/hidden relevant classes"
+      },
+      "pinned_generator_inputs": {
+        "condition": "When generated/hidden classes exist, bind every generator implementation and semantic input necessary to reproduce them.",
+        "evidence": [
+          "generator/agent/compiler implementation hashes",
+          "ordered inputs and flags",
+          "generated class census including defining loader, logical origin and resulting byte hash whenever bytes are retrievable",
+          "deterministic repeat comparison or explicit validator-approved equivalence rule for VM-hidden classes whose names are nondeterministic"
+        ]
+      },
+      "fail_closed": "No generated/hidden class family may be silently excluded."
+    }
+  },
+  "execution_shape": {
+    "phase_0": "Independent design review only. No JVM or capture execution.",
+    "phase_1": "After design acceptance, predeclare immutable platform image and exact capture workflow/source bytes.",
+    "phase_2": "One fresh single-source supplemental hermetic capture; preserve raw inventories before any validator decision.",
+    "phase_3": "Independent audit of the original artifact for binding, completeness, digests and five closure requirements.",
+    "phase_4": "Only if clean, construct a complete expected manifest from captured bytes and validate it prospectively.",
+    "phase_5": "Prepared-worker / combined-receiving / R1 permit gates remain separate and do not inherit automatically."
+  },
+  "preservation_requirements": [
+    "source binding and parent binding",
+    "raw archive/member inventories",
+    "raw build-input inventory",
+    "raw platform/process/mount/environment inventory",
+    "generated/hidden class policy evidence",
+    "canonicalized derived manifest candidate",
+    "artifact ZIP digest and CRC",
+    "all validator stdout/stderr and machine-readable receipts"
+  ],
+  "prohibitions": [
+    "no placeholder or repurposed digest",
+    "no schema-only pass represented as semantic completeness",
+    "no prepared-worker or combined-receiving authority",
+    "no R1 permit, claim, seed, allocation or gameplay",
+    "no official counters"
+  ],
+  "acceptance_for_design_review": [
+    "Reviewer confirms every one of the five preflight gaps has an explicit capture and fail-closed rule.",
+    "Reviewer confirms no required archive member, build input, platform identity, launch-path input, or generated/hidden class family is silently outside scope.",
+    "Reviewer chooses/approves the generated-hidden-class policy before execution.",
+    "Any required changes produce a new design version before a capture is dispatched."
+  ],
+  "official_counters_delta": 0
+}
