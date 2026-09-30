@@ -1,0 +1,33 @@
+{
+  "schema":"industrial-r1-vm-hidden-repeat-equivalence-rule-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_commit":"e966cc30b3b08bc78eee52d23c90c1653ec25f7e",
+  "reviewed_path":"industrial-waste/v2/R1_VM_HIDDEN_REPEAT_EQUIVALENCE_RULE_20260930.json",
+  "decision":"ACCEPT_VM_HIDDEN_REPEAT_EQUIVALENCE_RULE_FOR_ONE_FRESH_SUCCESSOR",
+  "review":{
+    "accepted_design_explicitly_permits_validator_approved_vm_hidden_equivalence":"PASS",
+    "unique_generated_hidden_family_set_remains_exact":"PASS",
+    "non_vm_generated_multiplicity_remains_exact":"PASS",
+    "vm_lookup_define_tolerance_is_source_scoped":"PASS",
+    "logical_source_platform_store_runtime_graph_and_worker_guards_preserved":"PASS",
+    "raw_classload_and_census_preservation_required":"PASS",
+    "prior_v5_incomplete_not_reinterpreted":"PASS",
+    "official_authority_not_broadened":"PASS"
+  },
+  "findings":[
+    "The rule is narrower than the v5 all-row normalized digest: it changes only the accepted comparison semantics for JVM-internal __JVM_LookupDefineClass__ generated/hidden multiplicity.",
+    "Every non-VM generated/hidden family still requires exact repeat multiplicity and every generated/hidden normalized family key must exist in both repeats.",
+    "The rule is conditional on byte-identical source, platform/tool identities, accepted dependency store, ordered runtime graph and identical fixed-worker result.",
+    "Ordinary lazy class-load ordering/count differences are preserved but remain covered by complete runtime/platform inventories rather than being promoted into generated/hidden authority."
+  ],
+  "accepted_scope":[
+    "Implement this exact rule in one successor capture validator while leaving source, platform, store, worker and no-official-game constraints unchanged.",
+    "One fresh successor may be dispatched only after exact implementation bytes are independently reviewed."
+  ],
+  "explicit_non_authority":[
+    "No acceptance of run 36731156370.",
+    "No expected manifest, prepared worker, sealed launch, R1 permit, claim, seed, allocation or gameplay authority."
+  ],
+  "next_gate":"Implement the accepted rule in the supplemental capture source and source-bound workflow/budget, independently review exact bytes, then dispatch one fresh successor original.",
+  "official_counters_delta":0
+}
