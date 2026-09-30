@@ -1,0 +1,34 @@
+{
+  "schema": "industrial-r1-hermetic-platform-probe-budget-v1",
+  "date_utc": "2026-09-29",
+  "source_commit": "de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+  "source_tree": "d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+  "accepted_design_blob": "2d23710bc63b7b29d4be97acd4f3927cf23f2d00",
+  "accepted_design_review_blob": "93163d9ea12ca7dc1182d306f8b293158677c0fa",
+  "platform": {
+    "image": "catthehacker/ubuntu@sha256:5dff02975654f16f1d1ab6fd04ff88e326a30f39eba177d85d3b4945e6fde62f",
+    "image_digest": "sha256:5dff02975654f16f1d1ab6fd04ff88e326a30f39eba177d85d3b4945e6fde62f",
+    "architecture": "linux/amd64",
+    "tag_provenance": "act-22.04"
+  },
+  "purpose": "Seed-free platform qualification only. Discover and bind immutable in-image Java 21, Python, Git, Bash and filesystem/mount identities before any Industrial supplemental capture.",
+  "acceptance": [
+    "job executes inside the exact immutable image digest on linux/amd64",
+    "checkout is clean and bound to this source",
+    "bash, git, python3 and sha256sum are present and hashed",
+    "at least one in-image Java 21 executable is present and hashed without downloading or installing Java",
+    "os-release, uname, locale, timezone, environment allowlist and mount table are preserved",
+    "no Gradle build, test, runtime capture, official seed read, claim, allocation or game initialization occurs"
+  ],
+  "prohibited": [
+    "no apt/yum/apk/package installation",
+    "no setup-java or downloaded JDK",
+    "no Gradle invocation",
+    "no project JVM/test execution",
+    "no expected manifest construction",
+    "no prepared-worker/R1 authority",
+    "no official seed/allocation/gameplay"
+  ],
+  "authority_if_clean": "PLATFORM_CANDIDATE_FOR_INDEPENDENT_REVIEW_ONLY",
+  "official_counters_delta": 0
+}
