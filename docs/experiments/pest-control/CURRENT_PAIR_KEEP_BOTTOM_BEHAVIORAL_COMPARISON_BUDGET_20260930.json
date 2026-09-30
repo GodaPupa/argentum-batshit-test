@@ -1,0 +1,58 @@
+{
+  "schema":"pest-current-pair-keep-bottom-behavioral-comparison-budget-v1",
+  "date_utc":"2026-09-30",
+  "accepted_bank":{
+    "run":36677360891,
+    "artifact":11080047971,
+    "artifact_sha256":"75d387fbcc39073ab2e18e491e7f3d510bc0bb225044c4ef94bd3238a8e81cf5",
+    "audit_commit":"09f1d7977f322f291f70f76536ffabaa04f5858e",
+    "bank_construction_sha256":"41b6c0266c39d57430e211198a77d9d0eec07548577db3556eadcfa67dbf6a06",
+    "unbanked_atoms_sha256":"a00aef9df49106a2611079ece2824bf4e97d40c7e89207b16bc1a9e05d7ae287",
+    "pest_name_multisets":71271,
+    "monster_name_multisets":882297,
+    "pest_unbanked_atoms":692,
+    "monster_unbanked_atoms":0
+  },
+  "current_authority":{
+    "integration_path":"docs/experiments/pest-control/tier-one-monster-c2-a2-current-prospective-integration-20260930.json",
+    "integration_blob":"7a1fd74d5c5a5eb9c709b471c87f64a7a1eb97a9",
+    "accepted_m5_rows":6850,
+    "vector_blob":"bb8e2247dc64a64403094c691d83b8eed53048bd",
+    "receiver_blob":"1936f537b737fb1b839e53fae0a727aab7a0f0ab"
+  },
+  "behavioral_scope":[
+    "Pest current keep/mulligan decision over every finite bank row for both play and draw starts.",
+    "Pest exact physical-card bottom identities for every declared bottom count and physical representative.",
+    "Monster current keep/mulligan decision and exact physical-card bottom identities over its complete finite bank for both starts.",
+    "Raw controller/oracle and lawful current actor are compared only on prospectively frozen rows and exact source identities."
+  ],
+  "unknown_pest_m5_protocol":{
+    "known_truth_rows":"Use only the already accepted 6850-row M5 truth authority.",
+    "unbanked_rows":692,
+    "rule":"Each unbanked atom remains null/unknown in lawful actor input until a separately preserved prospectively authorized raw-oracle observation for that exact atom is produced and audited.",
+    "prohibited":"No default false, default true, neighboring-key interpolation, library-order inference, or historical whole-controller promotion.",
+    "comparison_behavior":"Rows whose required M5 atom remains unknown must be reported as FAIL_CLOSED_UNKNOWN and cannot count as actor/oracle agreement."
+  },
+  "execution_shape":[
+    "Phase U: evaluate exactly the 692 frozen unbanked Pest atom keys with the frozen raw M5 oracle only; preserve an immutable truth supplement. No keep/bottom actor decision in this phase.",
+    "Audit Phase U once. Only accepted exact atom truths may extend the M5 receiving map.",
+    "Phase B: execute the finite Pest+Monster keep/bottom comparator over the exact frozen bank with all required M5 keys known; compare keep/mulligan plus ordered physical bottom IDs for play/draw starts.",
+    "Preserve source binding, bank identity, per-row result stream, summary, XML/logs and zero-official-counter receipt."
+  ],
+  "acceptance":[
+    "Every Monster bank row is compared.",
+    "Every Pest bank row is compared only after its required M5 atoms are either already accepted or accepted from Phase U.",
+    "Raw oracle and lawful actor agree on keep/mulligan and exact ordered physical bottom identities for every compared row.",
+    "No hidden-state field enters lawful actor inputs.",
+    "No unknown row is coerced or counted as a pass.",
+    "All original evidence is preserved for one-time audit."
+  ],
+  "prohibited":[
+    "no rerun of the consumed 6850 raw M5 comparator",
+    "no pair/C2-A2 admission from partial comparison",
+    "no seed allocation claim game initialization or gameplay"
+  ],
+  "authority_if_clean":"CURRENT_PAIR_KEEP_BOTTOM_BEHAVIORAL_EQUIVALENCE_CANDIDATE_ONLY",
+  "next_gate":"Independently review this exact two-phase finite comparison design before implementing or executing Phase U.",
+  "official_counters_delta":0
+}
