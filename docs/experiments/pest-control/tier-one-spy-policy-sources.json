@@ -1,0 +1,48 @@
+{
+  "schema": "pest-spy-policy-source-v1",
+  "status": "SEED_FREE_POLICY_CANDIDATE_RUNTIME_UNVERIFIED",
+  "base_source": "1ad4079b8fbdbc79ec5bb88dad343aad7d417f96",
+  "prior_code_source": "abfd806f6332c0da311e40b01c9d85eeb0962165",
+  "prior_code_path": "ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/SpyComboAdvisorModule.kt",
+  "prior_code_sha256": "e5f230989f8e3461a594578f56fa433d5a76d45cd8ce7835526f14537337500b",
+  "profile_id": "pest-spy-combo-policy-v1",
+  "protocol_id": "PEST_CONTROL_V10_VS_DR_DEJ96_SPY_COMBO_2026_09_15_PREBOARD_V1",
+  "opponent_main_sha256": "8a0ac71dd9873b001d22a4ea73286c75d448e24a1b517772f836d6dd5f2db97f",
+  "opponent_complete75_sha256": "d6fc701b272ff15bc2baf9ec5b2acdaf75566d780ff6d499efbac4aa77b19b15",
+  "fixed_regression_entropy": 88258681000784,
+  "allowed_for_official_sampling": false,
+  "code_sha256": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/CardAdvisor.kt": "7195131df096f4554f3953972c8d0cee73f37c10f430147aef302342a8b1e552",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt": "098557635cc8f9db53d777f76e64d038de2b5efeb299a14ac2e3c683683c9d68",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt": "fcb09eb3ca96b101ebd1d77b48528ba1d9862b32d305be74da1cf97f41446526",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt": "68807a9e124632e3c76140e48552381af31d92f65f6ae272e7a00a3acc217b8e",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/SpyComboAdvisorModule.kt": "65fb521ade52a15956c314486164351ebbe37e941e6e4cfc27002334eb75abda",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestSpyComboPolicy.kt": "7dd9b42dbb5ab154fa9fa695c7bf1f6ba248aa3f99e08726ccfd18194c1234a7",
+    "ai/src/test/kotlin/com/wingedsheep/ai/pestcontrol/PestSpyComboPolicyAuditTest.kt": "24de60ba408fbd33b2dcd5df178b051525366d1991c7d074d7788e8d9ef19f0b",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/ActivatedAbilityEnumerator.kt": "61e42436edb41218d23223a92a8c013d2bf6110e4699da9526e87db78131b818",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/legalactions/CompositeTapCostEnumerationTest.kt": "5517b72ea4f688b6babaf8f3e771ab1084b9e9574c3d1172ba9a0abb9a139708",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/ManaAbilityEnumerator.kt": "c0d081eb8951c9be7c3691ece6a9e1fa226e5a62f6bbe0a54a7bd4938def26f6"
+  },
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_actions_submitted": 0,
+  "outcome_exposure": 0,
+  "gameplay_ready": false,
+  "historical_matchup_results_transferred": false,
+  "source_review": "Coordinator source PASS for bounded validation after explicit modal/multitarget fallback guard; Kotlin runtime unverified",
+  "rejected_validation": {
+    "source_commit": "0d52052baddd3982d0c5acdadfc2a52a7382451a",
+    "workflow_run_id": 36091495389,
+    "receipt": "docs/experiments/pest-control/spy-policy-validation-failure-36091495389/receipt.json"
+  },
+  "rejected_validation_successor": {
+    "source_commit": "245ed48e9da4f4eb1bc553c7ec8c0b91cd3e2051",
+    "workflow_run_id": 36092918322,
+    "receipt": "docs/experiments/pest-control/spy-policy-validation-failure-36092918322/receipt.json"
+  },
+  "rejected_validation_fixture": {
+    "source_commit": "b98e1eb17f8478cb0bf847c418664804aaa005dd",
+    "workflow_run_id": 36094006493,
+    "receipt": "docs/experiments/pest-control/spy-policy-validation-failure-36094006493/receipt.json"
+  }
+}

@@ -505,9 +505,11 @@ class ActivatedAbilityEnumerator : ActionEnumerator {
                                     }
                                     is CostAtom.TapPermanents -> {
                                         tapCost = atom
+                                        // A separate {T} already spends this source's tap; it cannot
+                                        // also pay the creature/permanent tap leg of the same cost.
                                         tapTargets = context.costUtils.findAbilityTapTargets(
                                             state, playerId, atom.filter,
-                                            if (atom.excludeSelf) entityId else null
+                                            if (atom.excludeSelf || hasTapCost) entityId else null
                                         )
                                         if (tapTargets.size < atom.count) {
                                             costCanBePaid = false

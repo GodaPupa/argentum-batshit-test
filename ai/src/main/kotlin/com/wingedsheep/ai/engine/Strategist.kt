@@ -50,11 +50,13 @@ import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
 import com.wingedsheep.engine.state.components.stack.TargetsComponent
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
+import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Format
 import com.wingedsheep.sdk.core.ManaCost
 import com.wingedsheep.sdk.core.ManaSymbol
 import com.wingedsheep.sdk.core.Phase
 import com.wingedsheep.sdk.core.Step
+import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AdditionalCostPayment
 import com.wingedsheep.sdk.scripting.AlternativePaymentChoice
@@ -98,6 +100,7 @@ class Strategist(
      * `CastSpell: No valid targets available`" finding Phase 1 quantified and left open.
      */
     private val useMeaningfulFilter: Boolean = false,
+    private val considerAdvisedManaAbilities: Boolean = false,
     /** Phase 4b. How much search each decision may spend. */
     private val budgetPolicy: BudgetPolicy = LegacyBudgetPolicy,
     /**
@@ -243,7 +246,7 @@ class Strategist(
         }
 
         val pass = legalActions.find { it.actionType == "PassPriority" }
-        val affordable = expandXCostAbilities(state, preferKickerVariants(candidatesFrom(legalActions)), playerId)
+        val affordable = expandXCostAbilities(state, preferKickerVariants(candidatesFrom(state, legalActions)), playerId)
 
         if (affordable.isEmpty()) return pass ?: legalActions.first()
 
@@ -514,7 +517,7 @@ class Strategist(
             val here = StateProgress.digest(afterFirst)
             val continuations = expandXCostAbilities(
                 afterFirst,
-                preferKickerVariants(candidatesFrom(simulator.getLegalActions(afterFirst, playerId))),
+                preferKickerVariants(candidatesFrom(afterFirst, simulator.getLegalActions(afterFirst, playerId))),
                 playerId,
             ).filter { continuation ->
                 strategicActionSource(continuation.action) in initiallyAvailableSources
@@ -744,16 +747,10 @@ class Strategist(
         if (positionsActedFrom.size > POSITION_MEMORY) positionsActedFrom.removeFirst()
     }
 
-    /**
-     * The candidate actions worth scoring.
-     *
-     * Mana abilities are excluded either way: activating one on its own is never the AI's move —
-     * mana is produced as part of paying for something, by the engine's own auto-tap.
-     */
-    private fun candidatesFrom(legalActions: List<LegalAction>): List<LegalAction> =
-        if (useMeaningfulFilter) {
-            // The meaningful filter already removes ordinary mana abilities while retaining a
-            // sacrifice-for-mana action whose irreversible cost makes it a strategic choice.
+    /** Existing candidates plus explicitly advised mana abilities in an opt-in profile. */
+    private fun candidatesFrom(state: GameState, legalActions: List<LegalAction>): List<LegalAction> {
+        val baseline = if (useMeaningfulFilter) {
+            // Preserve the existing irreversible sacrifice-for-mana exception.
             MeaningfulActionFilter.filterMeaningful(legalActions).filter { it.affordable }
         } else {
             legalActions.filter {
@@ -762,6 +759,13 @@ class Strategist(
                     it.actionType != "PassPriority"
             }
         }
+        if (!considerAdvisedManaAbilities) return baseline
+        val existing = baseline.toSet()
+        return legalActions.filter { action ->
+            action in existing || (action.affordable && action.isManaAbility &&
+                resolveCardName(state, action)?.let(advisorRegistry::getAdvisor)?.strategicManaAbility == true)
+        }
+    }
 
     private fun handleCombatDeclaration(
         state: GameState,
@@ -2070,6 +2074,7 @@ class Strategist(
         if (TargetSelection.targetsAlreadyFilled(baseAction) != false) {
             return withSumGatedExilePayment(state, action, baseAction)
         }
+        advisedTargets(state, action, playerId, baseAction)?.let { return it }
         if (!budget.allowances.refineTargetsBySimulation && !forceTargetRefinement) {
             return heuristicTargets(state, action, playerId)
         }
@@ -2136,18 +2141,73 @@ class Strategist(
         )
     }
 
+    /**
+     * An advisor may rank the complete legal instance list before any search-budget truncation.
+     * Requirements and distinctness remain supplied by the engine. With no non-null advice,
+     * return null so every existing generic target path is unchanged.
+     */
+    private fun advisedTargets(
+        state: GameState, action: LegalAction, playerId: EntityId, baseAction: GameAction,
+    ): GameAction? {
+        if (action.modalEnumeration != null || TargetSelection.targetsAlreadyFilled(baseAction) != false) return null
+        val advisor = resolveCardName(state, action)?.let(advisorRegistry::getAdvisor) ?: return null
+        val infos = TargetSelection.fillableRequirements(action, useMeaningfulFilter) ?: return null
+        // This hook qualifies singleton slots only; all broader shapes retain generic handling.
+        if (infos.any { it.maxTargets != 1 || it.minTargets > 1 }) return null
+        if (infos.none { info -> info.validTargets.any { advisor.targetPreference(state, it, playerId) != null } }) {
+            return null
+        }
+        val chosen = mutableListOf<ChosenTarget>()
+        val used = mutableSetOf<EntityId>()
+        for (info in infos) {
+            val available = info.validTargets.filterNot { info.mustDifferFromEarlier && it in used }
+            val id = available.maxByOrNull {
+                advisor.targetPreference(state, it, playerId) ?: TargetSelection.rank(state, it, playerId, intents)
+            } ?: return null
+            chosen += TargetSelection.toChosenTarget(state, info, id, playerId)
+            used += id
+        }
+        return withSumGatedExilePayment(state, action, TargetSelection.applyTargets(baseAction, chosen))
+    }
+
     /** The cheap target pick — one heuristic choice per requirement, no simulation. */
     private fun heuristicTargets(
         state: GameState,
         action: LegalAction,
         playerId: EntityId,
-    ): com.wingedsheep.engine.core.GameAction = withSumGatedExilePayment(
-        state, action,
-        TargetSelection.fillHeuristically(
-            state, action.copy(action = withAutomaticPayments(state, action, playerId)), playerId,
-            fillPartialRequirements = useMeaningfulFilter, intents = intents
-        ),
-    )
+    ): GameAction {
+        val baseAction = withAutomaticPayments(state, action, playerId)
+        advisedTargets(state, action, playerId, baseAction)?.let { return it }
+        return withSumGatedExilePayment(
+            state, action,
+            TargetSelection.fillHeuristically(
+                state, action.copy(action = baseAction), playerId,
+                fillPartialRequirements = useMeaningfulFilter, intents = intents
+            ),
+        )
+    }
+
+    /** Choose among runtime-legal mana colors using only the acting player's own hand. */
+    private fun withAutomaticManaColorChoice(
+        state: GameState, action: LegalAction, playerId: EntityId, gameAction: GameAction,
+    ): GameAction {
+        val activation = gameAction as? ActivateAbility ?: return gameAction
+        if (!considerAdvisedManaAbilities || !action.isManaAbility ||
+            resolveCardName(state, action)?.let(advisorRegistry::getAdvisor)?.strategicManaAbility != true ||
+            !action.requiresManaColorChoice || activation.manaColorChoice != null
+        ) return gameAction
+        val allowed = action.availableManaColors?.takeIf { it.isNotEmpty() } ?: Color.entries.toList()
+        val hand = state.getZone(playerId, Zone.HAND)
+        val chosen = allowed.maxByOrNull { color ->
+            hand.sumOf { id ->
+                val card = state.getEntity(id)?.get<CardComponent>() ?: return@sumOf 0
+                val pip = "{${color.symbol}}"
+                card.manaCost.toString().windowed(pip.length).count { it == pip } +
+                    if (color in card.colors) 1 else 0
+            }
+        } ?: return gameAction
+        return activation.copy(manaColorChoice = chosen)
+    }
 
     /**
      * Materialize deterministic payment choices carried by [LegalAction.additionalCostInfo].
@@ -2163,7 +2223,8 @@ class Strategist(
         action: LegalAction,
         playerId: EntityId,
     ): GameAction {
-        val gameAction = withAutomaticTapForGeneric(action, withAutomaticConvoke(action))
+        val paymentBase = withAutomaticTapForGeneric(action, withAutomaticConvoke(action))
+        val gameAction = withAutomaticManaColorChoice(state, action, playerId, paymentBase)
         val info = action.additionalCostInfo ?: return gameAction
         val existing = when (gameAction) {
             is CastSpell -> gameAction.additionalCostPayment
@@ -2174,6 +2235,27 @@ class Strategist(
             is CastSpell -> gameAction.copy(additionalCostPayment = payment)
             is ActivateAbility -> gameAction.copy(costPayment = payment)
             else -> gameAction
+        }
+
+        val paymentAdvisor = resolveCardName(state, action)?.let(advisorRegistry::getAdvisor)
+        val advisedPool = when (info.costType) {
+            "SacrificePermanent" -> info.validSacrificeTargets to info.sacrificeCount
+            "BouncePermanent" -> info.validBounceTargets to info.bounceCount
+            else -> null
+        }
+        if (paymentAdvisor != null && advisedPool != null &&
+            advisedPool.first.any { paymentAdvisor.costPaymentPreference(state, it, playerId, info.costType) != null }
+        ) {
+            // Rank actual instances, preserving duplicates of the same card and legal-list ties.
+            val selected = advisedPool.first.sortedByDescending {
+                paymentAdvisor.costPaymentPreference(state, it, playerId, info.costType) ?: Double.NEGATIVE_INFINITY
+            }.take(advisedPool.second)
+            if (selected.size == advisedPool.second) {
+                return when (info.costType) {
+                    "SacrificePermanent" -> attach(existing.copy(sacrificedPermanents = selected))
+                    else -> attach(existing.copy(bouncedPermanents = selected))
+                }
+            }
         }
 
         // A one-card discard or sacrifice can encode most of the line's value: sacrificing the

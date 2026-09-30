@@ -250,9 +250,11 @@ class ManaAbilityEnumerator : ActionEnumerator {
                                     }
                                     is CostAtom.TapPermanents -> {
                                         tapCost = atom
+                                        // The separate {T} already spends the source's tap.
+                                        // It cannot also pay this additional tap-permanent leg.
                                         tapTargets = context.costUtils.findAbilityTapTargets(
                                             state, playerId, atom.filter,
-                                            if (atom.excludeSelf) entityId else null
+                                            if (atom.excludeSelf || hasTapCost) entityId else null
                                         )
                                         if (tapTargets.size < atom.count) {
                                             affordable = false; break

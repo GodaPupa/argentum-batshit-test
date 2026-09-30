@@ -375,6 +375,8 @@ data class AiProfile(
      * hand, and it is why this gets a real arena run rather than a puzzle column.
      */
     val priceLandsInHandAsMana: Boolean = false,
+    /** Evaluate explicitly advised mana abilities; existing profiles remain off. */
+    val considerAdvisedManaAbilities: Boolean = false,
     /** Non-null profiles may only be selected automatically for this set. Arena selection stays explicit. */
     val restrictedToSet: String? = null,
 ) {

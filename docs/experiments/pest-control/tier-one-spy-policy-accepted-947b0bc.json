@@ -1,0 +1,187 @@
+{
+  "schema": "pest-spy-policy-capability-audit-v1",
+  "status": "ACCEPTED_SEED_FREE_POLICY_CAPABILITY_NOT_OFFICIAL_ADMISSION",
+  "scope": "BOUNDED_SEED_FREE_POLICY_CAPABILITY_ONLY",
+  "validated_source_commit": "947b0bc63310b05ceca7c8396d44a0a347878619",
+  "profile_id": "pest-spy-combo-policy-v1",
+  "protocol_id": "PEST_CONTROL_V10_VS_DR_DEJ96_SPY_COMBO_2026_09_15_PREBOARD_V1",
+  "prior_code_source": "abfd806f6332c0da311e40b01c9d85eeb0962165",
+  "code_sha256": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/CardAdvisor.kt": "7195131df096f4554f3953972c8d0cee73f37c10f430147aef302342a8b1e552",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt": "098557635cc8f9db53d777f76e64d038de2b5efeb299a14ac2e3c683683c9d68",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt": "fcb09eb3ca96b101ebd1d77b48528ba1d9862b32d305be74da1cf97f41446526",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt": "68807a9e124632e3c76140e48552381af31d92f65f6ae272e7a00a3acc217b8e",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/SpyComboAdvisorModule.kt": "65fb521ade52a15956c314486164351ebbe37e941e6e4cfc27002334eb75abda",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestSpyComboPolicy.kt": "7dd9b42dbb5ab154fa9fa695c7bf1f6ba248aa3f99e08726ccfd18194c1234a7",
+    "ai/src/test/kotlin/com/wingedsheep/ai/pestcontrol/PestSpyComboPolicyAuditTest.kt": "24de60ba408fbd33b2dcd5df178b051525366d1991c7d074d7788e8d9ef19f0b",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/ActivatedAbilityEnumerator.kt": "61e42436edb41218d23223a92a8c013d2bf6110e4699da9526e87db78131b818",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/legalactions/CompositeTapCostEnumerationTest.kt": "5517b72ea4f688b6babaf8f3e771ab1084b9e9574c3d1172ba9a0abb9a139708",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/ManaAbilityEnumerator.kt": "c0d081eb8951c9be7c3691ece6a9e1fa226e5a62f6bbe0a54a7bd4938def26f6"
+  },
+  "workflow_run_id": 36094607243,
+  "workflow_job_id": 107944102223,
+  "artifact_id": 10846851902,
+  "archive_bytes": 13058,
+  "archive_sha256": "e10a821654989760cd9027e6708cf2d47502ddedb02022d5017b029d7cda56aa",
+  "stages": [
+    {
+      "stage": "composite-tap-cost",
+      "junit_path": "test-results/composite-tap-cost/TEST-com.wingedsheep.engine.legalactions.CompositeTapCostEnumerationTest.xml",
+      "junit_sha256": "13eb33a70bcaf0a1b02f9d0bcc04ba10617a7061c630bc6c056d9c09a08eed1b",
+      "tests": 6,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "a separate source tap and another tap cannot be paid by a lone creature",
+        "the complete offered tap pool excludes the reserved source and executes legally",
+        "a composite without a separate tap symbol still permits tapping its source",
+        "a nonmana composite with two tap legs is unavailable on a lone creature",
+        "a nonmana composite excludes its reserved source and resolves after legal payment",
+        "a nonmana composite without a tap symbol may tap itself and resolve"
+      ]
+    },
+    {
+      "stage": "default-payment-regression",
+      "junit_path": "test-results/default-payment-regression/TEST-com.wingedsheep.ai.engine.AutomaticAdditionalCostPaymentAiTest.xml",
+      "junit_sha256": "b0a725cb0ebb3e1cf0916969d2733319b7d06083738013d2ce395bc3011fd48c",
+      "tests": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "AI materializes each enumerated spell additional-cost selection",
+        "AI materializes enumerated costs for activated abilities"
+      ]
+    },
+    {
+      "stage": "exact-spy-main",
+      "junit_path": "test-results/exact-spy-main/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchCTest.xml",
+      "junit_sha256": "fb25bff8111b12f9396bc7f18f9e34708b862a7c60ef80e1a48c0d9f89c5791c",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "all nineteen frozen Spy main identities resolve with the explicit Nyxborn Bestow definition"
+      ]
+    },
+    {
+      "stage": "frozen-admission",
+      "junit_path": "test-results/frozen-admission/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboAdmissionTest.xml",
+      "junit_sha256": "51acfcedb925c13809acc76ab9cbd2be86861370bd11b678ada87b7373b083b5",
+      "tests": 1,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "freeze exact Spy Combo 60/15 and emit live support audit"
+      ]
+    },
+    {
+      "stage": "monster-pilot-regression",
+      "junit_path": "test-results/monster-pilot-regression/TEST-com.wingedsheep.ai.arena.PestMonsterTronPolicyAuditTest.xml",
+      "junit_sha256": "88dc58ad6f93c30c9bf91270dd46fe5269b18d1fcadca45e2f88c4704f1da45d",
+      "tests": 5,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "Crop Rotation preserves a live Tron piece then selects the missing piece",
+        "Expedition Map activates and tutors the missing Tron piece",
+        "Ancient Stirrings selection prefers a missing Tron piece over a redundant colorless card",
+        "Bonder's Ornament takes the draw mode with four other mana sources and a low hand",
+        "Bojuka Bog targets the opponent graveyard"
+      ]
+    },
+    {
+      "stage": "spy-policy",
+      "junit_path": "test-results/spy-policy/TEST-com.wingedsheep.ai.pestcontrol.PestSpyComboPolicyAuditTest.xml",
+      "junit_sha256": "3e062f1ed2591979caf5f95264f0ec7ba74223b476daa009755f1554c4746f0b",
+      "tests": 18,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "Land Grant takes the free landless-hand line before committing a slow payoff",
+        "Gatecreeper Vine search prioritizes Swamp when black combo pieces are stranded",
+        "Quirion Ranger points an untap at Overgrown Battlement",
+        "Wall of Roots mana ability is actively used for a stranded payoff",
+        "Overgrown Battlement scales a defender board before a payoff",
+        "Saruli Caretaker converts a spare creature into combo mana",
+        "one-mana forestcycling is used in a one-land low-resource hand",
+        "Winding Way chooses creature for the creature-dense Spy shell",
+        "Lead the Stampede keeps every creature offered",
+        "Mesmeric Fiend targets the opponent and takes Weather the Storm before lower-value cards",
+        "Balustrade Spy deliberately targets its controller for self-mill",
+        "Mesmeric Fiend policy exiles the priority engine card and linked return restores it",
+        "Lotleth Giant policy converts a lethal creature graveyard into the kill",
+        "Dread Return preserves the kill while sacrificing three low-value bodies",
+        "Dread Return ranks every duplicate body and executes the selected flashback payment",
+        "Quirion pays with the tapped Forest even when an untapped Forest is listed first",
+        "null advisor hooks preserve the default profile action and ordinary mana filtering",
+        "Spy choice is invariant to unknown opposing hand identities and future library order"
+      ]
+    }
+  ],
+  "total_tests": 33,
+  "all_stages_executed": true,
+  "all_cases_passed": true,
+  "frozen_opponent_main_sha256": "8a0ac71dd9873b001d22a4ea73286c75d448e24a1b517772f836d6dd5f2db97f",
+  "frozen_opponent_complete75_sha256": "d6fc701b272ff15bc2baf9ec5b2acdaf75566d780ff6d499efbac4aa77b19b15",
+  "unresolved_main_identities": 0,
+  "official_seeds_generated": 0,
+  "official_games_initialized": 0,
+  "official_actions_submitted": 0,
+  "outcome_exposure": 0,
+  "gameplay_ready": false,
+  "official_pilot_admission": false,
+  "allowed_for_official_sampling": false,
+  "draft_pr_required": true,
+  "prior_failures_preserved": [
+    36091495389,
+    36092918322,
+    36094006493
+  ],
+  "monster_original_claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+  "monster_original_claim_commit": "1c2e253ad7f5a7652304f7c9aaafc30e547a481e",
+  "monster_claim_state": "UNCHANGED_CONSUMED_NO_RERUN_AUTHORITY",
+  "unqualified_requirements": [
+    "integration and qualification against the separately corrected rules engine",
+    "guarded official execution wrapper and durable journal",
+    "prospective seed and seating authority",
+    "full interactive deterministic replay and telemetry audit",
+    "formal sampled-game authorization"
+  ],
+  "audit_utc": "2026-09-25T04:48:56Z",
+  "required_workflows_all_success": true,
+  "required_workflow_results": [
+    {
+      "run_id": 36094607243,
+      "conclusion": "success"
+    },
+    {
+      "run_id": 36094607235,
+      "conclusion": "success"
+    },
+    {
+      "run_id": 36094607274,
+      "conclusion": "success"
+    },
+    {
+      "run_id": 36094607286,
+      "conclusion": "success"
+    }
+  ],
+  "executed_check_runs_passed": 12,
+  "optional_coverage_check": "SKIPPED_AS_CONFIGURED_NOT_GAMEPLAY",
+  "draft_pr_number": 155,
+  "audit_basis": [
+    "Exact checkout and six executed Gradle stages confirmed in job logs",
+    "All ten code hashes independently reproduced against retained source manifest",
+    "All six retained XML stages contain 33 passed cases and no failure/error/skip",
+    "Frozen deck and admission reports agree with exact main/75 hashes and zero official counters",
+    "All four workflows and twelve executed checks succeeded at validated source",
+    "Original consumed Monster claim reference re-read unchanged"
+  ]
+}
