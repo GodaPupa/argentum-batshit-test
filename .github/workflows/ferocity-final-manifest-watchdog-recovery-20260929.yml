@@ -1,0 +1,67 @@
+name: Ferocity final-manifest watchdog recovery
+on:
+  push:
+    branches:
+      - ferocity/final-manifest-watchdog-recovery-20260929
+
+permissions:
+  contents: read
+
+jobs:
+  recover-watchdog-runtime:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout exact branch head
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Enforce zero-game recovery boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+          python3 - <<'PY'
+          import json, pathlib
+          p=pathlib.Path("ferocity-recycling/support-audits/source08-policy-selection-20260928/FINAL_MANIFEST_WATCHDOG_RECOVERY_BUDGET.json")
+          b=json.loads(p.read_text())
+          assert b["official_counters_delta"] == 0
+          assert "java" in b["forbidden_operations"]
+          assert "allocate" in b["forbidden_operations"]
+          assert "run-one" in b["forbidden_operations"]
+          PY
+
+      - name: Recover exact accepted watchdog runtime identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/recover_final_manifest_watchdog_runtime.py | tee build-watchdog-recovery.log
+
+      - name: Assert recovery had no experimental side effects
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+          python3 - <<'PY'
+          import json, pathlib
+          r=json.loads(pathlib.Path("build/reports/ferocity-watchdog-recovery/recovery.json").read_text())
+          assert r["javaStarted"] is False
+          assert r["gradleStarted"] is False
+          assert r["entropyRead"] is False
+          assert r["allocationRead"] is False
+          assert r["gameInitialized"] is False
+          PY
+
+      - name: Preserve recovery report
+        uses: actions/upload-artifact@v4
+        with:
+          name: ferocity-final-manifest-watchdog-recovery
+          path: |
+            build/reports/ferocity-watchdog-recovery/recovery.json
+            build-watchdog-recovery.log
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FINAL_MANIFEST_WATCHDOG_RECOVERY_BUDGET.json
+          if-no-files-found: error
+          retention-days: 90
