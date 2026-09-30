@@ -1,0 +1,48 @@
+{
+  "schema": "ferocity-current-source08-java-distribution-verification-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "recorded_provenance_run": 36653810718,
+    "recorded_provenance_audit": "ferocity-recycling/support-audits/source08-policy-selection-20260928/current-java-provenance-36653810718-original-audit.json",
+    "distribution": "Eclipse Temurin",
+    "version": "21.0.12.1+1",
+    "recorded_java_executable_sha256": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d"
+  },
+  "adoptium_release": {
+    "repository": "adoptium/temurin21-binaries",
+    "tag": "jdk-21.0.12.1+1",
+    "asset_id": 521122372,
+    "asset_name": "OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz",
+    "asset_size": 207473347,
+    "asset_sha256": "ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94",
+    "asset_url": "https://github.com/adoptium/temurin21-binaries/releases/download/jdk-21.0.12.1%2B1/OpenJDK21U-jdk_x64_linux_hotspot_21.0.12.1_1.tar.gz"
+  },
+  "scope": "PUBLIC_RELEASE_ASSET_BYTE_VERIFICATION_ONLY",
+  "required": [
+    "fetch public GitHub release-asset metadata for exact asset id 521122372 and require exact tag/name/size/published digest",
+    "download only the exact release asset URL to a temporary non-executable file",
+    "verify whole archive length and SHA-256 against the predeclared GitHub release-asset digest",
+    "read the archive with Python tarfile without executing any member",
+    "require exactly one */bin/java regular-file member and hash its bytes without extracting/executing it",
+    "require the Java member SHA-256 to equal the preserved source08 executable SHA-256",
+    "read the JDK release metadata file and preserve OS_ARCH/IMPLEMENTOR/JAVA_VERSION fields",
+    "delete temporary archive after verification",
+    "preserve exact metadata and hashes in java-distribution-verification.json"
+  ],
+  "prohibited": [
+    "no Java process",
+    "no Gradle",
+    "no exporter or definition bundle",
+    "no entropy/seed/allocation/game access",
+    "no use of a mutable setup-java or hosted-runner Java installation as authority"
+  ],
+  "acceptance": [
+    "release metadata matches exact predeclared asset",
+    "asset size and SHA-256 match",
+    "archive opens cleanly",
+    "bin/java byte SHA-256 matches preserved source08 receipt",
+    "release metadata identifies expected architecture/version/distribution"
+  ],
+  "authority_if_clean": "Exact public Temurin distribution/archive and source08 Java executable byte provenance only; still no D2/export/game authority.",
+  "official_counters_delta": 0
+}
