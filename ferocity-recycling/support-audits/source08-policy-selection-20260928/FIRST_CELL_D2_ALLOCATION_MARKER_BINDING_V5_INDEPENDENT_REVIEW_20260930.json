@@ -1,0 +1,32 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-marker-binding-v5-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"7adc5c5dcc5cc8e95cfa9831581015ddb4d8f0a5",
+  "workflow_blob":"d3c925a869544e112ae55b5f818d384b8350fd7b",
+  "budget_blob":"1799ab01e03f8c901eadd741ca03f845c870c2fe",
+  "verify_acceptance_blob":"e82c9cf587e2cedfa7e819606851af0e18c3089d",
+  "restore_helper_blob":"dd001c437f627b1615ccb590f2331589d4161f72",
+  "v4_failure_run":36745222608,
+  "v4_failure_audit_commit":"4dd085eaf329d40aacee06ce0b3621c31a2e8292",
+  "decision":"ACCEPT_MARKER_BINDING_V5_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL",
+  "review":{
+    "v4_allocation_invocation_executed":"NO",
+    "v4_entropy_consumed":"NO",
+    "only_v5_logic_change":"READ_ACCEPTED_MANIFEST_SHA256_FIELD",
+    "reviewed_v4_path_materialization_logic_unchanged":"PASS",
+    "accepted_manifest_value_unchanged":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+    "source08_restore_helper_unchanged":"PASS",
+    "one_allocate_invocation_semantics_unchanged":"PASS",
+    "failure_after_allocate_remains_consumed_no_retry":"PASS",
+    "run_one_and_gameplay_remain_forbidden":"PASS"
+  },
+  "accepted_scope":[
+    "Create one marker-only v5 execution branch. If all pre-allocation bindings and path materialization checks pass, execute exactly one fixed allocate invocation."
+  ],
+  "expected_official_state_if_clean":{"claims":0,"allocations":16,"seed_streams":48,"games":0,"outcomes":0},
+  "explicit_non_authority":[
+    "No trial claim, development journal, run-one, game initialization, gameplay or outcome interpretation."
+  ],
+  "next_gate":"Dispatch one v5 allocation original and audit it once; do not replace any allocation once allocate begins.",
+  "official_counters_delta_before_execution":0
+}
