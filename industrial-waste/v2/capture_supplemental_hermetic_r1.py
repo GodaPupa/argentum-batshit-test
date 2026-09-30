@@ -154,8 +154,8 @@ def restore_accepted_store(archive:pathlib.Path, manifest_path:pathlib.Path, tar
              "outer_artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b",
              "archive_sha256":STORE_ARCHIVE_SHA,"manifest_sha256":STORE_MANIFEST_SHA,
              "files":len(seen),"writable_gradle_home":str(target),
-             "input_archive_read_only":not os.access(archive,os.W_OK),
-             "input_manifest_read_only":not os.access(manifest_path,os.W_OK)}
+             "input_archive_read_only":(archive.stat().st_mode & 0o222)==0,
+             "input_manifest_read_only":(manifest_path.stat().st_mode & 0o222)==0}
     (OUT/"accepted-dependency-store-restore.json").write_bytes(canonical(receipt))
     return expected,receipt
 
@@ -224,7 +224,7 @@ def main():
     inputs=repo_inputs(); (OUT/"tracked-build-inputs.json").write_bytes(canonical(inputs))
     store_archive=pathlib.Path(os.environ["ARGENTUM_DEPENDENCY_STORE_ARCHIVE"]).resolve(strict=True)
     store_manifest=pathlib.Path(os.environ["ARGENTUM_DEPENDENCY_STORE_MANIFEST"]).resolve(strict=True)
-    assert not os.access(store_archive,os.W_OK) and not os.access(store_manifest,os.W_OK)
+    assert (store_archive.stat().st_mode & 0o222)==0 and (store_manifest.stat().st_mode & 0o222)==0
     assert sha_file(BOOTSTRAP)=="e2181fa92f04c14f1bbb724d9d0f4240ccc1b856"
     gradle_home=pathlib.Path(os.environ["RUNNER_TEMP"]).resolve()/"industrial-r1-hermetic-gradle-home"
     accepted_store,store_receipt=restore_accepted_store(store_archive,store_manifest,gradle_home)
