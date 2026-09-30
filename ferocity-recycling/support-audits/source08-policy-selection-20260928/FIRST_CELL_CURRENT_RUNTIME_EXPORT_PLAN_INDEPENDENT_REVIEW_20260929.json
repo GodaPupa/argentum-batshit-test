@@ -1,0 +1,44 @@
+{
+  "schema": "ferocity-first-cell-current-runtime-export-plan-independent-review-v1",
+  "date_utc": "2026-09-29",
+  "reviewed_plan_commit": "4d9a616013876d3abc9daeb89751c8be02dca5d9",
+  "reviewed_plan_path": "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_CURRENT_RUNTIME_EXPORT_PLAN_20260929.json",
+  "decision": "ACCEPT_DESIGN_ONLY",
+  "review": {
+    "source08_identity": "PASS",
+    "preserved_runtime_binding": "PASS",
+    "offline_export_source_binding": "PASS",
+    "java_provenance_handling": "PASS_FAIL_CLOSED",
+    "runtime_restore_scope": "PASS",
+    "offline_export_scope": "PASS_NO_GAME",
+    "reload_scope": "PASS_NO_GAME",
+    "independent_original_audit_requirement": "PASS",
+    "red_runtime_receiving_separation": "PASS",
+    "official_counter_preservation": "PASS"
+  },
+  "findings": [
+    "The plan correctly treats the accepted source08 runtime archive as archival byte authority only and does not upgrade it to complete runtime admission.",
+    "The plan does not substitute setup-java, ubuntu-latest, or a Java major version for exact executable/distribution provenance.",
+    "All six pre-dispatch bindings are required to be non-null before any export can run.",
+    "The plan separates bundle production/reload from MisterTwin Red v0.2 receiving and from final D2 admission.",
+    "The plan preserves no-retry semantics for an original export attempt and requires one-time artifact audit."
+  ],
+  "accepted_scope": [
+    "The current source08 offline bundle/runtime path is sufficiently specified at the design level to proceed to exact Java-provenance recovery and exact workflow/budget construction.",
+    "No Java process, exporter, definition load, bundle, entropy, seed, allocation or game is authorized by this review."
+  ],
+  "remaining_pre_dispatch_gates": [
+    "Exact Java executable/distribution/architecture provenance must be recovered from preserved source08 runtime evidence and independently bound.",
+    "Exact runtime restore recipe digest must be constructed and reviewed.",
+    "Exact export workflow and prospective budget blobs must be constructed and reviewed.",
+    "MisterTwin Red v0.2 runtime receiving remains a separate open gate."
+  ],
+  "prohibited": [
+    "Do not dispatch the exporter while any pre-dispatch binding is null.",
+    "Do not infer current Java byte identity from a hosted runner image or version string.",
+    "Do not consume entropy, seeds, allocation state or initialize D2 gameplay.",
+    "Do not treat successful bundle export as Red receiving or final D2 admission."
+  ],
+  "next_gate": "Recover and independently bind the exact Java executable/distribution identity recorded by the accepted source08 runtime receipt. In parallel, construct the exact non-executing runtime restore recipe and export workflow/budget without dispatching them.",
+  "official_counters_delta": 0
+}
