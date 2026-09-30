@@ -1,0 +1,37 @@
+{
+  "schema":"sphinx-stage-e-forced-empty-attackers-budget-v1",
+  "date_utc":"2026-09-30",
+  "accepted_parent":"d5a6fa73f95552632ab5171da9ca38035a707fb6",
+  "basis":{
+    "unique_pass_audit":"sphinx-approach/evidence/unique-pass-priority-36649527286-original-audit.json",
+    "unique_pass_audit_blob":"d19342300cb98bc45f95c5a51fa10e079310cce8",
+    "remaining_surface":"OP5 combat attack/block/damage remains unqualified beyond this new forced-empty sub-seam"
+  },
+  "candidate":{
+    "whole_actor_blob":"08ce654878257d469d5af5a1b72e7fd0186bc674",
+    "test_blob":"4c2fdbc3c408822dda64216c3ad91882bd81b6c1",
+    "combat_enumerator_blob":"15d5642cd0d22baeb5e8b3ccb79e62de563f784a",
+    "game_action_blob":"f7e36eb2416756fd4fbe3c22bb76c3c0c71d7ac0",
+    "actor_legal_action_blob":"5931e80c5c35f52b91e6143c7ba0b777be67e623"
+  },
+  "fixed_cases":[
+    "CA1 reconstructed-v01: exclusive DeclareAttackers menu with zero valid attackers -> canonical empty declaration",
+    "CA2 reconstructed-hybrid: exclusive DeclareAttackers menu with zero valid attackers -> canonical empty declaration"
+  ],
+  "acceptance":[
+    "2/2 fresh real-engine receiving cases pass",
+    "each input has exactly one combat declaration action, validAttackers is empty, and no mandatory attackers are present",
+    "whole actor proposes exactly DeclareAttackers(actor, emptyMap()) with unchanged policy RNG",
+    "engine accepts the proposed declaration",
+    "accepted unique-pass and multicast discriminator regression banks remain clean"
+  ],
+  "limits":[
+    "no attacker selection when any valid attacker exists",
+    "no defending-player choice",
+    "no blocker selection, order, damage assignment or post-block priority",
+    "no opponent package, collector, replay, freeze, seeds or gameplay"
+  ],
+  "authority_if_clean":"BOUNDED_FORCED_EMPTY_ATTACKERS_SEAM_ONLY",
+  "next_gate":"Audit once and accept only the forced-empty attack seam. Then continue with the next smallest still-unqualified combat/block or trusted runner/replay surface.",
+  "official_counters_delta":0
+}
