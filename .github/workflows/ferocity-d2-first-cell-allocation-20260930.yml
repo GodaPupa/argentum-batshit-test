@@ -30,7 +30,7 @@ jobs:
           set -euo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_CANONICAL_PATH_V6_INDEPENDENT_REVIEW_20260930.json
-          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V5_20260930.json
+          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V6_20260930.json
           "$PYTHON_EXACT" - "$REVIEW" "$MARKER" <<'PY'
           import json,pathlib,subprocess,sys
           review=json.loads(pathlib.Path(sys.argv[1]).read_text())
@@ -81,7 +81,7 @@ jobs:
           unzip -q "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired.zip" -d "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-allocation"
           MATERIALIZED="$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-allocation/build/reports/ferocity-final-manifest-watchdog-path-repair/materialized"
           test -d "$MATERIALIZED"
-          cp -a "$MATERIALIZED/." "$EXACT_REPO/"
+          cp -a "$MATERIALIZED/." "$EXACT_REPO_LITERAL/"
           MANIFEST="$EXACT_REPO_LITERAL/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
           echo "$MANIFEST_SHA256  $MANIFEST" | sha256sum -c -
           test ! -e "$EXACT_REPO_LITERAL/ferocity-recycling/allocations/D2-first-cell"
