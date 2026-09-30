@@ -1,0 +1,30 @@
+{
+  "schema":"izzet-position1-boreal-druid-36675760820-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36675760820,
+  "artifact_id":11079588754,
+  "artifact_sha256":"4c004001e7efbbbe72da7057c537928c3265a36a78fa6954b41481b57150b894",
+  "head":"7c9ebc75e69c166bad79f38f1c0c1503b3cb4125",
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "source_binding":"passed",
+    "semantic_xml":{"tests":1,"passes":1,"failures":0,"errors":0,"skipped":0,"sha256":"4350eaa96c0fd5eb4b8ddd66b1f6767e1a08807ab7e2a0cce2b8fddc5111efba"},
+    "snapshot_contract":"CSP_ONLY",
+    "generated_csp_sha256":"0ca24fd8c2dedcd5da2f79281af2edd70914d1499518512073511e8b5928340a",
+    "generated_delta_sha256":"c15c7a84575feda7b62d7ca9450b0714a2ddc332695e0eed7fb3389a6844b0ad"
+  },
+  "decision":"ACCEPTED_BOUNDED_BOREAL_DRUID_DETERMINISTIC_MECHANICS",
+  "accepted_scope":[
+    "Boreal Druid activates its prospectively pinned mana ability, taps, and adds exactly one colorless mana.",
+    "Card lint and snapshot tests pass.",
+    "The frozen snapshot delta adds only the Boreal Druid record to CSP.json and preserves all seven existing CSP records."
+  ],
+  "limits":[
+    "No authority for other missing identities or mana creatures.",
+    "No whole Position-1 pilot, action ranking, opponent, commander lifecycle/damage/event-ledger, replay, seed, allocation or gameplay authority."
+  ],
+  "next_gate":"Adopt only the exact Boreal definition/test/CSP snapshot into current runtime authority, then freshly re-inventory Position-1 registry identities.",
+  "official_counters_delta":0
+}
