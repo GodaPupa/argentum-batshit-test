@@ -1,0 +1,32 @@
+{
+  "schema":"ferocity-d2-first-row-runner-replay-budget-v1",
+  "date_utc":"2026-09-30",
+  "accepted_allocation_audit_commit":"49ee93ee46eecd5ed46353c30df1670dd23ecf29",
+  "accepted_allocation_run":36751266684,
+  "accepted_allocation_artifact":11114289057,
+  "accepted_allocation_artifact_sha256":"5b1d4cf7232bed9cb0065c28a215264a7c28450b2d298ba0d1dc785ab34a3fef",
+  "manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+  "ledger_sha256":"356a989ee1522947c66c053d9c596d6d3c185d934553fcde39602e34a7ce5f12",
+  "allocation_intent_sha256":"0bf7a24c0fd83159acca1fb3358968af999494374892c82c72bae7796b39d72d",
+  "allocation_id":"FEROCITY_RECYCLING/v0.1/D2/A3-F4/mono_red_madness_mistertwin_20260924/play/1",
+  "scope":"ONE_ACCEPTED_ROW_ONE_DURABLE_CLAIM_AT_MOST_ONE_GAME_INITIALIZATION_THEN_FRESH_READ_ONLY_REPLAY",
+  "preconditions":[
+    "Rehydrate, never regenerate, the accepted allocation original.",
+    "Verify exact outer artifact, allocation intent, ledger and manifest digests before Java.",
+    "Verify all sixteen ordered allocation identities and no replacement/failure allocation material.",
+    "Restore the already accepted source08 runtime and exact Java/Python identities.",
+    "Require no existing D2 first-cell development journal or process-supervisor directory.",
+    "Run only the exact first allocation identity under the accepted watchdog and its fixed caps."
+  ],
+  "fresh_replay":"Replay the just-recorded journal in a second JVM using the already compiled FerocityTrialReplay; replay creates zero gameplay games and does not mutate the journal.",
+  "failure_rules":[
+    "A durable claim or partial journal consumes this row; never delete, reopen, rename or retry it.",
+    "Any source/input/supervisor pin mismatch stops before game initialization.",
+    "Any failed replay preserves the original journal and is not repaired in place.",
+    "Never invoke allocate and never draw entropy."
+  ],
+  "official_state_before":{"allocations":16,"seed_streams":48,"claims":0,"games":0,"outcomes":0},
+  "maximum_delta":{"claims":1,"games":1,"outcomes_exposed_by_gate":0,"allocations":0,"seed_streams":0,"replacements":0},
+  "authority_if_clean":"ONE_ROW_RECORDED_AND_FRESHLY_REPLAY_VERIFIED_FOR_SEPARATE_ORIGINAL_AUDIT",
+  "explicit_non_authority":["No second row","No retry","No evaluation/confirmation/postboard","No deck-performance interpretation","No allocation or entropy authority"]
+}
