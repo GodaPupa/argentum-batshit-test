@@ -1,0 +1,96 @@
+name: Sphinx Stage-E current trusted replay qualification
+on:
+  push:
+    branches: ["sphinx/current-trusted-replay-20260930"]
+    paths: [".github/workflows/sphinx-current-trusted-replay-20260930.yml"]
+permissions: {contents: read}
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact current accepted replay surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/sphinx-current-trusted-replay
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = "64b008ebc32b63fd4793dd68d092c71dac43ed87"
+          git merge-base --is-ancestor bbcb15f085c9ff1fcac25608505ce8d23906abd9 HEAD
+          test "$(git hash-object sphinx-approach/CURRENT_TRUSTED_REPLAY_BUDGET_20260930.json)" = "151a64cdd6767a3a4442e5732680e81c79cdd59d"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "0e5a21429c367355c0951c7a3a367495a96a161d"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt)" = "63efac3d9321d658f9590ffbab689a187516487c"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageETrustedTransitionFile.kt)" = "6671a492891d6dc41db6dcc6de6244918872c611"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt)" = "d57d8f2f0407f3f7b6a8a3f561d53d832f28cb20"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEForcedEmptyBlockersReceivingTest.kt)" = "027fc80a3a67f39c02949eba8eeabf1bfe81526b"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEForcedEmptyAttackersReceivingTest.kt)" = "4c2fdbc3c408822dda64216c3ad91882bd81b6c1"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEUniquePassPriorityReceivingTest.kt)" = "d7a141cf2be33dd5eed826aa7bb52460c66a5209"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEMultiCastDiscriminatorReceivingTest.kt)" = "6b794b196d4ff65ab3a7fff5f14febb8f310ab35"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git rev-parse bbcb15f085c9ff1fcac25608505ce8d23906abd9
+            git hash-object sphinx-approach/CURRENT_TRUSTED_REPLAY_BUDGET_20260930.json
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournal.kt
+            git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageETrustedTransitionFile.kt
+            git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEAcceptedTransitionJournalTest.kt
+            git hash-object .github/workflows/sphinx-current-trusted-replay-20260930.yml
+            git status --porcelain
+          } > "$OUT/source.txt"
+      - name: Execute current durable replay traces
+        shell: bash
+        run: |
+          set -o pipefail
+          just test-class SphinxStageEAcceptedTransitionJournalTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-current-trusted-replay/replay.log
+      - name: Preserve accepted actor regressions
+        shell: bash
+        run: |
+          set -o pipefail
+          for cls in SphinxStageEForcedEmptyBlockersReceivingTest SphinxStageEForcedEmptyAttackersReceivingTest SphinxStageEUniquePassPriorityReceivingTest SphinxStageEMultiCastDiscriminatorReceivingTest
+          do
+            just test-class "$cls" --rerun-tasks --no-build-cache --console=plain 2>&1 | tee "build/reports/sphinx-current-trusted-replay/$cls.log"
+          done
+      - name: Preserve XML and summary
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/sphinx-current-trusted-replay
+          for cls in SphinxStageEAcceptedTransitionJournalTest SphinxStageEForcedEmptyBlockersReceivingTest SphinxStageEForcedEmptyAttackersReceivingTest SphinxStageEUniquePassPriorityReceivingTest SphinxStageEMultiCastDiscriminatorReceivingTest
+          do
+            cp "gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.$cls.xml" "$OUT/" 2>/dev/null || true
+          done
+          python3 - <<'PY'
+          import json,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path("build/reports/sphinx-current-trusted-replay")
+          expected={
+            "SphinxStageEAcceptedTransitionJournalTest":2,
+            "SphinxStageEForcedEmptyBlockersReceivingTest":2,
+            "SphinxStageEForcedEmptyAttackersReceivingTest":2,
+            "SphinxStageEUniquePassPriorityReceivingTest":2,
+            "SphinxStageEMultiCastDiscriminatorReceivingTest":2,
+          }
+          rows={}
+          for cls,n in expected.items():
+              p=out/f"TEST-com.wingedsheep.gym.sphinx.{cls}.xml"
+              root=ET.parse(p).getroot()
+              row={k:int(root.attrib.get(k,"0")) for k in ("tests","failures","errors","skipped")}
+              assert row["tests"]==n and row["failures"]==row["errors"]==row["skipped"]==0
+              rows[cls]=row
+          (out/"summary.json").write_text(json.dumps({"schema":"sphinx-current-trusted-replay-summary-v1","results":rows,"authority":"CURRENT_TRUSTED_ACCEPTED_TRANSITION_REPLAY_SUBSTRATE_ONLY","official_counters_delta":0},indent=2)+"\n")
+          PY
+      - name: Upload original current replay evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-current-trusted-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/sphinx-current-trusted-replay/
+          if-no-files-found: error
+          retention-days: 90
