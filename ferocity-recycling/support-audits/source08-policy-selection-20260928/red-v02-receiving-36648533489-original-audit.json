@@ -1,0 +1,26 @@
+{
+  "schema": "ferocity-first-cell-red-v02-receiving-36648533489-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36648533489,
+  "job_id": 109677058703,
+  "artifact_id": null,
+  "head": "4a64de2033d26e7590f6178e8cd8da6c346574e6",
+  "parent": "e3562d08205a4c2f2c6cc59e84a4e00ce48f2417",
+  "budget_blob": "ecba46e63ea3a0147769a3bab40899f4f2d14a93",
+  "result": {
+    "workflow_conclusion": "failure",
+    "binding_step": "failure",
+    "behavior_step": "skipped",
+    "xml_preservation_step": "failure_due_to_no_xml",
+    "artifact_uploaded": false,
+    "technical_cause": "actions/checkout fetch-depth 2 did not materialize HEAD^^; git rev-parse HEAD^^ failed before any behavioral execution"
+  },
+  "decision": "INCOMPLETE_PRETEST_ANCESTRY_DEPTH",
+  "interpretation": [
+    "No Red v0.2 receiving case executed.",
+    "No behavioral failure, deck loss, policy rejection or D2 result is inferred.",
+    "The original attempt is consumed and must not be rerun unchanged."
+  ],
+  "successor_scope": "Create a new branch from the unchanged budget commit and change only workflow checkout history depth/source binding so exact source08 grandparent is available; keep pilot, scenario bank, budget, opponent snapshot and command unchanged.",
+  "official_counters_delta": 0
+}
