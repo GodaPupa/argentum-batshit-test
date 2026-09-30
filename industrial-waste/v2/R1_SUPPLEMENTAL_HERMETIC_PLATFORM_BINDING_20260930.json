@@ -1,0 +1,41 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-platform-binding-v1",
+  "date_utc":"2026-09-30",
+  "basis":{
+    "platform_original_audit_commit":"300bde05b7682386155589d9f5d9cbdb550aa46b",
+    "platform_original_run":36650392590,
+    "platform_original_artifact":11070053761,
+    "accepted_design_blob":"2d23710bc63b7b29d4be97acd4f3927cf23f2d00",
+    "accepted_design_review_blob":"93163d9ea12ca7dc1182d306f8b293158677c0fa",
+    "source_commit":"de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+    "source_tree":"d62e3fbd59dd78cc444c09b26673ae1bf3a848ab"
+  },
+  "bound_platform":{
+    "image":"catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "image_digest":"sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "architecture":"linux/amd64",
+    "java":{
+      "path":"/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+      "sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+      "version":"21.0.12+8-LTS"
+    },
+    "python3":{"path":"/usr/bin/python3.10","sha256":"7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86"},
+    "bash":{"path":"/usr/bin/bash","sha256":"59474588a312b6b6e73e5a42a59bf71e62b55416b6c9d5e4a6e1c630c2a9ecd4"},
+    "git":{"path":"/usr/bin/git","sha256":"011fb1c28096c72e25688e56793f20b33e68f7f1065489f745763f19b6e9f516"},
+    "sha256sum":{"path":"/usr/bin/sha256sum","sha256":"b88ea413571562a591268213d736121fada5ba14330bfcc74b8d9f14e4018ddf"}
+  },
+  "implementation_requirements":[
+    "The supplemental capture workflow must name the exact immutable image digest and linux/amd64 architecture.",
+    "Before any build/test process, it must verify the exact selected Java executable path and SHA-256 plus the bound Python/Bash/Git/hash tool identities.",
+    "No setup-java, package install, mutable JDK substitution or external JDK mount may satisfy the platform binding.",
+    "The implementation must still close every design requirement for archive members, complete build inputs, process launch path and PINNED_GENERATOR_INPUTS; this binding closes only immutable platform identity.",
+    "Exact workflow/source blobs, output schema and preservation paths must be frozen and independently reviewed before the single fresh supplemental capture."
+  ],
+  "decision":"ACCEPT_PLATFORM_BINDING_FOR_IMPLEMENTATION_REVIEW_ONLY",
+  "explicit_non_authority":[
+    "No sealed launch or supplemental capture is authorized by this binding alone.",
+    "No expected manifest, prepared worker, R1 permit, claim, allocation, seed or gameplay authority."
+  ],
+  "next_gate":"Implement the single-source supplemental hermetic capture against these exact platform pins, freeze workflow/source/output bytes, and independently review them before dispatch.",
+  "official_counters_delta":0
+}
