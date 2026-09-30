@@ -1,0 +1,20 @@
+{
+  "schema":"izzet-position1-llanowar-visionary-trigger-repair-v3-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"bab16c9fe68b20d5f1e26a9a62ed02ec3325dc49",
+  "reviewed_workflow_blob":"b6c7ebb2e04af5928da804eee02e517370210fd8",
+  "superseded_preflight_run":36724747126,
+  "decision":"ACCEPT_YAML_TRIGGER_SYNTAX_REPAIR_ONLY_FOR_ONE_FRESH_LLANOWAR_VISIONARY_ORIGINAL",
+  "checks":{
+    "prior_run_had_jobs":false,
+    "prior_behavioral_original_consumed":false,
+    "functional_change":"replace literal backslash-n in push path list and advance distinct v3 branch/marker only",
+    "card_source_blob":"2cc1f07b325b4b7b5358418aa0aefc0ccabe430b",
+    "scenario_test_blob":"7378eacb4e0d4ac7fe1292e73fc5d94ee9cf5ece",
+    "repair_budget_blob":"ebab3f01b8155cb2e4f563aeddf475391193a1bb",
+    "snapshot_contract":["mtg-sets/src/test/resources/snapshots/cards/M21.json"],
+    "official_counters_delta":0
+  },
+  "next_gate":"Create exactly one v3 marker and consume the resulting qualification original once.",
+  "official_counters_delta":0
+}
