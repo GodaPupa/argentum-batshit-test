@@ -1,0 +1,53 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-store-successor-v2-implementation-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"3864d546b85598175b26111e1b17d893e0aa11d2",
+  "budget_blob":"624a04ef9d5b6411684e5e54aec23bc3b0c0b818",
+  "capture_source_blob":"9c79dc360e8c0ff92f81ce632a692f7ddbb298a0",
+  "gradle_probe_blob":"176eb792f22201dcb68e6963ce38589e43f84380",
+  "store_bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+  "store_bootstrap_sha256":"a95c3e90b63b072c03f3159446d64db6085a7c48d5085e33e404aba61a8186b7",
+  "workflow_blob":"e5a8aaf337d385056aff6036559eecd2cf5eb2c1",
+  "accepted_store":{
+    "run_id":36676489843,
+    "artifact_id":11080705894,
+    "outer_artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b",
+    "archive_sha256":"b686ca26e715ba965a9156c455a6fba8c0f80f8d55883fc9b85285d4bb0b0b23",
+    "manifest_sha256":"8e427eb24c5c3043dab37abb681b0d3caf5243f4cb9357e1d196a92523ae9c0e",
+    "files":1272
+  },
+  "superseded_incomplete_run":{
+    "run_id":36698671888,
+    "classification":"INCOMPLETE_PREFLIGHT_BOOTSTRAP_HASH_DOMAIN_MISMATCH",
+    "gradle_invoked":false,
+    "behavioral_worker_reached":false,
+    "audit_commit":"407ac757b4459a836e7886c89b2c003643e2d886"
+  },
+  "decision":"ACCEPT_STORE_BACKED_V2_IMPLEMENTATION_FOR_ONE_FRESH_SUPPLEMENTAL_CAPTURE_ORIGINAL",
+  "review":{
+    "functional_change_1":"PASS_BOOTSTRAP_SHA256_EXPECTATION_CORRECTED_FROM_GIT_BLOB_SHA1",
+    "functional_change_2":"PASS_TERMINAL_STORE_FILE_COUNT_USES_ACCEPTED_STORE_SIZE",
+    "accepted_platform_unchanged":"PASS",
+    "logical_source_unchanged":"PASS",
+    "dependency_store_unchanged":"PASS",
+    "both_gradle_invocations_offline":"PASS",
+    "runtime_member_visibility_process_class_census_capture_unchanged":"PASS",
+    "fixed_worker_scope_unchanged":"PASS",
+    "official_seed_claim_allocation_game_prohibition":"PASS",
+    "distinct_successor_execution_branch_and_marker":"PASS"
+  },
+  "findings":[
+    "The predecessor failed before accepted-store restoration and before any Gradle launch because a Git blob SHA-1 was compared against SHA-256(file bytes).",
+    "The successor corrects that hash-domain assertion to the independently recomputed bootstrap SHA-256 while retaining the Git blob identity separately in the review.",
+    "The predecessor also contained an unreachable final-print NameError; replacing len(preserve) with len(accepted_store) changes only terminal reporting and prevents loss of a completed capture to a deterministic typo.",
+    "No behavioral source, fixed worker, store bytes, platform bytes, runtime graph rules, class-census policy or official-safety rule is broadened."
+  ],
+  "accepted_scope":[
+    "Create exactly one v2 marker-only execution branch from this review and dispatch one fresh store-backed supplemental capture original."
+  ],
+  "explicit_non_authority":[
+    "No expected manifest, prepared worker, sealed R1 launch, permit, official seed, claim, allocation, game or outcome authority."
+  ],
+  "next_gate":"Dispatch the one fresh v2 store-backed supplemental capture original and independently audit the artifact once if complete.",
+  "official_counters_delta":0
+}
