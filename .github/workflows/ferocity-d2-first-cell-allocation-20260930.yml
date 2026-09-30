@@ -1,9 +1,9 @@
 name: Ferocity D2 first-cell one-shot allocation
 on:
   push:
-    branches: ["ferocity/d2-first-cell-allocation-execute-v6-20260930"]
+    branches: ["ferocity/d2-first-cell-allocation-execute-v7-20260930"]
     paths:
-      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V6_20260930.json"
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V7_20260930.json"
 permissions:
   contents: read
   actions: read
@@ -29,14 +29,15 @@ jobs:
         run: |
           set -euo pipefail
           EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"
-          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"\n          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_CANONICAL_REPO_V6_INDEPENDENT_REVIEW_20260930.json
-          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V6_20260930.json
+          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"
+          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_SHELL_LITERAL_V7_INDEPENDENT_REVIEW_20260930.json
+          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V7_20260930.json
           "$PYTHON_EXACT" - "$REVIEW" "$MARKER" <<'PY'
           import json,pathlib,subprocess,sys
           review=json.loads(pathlib.Path(sys.argv[1]).read_text())
           marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
-          assert review["decision"]=="ACCEPT_CANONICAL_REPO_V6_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL"
+          assert review["decision"]=="ACCEPT_SHELL_LITERAL_V7_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL"
           assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
           assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
           changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
@@ -46,8 +47,8 @@ jobs:
             "verify_acceptance_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/final-development-verify-only-36709748908-original-audit.json",
             "restore_helper_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py",
             "workflow_blob":".github/workflows/ferocity-d2-first-cell-allocation-20260930.yml",
-            "repair_budget_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_CANONICAL_REPO_V6_REPAIR_BUDGET_20260930.json",
-            "v5_audit_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/d2-first-cell-allocation-36746049068-original-audit.json",
+            "repair_budget_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_SHELL_LITERAL_V7_REPAIR_BUDGET_20260930.json",
+            "v6_audit_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/d2-first-cell-allocation-36750222012-original-audit.json",
           }.items():
               actual=subprocess.check_output(["git","hash-object",path],text=True).strip()
               assert actual==review[field],(field,actual,review[field])
@@ -62,7 +63,8 @@ jobs:
         run: |
           set -euo pipefail
           EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"
-          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"\n          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          mkdir -p "$(dirname "$EXACT_REPO_LITERAL")" "$EXACT_RUNNER_TEMP_LITERAL"
+          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"
+          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          mkdir -p "$(dirname "$EXACT_REPO_LITERAL")" "$EXACT_RUNNER_TEMP_LITERAL"
           if [ -e "$EXACT_REPO_LITERAL" ]; then
             test -d "$EXACT_REPO_LITERAL/.git"
             test "$(readlink -f "$EXACT_REPO_LITERAL")" = "$EXACT_REPO_LITERAL"
@@ -113,7 +115,8 @@ jobs:
         run: |
           set -euo pipefail
           EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"
-          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"\n          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          cd "$EXACT_REPO_LITERAL"
+          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"
+          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          cd "$EXACT_REPO_LITERAL"
           OUT="$EXACT_REPO_LITERAL/build/reports/ferocity-d2-first-cell-allocation"
           mkdir -p "$OUT"
           MANIFEST="$EXACT_REPO_LITERAL/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
@@ -180,7 +183,8 @@ jobs:
         run: |
           set -euo pipefail
           EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"
-          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"\n          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          DEST="$GITHUB_WORKSPACE/build/reports/ferocity-d2-first-cell-allocation-preserved"
+          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"
+          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          DEST="$GITHUB_WORKSPACE/build/reports/ferocity-d2-first-cell-allocation-preserved"
           mkdir -p "$DEST"
           cp -a "$EXACT_REPO_LITERAL/build/reports/ferocity-d2-first-cell-allocation/." "$DEST/" 2>/dev/null || true
           cp "$EXACT_RUNNER_TEMP_LITERAL/ferocity-allocation-restore.log" "$DEST/" 2>/dev/null || true
