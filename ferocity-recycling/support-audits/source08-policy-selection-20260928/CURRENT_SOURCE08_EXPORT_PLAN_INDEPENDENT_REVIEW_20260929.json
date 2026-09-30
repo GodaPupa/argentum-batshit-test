@@ -1,0 +1,55 @@
+{
+  "schema": "ferocity-current-source08-export-plan-independent-review-v1",
+  "date_utc": "2026-09-29",
+  "reviewed_original_run": 36655120463,
+  "reviewed_artifact_id": 11071774468,
+  "reviewed_artifact_sha256": "4a7b10491a164d211a7aac6897d105fd73176c8a15a0fd1f6971ea0957f7e6cf",
+  "reviewed_audit_commit": "1eed5356476482a9ec234f231619d202a4448a78",
+  "exact_plan_sha256": "3706ce1ef2276694bd3eebee66b3924bbec627841dec085ef35a0819c37b237b",
+  "exact_material_sha256": "4bbac9ebf1dabd0e37486e461d967895fd62a89cb2c476ce607c20fa07ce2c53",
+  "review": {
+    "artifact_integrity": "PASS",
+    "source08_artifact_reassembly": "PASS_12_PARTS_95124680_BYTES",
+    "runtime_restore": "PASS_56_CLASSPATH_ENTRIES_2159_FILES",
+    "java_distribution_and_executable": "PASS_EXACT_TEMURIN_AND_BIN_JAVA_BYTES",
+    "compiled_source_map": "PASS",
+    "artifact_control_policy_digest": "PASS",
+    "red_madness_v02_policy_digest": "PASS",
+    "protocol_digest": "PASS",
+    "serializer_pin": "PASS",
+    "plan_assembler_source": "PASS",
+    "plan_execution_during_assembly": "NONE",
+    "entropy_allocation_game_access": "NONE"
+  },
+  "recomputed": {
+    "source_tree_sha256": "663af924957ed0d67af8cd594a8abcd6c1e404ea8181acda3fcbac28b6961fd3",
+    "artifact_control_policy_sha256": "3e1009a0dbfbe83c8ca1f4bbf47860b0c57fda321d8b3d16427f8d9105846993",
+    "red_madness_policy_sha256": "65a256739f8484804a4c44a7081fd6e330cf70a350a29b005b5063008d3932a8",
+    "protocol_sha256": "b23496e6c183078a148cdd6c07bd57000670b15f074ffadd110fd5ef41879f2b",
+    "serializer_sha256": "5c3e70fea5aeeb0f1b64b216cd0dd5133785388706c56fdbbc27b768ed855042",
+    "classpath_sha256": "3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415"
+  },
+  "execution_reproducibility": {
+    "repository_path": "/home/runner/work/argentum-batshit-test/argentum-batshit-test",
+    "java_executable": "/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java",
+    "runtime_prefix": "/home/runner/work/_temp/ferocity-source08-runtime-36655120463",
+    "compiled_inputs_path": "build/reports/ferocity-export-plan-assembly/compiled-inputs-source08.json",
+    "requirement": "A future export original must reconstruct the exact accepted runtime/JDK/source-map bytes at these exact plan paths, reproduce the accepted plan SHA-256 before launch, and stop before launch on any mismatch. The export output directory is a separate runtime argument and is not frozen into export-plan.json."
+  },
+  "decision": "ACCEPT_EXACT_PLAN_FOR_ONE_PROSPECTIVE_NO_GAME_EXPORT_RELOAD_ORIGINAL",
+  "authority_granted": [
+    "One prospective source-bound offline definition export/reload attempt may be constructed and dispatched only if its prelaunch phase recreates the exact accepted plan bytes and every path/hash validation passes.",
+    "The permitted attempt may execute the exact accepted Temurin java executable only for the exact frozen FerocityFinitePoolExport source under the existing qualified watchdog.",
+    "The attempt must remain OFFLINE_EXPORT_NO_GAME_NO_ENTROPY and preserve its complete original artifact."
+  ],
+  "still_prohibited": [
+    "No D2 allocation or gameplay.",
+    "No seed or entropy access.",
+    "No policy calibration.",
+    "No retry or replacement if the prospective original reaches Java launch and then fails; preserve it and stop for audit.",
+    "No substitution of a regenerated plan with a different SHA-256 or different absolute runtime/JDK paths.",
+    "No inference that a successful bundle export qualifies MisterTwin Red v0.2 runtime receiving or final D2 admission."
+  ],
+  "next_gate": "Construct a source-bound one-shot export/reload workflow that recreates the accepted plan exactly, requires plan SHA-256 3706ce1ef2276694bd3eebee66b3924bbec627841dec085ef35a0819c37b237b before Java launch, executes the exact offline exporter once under the qualified watchdog, preserves all outputs, and performs no D2 allocation/game activity.",
+  "official_counters_delta": 0
+}
