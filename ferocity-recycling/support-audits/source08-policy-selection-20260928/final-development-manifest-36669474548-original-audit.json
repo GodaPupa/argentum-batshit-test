@@ -1,0 +1,73 @@
+{
+  "schema":"ferocity-final-development-manifest-36669474548-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36669474548,
+  "artifact_id":11077287825,
+  "artifact_sha256":"6cc1ed84aa9fd6b17ddcdce7a1054bbc856124b16dd6b1ecce1fe9d04f9ceb80",
+  "head":"b8f426a50b029d75fb950f6148d3be742f4ab1d3",
+  "reviewed_implementation_commit":"b9537e84c9195a68c6b845d43b4d9a41e544c600",
+  "implementation_review_commit":"d4f366b512c99733bffdabb1aec682a15761f49f",
+  "implementation_review_blob":"f5a68a16b13eae688ecf05004c47daa24838c4e7",
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "zip_members":34,
+    "source_workflow_review_marker_binding":"passed",
+    "materialized_member_count":28,
+    "materialized_member_rehash":"clean"
+  },
+  "accepted_inputs":{
+    "source08_qualification_artifact_sha256":"9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "current_offline_export_artifact_sha256":"94ec8d2ee12f929316c39ce0c69fbf9e5ad869a3b4ecedaa48faa2f8280b7ee6",
+    "current_watchdog_artifact_sha256":"c436b7df09091a001df6ecdad25a909c2ce7f4bb100d7ddb6f6020a1e4c4dedf",
+    "red_v02_run":36649260154,
+    "red_v02_pilot_sha256":"6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5"
+  },
+  "manifest":{
+    "path":"ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json",
+    "bytes":354758,
+    "sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+    "source08_commit":"3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "compiled_input_tree_sha256":"663af924957ed0d67af8cd594a8abcd6c1e404ea8181acda3fcbac28b6961fd3",
+    "classpath_entries":56,
+    "definitions":36,
+    "definition_bindings":68,
+    "qualification_classes":14,
+    "coverage_keys":55,
+    "allocation_ids_declared":16,
+    "replacements_authorized":0
+  },
+  "watchdog":{
+    "source_sha256":"803a03aae3f63ffb114d9a8b56d4bf108b2f5f71f051057e204220f5f52adb37",
+    "acceptance_sha256":"b1d779398aff49d6c4075d9c055c197a165fac7b415052e3731ae908c46244c1",
+    "run_receipt_sha256":"d9c98fac0ab2db9be7da54fefa7e383cdd82937078c81308faa6202a572a9042",
+    "author_receipt_sha256":"077447186d7979210bc58dae40701661663c7c467706ac4b6de00f34805f6e48",
+    "process_claim_sha256":"cd03cc4c456bc3be73d5c95b2823ea182c447b09719d7e0d910a36735cad79e5",
+    "python_executable":"/usr/local/python/3.14.2/bin/python3.14",
+    "python_executable_sha256":"4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601"
+  },
+  "construction_safety":{
+    "java_started":false,
+    "gradle_started":false,
+    "entropy_read":false,
+    "allocation_read":false,
+    "ledger_created":false,
+    "trial_claim_created":false,
+    "game_initialized":false,
+    "outcomes_exposed":0
+  },
+  "decision":"ACCEPTED_CANONICAL_CURRENT_FEROCITY_DEVELOPMENT_MANIFEST_CANDIDATE_FOR_INDEPENDENT_REVIEW",
+  "accepted_scope":[
+    "The exact canonical manifest candidate and its 28 materialized admission inputs are internally digest-consistent and source-bound to the already accepted current authorities.",
+    "The exact coverage map contains all 36 admitted definition names plus the 19 verifier-required mechanic/runtime/policy keys and references only preserved passing source08 qualification classes.",
+    "The current accepted watchdog package is bound byte-for-byte into the manifest candidate."
+  ],
+  "limits":[
+    "This receipt does not execute or accept FerocityDevelopmentCli verify.",
+    "No allocation, entropy, seed, ledger, trial claim, game initialization, gameplay or outcome authority.",
+    "The manifest must receive a separate independent semantic/contract review before a Java verify dispatch."
+  ],
+  "next_gate":"Independently review exact manifest shape, coverage, dependencies, runtime/classpath/Java/watchdog path contract and verify-only execution plan. If clean, dispatch one no-entropy/no-game Java verify original.",
+  "official_counters_delta":0
+}
