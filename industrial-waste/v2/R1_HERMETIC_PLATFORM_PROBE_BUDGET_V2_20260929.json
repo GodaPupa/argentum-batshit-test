@@ -1,0 +1,40 @@
+{
+  "schema": "industrial-r1-hermetic-platform-probe-budget-v2",
+  "date_utc": "2026-09-29",
+  "source_commit": "de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+  "source_tree": "d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+  "accepted_design_blob": "2d23710bc63b7b29d4be97acd4f3927cf23f2d00",
+  "accepted_design_review_blob": "93163d9ea12ca7dc1182d306f8b293158677c0fa",
+  "predecessor_candidate": {
+    "run_id": 36649328864,
+    "artifact_id": 11069234619,
+    "decision": "REJECT_PLATFORM_CANDIDATE_NO_IN_IMAGE_JAVA21",
+    "image": "catthehacker/ubuntu@sha256:5dff02975654f16f1d1ab6fd04ff88e326a30f39eba177d85d3b4945e6fde62f"
+  },
+  "platform": {
+    "image": "catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "image_digest": "sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "architecture": "linux/amd64",
+    "tag_provenance": "java-tools-22.04",
+    "tag_observation_date_utc": "2026-09-29"
+  },
+  "purpose": "Changed immutable-platform candidate only. Qualify the preinstalled Java 21 plus shell/Git/Python hashing environment needed before any Industrial supplemental hermetic capture.",
+  "acceptance": [
+    "job executes inside the exact immutable image digest on linux/amd64",
+    "checkout is clean and bound to the accepted Industrial source/design/review",
+    "bash, git, python3 and sha256sum are present and hashed",
+    "at least one Java 21 executable already present in the image is hashed and version-recorded",
+    "os-release, uname, locale, timezone, allowlisted environment, process tree and mount table are preserved",
+    "no package installation, setup-java, Gradle invocation, project JVM/test execution, official seed read, claim, allocation or game initialization occurs"
+  ],
+  "prohibited": [
+    "no apt/yum/apk/package installation",
+    "no downloaded or externally mounted JDK as platform authority",
+    "no Gradle or project test invocation",
+    "no runtime capture or expected-manifest construction",
+    "no prepared-worker/R1 authority",
+    "no official seed/allocation/gameplay"
+  ],
+  "authority_if_clean": "PLATFORM_CANDIDATE_FOR_INDEPENDENT_REVIEW_ONLY",
+  "official_counters_delta": 0
+}
