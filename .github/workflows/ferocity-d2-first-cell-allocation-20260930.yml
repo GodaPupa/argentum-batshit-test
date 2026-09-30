@@ -1,9 +1,9 @@
 name: Ferocity D2 first-cell one-shot allocation
 on:
   push:
-    branches: ["ferocity/d2-first-cell-allocation-execute-v3-20260930"]
+    branches: ["ferocity/d2-first-cell-allocation-execute-v4-20260930"]
     paths:
-      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V3_20260930.json"
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V4_20260930.json"
 permissions:
   contents: read
   actions: read
@@ -29,13 +29,13 @@ jobs:
         run: |
           set -euo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_MARKER_REPAIR_V3_INDEPENDENT_REVIEW_20260930.json
-          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V3_20260930.json
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_PATH_MATERIALIZATION_V4_INDEPENDENT_REVIEW_20260930.json
+          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V4_20260930.json
           "$PYTHON_EXACT" - "$REVIEW" "$MARKER" <<'PY'
           import json,pathlib,subprocess,sys
           review=json.loads(pathlib.Path(sys.argv[1]).read_text())
           marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
-          assert review["decision"]=="ACCEPT_MARKER_REPAIRED_V3_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL"
+          assert review["decision"]=="ACCEPT_PATH_MATERIALIZATION_V4_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL"
           assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
           assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
           changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
@@ -95,20 +95,62 @@ jobs:
             "$PYTHON_EXACT" ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py \
             | tee "$EXACT_RUNNER_TEMP/ferocity-allocation-restore.log"
           "$PYTHON_EXACT" - "$EXACT_REPO/build/reports/ferocity-export-plan-assembly/class-path.json" <<'PY'
-          import hashlib,json,pathlib,sys
+          import hashlib,json,pathlib,shutil,sys
           p=pathlib.Path(sys.argv[1])
           rows=json.loads(p.read_text())
           assert len(rows)==56
-          observed_prefix="/__w/_temp/ferocity-source08-runtime-36655120463/"
-          accepted_prefix="/home/runner/work/_temp/ferocity-source08-runtime-36655120463/"
+          observed_runtime=pathlib.Path("/__w/_temp/ferocity-source08-runtime-36655120463")
+          accepted_runtime=pathlib.Path("/home/runner/work/_temp/ferocity-source08-runtime-36655120463")
+          observed_jdk=pathlib.Path("/__w/_temp/ferocity-source08-jdk-36655120463")
+          accepted_jdk=pathlib.Path("/home/runner/work/_temp/ferocity-source08-jdk-36655120463")
+          assert observed_runtime.is_dir() and observed_jdk.is_dir()
+          assert not accepted_runtime.exists() and not accepted_jdk.exists()
+          accepted_runtime.parent.mkdir(parents=True,exist_ok=True)
+          # Materialize exact bytes at the historical absolute paths. Dereference any
+          # distribution symlinks so every admitted runtime/JDK path is a real object.
+          shutil.copytree(observed_runtime,accepted_runtime,symlinks=False,copy_function=shutil.copy2)
+          shutil.copytree(observed_jdk,accepted_jdk,symlinks=False,copy_function=shutil.copy2)
+          def sha_file(q):
+              h=hashlib.sha256()
+              with q.open("rb") as f:
+                  for chunk in iter(lambda:f.read(1024*1024),b""): h.update(chunk)
+              return h.hexdigest()
+          def require_real_tree(root):
+              assert root.is_dir() and not root.is_symlink()
+              for q in root.rglob("*"):
+                  assert not q.is_symlink(), q
+                  assert q.is_file() or q.is_dir(), q
+          require_real_tree(accepted_runtime)
+          require_real_tree(accepted_jdk)
+          observed_prefix=str(observed_runtime)+"/"
+          accepted_prefix=str(accepted_runtime)+"/"
           for row in rows:
-              path=row["path"]
-              assert path.startswith(observed_prefix), path
-              row["path"]=accepted_prefix+path[len(observed_prefix):]
-              assert pathlib.Path(row["path"]).exists(), row["path"]
+              raw_path=row["path"]
+              assert raw_path.startswith(observed_prefix), raw_path
+              q=pathlib.Path(accepted_prefix+raw_path[len(observed_prefix):])
+              assert q.exists() and not q.is_symlink(), q
+              row["path"]=str(q)
+              if row["directory"]:
+                  assert q.is_dir()
+                  actual={}
+                  for f in sorted(q.rglob("*")):
+                      assert not f.is_symlink(), f
+                      if f.is_file():
+                          actual[f.relative_to(q).as_posix()]=sha_file(f)
+                      else:
+                          assert f.is_dir(), f
+                  assert actual==row["files"], (q,len(actual),len(row["files"]))
+                  digest=hashlib.sha256(json.dumps(actual,ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()).hexdigest()
+                  assert digest==row["sha256"], (q,digest,row["sha256"])
+              else:
+                  assert q.is_file() and row["files"]=={}
+                  assert sha_file(q)==row["sha256"], q
           raw=json.dumps(rows,ensure_ascii=False,sort_keys=True,separators=(",",":")).encode()
           assert hashlib.sha256(raw).hexdigest()=="3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415"
           p.write_bytes(raw)
+          java=pathlib.Path("/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java")
+          assert java.is_file() and not java.is_symlink()
+          assert sha_file(java)=="2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d"
           PY
           echo "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d  $JAVA_EXACT" | sha256sum -c -
           echo "3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415  $EXACT_REPO/build/reports/ferocity-export-plan-assembly/class-path.json" | sha256sum -c -
