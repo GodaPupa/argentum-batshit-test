@@ -1,0 +1,41 @@
+{
+  "schema":"izzet-position1-llanowar-visionary-snapshot-contract-repair-budget-v1",
+  "date_utc":"2026-09-30",
+  "superseded_run":{
+    "run_id":36705511831,
+    "artifact_id":11092416229,
+    "classification":"INCOMPLETE_SNAPSHOT_DELTA_CONTRACT_ONLY",
+    "semantic_cases":"2/2 PASS",
+    "card_lint":"PASS",
+    "snapshot_generation":"PASS",
+    "observed_changed_paths":["mtg-sets/src/test/resources/snapshots/cards/M21.json"],
+    "failed_assertion":"original budget incorrectly required ALL.json and M21.json"
+  },
+  "source_authority":{
+    "parent_main":"e28f27e4ce3f84dca511b49f9cc4005f1cbb6ed9",
+    "source_blob":"2cc1f07b325b4b7b5358418aa0aefc0ccabe430b",
+    "test_blob":"7378eacb4e0d4ac7fe1292e73fc5d94ee9cf5ece",
+    "original_budget_blob":"2986c682c32c5fe493eee5fd4bfaae867e174925"
+  },
+  "repaired_snapshot_contract":[
+    "mtg-sets/src/test/resources/snapshots/cards/M21.json"
+  ],
+  "acceptance":[
+    "fresh LlanowarVisionaryScenarioTest executes exactly two deterministic real-engine cases with zero failures/errors/skips",
+    "casting and resolving Llanowar Visionary produces exactly one ETB draw while placing the creature on the battlefield",
+    "activating its mana ability taps the permanent and adds exactly one green mana and zero colorless mana",
+    "card lint passes",
+    "snapshot regeneration changes only M21.json and adds exactly one Llanowar Visionary record while preserving every existing M21 record byte-for-byte",
+    "all candidate and reused primitive Git blobs remain exactly the original prospectively pinned identities"
+  ],
+  "prohibited":[
+    "no changes to candidate definition or semantic test",
+    "no inference that any other missing mana creature is qualified",
+    "no whole Position-1 pilot/action-ranking or opponent competence",
+    "no commander lifecycle/damage/event-ledger authority",
+    "no seed, allocation or gameplay"
+  ],
+  "authority_if_clean":"BOUNDED_LLANOWAR_VISIONARY_DETERMINISTIC_MECHANICS_CANDIDATE_ONLY",
+  "next_gate":"Audit the fresh successor original once. If clean, adopt only Llanowar Visionary definition/test/M21 snapshot into current runtime authority, then freshly re-inventory Position-1.",
+  "official_counters_delta":0
+}
