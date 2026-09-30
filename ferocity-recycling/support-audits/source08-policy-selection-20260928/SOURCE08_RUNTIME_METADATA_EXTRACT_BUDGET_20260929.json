@@ -1,0 +1,42 @@
+{
+  "schema": "ferocity-source08-runtime-metadata-extract-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "directory_inventory_run": 36650252890,
+    "directory_inventory_artifact": 11070132791,
+    "directory_inventory_digest": "9f611a58919cf0544b02240d32d09d98c427a136d496f960cdb2375fd7fcf283",
+    "directory_inventory_receipt_commit": "2ccf276957c87e825547e644fc18174aa11a3390",
+    "preserved_original_id": 10914678223,
+    "preserved_original_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816"
+  },
+  "allowed_member_payloads": [
+    "qualification/runtime-classpath-observation/manifest.json",
+    "qualification/observed-gym-runtime/runtime-archive-receipt.json",
+    "qualification/receipt.json"
+  ],
+  "scope": "READ_ONLY_EXACT_METADATA_MEMBER_EXTRACTION",
+  "operation": [
+    "reassemble and verify the exact already-preserved original ZIP",
+    "open exactly the three allowlisted JSON members and no others",
+    "preserve their bytes verbatim with SHA-256 and length",
+    "parse only enough to produce a structural top-level key/type summary and identify explicit Java/classpath/runtime fields",
+    "do not open runtime-files.tar.gz, compiled-input maps, XML, logs, traces, seed/entropy files, source-changes.zip or any other archive member"
+  ],
+  "acceptance": [
+    "source/inventory/budget/publication-manifest binding clean",
+    "reassembled original digest exact",
+    "all three allowlisted members exist and are valid JSON",
+    "no other member payload opened",
+    "no JVM, Gradle, exporter, game initializer, seed or entropy access"
+  ],
+  "prohibited": [
+    "no runtime-files.tar.gz payload read",
+    "no compiled-input map payload read in this gate",
+    "no XML/log/trace/source archive payload read",
+    "no Java/Kotlin/Gradle execution",
+    "no export or plan assembly",
+    "no D2 admission or gameplay"
+  ],
+  "authority_if_clean": "METADATA_BYTES_ONLY_FOR_PROSPECTIVE_EXPORT_PLAN_CONSTRUCTION",
+  "official_counters_delta": 0
+}
