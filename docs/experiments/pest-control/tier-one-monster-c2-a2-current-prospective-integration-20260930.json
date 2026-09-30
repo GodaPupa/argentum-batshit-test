@@ -1,0 +1,79 @@
+{
+  "schema":"pest-monster-c2-a2-current-prospective-integration-v1",
+  "date_utc":"2026-09-30",
+  "status":"PROSPECTIVE_CURRENT_INTEGRATION_NO_ADMISSION",
+  "current_m5_authority":{
+    "receipt_commit":"5d8d2e117a2b5ad16e7bb43868f72951c54e83a7",
+    "receipt_blob":"4e832bb686a44fe1411c374c2457f3242d1e717b",
+    "run":36661970209,
+    "artifact":11075095277,
+    "decision":"ACCEPTED_M5_TRUTH_VECTOR_RECEIVING_FAIL_CLOSED",
+    "truth_rows":6850,
+    "accepted_vector_blob":"bb8e2247dc64a64403094c691d83b8eed53048bd",
+    "receiver_blob":"1936f537b737fb1b839e53fae0a727aab7a0f0ab"
+  },
+  "historical_inputs_not_auto_promoted":{
+    "c2_pair_seam_head":"4a16779238711e32fb9e1203e5a1d40e185addbf",
+    "c2_receiving_inventory_head":"04968e17540515ab6f073d4819309d6199ba908d",
+    "finite_bank_evidence_map_blob":"5a552aa87bdaee9ef02183a0c2fc654c18dbe4b6",
+    "exact_main_source_map_blob":"cd1eefdb98c5c8a8e43064548af7d68e480e4192",
+    "rule":"Historical scoped receipts may be rebound only by exact identity and scope; their union is not current C2/A2 admission."
+  },
+  "closed_by_current_m5_receiving":[
+    "Lawful public-key M5 receiving for all 6850 accepted atomic truth rows.",
+    "Non-forced unbanked M5 remains null and cannot qualify keep.",
+    "No hidden library identity/order, opponent hidden state or RNG was introduced by M5 receiving."
+  ],
+  "still_open":{
+    "C2P01_pest_keep_bottom":{
+      "requirement":"Current exact Pest London keep decision plus physical bottom ordering over the finite reachable current predicate-vector bank for both play/draw starts.",
+      "accepted_inputs":["current 6850-row M5 truth receiving","accepted lawful predicate-vector boundary"],
+      "historical_context":["eight physical-land/typecycling bottom openings are narrow only"],
+      "not_satisfied_by":"M5 truth alone"
+    },
+    "C2P02_monster_keep_bottom":{
+      "requirement":"Current exact Monster keep decision plus physical bottom ordering for both starts/seats over its finite reachable opening bank.",
+      "historical_context":["two Monster physical-bottom cases are narrow only"],
+      "status":"OPEN"
+    },
+    "C2P03_priority_payment":{
+      "requirement":"Rebind exact current reachable priority/action/payment variants; historical land, Crop, Map, Ent, response and combat cases remain scoped components only.",
+      "status":"OPEN_CURRENT_COMPLETENESS"
+    },
+    "C2P04_pending_choices":{
+      "requirement":"Rebind exact current reachable pending choices including Stirrings/remainder, scry/surveil, Bog/optional targets and other offered groups; prove finite completeness.",
+      "status":"OPEN_CURRENT_COMPLETENESS"
+    },
+    "C2P05_combat_postblock":{
+      "requirement":"Current pair whole-pilot attack/block/post-block priority coverage; historical two-seat combat baton is insufficient alone.",
+      "status":"OPEN"
+    },
+    "C2P06_hidden_invariance":{
+      "requirement":"Whole pair policy invariance under hidden-state permutations, not merely the lawful M5 seam.",
+      "status":"OPEN"
+    },
+    "C2P07_journal_replay":{
+      "requirement":"Source-bound durable claim/journal plus fresh replay for the exact pair package.",
+      "status":"OPEN"
+    }
+  },
+  "next_frozen_gate":{
+    "id":"CURRENT_PAIR_KEEP_BOTTOM_BANK",
+    "scope":[
+      "C2P01 Pest London keep/bottom using current accepted vector+M5 receiving and a frozen raw-controller oracle without rerunning the 6850 raw M5 comparator",
+      "C2P02 Monster keep/bottom in the same prospective pair envelope",
+      "both play/draw starts and exact physical-card bottom identities",
+      "unknown non-forced Pest M5 remains fail closed"
+    ],
+    "acceptance":[
+      "finite bank is source-bound and completely enumerated before behavioral execution",
+      "raw oracle and lawful current actor agree on keep/mulligan and exact bottom identities for every declared row",
+      "no hidden information enters the lawful actor inputs",
+      "fail-closed unknowns are preserved rather than coerced",
+      "original XML/source/bank are preserved for one-time audit"
+    ],
+    "prohibited":["no seed allocation","no pair/C2-A2 admission from a partial bank","no gameplay"]
+  },
+  "admission_after_open_gates":"Only a separately frozen/reviewed C2-A2 package may authorize any seed/allocation/claim/game action.",
+  "official_counters_delta":0
+}
