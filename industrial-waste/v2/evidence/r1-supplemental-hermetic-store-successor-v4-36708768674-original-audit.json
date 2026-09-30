@@ -1,0 +1,53 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-store-successor-v4-36708768674-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36708768674,
+  "job_id":109865262282,
+  "artifact_id":11093028965,
+  "artifact_sha256":"eb771963adf5b5041b3825753e1d015bc0ed16fe3f9250df2174f71ca0bee6dd",
+  "head":"573f786a6464a95c09b31b32696fec8baab5d279",
+  "integrity":{
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "accepted_store_restore":"passed_1272_files",
+    "first_launch_offline":true,
+    "accepted_image_and_java":"passed",
+    "top_level_ai_project_resolution":"passed",
+    "buildSrc_and_project_configuration_progressed":true
+  },
+  "execution":{
+    "gradle_launcher_started":true,
+    "gradle_daemon_started":true,
+    "ai_runtime_configuration_reached":true,
+    "fixed_test_worker_started":false,
+    "fixed_worker_tests_executed":0
+  },
+  "failure":{
+    "classification":"INCOMPLETE_PREFLIGHT_ACCEPTED_DEPENDENCY_STORE_MISSING_CURRENT_RUNTIME_ARTIFACTS",
+    "stage":":ai:industrialR1CaptureRuntime resolving :ai:testRuntimeClasspath offline",
+    "missing_coordinates":[
+      "community.flock.kotlinx.rgxgen:kotlin-rgxgen:0.0.6",
+      "io.github.java-diff-utils:java-diff-utils:4.16",
+      "io.github.pdvrieze.xmlutil:serialization:0.91.3",
+      "net.bytebuddy:byte-buddy-agent:1.17.6",
+      "net.bytebuddy:byte-buddy:1.17.6",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.11.0",
+      "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0",
+      "org.jetbrains.kotlinx:kotlinx-io-core:0.8.2"
+    ],
+    "behavioral_failure":false
+  },
+  "decision":"INCOMPLETE_NO_SUPPLEMENTAL_CAPTURE_AUTHORITY_DEPENDENCY_STORE_CLOSURE_BLOCKER",
+  "accepted_scope":[
+    "The v4 init-script root scoping is correct for the top-level argentum-engine build.",
+    "The exact accepted 1272-file store reconstructs and permits offline Gradle through buildSrc/project configuration into current :ai:testRuntimeClasspath resolution.",
+    "The eight explicitly observed missing module coordinates define the next bounded store-closure target."
+  ],
+  "limits":[
+    "No fixed test worker, runtime graph, class census, repeat equivalence or supplemental capture authority.",
+    "Do not enable network in the hermetic capture itself and do not rerun v4 unchanged.",
+    "No expected manifest, sealed R1 launch, seed, claim, allocation or gameplay authority."
+  ],
+  "next_gate":"Construct a prospectively reviewed dependency-store supplement for exactly the observed missing current runtime artifacts and any transitive metadata/files required to resolve those exact coordinates, merge it with the accepted immutable store under a new canonical manifest, independently audit the store successor, then rerun capture offline.",
+  "official_counters_delta":0
+}
