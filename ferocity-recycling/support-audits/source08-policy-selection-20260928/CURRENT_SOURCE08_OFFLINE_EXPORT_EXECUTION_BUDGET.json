@@ -1,0 +1,81 @@
+{
+  "schema": "ferocity-current-source08-offline-export-execution-budget-v1",
+  "date_utc": "2026-09-29",
+  "status": "PROSPECTIVE_ONE_SHOT_NO_GAME_EXPORT_RELOAD",
+  "accepted_plan": {
+    "assembly_run": 36655120463,
+    "assembly_artifact_id": 11071774468,
+    "assembly_artifact_sha256": "4a7b10491a164d211a7aac6897d105fd73176c8a15a0fd1f6971ea0957f7e6cf",
+    "plan_sha256": "3706ce1ef2276694bd3eebee66b3924bbec627841dec085ef35a0819c37b237b",
+    "material_sha256": "4bbac9ebf1dabd0e37486e461d967895fd62a89cb2c476ce607c20fa07ce2c53",
+    "independent_review_commit": "ebe76aac7283d6ca250edec9ff7a0d79a748b006",
+    "independent_review_blob": "891bc3aa709164db26bb439cce110d4f4f920c32"
+  },
+  "accepted_absolute_paths": {
+    "path_token": "36655120463",
+    "repository": "/home/runner/work/argentum-batshit-test/argentum-batshit-test",
+    "runtime_prefix": "/home/runner/work/_temp/ferocity-source08-runtime-36655120463",
+    "java_executable": "/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"
+  },
+  "source08": {
+    "commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6",
+    "compiled_inputs_file_sha256": "36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908",
+    "compiled_inputs_canonical_sha256": "663af924957ed0d67af8cd594a8abcd6c1e404ea8181acda3fcbac28b6961fd3"
+  },
+  "runtime_and_java": {
+    "source08_gym_artifact_id": 10914678223,
+    "source08_gym_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "runtime_archive_sha256": "0e9ea0c6c3f2e29230148d330b6b7961aeba1fa44985876b90f68bc8ca7e28d5",
+    "classpath_entries": 56,
+    "runtime_files": 2159,
+    "temurin_archive_sha256": "ce79869e1307ed8ee1e2baa86a412b1eb5b75d10a01006d788a6f968bcfaee94",
+    "java_executable_sha256": "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "architecture": "x86_64"
+  },
+  "execution_sources": {
+    "material_constructor_blob": "dd001c437f627b1615ccb590f2331589d4161f72",
+    "plan_assembler_blob": "1f0bb7bb71a4dc5cb5b61bcaf01f8359c6e426b4",
+    "plan_assembler_sha256": "e0e29897920dcd6043a3ea86511466046dfbd6b313db564f2c987370ab8b60f3",
+    "exporter_blob": "c0657160a7b299a9d4a4eded6d1cebdeeb96e6c2",
+    "exporter_sha256": "29d753603a7b25a6410d834060872146c799ec0c4008b6ab978007aa55b57b69",
+    "finite_java_exporter_blob": "16ee5db350ee56e782a9f8c580e58bd8d24d80e6",
+    "finite_java_exporter_sha256": "81a646d61fc44cc675c562d8a83accfe63588f1cd9fe0940e5a24f8c4d7cec6f",
+    "getters_blob": "4acf900e4c3b100db5b71ba391ff615aba521bb8",
+    "getters_sha256": "bfdd39f056dc4501c7bd1e54b78d02b778f8aecedc1803a534da47bb2085e39d",
+    "watchdog_blob": "2a236b9aa682c0f34b2a526033f58327fe7b99dd",
+    "watchdog_sha256": "803a03aae3f63ffb114d9a8b56d4bf108b2f5f71f051057e204220f5f52adb37"
+  },
+  "prelaunch_requirements": [
+    "restore and verify exact source08 runtime/JDK/source bytes",
+    "set FEROCITY_ACCEPTED_PATH_TOKEN=36655120463 and recreate the reviewed absolute paths exactly",
+    "regenerate material and require exact material SHA-256 4bbac9ebf1dabd0e37486e461d967895fd62a89cb2c476ce607c20fa07ce2c53",
+    "regenerate export-plan.json and require exact plan SHA-256 3706ce1ef2276694bd3eebee66b3924bbec627841dec085ef35a0819c37b237b",
+    "verify exporter, finite Java exporter, GETTERS and watchdog exact source hashes immediately before launch",
+    "if any prelaunch requirement fails, Java must not start and the attempt remains technical/prelaunch only"
+  ],
+  "permitted_launch": {
+    "count": 1,
+    "scope": "OFFLINE_EXPORT_NO_GAME_NO_ENTROPY",
+    "java": "exact accepted Temurin bin/java only",
+    "program": "exact FerocityFinitePoolExport.java only",
+    "supervisor": "exact qualified trial_watchdog.py only",
+    "wall_seconds": 120,
+    "java_heap": "-Xmx2048m"
+  },
+  "postlaunch_rules": [
+    "preserve every output from the original whether success or failure",
+    "do not retry or replace the original after Java launch",
+    "successful export/reload remains non-experimental and requires exact one-time artifact audit",
+    "successful bundle production does not grant Red v0.2 runtime receiving or D2 admission"
+  ],
+  "prohibited": [
+    "no official D2 seed generation or entropy consumption",
+    "no allocation claim",
+    "no game initialization or gameplay",
+    "no policy calibration",
+    "no fallback classpath or repository-definition loading",
+    "no retry after Java launch"
+  ],
+  "official_counters_delta": 0
+}
