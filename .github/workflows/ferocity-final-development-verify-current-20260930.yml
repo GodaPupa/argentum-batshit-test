@@ -1,9 +1,9 @@
 name: Ferocity current final development verify-only gate
 on:
   push:
-    branches: ["ferocity/final-development-verify-current-execute-20260930"]
+    branches: ["ferocity/final-development-verify-current-execute-v2-20260930"]
     paths:
-      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_EXECUTION_MARKER_20260930.json"
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_EXECUTION_MARKER_V2_20260930.json"
 
 permissions:
   contents: read
@@ -28,9 +28,9 @@ jobs:
           OUT=build/reports/ferocity-final-development-verify
           test ! -e "$OUT"
           mkdir -p "$OUT"
-          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_IMPLEMENTATION_V2_INDEPENDENT_REVIEW_20260930.json
           BUDGET=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_BUDGET_20260930.json
-          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_EXECUTION_MARKER_20260930.json
+          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_EXECUTION_MARKER_V2_20260930.json
           python3 - "$REVIEW" "$BUDGET" "$MARKER" <<'PY'
           import json,pathlib,subprocess,sys
           review=json.loads(pathlib.Path(sys.argv[1]).read_text())
@@ -55,9 +55,9 @@ jobs:
           assert "allocate" in budget["prohibited_operations"] and "run-one" in budget["prohibited_operations"]
           assert marker["authorization"]=="ONE_VERIFY_ONLY_ORIGINAL"
           PY
-          test ! -e ferocity-recycling/allocations/D2-first-cell
-          test ! -e ferocity-recycling/evidence/development/D2-first-cell
-          test ! -e ferocity-recycling/evidence/process/development/D2-first-cell
+          test ! -e "$TARGET/ferocity-recycling/allocations/D2-first-cell"
+          test ! -e "$TARGET/ferocity-recycling/evidence/development/D2-first-cell"
+          test ! -e "$TARGET/ferocity-recycling/evidence/process/development/D2-first-cell"
           {
             git rev-parse HEAD
             git rev-parse HEAD^
@@ -95,18 +95,43 @@ jobs:
           cp "$INPUT/unpacked/build/reports/ferocity-final-development-manifest/construction-receipt.json" "$OUT/accepted-construction-receipt.json"
           cp "$INPUT/unpacked/build/reports/ferocity-final-development-manifest/coverage-derivation.json" "$OUT/accepted-coverage-derivation.json"
 
-      - name: Restore exact source08 runtime and Java without execution
+      - name: Stage exact frozen repository path without aliases
+        shell: bash
+        run: |
+          set -euo pipefail
+          TARGET=/home/runner/work/argentum-batshit-test/argentum-batshit-test
+          PARENT=/home/runner/work/argentum-batshit-test
+          test ! -e "$PARENT"
+          mkdir -p "$TARGET"
+          cp -a "$GITHUB_WORKSPACE/." "$TARGET/"
+          test -d "$TARGET/.git"
+          test ! -L "$TARGET" && test ! -L "$PARENT"
+          test "$(readlink -f "$TARGET")" = "$TARGET"
+          git config --global --add safe.directory "$TARGET"
+          test "$(git -C "$TARGET" rev-parse HEAD)" = "$GITHUB_SHA"
+          echo "$TARGET" > build/reports/ferocity-final-development-verify/frozen-repository-path.txt
+          test ! -e "$TARGET/ferocity-recycling/allocations/D2-first-cell"
+          test ! -e "$TARGET/ferocity-recycling/evidence/development/D2-first-cell"
+          test ! -e "$TARGET/ferocity-recycling/evidence/process/development/D2-first-cell"
+
+      - name: Restore exact source08 runtime and Java at frozen paths without execution
         shell: bash
         env:
           FEROCITY_ACCEPTED_PATH_TOKEN: "36655120463"
+          RUNNER_TEMP: /home/runner/work/_temp
         run: |
           set -euo pipefail
-          OUT=build/reports/ferocity-final-development-verify
-          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py             | tee "$OUT/runtime-restore.log"
-          RESTORE=build/reports/ferocity-export-plan-assembly/restore-receipt.json
+          OUT="$GITHUB_WORKSPACE/build/reports/ferocity-final-development-verify"
+          TARGET=/home/runner/work/argentum-batshit-test/argentum-batshit-test
+          mkdir -p "$RUNNER_TEMP"
+          cd "$TARGET"
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py \
+            | tee "$OUT/runtime-restore.log"
+          RESTORE="$TARGET/build/reports/ferocity-export-plan-assembly/restore-receipt.json"
           cp "$RESTORE" "$OUT/runtime-restore-receipt.json"
-          echo "3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415  build/reports/ferocity-export-plan-assembly/class-path.json" | sha256sum -c -
-          cmp -s             build/reports/ferocity-export-plan-assembly/class-path.json             ferocity-recycling/evidence/admission/D2-first-cell-current/runtime/class-path.json
+          echo "3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415  $TARGET/build/reports/ferocity-export-plan-assembly/class-path.json" | sha256sum -c -
+          cmp -s "$TARGET/build/reports/ferocity-export-plan-assembly/class-path.json" \
+            "$TARGET/ferocity-recycling/evidence/admission/D2-first-cell-current/runtime/class-path.json"
           JAVA=/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java
           test -f "$JAVA"
           echo "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d  $JAVA" | sha256sum -c -
@@ -123,6 +148,7 @@ jobs:
           assert r["allocationRead"] is False
           assert r["gameInitialized"] is False
           assert r["runtime"]["classpathEntries"]==56
+          assert r["java"]["javaExecutable"]=="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"
           assert r["java"]["javaExecutableSha256"]=="2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d"
           PY
 
@@ -130,8 +156,9 @@ jobs:
         shell: bash
         run: |
           set -uo pipefail
-          OUT=build/reports/ferocity-final-development-verify
-          MANIFEST="$GITHUB_WORKSPACE/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
+          OUT="$GITHUB_WORKSPACE/build/reports/ferocity-final-development-verify"
+          TARGET=/home/runner/work/argentum-batshit-test/argentum-batshit-test
+          MANIFEST="$TARGET/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
           MANIFEST_SHA=86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc
           python3 - "$MANIFEST" "$OUT/launch.txt" <<'PY'
           import json,os,pathlib,sys
@@ -198,7 +225,7 @@ jobs:
           path: |
             build/reports/ferocity-final-development-verify/
             ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_BUDGET_20260930.json
-            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json
-            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_EXECUTION_MARKER_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_IMPLEMENTATION_V2_INDEPENDENT_REVIEW_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_CURRENT_EXECUTION_MARKER_V2_20260930.json
           if-no-files-found: error
           retention-days: 90
