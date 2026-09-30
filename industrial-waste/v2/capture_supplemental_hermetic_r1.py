@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import hashlib,json,os,pathlib,re,shutil,subprocess,sys,sysconfig,tarfile,threading,time,zipfile,xml.etree.ElementTree as ET
+import collections,hashlib,json,os,pathlib,re,shutil,subprocess,sys,sysconfig,tarfile,threading,time,zipfile,xml.etree.ElementTree as ET
 
 ROOT=pathlib.Path(".").resolve()
 OUT=ROOT/"build/reports/industrial-r1-supplemental-hermetic"
@@ -161,16 +161,55 @@ def restore_accepted_store(archive:pathlib.Path, manifest_path:pathlib.Path, tar
 
 def parse_classlog(path:pathlib.Path):
     rows=[]
-    rx=re.compile(r"\[class,load\]\s+(.+?)\s+source:\s+(.*)$")
+    rx=re.compile(r"\\[class,load\\]\\s+(.+?)\\s+source:\\s+(.*)$")
+    generated_sources={"__dynamic_proxy__","__ClassDefiner__","__JVM_LookupDefineClass__"}
     for line in path.read_text(errors="replace").splitlines():
         m=rx.search(line)
         if not m: continue
         name=m.group(1); source=m.group(2)
         normalized=re.sub(r"/0x[0-9a-fA-F]+","/0x<HIDDEN>",name)
-        rows.append({"name":name,"normalized_name":normalized,"source":source,"hidden":"/0x" in name})
+        hidden="/0x" in name
+        generated=hidden or "$Lambda" in name or name.startswith("jdk.proxy") or "Generated" in name or source in generated_sources
+        rows.append({"name":name,"normalized_name":normalized,"source":source,"hidden":hidden,"generated_or_hidden":generated})
     normalized=sorted((r["normalized_name"],r["source"]) for r in rows)
     return rows,hashlib.sha256(canonical(normalized)).hexdigest()
 
+def generated_hidden_repeat_equivalence(first,second):
+    def key(r): return (r["normalized_name"],r["source"])
+    first_generated=[key(r) for r in first if r["generated_or_hidden"]]
+    second_generated=[key(r) for r in second if r["generated_or_hidden"]]
+    first_families=set(first_generated); second_families=set(second_generated)
+    family_set_equal=first_families==second_families
+    first_non_vm=collections.Counter(x for x in first_generated if x[1]!="__JVM_LookupDefineClass__")
+    second_non_vm=collections.Counter(x for x in second_generated if x[1]!="__JVM_LookupDefineClass__")
+    non_vm_equal=first_non_vm==second_non_vm
+    first_vm=collections.Counter(x for x in first_generated if x[1]=="__JVM_LookupDefineClass__")
+    second_vm=collections.Counter(x for x in second_generated if x[1]=="__JVM_LookupDefineClass__")
+    vm_family_set_equal=set(first_vm)==set(second_vm)
+    vm_delta=[
+        {"normalized_name":name,"source":source,
+         "first_count":first_vm.get((name,source),0),
+         "second_count":second_vm.get((name,source),0)}
+        for name,source in sorted(set(first_vm)|set(second_vm))
+        if first_vm.get((name,source),0)!=second_vm.get((name,source),0)
+    ]
+    return {
+        "schema":"industrial-r1-vm-hidden-repeat-equivalence-v1",
+        "rule":"EXACT_GENERATED_HIDDEN_FAMILY_SET_AND_NON_VM_MULTIPLICITY;VM_LOOKUP_DEFINE_FAMILY_SET_ONLY",
+        "equal":family_set_equal and non_vm_equal and vm_family_set_equal,
+        "generated_hidden_family_set_equal":family_set_equal,
+        "non_vm_multiplicity_equal":non_vm_equal,
+        "vm_lookup_define_family_set_equal":vm_family_set_equal,
+        "first_generated_hidden_rows":len(first_generated),
+        "second_generated_hidden_rows":len(second_generated),
+        "first_generated_hidden_families":len(first_families),
+        "second_generated_hidden_families":len(second_families),
+        "first_non_vm_rows":sum(first_non_vm.values()),
+        "second_non_vm_rows":sum(second_non_vm.values()),
+        "first_vm_lookup_define_rows":sum(first_vm.values()),
+        "second_vm_lookup_define_rows":sum(second_vm.values()),
+        "vm_lookup_define_multiplicity_delta":vm_delta,
+    }
 def archive_inventory(path:pathlib.Path):
     if path.is_dir():
         members=file_inventory(path)
