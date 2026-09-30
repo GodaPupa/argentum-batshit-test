@@ -1,0 +1,53 @@
+{
+  "schema":"izzet-position1-llanowar-visionary-36729664246-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36729664246,
+  "job_id":109935588050,
+  "artifact_id":11104606590,
+  "artifact_sha256":"238eebaba8952d082f45a452ab256f0ee6c8c49fb903e6d10857387579699d6c",
+  "head":"4efd307e18a32f3caf71a5c48b11715b2c23020b",
+  "parent":"860739417560b20a2ed76834f7408d3f0993ea77",
+  "pins":{
+    "source_blob":"2cc1f07b325b4b7b5358418aa0aefc0ccabe430b",
+    "scenario_test_blob":"7378eacb4e0d4ac7fe1292e73fc5d94ee9cf5ece",
+    "budget_blob":"2986c682c32c5fe493eee5fd4bfaae867e174925",
+    "workflow_blob":"d3f0578e133387a958e79e0e587a767a0ba746ba"
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":7,
+    "source_parent_binding":"passed",
+    "freshness":"--rerun-tasks --no-build-cache",
+    "xml_sha256":"018a03ea142048020cc94e24a734a62a3200e810027fe1a8146202ba79a748e1",
+    "scenario_log_sha256":"158cc1fd010ae871d2b9383a866e1fcb23d629b7ec5a3eb7b7d494691f85ea8d",
+    "snapshot_lint_log_sha256":"6fa2b25d0ada0109d962a29569f0e20293a95f11693908d4c6c2b18bf2790a71"
+  },
+  "semantic_result":{
+    "tests":2,"passes":2,"failures":0,"errors":0,"skipped":0,
+    "cases":[
+      "resolving Llanowar Visionary draws exactly one card from its ETB trigger",
+      "tapping Llanowar Visionary adds exactly one green mana"
+    ]
+  },
+  "snapshot_contract":{
+    "path":"mtg-sets/src/test/resources/snapshots/cards/M21.json",
+    "generated_sha256":"565b8ee499b92b204d7177cf84da0ac6fb1e667df56a7c4571b115733dcf6929",
+    "added_records":["Llanowar Visionary"],
+    "unchanged_existing_records":19,
+    "other_snapshot_changes":0,
+    "card_lint":"PASS"
+  },
+  "decision":"ACCEPTED_POSITION1_LLANOWAR_VISIONARY_MECHANICS_AND_SNAPSHOT",
+  "accepted_scope":[
+    "Llanowar Visionary current source is qualified for ETB draw-one and tap-for-one-green mechanics using the existing engine primitives.",
+    "The generated M21 snapshot addition is exact and isolated; existing M21 records and card-lint invariants remain unchanged."
+  ],
+  "limits":[
+    "Registry adoption is not whole Position-1 pilot competence.",
+    "No opponent, commander lifecycle/damage/event-ledger, replay, seed, allocation or gameplay authority."
+  ],
+  "next_gate":"Adopt the exact source/test/snapshot bytes into live main, then run a fresh Position-1 registry re-inventory and select the next smallest missing requirement-driven identity/mechanic.",
+  "official_counters_delta":0
+}
