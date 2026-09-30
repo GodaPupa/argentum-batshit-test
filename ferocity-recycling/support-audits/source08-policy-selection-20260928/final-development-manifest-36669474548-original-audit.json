@@ -1,0 +1,67 @@
+{
+  "schema":"ferocity-final-development-manifest-36669474548-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36669474548,
+  "job_id":109741167102,
+  "artifact_id":11077287825,
+  "artifact_sha256":"6cc1ed84aa9fd6b17ddcdce7a1054bbc856124b16dd6b1ecce1fe9d04f9ceb80",
+  "head":"b8f426a50b029d75fb950f6148d3be742f4ab1d3",
+  "parent":"d4f366b512c99733bffdabb1aec682a15761f49f",
+  "reviewed_implementation_commit":"b9537e84c9195a68c6b845d43b4d9a41e544c600",
+  "pins":{
+    "constructor_blob":"bae12b34eb7ec9a888ed5eee1881481aa4055d44",
+    "budget_blob":"e8ce6b4baaa5d7a660a599cf7a60d18ea06e9db5",
+    "workflow_blob":"b29c62b8e2d5f8c8878cd2332968d8d5fb803048",
+    "implementation_review_blob":"f5a68a16b13eae688ecf05004c47daa24838c4e7",
+    "execution_marker_blob":"5780a8af4367f91906e23ca048b496bff019c5e0"
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":34,
+    "source_parent_workflow_binding":"passed",
+    "materialized_members_rehashed":28,
+    "materialized_member_rehash":"clean",
+    "manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc"
+  },
+  "manifest_review":{
+    "source08_commit":"3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "compiled_inputs_sha256":"36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908",
+    "compiled_inputs_canonical_sha256":"663af924957ed0d67af8cd594a8abcd6c1e404ea8181acda3fcbac28b6961fd3",
+    "serializer_sha256":"5c3e70fea5aeeb0f1b64b216cd0dd5133785388706c56fdbbc27b768ed855042",
+    "classpath_entries":56,
+    "definitions":36,
+    "registry_bindings":68,
+    "coverage_keys":55,
+    "required_xml_classes_verified":11,
+    "coverage_exact_card_plus_required_capability_closure":true,
+    "coverage_references_preserved_passing_classes":true,
+    "watchdog_python_executable":"/usr/local/python/3.14.2/bin/python3.14",
+    "watchdog_python_sha256":"4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601",
+    "watchdog_source_sha256":"803a03aae3f63ffb114d9a8b56d4bf108b2f5f71f051057e204220f5f52adb37"
+  },
+  "side_effects":{
+    "java_started":false,
+    "gradle_started":false,
+    "entropy_read":false,
+    "allocation_read":false,
+    "ledger_created":false,
+    "trial_claim_created":false,
+    "game_initialized":false,
+    "outcomes_exposed":0
+  },
+  "decision":"ACCEPTED_CANONICAL_CURRENT_FEROCITY_DEVELOPMENT_MANIFEST_CANDIDATE",
+  "accepted_scope":[
+    "The exact canonical FerocityDevelopmentManifest candidate and all 28 materialized verifier inputs are accepted as a complete non-executing candidate for the separately governed verify-only gate.",
+    "The 55-key coverage map is exactly the 36 admitted definition names plus the 19 required mechanic/runtime/policy capabilities and references only preserved passing qualification classes.",
+    "The accepted current watchdog package, exact runtime bundle, inline-token provenance, source08 qualification package and Red v0.2 policy authority are bound without rerun."
+  ],
+  "limits":[
+    "This audit does not execute VerifiedFerocityDevelopment.verify and does not itself grant D2 execution authority.",
+    "No entropy, seed, allocation, ledger, claim, journal, game initialization, gameplay or outcome authority.",
+    "Run 36669474548 is consumed and must not be rerun or replaced."
+  ],
+  "next_gate":"Independently adopt this exact manifest SHA-256 for one verify-only Java gate. Predeclare and review the exact runtime/JDK restoration plus FerocityDevelopmentCli verify workflow before dispatch; allocate and run-one remain forbidden.",
+  "official_counters_delta":0
+}
