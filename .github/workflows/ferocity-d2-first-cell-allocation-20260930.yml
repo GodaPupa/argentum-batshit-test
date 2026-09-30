@@ -30,7 +30,8 @@ jobs:
           set -euo pipefail
           EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"
           EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"
-          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_SHELL_LITERAL_V7_INDEPENDENT_REVIEW_20260930.json
           MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V7_20260930.json
           "$PYTHON_EXACT" - "$REVIEW" "$MARKER" <<'PY'
@@ -64,7 +65,8 @@ jobs:
           set -euo pipefail
           EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"
           EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"
-          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          mkdir -p "$(dirname "$EXACT_REPO_LITERAL")" "$EXACT_RUNNER_TEMP_LITERAL"
+          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"
+          mkdir -p "$(dirname "$EXACT_REPO_LITERAL")" "$EXACT_RUNNER_TEMP_LITERAL"
           if [ -e "$EXACT_REPO_LITERAL" ]; then
             test -d "$EXACT_REPO_LITERAL/.git"
             test "$(readlink -f "$EXACT_REPO_LITERAL")" = "$EXACT_REPO_LITERAL"
@@ -116,7 +118,8 @@ jobs:
           set -euo pipefail
           EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"
           EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"
-          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          cd "$EXACT_REPO_LITERAL"
+          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"
+          cd "$EXACT_REPO_LITERAL"
           OUT="$EXACT_REPO_LITERAL/build/reports/ferocity-d2-first-cell-allocation"
           mkdir -p "$OUT"
           MANIFEST="$EXACT_REPO_LITERAL/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
@@ -184,7 +187,8 @@ jobs:
           set -euo pipefail
           EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"
           EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"
-          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          DEST="$GITHUB_WORKSPACE/build/reports/ferocity-d2-first-cell-allocation-preserved"
+          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"
+          DEST="$GITHUB_WORKSPACE/build/reports/ferocity-d2-first-cell-allocation-preserved"
           mkdir -p "$DEST"
           cp -a "$EXACT_REPO_LITERAL/build/reports/ferocity-d2-first-cell-allocation/." "$DEST/" 2>/dev/null || true
           cp "$EXACT_RUNNER_TEMP_LITERAL/ferocity-allocation-restore.log" "$DEST/" 2>/dev/null || true
