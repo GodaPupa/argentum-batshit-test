@@ -1,7 +1,7 @@
 name: Pest London M5 truth to predicate-vector receiving
 on:
   push:
-    branches: ["pest/london-m5-truth-vector-receiving-successor-20260930"]
+    branches: ["pest/london-m5-truth-vector-receiving-successor2-20260930"]
     paths: [".github/workflows/pest-london-m5-truth-vector-receiving.yml"]
 permissions:
   contents: read
@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v6
-        with: {fetch-depth: 2}
+        with: {fetch-depth: 3}
       - uses: actions/setup-java@v5
         with: {distribution: temurin, java-version: "21"}
       - uses: gradle/actions/setup-gradle@v6
@@ -23,7 +23,9 @@ jobs:
           set -euo pipefail
           OUT=build/reports/pest-london-m5-truth-receiving
           mkdir -p "$OUT"
-          test "$(git rev-parse HEAD^)" = "45bd364facec9c0eeeabadc612afde05700198ae"\n          test "$(git rev-parse HEAD^^)" = "95c3f2baeac19a811928a53816edea08a0d83624"
+          test "$(git rev-parse HEAD^)" = "17df9486e1a613cb20a73133df46dcf7855451db"
+          test "$(git rev-parse HEAD^^)" = "45bd364facec9c0eeeabadc612afde05700198ae"
+          test "$(git rev-parse HEAD^^^)" = "95c3f2baeac19a811928a53816edea08a0d83624"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt)" = "bb8e2247dc64a64403094c691d83b8eed53048bd"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceiving.kt)" = "1936f537b737fb1b839e53fae0a727aab7a0f0ab"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceivingTest.kt)" = "6261fcc2bdfda526de12feac421dfcc842fbaf77"
