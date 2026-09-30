@@ -6,9 +6,9 @@ ROOT=pathlib.Path(".").resolve()
 OUT=ROOT/"build/reports/industrial-r1-supplemental-hermetic"
 INIT=ROOT/"industrial-waste/v2/r1-supplemental-hermetic-capture.init.gradle"
 BOOTSTRAP=ROOT/"industrial-waste/v2/r1-dependency-store-bootstrap.init.gradle"
-STORE_ARCHIVE_SHA="b686ca26e715ba965a9156c455a6fba8c0f80f8d55883fc9b85285d4bb0b0b23"
-STORE_MANIFEST_SHA="8e427eb24c5c3043dab37abb681b0d3caf5243f4cb9357e1d196a92523ae9c0e"
-STORE_FILES=1272
+STORE_ARCHIVE_SHA="a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3"
+STORE_MANIFEST_SHA="b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4"
+STORE_FILES=1339
 SOURCE="de27e189e7597bdf48f213a40a0bbf1b70f63c1a"
 SOURCE_TREE="d62e3fbd59dd78cc444c09b26673ae1bf3a848ab"
 JAVA=pathlib.Path("/usr/lib/jvm/temurin-21-jdk-amd64/bin/java")
@@ -150,8 +150,8 @@ def restore_accepted_store(archive:pathlib.Path, manifest_path:pathlib.Path, tar
     actual={r["path"]:(r["bytes"],r["sha256"]) for r in restored if r["kind"]=="file"}
     if actual!=expected: raise RuntimeError("restored dependency-store differs from accepted manifest")
     receipt={"schema":"industrial-r1-accepted-dependency-store-restore-v1",
-             "source_artifact_id":11080705894,
-             "outer_artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b",
+             "source_artifact_id":11105215706,
+             "outer_artifact_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649",
              "archive_sha256":STORE_ARCHIVE_SHA,"manifest_sha256":STORE_MANIFEST_SHA,
              "files":len(seen),"writable_gradle_home":str(target),
              "input_archive_read_only":(archive.stat().st_mode & 0o222)==0,
@@ -274,7 +274,7 @@ def main():
             rel=rp.relative_to(gradle_home).as_posix()
             if rel not in accepted_store or sha_file(rp)!=accepted_store[rel][1]:
                 raise RuntimeError("resolved dependency is not exact accepted store byte: "+rel)
-    summary={"schema":"industrial-r1-supplemental-hermetic-capture-v2","logical_source_commit":SOURCE,"logical_source_tree":SOURCE_TREE,"observed_head":cmd("git","rev-parse","HEAD"),"platform":platform,"tracked_input_count":len(inputs),"runtime_classpath_entries":len(entries),"runtime_visible_member_keys":len(first_visible),"first_launch":first,"offline_repeat":second,"class_census":{"first_sha256":d1,"second_sha256":d2,"equal":True,"hidden_first":sum(r["hidden"] for r in class1),"hidden_second":sum(r["hidden"] for r in class2),"policy":"PINNED_GENERATOR_INPUTS_REPEAT_NORMALIZED_EQUIVALENCE"},"immutable_store":{"source_artifact_id":11080705894,"outer_artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b","archive_sha256":STORE_ARCHIVE_SHA,"manifest_sha256":STORE_MANIFEST_SHA,"files":STORE_FILES,"mode":"VERIFIED_READ_ONLY_INPUT_RECONSTRUCTED_TO_WRITABLE_GRADLE_HOME","bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856"},"fixed_worker":{"class":TEST,"tests":10,"failures":0,"errors":0,"skipped":0},"official_seed_files_read":False,"official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},"authority":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY"}
+    summary={"schema":"industrial-r1-supplemental-hermetic-capture-v2","logical_source_commit":SOURCE,"logical_source_tree":SOURCE_TREE,"observed_head":cmd("git","rev-parse","HEAD"),"platform":platform,"tracked_input_count":len(inputs),"runtime_classpath_entries":len(entries),"runtime_visible_member_keys":len(first_visible),"first_launch":first,"offline_repeat":second,"class_census":{"first_sha256":d1,"second_sha256":d2,"equal":True,"hidden_first":sum(r["hidden"] for r in class1),"hidden_second":sum(r["hidden"] for r in class2),"policy":"PINNED_GENERATOR_INPUTS_REPEAT_NORMALIZED_EQUIVALENCE"},"immutable_store":{"source_artifact_id":11105215706,"outer_artifact_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649","archive_sha256":STORE_ARCHIVE_SHA,"manifest_sha256":STORE_MANIFEST_SHA,"files":STORE_FILES,"mode":"VERIFIED_READ_ONLY_INPUT_RECONSTRUCTED_TO_WRITABLE_GRADLE_HOME","bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856"},"fixed_worker":{"class":TEST,"tests":10,"failures":0,"errors":0,"skipped":0},"official_seed_files_read":False,"official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},"authority":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY"}
     (OUT/"summary.json").write_bytes(canonical(summary))
     manifest=[]
     for p in sorted(x for x in OUT.rglob("*") if x.is_file() and x.name!="artifact-manifest.json"):
