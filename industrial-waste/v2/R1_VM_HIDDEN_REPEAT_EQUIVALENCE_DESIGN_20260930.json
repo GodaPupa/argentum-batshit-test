@@ -1,0 +1,52 @@
+{
+  "schema":"industrial-r1-vm-hidden-repeat-equivalence-design-v1",
+  "date_utc":"2026-09-30",
+  "basis":{
+    "accepted_supplemental_design_review_blob":"93163d9ea12ca7dc1182d306f8b293158677c0fa",
+    "selected_policy":"PINNED_GENERATOR_INPUTS",
+    "blocked_run":36731156370,
+    "blocked_run_audit_commit":"af96a692ca006abf224c94d7cc79c9e3ec201853"
+  },
+  "observed_blocker":{
+    "unique_generated_hidden_family_sets_equal":true,
+    "unique_generated_hidden_families":15145,
+    "non_vm_generated_multiplicity_equal":true,
+    "non_vm_generated_rows":48808,
+    "vm_lookup_define_unique_family_sets_equal":true,
+    "vm_lookup_define_rows_first":475,
+    "vm_lookup_define_rows_second":476,
+    "sole_generated_multiplicity_delta":"java.lang.invoke.LambdaForm$MH/0x<HIDDEN> from __JVM_LookupDefineClass__, +1 on repeat"
+  },
+  "equivalence_rule":{
+    "classification":"generated_or_hidden iff normalized class name contains /0x, contains $$Lambda, starts jdk.proxy, contains Generated, or source is one of __dynamic_proxy__, __ClassDefiner__, __JVM_LookupDefineClass__",
+    "required_unique_family_equality":"Exact set equality of (normalized_name, source) for every generated_or_hidden class.",
+    "required_non_vm_multiplicity_equality":"Exact multiset equality of (normalized_name, source) for generated_or_hidden classes whose source is not __JVM_LookupDefineClass__.",
+    "vm_hidden_rule":"For source __JVM_LookupDefineClass__, exact unique normalized family-set equality is required but multiplicity may vary between repeats. Raw rows, counts and multiplicity deltas remain preserved.",
+    "ordinary_classes":"Ordinary non-generated class-load multiplicity/order is preserved as raw evidence but is not a generated/hidden equivalence criterion.",
+    "input_binding":"The rule is usable only when immutable image/JDK, source/build inputs, dependency-store bytes, normalized runtime graph, worker Java, test class and generator/tool inputs all rehash identically."
+  },
+  "fail_closed":[
+    "Any generated/hidden unique family present in only one repeat fails.",
+    "Any non-VM generated multiplicity difference fails.",
+    "Any VM hidden family-set difference fails.",
+    "Any runtime graph, dependency-store, source/build input, Java/tool or fixed-worker drift fails independently.",
+    "No family may be silently excluded after classification."
+  ],
+  "preservation":[
+    "complete raw class-load logs",
+    "complete parsed class census rows",
+    "all-class normalized digest for each repeat",
+    "generated/hidden unique-family digest for each repeat",
+    "non-VM generated multiset digest for each repeat",
+    "VM lookup-defined unique-family digest and raw multiplicity counts for each repeat",
+    "explicit multiplicity delta report"
+  ],
+  "authority_requested":"DESIGN_ONLY_REPEAT_EQUIVALENCE",
+  "execution_authorized":false,
+  "explicit_non_authority":[
+    "No supplemental capture acceptance.",
+    "No expected manifest, prepared worker, R1 permit, seed, claim, allocation or gameplay authority."
+  ],
+  "next_gate":"Independent review of this exact equivalence rule. Only if accepted may the capture validator be changed to implement it and a fresh successor original be dispatched.",
+  "official_counters_delta":0
+}
