@@ -4,7 +4,7 @@ import org.gradle.api.artifacts.result.ResolvedDependencyResult
 import org.gradle.api.artifacts.result.UnresolvedDependencyResult
 
 gradle.projectsEvaluated {
-    def p = rootProject.findProject(":ai")
+    def p = gradle.rootProject.findProject(":ai")
     if (p == null) throw new GradleException("missing :ai project")
     p.tasks.withType(Test).configureEach { t ->
         if (t.path == ":ai:test") {
