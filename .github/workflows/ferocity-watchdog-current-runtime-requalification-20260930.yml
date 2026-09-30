@@ -2,9 +2,9 @@ name: Ferocity watchdog current-runtime requalification
 on:
   push:
     branches:
-      - ferocity/watchdog-current-runtime-requalification-execute-v2-20260930
+      - ferocity/watchdog-current-runtime-requalification-execute-v3-20260930
     paths:
-      - ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_V2_20260930.json
+      - ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_V3_20260930.json
 
 permissions:
   contents: read
@@ -27,18 +27,19 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           python3 - <<'PY'
           import json, pathlib, subprocess
           root=pathlib.Path(".")
-          review_path=root/"ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_IMPLEMENTATION_INDEPENDENT_REVIEW_20260930.json"
+          review_path=root/"ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_REPAIR_V3_INDEPENDENT_REVIEW_20260930.json"
           review=json.loads(review_path.read_text())
-          assert review["decision"] == "ACCEPT_IMPLEMENTATION_FOR_ONE_FRESH_FIXED_PROCESS_ORIGINAL"
+          assert review["decision"] == "ACCEPT_REPAIRED_IMPLEMENTATION_FOR_ONE_FRESH_FIXED_PROCESS_ORIGINAL"
           head=subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()
           parent=subprocess.check_output(["git","rev-parse","HEAD^"],text=True).strip()
           implementation=subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()
           assert review["reviewed_implementation_commit"] == implementation
           changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
-          assert changed == ["ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_V2_20260930.json"], changed
+          assert changed == ["ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_EXECUTION_MARKER_V3_20260930.json"], changed
           files={
             "reviewed_harness_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/run_watchdog_current_runtime_requalification.py",
             "reviewed_budget_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/WATCHDOG_CURRENT_RUNTIME_REQUALIFICATION_BUDGET_20260930.json",
