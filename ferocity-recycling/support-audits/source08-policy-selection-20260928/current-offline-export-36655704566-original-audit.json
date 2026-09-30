@@ -1,0 +1,87 @@
+{
+  "schema": "ferocity-current-source08-offline-export-36655704566-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36655704566,
+  "job_id": 109699473277,
+  "artifact_id": 11071913791,
+  "artifact_sha256": "94ec8d2ee12f929316c39ce0c69fbf9e5ad869a3b4ecedaa48faa2f8280b7ee6",
+  "head": "ae329a842eb8cfae65abd2b1c1a8baa14bf8286f",
+  "parent": "c053cbfa6d8beb0d3654898f17e8d49c61719954",
+  "pins": {
+    "workflow": "5a8afa5f092d0fea129ecfa01247316510ccb3b5",
+    "execution_budget": "8af7adffb84a72cb99262e50b6a201ac6bf6a3c9",
+    "independent_plan_review": "891bc3aa709164db26bb439cce110d4f4f920c32",
+    "material_constructor": "dd001c437f627b1615ccb590f2331589d4161f72",
+    "plan_assembler": "1f0bb7bb71a4dc5cb5b61bcaf01f8359c6e426b4",
+    "exporter": "c0657160a7b299a9d4a4eded6d1cebdeeb96e6c2",
+    "finite_java_exporter": "16ee5db350ee56e782a9f8c580e58bd8d24d80e6",
+    "getters": "4acf900e4c3b100db5b71ba391ff615aba521bb8",
+    "watchdog": "2a236b9aa682c0f34b2a526033f58327fe7b99dd"
+  },
+  "integrity": {
+    "workflow_conclusion": "success",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "export_exit_status": 0,
+    "artifact_manifest_rehash": "clean",
+    "prelaunch_plan_sha256_match": true,
+    "prelaunch_material_sha256_match": true
+  },
+  "prelaunch": {
+    "accepted_plan_sha256": "3706ce1ef2276694bd3eebee66b3924bbec627841dec085ef35a0819c37b237b",
+    "observed_plan_sha256": "3706ce1ef2276694bd3eebee66b3924bbec627841dec085ef35a0819c37b237b",
+    "accepted_material_sha256": "4bbac9ebf1dabd0e37486e461d967895fd62a89cb2c476ce607c20fa07ce2c53",
+    "observed_material_sha256": "4bbac9ebf1dabd0e37486e461d967895fd62a89cb2c476ce607c20fa07ce2c53",
+    "restore_receipt_sha256": "9ce5f1602d065f92f8dc99f81dade49b22b94d843036aa8c457d26e014bc5052",
+    "launch_permit_sha256": "cecfb2e3776f82ec29796696ad9a327564f256a2a174dce22b05237ec833d6f7"
+  },
+  "process": {
+    "launch_sha256": "eabd8854a71b021a52344f2065c1f59f00468c16a77230d629fbfcd7c8ffb3e5",
+    "supervision_spec_sha256": "25ff8864b8a398ae9878ae4a04c4e1cff73aa4d9e9b9dc7c23b9e8a5cdcaf751",
+    "process_result_sha256": "4cdafa6af62add3616fd2797bc01251604a32ed19a248080246128e3872774af",
+    "classification": "EXIT_ZERO_REQUIRES_ENGINE_REPLAY",
+    "returncode": 0,
+    "timed_out": false,
+    "new_gameplay_games": 0,
+    "game_outcome": null,
+    "claim_scope": "PROCESS_SUPERVISION_ONLY",
+    "input_pins_unchanged": true
+  },
+  "export": {
+    "scope": "OFFLINE_ARTIFACT_EXPORT_NO_GAME_NO_ENTROPY",
+    "status": "RAW_BUNDLE_AND_INLINE_DESCRIPTOR_RELOADED_WITH_QUALIFIED_VALIDATORS",
+    "definitions": 36,
+    "unique_definition_names": 36,
+    "definition_bundle_sha256": "abc31a66ca4fc15602dfa861af83119c4418a9cc0cf9bc39bb01b2c7034d42ba",
+    "inline_token_admission_sha256": "16f8532a53a15a24c1b7318f3915e7c4d85b203e365f6348d99ade2e82b7535f",
+    "artifact_validation_pins_sha256": "5976fe19a06b1d3113a36e65c9181bd9c7a314edeb0db7faad1fac4c2c94e0ac",
+    "classpath_sha256": "3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415",
+    "export_receipt_sha256": "c2ee8a5f1399480f919d31e3e6e6b0574befb43d2eac37871858afb7c2637b41",
+    "artifact_manifest_sha256": "a50f106c0699bf92df1e32c7a259a5e375b6f27e6a1101461b5216f4bda258ae",
+    "resolved_plan_sha256": "75b30109953355bfcfa2ad27c1325411ef893ae888ccaf1e72636c5b39c57935",
+    "requires_final_development_admission_verification_before_entropy": true
+  },
+  "official": {
+    "seeds_allocated": 0,
+    "games_initialized": 0,
+    "gameplay_authorized": false
+  },
+  "decision": "ACCEPTED_EXACT_SOURCE08_OFFLINE_DEFINITION_BUNDLE_AND_RELOAD",
+  "accepted_scope": [
+    "The independently reviewed exact source08 export plan reproduced byte-for-byte before Java launch.",
+    "The exact accepted Temurin Java executable performed one bounded OFFLINE_EXPORT_NO_GAME_NO_ENTROPY source-file export under the qualified watchdog.",
+    "Exactly 36 frozen first-cell definition identities were loaded from the accepted source08 classpath and written into definition-bundle.json.",
+    "The bundle and inline Gift-Fish descriptor were reloaded and verified by the qualified validators before the process exited zero.",
+    "The complete output artifact rehashes against its own artifact manifest."
+  ],
+  "limits": [
+    "This bundle is offline artifact authority only; it is not D2 execution authority.",
+    "MisterTwin Red v0.2 runtime/pilot receiving remains separately open.",
+    "Final FerocityDevelopmentAdmission verification remains required before entropy.",
+    "No official seed, allocation, game or performance outcome was created.",
+    "This original is consumed and must not be rerun or replaced."
+  ],
+  "next_gate": "Bind the accepted definition bundle and exact validation pins into current first-cell authority, then qualify MisterTwin Red v0.2 against the same current source08 runtime/bundle. Only after complete receiving and independent final D2 admission may entropy/allocation/gameplay be considered.",
+  "official_counters_delta": 0
+}
