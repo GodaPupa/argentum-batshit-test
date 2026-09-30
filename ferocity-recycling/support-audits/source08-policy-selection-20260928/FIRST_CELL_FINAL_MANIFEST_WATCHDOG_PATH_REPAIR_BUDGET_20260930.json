@@ -1,0 +1,38 @@
+{
+  "schema":"ferocity-final-development-manifest-watchdog-path-repair-budget-v1",
+  "date_utc":"2026-09-30",
+  "source_manifest_original":{
+    "run_id":36669474548,
+    "artifact_id":11077287825,
+    "artifact_sha256":"6cc1ed84aa9fd6b17ddcdce7a1054bbc856124b16dd6b1ecce1fe9d04f9ceb80",
+    "manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+    "independent_review_commit":"274e660066d80781bbfb58b381a7c429a18e312a"
+  },
+  "verify_blocker":{
+    "run_id":36697783768,
+    "audit_commit":"3a10e1b684ef734efee3becccbc2066fb0b03830",
+    "classification":"VERIFY_REJECTED_WATCHDOG_SOURCE_PATH_BINDING"
+  },
+  "repair":{
+    "old_path":"ferocity-recycling/evidence/admission/D2-first-cell-current/watchdog/source/trial_watchdog.py",
+    "new_path":"watchdog/source/trial_watchdog.py",
+    "source_sha256":"803a03aae3f63ffb114d9a8b56d4bf108b2f5f71f051057e204220f5f52adb37",
+    "required_manifest_field":"watchdog.source.path",
+    "allowed_manifest_changes":1
+  },
+  "requirements":[
+    "consume the accepted manifest-construction artifact by exact whole-ZIP SHA-256 and clean ZIP CRC",
+    "rehash the old canonical manifest and every materialized member before transformation",
+    "require AUTHOR_RECEIPT.json to own watchdog/source/trial_watchdog.py with the exact accepted source SHA-256",
+    "materialize the same exact watchdog source bytes additionally at watchdog/source/trial_watchdog.py",
+    "change only manifest.watchdog.source.path from the old admission-directory path to the exact author-owned path",
+    "canonical-serialize the repaired manifest and prove all other manifest values are byte-for-byte semantically unchanged",
+    "do not execute Java, Gradle, FerocityDevelopmentCli, allocate, run-one, SecureRandom, game initialization or gameplay"
+  ],
+  "authority_if_clean":"REPAIRED_CANONICAL_FEROCITY_MANIFEST_CANDIDATE_FOR_VERIFY_ONLY_REVIEW",
+  "explicit_non_authority":[
+    "No VerifiedFerocityDevelopment capability.",
+    "No allocation, seed, ledger, claim, journal, game or outcome authority."
+  ],
+  "official_counters_delta":0
+}
