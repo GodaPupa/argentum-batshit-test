@@ -1,0 +1,27 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-36745222608-preflight-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36745222608,
+  "job_id":109989582988,
+  "head":"5ce3788eba65f9d4b5dc652ef9cf41cddff9b4e7",
+  "workflow_conclusion":"failure",
+  "failure":{
+    "classification":"INCOMPLETE_PREFLIGHT_MARKER_FIELD_NAME_MISMATCH_NO_ENTROPY",
+    "stage":"Bind exact independently reviewed allocation implementation",
+    "exception":"KeyError: manifest_sha256",
+    "reviewed_marker_field_present":"accepted_manifest_sha256",
+    "allocation_invocation_executed":false,
+    "runtime_restore_executed":false,
+    "entropy_consumed":false,
+    "ledger_created":false,
+    "allocation_intent_created":false
+  },
+  "official_state":{"claims":0,"allocations":0,"seed_streams":0,"games":0,"outcomes":0},
+  "decision":"INCOMPLETE_PREFLIGHT_MARKER_BINDING_ONLY_NO_ENTROPY",
+  "accepted_scope":[
+    "The v4 path-materialization implementation was not exercised because the marker-field assertion failed first.",
+    "No one-shot allocation authority was consumed."
+  ],
+  "next_gate":"Repair only the marker-field binding to read accepted_manifest_sha256, independently review the v5 workflow bytes, then dispatch one fresh preallocation-equivalent successor.",
+  "official_counters_delta":0
+}
