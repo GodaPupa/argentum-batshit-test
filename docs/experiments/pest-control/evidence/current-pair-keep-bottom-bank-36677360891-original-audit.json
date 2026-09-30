@@ -1,0 +1,37 @@
+{
+  "schema":"pest-current-pair-keep-bottom-bank-36677360891-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36677360891,
+  "artifact_id":11080047971,
+  "artifact_sha256":"75d387fbcc39073ab2e18e491e7f3d510bc0bb225044c4ef94bd3238a8e81cf5",
+  "head":"6211ded179a0032244cb04f6a0552b85e6f44893",
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "accepted_m5_original_sha256":"cd16753d52704ab31904531cf94e4390c7ceabacd382d09deb66afc155951528",
+    "truth_bank_sha256":"8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f",
+    "bank_construction_sha256":"41b6c0266c39d57430e211198a77d9d0eec07548577db3556eadcfa67dbf6a06",
+    "unbanked_atoms_sha256":"a00aef9df49106a2611079ece2824bf4e97d40c7e89207b16bc1a9e05d7ae287"
+  },
+  "result":{
+    "pest_name_multisets":71271,
+    "monster_name_multisets":882297,
+    "pest_unbanked_atoms":692,
+    "monster_unbanked_atoms":0,
+    "behavioral_cases":0
+  },
+  "decision":"ACCEPTED_CURRENT_PAIR_KEEP_BOTTOM_BANK_CONSTRUCTION_ONLY",
+  "accepted_scope":[
+    "Finite current Pest and Monster opening-name multiset geometry and physical-sensitive representative counts are frozen for later behavioral comparison.",
+    "The exact 692 Pest M5 atom keys absent from the accepted 6850-row truth bank are preserved as unresolved unknowns.",
+    "Monster requires no new M5 atom truth for this bank."
+  ],
+  "limits":[
+    "No keep/mulligan or bottom-order behavioral equivalence is established.",
+    "The 692 Pest atoms remain unknown and may not be coerced.",
+    "No C2-A2 admission, seed, allocation, claim or gameplay authority."
+  ],
+  "next_gate":"Freeze and independently review a finite behavioral keep-bottom comparison gate. That gate must keep unknown Pest rows fail-closed and authorize any new raw-oracle evidence for the 692 missing atoms prospectively before use.",
+  "official_counters_delta":0
+}
