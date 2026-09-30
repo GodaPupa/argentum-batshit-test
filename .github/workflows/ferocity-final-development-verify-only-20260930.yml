@@ -1,9 +1,9 @@
 name: Ferocity current final development verify-only gate
 on:
   push:
-    branches: ["ferocity/final-development-verify-only-current-execute-v3-20260930"]
+    branches: ["ferocity/final-development-verify-only-current-execute-v4-20260930"]
     paths:
-      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_EXECUTION_MARKER_V3_20260930.json"
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_EXECUTION_MARKER_V4_20260930.json"
 permissions:
   contents: read
   actions: read
@@ -17,7 +17,7 @@ jobs:
       EXACT_REPO: /home/runner/work/argentum-batshit-test/argentum-batshit-test
       EXACT_RUNNER_TEMP: /home/runner/work/_temp
       FEROCITY_ACCEPTED_PATH_TOKEN: "36655120463"
-      MANIFEST_SHA256: 86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc
+      MANIFEST_SHA256: 44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d
       JAVA_EXACT: /home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java
       PYTHON_EXACT: /usr/local/python/3.14.2/bin/python3.14
     steps:
@@ -28,19 +28,19 @@ jobs:
         run: |
           set -euo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_IMPLEMENTATION_INDEPENDENT_REVIEW_V3_20260930.json
-          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_EXECUTION_MARKER_V3_20260930.json
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_IMPLEMENTATION_INDEPENDENT_REVIEW_V4_20260930.json
+          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_EXECUTION_MARKER_V4_20260930.json
           "$PYTHON_EXACT" - "$REVIEW" "$MARKER" <<'PY'
           import json,pathlib,subprocess,sys
           review=json.loads(pathlib.Path(sys.argv[1]).read_text())
           marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
-          assert review["decision"]=="ACCEPT_LITERAL_PATH_IMPLEMENTATION_FOR_ONE_VERIFY_ONLY_JAVA_ORIGINAL"
+          assert review["decision"]=="ACCEPT_REPAIRED_MANIFEST_IMPLEMENTATION_FOR_ONE_VERIFY_ONLY_JAVA_ORIGINAL"
           assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
           assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
           changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
           assert changed==[sys.argv[2]],changed
           for field,path in {
-            "budget_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_BUDGET_20260930.json",
+            "budget_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_ONLY_BUDGET_V4_20260930.json",
             "restore_helper_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py",
             "workflow_blob":".github/workflows/ferocity-final-development-verify-only-20260930.yml",
           }.items():
@@ -68,12 +68,12 @@ jobs:
           git config --global --add safe.directory "$EXACT_REPO_LITERAL"
           cd "$EXACT_REPO_LITERAL"
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
-          curl -L --fail --retry 3             -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11077287825/zip"             -o "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-original.zip"
-          echo "6cc1ed84aa9fd6b17ddcdce7a1054bbc856124b16dd6b1ecce1fe9d04f9ceb80  $EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-original.zip" | sha256sum -c -
-          unzip -t "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-original.zip" >/dev/null
-          mkdir "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-original"
-          unzip -q "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-original.zip" -d "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-original"
-          MATERIALIZED="$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-original/build/reports/ferocity-final-development-manifest/materialized"
+          curl -L --fail --retry 3             -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11093470964/zip"             -o "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired.zip"
+          echo "12406295c2c96b9d6e09519517edeb57c6557a25440a7184877f4431157cdadf  $EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired.zip" | sha256sum -c -
+          unzip -t "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired.zip" >/dev/null
+          mkdir "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired"
+          unzip -q "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired.zip" -d "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired"
+          MATERIALIZED="$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired/build/reports/ferocity-final-manifest-watchdog-path-repair/materialized"
           test -d "$MATERIALIZED"
           cp -a "$MATERIALIZED/." "$EXACT_REPO_LITERAL/"
           MANIFEST="$EXACT_REPO_LITERAL/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
@@ -124,7 +124,7 @@ jobs:
           import json,pathlib,sys
           r=json.loads(pathlib.Path(sys.argv[1]).read_text())
           assert r["status"]=="VERIFIED_INPUTS_NO_ENTROPY_NO_GAME",r
-          assert r["admissionSha256"]=="86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc"
+          assert r["admissionSha256"]=="44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d"
           assert r["cellId"]=="D2-FIRST-A3-RED"
           assert r["allocations"]==16
           assert r["logicalSourceCommit"]=="3a4f99a7653839506e96d19e6639f58d9e8c5ced"
@@ -141,7 +141,7 @@ jobs:
           receipt={
             "schema":"ferocity-final-development-verify-only-result-v1",
             "status":"VERIFIED_INPUTS_NO_ENTROPY_NO_GAME",
-            "manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+            "manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
             "java_started":True,
             "java_invocations":1,
             "operation":"verify",
