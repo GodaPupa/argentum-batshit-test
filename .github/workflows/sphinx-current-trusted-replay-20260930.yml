@@ -1,7 +1,7 @@
 name: Sphinx Stage-E current trusted replay qualification
 on:
   push:
-    branches: ["sphinx/current-trusted-replay-20260930"]
+    branches: ["sphinx/current-trusted-replay-successor-20260930"]
     paths: [".github/workflows/sphinx-current-trusted-replay-20260930.yml"]
 permissions: {contents: read}
 jobs:
@@ -21,7 +21,7 @@ jobs:
           set -euo pipefail
           OUT=build/reports/sphinx-current-trusted-replay
           mkdir -p "$OUT"
-          test "$(git rev-parse HEAD^)" = "64b008ebc32b63fd4793dd68d092c71dac43ed87"
+          test "$(git rev-parse HEAD^)" = "6230822e5b3a5bd53d1e3afd376a1e8fc45772b2"
           git merge-base --is-ancestor bbcb15f085c9ff1fcac25608505ce8d23906abd9 HEAD
           test "$(git hash-object sphinx-approach/CURRENT_TRUSTED_REPLAY_BUDGET_20260930.json)" = "151a64cdd6767a3a4442e5732680e81c79cdd59d"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "0e5a21429c367355c0951c7a3a367495a96a161d"
@@ -48,7 +48,10 @@ jobs:
         shell: bash
         run: |
           set -o pipefail
-          just test-class SphinxStageEAcceptedTransitionJournalTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/sphinx-current-trusted-replay/replay.log
+          OUT=build/reports/sphinx-current-trusted-replay
+          cls=SphinxStageEAcceptedTransitionJournalTest
+          just test-class "$cls" --rerun-tasks --no-build-cache --console=plain 2>&1 | tee "$OUT/replay.log"
+          cp "gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.$cls.xml" "$OUT/"
       - name: Preserve accepted actor regressions
         shell: bash
         run: |
@@ -56,6 +59,7 @@ jobs:
           for cls in SphinxStageEForcedEmptyBlockersReceivingTest SphinxStageEForcedEmptyAttackersReceivingTest SphinxStageEUniquePassPriorityReceivingTest SphinxStageEMultiCastDiscriminatorReceivingTest
           do
             just test-class "$cls" --rerun-tasks --no-build-cache --console=plain 2>&1 | tee "build/reports/sphinx-current-trusted-replay/$cls.log"
+            cp "gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.$cls.xml" "build/reports/sphinx-current-trusted-replay/"
           done
       - name: Preserve XML and summary
         if: always()
@@ -63,10 +67,6 @@ jobs:
         run: |
           set -euo pipefail
           OUT=build/reports/sphinx-current-trusted-replay
-          for cls in SphinxStageEAcceptedTransitionJournalTest SphinxStageEForcedEmptyBlockersReceivingTest SphinxStageEForcedEmptyAttackersReceivingTest SphinxStageEUniquePassPriorityReceivingTest SphinxStageEMultiCastDiscriminatorReceivingTest
-          do
-            cp "gym/build/test-results/test/TEST-com.wingedsheep.gym.sphinx.$cls.xml" "$OUT/" 2>/dev/null || true
-          done
           python3 - <<'PY'
           import json,pathlib,xml.etree.ElementTree as ET
           out=pathlib.Path("build/reports/sphinx-current-trusted-replay")
