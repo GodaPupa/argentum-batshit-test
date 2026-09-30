@@ -1,0 +1,81 @@
+{
+  "schema": "ferocity-first-cell-current-authority-binding-v1",
+  "date_utc": "2026-09-29",
+  "status": "CURRENT_NON_EXECUTING_AUTHORITY_BINDING_READY_FOR_INDEPENDENT_REVIEW",
+  "source08": {
+    "commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"
+  },
+  "first_cell": {
+    "candidate": {
+      "id": "A3-F4",
+      "deck_sha256": "c72947c48bc45f2b31352a662a99e75dfc0f8ede72ecccc69b574a568eae6ba4"
+    },
+    "control": {
+      "id": "A3-N0",
+      "deck_sha256": "9aa9d3133f29b5793d66e9941da65d5c74d551f2d670b162f547ad0c1ae79298"
+    },
+    "opponent": {
+      "id": "mono_red_madness_mistertwin_20260924",
+      "policy": "red-madness-v0.2",
+      "pilot_sha256": "6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5"
+    }
+  },
+  "accepted_offline_definition_authority": {
+    "audit_path": "ferocity-recycling/support-audits/source08-policy-selection-20260928/current-offline-export-36655704566-original-audit.json",
+    "audit_blob": "a7d394d95b75dbde1252a3e134386ab37f203bd3",
+    "acceptance_commit": "f6a2546ff4fffc010a4de9bf957484d637b58bf1",
+    "run_id": 36655704566,
+    "artifact_id": 11071913791,
+    "artifact_sha256": "94ec8d2ee12f929316c39ce0c69fbf9e5ad869a3b4ecedaa48faa2f8280b7ee6",
+    "definition_bundle_sha256": "abc31a66ca4fc15602dfa861af83119c4418a9cc0cf9bc39bb01b2c7034d42ba",
+    "inline_token_admission_sha256": "16f8532a53a15a24c1b7318f3915e7c4d85b203e365f6348d99ade2e82b7535f",
+    "artifact_validation_pins_sha256": "5976fe19a06b1d3113a36e65c9181bd9c7a314edeb0db7faad1fac4c2c94e0ac",
+    "classpath_sha256": "3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415",
+    "resolved_plan_sha256": "75b30109953355bfcfa2ad27c1325411ef893ae888ccaf1e72636c5b39c57935",
+    "definitions": 36,
+    "unique_definition_names": 36
+  },
+  "accepted_red_runtime_receiving": {
+    "audit_path": "ferocity-recycling/support-audits/source08-policy-selection-20260928/red-v02-receiving-36649260154-original-audit.json",
+    "audit_blob": "1de6a34bb30721a2b7175a730a71f5932315886d",
+    "acceptance_commit": "92222d5ad63b02e515d551c000106a48d865e66e",
+    "run_id": 36649260154,
+    "artifact_id": 11069667883,
+    "artifact_sha256": "044445eb09a6d7d5a469e212314fccee0eabd6d27a8829f1e95a07d9ce5a67d4",
+    "tests": 24,
+    "passes": 24,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "binding_checks": {
+    "same_source08_commit": true,
+    "same_source08_tree": true,
+    "active_red_policy_matches": true,
+    "active_red_pilot_sha256_matches": true,
+    "offline_bundle_requires_final_development_admission_verification": true,
+    "red_receiving_grants_no_bundle_or_d2_authority": true,
+    "combined_authority_is_non_executing_only": true
+  },
+  "accepted_scope_if_reviewed_clean": [
+    "The exact accepted 36-definition source08 offline bundle is bound to the first-cell candidate/control/opponent identities.",
+    "The unchanged MisterTwin red-madness-v0.2 pilot has independent bounded 24/24 engine receiving on the same exact source08 commit/tree.",
+    "These accepted authorities may be presented together to final FerocityDevelopmentAdmission verification."
+  ],
+  "explicit_non_authority": [
+    "No final D2 admission is granted by this binding.",
+    "No runner or replay admission is granted.",
+    "No entropy, official seed, allocation, game initialization, gameplay or outcome exposure is authorized.",
+    "No consumed original may be rerun or replaced."
+  ],
+  "next_gate": "Independent review of this exact non-executing authority binding. If accepted, run only the separately predeclared final FerocityDevelopmentAdmission verification before any entropy/allocation/gameplay decision.",
+  "official": {
+    "seeds_allocated": 0,
+    "allocations_created": 0,
+    "games_initialized": 0,
+    "outcomes_exposed": 0,
+    "gameplay_authorized": false
+  },
+  "official_counters_delta": 0
+}
