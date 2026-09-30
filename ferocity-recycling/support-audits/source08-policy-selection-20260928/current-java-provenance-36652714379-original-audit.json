@@ -1,0 +1,41 @@
+{
+  "schema": "ferocity-current-source08-java-provenance-36652714379-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36652714379,
+  "job_id": 109690272959,
+  "artifact_id": 11070792197,
+  "artifact_sha256": "a7f102492bf8ef7468773a272313b4a852a0d5eb9a03c06322ac4cbbc8eb678f",
+  "head": "4d58ab5d3ff83fe2e521e099e61f29a6826a6838",
+  "parent": "a5b1ecdc2c8e471113107207d2b2234ef940dfc5",
+  "pins": {
+    "preserved_artifact_git_blob": "0db1ebd5259f858da7c391ed2e8ee623c2c39ae2",
+    "budget": "fa3d189553afdaf448f64b394c1be2c96ea532c2",
+    "parser": "a517e2253a3a66218898d2a829097d8c0a102854",
+    "workflow": "47ee23fec44f811cfe4a30eb34e59d453fda3a57"
+  },
+  "integrity": {
+    "workflow_conclusion": "failure",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding_step": "passed",
+    "java_started": false,
+    "gradle_started": false,
+    "exporter_started": false,
+    "seed_or_entropy_read": false,
+    "game_initialized": false
+  },
+  "failure": {
+    "class": "TECHNICAL_PATH_RESOLUTION",
+    "exception": "FileNotFoundError",
+    "cause": "The parser derived repository root with Path(__file__).resolve().parents[4], one level above the checked-out repository. The intended preserved ZIP therefore resolved outside the repository and was never opened.",
+    "behavioral_evidence_exposed": false
+  },
+  "decision": "INCOMPLETE_TECHNICAL_PATH_RESOLUTION",
+  "interpretation": [
+    "No Java provenance conclusion is drawn from this original.",
+    "No experiment, deck, policy, runtime or admission failure is inferred.",
+    "This original is consumed and must not be rerun unchanged."
+  ],
+  "next_gate": "Change only repository-root resolution from parents[4] to parents[3], repin the exact parser/workflow/parent, and dispatch one successor under the unchanged budget.",
+  "official_counters_delta": 0
+}
