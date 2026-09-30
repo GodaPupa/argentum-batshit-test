@@ -1,0 +1,48 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-store-successor-v4-implementation-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"44a6da21e4baf111cdfd19e4a5d79c9c7104389c",
+  "budget_blob":"624a04ef9d5b6411684e5e54aec23bc3b0c0b818",
+  "capture_source_blob":"9c79dc360e8c0ff92f81ce632a692f7ddbb298a0",
+  "gradle_probe_blob":"ef3a56e80afc5002e66a05b4f5cf3635eb604c21",
+  "store_bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+  "workflow_blob":"291dc3f6890bfa4fbec4e6dea34c112f048ab362",
+  "accepted_store":{
+    "run_id":36676489843,
+    "artifact_id":11080705894,
+    "outer_artifact_sha256":"1cb974fcb7cf4f5dd39889db4645a9943762f7c0dcd78674a57d6648001b476b",
+    "archive_sha256":"b686ca26e715ba965a9156c455a6fba8c0f80f8d55883fc9b85285d4bb0b0b23",
+    "manifest_sha256":"8e427eb24c5c3043dab37abb681b0d3caf5243f4cb9357e1d196a92523ae9c0e",
+    "files":1272
+  },
+  "superseded_incomplete_run":{
+    "run_id":36704781596,
+    "classification":"INCOMPLETE_PREFLIGHT_INIT_SCRIPT_NESTED_BUILD_SCOPE",
+    "test_worker_reached":false,
+    "audit_commit":"420a1308d01fdffac70eee5646c33f3f65615d92"
+  },
+  "decision":"ACCEPT_STORE_BACKED_V4_IMPLEMENTATION_FOR_ONE_FRESH_SUPPLEMENTAL_CAPTURE_ORIGINAL",
+  "review":{
+    "functional_change":"PASS_SCOPE_CALLBACK_TO_ARGENTUM_ENGINE_ROOT_ONLY",
+    "top_level_settings_root_name":"PASS_argentum-engine",
+    "top_level_settings_contains_ai":"PASS",
+    "top_level_ai_missing_remains_fail_closed":"PASS",
+    "nested_build_roots_do_not_trigger_false_ai_failure":"PASS",
+    "capture_source_unchanged":"PASS",
+    "accepted_store_unchanged":"PASS",
+    "accepted_platform_unchanged":"PASS",
+    "both_gradle_invocations_offline":"PASS",
+    "fixed_worker_filter_and_scope_unchanged":"PASS",
+    "runtime_graph_process_member_and_class_census_capture_unchanged":"PASS",
+    "official_seed_claim_allocation_game_prohibition":"PASS",
+    "distinct_v4_execution_branch_and_marker":"PASS"
+  },
+  "accepted_scope":[
+    "Create exactly one v4 marker-only execution branch from this review and dispatch one fresh store-backed supplemental capture original."
+  ],
+  "explicit_non_authority":[
+    "No expected manifest, prepared worker, sealed R1 launch, permit, official seed, claim, allocation, game or outcome authority."
+  ],
+  "next_gate":"Dispatch one fresh v4 store-backed supplemental capture original and independently audit it once if complete.",
+  "official_counters_delta":0
+}
