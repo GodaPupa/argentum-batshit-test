@@ -1,0 +1,38 @@
+import groovy.json.JsonOutput
+import org.gradle.api.tasks.testing.Test
+
+gradle.projectsEvaluated {
+    def p = rootProject.findProject(":ai")
+    if (p == null) throw new GradleException("missing :ai project")
+    p.tasks.withType(Test).configureEach { t ->
+        if (t.path == ":ai:test") {
+            t.filter.includeTestsMatching("com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest")
+            t.maxParallelForks = 1
+            def classLog = System.getProperty("industrial.classlog")
+            if (classLog == null || classLog.isBlank()) throw new GradleException("industrial.classlog missing")
+            t.jvmArgs("-Xlog:class+load=info:file=" + classLog + ":tags,level")
+        }
+    }
+    p.tasks.register("industrialR1CaptureRuntime") {
+        doLast {
+            def cfg = p.configurations.getByName("testRuntimeClasspath")
+            def rr = cfg.incoming.resolutionResult
+            def result = [
+                schema: "industrial-r1-supplemental-runtime-graph-v1",
+                gradle_version: gradle.gradleVersion,
+                gradle_home: gradle.gradleHomeDir.absolutePath,
+                ordered_files: cfg.files.toList().collect { it.absolutePath },
+                components: rr.allComponents.collect { c ->
+                    [id: c.id.displayName, reasons: c.selectionReason.descriptions.collect { it.description }.sort()]
+                }.sort { a,b -> a.id <=> b.id },
+                dependencies: rr.allDependencies.collect { d ->
+                    [from: d.from.id.displayName, requested: d.requested.displayName, selected:
+                        d.hasProperty("selected") ? d.selected.id.displayName : null]
+                }.sort { a,b -> (a.from <=> b.from) ?: (a.requested <=> b.requested) },
+            ]
+            def target = new File(System.getProperty("industrial.runtime.out"))
+            target.parentFile.mkdirs()
+            target.text = JsonOutput.prettyPrint(JsonOutput.toJson(result)) + "\n"
+        }
+    }
+}
