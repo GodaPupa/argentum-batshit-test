@@ -1,0 +1,53 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-store-successor-36698671888-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36698671888,
+  "job_id":109832664106,
+  "artifact_id":11088628023,
+  "artifact_sha256":"9482df0bab73f07c313974039a611cb09cec1af4f8273daf7c73b378ae826a59",
+  "head":"340a70a320c942003f09760613a2f66bd285ea74",
+  "reviewed_implementation_commit":"d0bd3ef925f0eeb04b6a5cd64d416527ff571c62",
+  "implementation_review_commit":"f8a0943cbb6493718712cd03593c2e681ff4c45a",
+  "integrity":{
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "zip_members":6,
+    "source_workflow_review_marker_binding":"passed"
+  },
+  "preflight":{
+    "accepted_store_outer_zip_sha256_match":true,
+    "accepted_store_inner_archive_sha256_match":true,
+    "accepted_store_manifest_sha256_match":true,
+    "accepted_store_manifest_files":1272,
+    "platform_binding":"passed",
+    "tracked_input_inventory_written":true,
+    "gradle_invoked":false,
+    "fixed_worker_reached":false
+  },
+  "failure":{
+    "classification":"INCOMPLETE_PREFLIGHT_BOOTSTRAP_HASH_DOMAIN_MISMATCH",
+    "stage":"capture script bootstrap source identity assertion before accepted-store restoration and before Gradle",
+    "cause":"capture_supplemental_hermetic_r1.py compared SHA-256(bootstrap bytes) to the bootstrap Git blob SHA-1 e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+    "expected_bootstrap_git_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+    "actual_bootstrap_sha256":"a95c3e90b63b072c03f3159446d64db6085a7c48d5085e33e404aba61a8186b7",
+    "behavioral_failure":false
+  },
+  "artifact_members":{
+    "platform_json_sha256":"32dad25ed4ba90d8819ee25bef6248ced853ba03ce935faa05d1ef1a2f40cb11",
+    "tracked_build_inputs_sha256":"59d45f40f85aff18b4061702cb33b209ae28c5867799f47612e2ca7d5c940f11",
+    "capture_log_sha256":"e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "decision":"INCOMPLETE_NO_SUPPLEMENTAL_CAPTURE_AUTHORITY_BOOTSTRAP_HASH_DOMAIN_BLOCKER",
+  "accepted_scope":[
+    "The exact accepted dependency-store artifact and manifest were successfully materialized and verified before capture-script entry.",
+    "The accepted platform/source/workflow preflight remained intact."
+  ],
+  "limits":[
+    "No accepted-store restoration receipt was emitted by the capture script.",
+    "No Gradle launcher, daemon, test worker, fixed-worker test, runtime graph, class census or supplemental capture result is accepted.",
+    "Do not rerun this implementation unchanged.",
+    "No expected manifest, sealed launch, claim, allocation, seed or gameplay authority."
+  ],
+  "next_gate":"Repair only the bootstrap hash-domain assertion and the known terminal undefined-variable typo in the capture script, independently review the exact successor implementation, then dispatch one fresh store-backed supplemental capture original.",
+  "official_counters_delta":0
+}
