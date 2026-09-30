@@ -1,0 +1,55 @@
+{
+  "schema": "ferocity-source08-runtime-restore-budget-v1",
+  "date_utc": "2026-09-29",
+  "basis": {
+    "source08_runtime_metadata_receipt": "1e04b18ea4dc219ba4dc879e1af9d02c83359537",
+    "historical_java_restore_receipt": "4202c49b1d3cf0572da3ab6836eb3e2be902654b",
+    "preserved_original_id": 10914678223,
+    "preserved_original_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816"
+  },
+  "allowed_preserved_original_payloads": [
+    "qualification/compiled-inputs-before.json",
+    "qualification/runtime-classpath-observation/manifest.json",
+    "qualification/observed-gym-runtime/runtime-archive-receipt.json",
+    "qualification/receipt.json",
+    "qualification/observed-gym-runtime/runtime-files.tar.gz"
+  ],
+  "expected": {
+    "compiled_inputs_sha256": "36cfd36a923f6883ae7b55925957055ae65389ae41a17eafb2ad48fdf4a14908",
+    "runtime_archive_bytes": 92698282,
+    "runtime_archive_sha256": "0e9ea0c6c3f2e29230148d330b6b7961aeba1fa44985876b90f68bc8ca7e28d5",
+    "runtime_archive_members": 2159,
+    "ordered_classpath_entries": 56,
+    "classpath_manifest_sha256": "74537901801ab9bae84907ce83c66e19cf08d67230a57ef5195ff43f64ed3f72",
+    "runtime_archive_receipt_sha256": "1dd2e960d9de93ad59a2439a14ef5345faa6bc572b9e8db3d3b886e18f8b1d49",
+    "qualification_receipt_sha256": "d898102510976b4791410e43fd9d71b61c4b6044763366e2438e3383fb212e27"
+  },
+  "operation": [
+    "reassemble and verify the exact preserved original ZIP",
+    "read only the five allowlisted members",
+    "verify all metadata bytes against the previously accepted metadata digests",
+    "verify compiled-input map exact SHA-256",
+    "verify runtime tarball byte length and SHA-256 before opening it",
+    "reject unsafe tar paths, links, devices or unexpected member types",
+    "compare the complete runtime tar file set exactly to the 2159-member accepted runtime archive receipt",
+    "hash every runtime file payload and require exact size/SHA-256 match",
+    "restore runtime files into a temporary fixed root and generate a 56-entry plan-compatible classpath-pins JSON from the accepted ordered classpath",
+    "do not execute Java, Gradle, Kotlin, any restored runtime file, exporter or game code"
+  ],
+  "acceptance": [
+    "complete 2159/2159 runtime member identity",
+    "56/56 ordered classpath reconstruction",
+    "compiled-input map identity exact",
+    "no other preserved original payload opened",
+    "zero JVM/export/entropy/game activity"
+  ],
+  "prohibited": [
+    "no runtime execution",
+    "no java -version",
+    "no Gradle/Kotlin",
+    "no exporter or export-plan assembly",
+    "no seed/allocation/gameplay"
+  ],
+  "authority_if_clean": "EXACT_SOURCE08_RUNTIME_BYTES_AND_COMPILED_INPUTS_RESTORABLE_FOR_PLAN_ASSEMBLY",
+  "official_counters_delta": 0
+}
