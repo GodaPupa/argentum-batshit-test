@@ -1,0 +1,53 @@
+{
+  "schema": "ferocity-final-development-verify-plan-independent-review-v1",
+  "date_utc": "2026-09-29",
+  "reviewed_commit": "54da61e806cd661c15cf957ecad5bf5fd1c2873f",
+  "reviewed_path": "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_DEVELOPMENT_VERIFY_PLAN_20260929.json",
+  "reviewed_blob": "5fc77602b41990a8fb0cdfb48af973d8cc1324ea",
+  "decision": "ACCEPT_DESIGN_ONLY_VERIFY_PATH",
+  "source_cross_check": {
+    "FerocityDevelopmentAdmission.kt_blob": "c64afaf0dac73fe4a73e47a58ababa60a5888064",
+    "FerocityDevelopmentCli.kt_blob": "8ba7a3de0a8405ca68548c52bb5796b95fcb677e",
+    "FerocityDevelopmentAdmissionTest.kt_blob": "256aeb99753b7b8f71165f146c1801979ee03e09",
+    "verify_status": "VERIFIED_INPUTS_NO_ENTROPY_NO_GAME",
+    "verify_calls_allocation": false,
+    "verify_calls_run_one": false,
+    "allocation_is_separate_cli_operation": true,
+    "run_one_is_separate_cli_operation": true
+  },
+  "review": {
+    "current_authority_binding": "PASS",
+    "source08_verifier_identity": "PASS",
+    "verify_only_command_boundary": "PASS",
+    "no_entropy_boundary": "PASS",
+    "no_ledger_boundary": "PASS",
+    "no_game_boundary": "PASS",
+    "post_verify_allocation_separation": "PASS",
+    "preservation_requirements": "PASS"
+  },
+  "findings": [
+    "The exact source08 CLI has distinct verify, allocate and run-one operations; the plan selects verify only.",
+    "VerifiedFerocityDevelopment.verify performs source, protocol, runtime, Java, bundle, inline-token, deck, gate, coverage and watchdog checks before returning a capability, but it does not itself allocate entropy or initialize gameplay.",
+    "The source08 admission test suite explicitly exercises that rejected verification creates neither an entropy reservation ledger nor a trial claim.",
+    "The proposed pre/post filesystem assertions make an unexpected allocation, claim or game-side effect acceptance-failing.",
+    "The plan correctly leaves allocation and gameplay as later gates even after a clean verify."
+  ],
+  "accepted_scope": [
+    "The final current D2 gate may be implemented as one exact source-bound CLI verify invocation after a complete FerocityDevelopmentManifest and workflow/budget have themselves been independently reviewed.",
+    "A clean future verify may establish VERIFIED_INPUTS_NO_ENTROPY_NO_GAME only."
+  ],
+  "still_required_before_dispatch": [
+    "Construct the complete current FerocityDevelopmentManifest from accepted preserved evidence.",
+    "Bind every qualification gate receipt/XML/log and coverage entry required by the existing verifier.",
+    "Bind the exact watchdog evidence and exact accepted Java/classpath/runtime paths.",
+    "Freeze manifest SHA-256, workflow blob, budget blob and expected output artifact contract.",
+    "Independently review those exact bytes."
+  ],
+  "explicit_non_authority": [
+    "No Java verifier was dispatched by this review.",
+    "No D2 allocation or execution authority.",
+    "No entropy, seed, ledger, trial claim, journal, game initialization, gameplay or outcome exposure."
+  ],
+  "next_gate": "Construct the exact current FerocityDevelopmentManifest and verify-only workflow/budget from preserved accepted evidence, then independently review those bytes before dispatch.",
+  "official_counters_delta": 0
+}
