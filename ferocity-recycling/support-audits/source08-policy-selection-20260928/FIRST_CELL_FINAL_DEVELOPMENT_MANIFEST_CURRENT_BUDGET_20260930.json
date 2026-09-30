@@ -1,0 +1,46 @@
+{
+  "schema":"ferocity-final-development-manifest-current-construction-budget-v1",
+  "date_utc":"2026-09-30",
+  "status":"PROSPECTIVE_NON_EXECUTING_CONSTRUCTION_ONLY",
+  "base_watchdog_acceptance_commit":"ba08f5a42a8dfe4ed0ef767aa71a1192295134c8",
+  "accepted_authorities":{
+    "watchdog":{"run":36661350925,"artifact":11074268074,"artifact_sha256":"c436b7df09091a001df6ecdad25a909c2ce7f4bb100d7ddb6f6020a1e4c4dedf","decision":"ACCEPTED_CURRENT_RUNTIME_FIXED_PROCESS_WATCHDOG_EVIDENCE_ONLY"},
+    "qualification":{"run":36268324461,"artifact":10914678223,"artifact_sha256":"9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816","source08_commit":"3a4f99a7653839506e96d19e6639f58d9e8c5ced","source08_tree":"56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"},
+    "runtime_bundle":{"run":36655704566,"artifact":11071913791,"artifact_sha256":"94ec8d2ee12f929316c39ce0c69fbf9e5ad869a3b4ecedaa48faa2f8280b7ee6","definition_bundle_sha256":"abc31a66ca4fc15602dfa861af83119c4418a9cc0cf9bc39bb01b2c7034d42ba","inline_token_admission_sha256":"16f8532a53a15a24c1b7318f3915e7c4d85b203e365f6348d99ade2e82b7535f"},
+    "red_v02":{"acceptance_commit":"92222d5ad63b02e515d551c000106a48d865e66e","run":36649260154,"artifact":11069667883,"tests":24,"passes":24,"pilot_sha256":"6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5"},
+    "authority_binding_review":{"commit":"31867c693f052b2c3a5680e792a7ac6a29724baa","decision":"ACCEPT_NON_EXECUTING_CURRENT_AUTHORITY_BINDING"}
+  },
+  "operation":[
+    "reassemble the exact accepted source08 qualification ZIP from already committed lossless parts and verify whole SHA-256 plus ZIP CRC",
+    "download only the two already-consumed accepted runtime-bundle and current-watchdog artifacts by immutable artifact ID and verify exact whole-ZIP SHA-256 plus ZIP CRC",
+    "materialize only exact qualification, bundle, inline-token and watchdog members required by FerocityDevelopmentAdmission",
+    "construct one canonical FerocityDevelopmentManifest using the existing source08 verifier contract without changing verifier source",
+    "derive an explicit coverage map only from preserved passing source08 qualification classes and preserve the derivation for independent review",
+    "preserve canonical manifest bytes, SHA-256, all input/member digests and zero-side-effect receipt"
+  ],
+  "fixed_manifest_contract":{
+    "cell_id":"D2-FIRST-A3-RED",
+    "stage":"DEVELOPMENT",
+    "rules_mode":"VERIFIED_TEXT_PRERELEASE",
+    "repository_path":"/home/runner/work/argentum-batshit-test/argentum-batshit-test",
+    "candidate":"A3-F4",
+    "control":"A3-N0",
+    "opponent":"mono_red_madness_mistertwin_20260924",
+    "allocation_count":16,
+    "limits":{"max_submitted_actions":6000,"max_completed_player_turns":150,"max_runtime_millis":300000},
+    "replacements_authorized":0
+  },
+  "prohibited":[
+    "no Java execution",
+    "no Gradle execution",
+    "no FerocityDevelopmentCli",
+    "no allocate or run-one",
+    "no SecureRandom or official entropy/seed read",
+    "no ledger, trial claim or development journal creation",
+    "no game initialization, gameplay or outcome exposure",
+    "no qualification rerun and no watchdog rerun"
+  ],
+  "authority_if_clean":"CANONICAL_CURRENT_FEROCITY_DEVELOPMENT_MANIFEST_CANDIDATE_FOR_INDEPENDENT_REVIEW_ONLY",
+  "next_gate":"Audit the single construction original and independently review the exact canonical manifest/coverage/materialization. Only if clean may the separately governed verify-only Java gate be implemented and dispatched.",
+  "official_counters_delta":0
+}
