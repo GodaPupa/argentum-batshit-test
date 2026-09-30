@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 import hashlib, json, pathlib, re, zipfile
 
-root = pathlib.Path(__file__).resolve().parents[4]
+root = pathlib.Path(__file__).resolve().parents[3]
 archive = root / "ferocity-recycling/evidence/source08-takeover/priority08/original-artifact-10915032554.zip"
 expected = "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816"
 raw = archive.read_bytes()
