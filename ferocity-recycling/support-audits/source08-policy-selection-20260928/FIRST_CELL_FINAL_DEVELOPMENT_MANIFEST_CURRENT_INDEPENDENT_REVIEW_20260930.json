@@ -1,0 +1,49 @@
+{
+  "schema":"ferocity-final-development-manifest-current-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_original_run":36669474548,
+  "reviewed_original_artifact":11077287825,
+  "reviewed_original_artifact_sha256":"6cc1ed84aa9fd6b17ddcdce7a1054bbc856124b16dd6b1ecce1fe9d04f9ceb80",
+  "reviewed_manifest_sha256":"86d6d0ed39eb098eb630865d22b75c2d25539b61eb70f8207ef526d64e2755dc",
+  "original_audit_commit":"e2350a7a8f3272c89c9e551708a034b6d1f8eb68",
+  "decision":"ACCEPT_CANONICAL_MANIFEST_FOR_VERIFY_ONLY_GATE",
+  "review":{
+    "artifact_digest_and_crc":"PASS",
+    "all_28_materialized_members_rehashed":"PASS",
+    "source08_commit_and_compiled_input_identity":"PASS",
+    "protocol_exact_hash_set":"PASS",
+    "three_deck_source_and_main_hashes":"PASS",
+    "artifact_control_and_red_v02_policy_source_binding":"PASS",
+    "definition_bundle_exact_36_definition_closure":"PASS",
+    "registry_bindings_exact_68":"PASS",
+    "inline_token_admission_exact":"PASS",
+    "classpath_exact_56_entry_manifest":"PASS",
+    "source08_java_exact_path_and_sha_binding":"PASS",
+    "qualification_gate_required_11_class_counts_and_xml":"PASS",
+    "coverage_exact_36_cards_plus_19_required_capabilities":"PASS",
+    "coverage_references_preserved_passing_classes":"PASS",
+    "current_watchdog_python_source_claim_author_run_acceptance_binding":"PASS",
+    "allocation_matrix_16_and_replacements_zero":"PASS",
+    "construction_zero_side_effects":"PASS"
+  },
+  "findings":[
+    "The coverage keys are exactly the 36 admitted card names plus all 19 capabilities hard-required by the unchanged source08 verifier.",
+    "Every required qualification class has the exact verifier count and clean preserved XML in the source08 original; the three additional preserved classes are additive and do not replace required evidence.",
+    "The manifest binds the current requalified watchdog Python executable /usr/local/python/3.14.2/bin/python3.14 and exact bytes 4c275e98..., matching the digest-pinned current container requalification.",
+    "The manifest binds the already-accepted source08 runtime/JDK paths produced by the no-Java restoration route with path token 36655120463.",
+    "The manifest has not been passed to VerifiedFerocityDevelopment.verify yet; acceptance is limited to one verify-only gate."
+  ],
+  "verify_only_authority":[
+    "A successor may restore the exact accepted source08 runtime/JDK without executing Java, materialize this exact manifest original by immutable artifact digest, and invoke FerocityDevelopmentCli with operation verify exactly once.",
+    "The verify workflow must execute in the exact current watchdog container so the accepted Python path/bytes remain available.",
+    "The workflow must assert absence of ledger, allocation, trial-claim, journal and game side effects before and after the verify."
+  ],
+  "explicit_non_authority":[
+    "No allocate operation.",
+    "No run-one operation.",
+    "No SecureRandom/official entropy generation.",
+    "No official seed, ledger, trial claim, journal, game initialization, gameplay or outcome exposure."
+  ],
+  "next_gate":"Implement and independently review the exact verify-only workflow/budget. Then dispatch one original FerocityDevelopmentCli verify against manifest 86d6d0ed...; audit the original before considering any allocation gate.",
+  "official_counters_delta":0
+}
