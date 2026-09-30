@@ -1,0 +1,85 @@
+name: Ferocity final manifest watchdog path-only repair
+on:
+  push:
+    branches: ["ferocity/final-development-manifest-watchdog-path-repair-execute-20260930"]
+    paths:
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_MANIFEST_WATCHDOG_PATH_REPAIR_EXECUTION_MARKER_20260930.json"
+permissions:
+  contents: read
+  actions: read
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact reviewed path-only repair
+        shell: bash
+        run: |
+          set -euo pipefail
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_MANIFEST_WATCHDOG_PATH_REPAIR_INDEPENDENT_REVIEW_20260930.json
+          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_MANIFEST_WATCHDOG_PATH_REPAIR_EXECUTION_MARKER_20260930.json
+          python3 - "$REVIEW" "$MARKER" <<'PY'
+          import json,pathlib,subprocess,sys
+          review=json.loads(pathlib.Path(sys.argv[1]).read_text())
+          marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
+          assert review["decision"]=="ACCEPT_PATH_ONLY_MANIFEST_REPAIR_FOR_ONE_NON_EXECUTING_ORIGINAL"
+          assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
+          assert marker["review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
+          assert subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).strip()==sys.argv[2]
+          for field,path in {
+            "budget_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_MANIFEST_WATCHDOG_PATH_REPAIR_BUDGET_20260930.json",
+            "repair_script_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/repair_final_manifest_watchdog_source_path.py",
+            "workflow_blob":".github/workflows/ferocity-final-manifest-watchdog-path-repair-20260930.yml",
+          }.items():
+              assert subprocess.check_output(["git","hash-object",path],text=True).strip()==review[field]
+          assert marker["official_counters_delta"]==0
+          PY
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+      - name: Retrieve exact accepted canonical manifest original
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/ferocity-watchdog-path-repair-input
+          curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+            "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11077287825/zip" \
+            -o build/ferocity-watchdog-path-repair-input/original.zip
+          echo "6cc1ed84aa9fd6b17ddcdce7a1054bbc856124b16dd6b1ecce1fe9d04f9ceb80  build/ferocity-watchdog-path-repair-input/original.zip" | sha256sum -c -
+          unzip -t build/ferocity-watchdog-path-repair-input/original.zip >/dev/null
+      - name: Construct repaired canonical manifest candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/repair_final_manifest_watchdog_source_path.py \
+            --original build/ferocity-watchdog-path-repair-input/original.zip \
+            | tee build/ferocity-watchdog-path-repair.log
+          test ! -e ferocity-recycling/allocations/D2-first-cell
+          test ! -e ferocity-recycling/evidence/development/D2-first-cell
+          python3 - <<'PY'
+          import json,pathlib
+          r=json.loads(pathlib.Path("build/reports/ferocity-final-manifest-watchdog-path-repair/repair-receipt.json").read_text())
+          assert r["status"]=="REPAIRED_CANONICAL_MANIFEST_CANDIDATE_FOR_VERIFY_ONLY_REVIEW"
+          assert len(r["manifest_changes"])==1
+          assert r["manifest_changes"][0]["field"]=="watchdog.source.path"
+          assert r["materialized_members"] and len(r["materialized_members"])==29
+          for k in ("java_started","gradle_started","entropy_read","allocation_read","ledger_created","trial_claim_created","game_initialized"):
+              assert r[k] is False
+          assert r["outcomes_exposed"]==0 and r["official_counters_delta"]==0
+          PY
+      - name: Preserve one non-executing path-repair original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-final-manifest-watchdog-path-repair-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/ferocity-final-manifest-watchdog-path-repair/
+            build/ferocity-watchdog-path-repair.log
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_MANIFEST_WATCHDOG_PATH_REPAIR_BUDGET_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_MANIFEST_WATCHDOG_PATH_REPAIR_INDEPENDENT_REVIEW_20260930.json
+            ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_FINAL_MANIFEST_WATCHDOG_PATH_REPAIR_EXECUTION_MARKER_20260930.json
+          if-no-files-found: error
+          retention-days: 90
