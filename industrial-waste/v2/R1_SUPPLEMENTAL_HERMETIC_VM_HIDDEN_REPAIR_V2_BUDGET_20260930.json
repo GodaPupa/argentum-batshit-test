@@ -1,0 +1,56 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-vm-hidden-repair-v2-budget-v1",
+  "date_utc":"2026-09-30",
+  "status":"PROSPECTIVE_TECHNICAL_REPAIR_REVIEW_REQUIRED",
+  "basis":{
+    "accepted_vm_hidden_rule_blob":"1deabad835da6808372add3feabd5fc514b31864",
+    "accepted_vm_hidden_rule_review_blob":"277eadf0cf975669e8718e4aa955bd7945c175a8",
+    "failed_successor_run":36744469981,
+    "failed_successor_artifact":11111534840,
+    "failed_successor_head":"94118b159fcf0baff15b9d94d59df8b43fe14c20",
+    "failed_successor_classification":"INCOMPLETE_VALIDATOR_NAMEERROR_AFTER_OFFLINE_REPEATS",
+    "prior_reviewed_implementation_commit":"07d7aae4d48e0e659676b6c4a685b75b0d986e2a",
+    "accepted_dependency_store_artifact":11105215706
+  },
+  "logical_source":{
+    "commit":"de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+    "tree":"d62e3fbd59dd78cc444c09b26673ae1bf3a848ab"
+  },
+  "only_authorized_changes":[
+    "Add the missing generated_hidden_repeat_equivalence helper called by the already-reviewed successor validator.",
+    "Restore the same generated/hidden classification used by the accepted rule: hidden suffix, $Lambda, jdk.proxy prefix, Generated name, or one of __dynamic_proxy__, __ClassDefiner__, __JVM_LookupDefineClass__ sources.",
+    "Compute exact generated/hidden normalized family-set equality, exact non-VM multiplicity equality, exact VM __JVM_LookupDefineClass__ family-set equality, and preserve VM multiplicity deltas.",
+    "Use a distinct successor execution branch/marker/review binding so run 36744469981 is never rerun or reinterpreted."
+  ],
+  "unchanged_authorities":{
+    "platform_image":"catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "java_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+    "dependency_store_archive_sha256":"a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3",
+    "dependency_store_manifest_sha256":"b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4",
+    "dependency_store_files":1339,
+    "fixed_worker":"com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest",
+    "fixed_worker_tests":10,
+    "gradle_launches":2,
+    "gradle_offline":true
+  },
+  "acceptance":[
+    "Both offline launches complete and use the exact accepted Java/store/source runtime graph.",
+    "The fixed worker passes 10/10 with zero failures/errors/skips.",
+    "Generated/hidden normalized family sets are exactly equal.",
+    "All non-VM generated/hidden family multiplicities are exactly equal.",
+    "VM __JVM_LookupDefineClass__ family sets are exactly equal; any multiplicity deltas are preserved in the artifact.",
+    "Complete raw class-load logs, parsed censuses, runtime/member inventories, build inputs, process facts and artifact manifest are preserved.",
+    "No official seed read, claim, allocation, game initialization, gameplay or outcome interpretation occurs."
+  ],
+  "prohibited":[
+    "no source/store/platform/fixed-worker change",
+    "no network during either Gradle launch",
+    "no tolerance for non-VM generated/hidden multiplicity drift",
+    "no dropping a generated/hidden family from comparison",
+    "no expected-manifest adoption in this gate",
+    "no R1 permit, claim, seed, allocation or gameplay"
+  ],
+  "authority_if_clean":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY",
+  "next_gate":"Independently review the exact repaired source/workflow/budget bytes, then dispatch one fresh marker-only successor original.",
+  "official_counters_delta":0
+}
