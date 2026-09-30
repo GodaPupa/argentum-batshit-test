@@ -1,9 +1,9 @@
 name: Ferocity D2 first-cell one-shot allocation
 on:
   push:
-    branches: ["ferocity/d2-first-cell-allocation-execute-v5-20260930"]
+    branches: ["ferocity/d2-first-cell-allocation-execute-v6-20260930"]
     paths:
-      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V5_20260930.json"
+      - "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V6_20260930.json"
 permissions:
   contents: read
   actions: read
@@ -28,14 +28,14 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_MARKER_BINDING_V5_INDEPENDENT_REVIEW_20260930.json
-          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V5_20260930.json
+          EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"\n          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"\n          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          REVIEW=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_CANONICAL_REPO_V6_INDEPENDENT_REVIEW_20260930.json
+          MARKER=ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_EXECUTION_MARKER_V6_20260930.json
           "$PYTHON_EXACT" - "$REVIEW" "$MARKER" <<'PY'
           import json,pathlib,subprocess,sys
           review=json.loads(pathlib.Path(sys.argv[1]).read_text())
           marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
-          assert review["decision"]=="ACCEPT_MARKER_BINDING_V5_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL"
+          assert review["decision"]=="ACCEPT_CANONICAL_REPO_V6_IMPLEMENTATION_FOR_ONE_D2_FIRST_CELL_ALLOCATION_ORIGINAL"
           assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
           assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
           changed=subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).splitlines()
@@ -45,6 +45,8 @@ jobs:
             "verify_acceptance_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/final-development-verify-only-36709748908-original-audit.json",
             "restore_helper_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py",
             "workflow_blob":".github/workflows/ferocity-d2-first-cell-allocation-20260930.yml",
+            "repair_budget_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_D2_ALLOCATION_CANONICAL_REPO_V6_REPAIR_BUDGET_20260930.json",
+            "v5_audit_blob":"ferocity-recycling/support-audits/source08-policy-selection-20260928/d2-first-cell-allocation-36746049068-original-audit.json",
           }.items():
               actual=subprocess.check_output(["git","hash-object",path],text=True).strip()
               assert actual==review[field],(field,actual,review[field])
@@ -58,43 +60,43 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           set -euo pipefail
-          mkdir -p "$(dirname "$EXACT_REPO")" "$EXACT_RUNNER_TEMP"
-          if [ -e "$EXACT_REPO" ]; then
-            test -d "$EXACT_REPO/.git"
-            test "$(readlink -f "$EXACT_REPO")" = "$EXACT_REPO"
-            test "$(stat -Lc '%d:%i' "$EXACT_REPO")" = "$(stat -Lc '%d:%i' "$GITHUB_WORKSPACE")"
+          EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"\n          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"\n          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          mkdir -p "$(dirname "$EXACT_REPO_LITERAL")" "$EXACT_RUNNER_TEMP_LITERAL"
+          if [ -e "$EXACT_REPO_LITERAL" ]; then
+            test -d "$EXACT_REPO_LITERAL/.git"
+            test "$(readlink -f "$EXACT_REPO_LITERAL")" = "$EXACT_REPO_LITERAL"
+            test "$(stat -Lc '%d:%i' "$EXACT_REPO_LITERAL")" = "$(stat -Lc '%d:%i' "$GITHUB_WORKSPACE")"
           else
-            cp -a "$GITHUB_WORKSPACE" "$EXACT_REPO"
+            cp -a "$GITHUB_WORKSPACE" "$EXACT_REPO_LITERAL"
           fi
-          git config --global --add safe.directory "$EXACT_REPO"
-          cd "$EXACT_REPO"
+          git config --global --add safe.directory "$EXACT_REPO_LITERAL"
+          cd "$EXACT_REPO_LITERAL"
           test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
           curl -L --fail --retry 3 \
             -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11093470964/zip" \
-            -o "$EXACT_RUNNER_TEMP/ferocity-final-manifest-repaired.zip"
-          echo "12406295c2c96b9d6e09519517edeb57c6557a25440a7184877f4431157cdadf  $EXACT_RUNNER_TEMP/ferocity-final-manifest-repaired.zip" | sha256sum -c -
-          unzip -t "$EXACT_RUNNER_TEMP/ferocity-final-manifest-repaired.zip" >/dev/null
-          mkdir "$EXACT_RUNNER_TEMP/ferocity-final-manifest-allocation"
-          unzip -q "$EXACT_RUNNER_TEMP/ferocity-final-manifest-repaired.zip" -d "$EXACT_RUNNER_TEMP/ferocity-final-manifest-allocation"
-          MATERIALIZED="$EXACT_RUNNER_TEMP/ferocity-final-manifest-allocation/build/reports/ferocity-final-manifest-watchdog-path-repair/materialized"
+            -o "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired.zip"
+          echo "12406295c2c96b9d6e09519517edeb57c6557a25440a7184877f4431157cdadf  $EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired.zip" | sha256sum -c -
+          unzip -t "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired.zip" >/dev/null
+          mkdir "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-allocation"
+          unzip -q "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-repaired.zip" -d "$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-allocation"
+          MATERIALIZED="$EXACT_RUNNER_TEMP_LITERAL/ferocity-final-manifest-allocation/build/reports/ferocity-final-manifest-watchdog-path-repair/materialized"
           test -d "$MATERIALIZED"
-          cp -a "$MATERIALIZED/." "$EXACT_REPO/"
-          MANIFEST="$EXACT_REPO/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
+          cp -a "$MATERIALIZED/." "$EXACT_REPO_LITERAL/"
+          MANIFEST="$EXACT_REPO_LITERAL/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
           echo "$MANIFEST_SHA256  $MANIFEST" | sha256sum -c -
-          test ! -e "$EXACT_REPO/ferocity-recycling/allocations/D2-first-cell"
-          test ! -e "$EXACT_REPO/ferocity-recycling/evidence/development/D2-first-cell"
-          test ! -e "$EXACT_REPO/ferocity-recycling/evidence/process/development/D2-first-cell"
+          test ! -e "$EXACT_REPO_LITERAL/ferocity-recycling/allocations/D2-first-cell"
+          test ! -e "$EXACT_REPO_LITERAL/ferocity-recycling/evidence/development/D2-first-cell"
+          test ! -e "$EXACT_REPO_LITERAL/ferocity-recycling/evidence/process/development/D2-first-cell"
 
       - name: Restore exact source08 runtime and Java without executing Java
         shell: bash
         run: |
           set -euo pipefail
-          cd "$EXACT_REPO"
-          RUNNER_TEMP="$EXACT_RUNNER_TEMP" FEROCITY_ACCEPTED_PATH_TOKEN="$FEROCITY_ACCEPTED_PATH_TOKEN" \
+          EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"\n          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"\n          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          cd "$EXACT_REPO_LITERAL"
+          RUNNER_TEMP="$EXACT_RUNNER_TEMP_LITERAL" FEROCITY_ACCEPTED_PATH_TOKEN="$FEROCITY_ACCEPTED_PATH_TOKEN" \
             "$PYTHON_EXACT" ferocity-recycling/support-audits/source08-policy-selection-20260928/prepare_current_source08_export_material.py \
-            | tee "$EXACT_RUNNER_TEMP/ferocity-allocation-restore.log"
-          "$PYTHON_EXACT" - "$EXACT_REPO/build/reports/ferocity-export-plan-assembly/class-path.json" <<'PY'
+            | tee "$EXACT_RUNNER_TEMP_LITERAL/ferocity-allocation-restore.log"
+          "$PYTHON_EXACT" - "$EXACT_REPO_LITERAL/build/reports/ferocity-export-plan-assembly/class-path.json" <<'PY'
           import hashlib,json,pathlib,shutil,sys
           p=pathlib.Path(sys.argv[1])
           rows=json.loads(p.read_text())
@@ -152,38 +154,38 @@ jobs:
           assert java.is_file() and not java.is_symlink()
           assert sha_file(java)=="2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d"
           PY
-          echo "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d  $JAVA_EXACT" | sha256sum -c -
-          echo "3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415  $EXACT_REPO/build/reports/ferocity-export-plan-assembly/class-path.json" | sha256sum -c -
-          test ! -e "$EXACT_REPO/ferocity-recycling/allocations/D2-first-cell"
-          test ! -e "$EXACT_REPO/ferocity-recycling/evidence/development/D2-first-cell"
-          test ! -e "$EXACT_REPO/ferocity-recycling/evidence/process/development/D2-first-cell"
+          echo "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d  $JAVA_EXACT_LITERAL" | sha256sum -c -
+          echo "3615e99ef8a8c108eb6fc0bf4bbd65c6f8843c5bb37894cc5fa360752f103415  $EXACT_REPO_LITERAL/build/reports/ferocity-export-plan-assembly/class-path.json" | sha256sum -c -
+          test ! -e "$EXACT_REPO_LITERAL/ferocity-recycling/allocations/D2-first-cell"
+          test ! -e "$EXACT_REPO_LITERAL/ferocity-recycling/evidence/development/D2-first-cell"
+          test ! -e "$EXACT_REPO_LITERAL/ferocity-recycling/evidence/process/development/D2-first-cell"
 
       - name: Execute exactly one allocation invocation and no game
         shell: bash
         run: |
           set -euo pipefail
-          cd "$EXACT_REPO"
-          OUT="$EXACT_REPO/build/reports/ferocity-d2-first-cell-allocation"
+          EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"\n          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"\n          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          cd "$EXACT_REPO_LITERAL"
+          OUT="$EXACT_REPO_LITERAL/build/reports/ferocity-d2-first-cell-allocation"
           mkdir -p "$OUT"
-          MANIFEST="$EXACT_REPO/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
+          MANIFEST="$EXACT_REPO_LITERAL/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json"
           CP="$("$PYTHON_EXACT" - "$MANIFEST" <<'PY'
           import json,sys,os
           m=json.load(open(sys.argv[1]))
           print(os.pathsep.join(x["path"] for x in m["source"]["classPath"]))
           PY
           )"
-          printf '%s\n' "$JAVA_EXACT" "-Xmx2048m" "-cp" "$CP" \
+          printf '%s\n' "$JAVA_EXACT_LITERAL" "-Xmx2048m" "-cp" "$CP" \
             "com.wingedsheep.gym.ferocity.FerocityDevelopmentCli" "allocate" \
-            "$EXACT_REPO" "$MANIFEST" "$MANIFEST_SHA256" > "$OUT/argv.txt"
+            "$EXACT_REPO_LITERAL" "$MANIFEST" "$MANIFEST_SHA256" > "$OUT/argv.txt"
           set +e
-          "$JAVA_EXACT" -Xmx2048m -cp "$CP" \
+          "$JAVA_EXACT_LITERAL" -Xmx2048m -cp "$CP" \
             com.wingedsheep.gym.ferocity.FerocityDevelopmentCli \
-            allocate "$EXACT_REPO" "$MANIFEST" "$MANIFEST_SHA256" \
+            allocate "$EXACT_REPO_LITERAL" "$MANIFEST" "$MANIFEST_SHA256" \
             >"$OUT/stdout.json" 2>"$OUT/stderr.log"
           rc=$?
           set -e
           printf '%s\n' "$rc" > "$OUT/exit-code.txt"
-          ALLOC="$EXACT_REPO/ferocity-recycling/allocations/D2-first-cell"
+          ALLOC="$EXACT_REPO_LITERAL/ferocity-recycling/allocations/D2-first-cell"
           if [ "$rc" -eq 0 ]; then
             test -f "$ALLOC/ALLOCATION_INTENT.json"
             test -f "$ALLOC/ledger.json"
@@ -216,11 +218,11 @@ jobs:
           }
           pathlib.Path(sys.argv[1]).parent.joinpath("result.json").write_text(json.dumps(receipt,sort_keys=True,indent=2)+"\n")
           PY
-            test ! -e "$EXACT_REPO/ferocity-recycling/evidence/development/D2-first-cell"
-            test ! -e "$EXACT_REPO/ferocity-recycling/evidence/process/development/D2-first-cell"
+            test ! -e "$EXACT_REPO_LITERAL/ferocity-recycling/evidence/development/D2-first-cell"
+            test ! -e "$EXACT_REPO_LITERAL/ferocity-recycling/evidence/process/development/D2-first-cell"
           fi
           echo "$MANIFEST_SHA256  $MANIFEST" | sha256sum -c - > "$OUT/post-hashes.txt"
-          echo "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d  $JAVA_EXACT" | sha256sum -c - >> "$OUT/post-hashes.txt"
+          echo "2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d  $JAVA_EXACT_LITERAL" | sha256sum -c - >> "$OUT/post-hashes.txt"
           exit "$rc"
 
       - name: Preserve exact allocation original
@@ -228,16 +230,16 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          DEST="$GITHUB_WORKSPACE/build/reports/ferocity-d2-first-cell-allocation-preserved"
+          EXACT_REPO_LITERAL="/home/runner/work/argentum-batshit-test/argentum-batshit-test"\n          EXACT_RUNNER_TEMP_LITERAL="/home/runner/work/_temp"\n          JAVA_EXACT_LITERAL="/home/runner/work/_temp/ferocity-source08-jdk-36655120463/jdk-21.0.12.1+1/bin/java"\n          DEST="$GITHUB_WORKSPACE/build/reports/ferocity-d2-first-cell-allocation-preserved"
           mkdir -p "$DEST"
-          cp -a "$EXACT_REPO/build/reports/ferocity-d2-first-cell-allocation/." "$DEST/" 2>/dev/null || true
-          cp "$EXACT_RUNNER_TEMP/ferocity-allocation-restore.log" "$DEST/" 2>/dev/null || true
-          cp "$EXACT_REPO/build/reports/ferocity-export-plan-assembly/restore-receipt.json" "$DEST/" 2>/dev/null || true
-          cp "$EXACT_REPO/build/reports/ferocity-export-plan-assembly/class-path.json" "$DEST/" 2>/dev/null || true
-          cp "$EXACT_REPO/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json" "$DEST/" 2>/dev/null || true
-          if [ -d "$EXACT_REPO/ferocity-recycling/allocations/D2-first-cell" ]; then
+          cp -a "$EXACT_REPO_LITERAL/build/reports/ferocity-d2-first-cell-allocation/." "$DEST/" 2>/dev/null || true
+          cp "$EXACT_RUNNER_TEMP_LITERAL/ferocity-allocation-restore.log" "$DEST/" 2>/dev/null || true
+          cp "$EXACT_REPO_LITERAL/build/reports/ferocity-export-plan-assembly/restore-receipt.json" "$DEST/" 2>/dev/null || true
+          cp "$EXACT_REPO_LITERAL/build/reports/ferocity-export-plan-assembly/class-path.json" "$DEST/" 2>/dev/null || true
+          cp "$EXACT_REPO_LITERAL/ferocity-recycling/evidence/admission/D2-first-cell-current/manifest.json" "$DEST/" 2>/dev/null || true
+          if [ -d "$EXACT_REPO_LITERAL/ferocity-recycling/allocations/D2-first-cell" ]; then
             mkdir -p "$DEST/allocation"
-            cp -a "$EXACT_REPO/ferocity-recycling/allocations/D2-first-cell/." "$DEST/allocation/"
+            cp -a "$EXACT_REPO_LITERAL/ferocity-recycling/allocations/D2-first-cell/." "$DEST/allocation/"
           fi
 
       - name: Upload exact allocation evidence
