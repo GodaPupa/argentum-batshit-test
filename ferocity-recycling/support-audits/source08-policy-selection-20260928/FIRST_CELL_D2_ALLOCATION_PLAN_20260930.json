@@ -1,0 +1,65 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-plan-v1",
+  "date_utc":"2026-09-30",
+  "status":"PROSPECTIVE_ONE_TIME_ALLOCATION_REVIEW_REQUIRED",
+  "basis":{
+    "verify_only_run":36709748908,
+    "verify_only_artifact":11094176040,
+    "verify_only_audit_blob":"e82c9cf587e2cedfa7e819606851af0e18c3089d",
+    "verify_only_decision":"ACCEPTED_FINAL_DEVELOPMENT_VERIFY_ONLY_INPUT_ADMISSION",
+    "manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+    "manifest_artifact":11093470964,
+    "manifest_artifact_sha256":"12406295c2c96b9d6e09519517edeb57c6557a25440a7184877f4431157cdadf",
+    "logical_source_commit":"3a4f99a7653839506e96d19e6639f58d9e8c5ced"
+  },
+  "operation":{
+    "entrypoint":"com.wingedsheep.gym.ferocity.FerocityDevelopmentCli",
+    "cli_operation":"allocate",
+    "java_invocations":1,
+    "expected_status":"LEDGER_DURABLE_NO_GAME",
+    "ledger_directory":"ferocity-recycling/allocations/D2-first-cell",
+    "ledger_file":"ferocity-recycling/allocations/D2-first-cell/ledger.json",
+    "allocation_intent":"ferocity-recycling/allocations/D2-first-cell/ALLOCATION_INTENT.json",
+    "allocation_failure":"ferocity-recycling/allocations/D2-first-cell/ALLOCATION_FAILURE.json",
+    "allocation_rows":16,
+    "entropy_streams":48,
+    "streams_per_row":3,
+    "replacements_authorized":0
+  },
+  "fixed_allocations":{
+    "decks":["A3-F4","A3-N0"],
+    "seats":["play","draw"],
+    "indices":[1,2,3,4],
+    "opponent":"mono_red_madness_mistertwin_20260924",
+    "namespace":"ferocity-recycling/v0.1/D2"
+  },
+  "prospective_guards":[
+    "Reconstruct and rehash the exact accepted manifest/runtime/JDK inputs used by the accepted verify-only original.",
+    "Require the exact manifest SHA-256 immediately before the allocate invocation.",
+    "Require the fixed ledger directory not to exist before allocation; an existing or partial cell blocks before SecureRandom is invoked.",
+    "Require no D2 development journal and no D2 process-run claim before allocation.",
+    "Invoke exactly one CLI operation named allocate; never invoke run-one in the allocation workflow.",
+    "The production allocator must first durably create ALLOCATION_INTENT.json, then invoke SecureRandom exactly for the 48 declared streams, then durably create ledger.json.",
+    "Require the resulting ledger schema, cell id, manifest SHA-256, allocation row order, row count and 48-stream global uniqueness through the existing validateFerocityDevelopmentLedger boundary.",
+    "Preserve the exact ledger bytes and SHA-256 from the first original whether allocation succeeds or records an allocation failure.",
+    "No retry, reroll, replacement allocation directory, alternate entropy source or second allocation original is authorized."
+  ],
+  "postconditions_if_clean":[
+    "CLI emits LEDGER_DURABLE_NO_GAME and one ledger SHA-256.",
+    "Exactly 16 fixed allocation rows and 48 pairwise-distinct Long streams are present.",
+    "ALLOCATION_INTENT.json and ledger.json exist at the single fixed path and bind the accepted manifest.",
+    "No development trial claim, journal, supervisor run claim, GameInitializer call, gameplay or outcome exposure occurs.",
+    "Allocation authority is limited to the exact durable ledger; each future run-one remains a separate prospective claim/game gate."
+  ],
+  "failure_preservation":[
+    "If stream generation or validation fails after ALLOCATION_INTENT creation, preserve ALLOCATION_FAILURE.json and any ledger bytes exactly.",
+    "A failed or collided allocation is consumed and must not be rerolled or replaced."
+  ],
+  "explicit_non_authority":[
+    "This plan does not itself consume entropy.",
+    "No run-one claim, game initialization, gameplay, outcome interpretation, evaluation or confirmation authority.",
+    "No replacement or retry authority."
+  ],
+  "next_gate":"Independently review this exact one-time allocation plan against the accepted manifest and production allocator. If accepted, implement one source-bound allocation workflow and independently review its exact bytes before dispatch.",
+  "official_counters_delta":0
+}
