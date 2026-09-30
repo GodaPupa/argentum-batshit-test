@@ -1,0 +1,106 @@
+{
+  "schema": "ferocity-first-cell-current-runtime-export-plan-v1",
+  "date_utc": "2026-09-29",
+  "status": "PROSPECTIVE_NON_EXECUTING_REVIEW_REQUIRED",
+  "purpose": "Close the current source08 offline definition-bundle and runtime-plan gap without starting Java, exporting definitions, consuming entropy, allocating a D2 cell, or initializing a game.",
+  "source08": {
+    "commit": "3a4f99a7653839506e96d19e6639f58d9e8c5ced",
+    "tree": "56c6b8dd46dc112cdb70db496fd9d0c3e915e8a6"
+  },
+  "current_hold_authority": {
+    "manifest_path": "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_ADMISSION_MANIFEST_HOLD.json",
+    "blob": "9cc72d8d23bdbe1bc17b09c1d3d77e18a7512d4e",
+    "decision": "HOLD_NO_D2_AUTHORITY"
+  },
+  "accepted_current_bindings": {
+    "source08_reconciliation_path": "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_CURRENT_SOURCE08_BINDING_RECONCILIATION_20260929.json",
+    "source08_reconciliation_blob": "ffcc2228f025bd1a5979ea0c51f37660ecd65eff",
+    "static_export_red_preadmission_path": "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_STATIC_EXPORT_RED_PREADMISSION_20260929.json",
+    "static_export_red_preadmission_blob": "1788c2793a469d85eea5f8036495b75d47a6c459",
+    "red_policy_authority_path": "ferocity-recycling/support-audits/source08-policy-selection-20260928/FIRST_CELL_RED_POLICY_AUTHORITY.json",
+    "red_policy_authority_blob": "ab54a82c558566acf370fef1efb483a6c1b3e7d3",
+    "priority_observation_run": 36511240177,
+    "priority_observation_result": "4/4 PASS",
+    "resource_binding_run": 36505469415,
+    "resource06_semantic_diff_run": 36510479750
+  },
+  "preserved_runtime_candidate": {
+    "source_branch": "ferocity-recycling/source08-evidence-20260926",
+    "original_artifact": 10914678223,
+    "original_zip_sha256": "9849c7aade4ffe015fd5ab859ae57e4ba3c4e5461514bbc72bc6ffa355be0816",
+    "runtime_archive_sha256": "0e9ea0c6c3f2e29230148d330b6b7961aeba1fa44985876b90f68bc8ca7e28d5",
+    "ordered_classpath_entries": 56,
+    "regular_files": 2159,
+    "payload_bytes": 112164180,
+    "peer_review_path": "ferocity-recycling/evidence/source08-takeover/priority08/root-observed-runtime-peer-review.json",
+    "peer_review_blob": "fe4f20e38cfe98e67d213a6191d242b199923321",
+    "peer_review_decision": "ACCEPT_ARCHIVAL_BYTE_BINDING_ONLY"
+  },
+  "offline_export_source": {
+    "inventory_path": "ferocity-recycling/evidence/source08-takeover/priority08/offline-export-source-binding-audit.json",
+    "inventory_blob": "924e6dd8e4f60335379c82eced8655732203ff43",
+    "peer_review_path": "ferocity-recycling/evidence/source08-takeover/priority08/root-offline-source-inventory-peer-review.json",
+    "peer_review_blob": "a07f7ac267c20ebf7b908b497b48663a1415f2c0",
+    "exporter_sha256": "81a646d61fc44cc675c562d8a83accfe63588f1cd9fe0940e5a24f8c4d7cec6f",
+    "getter_table_sha256": "bfdd39f056dc4501c7bd1e54b78d02b778f8aecedc1803a534da47bb2085e39d",
+    "wrapper_sha256": "29d753603a7b25a6410d834060872146c799ec0c4008b6ab978007aa55b57b69",
+    "assembler_sha256": "e0e29897920dcd6043a3ea86511466046dfbd6b313db564f2c987370ab8b60f3",
+    "getter_count": 36,
+    "main_deck_union": 33
+  },
+  "first_cell": {
+    "candidate": {"id": "A3-F4", "deck_sha256": "c72947c48bc45f2b31352a662a99e75dfc0f8ede72ecccc69b574a568eae6ba4"},
+    "control": {"id": "A3-N0", "deck_sha256": "9aa9d3133f29b5793d66e9941da65d5c74d551f2d670b162f547ad0c1ae79298"},
+    "opponent": {"id": "mono_red_madness_mistertwin_20260924", "policy": "red-madness-v0.2"}
+  },
+  "prospective_execution_plan": {
+    "phase_0_java_closure": [
+      "Recover the exact Java executable path/version/vendor/architecture and binary SHA-256 recorded by the accepted source08 runtime receipt.",
+      "Independently bind those recorded identifiers to immutable Java distribution provenance. Do not substitute a current hosted-runner Java executable merely because version 21 matches.",
+      "If exact Java closure cannot be independently established, stop; no export is dispatched."
+    ],
+    "phase_1_runtime_restore": [
+      "Reassemble only the already accepted source08 runtime archive bytes by exact SHA-256.",
+      "Restore the exact 56-entry ordered classpath from the preserved runtime audit.",
+      "Reject any missing, extra, reordered, mutated, symlinked, or shadowed runtime member before Java starts."
+    ],
+    "phase_2_offline_export": [
+      "Run only the exact current source08 exporter/wrapper/getter/assembler identities bound above.",
+      "Load exactly the frozen 36 getter identities covering the 33-card first-cell main-deck union.",
+      "Produce an offline immutable definition bundle and complete receipt without reading official D2 seeds, allocation state, trial journals, or game outcomes.",
+      "Immediately hash and preserve the bundle plus ordered runtime/Java/source inputs."
+    ],
+    "phase_3_reload_only": [
+      "In a separate no-game validation process using the same accepted Java/runtime closure, reload the exact emitted bundle.",
+      "Verify complete identity/count/source bindings and reject any dynamic fallback to repository card definitions."
+    ],
+    "phase_4_independent_audit": [
+      "Audit original export/reload artifacts exactly once for Java/runtime/source binding, ZIP/CRC, freshness, definition counts and absence of entropy/game initialization.",
+      "Only a separately accepted audit may populate the final non-executing first-cell manifest."
+    ]
+  },
+  "required_pre_dispatch_bindings": {
+    "java_executable_sha256": null,
+    "java_distribution_identity": null,
+    "java_architecture": null,
+    "exact_runtime_restore_recipe_digest": null,
+    "exact_export_workflow_blob": null,
+    "exact_export_budget_blob": null
+  },
+  "fail_closed": [
+    "Any null pre-dispatch binding blocks execution.",
+    "No mutable hosted-runner label or setup-java version string may stand in for exact Java byte provenance.",
+    "Any runtime/member/classpath drift blocks before Java starts.",
+    "Any seed/entropy/allocation/game access is a protocol violation and invalidates the attempt.",
+    "No automatic retry or replacement export after an original attempt."
+  ],
+  "red_runtime_receiving": {
+    "status": "SEPARATE_OPEN_GATE",
+    "active_policy": "red-madness-v0.2",
+    "active_pilot_sha256": "6ddd9d1daa60e777775b9f66de777b87bb84034b8973c92589d0f5c2ed40cef5",
+    "note": "Successful offline bundle production does not satisfy MisterTwin Red engine/runtime/pilot receiving."
+  },
+  "authority_requested": "DESIGN_ONLY",
+  "execution_authorized": false,
+  "official_counters_delta": 0
+}
