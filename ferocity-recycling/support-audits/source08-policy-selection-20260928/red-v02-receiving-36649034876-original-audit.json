@@ -1,0 +1,25 @@
+{
+  "schema": "ferocity-first-cell-red-v02-receiving-36649034876-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36649034876,
+  "job_id": 109678632013,
+  "artifact_id": null,
+  "head": "19ec0f0533617a5120fe77e27f3fa9b1877c1d3e",
+  "parent": "e3562d08205a4c2f2c6cc59e84a4e00ce48f2417",
+  "result": {
+    "workflow_conclusion": "failure",
+    "binding_step": "failure",
+    "behavior_step": "skipped",
+    "artifact_uploaded": false,
+    "grandparent_sha_available": true,
+    "technical_cause": "The binding used git rev-parse HEAD^^{tree}. Git parses that as the tree peel of HEAD^, not the tree of HEAD^^. The immediately preceding HEAD^^ SHA assertion reached the exact source08 commit, but the following tree expression compared the budget commit tree to the source08 tree."
+  },
+  "decision": "INCOMPLETE_PRETEST_GIT_REVISION_EXPRESSION",
+  "interpretation": [
+    "No Red v0.2 receiving case executed.",
+    "No behavioral failure, deck loss, policy rejection or D2 result is inferred.",
+    "The run is consumed and must not be rerun unchanged."
+  ],
+  "successor_scope": "Keep exact source, budget, pilot, scenario bank, opponent source and behavioral command unchanged. Replace only HEAD^^{tree} with the unambiguous HEAD~2^{tree} source-tree expression.",
+  "official_counters_delta": 0
+}
