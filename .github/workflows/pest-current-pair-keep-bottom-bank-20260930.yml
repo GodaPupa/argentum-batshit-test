@@ -1,0 +1,84 @@
+name: Pest current pair keep-bottom bank construction
+on:
+  push:
+    branches: ["pest/current-pair-keep-bottom-bank-execute-20260930"]
+    paths:
+      - "docs/experiments/pest-control/CURRENT_PAIR_KEEP_BOTTOM_BANK_EXECUTION_MARKER_20260930.json"
+permissions:
+  contents: read
+  actions: read
+jobs:
+  construct:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact reviewed bank constructor
+        shell: bash
+        run: |
+          set -euo pipefail
+          REVIEW=docs/experiments/pest-control/current-pair-keep-bottom-bank-construction-independent-review-20260930.json
+          MARKER=docs/experiments/pest-control/CURRENT_PAIR_KEEP_BOTTOM_BANK_EXECUTION_MARKER_20260930.json
+          python3 - "$REVIEW" "$MARKER" <<'PY'
+          import json,pathlib,subprocess,sys
+          review=json.loads(pathlib.Path(sys.argv[1]).read_text())
+          marker=json.loads(pathlib.Path(sys.argv[2]).read_text())
+          assert review["decision"]=="ACCEPT_CONSTRUCTOR_FOR_ONE_STATIC_BANK_ORIGINAL"
+          assert subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()==review["reviewed_implementation_commit"]
+          assert subprocess.check_output(["git","diff","--name-only","HEAD^","HEAD"],text=True).strip()==sys.argv[2]
+          assert marker["implementation_review_blob"]==subprocess.check_output(["git","hash-object",sys.argv[1]],text=True).strip()
+          for field,path in {
+            "budget_blob":"docs/experiments/pest-control/current-pair-keep-bottom-bank-budget-20260930.json",
+            "constructor_blob":"scripts/experiments/pest-control/construct_current_pair_keep_bottom_bank.py",
+            "workflow_blob":".github/workflows/pest-current-pair-keep-bottom-bank-20260930.yml",
+          }.items():
+              actual=subprocess.check_output(["git","hash-object",path],text=True).strip()
+              assert actual==review[field],(field,actual,review[field])
+          assert subprocess.check_output(["git","hash-object","ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt"],text=True).strip()=="4f020ea2406e9bd6a87ec389685b48f15df4c5a3"
+          assert subprocess.check_output(["git","hash-object","gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt"],text=True).strip()=="bb8e2247dc64a64403094c691d83b8eed53048bd"
+          assert subprocess.check_output(["git","hash-object","gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceiving.kt"],text=True).strip()=="1936f537b737fb1b839e53fae0a727aab7a0f0ab"
+          assert marker["official_counters_delta"]==0
+          PY
+      - name: Consume accepted M5 truth original without rerunning comparator
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          OUT=build/reports/pest-current-pair-keep-bottom-bank
+          mkdir -p "$OUT"
+          curl -L --fail --retry 3             -H "Authorization: Bearer $GH_TOKEN"             -H "Accept: application/vnd.github+json"             "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11016925265/zip"             -o "$OUT/accepted-m5-original.zip"
+          echo "cd16753d52704ab31904531cf94e4390c7ceabacd382d09deb66afc155951528  $OUT/accepted-m5-original.zip" | sha256sum -c -
+          unzip -t "$OUT/accepted-m5-original.zip"
+          unzip -p "$OUT/accepted-m5-original.zip" truth-bank.json > "$OUT/truth-bank.json"
+          echo "8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f  $OUT/truth-bank.json" | sha256sum -c -
+      - name: Construct finite pair bank geometry and unknown closure
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/construct_current_pair_keep_bottom_bank.py | tee build/reports/pest-current-pair-keep-bottom-bank/constructor.log
+          python3 - <<'PY'
+          import json,pathlib
+          p=pathlib.Path("build/reports/pest-current-pair-keep-bottom-bank/bank-construction.json")
+          r=json.loads(p.read_text())
+          assert r["monster"]["name_multisets"]==882297
+          assert r["pest"]["name_multisets"]>0
+          assert r["truth_rows"]==6850
+          assert r["rng_used"] is False and r["hidden_library_order_used"] is False
+          assert r["raw_controller_executed"] is False and r["behavioral_cases"]==0
+          assert r["official_counters_delta"]==0
+          assert r["authority"]=="CURRENT_PAIR_KEEP_BOTTOM_BANK_CONSTRUCTION_ONLY"
+          PY
+      - name: Preserve static bank original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-current-pair-keep-bottom-bank-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/pest-current-pair-keep-bottom-bank/
+            docs/experiments/pest-control/current-pair-keep-bottom-bank-budget-20260930.json
+            docs/experiments/pest-control/current-pair-keep-bottom-bank-construction-independent-review-20260930.json
+            docs/experiments/pest-control/CURRENT_PAIR_KEEP_BOTTOM_BANK_EXECUTION_MARKER_20260930.json
+          if-no-files-found: error
+          retention-days: 90
