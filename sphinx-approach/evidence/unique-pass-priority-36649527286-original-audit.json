@@ -1,0 +1,64 @@
+{
+  "schema": "sphinx-stage-e-unique-pass-priority-36649527286-original-audit-v1",
+  "date_utc": "2026-09-29",
+  "run_id": 36649527286,
+  "artifact_id": 11069704972,
+  "artifact_sha256": "f9feff66559a8751b4b6882882df852e00608757fff3e0f7998a9f5083cfb1a4",
+  "head": "1574838c03111fba5d247ed478a4654285fcbeca",
+  "parent": "e993dbf48ecbf548ad27609dfa85c853c69b6fa3",
+  "pins": {
+    "whole_actor": "dd9c493db93b0664ad07ceef97a9bbbc20943091",
+    "unique_pass_test": "d7a141cf2be33dd5eed826aa7bb52460c66a5209",
+    "budget": "1f7a56cd1bbbeb9ecd88302bfa2df0d99e447791",
+    "multicast_regression_test": "6b794b196d4ff65ab3a7fff5f14febb8f310ab35",
+    "reconstructed_v01": "e2f0abbc9f99be97b2562a18ae248d70cbefc0e1",
+    "reconstructed_hybrid": "7f76c94e4fbc24acdc982039aa248a1fa9485cd4",
+    "workflow": "7207a3bc48ef4a1c87b1a680914235ebb21a9018"
+  },
+  "integrity": {
+    "workflow_conclusion": "success",
+    "artifact_digest_match": true,
+    "zip_crc": "clean",
+    "source_binding": "passed",
+    "freshness": "--rerun-tasks --no-build-cache",
+    "unique_pass_xml_sha256": "cb4b499dff3eeb7f1745a00247bd6da06ad68d03a1a6328a8e93803673131eac",
+    "multicast_regression_xml_sha256": "9421cd30aa9a0db40324292f557800e1b03acff0c19fc0ce4933b01394522e41",
+    "unique_pass_log_sha256": "83b16ae84299f189837a7a9f70e89504bde1d28c2c41344bd83786c97bc754b4",
+    "multicast_regression_log_sha256": "40f5293a9a803dc5669749db6880ea7054c3742133ee8bd22f0cd619bf7b59c7",
+    "summary_sha256": "36879368f7d20876361e953c16c4c4413b10010025d05f10d9770b43b83245ad",
+    "source_record_sha256": "fdf380e5627c90457a01e1c0550a92434eda551203d3831fa068c78709561b76"
+  },
+  "result": {
+    "unique_pass_priority": {
+      "tests": 2,
+      "passes": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "cases": [
+        "UP1 reconstructed-v01 sole current action is canonical pass priority",
+        "UP2 reconstructed-hybrid sole current action is canonical pass priority"
+      ]
+    },
+    "multicast_regression": {
+      "tests": 2,
+      "passes": 2,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    }
+  },
+  "decision": "ACCEPTED_BOUNDED_SOLE_PASS_PRIORITY_SEAM",
+  "accepted_scope": [
+    "For the two frozen reconstructed Approach identities, after a real initialized seat is bound and the actor has priority, the whole actor may propose PassPriority only when the complete current legal-action set contains exactly one action and it is that actor's canonical PassPriority.",
+    "The proposal preserves the current input binding and policy RNG state.",
+    "The previously accepted bounded multi-cast discriminator remains 2/2 clean on the changed whole-actor source."
+  ],
+  "limits": [
+    "No pass-vs-cast, pass-vs-land, pass-vs-ability or other scheduling ranking.",
+    "No permission to pass merely because a reviewed cast component declines.",
+    "No combat policy, opponent package, collector, replay, durability, Stage-E freeze/admission, seed, allocation or gameplay authority."
+  ],
+  "next_gate": "Advance the remaining combat/whole-pilot surfaces, then collector/replay/durability and prospective Stage-E freeze/admission.",
+  "official_counters_delta": 0
+}
