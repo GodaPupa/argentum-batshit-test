@@ -1,7 +1,7 @@
 name: Sphinx Stage-E current trusted replay qualification
 on:
   push:
-    branches: ["sphinx/current-trusted-replay-successor-20260930"]
+    branches: ["sphinx/current-trusted-replay-successor-v2-20260930"]
     paths: [".github/workflows/sphinx-current-trusted-replay-20260930.yml"]
 permissions: {contents: read}
 jobs:
@@ -21,7 +21,7 @@ jobs:
           set -euo pipefail
           OUT=build/reports/sphinx-current-trusted-replay
           mkdir -p "$OUT"
-          test "$(git rev-parse HEAD^)" = "6230822e5b3a5bd53d1e3afd376a1e8fc45772b2"
+          test "$(git rev-parse HEAD^)" = "02d338b3eb3626a5c40c0187c65cbe39201a95fe"
           git merge-base --is-ancestor bbcb15f085c9ff1fcac25608505ce8d23906abd9 HEAD
           test "$(git hash-object sphinx-approach/CURRENT_TRUSTED_REPLAY_BUDGET_20260930.json)" = "151a64cdd6767a3a4442e5732680e81c79cdd59d"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "0e5a21429c367355c0951c7a3a367495a96a161d"
