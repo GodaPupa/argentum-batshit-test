@@ -1,0 +1,67 @@
+{
+  "schema":"ferocity-watchdog-current-runtime-requalification-36661350925-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36661350925,
+  "job_id":109716610796,
+  "artifact_id":11074268074,
+  "artifact_sha256":"c436b7df09091a001df6ecdad25a909c2ce7f4bb100d7ddb6f6020a1e4c4dedf",
+  "head":"db343bb5a1c2c8319deebe72d685f27133562408",
+  "parent":"1756fa092f12c29a3de240e7d0b5c52b804ab5ca",
+  "reviewed_implementation":"40a6465e664bd9a873f579750757e091ff5cf965",
+  "pins":{
+    "workflow":"675ab43bd64df7239656f81879460591ecaca2df",
+    "repair_review":"1756fa092f12c29a3de240e7d0b5c52b804ab5ca",
+    "budget":"28bbc2d4822cb3ae5219cacbb5b0eff224a92c4e",
+    "harness":"38b8cbf5a243040e9c10ae199e8a453873bfb272",
+    "watchdog_source_sha256":"803a03aae3f63ffb114d9a8b56d4bf108b2f5f71f051057e204220f5f52adb37"
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "zip_members":14,
+    "source_binding":"passed",
+    "workflow_parent_binding":"passed",
+    "freshness":"exact unittest discovery test_trial_watchdog*.py in reviewed digest-pinned container",
+    "source_guard_unchanged":true
+  },
+  "result":{
+    "tests":13,
+    "passes":13,
+    "failures":0,
+    "errors":0,
+    "skipped":0,
+    "summary_sha256":"3ab8f3b3e6a713c14cca00a29a8ed783b26a875716a0e04c4ff291814359cce5",
+    "acceptance_sha256":"b1d779398aff49d6c4075d9c055c197a165fac7b415052e3731ae908c46244c1",
+    "run_receipt_sha256":"d9c98fac0ab2db9be7da54fefa7e383cdd82937078c81308faa6202a572a9042",
+    "author_receipt_sha256":"077447186d7979210bc58dae40701661663c7c467706ac4b6de00f34805f6e48",
+    "platform_sha256":"8a849c213e0675b470fee06c85f3b8d60d0a4b0d22b225ce3ebe31327527305e",
+    "unittest_log_sha256":"8e891390e0d4ed21b4e5d6777c24a1e48539fddf8c8eac807e41d77a066e9284",
+    "process_claim_sha256":"cd03cc4c456bc3be73d5c95b2823ea182c447b09719d7e0d910a36735cad79e5",
+    "python_executable":"/usr/local/python/3.14.2/bin/python3.14",
+    "python_executable_sha256":"4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601",
+    "container_image":"mcr.microsoft.com/devcontainers/universal:linux@sha256:584e41561451c910dcd96221634be07545803aed9cd437a60288f06ddeaf5880"
+  },
+  "zero_game_invariants":{
+    "java_started":false,
+    "gradle_started":false,
+    "official_seed_files_read":false,
+    "entropy_read":false,
+    "allocation_read":false,
+    "game_initialized":false,
+    "official_counters_delta":0
+  },
+  "decision":"ACCEPT_CURRENT_RUNTIME_FIXED_PROCESS_WATCHDOG_EVIDENCE_ONLY",
+  "accepted_scope":[
+    "The unchanged source08 watchdog passes exactly the reviewed nine process and four resource fixtures in the digest-pinned current container.",
+    "The current Python executable path and byte identity are qualified for binding into the final no-game FerocityDevelopmentManifest verification package.",
+    "The normal-exit PROCESS_SUPERVISION_ONLY claim is preserved and bound through author/run/acceptance receipts."
+  ],
+  "limits":[
+    "No final FerocityDevelopmentManifest verification authority follows automatically.",
+    "No allocation, entropy, seed, ledger, trial claim, journal, game initialization, gameplay or outcome authority.",
+    "The infrastructure-only predecessor runs remain non-behavioral and must not be reinterpreted as failed watchdog evidence."
+  ],
+  "next_gate":"Bind this exact watchdog package, accepted definition bundle, inline-token admission, source08 qualification evidence, classpath and Java identity into the final no-game FerocityDevelopmentManifest candidate; independently review the complete candidate before one CLI verify dispatch.",
+  "official_counters_delta":0
+}
