@@ -1,0 +1,61 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-36746049068-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36746049068,
+  "job_id":109992397837,
+  "artifact_id":11112567068,
+  "artifact_sha256":"2b2503ec8274aa0032daccdf442f1ff633417a0ec1de94ca1602116a47270264",
+  "head":"1ff7fe805200260bbd862ffba0ff84c774f0aa40",
+  "manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+  "integrity":{
+    "workflow_conclusion":"failure",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":9,
+    "manifest_rehash":"passed",
+    "runtime_restore":"passed",
+    "historical_runtime_path_materialization":"passed",
+    "java_executable_sha256":"2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "java_invocations":1,
+    "requested_operation":"allocate"
+  },
+  "failure":{
+    "classification":"INCOMPLETE_PREALLOCATION_CANONICAL_REPOSITORY_PATH_IDENTITY",
+    "java_exit_code":1,
+    "exception":"java.lang.IllegalArgumentException: Another worktree cannot reclaim this admitted cell",
+    "failure_location":"VerifiedFerocityDevelopment.verify before operation dispatch",
+    "manifest_repository_path":"/home/runner/work/argentum-batshit-test/argentum-batshit-test",
+    "invoked_repository_path":"/__w/argentum-batshit-test/argentum-batshit-test",
+    "cause":"The job-level EXACT_REPO value was container-path translated; the successful verify-only gate used an unrewritten shell-local canonical literal instead.",
+    "allocate_method_entered":false,
+    "secure_random_constructed":false
+  },
+  "preserved_original":{
+    "stdout_bytes":0,
+    "stderr_preserved":true,
+    "allocation_directory_preserved":false,
+    "allocation_intent_preserved":false,
+    "ledger_preserved":false,
+    "allocation_failure_preserved":false
+  },
+  "official_state":{
+    "entropy_consumed":false,
+    "claims":0,
+    "allocations":0,
+    "seed_streams":0,
+    "games":0,
+    "outcomes":0
+  },
+  "decision":"INCOMPLETE_PREALLOCATION_REPOSITORY_PATH_BLOCKER_NO_ENTROPY",
+  "accepted_scope":[
+    "The exact manifest/runtime/JDK preparation reached the production admission verifier.",
+    "The verifier correctly rejected a repository-path identity mismatch before allocation."
+  ],
+  "limits":[
+    "No allocation authority was consumed.",
+    "Do not rerun v5 unchanged.",
+    "No entropy, ledger, claim, journal, game initialization, gameplay or outcome authority."
+  ],
+  "next_gate":"Use the already-proven verify-only canonical repository materialization pattern with a shell-local /home/runner/work/argentum-batshit-test/argentum-batshit-test literal, preserve all v5 runtime/allocation semantics unchanged, independently review exact v6 bytes, then allow one fresh allocation original.",
+  "official_counters_delta":0
+}
