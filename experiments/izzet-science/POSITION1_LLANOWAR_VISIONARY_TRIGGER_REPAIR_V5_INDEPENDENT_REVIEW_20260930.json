@@ -1,0 +1,28 @@
+{
+  "schema":"izzet-position1-llanowar-visionary-trigger-repair-v5-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"adf534a4398c0d047afc17fa50ee066961a09b32",
+  "reviewed_workflow_blob":"d3f0578e133387a958e79e0e587a767a0ba746ba",
+  "superseded_preflight_run":36726360478,
+  "decision":"ACCEPT_INTERNAL_MARKER_BINDING_REPAIR_ONLY_FOR_ONE_FRESH_LLANOWAR_VISIONARY_ORIGINAL",
+  "checks":{
+    "prior_run_reached_semantic_tests":false,
+    "behavioral_original_consumed":false,
+    "functional_change":"advance execution branch/marker to v5 and make the internal MARKER variable reference that exact v5 marker",
+    "card_source_blob":"2cc1f07b325b4b7b5358418aa0aefc0ccabe430b",
+    "scenario_test_blob":"7378eacb4e0d4ac7fe1292e73fc5d94ee9cf5ece",
+    "budget_blob":"2986c682c32c5fe493eee5fd4bfaae867e174925",
+    "repair_budget_blob":"ebab3f01b8155cb2e4f563aeddf475391193a1bb",
+    "snapshot_contract":["mtg-sets/src/test/resources/snapshots/cards/M21.json"],
+    "official_counters_delta":0
+  },
+  "accepted_scope":[
+    "Create exactly one v5 marker-only execution commit.",
+    "Treat the first v5 run reaching the semantic test step as the next fresh Llanowar Visionary qualification original."
+  ],
+  "explicit_non_authority":[
+    "No mechanics acceptance, registry authority, pilot authority, seed, allocation or gameplay follows from this repair review."
+  ],
+  "next_gate":"Dispatch one v5 marker and audit the resulting original once.",
+  "official_counters_delta":0
+}
