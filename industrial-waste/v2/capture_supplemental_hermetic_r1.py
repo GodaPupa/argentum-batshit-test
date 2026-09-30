@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from __future__ import annotations
-import hashlib,json,os,pathlib,re,shutil,subprocess,sys,sysconfig,tarfile,threading,time,zipfile,xml.etree.ElementTree as ET
+import collections,hashlib,json,os,pathlib,re,shutil,subprocess,sys,sysconfig,tarfile,threading,time,zipfile,xml.etree.ElementTree as ET
 
 ROOT=pathlib.Path(".").resolve()
 OUT=ROOT/"build/reports/industrial-r1-supplemental-hermetic"
@@ -162,14 +162,33 @@ def restore_accepted_store(archive:pathlib.Path, manifest_path:pathlib.Path, tar
 def parse_classlog(path:pathlib.Path):
     rows=[]
     rx=re.compile(r"\[class,load\]\s+(.+?)\s+source:\s+(.*)$")
+    generated_sources={"__dynamic_proxy__","__ClassDefiner__","__JVM_LookupDefineClass__"}
     for line in path.read_text(errors="replace").splitlines():
         m=rx.search(line)
         if not m: continue
         name=m.group(1); source=m.group(2)
         normalized=re.sub(r"/0x[0-9a-fA-F]+","/0x<HIDDEN>",name)
-        rows.append({"name":name,"normalized_name":normalized,"source":source,"hidden":"/0x" in name})
-    normalized=sorted((r["normalized_name"],r["source"]) for r in rows)
-    return rows,hashlib.sha256(canonical(normalized)).hexdigest()
+        hidden="/0x" in name
+        generated=hidden or "$Lambda" in name or name.startswith("jdk.proxy") or "Generated" in name or source in generated_sources
+        rows.append({"name":name,"normalized_name":normalized,"source":source,"hidden":hidden,"generated_or_hidden":generated})
+    all_normalized=sorted((r["normalized_name"],r["source"]) for r in rows)
+    generated=[(r["normalized_name"],r["source"]) for r in rows if r["generated_or_hidden"]]
+    non_vm=sorted(x for x in generated if x[1]!="__JVM_LookupDefineClass__")
+    vm=sorted(x for x in generated if x[1]=="__JVM_LookupDefineClass__")
+    metrics={
+      "all_normalized_sha256":hashlib.sha256(canonical(all_normalized)).hexdigest(),
+      "all_rows":len(rows),
+      "generated_hidden_rows":len(generated),
+      "generated_hidden_unique_families":len(set(generated)),
+      "generated_hidden_unique_family_sha256":hashlib.sha256(canonical(sorted(set(generated)))).hexdigest(),
+      "non_vm_generated_rows":len(non_vm),
+      "non_vm_generated_multiset_sha256":hashlib.sha256(canonical(non_vm)).hexdigest(),
+      "vm_lookup_define_rows":len(vm),
+      "vm_lookup_define_unique_families":len(set(vm)),
+      "vm_lookup_define_unique_family_sha256":hashlib.sha256(canonical(sorted(set(vm)))).hexdigest(),
+      "hidden_rows":sum(r["hidden"] for r in rows),
+    }
+    return rows,metrics
 
 def archive_inventory(path:pathlib.Path):
     if path.is_dir():
@@ -247,9 +266,23 @@ def main():
         assert all(r["exe"]==str(JAVA) and r["exe_sha256"]==EXPECTED["java"] for r in workers), ("unexpected test-worker Java",label,workers)
     store_after=file_inventory(store_root,exclude_names=frozenset({"daemon","workers","notifications","fileHashes","file-changes","buildOutputCleanup"}))
     (OUT/"store-after-offline.json").write_bytes(canonical(store_after))
-    class1,d1=parse_classlog(OUT/"classload-1.log"); class2,d2=parse_classlog(OUT/"classload-2.log")
-    assert d1==d2,("generated/hidden normalized census differs",d1,d2)
+    class1,census1=parse_classlog(OUT/"classload-1.log"); class2,census2=parse_classlog(OUT/"classload-2.log")
     (OUT/"class-census-1.json").write_bytes(canonical(class1)); (OUT/"class-census-2.json").write_bytes(canonical(class2))
+    assert census1["generated_hidden_unique_family_sha256"]==census2["generated_hidden_unique_family_sha256"],("generated/hidden family set differs",census1,census2)
+    assert census1["non_vm_generated_multiset_sha256"]==census2["non_vm_generated_multiset_sha256"],("non-VM generated multiplicity differs",census1,census2)
+    assert census1["vm_lookup_define_unique_family_sha256"]==census2["vm_lookup_define_unique_family_sha256"],("VM lookup-defined family set differs",census1,census2)
+    c1=collections.Counter((r["normalized_name"],r["source"]) for r in class1 if r["generated_or_hidden"] and r["source"]=="__JVM_LookupDefineClass__")
+    c2=collections.Counter((r["normalized_name"],r["source"]) for r in class2 if r["generated_or_hidden"] and r["source"]=="__JVM_LookupDefineClass__")
+    vm_delta=[{"normalized_name":name,"source":source,"first_count":c1.get((name,source),0),"second_count":c2.get((name,source),0)}
+              for name,source in sorted(set(c1)|set(c2)) if c1.get((name,source),0)!=c2.get((name,source),0)]
+    repeat_equivalence={"schema":"industrial-r1-vm-hidden-repeat-equivalence-v1",
+      "rule":"EXACT_GENERATED_FAMILY_SET_AND_NON_VM_MULTIPLICITY;VM_LOOKUP_DEFINED_SET_ONLY",
+      "first":census1,"second":census2,
+      "generated_hidden_unique_family_equal":True,
+      "non_vm_generated_multiplicity_equal":True,
+      "vm_lookup_define_unique_family_equal":True,
+      "vm_lookup_define_multiplicity_delta":vm_delta}
+    (OUT/"class-repeat-equivalence.json").write_bytes(canonical(repeat_equivalence))
     entries=[archive_inventory(pathlib.Path(x).resolve()) for x in graph2["ordered_files"]]
     first_visible={}
     for ordinal,entry in enumerate(entries):
@@ -274,7 +307,7 @@ def main():
             rel=rp.relative_to(gradle_home).as_posix()
             if rel not in accepted_store or sha_file(rp)!=accepted_store[rel][1]:
                 raise RuntimeError("resolved dependency is not exact accepted store byte: "+rel)
-    summary={"schema":"industrial-r1-supplemental-hermetic-capture-v2","logical_source_commit":SOURCE,"logical_source_tree":SOURCE_TREE,"observed_head":cmd("git","rev-parse","HEAD"),"platform":platform,"tracked_input_count":len(inputs),"runtime_classpath_entries":len(entries),"runtime_visible_member_keys":len(first_visible),"first_launch":first,"offline_repeat":second,"class_census":{"first_sha256":d1,"second_sha256":d2,"equal":True,"hidden_first":sum(r["hidden"] for r in class1),"hidden_second":sum(r["hidden"] for r in class2),"policy":"PINNED_GENERATOR_INPUTS_REPEAT_NORMALIZED_EQUIVALENCE"},"immutable_store":{"source_artifact_id":11105215706,"outer_artifact_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649","archive_sha256":STORE_ARCHIVE_SHA,"manifest_sha256":STORE_MANIFEST_SHA,"files":STORE_FILES,"mode":"VERIFIED_READ_ONLY_INPUT_RECONSTRUCTED_TO_WRITABLE_GRADLE_HOME","bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856"},"fixed_worker":{"class":TEST,"tests":10,"failures":0,"errors":0,"skipped":0},"official_seed_files_read":False,"official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},"authority":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY"}
+    summary={"schema":"industrial-r1-supplemental-hermetic-capture-v2","logical_source_commit":SOURCE,"logical_source_tree":SOURCE_TREE,"observed_head":cmd("git","rev-parse","HEAD"),"platform":platform,"tracked_input_count":len(inputs),"runtime_classpath_entries":len(entries),"runtime_visible_member_keys":len(first_visible),"first_launch":first,"offline_repeat":second,"class_census":{"first_sha256":census1["all_normalized_sha256"],"second_sha256":census2["all_normalized_sha256"],"equal":True,"hidden_first":census1["hidden_rows"],"hidden_second":census2["hidden_rows"],"generated_hidden_unique_family_sha256":census1["generated_hidden_unique_family_sha256"],"non_vm_generated_multiset_sha256":census1["non_vm_generated_multiset_sha256"],"vm_lookup_define_unique_family_sha256":census1["vm_lookup_define_unique_family_sha256"],"vm_lookup_define_multiplicity_delta_count":len(vm_delta),"policy":"PINNED_GENERATOR_INPUTS_VM_HIDDEN_SET_EQUIVALENCE_V1"},"immutable_store":{"source_artifact_id":11105215706,"outer_artifact_sha256":"3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649","archive_sha256":STORE_ARCHIVE_SHA,"manifest_sha256":STORE_MANIFEST_SHA,"files":STORE_FILES,"mode":"VERIFIED_READ_ONLY_INPUT_RECONSTRUCTED_TO_WRITABLE_GRADLE_HOME","bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856"},"fixed_worker":{"class":TEST,"tests":10,"failures":0,"errors":0,"skipped":0},"official_seed_files_read":False,"official_counters":{"claims":0,"allocations":0,"games":0,"outcomes":0},"authority":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY"}
     (OUT/"summary.json").write_bytes(canonical(summary))
     manifest=[]
     for p in sorted(x for x in OUT.rglob("*") if x.is_file() and x.name!="artifact-manifest.json"):
