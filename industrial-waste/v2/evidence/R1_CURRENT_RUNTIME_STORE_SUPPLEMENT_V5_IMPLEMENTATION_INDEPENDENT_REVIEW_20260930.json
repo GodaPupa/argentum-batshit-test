@@ -1,0 +1,50 @@
+{
+  "schema":"industrial-r1-current-runtime-store-supplement-v5-implementation-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"bc045c2bd85b9e385a087e00bdeb8f6e4399fd18",
+  "budget_blob":"3e6f89f42ed73c3f2ddb73dacc2a8cb2d6b65551",
+  "constructor_blob":"185a56f7e2fc2c3df11eedfcd952a747ec1c015b",
+  "bootstrap_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+  "runtime_probe_blob":"ef3a56e80afc5002e66a05b4f5cf3635eb604c21",
+  "workflow_blob":"23f60c002c856c136143c1b7b7265257a928afad",
+  "basis":{
+    "v4_run":36708768674,
+    "v4_audit_commit":"66ef92e50edb7676fd247d8c08dc50f68eafb523",
+    "accepted_base_store_artifact":11080705894,
+    "accepted_base_store_files":1272
+  },
+  "decision":"ACCEPT_IMPLEMENTATION_FOR_ONE_CURRENT_RUNTIME_STORE_SUPPLEMENT_V5_ORIGINAL",
+  "review":{
+    "target_set_exactly_eight_observed_coordinates":"PASS",
+    "network_scope_store_construction_only":"PASS",
+    "ai_test_task_forbidden":"PASS",
+    "fixed_worker_execution_forbidden":"PASS",
+    "accepted_1272_file_store_verified_before_extension":"PASS",
+    "accepted_wrapper_and_artifact_payload_mutation_forbidden":"PASS",
+    "zero_removals_required":"PASS",
+    "successor_manifest_and_deterministic_archive_required":"PASS",
+    "second_clean_home_offline_reconstruction_required":"PASS",
+    "online_offline_normalized_graph_equality_required":"PASS",
+    "immutable_platform_java_python_pinned":"PASS",
+    "seed_claim_allocation_game_outcome_forbidden":"PASS"
+  },
+  "target_coordinates":[
+    "community.flock.kotlinx.rgxgen:kotlin-rgxgen:0.0.6",
+    "io.github.java-diff-utils:java-diff-utils:4.16",
+    "io.github.pdvrieze.xmlutil:serialization:0.91.3",
+    "net.bytebuddy:byte-buddy-agent:1.17.6",
+    "net.bytebuddy:byte-buddy:1.17.6",
+    "org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:1.11.0",
+    "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.11.0",
+    "org.jetbrains.kotlinx:kotlinx-io-core:0.8.2"
+  ],
+  "accepted_scope":[
+    "Create exactly one marker-only v5 execution commit and construct one immutable current-runtime dependency-store successor candidate.",
+    "Network may be used only in the construction half; the reconstructed successor must then resolve the same runtime graph offline."
+  ],
+  "explicit_non_authority":[
+    "No supplemental hermetic capture, test worker, expected manifest, prepared worker, R1 permit, seed, claim, allocation or gameplay authority."
+  ],
+  "next_gate":"Dispatch one v5 store-successor original and audit its exact archive/manifest/graphs before any offline supplemental capture successor.",
+  "official_counters_delta":0
+}
