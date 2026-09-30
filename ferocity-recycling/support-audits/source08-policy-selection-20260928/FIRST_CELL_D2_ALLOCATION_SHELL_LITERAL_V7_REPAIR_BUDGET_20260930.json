@@ -1,0 +1,28 @@
+{
+  "schema":"ferocity-d2-first-cell-allocation-shell-literal-v7-repair-budget-v1",
+  "date_utc":"2026-09-30",
+  "basis":{
+    "v6_run":36750222012,
+    "v6_audit_commit":"c246bb3c2e4e2a3bb6edb20062aada03ccaf3f3d",
+    "accepted_verify_run":36709748908,
+    "accepted_manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d"
+  },
+  "repair_scope":[
+    "replace literal backslash-n text joining shell variable assignments with real newlines",
+    "advance workflow trigger/review/marker names from v6 to v7",
+    "preserve all manifest/runtime/JDK/allocation semantics byte-for-byte otherwise"
+  ],
+  "must_remain_unchanged":{
+    "allocation_identities":16,
+    "seed_streams":48,
+    "replacements_authorized":0,
+    "run_one_authorized":false,
+    "gameplay_authorized":false,
+    "manifest_sha256":"44316db63408797e45b07cc084acc2d3479e6284601ca65f13847e348ac6662d",
+    "java_sha256":"2a207f5e7d075afa01d97f8048389a64432a44c4a5af0f5e77d6e286ec5f401d",
+    "python_sha256":"4c275e98e459979b46ff33a08ab0e317db9267fecaffa01d3c70fd0a34711601"
+  },
+  "authority_if_reviewed":"ONE_FRESH_D2_FIRST_CELL_ALLOCATION_ORIGINAL_ONLY",
+  "failure_after_allocate":"CONSUMED_NO_RETRY",
+  "official_counters_delta_before_execution":0
+}
