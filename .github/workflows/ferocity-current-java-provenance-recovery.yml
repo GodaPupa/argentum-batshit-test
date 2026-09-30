@@ -1,0 +1,45 @@
+name: Ferocity current source08 Java provenance recovery
+on:
+  push:
+    branches: ["ferocity/current-java-provenance-recovery-20260929"]
+    paths: [".github/workflows/ferocity-current-java-provenance-recovery.yml"]
+permissions: {contents: read}
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 2}
+      - name: Bind exact archive parser budget and parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/ferocity-current-java-provenance
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = "a5b1ecdc2c8e471113107207d2b2234ef940dfc5"
+          test "$(git hash-object ferocity-recycling/evidence/source08-takeover/priority08/original-artifact-10915032554.zip)" = "0db1ebd5259f858da7c391ed2e8ee623c2c39ae2"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_JAVA_PROVENANCE_RECOVERY_BUDGET.json)" = "fa3d189553afdaf448f64b394c1be2c96ea532c2"
+          test "$(git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/recover_current_source08_java_provenance.py)" = "a517e2253a3a66218898d2a829097d8c0a102854"
+          {
+            git rev-parse HEAD
+            git rev-parse HEAD^
+            git hash-object ferocity-recycling/evidence/source08-takeover/priority08/original-artifact-10915032554.zip
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/CURRENT_SOURCE08_JAVA_PROVENANCE_RECOVERY_BUDGET.json
+            git hash-object ferocity-recycling/support-audits/source08-policy-selection-20260928/recover_current_source08_java_provenance.py
+            git hash-object .github/workflows/ferocity-current-java-provenance-recovery.yml
+            git status --porcelain
+          } > "$OUT/source.txt"
+      - name: Recover recorded Java provenance from preserved artifact only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 ferocity-recycling/support-audits/source08-policy-selection-20260928/recover_current_source08_java_provenance.py | tee build/reports/ferocity-current-java-provenance/run.log
+      - name: Preserve original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: ferocity-current-java-provenance-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/ferocity-current-java-provenance/
+          if-no-files-found: error
+          retention-days: 90
