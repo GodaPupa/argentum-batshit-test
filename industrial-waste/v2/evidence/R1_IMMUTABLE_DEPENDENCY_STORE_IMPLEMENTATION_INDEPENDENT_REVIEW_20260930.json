@@ -1,0 +1,48 @@
+{
+  "schema":"industrial-r1-immutable-dependency-store-implementation-independent-review-v1",
+  "date_utc":"2026-09-30",
+  "reviewed_implementation_commit":"b2d4e448ebfb9b07cf3ae6ffccb31fd2cde4c34d",
+  "budget_blob":"51ca3ecf189b8d98eb3c2bc7f1a3f2c8c0a3f2fb",
+  "init_blob":"e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+  "constructor_blob":"5a626a36d20f6e4b301cc6eb485126dfb735157b",
+  "workflow_blob":"80e1a9d8b9b243d93027af1da6023553682b0431",
+  "failed_capture":{
+    "run":36670017150,
+    "artifact":11078195062,
+    "classification":"INCOMPLETE_PREFLIGHT_DEPENDENCY_STORE_RESOLUTION",
+    "behavioral_worker_started":false,
+    "platform_invalidated":false
+  },
+  "decision":"ACCEPT_IMPLEMENTATION_FOR_ONE_DEPENDENCY_STORE_ORIGINAL",
+  "review":{
+    "exact_logical_source_and_platform_binding":"PASS",
+    "repository_source_files_unchanged":"PASS",
+    "repository_resolution_rules_unchanged":"PASS",
+    "resolution_bootstrap_is_external_reviewed_init_input":"PASS",
+    "network_phase_runs_testClasses_only":"PASS",
+    "no_test_task":"PASS",
+    "immutable_store_scope_wrapper_plus_modules2_only":"PASS",
+    "canonical_per_file_digest_manifest":"PASS",
+    "deterministic_archive_metadata":"PASS",
+    "second_home_reconstructed_only_from_archive":"PASS",
+    "offline_testClasses_required":"PASS",
+    "official_seed_allocation_game_excluded":"PASS",
+    "workflow_structure_and_heredocs":"PASS"
+  },
+  "findings":[
+    "This gate constructs external build-input bytes only and does not rerun the failed supplemental capture.",
+    "The reviewed init script changes repository lookup availability for construction/offline verification without changing the logical source tree or selecting a different declared dependency version.",
+    "The second clean Gradle home must be reconstructed only from the deterministic wrapper/modules-2 archive and pass the same compile-only target offline.",
+    "No behavioral test, official seed, allocation, claim, game or outcome is authorized."
+  ],
+  "accepted_scope":[
+    "Create one marker-only execution branch and run exactly one dependency-store construction original.",
+    "A clean result is only a store candidate for separate artifact audit and independent acceptance before reuse."
+  ],
+  "explicit_non_authority":[
+    "No supplemental hermetic capture authority.",
+    "No expected manifest, prepared worker, sealed launch, seed, allocation, game or outcome authority."
+  ],
+  "next_gate":"Dispatch one dependency-store construction original, audit its archive and manifest once, and if clean freeze the exact store digest for a separately reviewed supplemental capture successor.",
+  "official_counters_delta":0
+}
