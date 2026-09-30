@@ -1,0 +1,46 @@
+{
+  "schema":"industrial-r1-supplemental-hermetic-capture-implementation-budget-v1",
+  "date_utc":"2026-09-30",
+  "logical_source_commit":"de27e189e7597bdf48f213a40a0bbf1b70f63c1a",
+  "logical_source_tree":"d62e3fbd59dd78cc444c09b26673ae1bf3a848ab",
+  "accepted_platform_binding_commit":"c1d99262c9bd83f72805540d0f8f522d9a7ac40c",
+  "accepted_design_blob":"2d23710bc63b7b29d4be97acd4f3927cf23f2d00",
+  "accepted_design_review_blob":"93163d9ea12ca7dc1182d306f8b293158677c0fa",
+  "platform":{
+    "image":"catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "architecture":"linux/amd64",
+    "java_path":"/usr/lib/jvm/temurin-21-jdk-amd64/bin/java",
+    "java_sha256":"11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+    "python_path":"/usr/bin/python3.10",
+    "python_sha256":"7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86",
+    "bash_sha256":"59474588a312b6b6e73e5a42a59bf71e62b55416b6c9d5e4a6e1c630c2a9ecd4",
+    "git_sha256":"011fb1c28096c72e25688e56793f20b33e68f7f1065489f745763f19b6e9f516",
+    "sha256sum_sha256":"b88ea413571562a591268213d736121fada5ba14330bfcc74b8d9f14e4018ddf"
+  },
+  "fixed_worker_probe":{
+    "class":"com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest",
+    "source_blob":"9d1b439310b4646d8ed621884735372d074a950d",
+    "expected_tests":10,
+    "scope":"fixed mechanical equivalence controls only; no candidate list, corpus member, pilot tuning or official gameplay"
+  },
+  "capture_requirements":[
+    "verify exact platform image architecture and all bound executable byte identities before Gradle",
+    "hash a conservative complete inventory of every Git-tracked checkout file plus exact semantic environment allowlist",
+    "perform one dependency-populating fixed-worker probe and one --offline repeat under the same clean GRADLE_USER_HOME",
+    "preserve the wrapper/distribution and dependency/plugin input store plus canonical byte manifest",
+    "enumerate every member of every ordered :ai:testRuntimeClasspath archive/directory and record first-visible/shadowed duplicate disposition",
+    "capture actual launcher/daemon/test-worker process topology, executable identity, argv, cwd and allowlisted environment during both runs",
+    "capture complete JDK inventory, Python stdlib inventory and recursive dynamic-library closure for bound tools",
+    "capture class-load census twice and require deterministic normalized generated/hidden family equivalence under PINNED_GENERATOR_INPUTS",
+    "preserve raw logs, XML, inventories, output schema, store archive and zero-official-counter receipt"
+  ],
+  "prohibited":[
+    "no setup-java or package installation",
+    "no official seed or allocation file read",
+    "no expected-manifest adoption",
+    "no prepared-worker or sealed-launch authority",
+    "no claim, allocation, official game initialization, gameplay result or outcome interpretation"
+  ],
+  "authority_if_clean":"SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY",
+  "official_counters_delta":0
+}
