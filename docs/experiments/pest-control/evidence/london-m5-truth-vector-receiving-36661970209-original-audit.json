@@ -1,0 +1,66 @@
+{
+  "schema":"pest-monster-london-m5-truth-vector-receiving-36661970209-original-audit-v1",
+  "date_utc":"2026-09-30",
+  "run_id":36661970209,
+  "artifact_id":11075095277,
+  "artifact_sha256":"8131b5ff5d79cdc6437b9df15d7364d7a63a2f0669042f61b26f0416e6366d01",
+  "head":"22fb2ab2c0ab7da97a4d887020fc1a1e0f84c0e1",
+  "parent":"45bd364facec9c0eeeabadc612afde05700198ae",
+  "pins":{
+    "accepted_vector_blob":"bb8e2247dc64a64403094c691d83b8eed53048bd",
+    "receiver_blob":"1936f537b737fb1b839e53fae0a727aab7a0f0ab",
+    "repaired_nonforced_test_blob":"6261fcc2bdfda526de12feac421dfcc842fbaf77",
+    "budget_blob":"9a65b890f2444f335ef3c403bc3066608d4231a0",
+    "workflow_blob":"f19ca974fbecfe869d08e6e5579e13b746e3c91b"
+  },
+  "accepted_truth_original":{
+    "run_id":36531232867,
+    "artifact_id":11016925265,
+    "artifact_sha256":"cd16753d52704ab31904531cf94e4390c7ceabacd382d09deb66afc155951528",
+    "truth_bank_sha256":"8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f",
+    "rows":6850
+  },
+  "integrity":{
+    "workflow_conclusion":"success",
+    "artifact_digest_match":true,
+    "zip_crc":"clean",
+    "artifact_members":6,
+    "source_binding":"passed",
+    "accepted_truth_zip_digest_match":true,
+    "accepted_truth_zip_crc":"clean",
+    "truth_bank_digest_match":true,
+    "truth_bank_rows":6850,
+    "truth_bank_unique_keys":6850,
+    "fresh_xml_sha256":"c8dc8bbebeb31e31850a859dda40402a6f6de6f15f1b4b98f9673871b2c69a00",
+    "xml_timestamp":"2026-09-30T02:59:06.458Z"
+  },
+  "result":{
+    "tests":2,
+    "passes":2,
+    "failures":0,
+    "errors":0,
+    "skipped":0,
+    "all_6850_truths_bind_exactly":true,
+    "unbanked_nonforced_truth_remains_null":true,
+    "unbanked_nonforced_keep_qualification_fails_closed":true
+  },
+  "repair_disposition":{
+    "original_run_36589219551":"REJECTED_FIXTURE_SCOPE_ERROR: the two-card miss fixture accidentally entered the already-accepted forced-keep exception; accepted vector implementation was not changed",
+    "technical_run_36661221816":"INCOMPLETE_PREFLIGHT_NO_TESTS: grandparent unavailable at checkout depth 2",
+    "technical_run_36661533268":"INCOMPLETE_PREFLIGHT_NO_TESTS: literal newline transport typo in ancestry assertion",
+    "behavioral_successor":"36661970209 is the sole accepted repaired receiving original"
+  },
+  "decision":"ACCEPTED_M5_TRUTH_VECTOR_RECEIVING_FAIL_CLOSED",
+  "accepted_scope":[
+    "All 6850 already-accepted atomic M5 truths bind by exact lawful public key into the accepted predicate-vector seam.",
+    "For a non-forced keep window, an unbanked lookup remains null/unknown and cannot qualify a keep decision.",
+    "The previously accepted forced-keep exception remains unchanged and is not evidence for M5."
+  ],
+  "limits":[
+    "No raw-controller rerun or new raw truth authority.",
+    "No keep/bottom parity beyond the accepted predicate-vector boundary.",
+    "No pair/C2-A2 admission, seed, allocation, claim or gameplay authority."
+  ],
+  "next_gate":"Bind this accepted M5 receiving seam into the remaining pair/C2-A2 prospective admission package and independently verify the still-open pair/keep-bottom requirements before any seed or gameplay action.",
+  "official_counters_delta":0
+}
