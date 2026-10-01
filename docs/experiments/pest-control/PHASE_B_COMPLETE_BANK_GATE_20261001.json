@@ -1,6 +1,6 @@
 {
   "schema": "argentum-prospective-qualification-gate-v1",
-  "authority": "PREPARATION_ONLY_NO_EXECUTION_AUTHORITY",
+  "authority": "BLOCKED_SUPERSEDED_PLAN_NO_EXECUTION_AUTHORITY",
   "repository": "GodaPupa/argentum-batshit-test",
   "lane": "pest",
   "hold": true,
@@ -80,6 +80,7 @@
     "combined_rows": 7542
   },
   "requirements": [
+    "This old plan is blocked and must never execute. New count/digest must come only from corrected planner-only validation.",
     "Authenticate final exact source review, gate disposition and separate execution authorization before marker.",
     "Materialize accepted inputs read-only from their accepted artifacts and locate exactly one regular file matching each required SHA-256; never rerun truth generation.",
     "Require exact deterministic plan count and digest before raw comparison.",
@@ -90,11 +91,18 @@
     "No GameInitializer, fresh entropy, allocation, claim, game initialization or gameplay.",
     "Preserve raw/lawful separation and unchanged PestPhaseBProductionRowComparator."
   ],
-  "acceptance": "ZERO_MISMATCHES_ZERO_UNKNOWNS_ZERO_EXCEPTIONS_COMPLETE_30328476_ROWS_ONLY_CANDIDATE_FOR_SEPARATE_AUDIT",
+  "acceptance": "SUPERSEDED_PENDING_CORRECTED_PLANNER_VALIDATION_AND_FRESH_NON_AUTHOR_REVIEW",
   "non_authority": [
     "No C2-A2 or gameplay admission",
     "No truth-bank regeneration",
     "No acceptance from workflow success alone",
     "No rerun/refill after incomplete original without new authority"
-  ]
+  ],
+  "blocked_review": {
+    "reviewed_head": "2029d61690a17bc4b730e61d15b609d0db5df124",
+    "finding": "Physical representative coverage incomplete after one protected spell removal can shift the observable equal-CMC bottom identity.",
+    "old_expected_rows": 30328476,
+    "old_plan_sha256": "c2e15aaa4fcdd08ce2dd9a014c303983d9ffa884887df721a8d2fdfce0a1d064",
+    "disposition": "DO_NOT_EXECUTE_DO_NOT_RECEIPT_DO_NOT_MARKER_DO_NOT_LOAD_ACCEPTED_TRUTH"
+  }
 }
