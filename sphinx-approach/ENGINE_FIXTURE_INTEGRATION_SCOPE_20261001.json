@@ -1,0 +1,29 @@
+{
+  "schema": "sphinx-engine-fixture-integration-scope-v1",
+  "authority": "PROSPECTIVE_FIXTURES_ONLY_NOT_EXECUTION_AUTHORIZATION",
+  "reviewed_production_head": "400c617df38775398b468833dee5921e79263599",
+  "review_receiving_comment": 5933583908,
+  "production_compile_run": 36877572671,
+  "production_compile_artifact": 11169798524,
+  "production_compile_scope": "ACTUAL_PRODUCTION_DEPENDENCIES_COMPILE_ONLY",
+  "test_class": "com.wingedsheep.gym.sphinx.SphinxEngineFixtureIntegrationTest",
+  "test_path": "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxEngineFixtureIntegrationTest.kt",
+  "test_blob": "a3eb36b095c430742a5f5aca8e541dcaed5434ba",
+  "expected_cases": 6,
+  "fixture_seed_constant": -202610010217,
+  "excluded_from_official_sampling": true,
+  "fixture_configuration": "Two explicit synthetic seats, 40 Forest cards per seat, explicit starting player, London decisions enabled, no hand smoothing, no strategic pilot loop.",
+  "identity_pin_status": "REAL_SERIALIZED_FIXTURE_DECK_HASHES_AND_EXPLICIT_SYNTHETIC_PILOT_RUNTIME_PLACEHOLDERS",
+  "cases": [
+    "Real initialization envelope restored by a fresh codec with no repeated initializer",
+    "Two real keep decisions replay with exact complete state/event envelopes",
+    "Real mulligan RNG transition and full envelope replay",
+    "Wrong deck pin and missing explicit seed refuse before reservation",
+    "Closed initialized prefix remains incomplete and reservation cannot be reused",
+    "Incorrect expected source rejects without modifying original fixture bytes"
+  ],
+  "next_gate": "Independent exact review of new fixture bytes and bounded workflow, then one separately authorized exact six-case integration original and original-evidence audit.",
+  "execution_under_this_commit": false,
+  "prohibited": ["No official Stage-E deck or seed input", "No complete actor or opponent competence claim", "No mandatory full-game replay acceptance", "No consumed-original rerun", "No source/runtime authentication inferred from fixture pins"],
+  "official_counters_delta": 0
+}
