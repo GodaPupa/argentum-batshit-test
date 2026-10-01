@@ -1,0 +1,32 @@
+name: Izzet Opal Palace registry adoption v2
+on:
+  push:
+    branches:
+      - validation/izzet-opal-adoption-v2-20261001
+    paths:
+      - .github/workflows/izzet-opal-adoption-v2-20261001.yml
+permissions:
+  contents: read
+jobs:
+  registry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-opal-v2-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 52954c14f0b53be331d1e4d0a95b4003844caab2
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Compile and execute one registry-only check
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 52954c14f0b53be331d1e4d0a95b4003844caab2
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = 544a440160528f4a08211109936a55e263c39d19
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:test --tests com.wingedsheep.gym.izzet.IzzetOpalPalaceRegistryAdoptionTest
