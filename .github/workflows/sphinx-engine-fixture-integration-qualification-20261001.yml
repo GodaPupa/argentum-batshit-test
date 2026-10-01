@@ -1,0 +1,88 @@
+name: Sphinx engine-fixture exact six-case integration qualification candidate
+on:
+  push:
+    branches: ["sphinx/engine-fixture-qualification-execute-20261001"]
+    paths: ["sphinx-approach/ENGINE_FIXTURE_INTEGRATION_EXECUTION_MARKER_20261001.json"]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/sphinx-engine-fixture-gradle-20261001
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact review, gate disposition and separate authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(uname -m)" = x86_64
+          echo '7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86  /usr/bin/python3.10' | sha256sum -c -
+          echo '11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d  /usr/lib/jvm/temurin-21-jdk-amd64/bin/java' | sha256sum -c -
+          /usr/bin/python3.10 -I -S sphinx-approach/verify_engine_fixture_gate.py --plan sphinx-approach/ENGINE_FIXTURE_INTEGRATION_GATE_20261001.json --mode execution
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e build/reports/sphinx-engine-fixture-qualification-20261001
+          test ! -e gym/build/test-results/test
+          test -z "${JAVA_TOOL_OPTIONS:-}${JDK_JAVA_OPTIONS:-}${_JAVA_OPTIONS:-}${CLASSPATH:-}${JAVA_OPTS:-}${GRADLE_OPTS:-}"
+          mkdir -p build/reports/sphinx-engine-fixture-qualification-20261001
+          git rev-parse HEAD HEAD^{tree} > build/reports/sphinx-engine-fixture-qualification-20261001/source.txt
+          git ls-tree -r HEAD > build/reports/sphinx-engine-fixture-qualification-20261001/source-tree.txt
+          java -version 2> build/reports/sphinx-engine-fixture-qualification-20261001/java-version.txt
+          date -u +%s > build/reports/sphinx-engine-fixture-qualification-20261001/start-epoch.txt
+      - name: Compile then execute exactly six bounded integration cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/sphinx-engine-fixture-qualification-20261001
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+          date -u +%s > "$OUT/test-start-epoch.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info :gym:test --tests com.wingedsheep.gym.sphinx.SphinxEngineFixtureIntegrationTest 2>&1 | tee "$OUT/tests.log"
+          date -u +%s > "$OUT/test-end-epoch.txt"
+          /usr/bin/python3.10 -I -S - <<'PY'
+          import datetime,hashlib,json,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path('build/reports/sphinx-engine-fixture-qualification-20261001')
+          results=pathlib.Path('gym/build/test-results/test')
+          expected_name='com.wingedsheep.gym.sphinx.SphinxEngineFixtureIntegrationTest'
+          expected_file='TEST-'+expected_name+'.xml'
+          files=list(results.glob('TEST-*.xml'))
+          assert {p.name for p in files}=={expected_file}
+          p=files[0]; raw=p.read_bytes(); suite=ET.fromstring(raw)
+          assert suite.tag=='testsuite' and suite.attrib['name']==expected_name
+          assert int(suite.attrib['tests'])==6
+          assert all(int(suite.attrib[k])==0 for k in ('failures','errors','skipped'))
+          cases=list(suite.iter('testcase')); assert len(cases)==6
+          assert not any(list(suite.iter(k)) for k in ('failure','error','skipped'))
+          low=int((out/'test-start-epoch.txt').read_text()); high=int((out/'test-end-epoch.txt').read_text())
+          stamp=datetime.datetime.fromisoformat(suite.attrib['timestamp'].replace('Z','+00:00'))
+          if stamp.tzinfo is None: stamp=stamp.replace(tzinfo=datetime.timezone.utc)
+          assert low-1 <= stamp.timestamp() <= high+1
+          (out/p.name).write_bytes(raw)
+          (out/'result.json').write_text(json.dumps({
+              'authority':'ORIGINAL_FOR_SEPARATE_AUDIT_ONLY',
+              'suite':expected_name,'tests':6,'failures':0,'errors':0,'skipped':0,
+              'xml_sha256':hashlib.sha256(raw).hexdigest(),
+              'official_counters_delta':0,'stage_e_admission':False
+          },sort_keys=True)+'\n')
+          PY
+      - name: Preserve qualification original even on failure
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-engine-fixture-qualification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/sphinx-engine-fixture-qualification-20261001/
+            gym/build/test-results/test/
+            sphinx-approach/ENGINE_FIXTURE_INTEGRATION_GATE_20261001.json
+            sphinx-approach/evidence/ENGINE_FIXTURE_INTEGRATION_GATE_ACCEPTANCE_20261001.json
+            sphinx-approach/ENGINE_FIXTURE_INTEGRATION_EXECUTION_MARKER_20261001.json
+          if-no-files-found: error
+          retention-days: 90
