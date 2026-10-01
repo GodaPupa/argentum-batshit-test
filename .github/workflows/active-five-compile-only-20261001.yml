@@ -12,14 +12,10 @@ jobs:
       max-parallel: 2
       matrix:
         include:
-          - lane: manual
-            source: 1f4b927a54aab72ffc0ebecfeaab2c91dafe9735
-            file: gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoStoredFixtureReplay.kt
-            blob: ad2cc1ebaedd055104fb185f236427a9fd7e231a
-          - lane: sphinx
-            source: 400c617df38775398b468833dee5921e79263599
-            file: gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEEngineFixture.kt
-            blob: b48697cc594a52631bfdee7b4219afc7fdd466d9
+          - lane: pest
+            source: 76db88f26f25e23fbcea3d2db7e0c03d9edd6b99
+            file: gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt
+            blob: ce1be5ea615104953b7319182878f4135baac07e
     runs-on: ubuntu-latest
     timeout-minutes: 60
     container:
