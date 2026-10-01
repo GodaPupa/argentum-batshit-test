@@ -1,0 +1,33 @@
+{
+  "schema": "izzet-qualification-gate-acceptance-receipt-v1",
+  "date_utc": "2026-10-01",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "decision": "ACCEPT_EXACT_OWLBEAR_THREE_CASE_QUALIFICATION_ORIGINAL",
+  "gate_id": "izzet-qualification-20261001",
+  "base_commit": "f1e77027f65f45af287cb230d3804eda933e8ebe",
+  "reviewed_implementation_commit": "5ddd5f8adc206a5da25ad690c9a732102e4835e3",
+  "reviewed_tree": "18e2a9fe622aab1bd4004e81941c36b7bd3ea8b3",
+  "reviewed_blobs": {
+    ".github/workflows/izzet-owlbear-qualification-20261001.yml": "ba73d46eb983b97e19f3764a9a1c50d61e05f1b3",
+    "experiments/izzet-science/OWLBEAR_QUALIFICATION_GATE_20261001.json": "312f6ffdfb662366ffd02f915acf01286904a55c",
+    "experiments/izzet-science/POSITION1_OWLBEAR_QUALIFICATION_FREEZE_20260930.json": "3a878fc278bdda16ae03794b2e26af0438e3a825",
+    "experiments/izzet-science/verify_owlbear_gate.py": "3625c287da287c01b3a97362d92aec01563be50e",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/afr/cards/Owlbear.kt": "0c94d28957e735b7a0af93b783542dc5d002e305",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OwlbearScenarioTest.kt": "3e46fd15b1a99a41c77d56c6fb924d669d4ea112",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OwlbearTrampleScenarioTest.kt": "267c76a322d2c4fef5f68e5d42ab7a37129810ef",
+    "scripts/gradle-locked": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d"
+  },
+  "external_review_record_sha256": "fbe052d5c79e32d53136325ccac2577b86a9962e643f937f155165530029f65d",
+  "execution_authorization_record_sha256": "ceaee4fbce329ca86cde3cd01d0453fcfbfaba5d792997fd384189faba4183d8",
+  "execution_authorization_comment": 5939572018,
+  "maximum_originals": 1,
+  "official_counters_delta": 0,
+  "scope": "Compile the unchanged Owlbear fixtures; execute exactly the three predeclared tests in two classes once; preserve exact XML, runtime and source identities for audit.",
+  "authority": "ACCEPT_EXACT_REVIEWED_GATE_FOR_ONE_BOUNDED_ORIGINAL_ONLY",
+  "non_authority": [
+    "No actual registry-discovery parity",
+    "No automatic snapshot blessing",
+    "No registry adoption",
+    "No whole-pilot or Position-1 game authority"
+  ]
+}
