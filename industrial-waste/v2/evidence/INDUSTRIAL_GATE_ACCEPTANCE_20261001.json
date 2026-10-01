@@ -1,0 +1,59 @@
+{
+  "schema": "industrial-r1-parser-successor-gate-acceptance-v1",
+  "date_utc": "2026-10-01",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "gate_id": "industrial-qualification-20261001",
+  "decision": "ACCEPT_EXACT_PARSER_SUCCESSOR_ONE_SUPPLEMENTAL_CAPTURE_ORIGINAL",
+  "reviewed_implementation_commit": "bb711eea056fc731fda0ce3a3b18523f26bfbe62",
+  "reviewed_tree": "ada84194ec3ab3e2d98dd36ba3ee37a881de80e5",
+  "base_commit": "6e1f2509aab922dcf82c2e0524657955e7630863",
+  "maximum_originals": 1,
+  "official_counters_delta": 0,
+  "external_review_record_sha256": "71fcb57a69df90c11675339a5aee5ff19a48a19b4ed6e92e18b57a9c6fc4706d",
+  "external_review_receiving_comment": 5936167102,
+  "component_review_receiving_comment": 5926877992,
+  "separate_execution_authorization_receiving_comment": 5938614995,
+  "reviewed_blobs": {
+    ".github/workflows/industrial-r1-parser-successor-20261001.yml": "ea3d490dee11d6eeaf667dadb93aacf8821c8acd",
+    ".github/workflows/industrial-r1-supplemental-hermetic-capture-20260930.yml": "d432d61d2de3073deb4694a1f9c20113fb49b667",
+    "industrial-waste/v2/R1_CLASSLOG_PARSER_REPAIR_SCOPE_20260930.json": "88380874667f2bbd4c0c4459a757fb4c3ecc176b",
+    "industrial-waste/v2/R1_PARSER_SUCCESSOR_GATE_20261001.json": "2d07fbca88324914a04c88a21ad14b12612a1867",
+    "industrial-waste/v2/capture_supplemental_hermetic_r1.py": "a661462176e8ebf8ac4a6730106f1a913dad3638",
+    "industrial-waste/v2/r1-dependency-store-bootstrap.init.gradle": "e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+    "industrial-waste/v2/r1-supplemental-hermetic-capture.init.gradle": "ef3a56e80afc5002e66a05b4f5cf3635eb604c21",
+    "industrial-waste/v2/test_r1_classlog_parser.py": "bc8ad98ca3adff6a0a6aab0ea08fffbc6e49906a",
+    "industrial-waste/v2/verify_parser_successor_gate.py": "3625c287da287c01b3a97362d92aec01563be50e"
+  },
+  "accepted_dependency_store": {
+    "run_id": 36729847167,
+    "artifact_id": 11105215706,
+    "artifact_sha256": "3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649",
+    "archive_sha256": "a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3",
+    "manifest_sha256": "b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4",
+    "files": 1339,
+    "accepted_audit_blob": "e7e0feeed80530134c088315855d7b124121406b"
+  },
+  "review_conditions": {
+    "originals": 1,
+    "offline_launches": 2,
+    "fixed_cases_per_launch": 10,
+    "each_launch_must_independently_establish_complete_ten_case_result_set": true,
+    "final_xml_or_exit_zero_alone_cannot_establish_first_launch": true,
+    "missing_truncated_or_ambiguous_launch_evidence_means_incomplete_no_refill": true
+  },
+  "receipt_scope": "Source-gate acceptance only. Execution still requires the separately authenticated authorization record and exact marker-only child commit.",
+  "non_authority": [
+    "no rerun or promotion of consumed prior original",
+    "no reviewed parser or successor source change",
+    "no experimental input regeneration",
+    "no source/runtime/store binding relaxation",
+    "no rejected capture material",
+    "no undeclared launch",
+    "no expected-manifest adoption",
+    "no sealed-launch acceptance",
+    "no R1 permit",
+    "no claim",
+    "no allocation",
+    "no gameplay"
+  ]
+}
