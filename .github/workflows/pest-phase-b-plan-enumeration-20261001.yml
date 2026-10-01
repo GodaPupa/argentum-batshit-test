@@ -1,0 +1,71 @@
+name: Pest Phase-B deterministic plan enumeration only
+on:
+  push:
+    branches: ["validation/pest-phase-b-plan-enumeration-20261001"]
+    paths: [".github/workflows/pest-phase-b-plan-enumeration-20261001.yml"]
+permissions:
+  contents: read
+jobs:
+  enumerate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-phase-b-plan-${{ github.run_id }}
+      EVIDENCE: /tmp/pest-phase-b-plan-evidence-${{ github.run_id }}
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: a624dee50e64fd9b1db9dbdbb9730f7c54014753
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/ferocity-recycling/
+            !/industrial-waste/
+            !/experiments/
+            !/sphinx-approach/
+      - name: Bind exact planner-only source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = a624dee50e64fd9b1db9dbdbb9730f7c54014753
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt)" = a40c0fa23c2ce95137b2dedf56537372fceec485
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt)" = c9229e730fd81a5e6ddb7104b50a14eb9c8726ae
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt)" = 4adca33a97be8aeca099b513f61e9f4133f655b1
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankRunner.kt)" = a5797843c7773338edd5f9d21c496ee1fd19a4c9
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlanTest.kt)" = df8336c1cf03c1379740fc967b2eb04287361d80
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          test ! -d docs/experiments/pest-control/evidence
+          test ! -d build/reports/pest-current-pair-phase-b
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+          printf '%s\n' 'AUTHOR_PLAN_ENUMERATION_ONLY' 'No accepted truth bytes, raw controller invocation, GameInitializer, allocation, claim or gameplay.' > "$EVIDENCE/scope.txt"
+      - name: Compile and execute only deterministic planner tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:compileTestKotlin 2>&1 | tee "$EVIDENCE/compile.log"
+          date -u +%s > "$EVIDENCE/test-start.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info :gym:test --tests com.wingedsheep.gym.pest.PestPhaseBPhysicalPlanTest 2>&1 | tee "$EVIDENCE/tests.log"
+          date -u +%s > "$EVIDENCE/test-end.txt"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBPhysicalPlanTest.xml "$EVIDENCE/"
+          grep -F 'PEST_PHASE_B_PLAN rows=' "$EVIDENCE/tests.log" > "$EVIDENCE/plan-identity.txt"
+          test "$(wc -l < "$EVIDENCE/plan-identity.txt")" -eq 1
+          grep -F 'tests="3"' "$EVIDENCE/TEST-com.wingedsheep.gym.pest.PestPhaseBPhysicalPlanTest.xml"
+          grep -F 'failures="0"' "$EVIDENCE/TEST-com.wingedsheep.gym.pest.PestPhaseBPhysicalPlanTest.xml"
+          grep -F 'errors="0"' "$EVIDENCE/TEST-com.wingedsheep.gym.pest.PestPhaseBPhysicalPlanTest.xml"
+      - name: Preserve planner evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-plan-enumeration-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
