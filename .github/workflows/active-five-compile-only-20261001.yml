@@ -27,8 +27,8 @@ jobs:
       options: --platform linux/amd64
     env:
       JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
-      GRADLE_USER_HOME: ${{ runner.temp }}/argentum-compile-${{ matrix.lane }}-${{ github.run_id }}
-      COMPILE_EVIDENCE: ${{ runner.temp }}/compile-evidence-${{ matrix.lane }}
+      GRADLE_USER_HOME: /tmp/argentum-compile-${{ matrix.lane }}-${{ github.run_id }}
+      COMPILE_EVIDENCE: /tmp/compile-evidence-${{ matrix.lane }}-${{ github.run_id }}
       TZ: UTC
     steps:
       - name: Checkout exact reviewed source without experimental evidence directories
