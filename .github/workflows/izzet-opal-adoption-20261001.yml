@@ -1,0 +1,34 @@
+name: Izzet Opal Palace canonical adoption compile/registry only
+on:
+  push:
+    branches: ["validation/izzet-opal-adoption-20261001"]
+    paths: [".github/workflows/izzet-opal-adoption-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  adopt:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env: {GRADLE_USER_HOME: /tmp/izzet-opal-adoption-${{ github.run_id }}}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 66f9b4eab1d5593cf191bb1d183cd05ccb9b41df, fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Compile exact adopted source and verify registry discovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 66f9b4eab1d5593cf191bb1d183cd05ccb9b41df
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = 544a440160528f4a08211109936a55e263c39d19
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:compileTestKotlin
+          mkdir -p /tmp/opal-registry
+          cat > /tmp/opal-registry/request.json <<'JSON'
+          {"schema":"mt-p2-registry-audit-input-v1","decks":[{"deck_id":"opal-only","cards":[{"index":0,"requested_name":"Opal Palace"}]}]}
+          JSON
+          MT_P2_AUDIT_INPUT=/tmp/opal-registry/request.json MT_P2_AUDIT_OUTPUT=/tmp/opal-registry/out             bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest
+          python3 - <<'PY'
+          import json
+          d=json.load(open('/tmp/opal-registry/out/registry-report.json'))
+          c=d['decks'][0]['cards'][0]
+          assert c['requested_name']=='Opal Palace' and c['registry_resolved'] is True
+          PY
