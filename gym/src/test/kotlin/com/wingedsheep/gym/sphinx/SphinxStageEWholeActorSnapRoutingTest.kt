@@ -67,7 +67,9 @@ class SphinxStageEWholeActorSnapRoutingTest : ScenarioTestBase() {
                 .sortedBy { it.value }
             val snap = all.first { name(initialized.state, it) == "Snap" }
             val islands = all.filter { name(initialized.state, it) == "Island" }.take(2)
-            val hand = listOf(snap) + islands + all.filter { it != snap && it !in islands }.take(4)
+            val fillers = all.filter { it != snap && it !in islands && name(initialized.state, it) != "Island" }.take(4)
+            fillers.size shouldBe 4
+            val hand = listOf(snap) + islands + fillers
             val arranged = initialized.copy(
                 state = initialized.state.copy(
                     zones = initialized.state.zones +
