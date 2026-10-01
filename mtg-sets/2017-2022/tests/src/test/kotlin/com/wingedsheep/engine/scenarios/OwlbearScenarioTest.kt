@@ -31,7 +31,7 @@ class OwlbearScenarioTest : FunSpec({
 
         driver.bothPass().isSuccess shouldBe true
         driver.getHand(player).size shouldBe before
-        Owlbear.power shouldBe 4
-        Owlbear.toughness shouldBe 4
+        Owlbear.creatureStats?.basePower shouldBe 4
+        Owlbear.creatureStats?.baseToughness shouldBe 4
     }
 })
