@@ -1,0 +1,35 @@
+{
+  "schema": "manual-qualification-gate-acceptance-receipt-v1",
+  "date_utc": "2026-10-01",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "decision": "ACCEPT_EXACT_MANUAL_STORED_REPLAY_FOUR_CASE_QUALIFICATION_ORIGINAL",
+  "gate_id": "manual-stored-replay-integration-qualification-20261001",
+  "base_commit": "0d1a405bade0e92e632070f6dd8d986b75436ae4",
+  "reviewed_implementation_commit": "9532c2e79412694f953bd6ff4ae2438b1d347dae",
+  "reviewed_tree": "3a437b45fa530518064307cacdfaa8e279af2b46",
+  "reviewed_blobs": {
+    ".github/workflows/manual-stored-replay-integration-qualification-20261001.yml": "f4e435e601f249b1958956d67220d4ea95b2cafc",
+    "experiments/manual-transmission-phase2/STORED_REPLAY_INTEGRATION_GATE_20261001.json": "a23aeb18201870a7cd257454ec9d143461074550",
+    "experiments/manual-transmission-phase2/verify_stored_replay_gate.py": "3625c287da287c01b3a97362d92aec01563be50e",
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoStoredFixtureReplay.kt": "ad2cc1ebaedd055104fb185f236427a9fd7e231a",
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoFixtureLifecycle.kt": "f11281537cc1f582f32dc0aab4fbdea3cc58fdb1",
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoFixtureRunner.kt": "ea74fba66dfad36470b9ebe438570ce8b97f5c9b",
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt": "44608301d535a2114073d80c06d5ca0480c40043",
+    "gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualStoredFixtureReplayIntegrationTest.kt": "c50ccda3260da8e6baee6d8af15cb041a9184d42",
+    "experiments/manual-transmission-phase2/STORED_REPLAY_INTEGRATION_SCOPE_20261001.json": "1d6d676aad6dde795fc7a039b38c3939c4969775",
+    "scripts/gradle-locked": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d"
+  },
+  "external_review_record_sha256": "fbe052d5c79e32d53136325ccac2577b86a9962e643f937f155165530029f65d",
+  "execution_authorization_record_sha256": "9a523d320b3326cc0759539afd8718be74a010762697c6321d4eacfd9859edd5",
+  "execution_authorization_comment": 5939572682,
+  "maximum_originals": 1,
+  "official_counters_delta": 0,
+  "scope": "Compile the exact reviewed source tree and execute exactly the four predeclared stored-replay integration cases once. Preserve exact XML, source/tree, compile/test logs, runtime and gate records for separate audit.",
+  "authority": "ACCEPT_EXACT_REVIEWED_GATE_FOR_ONE_BOUNDED_ORIGINAL_ONLY",
+  "non_authority": [
+    "No frozen Animar hardware or strategic-pilot competence",
+    "No per-action crash-durability acceptance beyond demonstrated fixture behavior",
+    "No capability-36 or primary-864 gameplay authority",
+    "No rehabilitation of run 36765972037 or general CI 36765972153"
+  ]
+}
