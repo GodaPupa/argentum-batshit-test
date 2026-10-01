@@ -161,16 +161,22 @@ def restore_accepted_store(archive:pathlib.Path, manifest_path:pathlib.Path, tar
 
 def parse_classlog(path:pathlib.Path):
     rows=[]
-    rx=re.compile(r"\\[class,load\\]\\s+(.+?)\\s+source:\\s+(.*)$")
+    rx=re.compile(r"\[class,load\]\s+(\S+)\s+source:\s+(\S.*)$")
     generated_sources={"__dynamic_proxy__","__ClassDefiner__","__JVM_LookupDefineClass__"}
-    for line in path.read_text(errors="replace").splitlines():
+    tagged_lines=0
+    for line_number,line in enumerate(path.read_text(encoding="utf-8",errors="strict").splitlines(),1):
+        if "[class,load]" not in line: continue
+        tagged_lines+=1
         m=rx.search(line)
-        if not m: continue
+        if not m:
+            raise RuntimeError(f"Malformed class-load record at {path.name}:{line_number}")
         name=m.group(1); source=m.group(2)
         normalized=re.sub(r"/0x[0-9a-fA-F]+","/0x<HIDDEN>",name)
         hidden="/0x" in name
         generated=hidden or "$Lambda" in name or name.startswith("jdk.proxy") or "Generated" in name or source in generated_sources
         rows.append({"name":name,"normalized_name":normalized,"source":source,"hidden":hidden,"generated_or_hidden":generated})
+    if not rows or len(rows)!=tagged_lines:
+        raise RuntimeError(f"Empty or incomplete class-load census: {path.name}")
     normalized=sorted((r["normalized_name"],r["source"]) for r in rows)
     return rows,hashlib.sha256(canonical(normalized)).hexdigest()
 

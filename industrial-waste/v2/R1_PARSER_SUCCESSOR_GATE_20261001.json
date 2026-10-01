@@ -1,0 +1,63 @@
+{
+  "schema": "argentum-prospective-qualification-gate-v1",
+  "authority": "PREPARATION_ONLY_NO_EXECUTION_AUTHORITY",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "maximum_originals": 1,
+  "official_counters_delta": 0,
+  "external_prerequisites": [
+    "Responsible process authenticates the actual new gate review record, exact commit, decision, scope and independence. A shaped ID or digest is not approval.",
+    "Trusted pre-publication/pre-marker inspection of complete diff and workflow inventory. This workflow cannot stop another workflow starting.",
+    "No prior consumed original is rerun. No receipt or marker is supplied by this preparation."
+  ],
+  "hold": true,
+  "lane": "industrial",
+  "gate_id": "industrial-qualification-20261001",
+  "base_commit": "6e1f2509aab922dcf82c2e0524657955e7630863",
+  "workflow_path": ".github/workflows/industrial-r1-parser-successor-20261001.yml",
+  "plan_path": "industrial-waste/v2/R1_PARSER_SUCCESSOR_GATE_20261001.json",
+  "guard_path": "industrial-waste/v2/verify_parser_successor_gate.py",
+  "gate_files": [
+    ".github/workflows/industrial-r1-parser-successor-20261001.yml",
+    "industrial-waste/v2/R1_PARSER_SUCCESSOR_GATE_20261001.json",
+    "industrial-waste/v2/verify_parser_successor_gate.py"
+  ],
+  "protected_blobs": {
+    "industrial-waste/v2/capture_supplemental_hermetic_r1.py": "a661462176e8ebf8ac4a6730106f1a913dad3638",
+    "industrial-waste/v2/test_r1_classlog_parser.py": "bc8ad98ca3adff6a0a6aab0ea08fffbc6e49906a",
+    "industrial-waste/v2/R1_CLASSLOG_PARSER_REPAIR_SCOPE_20260930.json": "88380874667f2bbd4c0c4459a757fb4c3ecc176b",
+    "industrial-waste/v2/r1-supplemental-hermetic-capture.init.gradle": "ef3a56e80afc5002e66a05b4f5cf3635eb604c21",
+    "industrial-waste/v2/r1-dependency-store-bootstrap.init.gradle": "e2181fa92f04c14f1bbb724d9d0f4240ccc1b856",
+    ".github/workflows/industrial-r1-supplemental-hermetic-capture-20260930.yml": "d432d61d2de3073deb4694a1f9c20113fb49b667"
+  },
+  "receipt_path": "industrial-waste/v2/evidence/INDUSTRIAL_GATE_ACCEPTANCE_20261001.json",
+  "marker_path": "industrial-waste/v2/INDUSTRIAL_GATE_EXECUTION_MARKER_20261001.json",
+  "execution_ref": "refs/heads/industrial/qualification-execute-20261001",
+  "required_decision": "ACCEPT_EXACT_PARSER_SUCCESSOR_ONE_SUPPLEMENTAL_CAPTURE_ORIGINAL",
+  "component_review_receiving_comment": 5926877992,
+  "component_review_sha256": "d8fc72b914310beab9ed765430319175210aee7914d789862818a6f7e6ebaef3",
+  "immutable_consumed_original": {
+    "run": 36749369682,
+    "artifact": 11113993601,
+    "disposition": "INCOMPLETE_CLASSLOG_PARSER_EMPTY_CENSUS",
+    "rerun_authorized": false
+  },
+  "expected_offline_launches": 2,
+  "expected_fixed_cases_per_launch": 10,
+  "accepted_store_artifact": 11105215706,
+  "accepted_store_outer_sha256": "3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649",
+  "accepted_store_archive_sha256": "a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3",
+  "accepted_store_manifest_sha256": "b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4",
+  "accepted_store_files": 1339,
+  "scope": "One distinct successor of the rejected capture, using the unchanged reviewed parser repair, unchanged worker, accepted store and VM equivalence rule. Two offline launches belong to that single original.",
+  "non_authority": [
+    "No reparse or promotion of rejected original",
+    "No expected-manifest adoption",
+    "No sealed-launch/R1 permit",
+    "No official allocations/claims/games"
+  ],
+  "build_entry": "Unchanged capture helper and two fixed Gradle init scripts; no arbitrary Gradle/task override. Validate source/receipt/marker before store download and again before launch.",
+  "limitations": [
+    "Existing collector preserves final worker XML, both process/runtime records and build logs. Review adequacy for both launches before authorization; do not assert additional XML preservation.",
+    "Parser review covers expected tagged-line format, not proof of upstream logging completeness."
+  ]
+}

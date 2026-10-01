@@ -1,0 +1,86 @@
+name: Industrial reviewed parser successor capture candidate
+on:
+  push:
+    branches: ["industrial/qualification-execute-20261001"]
+    paths: ["industrial-waste/v2/INDUSTRIAL_GATE_EXECUTION_MARKER_20261001.json"]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      ARGENTUM_DECLARED_IMAGE: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact successor source review and separate authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(uname -m)" = x86_64
+          echo '7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86  /usr/bin/python3.10' | sha256sum -c -
+          /usr/bin/python3.10 -I -S industrial-waste/v2/verify_parser_successor_gate.py --plan industrial-waste/v2/R1_PARSER_SUCCESSOR_GATE_20261001.json --mode execution
+          test ! -e build/reports/industrial-r1-supplemental-hermetic
+          test ! -e "$RUNNER_TEMP/industrial-r1-hermetic-gradle-home"
+          test ! -L "$RUNNER_TEMP/industrial-r1-hermetic-gradle-home"
+      - name: Reuse only the accepted immutable dependency store
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          STORE_INPUT="$RUNNER_TEMP/industrial-parser-successor-store-20261001"
+          test ! -e "$STORE_INPUT" && test ! -L "$STORE_INPUT"
+          mkdir "$STORE_INPUT"
+          curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' "https://api.github.com/repos/${GITHUB_REPOSITORY}/actions/artifacts/11105215706/zip" -o "$STORE_INPUT/original.zip"
+          echo "3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649  $STORE_INPUT/original.zip" | sha256sum -c -
+          unzip -t "$STORE_INPUT/original.zip" >/dev/null
+          unzip -p "$STORE_INPUT/original.zip" build/reports/industrial-r1-current-runtime-store-supplement-v5/immutable-current-runtime-gradle-store.tar.gz > "$STORE_INPUT/store.tar.gz"
+          unzip -p "$STORE_INPUT/original.zip" build/reports/industrial-r1-current-runtime-store-supplement-v5/store-manifest.json > "$STORE_INPUT/manifest.json"
+          echo "a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3  $STORE_INPUT/store.tar.gz" | sha256sum -c -
+          echo "b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4  $STORE_INPUT/manifest.json" | sha256sum -c -
+          chmod 0444 "$STORE_INPUT/store.tar.gz" "$STORE_INPUT/manifest.json"
+      - name: Execute the unchanged reviewed collector once
+        shell: bash
+        run: |
+          set -euo pipefail
+          /usr/bin/python3.10 -I -S industrial-waste/v2/verify_parser_successor_gate.py --plan industrial-waste/v2/R1_PARSER_SUCCESSOR_GATE_20261001.json --mode execution
+          STORE_INPUT="$RUNNER_TEMP/industrial-parser-successor-store-20261001"
+          test ! -e build-industrial-parser-successor.log
+          ARGENTUM_DEPENDENCY_STORE_ARCHIVE="$STORE_INPUT/store.tar.gz" ARGENTUM_DEPENDENCY_STORE_MANIFEST="$STORE_INPUT/manifest.json" /usr/bin/python3.10 industrial-waste/v2/capture_supplemental_hermetic_r1.py 2>&1 | tee build-industrial-parser-successor.log
+          /usr/bin/python3.10 -I -S - <<'PY'
+          import json,pathlib
+          out=pathlib.Path('build/reports/industrial-r1-supplemental-hermetic')
+          r=json.loads((out/'summary.json').read_text())
+          assert r['authority']=='SUPPLEMENTAL_HERMETIC_CAPTURE_ORIGINAL_FOR_INDEPENDENT_REVIEW_ONLY'
+          assert r['fixed_worker']=={'class':'com.wingedsheep.ai.engine.IndustrialWasteV2FrozenResponderEquivalenceTest','tests':10,'failures':0,'errors':0,'skipped':0}
+          for ordinal in (1,2):
+              rows=json.loads((out/f'class-census-{ordinal}.json').read_text())
+              assert rows and len(rows)==sum('[class,load]' in line for line in (out/f'classload-{ordinal}.log').read_text(encoding='utf-8',errors='strict').splitlines())
+          assert r['class_census']['equal'] is True
+          assert r['class_census']['repeat_equivalence']['non_vm_multiplicity_equal'] is True
+          assert r['class_census']['repeat_equivalence']['vm_lookup_define_family_set_equal'] is True
+          assert r['immutable_store']['files']==1339 and r['immutable_store']['source_artifact_id']==11105215706
+          assert '--offline' in r['first_launch']['argv'] and '--offline' in r['offline_repeat']['argv']
+          assert r['official_seed_files_read'] is False and r['official_counters']=={'claims':0,'allocations':0,'games':0,'outcomes':0}
+          PY
+      - name: Preserve successor original; never promote it from workflow success alone
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-parser-successor-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/industrial-r1-supplemental-hermetic/
+            build-industrial-parser-successor.log
+            industrial-waste/v2/R1_PARSER_SUCCESSOR_GATE_20261001.json
+            industrial-waste/v2/evidence/INDUSTRIAL_GATE_ACCEPTANCE_20261001.json
+            industrial-waste/v2/INDUSTRIAL_GATE_EXECUTION_MARKER_20261001.json
+          if-no-files-found: error
+          retention-days: 90

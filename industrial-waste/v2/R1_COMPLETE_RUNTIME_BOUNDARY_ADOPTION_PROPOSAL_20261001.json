@@ -1,0 +1,54 @@
+{
+  "schema": "industrial-r1-complete-runtime-boundary-adoption-proposal-v1",
+  "date_utc": "2026-10-01",
+  "authority": "PROSPECTIVE_RULE_ADOPTION_PROPOSAL_ONLY_NO_IMPLEMENTATION_OR_R1_AUTHORITY",
+  "base_commit": "bb711eea056fc731fda0ce3a3b18523f26bfbe62",
+  "governing_documents": [
+    "industrial-waste/v2/R1_CAPABILITY.md",
+    "industrial-waste/v2/R1_COMPLETE_RUNTIME_BOUNDARY_PROPOSAL.md"
+  ],
+  "immutable_supporting_capture": {
+    "run": 36912341177,
+    "artifact": 11190020145,
+    "artifact_sha256": "d5c025ed75f61a53db78b2169f6c2da88c88d0b872ffd397917782a33a229d39",
+    "decision": "ACCEPTED_FOR_SUPPLEMENTAL_HERMETIC_CAPTURE_SCOPE_ONLY",
+    "non_normative_for_manifest": true
+  },
+  "prospective_universe_inputs": [
+    "Exact reviewed source tree/build scripts at the future boundary implementation head.",
+    "Accepted immutable 1,339-file dependency-store manifest/artifact and accepted outer/archive/manifest digests.",
+    "Pinned linux/amd64 container and exact pinned JDK binary/module-image identity.",
+    "Explicit Gradle test worker/launcher argv, classpath/module-path and generated test/runtime resources derived before worker launch.",
+    "Static/transitive runtime closure derived solely from those exact pre-launch inputs, including pinned-JDK runtime resources required by the launcher."
+  ],
+  "canonical_manifest_rule": [
+    "Construct expected non-VM runtime universe before the sealed worker starts, solely from prospective_universe_inputs.",
+    "Canonicalize each expected entry to origin category + canonical path/resource identity + stable content digest; reject duplicate aliases and symlink/path escapes.",
+    "Hash/version the expected universe as an immutable manifest before launch; the worker may resolve only manifest entries.",
+    "Exclude VM-defined/hidden classes from exact-name enumeration only under an independently adopted family rule tied to the pinned JVM; their non-VM parents/origins remain manifest-bound.",
+    "Observed receiving-launch names/multiplicities/closure may validate the rule but MUST NOT add/remove expected entries or define the manifest."
+  ],
+  "implementation_scope_after_adoption": [
+    "Offline manifest builder from exact source/build/store/JDK/launcher inputs.",
+    "Constrained worker/loader rejecting any non-VM runtime origin/resource outside the adopted manifest before test execution.",
+    "Prepared-worker attestation binding source/tree, manifest digest, runtime/JDK/store identities and fresh single-use launch identity.",
+    "Lifetime monitor recording attempted out-of-manifest loads and failing closed.",
+    "Qualification fixtures for missing/extra/alias/symlink/changed-store/changed-JDK/changed-classpath/replayed-attestation cases."
+  ],
+  "stages": [
+    "1 independent rule adoption",
+    "2 prospective implementation",
+    "3 independent source review + exact-runtime qualification",
+    "4 sealed-launch acceptance",
+    "5 separate R1 permit decision"
+  ],
+  "prohibited": [
+    "no expected manifest learned from run 36912341177",
+    "no supplemental capture rerun",
+    "no R1 permit",
+    "no seed/allocation/claim/gameplay",
+    "no implementation before independent rule adoption"
+  ],
+  "review_question": "Does this prospective universe rule completely and non-retrospectively define the R1 non-VM runtime boundary from permitted pre-launch inputs, with an explicit VM-hidden exception and fail-closed implementation contract?",
+  "official_counters_delta": 0
+}
