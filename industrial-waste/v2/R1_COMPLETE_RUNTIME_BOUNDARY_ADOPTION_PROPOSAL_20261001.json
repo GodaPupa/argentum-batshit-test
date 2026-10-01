@@ -79,12 +79,6 @@
           "binary_class": "java.lang.invoke.InvokerBytecodeGenerator",
           "permitted_output_family": "java.lang.invoke.LambdaForm$*",
           "definition_mechanism": "MethodHandles.Lookup hidden-class definition reported by the pinned JVM as __JVM_LookupDefineClass__"
-        },
-        {
-          "module": "java.base",
-          "binary_class": "java.lang.invoke.InnerClassLambdaMetafactory",
-          "permitted_output_family": "JDK lambda proxy hidden classes generated solely for manifest-bound call sites",
-          "definition_mechanism": "MethodHandles.Lookup hidden-class definition reported by the pinned JVM as __JVM_LookupDefineClass__"
         }
       ],
       "generator_identity_rule": "The exact module image plus exact .class bytes for every permitted generator and the Lookup definition implementation must be bound by SHA-256 from the pinned JDK before qualification. A package/module wildcard, a different JDK build, a different generator class, or any third-party/application generator is not permitted.",
@@ -92,7 +86,8 @@
       "loading_mechanism": "Only JVM lookup-defined hidden-class loading through the pinned java.base Lookup implementation is permitted. The resulting definition must be hidden and lookup-defined by the pinned JVM. Any generated non-hidden class, Proxy/ProxyGenerator output, Unsafe/defineClass path, custom/application loader, or different definition mechanism is outside this exception and fails unless separately prospectively adopted.",
       "member_identity_rule": "Exact hidden-member suffixes/addresses and multiplicity are not ordinary manifest members. The permitted provenance category is determined by the fixed generator allowlist, exact generator bytes, exact input-origin rule, fixed lookup-definition mechanism and permitted output family. Receiving-launch observations MUST NOT add a generator, output family or input source.",
       "non_redefinition_constraints": "Permitted hidden definitions may not redefine, replace, shadow or mutate any ordinary manifest class/resource. Java/native agents, instrumentation, retransformation, hotswap/redefinition, append-to-classpath and custom runtime loaders remain disabled for the full process lifetime.",
-      "unknown_family_rule": "Any generated/hidden class outside these exact generator/mechanism categories is a hard failure. It requires a separate prospective rule amendment with its own exact generator, inputs, loading mechanism and non-redefinition constraints, independently adopted before implementation qualification."
+      "unknown_family_rule": "Any generated/hidden class outside the single exact InvokerBytecodeGenerator/LambdaForm lookup-defined category is a hard failure, including JDK lambda proxy hidden classes. It requires a separate prospective rule amendment with its own exact generator, immutable inputs, loading mechanism and non-redefinition constraints, independently adopted before implementation qualification.",
+      "evidence_basis": "The accepted supplemental capture established repeat-equivalence with the only multiplicity delta normalized to java.lang.invoke.LambdaForm$MH/0x<HIDDEN> from __JVM_LookupDefineClass__. That observation is supporting evidence only; it does not widen this rule. This proposal therefore permits only the prospectively pinned LambdaForm generator family. Any lambda-proxy, ProxyGenerator, other JDK hidden class, third-party generator or different definition mechanism fails closed and requires a separate prospective amendment."
     }
   },
   "admission_and_lifetime_rule": [
