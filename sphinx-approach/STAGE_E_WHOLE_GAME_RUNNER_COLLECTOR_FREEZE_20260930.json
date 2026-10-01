@@ -1,0 +1,21 @@
+{
+  "schema":"sphinx-stage-e-whole-game-runner-collector-freeze-v1",
+  "date_utc":"2026-09-30",
+  "accepted_replay":{"run":36724539740,"artifact":11102810551,"artifact_sha256":"90e24182e6635a17b59f06afd0d7bcdeb21973d81253a14d2e7e22f277d21f25","audit_branch":"review/sphinx-current-trusted-replay-36724539740","decision":"ACCEPTED_CURRENT_TRUSTED_ACCEPTED_TRANSITION_REPLAY_SUBSTRATE_ONLY"},
+  "accepted_components":["initialized-seat boundary","whole-actor fail-closed composition","Ponder accepted-transition journal/recovery/replay","forced-empty attackers","forced-empty blockers","sole pass-priority","bounded multi-cast discriminator"],
+  "runner_contract":[
+    "Trusted code alone owns GameInitializer, complete GameState, exact frozen deck bytes, seed and transition submission.",
+    "Each pilot receives only ActorInput plus its own accepted bounded memory; no opponent hand/library/order, seed or engine state enters pilot code.",
+    "Every actor step uses the current source/trial/step ActorEpoch and rejects stale input/proposals.",
+    "SphinxStageEWholeActor.Unqualified is a terminal capability stop, never fallback, random choice, pass substitution or retry.",
+    "Accepted actions are journaled durably before the next actor decision; Ponder reorder/shuffle use the accepted transition journal and exact memory recovery.",
+    "Collector records source/deck/opponent/pilot pins, initialization identity, ordered accepted action records, stop classification and terminal engine state; it does not compute deck-performance conclusions.",
+    "A separate strict replay reconstructs from the recorded initialization and accepted actions and must reproduce every state-continuity hash before an attempt can be admitted."
+  ],
+  "pre_stage_e_scope":"Deterministic runner/collector qualification fixtures only. No official Stage-E seed/allocation/game is authorized by this freeze.",
+  "required_negative_cases":["unqualified nonempty combat","ambiguous multiple accepted casts","stale ActorEpoch","changed frozen deck bytes","changed transition record","interrupted journal prefix","replay state drift","pilot hidden-information injection"],
+  "prohibited":["no fallback policy","no retry of consumed attempt","no official Stage-E allocation","no performance metric interpretation","no reopening run 36724539740"],
+  "acceptance":"Independent source review plus fresh deterministic runner/collector/replay fixtures with exact source and artifact audit.",
+  "next_gate":"Implement the smallest trusted runner/collector around the already accepted actor/replay seams; preserve uncovered action surfaces as explicit capability stops.",
+  "official_counters_delta":0
+}
