@@ -1,54 +1,126 @@
 {
-  "schema": "industrial-r1-complete-runtime-boundary-adoption-proposal-v1",
+  "schema": "industrial-r1-complete-runtime-boundary-adoption-proposal-v2",
   "date_utc": "2026-10-01",
   "authority": "PROSPECTIVE_RULE_ADOPTION_PROPOSAL_ONLY_NO_IMPLEMENTATION_OR_R1_AUTHORITY",
   "base_commit": "bb711eea056fc731fda0ce3a3b18523f26bfbe62",
+  "supersedes": {
+    "proposal_head": "7c1b3ff9153087aaf27ba5f249d9f9fbede2e24d",
+    "proposal_blob": "6dc90dd3be24c6a62596ea42ac30f140b0692847",
+    "reason": "Narrow repair of demonstrated rule-level blockers I-3 through I-6 from non-qualifying technical analysis; no runtime-boundary implementation is introduced."
+  },
   "governing_documents": [
     "industrial-waste/v2/R1_CAPABILITY.md",
     "industrial-waste/v2/R1_COMPLETE_RUNTIME_BOUNDARY_PROPOSAL.md"
   ],
+  "non_qualifying_technical_analysis": {
+    "sha256": "5ec7f13d8ebf3322db7fec95cf6b7c403f11d95afbe2ee9453eab205283e0753",
+    "classification": "NON_QUALIFYING_TECHNICAL_ANALYSIS_ONLY",
+    "independence_failure": "Reviewer participated in authoring/publishing both exact review targets.",
+    "may_support_defect_repair": true,
+    "does_not_satisfy": [
+      "Pest fresh non-author v3 review",
+      "Industrial independent rule-adoption review"
+    ]
+  },
   "immutable_supporting_capture": {
     "run": 36912341177,
     "artifact": 11190020145,
     "artifact_sha256": "d5c025ed75f61a53db78b2169f6c2da88c88d0b872ffd397917782a33a229d39",
     "decision": "ACCEPTED_FOR_SUPPLEMENTAL_HERMETIC_CAPTURE_SCOPE_ONLY",
-    "non_normative_for_manifest": true
+    "non_normative_for_manifest": true,
+    "use_limit": "May support feasibility/provenance review only; observed names, multiplicities, closure, or launch contents MUST NOT define expected manifest membership."
   },
-  "prospective_universe_inputs": [
-    "Exact reviewed source tree/build scripts at the future boundary implementation head.",
-    "Accepted immutable 1,339-file dependency-store manifest/artifact and accepted outer/archive/manifest digests.",
-    "Pinned linux/amd64 container and exact pinned JDK binary/module-image identity.",
-    "Explicit Gradle test worker/launcher argv, classpath/module-path and generated test/runtime resources derived before worker launch.",
-    "Static/transitive runtime closure derived solely from those exact pre-launch inputs, including pinned-JDK runtime resources required by the launcher."
+  "complete_runtime_universe_rule": {
+    "construction_time": "Before sealed-worker start and before any claim, allocation request, seed read, admission, or game initialization.",
+    "prospective_inputs": [
+      "Exact reviewed source commit/tree and every build input: Gradle wrapper script/JAR/properties, Gradle distribution, settings/included builds, buildSrc/convention plugins, version catalogs, dependency locks and verification metadata, repositories, compiler/Kotlin/JDK toolchains, and all source/resource inputs.",
+      "Accepted immutable 1,339-file dependency-store manifest/artifact plus accepted outer/archive/manifest digests; no network resolution, fallback repository, mutable cache substitution, dynamic/changing dependency, or unverified dependency is permitted.",
+      "Ordered effective classpath and module path for every launcher, Gradle daemon/launcher where present, and test-worker process, including Gradle bootstrap/test-worker implementation, test framework, AI main/test outputs, rules-engine main/test fixtures, SDK, logging, and every transitive artifact.",
+      "Complete inventory of every directory output and every archive member, including classes, generated serializers, top-level/nested/anonymous/synthetic classes, service descriptors and all other resources; bind complete archive bytes, member inventory, multi-release-JAR selection for the pinned JDK, and exact independently reviewed precedence for any intentional duplicate resource.",
+      "Exact pinned JDK distribution/image digest, release/modules, executables and native libraries; exact linux/amd64 container image digest, architecture, dynamic loader and native-library dependency closure.",
+      "Exact Python interpreter binary, standard library and import closure used by admission/receiving code; exact shell/just/executable launcher chain; exact command arguments, working directory and allowed environment.",
+      "Exact loader topology/delegations, effective code sources and immutable mount mapping for launcher/Gradle/worker processes.",
+      "Every generated or transient pre-launch class/resource only when its generation recipe, generator bytes, complete immutable inputs and output bytes are prospectively bound and deterministically reproducible before manifest publication."
+    ],
+    "forbidden_undeclared_influence": [
+      "PATH",
+      "PYTHONPATH",
+      "CLASSPATH",
+      "module-path",
+      "boot-path",
+      "JAVA_TOOL_OPTIONS",
+      "JDK_JAVA_OPTIONS",
+      "_JAVA_OPTIONS",
+      "Gradle user init scripts",
+      "user-home plugins",
+      "native-library-path",
+      "undeclared environment variables or filesystem roots",
+      "network resolution or download",
+      "runtime compilation or classpath append"
+    ],
+    "closure_rule": "The independently reviewed resolved graphs plus actual ordered process paths and import/native/loader/resource graphs must establish exact complete closure. No reachable-only whitelist, observed-worker whitelist, source-filename inventory, successful-test inference, or launch-derived learning is permitted.",
+    "canonical_serialization": [
+      "Versioned schema.",
+      "UTF-8 canonical relative names.",
+      "Explicit ordinals for ordered process/classpath/module-path/loader entries.",
+      "Origin category, loader identity, artifact/entry type, byte length and lowercase SHA-256 for every ordinary manifest member.",
+      "Duplicate keys, ambiguous names, traversal, duplicate ZIP members, symlinks, missing/unexpected roots, duplicate binary names without an independently reviewed resolution, and unknown fields are fatal."
+    ],
+    "manifest_publication_rule": "A canonical manifest may be emitted only after complete closure is established and every generated/transient pre-launch byte is reproducible from the declared immutable inputs. Non-reproducible drift is a qualification failure and MUST NOT be normalized, reblessed, learned from receiving evidence, or omitted.",
+    "closure_failure_rule": "If any required graph edge, loader/delegation, native dependency, Python import, launcher component, environment influence, archive/directory member, generated/transient byte, or provenance relationship cannot be completely enumerated and verified, the builder emits a failure record only. It MUST NOT emit or adopt a canonical manifest, the worker MUST NOT produce a prepared-worker attestation, Python MUST NOT admit, and no claim/allocation/seed read/game initialization may occur."
+  },
+  "generated_hidden_class_rule": {
+    "ordinary_generated_classes": "Any non-VM generated class or resource must either be eliminated or be generated before launch reproducibly from manifest-bound immutable inputs and included by exact bytes in the ordinary manifest. Application/test/framework-defined runtime bytecode generation, runtime compilation, custom/application-defined class loaders, downloaded classes, append-to-classpath mechanisms, Java/native agents, instrumentation, retransformation and hot replacement are prohibited.",
+    "only_permitted_exact_name_exception": {
+      "category": "PINNED_JDK_LOOKUP_DEFINED_HIDDEN_CLASSES_ONLY",
+      "permitted_generators": [
+        {
+          "module": "java.base",
+          "binary_class": "java.lang.invoke.InvokerBytecodeGenerator",
+          "permitted_output_family": "java.lang.invoke.LambdaForm$*",
+          "definition_mechanism": "MethodHandles.Lookup hidden-class definition reported by the pinned JVM as __JVM_LookupDefineClass__"
+        }
+      ],
+      "generator_identity_rule": "The exact module image plus exact .class bytes for every permitted generator and the Lookup definition implementation must be bound by SHA-256 from the pinned JDK before qualification. A package/module wildcard, a different JDK build, a different generator class, or any third-party/application generator is not permitted.",
+      "generator_inputs": "Generator inputs are limited to the exact pinned JDK module image, manifest-bound ordinary classes/resources/call sites, and the sealed process arguments/environment. Every non-JDK parent/capturing/interface/target definition participating in generation must already be ordinary-manifest-bound. No network, mutable external file, unmanifested class/resource, custom loader, agent or runtime compiler may contribute.",
+      "loading_mechanism": "Only JVM lookup-defined hidden-class loading through the pinned java.base Lookup implementation is permitted. The resulting definition must be hidden and lookup-defined by the pinned JVM. Any generated non-hidden class, Proxy/ProxyGenerator output, Unsafe/defineClass path, custom/application loader, or different definition mechanism is outside this exception and fails unless separately prospectively adopted.",
+      "member_identity_rule": "Exact hidden-member suffixes/addresses and multiplicity are not ordinary manifest members. The permitted provenance category is determined by the fixed generator allowlist, exact generator bytes, exact input-origin rule, fixed lookup-definition mechanism and permitted output family. Receiving-launch observations MUST NOT add a generator, output family or input source.",
+      "non_redefinition_constraints": "Permitted hidden definitions may not redefine, replace, shadow or mutate any ordinary manifest class/resource. Java/native agents, instrumentation, retransformation, hotswap/redefinition, append-to-classpath and custom runtime loaders remain disabled for the full process lifetime.",
+      "unknown_family_rule": "Any generated/hidden class outside the single exact InvokerBytecodeGenerator/LambdaForm lookup-defined category is a hard failure, including JDK lambda proxy hidden classes. It requires a separate prospective rule amendment with its own exact generator, immutable inputs, loading mechanism and non-redefinition constraints, independently adopted before implementation qualification.",
+      "evidence_basis": "The accepted supplemental capture established repeat-equivalence with the only multiplicity delta normalized to java.lang.invoke.LambdaForm$MH/0x<HIDDEN> from __JVM_LookupDefineClass__. That observation is supporting evidence only; it does not widen this rule. This proposal therefore permits only the prospectively pinned LambdaForm generator family. Any lambda-proxy, ProxyGenerator, other JDK hidden class, third-party generator or different definition mechanism fails closed and requires a separate prospective amendment."
+    }
+  },
+  "admission_and_lifetime_rule": [
+    "Before any claim creation, require the independently accepted complete manifest, this adopted boundary-rule digest, immutable build/qualification evidence, and exact independent reviewer binding.",
+    "Before Python admit or any allocation request/game initialization, the prepared worker must verify actual ordered process paths, loader topology, immutable archive/directory bytes, complete inventories, JDK/container/native/Python/launcher identities, and the generated-hidden rule against the adopted authority.",
+    "Prepared-worker attestation must bind source/tree, manifest and review digests, runtime receipt, execution owner, unique worker process instance and a fresh single-use launch identity through a reviewed authenticated process channel or equivalent sealed-launch mechanism. Caller-supplied booleans and replayable JSON are insufficient.",
+    "Executable sources and mounts stay sealed for the entire process lifetime; extension paths remain disabled; later loads are checked against the same rule. Unknown source, loader, generator, definition mechanism, artifact mismatch or integrity failure stops before the next admission; after initialization it quarantines the sample under the frozen no-retry rule.",
+    "No fallback, repair-in-place, replacement worker, continuation, or replacement sample is permitted."
   ],
-  "canonical_manifest_rule": [
-    "Construct expected non-VM runtime universe before the sealed worker starts, solely from prospective_universe_inputs.",
-    "Canonicalize each expected entry to origin category + canonical path/resource identity + stable content digest; reject duplicate aliases and symlink/path escapes.",
-    "Hash/version the expected universe as an immutable manifest before launch; the worker may resolve only manifest entries.",
-    "Exclude VM-defined/hidden classes from exact-name enumeration only under an independently adopted family rule tied to the pinned JVM; their non-VM parents/origins remain manifest-bound.",
-    "Observed receiving-launch names/multiplicities/closure may validate the rule but MUST NOT add/remove expected entries or define the manifest."
-  ],
-  "implementation_scope_after_adoption": [
-    "Offline manifest builder from exact source/build/store/JDK/launcher inputs.",
-    "Constrained worker/loader rejecting any non-VM runtime origin/resource outside the adopted manifest before test execution.",
-    "Prepared-worker attestation binding source/tree, manifest digest, runtime/JDK/store identities and fresh single-use launch identity.",
-    "Lifetime monitor recording attempted out-of-manifest loads and failing closed.",
-    "Qualification fixtures for missing/extra/alias/symlink/changed-store/changed-JDK/changed-classpath/replayed-attestation cases."
+  "implementation_scope_after_independent_adoption": [
+    "Canonical offline complete-manifest builder and schema implementing the entire complete_runtime_universe_rule.",
+    "Constrained loader/worker enforcing ordinary manifest membership and the generated_hidden_class_rule.",
+    "Prepared-worker freshness/replay-resistant attestation and immutable lifetime enforcement.",
+    "Python admission receiver that independently verifies the attestation and refuses replay/stale/wrong-worker/source/review/runtime bindings.",
+    "Deterministic non-corpus fixtures covering missing/extra dependency/root/class/resource, changed class/resource/JAR/JDK/launcher/Python bytes, classpath/module-path order, duplicate/shadow/multi-release handling, loader/agent/option/environment injection, non-reproducible generated/transient bytes, unknown hidden family/generator, later mutation/load, stale/replayed/wrong-worker attestation, source/review mismatch, and refusal before admit/initialization."
   ],
   "stages": [
-    "1 independent rule adoption",
-    "2 prospective implementation",
-    "3 independent source review + exact-runtime qualification",
-    "4 sealed-launch acceptance",
+    "1 genuinely independent rule adoption of these exact proposal bytes",
+    "2 prospective implementation only after stage 1",
+    "3 independent source review plus exact-runtime qualification of that implementation",
+    "4 separate sealed-launch acceptance",
     "5 separate R1 permit decision"
   ],
   "prohibited": [
-    "no expected manifest learned from run 36912341177",
+    "no expected manifest learned from run 36912341177 or any other receiving launch",
     "no supplemental capture rerun",
+    "no runtime-boundary implementation before genuinely independent rule adoption",
+    "no automatic expected-manifest adoption",
+    "no sealed-launch acceptance",
     "no R1 permit",
     "no seed/allocation/claim/gameplay",
-    "no implementation before independent rule adoption"
+    "no use of the non-qualifying technical analysis as the required independent adoption review"
   ],
-  "review_question": "Does this prospective universe rule completely and non-retrospectively define the R1 non-VM runtime boundary from permitted pre-launch inputs, with an explicit VM-hidden exception and fail-closed implementation contract?",
+  "review_question": "Are these exact prospective rules complete, deterministic, non-retrospective and fail-closed enough to authorize only the subsequent implementation stage, with all complete-runtime surfaces explicit and the sole JVM-hidden exception fully bounded?",
   "official_counters_delta": 0
 }
