@@ -12,10 +12,14 @@ jobs:
       max-parallel: 2
       matrix:
         include:
-          - lane: pest
-            source: 76db88f26f25e23fbcea3d2db7e0c03d9edd6b99
-            file: gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt
-            blob: ce1be5ea615104953b7319182878f4135baac07e
+          - lane: manual
+            source: 0d1a405bade0e92e632070f6dd8d986b75436ae4
+            file: gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualStoredFixtureReplayIntegrationTest.kt
+            blob: c50ccda3260da8e6baee6d8af15cb041a9184d42
+          - lane: sphinx
+            source: c1fe387dde1e73942f9db3722c69fc8261c82470
+            file: gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxEngineFixtureIntegrationTest.kt
+            blob: a3eb36b095c430742a5f5aca8e541dcaed5434ba
     runs-on: ubuntu-latest
     timeout-minutes: 60
     container:
@@ -27,7 +31,7 @@ jobs:
       COMPILE_EVIDENCE: /tmp/compile-evidence-${{ matrix.lane }}-${{ github.run_id }}
       TZ: UTC
     steps:
-      - name: Checkout exact reviewed source without experimental evidence directories
+      - name: Checkout exact source without experimental evidence directories
         uses: actions/checkout@v6
         with:
           ref: ${{ matrix.source }}
@@ -62,7 +66,7 @@ jobs:
           git rev-parse HEAD HEAD^{tree} > "$COMPILE_EVIDENCE/source.txt"
           git hash-object "$EXPECTED_FILE" scripts/gradle-locked > "$COMPILE_EVIDENCE/source-blobs.txt"
           "$JAVA_HOME/bin/java" -version > "$COMPILE_EVIDENCE/java-version.txt" 2>&1
-          printf '%s\n' 'AUTHOR_COMPILE_ONLY_NOT_INTEGRATION_OR_EXPERIMENT_ACCEPTANCE' ':gym:compileKotlin' 'No Test or JavaExec tasks; no operational fixture, original, seed, allocation or game.' > "$COMPILE_EVIDENCE/scope.txt"
+          printf '%s\n' 'AUTHOR_COMPILE_ONLY_NOT_INTEGRATION_OR_EXPERIMENT_ACCEPTANCE' ':gym:compileTestKotlin' 'No Test or JavaExec tasks; no operational fixture, original, seed, allocation or game.' > "$COMPILE_EVIDENCE/scope.txt"
           cat > "$COMPILE_EVIDENCE/compile-only.init.gradle" <<'GROOVY'
           import org.gradle.api.tasks.testing.Test
           import org.gradle.api.tasks.JavaExec
@@ -74,12 +78,12 @@ jobs:
               println 'ARGENTUM_COMPILE_ONLY_GRAPH_NO_TEST_OR_JAVAEXEC'
           }
           GROOVY
-      - name: Compile production module and its actual dependencies without test execution
+      - name: Compile integration fixture sources and dependencies without executing tests
         shell: bash
         run: |
           set -euo pipefail
           set +e
-          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --max-workers=2 --console=plain --stacktrace -I "$COMPILE_EVIDENCE/compile-only.init.gradle" :gym:compileKotlin 2>&1 | tee "$COMPILE_EVIDENCE/compile.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --max-workers=2 --console=plain --stacktrace -I "$COMPILE_EVIDENCE/compile-only.init.gradle" :gym:compileTestKotlin 2>&1 | tee "$COMPILE_EVIDENCE/compile.log"
           rc=${PIPESTATUS[0]}
           set -e
           printf '%s\n' "$rc" > "$COMPILE_EVIDENCE/compile-exit.txt"
