@@ -1,0 +1,219 @@
+ARGENTUM — FRESH NON-AUTHOR REVIEW
+Pest Control #216 corrected Phase-B v3 delta
+Industrial Waste #214 prospective complete-runtime rule adoption
+Date: 2026-10-01
+Repository: GodaPupa/argentum-batshit-test
+Encoding: UTF-8
+Line endings: LF
+
+REVIEWER-INDEPENDENCE STATUS
+
+The requested fresh non-author condition is not satisfied by this reviewer.
+Prior conversation history establishes that this assistant authored/published the exact Pest v3 repair at 3306d4c23a11b605451db7c3866f694b0ca053c4 and authored/published the exact Industrial adoption proposal at 7c1b3ff9153087aaf27ba5f249d9f9fbede2e24d, and therefore participated in the implementation conversations that produced both review targets.
+
+Accordingly, this document MUST NOT be used as the required fresh non-author acceptance/rejection record for either gate. No qualifying independent disposition is issued below. The technical source/rule analysis is preserved only to avoid discarding the completed inspection and to give a genuinely fresh reviewer a concrete, reproducible basis for review.
+
+No repository bytes, PR comments, review states, branches, workflows, receipts, markers, or execution authorities were written or changed during this review.
+
+==================================================
+PEST #216 — CORRECTED V3 DELTA ANALYSIS
+==================================================
+
+PEST EXACT REVIEWED HEAD
+3306d4c23a11b605451db7c3866f694b0ca053c4
+
+PEST EXACT REVIEWED TREE
+5ada794d4b92fd501fdeaf53f6c5ef3daec3177d
+
+Tree authentication basis:
+- Final non-behavioral gate artifact 11192007131 from run 36919791766 was downloaded and SHA-256 verified as f95bcaa2669068c48bf640f18772eb9353fa7132ab403252bd6ef10ed156cfeb.
+- Its source.txt contains exactly:
+  3306d4c23a11b605451db7c3866f694b0ca053c4
+  5ada794d4b92fd501fdeaf53f6c5ef3daec3177d
+
+BLOCKED PREDECESSOR AUTHENTICATED
+2029d61690a17bc4b730e61d15b609d0db5df124
+Tree recorded by PR #216 comment 5939972674:
+8d39a534d29e3195dc33aa5028f82a528597214e
+
+FILES/DELTA INSPECTED
+
+Exact blocked-predecessor -> v3 compare showed 19 commits, no divergence from the predecessor, and exactly these 12 changed paths:
+1. .github/workflows/pest-phase-b-complete-bank-v2-20261001.yml
+2. .github/workflows/pest-phase-b-complete-bank-v3-20261001.yml
+3. docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_20261001.json
+4. docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V2_20261001.json
+5. docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V3_20261001.json
+6. docs/experiments/pest-control/PHASE_B_PRODUCTION_EXECUTION_SUPPORT_SCOPE_20261001.json
+7. gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt
+8. gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlanTest.kt
+9. gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankExecutionTest.kt
+10. gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProtectedRemovalRegressionTest.kt
+11. scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v2.py
+12. scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v3.py
+
+Directly inspected relevant unchanged interaction sources:
+- PestMonsterLondonPredicateVector.kt, blob bb8e2247dc64a64403094c691d83b8eed53048bd
+- PestPhaseBKeepBottomActor.kt, blob 526c877458fbd346d8e521119adb9ec70e7116a7
+- PestPhaseBProductionRowComparator.kt, blob ce1be5ea615104953b7319182878f4135baac07e
+- PestPhaseBDeterministicFixtureSupport.kt, blob c9229e730fd81a5e6ddb7104b50a14eb9c8726ae
+- PestPhaseBProductionBankRunner.kt, blob a5797843c7773338edd5f9d21c496ee1fd19a4c9
+
+Changed planner/test identities at the reviewed head:
+- PestPhaseBPhysicalPlan.kt: afeadb1f10ca23972bf197fa4cedcc626e8551c4
+- PestPhaseBPhysicalPlanTest.kt: 48daca63cc467963520243999910fc876cfd3434
+- PestPhaseBProtectedRemovalRegressionTest.kt: 85fa8f5800b9bd57db4388fb2f704cb5e6a8d1b5
+- PestPhaseBProductionBankExecutionTest.kt: 9cf6cdc2f44ce911b1c386189379a9f37bd395c0
+- PHASE_B_COMPLETE_BANK_GATE_V3_20261001.json: 4e9967764efd87ca60be6c413bbcc1b3a4c4f3d3
+- pest-phase-b-complete-bank-v3-20261001.yml: 1202ac0c96fa4b719b74f39bb4a4611373cea364
+- verify_phase_b_complete_bank_gate_v3.py: 3625c287da287c01b3a97362d92aec01563be50e
+
+The v3 gate base cffe2e43364d20e9a4c5f25601fd79a8605b84b4 -> reviewed head compare is exactly three added gate files: v3 workflow, v3 gate JSON, and v3 guard.
+
+REPRODUCTION PERFORMED
+
+No accepted truth was loaded. EngineAiPlayerController was not invoked. No 34,912,840-row behavioral bank, raw controller, GameInitializer, gameplay, allocation, claim, seed, or consumed original was executed.
+
+1. Exact non-behavioral evidence verification:
+- Run 36916433147 / artifact 11190815445 downloaded.
+- Downloaded ZIP SHA-256 independently recomputed as 344897394786d0a72508e37e72bd82f9c6ba4d92ac2bb06debd416053a6e7af2.
+- source.txt: 751881ce43595df99ba84352ee5b6ac6053e88da / tree a8f5efc7a0bc8acd6b7745013c4f562c532fdb48.
+- Planner blob: afeadb1f10ca23972bf197fa4cedcc626e8551c4.
+- Focused-regression blob: 85fa8f5800b9bd57db4388fb2f704cb5e6a8d1b5.
+- XML: 2 tests, 0 skipped, 0 failures, 0 errors.
+
+2. Corrected planner validation verification:
+- Run 36917108579 / artifact 11191470699 downloaded.
+- Downloaded ZIP SHA-256 independently recomputed as aef3d80c6385ff34bc6ad2a837dfc3116f74e795f33f70bd57e32f3588046f8a.
+- source.txt: 14b6aa415bd54d1b45bf29916e892d2aa20790df / tree 33b31f0fbfdc09edc82722b6046edfb44dec2a09.
+- Planner/test/regression blobs match the reviewed-head protected blobs.
+- XML total: 7 tests, 0 skipped, 0 failures, 0 errors.
+- plan-identity.txt: rows=34912840, sha256=bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71.
+- PestPhaseBProductionBankRunner.planIdentity() was inspected and hashes the full deterministic row identity: deck, name-multiset ordinal, mulligan count, physical-representative ordinal, seat, play/draw bit, and every physical entryIndex:copyOrdinal in ordered hand.
+
+3. Final gate verification:
+- Run 36919791766 / artifact 11192007131 downloaded.
+- Downloaded ZIP SHA-256 independently recomputed as f95bcaa2669068c48bf640f18772eb9353fa7132ab403252bd6ef10ed156cfeb.
+- The run checked out exact head 3306d4c23a11b605451db7c3866f694b0ca053c4.
+- The gate verifier returned STRUCTURE_ONLY_NOT_REVIEW_OR_EXECUTION.
+- A Gradle init guard rejected any Test or JavaExec task; only :gym:compileTestKotlin was requested, and compilation completed successfully.
+
+4. Independent small-state observability reproduction:
+- For mulligan counts 1 and 2, a sole-land hand has six spells and at most one spell can be protected by M2.
+- For a stable ranked spell sequence and requested spell-bottom count k, removing at most one protected spell can make only the original first k+1 positions relevant to the post-removal first k positions. Exhaustive symbolic enumeration for all six possible protected positions at k=1 and k=2 confirmed this inclusion property.
+- All physical-land counts 0..7 were checked algebraically for mulligan counts 1 and 2. After B2 excess-land selection, B3 always contains enough unprotected spells to satisfy the remaining requested bottom count; B4 cannot become the first source of a bottomed card in these seven-card/mulligan-1-or-2 contexts, including sole-land protection.
+
+FINDINGS
+
+P-1. The demonstrated predecessor defect is repaired at source level.
+The blocked predecessor enumerated only spellNeed positions of the pre-protection stable descending-CMC order. V3 uses observableSpellBudget = spellNeed + 1 whenever there is exactly one physical land. Since the extractor can protect at most one spell, this is sufficient to preserve every physical identity that can move into one of the first spellNeed bottom positions after protection removes one spell.
+
+P-2. The repair is not limited to the exact Generous Ent counterexample.
+The planner rule is expressed in terms of sole-land protected-removal capacity, not card name. The production extractor currently makes only one spell acquisition possible and the production comparator currently gives Generous Ent the relevant typed-cycling facts, but the quotient repair itself enumerates one extra global stable-CMC position independent of name. The second equal-CMC regression demonstrates the generic physical-order property rather than hardcoding Ent copy ordinals.
+
+P-3. Cross-CMC and equal-CMC cases are covered by the same one-position rule.
+B3 is a total stable order: descending CMC, then physical hand order. Removing one protected spell preserves the relative order of every remaining spell. Therefore a post-removal bottom prefix of length k can contain no identity that was deeper than position k+1 before removal. The v3 recursion consumes observableSpellBudget globally across CMC groups and fully orders only the observable prefix inside each equal-CMC group; an unobservable tail need not be factorially permuted.
+
+P-4. Mulligan-count changes do not expose a deeper physical prefix than v3 preserves.
+For mulligan 1 with one land, spellNeed=1 and v3 preserves two pre-removal spell positions. For mulligan 2 with one land, spellNeed=2 and v3 preserves three. Those are exactly the maxima required after one protected removal. For other land counts, no spell is protected by M2 and the original spellNeed prefix remains sufficient; v3 may conservatively over-enumerate one extra position in sole-land hands with no actual acquisition, but that redundancy does not omit a legal physical result.
+
+P-5. Land-bottom selection is not made less complete by the repair.
+B2 bottom identities are still represented by ordered selections of the exact number of observable excess-land positions. Sole-land M2 protection cannot interact with excess-land bottoming because a one-land hand has no excess land at either mulligan count.
+
+P-6. Seat and play/draw do not introduce an additional bottom-order equivalence dimension.
+The lawful bottom vector and BottomCardsInfo path used for bottom choice do not take seat or onPlay as a bottom-ranking input. The plan separately cross-products both seats and both play/draw states for every physical representative, so those contexts are not quotiented away.
+
+P-7. The corrected count/digest are consistently bound through the reviewed v3 source/gate scope.
+The validated planner bytes produced 34,912,840 / bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71. Those same values are required by the reviewed execution test, v3 gate JSON, and v3 workflow. The final v3 gate protects the same validated planner/test/regression blobs.
+
+P-8. Superseded old/v2 execution paths are fail-closed in the reviewed tree.
+The original gate JSON now declares BLOCKED_SUPERSEDED_PLAN_NO_EXECUTION_AUTHORITY. Its unchanged guard requires authority PREPARATION_ONLY_NO_EXECUTION_AUTHORITY, so the modified blocked authority causes guard failure before execution. The v2 workflow additionally places the job behind an unconditional false condition and its gate declares SUPERSEDED_BY_CORRECTED_GENERAL_OBSERVABILITY_PLAN_NO_EXECUTION_AUTHORITY / SUPERSEDED_DO_NOT_EXECUTE.
+
+P-9. No concrete changed-planner interaction defect was demonstrated in the preserved prior-reviewed components.
+Nothing in the changed quotient requires reopening the accepted truth bank, predicate-vector semantics, lawful actor, production row comparator, comparison journal, accepted-input digest/schema binding, frozen 60-card identity, no-GameInitializer property, no-fresh-entropy property, or raw/lawful information separation.
+
+PEST QUALIFYING DISPOSITION
+NOT ISSUED — reviewer independence prerequisite is not satisfied.
+
+PEST NON-QUALIFYING TECHNICAL RESULT
+NO DEMONSTRATED SOURCE BLOCKER IN DECLARED V3 SCOPE
+
+This technical result does NOT establish behavioral equivalence to EngineAiPlayerController, validity or completeness of the accepted truth bank, successful execution of the 34,912,840-row bank, zero mismatches/unknowns/exceptions, receipt/marker validity, execution authorization, acceptance of any behavioral original, C2-A2/gameplay admission, allocation, claim, or gameplay authority.
+
+==================================================
+INDUSTRIAL #214 — COMPLETE-RUNTIME RULE ADOPTION ANALYSIS
+==================================================
+
+INDUSTRIAL EXACT REVIEWED HEAD
+7c1b3ff9153087aaf27ba5f249d9f9fbede2e24d
+
+PROPOSAL FILE/BLOB
+industrial-waste/v2/R1_COMPLETE_RUNTIME_BOUNDARY_ADOPTION_PROPOSAL_20261001.json
+Blob: 6dc90dd3be24c6a62596ea42ac30f140b0692847
+
+The exact predecessor bb711eea056fc731fda0ce3a3b18523f26bfbe62 -> proposal-head compare is one commit and exactly one added file: the proposal above.
+
+GOVERNING DOCUMENTS INSPECTED
+
+industrial-waste/v2/R1_CAPABILITY.md
+Blob at predecessor and reviewed head: d86b946765d2b1637c3feac0d2e760c012063c94
+
+industrial-waste/v2/R1_COMPLETE_RUNTIME_BOUNDARY_PROPOSAL.md
+Blob at predecessor and reviewed head: a2161dda29fec1ac9e59f8a9e6b2c37b4d5a09cc
+
+PR #214 review request inspected: comment 5940179586.
+
+REPRODUCTION/STATIC ANALYSIS PERFORMED
+
+No supplemental capture was rerun or reinterpreted. Run 36912341177 was not used to derive expected membership. No manifest was generated from receiving evidence. No worker, capture, gameplay, seed, allocation, claim, or consumed original was executed.
+
+The proposal was compared clause-by-clause against the complete-universe, provenance, constrained-loading, admission/lifetime, and required-implementation rules in R1_COMPLETE_RUNTIME_BOUNDARY_PROPOSAL.md, with particular attention to prospectivity, determinism, runtime-surface completeness, generated/hidden classes, fail-closed behavior, and stage separation.
+
+FINDINGS
+
+I-1. Prospectivity and non-retrospective membership are correctly stated.
+The proposal requires construction of the expected non-VM runtime universe before sealed-worker start from declared prospective inputs. It marks the consumed supplemental capture non-normative and explicitly forbids observed receiving names/multiplicities/closure from adding or removing expected entries or defining the manifest. No rule-level blocker was found on criterion 1 or criterion 8.
+
+I-2. Rule/implementation/qualification/sealed-launch/R1-permit separation is correctly preserved.
+The authority string, five explicit stages, prohibited actions, and implementation_scope_after_adoption keep adoption separate from later implementation, qualification, sealed-launch acceptance, and R1 permit. No rule-level blocker was found on criterion 9.
+
+I-3. BLOCKER — the JVM-defined/generated/hidden-class rule is deferred rather than defined.
+The proposal says exact-name enumeration may exclude VM-defined/hidden classes only under an independently adopted family rule tied to the pinned JVM. That is a dependency on a future rule, not the explicit family rule itself. The governing runtime-boundary proposal requires generated/hidden classes to be explicitly classified by a precise pinned generator, inputs, loading mechanism, and non-redefinition constraints, or eliminated; it further states that readiness remains blocked until that category is fully specified and accepted. The current adoption proposal therefore does not itself satisfy criterion 5 and is not precise enough for atomic implementation under criterion 6.
+
+I-4. BLOCKER — the declared prospective universe is narrower/less explicit than the governing complete-runtime universe.
+The adoption JSON names exact source/build graph, the immutable dependency store, pinned container/JDK, worker/launcher argv/classpath/module-path/resources, and static/transitive closure. The governing proposal explicitly requires additional runtime surfaces to be manifest-bound and reviewed, including at minimum: Gradle wrapper/distribution/bootstrap and build-tool/plugin/compiler/toolchain graph; loader topology/delegations; complete directory/archive member inventories and multi-release handling; duplicate resource/binary precedence; OS/container dynamic loader and native-library dependencies; Python interpreter/standard-library/import closure; shell/just/executable launcher chain; working directory and allowed environment; and rejection of undeclared PATH/PYTHONPATH/CLASSPATH/JAVA option/init/plugin/native-library-path influence. The shorter adoption rule does not expressly incorporate those categories or normatively say that "runtime closure" includes every one of them. That leaves criterion 3 and criterion 6 under-specified relative to the governing document.
+
+I-5. BLOCKER — reproducibility of generated/transient pre-launch material is not made normative.
+The proposal includes "generated test/runtime resources derived before worker launch" as prospective inputs, but it does not require that those bytes be reproducible from the declared immutable inputs, nor state that non-reproducible drift prevents manifest adoption/admission. The governing proposal expressly states that non-reproducible byte drift fails qualification and cannot be normalized away, and that any necessary reproducibility rule must be specified prospectively and independently reviewed. Without that rule, identical declared inputs need not deterministically reproduce the same canonical universe, so criterion 2 is not fully met.
+
+I-6. BLOCKER — closure failure is not stated as a manifest-construction/admission failure strongly enough to close the above gaps.
+The proposed constrained worker rejects non-VM origins/resources outside the adopted manifest and a lifetime monitor records attempted out-of-manifest loads, which is directionally fail-closed. But because the universe and hidden/generated family are under-specified, the proposal does not explicitly state that inability to establish complete prospective closure means no canonical manifest may be produced and no prepared-worker attestation/admission may proceed. Criterion 7 therefore remains dependent on resolving I-3 through I-5 rather than being independently complete.
+
+I-7. The accepted immutable dependency store is distinguished from generated/transient material, but the treatment of transient material is incomplete.
+The 1,339-file dependency store is clearly identified as accepted and immutable, while generated test/runtime resources are named separately. That satisfies the basic distinction in criterion 4, but the missing reproducibility/sealing rules in I-5 prevent that distinction from being sufficient for adoption.
+
+INDUSTRIAL QUALIFYING DISPOSITION
+NOT ISSUED — reviewer independence prerequisite is not satisfied.
+
+INDUSTRIAL NON-QUALIFYING TECHNICAL RESULT
+BLOCKED — the proposal defers the JVM hidden/generated-class family rule; does not explicitly carry forward all complete-runtime surfaces required by the governing boundary document; and does not make generated/transient resource reproducibility plus closure-failure refusal normative enough for a deterministic, atomic governing manifest rule.
+
+A revised adoption rule would need, before independent re-review:
+- an explicit hidden/generated-class provenance rule, or a rule eliminating those definitions;
+- explicit incorporation of every launcher/build-tool/loader/native/platform/Python/shell/environment/resource surface required by R1_COMPLETE_RUNTIME_BOUNDARY_PROPOSAL.md;
+- a canonical, deterministic manifest construction rule that treats non-reproducible generated bytes as failure;
+- an explicit no-manifest/no-attestation/no-admission rule whenever complete closure cannot be established.
+
+Even after a revised rule is independently adopted, remaining work would still be prospective implementation of the offline manifest builder, constrained loader/worker, prepared-worker freshness/replay-resistant attestation, lifetime enforcement, Python admission receiver, canonical schema/serialization, and deterministic qualification fixtures; then independent source review and exact-runtime qualification; then separate sealed-launch acceptance; then a separate R1 permit decision.
+
+This analysis does NOT issue expected-manifest acceptance, sealed-launch acceptance, R1 permit, execution authorization, capture authorization, seed/allocation/claim authority, or gameplay authority.
+
+==================================================
+INDEPENDENCE STATEMENT
+==================================================
+
+I authored/published bytes in both exact review targets and participated in their implementation conversations:
+- Pest Control #216 corrected Phase-B v3 repair at 3306d4c23a11b605451db7c3866f694b0ca053c4.
+- Industrial Waste #214 R1_COMPLETE_RUNTIME_BOUNDARY_ADOPTION_PROPOSAL_20261001.json at 7c1b3ff9153087aaf27ba5f249d9f9fbede2e24d.
+
+Therefore I am not a fresh non-author reviewer for either scope. This document is a non-qualifying author-context source/rule analysis and MUST NOT be preserved or cited as the independent review required by the Pest v3 gate or the Industrial rule-adoption gate.
