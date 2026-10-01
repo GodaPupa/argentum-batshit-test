@@ -58,4 +58,28 @@ class PestPhaseBPhysicalPlanTest : FunSpec({
             .toSet()
         bottomedEntCopies shouldBe setOf(1, 2, 3)
     }
+    test("sole-land protected-removal observability is not card-name special-cased") {
+        val spec = PestPhaseBPhysicalPlan.spec("pest")
+        fun card(name: String, copy: Int): PestPhaseBPhysicalCard {
+            val index = spec.entries.indexOfFirst { it.first == name }
+            require(index >= 0)
+            return PestPhaseBPhysicalCard(index, copy, name)
+        }
+        val hand = listOf(
+            card("Forest", 1),
+            card("Pest Mascot", 1),
+            card("Pest Mascot", 2),
+            card("Pest Mascot", 3),
+            card("Essence Warden", 1),
+            card("Essence Warden", 2),
+            card("Essence Warden", 3),
+        )
+        val secondEqualCmcCopies = PestPhaseBPhysicalPlan.physicalRepresentatives(spec, hand, mulligans = 1)
+            .mapNotNull { ordered ->
+                ordered.filter { it.name == "Pest Mascot" }.getOrNull(1)?.copyOrdinal
+            }
+            .toSet()
+        secondEqualCmcCopies shouldBe setOf(1, 2, 3)
+    }
+
 })
