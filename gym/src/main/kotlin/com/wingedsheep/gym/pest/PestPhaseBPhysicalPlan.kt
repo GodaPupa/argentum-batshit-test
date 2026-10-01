@@ -168,41 +168,40 @@ internal object PestPhaseBPhysicalPlan {
             .toSortedMap(compareByDescending { it })
             .entries.map { it.key to it.value }
 
+        // With one physical land, M2 may protect one spell before B3 ranks the remaining spells.
+        // Therefore the observable pre-filter prefix is one position deeper than the requested
+        // spell-bottom count. This is an observability rule, not a card-name exception: enumerate
+        // the first (spellNeed + 1) physical positions of the global stable CMC ordering so every
+        // possible single protected removal still leaves every bottomable physical identity
+        // represented. When there is no sole-land protection possibility, only spellNeed positions
+        // are observable.
+        val observableSpellBudget = spellNeed + if (lands.size == 1 && spells.isNotEmpty()) 1 else 0
+
         fun spellOrders(
             index: Int,
-            need: Int,
+            observableLeft: Int,
             prefix: List<PestPhaseBPhysicalCard>,
         ): Sequence<List<PestPhaseBPhysicalCard>> = sequence {
             if (index == groups.size) {
-                check(need == 0)
+                check(observableLeft == 0)
                 yield(prefix)
                 return@sequence
             }
             val (_, group) = groups[index]
-            val take = minOf(need, group.size)
-            val acquisitionShift = if (
-                lands.size == 1 &&
-                group.any { it.name == "Generous Ent" } &&
-                take < group.size
-            ) 1 else 0
-            val observablePrefix = take + acquisitionShift
+            val observablePrefix = minOf(observableLeft, group.size)
             val options = if (observablePrefix == 0) sequenceOf(group) else sequence {
-                // Stable descending-CMC sort normally exposes the first 'take' bottom IDs. With
-                // exactly one land, however, the first visible Generous Ent can become the protected
-                // M2 acquisition card; filtering it shifts the observable bottom identity one place
-                // deeper. Enumerate that extra physical position instead of canonicalizing it away.
                 for (selected in orderedSelections(group, observablePrefix)) {
                     val selectedSet = selected.toSet()
                     yield(selected + group.filterNot(selectedSet::contains))
                 }
             }
             for (option in options) {
-                yieldAll(spellOrders(index + 1, need - take, prefix + option))
+                yieldAll(spellOrders(index + 1, observableLeft - observablePrefix, prefix + option))
             }
         }
 
         return sequence {
-            for (landOrder in landOrders) for (spellOrder in spellOrders(0, spellNeed, emptyList())) {
+            for (landOrder in landOrders) for (spellOrder in spellOrders(0, observableSpellBudget, emptyList())) {
                 val ordered = landOrder + spellOrder
                 check(ordered.size == 7 && ordered.toSet().size == 7)
                 yield(ordered)
