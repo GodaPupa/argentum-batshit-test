@@ -10,7 +10,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v6
-        with: {fetch-depth: 1, persist-credentials: false}
+        with: {fetch-depth: 3, persist-credentials: false}
       - uses: actions/setup-java@v5
         with: {distribution: temurin, java-version: "21"}
       - uses: gradle/actions/setup-gradle@v6
