@@ -1,0 +1,27 @@
+{
+  "schema": "manual-stored-replay-integration-fixture-scope-v1",
+  "authority": "PROSPECTIVE_FIXTURES_ONLY_NOT_EXECUTION_AUTHORIZATION",
+  "reviewed_production_head": "1f4b927a54aab72ffc0ebecfeaab2c91dafe9735",
+  "review_receiving_comment": 5933580140,
+  "production_compile_run": 36877572671,
+  "production_compile_artifact": 11170420256,
+  "production_compile_scope": "ACTUAL_PRODUCTION_DEPENDENCIES_COMPILE_ONLY",
+  "test_class": "com.wingedsheep.gym.manual.ManualStoredFixtureReplayIntegrationTest",
+  "test_path": "gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualStoredFixtureReplayIntegrationTest.kt",
+  "test_blob": "c50ccda3260da8e6baee6d8af15cb041a9184d42",
+  "expected_cases": 4,
+  "fixture_seed_constant": -202610010218,
+  "excluded_from_official_sampling": true,
+  "fixture_configuration": "Four explicit synthetic seats, 99 Forest cards per seat, vanilla legendary commander sentinels, no hand smoothing, explicit starting seat, exactly one masked keep before a submission cap.",
+  "identity_pin_status": "EXPLICIT_SYNTHETIC_PLACEHOLDERS_NOT_AUTHENTICATED_DECK_OR_PILOT_PINS",
+  "cases": [
+    "Durable-before-factory real initialization, one real masked keep, stored trace and read-only replay without repeated factory/pilot decisions",
+    "Corrupt disposable stored result rejects without rewriting it",
+    "Consumed completed identity cannot invoke a replacement factory",
+    "Failed factory material cannot be promoted to complete replay"
+  ],
+  "next_gate": "Independent review of these new fixture bytes and bounded workflow, then one separately authorized exact four-case qualification original; exact XML/result audit before scoped acceptance.",
+  "execution_under_this_commit": false,
+  "prohibited": ["No real frozen deck or opponent competence claim", "No Animar mechanics qualification from the name-only vanilla sentinel", "No official seed/allocation/claim/game", "No consumed-original rerun", "No whole-pilot or per-action crash-durability acceptance"],
+  "official_counters_delta": 0
+}
