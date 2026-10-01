@@ -1,0 +1,49 @@
+name: Manual Swan Song exact-source compile only
+on:
+  push:
+    branches: ["validation/manual-swan-song-compile-20261001"]
+    paths: [".github/workflows/manual-swan-song-compile-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/manual-swan-song-compile-${{ github.run_id }}
+      EVIDENCE: /tmp/manual-swan-song-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: b84e68b918874052c18b8845c48327aa1bf82a03, fetch-depth: 1, persist-credentials: false}
+      - name: Bind exact source and compile without tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = b84e68b918874052c18b8845c48327aa1bf82a03
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/SwanSong.kt)" = 385ab04b2d05e7f8d160f156746cb4b69b4fbee9
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SwanSongScenarioTest.kt)" = 34e5f47d835610f30ff45628afe98a6fcdc158bc
+          test "$(git hash-object experiments/manual-transmission-phase2/CARD_COVERAGE_SWAN_SONG_SCOPE_20261001.json)" = 998c44b23f58c46819e3bdec4f7fca404720d535
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+          cat > "$EVIDENCE/compile-only.init.gradle" <<'GROOVY'
+          import org.gradle.api.tasks.testing.Test
+          import org.gradle.api.tasks.JavaExec
+          gradle.taskGraph.whenReady { graph ->
+              def forbidden=graph.allTasks.findAll { it instanceof Test || it instanceof JavaExec }
+              if (!forbidden.empty) throw new GradleException('behavioral task forbidden: '+forbidden*.path)
+              println 'MANUAL_SWAN_SONG_COMPILE_ONLY'
+          }
+          GROOVY
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain -I "$EVIDENCE/compile-only.init.gradle" :mtg-sets:2008-2016:tests:compileTestKotlin 2>&1 | tee "$EVIDENCE/compile.log"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-swan-song-compile-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
