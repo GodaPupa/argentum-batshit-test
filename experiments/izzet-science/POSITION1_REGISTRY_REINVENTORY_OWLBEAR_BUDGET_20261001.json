@@ -1,0 +1,33 @@
+{
+  "schema": "izzet-position1-registry-reinventory-owlbear-budget-v1",
+  "date_utc": "2026-10-01",
+  "parent_implementation": "5ddd5f8adc206a5da25ad690c9a732102e4835e3",
+  "purpose": "Zero-seed registry-only re-inventory of the unchanged frozen 55 Position-1 identities after accepted Owlbear exact three-case mechanics qualification.",
+  "diagnostic_test_blob": "197a99e6c17885bb70511916893d3a33de217feb",
+  "accepted_prior_diagnostic": {
+    "run": 36737814720,
+    "artifact": 11108461417,
+    "artifact_sha256": "3b167d8da86a4f6800aea3bad4693a4fec26419508da80a466df88cc34c75205",
+    "registered": 13,
+    "missing": 42
+  },
+  "accepted_owlbear": {
+    "run": 36919216490,
+    "artifact": 11191368449,
+    "artifact_sha256": "ee8643e7c88c2d23305590082adadb31fa6dd57a7a2c248b8e9b889a989715f0",
+    "decision": "ACCEPT_OWLBEAR_EXACT_THREE_CASE_MECHANICS_QUALIFICATION_SCOPE_ONLY"
+  },
+  "acceptance": [
+    "execute exact unchanged 55-name registry inventory against current Owlbear-qualified source",
+    "preserve exact XML/build/source/registered/missing lists",
+    "require Owlbear registered",
+    "treat remaining missing names as registry absence diagnostics only"
+  ],
+  "prohibited": [
+    "no mechanics competence inferred from registry presence",
+    "no implementation of missing cards",
+    "no pilot/opponent/replay/seed/allocation/gameplay authority"
+  ],
+  "authority_if_clean": "POST_OWLBEAR_POSITION1_REGISTRY_DIAGNOSTIC_ONLY",
+  "official_counters_delta": 0
+}
