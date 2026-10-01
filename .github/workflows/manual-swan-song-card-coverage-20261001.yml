@@ -1,0 +1,37 @@
+name: Manual Swan Song card coverage validation
+on:
+  push:
+    branches: ["validation/manual-swan-song-card-coverage-20261001"]
+    paths: [".github/workflows/manual-swan-song-card-coverage-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  swan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_USER_HOME: /tmp/manual-swan-song-${{ github.run_id }}
+      OUT: /tmp/manual-swan-song-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 6fd1400ea39cc9f1228a43c9d7d710630fdec46e, fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Execute exact four-case Swan Song scope only
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 6fd1400ea39cc9f1228a43c9d7d710630fdec46e
+          test ! -e "$OUT" && mkdir "$OUT"
+          test "$(git hash-object experiments/manual-transmission-phase2/CARD_COVERAGE_SWAN_SONG_SCOPE_20261001.json)" = 998c44b23f58c46819e3bdec4f7fca404720d535
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/SwanSong.kt)" = 385ab04b2d05e7f8d160f156746cb4b69b4fbee9
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SwanSongScenarioTest.kt)" = 34e5f47d835610f30ff45628afe98a6fcdc158bc
+          git rev-parse HEAD HEAD^{tree} > "$OUT/source.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.SwanSongScenarioTest 2>&1 | tee "$OUT/tests.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SwanSongScenarioTest.xml "$OUT/"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-swan-song-card-coverage-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: warn
+          retention-days: 90
