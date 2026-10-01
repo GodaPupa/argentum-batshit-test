@@ -1,0 +1,49 @@
+name: Izzet Goblin Electromancer exact-source compile only
+on:
+  push:
+    branches: ["validation/izzet-goblin-electromancer-compile-20261001"]
+    paths: [".github/workflows/izzet-goblin-electromancer-compile-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/izzet-goblin-electromancer-compile-${{ github.run_id }}
+      EVIDENCE: /tmp/izzet-goblin-electromancer-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 9c0ff04e783478f41630a3d0fa4f361c4c0cef46, fetch-depth: 1, persist-credentials: false}
+      - name: Bind exact source and compile without tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = 9c0ff04e783478f41630a3d0fa4f361c4c0cef46
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/rtr/cards/GoblinElectromancer.kt)" = 7e2c27d56a5d3e67279cd464024309a90881cc9c
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GoblinElectromancerScenarioTest.kt)" = 1846884b808fdbdc5e6a987cf98d3d376caa0259
+          test "$(git hash-object experiments/izzet-science/POSITION1_GOBLIN_ELECTROMANCER_QUALIFICATION_FREEZE_20261001.json)" = 8db904a9d0c09a0c9bd9334ca10a341f50bfe81d
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+          cat > "$EVIDENCE/compile-only.init.gradle" <<'GROOVY'
+          import org.gradle.api.tasks.testing.Test
+          import org.gradle.api.tasks.JavaExec
+          gradle.taskGraph.whenReady { graph ->
+              def forbidden=graph.allTasks.findAll { it instanceof Test || it instanceof JavaExec }
+              if (!forbidden.empty) throw new GradleException('behavioral task forbidden: '+forbidden*.path)
+              println 'IZZET_GOBLIN_ELECTROMANCER_COMPILE_ONLY'
+          }
+          GROOVY
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain -I "$EVIDENCE/compile-only.init.gradle" :mtg-sets:2008-2016:tests:compileTestKotlin 2>&1 | tee "$EVIDENCE/compile.log"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-goblin-electromancer-compile-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
