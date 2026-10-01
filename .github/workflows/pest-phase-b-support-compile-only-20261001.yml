@@ -1,0 +1,85 @@
+name: Pest Phase-B support exact-source compile only
+on:
+  push:
+    branches: ["validation/pest-phase-b-support-compile-20261001"]
+    paths: [".github/workflows/pest-phase-b-support-compile-only-20261001.yml"]
+permissions:
+  contents: read
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-phase-b-support-compile-${{ github.run_id }}
+      COMPILE_EVIDENCE: /tmp/pest-phase-b-support-evidence-${{ github.run_id }}
+      TZ: UTC
+    steps:
+      - name: Checkout exact Pest source without unrelated experimental evidence
+        uses: actions/checkout@v6
+        with:
+          ref: 9748a51fc2df7e64c4f0bf675de08bf9c747705b
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/ferocity-recycling/
+            !/industrial-waste/
+            !/experiments/
+            !/sphinx-approach/
+      - name: Bind compile-only source and forbid behavioral tasks
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = 9748a51fc2df7e64c4f0bf675de08bf9c747705b
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt)" = a40c0fa23c2ce95137b2dedf56537372fceec485
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt)" = c9229e730fd81a5e6ddb7104b50a14eb9c8726ae
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt)" = 4adca33a97be8aeca099b513f61e9f4133f655b1
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt)" = ce1be5ea615104953b7319182878f4135baac07e
+          test "$(git hash-object scripts/gradle-locked)" = cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d
+          test -z "$(git status --porcelain --untracked-files=all)"
+          test -z "${JAVA_TOOL_OPTIONS:-}${JDK_JAVA_OPTIONS:-}${_JAVA_OPTIONS:-}${CLASSPATH:-}${JAVA_OPTS:-}${GRADLE_OPTS:-}"
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$COMPILE_EVIDENCE" && test ! -L "$COMPILE_EVIDENCE"
+          mkdir "$COMPILE_EVIDENCE"
+          echo '11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d  /usr/lib/jvm/temurin-21-jdk-amd64/bin/java' | sha256sum -c -
+          git rev-parse HEAD HEAD^{tree} > "$COMPILE_EVIDENCE/source.txt"
+          git hash-object             gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt             gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt             gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt             gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt             scripts/gradle-locked > "$COMPILE_EVIDENCE/source-blobs.txt"
+          "$JAVA_HOME/bin/java" -version > "$COMPILE_EVIDENCE/java-version.txt" 2>&1
+          printf '%s\n' 'AUTHOR_COMPILE_ONLY_NOT_PHASE_B_ACCEPTANCE' ':gym:compileTestKotlin' 'No Test/JavaExec; no accepted truth, raw controller invocation or behavioral original.' > "$COMPILE_EVIDENCE/scope.txt"
+          cat > "$COMPILE_EVIDENCE/compile-only.init.gradle" <<'GROOVY'
+          import org.gradle.api.tasks.testing.Test
+          import org.gradle.api.tasks.JavaExec
+          gradle.taskGraph.whenReady { graph ->
+              def forbidden = graph.allTasks.findAll { it instanceof Test || it instanceof JavaExec }
+              if (!forbidden.empty) throw new GradleException('Compile-only boundary rejected tasks: ' + forbidden*.path)
+              new File(System.getenv('COMPILE_EVIDENCE'), 'task-graph.txt').text =
+                  graph.allTasks.collect { it.path + ' ' + it.class.name }.join('\n') + '\n'
+              println 'ARGENTUM_PEST_COMPILE_ONLY_NO_TEST_OR_JAVAEXEC'
+          }
+          GROOVY
+      - name: Compile Pest support and test-fixture source without execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --max-workers=2 --console=plain --stacktrace -I "$COMPILE_EVIDENCE/compile-only.init.gradle" :gym:compileTestKotlin 2>&1 | tee "$COMPILE_EVIDENCE/compile.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          printf '%s\n' "$rc" > "$COMPILE_EVIDENCE/compile-exit.txt"
+          git status --porcelain --untracked-files=all > "$COMPILE_EVIDENCE/worktree-after.txt"
+          test ! -s "$COMPILE_EVIDENCE/worktree-after.txt"
+          exit "$rc"
+      - name: Preserve compile-only evidence including failure
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-support-compile-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.COMPILE_EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
