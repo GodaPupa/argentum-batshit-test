@@ -1,0 +1,108 @@
+{
+  "schema": "industrial-r1-parser-successor-original-audit-v1",
+  "date_utc": "2026-10-01",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "run": 36912341177,
+  "run_attempt": 1,
+  "artifact": 11190020145,
+  "artifact_sha256": "d5c025ed75f61a53db78b2169f6c2da88c88d0b872ffd397917782a33a229d39",
+  "execution_head": "41d21479fabe5961f1f42efa1b21f4622a977a9b",
+  "execution_tree": "3278d3bccc15fefb5a282d04689dc0fa41c447dc",
+  "reviewed_implementation": "bb711eea056fc731fda0ce3a3b18523f26bfbe62",
+  "reviewed_tree": "ada84194ec3ab3e2d98dd36ba3ee37a881de80e5",
+  "receipt_commit": "f3685c8f05ed9c8b9cd0ea35ce6b24f51e97f909",
+  "receipt_blob": "4135eefc7109b0b066e2c57e423823b2602b9a0a",
+  "marker_blob": "cd528df38dcf6946519b19d863d71946ba899f8f",
+  "authorization_comment": 5938614995,
+  "authorization_sha256": "ebaca38dc70a93a809eb623e7342c39a77effee7b40033ecd324d23b73dc61cb",
+  "source_gate_review_sha256": "71fcb57a69df90c11675339a5aee5ff19a48a19b4ed6e92e18b57a9c6fc4706d",
+  "dependency_store": {
+    "artifact": 11105215706,
+    "outer_sha256": "3c8d31f1560cb6e52f862fcaed5de757d67ac4433bd84a1e729d44e2384da649",
+    "archive_sha256": "a282721ebdc4117ec20eaed1d711a5f20568c13ded082f00676843b894773be3",
+    "manifest_sha256": "b5e458d3039e70cecbaf90337c4dbf1b81feb44aea86d54fe0cd8477a50430c4",
+    "files": 1339
+  },
+  "runtime": {
+    "container": "catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3",
+    "java_sha256": "11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d",
+    "python_sha256": "7d51cd6b48b521277f5caa4610a82126e315fa2be4df069823a8b1eeb5bd4a86",
+    "runtime_1_sha256": "f10d9bfd3db0f71b8fe2c46ae6bdbaab7a6c0305f0847054c47ce26d152cbec5",
+    "runtime_2_sha256": "f10d9bfd3db0f71b8fe2c46ae6bdbaab7a6c0305f0847054c47ce26d152cbec5"
+  },
+  "launches": {
+    "first": {
+      "returncode": 0,
+      "log_sha256": "5261bea786470684f5f77ce52cd33b2363b49c765320d40e13227a066fabd63d",
+      "processes": 9,
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "complete_independent_case_evidence": true
+    },
+    "second": {
+      "returncode": 0,
+      "log_sha256": "4b326215ae70b844d9dc25c9eaedeafc743d88d4301cd7094042b06d7ba6aeaa",
+      "processes": 9,
+      "tests": 10,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "complete_independent_case_evidence": true
+    }
+  },
+  "fixed_case_names": [
+    "legacy exact-one beneficial singleton retains both original evaluation views",
+    "legacy exact-one empty beneficial branch retains both original evaluation views",
+    "legacy no-candidate no-payoff tie retains greater-than-or-equal acceptance",
+    "legacy up-to-one beneficial singleton stores no completed follow-up",
+    "legacy up-to-one beneficial empty branch stores no completed follow-up",
+    "legacy harmful singleton keeps its original tie behavior without default-policy repair",
+    "legacy multiple candidates retain independent generic selection rather than a stored branch",
+    "legacy advisor answer remains first and bypasses generic simulation",
+    "legacy advisor deferral retains original two-simulation generic evaluation",
+    "legacy unaffordable optional cast retains the original evaluated decline without preflight"
+  ],
+  "class_census": {
+    "policy": "PINNED_GENERATOR_INPUTS_VM_LOOKUP_DEFINE_MULTIPLICITY_EQUIVALENCE",
+    "equal": true,
+    "non_vm_multiplicity_equal": true,
+    "generated_hidden_family_set_equal": true,
+    "vm_lookup_define_family_set_equal": true,
+    "first_non_vm_rows": 48806,
+    "second_non_vm_rows": 48806,
+    "first_vm_lookup_define_rows": 475,
+    "second_vm_lookup_define_rows": 476
+  },
+  "final_xml": {
+    "sha256": "0fcc97bfd9437fd38b5406b97707aea145cf1957be465f3d0ddb78a3a73d19a4",
+    "tests": 10,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "official_counters": {
+    "claims": 0,
+    "allocations": 0,
+    "games": 0,
+    "outcomes": 0
+  },
+  "decision": "ACCEPT_SUPPLEMENTAL_HERMETIC_CAPTURE_SCOPE_ONLY",
+  "demonstrated": [
+    "exact reviewed receipt-only then marker-only execution topology",
+    "accepted dependency-store identity",
+    "two offline launches each independently establishing all ten fixed cases",
+    "identical runtime graph bytes across launches",
+    "class-census equivalence under the predeclared VM-hidden rule",
+    "no official seed files and zero official counters"
+  ],
+  "non_authority": [
+    "no expected-manifest adoption",
+    "no sealed-launch acceptance",
+    "no R1 permit",
+    "no claim allocation game or gameplay",
+    "no promotion or rerun of consumed run 36749369682"
+  ],
+  "next_gate": "Use this accepted supplemental-hermetic-capture evidence only as input to the separately reviewed expected-manifest / sealed-launch / R1-permit sequence required by the governing Industrial protocol."
+}
