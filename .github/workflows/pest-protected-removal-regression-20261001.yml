@@ -1,0 +1,48 @@
+name: Pest protected-removal focused regression only
+on:
+  push:
+    branches: ["validation/pest-protected-removal-regression-20261001"]
+    paths: [".github/workflows/pest-protected-removal-regression-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  regress:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-protected-removal-${{ github.run_id }}
+      EVIDENCE: /tmp/pest-protected-removal-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 751881ce43595df99ba84352ee5b6ac6053e88da, fetch-depth: 1, persist-credentials: false}
+      - name: Execute only two focused planner regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = 751881ce43595df99ba84352ee5b6ac6053e88da
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+          git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProtectedRemovalRegressionTest.kt > "$EVIDENCE/blobs.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:compileTestKotlin 2>&1 | tee "$EVIDENCE/compile.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info :gym:test --tests com.wingedsheep.gym.pest.PestPhaseBProtectedRemovalRegressionTest 2>&1 | tee "$EVIDENCE/tests.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBProtectedRemovalRegressionTest.xml "$EVIDENCE/"
+          /usr/bin/python3.10 -I -S - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          e=pathlib.Path(os.environ['EVIDENCE'])
+          r=ET.parse(e/'TEST-com.wingedsheep.gym.pest.PestPhaseBProtectedRemovalRegressionTest.xml').getroot()
+          assert int(r.attrib['tests'])==2
+          assert all(int(r.attrib[k])==0 for k in ('failures','errors','skipped'))
+          assert len(list(r.iter('testcase')))==2
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-protected-removal-regression-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
