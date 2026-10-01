@@ -1,0 +1,58 @@
+name: Active gates exact-head structural validation only
+on:
+  push:
+    branches: ["validation/active-gates-structure-20261001"]
+    paths: [".github/workflows/active-gates-structure-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  structure:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - lane: izzet
+            source: 5ddd5f8adc206a5da25ad690c9a732102e4835e3
+            plan: experiments/izzet-science/POSITION1_OWLBEAR_QUALIFICATION_GATE_20261001.json
+            guard: experiments/izzet-science/verify_owlbear_gate.py
+          - lane: manual
+            source: 9532c2e79412694f953bd6ff4ae2438b1d347dae
+            plan: experiments/manual-transmission-phase2/STORED_REPLAY_INTEGRATION_GATE_20261001.json
+            guard: experiments/manual-transmission-phase2/verify_stored_replay_gate.py
+          - lane: sphinx
+            source: 1651644ff0e638a0b5e77b26d9c670109b7defd2
+            plan: sphinx-approach/ENGINE_FIXTURE_INTEGRATION_GATE_20261001.json
+            guard: sphinx-approach/verify_engine_fixture_gate.py
+          - lane: industrial
+            source: bb711eea056fc731fda0ce3a3b18523f26bfbe62
+            plan: industrial-waste/v2/R1_PARSER_SUCCESSOR_GATE_20261001.json
+            guard: industrial-waste/v2/verify_parser_successor_gate.py
+    runs-on: ubuntu-latest
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ matrix.source }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate exact implementation structure only
+        shell: bash
+        env:
+          SOURCE: ${{ matrix.source }}
+          PLAN: ${{ matrix.plan }}
+          GUARD: ${{ matrix.guard }}
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = "$SOURCE"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          /usr/bin/python3.10 -I -S "$GUARD" --plan "$PLAN" --mode implementation --implementation "$SOURCE"
+          test -z "$(git status --porcelain --untracked-files=all)"
+          printf '%s\n' "$SOURCE" "$(git rev-parse HEAD^{tree})" "$(git hash-object "$PLAN")" "$(git hash-object "$GUARD")" > structure-result.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: active-gate-structure-${{ matrix.lane }}-${{ github.run_id }}
+          path: structure-result.txt
+          if-no-files-found: error
+          retention-days: 90
