@@ -15,7 +15,7 @@ jobs:
       options: --platform linux/amd64
     env:
       JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
-      GRADLE_USER_HOME: ${{ runner.temp }}/izzet-owlbear-gradle-20261001
+      GRADLE_USER_HOME: /tmp/izzet-owlbear-gradle-20261001
       TZ: UTC
     steps:
       - uses: actions/checkout@v6
