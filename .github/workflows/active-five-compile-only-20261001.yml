@@ -1,0 +1,100 @@
+name: Active program exact-source compile only
+on:
+  push:
+    branches: ["validation/active-five-compile-only-20261001"]
+    paths: [".github/workflows/active-five-compile-only-20261001.yml"]
+permissions:
+  contents: read
+jobs:
+  compile:
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - lane: manual
+            source: 1f4b927a54aab72ffc0ebecfeaab2c91dafe9735
+            file: gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoStoredFixtureReplay.kt
+            blob: ad2cc1ebaedd055104fb185f236427a9fd7e231a
+          - lane: sphinx
+            source: 400c617df38775398b468833dee5921e79263599
+            file: gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEEngineFixture.kt
+            blob: b48697cc594a52631bfdee7b4219afc7fdd466d9
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: ${{ runner.temp }}/argentum-compile-${{ matrix.lane }}-${{ github.run_id }}
+      COMPILE_EVIDENCE: ${{ runner.temp }}/compile-evidence-${{ matrix.lane }}
+      TZ: UTC
+    steps:
+      - name: Checkout exact reviewed source without experimental evidence directories
+        uses: actions/checkout@v6
+        with:
+          ref: ${{ matrix.source }}
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/ferocity-recycling/
+            !/industrial-waste/
+            !/experiments/
+            !/sphinx-approach/
+            !/docs/
+      - name: Freeze compile-only task and exact source
+        shell: bash
+        env:
+          EXPECTED_SOURCE: ${{ matrix.source }}
+          EXPECTED_FILE: ${{ matrix.file }}
+          EXPECTED_BLOB: ${{ matrix.blob }}
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SOURCE"
+          test "$(git hash-object "$EXPECTED_FILE")" = "$EXPECTED_BLOB"
+          test "$(git hash-object scripts/gradle-locked)" = cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d
+          test -z "$(git status --porcelain --untracked-files=all)"
+          test -z "${JAVA_TOOL_OPTIONS:-}${JDK_JAVA_OPTIONS:-}${_JAVA_OPTIONS:-}${CLASSPATH:-}${JAVA_OPTS:-}${GRADLE_OPTS:-}"
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$COMPILE_EVIDENCE" && test ! -L "$COMPILE_EVIDENCE"
+          mkdir "$COMPILE_EVIDENCE"
+          echo '11af352aa2c506c4123a4e4c19c187d59e06cd0dff317d54f5e6806e07c6715d  /usr/lib/jvm/temurin-21-jdk-amd64/bin/java' | sha256sum -c -
+          git rev-parse HEAD HEAD^{tree} > "$COMPILE_EVIDENCE/source.txt"
+          git hash-object "$EXPECTED_FILE" scripts/gradle-locked > "$COMPILE_EVIDENCE/source-blobs.txt"
+          "$JAVA_HOME/bin/java" -version > "$COMPILE_EVIDENCE/java-version.txt" 2>&1
+          printf '%s\n' 'AUTHOR_COMPILE_ONLY_NOT_INTEGRATION_OR_EXPERIMENT_ACCEPTANCE' ':gym:compileKotlin' 'No Test or JavaExec tasks; no operational fixture, original, seed, allocation or game.' > "$COMPILE_EVIDENCE/scope.txt"
+          cat > "$COMPILE_EVIDENCE/compile-only.init.gradle" <<'GROOVY'
+          import org.gradle.api.tasks.testing.Test
+          import org.gradle.api.tasks.JavaExec
+          gradle.taskGraph.whenReady { graph ->
+              def forbidden = graph.allTasks.findAll { it instanceof Test || it instanceof JavaExec }
+              if (!forbidden.empty) throw new GradleException('Compile-only boundary rejected tasks: ' + forbidden*.path)
+              def report = new File(System.getenv('COMPILE_EVIDENCE'), 'task-graph-' + gradle.rootProject.name + '.txt')
+              report.text = graph.allTasks.collect { it.path + ' ' + it.class.name }.join('\n') + '\n'
+              println 'ARGENTUM_COMPILE_ONLY_GRAPH_NO_TEST_OR_JAVAEXEC'
+          }
+          GROOVY
+      - name: Compile production module and its actual dependencies without test execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --max-workers=2 --console=plain --stacktrace -I "$COMPILE_EVIDENCE/compile-only.init.gradle" :gym:compileKotlin 2>&1 | tee "$COMPILE_EVIDENCE/compile.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          printf '%s\n' "$rc" > "$COMPILE_EVIDENCE/compile-exit.txt"
+          git status --porcelain --untracked-files=all > "$COMPILE_EVIDENCE/worktree-after.txt"
+          test ! -s "$COMPILE_EVIDENCE/worktree-after.txt"
+          exit "$rc"
+      - name: Preserve static compilation evidence, including failure
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: active-compile-only-${{ matrix.lane }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.COMPILE_EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
