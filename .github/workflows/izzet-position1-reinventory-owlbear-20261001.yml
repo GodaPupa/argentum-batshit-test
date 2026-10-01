@@ -1,0 +1,63 @@
+name: Izzet Position-1 registry reinventory after accepted Owlbear
+on:
+  push:
+    branches: ["validation/izzet-position1-reinventory-owlbear-20261001"]
+    paths: [".github/workflows/izzet-position1-reinventory-owlbear-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  registry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind source-only registry diagnostic
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/izzet-position1-reinventory-owlbear
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = ed84c9078fa29f39e3a8c7356496b55096dd8375
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt)" = 197a99e6c17885bb70511916893d3a33de217feb
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/afr/cards/Owlbear.kt)" = 0c94d28957e735b7a0af93b783542dc5d002e305
+          git rev-parse HEAD HEAD^ HEAD^^ HEAD^{tree} > "$OUT/source.txt"
+          printf '%s\n' 'REGISTRY_DIAGNOSTIC_ONLY_NO_POSITION1_PILOT_OR_GAMEPLAY' > "$OUT/scope.txt"
+      - name: Execute exact 55 registry identities
+        shell: bash
+        run: |
+          set -o pipefail
+          just test-class IzzetPosition1RegistryInventoryTest --rerun-tasks --no-build-cache --console=plain 2>&1 | tee build/reports/izzet-position1-reinventory-owlbear/test.log
+      - name: Preserve and summarize diagnostic
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/izzet-position1-reinventory-owlbear
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          cp "$XML" "$OUT/"
+          python3 - <<'PY'
+          import json,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path("build/reports/izzet-position1-reinventory-owlbear")
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          reg=[]; miss=[]; suffix=" is registered in current runtime"
+          for case in root.iter("testcase"):
+              name=case.attrib["name"]; card=name[:-len(suffix)] if name.endswith(suffix) else name
+              (reg if case.find("failure") is None and case.find("error") is None else miss).append(card)
+          summary={"schema":"izzet-position1-registry-reinventory-owlbear-v1","tests":int(root.attrib.get("tests","0")),
+                   "failures":int(root.attrib.get("failures","0")),"errors":int(root.attrib.get("errors","0")),
+                   "skipped":int(root.attrib.get("skipped","0")),"registered":len(reg),"missing":len(miss),
+                   "registered_names":sorted(reg),"missing_names":sorted(miss),"owlbear_registered":"Owlbear" in reg}
+          assert summary["tests"]==55 and summary["owlbear_registered"] is True
+          (out/"registry-summary.json").write_text(json.dumps(summary,sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-position1-reinventory-owlbear-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/izzet-position1-reinventory-owlbear/
+          if-no-files-found: error
+          retention-days: 90
