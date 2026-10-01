@@ -44,7 +44,7 @@
     "No full Phase-B behavioral original before independent source review and separate authorization.",
     "No allocation claim game initialization gameplay or outcome."
   ],
-  "next_gate": "Freeze a new v2 execution gate around exactly 30,452,552 rows / plan SHA-256 7ff0b8d7...17bf8, compile/static validate changed support, then obtain fresh non-author review of the changed Pest delta before any behavioral original.",
+  "next_gate": "Fresh non-author review of corrected planner/regressions and v3 gate; then separate execution authorization before any truth-bank/raw-controller execution.",
   "official_counters_delta": 0,
   "blocked_review": {
     "review_sha256": "fbe052d5c79e32d53136325ccac2577b86a9962e643f937f155165530029f65d",
@@ -55,19 +55,27 @@
     "old_plan_admissible": false
   },
   "corrected_planner": {
-    "source_commit": "d7105fc853fd03c6b0b7ed154639613aa827b5c7",
-    "source_tree": "3020d8ac8f4df769213b9e9e02787b0b7f0a753d",
-    "planner_blob": "e3a3591a680bbe0b745082df1a24e14405641fe5",
-    "test_blob": "256e1c6ea91ef0301f18eff582d71566f8e7f5da",
-    "run": 36914319520,
-    "artifact": 11188619082,
-    "artifact_sha256": "e5c3a562df0366712ab77f571d25b925d773f331eca9284dc9345a5734c3f299",
-    "tests": 4,
+    "source_commit": "14b6aa415bd54d1b45bf29916e892d2aa20790df",
+    "source_tree": "33b31f0fbfdc09edc82722b6046edfb44dec2a09",
+    "planner_blob": "afeadb1f10ca23972bf197fa4cedcc626e8551c4",
+    "planner_test_blob": "48daca63cc467963520243999910fc876cfd3434",
+    "focused_regression_blob": "85fa8f5800b9bd57db4388fb2f704cb5e6a8d1b5",
+    "validation_run": 36917108579,
+    "artifact": 11191470699,
+    "artifact_sha256": "aef3d80c6385ff34bc6ad2a837dfc3116f74e795f33f70bd57e32f3588046f8a",
+    "tests": 7,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
-    "rows": 30452552,
-    "plan_sha256": "7ff0b8d7124c283bf5bb6df5a00db0f3685d3049ee1effab988c44b3fab17bf8",
-    "counterexample": "one Forest + Generous Ent copies 1/2/3 + Essence Warden copies 1/2/3 at mulligan 1 exposes bottom Ent copies {1,2,3} after first Ent is protected"
+    "expected_rows": 34912840,
+    "plan_sha256": "bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71",
+    "disposition": "ACCEPT_CORRECTED_PLANNER_IDENTITY_AS_PLANNER_ONLY_EVIDENCE"
+  },
+  "blocked_predecessor": {
+    "head": "2029d61690a17bc4b730e61d15b609d0db5df124",
+    "rows": 30328476,
+    "plan_sha256": "c2e15aaa4fcdd08ce2dd9a014c303983d9ffa884887df721a8d2fdfce0a1d064",
+    "review_sha256": "fbe052d5c79e32d53136325ccac2577b86a9962e643f937f155165530029f65d",
+    "disposition": "BLOCKED_PHYSICAL_REPRESENTATIVE_COVERAGE"
   }
 }
