@@ -1,0 +1,100 @@
+{
+  "schema": "argentum-prospective-qualification-gate-v1",
+  "authority": "PREPARATION_ONLY_NO_EXECUTION_AUTHORITY",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "lane": "pest",
+  "hold": true,
+  "maximum_originals": 1,
+  "official_counters_delta": 0,
+  "gate_id": "pest-phase-b-complete-frozen-bank-20261001",
+  "base_commit": "a56aa9dc164cf06ad7e826a9d96d4d624fec4412",
+  "workflow_path": ".github/workflows/pest-phase-b-complete-bank-20261001.yml",
+  "plan_path": "docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_20261001.json",
+  "guard_path": "scripts/experiments/pest-control/verify_phase_b_complete_bank_gate.py",
+  "gate_files": [
+    ".github/workflows/pest-phase-b-complete-bank-20261001.yml",
+    "docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_20261001.json",
+    "scripts/experiments/pest-control/verify_phase_b_complete_bank_gate.py"
+  ],
+  "protected_blobs": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt": "a02f0f8ccf34c716d92f4eb10b7da8204e0c2be0",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt": "c9229e730fd81a5e6ddb7104b50a14eb9c8726ae",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt": "4adca33a97be8aeca099b513f61e9f4133f655b1",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankRunner.kt": "a5797843c7773338edd5f9d21c496ee1fd19a4c9",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt": "ce1be5ea615104953b7319182878f4135baac07e",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBKeepBottomActor.kt": "526c877458fbd346d8e521119adb9ec70e7116a7",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt": "bb8e2247dc64a64403094c691d83b8eed53048bd",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceiving.kt": "1936f537b737fb1b839e53fae0a727aab7a0f0ab",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankExecutionTest.kt": "8b4831220a16d41fba0532f1fe49ecbb57170b59",
+    "docs/experiments/pest-control/CURRENT_PAIR_PHASE_B_KEEP_BOTTOM_FREEZE_20260930.json": "ffacfc28c80c29246fbed33c26f8d52e7e5625c8",
+    "docs/experiments/pest-control/PHASE_B_PRODUCTION_EXECUTION_SUPPORT_SCOPE_20261001.json": "a25bffe5dc2e0426926fbce0c8c19155792764f1",
+    "scripts/gradle-locked": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d"
+  },
+  "receipt_path": "docs/experiments/pest-control/evidence/PHASE_B_COMPLETE_BANK_GATE_ACCEPTANCE_20261001.json",
+  "marker_path": "docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_EXECUTION_MARKER_20261001.json",
+  "execution_ref": "refs/heads/pest/phase-b-complete-bank-execute-20261001",
+  "required_decision": "ACCEPT_EXACT_PEST_PHASE_B_COMPLETE_BANK_ONE_BEHAVIORAL_ORIGINAL",
+  "planner_validation": {
+    "run": 36908316335,
+    "artifact": 11185363454,
+    "artifact_sha256": "e2edd6d26a51cb2dce21db49d587f3e8faef757f6b0a8707c00795aca9aa1f69",
+    "source_commit": "ccb17240eda00c8ab478b93405bc61f5390a3dc2",
+    "source_tree": "dd6c657822ba83da1e7ab2072990575dc30375e2",
+    "tests": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "expected_rows": 30328476,
+  "plan_sha256": "c2e15aaa4fcdd08ce2dd9a014c303983d9ffa884887df721a8d2fdfce0a1d064",
+  "name_multisets": {
+    "pest": 71271,
+    "monster": 882297
+  },
+  "contexts": {
+    "seats": [
+      0,
+      1
+    ],
+    "starts": [
+      "draw",
+      "play"
+    ],
+    "mulligans": [
+      0,
+      1,
+      2
+    ]
+  },
+  "accepted_inputs": {
+    "base": {
+      "artifact": 11080047971,
+      "sha256": "8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f",
+      "rows": 6850
+    },
+    "supplement": {
+      "artifact": 11088938274,
+      "sha256": "1bbe8b92f01e69cd679b36375ef4168893267e783441ba5d1b81c76166f0cf4a",
+      "rows": 692
+    },
+    "combined_rows": 7542
+  },
+  "requirements": [
+    "Authenticate final exact source review, gate disposition and separate execution authorization before marker.",
+    "Materialize accepted inputs read-only from their accepted artifacts and locate exactly one regular file matching each required SHA-256; never rerun truth generation.",
+    "Require exact deterministic plan count and digest before raw comparison.",
+    "Execute exactly one filtered PestPhaseBProductionBankExecutionTest original.",
+    "Require every planned row exactly once; no silent skip or implicit regeneration.",
+    "Preserve durable intent/result rows, mismatch/unknown/exception records and incomplete prefixes.",
+    "Do not create summary.json unless all 30328476 rows complete.",
+    "No GameInitializer, fresh entropy, allocation, claim, game initialization or gameplay.",
+    "Preserve raw/lawful separation and unchanged PestPhaseBProductionRowComparator."
+  ],
+  "acceptance": "ZERO_MISMATCHES_ZERO_UNKNOWNS_ZERO_EXCEPTIONS_COMPLETE_30328476_ROWS_ONLY_CANDIDATE_FOR_SEPARATE_AUDIT",
+  "non_authority": [
+    "No C2-A2 or gameplay admission",
+    "No truth-bank regeneration",
+    "No acceptance from workflow success alone",
+    "No rerun/refill after incomplete original without new authority"
+  ]
+}
