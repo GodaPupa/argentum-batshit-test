@@ -1,0 +1,46 @@
+{
+  "schema":"pest-current-pair-phase-b-keep-bottom-freeze-v1",
+  "date_utc":"2026-09-30",
+  "accepted_inputs":{
+    "static_bank":{"run":36677360891,"artifact":11080047971,"artifact_sha256":"75d387fbcc39073ab2e18e491e7f3d510bc0bb225044c4ef94bd3238a8e81cf5","audit_commit":"09f1d7977f322f291f70f76536ffabaa04f5858e"},
+    "phase_u":{"run":36699359839,"artifact":11088938274,"artifact_sha256":"70336f87daade2fd480af00f6023afe205f03ac747a2b250773d7e5549b4462c","audit_branch":"review/pest-current-pair-phase-u-36699359839","decision":"ACCEPTED_PEST_692_M5_ATOM_TRUTH_SUPPLEMENT_ONLY","truth_supplement_sha256":"1bbe8b92f01e69cd679b36375ef4168893267e783441ba5d1b81c76166f0cf4a"},
+    "base_truth_rows":6850,
+    "supplement_truth_rows":692,
+    "required_combined_truth_rows":7542
+  },
+  "source_pins":{
+    "raw_controller_blob":"4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+    "lawful_receiver_blob":"1936f537b737fb1b839e53fae0a727aab7a0f0ab",
+    "predicate_vector_blob":"bb8e2247dc64a64403094c691d83b8eed53048bd",
+    "pest_main_sha256":"7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5"
+  },
+  "phase_b_scope":{
+    "pest_name_multisets":71271,
+    "monster_name_multisets":882297,
+    "starts":["play","draw"],
+    "mulligan_counts":[0,1,2],
+    "compare":["keep_or_mulligan","ordered_physical_bottom_ids"],
+    "unknown_truth_policy":"FAIL_CLOSED_NOT_PASS",
+    "hidden_library_order":"PROHIBITED",
+    "rng":"PROHIBITED"
+  },
+  "requirements":[
+    "Consume accepted bank and Phase-U artifacts read-only by exact SHA-256.",
+    "Require exactly 7542 unique M5 atom keys after merge and reject conflicting duplicate keys.",
+    "Generate deterministic physical representative IDs solely from frozen hand multiplicities and declared physical order.",
+    "Run the current raw EngineAiPlayerController oracle and the lawful predicate-vector actor on identical own-hand facts.",
+    "Compare both play/draw contexts, all three mulligan counts, and every declared physical bottom representative.",
+    "Any actor unknown, raw exception, identity mismatch, hidden-state dependency, or disagreement is a preserved failure.",
+    "Preserve per-row stream digest, mismatch records, source pins, raw XML/log and summary."
+  ],
+  "prohibited":[
+    "no rerun of run 36699359839 or the consumed 6850 comparator",
+    "no truth interpolation or default",
+    "no seed allocation claim game initialization gameplay or outcome",
+    "no C2-A2 admission from a partial Phase-B result"
+  ],
+  "acceptance":"ZERO_MISMATCHES_ZERO_UNKNOWNS_COMPLETE_FROZEN_BANK_ONLY",
+  "authority_if_clean":"PEST_MONSTER_KEEP_BOTTOM_BEHAVIORAL_EQUIVALENCE_CANDIDATE_FOR_SEPARATE_AUDIT",
+  "next_gate":"Implement this exact Phase-B comparator, independently review source/workflow bytes, then dispatch one fresh behavioral original.",
+  "official_counters_delta":0
+}

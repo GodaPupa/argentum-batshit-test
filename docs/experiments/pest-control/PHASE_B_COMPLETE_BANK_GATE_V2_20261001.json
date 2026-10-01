@@ -1,0 +1,111 @@
+{
+  "schema": "argentum-prospective-qualification-gate-v1",
+  "authority": "SUPERSEDED_BY_CORRECTED_GENERAL_OBSERVABILITY_PLAN_NO_EXECUTION_AUTHORITY",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "maximum_originals": 1,
+  "official_counters_delta": 0,
+  "hold": true,
+  "lane": "pest",
+  "gate_id": "pest-phase-b-complete-frozen-bank-v2-20261001",
+  "base_commit": "4441cb0bcbbe855aa7b2564df7f24dcd7e61c385",
+  "workflow_path": ".github/workflows/pest-phase-b-complete-bank-v2-20261001.yml",
+  "plan_path": "docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V2_20261001.json",
+  "guard_path": "scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v2.py",
+  "gate_files": [
+    ".github/workflows/pest-phase-b-complete-bank-v2-20261001.yml",
+    "docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V2_20261001.json",
+    "scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v2.py"
+  ],
+  "protected_blobs": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt": "e3a3591a680bbe0b745082df1a24e14405641fe5",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt": "c9229e730fd81a5e6ddb7104b50a14eb9c8726ae",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt": "4adca33a97be8aeca099b513f61e9f4133f655b1",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankRunner.kt": "a5797843c7773338edd5f9d21c496ee1fd19a4c9",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt": "ce1be5ea615104953b7319182878f4135baac07e",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBKeepBottomActor.kt": "526c877458fbd346d8e521119adb9ec70e7116a7",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt": "bb8e2247dc64a64403094c691d83b8eed53048bd",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceiving.kt": "1936f537b737fb1b839e53fae0a727aab7a0f0ab",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlanTest.kt": "256e1c6ea91ef0301f18eff582d71566f8e7f5da",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankExecutionTest.kt": "c1881608d7e0614495d857fea5b99bce8b9ce050",
+    "docs/experiments/pest-control/CURRENT_PAIR_PHASE_B_KEEP_BOTTOM_FREEZE_20260930.json": "ffacfc28c80c29246fbed33c26f8d52e7e5625c8",
+    "docs/experiments/pest-control/PHASE_B_PRODUCTION_EXECUTION_SUPPORT_SCOPE_20261001.json": "e2e5cd6b94dab4ed3d4e2fe7b8e5272e078190d9",
+    "scripts/gradle-locked": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d"
+  },
+  "receipt_path": "docs/experiments/pest-control/evidence/PHASE_B_COMPLETE_BANK_GATE_V2_ACCEPTANCE_20261001.json",
+  "marker_path": "docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_V2_EXECUTION_MARKER_20261001.json",
+  "execution_ref": "refs/heads/pest/phase-b-complete-bank-v2-execute-20261001",
+  "required_decision": "ACCEPT_EXACT_PEST_PHASE_B_COMPLETE_BANK_V2_ONE_BEHAVIORAL_ORIGINAL",
+  "blocked_predecessor": {
+    "head": "2029d61690a17bc4b730e61d15b609d0db5df124",
+    "review_sha256": "fbe052d5c79e32d53136325ccac2577b86a9962e643f937f155165530029f65d",
+    "rows": 30328476,
+    "plan_sha256": "c2e15aaa4fcdd08ce2dd9a014c303983d9ffa884887df721a8d2fdfce0a1d064",
+    "execution_authorized": false
+  },
+  "planner_validation": {
+    "run": 36914319520,
+    "artifact": 11188619082,
+    "artifact_sha256": "e5c3a562df0366712ab77f571d25b925d773f331eca9284dc9345a5734c3f299",
+    "source_commit": "d7105fc853fd03c6b0b7ed154639613aa827b5c7",
+    "source_tree": "3020d8ac8f4df769213b9e9e02787b0b7f0a753d",
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "expected_rows": 30452552,
+  "plan_sha256": "7ff0b8d7124c283bf5bb6df5a00db0f3685d3049ee1effab988c44b3fab17bf8",
+  "name_multisets": {
+    "pest": 71271,
+    "monster": 882297
+  },
+  "contexts": {
+    "seats": [
+      0,
+      1
+    ],
+    "starts": [
+      "draw",
+      "play"
+    ],
+    "mulligans": [
+      0,
+      1,
+      2
+    ]
+  },
+  "accepted_inputs": {
+    "base": {
+      "artifact": 11080047971,
+      "sha256": "8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f",
+      "rows": 6850
+    },
+    "supplement": {
+      "artifact": 11088938274,
+      "sha256": "1bbe8b92f01e69cd679b36375ef4168893267e783441ba5d1b81c76166f0cf4a",
+      "rows": 692
+    },
+    "combined_rows": 7542
+  },
+  "external_prerequisites": [
+    "Fresh non-author review of this corrected exact v2 source/gate scope; the BLOCKED review of 2029d616... cannot approve modified bytes.",
+    "Distinct responsible gate acceptance and separate execution authorization before receipt/marker publication.",
+    "Trusted pre-marker inspection of actual I/R/M tips and complete workflow inventory."
+  ],
+  "requirements": [
+    "Complete exactly 30,452,552 planned rows with exact plan SHA-256 7ff0b8d7...17bf8.",
+    "Exact accepted-input digest/schema binding; no truth regeneration.",
+    "No silent skipped rows or implicit fixture regeneration.",
+    "Durable mismatch/unknown/exception records; incomplete prefix preserved; summary forbidden unless coverage complete.",
+    "Unchanged raw/lawful separation and production row comparator.",
+    "No GameInitializer, fresh entropy, allocation, claim, game initialization or gameplay."
+  ],
+  "acceptance": "SUPERSEDED_DO_NOT_EXECUTE",
+  "non_authority": [
+    "No C2-A2/gameplay admission",
+    "No acceptance from workflow success alone",
+    "No rerun/refill of incomplete original without new authority"
+  ],
+  "superseded_by": "PHASE_B_COMPLETE_BANK_GATE_V3_20261001.json",
+  "superseded_reason": "Intermediate v2 planner identity 30,452,552 / 7ff0... was replaced by general protected-removal observability and audited planner identity 34,912,840 / bcc577... ."
+}
