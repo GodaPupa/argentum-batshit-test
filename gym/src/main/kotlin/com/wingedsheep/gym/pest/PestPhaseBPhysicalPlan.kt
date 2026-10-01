@@ -150,31 +150,51 @@ internal object PestPhaseBPhysicalPlan {
         val spells = cards.filterNot { it.name in spec.lands }
         val targetLands = if (7 - mulligans <= 5) 2 else 3
         val excess = (lands.size - targetLands).coerceAtLeast(0)
-        val landOrders = if (excess > 0) permutations(lands) else sequenceOf(lands)
+        val observableLandBottoms = minOf(mulligans, excess)
+        val landOrders = if (observableLandBottoms == 0) sequenceOf(lands) else sequence {
+            // Raw bottoming observes only the ordered IDs beginning at targetLands, truncated to
+            // the requested bottom count. Enumerate that ordered selection exactly; canonicalize
+            // all unobserved kept/trailing lands instead of factorially permuting them.
+            for (selected in orderedSelections(lands, observableLandBottoms)) {
+                val selectedSet = selected.toSet()
+                val remaining = lands.filterNot(selectedSet::contains)
+                check(remaining.size >= targetLands)
+                yield(remaining.take(targetLands) + selected + remaining.drop(targetLands))
+            }
+        }
 
-        var need = (mulligans - excess).coerceAtLeast(0)
+        val spellNeed = (mulligans - excess).coerceAtLeast(0)
         val groups = spells.groupBy { spec.cmc.getValue(it.name) }
             .toSortedMap(compareByDescending { it })
             .entries.map { it.key to it.value }
-        val sensitive = mutableSetOf<Int>()
-        for ((cmc, group) in groups) {
-            if (need <= 0) break
-            sensitive += cmc
-            need -= group.size
-        }
 
-        fun spellOrders(index: Int, prefix: List<PestPhaseBPhysicalCard>): Sequence<List<PestPhaseBPhysicalCard>> = sequence {
+        fun spellOrders(
+            index: Int,
+            need: Int,
+            prefix: List<PestPhaseBPhysicalCard>,
+        ): Sequence<List<PestPhaseBPhysicalCard>> = sequence {
             if (index == groups.size) {
+                check(need == 0)
                 yield(prefix)
                 return@sequence
             }
-            val (cmc, group) = groups[index]
-            val options = if (cmc in sensitive && group.size > 1) permutations(group) else sequenceOf(group)
-            for (option in options) yieldAll(spellOrders(index + 1, prefix + option))
+            val (_, group) = groups[index]
+            val take = minOf(need, group.size)
+            val options = if (take == 0) sequenceOf(group) else sequence {
+                // Stable descending-CMC sort can expose only the first 'take' physical IDs in this
+                // equal-CMC group. Enumerate those ordered IDs and canonicalize the unobserved tail.
+                for (selected in orderedSelections(group, take)) {
+                    val selectedSet = selected.toSet()
+                    yield(selected + group.filterNot(selectedSet::contains))
+                }
+            }
+            for (option in options) {
+                yieldAll(spellOrders(index + 1, need - take, prefix + option))
+            }
         }
 
         return sequence {
-            for (landOrder in landOrders) for (spellOrder in spellOrders(0, emptyList())) {
+            for (landOrder in landOrders) for (spellOrder in spellOrders(0, spellNeed, emptyList())) {
                 val ordered = landOrder + spellOrder
                 check(ordered.size == 7 && ordered.toSet().size == 7)
                 yield(ordered)
@@ -182,15 +202,16 @@ internal object PestPhaseBPhysicalPlan {
         }
     }
 
-    private fun <T> permutations(values: List<T>): Sequence<List<T>> = sequence {
-        if (values.size <= 1) {
-            yield(values)
+    private fun <T> orderedSelections(values: List<T>, count: Int): Sequence<List<T>> = sequence {
+        require(count in 0..values.size)
+        if (count == 0) {
+            yield(emptyList())
             return@sequence
         }
         values.indices.forEach { index ->
             val head = values[index]
             val rest = values.take(index) + values.drop(index + 1)
-            for (tail in permutations(rest)) yield(listOf(head) + tail)
+            for (tail in orderedSelections(rest, count - 1)) yield(listOf(head) + tail)
         }
     }
 
