@@ -1,0 +1,52 @@
+name: Pest Phase-B exact reviewed counterexample planner validation
+on:
+  push:
+    branches: ["validation/pest-phase-b-ent-repair-exact-20261001"]
+    paths: [".github/workflows/pest-phase-b-ent-repair-exact-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-ent-exact-${{ github.run_id }}
+      EVIDENCE: /tmp/pest-ent-exact-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: d7105fc853fd03c6b0b7ed154639613aa827b5c7, fetch-depth: 1, persist-credentials: false}
+      - name: Execute only repaired planner and exact counterexample tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = d7105fc853fd03c6b0b7ed154639613aa827b5c7
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt)" = e3a3591a680bbe0b745082df1a24e14405641fe5
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlanTest.kt)" = 256e1c6ea91ef0301f18eff582d71566f8e7f5da
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+          printf '%s\n' 'AUTHOR_PLANNER_ONLY_EXACT_REVIEW_COUNTEREXAMPLE' 'No accepted truth bytes, raw controller, GameInitializer, allocation, claim or gameplay.' > "$EVIDENCE/scope.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:compileTestKotlin 2>&1 | tee "$EVIDENCE/compile.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info :gym:test --tests com.wingedsheep.gym.pest.PestPhaseBPhysicalPlanTest 2>&1 | tee "$EVIDENCE/tests.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBPhysicalPlanTest.xml "$EVIDENCE/"
+          grep -F 'PEST_PHASE_B_PLAN rows=' "$EVIDENCE/tests.log" > "$EVIDENCE/plan-identity.txt"
+          /usr/bin/python3.10 -I -S - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          e=pathlib.Path(os.environ['EVIDENCE']); root=ET.parse(e/'TEST-com.wingedsheep.gym.pest.PestPhaseBPhysicalPlanTest.xml').getroot()
+          assert root.attrib['name']=='com.wingedsheep.gym.pest.PestPhaseBPhysicalPlanTest'
+          assert int(root.attrib['tests'])==4
+          assert all(int(root.attrib[k])==0 for k in ('failures','errors','skipped'))
+          assert len(list(root.iter('testcase')))==4
+          assert len((e/'plan-identity.txt').read_text().splitlines())==1
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-ent-repair-exact-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
