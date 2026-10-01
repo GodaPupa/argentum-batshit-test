@@ -43,9 +43,9 @@ class PestPhaseBPhysicalPlanTest : FunSpec({
             card("Generous Ent", 1),
             card("Generous Ent", 2),
             card("Generous Ent", 3),
-            card("Fierce Witchstalker", 1),
-            card("Blood Researcher", 1),
-            card("Carrier Thrall", 1),
+            card("Essence Warden", 1),
+            card("Essence Warden", 2),
+            card("Essence Warden", 3),
         )
         val bottomedEntCopies = PestPhaseBPhysicalPlan.physicalRepresentatives(spec, hand, mulligans = 1)
             .mapNotNull { ordered ->
