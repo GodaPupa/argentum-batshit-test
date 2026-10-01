@@ -509,6 +509,81 @@
     ]
 }
 
+// Reality Shift
+{
+    "name": "Reality Shift",
+    "manaCost": "{1}{U}",
+    "typeLine": "Instant",
+    "oracleText": "Exile target creature. Its controller manifests the top card of their library.",
+    "script": {
+        "spellEffect": {
+            "type": "ForEach",
+            "space": {
+                "type": "IterationSpace.Players",
+                "players": {
+                    "type": "ControllerOf",
+                    "targetDescription": "target creature"
+                }
+            },
+            "body": {
+                "type": "Composite",
+                "effects": [
+                    {
+                        "type": "MoveToZone",
+                        "target": {
+                            "type": "BoundVariable",
+                            "name": "target creature"
+                        },
+                        "destination": "Exile"
+                    },
+                    {
+                        "type": "Composite",
+                        "effects": [
+                            {
+                                "type": "GatherCards",
+                                "source": {
+                                    "type": "TopOfLibrary",
+                                    "count": {
+                                        "type": "Fixed",
+                                        "amount": 1
+                                    }
+                                },
+                                "storeAs": "manifested"
+                            },
+                            {
+                                "type": "MoveCollection",
+                                "from": "manifested",
+                                "destination": {
+                                    "type": "ToZone",
+                                    "zone": "Battlefield"
+                                },
+                                "faceDown": "MANIFEST"
+                            }
+                        ]
+                    }
+                ]
+            }
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": "creature"
+                },
+                "id": "target creature"
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "46",
+        "rarity": "UNCOMMON",
+        "artist": "Howard Lyon"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Valorous Stance
 {
     "name": "Valorous Stance",

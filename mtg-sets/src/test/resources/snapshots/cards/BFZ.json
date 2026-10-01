@@ -1172,6 +1172,84 @@
     ]
 }
 
+// Eyeless Watcher
+{
+    "name": "Eyeless Watcher",
+    "manaCost": "{3}{G}",
+    "typeLine": "Creature — Eldrazi Drone",
+    "oracleText": "Devoid (This card has no color.)\nWhen this creature enters, create two 1/1 colorless Eldrazi Scion creature tokens. They have \"Sacrifice this token: Add {C}.\"",
+    "creatureStats": {
+        "power": 1,
+        "toughness": 1
+    },
+    "keywords": [
+        "DEVOID"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "to": "Battlefield"
+                },
+                "effect": {
+                    "type": "CreatePredefinedToken",
+                    "tokenType": "Eldrazi Scion",
+                    "count": 2
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "166",
+        "artist": "Yohann Schepacz",
+        "flavorText": "Every Eldrazi in Ulamog's lineage is an extension of the titan's will.",
+        "imageUri": "https://cards.scryfall.io/normal/front/4/d/4d949d0e-baf7-4573-bb15-7e30e3e9b202.jpg?1783938189",
+        "rulings": [
+            {
+                "date": "2015-08-25",
+                "text": "Cards with devoid use frames that are variations of the transparent frame traditionally used for Eldrazi. The top part of the card features some color over a background based on the texture of the hedrons that once imprisoned the Eldrazi. This coloration is intended to aid deckbuilding and game play."
+            },
+            {
+                "date": "2015-08-25",
+                "text": "A card with devoid is just colorless. It's not colorless and the colors of mana in its mana cost."
+            },
+            {
+                "date": "2015-08-25",
+                "text": "Other cards and abilities can give a card with devoid color. If that happens, it's just the new color, not that color and colorless."
+            },
+            {
+                "date": "2015-08-25",
+                "text": "Devoid works in all zones, not just on the battlefield."
+            },
+            {
+                "date": "2015-08-25",
+                "text": "If a card loses devoid, it will still be colorless. This is because effects that change an object's color (like the one created by devoid) are considered before the object loses devoid."
+            },
+            {
+                "date": "2015-08-25",
+                "text": "Eldrazi Scions are similar to Eldrazi Spawn, seen in the Zendikar block. Note that Eldrazi Scions are 1/1, not 0/1."
+            },
+            {
+                "date": "2015-08-25",
+                "text": "Eldrazi and Scion are each separate creature types. Anything that affects Eldrazi will affect these tokens, for example."
+            },
+            {
+                "date": "2015-08-25",
+                "text": "Sacrificing an Eldrazi Scion creature token to add {C} is a mana ability. It doesn't use the stack and can't be responded to."
+            },
+            {
+                "date": "2015-08-25",
+                "text": "Some instants and sorceries that create Eldrazi Scions require targets. If all targets for such a spell have become illegal by the time that spell tries to resolve, the spell won't resolve and none of its effects will happen. You won't get any Eldrazi Scions."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Felidar Cub
 {
     "name": "Felidar Cub",

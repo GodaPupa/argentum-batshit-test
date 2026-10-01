@@ -1,0 +1,70 @@
+name: Manual Transmission Phase 2 Engine Telemetry
+
+on:
+  pull_request:
+    paths:
+      - 'gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt'
+      - 'gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapterTest.kt'
+      - 'experiments/manual-transmission-phase2/import_engine_trace.py'
+      - 'experiments/manual-transmission-phase2/test_import_engine_trace.py'
+      - 'experiments/manual-transmission-phase2/metrics_contract.py'
+      - 'experiments/manual-transmission-phase2/engine-telemetry-adapter-r1.md'
+      - 'experiments/manual-transmission-phase2/attempt_journal.py'
+      - 'experiments/manual-transmission-phase2/test_attempt_journal.py'
+      - 'experiments/manual-transmission-phase2/attempt-journal-r1.md'
+      - 'tools/evidence_durability.py'
+      - 'tools/repository_claim.py'
+      - 'tools/tests/test_evidence_durability.py'
+      - 'tools/tests/test_repository_claim.py'
+      - '.github/workflows/manual-transmission-phase2-engine-telemetry.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  qualify-engine-telemetry:
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      MT_P2_ENGINE_TRACE_OUTPUT: ${{ github.workspace }}/build/reports/manual-transmission-phase2/engine-telemetry
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run typed engine extraction and exact replay fixtures
+        run: scripts/test-class PhaseTwoTelemetryAdapterTest --info --stacktrace
+      - name: Import the real-engine fixture through the accepted telemetry contract
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s experiments/manual-transmission-phase2 -p test_metrics_contract.py -v 2>&1 | tee "$MT_P2_ENGINE_TRACE_OUTPUT/contract-tests.txt"
+          python3 -m unittest discover -s experiments/manual-transmission-phase2 -p test_import_engine_trace.py -v 2>&1 | tee "$MT_P2_ENGINE_TRACE_OUTPUT/import-tests.txt"
+      - name: Qualify receiving durability and exact private trace artifact binding
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tools/tests -p 'test_*.py' -v 2>&1 | tee "$MT_P2_ENGINE_TRACE_OUTPUT/shared-evidence-tests.txt"
+          python3 -m unittest discover -s experiments/manual-transmission-phase2 -p test_attempt_journal.py -v 2>&1 | tee "$MT_P2_ENGINE_TRACE_OUTPUT/attempt-journal-tests.txt"
+      - name: Bind exact source without creating gameplay authority
+        if: always()
+        env:
+          SOURCE_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          mkdir -p "$MT_P2_ENGINE_TRACE_OUTPUT"
+          printf '%s\n' "source_sha=$SOURCE_SHA" "official_capability_games=0" "official_primary_games=0" "execution_authorized=false" > "$MT_P2_ENGINE_TRACE_OUTPUT/provenance.txt"
+          sha256sum gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt gym/src/test/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapterTest.kt experiments/manual-transmission-phase2/import_engine_trace.py experiments/manual-transmission-phase2/metrics_contract.py > "$MT_P2_ENGINE_TRACE_OUTPUT/source-sha256.txt"
+          sha256sum tools/evidence_durability.py tools/repository_claim.py tools/tests/test_evidence_durability.py tools/tests/test_repository_claim.py experiments/manual-transmission-phase2/attempt_journal.py experiments/manual-transmission-phase2/test_attempt_journal.py experiments/manual-transmission-phase2/attempt-journal-r1.md >> "$MT_P2_ENGINE_TRACE_OUTPUT/source-sha256.txt"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-transmission-phase2-engine-telemetry
+          path: |
+            build/reports/manual-transmission-phase2/engine-telemetry/
+            gym/build/test-results/test/
+          if-no-files-found: error
+          retention-days: 90

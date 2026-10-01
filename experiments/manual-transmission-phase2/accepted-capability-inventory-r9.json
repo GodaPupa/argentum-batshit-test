@@ -1,0 +1,70 @@
+{
+  "schema": "mt-phase2-integrated-capability-requalification-r9",
+  "status": "ACCEPTED_CURRENT_INTEGRATED_SEED_FREE_COMPONENT_EVIDENCE",
+  "source_commit": "55d102dce922a85b7d188ee6465c5b4ff9cad19f",
+  "predecessor": "accepted-capability-inventory-r8.json",
+  "validated_runs": {
+    "full_ci": 36213608635,
+    "capability_audit": 36213608523,
+    "telemetry_component": 36213608577,
+    "priority_after_resolution": 36213608518
+  },
+  "audited_engine_artifact": {
+    "id": 10897070160,
+    "sha256": "c3c244d9976355040eef8d780e13122a26f85d8950ad9e5a401cc2bd835f3d27",
+    "independent_download_match": true
+  },
+  "source_audit_artifact": {
+    "id": 10895644645,
+    "github_sha256": "d0f9a90d08ce7fea98395dd739339a921a218c333d12ce2fe009541e5f8f56dd"
+  },
+  "live_registry": {
+    "physical_entries": 800,
+    "manual_resolved": 82,
+    "manual_unresolved": 18,
+    "manual_unresolved_identities": [
+      "Gwenna, Eyes of Gaea",
+      "Fblthp, the Lost",
+      "Aether Channeler",
+      "Reckless Bushwhacker",
+      "Amphin Mutineer",
+      "Bane of Progress",
+      "Spellskite",
+      "Malevolent Hermit",
+      "Phyrexian Metamorph",
+      "Glen Elendra Archmage",
+      "Temur Sabertooth",
+      "Purphoros, God of the Forge",
+      "World Breaker",
+      "Disciple of Freyalise",
+      "Reality Shift",
+      "Veil of Summer",
+      "Pact of Negation",
+      "Opal Palace"
+    ]
+  },
+  "newly_accepted_component": {
+    "card": "Walking Ballista",
+    "scenario": "WalkingBallistaScenarioTest",
+    "scenario_cases": 2,
+    "scenario_failures": 0,
+    "exact_cost_surface": "{X}{X} pays twice X; enters with X +1/+1 counters",
+    "activated_surfaces": [
+      "{4}: put a +1/+1 counter on this creature",
+      "remove a +1/+1 counter: deal 1 damage to any target"
+    ]
+  },
+  "hardware_disposition": "KEEP_V07",
+  "hardware_changed": false,
+  "official_counters": {
+    "seeds_generated": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "actions": 0,
+    "outcomes": 0,
+    "capability_games": "0/36",
+    "primary_games": "0/864"
+  },
+  "gameplay_authorized": false,
+  "next_gate": "Continue exact-card/mechanic coverage plus executable Cruise/Sport/Race and opponent pilots, typed collectors, replay, durable attempt journal and guarded execution. No v0.8 hardware change."
+}
