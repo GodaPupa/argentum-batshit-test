@@ -1,0 +1,49 @@
+name: Pest Phase-B corrected v2 final gate compile/static only
+on:
+  push:
+    branches: ["validation/pest-phase-b-v2-final-gate-20261001"]
+    paths: [".github/workflows/pest-phase-b-v2-final-gate-validation-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-phase-b-v2-final-${{ github.run_id }}
+      EVIDENCE: /tmp/pest-phase-b-v2-final-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: d9bed6e70c826d34dc924f719d41fe9bf3fcd28b, fetch-depth: 0, persist-credentials: false}
+      - name: Structural guard plus compile only
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = d9bed6e70c826d34dc924f719d41fe9bf3fcd28b
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v2.py --plan docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V2_20261001.json --mode implementation --implementation d9bed6e70c826d34dc924f719d41fe9bf3fcd28b
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+          git diff --name-status 2029d61690a17bc4b730e61d15b609d0db5df124..HEAD > "$EVIDENCE/repair-diff.txt"
+          cat > "$EVIDENCE/compile-only.init.gradle" <<'GROOVY'
+          import org.gradle.api.tasks.testing.Test
+          import org.gradle.api.tasks.JavaExec
+          gradle.taskGraph.whenReady { graph ->
+              def forbidden=graph.allTasks.findAll { it instanceof Test || it instanceof JavaExec }
+              if (!forbidden.empty) throw new GradleException('forbidden behavioral task: '+forbidden*.path)
+              println 'PEST_V2_FINAL_GATE_COMPILE_ONLY'
+          }
+          GROOVY
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain -I "$EVIDENCE/compile-only.init.gradle" :gym:compileTestKotlin 2>&1 | tee "$EVIDENCE/compile.log"
+          test -z "$(git status --porcelain --untracked-files=all)"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v2-final-gate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
