@@ -1,0 +1,55 @@
+name: Pest generalized observability planner validation only
+on:
+  push:
+    branches: ["validation/pest-general-observability-plan-20261001"]
+    paths: [".github/workflows/pest-general-observability-plan-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-general-plan-${{ github.run_id }}
+      EVIDENCE: /tmp/pest-general-plan-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 14b6aa415bd54d1b45bf29916e892d2aa20790df, fetch-depth: 1, persist-credentials: false}
+      - name: Run planner-only validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = 14b6aa415bd54d1b45bf29916e892d2aa20790df
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+          git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlanTest.kt gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProtectedRemovalRegressionTest.kt > "$EVIDENCE/blobs.txt"
+          printf '%s\n' 'PLANNER_ONLY_NO_ACCEPTED_TRUTH_NO_RAW_CONTROLLER_NO_GAMEINITIALIZER' > "$EVIDENCE/scope.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:compileTestKotlin 2>&1 | tee "$EVIDENCE/compile.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info :gym:test --tests com.wingedsheep.gym.pest.PestPhaseBPhysicalPlanTest --tests com.wingedsheep.gym.pest.PestPhaseBProtectedRemovalRegressionTest 2>&1 | tee "$EVIDENCE/tests.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBPhysicalPlanTest.xml "$EVIDENCE/"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBProtectedRemovalRegressionTest.xml "$EVIDENCE/"
+          grep -F 'PEST_PHASE_B_PLAN rows=' "$EVIDENCE/tests.log" > "$EVIDENCE/plan-identity.txt"
+          test "$(wc -l < "$EVIDENCE/plan-identity.txt")" -eq 1
+          /usr/bin/python3.10 -I -S - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          e=pathlib.Path(os.environ['EVIDENCE'])
+          expected={'PestPhaseBPhysicalPlanTest':5,'PestPhaseBProtectedRemovalRegressionTest':2}
+          for short,n in expected.items():
+              p=e/('TEST-com.wingedsheep.gym.pest.'+short+'.xml')
+              r=ET.parse(p).getroot()
+              assert int(r.attrib['tests'])==n
+              assert all(int(r.attrib[k])==0 for k in ('failures','errors','skipped'))
+              assert len(list(r.iter('testcase')))==n
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-general-observability-plan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
