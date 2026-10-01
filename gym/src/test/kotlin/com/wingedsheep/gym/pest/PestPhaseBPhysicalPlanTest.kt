@@ -30,4 +30,32 @@ class PestPhaseBPhysicalPlanTest : FunSpec({
             row.orderedHand.toSet().size shouldBe 7
         }
     }
+
+    test("one Forest plus three physical Ents can expose every Ent as the post-protection bottom") {
+        val spec = PestPhaseBPhysicalPlan.spec("pest")
+        fun card(name: String, copy: Int): PestPhaseBPhysicalCard {
+            val index = spec.entries.indexOfFirst { it.first == name }
+            require(index >= 0)
+            return PestPhaseBPhysicalCard(index, copy, name)
+        }
+        val hand = listOf(
+            card("Forest", 1),
+            card("Generous Ent", 1),
+            card("Generous Ent", 2),
+            card("Generous Ent", 3),
+            card("Fierce Witchstalker", 1),
+            card("Blood Researcher", 1),
+            card("Carrier Thrall", 1),
+        )
+        val bottomedEntCopies = PestPhaseBPhysicalPlan.physicalRepresentatives(spec, hand, mulligans = 1)
+            .mapNotNull { ordered ->
+                val acquisition = ordered.firstOrNull { it.name == "Generous Ent" }
+                ordered.asSequence()
+                    .filter { it.name == "Generous Ent" && it != acquisition }
+                    .firstOrNull()
+                    ?.copyOrdinal
+            }
+            .toSet()
+        bottomedEntCopies shouldBe setOf(1, 2, 3)
+    }
 })
