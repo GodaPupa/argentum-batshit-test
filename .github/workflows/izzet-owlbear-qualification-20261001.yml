@@ -53,11 +53,14 @@ jobs:
           expected={'com.wingedsheep.engine.scenarios.OwlbearScenarioTest':1,'com.wingedsheep.engine.scenarios.OwlbearTrampleScenarioTest':2}
           files=list(results.glob('TEST-*.xml'))
           assert {p.name for p in files}=={'TEST-'+n+'.xml' for n in expected}
-          rows=[]
+          rows=[];seen=set()
           low=int((out/'test-start-epoch.txt').read_text());high=int((out/'test-end-epoch.txt').read_text())
           for p in sorted(files):
               raw=p.read_bytes();suite=ET.fromstring(raw);name=suite.attrib['name']
-              assert name in expected and int(suite.attrib['tests'])==expected[name]
+              assert suite.tag=='testsuite' and name in expected
+              assert p.name=='TEST-'+name+'.xml' and name not in seen
+              seen.add(name)
+              assert int(suite.attrib['tests'])==expected[name]
               assert all(int(suite.attrib[k])==0 for k in ('failures','errors','skipped'))
               cases=list(suite.iter('testcase'));assert len(cases)==expected[name]
               assert not any(list(suite.iter(k)) for k in ('failure','error','skipped'))
@@ -66,7 +69,10 @@ jobs:
               assert low-1 <= stamp.timestamp() <= high+1
               (out/p.name).write_bytes(raw)
               rows.append({'class':name,'tests':len(cases),'sha256':hashlib.sha256(raw).hexdigest()})
-          (out/'result.json').write_text(json.dumps({'authority':'ORIGINAL_FOR_SEPARATE_AUDIT_ONLY','suites':rows,'tests':3,'official_counters_delta':0,'registry_adoption':False},sort_keys=True)+'\n')
+          assert seen==set(expected)
+          total=sum(row['tests'] for row in rows)
+          assert total==sum(expected.values())==3
+          (out/'result.json').write_text(json.dumps({'authority':'ORIGINAL_FOR_SEPARATE_AUDIT_ONLY','suites':rows,'tests':total,'official_counters_delta':0,'registry_adoption':False},sort_keys=True)+'\n')
           PY
       - name: Preserve original even on compile or fixture failure
         if: always()
