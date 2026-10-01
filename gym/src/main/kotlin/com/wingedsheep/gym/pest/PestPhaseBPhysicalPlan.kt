@@ -138,7 +138,7 @@ internal object PestPhaseBPhysicalPlan {
         }
     }
 
-    private fun physicalRepresentatives(
+    internal fun physicalRepresentatives(
         spec: PestPhaseBDeckSpec,
         cards: List<PestPhaseBPhysicalCard>,
         mulligans: Int,
@@ -180,10 +180,18 @@ internal object PestPhaseBPhysicalPlan {
             }
             val (_, group) = groups[index]
             val take = minOf(need, group.size)
-            val options = if (take == 0) sequenceOf(group) else sequence {
-                // Stable descending-CMC sort can expose only the first 'take' physical IDs in this
-                // equal-CMC group. Enumerate those ordered IDs and canonicalize the unobserved tail.
-                for (selected in orderedSelections(group, take)) {
+            val acquisitionShift = if (
+                lands.size == 1 &&
+                group.any { it.name == "Generous Ent" } &&
+                take < group.size
+            ) 1 else 0
+            val observablePrefix = take + acquisitionShift
+            val options = if (observablePrefix == 0) sequenceOf(group) else sequence {
+                // Stable descending-CMC sort normally exposes the first 'take' bottom IDs. With
+                // exactly one land, however, the first visible Generous Ent can become the protected
+                // M2 acquisition card; filtering it shifts the observable bottom identity one place
+                // deeper. Enumerate that extra physical position instead of canonicalizing it away.
+                for (selected in orderedSelections(group, observablePrefix)) {
                     val selectedSet = selected.toSet()
                     yield(selected + group.filterNot(selectedSet::contains))
                 }
