@@ -1,41 +1,39 @@
 {
-  "schema": "pest-phase-b-production-enumeration-fixture-journal-scope-v1",
+  "schema": "pest-phase-b-production-execution-support-scope-v2",
   "date_utc": "2026-10-01",
   "authority": "PROSPECTIVE_SOURCE_ONLY_NOT_BEHAVIORAL_ACCEPTANCE",
-  "predecessor_head": "76db88f26f25e23fbcea3d2db7e0c03d9edd6b99",
+  "predecessor_review_request_head": "9748a51fc2df7e64c4f0bf675de08bf9c747705b",
   "frozen_protocol": "docs/experiments/pest-control/CURRENT_PAIR_PHASE_B_KEEP_BOTTOM_FREEZE_20260930.json",
-  "unchanged_row_comparator_blob": "ce1be5ea615104953b7319182878f4135baac07e",
-  "new_source_blobs": {
+  "blobs": {
     "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt": "a40c0fa23c2ce95137b2dedf56537372fceec485",
-    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt": "c9229e730fd81a5e6ddb7104b50a14eb9c8726ae",
-    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt": "4adca33a97be8aeca099b513f61e9f4133f655b1"
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt": "c9229e730fd81a5e6ddb7104b50a14eb9c8726ae",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt": "4adca33a97be8aeca099b513f61e9f4133f655b1",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankRunner.kt": "a5797843c7773338edd5f9d21c496ee1fd19a4c9",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlanTest.kt": "df8336c1cf03c1379740fc967b2eb04287361d80",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt": "ce1be5ea615104953b7319182878f4135baac07e"
   },
   "responsibilities": [
-    "Stream every frozen seven-card name multiset with exact denominators 71271 Pest and 882297 Monster.",
-    "Enumerate only the physical handle-order equivalence classes observable by the frozen raw/lawful bottom rules: excess-land order and equal-CMC spell tie order.",
-    "Expand every representative across seats 0/1, play/draw context and mulligan counts 0/1/2 without RNG.",
-    "Construct an exact own 60 deterministically with CardEntityFactory and a fixed non-random fixture RNG state; never call GameInitializer or draw entropy.",
-    "Keep hidden library order non-authoritative: canonical inventory order only, with future review required to ensure the frozen raw controller continues selecting typed-cycling targets by intrinsic identity.",
-    "Record ordered comparison rows, mismatches, unknowns and exceptions durably; incomplete prefixes remain incomplete and are not silently promoted."
+    "Enumerate exactly the frozen seven-card name multisets: 71271 Pest and 882297 Monster.",
+    "Expand every multiset across mulligan counts 0/1/2, seats 0/1, play/draw, and every physical handle-order equivalence class observable by the frozen raw/lawful bottom algorithms.",
+    "Construct the exact frozen own 60 with CardEntityFactory in production source, no GameInitializer and no fresh entropy.",
+    "Keep canonical library order non-authoritative and require source review of the raw typed-cycling intrinsic-identity selection property.",
+    "Load only exact accepted base/supplement byte digests through PestPhaseBAcceptedTruth; no truth interpolation/default/overlap.",
+    "Iterate the deterministic plan without skipped rows, invoke the unchanged production row comparator exactly once per row, and preserve every result/mismatch/unknown/exception in the durable journal.",
+    "Require completed row count to equal a precomputed deterministic plan count before writing a summary; hard-crash prefixes remain incomplete.",
+    "Expose no main/CLI/workflow from the production bank runner in this source scope."
   ],
-  "journal_durability": {
-    "ordinary_checkpoint_rows": 1024,
-    "force_immediately_on": [
-      "MISMATCH",
-      "UNQUALIFIED_ROW",
-      "EXCEPTION"
-    ],
-    "exception_policy": "PRESERVE_AND_RETHROW_NO_RETRY_WITHIN_SOURCE",
-    "hard_crash_policy": "INCOMPLETE_PREFIX_FOR_SEPARATE_AUDIT_NOT_FULL_COVERAGE"
+  "validation_history": {
+    "compile_only_run_36896307535": "SUCCESS for predecessor support head 9748a51fc2df7e64c4f0bf675de08bf9c747705b; compilation only.",
+    "planner_run_36907244688": "INFRASTRUCTURE_FAILURE_BEFORE_COMPILE_OR_TEST: validation preflight rejected an already-present evidence directory; planner was not executed.",
+    "source_set_repair": "Deterministic fixture support moved from test to main because the production bank runner references it. No behavioral semantics changed."
   },
-  "explicitly_not_executed": [
-    "accepted 6850 truth bank",
-    "accepted 692 supplement",
-    "EngineAiPlayerController raw comparison",
-    "full physical representative enumeration",
-    "behavioral original",
-    "seed/allocation/claim/gameplay"
+  "prohibited": [
+    "No accepted 6850 truth-bank load during source validation.",
+    "No accepted 692 supplement load during source validation.",
+    "No raw EngineAiPlayerController invocation during source validation.",
+    "No full Phase-B behavioral original before independent source review and separate authorization.",
+    "No allocation claim game initialization gameplay or outcome."
   ],
-  "next_gate": "Independent source review and exact-source compilation of these new support surfaces; then complete the reviewed runner that supplies accepted inputs and every planned row, followed by a separately authorized fresh Phase-B behavioral original.",
+  "next_gate": "Exact-source compile of the corrected production support; then planner-only deterministic enumeration evidence; independent source review of the final support/runner scope; then separately reviewed and authorized behavioral workflow.",
   "official_counters_delta": 0
 }
