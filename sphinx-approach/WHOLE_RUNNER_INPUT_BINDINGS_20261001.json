@@ -1,0 +1,58 @@
+{
+  "schema": "sphinx-stage-e-whole-runner-input-bindings-v1",
+  "date_utc": "2026-10-01",
+  "authority": "PROSPECTIVE_BINDING_ONLY_NO_EXECUTION_AUTHORITY",
+  "source_head": "ba630821dc2b33ff35d56bb87a7eac6e0ce12bd8",
+  "deck_reconstruction": {
+    "path": "sphinx-approach/STAGE_E_DECK_RECONSTRUCTION.json",
+    "blob": "dba5fcbb6b832b14b8132d32ac3d5b731f1d5150",
+    "status": "PROSPECTIVE_STAGE_E_INPUT_IDENTITIES_FROZEN_QUALIFICATION_PENDING"
+  },
+  "decks": {
+    "reconstructed-v01": {
+      "path": "sphinx-approach/decks/reconstructed-v01.csv",
+      "blob": "e2f0abbc9f99be97b2562a18ae248d70cbefc0e1",
+      "rows_sha256": "274521097cc731ac5f5aa9b7645a20b13d4546fd73b17dbcd14af0b0a25c4486"
+    },
+    "reconstructed-hybrid": {
+      "path": "sphinx-approach/decks/reconstructed-hybrid.csv",
+      "blob": "7f76c94e4fbc24acdc982039aa248a1fa9485cd4",
+      "rows_sha256": "f4cf2c64bb07847bd013e9984480f5b0fa76ac3a40dc5a47894a3609e9cb3b2e"
+    },
+    "closest-no-approach-v01": {
+      "path": "sphinx-approach/decks/closest-no-approach-v01.csv",
+      "blob": "16f429ef50b2699d60be66de4a39681d9aa2d00e",
+      "rows_sha256": "548998c77f5f688d793d36cdb9f21ae8b3b63963856875c4b84d82c271196a83"
+    },
+    "serpico-terror-benchmark": {
+      "path": "sphinx-approach/decks/serpico-terror-benchmark.csv",
+      "blob": "da2f0d8d1e7a6d464567f765483d0145ae3726dd",
+      "rows_sha256": "6c678f94112c56b0856c1fe4c008f77e7d0897bdeb290f3e2a0ec9d034147c62"
+    }
+  },
+  "governing_scope": {
+    "path": "sphinx-approach/STAGE_E_WHOLE_PILOT_PROSPECTIVE_SCOPE.json",
+    "blob": "89a343e35be4b5ed4be6aa41dfab2fc739ee48b5"
+  },
+  "coverage_inventory": {
+    "path": "sphinx-approach/STAGE_E_WHOLE_ACTOR_COVERAGE_20260928.json",
+    "blob": "101fdc617ec59582476ce15ec12594bdbdc14537"
+  },
+  "reachable_inventory": {
+    "path": "sphinx-approach/STAGE_E_REACHABLE_PILOT_PATH_INVENTORY.json",
+    "blob": "daf0e93c61a0b4513c98c6bf92d163f9d4df0cd0"
+  },
+  "qualified_runtime_components": {
+    "SphinxStageEWholeActor": "0e5a21429c367355c0951c7a3a367495a96a161d",
+    "SphinxStageEEngineFixture": "b48697cc594a52631bfdee7b4219afc7fdd466d9",
+    "SphinxStageEFixtureReplay": "a1f35e725c9c269a82288126945c0b5d595df2a6",
+    "SphinxStageEWriteAheadJournal": "dc0995c25befb785bd83da7dc98b02115c8ddadb"
+  },
+  "remaining_binding_gap": [
+    "Frozen Stage-E opponent deck packages are not yet selected; opponent-triggered question/target coverage is necessarily incomplete.",
+    "WholeActor still returns Unqualified for explicitly inventoried reachable paths; no fallback may substitute.",
+    "A finite equal-opportunity pilot qualification inventory remains unfrozen after prior reviewer deferred the 64-per-identity geometry.",
+    "After those are resolved, implement the trusted runner/collector seam under WHOLE_RUNNER_MINIMAL_INTEGRATION_SCOPE_20261001.json."
+  ],
+  "official_counters_delta": 0
+}
