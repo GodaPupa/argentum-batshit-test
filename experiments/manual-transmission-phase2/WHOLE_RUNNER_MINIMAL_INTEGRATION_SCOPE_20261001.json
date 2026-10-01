@@ -1,0 +1,46 @@
+{
+  "schema": "manual-phase2-whole-runner-minimal-integration-scope-v1",
+  "date_utc": "2026-10-01",
+  "authority": "PROSPECTIVE_SOURCE_SCOPE_ONLY_NO_EXECUTION_AUTHORITY",
+  "base_commit": "9532c2e79412694f953bd6ff4ae2438b1d347dae",
+  "accepted_integration_original": {
+    "run": 36919292114,
+    "artifact": 11191748770,
+    "artifact_sha256": "8af7fa3973155d21dfb7a45f947b7fb452ef4f025031385d0fb05accbb325f6a",
+    "decision": "ACCEPT_MANUAL_STORED_REPLAY_FOUR_CASE_INTEGRATION_SCOPE_ONLY"
+  },
+  "governing_freeze": "experiments/manual-transmission-phase2/WHOLE_PILOT_OPPONENT_RUNNER_REPLAY_FREEZE_20260930.json",
+  "reuse_without_reopening": [
+    "PhaseTwoPilotBoundary masked own-information action boundary",
+    "PhaseTwoTelemetryAdapter accepted transition telemetry",
+    "ManualPhaseTwoFixtureLifecycle durable-before-factory reservation/refusal",
+    "ManualPhaseTwoFixtureRunner and stored replay integration just qualified",
+    "existing CRUISE/SPORT/RACE policy components and public opponent axes"
+  ],
+  "minimum_new_implementation": [
+    "Trusted two/three? no: exact frozen four-seat whole-runner owner that binds CRUISE/SPORT/RACE own-list/policy and every declared opponent list/source before initialization.",
+    "Adapter from the existing PhaseTwoPilotBoundary proposals to the reviewed fixture lifecycle/runner without exposing raw GameState/seed/opponent private zones to policies.",
+    "ActorEpoch or equivalent exact current-observation/action binding so stale proposals fail closed before submission; no fallback/auto-pass.",
+    "Durable exclusive attempt claim before initializer, append-only accepted transition journal, and strict replay against exact initialization/action stream.",
+    "Collector pins protocol/source/deck/policy/opponent/runtime identities and raw stop classification only."
+  ],
+  "required_negative_cases": [
+    "wrong gear policy",
+    "wrong opponent/list",
+    "hidden opponent hand access",
+    "stale proposal",
+    "illegal fallback",
+    "duplicate attempt claim",
+    "initializer failure",
+    "interrupted intent",
+    "replay drift"
+  ],
+  "prohibited": [
+    "no official Phase-2 seed/allocation/game",
+    "no retry alias",
+    "no performance interpretation",
+    "no mutation of frozen v0.7 hardware"
+  ],
+  "next_gate": "Implement only this missing trusted whole-runner integration and deterministic qualification fixtures, compile, source-review changed bytes, then separately authorize one bounded whole-runner qualification original.",
+  "official_counters_delta": 0
+}
