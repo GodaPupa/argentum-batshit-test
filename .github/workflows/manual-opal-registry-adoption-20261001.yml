@@ -1,0 +1,48 @@
+name: Manual Opal Palace registry adoption diagnostic
+on:
+  push:
+    branches:
+      - validation/manual-opal-registry-adoption-20261001
+    paths:
+      - .github/workflows/manual-opal-registry-adoption-20261001.yml
+permissions:
+  contents: read
+jobs:
+  registry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/manual-opal-registry-${{ github.run_id }}
+      OUT: /tmp/manual-opal-registry-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 44be83cbb1ad18458affb1b13a7cd408c4c0e933
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Reinventory eight frozen decks after exact Opal adoption
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 44be83cbb1ad18458affb1b13a7cd408c4c0e933
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = 544a440160528f4a08211109936a55e263c39d19
+          mkdir "$OUT"
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out "$OUT/source"
+          MT_P2_AUDIT_INPUT="$OUT/source/registry-requests.json" MT_P2_AUDIT_OUTPUT="$OUT/registry"             bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest
+          cp "$OUT/registry/registry-report.json" "$OUT/registry-report.json"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-opal-registry-adoption-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: warn
+          retention-days: 90
