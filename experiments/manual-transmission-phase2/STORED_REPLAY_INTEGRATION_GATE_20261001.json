@@ -1,0 +1,58 @@
+{
+  "schema": "argentum-prospective-qualification-gate-v1",
+  "authority": "PREPARATION_ONLY_NO_EXECUTION_AUTHORITY",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "maximum_originals": 1,
+  "official_counters_delta": 0,
+  "external_prerequisites": [
+    "Authenticate the actual exact-head non-author review of the four new fixture/scope/workflow bytes; a quota-limit response or shaped digest is not approval.",
+    "Record a distinct responsible gate-acceptance decision and a separate execution-authorization record before receipt/marker publication.",
+    "Trusted pre-marker inspection must verify the actual proposed I/R/M ancestry, complete workflow inventory, reviewed tree/blobs, and runtime/input availability.",
+    "No historical capability/general-CI failure is rerun or rehabilitated by this gate."
+  ],
+  "hold": true,
+  "lane": "manual",
+  "gate_id": "manual-stored-replay-integration-qualification-20261001",
+  "base_commit": "0d1a405bade0e92e632070f6dd8d986b75436ae4",
+  "workflow_path": ".github/workflows/manual-stored-replay-integration-qualification-20261001.yml",
+  "plan_path": "experiments/manual-transmission-phase2/STORED_REPLAY_INTEGRATION_GATE_20261001.json",
+  "guard_path": "experiments/manual-transmission-phase2/verify_stored_replay_gate.py",
+  "gate_files": [
+    ".github/workflows/manual-stored-replay-integration-qualification-20261001.yml",
+    "experiments/manual-transmission-phase2/STORED_REPLAY_INTEGRATION_GATE_20261001.json",
+    "experiments/manual-transmission-phase2/verify_stored_replay_gate.py"
+  ],
+  "protected_blobs": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoStoredFixtureReplay.kt": "ad2cc1ebaedd055104fb185f236427a9fd7e231a",
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoFixtureLifecycle.kt": "f11281537cc1f582f32dc0aab4fbdea3cc58fdb1",
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoFixtureRunner.kt": "ea74fba66dfad36470b9ebe438570ce8b97f5c9b",
+    "gym/src/main/kotlin/com/wingedsheep/gym/manual/PhaseTwoTelemetryAdapter.kt": "44608301d535a2114073d80c06d5ca0480c40043",
+    "gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualStoredFixtureReplayIntegrationTest.kt": "c50ccda3260da8e6baee6d8af15cb041a9184d42",
+    "experiments/manual-transmission-phase2/STORED_REPLAY_INTEGRATION_SCOPE_20261001.json": "1d6d676aad6dde795fc7a039b38c3939c4969775",
+    "scripts/gradle-locked": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d"
+  },
+  "receipt_path": "experiments/manual-transmission-phase2/evidence/STORED_REPLAY_INTEGRATION_GATE_ACCEPTANCE_20261001.json",
+  "marker_path": "experiments/manual-transmission-phase2/STORED_REPLAY_INTEGRATION_EXECUTION_MARKER_20261001.json",
+  "execution_ref": "refs/heads/manual/stored-replay-qualification-execute-20261001",
+  "required_decision": "ACCEPT_EXACT_MANUAL_STORED_REPLAY_FOUR_CASE_QUALIFICATION_ORIGINAL",
+  "component_review_receiving_comment": 5933580140,
+  "component_review_sha256": "22cf06a68ee1b7ef9a00fe4df42ed2d922ac0575ed2550968ef0bd04ecc1b190",
+  "fixture_review_request_comment": 5934055478,
+  "production_compile_run": 36877572671,
+  "production_compile_artifact": 11170420256,
+  "fixture_compile_run": 36879982488,
+  "fixture_compile_artifact": 11170902463,
+  "fixture_compile_artifact_sha256": "6f31911ab97b7e60e5605b4bdcc2428f3e6fc4e0d22db936e1fa7ca4c65c93a9",
+  "expected_suites": {
+    "com.wingedsheep.gym.manual.ManualStoredFixtureReplayIntegrationTest": 4
+  },
+  "scope": "Compile the exact reviewed source tree and execute exactly the four predeclared stored-replay integration cases once. Preserve exact XML, source/tree, compile/test logs, runtime and gate records for separate audit.",
+  "non_authority": [
+    "No frozen Animar hardware or strategic-pilot competence",
+    "No per-action crash-durability acceptance beyond demonstrated fixture behavior",
+    "No capability-36 or primary-864 gameplay authority",
+    "No rehabilitation of run 36765972037 or general CI 36765972153"
+  ],
+  "build_entry": "bash scripts/gradle-locked with fresh literal /tmp Gradle home; :gym:compileTestKotlin then :gym:test filtered to exactly ManualStoredFixtureReplayIntegrationTest",
+  "runtime": "Digest-pinned linux/amd64 container with exact Java/Python checks; compile evidence is preserved but is not behavioral qualification."
+}
