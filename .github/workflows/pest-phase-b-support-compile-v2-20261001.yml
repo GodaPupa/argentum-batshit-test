@@ -1,0 +1,65 @@
+name: Pest Phase-B support v2 exact-source compile only
+on:
+  push:
+    branches: ["validation/pest-phase-b-support-compile-v2-20261001"]
+    paths: [".github/workflows/pest-phase-b-support-compile-v2-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-phase-b-support-v2-${{ github.run_id }}
+      EVIDENCE: /tmp/pest-phase-b-support-v2-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 61c01456a777526a0772181e08894161a25ac429
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /*
+            !/ferocity-recycling/
+            !/industrial-waste/
+            !/experiments/
+            !/sphinx-approach/
+      - name: Bind source and forbid Test/JavaExec
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = 61c01456a777526a0772181e08894161a25ac429
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt)" = a40c0fa23c2ce95137b2dedf56537372fceec485
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt)" = c9229e730fd81a5e6ddb7104b50a14eb9c8726ae
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt)" = 4adca33a97be8aeca099b513f61e9f4133f655b1
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankRunner.kt)" = a5797843c7773338edd5f9d21c496ee1fd19a4c9
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlanTest.kt)" = df8336c1cf03c1379740fc967b2eb04287361d80
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+          cat > "$EVIDENCE/compile-only.init.gradle" <<'GROOVY'
+          import org.gradle.api.tasks.testing.Test
+          import org.gradle.api.tasks.JavaExec
+          gradle.taskGraph.whenReady { graph ->
+              def forbidden = graph.allTasks.findAll { it instanceof Test || it instanceof JavaExec }
+              if (!forbidden.empty) throw new GradleException('forbidden behavioral task: ' + forbidden*.path)
+              println 'PEST_SUPPORT_V2_COMPILE_ONLY'
+          }
+          GROOVY
+      - name: Compile only
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain -I "$EVIDENCE/compile-only.init.gradle" :gym:compileTestKotlin 2>&1 | tee "$EVIDENCE/compile.log"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-support-v2-compile-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
