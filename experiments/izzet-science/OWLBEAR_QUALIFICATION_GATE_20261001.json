@@ -1,0 +1,50 @@
+{
+  "schema": "argentum-prospective-qualification-gate-v1",
+  "authority": "PREPARATION_ONLY_NO_EXECUTION_AUTHORITY",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "maximum_originals": 1,
+  "official_counters_delta": 0,
+  "external_prerequisites": [
+    "Responsible process authenticates the actual new gate review record, exact commit, decision, scope and independence. A shaped ID or digest is not approval.",
+    "Trusted pre-publication/pre-marker inspection of complete diff and workflow inventory. This workflow cannot stop another workflow starting.",
+    "No prior consumed original is rerun. No receipt or marker is supplied by this preparation."
+  ],
+  "hold": true,
+  "lane": "izzet",
+  "gate_id": "izzet-qualification-20261001",
+  "base_commit": "f1e77027f65f45af287cb230d3804eda933e8ebe",
+  "workflow_path": ".github/workflows/izzet-owlbear-qualification-20261001.yml",
+  "plan_path": "experiments/izzet-science/OWLBEAR_QUALIFICATION_GATE_20261001.json",
+  "guard_path": "experiments/izzet-science/verify_owlbear_gate.py",
+  "gate_files": [
+    ".github/workflows/izzet-owlbear-qualification-20261001.yml",
+    "experiments/izzet-science/OWLBEAR_QUALIFICATION_GATE_20261001.json",
+    "experiments/izzet-science/verify_owlbear_gate.py"
+  ],
+  "protected_blobs": {
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/afr/cards/Owlbear.kt": "0c94d28957e735b7a0af93b783542dc5d002e305",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OwlbearScenarioTest.kt": "3e46fd15b1a99a41c77d56c6fb924d669d4ea112",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OwlbearTrampleScenarioTest.kt": "267c76a322d2c4fef5f68e5d42ab7a37129810ef",
+    "experiments/izzet-science/POSITION1_OWLBEAR_QUALIFICATION_FREEZE_20260930.json": "3a878fc278bdda16ae03794b2e26af0438e3a825",
+    "scripts/gradle-locked": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d"
+  },
+  "receipt_path": "experiments/izzet-science/evidence/IZZET_GATE_ACCEPTANCE_20261001.json",
+  "marker_path": "experiments/izzet-science/IZZET_GATE_EXECUTION_MARKER_20261001.json",
+  "execution_ref": "refs/heads/izzet/qualification-execute-20261001",
+  "required_decision": "ACCEPT_EXACT_OWLBEAR_THREE_CASE_QUALIFICATION_ORIGINAL",
+  "component_review_receiving_comment": 5932021014,
+  "component_review_sha256": "cf0e6921a99a594811cc3996f62f1c44572dc3f3b7ade60aaf9f15b52ba83433",
+  "expected_suites": {
+    "com.wingedsheep.engine.scenarios.OwlbearScenarioTest": 1,
+    "com.wingedsheep.engine.scenarios.OwlbearTrampleScenarioTest": 2
+  },
+  "scope": "Compile the unchanged Owlbear fixtures; execute exactly the three predeclared tests in two classes once; preserve exact XML, runtime and source identities for audit.",
+  "non_authority": [
+    "No actual registry-discovery parity",
+    "No automatic snapshot blessing",
+    "No registry adoption",
+    "No whole-pilot or Position-1 game authority"
+  ],
+  "build_entry": "bash scripts/gradle-locked; isolated Gradle user home; compileTestKotlin then exact filtered test task, no broad test task",
+  "runtime": "Digest-pinned linux/amd64 image; exact Java and Python binary checks; worker/runtime provenance must be audited from preserved build output. No prior source review qualifies this new runtime gate."
+}
