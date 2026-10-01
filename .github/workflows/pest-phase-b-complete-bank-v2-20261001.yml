@@ -8,6 +8,7 @@ permissions:
   actions: read
 jobs:
   phase-b:
+    if: ${{ false }} # SUPERSEDED: corrected general-observability gate v3 owns any future execution
     runs-on: ubuntu-latest
     timeout-minutes: 360
     container:
