@@ -1,0 +1,34 @@
+{
+  "schema": "sphinx-qualification-gate-acceptance-receipt-v1",
+  "date_utc": "2026-10-01",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "decision": "ACCEPT_EXACT_SPHINX_ENGINE_FIXTURE_SIX_CASE_QUALIFICATION_ORIGINAL",
+  "gate_id": "sphinx-engine-fixture-integration-qualification-20261001",
+  "base_commit": "c1fe387dde1e73942f9db3722c69fc8261c82470",
+  "reviewed_implementation_commit": "1651644ff0e638a0b5e77b26d9c670109b7defd2",
+  "reviewed_tree": "2de942bde34b8badbcad71084ae2b8c650439bca",
+  "reviewed_blobs": {
+    ".github/workflows/sphinx-engine-fixture-integration-qualification-20261001.yml": "06aeca585d543f67a3f67617d866470b39535236",
+    "sphinx-approach/ENGINE_FIXTURE_INTEGRATION_GATE_20261001.json": "b2010da6ce606077bb6cec369a2db162f1a676aa",
+    "sphinx-approach/verify_engine_fixture_gate.py": "3625c287da287c01b3a97362d92aec01563be50e",
+    "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEEngineFixture.kt": "b48697cc594a52631bfdee7b4219afc7fdd466d9",
+    "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEFixtureReplay.kt": "a1f35e725c9c269a82288126945c0b5d595df2a6",
+    "gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWriteAheadJournal.kt": "dc0995c25befb785bd83da7dc98b02115c8ddadb",
+    "gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxEngineFixtureIntegrationTest.kt": "a3eb36b095c430742a5f5aca8e541dcaed5434ba",
+    "sphinx-approach/ENGINE_FIXTURE_INTEGRATION_SCOPE_20261001.json": "0fb6ce04464f9ceede9e86fce453ff2e166eb55a",
+    "scripts/gradle-locked": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d"
+  },
+  "external_review_record_sha256": "fbe052d5c79e32d53136325ccac2577b86a9962e643f937f155165530029f65d",
+  "execution_authorization_record_sha256": "87e5a0f56c532630019b44caf1e8213746d7243bb89ef4b4fbd6094931db35f6",
+  "execution_authorization_comment": 5939573305,
+  "maximum_originals": 1,
+  "official_counters_delta": 0,
+  "scope": "Compile the exact reviewed source tree and execute exactly the six predeclared engine integration cases once. Preserve exact XML, source/tree, compile/test logs, runtime and gate records for separate audit.",
+  "authority": "ACCEPT_EXACT_REVIEWED_GATE_FOR_ONE_BOUNDED_ORIGINAL_ONLY",
+  "non_authority": [
+    "No official Stage-E deck, seed or strategic actor competence",
+    "No whole-game or whole-pilot admission",
+    "No accepted Ponder/replay evidence rerun",
+    "No Stage-E allocation/game authority"
+  ]
+}
