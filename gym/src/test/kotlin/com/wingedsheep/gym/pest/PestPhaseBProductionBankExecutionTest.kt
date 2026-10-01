@@ -32,8 +32,8 @@ class PestPhaseBProductionBankExecutionTest : FunSpec({
             runId = runId,
             sourceCommit = source,
         )
-        result.expectedRows shouldBe 30_328_476L
-        result.completedRows shouldBe 30_328_476L
-        result.planSha256 shouldBe "c2e15aaa4fcdd08ce2dd9a014c303983d9ffa884887df721a8d2fdfce0a1d064"
+        result.expectedRows shouldBe 30_452_552L
+        result.completedRows shouldBe 30_452_552L
+        result.planSha256 shouldBe "7ff0b8d7124c283bf5bb6df5a00db0f3685d3049ee1effab988c44b3fab17bf8"
     }
 })
