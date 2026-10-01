@@ -97,9 +97,9 @@ class SphinxStageEWholeActorSnapRoutingTest : ScenarioTestBase() {
             state = ZoneTransitionService.moveToZone(
                 state, bear, Zone.BATTLEFIELD, ZoneEntryOptions(controllerId = opponent)
             ).state.copy(
-                phase = Phase.PRECOMBAT_MAIN,
-                step = Step.PRECOMBAT_MAIN,
-                activePlayerId = actor,
+                phase = Phase.ENDING,
+                step = Step.END,
+                activePlayerId = opponent,
                 priorityPlayerId = actor,
             )
 
