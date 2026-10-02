@@ -1,0 +1,108 @@
+name: Izzet Skred current-head exact validation v11
+on:
+  push:
+    branches: ["validation/izzet-skred-current-head-v11-20261002"]
+    paths: [".github/workflows/izzet-skred-current-head-v11-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-skred-v11-${{ github.run_id }}
+      OUT: /tmp/izzet-skred-v11-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact current-head source adoption
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "1844ff2340f83e081cdb758dfc1f1839de0f4464"
+          test "$(git rev-parse HEAD^^)" = "08153bdde66179d0abde39d92c241412162ef44a"
+          test "$(git rev-parse HEAD^^^)" = "9ffd87d0547552a505d9da31f06d3aae2a0a39a5"
+          test "$(git hash-object mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/csp/cards/Skred.kt)" = "8aeba072a88a1abf29eddc9328523e373977aff4"
+          test "$(git hash-object mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SkredScenarioTest.kt)" = "63dbf7b07de73a0a34e6d9c8ce1bff6522a5853d"
+          test "$(git rev-list --count 9ffd87d0547552a505d9da31f06d3aae2a0a39a5..HEAD^)" = "2"
+          mkdir "$OUT"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ HEAD^^^ > "$OUT/source.txt"
+          git diff --name-status 9ffd87d0547552a505d9da31f06d3aae2a0a39a5 HEAD^ > "$OUT/source-delta.txt"
+          test "$(wc -l < "$OUT/source-delta.txt" | tr -d ' ')" = "2"
+          grep -Fq $'A\tmtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/csp/cards/Skred.kt' "$OUT/source-delta.txt"
+          grep -Fq $'A\tmtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SkredScenarioTest.kt' "$OUT/source-delta.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+          printf '%s\n' 'allocations=0 claims=0 games=0 outcomes=0' > "$OUT/official-counters.txt"
+      - name: Compile exact affected shards
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2003-2007:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Skred scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2003-2007:tests:test --tests com.wingedsheep.engine.scenarios.SkredScenarioTest 2>&1 | tee "$OUT/skred.log"
+          XML=mtg-sets/2003-2007/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SkredScenarioTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          python3 - <<'PY'
+          import os, xml.etree.ElementTree as ET
+          root=ET.parse(os.path.join(os.environ["OUT"],"TEST-com.wingedsheep.engine.scenarios.SkredScenarioTest.xml")).getroot()
+          assert int(root.attrib["tests"]) == 4
+          assert int(root.attrib["failures"]) == 0
+          assert int(root.attrib["errors"]) == 0
+          assert int(root.attrib["skipped"]) == 0
+          PY
+      - name: Confirm exact Position-1 zero-seed registry inventory
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"]) == 55
+          suffix=" is registered in current runtime"
+          registered=[]; missing=[]
+          for case in root.iter("testcase"):
+              name=case.attrib["name"]
+              card=name[:-len(suffix)] if name.endswith(suffix) else name
+              (registered if case.find("failure") is None and case.find("error") is None else missing).append(card)
+          assert "Skred" in registered
+          assert len(registered) == 33, (len(registered), registered)
+          assert len(missing) == 22, (len(missing), missing)
+          summary={
+            "schema":"izzet-skred-current-head-v11-validation-v1",
+            "authority":"AUTHOR_VALIDATION_ONLY_NOT_INDEPENDENT_REVIEW_OR_GAMEPLAY_ADMISSION",
+            "published_source_head":"1844ff2340f83e081cdb758dfc1f1839de0f4464",
+            "published_source_base":"9ffd87d0547552a505d9da31f06d3aae2a0a39a5",
+            "registered_count":len(registered),
+            "missing_count":len(missing),
+            "registered":sorted(registered),
+            "missing":sorted(missing),
+            "skred_registered":True,
+            "gradle_exit_code":int(os.environ["REGISTRY_RC"]),
+            "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0},
+          }
+          (out/"registry-summary.json").write_text(json.dumps(summary,sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-skred-current-head-v11-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
