@@ -1,0 +1,109 @@
+name: Izzet Pieces current-head checkpoint
+on:
+  push:
+    branches: ["validation/izzet-pieces-current-head-20261002"]
+    paths: [".github/workflows/izzet-pieces-current-head-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-pieces-current-${{ github.run_id }}
+      OUT: /tmp/izzet-pieces-current-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact Pieces candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "049ecad5c57378bd5bc4a0ec0ee8432ea2efb4ea"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-pieces-current-head-validation-20261002.yml"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/soi/cards/PiecesOfThePuzzle.kt)" = "7994688e23747438a8518926e3bcc82f6e11ac22"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PiecesOfThePuzzleScenarioTest.kt)" = "bdd05be0cb8a7745a4ef988c15109924d53f130b"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m20/cards/BrightwoodTracker.kt)" = "ec6f8f13d8e6d9532922c0b64158e285c42affbe"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m12/cards/StaveOff.kt)" = "81346393e07564616ddd364b7ecf7c6b7c296f2a"
+          mkdir "$OUT"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          git diff --name-status HEAD^ HEAD > "$OUT/validation-delta.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile affected source and tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:compileTestKotlin \
+            :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Pieces and Stave Off scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:test \
+            --tests com.wingedsheep.engine.scenarios.PiecesOfThePuzzleScenarioTest \
+            --tests com.wingedsheep.engine.scenarios.StaveOffBatchAHScenarioTest 2>&1 | tee "$OUT/scenarios.log"
+          for cls in PiecesOfThePuzzleScenarioTest StaveOffBatchAHScenarioTest; do
+            cp "mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.${cls}.xml" "$OUT/"
+          done
+          python3 - <<'PY'
+          import os, xml.etree.ElementTree as ET
+          out=os.environ["OUT"]
+          checks=[("PiecesOfThePuzzleScenarioTest",2),("StaveOffBatchAHScenarioTest",1)]
+          for cls,n in checks:
+              r=ET.parse(os.path.join(out,f"TEST-com.wingedsheep.engine.scenarios.{cls}.xml")).getroot()
+              assert int(r.attrib["tests"])==n
+              assert int(r.attrib["failures"])==0
+              assert int(r.attrib["errors"])==0
+              assert int(r.attrib["skipped"])==0
+          PY
+      - name: Reinventory exact Position-1 registry without seeds or games
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/position1-registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          REGISTRY_GRADLE_RC="$rc" python3 - <<'PY'
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"
+          registered=[]; missing=[]
+          for case in root.iter("testcase"):
+              name=case.attrib["name"]
+              card=name[:-len(suffix)] if name.endswith(suffix) else name
+              (registered if case.find("failure") is None and case.find("error") is None else missing).append(card)
+          assert {"Pieces of the Puzzle","Brightwood Tracker","Stave Off"}.issubset(set(registered))
+          assert {"Capsize","Star Compass","Everflowing Chalice","Skred","Benevolent Blessing","Snake Umbra"}.issubset(set(missing))
+          assert len(registered)==35, (len(registered),sorted(registered))
+          assert len(missing)==20, (len(missing),sorted(missing))
+          (out/"position1-registry-summary.json").write_text(json.dumps({
+            "schema":"izzet-position1-pieces-current-head-v1",
+            "authority":"REGISTRY_DIAGNOSTIC_ONLY_NOT_MECHANICS_OR_GAMEPLAY_QUALIFICATION",
+            "candidate_source":"049ecad5c57378bd5bc4a0ec0ee8432ea2efb4ea",
+            "tests":55,
+            "registered":len(registered),
+            "missing":len(missing),
+            "registered_names":sorted(registered),
+            "missing_names":sorted(missing),
+            "gradle_exit_code":int(os.environ["REGISTRY_GRADLE_RC"]),
+            "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0}
+          },sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-pieces-current-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
