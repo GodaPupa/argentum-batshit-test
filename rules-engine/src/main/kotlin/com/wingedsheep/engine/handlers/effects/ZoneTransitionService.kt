@@ -875,6 +875,11 @@ object ZoneTransitionService {
             }
         }
 
+        // A mana-spent rider belongs to the spell object, never a later incarnation of the card.
+        newState = newState.updateEntity(entityId) { c ->
+            c.without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+        }
+
         // 8. Emit ZoneChangeEvent. A battlefield exit is a sacrifice (CR 701.21) when the central
         // sacrifice hook (trackPermanentSacrifice) pre-marked this entity in pendingSacrificeIds —
         // every sacrifice site routes through that hook, so the dozen call sites stay flag-free.
