@@ -1,0 +1,36 @@
+name: Izzet simple four canonical adoption
+on:
+  push:
+    branches: ["validation/izzet-simple-four-adoption-20261002"]
+    paths: [".github/workflows/izzet-simple-four-adoption-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-simple-four-${{ github.run_id }}
+      OUT: /tmp/izzet-simple-four-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 924fef816dc6e7ea9107bced74969eddc1e45c64, fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Compile and run exact existing scenario suites
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = 924fef816dc6e7ea9107bced74969eddc1e45c64
+          test ! -e "$OUT" && mkdir "$OUT"
+          git rev-parse HEAD HEAD^{tree} > "$OUT/source.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:1993-1999:compileKotlin :mtg-sets:2017-2022:compileKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:1993-1999:tests:test --tests com.wingedsheep.engine.scenarios.AfterlifeScenarioTest 2>&1 | tee "$OUT/afterlife.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.DestroyEvilScenarioTest --tests com.wingedsheep.engine.scenarios.GenerousGiftScenarioTest --tests com.wingedsheep.engine.scenarios.MastersRebukeBatchAFScenarioTest 2>&1 | tee "$OUT/other.log"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-simple-four-adoption-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: warn
+          retention-days: 90
