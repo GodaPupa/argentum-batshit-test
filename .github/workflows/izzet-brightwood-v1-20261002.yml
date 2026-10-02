@@ -1,0 +1,109 @@
+name: Izzet Brightwood exact validation v1
+on:
+  pull_request:
+    branches: ["validation/izzet-pre-stave-clean-base-20261002"]
+    paths: [".github/workflows/izzet-brightwood-v1-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-brightwood-v1-${{ github.run_id }}
+      OUT: /tmp/izzet-brightwood-v1-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact Brightwood candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+          test "$(git rev-parse HEAD^)" = "630dd1974edc9dc981783f8d11e4363e47151726"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m20/cards/BrightwoodTracker.kt)" = "ec6f8f13d8e6d9532922c0b64158e285c42affbe"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BrightwoodTrackerScenarioTest.kt)" = "8e7c515d6f5356fa01577dab161ce0c6bda5240e"
+          test ! -e mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/csp/cards/Skred.kt
+          test ! -e mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m12/cards/StaveOff.kt
+          mkdir "$OUT"
+          git diff --name-status 7e691db5ece690602e904147bf02a0d82f3a1047 HEAD^ > "$OUT/source-delta.txt"
+          test "$(wc -l < "$OUT/source-delta.txt" | tr -d ' ')" = "2"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+          printf '%s\n' 'allocations=0 claims=0 games=0 outcomes=0' > "$OUT/official-counters.txt"
+      - name: Compile exact affected shards
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Brightwood scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.BrightwoodTrackerScenarioTest 2>&1 | tee "$OUT/brightwood.log"
+          XML=mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.BrightwoodTrackerScenarioTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          python3 - <<'PY'
+          import os, xml.etree.ElementTree as ET
+          root=ET.parse(os.path.join(os.environ["OUT"],"TEST-com.wingedsheep.engine.scenarios.BrightwoodTrackerScenarioTest.xml")).getroot()
+          assert int(root.attrib["tests"]) == 2
+          assert int(root.attrib["failures"]) == 0
+          assert int(root.attrib["errors"]) == 0
+          assert int(root.attrib["skipped"]) == 0
+          PY
+      - name: Confirm exact Position-1 zero-seed registry inventory
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"]) == 55
+          suffix=" is registered in current runtime"
+          registered=[]; missing=[]
+          for case in root.iter("testcase"):
+              name=case.attrib["name"]
+              card=name[:-len(suffix)] if name.endswith(suffix) else name
+              (registered if case.find("failure") is None and case.find("error") is None else missing).append(card)
+          assert "Brightwood Tracker" in registered
+          assert "Stave Off" in missing
+          assert "Skred" in missing
+          assert len(registered) == 33
+          assert len(missing) == 22
+          (out/"registry-summary.json").write_text(json.dumps({
+            "schema":"izzet-brightwood-v1-validation-v1",
+            "authority":"AUTHOR_VALIDATION_ONLY_NOT_INDEPENDENT_REVIEW_OR_GAMEPLAY_ADMISSION",
+            "clean_base":"7e691db5ece690602e904147bf02a0d82f3a1047",
+            "candidate_head":"630dd1974edc9dc981783f8d11e4363e47151726",
+            "registered_count":len(registered),
+            "missing_count":len(missing),
+            "registered":sorted(registered),
+            "missing":sorted(missing),
+            "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0},
+            "gradle_exit_code":int(os.environ["REGISTRY_RC"])
+          },sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-brightwood-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
