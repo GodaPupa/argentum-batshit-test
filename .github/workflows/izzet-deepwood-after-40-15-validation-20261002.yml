@@ -1,0 +1,78 @@
+name: Izzet Deepwood Denizen after 40/15
+on:
+  push:
+    branches: ["validation/izzet-deepwood-after-40-15-20261002"]
+    paths: [".github/workflows/izzet-deepwood-after-40-15-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-deepwood-${{ github.run_id }}
+      OUT: /tmp/izzet-deepwood-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact Deepwood Denizen candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "967c56f762815d5fe9ba618a1131f8b5b3298795"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-deepwood-after-40-15-validation-20261002.yml"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh2/cards/DeepwoodDenizen.kt)" = "f1eacbf951f732cd10372fd661a7d56bff29c347"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DeepwoodDenizenScenarioTest.kt)" = "13b29407cff6b0915fb14cde2935419677213ddd"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile affected shard
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Deepwood Denizen scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.DeepwoodDenizenScenarioTest 2>&1 | tee "$OUT/deepwood.log"
+          cp mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DeepwoodDenizenScenarioTest.xml "$OUT/"
+      - name: Reinventory Position-1
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"; cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"; reg=[]; miss=[]
+          for c in root.iter("testcase"):
+              n=c.attrib["name"]; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (reg if c.find("failure") is None and c.find("error") is None else miss).append(card)
+          assert "Deepwood Denizen" in reg
+          expected_missing={"Capsize","Everflowing Chalice","Lose Focus","Rolling Thunder","Shattering Pulse","Skred","Star Compass","Benevolent Blessing","Cosmic Hunger","Guardian Naga // Banishing Coils","Shardless Outlander","Snake Umbra","Temporal Isolation","Ulvenwald Captive // Ulvenwald Abomination"}
+          assert set(miss)==expected_missing, (len(reg),len(miss),sorted(miss))
+          assert len(reg)==41 and len(miss)==14
+          (out/"registry-summary.json").write_text(json.dumps({
+            "registered":len(reg),"missing":len(miss),"missing_names":sorted(miss),
+            "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0}
+          },indent=2,sort_keys=True)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-deepwood-after-40-15-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
