@@ -1,0 +1,101 @@
+name: Izzet Brightwood + Ideas live checkpoint
+on:
+  push:
+    branches: ["validation/izzet-brightwood-ideas-live-20261002"]
+    paths: [".github/workflows/izzet-brightwood-ideas-live-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-brightwood-ideas-${{ github.run_id }}
+      OUT: /tmp/izzet-brightwood-ideas-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact live source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "d0447fb16d3e294cd53f523c8f10ffd7060cce3f"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-brightwood-ideas-live-validation-20261002.yml"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m20/cards/BrightwoodTracker.kt)" = "ec6f8f13d8e6d9532922c0b64158e285c42affbe"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BrightwoodTrackerScenarioTest.kt)" = "8e7c515d6f5356fa01577dab161ce0c6bda5240e"
+          test "$(git hash-object mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/sok/cards/IdeasUnbound.kt)" = "1569f13cf0ad0476b23c96833ef1f09e4183601e"
+          test "$(git hash-object mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IdeasUnboundScenarioTest.kt)" = "e84741dfe9bb8de6d8554c1222f953e2900c23b1"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m12/cards/StaveOff.kt)" = "81346393e07564616ddd364b7ecf7c6b7c296f2a"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt)" = "197a99e6c17885bb70511916893d3a33de217feb"
+          mkdir "$OUT"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile affected shards
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2003-2007:tests:compileTestKotlin \
+            :mtg-sets:2008-2016:tests:compileTestKotlin \
+            :mtg-sets:2017-2022:tests:compileTestKotlin \
+            :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact retained card scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.BrightwoodTrackerScenarioTest 2>&1 | tee "$OUT/brightwood.log"
+          cp mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.BrightwoodTrackerScenarioTest.xml "$OUT/"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2003-2007:tests:test --tests com.wingedsheep.engine.scenarios.IdeasUnboundScenarioTest 2>&1 | tee "$OUT/ideas.log"
+          cp mtg-sets/2003-2007/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.IdeasUnboundScenarioTest.xml "$OUT/"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.StaveOffBatchAHScenarioTest 2>&1 | tee "$OUT/staveoff.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.StaveOffBatchAHScenarioTest.xml "$OUT/"
+      - name: Reinventory Position-1
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/position1-registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          REGISTRY_GRADLE_RC="$rc" python3 - <<'PY'
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"
+          registered=[]; missing=[]
+          for case in root.iter("testcase"):
+              name=case.attrib["name"]
+              card=name[:-len(suffix)] if name.endswith(suffix) else name
+              if case.find("failure") is None and case.find("error") is None: registered.append(card)
+              else: missing.append(card)
+          assert {"Stave Off","Brightwood Tracker","Ideas Unbound"}.issubset(set(registered))
+          assert {"Capsize","Everflowing Chalice","Skred","Star Compass","Benevolent Blessing","Snake Umbra"}.issubset(set(missing))
+          assert len(registered)==35, (len(registered), sorted(registered))
+          assert len(missing)==20, (len(missing), sorted(missing))
+          (out/"position1-registry-summary.json").write_text(json.dumps({
+            "schema":"izzet-position1-brightwood-ideas-live-v1",
+            "authority":"REGISTRY_DIAGNOSTIC_ONLY_NOT_GAMEPLAY_ADMISSION",
+            "published_source":"d0447fb16d3e294cd53f523c8f10ffd7060cce3f",
+            "registered":len(registered),"missing":len(missing),
+            "registered_names":sorted(registered),"missing_names":sorted(missing),
+            "gradle_exit_code":int(os.environ["REGISTRY_GRADLE_RC"]),
+            "official_counters_delta":0
+          },sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-brightwood-ideas-live-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
