@@ -2122,6 +2122,18 @@ class ClientStateTransformer(
             }
             if (playerId !in floatingEffect.effect.affectedEntities) continue
             when (modification) {
+                is SerializableModification.PreventTargeting -> {
+                    if (!com.wingedsheep.engine.mechanics.targeting.FloatingTargetingRestriction.appliesTo(state, floatingEffect, playerId)) continue
+                    val names = modification.controllers.map { blockedPlayer ->
+                        state.getEntity(blockedPlayer)?.get<PlayerComponent>()?.name ?: "another player"
+                    }.joinToString(", ")
+                    effects.add(ClientPlayerEffect(
+                        effectId = "targeting_restriction_${floatingEffect.id}",
+                        name = "Targeting restricted",
+                        description = "Can't be targeted by spells or abilities controlled by $names",
+                        icon = "hexproof"
+                    ))
+                }
                 is SerializableModification.PreventAllDamageTo -> {
                     preventsAllDamage = true
                 }
