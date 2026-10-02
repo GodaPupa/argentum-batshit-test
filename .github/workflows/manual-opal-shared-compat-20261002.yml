@@ -1,0 +1,73 @@
+name: Manual shared Opal compatibility qualification
+on:
+  push:
+    branches: ["validation/manual-opal-shared-compat-20261002"]
+    paths: [".github/workflows/manual-opal-shared-compat-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/manual-opal-shared-${{ github.run_id }}
+      OUT: /tmp/manual-opal-shared-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 24c033d5d4e7caf568d0aad365f486e19d10256d, fetch-depth: 1, persist-credentials: false}
+      - uses: actions/checkout@v6
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact compatibility and compile affected modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = "24c033d5d4e7caf568d0aad365f486e19d10256d"
+          test ! -e "$OUT" && mkdir "$OUT"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaSpellRider.kt)" = 5c6c1d4e8374a5375f79643a6e282fb728ab23b6
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt)" = a3526220f4b7f172ad8270d01da77a10dacfc158
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt)" = 7cb03c944411532f8ecdeccff470129260a2aa01
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = 544a440160528f4a08211109936a55e263c39d19
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/SwanSong.kt)" = 385ab04b2d05e7f8d160f156746cb4b69b4fbee9
+          git rev-parse HEAD HEAD^{tree} > "$OUT/source.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sdk:compileKotlin :rules-engine:compileKotlin :mtg-sets:2008-2016:tests:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Opal Palace scenario qualification
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest 2>&1 | tee "$OUT/opal.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest.xml "$OUT/"
+      - name: Run unchanged Swan Song mechanics suite
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.SwanSongScenarioTest 2>&1 | tee "$OUT/swan.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SwanSongScenarioTest.xml "$OUT/"
+      - name: Reinventory exact eight frozen decks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out "$OUT/source-audit"
+          MT_P2_AUDIT_INPUT="$OUT/source-audit/registry-requests.json"           MT_P2_AUDIT_OUTPUT="$OUT/registry"             bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain               :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest 2>&1 | tee "$OUT/registry.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml "$OUT/"
+          python3 - <<'PY'
+          import json,os,pathlib
+          out=pathlib.Path(os.environ['OUT'])
+          report=json.loads((out/'registry/registry-report.json').read_text())
+          rows=[]
+          for d in report['decks']:
+              missing=[c['requested_name'] for c in d['cards'] if not c['registry_resolved']]
+              rows.append({'deck_id':d['deck_id'],'missing':len(missing),'missing_names':missing})
+          (out/'registry-summary.json').write_text(json.dumps({'schema':'manual-post-opal-registry-v1','decks':rows,'total_missing':sum(x['missing'] for x in rows),'official_counters_delta':0},sort_keys=True,indent=2)+'\n')
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-opal-shared-compat-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: warn
+          retention-days: 90
