@@ -1,0 +1,76 @@
+name: Izzet mana-creature adoption qualification
+on:
+  push:
+    branches: ["validation/izzet-mana-creature-adoption-20261002"]
+    paths: [".github/workflows/izzet-mana-creature-adoption-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/izzet-mana-adoption-${{ github.run_id }}
+      EVIDENCE: /tmp/izzet-mana-adoption-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 6dd57de2d3992c68b5c94209178c00ab72bda7fe, fetch-depth: 1, persist-credentials: false}
+      - name: Bind exact retained canonical bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = 6dd57de2d3992c68b5c94209178c00ab72bda7fe
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          for spec in             "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/thb/cards/IlysianCaryatid.kt 967b2b9afb73522b47f0c96f6381ea7500fd4da5"             "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IlysianCaryatidScenarioTest.kt 93ca85a26f15baa8128542e1c09a0020b91f4570"             "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/frf/cards/WhispererOfTheWilds.kt f912edd657fe1f891d6beae9b2fb49407c28c820"             "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WhispererOfTheWildsScenarioTest.kt 7f8c51c7946cc852af0d176a6ddd09daf4c58047"
+          do set -- $spec; test "$(git hash-object "$1")" = "$2"; done
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+      - name: Execute exact four mechanics cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.IlysianCaryatidScenarioTest             :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.WhispererOfTheWildsScenarioTest             2>&1 | tee "$EVIDENCE/mechanics.log"
+          cp mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.IlysianCaryatidScenarioTest.xml "$EVIDENCE/"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.WhispererOfTheWildsScenarioTest.xml "$EVIDENCE/"
+          /usr/bin/python3 -I -S - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          e=pathlib.Path(os.environ['EVIDENCE'])
+          for fn in ['TEST-com.wingedsheep.engine.scenarios.IlysianCaryatidScenarioTest.xml','TEST-com.wingedsheep.engine.scenarios.WhispererOfTheWildsScenarioTest.xml']:
+              r=ET.parse(e/fn).getroot()
+              assert int(r.attrib['tests'])==2
+              assert all(int(r.attrib[k])==0 for k in ('failures','errors','skipped'))
+          PY
+      - name: Reinventory unchanged 55 identities
+        shell: bash
+        run: |
+          set -o pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$EVIDENCE/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml "$EVIDENCE/"
+          RC="$rc" /usr/bin/python3 -I -S - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          e=pathlib.Path(os.environ['EVIDENCE'])
+          r=ET.parse(e/'TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml').getroot()
+          suffix=' is registered in current runtime'; reg=[]; miss=[]
+          for c in r.iter('testcase'):
+              n=c.attrib['name']; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (miss if c.find('failure') is not None or c.find('error') is not None else reg).append(card)
+          s={'tests':int(r.attrib['tests']),'registered':len(reg),'missing':len(miss),
+             'registered_names':sorted(reg),'missing_names':sorted(miss),'gradle_exit':int(os.environ['RC']),
+             'authority':'REGISTRY_ONLY','official_counters_delta':0}
+          assert s['tests']==55
+          assert 'Ilysian Caryatid' in reg and 'Whisperer of the Wilds' in reg
+          (e/'registry-summary.json').write_text(json.dumps(s,sort_keys=True,indent=2)+'\n')
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-mana-creature-adoption-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
