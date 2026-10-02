@@ -1,0 +1,67 @@
+name: Izzet accepted five-card canonical adoption
+on:
+  push:
+    branches: ["validation/izzet-accepted-five-adoption-20261002"]
+    paths: [".github/workflows/izzet-accepted-five-adoption-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-five-adoption-${{ github.run_id }}
+      OUT: /tmp/izzet-five-adoption-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 7357066d27ce8a7ffd9da7f2e980e719ade9114a, fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact accepted card blobs and compile
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = 7357066d27ce8a7ffd9da7f2e980e719ade9114a
+          test ! -e "$OUT" && mkdir "$OUT"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/ChoMannosBlessing.kt)" = d9c65d30a84d21ebbdc27494de4d9a23e975ae73
+          test "$(git hash-object mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/ColossalDreadmask.kt)" = c766c45f9782eab665ace62571cfdda13255dc89
+          test "$(git hash-object mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/jud/cards/PrismaticStrands.kt)" = 53502a126276f95645239073b2c446289dc05d76
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/iko/cards/RamThrough.kt)" = dd67a43a58d3a26ecbd07606a65c716685f67120
+          test "$(git hash-object mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/10e/cards/SpiritLink.kt)" = 01229f432e088fc1ab8c3ed965ea0c5e73c5cdcf
+          git rev-parse HEAD HEAD^{tree} > "$OUT/source.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:1993-1999:compileKotlin :mtg-sets:2000-2002:compileKotlin :mtg-sets:2003-2007:compileKotlin :mtg-sets:2017-2022:compileKotlin :mtg-sets:2024:compileKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact existing mechanics suites
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:1993-1999:tests:test --tests com.wingedsheep.engine.scenarios.ChoMannosBlessingScenarioTest 2>&1 | tee "$OUT/mmq.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:2000-2002:tests:test --tests com.wingedsheep.engine.scenarios.PrismaticStrandsScenarioTest 2>&1 | tee "$OUT/jud.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:2003-2007:tests:test --tests com.wingedsheep.engine.scenarios.SpiritLinkBatchAJScenarioTest 2>&1 | tee "$OUT/10e.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.RamThroughScenarioTest 2>&1 | tee "$OUT/iko.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:2024:tests:test --tests com.wingedsheep.engine.scenarios.ColossalDreadmaskScenarioTest 2>&1 | tee "$OUT/mh3.log"
+      - name: Reinventory unchanged 55 names
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/inventory.log"
+          rc=${PIPESTATUS[0]}; set -e; echo "$rc" > "$OUT/inventory-gradle-exit.txt"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml "$OUT/"
+          python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']); root=ET.parse(out/'TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml').getroot()
+          suffix=' is registered in current runtime'; reg=[]; miss=[]
+          for c in root.iter('testcase'):
+              n=c.attrib['name']; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (miss if c.find('failure') is not None or c.find('error') is not None else reg).append(card)
+          expected={"Cho-Manno's Blessing","Colossal Dreadmask","Prismatic Strands","Ram Through","Spirit Link"}
+          assert expected <= set(reg)
+          (out/'registry-summary.json').write_text(json.dumps({'schema':'izzet-position1-post-five-adoption-registry-v1','registered':len(reg),'missing':len(miss),'registered_names':sorted(reg),'missing_names':sorted(miss),'authority':'REGISTRY_DIAGNOSTIC_ONLY','official_counters_delta':0},sort_keys=True,indent=2)+'\n')
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-accepted-five-adoption-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: warn
+          retention-days: 90
