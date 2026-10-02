@@ -13,7 +13,7 @@ jobs:
       OUT: /tmp/izzet-opal-shared-evidence-${{ github.run_id }}
     steps:
       - uses: actions/checkout@v6
-        with: {ref: c2a11b501fa9b6c4c78972c7d1bf1ff591f62fcf, fetch-depth: 1, persist-credentials: false}
+        with: {ref: 7a1992fdf8e4cbb27d4bea8739c128a056bfc9cf, fetch-depth: 1, persist-credentials: false}
       - uses: actions/setup-java@v5
         with: {distribution: temurin, java-version: "21"}
       - name: Bind exact shared compatibility and compile
@@ -21,13 +21,14 @@ jobs:
         run: |
           set -euo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          test "$(git rev-parse HEAD)" = "c2a11b501fa9b6c4c78972c7d1bf1ff591f62fcf"
+          test "$(git rev-parse HEAD)" = "7a1992fdf8e4cbb27d4bea8739c128a056bfc9cf"
           test ! -e "$OUT" && mkdir "$OUT"
           test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaSpellRider.kt)" = 5c6c1d4e8374a5375f79643a6e282fb728ab23b6
           test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt)" = a3526220f4b7f172ad8270d01da77a10dacfc158
           test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt)" = 7cb03c944411532f8ecdeccff470129260a2aa01
           test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = 544a440160528f4a08211109936a55e263c39d19
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt)" = 197a99e6c17885bb70511916893d3a33de217feb
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetOpalPalaceRegistryAdoptionTest.kt)" = 3422c04443c385d53ed7e4c7a3b381f96d98d016
           git rev-parse HEAD HEAD^{tree} > "$OUT/source.txt"
           bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sdk:compileKotlin :rules-engine:compileKotlin :mtg-sets:2008-2016:compileKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
       - name: Require canonical Opal Palace registry adoption
