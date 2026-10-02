@@ -1,0 +1,61 @@
+name: Manual Gwenna author validation
+on:
+  push:
+    branches: ["validation/manual-gwenna-author-validation-20261002"]
+    paths: [".github/workflows/manual-gwenna-author-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/manual-gwenna-${{ github.run_id }}
+      OUT: /tmp/manual-gwenna-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact authored Gwenna candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "8ac39d88e42b5b69d1ce2b04df39139316d872cd"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-gwenna-author-validation-20261002.yml"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bro/cards/GwennaEyesOfGaea.kt)" = "72f2a62bf2682baecbcc704bb85ea0a31766ff73"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GwennaEyesOfGaeaScenarioTest.kt)" = "8c9e83a0d2ad8d66e807e10652c85bcce78e8c86"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile affected source
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Gwenna scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.GwennaEyesOfGaeaScenarioTest 2>&1 | tee "$OUT/gwenna.log"
+          XML=mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.GwennaEyesOfGaeaScenarioTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          python3 - <<'PY'
+          import os, pathlib, xml.etree.ElementTree as ET, json
+          out=pathlib.Path(os.environ["OUT"])
+          xml=out/"TEST-com.wingedsheep.engine.scenarios.GwennaEyesOfGaeaScenarioTest.xml"
+          root=ET.parse(xml).getroot()
+          summary={k:int(root.attrib[k]) for k in ("tests","failures","errors","skipped")}
+          assert summary=={"tests":3,"failures":0,"errors":0,"skipped":0}, summary
+          summary["official_counters_delta"]={"allocations":0,"claims":0,"games":0,"outcomes":0}
+          (out/"result.json").write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-gwenna-author-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
