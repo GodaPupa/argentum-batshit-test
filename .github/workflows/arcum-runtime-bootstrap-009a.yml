@@ -1,0 +1,198 @@
+name: Arcum Runtime Bootstrap 009A
+
+on:
+  push:
+    branches:
+      - "arcum/runtime-bootstrap-009a"
+    paths:
+      - ".github/workflows/arcum-runtime-bootstrap-009a.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: arcum-runtime-bootstrap-009a
+  cancel-in-progress: false
+
+jobs:
+  bootstrap:
+    name: Package pinned source and focused dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      PINNED_COMMIT: 96d6da744aa9051ce4064f1e768f10228e81744b
+      PINNED_TREE: d202c80f3f1bf417742725c0a6dd274fe28af68a
+      WRAPPER_BLOB: b1b8ef56b44f16b14dc800fa8103a6d89abb526f
+      GRADLE_USER_HOME: ${{ runner.temp }}/arcum-gradle-home
+      OUT_DIR: ${{ runner.temp }}/arcum-bootstrap-out
+
+    steps:
+      - name: Checkout exact pinned source
+        uses: actions/checkout@v6
+        with:
+          ref: 96d6da744aa9051ce4064f1e768f10228e81744b
+          fetch-depth: 1
+          persist-credentials: false
+
+      - name: Authenticate pinned source
+        shell: bash
+        run: |
+          set -euo pipefail
+          ACTUAL_COMMIT="$(git rev-parse HEAD)"
+          ACTUAL_TREE="$(git rev-parse 'HEAD^{tree}')"
+          test "$ACTUAL_COMMIT" = "$PINNED_COMMIT"
+          test "$ACTUAL_TREE" = "$PINNED_TREE"
+          test "$(git hash-object gradle/wrapper/gradle-wrapper.jar)" = "$WRAPPER_BLOB"
+          test -z "$(git status --porcelain --untracked-files=no)"
+          printf '%s\n' "$ACTUAL_COMMIT" > /tmp/arcum-pinned-commit
+          printf '%s\n' "$ACTUAL_TREE" > /tmp/arcum-pinned-tree
+
+      - name: Set up Java 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Build complete Git-derived source bundle
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT_DIR"
+          git ls-tree -r -l "$PINNED_COMMIT" > "$OUT_DIR/source-tree-ls-tree.txt"
+          git archive --format=tar "$PINNED_COMMIT" | gzip -n -9 > "$OUT_DIR/argentum-pinned-source.tar.gz"
+          sha256sum "$OUT_DIR/argentum-pinned-source.tar.gz" > "$OUT_DIR/source-archive.sha256"
+          sha256sum "$OUT_DIR/source-tree-ls-tree.txt" > "$OUT_DIR/source-tree-ls-tree.sha256"
+
+      - name: Resolve focused module compile and test-runtime dependencies
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -rf "$GRADLE_USER_HOME"
+          mkdir -p "$GRADLE_USER_HOME"
+          chmod +x gradlew
+          java -version 2>&1 | tee "$OUT_DIR/java-version.txt"
+          ./gradlew --version | tee "$OUT_DIR/gradle-version.txt"
+          ./gradlew --no-daemon -Dorg.gradle.workers.max=1             :mtg-sets:2003-2007:tests:testClasses             --stacktrace | tee "$OUT_DIR/focused-testClasses.log"
+          ./gradlew --no-daemon -Dorg.gradle.workers.max=1             :mtg-sets:2003-2007:tests:dependencies             --configuration testRuntimeClasspath             | tee "$OUT_DIR/focused-testRuntimeClasspath.txt"
+
+          # Force Gradle to realize the focused Test task/runtime classpath without executing
+          # any unrelated behavioral test. The only acceptable nonzero result is "no tests found"
+          # for this intentionally nonexistent selector.
+          set +e
+          ./gradlew --no-daemon -Dorg.gradle.workers.max=1             :mtg-sets:2003-2007:tests:test             --tests "__ArcumDependencyBootstrapSentinel_NoSuchTest__"             --stacktrace > "$OUT_DIR/runtime-classpath-sentinel.log" 2>&1
+          SENTINEL_RC=$?
+          set -e
+          if [ "$SENTINEL_RC" -ne 0 ]; then
+            grep -Eiq "No tests found|No matching tests found|No tests were found" "$OUT_DIR/runtime-classpath-sentinel.log" || {
+              cat "$OUT_DIR/runtime-classpath-sentinel.log"
+              exit "$SENTINEL_RC"
+            }
+          fi
+          printf '%s\n' "$SENTINEL_RC" > "$OUT_DIR/runtime-classpath-sentinel.exit"
+
+      - name: Package fresh Gradle dependency state
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./gradlew --stop >/dev/null 2>&1 || true
+          rm -rf "$GRADLE_USER_HOME/daemon" "$GRADLE_USER_HOME/.tmp"
+          find "$GRADLE_USER_HOME" -type f -name '*.lock' -delete || true
+
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root = Path(__import__("os").environ["GRADLE_USER_HOME"])
+          out = Path(__import__("os").environ["OUT_DIR"]) / "gradle-home-inventory.sha256"
+          rows = []
+          for p in sorted(root.rglob("*")):
+              if not p.is_file():
+                  continue
+              h = hashlib.sha256()
+              with p.open("rb") as f:
+                  for chunk in iter(lambda: f.read(1024 * 1024), b""):
+                      h.update(chunk)
+              rows.append(f"{h.hexdigest()}  {p.relative_to(root).as_posix()}\n")
+          out.write_text("".join(rows))
+          PY
+
+          tar -C "$(dirname "$GRADLE_USER_HOME")" -czf "$OUT_DIR/arcum-gradle-home.tar.gz" "$(basename "$GRADLE_USER_HOME")"
+          sha256sum "$OUT_DIR/arcum-gradle-home.tar.gz" > "$OUT_DIR/gradle-home-archive.sha256"
+          sha256sum "$OUT_DIR/gradle-home-inventory.sha256" > "$OUT_DIR/gradle-home-inventory.sha256.sha256"
+
+      - name: Write bootstrap manifest
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os, subprocess, datetime
+
+          out = Path(os.environ["OUT_DIR"])
+          def sha(path):
+              h = hashlib.sha256()
+              with path.open("rb") as f:
+                  for chunk in iter(lambda: f.read(1024 * 1024), b""):
+                      h.update(chunk)
+              return h.hexdigest()
+
+          source = out / "argentum-pinned-source.tar.gz"
+          deps = out / "arcum-gradle-home.tar.gz"
+          inventory = out / "source-tree-ls-tree.txt"
+          manifest = {
+              "schema": "arcum-runtime-bootstrap-009a-v1",
+              "repository": "GodaPupa/argentum-batshit-test",
+              "pinned_commit": os.environ["PINNED_COMMIT"],
+              "pinned_tree": os.environ["PINNED_TREE"],
+              "authenticated_head": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
+              "authenticated_tree": subprocess.check_output(["git", "rev-parse", "HEAD^{tree}"], text=True).strip(),
+              "source_generation_command": "git archive --format=tar $PINNED_COMMIT | gzip -n -9",
+              "source_archive": {
+                  "filename": source.name,
+                  "bytes": source.stat().st_size,
+                  "sha256": sha(source),
+              },
+              "source_inventory": {
+                  "filename": inventory.name,
+                  "entries": sum(1 for _ in inventory.open("r", encoding="utf-8")),
+                  "sha256": sha(inventory),
+              },
+              "dependency_bundle": {
+                  "filename": deps.name,
+                  "bytes": deps.stat().st_size,
+                  "sha256": sha(deps),
+                  "gradle_user_home_source": os.environ["GRADLE_USER_HOME"],
+              },
+              "focused_module": ":mtg-sets:2003-2007:tests",
+              "resolution_tasks": [
+                  ":mtg-sets:2003-2007:tests:testClasses",
+                  ":mtg-sets:2003-2007:tests:dependencies --configuration testRuntimeClasspath",
+                  ":mtg-sets:2003-2007:tests:test --tests __ArcumDependencyBootstrapSentinel_NoSuchTest__",
+              ],
+              "important_dependencies": {
+                  "foojay_marker": "org.gradle.toolchains.foojay-resolver-convention:org.gradle.toolchains.foojay-resolver-convention.gradle.plugin:1.0.0",
+                  "foojay_implementation": "org.gradle.toolchains:foojay-resolver:1.0.0",
+              },
+              "runner_os": os.environ.get("RUNNER_OS"),
+              "runner_arch": os.environ.get("RUNNER_ARCH"),
+              "github_run_id": os.environ.get("GITHUB_RUN_ID"),
+              "github_run_attempt": os.environ.get("GITHUB_RUN_ATTEMPT"),
+              "workflow_ref": os.environ.get("GITHUB_WORKFLOW_REF"),
+              "bootstrap_workflow_head": os.environ.get("GITHUB_SHA"),
+              "generated_at_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+          }
+          if manifest["authenticated_head"] != manifest["pinned_commit"]:
+              raise SystemExit("authenticated HEAD mismatch")
+          if manifest["authenticated_tree"] != manifest["pinned_tree"]:
+              raise SystemExit("authenticated tree mismatch")
+          (out / "BOOTSTRAP_MANIFEST.json").write_text(json.dumps(manifest, indent=2, sort_keys=True) + "\n")
+          PY
+          sha256sum "$OUT_DIR/BOOTSTRAP_MANIFEST.json" > "$OUT_DIR/BOOTSTRAP_MANIFEST.sha256"
+
+      - name: Upload Arcum bootstrap artifact
+        uses: actions/upload-artifact@v7
+        with:
+          name: arcum-runtime-bootstrap-009a
+          path: ${{ runner.temp }}/arcum-bootstrap-out/
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
