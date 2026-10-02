@@ -1,0 +1,54 @@
+name: Izzet registry after Opal and accepted adoptions
+on:
+  push:
+    branches: ["validation/izzet-registry-after-opal-20261001"]
+    paths: [".github/workflows/izzet-registry-after-opal-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  registry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-registry-opal-${{ github.run_id }}
+      OUT: /tmp/izzet-registry-opal-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 75e7509fce69f84fa4cdf314619e92177c5ec62a, fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Prove canonical Opal registry adoption
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e "$OUT" && mkdir "$OUT"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :gym:test --tests com.wingedsheep.gym.izzet.IzzetOpalPalaceRegistryAdoptionTest 2>&1 | tee "$OUT/opal-adoption.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetOpalPalaceRegistryAdoptionTest.xml "$OUT/"
+      - name: Reinventory unchanged 55 identities
+        shell: bash
+        run: |
+          set -o pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info             :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/inventory.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml "$OUT/"
+          RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']); root=ET.parse(out/'TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml').getroot()
+          suffix=' is registered in current runtime'; reg=[]; miss=[]
+          for c in root.iter('testcase'):
+              name=c.attrib['name']; card=name[:-len(suffix)] if name.endswith(suffix) else name
+              (miss if c.find('failure') is not None or c.find('error') is not None else reg).append(card)
+          s={'schema':'izzet-registry-after-opal-v1','tests':int(root.attrib['tests']),'registered':len(reg),'missing':len(miss),
+             'registered_names':sorted(reg),'missing_names':sorted(miss),'opal_palace_registered':'Opal Palace' in reg,
+             'gradle_exit':int(os.environ['RC']),'authority':'REGISTRY_ONLY','official_counters_delta':0}
+          (out/'summary.json').write_text(json.dumps(s,sort_keys=True,indent=2)+'\n')
+          assert s['tests']==55 and s['opal_palace_registered']
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-registry-after-opal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: warn
+          retention-days: 90
