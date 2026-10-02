@@ -1,0 +1,127 @@
+name: Izzet Opal Palace shared compatibility author validation
+on:
+  push:
+    branches: ["validation/opal-izzet-20261001"]
+    paths: [".github/workflows/opal-izzet-compat-validation-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/opal-izzet-${{ github.run_id }}
+      OUT: /tmp/opal-izzet-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact Izzet source and shared Opal bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^^)" = "957a26bfec076be07effc162999830576736861e"
+          python3 - <<'PY'
+          import subprocess
+          expected={
+            ".github/workflows/opal-izzet-compat-validation-20261001.yml",
+            "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt",
+          }
+          got=set(subprocess.check_output(["git","diff","--name-only","957a26bfec076be07effc162999830576736861e","HEAD"],text=True).splitlines())
+          assert got==expected,(got,expected)
+          PY
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaSpellRider.kt)" = "5c6c1d4e8374a5375f79643a6e282fb728ab23b6"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt)" = "a3526220f4b7f172ad8270d01da77a10dacfc158"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt)" = "7cb03c944411532f8ecdeccff470129260a2aa01"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt)" = "10d4563b2e615bb33ede712815bc063c299ab7d0"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt)" = "67bc89bf3a21c30f25fada6ae83d4408899f6cef"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt)" = "de67736673c3f737e1565261e4c31d6f8074f643"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = "544a440160528f4a08211109936a55e263c39d19"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt)" = "5b1be3a666cc615d8a274419479f1a885df9968c"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetOpalPalaceRegistryAdoptionTest.kt)" = "3422c04443c385d53ed7e4c7a3b381f96d98d016"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt)" = "197a99e6c17885bb70511916893d3a33de217feb"
+          mkdir "$OUT"
+          git rev-parse HEAD HEAD^{tree} > "$OUT/validation-head.txt"
+          git rev-parse HEAD^^ > "$OUT/bound-source-head.txt"
+          git diff --name-status 957a26bfec076be07effc162999830576736861e HEAD > "$OUT/validation-delta.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile affected set and gym test modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sets:2008-2016:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Opal Palace mechanics and registry adoption checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest 2>&1 | tee "$OUT/opal.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest.xml "$OUT/"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :gym:test --tests com.wingedsheep.gym.izzet.IzzetOpalPalaceRegistryAdoptionTest 2>&1 | tee "$OUT/opal-registry.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetOpalPalaceRegistryAdoptionTest.xml "$OUT/"
+          python3 - <<'PY'
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          expected={
+            "com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest":10,
+            "com.wingedsheep.gym.izzet.IzzetOpalPalaceRegistryAdoptionTest":1,
+          }
+          for name,count in expected.items():
+              root=ET.parse(out/f"TEST-{name}.xml").getroot()
+              assert int(root.attrib["tests"])==count
+              assert int(root.attrib["failures"])==0
+              assert int(root.attrib["errors"])==0
+              assert int(root.attrib["skipped"])==0
+          (out/"opal-summary.json").write_text(json.dumps({
+            "schema":"opal-izzet-compat-author-validation-v1",
+            "authority":"AUTHOR_VALIDATION_ONLY_NOT_INDEPENDENT_REVIEW_OR_GAMEPLAY_ADMISSION",
+            "opal_scenario_tests":10,
+            "opal_registry_tests":1,
+            "official_counters_delta":0
+          },sort_keys=True,indent=2)+"\n")
+          PY
+      - name: Reinventory exact 55 Position-1 identities without seeds or games
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/position1-registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          test -e gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml "$OUT/"
+          REGISTRY_GRADLE_RC="$rc" python3 - <<'PY'
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"
+          registered=[]; missing=[]
+          for case in root.iter("testcase"):
+              name=case.attrib["name"]
+              card=name[:-len(suffix)] if name.endswith(suffix) else name
+              if case.find("failure") is None and case.find("error") is None:
+                  registered.append(card)
+              else:
+                  missing.append(card)
+          assert "Opal Palace" in registered
+          summary={
+            "schema":"izzet-position1-registry-current-summary-v2",
+            "authority":"REGISTRY_DIAGNOSTIC_ONLY_NOT_RULES_OR_PILOT_QUALIFICATION",
+            "tests":55,
+            "registered":len(registered),
+            "missing":len(missing),
+            "registered_names":sorted(registered),
+            "missing_names":sorted(missing),
+            "gradle_exit_code":int(os.environ["REGISTRY_GRADLE_RC"]),
+            "official_counters_delta":0
+          }
+          (out/"position1-registry-summary.json").write_text(json.dumps(summary,sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: opal-izzet-compat-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
