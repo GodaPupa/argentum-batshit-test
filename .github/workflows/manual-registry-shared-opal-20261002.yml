@@ -1,0 +1,70 @@
+name: Manual registry on shared Opal compatibility
+on:
+  push:
+    branches: ["validation/manual-registry-shared-opal-20261002"]
+    paths: [".github/workflows/manual-registry-shared-opal-20261002.yml"]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/manual-registry-shared-opal-${{ github.run_id }}
+      EVIDENCE: /tmp/manual-registry-shared-opal-evidence-${{ github.run_id }}
+      INPUT_ROOT: /tmp/manual-registry-shared-opal-input-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 943b6c1ee46d49bce4a212fae20a0f5de265d240, fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Materialize prior exact eight-deck registry request
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = "943b6c1ee46d49bce4a212fae20a0f5de265d240"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = "544a440160528f4a08211109936a55e263c39d19"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/ManualTransmissionPhaseTwoRegistryAuditTest.kt)" = "28a52995671550d87fba5f35d6b100a31fa23848"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          test ! -e "$INPUT_ROOT" && mkdir "$INPUT_ROOT"
+          curl -L --fail --retry 3             -H "Authorization: Bearer $GH_TOKEN"             -H 'Accept: application/vnd.github+json'             "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/11197282992/zip"             -o "$INPUT_ROOT/prior.zip"
+          echo 'dd6e4d2212cfbc7b019cf62241fea38040e366c1900ba2005c0b8cb2fbffeb42  '"$INPUT_ROOT/prior.zip" | sha256sum -c -
+          unzip -q "$INPUT_ROOT/prior.zip" -d "$INPUT_ROOT/unpacked"
+          test -f "$INPUT_ROOT/unpacked/source/registry-requests.json"
+          cp "$INPUT_ROOT/unpacked/source/registry-requests.json" "$EVIDENCE/registry-requests.json"
+          sha256sum "$EVIDENCE/registry-requests.json" > "$EVIDENCE/registry-requests.sha256"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+      - name: Run exact eight-deck registry inventory only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$EVIDENCE/registry"
+          MT_P2_AUDIT_INPUT="$EVIDENCE/registry-requests.json"           MT_P2_AUDIT_OUTPUT="$EVIDENCE/registry"             bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info               :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest               2>&1 | tee "$EVIDENCE/tests.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml "$EVIDENCE/"
+          python3 - <<'PY'
+          import json,os,pathlib
+          e=pathlib.Path(os.environ['EVIDENCE'])
+          report=json.loads((e/'registry/registry-report.json').read_text())
+          decks=[]
+          for d in report['decks']:
+              missing=[c['requested_name'] for c in d['cards'] if not c['registry_resolved']]
+              decks.append({'deck_id':d['deck_id'],'missing':len(missing),'missing_names':missing})
+          out={'schema':'manual-shared-opal-registry-summary-v1',
+               'authority':'REGISTRY_DIAGNOSTIC_ONLY_NOT_RULES_OR_PILOT_QUALIFICATION',
+               'decks':decks,'total_missing_physical':sum(d['missing'] for d in decks),
+               'opal_manual_registered': all('Opal Palace' not in d['missing_names'] for d in decks if d['deck_id']=='manual-transmission-v07'),
+               'official_games_initialized':0,'official_outcomes':0}
+          assert out['opal_manual_registered']
+          (e/'summary.json').write_text(json.dumps(out,sort_keys=True,indent=2)+'\n')
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-registry-shared-opal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
