@@ -1,0 +1,71 @@
+name: Izzet Alabaster after Pieces
+on:
+  push:
+    branches: ["validation/izzet-alabaster-after-pieces-20261002"]
+    paths: [".github/workflows/izzet-alabaster-after-pieces-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-alabaster-${{ github.run_id }}
+      OUT: /tmp/izzet-alabaster-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact Alabaster candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "9197daf2f6863559134c12d0898e0287287ec67f"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-alabaster-after-pieces-validation-20261002.yml"
+          test "$(git hash-object mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mom/cards/AlabasterHostIntercessor.kt)" = "b69090ba9e195e21e3a10e717830aca7cdd7334c"
+          test "$(git hash-object mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AlabasterHostIntercessorBatchAIScenarioTest.kt)" = "c4b4bf0fbbcc3e9df34690bf9236d7a987c5c48a"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+      - name: Compile affected shard
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2023:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Alabaster scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2023:tests:test --tests com.wingedsheep.engine.scenarios.AlabasterHostIntercessorBatchAIScenarioTest 2>&1 | tee "$OUT/alabaster.log"
+          cp mtg-sets/2023/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.AlabasterHostIntercessorBatchAIScenarioTest.xml "$OUT/"
+      - name: Reinventory Position-1
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"; cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          suffix=" is registered in current runtime"; reg=[]; miss=[]
+          for c in root.iter("testcase"):
+              n=c.attrib["name"]; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (reg if c.find("failure") is None and c.find("error") is None else miss).append(card)
+          assert "Alabaster Host Intercessor" in reg
+          assert len(reg)==37 and len(miss)==18, (len(reg),len(miss),sorted(miss))
+          (out/"registry-summary.json").write_text(json.dumps({"registered":len(reg),"missing":len(miss),"missing_names":sorted(miss),"official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0}},indent=2,sort_keys=True)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-alabaster-after-pieces-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
