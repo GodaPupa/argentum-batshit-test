@@ -1,0 +1,82 @@
+name: Izzet Pieces after Ideas checkpoint
+on:
+  push:
+    branches: ["validation/izzet-pieces-after-ideas-20261002"]
+    paths: [".github/workflows/izzet-pieces-after-ideas-validation-20261002.yml"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-pieces-after-ideas-${{ github.run_id }}
+      OUT: /tmp/izzet-pieces-after-ideas-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Bind exact source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "cd45677eecb61f6973db528dca98373d189940c7"
+          test "$(git rev-parse HEAD^^)" = "d0447fb16d3e294cd53f523c8f10ffd7060cce3f"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/soi/cards/PiecesOfThePuzzle.kt)" = "7994688e23747438a8518926e3bcc82f6e11ac22"
+          test "$(git hash-object mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/sok/cards/IdeasUnbound.kt)" = "1569f13cf0ad0476b23c96833ef1f09e4183601e"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m20/cards/BrightwoodTracker.kt)" = "ec6f8f13d8e6d9532922c0b64158e285c42affbe"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m12/cards/StaveOff.kt)" = "81346393e07564616ddd364b7ecf7c6b7c296f2a"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+      - name: Compile affected shards
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:compileTestKotlin \
+            :mtg-sets:2003-2007:tests:compileTestKotlin \
+            :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run Pieces plus current regression seams
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:test \
+            --tests com.wingedsheep.engine.scenarios.PiecesOfThePuzzleScenarioTest \
+            --tests com.wingedsheep.engine.scenarios.StaveOffBatchAHScenarioTest 2>&1 | tee "$OUT/pieces-stave.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2003-2007:tests:test --tests com.wingedsheep.engine.scenarios.IdeasUnboundScenarioTest 2>&1 | tee "$OUT/ideas-regression.log"
+      - name: Reinventory Position-1
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"]); root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          suffix=" is registered in current runtime"; reg=[]; miss=[]
+          for c in root.iter("testcase"):
+              n=c.attrib["name"]; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (reg if c.find("failure") is None and c.find("error") is None else miss).append(card)
+          assert {"Pieces of the Puzzle","Ideas Unbound","Brightwood Tracker","Stave Off"}.issubset(reg)
+          assert {"Capsize","Everflowing Chalice","Skred","Star Compass","Benevolent Blessing","Snake Umbra"}.issubset(miss)
+          assert len(reg)==36 and len(miss)==19, (len(reg),len(miss),sorted(miss))
+          (out/"registry-summary.json").write_text(json.dumps({"registered":len(reg),"missing":len(miss),"registered_names":sorted(reg),"missing_names":sorted(miss),"official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0}},indent=2,sort_keys=True)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-pieces-after-ideas-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: warn
+          retention-days: 90
