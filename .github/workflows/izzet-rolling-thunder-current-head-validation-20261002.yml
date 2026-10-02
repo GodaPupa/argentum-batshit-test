@@ -1,0 +1,36 @@
+name: Izzet Rolling Thunder compatibility diagnostic
+on:
+  push:
+    branches: ["validation/izzet-rolling-thunder-current-head-20261002"]
+    paths: [".github/workflows/izzet-rolling-thunder-current-head-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env: {GRADLE_USER_HOME: /tmp/izzet-rolling-${{ github.run_id }}, OUT: /tmp/izzet-rolling-evidence-${{ github.run_id }}}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact candidate
+        shell: bash
+        run: |
+          set -euo pipefail; mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "3732e722bbe7966efcaf5d9fde621862f6757229"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tmp/cards/RollingThunder.kt)" = "f8359187f2297f60a849523bb7629fe40cf4c0fa"
+          test "$(git hash-object mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RollingThunderScenarioTest.kt)" = "1efbe57a13484e29dc92f37f472e076616e3e9fd"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+      - name: Compile exact affected shard
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:1993-1999:tests:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Exact scenario only if compile succeeds
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:1993-1999:tests:test --tests com.wingedsheep.engine.scenarios.RollingThunderScenarioTest 2>&1 | tee "$OUT/rolling.log"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with: {name: "izzet-rolling-${{ github.run_id }}-${{ github.run_attempt }}", path: "${{ env.OUT }}/", if-no-files-found: warn, retention-days: 90}
