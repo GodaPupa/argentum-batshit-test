@@ -1,0 +1,89 @@
+name: Izzet Fire Ice after Pieces
+on:
+  push:
+    branches: ["validation/izzet-fire-ice-after-pieces-20261002"]
+    paths: [".github/workflows/izzet-fire-ice-after-pieces-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-fire-ice-after-pieces-${{ github.run_id }}
+      OUT: /tmp/izzet-fire-ice-after-pieces-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "c183aac271af83923e01a3e82c6cc0b7549bc6d7"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-fire-ice-after-pieces-validation-20261002.yml"
+          test "$(git hash-object mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/apc/cards/FireIce.kt)" = "e1a05c6322a511592baa84d0646c946eeef00888"
+          test "$(git hash-object mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FireIceScenarioTest.kt)" = "045a3971e640e1109566de73e761c96dc4e28932"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/soi/cards/PiecesOfThePuzzle.kt)" != ""
+          test "$(git hash-object mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/sok/cards/IdeasUnbound.kt)" = "1569f13cf0ad0476b23c96833ef1f09e4183601e"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile affected shards
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2000-2002:tests:compileTestKotlin \
+            :mtg-sets:2003-2007:tests:compileTestKotlin \
+            :mtg-sets:2008-2016:tests:compileTestKotlin \
+            :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Fire Ice plus retained successor regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2000-2002:tests:test --tests com.wingedsheep.engine.scenarios.FireIceScenarioTest 2>&1 | tee "$OUT/fire-ice.log"
+          cp mtg-sets/2000-2002/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.FireIceScenarioTest.xml "$OUT/"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2003-2007:tests:test --tests com.wingedsheep.engine.scenarios.IdeasUnboundScenarioTest 2>&1 | tee "$OUT/ideas.log"
+          cp mtg-sets/2003-2007/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.IdeasUnboundScenarioTest.xml "$OUT/"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.PiecesOfThePuzzleScenarioTest 2>&1 | tee "$OUT/pieces.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PiecesOfThePuzzleScenarioTest.xml "$OUT/"
+      - name: Reinventory Position-1
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"; reg=[]; miss=[]
+          for c in root.iter("testcase"):
+              n=c.attrib["name"]; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (reg if c.find("failure") is None and c.find("error") is None else miss).append(card)
+          assert {"Fire // Ice","Pieces of the Puzzle","Ideas Unbound","Brightwood Tracker","Stave Off"}.issubset(set(reg))
+          assert {"Capsize","Everflowing Chalice","Skred","Star Compass","Benevolent Blessing","Snake Umbra","Lose Focus"}.issubset(set(miss))
+          assert len(reg)==37 and len(miss)==18, (len(reg),len(miss),sorted(miss))
+          (out/"registry-summary.json").write_text(json.dumps({
+            "registered":len(reg),"missing":len(miss),"missing_names":sorted(miss),
+            "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0}
+          },indent=2,sort_keys=True)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-fire-ice-after-pieces-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
