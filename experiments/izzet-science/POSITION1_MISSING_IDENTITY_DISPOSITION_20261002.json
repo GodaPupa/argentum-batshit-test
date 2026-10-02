@@ -153,10 +153,6 @@
         "state": "canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"
       },
       {
-        "name": "Star Compass",
-        "state": "canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"
-      },
-      {
         "name": "Stave Off",
         "state": "canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"
       },
@@ -186,6 +182,10 @@
       {
         "name": "Capsize",
         "gap": "Canonical historical definition/test were located, but direct adoption failed compilation because current source lacks KeywordAbility.buyback. Adoption was backed out; buyback support requires its own source/qualification scope before Capsize can re-enter the registry."
+      },
+      {
+        "name": "Star Compass",
+        "gap": "Canonical historical definition/test were located, but direct adoption failed compilation because current source lacks ManaColorSet.BasicLandsYouControlCouldProduce. Adoption was backed out; that mana-color selection primitive and its runtime handling require their own source/qualification scope."
       }
     ]
   },
@@ -215,6 +215,17 @@
       "Capsize canonical source requires missing KeywordAbility.buyback"
     ],
     "disposition": "Restore exact PreventTargeting helper; back out Capsize adoption rather than import unreviewed buyback subsystem.",
+    "official_counters_delta": 0
+  },
+  "compile_repair_checkpoint_v2": {
+    "source_before_repair": "fcd8b792169bcbc0f7597a1a9b69c9cfeda0b00f",
+    "failed_validation_run": 36976258309,
+    "demonstrated_blockers": [
+      "SerializableModification.PreventTargeting missing toModification exhaustiveness branch",
+      "TargetingRestrictionCreatedEvent missing ClientEvent exhaustiveness branch",
+      "Star Compass canonical source requires missing ManaColorSet.BasicLandsYouControlCouldProduce"
+    ],
+    "disposition": "Restore the two exact historical targeting exhaustiveness companions; back out Star Compass rather than import an unreviewed mana-color subsystem.",
     "official_counters_delta": 0
   }
 }
