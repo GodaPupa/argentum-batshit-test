@@ -1454,6 +1454,9 @@ class StackResolver(
         val graveyardCastRider =
             state.getEntity(spellId)?.get<com.wingedsheep.engine.state.components.stack.GraveyardCastRiderComponent>()
 
+        val commanderManaEntryCounters = state.getEntity(spellId)
+            ?.get<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+
         // For Auras: get the target before removing TargetsComponent. The target is usually a
         // permanent, but "enchant player" Auras (Grievous Wound) attach to a player — both are
         // entities, so AttachedToComponent holds either id (CR 303.4).
@@ -1477,6 +1480,7 @@ class StackResolver(
         val resolvingAsSpellCopy = copyOf != null && copyOf.originalCardComponent == null
         var newState = state.updateEntity(spellId) { c ->
             var updated = c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
                 .without<TargetsComponent>()
                 .without<com.wingedsheep.engine.state.components.stack.GraveyardCastRiderComponent>()
                 .with(ControllerComponent(controllerId))
@@ -1842,6 +1846,17 @@ class StackResolver(
                 )
             newState = riderState
             counterEvents.addAll(riderEvents)
+        }
+
+        // Mana-spent entry riders survive choices/copy replacement, then apply before ETB snapshots.
+        // Combine all Palace mana contributions before applying counter-placement modifiers.
+        if (commanderManaEntryCounters != null) {
+            val (entryState, entryEvents) = EntersWithReplacements.placeEntryCounters(
+                newState, spellId, CounterTypeFilter.PlusOnePlusOne, commanderManaEntryCounters.count,
+                controllerId, cardComponent?.name ?: ""
+            )
+            newState = entryState
+            counterEvents.addAll(entryEvents)
         }
 
         // Handle the intrinsic entry counters of a planeswalker (starting loyalty, CR 306.5b) or a
@@ -2441,6 +2456,7 @@ class StackResolver(
 
         newState = newState.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
                 .without<TargetsComponent>()
                 .without<com.wingedsheep.engine.state.components.identity.PlayWithoutPayingCostComponent>()
                 .without<com.wingedsheep.engine.state.components.identity.PlayWithCostIncreaseComponent>()
@@ -2597,6 +2613,7 @@ class StackResolver(
         // becomes a permanent, mirroring the normal resolved-spell cleanup.
         var working = state.updateEntity(spellId) { c ->
             c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
                 .without<TargetsComponent>()
                 .without<PlayWithoutPayingCostComponent>()
                 .without<com.wingedsheep.engine.state.components.identity.PlayWithCostIncreaseComponent>()
@@ -2707,7 +2724,9 @@ class StackResolver(
         val destZoneKey = ZoneKey(ownerId, destZone)
 
         var newState = state.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = newState.addToZone(destZoneKey, spellId)
         val destinationObject = newState.objectRef(spellId)
@@ -3106,7 +3125,9 @@ class StackResolver(
         // Remove stack components and reset any Prototype characteristics now that the card has
         // become a new object outside the stack/battlefield.
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
@@ -3170,7 +3191,9 @@ class StackResolver(
         val destinationObject = newState.objectRef(spellId)
 
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
@@ -3234,7 +3257,9 @@ class StackResolver(
         val destinationObject = newState.objectRef(spellId)
 
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
@@ -3290,7 +3315,9 @@ class StackResolver(
         // Remove stack components and optionally grant the counter's controller a free recast
         // (Kheru Spellsnatcher).
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
         if (grantFreeCast) {
@@ -3368,7 +3395,9 @@ class StackResolver(
         val exileZone = ZoneKey(ownerId, Zone.EXILE)
         newState = newState.addToZone(exileZone, spellId)
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
