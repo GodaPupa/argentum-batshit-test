@@ -1,0 +1,82 @@
+{
+  "schema": "manual-v07-missing-identity-disposition-v1",
+  "date_utc": "2026-10-02",
+  "authority": "SOURCE_TRIAGE_ONLY_NO_MECHANICS_OR_GAMEPLAY_AUTHORITY",
+  "evidence": {
+    "registry_run": 36945609588,
+    "artifact": 11202890987,
+    "artifact_sha256": "83010a96259c75e9dc71ea1b1da2a91406d5c91b9726be08487757732a054088",
+    "result": "Opal Palace resolved; Manual v0.7 exact missing identities 12 -> 11",
+    "searches": [
+      "live recursive source tree",
+      "indexed repository source search",
+      "commit-message/history search",
+      "expected canonical set-directory inspection where present"
+    ],
+    "limitation": "No-hit searches are not mechanics evidence; categories describe current implementation/adoption state only."
+  },
+  "categories": {
+    "1_existing_definition_registration_only": [],
+    "2_existing_implementation_requires_qualification_or_adoption": [],
+    "3_genuinely_absent_definition_primitives_appear_reusable": [
+      {
+        "name": "Gwenna, Eyes of Gaea",
+        "reason": "restricted creature/ability mana plus cast-power trigger/untap/counter appears expressible from existing mana/counter/trigger primitives; no canonical card source demonstrated"
+      },
+      {
+        "name": "Spellskite",
+        "reason": "activated retarget-to-self card source absent; target-change engine support must be confirmed during implementation but no new global mechanic is yet demonstrated"
+      },
+      {
+        "name": "Temur Sabertooth",
+        "reason": "bounce-another-creature activation plus temporary indestructible appears composable from existing zone/keyword primitives; no canonical source demonstrated"
+      },
+      {
+        "name": "Veil of Summer",
+        "reason": "conditional draw, anti-counter and blue/black targeting protection appear composable from existing draw/counter/targeting effects; no canonical source demonstrated"
+      }
+    ],
+    "4_absent_definition_requires_separate_mechanic_or_engine_work": [
+      {
+        "name": "Fblthp, the Lost",
+        "gap": "origin-from-library conditional draw plus targeted-self shuffle/random-library handling"
+      },
+      {
+        "name": "Reckless Bushwhacker",
+        "gap": "surge alternative-cost state and surge-conditioned ETB team buff"
+      },
+      {
+        "name": "Amphin Mutineer",
+        "gap": "Encore"
+      },
+      {
+        "name": "Malevolent Hermit",
+        "gap": "Disturb transforming DFC plus back-face noncreature uncounterability"
+      },
+      {
+        "name": "Phyrexian Metamorph",
+        "gap": "Phyrexian mana plus artifact/creature copy-as-entry semantics"
+      },
+      {
+        "name": "Glen Elendra Archmage",
+        "gap": "Persist plus activated noncreature-spell countering composition"
+      },
+      {
+        "name": "Disciple of Freyalise",
+        "gap": "modal double-faced spell/land identity plus sacrifice-on-entry draw/life behavior"
+      }
+    ]
+  },
+  "next_batch": [
+    "Veil of Summer",
+    "Temur Sabertooth",
+    "Gwenna, Eyes of Gaea",
+    "Spellskite"
+  ],
+  "prohibited": [
+    "do not batch category-4 mechanics together",
+    "no official Manual game/seed/allocation/claim",
+    "registry presence never equals mechanics competence"
+  ],
+  "official_counters_delta": 0
+}
