@@ -23,8 +23,8 @@ jobs:
       PINNED_COMMIT: 96d6da744aa9051ce4064f1e768f10228e81744b
       PINNED_TREE: d202c80f3f1bf417742725c0a6dd274fe28af68a
       WRAPPER_BLOB: b1b8ef56b44f16b14dc800fa8103a6d89abb526f
-      GRADLE_USER_HOME: ${{ runner.temp }}/arcum-gradle-home
-      OUT_DIR: ${{ runner.temp }}/arcum-bootstrap-out
+      GRADLE_USER_HOME: /tmp/arcum-gradle-home
+      OUT_DIR: /tmp/arcum-bootstrap-out
 
     steps:
       - name: Checkout exact pinned source
@@ -192,7 +192,7 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: arcum-runtime-bootstrap-009a
-          path: ${{ runner.temp }}/arcum-bootstrap-out/
+          path: /tmp/arcum-bootstrap-out/
           if-no-files-found: error
           retention-days: 7
           compression-level: 0
