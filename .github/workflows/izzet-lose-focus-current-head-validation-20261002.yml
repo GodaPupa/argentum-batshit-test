@@ -1,0 +1,48 @@
+name: Izzet Lose Focus current-head diagnostic
+on:
+  push:
+    branches: ["validation/izzet-lose-focus-current-head-20261002"]
+    paths: [".github/workflows/izzet-lose-focus-current-head-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-lose-focus-${{ github.run_id }}
+      OUT: /tmp/izzet-lose-focus-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact Lose Focus candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "dec4aad0964491db8ce251f18e4121ab5f6f7dcd"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh2/cards/LoseFocus.kt)" = "d15804e483eb0bcfe510d8f9ccff0d94e2f6309e"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LoseFocusScenarioTest.kt)" = "d751966a9fc94990d29bc7ddb779cf09872ff1cd"
+          mkdir "$OUT"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          printf '%s\n' 'ISOLATED_PRIMITIVE_COMPATIBILITY_DIAGNOSTIC_ONLY' > "$OUT/authority.txt"
+      - name: Compile exact affected shard
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Lose Focus scenario only if compile succeeds
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.LoseFocusScenarioTest 2>&1 | tee "$OUT/lose-focus.log"
+          cp mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.LoseFocusScenarioTest.xml "$OUT/"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-lose-focus-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: warn
+          retention-days: 90
