@@ -1,0 +1,49 @@
+name: Shared Opal Palace compatibility qualification
+on:
+  push:
+    branches: ["validation/shared-opal-palace-compatibility-20261002"]
+    paths: [".github/workflows/shared-opal-palace-compatibility-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  opal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/shared-opal-compat-${{ github.run_id }}
+      OUT: /tmp/shared-opal-compat-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 75e7509fce69f84fa4cdf314619e92177c5ec62a, fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind shared compatibility bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 75e7509fce69f84fa4cdf314619e92177c5ec62a
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaSpellRider.kt)" = 5c6c1d4e8374a5375f79643a6e282fb728ab23b6
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = 544a440160528f4a08211109936a55e263c39d19
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt)" = 5b1be3a666cc615d8a274419479f1a885df9968c
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetOpalPalaceRegistryAdoptionTest.kt)" = 3422c04443c385d53ed7e4c7a3b381f96d98d016
+          test ! -e "$OUT" && mkdir "$OUT"
+          git rev-parse HEAD HEAD^{tree} > "$OUT/source.txt"
+          git show --stat --oneline 2985f15a385d4570e82f09545b9332dc133ab3a0 > "$OUT/compatibility-commit.txt"
+      - name: Compile affected source and tests
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:2008-2016:compileKotlin :mtg-sets:2008-2016:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run canonical Opal Palace scenarios and Izzet registry adoption
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest             :gym:test --tests com.wingedsheep.gym.izzet.IzzetOpalPalaceRegistryAdoptionTest             2>&1 | tee "$OUT/tests.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest.xml "$OUT/"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetOpalPalaceRegistryAdoptionTest.xml "$OUT/"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: shared-opal-palace-compatibility-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: warn
+          retention-days: 90
