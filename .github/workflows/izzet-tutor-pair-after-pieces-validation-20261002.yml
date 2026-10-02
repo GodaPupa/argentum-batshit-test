@@ -1,0 +1,80 @@
+name: Izzet tutor pair after Pieces
+on:
+  push:
+    branches: ["validation/izzet-tutor-pair-after-pieces-20261002"]
+    paths: [".github/workflows/izzet-tutor-pair-after-pieces-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-tutors-after-pieces-${{ github.run_id }}
+      OUT: /tmp/izzet-tutors-after-pieces-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact homogeneous tutor pair
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "05c5a1246f4743a903e9cc51b0a667dea0b07c9a"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-tutor-pair-after-pieces-validation-20261002.yml"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m15/cards/HeliodsPilgrim.kt)" = "d09543a5e2b8e9fc8d64100bd3c3c858b64f052d"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HeliodsPilgrimScenarioTest.kt)" = "964c2f727036fac8b2565f067397262dfe4c97ca"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/neo/cards/ShrineSteward.kt)" = "64d8d55d3362a8d9c7c017b3a5e2f986ad6c68bc"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ShrineStewardScenarioTest.kt)" = "7c517fc155596e871d2959a8ebf4724fbbfcecc4"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile exact affected shards
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:compileTestKotlin \
+            :mtg-sets:2017-2022:tests:compileTestKotlin \
+            :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact tutor scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.HeliodsPilgrimScenarioTest 2>&1 | tee "$OUT/heliod.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.HeliodsPilgrimScenarioTest.xml "$OUT/"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.ShrineStewardScenarioTest 2>&1 | tee "$OUT/shrine.log"
+          cp mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ShrineStewardScenarioTest.xml "$OUT/"
+      - name: Reinventory Position-1
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"; cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          suffix=" is registered in current runtime"; reg=[]; miss=[]
+          for c in root.iter("testcase"):
+              n=c.attrib["name"]; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (reg if c.find("failure") is None and c.find("error") is None else miss).append(card)
+          assert {"Heliod's Pilgrim","Shrine Steward","Pieces of the Puzzle","Ideas Unbound","Brightwood Tracker","Stave Off"}.issubset(set(reg))
+          assert {"Capsize","Everflowing Chalice","Skred","Star Compass","Benevolent Blessing","Snake Umbra","Lose Focus"}.issubset(set(miss))
+          assert len(reg)==38 and len(miss)==17, (len(reg),len(miss),sorted(miss))
+          (out/"registry-summary.json").write_text(json.dumps({"registered":len(reg),"missing":len(miss),"missing_names":sorted(miss),"official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0}},indent=2,sort_keys=True)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-tutors-after-pieces-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
