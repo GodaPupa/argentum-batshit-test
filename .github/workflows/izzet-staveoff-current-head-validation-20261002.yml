@@ -1,0 +1,115 @@
+name: Izzet Stave Off current-head checkpoint
+on:
+  push:
+    branches: ["validation/izzet-staveoff-current-head-20261002"]
+    paths: [".github/workflows/izzet-staveoff-current-head-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-staveoff-${{ github.run_id }}
+      OUT: /tmp/izzet-staveoff-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact live Izzet source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "7d420712f07b731c27eef09e2bb5de330004675a"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-staveoff-current-head-validation-20261002.yml"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m12/cards/StaveOff.kt)" = "81346393e07564616ddd364b7ecf7c6b7c296f2a"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StaveOffBatchAHScenarioTest.kt)" = "4f5c13a004bda9c4628c7c4a27305a7890379d1a"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt)" = "197a99e6c17885bb70511916893d3a33de217feb"
+          mkdir "$OUT"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          git diff --name-status HEAD^ HEAD > "$OUT/validation-delta.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile affected source and tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:compileTestKotlin \
+            :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Stave Off scenario
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:test \
+            --tests com.wingedsheep.engine.scenarios.StaveOffBatchAHScenarioTest 2>&1 | tee "$OUT/staveoff.log"
+          XML=mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.StaveOffBatchAHScenarioTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          python3 - <<'PY'
+          import os, pathlib, xml.etree.ElementTree as ET, json
+          out=pathlib.Path(os.environ["OUT"])
+          p=out/"TEST-com.wingedsheep.engine.scenarios.StaveOffBatchAHScenarioTest.xml"
+          r=ET.parse(p).getroot()
+          assert int(r.attrib["tests"]) == 1
+          assert int(r.attrib["failures"]) == 0
+          assert int(r.attrib["errors"]) == 0
+          assert int(r.attrib["skipped"]) == 0
+          (out/"staveoff-summary.json").write_text(json.dumps({
+            "schema":"izzet-staveoff-author-validation-v1",
+            "authority":"AUTHOR_VALIDATION_ONLY_NOT_INDEPENDENT_REVIEW_OR_GAMEPLAY_ADMISSION",
+            "published_source":"7d420712f07b731c27eef09e2bb5de330004675a",
+            "tests":1,"failures":0,"errors":0,"skipped":0,
+            "official_counters_delta":0
+          },sort_keys=True,indent=2)+"\n")
+          PY
+      - name: Reinventory exact Position-1 registry without seeds or games
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/position1-registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          REGISTRY_GRADLE_RC="$rc" python3 - <<'PY'
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"
+          registered=[]; missing=[]
+          for case in root.iter("testcase"):
+              name=case.attrib["name"]
+              card=name[:-len(suffix)] if name.endswith(suffix) else name
+              if case.find("failure") is None and case.find("error") is None:
+                  registered.append(card)
+              else:
+                  missing.append(card)
+          assert "Stave Off" in registered, sorted(registered)
+          assert {"Capsize","Star Compass","Everflowing Chalice","Skred"}.issubset(set(missing))
+          summary={
+            "schema":"izzet-position1-staveoff-checkpoint-v1",
+            "authority":"REGISTRY_DIAGNOSTIC_ONLY_NOT_MECHANICS_OR_GAMEPLAY_QUALIFICATION",
+            "published_source":"7d420712f07b731c27eef09e2bb5de330004675a",
+            "tests":55,
+            "registered":len(registered),
+            "missing":len(missing),
+            "registered_names":sorted(registered),
+            "missing_names":sorted(missing),
+            "gradle_exit_code":int(os.environ["REGISTRY_GRADLE_RC"]),
+            "official_counters_delta":0
+          }
+          (out/"position1-registry-summary.json").write_text(json.dumps(summary,sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-staveoff-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
