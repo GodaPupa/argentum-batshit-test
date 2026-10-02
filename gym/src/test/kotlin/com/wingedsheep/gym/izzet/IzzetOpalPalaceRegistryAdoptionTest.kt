@@ -9,6 +9,6 @@ class IzzetOpalPalaceRegistryAdoptionTest : FunSpec({
     test("canonical Opal Palace is discovered in current runtime") {
         val registry = CardRegistry()
         MtgSetCatalog.all.forEach { registry.register(it.cards) }
-        registry.findByName("Opal Palace")?.name shouldBe "Opal Palace"
+        registry.getCard("Opal Palace")?.name shouldBe "Opal Palace"
     }
 })
