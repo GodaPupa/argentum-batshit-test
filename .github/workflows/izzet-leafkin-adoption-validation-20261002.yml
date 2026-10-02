@@ -1,0 +1,83 @@
+name: Izzet Leafkin Druid exact-adoption validation
+on:
+  push:
+    branches: ["validation/izzet-leafkin-adoption-20261002"]
+    paths: [".github/workflows/izzet-leafkin-adoption-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-leafkin-${{ github.run_id }}
+      OUT: /tmp/izzet-leafkin-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact source-only adoption
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^^)" = "287dba244ff7bec3a4d89467f80cfcfc7517962a"
+          test "$(git rev-parse HEAD^)" = "3a3af77b0a8d4957b2b99867f4ac3a9400dd009b"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/m20/cards/LeafkinDruid.kt)" = "5927894349ef9adce1596b156dd14d9b3ba3e404"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/LeafkinDruidBatchAGScenarioTest.kt)" = "448de12064fefbc6a33be62be057e04fbad48423"
+          mkdir "$OUT"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          git diff --name-status HEAD^^ HEAD > "$OUT/delta.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile exact adoption
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sets:2017-2022:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Leafkin mechanics scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.LeafkinDruidBatchAGScenarioTest 2>&1 | tee "$OUT/leafkin.log"
+          cp mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.LeafkinDruidBatchAGScenarioTest.xml "$OUT/"
+      - name: Confirm Position-1 registry discovery without seeds or games
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"
+          registered=[]; missing=[]
+          for case in root.iter("testcase"):
+              name=case.attrib["name"]
+              card=name[:-len(suffix)] if name.endswith(suffix) else name
+              (registered if case.find("failure") is None and case.find("error") is None else missing).append(card)
+          assert "Leafkin Druid" in registered
+          (out/"registry-summary.json").write_text(json.dumps({
+            "schema":"izzet-leafkin-exact-adoption-validation-v1",
+            "authority":"AUTHOR_VALIDATION_ONLY_NOT_INDEPENDENT_REVIEW_OR_GAMEPLAY_ADMISSION",
+            "source_base":"287dba244ff7bec3a4d89467f80cfcfc7517962a",
+            "adoption_commit":"3a3af77b0a8d4957b2b99867f4ac3a9400dd009b",
+            "registered":len(registered),"missing":len(missing),
+            "leafkin_registered":True,
+            "gradle_exit_code":int(os.environ["REGISTRY_RC"]),
+            "official_counters_delta":0
+          },sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-leafkin-adoption-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
