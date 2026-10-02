@@ -53,6 +53,23 @@ sealed interface ManaSpellRider {
     }
 
     /**
+     * "If you spend this mana to cast your commander, it enters with a number of additional
+     * +1/+1 counters on it equal to the number of times it's been cast from the command zone
+     * this game." (Opal Palace)
+     *
+     * One copy of this rider is consumed for each mana actually spent. The cast pipeline freezes
+     * the command-zone cast count, including the current cast if applicable, onto that commander
+     * spell. The entry pipeline applies the counters only if the spell resolves. Two such mana
+     * spent on one spell contribute to a single counter placement before modifiers apply.
+     */
+    @SerialName("CommanderCastEntryCounters")
+    @Serializable
+    data object CommanderCastEntryCounters : ManaSpellRider {
+        override val description: String =
+            "If this mana is spent to cast your commander, it enters with +1/+1 counters for its command-zone casts"
+    }
+
+    /**
      * "When that mana is spent to cast a [spellFilter] spell, copy that spell and you may choose
      * new targets for the copy." (Pyromancer's Goggles, with
      * `spellFilter = GameObjectFilter.InstantOrSorcery.withColor(Color.RED)`.)
