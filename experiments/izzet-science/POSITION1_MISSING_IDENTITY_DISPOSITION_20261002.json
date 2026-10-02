@@ -1,0 +1,152 @@
+{
+  "schema": "izzet-position1-missing-identity-disposition-v1",
+  "date_utc": "2026-10-02",
+  "authority": "SOURCE_TRIAGE_AND_ADOPTION_TRACKING_ONLY_NO_GAMEPLAY_AUTHORITY",
+  "baseline": {
+    "run": 36933345998,
+    "artifact": 11196234353,
+    "artifact_sha256": "81308d41e5fb918c72174dd472053b98e88afd178065507cf11563620e305cb1",
+    "registered": 14,
+    "missing": 41
+  },
+  "categories": {
+    "1_existing_definition_registration_only": [],
+    "2_existing_implementation_requires_or_is_under_exact_adoption": [
+      {
+        "name": "Opal Palace",
+        "state": "shared compatibility + canonical adoption validation in progress",
+        "source_blob": "544a440160528f4a08211109936a55e263c39d19"
+      },
+      {
+        "name": "Vines of Vastwood",
+        "state": "exact previously accepted component source adopted; validation in progress",
+        "source_blob": "7fc212f250daf9c26dd6ca60feb8086f59dd6ed2"
+      },
+      {
+        "name": "Forge of Heroes",
+        "state": "exact previously accepted component source adopted; validation in progress",
+        "source_blob": "d81a0d3f9022564c5616473db6b1cf3e4a6feb76"
+      },
+      {
+        "name": "Cho-Manno's Blessing",
+        "state": "exact previously accepted 560-bank source adopted; validation in progress",
+        "source_blob": "d9c65d30a84d21ebbdc27494de4d9a23e975ae73"
+      },
+      {
+        "name": "Colossal Dreadmask",
+        "state": "exact previously accepted 560-bank source adopted; validation in progress",
+        "source_blob": "c766c45f9782eab665ace62571cfdda13255dc89"
+      },
+      {
+        "name": "Prismatic Strands",
+        "state": "exact previously accepted 560-bank source adopted; validation in progress",
+        "source_blob": "53502a126276f95645239073b2c446289dc05d76"
+      },
+      {
+        "name": "Ram Through",
+        "state": "exact previously accepted 560-bank source adopted; validation in progress",
+        "source_blob": "dd67a43a58d3a26ecbd07606a65c716685f67120"
+      },
+      {
+        "name": "Spirit Link",
+        "state": "exact previously accepted 560-bank source adopted; validation in progress",
+        "source_blob": "01229f432e088fc1ab8c3ed965ea0c5e73c5cdcf"
+      },
+      {
+        "name": "Goblin Electromancer",
+        "state": "five-case mechanics scope frozen; do not mutate pending source review + explicit authorization"
+      }
+    ],
+    "3_no_current_definition_demonstrated_primitives_appear_reusable": [
+      "Afterlife",
+      "Cosmic Hunger",
+      "Deepwood Denizen",
+      "Destroy Evil",
+      "Echoing Truth",
+      "Generous Gift",
+      "Heliod's Pilgrim",
+      "Ideas Unbound",
+      "Ilysian Caryatid",
+      "Leafkin Druid",
+      "Master's Rebuke",
+      "Pieces of the Puzzle",
+      "Rolling Thunder",
+      "Shardless Outlander",
+      "Skred",
+      "Star Compass",
+      "Stave Off",
+      "Whisperer of the Wilds"
+    ],
+    "4_requires_distinct_mechanic_or_engine_qualification_before_batching": [
+      {
+        "name": "Alabaster Host Intercessor",
+        "gap": "landcycling plus linked temporary exile"
+      },
+      {
+        "name": "Benevolent Blessing",
+        "gap": "chosen-color protection Aura with self-Aura retention exception"
+      },
+      {
+        "name": "Brightwood Tracker",
+        "gap": "look/select/reorder library choice flow"
+      },
+      {
+        "name": "Capsize",
+        "gap": "buyback cast/payment/return-to-hand semantics"
+      },
+      {
+        "name": "Everflowing Chalice",
+        "gap": "multikicker and charge-counter-scaled mana"
+      },
+      {
+        "name": "Fire // Ice",
+        "gap": "split-card cast identity and mode-specific halves"
+      },
+      {
+        "name": "Guardian Naga // Banishing Coils",
+        "gap": "Adventure card dual-zone/cast identity"
+      },
+      {
+        "name": "Izzet Guildmage",
+        "gap": "copy instant/sorcery spell with mana-value restriction"
+      },
+      {
+        "name": "Lose Focus",
+        "gap": "replicate"
+      },
+      {
+        "name": "Shattering Pulse",
+        "gap": "buyback"
+      },
+      {
+        "name": "Shrine Steward",
+        "gap": "typed Aura/Equipment tutor choice; isolate from broader search mechanics"
+      },
+      {
+        "name": "Snake Umbra",
+        "gap": "totem armor replacement plus combat-damage draw Aura"
+      },
+      {
+        "name": "Temporal Isolation",
+        "gap": "flash Aura plus shadow/damage-prevention continuous effects"
+      },
+      {
+        "name": "Ulvenwald Captive // Ulvenwald Abomination",
+        "gap": "transforming double-faced permanent and activated transform"
+      }
+    ]
+  },
+  "next_high_leverage_batch": [
+    "Afterlife",
+    "Destroy Evil",
+    "Generous Gift",
+    "Master's Rebuke"
+  ],
+  "prohibited": [
+    "do not retest Owlbear",
+    "do not mutate Goblin Electromancer pending review",
+    "do not batch category-4 mechanics together",
+    "no official seed/allocation/claim/game"
+  ],
+  "official_counters_delta": 0
+}
