@@ -1,0 +1,63 @@
+name: Swan Song unchanged mechanics on shared Opal compatibility
+on:
+  push:
+    branches: ["validation/swan-song-on-shared-opal-20261002"]
+    paths: [".github/workflows/swan-song-on-shared-opal-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  swan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/21/x64
+      GRADLE_USER_HOME: /tmp/swan-shared-opal-${{ github.run_id }}
+      EVIDENCE: /tmp/swan-shared-opal-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 244a4b7ed3973d2a3384590762999dcba9962df8, fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind unchanged Swan and shared Opal source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = "244a4b7ed3973d2a3384590762999dcba9962df8"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/SwanSong.kt)" = "385ab04b2d05e7f8d160f156746cb4b69b4fbee9"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SwanSongScenarioTest.kt)" = "34e5f47d835610f30ff45628afe98a6fcdc158bc"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaSpellRider.kt)" = "5c6c1d4e8374a5375f79643a6e282fb728ab23b6"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = "544a440160528f4a08211109936a55e263c39d19"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+      - name: Execute exact unchanged Swan Song four-case scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info             :mtg-sets:2008-2016:tests:test             --tests com.wingedsheep.engine.scenarios.SwanSongScenarioTest             2>&1 | tee "$EVIDENCE/tests.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SwanSongScenarioTest.xml "$EVIDENCE/"
+          python3 - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET,json
+          e=pathlib.Path(os.environ['EVIDENCE'])
+          p=e/'TEST-com.wingedsheep.engine.scenarios.SwanSongScenarioTest.xml'
+          r=ET.parse(p).getroot()
+          assert r.attrib['name']=='com.wingedsheep.engine.scenarios.SwanSongScenarioTest'
+          assert int(r.attrib['tests'])==4
+          assert all(int(r.attrib[k])==0 for k in ('failures','errors','skipped'))
+          assert len(list(r.iter('testcase')))==4
+          (e/'summary.json').write_text(json.dumps({
+            'schema':'swan-song-shared-opal-validation-v1',
+            'tests':4,'failures':0,'errors':0,'skipped':0,
+            'swan_definition_blob':'385ab04b2d05e7f8d160f156746cb4b69b4fbee9',
+            'swan_test_blob':'34e5f47d835610f30ff45628afe98a6fcdc158bc',
+            'opal_compat_source':'5ae799ea5b79f8e670463409121109a09cfbac70',
+            'authority':'MECHANICS_VALIDATION_ONLY_NO_PROJECT_ADMISSION',
+            'official_counters_delta':0
+          },sort_keys=True)+'\n')
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: swan-song-shared-opal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
