@@ -1,0 +1,69 @@
+name: Shared Opal Palace mechanics and registry
+on:
+  push:
+    branches: ["validation/shared-opal-palace-compatibility-20261001"]
+    paths: [".github/workflows/shared-opal-palace-mechanics-registry.yml"]
+permissions: {contents: read}
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/shared-opal-mechanics-${{ github.run_id }}
+      EVIDENCE: /tmp/shared-opal-mechanics-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 957a26bfec076be07effc162999830576736861e
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Bind exact shared compatibility and canonical Opal bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = 957a26bfec076be07effc162999830576736861e
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaSpellRider.kt)" = 5c6c1d4e8374a5375f79643a6e282fb728ab23b6
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = 544a440160528f4a08211109936a55e263c39d19
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt)" = 5b1be3a666cc615d8a274419479f1a885df9968c
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetOpalPalaceRegistryAdoptionTest.kt)" = 3422c04443c385d53ed7e4c7a3b381f96d98d016
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+          printf '%s\n' 'OPAL_MECHANICS_AND_REGISTRY_ONLY' 'No official seed/allocation/claim/game/outcome.' > "$EVIDENCE/scope.txt"
+      - name: Run exact Opal Palace scenario and registry adoption
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info             :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest             :gym:test --tests com.wingedsheep.gym.izzet.IzzetOpalPalaceRegistryAdoptionTest             2>&1 | tee "$EVIDENCE/tests.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest.xml "$EVIDENCE/"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetOpalPalaceRegistryAdoptionTest.xml "$EVIDENCE/"
+          /usr/bin/python3 -I -S - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          e=pathlib.Path(os.environ["EVIDENCE"])
+          specs=[
+            ("TEST-com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest.xml",10),
+            ("TEST-com.wingedsheep.gym.izzet.IzzetOpalPalaceRegistryAdoptionTest.xml",1),
+          ]
+          results={}
+          for file,n in specs:
+              r=ET.parse(e/file).getroot()
+              assert int(r.attrib["tests"])==n
+              assert all(int(r.attrib[k])==0 for k in ("failures","errors","skipped"))
+              results[file]={"tests":n,"failures":0,"errors":0,"skipped":0}
+          (e/"result.json").write_text(json.dumps({
+              "schema":"shared-opal-palace-mechanics-registry-v1",
+              "authority":"MECHANICS_AND_REGISTRY_EVIDENCE_ONLY",
+              "results":results,"official_counters_delta":0
+          },sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: shared-opal-palace-mechanics-registry-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
