@@ -188,11 +188,101 @@ jobs:
           PY
           sha256sum "$OUT_DIR/BOOTSTRAP_MANIFEST.json" > "$OUT_DIR/BOOTSTRAP_MANIFEST.sha256"
 
-      - name: Upload Arcum bootstrap artifact
+      - name: Split dependency bundle for connector transport
+        shell: bash
+        run: |
+          set -euo pipefail
+          split -b 240M -d -a 2 "$OUT_DIR/arcum-gradle-home.tar.gz" "$OUT_DIR/arcum-gradle-home.tar.gz.part-"
+          rm "$OUT_DIR/arcum-gradle-home.tar.gz"
+          for i in 00 01 02 03; do
+            touch "$OUT_DIR/arcum-gradle-home.tar.gz.part-$i"
+          done
+          PART_COUNT="$(find "$OUT_DIR" -maxdepth 1 -type f -name 'arcum-gradle-home.tar.gz.part-*' -size +0c | wc -l)"
+          test "$PART_COUNT" -ge 1
+          test "$PART_COUNT" -le 4
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib, json, os
+          out = Path(os.environ["OUT_DIR"])
+          def sha(p):
+              h = hashlib.sha256()
+              with p.open("rb") as f:
+                  for chunk in iter(lambda: f.read(1024 * 1024), b""):
+                      h.update(chunk)
+              return h.hexdigest()
+          parts = []
+          for p in sorted(out.glob("arcum-gradle-home.tar.gz.part-*")):
+              if p.stat().st_size == 0:
+                  continue
+              parts.append({"filename": p.name, "bytes": p.stat().st_size, "sha256": sha(p)})
+          manifest = json.loads((out / "BOOTSTRAP_MANIFEST.json").read_text())
+          transport = {
+              "schema": "arcum-runtime-bootstrap-009a-transport-v1",
+              "dependency_archive": manifest["dependency_bundle"],
+              "part_size_command": "split -b 240M -d -a 2",
+              "parts": parts,
+          }
+          (out / "TRANSPORT_PARTS.json").write_text(json.dumps(transport, indent=2, sort_keys=True) + "\n")
+          PY
+          sha256sum "$OUT_DIR/TRANSPORT_PARTS.json" > "$OUT_DIR/TRANSPORT_PARTS.sha256"
+
+      - name: Upload Arcum source and manifests
         uses: actions/upload-artifact@v7
         with:
-          name: arcum-runtime-bootstrap-009a
-          path: /tmp/arcum-bootstrap-out/
+          name: arcum-runtime-bootstrap-009a-source
+          path: |
+            /tmp/arcum-bootstrap-out/argentum-pinned-source.tar.gz
+            /tmp/arcum-bootstrap-out/source-archive.sha256
+            /tmp/arcum-bootstrap-out/source-tree-ls-tree.txt
+            /tmp/arcum-bootstrap-out/source-tree-ls-tree.sha256
+            /tmp/arcum-bootstrap-out/BOOTSTRAP_MANIFEST.json
+            /tmp/arcum-bootstrap-out/BOOTSTRAP_MANIFEST.sha256
+            /tmp/arcum-bootstrap-out/TRANSPORT_PARTS.json
+            /tmp/arcum-bootstrap-out/TRANSPORT_PARTS.sha256
+            /tmp/arcum-bootstrap-out/java-version.txt
+            /tmp/arcum-bootstrap-out/gradle-version.txt
+            /tmp/arcum-bootstrap-out/focused-testClasses.log
+            /tmp/arcum-bootstrap-out/focused-testRuntimeClasspath.txt
+            /tmp/arcum-bootstrap-out/runtime-classpath-sentinel.log
+            /tmp/arcum-bootstrap-out/runtime-classpath-sentinel.exit
+            /tmp/arcum-bootstrap-out/gradle-home-inventory.sha256
+            /tmp/arcum-bootstrap-out/gradle-home-inventory.sha256.sha256
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+      - name: Upload dependency part 00
+        uses: actions/upload-artifact@v7
+        with:
+          name: arcum-runtime-bootstrap-009a-deps-00
+          path: /tmp/arcum-bootstrap-out/arcum-gradle-home.tar.gz.part-00
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+      - name: Upload dependency part 01
+        uses: actions/upload-artifact@v7
+        with:
+          name: arcum-runtime-bootstrap-009a-deps-01
+          path: /tmp/arcum-bootstrap-out/arcum-gradle-home.tar.gz.part-01
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+      - name: Upload dependency part 02
+        uses: actions/upload-artifact@v7
+        with:
+          name: arcum-runtime-bootstrap-009a-deps-02
+          path: /tmp/arcum-bootstrap-out/arcum-gradle-home.tar.gz.part-02
+          if-no-files-found: error
+          retention-days: 7
+          compression-level: 0
+
+      - name: Upload dependency part 03
+        uses: actions/upload-artifact@v7
+        with:
+          name: arcum-runtime-bootstrap-009a-deps-03
+          path: /tmp/arcum-bootstrap-out/arcum-gradle-home.tar.gz.part-03
           if-no-files-found: error
           retention-days: 7
           compression-level: 0
