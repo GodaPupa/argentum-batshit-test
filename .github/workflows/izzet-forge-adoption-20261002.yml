@@ -1,0 +1,36 @@
+name: Izzet accepted Forge adoption
+on:
+  push:
+    branches: ["validation/izzet-forge-adoption-20261002"]
+    paths: [".github/workflows/izzet-forge-adoption-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  forge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-forge-${{ github.run_id }}
+      OUT: /tmp/izzet-forge-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: c48ac08dec9698ed7098fd360fceb6500a04a38a, fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Validate exact accepted Forge source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = c48ac08dec9698ed7098fd360fceb6500a04a38a
+          test ! -e "$OUT" && mkdir "$OUT"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c18/cards/ForgeOfHeroes.kt)" = d81a0d3f9022564c5616473db6b1cf3e4a6feb76
+          git rev-parse HEAD HEAD^{tree} > "$OUT/source.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:2017-2022:compileKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.ForgeOfHeroesScenarioTest 2>&1 | tee "$OUT/forge.log"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-forge-adoption-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: warn
+          retention-days: 90
