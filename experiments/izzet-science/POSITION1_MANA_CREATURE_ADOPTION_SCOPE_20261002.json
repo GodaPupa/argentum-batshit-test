@@ -1,0 +1,44 @@
+{
+  "schema": "izzet-position1-mana-creature-adoption-scope-v1",
+  "date_utc": "2026-10-02",
+  "authority": "PROSPECTIVE_EXACT_SOURCE_ADOPTION_AND_ZERO_SEED_MECHANICS_VALIDATION_ONLY",
+  "base_commit": "75e7509fce69f84fa4cdf314619e92177c5ec62a",
+  "retained_source_tree": "f92cdeaed8be104d98b1a971347cd9c2f089f779",
+  "cards": [
+    {
+      "name": "Ilysian Caryatid",
+      "source_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/thb/cards/IlysianCaryatid.kt",
+      "source_blob": "967b2b9afb73522b47f0c96f6381ea7500fd4da5",
+      "test_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/IlysianCaryatidScenarioTest.kt",
+      "test_blob": "93ca85a26f15baa8128542e1c09a0020b91f4570",
+      "mechanic": "conditional mana quantity based on controlling creature with power >= 4"
+    },
+    {
+      "name": "Whisperer of the Wilds",
+      "source_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/frf/cards/WhispererOfTheWilds.kt",
+      "source_blob": "f912edd657fe1f891d6beae9b2fb49407c28c820",
+      "test_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WhispererOfTheWildsScenarioTest.kt",
+      "test_blob": "7f8c51c7946cc852af0d176a6ddd09daf4c58047",
+      "mechanic": "base green mana plus ferocious-gated double green mana"
+    }
+  ],
+  "reuse_basis": [
+    "existing Conditions.YouControl(GameObjectFilter.Creature.powerAtLeast(4))",
+    "existing mana abilities",
+    "existing activation restrictions",
+    "no new engine primitive"
+  ],
+  "validation": [
+    "compile affected set test modules",
+    "run exact two Ilysian Caryatid cases",
+    "run exact two Whisperer of the Wilds cases",
+    "re-run Position-1 registry diagnostic only after mechanics cases pass"
+  ],
+  "prohibited": [
+    "do not mutate Goblin Electromancer",
+    "do not retest Owlbear",
+    "no official seed/allocation/claim/game",
+    "registry presence is not mechanics competence"
+  ],
+  "official_counters_delta": 0
+}
