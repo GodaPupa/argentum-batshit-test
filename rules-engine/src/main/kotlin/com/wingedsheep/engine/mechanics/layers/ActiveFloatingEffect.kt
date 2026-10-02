@@ -194,6 +194,13 @@ sealed interface SerializableModification {
     @Serializable
     data class GrantKeyword(val keyword: String) : SerializableModification
 
+    /** Rule restriction, read by targeting rather than projected as a removable ability. */
+    @Serializable
+    data class PreventTargeting(
+        val controllers: Set<EntityId>,
+        val targetObject: com.wingedsheep.engine.state.ObjectRef? = null
+    ) : SerializableModification
+
     @Serializable
     data class RemoveKeyword(val keyword: String) : SerializableModification
 
