@@ -69,10 +69,6 @@
         "state": "canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"
       },
       {
-        "name": "Capsize",
-        "state": "canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"
-      },
-      {
         "name": "Cosmic Hunger",
         "state": "canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"
       },
@@ -186,6 +182,10 @@
       {
         "name": "Snake Umbra",
         "gap": "No canonical source/test demonstrated in retained historical source tree; totem armor replacement plus combat-damage draw Aura requires isolated implementation/qualification."
+      },
+      {
+        "name": "Capsize",
+        "gap": "Canonical historical definition/test were located, but direct adoption failed compilation because current source lacks KeywordAbility.buyback. Adoption was backed out; buyback support requires its own source/qualification scope before Capsize can re-enter the registry."
       }
     ]
   },
@@ -206,5 +206,15 @@
   "history_sweep": {
     "source_tree": "f92cdeaed8be104d98b1a971347cd9c2f089f779",
     "finding": "30 of the 32 previously unclassified missing identities have canonical definition + scenario-test paths in this retained historical source tree; registry absence on current line is not implementation absence."
+  },
+  "compile_repair_checkpoint": {
+    "source_before_repair": "7a10e6033ec1a02fc131dd2c4ea66f5c760f2db2",
+    "failed_validation_run": 36975721064,
+    "demonstrated_blockers": [
+      "missing Effects.PreventTargeting DSL helper",
+      "Capsize canonical source requires missing KeywordAbility.buyback"
+    ],
+    "disposition": "Restore exact PreventTargeting helper; back out Capsize adoption rather than import unreviewed buyback subsystem.",
+    "official_counters_delta": 0
   }
 }
