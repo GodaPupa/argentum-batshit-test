@@ -322,7 +322,13 @@ class TargetValidator {
             is TargetOther -> validateSingleTarget(state, target, requirement.baseRequirement, casterId, sourceColors, sourceSubtypes, sourceId, xValue, allTargets, targetingSourceType)
         }
         if (error != null) return error
-        if (FloatingTargetingRestriction.prevents(state, target.toEntityId(), casterId)) {
+        val targetEntityId = when (target) {
+            is ChosenTarget.Player -> target.playerId
+            is ChosenTarget.Permanent -> target.entityId
+            is ChosenTarget.Card -> target.cardId
+            is ChosenTarget.Spell -> target.spellEntityId
+        }
+        if (FloatingTargetingRestriction.prevents(state, targetEntityId, casterId)) {
             return "This player cannot target that object or player with spells or abilities"
         }
 
