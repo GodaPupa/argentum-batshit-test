@@ -1,0 +1,57 @@
+name: Izzet Position-1 registry on shared Opal compatibility
+on:
+  push:
+    branches: ["validation/izzet-registry-shared-opal-20261002"]
+    paths: [".github/workflows/izzet-registry-shared-opal-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-registry-shared-opal-${{ github.run_id }}
+      EVIDENCE: /tmp/izzet-registry-shared-opal-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 961ed695b1162510f58e1795edb6eb52e31cbab5, fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Run unchanged 55-name registry inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = "961ed695b1162510f58e1795edb6eb52e31cbab5"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt)" = "544a440160528f4a08211109936a55e263c39d19"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/afr/cards/Owlbear.kt)" = "0c94d28957e735b7a0af93b783542dc5d002e305"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt)" = "197a99e6c17885bb70511916893d3a33de217feb"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info             :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest             2>&1 | tee "$EVIDENCE/tests.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml "$EVIDENCE/"
+          RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          e=pathlib.Path(os.environ['EVIDENCE'])
+          r=ET.parse(e/'TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml').getroot()
+          suffix=" is registered in current runtime"; reg=[]; missing=[]
+          for c in r.iter('testcase'):
+              n=c.attrib['name']; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (reg if c.find('failure') is None and c.find('error') is None else missing).append(card)
+          out={'schema':'izzet-position1-shared-opal-registry-v1','tests':int(r.attrib['tests']),
+            'registered':len(reg),'missing':len(missing),'registered_names':sorted(reg),'missing_names':sorted(missing),
+            'opal_registered':'Opal Palace' in reg,'owlbear_registered':'Owlbear' in reg,
+            'authority':'REGISTRY_DIAGNOSTIC_ONLY_NOT_MECHANICS_OR_PILOT_QUALIFICATION','official_counters_delta':0}
+          assert out['tests']==55 and out['opal_registered'] and out['owlbear_registered']
+          (e/'registry-summary.json').write_text(json.dumps(out,sort_keys=True,indent=2)+'\n')
+          PY
+          # The diagnostic test intentionally fails for absent identities; preservation/summary is the result.
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-registry-shared-opal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
