@@ -1,0 +1,144 @@
+name: Izzet targeting compatibility compile checkpoint v2
+on:
+  push:
+    branches: ["validation/izzet-compile-repair-v2-20261001"]
+    paths: [".github/workflows/izzet-compile-repair-v2-validation-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-compile-repair-v2-${{ github.run_id }}
+      OUT: /tmp/izzet-compile-repair-v2-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact published checkpoint and repair bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "fcd8b792169bcbc0f7597a1a9b69c9cfeda0b00f"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-compile-repair-v2-validation-20261001.yml"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Effects.kt)" = "b791a90dff8ca8131b56d3d33f8c60bccc7246b4"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/TargetingEffects.kt)" = "0b8d9c7179923ff9719774bcf6413bee31431889"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/protection/PreventTargetingExecutor.kt)" = "8dc51dfb5219013a6787a58a790e7e226f476b28"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/FloatingTargetingRestriction.kt)" = "3e4c28df0cf8701a34e214a99a2153f6efa147ea"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt)" = "5e97d17206c59f1db1df6e13ac0f0a3da8abfed8"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ActiveFloatingEffect.kt)" = "9da1609977556113e68d02c550bd3cbfa87eaffd"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/EndedDurationExpiryCheck.kt)" = "92c2cc0d455dfc96d6b00ed7cff6f52e39315c6f"
+          test "$(git hash-object experiments/izzet-science/POSITION1_MISSING_IDENTITY_DISPOSITION_20261002.json)" = "30da7597fdc8c7dd8a86f8fe10214d5fc3249114"
+          test ! -e mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tmp/cards/Capsize.kt
+          test ! -e mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CapsizeScenarioTest.kt
+          mkdir "$OUT"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          git diff --name-status HEAD^ HEAD > "$OUT/validation-delta.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile targeting consumers and current adopted set shards
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sdk:compileTestKotlin             :rules-engine:compileTestKotlin             :mtg-sets:1993-1999:tests:compileTestKotlin             :mtg-sets:2000-2002:tests:compileTestKotlin             :mtg-sets:2003-2007:tests:compileTestKotlin             :mtg-sets:2008-2016:tests:compileTestKotlin             :mtg-sets:2017-2022:tests:compileTestKotlin             :mtg-sets:2024:tests:compileTestKotlin             :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact shared targeting compatibility tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sdk:test --tests com.wingedsheep.sdk.serialization.PreventTargetingSerializationTest 2>&1 | tee "$OUT/targeting-sdk.log"
+          cp mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.serialization.PreventTargetingSerializationTest.xml "$OUT/"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :rules-engine:test --tests com.wingedsheep.engine.scenarios.PreventTargetingScenarioTest 2>&1 | tee "$OUT/targeting-engine.log"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PreventTargetingScenarioTest.xml "$OUT/"
+      - name: Validate newly reused canonical card scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sets:2000-2002:tests:test --tests com.wingedsheep.engine.scenarios.StarCompassScenarioTest 2>&1 | tee "$OUT/star-compass.log"
+          cp mtg-sets/2000-2002/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.StarCompassScenarioTest.xml "$OUT/"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sets:2003-2007:tests:test             --tests com.wingedsheep.engine.scenarios.IzzetGuildmageScenarioTest             --tests com.wingedsheep.engine.scenarios.EchoingTruthScenarioTest 2>&1 | tee "$OUT/izzet-guildmage-echoing-truth.log"
+          cp mtg-sets/2003-2007/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.IzzetGuildmageScenarioTest.xml "$OUT/"
+          cp mtg-sets/2003-2007/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.EchoingTruthScenarioTest.xml "$OUT/"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.EverflowingChaliceScenarioTest 2>&1 | tee "$OUT/everflowing-chalice.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.EverflowingChaliceScenarioTest.xml "$OUT/"
+      - name: Reinventory exact 55 Position-1 identities without seeds or games
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/position1-registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"
+          cp "$XML" "$OUT/"
+          REGISTRY_GRADLE_RC="$rc" python3 - <<'PY'
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"
+          registered=[]; missing=[]
+          for case in root.iter("testcase"):
+              name=case.attrib["name"]
+              card=name[:-len(suffix)] if name.endswith(suffix) else name
+              if case.find("failure") is None and case.find("error") is None:
+                  registered.append(card)
+              else:
+                  missing.append(card)
+          required={"Opal Palace","Everflowing Chalice","Star Compass","Izzet Guildmage","Echoing Truth"}
+          assert required.issubset(set(registered)), (required-set(registered), sorted(registered))
+          assert "Capsize" in missing
+          summary={
+            "schema":"izzet-position1-registry-compile-repair-checkpoint-v2",
+            "authority":"REGISTRY_DIAGNOSTIC_ONLY_NOT_MECHANICS_OR_GAMEPLAY_QUALIFICATION",
+            "published_source":"fcd8b792169bcbc0f7597a1a9b69c9cfeda0b00f",
+            "tests":55,
+            "registered":len(registered),
+            "missing":len(missing),
+            "registered_names":sorted(registered),
+            "missing_names":sorted(missing),
+            "gradle_exit_code":int(os.environ["REGISTRY_GRADLE_RC"]),
+            "capsize_backed_out_for_buyback_gap":True,
+            "official_counters_delta":0
+          }
+          (out/"position1-registry-summary.json").write_text(json.dumps(summary,sort_keys=True,indent=2)+"\n")
+          PY
+      - name: Summarize successful targeted suites
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          names=[
+            "com.wingedsheep.sdk.serialization.PreventTargetingSerializationTest",
+            "com.wingedsheep.engine.scenarios.PreventTargetingScenarioTest",
+            "com.wingedsheep.engine.scenarios.StarCompassScenarioTest",
+            "com.wingedsheep.engine.scenarios.IzzetGuildmageScenarioTest",
+            "com.wingedsheep.engine.scenarios.EchoingTruthScenarioTest",
+            "com.wingedsheep.engine.scenarios.EverflowingChaliceScenarioTest",
+          ]
+          rows=[]
+          for name in names:
+              root=ET.parse(out/f"TEST-{name}.xml").getroot()
+              assert int(root.attrib["failures"])==0
+              assert int(root.attrib["errors"])==0
+              assert int(root.attrib["skipped"])==0
+              rows.append({"suite":name,"tests":int(root.attrib["tests"])})
+          (out/"targeted-summary.json").write_text(json.dumps({
+            "schema":"izzet-compile-repair-author-validation-v2",
+            "authority":"AUTHOR_VALIDATION_ONLY_NOT_INDEPENDENT_REVIEW_OR_GAMEPLAY_ADMISSION",
+            "published_source":"fcd8b792169bcbc0f7597a1a9b69c9cfeda0b00f",
+            "suites":rows,
+            "total_tests":sum(x["tests"] for x in rows),
+            "official_counters_delta":0
+          },sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-compile-repair-v2-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
