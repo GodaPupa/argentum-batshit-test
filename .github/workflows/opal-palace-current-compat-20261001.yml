@@ -1,0 +1,62 @@
+name: Shared Opal Palace current-line compatibility validation
+on:
+  push:
+    branches: ["validation/opal-palace-current-compat-20261001"]
+    paths: [".github/workflows/opal-palace-current-compat-20261001.yml"]
+permissions: {contents: read}
+jobs:
+  opal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/opal-palace-current-${{ github.run_id }}
+      EVIDENCE: /tmp/opal-palace-current-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {ref: 5ae799ea5b79f8e670463409121109a09cfbac70, fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact shared compatibility source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = "5ae799ea5b79f8e670463409121109a09cfbac70"
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$EVIDENCE" && mkdir "$EVIDENCE"
+          git rev-parse HEAD HEAD^{tree} > "$EVIDENCE/source.txt"
+          git hash-object             mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/ManaSpellRider.kt             rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt             rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt             rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt             rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt             rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt             mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/OpalPalace.kt             mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpalPalaceScenarioTest.kt             > "$EVIDENCE/blobs.txt"
+      - name: Compile affected modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain             :mtg-sdk:compileKotlin             :rules-engine:compileKotlin             :mtg-sets:2008-2016:compileKotlin             :mtg-sets:2008-2016:tests:compileTestKotlin             2>&1 | tee "$EVIDENCE/compile.log"
+      - name: Run exact Opal Palace scenario suite
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info             :mtg-sets:2008-2016:tests:test             --tests com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest             2>&1 | tee "$EVIDENCE/tests.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest.xml "$EVIDENCE/"
+          python3 - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET,json
+          e=pathlib.Path(os.environ['EVIDENCE'])
+          p=e/'TEST-com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest.xml'
+          r=ET.parse(p).getroot()
+          assert r.attrib['name']=='com.wingedsheep.engine.scenarios.OpalPalaceScenarioTest'
+          assert int(r.attrib['tests'])==10
+          assert all(int(r.attrib[k])==0 for k in ('failures','errors','skipped'))
+          assert len(list(r.iter('testcase')))==10
+          (e/'summary.json').write_text(json.dumps({
+            'schema':'shared-opal-palace-compatibility-validation-v1',
+            'tests':10,'failures':0,'errors':0,'skipped':0,
+            'authority':'SHARED_MECHANICS_COMPATIBILITY_ONLY',
+            'official_counters_delta':0
+          },sort_keys=True)+'\n')
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: opal-palace-current-compat-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.EVIDENCE }}/
+          if-no-files-found: warn
+          retention-days: 90
