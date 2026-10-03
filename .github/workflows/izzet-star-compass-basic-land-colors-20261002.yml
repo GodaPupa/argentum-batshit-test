@@ -1,0 +1,63 @@
+name: Izzet basic-land producible-color primitive
+on:
+  push:
+    branches: ["validation/izzet-star-compass-basic-land-colors-20261002"]
+    paths: [".github/workflows/izzet-star-compass-basic-land-colors-20261002.yml"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OUT: /tmp/izzet-basic-land-colors-${{ github.run_id }}
+      GRADLE_USER_HOME: /tmp/izzet-basic-land-colors-gradle-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Bind exact shared primitive source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = "bfe1e2e9821b57051c1c0f7a9901b77c46491612"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-star-compass-basic-land-colors-20261002.yml"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/values/ManaColorSet.kt)" = "ff0d827f2f333b82d6c4023adef176001f14adf4"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaColorSetResolver.kt)" = "defbbf047da729cdc8e533e98149c24cda09bc91"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/LandManaColorInspector.kt)" = "419c4ac96848b207e861861adf5864860b7c26a2"
+          test "$(git hash-object rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BasicLandsYouControlCouldProduceScenarioTest.kt)" = "f6dd4b8d16e5991b8cb9a61a54ad16043d8a239d"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile shared primitive and regression test source
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sdk:compileKotlin :rules-engine:compileTestKotlin :mtg-sets:1993-1999:tests:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run generalized basic-land color-set scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.BasicLandsYouControlCouldProduceScenarioTest 2>&1 | tee "$OUT/basic-land-colors.log"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.BasicLandsYouControlCouldProduceScenarioTest.xml "$OUT/"
+      - name: Run unchanged Fellwar Stone regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:1993-1999:tests:test --tests com.wingedsheep.engine.scenarios.FellwarStoneScenarioTest 2>&1 | tee "$OUT/fellwar.log"
+          cp mtg-sets/1993-1999/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.FellwarStoneScenarioTest.xml "$OUT/"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-basic-land-colors-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
