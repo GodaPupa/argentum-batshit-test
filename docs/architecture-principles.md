@@ -1906,3 +1906,16 @@ complexity:
 
 The result is a system where each layer has a clear, minimal responsibility — the SDK describes,
 the engine executes, the server orchestrates, and the client renders.
+
+### Historical spell-copy state
+
+A triggered copy can resolve after its original spell leaves the stack. Stack removal
+captures `SpellCopySnapshot` under the original object generation in
+`GameState.departedSpellCopies`. The snapshot contains copiable card characteristics,
+structured cast choices and target identities, not the original runtime component bag.
+These records persist for the game because delayed copies may outlive a turn boundary.
+Copy continuations carry the resolved snapshot across player input and serialization.
+Target selection evaluates a temporary prospective copy through the existing target
+finder; the actual copy is created only after selection. A captured source reference
+never resolves to a later casting of the same card. See
+`docs/experiments/izzet/historical-spell-copy-20261003.md` for the qualification contract.

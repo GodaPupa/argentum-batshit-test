@@ -171,6 +171,7 @@ class StackResolver(
         additionalCostBlightAmount: Int = 0,
         additionalCostPayXLifeAmount: Int? = null,
         declaredCostSlot: ChoiceSlot? = null,
+        optionalCostCounts: Map<ChoiceSlot, Int> = emptyMap(),
         wasBlightPaid: Boolean = false,
         wasWaterbendPaid: Boolean = false,
         giftRecipient: EntityId? = null,
@@ -371,6 +372,7 @@ class StackResolver(
                 casterId = casterId,
                 xValue = boundXValue,
                 declaredCostSlot = declaredCostSlot,
+                optionalCostCounts = optionalCostCounts,
                 wasBlightPaid = wasBlightPaid,
                 wasWaterbendPaid = wasWaterbendPaid,
                 giftRecipient = giftRecipient,
@@ -579,6 +581,7 @@ class StackResolver(
                     semanticName = spellName,
                 ),
                 declaredCostSlot = declaredCostSlot,
+                optionalCostCounts = optionalCostCounts,
                 totalManaSpent = totalManaSpent,
                 distinctColorsSpent =
                     com.wingedsheep.engine.handlers.ManaSpentReader.distinctColorsSpent(newState, cardId),
@@ -795,19 +798,16 @@ class StackResolver(
         modeTargetRequirements: Map<Int, List<TargetRequirement>>? = null,
         copyIndex: Int? = null,
         copyTotal: Int? = null,
-        controllerId: EntityId? = null
+        controllerId: EntityId? = null,
+        sourceSnapshot: com.wingedsheep.engine.state.components.stack.SpellCopySnapshot? = null
     ): ExecutionResult {
-        val sourceContainer = state.getEntity(sourceSpellId)
+        val snapshot = sourceSnapshot ?: com.wingedsheep.engine.state.components.stack.SpellCopySnapshot.capture(state, sourceSpellId)
             ?: return ExecutionResult.error(state, "Source spell not found: $sourceSpellId")
-        // CR 707.10: a spell that can't be copied yields no copy. Succeed without change.
-        if (sourceContainer.has<com.wingedsheep.engine.state.components.identity.CantBeCopiedComponent>()) {
-            return ExecutionResult.success(state)
-        }
-        val sourceCard = sourceContainer.get<CardComponent>()
-            ?: return ExecutionResult.error(state, "Source is not a card: $sourceSpellId")
-        val sourceSpell = sourceContainer.get<SpellOnStackComponent>()
-            ?: return ExecutionResult.error(state, "Source is not a spell on stack: $sourceSpellId")
-        val sourceTargets = sourceContainer.get<TargetsComponent>()
+        if (snapshot.reference.entityId != sourceSpellId) return ExecutionResult.error(state, "Mismatched copy source")
+        if (snapshot.cantBeCopied) return ExecutionResult.success(state)
+        val sourceCard = snapshot.card
+        val sourceSpell = snapshot.spell
+        val sourceTargets = snapshot.targets
 
         val (copyId, stateWithId) = state.newEntity()
         val copyController = controllerId ?: sourceSpell.casterId
@@ -848,9 +848,16 @@ class StackResolver(
             modeTargetRequirements = effectiveModeRequirements
         )
 
+        // With no target override, inherit the original object identities as well as IDs.
+        // Re-capturing a blinked permanent here would silently target its new battlefield visit.
+        val copyTargets = if (targets.isEmpty() && modeTargetsOrdered == null && sourceTargets != null) {
+            sourceTargets.copy(targets = effectiveTargets, targetRequirements = effectiveRequirements)
+        } else {
+            TargetsComponent.capture(state, effectiveTargets, effectiveRequirements)
+        }
         var container = ComponentContainer.of(copiedCardComp, copiedSpellComp)
         if (effectiveTargets.isNotEmpty()) {
-            container = container.with(TargetsComponent.capture(state, effectiveTargets, effectiveRequirements))
+            container = container.with(copyTargets)
         }
         container = container.with(
             CopyOfComponent(
@@ -876,6 +883,8 @@ class StackResolver(
         // Emit BecomesTargetEvent for each permanent, spell, or player target — the copy is its own
         // source on the stack (ward on the target can counter the copy independently).
         for (target in effectiveTargets) {
+            if (target is ChosenTarget.Permanent &&
+                TargetsComponent.isDifferentObject(newState, target.entityId, copyTargets.targetEntryStamps)) continue
             newState = emitBecomesTarget(newState, target, copyId, copyController, events, sourceIsSpell = true)
         }
 
@@ -979,7 +988,7 @@ class StackResolver(
         val (_, poppedState) = state.popFromStack()
 
         // Determine what type of item this is
-        return when {
+        val result = when {
             container.has<SpellOnStackComponent>() ->
                 resolveSpell(poppedState, topId, container)
 
@@ -992,6 +1001,7 @@ class StackResolver(
             else ->
                 ExecutionResult.error(state, "Unknown stack item type")
         }
+        return result.copy(state = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, result.newState))
     }
 
     /**
@@ -1453,6 +1463,8 @@ class StackResolver(
         // Captured before the `updateEntity` block below strips it; applied on entry further down.
         val graveyardCastRider =
             state.getEntity(spellId)?.get<com.wingedsheep.engine.state.components.stack.GraveyardCastRiderComponent>()
+        val commanderManaEntryCounters = state.getEntity(spellId)
+            ?.get<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
 
         // For Auras: get the target before removing TargetsComponent. The target is usually a
         // permanent, but "enchant player" Auras (Grievous Wound) attach to a player — both are
@@ -1477,6 +1489,7 @@ class StackResolver(
         val resolvingAsSpellCopy = copyOf != null && copyOf.originalCardComponent == null
         var newState = state.updateEntity(spellId) { c ->
             var updated = c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
                 .without<TargetsComponent>()
                 .without<com.wingedsheep.engine.state.components.stack.GraveyardCastRiderComponent>()
                 .with(ControllerComponent(controllerId))
@@ -1553,6 +1566,10 @@ class StackResolver(
                         slot,
                         com.wingedsheep.engine.state.components.battlefield.ChoiceValue.Flag
                     )
+                }
+                for ((slot, count) in spellComponent.optionalCostCounts) {
+                    if (count > 0) bag = bag.withChoice(slot,
+                        com.wingedsheep.engine.state.components.battlefield.ChoiceValue.NumberChoice(count))
                 }
                 // Sneak (CR 702.190): durably mark the permanent so Conditions.SneakCostWasPaid
                 // reads "its sneak cost was paid" for its whole life on the battlefield.
@@ -1844,6 +1861,17 @@ class StackResolver(
             counterEvents.addAll(riderEvents)
         }
 
+        // Mana-spent entry riders survive choices/copy replacement, then apply before ETB snapshots.
+        // Combine all Palace mana contributions before applying counter-placement modifiers.
+        if (commanderManaEntryCounters != null) {
+            val (entryState, entryEvents) = EntersWithReplacements.placeEntryCounters(
+                newState, spellId, CounterTypeFilter.PlusOnePlusOne, commanderManaEntryCounters.count,
+                controllerId, cardComponent?.name ?: ""
+            )
+            newState = entryState
+            counterEvents.addAll(entryEvents)
+        }
+
         // Handle the intrinsic entry counters of a planeswalker (starting loyalty, CR 306.5b) or a
         // battle (printed defense, CR 310.4b). This is the cast pipeline's entry point for those
         // intrinsic entry replacements — it runs here, while the permanent is still on the stack,
@@ -2054,7 +2082,7 @@ class StackResolver(
                 ?.get<com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent>()?.timestamp,
             oldObject = state.objectRef(spellId), newObject = newState.objectRef(spellId),
         ))
-        return newState to counterEvents
+        return com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, newState) to counterEvents
     }
 
 
@@ -2344,7 +2372,7 @@ class StackResolver(
         cardComponent: CardComponent?,
     ): ExecutionResult {
         if (state.logicalZone(spellId)?.zoneType != Zone.STACK) return ExecutionResult.success(state)
-        var newState = if (spellId in state.stack) state.copy(stack = state.stack.filterNot { it == spellId }) else state
+        var newState = state.removeFromStack(spellId)
         val events = mutableListOf<GameEvent>()
         // Rule 112.3b: a copy of a spell ceases to exist when it leaves the stack —
         // it does not go to a graveyard or exile.
@@ -2402,6 +2430,11 @@ class StackResolver(
         // on resolution instead of going to the graveyard, and arms a next-upkeep free recast.
         val reboundExile = spellComponent.castFromZone == Zone.HAND &&
             spellHasRebound(newState, spellId, cardDef)
+        // Buyback (CR 702.27a): when its optional additional cost was paid, a spell that would
+        // normally be put into its owner's graveyard as it resolves returns to hand instead.
+        // This is resolution-only; counter/fizzle paths deliberately do not consult this flag.
+        val buybackReturnToHand = spellComponent.declaredCostSlot ==
+            com.wingedsheep.sdk.scripting.ChoiceSlot.BUYBACK
         // Not a plain priority order, because the underlying replacements aren't totally ordered:
         // the rider loses to the printed self-shuffle clause, the self-shuffle clause loses to
         // flashback, and flashback loses to the rider. What breaks the cycle is *what each
@@ -2428,6 +2461,7 @@ class StackResolver(
             selfShuffleIntoLibrary -> Zone.LIBRARY
             selfExile || adventureFaceExile || reboundExile -> Zone.EXILE
             omenFaceShuffle -> Zone.LIBRARY
+            buybackReturnToHand -> Zone.HAND
             else -> Zone.GRAVEYARD
         }
 
@@ -2707,7 +2741,9 @@ class StackResolver(
         val destZoneKey = ZoneKey(ownerId, destZone)
 
         var newState = state.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = newState.addToZone(destZoneKey, spellId)
         val destinationObject = newState.objectRef(spellId)
@@ -3106,7 +3142,9 @@ class StackResolver(
         // Remove stack components and reset any Prototype characteristics now that the card has
         // become a new object outside the stack/battlefield.
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
@@ -3170,7 +3208,9 @@ class StackResolver(
         val destinationObject = newState.objectRef(spellId)
 
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
@@ -3234,7 +3274,9 @@ class StackResolver(
         val destinationObject = newState.objectRef(spellId)
 
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
@@ -3290,7 +3332,9 @@ class StackResolver(
         // Remove stack components and optionally grant the counter's controller a free recast
         // (Kheru Spellsnatcher).
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
         if (grantFreeCast) {
@@ -3368,7 +3412,9 @@ class StackResolver(
         val exileZone = ZoneKey(ownerId, Zone.EXILE)
         newState = newState.addToZone(exileZone, spellId)
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 

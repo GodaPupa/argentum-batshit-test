@@ -214,6 +214,8 @@ val engineSerializersModule = SerializersModule {
         subclass(Suspension::class)
         subclass(FinishResolvingSpellContinuation::class)
         subclass(ReplacementResolveContinuation::class)
+        subclass(LethalDestructionContinuation::class)
+        subclass(DestroyCollectionContinuation::class)
         subclass(ModalPreChosenContinuation::class)
         subclass(SpliceTailContinuation::class)
         subclass(ModalChosenModeTailContinuation::class)
@@ -236,6 +238,8 @@ val engineSerializersModule = SerializersModule {
     polymorphic(AutomaticContinuation::class) {
         subclass(FinishResolvingSpellContinuation::class)
         subclass(ReplacementResolveContinuation::class)
+        subclass(LethalDestructionContinuation::class)
+        subclass(DestroyCollectionContinuation::class)
         subclass(ModalPreChosenContinuation::class)
         subclass(SpliceTailContinuation::class)
         subclass(ModalChosenModeTailContinuation::class)
@@ -269,8 +273,10 @@ val engineSerializersModule = SerializersModule {
         subclass(ChooseDoorContinuation::class)
         subclass(TriggerOrderingContinuation::class)
         subclass(ReplacementChoiceContinuation::class)
+        subclass(DestructionReplacementContinuation::class)
         subclass(TriggerModalModeSelectionContinuation::class)
         subclass(TriggerModalTargetSelectionContinuation::class)
+        subclass(OptionalCostCountContinuation::class)
         subclass(CastModalModeSelectionContinuation::class)
         subclass(CastModalTargetSelectionContinuation::class)
         subclass(ModalContinuation::class)
@@ -680,6 +686,7 @@ val engineSerializersModule = SerializersModule {
         subclass(SpellGrantedKeywordsComponent::class)
         subclass(SpellCopyTokenRidersComponent::class)
         subclass(GraveyardCastRiderComponent::class)
+        subclass(CommanderManaEntryCountersComponent::class)
 
         // Continuous effects
         subclass(ContinuousEffectSourceComponent::class)

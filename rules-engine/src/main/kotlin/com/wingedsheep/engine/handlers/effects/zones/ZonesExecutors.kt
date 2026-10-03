@@ -56,6 +56,6 @@ class ZonesExecutors(
         PutOntoBattlefieldAttachedToChosenExecutor(cardRegistry, targetFinder),
         ExileOpponentsGraveyardsExecutor(),
         ExileAllGraveyardsExecutor(),
-        DestroyAllEquipmentOnTargetExecutor()
+        DestroyAllEquipmentOnTargetExecutor(cardRegistry)
     )
 }

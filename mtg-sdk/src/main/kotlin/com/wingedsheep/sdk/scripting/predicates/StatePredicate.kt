@@ -67,6 +67,17 @@ sealed interface StatePredicate {
         override val description: String = "on the battlefield"
     }
 
+    /**
+     * The card is a designated commander. This designation is independent of its current card
+     * types, controller, abilities and zone; a copy of a commander does not gain the designation.
+     * Compose with zone and entry predicates for "target commander that entered this turn".
+     */
+    @SerialName("IsCommander")
+    @Serializable
+    data object IsCommander : Entity {
+        override val description: String = "commander"
+    }
+
     // =============================================================================
     // Combat (Entity)
     // =============================================================================

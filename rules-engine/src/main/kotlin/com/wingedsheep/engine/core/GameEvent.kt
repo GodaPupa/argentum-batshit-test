@@ -273,6 +273,15 @@ data class StatsModifiedEvent(
     val sourceName: String
 ) : GameEvent
 
+/** A targeting rule was established; the effect is represented in public state. */
+@Serializable
+@SerialName("TargetingRestrictionCreatedEvent")
+data class TargetingRestrictionCreatedEvent(
+    val targetId: EntityId,
+    val restrictedControllers: Set<EntityId>,
+    val sourceId: EntityId?
+) : GameEvent
+
 /**
  * A keyword was granted (e.g., "gains flying until end of turn").
  */
@@ -698,6 +707,8 @@ data class SpellCastEvent(
      * [ChoiceSlot.KICKED] only, so a bargained spell doesn't satisfy it).
      */
     val declaredCostSlot: ChoiceSlot? = null,
+    /** Announced payment multiplicity survives the spell cast event. */
+    val optionalCostCounts: Map<ChoiceSlot, Int> = emptyMap(),
     /** Total mana spent to cast this spell (for Expend trigger detection) */
     val totalManaSpent: Int = 0,
     /**

@@ -837,6 +837,8 @@ class ModalAndCloneContinuationResumer(
             }
         }
 
+        newState = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, newState)
+
         // Check if the permanent has remaining choices to chain to (e.g. color + creature type).
         val entityContainer = newState.getEntity(entityId)
         val cardComponent = entityContainer?.get<CardComponent>()

@@ -2226,11 +2226,11 @@ class CastSpellEnumerator : ActionEnumerator {
                 // Calculate kicked/offspring cost. The base cost is priced *for this branch*: a
                 // "costs {2} less to cast if it's bargained" reduction (Hamlet Glutton) is gated on the
                 // declaration, so it only applies to the variant that declares it.
-                val baseCost = context.costCalculator.calculateEffectiveCost(
+                val kickedManaCost = manaKicker?.manaCost ?: offspringAbility?.manaCost ?: ManaCost.ZERO
+                val kickedCost = context.costCalculator.calculateEffectiveCost(
                     state, cardDef, playerId, declaredCostSlot = declaredSlot,
+                    additionalMana = kickedManaCost,
                 )
-                val kickedManaCost = manaKicker?.manaCost ?: offspringAbility?.manaCost
-                val kickedCost = if (kickedManaCost != null) baseCost + kickedManaCost else baseCost
                 val kickedSpellContext = spellPaymentContextFor(cardComponent, isKicked = declaredSlot == ChoiceSlot.KICKED)
                 val canAffordKickedMana = context.manaSolver.canPay(state, playerId, kickedCost, spellContext = kickedSpellContext, precomputedSources = context.availableManaSources)
                 val kickedCostString = kickedCost.toString()
@@ -2360,6 +2360,7 @@ class CastSpellEnumerator : ActionEnumerator {
                 // "with Flash" / "Kicked" for the kicker family. The client shows this verbatim.
                 val kickLabel = when {
                     declaredSlot == ChoiceSlot.BARGAINED -> "Bargained"
+                    declaredSlot == ChoiceSlot.BUYBACK -> "Buyback"
                     // Collect evidence names the amount, because the amount is the whole choice —
                     // "Collect evidence 6" reads the way the card is printed, where a bare
                     // "Evidence" would not (CR 701.59).

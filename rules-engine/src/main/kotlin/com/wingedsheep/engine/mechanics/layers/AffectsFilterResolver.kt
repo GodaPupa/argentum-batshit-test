@@ -24,6 +24,7 @@ import com.wingedsheep.engine.state.components.combat.BlockingComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackersThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackersLastTurnComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.identity.CommanderComponent
 import com.wingedsheep.engine.state.components.identity.ControllerComponent
 import com.wingedsheep.engine.state.components.identity.FaceDownComponent
 import com.wingedsheep.engine.state.components.identity.RoomComponent
@@ -516,6 +517,7 @@ internal class AffectsFilterResolver {
         // meaningful in target/gather-filter contexts via PredicateEvaluator; never match in
         // group-static projection.
         StatePredicate.ExiledWithSource -> false
+        StatePredicate.IsCommander -> container.has<CommanderComponent>()
         StatePredicate.EnteredThisTurn -> container.has<EnteredThisTurnComponent>()
         // Counter history — the per-permanent marker, so a group static gated on "each creature you
         // control that you've put one or more +1/+1 counters on this turn" (Kid Loki) resolves
@@ -836,6 +838,7 @@ internal class AffectsFilterResolver {
         CardPredicate.IsArtifact -> "ARTIFACT" in types
         CardPredicate.IsEnchantment -> "ENCHANTMENT" in types
         CardPredicate.IsPlaneswalker -> "PLANESWALKER" in types
+        is CardPredicate.HasCardType -> predicate.cardType.name in types
         CardPredicate.IsInstant -> "INSTANT" in types
         CardPredicate.IsSorcery -> "SORCERY" in types
         // Adventure-ness is a static whole-card characteristic, not a projected type.
@@ -855,6 +858,7 @@ internal class AffectsFilterResolver {
         CardPredicate.IsToken -> container.has<com.wingedsheep.engine.state.components.identity.TokenComponent>()
         CardPredicate.IsNontoken -> !container.has<com.wingedsheep.engine.state.components.identity.TokenComponent>()
         CardPredicate.IsLegendary -> "LEGENDARY" in types
+        CardPredicate.IsSnow -> "SNOW" in types
         CardPredicate.IsNonlegendary -> "LEGENDARY" !in types
         CardPredicate.HasNonManaActivatedAbility -> card.hasNonManaActivatedAbility
         CardPredicate.HasActivatedAbility -> card.hasActivatedAbility
