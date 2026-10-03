@@ -221,6 +221,7 @@ class PermanentExecutors(
         GrantFlashbackExecutor(),
         GrantHarmonizeExecutor(),
         GrantKeywordExecutor(),
+        com.wingedsheep.engine.handlers.effects.permanent.protection.GrantHexproofFromColorsExecutor(),
         GrantStaticAbilityExecutor(),
         GrantReplacementEffectExecutor(),
         RemoveKeywordExecutor(),
@@ -257,3 +258,4 @@ class PermanentExecutors(
         GrantCantBeBlockedByChosenColorExecutor()
     )
 }
+

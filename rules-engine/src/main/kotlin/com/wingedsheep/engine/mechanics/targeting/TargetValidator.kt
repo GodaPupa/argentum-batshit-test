@@ -526,6 +526,11 @@ class TargetValidator {
         sourceColors: Set<Color>
     ): String? {
         if (sourceColors.isEmpty()) return null
+        if (target is ChosenTarget.Player) {
+            if (target.playerId == casterId) return null
+            return if (PlayerColorHexproof.applies(state, target.playerId, casterId, sourceColors))
+                "Target player has hexproof from this source's color" else null
+        }
 
         val entityId = when (target) {
             is ChosenTarget.Permanent -> target.entityId

@@ -666,6 +666,11 @@ class CleanupPhaseManager(
                 if (shroud?.removeOn == PlayerEffectRemoval.EndOfTurn) {
                     result = result.without<PlayerShroudComponent>()
                 }
+                result.get<com.wingedsheep.engine.state.components.player.PlayerHexproofFromColorsComponent>()?.let { scoped ->
+                    val remaining = scoped.grants.filterNot { it.removeOn == PlayerEffectRemoval.EndOfTurn }
+                    result = if (remaining.isEmpty()) result.without<com.wingedsheep.engine.state.components.player.PlayerHexproofFromColorsComponent>()
+                        else result.with(scoped.copy(grants = remaining))
+                }
                 val hexproof = result.get<PlayerHexproofComponent>()
                 if (hexproof?.removeOn == PlayerEffectRemoval.EndOfTurn) {
                     result = result.without<PlayerHexproofComponent>()
@@ -1175,3 +1180,4 @@ class CleanupPhaseManager(
         }
     }
 }
+

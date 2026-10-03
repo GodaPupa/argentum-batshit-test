@@ -655,6 +655,7 @@ val engineSerializersModule = SerializersModule {
         subclass(PlayerNoMaximumHandSizeComponent::class)
         subclass(PlayerMaximumHandSizeReductionComponent::class)
         subclass(PlayerHexproofComponent::class)
+        subclass(com.wingedsheep.engine.state.components.player.PlayerHexproofFromColorsComponent::class)
         subclass(PlayerProtectionComponent::class)
         subclass(PlayerCantPlayFromHandComponent::class)
         subclass(PlayerShroudComponent::class)
@@ -686,3 +687,4 @@ val engineSerializersModule = SerializersModule {
         subclass(ContinuousEffectSourceComponent::class)
     }
 }
+
