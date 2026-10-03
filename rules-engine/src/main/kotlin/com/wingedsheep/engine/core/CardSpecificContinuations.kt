@@ -430,6 +430,7 @@ data class StormCopyTargetContinuation(
     val keywordsForCopy: Set<String> = emptySet(),
     val removeLegendary: Boolean = false,
     val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
+    val sourceSnapshot: com.wingedsheep.engine.state.components.stack.SpellCopySnapshot? = null,
 ) : AnswerContinuation
 
 /**
@@ -491,6 +492,7 @@ data class StormCopyModalTargetContinuation(
     /** If true, strip the Legendary supertype from each resulting copy. */
     val removeLegendary: Boolean = false,
     val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
+    val sourceSnapshot: com.wingedsheep.engine.state.components.stack.SpellCopySnapshot? = null,
 ) : AnswerContinuation
 
 /**
