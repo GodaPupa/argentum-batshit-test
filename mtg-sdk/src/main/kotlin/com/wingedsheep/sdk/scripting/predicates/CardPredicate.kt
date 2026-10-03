@@ -178,6 +178,13 @@ sealed interface CardPredicate : TextReplaceable<CardPredicate> {
         override val description: String = "legendary"
     }
 
+    /** Matches a card or permanent with the Snow supertype. */
+    @SerialName("IsSnow")
+    @Serializable
+    data object IsSnow : CardPredicate {
+        override val description: String = "snow"
+    }
+
     @SerialName("IsNonlegendary")
     @Serializable
     data object IsNonlegendary : CardPredicate {
