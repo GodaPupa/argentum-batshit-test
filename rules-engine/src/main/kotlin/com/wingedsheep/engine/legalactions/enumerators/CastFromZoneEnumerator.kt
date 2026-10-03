@@ -2672,7 +2672,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
 
         // Collect affordable zone-cast actions (not flashback/warp)
         val zoneCastActions = result
-            .filter { it.actionType == "CastSpell" && it.affordable && it.sourceZone != null }
+            .filter { it.action is CastSpell && it.affordable && it.sourceZone != null }
             .mapNotNull { la -> (la.action as? CastSpell)?.let { it.cardId to la } }
             .toMap()
 
@@ -2701,11 +2701,8 @@ class CastFromZoneEnumerator : ActionEnumerator {
 
                 // Calculate the cost for this branch — a declaration-gated reduction ("costs {2} less
                 // to cast if it's bargained") applies only to the variant that declares it.
-                val baseCost = context.costCalculator.calculateEffectiveCost(
-                    state, cardDef, playerId, declaredCostSlot = declaredSlot,
-                )
-                val kickedManaCost = manaKicker?.manaCost ?: offspringAbility?.manaCost
-                val kickedCost = if (kickedManaCost != null) baseCost + kickedManaCost else baseCost
+                val kickedCost = context.castManaQuote.quote(state,
+                    originalCast.copy(declaredCostSlot = declaredSlot)) ?: continue
                 // This enumerator only enumerates non-hand-zone casts (command, library, exile,
                 // graveyard, …) — `sourceZone` is never "HAND" here. Mark accordingly so
                 // [ManaRestriction.CastFromNonHandOnly] mana is eligible for the kicked variant.
@@ -2825,7 +2822,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
                             kickerActions.add(LegalAction(
                                 actionType = "CastWithKicker",
                                 description = "Cast ${cardComponent.name} ($kickLabel)",
-                                action = CastSpell(playerId, cardId, targets = listOf(autoSelectedTarget), declaredCostSlot = declaredSlot, graveyardLifeCost = originalCast.graveyardLifeCost),
+                                action = originalCast.copy(targets = listOf(autoSelectedTarget), declaredCostSlot = declaredSlot),
                                 affordable = canAffordKicked,
                                 manaCostString = kickedCostString,
                                 autoTapPreview = kickedAutoTapPreview,
@@ -2840,7 +2837,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
                             kickerActions.add(LegalAction(
                                 actionType = "CastWithKicker",
                                 description = "Cast ${cardComponent.name} ($kickLabel)",
-                                action = CastSpell(playerId, cardId, declaredCostSlot = declaredSlot, graveyardLifeCost = originalCast.graveyardLifeCost),
+                                action = originalCast.copy(declaredCostSlot = declaredSlot),
                                 validTargets = firstReqInfo.validTargets,
                                 requiresTargets = true,
                                 targetCount = firstReqInfo.maxTargets,
@@ -2863,7 +2860,7 @@ class CastFromZoneEnumerator : ActionEnumerator {
                     kickerActions.add(LegalAction(
                         actionType = "CastWithKicker",
                         description = "Cast ${cardComponent.name} ($kickLabel)",
-                        action = CastSpell(playerId, cardId, declaredCostSlot = declaredSlot, graveyardLifeCost = originalCast.graveyardLifeCost),
+                        action = originalCast.copy(declaredCostSlot = declaredSlot),
                         affordable = canAffordKicked,
                         manaCostString = kickedCostString,
                         autoTapPreview = kickedAutoTapPreview,

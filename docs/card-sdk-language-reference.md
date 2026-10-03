@@ -13515,3 +13515,14 @@ is false. Each projected color-protection grant retains its own source and
 controller provenance; a different matching grant can still remove the Aura.
 This does not exempt any other controlled attachment or implement the separate
 “already attached” activation-time snapshot policy.
+
+
+### Repeated optional-cost announcements
+
+`CastSpell.optionalCostCounts` records the announced count by `ChoiceSlot`. Declaring a
+`OptionalAdditionalCost.multi` slot without a count asks the existing number-choice UI before
+payment. A zero count declines the slot. Positive counts are retained on the spell, its copies,
+and the resulting permanent's numeric cast choice. The printed or alternative base and elected
+additional mana are combined before cost increases and reductions. Free casting replaces only
+the base mana cost. Repeated non-mana costs require separate payment selection support and are
+rejected instead of reusing the same sacrificed/discarded objects.
