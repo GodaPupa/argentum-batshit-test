@@ -1638,7 +1638,7 @@ class StackResolver(
                         )
                     )
                 }
-                if (bag.x != null || bag.chosen.isNotEmpty()) {
+                if (bag.x != null || bag.chosen.isNotEmpty() || bag.alternativeCost != null) {
                     updated = updated.with(bag)
                 }
             }
