@@ -437,6 +437,22 @@ data class EntersWithChoiceOnBattlefieldContinuation(
  * @property lifeCost The amount of life to pay if they choose yes
  * @property fromZone The zone the land was played from (for the ZoneChangeEvent)
  */
+/**
+ * Resume a land play whose optional life payment was announced before battlefield placement.
+ *
+ * The source remains in its original zone while the decision is pending. [source] and [sourceZone]
+ * bind the continuation to that exact object visit; [action] retains the chosen MDFC face and
+ * player. The resumer revalidates the land play and commits payment + entry exactly once.
+ */
+@Serializable
+data class PreEntryLandPlayPaymentContinuation(
+    val action: PlayLand,
+    val source: com.wingedsheep.engine.state.ObjectRef,
+    val sourceZone: com.wingedsheep.engine.state.ZoneKey,
+    val lifeCost: Int,
+    val duringResolution: Boolean = false,
+) : AnswerContinuation
+
 @Serializable
 data class PayLifeOrEnterTappedLandContinuation(
     val landId: EntityId,
