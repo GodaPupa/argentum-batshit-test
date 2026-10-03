@@ -1,0 +1,96 @@
+name: Manual Temur Sabertooth v2 exact-card validation
+on:
+  push:
+    branches: ["validation/manual-temur-sabertooth-v2-20261002"]
+    paths: [".github/workflows/manual-temur-sabertooth-v2-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/manual-temur-v2-${{ github.run_id }}
+      OUT: /tmp/manual-temur-v2-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/checkout@v6
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact Temur v2 candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "f4760f29567ca64c724ac0b1f6ab40f23c875247"
+          test "$(git rev-parse HEAD^^)" = "176f5ada1a88553bddd2292dd4570bd1ced1c4bd"
+          test "$(git rev-parse HEAD^^^)" = "b02f5c79088fab1a080a9d1998569af625b126d2"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-temur-sabertooth-v2-validation-20261002.yml"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/frf/cards/TemurSabertooth.kt)" = "60866f4ef465eef5cec68a9984be0fc4d5d78941"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TemurSabertoothScenarioTest.kt)" = "c96c82c536a562cbaf79e9771e23d8dee39849d0"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ HEAD^^^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_AND_ZERO_GAME_REGISTRY_DIAGNOSTIC_ONLY' > "$OUT/authority.txt"
+      - name: Compile affected shard and registry test
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Temur mechanics scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.TemurSabertoothScenarioTest 2>&1 | tee "$OUT/temur.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.TemurSabertoothScenarioTest.xml "$OUT/"
+          python3 - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.engine.scenarios.TemurSabertoothScenarioTest.xml").getroot()
+          got={k:int(root.attrib[k]) for k in ("tests","failures","errors","skipped")}
+          assert got=={"tests":3,"failures":0,"errors":0,"skipped":0}, got
+          PY
+      - name: Reinventory exact eight frozen decks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out "$OUT/source-audit"
+          MT_P2_AUDIT_INPUT="$OUT/source-audit/registry-requests.json" \
+          MT_P2_AUDIT_OUTPUT="$OUT/registry" \
+            bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+              :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest 2>&1 | tee "$OUT/registry.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml "$OUT/"
+          python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml").getroot()
+          assert {k:int(root.attrib[k]) for k in ("tests","failures","errors","skipped")} == {"tests":1,"failures":0,"errors":0,"skipped":0}
+          report=json.loads((out/"registry/registry-report.json").read_text())
+          rows=[]; temur=[]; gwenna=[]
+          for d in report["decks"]:
+              missing=[c["requested_name"] for c in d["cards"] if not c["registry_resolved"]]
+              rows.append({"deck_id":d["deck_id"],"missing":len(missing),"missing_names":missing})
+              temur += [c for c in d["cards"] if c["requested_name"]=="Temur Sabertooth"]
+              gwenna += [c for c in d["cards"] if c["requested_name"]=="Gwenna, Eyes of Gaea"]
+          assert temur and all(c["registry_resolved"] for c in temur), temur
+          assert gwenna and all(c["registry_resolved"] for c in gwenna), gwenna
+          (out/"registry-summary.json").write_text(json.dumps({
+              "schema":"manual-temur-v2-candidate-registry-v1",
+              "decks":rows,
+              "total_missing":sum(x["missing"] for x in rows),
+              "temur_occurrences":len(temur),
+              "gwenna_occurrences":len(gwenna),
+              "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0}
+          },sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-temur-sabertooth-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
