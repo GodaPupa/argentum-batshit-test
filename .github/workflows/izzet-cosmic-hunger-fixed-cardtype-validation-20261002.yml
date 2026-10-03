@@ -1,0 +1,88 @@
+name: Izzet Cosmic Hunger fixed-card-type validation
+on:
+  push:
+    branches: ["validation/izzet-cosmic-hunger-fixed-cardtype-20261002"]
+    paths: [".github/workflows/izzet-cosmic-hunger-fixed-cardtype-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-cosmic-fixed-cardtype-${{ github.run_id }}
+      OUT: /tmp/izzet-cosmic-fixed-cardtype-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact shared primitive plus preserved Cosmic Hunger blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "fc9ec37a4208086de5918ffc389e656847c1706b"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-cosmic-hunger-fixed-cardtype-validation-20261002.yml"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/predicates/CardPredicate.kt)" = "3d2679a7550fb9f13829d54488ff4ebe2c8f5d5c"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/filters/unified/ObjectFilter.kt)" = "990bb92a24d7e53926e3b5e1b9c5740dd4170168"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt)" = "f1a8da7e1519f13d754b80b023d4c07c55f268b9"
+          test "$(git hash-object mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mom/cards/CosmicHunger.kt)" = "add5e7abdae6c3dc77c8ce67152a93c98ef2aabc"
+          test "$(git hash-object mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CosmicHungerScenarioTest.kt)" = "d3f7296b20da563ac747b9937e3616c8f353dbc0"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_SHARED_FILTER_CHANGE_REQUIRES_INDEPENDENT_REVIEW_BEFORE_LIVE_PROMOTION' > "$OUT/authority.txt"
+      - name: Compile shared engine, affected shard, and registry test
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sdk:compileKotlin :rules-engine:compileKotlin :mtg-sets:2023:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Cosmic Hunger scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2023:tests:test --tests com.wingedsheep.engine.scenarios.CosmicHungerScenarioTest 2>&1 | tee "$OUT/cosmic.log"
+          cp mtg-sets/2023/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CosmicHungerScenarioTest.xml "$OUT/"
+          python3 - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.engine.scenarios.CosmicHungerScenarioTest.xml").getroot()
+          got={k:int(root.attrib[k]) for k in ("tests","failures","errors","skipped")}
+          assert got=={"tests":10,"failures":0,"errors":0,"skipped":0}, got
+          PY
+      - name: Reinventory Position-1
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"; cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"; reg=[]; miss=[]
+          for c in root.iter("testcase"):
+              n=c.attrib["name"]; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (reg if c.find("failure") is None and c.find("error") is None else miss).append(card)
+          assert "Cosmic Hunger" in reg
+          expected_missing={"Capsize","Everflowing Chalice","Lose Focus","Rolling Thunder","Shattering Pulse","Skred","Star Compass","Benevolent Blessing","Guardian Naga // Banishing Coils","Shardless Outlander","Snake Umbra","Ulvenwald Captive // Ulvenwald Abomination"}
+          assert set(miss)==expected_missing, (len(reg),len(miss),sorted(miss))
+          assert len(reg)==43 and len(miss)==12
+          (out/"registry-summary.json").write_text(json.dumps({
+            "registered":len(reg),"missing":len(miss),"missing_names":sorted(miss),
+            "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0}
+          },indent=2,sort_keys=True)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-cosmic-fixed-cardtype-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
