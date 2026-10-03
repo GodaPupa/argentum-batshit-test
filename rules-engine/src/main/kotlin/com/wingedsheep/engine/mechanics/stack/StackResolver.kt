@@ -848,9 +848,16 @@ class StackResolver(
             modeTargetRequirements = effectiveModeRequirements
         )
 
+        // With no target override, inherit the original object identities as well as IDs.
+        // Re-capturing a blinked permanent here would silently target its new battlefield visit.
+        val copyTargets = if (targets.isEmpty() && modeTargetsOrdered == null && sourceTargets != null) {
+            sourceTargets.copy(targets = effectiveTargets, targetRequirements = effectiveRequirements)
+        } else {
+            TargetsComponent.capture(state, effectiveTargets, effectiveRequirements)
+        }
         var container = ComponentContainer.of(copiedCardComp, copiedSpellComp)
         if (effectiveTargets.isNotEmpty()) {
-            container = container.with(TargetsComponent.capture(state, effectiveTargets, effectiveRequirements))
+            container = container.with(copyTargets)
         }
         container = container.with(
             CopyOfComponent(
@@ -876,6 +883,8 @@ class StackResolver(
         // Emit BecomesTargetEvent for each permanent, spell, or player target — the copy is its own
         // source on the stack (ward on the target can counter the copy independently).
         for (target in effectiveTargets) {
+            if (target is ChosenTarget.Permanent &&
+                TargetsComponent.isDifferentObject(newState, target.entityId, copyTargets.targetEntryStamps)) continue
             newState = emitBecomesTarget(newState, target, copyId, copyController, events, sourceIsSpell = true)
         }
 
