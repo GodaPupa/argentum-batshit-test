@@ -1,0 +1,132 @@
+name: Izzet three-card current-head checkpoint
+on:
+  push:
+    branches: [diagnostic/izzet-three-card-checkpoint-20261003]
+    paths: [.github/workflows/izzet-three-card-checkpoint-20261003.yml]
+permissions:
+  contents: read
+concurrency:
+  group: izzet-three-card-checkpoint-20261003
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/izzet-three-card-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source-only successor and workflow-only validation child
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='1b871733dcf54c115e24c1a1dc7862a3a7c13772';parent='274ce9c1817844e87476ea1d6faa92a3a0a514c0';workflow='.github/workflows/izzet-three-card-checkpoint-20261003.yml'
+          expected={'docs/card-sdk-language-reference.md': '2d9cf2e050f921e657f5519d53a1d013c33c44f9', 'mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/core/Keyword.kt': 'b494b923c512517bfb6100c12c97d805c52b91f8', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/DestructionContinuations.kt': 'fa996bc29e120a63cf324d49d25b577368158e19', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt': 'ed81de2bf00053af9d6f9c90cc14f55a152fe834', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt': '1391a5a1ed8149bfdc6c1e015f9e4e52e41e0435', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/DestructionContinuationResumer.kt': '13061b9abfc72ac74b392b277e78360aa4b90181', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DestructionReplacements.kt': '00ddb1bc8b314dcaa81ed1bb6d3495505482158c', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneMovementUtils.kt': '6eb0161509a76213a4dffc88675610ba7855575d', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt': 'b9147f8abd95b1d34e31999a320c503f5a1a2ea8', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/creature/LethalDamageCheck.kt': '4e99f0a5f23108eef9ea8a8302867d652e9d9310', 'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DestructionReplacementResumeTest.kt': '122ee84cc8ad1419f60b8d5ffd6bf007225322f9', 'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/UmbraArmorReplacementTest.kt': 'aa18650f7afade09244be8c869cd0128c85bcdcc', 'web-client/src/assets/icons/keywords/index.ts': '71b954c799855014417f21072ea2e6590759652a', 'web-client/src/types/enums.ts': '6cd6f96c1ed6f0f33e57c10da946fc2d40e34694', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/ZonesExecutors.kt': '4822e574b895a08b9eaef920e428b7a9ac10e853', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/DestroyAllEquipmentOnTargetExecutor.kt': '6d252176cc63473cd16d757da16b2aa7693ac162', 'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/EverflowingChalice.kt': '3d6414b022f7ecbdc6d29bfdb9a43a07916485cc', 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/EverflowingChaliceScenarioTest.kt': 'c0d4bd83020dcb889f7ee0f70202a64dac70911e', 'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/SnakeUmbra.kt': '869d92cee7d84c14256a689fcb002d613117cd37', 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SnakeUmbraScenarioTest.kt': '5871ef5290568ca94f7c5926671f87029f02527e'}
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse','HEAD^^')==parent
+          assert git('rev-parse',source+'^{tree}')=='4c0650b4f97745ad1fad5a1c5e2addfff254c7bd'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          assert git('diff','--name-only',parent,source).splitlines()==sorted(expected)
+          assert not git('status','--porcelain')
+          assert git('hash-object','gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt')=='197a99e6c17885bb70511916893d3a33de217feb'
+          for p,blob in expected.items(): assert git('hash-object',p)==blob,p
+          binding={'source_head':source,'source_tree':'4c0650b4f97745ad1fad5a1c5e2addfff254c7bd','parent_source_head':parent,
+            'validation_head':git('rev-parse','HEAD'),'validation_tree':git('rev-parse','HEAD^{tree}'),
+            'source_git_blobs':expected,'source_sha256':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in expected},
+            'workflow_sha256':hashlib.sha256(pathlib.Path(workflow).read_bytes()).hexdigest(),
+            'scope':'CURRENT_HEAD_THREE_CARD_CHECKPOINT','registry_not_executed':False,'exact_card_admission':False,
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}}
+          (out/'source-binding.json').write_text(json.dumps(binding,indent=2)+'\n')
+          PYCODE
+      - name: Qualify three exact cards and current-head shared primitive composition
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --continue --max-workers=1 \
+            -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.RepeatedOptionalCostTest --tests com.wingedsheep.engine.scenarios.RepeatedSpellCopyTest --tests com.wingedsheep.engine.scenarios.DestructionReplacementResumeTest --tests com.wingedsheep.engine.scenarios.UmbraArmorReplacementTest --tests com.wingedsheep.engine.scenarios.ProtectionAttachmentProvenanceTest :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.EverflowingChaliceScenarioTest --tests com.wingedsheep.engine.scenarios.SnakeUmbraScenarioTest :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.LoseFocusScenarioTest \
+            2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+      - name: Unchanged Position-1 reinventory
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest \
+            2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"; cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT'])
+          root=ET.parse(out/'TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml').getroot()
+          cases=list(root.iter('testcase')); suffix=' is registered in current runtime'
+          assert int(root.attrib['tests'])==55 and len(cases)==55
+          assert len({c.attrib['name'] for c in cases})==55
+          assert all(c.attrib['name'].endswith(suffix) and c.find('skipped') is None and c.find('error') is None for c in cases)
+          reg=[]; miss=[]
+          for c in cases:
+              card=c.attrib['name'][:-len(suffix)]
+              (reg if c.find('failure') is None else miss).append(card)
+          expected={'Benevolent Blessing'}
+          assert {'Cosmic Hunger','Lose Focus','Everflowing Chalice','Snake Umbra'}.issubset(reg)
+          assert len(reg)==54 and set(miss)==expected, (len(reg), sorted(miss))
+          assert int(os.environ['REGISTRY_RC'])!=0
+          (out/'registry-summary.json').write_text(json.dumps({
+              'registered':len(reg),'missing':len(miss),'missing_names':sorted(miss),
+              'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}
+          },indent=2,sort_keys=True)+'\n')
+          PY
+      - name: Preserve all actual prerequisite cases and failures; no registry or admission
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']);out.mkdir(parents=True,exist_ok=True)
+          expected={'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RepeatedOptionalCostTest.xml': 12, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RepeatedSpellCopyTest.xml': 4, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DestructionReplacementResumeTest.xml': 8, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.UmbraArmorReplacementTest.xml': 10, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ProtectionAttachmentProvenanceTest.xml': 8, 'mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.EverflowingChaliceScenarioTest.xml': 11, 'mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.SnakeUmbraScenarioTest.xml': 10, 'mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.LoseFocusScenarioTest.xml': 7}
+          suites=[];problems=[]
+          for cls,count in expected.items():
+            p=pathlib.Path(cls)
+            if not p.exists(): problems.append('Missing '+str(p));continue
+            shutil.copy2(p,out/p.name)
+            root=ET.parse(p).getroot();cases=root.findall('.//testcase')
+            totals={k:int(root.get(k,'0')) for k in ('tests','failures','errors','skipped')}
+            suites.append({'class':cls,**totals,'actual_cases':len(cases)})
+            if totals!={'tests':count,'failures':0,'errors':0,'skipped':0} or len(cases)!=count:
+              problems.append(cls+': '+json.dumps(totals)+' actual='+str(len(cases)))
+          (out/'summary.json').write_text(json.dumps({'suites':suites,'problems':problems,'expected_tests':sum(expected.values())},indent=2)+'\n')
+          if not (out/'registry-summary.json').exists(): problems.append('Missing unchanged registry checkpoint')
+          files=sorted(p for p in out.iterdir() if p.is_file())
+          (out/'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in files))
+          if problems: raise SystemExit('\n'.join(problems))
+          PYCODE
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: izzet-three-card-${{ github.run_id }}
+          path: ${{ env.OUT }}
+          if-no-files-found: error
+          retention-days: 90
+
