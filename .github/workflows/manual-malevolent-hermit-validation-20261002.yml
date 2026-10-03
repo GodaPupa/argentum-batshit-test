@@ -1,0 +1,96 @@
+name: Manual Malevolent Hermit exact-card validation
+on:
+  push:
+    branches: ["validation/manual-malevolent-hermit-20261002"]
+    paths: [".github/workflows/manual-malevolent-hermit-validation-20261002.yml"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OUT: /tmp/manual-malevolent-hermit-${{ github.run_id }}
+      GRADLE_USER_HOME: /tmp/manual-malevolent-hermit-gradle-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Bind exact Malevolent Hermit candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD^)" = "d462fbb06b7d15a0be32065216dfa115f2bf5359"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-malevolent-hermit-validation-20261002.yml"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mid/cards/MalevolentHermit.kt)" = "b0db467c247183daf7da6c7524c6366e2323f8ca"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MalevolentHermitScenarioTest.kt)" = "2ab9457485607b403cb85df9c08a300dd51119ae"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile affected shard and registry test source
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Malevolent Hermit mechanics scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.MalevolentHermitScenarioTest 2>&1 | tee "$OUT/malevolent-hermit.log"
+          cp mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MalevolentHermitScenarioTest.xml "$OUT/"
+      - name: Reinventory exact eight frozen decks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT/source-audit" "$OUT/registry"
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out "$OUT/source-audit"
+          MT_P2_AUDIT_INPUT="$OUT/source-audit/registry-requests.json" MT_P2_AUDIT_OUTPUT="$OUT/registry" \
+            bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest 2>&1 | tee "$OUT/registry.log"
+          OUT="$OUT" python3 - <<'PY'
+          import json, os, pathlib
+          out=pathlib.Path(os.environ["OUT"])
+          j=json.loads((out/"registry/registry-report.json").read_text())
+          deck=next(d for d in j["decks"] if d["deck_id"]=="manual-transmission-v07")
+          missing=[c["requested_name"] for c in deck["cards"] if not c["registry_resolved"]]
+          expected=[
+            "Fblthp, the Lost",
+            "Reckless Bushwhacker",
+            "Amphin Mutineer",
+            "Spellskite",
+            "Phyrexian Metamorph",
+            "Disciple of Freyalise",
+            "Veil of Summer",
+          ]
+          assert missing == expected, (missing, expected)
+          assert j["execution_allowed"] is False
+          assert j["actual_deck_games_initialized"] == 0
+          assert j["official_outcomes"] == 0
+          (out/"registry-summary.json").write_text(json.dumps({
+            "manual_v07_missing_count":len(missing),
+            "manual_v07_missing":missing,
+            "execution_allowed":j["execution_allowed"],
+            "actual_deck_games_initialized":j["actual_deck_games_initialized"],
+            "official_outcomes":j["official_outcomes"],
+            "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0},
+          },indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-malevolent-hermit-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
