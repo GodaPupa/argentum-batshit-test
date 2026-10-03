@@ -22,8 +22,8 @@ class DiscipleOfFreyaliseScenarioTest : ScenarioTestBase() {
             DiscipleOfFreyalise.name shouldBe "Disciple of Freyalise"
             DiscipleOfFreyalise.manaCost.toString() shouldBe "{3}{G}{G}{G}"
             DiscipleOfFreyalise.typeLine.cardTypes.contains(CardType.CREATURE) shouldBe true
-            DiscipleOfFreyalise.baseStats?.basePower shouldBe 3
-            DiscipleOfFreyalise.baseStats?.baseToughness shouldBe 3
+            DiscipleOfFreyalise.creatureStats?.basePower shouldBe 3
+            DiscipleOfFreyalise.creatureStats?.baseToughness shouldBe 3
             DiscipleOfFreyalise.metadata.rarity shouldBe com.wingedsheep.sdk.model.Rarity.UNCOMMON
             DiscipleOfFreyalise.metadata.collectorNumber shouldBe "250"
             DiscipleOfFreyalise.metadata.artist shouldBe "Valera Lutfullina"
@@ -62,7 +62,7 @@ class DiscipleOfFreyaliseScenarioTest : ScenarioTestBase() {
             withClue("Disciple says another creature") {
                 decision.options.contains(game.findPermanent("Disciple of Freyalise")!!) shouldBe false
             }
-            game.submitCardSelection(1, listOf(courser))
+            game.selectCards(listOf(courser))
             game.resolveStack()
 
             withClue("Anthem made the sacrificed Courser 4 power as it last existed") {
@@ -160,7 +160,7 @@ class DiscipleOfFreyaliseScenarioTest : ScenarioTestBase() {
             game.execute(PlayLand(game.player1Id, id, asBackFace = true)).error shouldBe null
             game.answerYesNo(true)
             game.resolveStack()
-            val manaAbility = DiscipleOfFreyalise.backFace!!.script.activatedAbilities.single { it.manaAbility }
+            val manaAbility = DiscipleOfFreyalise.backFace!!.script.activatedAbilities.single { it.isManaAbility }
             game.execute(ActivateAbility(game.player1Id, id, manaAbility.id)).error shouldBe null
             game.state.getEntity(game.player1Id)!!.get<ManaPoolComponent>()!!.green shouldBe 1
         }
