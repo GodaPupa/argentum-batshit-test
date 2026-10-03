@@ -1,0 +1,68 @@
+name: Izzet fixed card-type predicate after Rolling
+on:
+  push:
+    branches: ["validation/izzet-fixed-cardtype-after-rolling-20261003"]
+    paths: [".github/workflows/izzet-fixed-cardtype-after-rolling-20261003.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OUT: /tmp/izzet-fixed-cardtype-after-rolling-${{ github.run_id }}
+      GRADLE_USER_HOME: /tmp/izzet-fixed-cardtype-after-rolling-gradle-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact repaired shared source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "c53d9621557c26b46dc946c20a9c072349af0374"
+          test "$(git rev-parse HEAD^^)" = "36b9238b58d308475bb06d35fa4529c00dfea620"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-fixed-cardtype-after-rolling-20261003.yml"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/filters/unified/ObjectFilter.kt)" = "57ead5d283f9da1011ec8bbeb397bdf57f8cbced"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/predicates/CardPredicate.kt)" = "711f6bf6c66eeb0d0489bd8ba21d89898100b280"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt)" = "1329b8f79675ccd54e21689b3cfaa2a75315c65d"
+          test "$(git hash-object rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/FixedCardTypePredicateTest.kt)" = "6cf227b1293cfcd74940bdfa366cc98f75a531f8"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastZoneResolver.kt)" = "6edfc662b580c6ad217e02ab1c12456dfba966e0"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/AffectsFilterResolver.kt)" = "17598acf569062a56c3cc4708712c71967048c2a"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt)" = "5b070eb74a177d7c02a6e328b66669054d10dfe7"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          printf '%s\n' 'BOUNDED_SHARED_FIXED_CARDTYPE_AUTHOR_VALIDATION_ONLY_NO_COSMIC_HUNGER_ADMISSION_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile shared SDK and rules-engine tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sdk:compileKotlin :rules-engine:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run fixed and surrounding predicate regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:test \
+            --tests com.wingedsheep.engine.handlers.FixedCardTypePredicateTest \
+            --tests com.wingedsheep.engine.handlers.ChosenCardTypePredicateTest \
+            --tests com.wingedsheep.engine.handlers.PredicateEvaluatorRecordTest \
+            --tests com.wingedsheep.engine.mechanics.layers.AffectsFilterResolverStatePredicateTest \
+            2>&1 | tee "$OUT/predicate.log"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.FixedCardTypePredicateTest.xml "$OUT/"
+      - name: Run composed Rolling shared-seam regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sdk:test --tests com.wingedsheep.sdk.scripting.targets.AnyTargetUnlimitedTest 2>&1 | tee "$OUT/anytarget.log"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.DynamicDividedDamageCastValidationTest 2>&1 | tee "$OUT/dynamic.log"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-fixed-cardtype-after-rolling-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
