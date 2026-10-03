@@ -53,27 +53,13 @@ class EffectAndTriggerContinuationResumer(
             return ExecutionResult.error(state, "Expected target selection response for triggered ability")
         }
 
-        // Build the chosen-targets list in requirement-slot order, keeping it PARALLEL to the
-        // requirements that actually received a target. A declined "up to one" slot (empty list)
-        // drops out of BOTH lists together, so a later target never shifts forward into an earlier
-        // requirement's position. Without this, exiling only a creature with Don & Leo, Problem
-        // Solvers (declining the "up to one artifact" slot) validated the creature against the
-        // artifact requirement at resolution and fizzled with "all targets invalid" (CR 608.2b).
-        //
-        // Each kept requirement is also narrowed (`withCount`) to the number of targets actually
-        // chosen for its slot: the downstream index walks (StackResolver.getRequirementForTargetIndex,
-        // EffectContext.buildNamedTargets) advance by `count`, so a partially filled "up to two"
-        // slot left at its declared max would absorb the next slot's target into its own range and
-        // validate it against the wrong filter.
-        val orderedSlots = response.selectedTargets.entries.sortedBy { it.key }
-        val selectedTargets = mutableListOf<ChosenTarget>()
-        val alignedRequirements = mutableListOf<TargetRequirement>()
-        for ((slotIndex, targetIds) in orderedSlots) {
-            if (targetIds.isEmpty()) continue
-            targetIds.forEach { entityId -> selectedTargets.add(entityIdToChosenTarget(state, entityId)) }
-            continuation.targetRequirements.getOrNull(slotIndex)
-                ?.let { alignedRequirements.add(it.withCount(targetIds.size)) }
+        // Retain every declared requirement, including an omitted optional group; its zero
+        // width is announced data, not a missing requirement or a guess from current legality.
+        val announcedCounts = continuation.targetRequirements.indices.map { response.selectedTargets[it].orEmpty().size }
+        val selectedTargets = continuation.targetRequirements.indices.flatMap { index ->
+            response.selectedTargets[index].orEmpty().map { entityIdToChosenTarget(state, it) }
         }
+        val alignedRequirements = continuation.targetRequirements.mapIndexed { index, req -> req.withCount(announcedCounts[index]) }
 
         // Zero-target resolution path. Two cases:
         //  - `elseEffect != null`: the ability has explicit "...; otherwise, X" wording —
@@ -193,7 +179,7 @@ class EffectAndTriggerContinuationResumer(
         )
 
         val stackResult = services.stackResolver.putTriggeredAbility(
-            state, abilityComponent, selectedTargets, alignedRequirements
+            state, abilityComponent, selectedTargets, alignedRequirements, announcedTargetCounts = announcedCounts
         )
 
         if (!stackResult.isSuccess) {

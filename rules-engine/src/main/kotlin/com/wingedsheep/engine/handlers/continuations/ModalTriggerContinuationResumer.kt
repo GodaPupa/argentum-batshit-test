@@ -9,6 +9,7 @@ import com.wingedsheep.engine.core.TriggerModalModeSelectionContinuation
 import com.wingedsheep.engine.core.TriggerModalTargetSelectionContinuation
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.sdk.scripting.effects.ModalEffect
+import com.wingedsheep.sdk.scripting.targets.withCount
 
 /**
  * Drives mode + target selection for a modal **triggered** ability on its way to the stack
@@ -117,7 +118,12 @@ class ModalTriggerContinuationResumer(
             ability = continuation.ability,
             outerTargets = continuation.outerTargets,
             outerTargetRequirements = continuation.outerTargetRequirements,
-            modes = continuation.modes,
+            modes = continuation.modes.mapIndexed { modeIndex, mode ->
+                if (modeIndex != continuation.chosenModeIndices[continuation.currentOrdinal]) mode
+                else mode.copy(targetRequirements = mode.targetRequirements.mapIndexed { index, req ->
+                    req.withCount(response.selectedTargets[index].orEmpty().size)
+                })
+            },
             chosenModeIndices = continuation.chosenModeIndices,
             resolvedModeTargets = continuation.resolvedModeTargets + listOf(chosenTargets),
             currentOrdinal = continuation.currentOrdinal + 1,

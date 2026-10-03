@@ -372,6 +372,7 @@ data class DiscoverMayCastContinuation(
  */
 @Serializable
 data class CastFromCollectionTargetsContinuation(
+    val targetGroupCount: Int = 0,
     val cardId: EntityId,
     val casterId: EntityId,
     val storeCastTo: String? = null,

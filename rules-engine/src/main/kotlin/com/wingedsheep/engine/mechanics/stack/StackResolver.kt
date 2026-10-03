@@ -213,6 +213,7 @@ class StackResolver(
         castOriginState: GameState = state,
         /** Prototype characteristics selected for this cast (CR 702.160), or null for a normal cast. */
         prototype: com.wingedsheep.sdk.scripting.KeywordAbility.Prototype? = null,
+        announcedTargetCounts: List<Int>? = null,
     ): ExecutionResult {
         val container = state.getEntity(cardId)
             ?: return ExecutionResult.error(state, "Card not found: $cardId")
@@ -340,6 +341,17 @@ class StackResolver(
             targetRequirements
         }
 
+        val frozenTargetComponent = TargetsComponent.capture(state, effectiveTargets, effectiveTargetRequirements, announcedTargetCounts)
+        if (effectiveTargetRequirements.isNotEmpty() && frozenTargetComponent.announcedTargetCounts == null) {
+            return ExecutionResult.error(state, "Missing unambiguous target group announcement")
+        }
+        var modeRequirementOffset = 0
+        val frozenModeRequirements = chosenModes.associateWith { modeIndex ->
+            modeTargetRequirements[modeIndex].orEmpty().map { requirement ->
+                frozenTargetComponent.targetRequirements.getOrNull(modeRequirementOffset++) ?: requirement
+            }
+        }
+
         // Splice (CR 702.47d): the cast's flat target list runs main-spell targets first, then one
         // group per spliced card in splice order. Slice the tail off now so resolution can hand each
         // spliced card its own targets — its `ContextTarget(0)` means its own first target, not the
@@ -378,7 +390,7 @@ class StackResolver(
                 chosenModes = chosenModes,
                 modalSelectionCompleted = modalSelectionCompleted,
                 modeTargetsOrdered = modeTargetsOrdered,
-                modeTargetRequirements = modeTargetRequirements,
+                modeTargetRequirements = frozenModeRequirements,
                 modeDamageDistribution = modeDamageDistribution,
                 sacrificedPermanents = sacrificedPermanents,
                 castFaceDown = castFaceDown,
@@ -417,7 +429,7 @@ class StackResolver(
             ))
             if (effectiveTargets.isNotEmpty()) {
                 updated = updated.with(
-                    TargetsComponent.capture(state, effectiveTargets, effectiveTargetRequirements)
+                    frozenTargetComponent
                 )
             }
             // Add turn-up data for cards castable face down (needed for face-down casting and
@@ -690,14 +702,15 @@ class StackResolver(
          * Firebender Ascension's "attacking causes a triggered ability of that creature to trigger"
          * meta-trigger can key on it.
          */
-        causedByAttack: Boolean = false
+        causedByAttack: Boolean = false,
+        announcedTargetCounts: List<Int>? = null
     ): ExecutionResult {
         // Create a new entity for the ability on the stack
         val (abilityId, stateWithId) = state.newEntity()
 
         var container = ComponentContainer.of(ability)
         if (targets.isNotEmpty()) {
-            container = container.with(TargetsComponent.capture(state, targets, targetRequirements))
+            container = container.with(TargetsComponent.capture(state, targets, targetRequirements, announcedTargetCounts))
         }
 
         var newState = stateWithId.withEntity(abilityId, container)
@@ -821,7 +834,7 @@ class StackResolver(
 
         var container = ComponentContainer.of(copiedCardComp, copiedSpellComp)
         if (effectiveTargets.isNotEmpty()) {
-            container = container.with(TargetsComponent.capture(state, effectiveTargets, effectiveRequirements))
+            container = container.with(TargetsComponent.capture(state, effectiveTargets, effectiveRequirements, sourceTargets?.announcedTargetCounts))
         }
         container = container.with(
             CopyOfComponent(
@@ -871,13 +884,14 @@ class StackResolver(
         emitActivationEvent: Boolean = true,
         costsTap: Boolean = false,
         isExhaust: Boolean = false,
-        cantBeCopied: Boolean = false
+        cantBeCopied: Boolean = false,
+        announcedTargetCounts: List<Int>? = null
     ): ExecutionResult {
         val (abilityId, stateWithId) = state.newEntity()
 
         var container = ComponentContainer.of(ability)
         if (targets.isNotEmpty()) {
-            container = container.with(TargetsComponent.capture(state, targets, targetRequirements))
+            container = container.with(TargetsComponent.capture(state, targets, targetRequirements, announcedTargetCounts))
         }
         // CR 707.10e — "This ability can't be copied": tag the ability instance on the stack so a
         // copy-ability effect (e.g. Gogo, Master of Mimicry) makes no copy of it.

@@ -330,6 +330,7 @@ class CastFromCollectionWithoutPayingCostExecutor(
                 canCancel = false,
             ) }
             val continuation = CastFromCollectionTargetsContinuation(
+                targetGroupCount = targetRequirements.size,
                 cardId = cardId,
                 casterId = casterId,
                 storeCastTo = storeCastTo,

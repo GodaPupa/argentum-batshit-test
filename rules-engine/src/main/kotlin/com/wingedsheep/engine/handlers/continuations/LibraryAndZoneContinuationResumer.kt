@@ -1159,6 +1159,7 @@ class LibraryAndZoneContinuationResumer(
                 continuation.cardId,
                 chosenTargets,
                 castForPrototype = continuation.castForPrototype,
+                announcedTargetCounts = (0 until continuation.targetGroupCount).map { response.selectedTargets[it].orEmpty().size },
             ),
         )
 

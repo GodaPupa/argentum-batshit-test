@@ -82,7 +82,12 @@ object ContestedRetargetLogic {
             ?: return EffectResult.success(state)
         val ownerControllerId = controllerOfStackObject(state, stackObjectId)
             ?: return EffectResult.success(state)
-        val perSlot = expandRequirements(targetsComponent.targetRequirements, targetsComponent.targets)
+        val counts = targetsComponent.announcedTargetCounts
+            ?: com.wingedsheep.engine.mechanics.targeting.AnnouncedTargetGroups.counts(targetsComponent.targetRequirements, targetsComponent.targets.size)
+            ?: return EffectResult.error(state, "Missing announced target group structure")
+        val perSlot = targetsComponent.targetRequirements.flatMapIndexed { index, requirement ->
+            List(counts[index]) { requirement }
+        }
 
         return advance(
             state = state,

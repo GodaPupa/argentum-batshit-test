@@ -66,7 +66,8 @@ class TargetValidator {
          * restriction (Lurker), and a strict one would wrongly block abilities, so every call site
          * is made to say which it is.
          */
-        targetingSourceType: TargetingSourceType
+        targetingSourceType: TargetingSourceType,
+        announcedTargetCounts: List<Int>? = null
     ): String? {
         // Use the game state for validation
         // StateProjector is used for P/T checks to account for continuous effects
@@ -106,18 +107,11 @@ class TargetValidator {
             }
             return unboundedFallback
         }
+        val groupCounts = AnnouncedTargetGroups.counts(requirements, targets.size, announcedTargetCounts, requirements.map(::effectiveMaxCount))
+            ?: return "Target group cardinalities are invalid or ambiguous; declare each group's target count"
         for ((index, requirement) in requirements.withIndex()) {
-            // Get targets for this requirement (handle multi-target requirements)
-            val targetCount = effectiveMaxCount(requirement)
-            val startIdx = requirements.take(index).sumOf { effectiveMaxCount(it) }
-            // Use Long for the end index so an unlimited requirement (targetCount = Int.MAX_VALUE)
-            // doesn't overflow to a negative value and make subList throw.
-            val endIdx = (startIdx.toLong() + targetCount.toLong())
-                .coerceAtMost(targets.size.toLong()).toInt()
-            val targetsForReq = targets.subList(
-                startIdx.coerceAtMost(targets.size),
-                endIdx
-            )
+            val startIdx = groupCounts.take(index).sum()
+            val targetsForReq = targets.subList(startIdx, startIdx + groupCounts[index])
 
             // Reject if too many targets were declared. When a requirement is *effectively*
             // unbounded ("any number of target ...", Drafna's Restoration) there is no upper

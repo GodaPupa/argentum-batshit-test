@@ -603,7 +603,8 @@ class ActivateAbilityHandler(
                 // and X-bounded "mana value X or less" reanimation targets (Fabrication Foundry)
                 // need the chosen X to validate — mirror the spell path.
                 xValue = effectiveXValue,
-                targetingSourceType = TargetingSourceType.ABILITY
+                targetingSourceType = TargetingSourceType.ABILITY,
+                announcedTargetCounts = action.announcedTargetCounts
             )
             if (targetError != null) {
                 return targetError
@@ -1981,6 +1982,7 @@ class ActivateAbilityHandler(
         var stackResult = stackResolver.putActivatedAbility(
             currentState, abilityOnStack, action.targets,
             targetRequirements = effectiveTargetReqs,
+            announcedTargetCounts = action.announcedTargetCounts,
             costsTap = hasTapCost(effectiveCost),
             isExhaust = ability.isExhaust,
             cantBeCopied = ability.cantBeCopied
@@ -2073,6 +2075,7 @@ class ActivateAbilityHandler(
                 val repeatStackResult = stackResolver.putActivatedAbility(
                     currentState, repeatAbilityOnStack, action.targets,
                     targetRequirements = effectiveTargetReqs,
+            announcedTargetCounts = action.announcedTargetCounts,
                     isExhaust = ability.isExhaust,
                 )
                 currentState = repeatStackResult.newState
