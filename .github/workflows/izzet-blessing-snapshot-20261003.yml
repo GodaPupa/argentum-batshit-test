@@ -1,0 +1,59 @@
+name: Izzet Benevolent printing and CMR snapshot audit
+on:
+  push:
+    branches: [validation/izzet-blessing-snapshot-20261003]
+    paths: [.github/workflows/izzet-blessing-snapshot-20261003.yml]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OUT: /tmp/izzet-blessing-snapshot
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ecd0b5049fee1cde89448a968682bd0b4980cce9
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Export only CMR snapshots and audit printings
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p "$OUT"
+          set +e
+          UPDATE_SNAPSHOTS=1 bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g :mtg-sets:test --tests '*CardDefinitionSnapshotTest.CMR*' > "$OUT/snapshots.log" 2>&1
+          snapshot_rc=$?
+          python3 scripts/check-card-printing.py 'Benevolent Blessing' > "$OUT/spellskite-printing.log" 2>&1
+          spellskite_rc=$?
+          veil_rc=0
+          printf '%s %s %s\n' "$snapshot_rc" "$spellskite_rc" "$veil_rc" > "$OUT/exit-codes.txt"
+          cp mtg-sets/src/test/resources/snapshots/cards/CMR.json "$OUT/"
+          cp mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml "$OUT/" || true
+          git diff --stat > "$OUT/snapshot-diff-stat.txt"
+          python3 - <<'PY'
+          import pathlib,json,subprocess,re,hashlib
+          out=pathlib.Path('/tmp/izzet-blessing-snapshot');delta={}
+          def cards(s):return {b.split('\n',1)[0]:b.split('\n',1)[1].strip() for b in re.split(r'^// ',s,flags=re.M)[1:]}
+          for code in ['CMR']:
+            path='mtg-sets/src/test/resources/snapshots/cards/'+code+'.json'
+            before=cards(subprocess.check_output(['git','show','HEAD:'+path],text=True));after=cards(pathlib.Path(path).read_text())
+            delta[code]={'added':sorted(after.keys()-before.keys()),'removed':sorted(before.keys()-after.keys()),'changed':sorted(n for n in before.keys()&after.keys() if before[n]!=after[n])}
+          (out/'delta.json').write_text(json.dumps(delta,indent=2)+'\n')
+          (out/'sha256.json').write_text(json.dumps({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.iterdir()) if p.is_file()},indent=2)+'\n')
+          assert delta=={'CMR':{'added':['Benevolent Blessing'],'removed':[],'changed':[]}},delta
+          PY
+          delta_rc=$?
+          test "$snapshot_rc" -eq 0 && test "$spellskite_rc" -eq 0 && test "$veil_rc" -eq 0 && test "$delta_rc" -eq 0
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: izzet-blessing-snapshot-${{ github.run_id }}
+          path: /tmp/izzet-blessing-snapshot/
+          retention-days: 90
+          if-no-files-found: error
