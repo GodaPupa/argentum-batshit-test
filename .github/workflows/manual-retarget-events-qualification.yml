@@ -1,0 +1,93 @@
+name: Manual Shared Retarget Event Qualification
+on:
+  push:
+    branches: [validation/manual-retarget-events-20261003]
+    paths: [.github/workflows/manual-retarget-events-qualification.yml]
+permissions:
+  contents: read
+concurrency:
+  group: manual-retarget-events-qualification
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Bind exact source and workflow-only validation descendant
+        shell: bash
+        run: |
+          mkdir -p build/reports/manual-retarget-events
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source = '449a966b9552c7c4b863a1ad84903a2370bb538c'
+          base = 'a5e12b589d350f5b16357327ef29bf87f8593ede'
+          workflow = '.github/workflows/manual-retarget-events-qualification.yml'
+          expected = {"docs/card-sdk-language-reference.md": "c429f9fbb17c1c2a27efbd074ebddb2fe103b4676937c2ec1958fe3f1b9d6e90", "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ManaPaymentContinuationResumer.kt": "d9509a31aa4e74ecc24fdc9bf8e704ac545e4d3e9353cd80d9b8f0c2a2763a84", "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ContestedRetargetExecutors.kt": "1dad7295fc190205f7a84a14b3d3707b71ddc870306697367489b4922810b1ed", "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ReselectTargetRandomlyExecutor.kt": "54b1795d2784493fc881bb9ac50ab9263683bafff7646b8cf5f276cc9c71632f", "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": "f4cec7600db7d369163e4be8c70d178ce73b22d2bf5253e06b1b981dae1a9d96", "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/TargetingEvents.kt": "dd113e2923d87ff6366d1ec219299c0b05e2096dae53fc149028c7ea7cf5a6e0", "rules-engine/src/test/kotlin/com/wingedsheep/engine/triggers/BecomesTargetPlayerAndAbilityAxesTest.kt": "8b9dd8fcbb1346eccdc6102d2cc9ecf31e767de939722123370b78bc9da96b76", "rules-engine/src/test/kotlin/com/wingedsheep/engine/triggers/RetargetBecomesTargetEventTest.kt": "055c3dead060c0876499df523c9a6d85cfcf7b77e331fa281839b42e7da590be"}
+          assert git('rev-parse','HEAD') == os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^') == source
+          assert git('rev-parse','HEAD^^') == base
+          assert git('diff','--name-only',source,'HEAD').splitlines() == [workflow]
+          assert not git('status','--porcelain')
+          actual = {p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in expected}
+          assert actual == expected
+          assert git('diff','--name-only',base,source).splitlines() == sorted(expected)
+          binding = {'validation_head':git('rev-parse','HEAD'),'validation_tree':git('rev-parse','HEAD^{tree}'),
+            'source_head':source,'source_tree':git('rev-parse',source+'^{tree}'),'manual_base':base,
+            'source_files_sha256':actual,'workflow_sha256':hashlib.sha256(pathlib.Path(workflow).read_bytes()).hexdigest(),
+            'scope':'EXCLUDED_FIXED_COMPONENT_QUALIFICATION','official_allocations':0,'official_claims':0,
+            'official_games':0,'official_outcomes':0}
+          pathlib.Path('build/reports/manual-retarget-events/source-binding.json').write_text(json.dumps(binding,indent=2)+'\n')
+          PYCODE
+      - name: Compile affected modules and execute fixed retarget and ward cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class RetargetBecomesTargetEventTest --tests '*BecomesTargetPlayerAndAbilityAxesTest' --tests '*WardCounterTest' --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g --stacktrace 2>&1 | tee build/reports/manual-retarget-events/qualification.log
+      - name: Require complete actual XML cases
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib,json,pathlib,xml.etree.ElementTree as ET
+          expected={'RetargetBecomesTargetEventTest':12,'BecomesTargetPlayerAndAbilityAxesTest':16,'WardCounterTest':4}
+          rows=[]
+          seen=set()
+          for p in sorted(pathlib.Path('rules-engine/build/test-results/test').glob('TEST-*.xml')):
+            suite=ET.parse(p).getroot()
+            name=suite.attrib['name'].rsplit('.',1)[-1]
+            assert name in expected,name
+            cases=suite.findall('testcase')
+            seen.add(name)
+            rows.append({'class':name,'xml_sha256':hashlib.sha256(p.read_bytes()).hexdigest(),
+              'cases':[{'name':c.attrib['name'],'failure':c.find('failure') is not None,'error':c.find('error') is not None,'skipped':c.find('skipped') is not None} for c in cases]})
+          out={'suites':rows,'total_actual_cases':sum(len(r['cases']) for r in rows),'expected':expected,
+            'official_allocations':0,'official_claims':0,'official_games':0,'official_outcomes':0}
+          pathlib.Path('build/reports/manual-retarget-events/actual-cases.json').write_text(json.dumps(out,indent=2)+'\n')
+          assert seen==set(expected),seen
+          assert all(len(r['cases'])==expected[r['class']] for r in rows),rows
+          assert not any(c['failure'] or c['error'] or c['skipped'] for r in rows for c in r['cases']),rows
+          PYCODE
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-retarget-events-${{ github.sha }}
+          path: |
+            build/reports/manual-retarget-events
+            rules-engine/build/test-results/test/TEST-*.xml
+          retention-days: 30
+          if-no-files-found: error
