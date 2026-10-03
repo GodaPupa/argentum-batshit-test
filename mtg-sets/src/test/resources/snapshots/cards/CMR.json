@@ -58,6 +58,49 @@
     ]
 }
 
+// Benevolent Blessing
+{
+    "name": "Benevolent Blessing",
+    "manaCost": "{1}{W}",
+    "typeLine": "Enchantment — Aura",
+    "oracleText": "Flash\nEnchant creature\nAs this Aura enters, choose a color.\nEnchanted creature has protection from the chosen color. This effect doesn't remove Auras and Equipment you control that are already attached to it.",
+    "keywords": [
+        "FLASH"
+    ],
+    "script": {
+        "staticAbilities": [
+            {
+                "type": "GrantProtectionFromChosenColorToGroup",
+                "filter": {
+                    "baseFilter": "permanent",
+                    "scope": "AttachedTo"
+                },
+                "retainsPreexistingControlledAttachments": true
+            }
+        ],
+        "replacementEffects": [
+            {
+                "type": "EntersWithChoice",
+                "choiceType": "COLOR"
+            }
+        ],
+        "auraTarget": {
+            "type": "TargetObject",
+            "filter": {
+                "baseFilter": "creature"
+            }
+        }
+    },
+    "metadata": {
+        "collectorNumber": "13",
+        "artist": "Ekaterina Burmak",
+        "imageUri": "https://cards.scryfall.io/normal/front/0/d/0d5c2401-da2c-46f9-b850-f37edcbb85cd.jpg?1783928890"
+    },
+    "colorIdentityOverride": [
+        "WHITE"
+    ]
+}
+
 // Boarding Party
 {
     "name": "Boarding Party",
