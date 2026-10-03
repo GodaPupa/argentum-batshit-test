@@ -42,6 +42,24 @@ class BuybackScenarioTest : FunSpec({
         while (d.stackSize > 0 && guard++ < 12) d.bothPass()
     }
 
+    test("legal actions offer a distinct affordable buyback cast") {
+        val d = driver()
+        val me = d.activePlayer!!
+        val card = d.putCardInHand(me, fixture.name)
+        d.giveMana(me, Color.RED, 1)
+        d.giveColorlessMana(me, 3)
+
+        val casts = d.legalActions(me).filter {
+            (it.action as? CastSpell)?.cardId == card
+        }
+        casts.any { (it.action as? CastSpell)?.declaredCostSlot == null } shouldBe true
+        val buyback = casts.single {
+            (it.action as? CastSpell)?.declaredCostSlot == ChoiceSlot.BUYBACK
+        }
+        buyback.affordable shouldBe true
+        buyback.description.contains("Buyback") shouldBe true
+    }
+
     test("plain cast resolves to graveyard") {
         val d = driver()
         val me = d.activePlayer!!
