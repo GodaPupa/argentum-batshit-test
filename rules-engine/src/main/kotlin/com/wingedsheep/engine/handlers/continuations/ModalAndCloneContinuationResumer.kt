@@ -56,6 +56,7 @@ class ModalAndCloneContinuationResumer(
         resumer(EntersWithChoiceSpellContinuation::class, ::resumeEntersWithChoiceSpell),
         resumer(EntersWithChoiceOnBattlefieldContinuation::class, ::resumeEntersWithChoiceOnBattlefield),
         resumer(PreEntryContinuation::class, ::resumePreEntry),
+        resumer(PreEntryLandPlayPaymentContinuation::class, ::resumePreEntryLandPlayPayment),
         resumer(PayLifeOrEnterTappedLandContinuation::class, ::resumePayLifeOrEnterTappedLand),
         resumer(PayLifeOrEnterTappedSpellContinuation::class, ::resumePayLifeOrEnterTappedSpell),
         resumer(RevealCountersContinuation::class, ::resumeRevealCounters),
@@ -909,6 +910,28 @@ class ModalAndCloneContinuationResumer(
         }
 
         return checkForMore(newState, entryEvents)
+    }
+
+    /**
+     * Resume the serialized optional-payment decision before a land has entered.
+     *
+     * The handler revalidates the exact ObjectRef/source zone and performs payment before calling
+     * the ordinary land-play transaction. A nested "play a land" effect can have frames below this
+     * question, so synchronous completion must continue draining the continuation stack.
+     */
+    fun resumePreEntryLandPlayPayment(
+        state: GameState,
+        continuation: PreEntryLandPlayPaymentContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore,
+    ): ExecutionResult {
+        if (response !is YesNoResponse) {
+            return ExecutionResult.error(state, "Expected yes/no response for pre-entry land payment")
+        }
+        val result = com.wingedsheep.engine.handlers.actions.land.PlayLandHandler.create(services)
+            .resumePreEntryLifePayment(state, continuation, response.choice)
+        if (result.error != null || result.isPaused) return result
+        return checkForMore(result.state, result.events)
     }
 
     /**
