@@ -252,6 +252,84 @@
     ]
 }
 
+// Phyrexian Metamorph
+{
+    "name": "Phyrexian Metamorph",
+    "manaCost": "{3}{U/P}",
+    "typeLine": "Artifact Creature — Phyrexian Shapeshifter",
+    "oracleText": "({U/P} can be paid with either {U} or 2 life.)\nYou may have this creature enter as a copy of any artifact or creature on the battlefield, except it's an artifact in addition to its other types.",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 0
+    },
+    "script": {
+        "replacementEffects": [
+            {
+                "type": "EntersAsCopy",
+                "copyFilter": {
+                    "cardPredicates": [
+                        {
+                            "type": "Or",
+                            "predicates": [
+                                "IsArtifact",
+                                "IsCreature"
+                            ]
+                        }
+                    ]
+                },
+                "exceptions": {
+                    "addedCardTypes": [
+                        "ARTIFACT"
+                    ]
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "42",
+        "rarity": "RARE",
+        "artist": "Jana Schirmer & Johannes Voss",
+        "imageUri": "https://cards.scryfall.io/normal/front/d/2/d2e27911-87cb-49a0-a34f-6afe4bddd592.jpg?1783941318",
+        "rulings": [
+            {
+                "date": "2011-06-01",
+                "text": "If the chosen permanent has {X} in its mana cost (such as Protean Hydra), X is considered to be zero."
+            },
+            {
+                "date": "2011-06-01",
+                "text": "If the chosen permanent is a token, Phyrexian Metamorph copies the original characteristics of that token as stated by the effect that put the token onto the battlefield, except it's also an artifact. Phyrexian Metamorph is not a token."
+            },
+            {
+                "date": "2011-06-01",
+                "text": "If Phyrexian Metamorph somehow enters at the same time as another permanent (due to Mass Polymorph or Liliana Vess's third ability, for example), Phyrexian Metamorph can't become a copy of that permanent. You may choose only a permanent that's already on the battlefield."
+            },
+            {
+                "date": "2011-06-01",
+                "text": "If Phyrexian Metamorph copies a noncreature artifact, it is no longer a creature."
+            },
+            {
+                "date": "2011-06-01",
+                "text": "If the chosen creature is copying something else (for example, if the chosen creature is a Clone), then your Phyrexian Metamorph enters as whatever the chosen creature copied, except it's also an artifact."
+            },
+            {
+                "date": "2011-06-01",
+                "text": "Any \"enters\" abilities of the copied permanent will trigger when Phyrexian Metamorph enters. Any \"as [this] enters\" or \"[this] enters with\" abilities of the chosen permanent will also work."
+            },
+            {
+                "date": "2011-06-01",
+                "text": "Except for also being an artifact, Phyrexian Metamorph copies exactly what was printed on the original permanent and nothing more (unless that creature is itself copying something or is a token; see below). It doesn't copy whether that permanent is tapped or untapped, whether it has any counters on it or Auras attached to it, or any noncopy effects that have changed its power, toughness, types, color, and so on."
+            },
+            {
+                "date": "2011-06-01",
+                "text": "You can choose not to copy anything. In that case, Phyrexian Metamorph simply enters as a 0/0 artifact creature and is put into its owner's graveyard as a state-based action (unless something else is raising its toughness)."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Pristine Talisman
 {
     "name": "Pristine Talisman",
@@ -319,6 +397,78 @@
     },
     "colorIdentityOverride": [
         "GREEN"
+    ]
+}
+
+// Spellskite
+{
+    "name": "Spellskite",
+    "manaCost": "{2}",
+    "typeLine": "Artifact Creature — Phyrexian Horror",
+    "oracleText": "{U/P}: Change a target of target spell or ability to this creature. ({U/P} can be paid with either {U} or 2 life.)",
+    "creatureStats": {
+        "power": 0,
+        "toughness": 4
+    },
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostAtomWrapper",
+                    "atom": {
+                        "type": "AtomMana",
+                        "cost": "{U/P}"
+                    }
+                },
+                "effect": "ChangeOneTargetTo",
+                "targetRequirements": [
+                    {
+                        "type": "TargetObject",
+                        "filter": {
+                            "baseFilter": {},
+                            "zone": "Stack"
+                        },
+                        "id": "spellOrAbility"
+                    }
+                ]
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "159",
+        "rarity": "RARE",
+        "artist": "Chippy",
+        "imageUri": "https://cards.scryfall.io/normal/front/1/a/1a84bada-ed6a-4e97-8a0c-05b7cb32d66f.jpg?1783941290",
+        "rulings": [
+            {
+                "date": "2020-08-07",
+                "text": "You can activate Spellskite's ability even if Spellskite isn't a legal target for the target spell or ability—or even if that spell or ability has no targets. In this case, no targets are changed."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "If Spellskite leaves the battlefield before its ability resolves or otherwise becomes an illegal target for the target spell or ability before its ability resolves, no targets are changed."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "If changing one target of a spell or ability to Spellskite would make other targets of that spell or ability illegal, that target can't be changed to Spellskite."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "If the spell or ability has multiple instances of the word “target,” you choose which one target you're changing to Spellskite as Spellskite's ability resolves."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "If a spell or ability has multiple targets but doesn't use the word “target” multiple times, such as the ability of Deepglow Skate, you can only change one of the targets to Spellskite."
+            },
+            {
+                "date": "2020-08-07",
+                "text": "If a spell or ability has a variable number of targets, you can't change the number of targets."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
     ]
 }
 
