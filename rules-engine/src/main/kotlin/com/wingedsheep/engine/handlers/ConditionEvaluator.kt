@@ -436,6 +436,15 @@ class ConditionEvaluator(
             is com.wingedsheep.sdk.scripting.conditions.PlayerAttackedPlayerThisTurn ->
                 evaluateAttackedPlayerThisTurnCtx(state, condition, ctx)
             is PlayerCastSpellsThisTurn -> evaluateCastSpellsThisTurnCtx(state, condition, ctx)
+            is com.wingedsheep.sdk.scripting.conditions.YouOrTeammateCastSpellThisTurn -> {
+                // Surge (CR 702.117): a prior spell cast by either the caster or any teammate
+                // satisfies the permission. GameState.teamOf() deliberately degrades to [you] in
+                // non-team games, so this is one rule path for 1v1, FFA, Team-vs-Team and 2HG.
+                val controllerId = ctx.controllerId
+                controllerId != null && state.teamOf(controllerId).any { teammateId ->
+                    state.spellsCastThisTurnByPlayer[teammateId]?.isNotEmpty() == true
+                }
+            }
             is com.wingedsheep.sdk.scripting.conditions.PlayerDrewCardsThisTurn -> {
                 if (condition.atLeast <= 0) true
                 else {
