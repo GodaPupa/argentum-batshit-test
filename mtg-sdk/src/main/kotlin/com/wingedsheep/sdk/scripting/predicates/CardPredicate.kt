@@ -1,5 +1,6 @@
 package com.wingedsheep.sdk.scripting.predicates
 
+import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Subtype
@@ -55,6 +56,17 @@ sealed interface CardPredicate : TextReplaceable<CardPredicate> {
     @Serializable
     data object IsPlaneswalker : CardPredicate {
         override val description: String = "planeswalker"
+    }
+
+    /**
+     * Matches an object whose current card types include [cardType].
+     * This is the fixed-value generic axis used for types without a named convenience filter,
+     * including Battle.
+     */
+    @SerialName("HasCardType")
+    @Serializable
+    data class HasCardType(val cardType: CardType) : CardPredicate {
+        override val description: String = cardType.displayName.lowercase()
     }
 
     @SerialName("IsInstant")
