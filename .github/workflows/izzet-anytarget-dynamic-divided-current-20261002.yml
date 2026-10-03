@@ -1,0 +1,66 @@
+name: Izzet AnyTarget + dynamic divided-damage current head
+on:
+  push:
+    branches: ["validation/izzet-anytarget-dynamic-divided-current-20261002"]
+    paths: [".github/workflows/izzet-anytarget-dynamic-divided-current-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OUT: /tmp/izzet-anytarget-dynamic-${{ github.run_id }}
+      GRADLE_USER_HOME: /tmp/izzet-anytarget-dynamic-gradle-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact composed shared source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "63ac5861d47c023ba80c18bfa084538e47b4b184"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-anytarget-dynamic-divided-current-20261002.yml"
+          test "$(git rev-parse HEAD^^)" = "b91e02ab9fd0ac8583dd9e880209811d842f1e2f"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/targets/TargetRequirement.kt)" = "9cee0c4f5acf0ea2a0392a7a8fed11ae058a8175"
+          test "$(git hash-object mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/scripting/targets/AnyTargetUnlimitedTest.kt)" = "59dfc24e79d53597cc46f1a7fd7bdd64d7e7bcf2"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt)" = "2b8b55319716169ccf3d5f2b1687395c45046344"
+          test "$(git hash-object rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DynamicDividedDamageCastValidationTest.kt)" = "f9233768c060be255f9463a50f1d5f54224b2d7b"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_CARD_ADMISSION_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile affected modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sdk:compileTestKotlin :rules-engine:compileTestKotlin :mtg-sets:2003-2007:tests:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run AnyTarget regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sdk:test --tests com.wingedsheep.sdk.scripting.targets.AnyTargetUnlimitedTest \
+            --tests com.wingedsheep.sdk.scripting.targets.RequiresExactlyOneTargetTest \
+            --tests com.wingedsheep.sdk.scripting.targets.TargetRequirementWithCountTest 2>&1 | tee "$OUT/target.log"
+      - name: Run dynamic divided-damage regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.DynamicDividedDamageCastValidationTest 2>&1 | tee "$OUT/dynamic.log"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DynamicDividedDamageCastValidationTest.xml "$OUT/"
+      - name: Run Skred regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2003-2007:tests:test --tests com.wingedsheep.engine.scenarios.SkredScenarioTest 2>&1 | tee "$OUT/skred.log"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-anytarget-dynamic-current-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
