@@ -195,7 +195,10 @@ class CleanupPhaseManager(
      * mechanism as the end-of-turn and next-end-step markers, keyed to the copy effect's
      * controller rather than to a step of any player's turn.
      */
-    fun expireUntilYourNextTurnEffects(state: GameState, activePlayer: EntityId): GameState {
+    fun expireUntilYourNextTurnEffects(state: GameState, activePlayer: EntityId): GameState =
+        com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, expireUntilYourNextTurnEffectsInternal(state, activePlayer))
+
+    private fun expireUntilYourNextTurnEffectsInternal(state: GameState, activePlayer: EntityId): GameState {
         // "Your next turn" is the next turn of the player's *team* in a shared team turn (CR
         // 805.4): both heads' "until your next turn" effects wear off on the team's untap. Outside
         // shared team turns this set is just [activePlayer].
@@ -307,7 +310,10 @@ class CleanupPhaseManager(
      * upkeep-triggered ability, which resolves after this expiry; the freshly granted effect then
      * carries the new turn's timestamp and survives this same-step expiry on the following turn.
      */
-    fun expireUntilYourNextUpkeepEffects(state: GameState, activePlayer: EntityId): GameState {
+    fun expireUntilYourNextUpkeepEffects(state: GameState, activePlayer: EntityId): GameState =
+        com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, expireUntilYourNextUpkeepEffectsInternal(state, activePlayer))
+
+    private fun expireUntilYourNextUpkeepEffectsInternal(state: GameState, activePlayer: EntityId): GameState {
         // The team's upkeep is each head's upkeep in a shared team turn (CR 805.4).
         val activeTeam = state.sharedTurnTeam(activePlayer).toHashSet()
         val remainingFloating = state.floatingEffects.filter { floatingEffect ->
@@ -345,7 +351,10 @@ class CleanupPhaseManager(
      * so it correctly survives to the following end step — matching the paired delayed
      * "at the beginning of the next end step" trigger.
      */
-    fun performNextEndStepExpiry(state: GameState): GameState {
+    fun performNextEndStepExpiry(state: GameState): GameState =
+        com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, performNextEndStepExpiryInternal(state))
+
+    private fun performNextEndStepExpiryInternal(state: GameState): GameState {
         var result = state
 
         val remainingFloating = result.floatingEffects.filter { it.duration !is Duration.UntilNextEndStep }
@@ -409,7 +418,10 @@ class CleanupPhaseManager(
      * These expire when any of the affected entities are controlled by the active player,
      * meaning the affected creature's controller just had their untap step.
      */
-    fun expireAffectedControllersNextUntapEffects(state: GameState, activePlayer: EntityId): GameState {
+    fun expireAffectedControllersNextUntapEffects(state: GameState, activePlayer: EntityId): GameState =
+        com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, expireAffectedControllersNextUntapEffectsInternal(state, activePlayer))
+
+    private fun expireAffectedControllersNextUntapEffectsInternal(state: GameState, activePlayer: EntityId): GameState {
         val projected = state.projectedState
         // Both heads untap on the team's turn (CR 805.4), so either head counts as "the
         // affected creature's controller just had their untap step".
@@ -437,7 +449,10 @@ class CleanupPhaseManager(
      * the Sea); the power-comparison half is gated per-frame by [StateProjector], so
      * cleanup here only enforces the source-tapped half — same rule as [Duration.WhileSourceTapped].
      */
-    fun cleanupWhileSourceTappedEffects(state: GameState): GameState {
+    fun cleanupWhileSourceTappedEffects(state: GameState): GameState =
+        com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, cleanupWhileSourceTappedEffectsInternal(state))
+
+    private fun cleanupWhileSourceTappedEffectsInternal(state: GameState): GameState {
         val remaining = state.floatingEffects.filter { floatingEffect ->
             when (floatingEffect.duration) {
                 is Duration.WhileSourceTapped,
@@ -469,7 +484,10 @@ class CleanupPhaseManager(
      * Firebending (END_OF_COMBAT) mana is preserved by [ManaPoolComponent.emptyAtBoundary] and
      * handled instead by `CombatManager.endCombat`, since it lasts until end of combat, not step end.
      */
-    fun emptyManaPools(state: GameState): GameState {
+    fun emptyManaPools(state: GameState): GameState =
+        com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, emptyManaPoolsInternal(state))
+
+    private fun emptyManaPoolsInternal(state: GameState): GameState {
         // Runs on every step/phase boundary; almost always every pool is already empty (no mana
         // floated), so skip the battlefield scans below in that common case.
         if (state.turnOrder.all { state.getEntity(it)?.get<ManaPoolComponent>()?.isEmpty != false }) return state
@@ -523,7 +541,10 @@ class CleanupPhaseManager(
      * 2. Emptying mana pools
      * 3. Resetting per-turn trackers (land drops)
      */
-    fun cleanupEndOfTurn(state: GameState): GameState {
+    fun cleanupEndOfTurn(state: GameState): GameState =
+        com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, cleanupEndOfTurnInternal(state))
+
+    private fun cleanupEndOfTurnInternal(state: GameState): GameState {
         var newState = state
 
         // 1. Expire floating effects with EndOfTurn duration

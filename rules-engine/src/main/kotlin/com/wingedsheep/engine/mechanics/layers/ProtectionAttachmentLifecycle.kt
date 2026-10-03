@@ -24,6 +24,11 @@ data class ProtectionAttachmentActivation(
  * A legacy active grant with no captured history fails closed instead of sampling at legality time.
  */
 object ProtectionAttachmentLifecycle {
+    // Projection uses the current game timestamp as a layer-order fallback for legacy
+    // fixtures. That moving fallback is not the identity of a protection instance.
+    private fun sourceTimestamp(state: GameState, source: EntityId): Long =
+        state.getEntity(source)?.get<com.wingedsheep.engine.state.components.battlefield.TimestampComponent>()?.timestamp ?: 0L
+
     private fun hasRetainingGrant(state: GameState): Boolean = state.getBattlefield().any { id ->
         state.getEntity(id)?.get<ContinuousEffectSourceComponent>()?.effects
             ?.any { it.retainsPreexistingControlledAttachments } == true
@@ -42,7 +47,7 @@ object ProtectionAttachmentLifecycle {
                 val hostRef = state.objectRef(host) ?: continue
                 val controller = grant.controllerId ?: continue
                 add(ProtectionAttachmentGrantKey(source, hostRef, grant.protectionGrantIndex,
-                    grant.timestamp, grant.color, controller))
+                    sourceTimestamp(state, sourceId), grant.color, controller))
             }
         }
     }
@@ -81,7 +86,7 @@ object ProtectionAttachmentLifecycle {
         val controller = grant.controllerId ?: return false
         if (state.projectedState.getController(attachment) != controller) return false
         val key = ProtectionAttachmentGrantKey(source, hostRef, grant.protectionGrantIndex,
-            grant.timestamp, grant.color, controller)
+            sourceTimestamp(state, grant.sourceId!!), grant.color, controller)
         val ref = state.objectRef(attachment) ?: return false
         return state.protectionAttachmentActivations.any { it.key == key && ref in it.attachments }
     }

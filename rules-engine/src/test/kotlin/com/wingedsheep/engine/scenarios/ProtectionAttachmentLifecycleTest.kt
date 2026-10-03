@@ -1,5 +1,14 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.TurnManager
+import com.wingedsheep.engine.handlers.EffectContext
+import com.wingedsheep.engine.handlers.effects.EffectExecutorRegistry
+import com.wingedsheep.engine.handlers.effects.ZoneTransitionService
+import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.sdk.dsl.Conditions
+import com.wingedsheep.sdk.scripting.ConditionalStaticAbility
+import com.wingedsheep.sdk.scripting.effects.TapUntapEffect
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
 import com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle
 import com.wingedsheep.engine.mechanics.sba.permanent.UnattachedAurasCheck
 import com.wingedsheep.engine.state.GameState
@@ -38,6 +47,19 @@ class ProtectionAttachmentLifecycleTest : ScenarioTestBase() {
         staticAbility { ability = GrantProtection(Color.WHITE) }
     }
 
+    private val tappedGrant = card("Lifecycle Tapped Grant") {
+        manaCost = "{W}"; typeLine = "Enchantment — Aura"; auraTarget = Targets.Creature
+        staticAbility { ability = ConditionalStaticAbility(
+            condition = Conditions.SourceIsTapped,
+            ability = GrantProtection(Color.WHITE, retainsPreexistingControlledAttachments = true)) }
+    }
+    private val turnGrant = card("Lifecycle Turn Grant") {
+        manaCost = "{W}"; typeLine = "Enchantment — Aura"; auraTarget = Targets.Creature
+        staticAbility { ability = ConditionalStaticAbility(
+            condition = Conditions.IsYourTurn,
+            ability = GrantProtection(Color.WHITE, retainsPreexistingControlledAttachments = true)) }
+    }
+
     private data class Board(val state: GameState, val host: EntityId, val grant: EntityId, val aura: EntityId, val equipment: EntityId)
     private fun board(opponentAttachments: Boolean = false): Board {
         val g = scenario().withPlayers("A", "B")
@@ -53,7 +75,7 @@ class ProtectionAttachmentLifecycleTest : ScenarioTestBase() {
     private fun activate(b: Board): GameState = ProtectionAttachmentLifecycle.reconcile(detach(b.state, b.grant), b.state)
 
     init {
-        listOf(host, grant, aura, equipment, plain).forEach(cardRegistry::register)
+        listOf(host, grant, aura, equipment, plain, tappedGrant, turnGrant).forEach(cardRegistry::register)
 
         test("activation captures controlled Aura Equipment and the source itself") {
             val b = board(); val s = activate(b)
@@ -141,6 +163,56 @@ class ProtectionAttachmentLifecycleTest : ScenarioTestBase() {
             val next = active.copy(objectIdentities = active.objectIdentities + (b.grant to old.copy(generation = old.generation + 1)))
             val grant = next.projectedState.colorProtectionGrants(b.host).single()
             ProtectionAttachmentLifecycle.retains(next, b.host, b.aura, grant) shouldBe false
+        }
+
+        test("effect dispatcher captures a conditional grant when tapping activates it") {
+            val g = scenario().withPlayers("A", "B").withCardOnBattlefield(1, host.name)
+                .withCardAttachedTo(1, aura.name, host.name)
+                .withCardAttachedTo(1, tappedGrant.name, host.name).build()
+            val source = g.findPermanent(tappedGrant.name)!!
+            val controller = g.state.projectedState.getController(source)!!
+            val result = EffectExecutorRegistry(cardRegistry = cardRegistry).execute(g.state,
+                TapUntapEffect(EffectTarget.Self), EffectContext(sourceId = source, controllerId = controller))
+            result.newState.protectionAttachmentActivations.single().attachments.size shouldBe 2
+            (g.findPermanent(aura.name)!! in UnattachedAurasCheck(cardRegistry).check(result.newState).newState.getBattlefield()) shouldBe true
+        }
+        test("turn dispatcher captures a conditional grant before following turn operations") {
+            val g = scenario().withPlayers("A", "B").withCardOnBattlefield(1, host.name)
+                .withCardAttachedTo(1, aura.name, host.name)
+                .withCardAttachedTo(1, turnGrant.name, host.name).build()
+            val source = g.findPermanent(turnGrant.name)!!
+            val controller = g.state.projectedState.getController(source)!!
+            val before = g.state.copy(activePlayerId = g.state.turnOrder.first { it != controller })
+            val result = TurnManager(cardRegistry).startTurn(before, controller)
+            result.newState.protectionAttachmentActivations.single().attachments.size shouldBe 2
+            (g.findPermanent(aura.name)!! in UnattachedAurasCheck(cardRegistry).check(result.newState).newState.getBattlefield()) shouldBe true
+        }
+        test("host zone departure and return cannot recapture stale attachments from its old visit") {
+            val b = board(); val active = activate(b)
+            val departed = ZoneTransitionService.moveToZone(active, b.host, Zone.EXILE).state
+            val capturedDeparture = ProtectionAttachmentLifecycle.reconcile(active, departed)
+            val returned = ZoneTransitionService.moveToZone(capturedDeparture, b.host, Zone.BATTLEFIELD).state
+            val result = ProtectionAttachmentLifecycle.reconcile(capturedDeparture, returned)
+            result.protectionAttachmentActivations.isEmpty() shouldBe true
+            (b.grant in UnattachedAurasCheck(cardRegistry).check(result).newState.getBattlefield()) shouldBe false
+        }
+
+        test("composite dispatcher preserves capture before its later attachment child") {
+            val g = scenario().withPlayers("A", "B").withCardOnBattlefield(1, host.name)
+                .withCardOnBattlefield(1, equipment.name)
+                .withCardAttachedTo(1, tappedGrant.name, host.name).build()
+            val source = g.findPermanent(tappedGrant.name)!!
+            val controller = g.state.projectedState.getController(source)!!
+            val equipmentId = g.findPermanent(equipment.name)!!
+            val hostId = g.findPermanent(host.name)!!
+            val result = EffectExecutorRegistry(cardRegistry = cardRegistry).execute(g.state,
+                com.wingedsheep.sdk.scripting.effects.CompositeEffect(listOf(
+                    TapUntapEffect(EffectTarget.Self),
+                    com.wingedsheep.sdk.scripting.effects.AttachTargetEquipmentToCreatureEffect(
+                        EffectTarget.SpecificEntity(equipmentId), EffectTarget.SpecificEntity(hostId))
+                )), EffectContext(sourceId = source, controllerId = controller))
+            val capture = result.newState.protectionAttachmentActivations.single()
+            capture.attachments.map { it.entityId } shouldBe listOf(source)
         }
 
     }
