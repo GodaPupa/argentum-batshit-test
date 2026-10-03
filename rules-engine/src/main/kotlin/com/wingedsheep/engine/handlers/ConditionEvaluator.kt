@@ -631,7 +631,9 @@ class ConditionEvaluator(
                 // spell exists both read true — the bag only exists once it resolves.
                 val sourceId = ctx.sourceId
                 val declaredThisCast = (ctx as? Resolution)?.effectContext?.declaredCostSlot
-                if (declaredThisCast == condition.slot) {
+                if (condition.slot == ChoiceSlot.ALTERNATIVE_COST) {
+                    sourceAlternativeCost(state, ctx) != null
+                } else if (declaredThisCast == condition.slot) {
                     true
                 } else {
                     sourceId != null &&
@@ -641,7 +643,9 @@ class ConditionEvaluator(
             }
             is CastChoiceIs -> {
                 val sourceId = ctx.sourceId
-                sourceId != null &&
+                if (condition.slot == ChoiceSlot.ALTERNATIVE_COST) {
+                    sourceAlternativeCost(state, ctx)?.name?.equals(condition.value, ignoreCase = true) == true
+                } else sourceId != null &&
                     castChoiceMatches(state.getEntity(sourceId), condition.slot, condition.value)
             }
             is CastTimeFlagSet -> {
@@ -1574,6 +1578,28 @@ class ConditionEvaluator(
             ?.containsKey(ChoiceSlot.WATERBEND_PAID) == true
         if (flagged) return true
         return context.wasWaterbendPaid
+    }
+
+    /** Payment history belongs to the originating object, not an actionable Self after a move. */
+    private fun sourceAlternativeCost(
+        state: GameState,
+        context: ConditionEvaluationContext,
+    ): com.wingedsheep.engine.core.AlternativeCostType? {
+        val sourceId = context.sourceId ?: return null
+        val resolution = (context as? Resolution)?.effectContext
+        if (resolution != null) {
+            val origin = resolution.objectReferences.origin
+            if (resolution.objectReferences.captured) {
+                if (origin == null) return null
+                if (!state.isCurrentObject(origin)) {
+                    return resolution.lastKnownSourceSnapshot
+                        ?.takeIf { it.objectRef == origin }?.alternativeCost
+                }
+            }
+        }
+        val entity = state.getEntity(sourceId) ?: return null
+        return entity.get<CastChoicesComponent>()?.alternativeCost
+            ?: entity.get<com.wingedsheep.engine.state.components.stack.SpellOnStackComponent>()?.alternativeCost
     }
 
     /** Compare the value locked into [slot] on [entity]'s cast-choices bag to [value] as text. */

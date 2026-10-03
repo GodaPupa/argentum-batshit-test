@@ -10665,6 +10665,7 @@ Other gates available in both contexts:
   the enum name): `CastChoiceIs(ChoiceSlot.MODE, "Khans")`, `CastChoiceIs(ChoiceSlot.COLOR, "RED")`. The
   generic slot reader new cards should prefer over per-slot conditions; the §8 emitter target for
   mtgish's `TheChosenColor`/`TheChosenCreatureType` guards.
+- `CastChoiceMade(ChoiceSlot.ALTERNATIVE_COST)` / `CastChoiceIs(ChoiceSlot.ALTERNATIVE_COST, "SELF_ALTERNATIVE")` — read the actual selected alternative pricing branch, not an inferred mana payment or a raw action request. This typed, noncopiable cast fact survives stack-to-permanent entry and is cleared on a new visit. Pending abilities read only the matching original ObjectRef's last-known snapshot after departure; a blink never borrows the new visit's payment history. Ordinary or free casting and direct noncast entry do not manufacture an alternative-cost election. The slot is read-only engine provenance, not an as-entry choice consumer.
 - `CapturedAtCast("flag")` — the named **"as you cast this spell"** condition capture (CR 601.2i) was
   true the moment the spell was cast. Pairs with the spell DSL `captureAtCast("flag", condition)`: the
   engine evaluates `condition` (caster as controller) as the spell finishes being cast and freezes the

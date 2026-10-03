@@ -412,6 +412,7 @@ object ZoneTransitionService {
                 entityId = entityId,
                 battlefieldEntryTimestamp = container.get<BattlefieldEntryTimestampComponent>()?.timestamp,
                 objectRef = oldObject,
+                alternativeCost = container.get<com.wingedsheep.engine.state.components.battlefield.CastChoicesComponent>()?.alternativeCost,
                 colors = state.projectedState.getColors(entityId),
                 ownerId = ownerId,
                 name = cardComponent.name,

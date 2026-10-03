@@ -74,7 +74,9 @@ data class CastChoicesComponent(
     /** The value chosen for `{X}` as this object was cast. Only present for spells cast with `{X}`. */
     val x: Int? = null,
     /** The per-[ChoiceSlot] values locked in for this object. */
-    val chosen: Map<ChoiceSlot, ChoiceValue> = emptyMap()
+    val chosen: Map<ChoiceSlot, ChoiceValue> = emptyMap(),
+    /** Actual selected pricing branch; noncopiable and cleared with this battlefield visit. */
+    val alternativeCost: com.wingedsheep.engine.core.AlternativeCostType? = null
 ) : Component {
     /** Return a copy with [slot] set to [value], replacing any prior value for that slot. */
     fun withChoice(slot: ChoiceSlot, value: ChoiceValue): CastChoicesComponent =
