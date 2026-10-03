@@ -35,7 +35,8 @@ val ChoMannosBlessing = card("Cho-Manno's Blessing") {
 
     staticAbility {
         ability = GrantProtectionFromChosenColorToGroup(
-            filter = GroupFilter.attachedCreature()
+            filter = GroupFilter.attachedCreature(),
+            retainsSourceAttachment = true
         )
     }
 

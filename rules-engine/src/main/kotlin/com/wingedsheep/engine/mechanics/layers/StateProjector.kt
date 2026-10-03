@@ -114,6 +114,9 @@ class StateProjector(
             } else {
                 val baseStats = cardComponent.baseStats
                 projectedValues[entityId] = MutableProjectedValues(
+                    colorProtectionGrants = container.get<ProtectionComponent>()?.colors.orEmpty().mapTo(mutableListOf()) {
+                        ColorProtectionGrant(it.name, entityId, container.get<ControllerComponent>()?.playerId, 0L)
+                    },
                     power = baseStats?.basePower,
                     toughness = baseStats?.baseToughness,
                     keywords = linkedSetOf<String>().apply {
@@ -406,6 +409,7 @@ class StateProjector(
                 toughness = v.toughness,
                 name = v.name,
                 keywords = v.keywords,
+                colorProtectionGrants = v.colorProtectionGrants.toList(),
                 colors = v.colors,
                 types = v.types,
                 subtypes = v.subtypes,
@@ -592,7 +596,8 @@ class StateProjector(
                         affectedEntities = filterResolver.resolveAffectedEntities(state, entityId, effectiveFilter, projectedValues),
                         sourceCondition = effect.sourceCondition,
                         affectsFilter = effectiveFilter,
-                        groupId = effect.groupId
+                        groupId = effect.groupId,
+                        retainsSourceAttachment = effect.retainsSourceAttachment
                     )
                 })
             }

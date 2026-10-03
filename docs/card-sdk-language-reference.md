@@ -13505,3 +13505,13 @@ resolution executor is introduced. The existing Yes/No decision belongs to the
 drawing player, and its source identifies the public graveyard card. The client
 keyword label is `DREDGE`. The mtgish emitter preserves the numeric argument through
 `KeywordAbility.dredge(N)`; unsupported numeric shapes remain scaffolded.
+
+### Protection source attachment retention
+
+`GrantProtection`, `GrantProtectionFromChosenColorToGroup`, and
+`GrantProtectionFromControlledColors` accept `retainsSourceAttachment = true`
+for the explicit “this effect doesn't remove this Aura” exception. The default
+is false. Each projected color-protection grant retains its own source and
+controller provenance; a different matching grant can still remove the Aura.
+This does not exempt any other controlled attachment or implement the separate
+“already attached” activation-time snapshot policy.

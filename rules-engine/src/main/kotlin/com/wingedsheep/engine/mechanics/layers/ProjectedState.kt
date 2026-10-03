@@ -37,11 +37,21 @@ data class CrossZoneSubtypeGrant(
 /**
  * Projected values for an entity after all effects are applied.
  */
+/** One protection instance; exemptions never transfer between grants. */
+data class ColorProtectionGrant(
+    val color: String,
+    val sourceId: EntityId?,
+    val controllerId: EntityId?,
+    val timestamp: Long,
+    val retainsSourceAttachment: Boolean = false
+)
+
 data class ProjectedValues(
     val power: Int? = null,
     val toughness: Int? = null,
     val name: String? = null,
     val keywords: Set<String> = emptySet(),
+    val colorProtectionGrants: List<ColorProtectionGrant> = emptyList(),
     val colors: Set<String> = emptySet(),
     val types: Set<String> = emptySet(),
     val subtypes: Set<String> = emptySet(),
@@ -80,6 +90,9 @@ class ProjectedState(
     val crossZoneSubtypeGrants: List<CrossZoneSubtypeGrant> = emptyList()
 ) {
     fun getBaseState(): GameState = baseState
+
+    fun colorProtectionGrants(entityId: EntityId): List<ColorProtectionGrant> =
+        projectedValues[entityId]?.colorProtectionGrants.orEmpty()
 
     /**
      * The chosen creature types granted to a **non-battlefield** object (a creature spell on the
@@ -251,6 +264,7 @@ internal fun buildIntermediateProjectedState(
             power = v.power,
             toughness = v.toughness,
             keywords = v.keywords.toSet(),
+            colorProtectionGrants = v.colorProtectionGrants.toList(),
             colors = v.colors.toSet(),
             types = v.types.toSet(),
             subtypes = v.subtypes.toSet(),

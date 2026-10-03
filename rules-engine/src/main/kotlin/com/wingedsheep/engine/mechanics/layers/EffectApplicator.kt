@@ -121,6 +121,9 @@ internal class EffectApplicator(
                 }
                 is Modification.GrantKeyword -> {
                     values.keywords.add(mod.keyword)
+                    if (mod.keyword.removePrefix("PROTECTION_FROM_") in setOf("WHITE", "BLUE", "BLACK", "RED", "GREEN")) {
+                        values.colorProtectionGrants.add(ColorProtectionGrant(mod.keyword.removePrefix("PROTECTION_FROM_"), effect.sourceId, effect.controllerId, effect.timestamp))
+                    }
                     // Changeling grants all creature types (Rule 702.73)
                     if (mod.keyword == Keyword.CHANGELING.name) {
                         values.subtypes.addAll(com.wingedsheep.sdk.core.Subtype.ALL_CREATURE_TYPES)
@@ -128,6 +131,7 @@ internal class EffectApplicator(
                 }
                 is Modification.RemoveKeyword -> {
                     values.keywords.remove(mod.keyword)
+                    values.colorProtectionGrants.removeAll { "PROTECTION_FROM_${it.color}" == mod.keyword }
                 }
                 is Modification.GrantLandwalkFromChosen -> {
                     val chosenLandType = state.getEntity(effect.sourceId)
@@ -269,6 +273,7 @@ internal class EffectApplicator(
                 }
                 is Modification.GrantProtectionFromColor -> {
                     values.keywords.add("PROTECTION_FROM_${mod.color}")
+                    values.colorProtectionGrants.add(ColorProtectionGrant(mod.color, effect.sourceId, projectedValues[effect.sourceId]?.controllerId ?: effect.controllerId, effect.timestamp, effect.fromStaticAbility && effect.retainsSourceAttachment))
                 }
                 is Modification.GrantProtectionFromCardType -> {
                     values.keywords.add("PROTECTION_FROM_CARDTYPE_${mod.cardType.uppercase()}")
@@ -278,6 +283,7 @@ internal class EffectApplicator(
                         ?.chosenColor()
                     if (chosenColor != null) {
                         values.keywords.add("PROTECTION_FROM_${chosenColor.name}")
+                    values.colorProtectionGrants.add(ColorProtectionGrant(chosenColor.name, effect.sourceId, projectedValues[effect.sourceId]?.controllerId ?: effect.controllerId, effect.timestamp, effect.fromStaticAbility && effect.retainsSourceAttachment))
                     }
                 }
                 is Modification.GrantHexproofFromOwnColors -> {
@@ -303,6 +309,7 @@ internal class EffectApplicator(
                             if (other.controllerId != sourceController) continue
                             for (colorName in other.colors) {
                                 values.keywords.add("PROTECTION_FROM_$colorName")
+                    values.colorProtectionGrants.add(ColorProtectionGrant(colorName, effect.sourceId, projectedValues[effect.sourceId]?.controllerId ?: effect.controllerId, effect.timestamp, effect.fromStaticAbility && effect.retainsSourceAttachment))
                             }
                         }
                     }
@@ -367,6 +374,7 @@ internal class EffectApplicator(
                 }
                 is Modification.RemoveAllAbilities -> {
                     values.keywords.clear()
+                    values.colorProtectionGrants.clear()
                     values.lostAllAbilities = true
                 }
                 is Modification.NoOp -> {
