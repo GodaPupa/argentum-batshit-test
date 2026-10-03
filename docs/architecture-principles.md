@@ -664,6 +664,24 @@ recorded responses while keeping their player and choice payloads.
 - **Deterministic replay.** The continuation stack is part of `GameState`. A replay log of actions
   deterministically reproduces the exact sequence of decisions and resumptions.
 
+#### Direct permanent entry choices
+
+`PreEntryOperation` suspends a direct battlefield-entry instruction before placement. It stores
+all entering source visits, source zones, controllers, attachment-host visits, choice cursors,
+and the original effect context. The existing color/type/mode/number/host decisions collect
+answers in the serialized operation; no permanent or attachment is visible during the pause.
+Only after every entry in the collection has its answers does the original zone executor commit
+placement and attachment. Stale source or host visits are skipped. The resumer forwards pipeline
+collections and detects the resulting entry events once before draining outer continuations.
+
+The initial scope is `EntersWithChoice` through `MoveToZone`, fixed attached return, and fixed-zone
+`MoveCollection`. Face-down and transformed entry continue through their existing paths.
+An entry batch containing an `EntersAsCopy` consumer delegates to the existing route before
+collecting any choices; consuming just the printed choice would assume an incorrect replacement order.
+Copy-entry, arbitrary `OnEnterRunEffect` replacements, and mixed per-card destinations remain
+separate boundaries; this operation is not a claim of complete replacement orchestration.
+No new decision protocol or client component is introduced.
+
 ### 2.5 Explicit Event Emission
 
 **Principle:** Every state mutation emits an explicit, typed event.
