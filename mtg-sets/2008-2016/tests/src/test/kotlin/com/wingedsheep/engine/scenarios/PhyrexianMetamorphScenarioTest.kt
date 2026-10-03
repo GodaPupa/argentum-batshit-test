@@ -17,6 +17,7 @@ import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.dsl.Costs
 import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.Targets
+import com.wingedsheep.sdk.dsl.Triggers
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
@@ -48,7 +49,10 @@ class PhyrexianMetamorphScenarioTest : FunSpec({
         typeLine = "Creature — Bear"
         power = 2
         toughness = 3
-        etb { effect = Effects.DrawCards(1) }
+        triggeredAbility {
+            trigger = Triggers.EntersBattlefield
+            effect = Effects.DrawCards(1)
+        }
     }
     val plainClone = card("Metamorph Test Plain Clone") {
         manaCost = "{0}"
