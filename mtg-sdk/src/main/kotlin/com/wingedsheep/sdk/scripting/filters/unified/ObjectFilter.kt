@@ -308,6 +308,11 @@ data class GameObjectFilter(
         cardPredicates = cardPredicates + CardPredicate.IsMonocolored
     )
 
+    /** Add a fixed card-type requirement, including types without a named convenience filter. */
+    fun withCardType(cardType: CardType) = copy(
+        cardPredicates = cardPredicates + CardPredicate.HasCardType(cardType)
+    )
+
     /** Add a subtype requirement */
     fun withSubtype(subtype: Subtype) = copy(
         cardPredicates = cardPredicates + CardPredicate.HasSubtype(subtype)

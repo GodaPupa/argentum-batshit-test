@@ -57,6 +57,18 @@ sealed interface CardPredicate : TextReplaceable<CardPredicate> {
         override val description: String = "planeswalker"
     }
 
+    /**
+     * Matches a card/object whose current card types include [cardType].
+     *
+     * Unlike the named convenience predicates this is the fixed-value generic card-type axis,
+     * including newer types such as Battle.
+     */
+    @SerialName("HasCardType")
+    @Serializable
+    data class HasCardType(val cardType: CardType) : CardPredicate {
+        override val description: String = cardType.displayName.lowercase()
+    }
+
     @SerialName("IsInstant")
     @Serializable
     data object IsInstant : CardPredicate {
