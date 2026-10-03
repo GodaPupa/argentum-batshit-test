@@ -423,3 +423,23 @@ describe('announced target groups on ordinary actions', () => {
     expect(action).toMatchObject({ type: 'CastSpell', targets: [{ type: 'Player', playerId: 'p2' }], announcedTargetCounts: [0, 1] })
   })
 })
+
+
+describe('Phyrexian activated ability election', () => {
+  const info = castAction({
+    actionType: 'ActivateAbility',
+    action: { type: 'ActivateAbility', playerId: 'p1', sourceId: 'source', abilityId: 'ability' },
+    manaCostString: '{U/P}', availableManaSources: [],
+  })
+  it('offers life payment for an activation without any mana sources', () => {
+    expect(computePhases(info, { autoTapEnabled: true })).toEqual([{ type: 'manaSource' }])
+  })
+  it('carries the elected life pip on the shared explicit payment contract', () => {
+    const action = mergeResult(info.action, info,
+      { type: 'manaSource', selectedSources: [], phyrexianLifePayments: ['BLUE'] },
+      { players: [], cards: {} } as never)
+    expect(action).toMatchObject({ type: 'ActivateAbility', paymentStrategy: {
+      type: 'Explicit', manaAbilitiesToActivate: [], phyrexianLifePayments: ['BLUE'],
+    } })
+  })
+})

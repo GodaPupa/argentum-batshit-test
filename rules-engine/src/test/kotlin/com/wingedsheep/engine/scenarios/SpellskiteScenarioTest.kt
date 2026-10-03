@@ -22,7 +22,7 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
     }
     private val damage = card("Spellskite damage witness") {
         manaCost = "{0}"; typeLine = "Instant"
-        spell { target("creature", Targets.Creature); effect = Effects.DealDamage(1) }
+        spell { target("creature", Targets.Creature); effect = Effects.DealDamage(1, EffectTarget.ContextTarget(0)) }
     }
     private val noTargets = card("Spellskite targetless witness") {
         manaCost = "{0}"; typeLine = "Instant"
@@ -30,7 +30,7 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
     }
     private val playerOnly = card("Spellskite player witness") {
         manaCost = "{0}"; typeLine = "Instant"
-        spell { target("player", Targets.Player); effect = Effects.DealDamage(1) }
+        spell { target("player", Targets.Player); effect = Effects.DealDamage(1, EffectTarget.ContextTarget(0)) }
     }
     init {
         listOf(spellskite, damage, noTargets, playerOnly).forEach(cardRegistry::register)
@@ -45,7 +45,9 @@ class SpellskiteScenarioTest : ScenarioTestBase() {
                 g.state = g.state.updateEntity(g.player1Id) { it.with(ManaPoolComponent(blue = if (payBlue) 1 else 0)) }
                 val life = g.state.lifeTotal(g.player1Id)
                 g.execute(ActivateAbility(g.player1Id, skite, spellskite.activatedAbilities.single().id,
-                    targets = listOf(ChosenTarget.Spell(spell)))).error shouldBe null
+                    targets = listOf(ChosenTarget.Spell(spell)),
+                    paymentStrategy = if (payBlue) PaymentStrategy.FromPool else PaymentStrategy.Explicit(
+                        emptyList(), phyrexianLifePayments = listOf(com.wingedsheep.sdk.core.Color.BLUE)))).error shouldBe null
                 g.state.lifeTotal(g.player1Id) shouldBe life - if (payBlue) 0 else 2
                 val resolved = EngineServices(cardRegistry).stackResolver.resolveTop(g.state)
                 resolved.error shouldBe null
