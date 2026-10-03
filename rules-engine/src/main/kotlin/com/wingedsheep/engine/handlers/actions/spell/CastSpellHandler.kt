@@ -872,30 +872,59 @@ class CastSpellHandler(
         } else {
             cardDef?.script?.spellEffect
         }
-        if (spellEffect is DividedDamageEffect && action.targets.size > 1) {
-            val distribution = action.damageDistribution
-            if (distribution == null) {
-                return "Damage distribution required for this spell when targeting multiple creatures"
-            }
+        if (spellEffect is DividedDamageEffect) {
+            // CR 601.2d fixes a divided amount as the spell is cast. For X/dynamic forms,
+            // validate against the cast-time amount rather than the static fallback field.
+            val dividedTotal = spellEffect.dynamicTotal?.let { dynamic ->
+                DynamicAmountEvaluator().evaluate(
+                    state,
+                    dynamic,
+                    EffectContext(
+                        sourceId = action.cardId,
+                        controllerId = action.playerId,
+                        xValue = action.xValue,
+                    ),
+                )
+            } ?: spellEffect.totalDamage
 
-            // Check that distribution targets match chosen targets
-            val targetIds = action.targets.map { it.toEntityId() }.toSet()
-            val distributionTargets = distribution.keys
-            if (distributionTargets != targetIds) {
-                return "Damage distribution targets must match chosen targets"
-            }
+            // A zero total cannot be assigned to a target because every chosen target must
+            // receive at least one. Conversely, a zero-target dynamic spell is legal only
+            // when there is actually nothing to distribute.
+            if (action.targets.isEmpty()) {
+                if (dividedTotal != 0) {
+                    return "Cannot divide $dividedTotal damage among zero targets"
+                }
+            } else {
+                if (dividedTotal == 0) {
+                    return "Cannot choose targets when total divided damage is 0"
+                }
 
-            // Check that total damage equals the spell's total damage
-            val totalDistributed = distribution.values.sum()
-            if (totalDistributed != spellEffect.totalDamage) {
-                return "Total distributed damage ($totalDistributed) must equal ${spellEffect.totalDamage}"
-            }
+                val distribution = action.damageDistribution
+                if (action.targets.size > 1 && distribution == null) {
+                    return "Damage distribution required for this spell when targeting multiple creatures"
+                }
 
-            // Check that each target gets at least 1 damage (per MTG rules)
-            val minPerTarget = 1
-            for ((targetId, damage) in distribution) {
-                if (damage < minPerTarget) {
-                    return "Each target must receive at least $minPerTarget damage"
+                if (distribution != null) {
+                    // Check that distribution targets match chosen targets.
+                    val targetIds = action.targets.map { it.toEntityId() }.toSet()
+                    val distributionTargets = distribution.keys
+                    if (distributionTargets != targetIds) {
+                        return "Damage distribution targets must match chosen targets"
+                    }
+
+                    // Check that total damage equals the cast-time divided total.
+                    val totalDistributed = distribution.values.sum()
+                    if (totalDistributed != dividedTotal) {
+                        return "Total distributed damage ($totalDistributed) must equal $dividedTotal"
+                    }
+
+                    // Each chosen target must be assigned at least 1 damage (CR 601.2d).
+                    val minPerTarget = 1
+                    for ((_, damage) in distribution) {
+                        if (damage < minPerTarget) {
+                            return "Each target must receive at least $minPerTarget damage"
+                        }
+                    }
                 }
             }
         }
