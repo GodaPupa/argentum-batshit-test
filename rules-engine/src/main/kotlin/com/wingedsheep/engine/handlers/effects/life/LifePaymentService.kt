@@ -46,6 +46,23 @@ object LifePaymentService {
      *   [payerId] has no life total (nothing mutated) so cost callers can surface a payment
      *   failure. A non-positive [amount] is a no-op that still succeeds.
      */
+    /**
+     * Whether [payerId] can legally choose a life payment right now.
+     *
+     * A replacement that turns the payment into library exile makes the payment payable when the
+     * replacement resource is available; otherwise a player may not pay more life than they have.
+     */
+    fun canPay(state: GameState, payerId: EntityId, amount: Int): Boolean {
+        if (amount <= 0) return true
+        val life = state.getEntity(payerId)
+            ?.get<com.wingedsheep.engine.state.components.identity.LifeTotalComponent>()
+            ?.life ?: return false
+        if (hasLibraryExileReplacement(state, payerId) &&
+            state.getZone(ZoneKey(payerId, Zone.LIBRARY)).size >= amount
+        ) return true
+        return life >= amount
+    }
+
     fun pay(state: GameState, payerId: EntityId, amount: Int): Pair<GameState, List<GameEvent>>? {
         if (state.getEntity(payerId)?.get<LifeTotalComponent>() == null) return null
         if (amount <= 0) return state to emptyList()

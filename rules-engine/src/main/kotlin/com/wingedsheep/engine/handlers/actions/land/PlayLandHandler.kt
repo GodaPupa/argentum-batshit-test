@@ -172,15 +172,12 @@ class PlayLandHandler(
     override fun execute(state: GameState, action: PlayLand): ExecutionResult {
         val played = executePlay(state, action)
         if (!played.isSuccess) return played
+        if (played.isPaused && action.cardId !in played.state.getBattlefield()) return played
+        return finishAfterPlay(played)
+    }
 
-        // Ordering: the land's own ETB triggers (landfall) are already detected and on the stack
-        // by this point — `executePlay` does that before returning — which is the order CR 603.10
-        // wants and the one PassPriorityHandler arranges explicitly for the resolution path. Moving
-        // this check earlier would drop a landfall trigger whose permanent the legend rule then
-        // removes, and no test here would notice.
+    private fun finishAfterPlay(played: ExecutionResult): ExecutionResult {
         val sbaResult = sbaChecker.checkAndApply(played.state)
-        // An SBA that needs input (the legend rule's "which one do you keep?") pauses the action;
-        // the land is already on the battlefield, so the decision resolves against the real board.
         if (sbaResult.isPaused) {
             return ExecutionResult.propagatePause(
                 sbaResult.state,
@@ -193,7 +190,60 @@ class PlayLandHandler(
         ).copy(triggersAlreadyProcessed = played.triggersAlreadyProcessed)
     }
 
-    private fun executePlay(state: GameState, action: PlayLand): ExecutionResult {
+    /**
+     * Commit a serialized optional-payment land play. The exact announced source visit and source
+     * zone must still exist; otherwise the stale answer fails closed without spending life or a
+     * land drop. Payment, when chosen, happens exactly once before battlefield placement.
+     */
+    fun resumePreEntryLandPlay(
+        state: GameState,
+        continuation: com.wingedsheep.engine.core.PreEntryLandPlayContinuation,
+        response: com.wingedsheep.engine.core.DecisionResponse,
+    ): ExecutionResult {
+        if (response !is com.wingedsheep.engine.core.YesNoResponse) {
+            return ExecutionResult.error(state, "Expected yes/no response for pre-entry land payment")
+        }
+        val action = continuation.action
+        if (!state.isCurrentObject(continuation.source) ||
+            state.logicalZone(action.cardId) != continuation.sourceZone
+        ) {
+            return ExecutionResult.error(state, "The announced land object is no longer in its source zone")
+        }
+        validate(state, action, duringResolution = true)?.let { error ->
+            return ExecutionResult.error(state, error)
+        }
+
+        var paymentState = state
+        val paymentEvents = mutableListOf<com.wingedsheep.engine.core.GameEvent>()
+        if (response.choice) {
+            if (!com.wingedsheep.engine.handlers.effects.life.LifePaymentService.canPay(
+                    state, action.playerId, continuation.lifeCost
+                )
+            ) {
+                return ExecutionResult.error(state, "You cannot pay ${continuation.lifeCost} life")
+            }
+            val payment = com.wingedsheep.engine.handlers.effects.life.LifePaymentService
+                .pay(state, action.playerId, continuation.lifeCost)
+                ?: return ExecutionResult.error(state, "Player has no life total")
+            paymentState = payment.first
+            paymentEvents.addAll(payment.second)
+        }
+
+        val played = executePlay(paymentState, action, preEntryPayment = response.choice)
+        if (!played.isSuccess) return played.copy(events = paymentEvents + played.events)
+        val finished = if (played.isPaused && action.cardId !in played.state.getBattlefield()) {
+            played
+        } else {
+            finishAfterPlay(played)
+        }
+        return finished.copy(events = paymentEvents + finished.events)
+    }
+
+    private fun executePlay(
+        state: GameState,
+        action: PlayLand,
+        preEntryPayment: Boolean? = null,
+    ): ExecutionResult {
         val container = state.getEntity(action.cardId)
             ?: return ExecutionResult.error(state, "Card not found")
 
@@ -222,6 +272,67 @@ class PlayLandHandler(
         } else {
             ZoneKey(action.playerId, fromZone)
         }
+
+        // Resolve an optional "pay life or this land enters tapped" replacement before *any*
+        // mutation. Build only a hypothetical face/controller projection so global enter-tapped /
+        // enter-untapped replacements can be ordered correctly without battlefield visibility.
+        var resolvedPreEntryPayment = preEntryPayment
+        run {
+            var previewState = state.updateEntity(action.cardId) { c ->
+                c.without<FaceDownComponent>().with(ControllerComponent(action.playerId))
+            }
+            if (action.asBackFace) {
+                previewState = stampDoubleFacedFrontFace(previewState, cardRegistry, action.cardId)
+                previewState = setDfcFace(
+                    previewState, cardRegistry, action.cardId,
+                    com.wingedsheep.engine.state.components.identity.DoubleFacedComponent.Face.BACK
+                ) ?: return ExecutionResult.error(state, "Card has no back face to play")
+            }
+            val previewCard = previewState.getEntity(action.cardId)?.get<CardComponent>()
+                ?: return ExecutionResult.error(state, "Not a card")
+            val previewDef = cardRegistry.getCard(previewCard.cardDefinitionId)
+            val previewUntapped = com.wingedsheep.engine.handlers.effects.EnterUntappedReplacements
+                .entersUntapped(previewState, action.cardId, action.playerId, state)
+            val previewPermissionTapped = fromZone == Zone.EXILE &&
+                permissionForcesLandTapped(state, action.playerId, action.cardId)
+            val optionalPayment = previewDef?.script?.replacementEffects
+                ?.filterIsInstance<EntersTapped>()?.firstOrNull()?.payLifeCost
+
+            if (optionalPayment != null && !previewUntapped && !previewPermissionTapped &&
+                resolvedPreEntryPayment == null
+            ) {
+                if (!com.wingedsheep.engine.handlers.effects.life.LifePaymentService
+                        .canPay(state, action.playerId, optionalPayment)
+                ) {
+                    resolvedPreEntryPayment = false
+                } else {
+                    val sourceRef = state.objectRef(action.cardId)
+                        ?: return ExecutionResult.error(state, "Land has no object identity")
+                    return state.suspendForDecision(
+                        question = { decisionId ->
+                            com.wingedsheep.engine.core.YesNoDecision(
+                                id = decisionId,
+                                playerId = action.playerId,
+                                prompt = "Pay $optionalPayment life to have ${previewCard.name} enter untapped?",
+                                context = com.wingedsheep.engine.core.DecisionContext(
+                                    sourceId = action.cardId,
+                                    sourceName = previewCard.name,
+                                    phase = com.wingedsheep.engine.core.DecisionPhase.RESOLUTION,
+                                )
+                            )
+                        },
+                        answer = com.wingedsheep.engine.core.PreEntryLandPlayContinuation(
+                            action = action,
+                            source = sourceRef,
+                            sourceZone = sourceZoneKey,
+                            lifeCost = optionalPayment,
+                        ),
+                        events = emptyList(),
+                    )
+                }
+            }
+        }
+
         newState = newState.removeFromZone(sourceZoneKey, action.cardId)
 
         // A land played from a face-down exile enters face up as the real land, never as a face-down
@@ -550,49 +661,13 @@ class PlayLandHandler(
                 if (permissionForcesTapped) {
                     // Already handled: TappedComponent applied, control falls through to triggers/finish.
                 } else if (entersTapped.payLifeCost != null) {
-                    // Shock land: ask the player if they want to pay life
-                    // Use up a land drop first
-                    newState = newState.updateEntity(action.playerId) { c ->
-                        val landDrops = c.get<LandDropsComponent>() ?: LandDropsComponent()
-                        c.with(landDrops.use())
+                    // The optional payment was decided while the card was still in its source
+                    // zone. Paid -> leave untapped; declined/unpayable -> enter tapped.
+                    if (resolvedPreEntryPayment != true) {
+                        newState = newState.updateEntity(action.cardId) { c ->
+                            c.with(TappedComponent)
+                        }
                     }
-
-                    val zoneChangeEvent = com.wingedsheep.engine.core.ZoneChangeEvent(
-                        action.cardId,
-                        cardComponent.name,
-                        fromZone,
-                        Zone.BATTLEFIELD,
-                        action.playerId,
-                        oldObject = state.objectRef(action.cardId),
-                        newObject = enteredObject,
-                    )
-                    val events = listOf(zoneChangeEvent) + entersWithEvents + listOfNotNull(riderPlayEvent, landPlayedEvent)
-                    newState = newState.tick()
-
-                    val continuation = com.wingedsheep.engine.core.PayLifeOrEnterTappedLandContinuation(
-                        landId = action.cardId,
-                        controllerId = action.playerId,
-                        lifeCost = entersTapped.payLifeCost!!,
-                        fromZone = fromZone,
-                        entryOldObject = state.objectRef(action.cardId),
-                        entryNewObject = enteredObject,
-                    )
-                    return newState.suspendForDecision(
-                        question = { decisionId ->
-                            com.wingedsheep.engine.core.YesNoDecision(
-                                id = decisionId,
-                                playerId = action.playerId,
-                                prompt = "Pay ${entersTapped.payLifeCost} life to have ${cardComponent.name} enter untapped?",
-                                context = com.wingedsheep.engine.core.DecisionContext(
-                                    sourceId = action.cardId,
-                                    sourceName = cardComponent.name,
-                                    phase = com.wingedsheep.engine.core.DecisionPhase.RESOLUTION
-                                )
-                            )
-                        },
-                        answer = continuation,
-                        events = events
-                    )
                 } else {
                     val shouldEnterTapped = if (entersTapped.unlessCondition != null) {
                         // Conditional: enters tapped UNLESS condition is met

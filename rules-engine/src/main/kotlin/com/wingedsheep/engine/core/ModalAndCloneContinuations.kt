@@ -437,6 +437,21 @@ data class EntersWithChoiceOnBattlefieldContinuation(
  * @property lifeCost The amount of life to pay if they choose yes
  * @property fromZone The zone the land was played from (for the ZoneChangeEvent)
  */
+/**
+ * A land play paused before any zone move, land-drop consumption, battlefield visibility or entry
+ * event while its controller answers an optional life payment ("as this land enters ...").
+ *
+ * [source] and [sourceZone] bind the answer to the exact announced object visit. [action] retains
+ * the chosen modal face. No play permission is consumed until the continuation commits.
+ */
+@Serializable
+data class PreEntryLandPlayContinuation(
+    val action: PlayLand,
+    val source: com.wingedsheep.engine.state.ObjectRef,
+    val sourceZone: com.wingedsheep.engine.state.ZoneKey,
+    val lifeCost: Int,
+) : AnswerContinuation
+
 @Serializable
 data class PayLifeOrEnterTappedLandContinuation(
     val landId: EntityId,
