@@ -171,6 +171,7 @@ class StackResolver(
         additionalCostBlightAmount: Int = 0,
         additionalCostPayXLifeAmount: Int? = null,
         declaredCostSlot: ChoiceSlot? = null,
+        optionalCostCounts: Map<ChoiceSlot, Int> = emptyMap(),
         wasBlightPaid: Boolean = false,
         wasWaterbendPaid: Boolean = false,
         giftRecipient: EntityId? = null,
@@ -371,6 +372,7 @@ class StackResolver(
                 casterId = casterId,
                 xValue = boundXValue,
                 declaredCostSlot = declaredCostSlot,
+                optionalCostCounts = optionalCostCounts,
                 wasBlightPaid = wasBlightPaid,
                 wasWaterbendPaid = wasWaterbendPaid,
                 giftRecipient = giftRecipient,
@@ -579,6 +581,7 @@ class StackResolver(
                     semanticName = spellName,
                 ),
                 declaredCostSlot = declaredCostSlot,
+                optionalCostCounts = optionalCostCounts,
                 totalManaSpent = totalManaSpent,
                 distinctColorsSpent =
                     com.wingedsheep.engine.handlers.ManaSpentReader.distinctColorsSpent(newState, cardId),
@@ -1562,6 +1565,10 @@ class StackResolver(
                         slot,
                         com.wingedsheep.engine.state.components.battlefield.ChoiceValue.Flag
                     )
+                }
+                for ((slot, count) in spellComponent.optionalCostCounts) {
+                    if (count > 0) bag = bag.withChoice(slot,
+                        com.wingedsheep.engine.state.components.battlefield.ChoiceValue.NumberChoice(count))
                 }
                 // Sneak (CR 702.190): durably mark the permanent so Conditions.SneakCostWasPaid
                 // reads "its sneak cost was paid" for its whole life on the battlefield.

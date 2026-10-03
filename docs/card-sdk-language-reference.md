@@ -13505,3 +13505,14 @@ resolution executor is introduced. The existing Yes/No decision belongs to the
 drawing player, and its source identifies the public graveyard card. The client
 keyword label is `DREDGE`. The mtgish emitter preserves the numeric argument through
 `KeywordAbility.dredge(N)`; unsupported numeric shapes remain scaffolded.
+
+
+### Repeated optional-cost announcements
+
+`CastSpell.optionalCostCounts` records the announced count by `ChoiceSlot`. Declaring a
+`OptionalAdditionalCost.multi` slot without a count asks the existing number-choice UI before
+payment. A zero count declines the slot. Positive counts are retained on the spell, its copies,
+and the resulting permanent's numeric cast choice. The printed or alternative base and elected
+additional mana are combined before cost increases and reductions. Free casting replaces only
+the base mana cost. Repeated non-mana costs require separate payment selection support and are
+rejected instead of reusing the same sacrificed/discarded objects.

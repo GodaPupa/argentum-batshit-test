@@ -271,6 +271,7 @@ val engineSerializersModule = SerializersModule {
         subclass(ReplacementChoiceContinuation::class)
         subclass(TriggerModalModeSelectionContinuation::class)
         subclass(TriggerModalTargetSelectionContinuation::class)
+        subclass(OptionalCostCountContinuation::class)
         subclass(CastModalModeSelectionContinuation::class)
         subclass(CastModalTargetSelectionContinuation::class)
         subclass(ModalContinuation::class)

@@ -707,6 +707,8 @@ data class SpellCastEvent(
      * [ChoiceSlot.KICKED] only, so a bargained spell doesn't satisfy it).
      */
     val declaredCostSlot: ChoiceSlot? = null,
+    /** Announced payment multiplicity survives the spell cast event. */
+    val optionalCostCounts: Map<ChoiceSlot, Int> = emptyMap(),
     /** Total mana spent to cast this spell (for Expend trigger detection) */
     val totalManaSpent: Int = 0,
     /**
