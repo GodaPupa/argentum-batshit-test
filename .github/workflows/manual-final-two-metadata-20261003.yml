@@ -1,0 +1,38 @@
+name: Manual final two exact card metadata
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Preserve exact printings and ruling responses
+      shell: bash
+      run: |
+        mkdir -p /tmp/manual-final-two-metadata
+        python3 - <<'PYCODE'
+        import urllib.request,json,pathlib,hashlib
+        out=pathlib.Path('/tmp/manual-final-two-metadata')
+        for name,code,key in [('Disciple of Freyalise','mh3','disciple'),('Amphin Mutineer','cmr','amphin')]:
+         url='https://api.scryfall.com/cards/named?exact='+name.replace(' ','%20')+'&set='+code
+         req=urllib.request.Request(url,headers={'User-Agent':'Argentum-Qualification/1.0','Accept':'application/json'})
+         raw=urllib.request.urlopen(req,timeout=30).read();c=json.loads(raw)
+         assert c['name'].split(' // ')[0]==name and c['set']==code
+         (out/(key+'.json')).write_bytes(raw)
+         req=urllib.request.Request(c['rulings_uri'],headers={'User-Agent':'Argentum-Qualification/1.0','Accept':'application/json'})
+         (out/(key+'-rulings.json')).write_bytes(urllib.request.urlopen(req,timeout=30).read())
+        (out/'sha256.json').write_text(json.dumps({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in out.glob('*.json')},indent=2)+'\n')
+        PYCODE
+    - uses: actions/upload-artifact@v7
+      if: always()
+      with:
+        name: manual-final-two-metadata-${{ github.run_id }}
+        path: /tmp/manual-final-two-metadata/
+        if-no-files-found: error
+        retention-days: 90
+'on':
+  push:
+    branches:
+    - validation/manual-final-two-metadata-20261003
+    paths:
+    - .github/workflows/manual-final-two-metadata-20261003.yml
