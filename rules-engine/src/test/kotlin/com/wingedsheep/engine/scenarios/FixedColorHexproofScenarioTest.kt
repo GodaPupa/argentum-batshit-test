@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.engineSerializersModule
+import com.wingedsheep.engine.mechanics.layers.addFloatingEffect
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.PredicateEvaluator
 import com.wingedsheep.engine.handlers.TargetFinder
@@ -135,6 +136,57 @@ class FixedColorHexproofScenarioTest : ScenarioTestBase() {
                 override fun replaceSubtype(subtype: com.wingedsheep.sdk.core.Subtype) = subtype
             }
             effect.applyTextReplacement(replacer) shouldBe effect.copy(colors = setOf(Color.RED, Color.BLACK))
+        }
+        test("teammate blue source can target scoped hexproof player through both enumeration and validation") {
+            val game = scenario().withPlayers("A", "Ally").withCardInHand(2, blueTarget.name).build()
+            var state = game.state.updateEntity(game.player1Id) { it.with(com.wingedsheep.engine.state.components.identity.TeamComponent(0)) }
+                .updateEntity(game.player2Id) { it.with(com.wingedsheep.engine.state.components.identity.TeamComponent(0)) }
+            state = GrantHexproofFromColorsExecutor().execute(state,
+                GrantHexproofFromColorsEffect(setOf(Color.BLUE), EffectTarget.Controller), EffectContext(null, game.player1Id)).state
+            val source = game.findCardsInHand(2, blueTarget.name).single()
+            PlayerColorHexproof.applies(state, game.player1Id, game.player2Id, setOf(Color.BLUE)) shouldBe false
+            (game.player1Id in TargetFinder().findLegalTargets(state, TargetPlayer(), game.player2Id, source)) shouldBe true
+            (game.player1Id in TargetEnumerationUtils(PredicateEvaluator()).findValidTargets(state, game.player2Id, TargetPlayer(), source)) shouldBe true
+            TargetValidator().validateTargets(state, listOf(ChosenTarget.Player(game.player1Id)), listOf(TargetPlayer()), game.player2Id,
+                sourceColors = setOf(Color.BLUE), targetingSourceType = TargetingSourceType.SPELL) shouldBe null
+        }
+        test("teammate blue source can target scoped hexproof permanent through both enumeration and validation") {
+            val game = scenario().withPlayers("A", "Ally").withCardInHand(2, blueTarget.name)
+                .withCardOnBattlefield(1, "Grizzly Bears").build()
+            val bear = game.findPermanent("Grizzly Bears")!!
+            var state = game.state.updateEntity(game.player1Id) { it.with(com.wingedsheep.engine.state.components.identity.TeamComponent(0)) }
+                .updateEntity(game.player2Id) { it.with(com.wingedsheep.engine.state.components.identity.TeamComponent(0)) }
+            state = GrantHexproofFromColorsExecutor().execute(state,
+                GrantHexproofFromColorsEffect(setOf(Color.BLUE), EffectTarget.ContextTarget(0)),
+                EffectContext(null, game.player1Id, targets = listOf(ChosenTarget.Permanent(bear)))).state
+            val source = game.findCardsInHand(2, blueTarget.name).single()
+            (bear in TargetFinder().findLegalTargets(state, Targets.Creature, game.player2Id, source)) shouldBe true
+            (bear in TargetEnumerationUtils(PredicateEvaluator()).findValidTargets(state, game.player2Id, Targets.Creature, source)) shouldBe true
+            TargetValidator().validateTargets(state, listOf(ChosenTarget.Permanent(bear)), listOf(Targets.Creature), game.player2Id,
+                sourceColors = setOf(Color.BLUE), targetingSourceType = TargetingSourceType.SPELL) shouldBe null
+        }
+        test("scoped permanent hexproof follows projected controller through every targeting path") {
+            val game = scenario().withPlayers("A", "B").withCardInHand(1, blueTarget.name)
+                .withCardInHand(2, blueTarget.name).withCardOnBattlefield(1, "Grizzly Bears").build()
+            val bear = game.findPermanent("Grizzly Bears")!!
+            var state = GrantHexproofFromColorsExecutor().execute(game.state,
+                GrantHexproofFromColorsEffect(setOf(Color.BLUE), EffectTarget.ContextTarget(0)),
+                EffectContext(null, game.player1Id, targets = listOf(ChosenTarget.Permanent(bear)))).state
+            state = state.addFloatingEffect(layer = com.wingedsheep.engine.mechanics.layers.Layer.CONTROL,
+                modification = com.wingedsheep.engine.mechanics.layers.SerializableModification.ChangeController(game.player2Id),
+                affectedEntities = setOf(bear), duration = Duration.EndOfTurn, context = EffectContext(null, game.player2Id))
+            state.projectedState.getController(bear) shouldBe game.player2Id
+            for ((number, player) in listOf(1 to game.player1Id, 2 to game.player2Id)) {
+                val source = game.findCardsInHand(number, blueTarget.name).single()
+                for (requirement in listOf(Targets.Creature, com.wingedsheep.sdk.scripting.targets.TargetSpellOrPermanent())) {
+                    val expected = player == game.player2Id
+                    (bear in TargetFinder().findLegalTargets(state, requirement, player, source)) shouldBe expected
+                    (bear in TargetEnumerationUtils(PredicateEvaluator()).findValidTargets(state, player, requirement, source)) shouldBe expected
+                    val error = TargetValidator().validateTargets(state, listOf(ChosenTarget.Permanent(bear)), listOf(requirement), player,
+                        sourceColors = setOf(Color.BLUE), targetingSourceType = TargetingSourceType.SPELL)
+                    (error == null) shouldBe expected
+                }
+            }
         }
         test("effect data round trips with fixed colors target and duration") {
             val effect = GrantHexproofFromColorsEffect(setOf(Color.BLUE, Color.BLACK), EffectTarget.Controller, Duration.Permanent)

@@ -3618,7 +3618,7 @@ class StackResolver(
                     if (!hexproofSuppressed && projected.hasKeyword(target.entityId, "HEXPROOF") && entityController != controllerId) return@run false
 
                     // Check hexproof from color (Rule 702.11b)
-                    if (!hexproofSuppressed && entityController != controllerId) {
+                    if (!hexproofSuppressed && entityController != null && state.isOpponentOf(controllerId, entityController)) {
                         for (color in sourceColors) {
                             if (projected.hasKeyword(target.entityId, "HEXPROOF_FROM_${color.name}")) {
                                 return@run false

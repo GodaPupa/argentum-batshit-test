@@ -549,8 +549,8 @@ class TargetValidator {
         if (entityId !in state.getBattlefield()) return null
 
         // Hexproof from color only blocks opponents — owner can still target
-        val entityController = state.getEntity(entityId)?.get<ControllerComponent>()?.playerId
-        if (entityController == casterId) return null
+        val entityController = state.projectedState.getController(entityId) ?: return null
+        if (!state.isOpponentOf(casterId, entityController)) return null
 
         val projected = state.projectedState
         val hexproofSuppressed = HexproofSuppression.isSuppressedForCaster(state, projected, entityId, casterId)
