@@ -843,10 +843,17 @@ class StackResolver(
         val copiedSpliceTargets = spliceSizes.map { size ->
             effectiveTargets.subList(copySpliceCursor, copySpliceCursor + size).also { copySpliceCursor += size }.toList()
         }
+        var copyModeCursor = 0
+        val copiedModeTargets = effectiveModeTargets.map { slice ->
+            if (copyModeCursor + slice.size > effectiveTargets.size) {
+                return ExecutionResult.error(state, "Invalid copied modal target structure")
+            }
+            effectiveTargets.subList(copyModeCursor, copyModeCursor + slice.size).also { copyModeCursor += slice.size }.toList()
+        }
         val copiedSpellComp = sourceSpell.copy(
             casterId = copyController,
             chosenModes = effectiveModes,
-            modeTargetsOrdered = effectiveModeTargets,
+            modeTargetsOrdered = copiedModeTargets,
             modeTargetRequirements = effectiveModeRequirements,
             splicedTargetsOrdered = copiedSpliceTargets
         )

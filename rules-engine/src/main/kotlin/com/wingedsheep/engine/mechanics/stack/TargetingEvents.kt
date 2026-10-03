@@ -52,10 +52,10 @@ object TargetingEvents {
             is ChosenTarget.Spell -> target.spellEntityId
             is ChosenTarget.Card -> target.cardId
         }
-        fun remapAllocation(allocation: Map<EntityId, Int>): Map<EntityId, Int>? {
+        fun remapAllocation(allocation: Map<EntityId, Int>, candidateSlots: List<Int>): Map<EntityId, Int>? {
             val result = linkedMapOf<EntityId, Int>()
             for ((oldId, amount) in allocation) {
-                val slots = previous.targets.indices.filter { id(previous.targets[it]) == oldId }
+                val slots = candidateSlots.filter { id(previous.targets[it]) == oldId }
                 val destinations = slots.map { id(targets[it]) }.distinct()
                 if (destinations.size != 1) return null
                 val destination = destinations.single()
@@ -66,10 +66,17 @@ object TargetingEvents {
             return result
         }
         val allocation = spell?.damageDistribution?.let {
-            remapAllocation(it) ?: return EffectResult.error(state, "Ambiguous divided target allocation")
+            remapAllocation(it, (0 until mainCount).toList()) ?: return EffectResult.error(state, "Ambiguous divided target allocation")
         }
-        val modeAllocations = (spell?.modeDamageDistribution ?: triggered?.modeDamageDistribution.orEmpty()).mapValues { (_, allocation) ->
-            remapAllocation(allocation) ?: return EffectResult.error(state, "Ambiguous modal divided allocation")
+        val originalModeTargets = spell?.modeTargetsOrdered ?: triggered?.modeTargetsOrdered.orEmpty()
+        val chosenModes = spell?.chosenModes ?: triggered?.chosenModes.orEmpty()
+        var modeCursor = 0
+        val modeSlots = originalModeTargets.map { slice ->
+            (modeCursor until modeCursor + slice.size).toList().also { modeCursor += slice.size }
+        }
+        val modeAllocations = (spell?.modeDamageDistribution ?: triggered?.modeDamageDistribution.orEmpty()).mapValues { (mode, allocation) ->
+            val slots = chosenModes.indices.filter { chosenModes[it] == mode }.flatMap { modeSlots.getOrNull(it).orEmpty() }
+            remapAllocation(allocation, slots) ?: return EffectResult.error(state, "Ambiguous modal divided allocation")
         }
         val captured = TargetsComponent.capture(state, targets, previous.targetRequirements, previous.announcedTargetCounts)
             .inheritingVisits(previous, refreshedSlots)

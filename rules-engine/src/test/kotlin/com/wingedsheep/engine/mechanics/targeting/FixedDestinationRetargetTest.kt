@@ -122,4 +122,17 @@ class FixedDestinationRetargetTest : FunSpec({
         val updated = before.updateEntity(stack) { it.without<SpellOnStackComponent>().with(ability) }
         FixedDestinationRetarget.legalSlots(updated, stack, target(next)) shouldBe emptyList()
     }
+    test("divided allocations in independent modes follow only their own target slot") {
+        val same = listOf(target(old), target(old))
+        val spell = SpellOnStackComponent(caster, chosenModes = listOf(0, 1),
+            modeTargetsOrdered = same.map { listOf(it) },
+            modeTargetRequirements = mapOf(0 to listOf(TargetPlayer()), 1 to listOf(TargetPlayer())),
+            modeDamageDistribution = mapOf(0 to mapOf(old to 2), 1 to mapOf(old to 3)))
+        val before = state(same, listOf(1, 1)).updateEntity(stack) { it.with(spell) }
+        FixedDestinationRetarget.legalSlots(before, stack, target(next)) shouldBe listOf(0, 1)
+        val result = FixedDestinationRetarget.replaceSlot(before, stack, 0, target(next))
+        result.state.getEntity(stack)!!.get<SpellOnStackComponent>()!!.modeDamageDistribution shouldBe
+            mapOf(0 to mapOf(next to 2), 1 to mapOf(old to 3))
+        result.events.filterIsInstance<BecomesTargetEvent>().size shouldBe 1
+    }
 })

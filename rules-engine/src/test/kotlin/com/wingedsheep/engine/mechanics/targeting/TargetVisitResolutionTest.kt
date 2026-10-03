@@ -139,5 +139,23 @@ class TargetVisitResolutionTest : ScenarioTestBase() {
             slots.isCurrentSlot(roundTrip, 1) shouldBe true
             resolver.resolveTop(roundTrip).state.getEntity(permanent)!!.get<DamageComponent>()!!.amount shouldBe 2
         }
+        test("explicit flat copy replacements rebind inherited modal slot slices") {
+            val g = scenario().withPlayers().withCardOnBattlefield(1, body.name)
+                .withCardOnBattlefield(1, "Grizzly Bears").withCardInHand(1, spell.name).build()
+            val first = ChosenTarget.Permanent(g.findPermanent(body.name)!!)
+            val second = ChosenTarget.Permanent(g.findPermanent("Grizzly Bears")!!)
+            val resolver = EngineServices(cardRegistry).stackResolver
+            val stacked = resolver.castSpell(g.state, g.state.getHand(g.player1Id).single(), g.player1Id,
+                targets = listOf(first, first), targetRequirements = listOf(Targets.Creature, Targets.Creature))
+            val id = stacked.state.stack.last()
+            val modal = stacked.state.updateEntity(id) { container -> container.with(container.get<SpellOnStackComponent>()!!.copy(
+                chosenModes = listOf(0, 1), modeTargetsOrdered = listOf(listOf(first), listOf(first)),
+                modeTargetRequirements = mapOf(0 to listOf(Targets.Creature), 1 to listOf(Targets.Creature)))) }
+            val copied = resolver.putSpellCopy(modal, id, targets = listOf(first, second))
+            copied.error shouldBe null
+            val result = copied.state.getEntity(copied.state.stack.last())!!
+            result.get<SpellOnStackComponent>()!!.modeTargetsOrdered shouldBe listOf(listOf(first), listOf(second))
+            result.get<TargetsComponent>()!!.targets shouldBe listOf(first, second)
+        }
     }
 }
