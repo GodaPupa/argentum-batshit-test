@@ -288,13 +288,23 @@ class PlayLandHandler(
         // Keep the real state untouched, but detach the card from its source zone in the immutable
         // preview first; otherwise a hand/library/exile/graveyard object is "inserted" twice while
         // merely asking whether an external EntersUntapped replacement suppresses this payment.
+        val replacementBeforeEntry = state.removeFromZone(sourceZone, action.cardId)
         val replacementPreview = preview.removeFromZone(sourceZone, action.cardId)
 
+        // StateProjector rebuilds its hypothetical subject from beforeEntry, not just prepared.
+        // Detach the old-zone membership in BOTH immutable scratch inputs: beforeEntry keeps the
+        // historical board/characteristics, while replacementPreview carries the chosen face and
+        // controller. The real state remains untouched until the land-play transaction commits.
+        //
         // Existing ordering: a forced-untapped replacement elides the payment, and a permission
-        // that already forces the land tapped makes the payment meaningless. Preserve both rules,
-        // but evaluate them against the detached pre-entry preview rather than a published battlefield object.
+        // that already forces the land tapped makes the payment meaningless.
         if (com.wingedsheep.engine.handlers.effects.EnterUntappedReplacements
-                .entersUntapped(replacementPreview, action.cardId, action.playerId, state)
+                .entersUntapped(
+                    replacementPreview,
+                    action.cardId,
+                    action.playerId,
+                    replacementBeforeEntry,
+                )
         ) return null
         if (sourceZone.zoneType == Zone.EXILE &&
             permissionForcesLandTapped(state, action.playerId, action.cardId)
