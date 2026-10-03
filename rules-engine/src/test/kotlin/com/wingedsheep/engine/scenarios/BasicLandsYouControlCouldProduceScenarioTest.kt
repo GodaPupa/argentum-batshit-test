@@ -55,8 +55,9 @@ class BasicLandsYouControlCouldProduceScenarioTest : FunSpec({
         d.putLandOnBattlefield(me, "City of Brass")
         val fixture = d.putPermanentOnBattlefield(me, source.name)
 
-        d.submit(ActivateAbility(me, fixture, abilityId, manaColorChoice = Color.GREEN)).isSuccess shouldBe false
+        d.submit(ActivateAbility(me, fixture, abilityId, manaColorChoice = Color.GREEN)).isSuccess shouldBe true
         pool(d, me).green shouldBe 0
+        pool(d, me).red shouldBe 1
     }
 
     test("an opponent's basic land does not widen the color set") {
@@ -67,7 +68,8 @@ class BasicLandsYouControlCouldProduceScenarioTest : FunSpec({
         d.putLandOnBattlefield(enemy, "Island")
         val fixture = d.putPermanentOnBattlefield(me, source.name)
 
-        d.submit(ActivateAbility(me, fixture, abilityId, manaColorChoice = Color.BLUE)).isSuccess shouldBe false
+        d.submit(ActivateAbility(me, fixture, abilityId, manaColorChoice = Color.BLUE)).isSuccess shouldBe true
         pool(d, me).blue shouldBe 0
+        pool(d, me).red shouldBe 1
     }
 })
