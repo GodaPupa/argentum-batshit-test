@@ -1,0 +1,73 @@
+name: Izzet compound face alias author validation
+on:
+  push:
+    branches: ["validation/izzet-compound-face-alias-20261002"]
+    paths: [".github/workflows/izzet-compound-face-alias-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-compound-alias-${{ github.run_id }}
+      OUT: /tmp/izzet-compound-alias-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact shared alias source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "52c458a9a7a2a1c412a7a46b23e953f894d2f602"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-compound-face-alias-validation-20261002.yml"
+          test "$(git rev-parse HEAD^^)" = "3d65d0028d941dfe74cec0b3789ed6c877163e69"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/registry/CardRegistry.kt)" = "f16a158d230211b36438532bf444ee96889338d1"
+          test "$(git hash-object rules-engine/src/test/kotlin/com/wingedsheep/engine/registry/CardRegistryCompoundAliasTest.kt)" = "f0d0edf66631856eedc6107bb37d63bf6230fc14"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile rules-engine test source
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact compound alias and unchanged registry regression suites
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:test \
+            --tests com.wingedsheep.engine.registry.CardRegistryCompoundAliasTest \
+            --tests com.wingedsheep.engine.registry.CardRegistryTest \
+            2>&1 | tee "$OUT/tests.log"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.registry.CardRegistryCompoundAliasTest.xml "$OUT/"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.registry.CardRegistryTest.xml "$OUT/"
+          python3 - <<'PY'
+          import pathlib,xml.etree.ElementTree as ET,os,json
+          out=pathlib.Path(os.environ["OUT"])
+          expected={
+            "TEST-com.wingedsheep.engine.registry.CardRegistryCompoundAliasTest.xml":4,
+            "TEST-com.wingedsheep.engine.registry.CardRegistryTest.xml":6,
+          }
+          summary={}
+          for name,count in expected.items():
+              root=ET.parse(out/name).getroot()
+              got=int(root.attrib["tests"])
+              fail=int(root.attrib["failures"])
+              err=int(root.attrib["errors"])
+              skip=int(root.attrib["skipped"])
+              assert (got,fail,err,skip)==(count,0,0,0),(name,got,fail,err,skip)
+              summary[name]={"tests":got,"failures":fail,"errors":err,"skipped":skip}
+          summary["official_counters_delta"]={"allocations":0,"claims":0,"games":0,"outcomes":0}
+          (out/"summary.json").write_text(json.dumps(summary,indent=2,sort_keys=True)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-compound-face-alias-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
