@@ -1,0 +1,96 @@
+name: Izzet Cosmic Hunger current fixed-type checkpoint
+on:
+  push:
+    branches: ["validation/izzet-cosmic-current-fixedtype-20261003"]
+    paths: [".github/workflows/izzet-cosmic-current-fixedtype-20261003.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-cosmic-current-${{ github.run_id }}
+      OUT: /tmp/izzet-cosmic-current-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact current-head candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "ae209a6f0897f79c5379257091bd36663e0fcf00"
+          test "$(git rev-parse HEAD^^)" = "c53d9621557c26b46dc946c20a9c072349af0374"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-cosmic-current-fixedtype-20261003.yml"
+          test "$(git hash-object mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mom/cards/CosmicHunger.kt)" = "add5e7abdae6c3dc77c8ce67152a93c98ef2aabc"
+          test "$(git hash-object mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CosmicHungerScenarioTest.kt)" = "d3f7296b20da563ac747b9937e3616c8f353dbc0"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt)" = "197a99e6c17885bb70511916893d3a33de217feb"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          printf '%s\n' 'EXACT_CURRENT_HEAD_AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+          cp mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mom/cards/CosmicHunger.kt "$OUT/"
+          cp mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CosmicHungerScenarioTest.kt "$OUT/"
+          cp gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt "$OUT/"
+      - name: Compile affected shard and run exact Cosmic Hunger scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain \
+            :mtg-sets:2023:tests:test --tests com.wingedsheep.engine.scenarios.CosmicHungerScenarioTest \
+            2>&1 | tee "$OUT/cosmic.log"
+          cp mtg-sets/2023/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CosmicHungerScenarioTest.xml "$OUT/"
+          python3 - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          p=pathlib.Path(os.environ['OUT'])/'TEST-com.wingedsheep.engine.scenarios.CosmicHungerScenarioTest.xml'
+          r=ET.parse(p).getroot(); cases=list(r.iter('testcase'))
+          assert len(cases)==10 and len({c.attrib['name'] for c in cases})==10
+          assert all(c.find('failure') is None and c.find('error') is None and c.find('skipped') is None for c in cases)
+          PY
+      - name: Unchanged Position-1 reinventory
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest \
+            2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"; cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT'])
+          root=ET.parse(out/'TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml').getroot()
+          cases=list(root.iter('testcase')); suffix=' is registered in current runtime'
+          assert int(root.attrib['tests'])==55 and len(cases)==55
+          assert len({c.attrib['name'] for c in cases})==55
+          assert all(c.attrib['name'].endswith(suffix) and c.find('skipped') is None and c.find('error') is None for c in cases)
+          reg=[]; miss=[]
+          for c in cases:
+              card=c.attrib['name'][:-len(suffix)]
+              (reg if c.find('failure') is None else miss).append(card)
+          expected={'Benevolent Blessing','Everflowing Chalice','Lose Focus','Snake Umbra'}
+          assert 'Cosmic Hunger' in reg
+          assert len(reg)==51 and set(miss)==expected, (len(reg), sorted(miss))
+          assert int(os.environ['REGISTRY_RC'])!=0
+          (out/'registry-summary.json').write_text(json.dumps({
+              'registered':len(reg),'missing':len(miss),'missing_names':sorted(miss),
+              'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}
+          },indent=2,sort_keys=True)+'\n')
+          PY
+      - name: Preserve exact results including any failure
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p "$OUT"
+          find mtg-sets/2023/tests/build/test-results/test gym/build/test-results/test \
+            -maxdepth 1 -name 'TEST-*.xml' -exec cp '{}' "$OUT/" ';' 2>/dev/null || true
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-cosmic-current-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
