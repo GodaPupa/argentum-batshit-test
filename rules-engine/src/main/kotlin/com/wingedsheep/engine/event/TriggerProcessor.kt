@@ -525,6 +525,7 @@ class TriggerProcessor(
                 triggerLastKnownCounters = trigger.triggerContext.lastKnownCounters,
             triggerLastKnownSubtypes = trigger.triggerContext.lastKnownSubtypes,
             triggerLastKnownCardTypes = trigger.triggerContext.lastKnownCardTypes,
+            triggerEntryOrigin = trigger.triggerContext.entryOrigin,
                 triggerLastKnownDamageDealtByPlayers =
                     trigger.triggerContext.lastKnownDamageDealtByPlayers,
                 triggerLastKnownBlockingOrBlockedByIds =
@@ -578,6 +579,7 @@ class TriggerProcessor(
                 triggerLastKnownCounters = trigger.triggerContext.lastKnownCounters,
                 triggerLastKnownSubtypes = trigger.triggerContext.lastKnownSubtypes,
                 triggerLastKnownCardTypes = trigger.triggerContext.lastKnownCardTypes,
+                triggerEntryOrigin = trigger.triggerContext.entryOrigin,
                 triggerLastKnownDamageDealtByPlayers =
                     trigger.triggerContext.lastKnownDamageDealtByPlayers,
                 triggerLastKnownBlockingOrBlockedByIds =
@@ -665,6 +667,7 @@ class TriggerProcessor(
             triggerLastKnownCounters = trigger.triggerContext.lastKnownCounters,
             triggerLastKnownSubtypes = trigger.triggerContext.lastKnownSubtypes,
             triggerLastKnownCardTypes = trigger.triggerContext.lastKnownCardTypes,
+            triggerEntryOrigin = trigger.triggerContext.entryOrigin,
             triggerLastKnownDamageDealtByPlayers =
                 trigger.triggerContext.lastKnownDamageDealtByPlayers,
             triggerLastKnownBlockingOrBlockedByIds =
@@ -1320,6 +1323,7 @@ class TriggerProcessor(
                         triggerLastKnownCounters = trigger.triggerContext.lastKnownCounters,
             triggerLastKnownSubtypes = trigger.triggerContext.lastKnownSubtypes,
             triggerLastKnownCardTypes = trigger.triggerContext.lastKnownCardTypes,
+            triggerEntryOrigin = trigger.triggerContext.entryOrigin,
                         triggerLastKnownDamageDealtByPlayers = trigger.triggerContext.lastKnownDamageDealtByPlayers,
                         triggerLastKnownBlockingOrBlockedByIds = trigger.triggerContext.lastKnownBlockingOrBlockedByIds,
                         triggerLastKnownPower = trigger.triggerContext.lastKnownPower,
@@ -1388,6 +1392,7 @@ class TriggerProcessor(
                 triggerLastKnownCounters = trigger.triggerContext.lastKnownCounters,
             triggerLastKnownSubtypes = trigger.triggerContext.lastKnownSubtypes,
             triggerLastKnownCardTypes = trigger.triggerContext.lastKnownCardTypes,
+            triggerEntryOrigin = trigger.triggerContext.entryOrigin,
                 triggerLastKnownDamageDealtByPlayers = trigger.triggerContext.lastKnownDamageDealtByPlayers,
                 triggerLastKnownBlockingOrBlockedByIds = trigger.triggerContext.lastKnownBlockingOrBlockedByIds,
                 triggerLastKnownPower = trigger.triggerContext.lastKnownPower,

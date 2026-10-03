@@ -2090,6 +2090,7 @@ class TriggerMatcher(
                 triggerLastKnownCounters = trigger.triggerContext.lastKnownCounters,
                 triggerLastKnownSubtypes = trigger.triggerContext.lastKnownSubtypes,
                 triggerLastKnownCardTypes = trigger.triggerContext.lastKnownCardTypes,
+                triggerEntryOrigin = trigger.triggerContext.entryOrigin,
                 triggerLastKnownPower = trigger.triggerContext.lastKnownPower,
                 triggerLastKnownToughness = trigger.triggerContext.lastKnownToughness,
                 triggerDiedBatchTotalPower = trigger.triggerContext.diedBatchTotalPower,

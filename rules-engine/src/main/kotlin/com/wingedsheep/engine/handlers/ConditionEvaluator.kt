@@ -668,6 +668,8 @@ class ConditionEvaluator(
                 ifResolution { evaluateTriggeringSpellCastWithoutPayingMana(state, it) }
             is com.wingedsheep.sdk.scripting.conditions.TriggeringSpellManaSpentAtLeast ->
                 ifResolution { evaluateTriggeringSpellManaSpentAtLeast(state, condition.amount, it) }
+            is com.wingedsheep.sdk.scripting.conditions.TriggeringEntityEnteredOrWasCastFromZone ->
+                ifResolution { it.triggerEntryOrigin?.enteredOrWasCastFrom(condition.zone) == true }
             is TriggeringEntityEnteredOrWasCastFromGraveyard ->
                 ifResolution { evaluateTriggeringEntityEnteredOrWasCastFromGraveyard(state, it) }
             is TriggeringEntityHadMinusOneMinusOneCounter ->
@@ -1763,6 +1765,7 @@ class ConditionEvaluator(
         state: GameState,
         context: EffectContext
     ): Boolean {
+        context.triggerEntryOrigin?.let { return it.enteredOrWasCastFrom(Zone.GRAVEYARD) }
         val entityId = context.triggeringEntityId ?: return false
         val entity = state.getEntity(entityId) ?: return false
         return entity.has<com.wingedsheep.engine.state.components.battlefield.CastFromGraveyardComponent>() ||

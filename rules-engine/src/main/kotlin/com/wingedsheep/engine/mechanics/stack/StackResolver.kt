@@ -2036,6 +2036,7 @@ class StackResolver(
             spellId, nameVisibleToAll(newState, spellId, cardComponent?.name ?: "Unknown"),
             Zone.STACK, Zone.BATTLEFIELD, cardComponent?.ownerId ?: controllerId,
             xValue = spellComponent.xValue,
+            castFromZone = spellComponent.castFromZone.takeUnless { resolvingAsSpellCopy },
             enteredBattlefieldTimestamp = newState.getEntity(spellId)
                 ?.get<com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent>()?.timestamp,
             oldObject = state.objectRef(spellId), newObject = newState.objectRef(spellId),

@@ -217,6 +217,7 @@ data class TriggeredAbilityOnStackComponent(
      */
     val triggerLastKnownSubtypes: Set<String>? = null,
     val triggerLastKnownCardTypes: Set<String>? = null,
+    val triggerEntryOrigin: com.wingedsheep.engine.event.BattlefieldEntryOrigin? = null,
     /** Per-player damage dealt to the trigger's source this turn, captured at LTB time (Grothama). */
     val triggerLastKnownDamageDealtByPlayers: Map<EntityId, Int>? = null,
     /** Creatures blocking/blocked by the trigger's source on leave-battlefield (CR 509 LKI, Abu Ja'far). */

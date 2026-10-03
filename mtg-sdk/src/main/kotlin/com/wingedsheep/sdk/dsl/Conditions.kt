@@ -2166,6 +2166,10 @@ object Conditions {
      * If the triggering entity entered or was cast from a graveyard.
      * Used by Twilight Diviner: "if they entered or were cast from a graveyard".
      */
+    /** Historical direct-entry or cast origin of the triggering battlefield object. */
+    fun TriggeringEntityEnteredOrWasCastFromZone(zone: Zone): ConditionInterface =
+        com.wingedsheep.sdk.scripting.conditions.TriggeringEntityEnteredOrWasCastFromZone(zone)
+
     val TriggeringEntityEnteredOrWasCastFromGraveyard: ConditionInterface =
         com.wingedsheep.sdk.scripting.conditions.TriggeringEntityEnteredOrWasCastFromGraveyard
 
