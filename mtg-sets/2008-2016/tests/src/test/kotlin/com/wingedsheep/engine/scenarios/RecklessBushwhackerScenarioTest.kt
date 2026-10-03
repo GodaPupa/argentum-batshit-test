@@ -71,15 +71,15 @@ class RecklessBushwhackerScenarioTest : FunSpec({
         d.legalActions(d.player1).filter { (it.action as? CastSpell)?.cardId == cardId }
 
     fun surgeActionExists(d: GameTestDriver, cardId: com.wingedsheep.sdk.model.EntityId): Boolean =
-        actionsFor(d, cardId).any {
-            val cast = it.action as CastSpell
-            cast.useAlternativeCost && cast.alternativeCostType == AlternativeCostType.SELF_ALTERNATIVE
+        actionsFor(d, cardId).any { info ->
+            val spell = info.action as CastSpell
+            spell.useAlternativeCost && spell.alternativeCostType == AlternativeCostType.SELF_ALTERNATIVE
         }
 
     fun normalActionExists(d: GameTestDriver, cardId: com.wingedsheep.sdk.model.EntityId): Boolean =
-        actionsFor(d, cardId).any {
-            val cast = it.action as CastSpell
-            !cast.useAlternativeCost
+        actionsFor(d, cardId).any { info ->
+            val spell = info.action as CastSpell
+            spell.useAlternativeCost == false
         }
 
     fun castSurged(d: GameTestDriver): com.wingedsheep.sdk.model.EntityId {
@@ -120,15 +120,15 @@ class RecklessBushwhackerScenarioTest : FunSpec({
         d.giveMana(d.player1, Color.RED, 3)
         val actions = actionsFor(d, id)
 
-        actions.any {
-            val cast = it.action as CastSpell
-            !cast.useAlternativeCost && it.manaCostString == "{2}{R}"
+        actions.any { info ->
+            val spell = info.action as CastSpell
+            spell.useAlternativeCost == false && info.manaCostString == "{2}{R}"
         } shouldBe true
-        actions.any {
-            val cast = it.action as CastSpell
-            cast.useAlternativeCost &&
-                cast.alternativeCostType == AlternativeCostType.SELF_ALTERNATIVE &&
-                it.manaCostString == "{1}{R}"
+        actions.any { info ->
+            val spell = info.action as CastSpell
+            spell.useAlternativeCost &&
+                spell.alternativeCostType == AlternativeCostType.SELF_ALTERNATIVE &&
+                info.manaCostString == "{1}{R}"
         } shouldBe true
     }
 
@@ -244,8 +244,8 @@ class RecklessBushwhackerScenarioTest : FunSpec({
     test("canonical Oath of the Gatewatch printing metadata and characteristics are preserved") {
         RecklessBushwhacker.manaCost.toString() shouldBe "{2}{R}"
         RecklessBushwhacker.typeLine.toString() shouldBe "Creature — Goblin Warrior Ally"
-        RecklessBushwhacker.creatureStats?.power shouldBe 2
-        RecklessBushwhacker.creatureStats?.toughness shouldBe 1
+        RecklessBushwhacker.creatureStats?.power shouldBe DynamicAmount.Fixed(2)
+        RecklessBushwhacker.creatureStats?.toughness shouldBe DynamicAmount.Fixed(1)
         RecklessBushwhacker.keywords.contains(Keyword.HASTE) shouldBe true
         RecklessBushwhacker.metadata.rarity shouldBe com.wingedsheep.sdk.model.Rarity.UNCOMMON
         RecklessBushwhacker.metadata.collectorNumber shouldBe "116"
