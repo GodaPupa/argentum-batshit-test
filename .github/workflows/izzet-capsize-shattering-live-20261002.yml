@@ -1,0 +1,87 @@
+name: Izzet Capsize + Shattering Pulse live checkpoint
+on:
+  push:
+    branches: ["validation/izzet-capsize-shattering-live-20261002"]
+    paths: [".github/workflows/izzet-capsize-shattering-live-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-buyback-cards-${{ github.run_id }}
+      OUT: /tmp/izzet-buyback-cards-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact composed live source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "f1cc969db03a93dce068a45f72b04d502071d006"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-capsize-shattering-live-20261002.yml"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tmp/cards/Capsize.kt)" = "d2add4a72b0c572d9b0ae87ac15ac91ec55d04db"
+          test "$(git hash-object mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CapsizeScenarioTest.kt)" = "eff112643ab8dfc91cd2721df21e12fa1e71af63"
+          test "$(git hash-object mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/exo/cards/ShatteringPulse.kt)" = "2d0fe8c7310b699a798ac959c31c86402acbcef2"
+          test "$(git hash-object mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ShatteringPulseScenarioTest.kt)" = "fc8a501544bdbc8d190829936207ba54e5a162c4"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_ONLY_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile affected shard and registry test source
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:1993-1999:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Capsize scenario
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:1993-1999:tests:test --tests com.wingedsheep.engine.scenarios.CapsizeScenarioTest 2>&1 | tee "$OUT/capsize.log"
+          cp mtg-sets/1993-1999/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CapsizeScenarioTest.xml "$OUT/"
+      - name: Run exact Shattering Pulse scenario
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:1993-1999:tests:test --tests com.wingedsheep.engine.scenarios.ShatteringPulseScenarioTest 2>&1 | tee "$OUT/shattering.log"
+          cp mtg-sets/1993-1999/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ShatteringPulseScenarioTest.xml "$OUT/"
+      - name: Reinventory Position-1
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"; cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"; reg=[]; miss=[]
+          for c in root.iter("testcase"):
+              n=c.attrib["name"]; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (reg if c.find("failure") is None and c.find("error") is None else miss).append(card)
+          expected={"Benevolent Blessing","Cosmic Hunger","Everflowing Chalice","Lose Focus","Rolling Thunder","Skred","Snake Umbra"}
+          assert set(miss)==expected, (len(reg),len(miss),sorted(miss))
+          assert len(reg)==48 and len(miss)==7
+          assert "Capsize" in reg and "Shattering Pulse" in reg
+          (out/"registry-summary.json").write_text(json.dumps({
+            "registered":len(reg),"missing":len(miss),"missing_names":sorted(miss),
+            "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0}
+          },indent=2,sort_keys=True)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-capsize-shattering-live-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
