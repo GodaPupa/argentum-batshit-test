@@ -1,0 +1,97 @@
+name: Izzet protection provenance qualification
+on:
+  push:
+    branches: [diagnostic/izzet-protection-provenance-20261003]
+    paths: [.github/workflows/izzet-protection-provenance-20261003.yml]
+permissions:
+  contents: read
+concurrency:
+  group: izzet-protection-provenance-20261003
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/izzet-protection-provenance-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source-only successor and workflow-only validation child
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='b1ec11075295874ea5be277b0f9b2b0b01d04022';parent='d5729950a65fb10e0b32424d74c9ccb57ed2dfcf';workflow='.github/workflows/izzet-protection-provenance-20261003.yml'
+          expected={'docs/card-sdk-language-reference.md': '32a24c25a33f12e012bbcd41420606e3bc15975e', 'docs/experiments/izzet/protection-provenance-20261003.md': 'f1e23f1ea85f2a5e903ac2253f9bc3589f55d029', 'mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ProtectionStaticAbilities.kt': '3b209964328996f900f6e557716b0d089962bc99', 'mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/BlackWard.kt': '29f4f6d414e7774e68290f1de171a060970d53dc', 'mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/BlueWard.kt': '44f891b7cbd52e3ba662798a788e7cfb851c8756', 'mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/GreenWard.kt': 'd6afe0bc9ffdf10d65fc2d6a5301be8d94b47af1', 'mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/RedWard.kt': 'e1d11c81bc10b037a9aad87bcd6b25f5bd2417c9', 'mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/WhiteWard.kt': 'a979846bfc0cb3b9947047fe15139a69c0eed590', 'mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/ChoMannosBlessing.kt': '7c173beb4a54c26f53cfcaec3cf8e8df23871ec8', 'mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tmp/cards/FlickeringWard.kt': 'aad433e67309809f1ec68df9aa2430f50b37ecb0', 'mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/inv/cards/PledgeOfLoyalty.kt': '334e4a9c9ab50725cfa0f1e194447ddb78b64c49', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/EffectApplicator.kt': '454e1babf8378d238cfd6f8fef39208ea9dcde54', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ProjectedState.kt': 'd53829951e6c2792375ebc0b0322f64fa8a57c96', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ProjectionModels.kt': '66a5a8be56f6f3c7bf08131411c3ecd5a6332452', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/StateProjector.kt': 'eb2aa3a07228ccabdb8fdf988163567e4d05eb8b', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/StaticAbilityHandler.kt': 'ba01097224754062a4e0bd1f6aefb72df11eaada', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/UnattachedAurasCheck.kt': '2ee795a393b1854f34ceb6fe13070e17f3628829', 'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ProtectionAttachmentProvenanceTest.kt': '383b361b950858c202cd37e0c97e156b39cfb11a'}
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse','HEAD^^')==parent
+          assert git('rev-parse',source+'^{tree}')=='b65729e5a458638d09532ce5ab06f7e55af75cc3'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          assert git('diff','--name-only',parent,source).splitlines()==sorted(expected)
+          assert not git('status','--porcelain')
+          for p,blob in expected.items(): assert git('hash-object',p)==blob,p
+          binding={'source_head':source,'source_tree':'b65729e5a458638d09532ce5ab06f7e55af75cc3','parent_source_head':parent,
+            'validation_head':git('rev-parse','HEAD'),'validation_tree':git('rev-parse','HEAD^{tree}'),
+            'source_git_blobs':expected,'source_sha256':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in expected},
+            'workflow_sha256':hashlib.sha256(pathlib.Path(workflow).read_bytes()).hexdigest(),
+            'scope':'PROTECTION_PROVENANCE_SHARED_QUALIFICATION','registry_not_executed':True,'exact_card_admission':False,
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}}
+          (out/'source-binding.json').write_text(json.dumps(binding,indent=2)+'\n')
+          PYCODE
+      - name: Compile affected sources and run eight provenance plus three existing Aura regressions
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --continue --max-workers=1 \
+            -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.ProtectionAttachmentProvenanceTest --tests com.wingedsheep.engine.scenarios.ProtectionAuraStateBasedActionTest :mtg-sets:2000-2002:tests:test --tests com.wingedsheep.engine.scenarios.PledgeOfLoyaltyTest \
+            2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+      - name: Preserve all actual prerequisite cases and failures; no registry or admission
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']);out.mkdir(parents=True,exist_ok=True)
+          expected={'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ProtectionAttachmentProvenanceTest.xml': 8, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ProtectionAuraStateBasedActionTest.xml': 1, 'mtg-sets/2000-2002/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PledgeOfLoyaltyTest.xml': 2}
+          suites=[];problems=[]
+          for cls,count in expected.items():
+            p=pathlib.Path(cls)
+            if not p.exists(): problems.append('Missing '+str(p));continue
+            shutil.copy2(p,out/p.name)
+            root=ET.parse(p).getroot();cases=root.findall('.//testcase')
+            totals={k:int(root.get(k,'0')) for k in ('tests','failures','errors','skipped')}
+            suites.append({'class':cls,**totals,'actual_cases':len(cases)})
+            if totals!={'tests':count,'failures':0,'errors':0,'skipped':0} or len(cases)!=count:
+              problems.append(cls+': '+json.dumps(totals)+' actual='+str(len(cases)))
+          (out/'summary.json').write_text(json.dumps({'suites':suites,'problems':problems,'expected_tests':sum(expected.values())},indent=2)+'\n')
+          files=sorted(p for p in out.iterdir() if p.is_file())
+          (out/'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in files))
+          if problems: raise SystemExit('\n'.join(problems))
+          PYCODE
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: izzet-protection-provenance-${{ github.run_id }}
+          path: ${{ env.OUT }}
+          if-no-files-found: error
+          retention-days: 90
+
