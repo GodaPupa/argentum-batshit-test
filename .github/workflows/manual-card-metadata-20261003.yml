@@ -1,0 +1,36 @@
+name: Manual exact card metadata capture
+on:
+  push:
+    branches: [validation/manual-card-metadata-20261003]
+    paths: [.github/workflows/manual-card-metadata-20261003.yml]
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Preserve exact printings and ruling responses
+        shell: bash
+        run: |
+          mkdir -p /tmp/manual-card-metadata
+          python3 - <<'PY'
+          import urllib.request,json,pathlib,hashlib,time
+          out=pathlib.Path('/tmp/manual-card-metadata')
+          for name,code,number in [('Veil of Summer','m20','198'),('Spellskite','nph','159')]:
+            req=urllib.request.Request('https://api.scryfall.com/cards/'+code+'/'+number,headers={'User-Agent':'Argentum-Qualification/1.0','Accept':'application/json'})
+            raw=urllib.request.urlopen(req,timeout=30).read();card=json.loads(raw)
+            assert card['name']==name and card['set']==code and card['collector_number']==number
+            (out/(code+'-'+number+'.json')).write_bytes(raw)
+            time.sleep(.2)
+            req=urllib.request.Request(card['rulings_uri'],headers={'User-Agent':'Argentum-Qualification/1.0','Accept':'application/json'})
+            (out/(code+'-'+number+'-rulings.json')).write_bytes(urllib.request.urlopen(req,timeout=30).read())
+          (out/'sha256.json').write_text(json.dumps({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.iterdir())},indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-card-metadata-${{ github.run_id }}
+          path: /tmp/manual-card-metadata/
+          if-no-files-found: error
+          retention-days: 90
