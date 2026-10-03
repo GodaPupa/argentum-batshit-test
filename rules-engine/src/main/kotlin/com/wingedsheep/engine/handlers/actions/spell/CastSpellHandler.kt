@@ -862,7 +862,8 @@ class CastSpellHandler(
                     sourceSubtypes = validationDef.typeLine.subtypes.map { it.value }.toSet(),
                     sourceId = action.cardId,
                     xValue = action.xValue,
-                    targetingSourceType = TargetingSourceType.SPELL
+                    targetingSourceType = TargetingSourceType.SPELL,
+                    announcedTargetCounts = action.announcedTargetCounts
                 )
                 if (targetError != null) {
                     return targetError
@@ -3953,6 +3954,7 @@ class CastSpellHandler(
             } else null,
             damageDistribution = action.damageDistribution,
             targetRequirements = spellTargetRequirements,
+            announcedTargetCounts = action.announcedTargetCounts,
             exiledCardCount = exiledCardCount,
             additionalCostBlightAmount = action.additionalCostPayment?.blightAmount ?: 0,
             additionalCostPayXLifeAmount = payXLifeAmount,

@@ -462,7 +462,8 @@ data class AbilityOnStackComponent(
 data class TargetsComponent(
     val targets: List<ChosenTarget>,
     val targetRequirements: List<TargetRequirement> = emptyList(),
-    val targetEntryStamps: Map<EntityId, Long> = emptyMap()
+    val targetEntryStamps: Map<EntityId, Long> = emptyMap(),
+    val announcedTargetCounts: List<Int>? = null
 ) : Component {
 
     companion object {
@@ -486,10 +487,12 @@ data class TargetsComponent(
         fun capture(
             state: GameState,
             targets: List<ChosenTarget>,
-            targetRequirements: List<TargetRequirement> = emptyList()
+            targetRequirements: List<TargetRequirement> = emptyList(),
+            announcedTargetCounts: List<Int>? = null
         ): TargetsComponent = TargetsComponent(
             targets = targets,
             targetRequirements = targetRequirements,
+            announcedTargetCounts = announcedTargetCounts ?: com.wingedsheep.engine.mechanics.targeting.AnnouncedTargetGroups.counts(targetRequirements, targets.size),
             targetEntryStamps = targets.filterIsInstance<ChosenTarget.Permanent>()
                 .filter { it.entityId in state.getBattlefield() }
                 .associate { it.entityId to entryStamp(state, it.entityId) }

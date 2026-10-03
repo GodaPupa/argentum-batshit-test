@@ -28,13 +28,62 @@ object TargetingEvents {
             ?: return EffectResult.success(state)
         if (previous.targets == targets) return EffectResult.success(state)
 
-        val captured = TargetsComponent.capture(state, targets, previous.targetRequirements)
+        // Target-changing effects replace slots, not the number of announced targets.
+        if (targets.size != previous.targets.size) return EffectResult.error(state, "Target slot count cannot change")
+        val spliceCount = spell?.splicedTargetsOrdered?.sumOf { it.size } ?: 0
+        val mainCount = previous.targets.size - spliceCount
+        if (mainCount < 0) return EffectResult.error(state, "Invalid splice target structure")
+        fun rebind(slices: List<List<ChosenTarget>>, offset: Int): List<List<ChosenTarget>>? {
+            if (slices.isEmpty()) return emptyList()
+            val flat = slices.flatten()
+            if (offset < 0 || offset + flat.size > previous.targets.size ||
+                previous.targets.subList(offset, offset + flat.size) != flat) return null
+            var cursor = offset
+            return slices.map { slice -> targets.subList(cursor, cursor + slice.size).also { cursor += slice.size }.toList() }
+        }
+        val reboundModes = rebind(spell?.modeTargetsOrdered.orEmpty(), 0)
+            ?: return EffectResult.error(state, "Modal target structure does not match announced slots")
+        val reboundSplices = rebind(spell?.splicedTargetsOrdered.orEmpty(), mainCount)
+            ?: return EffectResult.error(state, "Splice target structure does not match announced slots")
+        fun id(target: ChosenTarget): EntityId = when (target) {
+            is ChosenTarget.Player -> target.playerId
+            is ChosenTarget.Permanent -> target.entityId
+            is ChosenTarget.Spell -> target.spellEntityId
+            is ChosenTarget.Card -> target.cardId
+        }
+        fun remapAllocation(allocation: Map<EntityId, Int>): Map<EntityId, Int>? {
+            val result = linkedMapOf<EntityId, Int>()
+            for ((oldId, amount) in allocation) {
+                val slots = previous.targets.indices.filter { id(previous.targets[it]) == oldId }
+                val destinations = slots.map { id(targets[it]) }.distinct()
+                if (destinations.size != 1) return null
+                val destination = destinations.single()
+                // A target-keyed allocation cannot represent merging or splitting two slots.
+                if (destination in result) return null
+                result[destination] = amount
+            }
+            return result
+        }
+        val allocation = spell?.damageDistribution?.let {
+            remapAllocation(it) ?: return EffectResult.error(state, "Ambiguous divided target allocation")
+        }
+        val modeAllocations = spell?.modeDamageDistribution.orEmpty().mapValues { (_, allocation) ->
+            remapAllocation(allocation) ?: return EffectResult.error(state, "Ambiguous modal divided allocation")
+        }
+        val captured = TargetsComponent.capture(state, targets, previous.targetRequirements, previous.announcedTargetCounts)
         // Retained targets keep their old object-identity stamps, even if that object has blinked.
         val retainedStamps = previous.targetEntryStamps.filterKeys { id ->
             targets.any { it is ChosenTarget.Permanent && it.entityId == id }
         }
         var updated = state.updateEntity(stackObjectId) {
-            it.with(captured.copy(targetEntryStamps = captured.targetEntryStamps + retainedStamps))
+            var entity = it.with(captured.copy(targetEntryStamps = captured.targetEntryStamps + retainedStamps))
+            if (spell != null) entity = entity.with(spell.copy(
+                modeTargetsOrdered = reboundModes,
+                splicedTargetsOrdered = reboundSplices,
+                damageDistribution = allocation,
+                modeDamageDistribution = modeAllocations
+            ))
+            entity
         }
         val events = mutableListOf<GameEvent>()
         for (target in targets.distinct()) {

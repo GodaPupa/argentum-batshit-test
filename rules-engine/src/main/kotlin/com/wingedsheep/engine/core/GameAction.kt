@@ -196,7 +196,9 @@ data class CastSpell(
      * synthesized free casts) leave it null. Mirrors how [useWithoutPayingManaCost] was split
      * out as its own flag for the same reason (CR 118.9a — only one alternative cost per cast).
      */
-    val alternativeCostType: AlternativeCostType? = null
+    val alternativeCostType: AlternativeCostType? = null,
+    /** Chosen target cardinality of each announced requirement, including omitted optional groups. */
+    val announcedTargetCounts: List<Int>? = null
 ) : GameAction
 
 /**

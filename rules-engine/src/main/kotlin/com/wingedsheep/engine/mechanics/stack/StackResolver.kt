@@ -213,6 +213,7 @@ class StackResolver(
         castOriginState: GameState = state,
         /** Prototype characteristics selected for this cast (CR 702.160), or null for a normal cast. */
         prototype: com.wingedsheep.sdk.scripting.KeywordAbility.Prototype? = null,
+        announcedTargetCounts: List<Int>? = null,
     ): ExecutionResult {
         val container = state.getEntity(cardId)
             ?: return ExecutionResult.error(state, "Card not found: $cardId")
@@ -417,7 +418,7 @@ class StackResolver(
             ))
             if (effectiveTargets.isNotEmpty()) {
                 updated = updated.with(
-                    TargetsComponent.capture(state, effectiveTargets, effectiveTargetRequirements)
+                    TargetsComponent.capture(state, effectiveTargets, effectiveTargetRequirements, announcedTargetCounts)
                 )
             }
             // Add turn-up data for cards castable face down (needed for face-down casting and
@@ -821,7 +822,7 @@ class StackResolver(
 
         var container = ComponentContainer.of(copiedCardComp, copiedSpellComp)
         if (effectiveTargets.isNotEmpty()) {
-            container = container.with(TargetsComponent.capture(state, effectiveTargets, effectiveRequirements))
+            container = container.with(TargetsComponent.capture(state, effectiveTargets, effectiveRequirements, sourceTargets?.announcedTargetCounts))
         }
         container = container.with(
             CopyOfComponent(
