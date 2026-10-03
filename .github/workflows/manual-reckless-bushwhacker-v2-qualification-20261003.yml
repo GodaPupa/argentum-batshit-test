@@ -1,0 +1,193 @@
+name: Manual exact Reckless Bushwhacker v2 qualification
+on:
+  push:
+    branches: [validation/manual-reckless-bushwhacker-v2-20261003]
+    paths: [.github/workflows/manual-reckless-bushwhacker-v2-qualification-20261003.yml]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-reckless-bushwhacker-v2-qualification
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/manual-bushwhacker-v2-${{ github.run_id }}
+      MT_P2_AUDIT_INPUT: /tmp/manual-bushwhacker-v2-${{ github.run_id }}/registry-requests.json
+      MT_P2_AUDIT_OUTPUT: /tmp/manual-bushwhacker-v2-${{ github.run_id }}/registry
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Bind exact source-only Bushwhacker candidate and frozen registry contract
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='e36d759dd18f3e34f42cae4c7959c1b0a6d29909'
+          live='d79462d20b147ad34f8a3dbbeb9981676d03e3ec'
+          workflow='.github/workflows/manual-reckless-bushwhacker-v2-qualification-20261003.yml'
+          expected={
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt':'54be95600dcd353bc4e7f74b7d4b385beb3b8457',
+            'mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/conditions/TeamCastConditions.kt':'48f5078b48358e8607a0b79ff70436e39f69ba93',
+            'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/RecklessBushwhacker.kt':'c80a3ba3a9fb1d8f7fbdebdf7abccc16a306209d',
+            'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RecklessBushwhackerScenarioTest.kt':'88db967f6280b1d4328780895c1d93a55a19eae1',
+          }
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse',source+'^')==live
+          assert git('rev-parse',source+'^{tree}')=='47ed03e53e615fefa1ae2169181988ded9fb8c1b'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          actual=git('diff','--name-only',live,source).splitlines()
+          assert actual==sorted(expected),(actual,sorted(expected))
+          assert not any(p.startswith('.github/workflows/') for p in actual)
+          assert not git('status','--porcelain')
+          for p,blob in expected.items():
+            assert git('hash-object',p)==blob,(p,git('hash-object',p),blob)
+          (out/'source-binding.json').write_text(json.dumps({
+            'source_head':source,'source_tree':git('rev-parse',source+'^{tree}'),'parent_live':live,
+            'validation_head':git('rev-parse','HEAD'),'validation_tree':git('rev-parse','HEAD^{tree}'),
+            'source_blobs':expected,
+            'preserved_prior_failed_run':37153889346,
+            'preserved_prior_failed_artifact':11284543880,
+            'preserved_prior_failed_artifact_sha256':'f98205a5c389c8d78966681ca82510530762cfc0236ee86b1f5dddc0b3b128ff',
+            'qualified_provenance_run':37151070713,
+            'qualified_provenance_artifact':11283534356,
+            'qualified_provenance_artifact_sha256':'1545d503a9d0f0a4d2c09ebb9090d6d4f327966313d6b72aad9a543c6feb894a',
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0},
+          },indent=2)+'\n')
+          PY
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/11283534356/zip" \
+            -o "$OUT/prior-green.zip"
+          unzip -p "$OUT/prior-green.zip" registry-requests.json > "$MT_P2_AUDIT_INPUT"
+          test "$(sha256sum "$MT_P2_AUDIT_INPUT" | awk '{print $1}')" = "09b8617057b9bd42fb6501f993588c9bf769e1f0af0c73426ca963da07d20084"
+
+      - name: Configure validation-only execution without coverage instrumentation
+        shell: bash
+        run: |
+          cat > "$OUT/no-coverage.gradle" <<'GRADLE'
+          allprojects { p ->
+            p.plugins.withId('org.jetbrains.kotlinx.kover') {
+              p.extensions.getByName('kover').currentProject {
+                instrumentation { disabledForAll.set(true) }
+              }
+            }
+          }
+          GRADLE
+
+      - name: Run exact Bushwhacker cases and unchanged registry audit
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --init-script "$OUT/no-coverage.gradle" --no-daemon --no-configuration-cache \
+            --console=plain --continue --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest \
+            :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest \
+            2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+
+      - name: Audit actual cases and exact registry delta
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']); out.mkdir(parents=True,exist_ok=True)
+          suites={
+            'mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RecklessBushwhackerScenarioTest.xml':9,
+            'gym/build/test-results/test/TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml':1,
+          }
+          rows=[]
+          for name,count in suites.items():
+            p=pathlib.Path(name)
+            row={'path':name,'expected':count,'missing':not p.exists(),'cases':[]}
+            if p.exists():
+              dest=out/p.name; shutil.copyfile(p,dest)
+              row['xml_sha256']=hashlib.sha256(p.read_bytes()).hexdigest()
+              row['cases']=[{'name':c.attrib['name'],'failure':c.find('failure') is not None,
+                'error':c.find('error') is not None,'skipped':c.find('skipped') is not None}
+                for c in ET.parse(p).getroot().findall('testcase')]
+            rows.append(row)
+          (out/'actual-cases.json').write_text(json.dumps(rows,indent=2)+'\n')
+          assert all(not r['missing'] for r in rows),rows
+          assert all(len(r['cases'])==r['expected'] for r in rows),rows
+          assert all(len({c['name'] for c in r['cases']})==r['expected'] for r in rows),rows
+          assert not any(c['failure'] or c['error'] or c['skipped'] for r in rows for c in r['cases']),rows
+          assert (out/'gradle-exit-code.txt').read_text().strip()=='0'
+
+          report_path=out/'registry/registry-report.json'
+          report=json.loads(report_path.read_text())
+          assert report['schema']=='mt-phase2-live-registry-audit-v1'
+          assert report['status']=='INVENTORY_ONLY_NOT_RULES_OR_PILOT_QUALIFICATION'
+          assert report['execution_allowed'] is False
+          assert report['actual_deck_games_initialized']==0 and report['official_outcomes']==0
+          assert len(report['decks'])==8
+          summary={}
+          for deck in report['decks']:
+            assert deck['physical_cards']==len(deck['cards'])==100
+            assert all(c['rules_qualified'] is False for c in deck['cards'])
+            missing=[c['requested_name'] for c in deck['cards'] if not c['registry_resolved']]
+            summary[deck['deck_id']]={'resolved':100-len(missing),'unresolved':len(missing),'missing':missing}
+          expected_resolved={
+            'manual-transmission-v07':98,'blue-farm':62,'rogsi':59,'kinnan':61,
+            'sisay':60,'magda':50,'hashaton':49,'shorikai':56,
+          }
+          assert {k:v['resolved'] for k,v in summary.items()}==expected_resolved,summary
+          own=summary['manual-transmission-v07']
+          assert own['missing']==['Amphin Mutineer','Disciple of Freyalise'],own
+          assert sum(v['unresolved'] for v in summary.values())==305,summary
+          bush=[(d['deck_id'],c['index'],c['registry_resolved']) for d in report['decks'] for c in d['cards']
+                if c['requested_name']=='Reckless Bushwhacker']
+          assert bush==[('manual-transmission-v07',28,True)],bush
+          (out/'registry-summary.json').write_text(json.dumps({
+            'decks':summary,
+            'prior_manual_resolved':97,'current_manual_resolved':98,
+            'new_identity':'Reckless Bushwhacker','new_position':['manual-transmission-v07',28],
+            'prior_unresolved_physical_entries':306,'current_unresolved_physical_entries':305,
+            'registry_report_sha256':hashlib.sha256(report_path.read_bytes()).hexdigest(),
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0},
+          },indent=2)+'\n')
+          PY
+
+      - name: Digest evidence
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          out=pathlib.Path(os.environ['OUT']);out.mkdir(parents=True,exist_ok=True)
+          (out/'evidence-sha256.json').write_text(json.dumps({
+            str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted(out.rglob('*'))
+            if p.is_file() and p.name not in {'evidence-sha256.json','prior-green.zip'}
+          },indent=2)+'\n')
+          PY
+
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-reckless-bushwhacker-v2-${{ github.run_id }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
