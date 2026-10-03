@@ -13515,3 +13515,7 @@ is false. Each projected color-protection grant retains its own source and
 controller provenance; a different matching grant can still remove the Aura.
 This does not exempt any other controlled attachment or implement the separate
 “already attached” activation-time snapshot policy.
+
+### Umbra armor destruction replacement
+
+`Keyword.UMBRA_ARMOR` on an attached Aura replaces destruction of its enchanted permanent with removing all marked damage and destroying the Aura. Competing regeneration, shield-counter, damage-removal, and armor instances are chosen by the affected permanent controller through the existing option decision. Replacement and batch remainders are durable continuation frames.

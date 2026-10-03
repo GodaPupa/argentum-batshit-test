@@ -23,16 +23,7 @@ class LethalDamageCheck : StateBasedActionCheck {
     override fun check(state: GameState): ExecutionResult = check(state, state)
 
     override fun check(state: GameState, passStartState: GameState): ExecutionResult {
-        var newState = state
-        val events = mutableListOf<com.wingedsheep.engine.core.GameEvent>()
-        // CR 704.3: state-based actions are checked, then all applicable ones are performed
-        // simultaneously as a single event. The lethal-damage DETERMINATION must therefore be
-        // made against a single projection taken from the original `state` before any creature
-        // is moved — never re-projected off the progressively-mutated `newState`, which would
-        // make the result depend on battlefield iteration order (e.g. an anti-lord giving
-        // other creatures -2/-2 leaving before the small creature it was keeping lethal).
-        // Mutation (regeneration / remove-damage shields / graveyard moves) still flows through
-        // `newState`. Mirrors ZeroToughnessCheck.
+        val lethal = mutableListOf<com.wingedsheep.engine.state.ObjectRef>()
         val projected = state.projectedState
 
         for (entityId in state.getBattlefield().toList()) {
@@ -56,41 +47,36 @@ class LethalDamageCheck : StateBasedActionCheck {
             val hasDeathtouch = damageComponent.deathtouchDamageReceived
 
             if (hasLethalDamage || hasDeathtouch) {
-                // Check for regeneration shields
-                val (shieldState, wasRegenerated) = ZoneMovementUtils.applyRegenerationShields(newState, entityId)
-                if (wasRegenerated) {
-                    val regenResult = ZoneMovementUtils.applyRegenerationReplacement(shieldState, entityId)
-                    newState = regenResult.newState
-                    events.addAll(regenResult.events)
-                    continue
-                }
-
-                // Check for remove-damage destruction shields (Pyramids). Its second mode
-                // replaces "would be destroyed" with "remove all damage marked on it" — the
-                // SBA destruction here is exactly that destruction, so the shield must fire
-                // (an animated land taking lethal combat damage is the wording's intent).
-                val (damageShieldState, wasShielded) = ZoneMovementUtils.applyRemoveDamageShields(newState, entityId)
-                if (wasShielded) {
-                    val shieldResult = ZoneMovementUtils.applyRemoveDamageReplacement(damageShieldState, entityId)
-                    newState = shieldResult.newState
-                    events.addAll(shieldResult.events)
-                    continue
-                }
-
-                // `passStartState` — not `newState` — decides which battlefield permanents can
-                // replace this death. Everything this SBA pass performs is one simultaneous event
-                // (CR 704.3), so a "would die → exile it instead" shield dying in the same batch
-                // still shields the rest (CR 614.1). Reading the mutated state instead would let
-                // battlefield iteration order decide it: a Head of the Hunt that traded with the
-                // creatures it was meant to exile happened to be moved first, so they died.
-                val result = SbaZoneMovementHelper.putCreatureInGraveyard(
-                    newState, entityId, cardComponent, "lethal damage", passStartState
-                )
-                newState = result.newState
-                events.addAll(result.events)
+                state.objectRef(entityId)?.let { lethal += it }
             }
         }
 
-        return ExecutionResult.success(newState, events)
+        return destroyRemaining(state, lethal, passStartState)
+    }
+
+    fun destroyRemaining(
+        state: GameState,
+        remaining: List<com.wingedsheep.engine.state.ObjectRef>,
+        passStartState: GameState
+    ): ExecutionResult {
+        var current = state
+        val events = mutableListOf<com.wingedsheep.engine.core.GameEvent>()
+        for ((index, ref) in remaining.withIndex()) {
+            if (!current.isCurrentObject(ref) || ref.entityId !in current.getBattlefield()) continue
+            val card = current.getEntity(ref.entityId)?.get<CardComponent>() ?: continue
+            val frame = com.wingedsheep.engine.core.LethalDestructionContinuation(remaining.drop(index + 1), passStartState)
+            val queued = current.pushContinuation(frame)
+            val replacement = com.wingedsheep.engine.handlers.effects.DestructionReplacements.replace(
+                queued, ref.entityId, canRegenerate = true, byEffect = false)
+            val result = replacement?.toExecutionResult() ?: SbaZoneMovementHelper.putCreatureInGraveyard(
+                queued, ref.entityId, card, "lethal damage", passStartState)
+            events += result.events
+            if (result.isPaused) return ExecutionResult.propagatePause(result.state, events)
+            if (result.error != null) return result.copy(events = events)
+            // The remainder frame belongs to this synchronous operation; only a pause retains it.
+            check(result.state.peekContinuation() == frame)
+            current = result.state.popContinuation().second
+        }
+        return ExecutionResult.success(current, events)
     }
 }
