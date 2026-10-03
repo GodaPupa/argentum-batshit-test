@@ -3,6 +3,7 @@ package com.wingedsheep.sdk.scripting
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.scripting.conditions.Condition
+import com.wingedsheep.sdk.scripting.effects.CopyExceptions
 import com.wingedsheep.sdk.scripting.effects.Effect
 import com.wingedsheep.sdk.scripting.events.CounterTypeFilter
 import com.wingedsheep.sdk.scripting.events.RecipientFilter
@@ -1632,6 +1633,8 @@ data class ReplaceLifePaymentWithLibraryExile(
  *                   copy — the "enter tapped as a copy" rider on the land-copy cycle (Vesuva,
  *                   Thespian's Stage, Echoing Deeps). If the copy is declined (or no candidate
  *                   exists) the permanent enters untapped as its printed self.
+ * @param exceptions Copiable characteristic exceptions, merged over the historical flat riders.
+ *                   Type additions retain all copied types; explicit overrides take precedence.
  * @param additionalCounters When non-null, the permanent enters with this many **additional +1/+1
  *                   counters** if (and only if) it enters as a copy — the "except it enters with N
  *                   additional +1/+1 counters on it" rider (Altered Ego with
@@ -1645,6 +1648,7 @@ data class ReplaceLifePaymentWithLibraryExile(
  */
 @SerialName("EntersAsCopy")
 @Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 data class EntersAsCopy(
     override val optional: Boolean = true,
     val copyFilter: GameObjectFilter = GameObjectFilter.Creature,
@@ -1661,10 +1665,22 @@ data class EntersAsCopy(
     override val appliesTo: EventPattern = EventPattern.ZoneChangeEvent(
         filter = GameObjectFilter.Any,
         to = Zone.BATTLEFIELD
-    )
+    ),
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val exceptions: CopyExceptions = CopyExceptions.None
 ) : ReplacementEffect {
     override val priorityGroup: ReplacementPriorityGroup
         get() = ReplacementPriorityGroup.COPY
+
+    /** Modern exceptions win overrides and union additions with legacy riders. */
+    val copyExceptions: CopyExceptions
+        get() = exceptions.over(CopyExceptions(
+            nameOverride = nameOverride,
+            addedKeywords = additionalKeywords.toSet(),
+            addedSubtypes = additionalSubtypes.map { com.wingedsheep.sdk.core.Subtype(it) }.toSet(),
+            powerOverride = powerOverride,
+            toughnessOverride = toughnessOverride,
+        ))
 
     override val description: String = run {
         val filterDesc = copyFilter.description
@@ -1678,22 +1694,28 @@ data class EntersAsCopy(
         }
         buildString {
             append(lead)
-            val exceptions = buildList {
-                if (nameOverride != null) add("its name is $nameOverride")
-                if (powerOverride != null && toughnessOverride != null) {
-                    add("it's $powerOverride/$toughnessOverride")
-                }
-                if (additionalSubtypes.isNotEmpty()) {
-                    add("a ${additionalSubtypes.joinToString(" ")} in addition to its other types")
-                }
-                if (additionalKeywords.isNotEmpty()) {
-                    add("it has ${additionalKeywords.joinToString(", ") { it.name.lowercase() }}")
+            val clauses = buildList {
+                if (exceptions != CopyExceptions.None) {
+                    addAll(copyExceptions.clauses())
+                } else {
+                    // Preserve legacy description bytes for definitions using only flat riders.
+
+                    if (nameOverride != null) add("its name is $nameOverride")
+                    if (powerOverride != null && toughnessOverride != null) {
+                        add("it's $powerOverride/$toughnessOverride")
+                    }
+                    if (additionalSubtypes.isNotEmpty()) {
+                        add("a ${additionalSubtypes.joinToString(" ")} in addition to its other types")
+                    }
+                    if (additionalKeywords.isNotEmpty()) {
+                        add("it has ${additionalKeywords.joinToString(", ") { it.name.lowercase() }}")
+                    }
                 }
                 if (additionalCounters != null) {
                     add("it enters with ${additionalCounters.description} additional +1/+1 counters on it")
                 }
             }
-            if (exceptions.isNotEmpty()) append(", except ${exceptions.joinToString(" and ")}")
+            if (clauses.isNotEmpty()) append(", except ${clauses.joinToString(" and ")}")
             if (exileCopiedCard) append(". When you do, exile that card")
         }
     }

@@ -1157,7 +1157,8 @@ class StackResolver(
                         powerOverride = entersAsCopy.powerOverride,
                         toughnessOverride = entersAsCopy.toughnessOverride,
                         exileCopiedCard = entersAsCopy.exileCopiedCard,
-                        additionalCounters = entersAsCopy.additionalCounters
+                        additionalCounters = entersAsCopy.additionalCounters,
+                        exceptions = entersAsCopy.exceptions
                     )
                     return state.suspendForDecision(
                         question = { decisionId ->
