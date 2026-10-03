@@ -71,7 +71,7 @@ class LoseFocusScenarioTest : FunSpec({
         repeat(2) { g.submitTargetSelection(p, listOf(target)).error shouldBe null }
         g.state.stack.count { g.state.getEntity(it)?.has<CopyOfComponent>() == true } shouldBe 2
         g.bothPass().error shouldBe null
-        if (g.pendingDecision != null) g.submitManaAutoPayOrDecline(p, false).error shouldBe null
+        if (g.pendingDecision != null) g.submitYesNo(p, false).error shouldBe null
         (target in g.state.stack) shouldBe false
         g.bothPass().error shouldBe null
         g.state.stack.size shouldBe 0
@@ -79,14 +79,14 @@ class LoseFocusScenarioTest : FunSpec({
     test("paying two preserves the target spell") {
         val g = driver(); val p = g.activePlayer!!; val target = g.targetSpell()
         g.focus(target, 0); g.bothPass().error shouldBe null
-        g.submitManaAutoPayOrDecline(p, true).error shouldBe null
+        g.submitYesNo(p, true).error shouldBe null
         (target in g.state.stack) shouldBe true
         g.state.getEntity(p)!!.get<ManaPoolComponent>()!!.total shouldBe 6
     }
     test("declining two counters the target spell") {
         val g = driver(); val p = g.activePlayer!!; val target = g.targetSpell()
         g.focus(target, 0); g.bothPass().error shouldBe null
-        g.submitManaAutoPayOrDecline(p, false).error shouldBe null
+        g.submitYesNo(p, false).error shouldBe null
         (target in g.state.stack) shouldBe false
     }
 })

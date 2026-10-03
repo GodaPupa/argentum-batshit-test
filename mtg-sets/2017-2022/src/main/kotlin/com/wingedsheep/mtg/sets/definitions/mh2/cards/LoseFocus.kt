@@ -20,5 +20,6 @@ val LoseFocus = card("Lose Focus") {
         rarity = Rarity.COMMON
         collectorNumber = "49"
         artist = "Martina Fačková"
+        imageUri = "https://cards.scryfall.io/normal/front/9/8/985bdb0c-ce6c-4506-8163-76f3b2fdf5fb.jpg?1783926877"
     }
 }
