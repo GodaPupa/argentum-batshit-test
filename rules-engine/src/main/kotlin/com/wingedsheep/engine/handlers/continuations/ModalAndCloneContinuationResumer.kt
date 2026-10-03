@@ -26,6 +26,25 @@ class ModalAndCloneContinuationResumer(
     private val services: com.wingedsheep.engine.core.EngineServices
 ) : ContinuationResumerModule {
 
+    private fun resumePreEntry(state: GameState, continuation: PreEntryContinuation,
+        response: DecisionResponse, checkForMore: CheckForMore): ExecutionResult {
+        val result = com.wingedsheep.engine.handlers.effects.PreEntryCoordinator(services.cardRegistry)
+            .resume(state, continuation, response, services.effectExecutorRegistry::execute)
+        if (!result.isSuccess) return result.toExecutionResult()
+        val resumed = exposeCollectionsToNextFrame(result.state,
+            continuation.operation.context.pipeline.storedCollections + result.updatedCollections)
+        if (result.triggersAlreadyProcessed) return checkForMore(resumed, result.events)
+        val triggers = services.triggerDetector.detectTriggers(resumed, result.events)
+        val events = result.events.map { event -> if (event is ZoneChangeEvent && event.toZone == Zone.BATTLEFIELD)
+            event.copy(entryTriggersAlreadyProcessed = true) else event }
+        if (triggers.isNotEmpty()) {
+            val triggered = services.triggerProcessor.processTriggers(resumed, triggers)
+            if (triggered.isPaused) return ExecutionResult.propagatePause(triggered.state, events + triggered.events)
+            return checkForMore(triggered.state, events + triggered.events)
+        }
+        return checkForMore(resumed, events)
+    }
+
     private val dynamicAmountEvaluator = DynamicAmountEvaluator()
 
     override fun resumers(): List<ContinuationResumer<*>> = listOf(
@@ -35,6 +54,7 @@ class ModalAndCloneContinuationResumer(
         resumer(CloneEntersOnBattlefieldContinuation::class, ::resumeCloneEntersOnBattlefield),
         resumer(EntersWithChoiceSpellContinuation::class, ::resumeEntersWithChoiceSpell),
         resumer(EntersWithChoiceOnBattlefieldContinuation::class, ::resumeEntersWithChoiceOnBattlefield),
+        resumer(PreEntryContinuation::class, ::resumePreEntry),
         resumer(PayLifeOrEnterTappedLandContinuation::class, ::resumePayLifeOrEnterTappedLand),
         resumer(PayLifeOrEnterTappedSpellContinuation::class, ::resumePayLifeOrEnterTappedSpell),
         resumer(RevealCountersContinuation::class, ::resumeRevealCounters),

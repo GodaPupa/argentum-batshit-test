@@ -93,7 +93,7 @@ class ReturnSelfToBattlefieldAttachedExecutor(
         }
 
         // "under your control" for a player host; an Aura on a permanent follows its host.
-        val newControllerId = if (hostIsPlayer) {
+        val newControllerId = context.preEntryOperation?.entries?.firstOrNull { it.source.entityId == sourceId }?.controller ?: if (hostIsPlayer) {
             context.controllerId
         } else {
             state.getEntity(attachTargetId)?.get<ControllerComponent>()?.playerId ?: ownerId
@@ -132,6 +132,12 @@ class ReturnSelfToBattlefieldAttachedExecutor(
             }
 
             updated
+        }
+
+        newState = newState.updateEntity(attachTargetId) { c ->
+            val attachments = c.get<com.wingedsheep.engine.state.components.battlefield.AttachmentsComponent>()
+                ?: com.wingedsheep.engine.state.components.battlefield.AttachmentsComponent(emptyList())
+            c.with(attachments.copy(attachedIds = (attachments.attachedIds + sourceId).distinct()))
         }
 
         val events = listOf(

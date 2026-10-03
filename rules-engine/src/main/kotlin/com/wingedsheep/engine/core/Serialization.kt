@@ -285,6 +285,7 @@ val engineSerializersModule = SerializersModule {
         subclass(CloneEntersOnBattlefieldContinuation::class)
         subclass(EntersWithChoiceSpellContinuation::class)
         subclass(EntersWithChoiceOnBattlefieldContinuation::class)
+        subclass(PreEntryContinuation::class)
         subclass(PayLifeOrEnterTappedLandContinuation::class)
         subclass(PayLifeOrEnterTappedSpellContinuation::class)
         subclass(RevealCountersContinuation::class)
