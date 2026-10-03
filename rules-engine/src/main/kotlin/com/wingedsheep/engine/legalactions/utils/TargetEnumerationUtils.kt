@@ -115,6 +115,8 @@ class TargetEnumerationUtils(
                 }
                 permanents + spells
             }
+        }.filterNot { id ->
+            com.wingedsheep.engine.mechanics.targeting.PlayerColorHexproof.appliesFromSource(state, id, playerId, sourceId)
         }
     }
 
@@ -465,3 +467,4 @@ class TargetEnumerationUtils(
         }
     }
 }
+

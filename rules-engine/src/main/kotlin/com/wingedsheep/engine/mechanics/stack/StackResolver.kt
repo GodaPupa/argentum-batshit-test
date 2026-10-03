@@ -3573,6 +3573,8 @@ class StackResolver(
                 is ChosenTarget.Player -> {
                     // Player is valid if they exist and haven't lost...
                     if (!state.hasEntity(target.playerId)) return@run false
+                    if (com.wingedsheep.engine.mechanics.targeting.PlayerColorHexproof.applies(
+                            state, target.playerId, controllerId, sourceColors)) return@run false
                     // ...and (CR 608.2b) the player-target restriction still holds. A player who
                     // gained life above the threshold, or whose "lost life this turn" never
                     // happened, is removed at resolution.
@@ -4305,3 +4307,4 @@ internal fun buildBeheldStoredCollections(
     cardDef?.script?.additionalCosts?.forEach(::collect)
     return keys.associateWith { beheldCards }
 }
+

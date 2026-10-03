@@ -123,6 +123,8 @@ class TargetFinder(
                     }
                 if (excludeId != null) baseTargets.filter { it != excludeId } else baseTargets
             }
+        }.filterNot { id -> !ignoreTargetingRestrictions &&
+            com.wingedsheep.engine.mechanics.targeting.PlayerColorHexproof.appliesFromSource(state, id, controllerId, sourceId)
         }
     }
 
@@ -678,3 +680,4 @@ class TargetFinder(
         return targets
     }
 }
+

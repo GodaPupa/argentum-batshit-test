@@ -1,0 +1,37 @@
+package com.wingedsheep.mtg.sets.definitions.m20.cards
+
+import com.wingedsheep.sdk.core.Color
+import com.wingedsheep.sdk.dsl.Effects
+import com.wingedsheep.sdk.dsl.card
+import com.wingedsheep.sdk.model.Rarity
+import com.wingedsheep.sdk.scripting.GameObjectFilter
+import com.wingedsheep.sdk.scripting.GroupFilter
+import com.wingedsheep.sdk.scripting.references.Player
+import com.wingedsheep.sdk.scripting.targets.EffectTarget
+import com.wingedsheep.sdk.scripting.values.DynamicAmount
+
+val VeilOfSummer = card("Veil of Summer") {
+    manaCost = "{G}"
+    colorIdentity = "G"
+    typeLine = "Instant"
+    oracleText = "Draw a card if an opponent has cast a blue or black spell this turn. Spells you control can't be countered this turn. You and permanents you control gain hexproof from blue and from black until end of turn. (You and they can't be the targets of blue or black spells or abilities your opponents control.)"
+    spell {
+        effect = Effects.DrawCards(DynamicAmount.Min(
+            DynamicAmount.Fixed(1),
+            DynamicAmount.SpellsCastThisTurn(Player.EachOpponent,
+                GameObjectFilter.Any.withColor(Color.BLUE) or GameObjectFilter.Any.withColor(Color.BLACK))
+        )).then(Effects.GrantSpellsCantBeCountered(spellFilter = GameObjectFilter.Any))
+            .then(Effects.GrantHexproofFromColors(setOf(Color.BLUE, Color.BLACK), EffectTarget.Controller))
+            .then(Effects.ForEachInGroup(GroupFilter.AllPermanentsYouControl,
+                Effects.GrantHexproofFromColors(setOf(Color.BLUE, Color.BLACK), EffectTarget.Self)))
+    }
+    metadata {
+        rarity = Rarity.UNCOMMON
+        collectorNumber = "198"
+        artist = "Lake Hurwitz"
+        imageUri = "https://cards.scryfall.io/normal/front/a/a/aa686c34-1c11-469f-93c2-f9891aea521f.jpg?1783932955"
+        ruling("2019-07-12", "If your opponents have cast more than one blue or black spell, you still draw only one card as Veil of Summer resolves.")
+        ruling("2019-07-12", "Veil of Summer has no effect until it resolves. It can be countered.")
+        ruling("2019-07-12", "A spell or ability that counters spells can still target your spells after Veil of Summer resolves. When that spell or ability resolves, your spell won't be countered, but any additional effects of the countering spell or ability will still happen.")
+    }
+}
