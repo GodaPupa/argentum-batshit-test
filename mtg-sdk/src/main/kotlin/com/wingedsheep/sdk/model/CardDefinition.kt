@@ -832,6 +832,37 @@ data class CardDefinition(
         }
 
         /**
+         * Creates a modal double-faced **spell // land** card (CR 712.3 / 712.12), such as
+         * Disciple of Freyalise // Garden of Freyalise.
+         *
+         * The front is a castable nonland card and the back is a full land [CardDefinition].
+         * Keeping the back as a full definition is deliberate: its replacement effects, mana
+         * abilities, oracle text and battlefield characteristics must all be the chosen face's,
+         * while every non-stack/non-battlefield zone continues to expose only the front face.
+         */
+        fun modalDoubleFacedSpellLand(
+            frontFace: CardDefinition,
+            backFace: CardDefinition
+        ): CardDefinition {
+            require(!frontFace.typeLine.isLand) {
+                "Spell-front modal DFC '${frontFace.name}' must have a nonland front face"
+            }
+            require(!frontFace.manaCost.isEmpty()) {
+                "Spell-front modal DFC '${frontFace.name}' must carry its cast mana cost"
+            }
+            require(backFace.typeLine.isLand) {
+                "Spell-front modal DFC back face '${backFace.name}' must be a land"
+            }
+            require(backFace.manaCost.isEmpty()) {
+                "Land back face '${backFace.name}' is played, not cast — it takes no mana cost"
+            }
+            require(backFace.colorIndicator == null) {
+                "Land back face '${backFace.name}' takes no color indicator"
+            }
+            return frontFace.copy(backFace = backFace, layout = CardLayout.MODAL_DFC)
+        }
+
+        /**
          * Creates a planeswalker card.
          * @param name Card name
          * @param manaCost Mana cost
