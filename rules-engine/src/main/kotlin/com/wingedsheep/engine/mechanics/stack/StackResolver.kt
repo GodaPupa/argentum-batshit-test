@@ -2416,6 +2416,11 @@ class StackResolver(
         // on resolution instead of going to the graveyard, and arms a next-upkeep free recast.
         val reboundExile = spellComponent.castFromZone == Zone.HAND &&
             spellHasRebound(newState, spellId, cardDef)
+        // Buyback (CR 702.27a): when its optional additional cost was paid, a spell that would
+        // normally be put into its owner's graveyard as it resolves returns to hand instead.
+        // This is resolution-only; counter/fizzle paths deliberately do not consult this flag.
+        val buybackReturnToHand = spellComponent.declaredCostSlot ==
+            com.wingedsheep.sdk.scripting.ChoiceSlot.BUYBACK
         // Not a plain priority order, because the underlying replacements aren't totally ordered:
         // the rider loses to the printed self-shuffle clause, the self-shuffle clause loses to
         // flashback, and flashback loses to the rider. What breaks the cycle is *what each
@@ -2442,6 +2447,7 @@ class StackResolver(
             selfShuffleIntoLibrary -> Zone.LIBRARY
             selfExile || adventureFaceExile || reboundExile -> Zone.EXILE
             omenFaceShuffle -> Zone.LIBRARY
+            buybackReturnToHand -> Zone.HAND
             else -> Zone.GRAVEYARD
         }
 

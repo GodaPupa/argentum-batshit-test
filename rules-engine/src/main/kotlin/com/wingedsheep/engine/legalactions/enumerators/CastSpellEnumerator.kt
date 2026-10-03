@@ -2360,6 +2360,7 @@ class CastSpellEnumerator : ActionEnumerator {
                 // "with Flash" / "Kicked" for the kicker family. The client shows this verbatim.
                 val kickLabel = when {
                     declaredSlot == ChoiceSlot.BARGAINED -> "Bargained"
+                    declaredSlot == ChoiceSlot.BUYBACK -> "Buyback"
                     // Collect evidence names the amount, because the amount is the whole choice —
                     // "Collect evidence 6" reads the way the card is printed, where a bare
                     // "Evidence" would not (CR 701.59).
