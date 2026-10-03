@@ -1,0 +1,107 @@
+name: Manual elected Phyrexian activation qualification
+on:
+  push:
+    branches: [validation/manual-phyrexian-activation-20261003]
+    paths: [.github/workflows/manual-phyrexian-activation-20261003.yml]
+permissions:
+  contents: read
+concurrency:
+  group: manual-phyrexian-activation-20261003
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/manual-phyrexian-activation-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source-only successor and workflow-only validation child
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='c89e30e50cc7e283c00be8541f616c7a22fae8f3';parent='d129a4ece036d5e86338a7e0da63ca69ff56bb70';workflow='.github/workflows/manual-phyrexian-activation-20261003.yml'
+          expected={'web-client/src/store/slices/ui/pipelinePhases.test.ts': 'ae3d8ce3cc4c0323750a80c1892e38322930df65', 'docs/experiments/manual/phyrexian-activation-payment-20261003.md': '07835b3e8cf6583baa3abd2816d48eea38b1bc06', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt': '6e633dcb73320a38248e1913c38d5c4d77ef9cfb', 'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/SpellskiteScenarioTest.kt': '8c583a1ef96a6bf8ca8c24342870daa9fb70c45f', 'rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/mana/PhyrexianAbilityPaymentTest.kt': 'ecbc21f64234cfd9f59738c329257247e6c68d71'}
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse','HEAD^^')==parent
+          assert git('rev-parse',source+'^{tree}')=='2c59e3edb4234fc08809eb2d7dca627c4ac04c7e'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          assert git('diff','--name-only',parent,source).splitlines()==sorted(expected)
+          assert not git('status','--porcelain')
+          for p,blob in expected.items(): assert git('hash-object',p)==blob,p
+          binding={'source_head':source,'source_tree':'2c59e3edb4234fc08809eb2d7dca627c4ac04c7e','parent_source_head':parent,'validation_head':git('rev-parse','HEAD'),'source_git_blobs':expected,'scope':'EXCLUDED_COPY_SLOT_AND_EXACT_DIAGNOSTIC','official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}}
+          (out/'source-binding.json').write_text(json.dumps(binding,indent=2)+'\n')
+          PYCODE
+      - name: Run integrated retarget scenarios and isolated visit-identity requirement
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --continue --max-workers=1 \
+            -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :rules-engine:test --tests com.wingedsheep.engine.triggers.RetargetStructureBoundaryTest --tests com.wingedsheep.engine.mechanics.targeting.AnnouncedTargetGroupsTest --tests com.wingedsheep.engine.mechanics.targeting.TargetGroupProducerIntegrationTest --tests com.wingedsheep.engine.mechanics.targeting.FixedDestinationRetargetTest --tests com.wingedsheep.engine.mechanics.targeting.FixedDestinationEffectTest --tests com.wingedsheep.engine.mechanics.targeting.AnnouncedSpliceGroupsTest --tests com.wingedsheep.engine.mechanics.targeting.RetargetVisitIdentityDiagnosticTest --tests com.wingedsheep.engine.mechanics.targeting.TargetVisitResolutionTest --tests com.wingedsheep.engine.scenarios.SpellskiteScenarioTest --tests com.wingedsheep.engine.mechanics.mana.PhyrexianAbilityPaymentTest \
+            2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+      - uses: actions/setup-node@v5
+        if: always()
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: web-client/package-lock.json
+      - name: Verify affected client target selection
+        if: always()
+        working-directory: web-client
+        shell: bash
+        run: |
+          set -uo pipefail
+          npm ci > "$OUT/client-install.log" 2>&1 || exit $?
+          npm run typecheck > "$OUT/client-typecheck.log" 2>&1
+          type_rc=$?
+          npx vitest run src/store/slices/ui/targetingSlice.test.ts src/store/slices/ui/pipelinePhases.test.ts --reporter=json --outputFile="$OUT/client-tests.json" > "$OUT/client-tests.log" 2>&1
+          test_rc=$?
+          printf '%s %s\n' "$type_rc" "$test_rc" > "$OUT/client-exit-codes.txt"
+          test "$type_rc" -eq 0 && test "$test_rc" -eq 0
+      - name: Preserve every diagnostic result
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']);out.mkdir(parents=True,exist_ok=True)
+          reports=out/'xml';reports.mkdir(exist_ok=True)
+          cases=[]
+          for path in pathlib.Path('rules-engine/build/test-results/test').glob('TEST-*.xml'):
+            shutil.copy2(path,reports/path.name)
+            for case in ET.parse(path).getroot().iter('testcase'):
+              failure=case.find('failure');error=case.find('error')
+              cases.append({'name':case.attrib['name'],'failure':None if failure is None else failure.attrib,'error':None if error is None else error.attrib,'skipped':case.find('skipped') is not None})
+          summary={'tests':len(cases),'failures':sum(c['failure'] is not None for c in cases),'errors':sum(c['error'] is not None for c in cases),'skipped':sum(c['skipped'] for c in cases),'cases':cases,'card_admitted':False,'inventory_executed':False,'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}}
+          (out/'test-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
+          (out/'evidence-sha256.json').write_text(json.dumps({str(f.relative_to(out)):hashlib.sha256(f.read_bytes()).hexdigest() for f in out.rglob('*') if f.is_file() and f.name!='evidence-sha256.json'},indent=2)+'\n')
+          assert len(cases)==61,summary
+          assert summary['failures']==0 and summary['errors']==0 and summary['skipped']==0,summary
+          PYCODE
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-phyrexian-activation-${{ github.run_id }}
+          path: ${{ env.OUT }}
+          retention-days: 90
+          if-no-files-found: error
