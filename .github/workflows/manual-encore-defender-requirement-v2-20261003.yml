@@ -1,0 +1,33 @@
+name: Manual Encore assigned-defender qualification v2
+on:
+  push:
+    branches: [validation/manual-encore-defender-requirement-v2-20261003]
+    paths: [.github/workflows/manual-encore-defender-requirement-v2-20261003.yml]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 4
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "9befabfa123294e469f931aac22c2e4e73e81a1e"
+          test "$(git rev-parse 9befabfa123294e469f931aac22c2e4e73e81a1e^)" = "2478f153206597a5f69b0a15209d1e6249489f09"
+          test "$(git rev-parse 2478f153206597a5f69b0a15209d1e6249489f09^)" = "1804bc91021895070d5b3e90819243725de67b46"
+          test "$(git diff --name-only 9befabfa123294e469f931aac22c2e4e73e81a1e HEAD)" = ".github/workflows/manual-encore-defender-requirement-v2-20261003.yml"
+      - name: Run assigned-defender combat regressions
+        shell: bash
+        run: |
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --max-workers=1 \
+            :rules-engine:test --tests com.wingedsheep.engine.mechanics.combat.MustAttackDefenderThisTurnTest
