@@ -310,13 +310,7 @@ class PlayLandHandler(
         preEntryEvents: List<com.wingedsheep.engine.core.GameEvent> = emptyList(),
     ): ExecutionResult {
 
-            ?: return ExecutionResult.error(state, "Card not found")
-
-        val printedCardComponent = container.get<CardComponent>()
-            ?: return ExecutionResult.error(state, "Not a card")
-
-        var newState = state
-                val container = state.getEntity(action.cardId)
+        val container = state.getEntity(action.cardId)
             ?: return ExecutionResult.error(state, "Card not found")
 
         val printedCardComponent = container.get<CardComponent>()
