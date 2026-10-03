@@ -4,6 +4,7 @@ import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.effects.CopyExceptions
 import com.wingedsheep.sdk.scripting.effects.BudgetMode
 import com.wingedsheep.sdk.scripting.effects.Effect
 import com.wingedsheep.sdk.scripting.effects.EffectChoice
@@ -255,6 +256,7 @@ data class ModalTargetContinuation(
  *   only when a copy was actually made — declining the copy declines the counters too.
  */
 @Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 data class CloneEntersContinuation(
     val spellId: EntityId,
     val controllerId: EntityId,
@@ -266,7 +268,9 @@ data class CloneEntersContinuation(
     val powerOverride: Int? = null,
     val toughnessOverride: Int? = null,
     val exileCopiedCard: Boolean = false,
-    val additionalCounters: DynamicAmount? = null
+    val additionalCounters: DynamicAmount? = null,
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val exceptions: CopyExceptions = CopyExceptions.None
 ) : AnswerContinuation
 
 /**
@@ -291,6 +295,7 @@ data class CloneEntersContinuation(
  *   as a copy. See [CloneEntersContinuation.additionalCounters].
  */
 @Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 data class CloneEntersOnBattlefieldContinuation(
     val entityId: EntityId,
     val controllerId: EntityId,
@@ -305,7 +310,9 @@ data class CloneEntersOnBattlefieldContinuation(
     val additionalCounters: DynamicAmount? = null,
     /** Actual entry refs, retained across every as-enters decision. */
     val entryOldObject: com.wingedsheep.engine.state.ObjectRef? = null,
-    val entryNewObject: com.wingedsheep.engine.state.ObjectRef? = null
+    val entryNewObject: com.wingedsheep.engine.state.ObjectRef? = null,
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val exceptions: CopyExceptions = CopyExceptions.None
 ) : AnswerContinuation
 
 /**
