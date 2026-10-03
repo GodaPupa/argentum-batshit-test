@@ -1,0 +1,56 @@
+name: Izzet generalized AnyTarget unlimited
+on:
+  push:
+    branches: ["validation/izzet-anytarget-unlimited-20261002"]
+    paths: [".github/workflows/izzet-anytarget-unlimited-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      OUT: /tmp/izzet-anytarget-${{ github.run_id }}
+      GRADLE_USER_HOME: /tmp/izzet-anytarget-gradle-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact shared source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "9eed0179f807984576fd238730f08b21363b6e87"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-anytarget-unlimited-20261002.yml"
+          test "$(git rev-parse HEAD^^^)" = "f1cc969db03a93dce068a45f72b04d502071d006"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/targets/TargetRequirement.kt)" = "9cee0c4f5acf0ea2a0392a7a8fed11ae058a8175"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ HEAD^^^ > "$OUT/source.txt"
+          printf '%s\n' 'BOUNDED_SHARED_TARGET_REQUIREMENT_AUTHOR_VALIDATION_ONLY_NO_CARD_ADMISSION_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile SDK and rules engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sdk:compileTestKotlin :rules-engine:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact AnyTarget unlimited regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sdk:test --tests com.wingedsheep.sdk.scripting.targets.AnyTargetUnlimitedTest 2>&1 | tee "$OUT/anytarget.log"
+          cp mtg-sdk/build/test-results/test/TEST-com.wingedsheep.sdk.scripting.targets.AnyTargetUnlimitedTest.xml "$OUT/"
+      - name: Run unchanged target requirement regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sdk:test --tests com.wingedsheep.sdk.scripting.targets.RequiresExactlyOneTargetTest \
+            --tests com.wingedsheep.sdk.scripting.targets.TargetRequirementWithCountTest 2>&1 | tee "$OUT/target-regressions.log"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-anytarget-unlimited-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
