@@ -5991,15 +5991,13 @@ Triggers.youCastSpell(
   silently firing on permanents only; the only printed wording today pairs the two anyway. A future
   "a player or *creature*" needs the object half and the player half kept apart. The
   **retarget/reselect** effects (`Effects.ChangeTarget`, `Effects.ChangeSpellTarget`,
-  `Effects.ReselectTargetRandomly`, "change the triggering object's targets") rewrite a stack
-  object's targets without emitting a fresh `BecomesTargetEvent` — for any target kind — so no
-  becomes-target trigger sees a redirect. **Known bug (ward and every other becomes-target trigger
-  miss redirects), not intended behaviour:** CR 115.9c counts the targets chosen when the spell or
-  ability was put on the stack "(as modified by effects that changed those targets)", so a redirected
-  object *is* a target of it, and by CR 603.2e the "becomes a target" event happens at the moment the
-  redirect makes it one. Pre-existing and orthogonal to the player axis, so it is pinned rather than
-  fixed by `BecomesTargetPlayerAndAbilityAxesTest`, which characterizes current-and-wrong behaviour —
-  when a later unit fixes it, invert that test rather than deleting it.
+  `Effects.ReselectTargetRandomly`, "change the triggering object's targets") emit a fresh
+  `BecomesTargetEvent` for each newly targeted permanent, stack object, or player. Retained targets
+  and targets moved between slots emit nothing; a new entity targeted by several slots emits once.
+  The event identifies the original spell/ability and its controller, and shares declaration-time
+  first-target-this-turn tracking. Ward and other becomes-target triggers therefore see redirects.
+  Legal target selection remains the responsibility of each retarget effect. Cards targeted in
+  non-battlefield zones retain the existing policy of emitting no becomes-target event.
 - `CreatureYouControlBecomesTargetByOpponent(filter?, includeSpellTargets = false)` — your creature
   gets targeted by an opponent's spell or ability. Permanent-only unless `includeSpellTargets = true`
   (Surrak), which also fires when an opponent targets a matching creature spell you control.

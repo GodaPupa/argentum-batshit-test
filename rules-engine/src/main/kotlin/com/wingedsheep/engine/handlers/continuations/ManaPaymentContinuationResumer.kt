@@ -887,12 +887,10 @@ class ManaPaymentContinuationResumer(
             ChosenTarget.Permanent(selectedEntityId)
         }
 
-        val newTargets = listOf(newTarget)
-        val updatedState = state.updateEntity(continuation.spellEntityId) { container ->
-            container.with(TargetsComponent.capture(state, newTargets, targetsComponent.targetRequirements))
-        }
-
-        return checkForMore(updatedState, emptyList())
+        val retarget = com.wingedsheep.engine.mechanics.stack.TargetingEvents.replaceTargets(
+            state, continuation.spellEntityId, listOf(newTarget)
+        )
+        return checkForMore(retarget.state, retarget.events)
     }
 
     /**

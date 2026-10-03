@@ -22,7 +22,6 @@ import com.wingedsheep.engine.state.FACE_DOWN_DISPLAY_NAME
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
-import com.wingedsheep.engine.state.components.battlefield.TargetedByControllerThisTurnComponent
 import com.wingedsheep.engine.state.components.battlefield.ClassLevelComponent
 import com.wingedsheep.engine.state.components.battlefield.SagaComponent
 import com.wingedsheep.engine.state.components.battlefield.CastFromHandComponent
@@ -675,35 +674,7 @@ class StackResolver(
         controllerId: EntityId,
         events: MutableList<GameEvent>,
         sourceIsSpell: Boolean
-    ): GameState {
-        val isSpell = target is ChosenTarget.Spell
-        val isPlayer = target is ChosenTarget.Player
-        val targetEntityId = when (target) {
-            is ChosenTarget.Permanent -> target.entityId
-            is ChosenTarget.Spell -> target.spellEntityId
-            is ChosenTarget.Player -> target.playerId
-            is ChosenTarget.Card -> return state
-        }
-        val targetName = if (isPlayer) {
-            state.getEntity(targetEntityId)?.get<PlayerComponent>()?.name ?: "Unknown"
-        } else {
-            state.getEntity(targetEntityId)?.get<CardComponent>()?.name ?: "Unknown"
-        }
-        val firstTime = isSpell || !hasBeenTargetedByController(state, targetEntityId, controllerId)
-        events.add(
-            BecomesTargetEvent(
-                targetEntityId,
-                targetName,
-                sourceEntityId,
-                controllerId,
-                firstTime,
-                targetIsSpell = isSpell,
-                sourceIsSpell = sourceIsSpell,
-                targetIsPlayer = isPlayer
-            )
-        )
-        return if (isSpell) state else markTargetedByController(state, targetEntityId, controllerId)
-    }
+    ): GameState = TargetingEvents.emit(state, target, sourceEntityId, controllerId, events, sourceIsSpell)
 
     /**
      * Put a triggered ability on the stack.
@@ -3967,30 +3938,6 @@ class StackResolver(
         }
         return false
     }
-
-    // =========================================================================
-    // Valiant / "first time targeted" tracking
-    // =========================================================================
-
-    /**
-     * Check if the target entity has already been targeted by the given controller this turn.
-     */
-    private fun hasBeenTargetedByController(state: GameState, targetId: EntityId, controllerId: EntityId): Boolean {
-        val component = state.getEntity(targetId)?.get<TargetedByControllerThisTurnComponent>()
-        return component?.hasBeenTargetedBy(controllerId) == true
-    }
-
-    /**
-     * Mark the target entity as having been targeted by the given controller this turn.
-     */
-    private fun markTargetedByController(state: GameState, targetId: EntityId, controllerId: EntityId): GameState {
-        return state.updateEntity(targetId) { container ->
-            val existing = container.get<TargetedByControllerThisTurnComponent>()
-                ?: TargetedByControllerThisTurnComponent()
-            container.with(existing.withController(controllerId))
-        }
-    }
-
 
     /**
      * Create the appropriate decision and continuation for an EntersWithChoice replacement effect.
