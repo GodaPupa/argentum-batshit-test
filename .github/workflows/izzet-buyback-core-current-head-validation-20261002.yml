@@ -1,0 +1,74 @@
+name: Izzet buyback core current-head validation
+on:
+  push:
+    branches: ["validation/izzet-buyback-core-current-head-20261002"]
+    paths: [".github/workflows/izzet-buyback-core-current-head-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OUT: /tmp/izzet-buyback-current-${{ github.run_id }}
+      GRADLE_USER_HOME: /tmp/izzet-buyback-current-gradle-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact current-head buyback composition
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "e5dc2d19adf9e6277214f2e8654ff82d25413c97"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-buyback-core-current-head-validation-20261002.yml"
+          test "$(git rev-parse HEAD^^)" = "0c9bc48c56162ba2e3c4e6600db370f4fe7de2cb"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ChoiceSlot.kt)" = "9f49738bd7fbf31e27b5c354cefc4ec3f8d5dda9"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/KeywordAbility.kt)" = "88245f2b5499bc517f5b5ae6b93b8cbdf83bcb5b"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt)" = "218a4c166031db098a772512a7f52ab6a873ad54"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt)" = "67c64d6a81c90e1c0dba4b5333d2675c59e15c3f"
+          test "$(git hash-object rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BuybackScenarioTest.kt)" = "226d152b8028157268c4def06a3afc21c97adf11"
+          test "$(git hash-object mtg-sets/2000-2002/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/pls/cards/StarCompass.kt)" = "04b59e9a55e807fff9552a2733323da7a707c963"
+          test "$(git hash-object mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StarCompassScenarioTest.kt)" = "797667723b9f2da97b45a4150533a943e0d15577"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          printf '%s\n' 'CURRENT_HEAD_SHARED_MECHANICS_AUTHOR_VALIDATION_ONLY_NO_CARD_ADMISSION_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile shared engine and current Star Compass shard
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:compileTestKotlin :mtg-sets:2000-2002:tests:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact buyback core scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.BuybackScenarioTest 2>&1 | tee "$OUT/buyback.log"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.BuybackScenarioTest.xml "$OUT/"
+      - name: Run unchanged optional-cost regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:test \
+              --tests com.wingedsheep.engine.scenarios.KickerConditionTest \
+              --tests com.wingedsheep.engine.legalactions.CastSpellEnumeratorTest \
+            2>&1 | tee "$OUT/regressions.log"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.KickerConditionTest.xml "$OUT/"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.CastSpellEnumeratorTest.xml "$OUT/"
+      - name: Run unchanged Star Compass regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2000-2002:tests:test --tests com.wingedsheep.engine.scenarios.StarCompassScenarioTest \
+            2>&1 | tee "$OUT/star-compass.log"
+          cp mtg-sets/2000-2002/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.StarCompassScenarioTest.xml "$OUT/"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-buyback-current-head-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
