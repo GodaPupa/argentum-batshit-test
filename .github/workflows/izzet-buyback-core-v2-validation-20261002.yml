@@ -1,0 +1,65 @@
+name: Izzet bounded generic buyback core v2
+on:
+  push:
+    branches: ["validation/izzet-buyback-core-v2-20261002"]
+    paths: [".github/workflows/izzet-buyback-core-v2-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OUT: /tmp/izzet-buyback-core-v2-${{ github.run_id }}
+      GRADLE_USER_HOME: /tmp/izzet-buyback-core-v2-gradle-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact generic buyback source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "6db1c4cb129e0d5a3a95b491dba7e2496cc8d5b2"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-buyback-core-v2-validation-20261002.yml"
+          test "$(git rev-parse HEAD^^)" = "8e5978ae0fbb3890f915b884ff2ac10e9a5d9b96"
+          test "$(git rev-parse HEAD^^^)" = "0e33563171e9c25b5e57b3aa792002d3e7940196"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ChoiceSlot.kt)" = "9f49738bd7fbf31e27b5c354cefc4ec3f8d5dda9"
+          test "$(git hash-object mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/KeywordAbility.kt)" = "88245f2b5499bc517f5b5ae6b93b8cbdf83bcb5b"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt)" = "218a4c166031db098a772512a7f52ab6a873ad54"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt)" = "67c64d6a81c90e1c0dba4b5333d2675c59e15c3f"
+          test "$(git hash-object rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BuybackScenarioTest.kt)" = "226d152b8028157268c4def06a3afc21c97adf11"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ HEAD^^^ > "$OUT/source.txt"
+          printf '%s\n' 'BOUNDED_SHARED_MECHANICS_AUTHOR_VALIDATION_ONLY_NO_CARD_ADMISSION_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile shared engine and tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact buyback core scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.BuybackScenarioTest 2>&1 | tee "$OUT/buyback.log"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.BuybackScenarioTest.xml "$OUT/"
+      - name: Run unchanged optional-cost regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:test \
+              --tests com.wingedsheep.engine.scenarios.KickerConditionTest \
+              --tests com.wingedsheep.engine.legalactions.CastSpellEnumeratorTest \
+            2>&1 | tee "$OUT/regressions.log"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.KickerConditionTest.xml "$OUT/"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.legalactions.CastSpellEnumeratorTest.xml "$OUT/"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-buyback-core-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
