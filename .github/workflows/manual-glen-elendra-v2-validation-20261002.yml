@@ -1,0 +1,49 @@
+name: Manual Glen Elendra v2 exact-card validation
+on:
+  push:
+    branches: ["validation/manual-glen-elendra-v2-20261002"]
+    paths: [".github/workflows/manual-glen-elendra-v2-validation-20261002.yml"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Bind exact Glen v2 candidate
+        run: |
+          test "$(git rev-parse HEAD^)" = "7f3daa4b31ef4b160758ce8fe741251349805ffb"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/eve/cards/GlenElendraArchmage.kt)" = "ad424467549beb38cff88670ed28d0abac3e38a3"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GlenElendraArchmageScenarioTest.kt)" = "1ce622dc7c16b69ff94edb9fe80f2c7301592a31"
+      - name: Compile affected shard and registry test source
+        run: |
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:2008-2016:tests:compileTestKotlin :gym:compileTestKotlin
+      - name: Run exact Glen mechanics scenarios
+        run: |
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.GlenElendraArchmageScenarioTest
+      - name: Reinventory exact eight frozen decks
+        run: |
+          mkdir -p /tmp/manual-glen-v2/source-audit /tmp/manual-glen-v2/registry
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out /tmp/manual-glen-v2/source-audit
+          MT_P2_AUDIT_INPUT=/tmp/manual-glen-v2/source-audit/registry-requests.json MT_P2_AUDIT_OUTPUT=/tmp/manual-glen-v2/registry bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest
+          cat /tmp/manual-glen-v2/registry/registry-report.json
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-glen-elendra-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/manual-glen-v2/
+          if-no-files-found: warn
+          retention-days: 90
