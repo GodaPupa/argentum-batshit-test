@@ -1,0 +1,106 @@
+name: Izzet Shardless Outlander J25 validation
+on:
+  push:
+    branches: ["validation/izzet-shardless-j25-20261002"]
+    paths: [".github/workflows/izzet-shardless-j25-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-shardless-j25-${{ github.run_id }}
+      OUT: /tmp/izzet-shardless-j25-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact J25 and Shardless source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "39eb9a9e683c2f5db99cbe05ee0997927293395f"
+          test "$(git rev-parse HEAD^^)" = "52c458a9a7a2a1c412a7a46b23e953f894d2f602"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-shardless-j25-validation-20261002.yml"
+          test "$(git hash-object mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j25/FoundationsJumpstartSet.kt)" = "7cd6809b7971423341282cf3d6be814cdf23aff8"
+          test "$(git hash-object mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/j25/cards/ShardlessOutlander.kt)" = "7b9955cb83895f561d7bb5c4e3b57f87c697188e"
+          test "$(git hash-object mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ShardlessOutlanderScenarioTest.kt)" = "1b572cc099340547d90ddb77f525bdb5719de267"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_AND_ZERO_SEED_REGISTRY_DIAGNOSTIC_ONLY' > "$OUT/authority.txt"
+      - name: Compile current J25/Shardless and gym surfaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2024:tests:compileTestKotlin :mtg-sets:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Shardless mechanics
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2024:tests:test --tests com.wingedsheep.engine.scenarios.ShardlessOutlanderScenarioTest 2>&1 | tee "$OUT/shardless.log"
+          cp mtg-sets/2024/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ShardlessOutlanderScenarioTest.xml "$OUT/"
+          python3 - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.engine.scenarios.ShardlessOutlanderScenarioTest.xml").getroot()
+          got={k:int(root.attrib[k]) for k in ("tests","failures","errors","skipped")}
+          assert got=={"tests":1,"failures":0,"errors":0,"skipped":0}, got
+          PY
+      - name: Run unchanged set-catalog invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:test --tests com.wingedsheep.mtg.sets.MtgSetCatalogTest 2>&1 | tee "$OUT/catalog.log"
+          cp mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.MtgSetCatalogTest.xml "$OUT/"
+          python3 - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.mtg.sets.MtgSetCatalogTest.xml").getroot()
+          assert int(root.attrib["failures"])==0 and int(root.attrib["errors"])==0 and int(root.attrib["skipped"])==0
+          assert int(root.attrib["tests"])>=6
+          PY
+      - name: Reinventory Position-1 exact identities
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"; cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"; reg=[]; miss=[]
+          for c in root.iter("testcase"):
+              n=c.attrib["name"]; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (reg if c.find("failure") is None and c.find("error") is None else miss).append(card)
+          expected_missing={
+            "Benevolent Blessing","Capsize","Cosmic Hunger","Everflowing Chalice",
+            "Guardian Naga // Banishing Coils","Lose Focus","Rolling Thunder",
+            "Shattering Pulse","Skred","Snake Umbra","Star Compass",
+            "Ulvenwald Captive // Ulvenwald Abomination"
+          }
+          assert "Shardless Outlander" in reg
+          assert set(miss)==expected_missing,(len(reg),len(miss),sorted(miss))
+          assert len(reg)==43 and len(miss)==12
+          (out/"registry-summary.json").write_text(json.dumps({
+            "registered":len(reg),"missing":len(miss),"missing_names":sorted(miss),
+            "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0}
+          },indent=2,sort_keys=True)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-shardless-j25-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
