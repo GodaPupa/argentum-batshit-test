@@ -1,0 +1,46 @@
+name: Manual Malevolent post-adoption registry
+on:
+  push:
+    branches: ["validation/manual-malevolent-post-adoption-registry-20261002"]
+    paths: [".github/workflows/manual-malevolent-post-adoption-registry-20261002.yml"]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Bind published Malevolent Hermit bytes
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "a5e12b589d350f5b16357327ef29bf87f8593ede"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-malevolent-post-adoption-registry-20261002.yml"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mid/cards/MalevolentHermit.kt)" = "b0db467c247183daf7da6c7524c6366e2323f8ca"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MalevolentHermitScenarioTest.kt)" = "3d8b721c8f37b7267d25691af3b2a0d344dca3ce"
+      - name: Run zero-game eight-deck registry audit
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/manual-malevolent/source-audit /tmp/manual-malevolent/registry
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out /tmp/manual-malevolent/source-audit
+          MT_P2_AUDIT_INPUT=/tmp/manual-malevolent/source-audit/registry-requests.json MT_P2_AUDIT_OUTPUT=/tmp/manual-malevolent/registry bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest
+          cat /tmp/manual-malevolent/registry/registry-report.json
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-malevolent-post-adoption-registry-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/manual-malevolent/
+          if-no-files-found: error
+          retention-days: 90
