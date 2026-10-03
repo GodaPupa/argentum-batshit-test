@@ -46,6 +46,25 @@ class ModalAndCloneContinuationResumer(
         return checkForMore(resumed, events)
     }
 
+    private fun resumePreEntryLandPlay(
+        state: GameState,
+        continuation: PreEntryLandPlayContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore,
+    ): ExecutionResult {
+        val handler = com.wingedsheep.engine.handlers.actions.land.PlayLandHandler(
+            cardRegistry = services.cardRegistry,
+            triggerDetector = services.triggerDetector,
+            triggerProcessor = services.triggerProcessor,
+            conditionEvaluator = services.conditionEvaluator,
+            effectExecutor = services.effectExecutorRegistry::execute,
+            sbaChecker = services.sbaChecker,
+        )
+        val result = handler.resumePreEntryLandPlay(state, continuation, response)
+        if (!result.isSuccess || result.isPaused) return result
+        return checkForMore(result.state, result.events)
+    }
+
     private val dynamicAmountEvaluator = DynamicAmountEvaluator()
 
     override fun resumers(): List<ContinuationResumer<*>> = listOf(
@@ -56,6 +75,7 @@ class ModalAndCloneContinuationResumer(
         resumer(EntersWithChoiceSpellContinuation::class, ::resumeEntersWithChoiceSpell),
         resumer(EntersWithChoiceOnBattlefieldContinuation::class, ::resumeEntersWithChoiceOnBattlefield),
         resumer(PreEntryContinuation::class, ::resumePreEntry),
+        resumer(PreEntryLandPlayContinuation::class, ::resumePreEntryLandPlay),
         resumer(PayLifeOrEnterTappedLandContinuation::class, ::resumePayLifeOrEnterTappedLand),
         resumer(PayLifeOrEnterTappedSpellContinuation::class, ::resumePayLifeOrEnterTappedSpell),
         resumer(RevealCountersContinuation::class, ::resumeRevealCounters),
