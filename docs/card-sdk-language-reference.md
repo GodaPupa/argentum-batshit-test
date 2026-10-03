@@ -13526,3 +13526,11 @@ and the resulting permanent's numeric cast choice. The printed or alternative ba
 additional mana are combined before cost increases and reductions. Free casting replaces only
 the base mana cost. Repeated non-mana costs require separate payment selection support and are
 rejected instead of reusing the same sacrificed/discarded objects.
+
+### Replicate spell copies
+
+`KeywordAbility.replicate(cost)` declares a repeated optional mana cost under
+`ChoiceSlot.REPLICATED`. `OptionalAdditionalCost.copySpellForEachPayment`
+creates one cast trigger with the elected copy count. Copies use existing
+new-target continuations and historical spell snapshots; creating a copy does
+not cast another spell or trigger replicate again.

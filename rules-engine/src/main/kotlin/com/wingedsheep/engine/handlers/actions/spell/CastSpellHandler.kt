@@ -3952,6 +3952,46 @@ class CastSpellHandler(
                 }
             } else emptyList()
 
+        // Optional repeatable copy payments share the ordinary cost-count and spell-copy rails.
+        val repeatedCopyCount = cardDef?.keywordAbilities
+            ?.filterIsInstance<KeywordAbility.OptionalAdditionalCost>()
+            ?.filter { it.copySpellForEachPayment }
+            ?.sumOf { action.optionalCostCounts[it.declaredSlot] ?: 0 } ?: 0
+        val repeatCopyPendingTriggers: List<PendingTrigger> =
+            if (!action.castFaceDown && cardDef != null && repeatedCopyCount > 0) {
+                val spellEffect = cardDef.script.spellEffect
+                if (spellEffect != null) {
+                    val copyEffect = StormCopyEffect(
+                        copyCount = repeatedCopyCount,
+                        spellEffect = spellEffect,
+                        spellTargetRequirements = spellTargetRequirements,
+                        spellName = cardComponent.name
+                    )
+                    val ability = TriggeredAbility(
+                        id = AbilityId.generate(),
+                        trigger = SdkGameEvent.SpellCastEvent(player = Player.You),
+                        binding = TriggerBinding.SELF,
+                        effect = copyEffect,
+                        activeZones = setOf(Zone.STACK),
+                        descriptionOverride = "Replicate — copy ${cardComponent.name}"
+                    )
+                    listOf(
+                        PendingTrigger(
+                            ability = ability,
+                            sourceId = action.cardId,
+                            objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(captured = true,
+                                origin = currentCastState.objectRef(action.cardId), source = currentCastState.objectRef(action.cardId), triggering = currentCastState.objectRef(action.cardId)),
+                            sourceName = cardComponent.name,
+                            controllerId = action.playerId,
+                            triggerContext = TriggerContext(
+                                triggeringEntityId = action.cardId,
+                                triggeringPlayerId = action.playerId
+                            )
+                        )
+                    )
+                } else emptyList()
+            } else emptyList()
+
         // Handle Conspire (CR 702.78): when the optional additional cost was paid, a reflexive
         // trigger goes on the stack above the spell: "When you do, copy it and you may choose
         // new targets for the copy." Reuses StormCopyEffect with copyCount=1 so the existing
@@ -4175,7 +4215,7 @@ class CastSpellHandler(
         // Other AP spell-cast triggers follow (placed higher on the stack), then NAP triggers on top,
         // matching APNAP ordering within processTriggers.
         val detectedTriggers = triggerDetector.detectTriggers(currentCastState, allEvents)
-        val triggers = riderPendingTriggers + conspirePendingTriggers + casualtyPendingTriggers + stormPendingTriggers + cascadePendingTriggers + detectedTriggers
+        val triggers = riderPendingTriggers + repeatCopyPendingTriggers + conspirePendingTriggers + casualtyPendingTriggers + stormPendingTriggers + cascadePendingTriggers + detectedTriggers
         if (!currentCastState.stackResolutionPendingPriority) {
             return castPriorityProcessor.start(currentCastState, action.playerId, allEvents, triggers)
         }
