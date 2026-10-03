@@ -1,0 +1,98 @@
+name: Izzet protection lifecycle and Benevolent Blessing checkpoint
+on:
+  push:
+    branches: [diagnostic/izzet-blessing-lifecycle-20261003]
+    paths: [.github/workflows/izzet-blessing-lifecycle-20261003.yml]
+permissions:
+  contents: read
+concurrency:
+  group: izzet-blessing-lifecycle-20261003
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/izzet-blessing-lifecycle-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source-only successor and workflow-only validation child
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='363478df0ee17ed4c3a0ff19cf9e12e23334f9b0';parent='1b871733dcf54c115e24c1a1dc7862a3a7c13772';workflow='.github/workflows/izzet-blessing-lifecycle-20261003.yml'
+          expected={'docs/card-sdk-language-reference.md': '854e02da6648f37c6921386dda7be61ade0cf241', 'mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ProtectionStaticAbilities.kt': '9047dd5fd8a01f9be2d70f587c2e1de40fe06b50', 'mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmr/cards/BenevolentBlessing.kt': 'c298f8a64104f1997d7d8edb7704af965fd88953', 'mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BenevolentBlessingScenarioTest.kt': '44524342cdb643efa99f8ec09d89cc8264e3316b', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CleanupPhaseManager.kt': 'ee194c9f98a1a4de4ec06eef16c4bea2a89e5a53', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ActionHandlerRegistry.kt': '5909175fdfee34a3991e530c9bcbdc73d8e5307d', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ContinuationResumerRegistry.kt': 'cde5e32845187dce7a6f28a9f805bad35d1d72e5', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt': 'de8e7661fc6b98cd89599dfc3508498a086a2be8', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EffectExecutorRegistry.kt': '6e4a1855d80cea325e4765e4a76d0b97399c6ace', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/StateBasedActionChecker.kt': 'd668f1dd30da2141213812e1dfd57222a5cccd84', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/EffectApplicator.kt': '27600f372accb7787bd00c1c6bda0bc137bbcaef', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ProjectedState.kt': '2eadec1a40eb31b3eef1721d3be5a8ce0a5e096f', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ProjectionModels.kt': 'f1039c165c459a79069377b2d7040387e2c393fe', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ProtectionAttachmentLifecycle.kt': '9a0fcc94ba32278e041f84d462fd295ad65fbb14', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/StateProjector.kt': 'd193fce81b8142654a796481f0a5ef62922f37cc', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/StaticAbilityHandler.kt': 'efb12fb0513226f8ac5d57fb2eb1a31f1aec182c', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/UnattachedAurasCheck.kt': 'a0c3528c8ef826e404890c886e2164517c3acbb8', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt': '0c7395a05aee635aff44cb9293628db5e99b7311', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt': '521034e4d725cf0c703a3a2d725b8233063bd2ad', 'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ProtectionAttachmentLifecycleTest.kt': '62c71c9ddd56beed68867a19f584f4daf0a516b9'}
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse','HEAD^^')==parent
+          assert git('rev-parse',source+'^{tree}')=='54eec3bf1c6ed482cf50bcee9dd72975a3838a39'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          assert git('diff','--name-only',parent,source).splitlines()==sorted(expected)
+          assert not git('status','--porcelain')
+          assert git('hash-object','gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt')=='197a99e6c17885bb70511916893d3a33de217feb'
+          for p,blob in expected.items(): assert git('hash-object',p)==blob,p
+          binding={'source_head':source,'source_tree':'54eec3bf1c6ed482cf50bcee9dd72975a3838a39','parent_source_head':parent,
+            'validation_head':git('rev-parse','HEAD'),'validation_tree':git('rev-parse','HEAD^{tree}'),
+            'source_git_blobs':expected,'source_sha256':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in expected},
+            'workflow_sha256':hashlib.sha256(pathlib.Path(workflow).read_bytes()).hexdigest(),
+            'scope':'ISOLATED_BLESSING_LIFECYCLE_IMPLEMENTATION','registry_not_executed':True,'exact_card_admission':False,
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}}
+          (out/'source-binding.json').write_text(json.dumps(binding,indent=2)+'\n')
+          PYCODE
+      - name: Qualify protection lifecycle and exact Benevolent Blessing
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --continue --max-workers=1 \
+            -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.ProtectionAttachmentLifecycleTest --tests com.wingedsheep.engine.scenarios.ProtectionAttachmentProvenanceTest :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.BenevolentBlessingScenarioTest \
+            2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+      - name: Preserve exact mechanics and unchanged inventory evidence
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']);out.mkdir(parents=True,exist_ok=True)
+          expected={'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ProtectionAttachmentLifecycleTest.xml': 12, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ProtectionAttachmentProvenanceTest.xml': 8, 'mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.BenevolentBlessingScenarioTest.xml': 10}
+          suites=[];problems=[]
+          for cls,count in expected.items():
+            p=pathlib.Path(cls)
+            if not p.exists(): problems.append('Missing '+str(p));continue
+            shutil.copy2(p,out/p.name)
+            root=ET.parse(p).getroot();cases=root.findall('.//testcase')
+            totals={k:int(root.get(k,'0')) for k in ('tests','failures','errors','skipped')}
+            suites.append({'class':cls,**totals,'actual_cases':len(cases)})
+            if totals!={'tests':count,'failures':0,'errors':0,'skipped':0} or len(cases)!=count:
+              problems.append(cls+': '+json.dumps(totals)+' actual='+str(len(cases)))
+          (out/'summary.json').write_text(json.dumps({'suites':suites,'problems':problems,'expected_tests':sum(expected.values())},indent=2)+'\n')
+          files=sorted(p for p in out.iterdir() if p.is_file())
+          (out/'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in files))
+          if problems: raise SystemExit('\n'.join(problems))
+          PYCODE
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: izzet-blessing-lifecycle-${{ github.run_id }}
+          path: ${{ env.OUT }}
+          if-no-files-found: error
+          retention-days: 90
+
