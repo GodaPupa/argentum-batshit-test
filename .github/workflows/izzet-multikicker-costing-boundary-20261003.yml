@@ -1,0 +1,76 @@
+name: Izzet multikicker costing boundary
+on:
+  push:
+    branches: ["validation/izzet-multikicker-costing-boundary-20261003"]
+    paths: [".github/workflows/izzet-multikicker-costing-boundary-20261003.yml"]
+permissions: {contents: read}
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    env:
+      OUT: /tmp/izzet-multikicker-boundary-${{ github.run_id }}
+      GRADLE_USER_HOME: /tmp/izzet-multikicker-gradle-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind source-only diagnostic and current qualified inventory source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "525e28115037c887e9b030d5b93a9c16e83de375"
+          test "$(git rev-parse HEAD^^)" = "ae209a6f0897f79c5379257091bd36663e0fcf00"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-multikicker-costing-boundary-20261003.yml"
+          test "$(git diff --name-only HEAD^^ HEAD^)" = "$(printf '%s\n' docs/experiments/izzet/multikicker-costing-boundary-20261003.md rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/MultikickerCostingBoundaryTest.kt)"
+          test "$(git hash-object rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/MultikickerCostingBoundaryTest.kt)" = "5be2afd4d73c2cc4f78ddfc6b93d1ecd12d92465"
+          test "$(git hash-object docs/experiments/izzet/multikicker-costing-boundary-20261003.md)" = "de8d16d6cb057f7c347aaad8420b1edcadd7e5c0"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHORING_DIAGNOSTIC_EXPECTED_BOUNDARY_NO_CARD_ADMISSION_NO_PROMOTION_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+          cp docs/experiments/izzet/multikicker-costing-boundary-20261003.md "$OUT/"
+      - name: Compile affected SDK and rules-engine tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --console=plain \
+            :mtg-sdk:compileKotlin :rules-engine:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run two controls and five required-behavior probes
+        shell: bash
+        run: |
+          set -uo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --console=plain \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.MultikickerCostingBoundaryTest \
+            2>&1 | tee "$OUT/boundary.log"
+          status=${PIPESTATUS[0]}
+          printf '%s\n' "$status" > "$OUT/test-exit-status.txt"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.MultikickerCostingBoundaryTest.xml "$OUT/"
+          exit "$status"
+      - name: Retain exact failures and artifact manifest
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY' > "$OUT/test-summary.txt"
+          import os, pathlib, xml.etree.ElementTree as ET
+          path = pathlib.Path(os.environ["OUT"]) / "TEST-com.wingedsheep.engine.scenarios.MultikickerCostingBoundaryTest.xml"
+          if not path.exists():
+              print("NO_TEST_XML: compilation or infrastructure failed; no engine boundary established")
+          else:
+              root = ET.parse(path).getroot()
+              print({key: root.attrib.get(key) for key in ("tests", "failures", "errors", "skipped")})
+              for case in root.findall("testcase"):
+                  failure = case.find("failure")
+                  print(("PASS" if failure is None else "FAIL"), case.attrib["name"])
+                  if failure is not None:
+                      print(failure.attrib.get("message", ""))
+          PY
+          (cd "$OUT" && find . -maxdepth 1 -type f ! -name sha256.txt -print0 | sort -z | xargs -0 sha256sum) > "$OUT/sha256.txt"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-multikicker-boundary-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
