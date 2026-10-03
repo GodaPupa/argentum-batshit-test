@@ -1,0 +1,34 @@
+name: Manual Spellskite CLB printing metadata
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Preserve exact printings and ruling responses
+      shell: bash
+      run: |
+        mkdir -p /tmp/manual-clb-metadata
+        python3 - <<'PYCODE'
+        import urllib.request,json,pathlib,hashlib
+        out=pathlib.Path('/tmp/manual-clb-metadata')
+        req=urllib.request.Request('https://api.scryfall.com/cards/named?exact=Spellskite&set=clb',headers={'User-Agent':'Argentum-Qualification/1.0','Accept':'application/json'})
+        raw=urllib.request.urlopen(req,timeout=30).read();c=json.loads(raw)
+        assert c['name']=='Spellskite' and c['set']=='clb'
+        (out/'spellskite-clb.json').write_bytes(raw)
+        (out/'sha256.json').write_text(json.dumps({'spellskite-clb.json':hashlib.sha256(raw).hexdigest()},indent=2)+'\n')
+        PYCODE
+    - uses: actions/upload-artifact@v7
+      if: always()
+      with:
+        name: manual-clb-metadata-${{ github.run_id }}
+        path: /tmp/manual-clb-metadata/
+        if-no-files-found: error
+        retention-days: 90
+'on':
+  push:
+    branches:
+    - validation/manual-clb-metadata-20261003
+    paths:
+    - .github/workflows/manual-clb-metadata-20261003.yml
