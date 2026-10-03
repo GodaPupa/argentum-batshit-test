@@ -55,6 +55,7 @@ enum class Keyword(val displayName: String) {
     // ── Defense ──────────────────────────────────────────────
     DEFENDER("Defender"),
     INDESTRUCTIBLE("Indestructible"),
+    UMBRA_ARMOR("Umbra armor"),
     HEXPROOF("Hexproof"),
     SHROUD("Shroud"),
     WARD("Ward"),

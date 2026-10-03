@@ -13534,3 +13534,7 @@ rejected instead of reusing the same sacrificed/discarded objects.
 creates one cast trigger with the elected copy count. Copies use existing
 new-target continuations and historical spell snapshots; creating a copy does
 not cast another spell or trigger replicate again.
+
+### Umbra armor destruction replacement
+
+`Keyword.UMBRA_ARMOR` on an attached Aura replaces destruction of its enchanted permanent with removing all marked damage and destroying the Aura. Competing regeneration, shield-counter, damage-removal, and armor instances are chosen by the affected permanent controller through the existing option decision. Replacement and batch remainders are durable continuation frames.

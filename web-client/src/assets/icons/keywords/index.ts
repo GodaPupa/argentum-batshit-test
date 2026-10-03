@@ -5,6 +5,7 @@
  *
  * Keywords without a mana-font glyph fall back to a local SVG via `keywordSvgIcon`.
  */
+import genericSvgUrl from './generic.svg'
 import persistSvgUrl from './persist.svg'
 import bandingSvgUrl from './banding.svg'
 import flankingSvgUrl from './flanking.svg'
@@ -13,6 +14,7 @@ import hourglassCounterSvgUrl from '../counters/hourglass.svg'
 
 /** Maps engine keyword names to local SVG URLs (used when mana-font has no glyph). */
 export const keywordSvgIcon: Record<string, string> = {
+  UMBRA_ARMOR: genericSvgUrl,
   PERSIST: persistSvgUrl,
   BANDING: bandingSvgUrl,
   FLANKING: flankingSvgUrl,
@@ -83,7 +85,7 @@ export const displayableKeywords = new Set([
   'FLYING', 'REACH', 'TRAMPLE',
   'FIRST_STRIKE', 'DOUBLE_STRIKE', 'DEATHTOUCH',
   'LIFELINK', 'VIGILANCE', 'HASTE', 'HEXPROOF',
-  'SHROUD', 'INDESTRUCTIBLE', 'DEFENDER', 'MENACE', 'FEAR',
+  'UMBRA_ARMOR', 'SHROUD', 'INDESTRUCTIBLE', 'DEFENDER', 'MENACE', 'FEAR',
   'PROWESS', 'WARD', 'INTIMIDATE', 'INFECT',
   'SWAMPWALK', 'FORESTWALK', 'ISLANDWALK', 'MOUNTAINWALK', 'PLAINSWALK',
   'DESERTWALK', 'NONBASIC_LANDWALK',

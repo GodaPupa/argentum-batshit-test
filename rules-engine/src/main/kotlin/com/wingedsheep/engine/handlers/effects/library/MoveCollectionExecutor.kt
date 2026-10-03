@@ -89,12 +89,25 @@ class MoveCollectionExecutor(
             return EffectResult.success(state)
         }
 
+        if (effect.moveType == MoveType.Destroy && destination is CardDestination.ToZone && destination.zone == Zone.GRAVEYARD) {
+            val destructible = cards.filterNot { state.projectedState.hasKeyword(it, Keyword.INDESTRUCTIBLE) }
+            val options = destructible.associateWith {
+                com.wingedsheep.engine.handlers.effects.DestructionReplacements.applicableOptions(state, it, !effect.noRegenerate, true)
+            }
+            return destroyCollection(state, effect, context, cards, destructible.mapNotNull(state::objectRef), emptyList(), options)
+        }
         var result = when (destination) {
             is CardDestination.ToZone ->
                 moveToZone(state, context, cards, destination, effect.order, effect.revealed, effect.moveType, effect.faceDown, effect.noRegenerate, effect.storeMovedAs, effect.underOwnersControl, effect.revealToSelf)
             is CardDestination.ToZoneExiledFrom ->
                 moveToZonesExiledFrom(state, context, cards, destination, effect)
         }
+        return finishMove(result, effect, context, cards)
+    }
+
+    private fun finishMove(initialResult: EffectResult, effect: MoveCollectionEffect, context: EffectContext, cards: List<EntityId>): EffectResult {
+        var result = initialResult
+        val destination = effect.destination
         if (effect.linkToSource && result.isSuccess) {
             result = linkCardsToSource(result, context, cards)
         }
@@ -125,6 +138,38 @@ class MoveCollectionExecutor(
             result = markEnteredViaSourceAbility(result, context, cards)
         }
         return result
+    }
+
+    fun destroyCollection(
+        state: GameState,
+        effect: MoveCollectionEffect,
+        context: EffectContext,
+        cards: List<EntityId>,
+        remaining: List<com.wingedsheep.engine.state.ObjectRef>,
+        attempted: List<com.wingedsheep.engine.state.ObjectRef>,
+        replacementOptions: Map<EntityId, List<com.wingedsheep.engine.core.DestructionReplacementOption>>
+    ): EffectResult {
+        var current = state
+        val events = mutableListOf<GameEvent>()
+        var processed = attempted
+        for ((index, ref) in remaining.withIndex()) {
+            if (!current.isCurrentObject(ref) || ref.entityId !in current.getBattlefield()) continue
+            processed = processed + ref
+            val frame = com.wingedsheep.engine.core.DestroyCollectionContinuation(effect, context, cards, remaining.drop(index + 1), processed, replacementOptions)
+            val queued = current.pushContinuation(frame)
+            val result = com.wingedsheep.engine.handlers.effects.DestructionReplacements.replaceWithOptions(
+                queued, ref.entityId, replacementOptions[ref.entityId] ?: emptyList(), byEffect = true, concurrentDestructions = replacementOptions.keys)
+                ?: ZoneMovementUtils.movePermanentToZone(queued, ref.entityId, Zone.GRAVEYARD)
+            events += result.events
+            if (result.isPaused) return EffectResult.propagatePause(result.state, events)
+            if (result.error != null) return result.copy(events = events)
+            check(result.state.peekContinuation() == frame)
+            current = result.state.popContinuation().second
+        }
+        val moved = processed.filterNot(current::isCurrentObject).map { it.entityId }
+        val result = EffectResult.success(current, events).copy(updatedCollections =
+            effect.storeMovedAs?.let { mapOf(it to moved) } ?: emptyMap())
+        return finishMove(result, effect, context, cards)
     }
 
     /**
