@@ -832,6 +832,37 @@ data class CardDefinition(
         }
 
         /**
+         * Creates a modal double-faced card with a castable nonland front and a land back.
+         *
+         * Zendikar Rising spell lands and later creature // land MDFCs use this shape: in hand the
+         * front can be cast for its own mana cost, while CR 712.12 separately permits the land back
+         * to be played as a land. The back face is a complete [CardDefinition], so its mana ability,
+         * replacement effects, and other as-entry behavior remain exact rather than being flattened
+         * into display-only face data.
+         */
+        fun modalDoubleFacedSpellLand(
+            frontFace: CardDefinition,
+            backFace: CardDefinition,
+        ): CardDefinition {
+            require(!frontFace.typeLine.isLand) {
+                "Modal DFC castable front '${frontFace.name}' must be nonland"
+            }
+            require(!frontFace.manaCost.isEmpty()) {
+                "Modal DFC castable front '${frontFace.name}' must carry its casting mana cost"
+            }
+            require(backFace.typeLine.isLand) {
+                "Modal DFC back face '${backFace.name}' must be a land (CR 712.12)"
+            }
+            require(backFace.manaCost.isEmpty()) {
+                "Modal DFC land back '${backFace.name}' is played, not cast — it takes no mana cost"
+            }
+            require(backFace.colorIndicator == null) {
+                "Modal DFC land back '${backFace.name}' takes no color indicator; a land face is colorless"
+            }
+            return frontFace.copy(backFace = backFace, layout = CardLayout.MODAL_DFC)
+        }
+
+        /**
          * Creates a planeswalker card.
          * @param name Card name
          * @param manaCost Mana cost
