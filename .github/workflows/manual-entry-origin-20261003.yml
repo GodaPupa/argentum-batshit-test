@@ -1,0 +1,101 @@
+name: Manual captured entry-origin shared qualification
+on:
+  push:
+    branches: [validation/manual-entry-origin-20261003]
+    paths: [.github/workflows/manual-entry-origin-20261003.yml]
+permissions:
+  contents: read
+concurrency:
+  group: manual-entry-origin-20261003
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/manual-entry-origin-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source-only successor and workflow-only validation child
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='c4ff7747e97c5653b9b1b1239d404f92c693eb60';parent='449a966b9552c7c4b863a1ad84903a2370bb538c';workflow='.github/workflows/manual-entry-origin-20261003.yml'
+          expected={"docs/card-sdk-language-reference.md":"c99a15bb935a6942d6929249417affb9193a57e8","mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/dsl/Conditions.kt":"2e0e877931c0db6b91cfb5d586c73780fc8334fa","mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/conditions/BattlefieldConditions.kt":"ab44c9b6facef5ed47535918184eda349eb227c5","rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CoreContinuations.kt":"30033af3ea470c28537a66cc7895adf494a7039a","rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt":"87e20e2b2cbecde20b41bd141d5081654db86a45","rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerContext.kt":"b6f97702c5114f2ab59f975cf5f97a98984fd4b0","rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt":"026b521033daf0856c8d3475eed0b1e062a0c94a","rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt":"69a0ab349c3f411781a1bc8dfd04855af85dfa31","rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt":"b53c2aec3088bf5930db26c4316cee49d6b18823","rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt":"33365174eca0737a2ae14b14cc9af890ea466eea","rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/EffectAndTriggerContinuationResumer.kt":"1f41aff5211a72bb912ff0b72cb75f1f5df79669","rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ReflexiveTriggerEffectExecutor.kt":"346e3b234c1a799bc86c7a40a3004afa4df0e411","rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt":"9622096ed8ed98e6e64fd60d36ba856087b0c7f1","rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt":"ac42a7201e0500e956aff49406713bf58b814945","rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/TriggerEntryOriginProvenanceTest.kt":"8a288f1011c8df3e421b648ec4c1d45c97634fc6"}
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse','HEAD^^')==parent
+          assert git('rev-parse',source+'^{tree}')=='2da8c5c4dd86476de390b8251343aba740ac5f7f'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          assert git('diff','--name-only',parent,source).splitlines()==sorted(expected)
+          assert not git('status','--porcelain')
+          for p,blob in expected.items(): assert git('hash-object',p)==blob,p
+          binding={'source_head':source,'source_tree':'2da8c5c4dd86476de390b8251343aba740ac5f7f','parent_source_head':parent,
+            'validation_head':git('rev-parse','HEAD'),'validation_tree':git('rev-parse','HEAD^{tree}'),
+            'source_git_blobs':expected,'source_sha256':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in expected},
+            'workflow_sha256':hashlib.sha256(pathlib.Path(workflow).read_bytes()).hexdigest(),
+            'scope':'EXCLUDED_FIXED_SHARED_PRIMITIVE_QUALIFICATION',
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}}
+          (out/'source-binding.json').write_text(json.dumps(binding,indent=2)+'\n')
+          PYCODE
+      - name: Compile affected engine and run origin, entry snapshot, retarget, and ward regressions
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --max-workers=1 \
+            -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :rules-engine:test \
+            --tests com.wingedsheep.engine.handlers.TriggerEntryOriginProvenanceTest \
+            --tests com.wingedsheep.engine.event.BattlefieldEntrySnapshotTest \
+            --tests com.wingedsheep.engine.triggers.RetargetBecomesTargetEventTest \
+            --tests com.wingedsheep.engine.triggers.BecomesTargetPlayerAndAbilityAxesTest \
+            --tests com.wingedsheep.engine.scenarios.WardCounterTest \
+            2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+      - name: Preserve evidence and require all 56 actual tests
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']);out.mkdir(parents=True,exist_ok=True)
+          expected={"com.wingedsheep.engine.handlers.TriggerEntryOriginProvenanceTest":13,"com.wingedsheep.engine.event.BattlefieldEntrySnapshotTest":11,"com.wingedsheep.engine.triggers.RetargetBecomesTargetEventTest":12,"com.wingedsheep.engine.triggers.BecomesTargetPlayerAndAbilityAxesTest":16,"com.wingedsheep.engine.scenarios.WardCounterTest":4}
+          suites=[];problems=[]
+          for cls,count in expected.items():
+            p=pathlib.Path('rules-engine/build/test-results/test')/('TEST-'+cls+'.xml')
+            if not p.exists(): problems.append('Missing '+str(p));continue
+            shutil.copy2(p,out/p.name)
+            root=ET.parse(p).getroot();cases=root.findall('.//testcase')
+            totals={k:int(root.get(k,'0')) for k in ('tests','failures','errors','skipped')}
+            suites.append({'class':cls,**totals,'actual_cases':len(cases)})
+            if totals!={'tests':count,'failures':0,'errors':0,'skipped':0} or len(cases)!=count:
+              problems.append(cls+': '+json.dumps(totals)+' actual='+str(len(cases)))
+          (out/'summary.json').write_text(json.dumps({'suites':suites,'problems':problems,'expected_tests':sum(expected.values())},indent=2)+'\n')
+          files=sorted(p for p in out.iterdir() if p.is_file())
+          (out/'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in files))
+          if problems: raise SystemExit('\n'.join(problems))
+          PYCODE
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-entry-origin-${{ github.run_id }}
+          path: ${{ env.OUT }}
+          if-no-files-found: error
+          retention-days: 90
