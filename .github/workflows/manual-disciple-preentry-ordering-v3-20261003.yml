@@ -1,0 +1,108 @@
+name: Manual pre-entry land payment ordering v3 qualification
+on:
+  push:
+    branches: [validation/manual-disciple-preentry-ordering-v3-20261003]
+    paths: [.github/workflows/manual-disciple-preentry-ordering-v3-20261003.yml]
+permissions:
+  contents: read
+concurrency:
+  group: manual-disciple-preentry-ordering-v3
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/manual-disciple-preentry-v3-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 4
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact successor source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='29cea74e9c7c3a616f7ea5bcc6b72bdb6d8fc3b9'
+          prior='ad6bde239aac9dab60f231ee2ba7c86e9f1c59a7'
+          live='5055df90b530e00f9dd044e1dab57e9b18ddc7f7'
+          workflow='.github/workflows/manual-disciple-preentry-ordering-v3-20261003.yml'
+          expected={
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt':'bc0172c3b53db87aee5f959f0ffadaddef2f5c58',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt':'f96aaa83233ac64089505a7a90d38b1ebbb29918',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt':'e76cf4af6bbe40c76aec7f0ca9c84a74242a11ae',
+            'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PreEntryLandPlayPaymentTest.kt':'b1d1eb18713eb5d5cd300e0c91bba0c97c2d5e7d',
+          }
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse',source+'^')==prior
+          assert git('rev-parse',prior+'^')==live
+          assert git('rev-parse',source+'^{tree}')=='cb525cb92978795da61aed0dff5cfd75a0285876'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          assert git('diff','--name-only',live,source).splitlines()==sorted(expected)
+          for p,b in expected.items(): assert git('hash-object',p)==b,(p,git('hash-object',p),b)
+          (out/'source-binding.json').write_text(json.dumps({
+            'source_head':source,'source_tree':git('rev-parse',source+'^{tree}'),
+            'parent_failed_source':prior,'promoted_parent_live':live,'source_blobs':expected,
+            'preserved_real_failures':[37155410777,37161052924],
+            'preserved_harness_failures':[37160832494,37160921927],
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0},
+          },indent=2)+'\n')
+          PY
+      - name: Configure validation-only execution without coverage instrumentation
+        shell: bash
+        run: |
+          cat > "$OUT/no-coverage.gradle" <<'GRADLE'
+          allprojects { p ->
+            p.plugins.withId('org.jetbrains.kotlinx.kover') {
+              p.extensions.getByName('kover').currentProject {
+                instrumentation { disabledForAll.set(true) }
+              }
+            }
+          }
+          GRADLE
+      - name: Run focused generalized regressions
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --init-script "$OUT/no-coverage.gradle" --no-daemon --no-configuration-cache             --console=plain --max-workers=1 -PkotlinCompileParallelism=1             -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g             :rules-engine:test --tests com.wingedsheep.engine.scenarios.PreEntryLandPlayPaymentTest             2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}; printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"; exit "$rc"
+      - name: Audit actual seven cases
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT'])
+          p=pathlib.Path('rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PreEntryLandPlayPaymentTest.xml')
+          row={'path':str(p),'expected':7,'missing':not p.exists(),'cases':[]}
+          if p.exists():
+            shutil.copyfile(p,out/p.name); row['xml_sha256']=hashlib.sha256(p.read_bytes()).hexdigest()
+            row['cases']=[{'name':c.attrib['name'],'failure':c.find('failure') is not None,
+              'error':c.find('error') is not None,'skipped':c.find('skipped') is not None}
+              for c in ET.parse(p).getroot().findall('testcase')]
+          (out/'actual-cases.json').write_text(json.dumps(row,indent=2)+'\n')
+          assert not row['missing'] and len(row['cases'])==7,row
+          assert len({c['name'] for c in row['cases']})==7,row
+          assert not any(c['failure'] or c['error'] or c['skipped'] for c in row['cases']),row
+          assert (out/'gradle-exit-code.txt').read_text().strip()=='0'
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-disciple-preentry-v3-${{ github.run_id }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
