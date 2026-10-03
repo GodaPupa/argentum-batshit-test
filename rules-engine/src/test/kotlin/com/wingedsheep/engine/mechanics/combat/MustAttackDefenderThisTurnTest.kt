@@ -78,7 +78,11 @@ class MustAttackDefenderThisTurnTest : FunSpec({
 
     test("assigned Encore defender makes the token a mandatory attacker") {
         val (state, players, token) = board()
-        CombatManager(registry()).getMandatoryAttackers(state, players[0]) shouldContain token
+        val cards = registry()
+        CombatManager(
+            cards,
+            com.wingedsheep.engine.mechanics.mana.ManaAbilitySideEffectExecutor(cards)
+        ).getMandatoryAttackers(state, players[0]) shouldContain token
     }
 
     test("assigned Encore token cannot attack a different opponent while assigned opponent is legal") {
