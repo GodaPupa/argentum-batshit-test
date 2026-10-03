@@ -14,8 +14,11 @@ import com.wingedsheep.sdk.model.EntityId
 /** The affected permanent's controller orders competing destruction replacements. */
 object DestructionReplacements {
     fun replace(state: GameState, permanentId: EntityId, canRegenerate: Boolean, byEffect: Boolean): EffectResult? {
-        val ref = state.objectRef(permanentId) ?: return null
-        val controller = state.projectedState.getController(permanentId) ?: return null
+        val options = applicableOptions(state, permanentId, canRegenerate, byEffect)
+        return replaceWithOptions(state, permanentId, options, byEffect)
+    }
+
+    fun applicableOptions(state: GameState, permanentId: EntityId, canRegenerate: Boolean, byEffect: Boolean): List<DestructionReplacementOption> {
         val options = mutableListOf<DestructionReplacementOption>()
         val regenerationAllowed = canRegenerate && state.floatingEffects.none {
             it.effect.modification is SerializableModification.CantBeRegenerated && permanentId in it.effect.affectedEntities
@@ -39,17 +42,23 @@ object DestructionReplacements {
             options += DestructionReplacementOption(DestructionReplacementKind.UMBRA_ARMOR, aura,
                 "Umbra armor — " + (state.getEntity(aura)?.get<CardComponent>()?.name ?: "Aura"))
         }
+        return options
+    }
+
+    fun replaceWithOptions(state: GameState, permanentId: EntityId, options: List<DestructionReplacementOption>, byEffect: Boolean, concurrentDestructions: Set<EntityId> = emptySet()): EffectResult? {
+        val ref = state.objectRef(permanentId) ?: return null
+        val controller = state.projectedState.getController(permanentId) ?: return null
         if (options.isEmpty()) return null
-        if (options.size == 1) return apply(state, ref, options.single())
+        if (options.size == 1) return apply(state, ref, options.single(), byEffect, concurrentDestructions)
         return EffectResult.from(state.suspendForDecision(
             { id -> ChooseOptionDecision(id = id, playerId = controller,
                 prompt = "Choose a destruction replacement", options = options.map { it.label }, canCancel = false,
                 context = DecisionContext(sourceId = permanentId, sourceName = "Destruction replacement", phase = DecisionPhase.RESOLUTION)) },
-            DestructionReplacementContinuation(ref, options)
+            DestructionReplacementContinuation(ref, options, byEffect, concurrentDestructions)
         ))
     }
 
-    fun apply(state: GameState, permanent: ObjectRef, option: DestructionReplacementOption): EffectResult {
+    fun apply(state: GameState, permanent: ObjectRef, option: DestructionReplacementOption, byEffect: Boolean, concurrentDestructions: Set<EntityId> = emptySet()): EffectResult {
         if (!state.isCurrentObject(permanent) || permanent.entityId !in state.getBattlefield()) return EffectResult.success(state)
         val id = permanent.entityId
         return when (option.kind) {
@@ -66,7 +75,9 @@ object DestructionReplacements {
             DestructionReplacementKind.UMBRA_ARMOR -> {
                 val healed = DamageUtils.healMarkedDamage(state, id)
                 // Destruction of the Aura is a new event and can itself require a replacement choice.
-                ZoneMovementUtils.destroyPermanent(healed, option.sourceId)
+                if (option.sourceId in concurrentDestructions) EffectResult.success(healed)
+                else if (option.sourceId in healed.getBattlefield()) ZoneMovementUtils.destroyPermanent(healed, option.sourceId, byEffect = byEffect)
+                else EffectResult.success(healed)
             }
         }
     }

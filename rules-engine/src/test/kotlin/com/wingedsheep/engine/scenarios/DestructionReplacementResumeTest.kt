@@ -1,5 +1,9 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.engineSerializersModule
+import com.wingedsheep.engine.state.GameState
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import com.wingedsheep.engine.core.OptionChosenResponse
 import com.wingedsheep.engine.core.ChooseOptionDecision
 import com.wingedsheep.engine.handlers.EffectContext
@@ -149,5 +153,59 @@ class DestructionReplacementResumeTest : FunSpec({
         (other in d.state.getBattlefield()) shouldBe false
         d.state.pendingDecision shouldBe null
         d.state.continuationStack shouldBe emptyList()
+    }
+
+    test("batch resumes through two independent replacement choices exactly once") {
+        val d = driver()
+        val first = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val second = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val last = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        for (id in listOf(first, second)) {
+            addShield(d, id, SerializableModification.RegenerationShield)
+            addShield(d, id, SerializableModification.RemoveDamageShield)
+        }
+        val effect = MoveCollectionEffect(from = "victims", destination = CardDestination.ToZone(Zone.GRAVEYARD, Player.You), moveType = MoveType.Destroy)
+        val r = MoveCollectionExecutor(d.cardRegistry).execute(d.state, effect,
+            EffectContext(sourceId = null, controllerId = d.player1,
+                pipeline = PipelineState(storedCollections = mapOf("victims" to listOf(first, second, last)))))
+        val json = Json { serializersModule = engineSerializersModule; allowStructuredMapKeys = true; encodeDefaults = true }
+        d.replaceState(json.decodeFromString<GameState>(json.encodeToString(r.state)))
+        val one = d.state.pendingDecision as ChooseOptionDecision
+        d.submitDecision(one.playerId, OptionChosenResponse(one.id, 1)).error shouldBe null
+        val two = d.state.pendingDecision as ChooseOptionDecision
+        (one.id == two.id) shouldBe false
+        (last in d.state.getBattlefield()) shouldBe true
+        d.submitDecision(two.playerId, OptionChosenResponse(two.id, 1)).error shouldBe null
+        (first in d.state.getBattlefield()) shouldBe true
+        (second in d.state.getBattlefield()) shouldBe true
+        (last in d.state.getBattlefield()) shouldBe false
+        d.state.floatingEffects.size shouldBe 2
+        d.state.continuationStack shouldBe emptyList()
+        d.submitDecision(two.playerId, OptionChosenResponse(two.id, 1)).error.isNullOrBlank() shouldBe false
+        d.state.floatingEffects.size shouldBe 2
+    }
+
+    test("attached equipment batch propagates replacement pause and resumes its remainder") {
+        val d = driver()
+        val equipment = com.wingedsheep.sdk.dsl.card("Destruction Test Equipment") { typeLine = "Artifact — Equipment" }
+        d.registerCard(equipment)
+        val c = d.putCreatureOnBattlefield(d.player1, "Centaur Courser")
+        val first = d.putPermanentOnBattlefield(d.player1, equipment.name)
+        val second = d.putPermanentOnBattlefield(d.player1, equipment.name)
+        d.replaceState(d.state.updateEntity(c) { it.with(com.wingedsheep.engine.state.components.battlefield.AttachmentsComponent(listOf(first, second))) }
+            .updateEntity(first) { it.with(com.wingedsheep.engine.state.components.battlefield.AttachedToComponent(c)) }
+            .updateEntity(second) { it.with(com.wingedsheep.engine.state.components.battlefield.AttachedToComponent(c)) })
+        addShield(d, first, SerializableModification.RegenerationShield)
+        addShield(d, first, SerializableModification.RemoveDamageShield)
+        val result = com.wingedsheep.engine.handlers.effects.zones.DestroyAllEquipmentOnTargetExecutor(d.cardRegistry).execute(
+            d.state, com.wingedsheep.sdk.scripting.effects.DestroyAllEquipmentOnTargetEffect(com.wingedsheep.sdk.scripting.targets.EffectTarget.Self),
+            EffectContext(sourceId = c, controllerId = d.player1))
+        d.replaceState(result.state)
+        val choice = d.state.pendingDecision as ChooseOptionDecision
+        (second in d.state.getBattlefield()) shouldBe true
+        d.submitDecision(choice.playerId, OptionChosenResponse(choice.id, 1)).error shouldBe null
+        (first in d.state.getBattlefield()) shouldBe true
+        (second in d.state.getBattlefield()) shouldBe false
+        d.state.pendingDecision shouldBe null
     }
 })

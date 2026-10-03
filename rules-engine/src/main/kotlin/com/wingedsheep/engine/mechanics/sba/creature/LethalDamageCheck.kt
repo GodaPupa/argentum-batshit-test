@@ -57,17 +57,20 @@ class LethalDamageCheck : StateBasedActionCheck {
     fun destroyRemaining(
         state: GameState,
         remaining: List<com.wingedsheep.engine.state.ObjectRef>,
-        passStartState: GameState
+        passStartState: GameState,
+        concurrentDestructions: Set<com.wingedsheep.sdk.model.EntityId> = remaining.map { it.entityId }.toSet()
     ): ExecutionResult {
         var current = state
         val events = mutableListOf<com.wingedsheep.engine.core.GameEvent>()
         for ((index, ref) in remaining.withIndex()) {
             if (!current.isCurrentObject(ref) || ref.entityId !in current.getBattlefield()) continue
             val card = current.getEntity(ref.entityId)?.get<CardComponent>() ?: continue
-            val frame = com.wingedsheep.engine.core.LethalDestructionContinuation(remaining.drop(index + 1), passStartState)
+            val frame = com.wingedsheep.engine.core.LethalDestructionContinuation(remaining.drop(index + 1), passStartState, concurrentDestructions)
             val queued = current.pushContinuation(frame)
-            val replacement = com.wingedsheep.engine.handlers.effects.DestructionReplacements.replace(
-                queued, ref.entityId, canRegenerate = true, byEffect = false)
+            val options = com.wingedsheep.engine.handlers.effects.DestructionReplacements.applicableOptions(
+                passStartState, ref.entityId, canRegenerate = true, byEffect = false)
+            val replacement = com.wingedsheep.engine.handlers.effects.DestructionReplacements.replaceWithOptions(
+                queued, ref.entityId, options, byEffect = false, concurrentDestructions = concurrentDestructions)
             val result = replacement?.toExecutionResult() ?: SbaZoneMovementHelper.putCreatureInGraveyard(
                 queued, ref.entityId, card, "lethal damage", passStartState)
             events += result.events

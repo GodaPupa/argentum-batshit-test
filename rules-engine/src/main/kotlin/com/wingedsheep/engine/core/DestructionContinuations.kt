@@ -19,14 +19,17 @@ data class DestructionReplacementOption(
 @Serializable
 data class DestructionReplacementContinuation(
     val permanent: ObjectRef,
-    val options: List<DestructionReplacementOption>
+    val options: List<DestructionReplacementOption>,
+    val byEffect: Boolean,
+    val concurrentDestructions: Set<EntityId> = emptySet()
 ) : AnswerContinuation
 
 /** Remaining lethal determinations and their shared pre-pass replacement source snapshot. */
 @Serializable
 data class LethalDestructionContinuation(
     val remaining: List<ObjectRef>,
-    val passStartState: com.wingedsheep.engine.state.GameState
+    val passStartState: com.wingedsheep.engine.state.GameState,
+    val concurrentDestructions: Set<EntityId>
 ) : AutomaticContinuation
 
 /** Retains the complete collection operation while a nested destruction replacement asks a question. */
@@ -36,5 +39,6 @@ data class DestroyCollectionContinuation(
     val context: com.wingedsheep.engine.handlers.EffectContext,
     val cards: List<EntityId>,
     val remaining: List<ObjectRef>,
-    val attempted: List<ObjectRef>
+    val attempted: List<ObjectRef>,
+    val replacementOptions: Map<EntityId, List<DestructionReplacementOption>>
 ) : AutomaticContinuation

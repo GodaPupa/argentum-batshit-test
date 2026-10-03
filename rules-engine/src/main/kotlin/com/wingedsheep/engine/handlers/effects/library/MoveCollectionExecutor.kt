@@ -90,7 +90,11 @@ class MoveCollectionExecutor(
         }
 
         if (effect.moveType == MoveType.Destroy && destination is CardDestination.ToZone && destination.zone == Zone.GRAVEYARD) {
-            return destroyCollection(state, effect, context, cards, cards.mapNotNull(state::objectRef), emptyList())
+            val destructible = cards.filterNot { state.projectedState.hasKeyword(it, Keyword.INDESTRUCTIBLE) }
+            val options = destructible.associateWith {
+                com.wingedsheep.engine.handlers.effects.DestructionReplacements.applicableOptions(state, it, !effect.noRegenerate, true)
+            }
+            return destroyCollection(state, effect, context, cards, destructible.mapNotNull(state::objectRef), emptyList(), options)
         }
         var result = when (destination) {
             is CardDestination.ToZone ->
@@ -142,7 +146,8 @@ class MoveCollectionExecutor(
         context: EffectContext,
         cards: List<EntityId>,
         remaining: List<com.wingedsheep.engine.state.ObjectRef>,
-        attempted: List<com.wingedsheep.engine.state.ObjectRef>
+        attempted: List<com.wingedsheep.engine.state.ObjectRef>,
+        replacementOptions: Map<EntityId, List<com.wingedsheep.engine.core.DestructionReplacementOption>>
     ): EffectResult {
         var current = state
         val events = mutableListOf<GameEvent>()
@@ -150,8 +155,11 @@ class MoveCollectionExecutor(
         for ((index, ref) in remaining.withIndex()) {
             if (!current.isCurrentObject(ref) || ref.entityId !in current.getBattlefield()) continue
             processed = processed + ref
-            val frame = com.wingedsheep.engine.core.DestroyCollectionContinuation(effect, context, cards, remaining.drop(index + 1), processed)
-            val result = ZoneMovementUtils.destroyPermanent(current.pushContinuation(frame), ref.entityId, !effect.noRegenerate)
+            val frame = com.wingedsheep.engine.core.DestroyCollectionContinuation(effect, context, cards, remaining.drop(index + 1), processed, replacementOptions)
+            val queued = current.pushContinuation(frame)
+            val result = com.wingedsheep.engine.handlers.effects.DestructionReplacements.replaceWithOptions(
+                queued, ref.entityId, replacementOptions[ref.entityId] ?: emptyList(), byEffect = true, concurrentDestructions = replacementOptions.keys)
+                ?: ZoneMovementUtils.movePermanentToZone(queued, ref.entityId, Zone.GRAVEYARD)
             events += result.events
             if (result.isPaused) return EffectResult.propagatePause(result.state, events)
             if (result.error != null) return result.copy(events = events)

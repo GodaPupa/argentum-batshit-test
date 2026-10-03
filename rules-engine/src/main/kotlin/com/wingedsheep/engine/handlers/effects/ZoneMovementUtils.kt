@@ -574,7 +574,7 @@ object ZoneMovementUtils {
      * @param canRegenerate If false, regeneration shields are not checked (e.g. Wrath of God)
      * @return The execution result with updated state and events
      */
-    fun destroyPermanent(state: GameState, entityId: EntityId, canRegenerate: Boolean = true): EffectResult {
+    fun destroyPermanent(state: GameState, entityId: EntityId, canRegenerate: Boolean = true, byEffect: Boolean = true): EffectResult {
         val container = state.getEntity(entityId)
             ?: return EffectResult.error(state, "Entity not found: $entityId")
 
@@ -586,7 +586,7 @@ object ZoneMovementUtils {
             return EffectResult.success(state)
         }
 
-        DestructionReplacements.replace(state, entityId, canRegenerate, byEffect = true)?.let { return it }
+        DestructionReplacements.replace(state, entityId, canRegenerate, byEffect)?.let { return it }
 
         // Delegate to ZoneTransitionService
         val result = ZoneTransitionService.moveToZone(state, entityId, Zone.GRAVEYARD)
