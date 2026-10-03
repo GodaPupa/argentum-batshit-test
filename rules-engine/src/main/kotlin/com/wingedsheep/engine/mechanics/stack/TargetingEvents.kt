@@ -22,6 +22,7 @@ object TargetingEvents {
         val objectEntity = state.getEntity(stackObjectId) ?: return EffectResult.success(state)
         val previous = objectEntity.get<TargetsComponent>() ?: return EffectResult.success(state)
         val spell = objectEntity.get<SpellOnStackComponent>()
+        val triggered = objectEntity.get<TriggeredAbilityOnStackComponent>()
         val controllerId = spell?.casterId
             ?: objectEntity.get<ActivatedAbilityOnStackComponent>()?.controllerId
             ?: objectEntity.get<TriggeredAbilityOnStackComponent>()?.controllerId
@@ -41,7 +42,7 @@ object TargetingEvents {
             var cursor = offset
             return slices.map { slice -> targets.subList(cursor, cursor + slice.size).also { cursor += slice.size }.toList() }
         }
-        val reboundModes = rebind(spell?.modeTargetsOrdered.orEmpty(), 0)
+        val reboundModes = rebind(spell?.modeTargetsOrdered ?: triggered?.modeTargetsOrdered.orEmpty(), 0)
             ?: return EffectResult.error(state, "Modal target structure does not match announced slots")
         val reboundSplices = rebind(spell?.splicedTargetsOrdered.orEmpty(), mainCount)
             ?: return EffectResult.error(state, "Splice target structure does not match announced slots")
@@ -67,7 +68,7 @@ object TargetingEvents {
         val allocation = spell?.damageDistribution?.let {
             remapAllocation(it) ?: return EffectResult.error(state, "Ambiguous divided target allocation")
         }
-        val modeAllocations = spell?.modeDamageDistribution.orEmpty().mapValues { (_, allocation) ->
+        val modeAllocations = (spell?.modeDamageDistribution ?: triggered?.modeDamageDistribution.orEmpty()).mapValues { (_, allocation) ->
             remapAllocation(allocation) ?: return EffectResult.error(state, "Ambiguous modal divided allocation")
         }
         val captured = TargetsComponent.capture(state, targets, previous.targetRequirements, previous.announcedTargetCounts)
@@ -81,6 +82,10 @@ object TargetingEvents {
                 modeTargetsOrdered = reboundModes,
                 splicedTargetsOrdered = reboundSplices,
                 damageDistribution = allocation,
+                modeDamageDistribution = modeAllocations
+            ))
+            if (triggered != null) entity = entity.with(triggered.copy(
+                modeTargetsOrdered = reboundModes,
                 modeDamageDistribution = modeAllocations
             ))
             entity
