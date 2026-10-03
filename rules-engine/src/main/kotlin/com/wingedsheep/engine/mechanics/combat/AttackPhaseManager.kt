@@ -12,6 +12,7 @@ import com.wingedsheep.engine.state.components.combat.AttackersDeclaredThisTurnC
 import com.wingedsheep.engine.state.components.combat.GoadedComponent
 import com.wingedsheep.engine.state.components.combat.MustAttackPlayerComponent
 import com.wingedsheep.engine.state.components.combat.MustAttackThisTurnComponent
+import com.wingedsheep.engine.state.components.combat.MustAttackDefenderThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackedThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackersThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
@@ -137,6 +138,12 @@ internal class AttackPhaseManager(
         val mustAttackThisTurnValidation = validateMustAttackThisTurnRequirements(state, attackingPlayer, attackers)
         if (mustAttackThisTurnValidation != null) {
             return ExecutionResult.error(state, mustAttackThisTurnValidation)
+        }
+
+        // Check per-creature defender-pinned requirements (Encore).
+        val mustAttackDefenderValidation = validateMustAttackDefenderRequirements(state, attackingPlayer, attackers)
+        if (mustAttackDefenderValidation != null) {
+            return ExecutionResult.error(state, mustAttackDefenderValidation)
         }
 
         // Check projected must-attack requirements (Grand Melee)
@@ -683,6 +690,43 @@ internal class AttackPhaseManager(
     }
 
     /**
+     * Validate a creature's requirement to attack one particular opponent this turn if able.
+     *
+     * The requirement only binds while that exact opponent remains an active opponent and is a
+     * legal defender for this attacker. This keeps "if able" honest when an opponent leaves or a
+     * restriction makes that player impossible to attack.
+     */
+    private fun validateMustAttackDefenderRequirements(
+        state: GameState,
+        attackingPlayer: EntityId,
+        attackers: Map<EntityId, EntityId>
+    ): String? {
+        val validAttackers = getValidAttackers(state, attackingPlayer)
+        val opponents = state.getOpponents(attackingPlayer)
+
+        for (attackerId in validAttackers) {
+            val container = state.getEntity(attackerId) ?: continue
+            val requirement = container.get<MustAttackDefenderThisTurnComponent>() ?: continue
+            if (requirement.defenderId !in opponents) continue
+
+            val ctx = AttackCheckContext(state, state.projectedState, attackerId, attackingPlayer, cardRegistry)
+            val canAttackRequiredDefender =
+                attackDefenderRules.all { rule -> rule.check(ctx, requirement.defenderId) == null }
+            if (!canAttackRequiredDefender) continue
+
+            val cardName = container.get<CardComponent>()?.name ?: "Creature"
+            val chosenDefender = attackers[attackerId]
+            if (chosenDefender == null) {
+                return "$cardName must attack its assigned opponent this turn if able"
+            }
+            if (chosenDefender != requirement.defenderId) {
+                return "$cardName must attack its assigned opponent this turn if able"
+            }
+        }
+        return null
+    }
+
+    /**
      * Validate goaded-creature requirements (CR 701.15b–c).
      *
      * Per CR 701.15b a goaded creature has two combat requirements:
@@ -837,7 +881,19 @@ internal class AttackPhaseManager(
             }
         }
 
-        // 3. Projected mustAttack (static ability like Valley Dasher, Grand Melee) or a granted
+        // 3. Defender-pinned must-attack requirements (Encore).
+        val opponents = state.getOpponents(attackingPlayer)
+        for (attackerId in validAttackers) {
+            val requirement = state.getEntity(attackerId)
+                ?.get<MustAttackDefenderThisTurnComponent>() ?: continue
+            if (requirement.defenderId !in opponents) continue
+            val ctx = AttackCheckContext(state, state.projectedState, attackerId, attackingPlayer, cardRegistry)
+            if (attackDefenderRules.all { it.check(ctx, requirement.defenderId) == null }) {
+                mandatory.add(attackerId)
+            }
+        }
+
+        // 4. Projected mustAttack (static ability like Valley Dasher, Grand Melee) or a granted
         // entity-scoped MustAttack (Carnage's reanimated target), which never reaches projection.
         for (attackerId in validAttackers) {
             if (mustAttackThisCombat(state, attackerId)) {
@@ -845,7 +901,7 @@ internal class AttackPhaseManager(
             }
         }
 
-        // 4. GoadedComponent (CR 701.15b) — individual creatures
+        // 5. GoadedComponent (CR 701.15b) — individual creatures
         for (attackerId in validAttackers) {
             val container = state.getEntity(attackerId) ?: continue
             if (container.has<GoadedComponent>()) {

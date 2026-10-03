@@ -27,6 +27,7 @@ import com.wingedsheep.engine.state.components.combat.BlockedOrWasBlockedByLegen
 import com.wingedsheep.engine.state.components.combat.CanAttackDespiteDefenderThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.GoadedComponent
 import com.wingedsheep.engine.state.components.combat.MustAttackThisTurnComponent
+import com.wingedsheep.engine.state.components.combat.MustAttackDefenderThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackedThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackersLastTurnComponent
 import com.wingedsheep.engine.state.components.combat.BlockedThisTurnComponent
@@ -1132,6 +1133,14 @@ class CleanupPhaseManager(
             }.keys
             for (entityId in creaturesWithMustAttack) {
                 newState = newState.updateEntity(entityId) { it.without<MustAttackThisTurnComponent>() }
+            }
+
+            // Remove defender-pinned turn requirements (Encore).
+            val creaturesWithPinnedDefender = newState.entities.filter { (_, container) ->
+                container.has<MustAttackDefenderThisTurnComponent>()
+            }.keys
+            for (entityId in creaturesWithPinnedDefender) {
+                newState = newState.updateEntity(entityId) { it.without<MustAttackDefenderThisTurnComponent>() }
             }
 
             // Remove CanAttackDespiteDefenderThisTurnComponent (Krotiq Nestguard's "can attack

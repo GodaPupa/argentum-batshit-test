@@ -211,6 +211,21 @@ data class MustAttackPlayerComponent(
 data object MustAttackThisTurnComponent : Component
 
 /**
+ * Turn-scoped combat requirement: this creature must attack [defenderId] this turn if able.
+ *
+ * Unlike [MustAttackPlayerComponent], this belongs to one creature and names one specific
+ * defending player. Encore uses one instance per token so each copy is paired with a different
+ * opponent. If that opponent has left the game or cannot legally be attacked by this creature,
+ * the requirement is unsatisfiable and imposes no illegal declaration.
+ *
+ * Removed during cleanup with [MustAttackThisTurnComponent].
+ */
+@Serializable
+data class MustAttackDefenderThisTurnComponent(
+    val defenderId: EntityId
+) : Component
+
+/**
  * Marker component letting a creature attack this turn as though it didn't have defender.
  *
  * Added by [com.wingedsheep.sdk.scripting.effects.CanAttackDespiteDefenderThisTurnEffect] (e.g. Krotiq
