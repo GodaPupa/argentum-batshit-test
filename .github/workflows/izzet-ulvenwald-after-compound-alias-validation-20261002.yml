@@ -1,0 +1,91 @@
+name: Izzet Ulvenwald Captive after compound alias
+on:
+  push:
+    branches: ["validation/izzet-ulvenwald-after-compound-alias-20261002"]
+    paths: [".github/workflows/izzet-ulvenwald-after-compound-alias-validation-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_USER_HOME: /tmp/izzet-ulvenwald-alias-${{ github.run_id }}
+      OUT: /tmp/izzet-ulvenwald-alias-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact Ulvenwald composition
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "ade113db9ef2737ebc24cdce14453bd936852bb6"
+          test "$(git rev-parse HEAD^^)" = "52c458a9a7a2a1c412a7a46b23e953f894d2f602"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-ulvenwald-after-compound-alias-validation-20261002.yml"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/registry/CardRegistry.kt)" = "f16a158d230211b36438532bf444ee96889338d1"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/emn/cards/UlvenwaldCaptive.kt)" = "2b0be33095886adfd92f93a39e0099e587a1d761"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UlvenwaldCaptiveScenarioTest.kt)" = "89eceac1a71246dbf044fdc9ddddbcb044a00fb9"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          printf '%s\n' 'AUTHOR_VALIDATION_AND_ZERO_SEED_REGISTRY_DIAGNOSTIC_ONLY' > "$OUT/authority.txt"
+      - name: Compile affected shard and gym test source
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:compileTestKotlin :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact Ulvenwald mechanics scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :mtg-sets:2008-2016:tests:test --tests com.wingedsheep.engine.scenarios.UlvenwaldCaptiveScenarioTest 2>&1 | tee "$OUT/ulvenwald.log"
+          cp mtg-sets/2008-2016/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.UlvenwaldCaptiveScenarioTest.xml "$OUT/"
+          python3 - <<'PY'
+          import os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.engine.scenarios.UlvenwaldCaptiveScenarioTest.xml").getroot()
+          got={k:int(root.attrib[k]) for k in ("tests","failures","errors","skipped")}
+          assert got=={"tests":2,"failures":0,"errors":0,"skipped":0}, got
+          PY
+      - name: Reinventory Position-1 exact identities
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest 2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"; cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml").getroot()
+          assert int(root.attrib["tests"])==55
+          suffix=" is registered in current runtime"; reg=[]; miss=[]
+          for c in root.iter("testcase"):
+              n=c.attrib["name"]; card=n[:-len(suffix)] if n.endswith(suffix) else n
+              (reg if c.find("failure") is None and c.find("error") is None else miss).append(card)
+          expected_missing={
+            "Benevolent Blessing","Capsize","Cosmic Hunger","Everflowing Chalice",
+            "Guardian Naga // Banishing Coils","Lose Focus","Rolling Thunder",
+            "Shardless Outlander","Shattering Pulse","Skred","Snake Umbra","Star Compass"
+          }
+          assert "Ulvenwald Captive // Ulvenwald Abomination" in reg
+          assert set(miss)==expected_missing,(len(reg),len(miss),sorted(miss))
+          assert len(reg)==43 and len(miss)==12
+          (out/"registry-summary.json").write_text(json.dumps({
+            "registered":len(reg),"missing":len(miss),"missing_names":sorted(miss),
+            "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0}
+          },indent=2,sort_keys=True)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-ulvenwald-after-alias-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
