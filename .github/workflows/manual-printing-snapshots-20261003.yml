@@ -1,0 +1,60 @@
+name: Manual exact printing and scoped snapshot audit
+on:
+  push:
+    branches: [validation/manual-printing-snapshots-20261003]
+    paths: [.github/workflows/manual-printing-snapshots-20261003.yml]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OUT: /tmp/manual-printing-snapshots
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: c1a2f4e8b5ca900518b4ca47cda58ff346dc43fa
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Export only NPH and M20 snapshots and audit printings
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p "$OUT"
+          set +e
+          UPDATE_SNAPSHOTS=1 bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g :mtg-sets:test --tests '*CardDefinitionSnapshotTest.NPH*' --tests '*CardDefinitionSnapshotTest.M20*' > "$OUT/snapshots.log" 2>&1
+          snapshot_rc=$?
+          python3 scripts/check-card-printing.py 'Spellskite' > "$OUT/spellskite-printing.log" 2>&1
+          spellskite_rc=$?
+          python3 scripts/check-card-printing.py 'Veil of Summer' > "$OUT/veil-printing.log" 2>&1
+          veil_rc=$?
+          printf '%s %s %s\n' "$snapshot_rc" "$spellskite_rc" "$veil_rc" > "$OUT/exit-codes.txt"
+          cp mtg-sets/src/test/resources/snapshots/cards/{NPH,M20}.json "$OUT/"
+          cp mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml "$OUT/" || true
+          git diff --stat > "$OUT/snapshot-diff-stat.txt"
+          python3 - <<'PY'
+          import pathlib,json,subprocess,re,hashlib
+          out=pathlib.Path('/tmp/manual-printing-snapshots');delta={}
+          def cards(s):return {b.split('\n',1)[0]:b.split('\n',1)[1].strip() for b in re.split(r'^// ',s,flags=re.M)[1:]}
+          for code in ['NPH','M20']:
+            path='mtg-sets/src/test/resources/snapshots/cards/'+code+'.json'
+            before=cards(subprocess.check_output(['git','show','HEAD:'+path],text=True));after=cards(pathlib.Path(path).read_text())
+            delta[code]={'added':sorted(after.keys()-before.keys()),'removed':sorted(before.keys()-after.keys()),'changed':sorted(n for n in before.keys()&after.keys() if before[n]!=after[n])}
+          (out/'delta.json').write_text(json.dumps(delta,indent=2)+'\n')
+          (out/'sha256.json').write_text(json.dumps({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(out.iterdir()) if p.is_file()},indent=2)+'\n')
+          assert delta=={'NPH':{'added':['Spellskite'],'removed':[],'changed':[]},'M20':{'added':['Veil of Summer'],'removed':[],'changed':[]}},delta
+          PY
+          delta_rc=$?
+          test "$snapshot_rc" -eq 0 && test "$spellskite_rc" -eq 0 && test "$veil_rc" -eq 0 && test "$delta_rc" -eq 0
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-printing-snapshots-${{ github.run_id }}
+          path: /tmp/manual-printing-snapshots/
+          retention-days: 90
+          if-no-files-found: error
