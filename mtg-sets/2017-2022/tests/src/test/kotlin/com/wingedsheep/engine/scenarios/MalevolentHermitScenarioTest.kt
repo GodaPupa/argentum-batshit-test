@@ -133,6 +133,7 @@ class MalevolentHermitScenarioTest : FunSpec({
         val enemyBolt = d.putCardInHand(enemy, "Lightning Bolt")
         val myCounter = d.putCardInHand(me, "Counterspell")
         d.giveMana(enemy, Color.RED, 1)
+        d.passPriority(me).isSuccess shouldBe true
         d.castSpell(enemy, enemyBolt, listOf(me)).isSuccess shouldBe true
         val enemySpell = d.getTopOfStack()!!
         d.passPriority(enemy).isSuccess shouldBe true
