@@ -15,8 +15,30 @@ class CardSpecificContinuationResumer(
     override fun resumers(): List<ContinuationResumer<*>> = listOf(
         resumer(SecretBidContinuation::class, ::resumeSecretBid),
         resumer(OpenLifeBidContinuation::class, ::resumeOpenLifeBid),
-        resumer(ContestedRetargetContinuation::class, ::resumeContestedRetarget)
+        resumer(ContestedRetargetContinuation::class, ::resumeContestedRetarget),
+        resumer(FixedDestinationRetargetContinuation::class, ::resumeFixedDestinationRetarget)
     )
+
+    fun resumeFixedDestinationRetarget(
+        state: GameState,
+        continuation: FixedDestinationRetargetContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is OptionChosenResponse) return ExecutionResult.error(state, "Expected target slot choice")
+        val slot = continuation.slots.getOrNull(response.optionIndex)
+            ?: return ExecutionResult.error(state, "Invalid target slot choice")
+        if (!state.isCurrentObject(continuation.stackObject) || !state.isCurrentObject(continuation.destination)) {
+            return checkForMore(state, emptyList())
+        }
+        val currentTargets = state.getEntity(continuation.stackObject.entityId)
+            ?.get<com.wingedsheep.engine.state.components.stack.TargetsComponent>()?.targets
+        if (currentTargets != continuation.originalTargets) return checkForMore(state, emptyList())
+        val result = com.wingedsheep.engine.mechanics.targeting.FixedDestinationRetarget.replaceSlot(
+            state, continuation.stackObject.entityId, slot,
+            com.wingedsheep.engine.state.components.stack.ChosenTarget.Permanent(continuation.destination.entityId))
+        return checkForMore(result.state, result.events)
+    }
 
     /**
      * Resume a chosen player's retargeting of a contested spell/ability (Psychic Battle's reveal

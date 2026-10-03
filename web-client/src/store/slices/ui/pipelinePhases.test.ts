@@ -412,3 +412,14 @@ describe('computePhases — target-priced collect evidence (Urgent Necropsy)', (
     expect(captured).toMatchObject({ minTotalWeight: 0, minTargets: 0 })
   })
 })
+
+
+describe('announced target groups on ordinary actions', () => {
+  it('preserves zero and later group counts when building the server action', () => {
+    const info = castAction({})
+    const action = mergeResult(info.action, info,
+      { type: 'targeting', selectedTargets: ['p2' as never], announcedTargetCounts: [0, 1] },
+      { players: [{ playerId: 'p2' }], cards: {} } as never)
+    expect(action).toMatchObject({ type: 'CastSpell', targets: [{ type: 'Player', playerId: 'p2' }], announcedTargetCounts: [0, 1] })
+  })
+})

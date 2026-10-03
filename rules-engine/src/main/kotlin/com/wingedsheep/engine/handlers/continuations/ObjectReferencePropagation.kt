@@ -25,6 +25,7 @@ internal fun AnswerContinuation.objectReferences(): ObjectReferenceEnvironment? 
     is SecretBidContinuation -> objectReferences
     is OpenLifeBidContinuation -> objectReferences
     is ContestedRetargetContinuation -> objectReferences
+    is FixedDestinationRetargetContinuation -> objectReferences
     is DistributeCountersContinuation -> objectReferences
     is RemoveAnyNumberOfCountersContinuation -> objectReferences
     is AddCountersUpToContinuation -> objectReferences
@@ -135,6 +136,7 @@ internal fun AnswerContinuation.withObjectReferences(refs: ObjectReferenceEnviro
     is SecretBidContinuation -> copy(objectReferences = refs)
     is OpenLifeBidContinuation -> copy(objectReferences = refs)
     is ContestedRetargetContinuation -> copy(objectReferences = refs)
+    is FixedDestinationRetargetContinuation -> copy(objectReferences = refs)
     is DistributeCountersContinuation -> copy(objectReferences = refs)
     is RemoveAnyNumberOfCountersContinuation -> copy(objectReferences = refs)
     is AddCountersUpToContinuation -> copy(objectReferences = refs)

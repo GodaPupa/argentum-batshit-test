@@ -134,7 +134,7 @@ class StackResolver(
             PreTargetedEffectEntry(
                 effect = effect,
                 targets = spellComponent.splicedTargetsOrdered.getOrNull(index) ?: emptyList(),
-                targetRequirements = splicedDef.script.targetRequirements
+                targetRequirements = spellComponent.splicedTargetRequirements.getOrNull(index) ?: splicedDef.script.targetRequirements
             )
         }
 
@@ -357,10 +357,19 @@ class StackResolver(
         // spliced card its own targets — its `ContextTarget(0)` means its own first target, not the
         // main spell's. TargetsComponent keeps the flat union, so target arrows and the 608.2b
         // re-validation pass keep working unchanged.
-        val splicedTargetsOrdered: List<List<ChosenTarget>> = if (splicedCardNames.isEmpty()) {
-            emptyList()
-        } else {
-            SpliceCasts.sliceSplicedTargets(effectiveTargets, splicedCardNames, cardRegistry)
+        val spliceRequirementSizes = splicedCardNames.map { name ->
+            cardRegistry.getCard(name)?.script?.targetRequirements?.size ?: 0
+        }
+        var requirementCursor = effectiveTargetRequirements.size - spliceRequirementSizes.sum()
+        if (requirementCursor < 0) return ExecutionResult.error(state, "Invalid splice requirement structure")
+        val frozenSpliceRequirements = spliceRequirementSizes.map { size ->
+            frozenTargetComponent.targetRequirements.subList(requirementCursor, requirementCursor + size)
+                .also { requirementCursor += size }.toList()
+        }
+        var spliceCursor = effectiveTargets.size - frozenSpliceRequirements.flatten().sumOf { it.count }
+        val splicedTargetsOrdered = frozenSpliceRequirements.map { requirements ->
+            val size = requirements.sumOf { it.count }
+            effectiveTargets.subList(spliceCursor, spliceCursor + size).also { spliceCursor += size }.toList()
         }
 
         // Add spell components
@@ -387,6 +396,7 @@ class StackResolver(
                 giftRecipient = giftRecipient,
                 splicedCardNames = splicedCardNames,
                 splicedTargetsOrdered = splicedTargetsOrdered,
+                splicedTargetRequirements = frozenSpliceRequirements,
                 chosenModes = chosenModes,
                 modalSelectionCompleted = modalSelectionCompleted,
                 modeTargetsOrdered = modeTargetsOrdered,
@@ -825,11 +835,18 @@ class StackResolver(
         // (copy controller) and modal fields (which the caller may retarget) are
         // overridden explicitly. Payment events (ManaSpentEvent, SpellCastEvent) are
         // deliberately not re-emitted — a copy isn't cast (707.10).
+        val spliceSizes = sourceSpell.splicedTargetsOrdered.map { it.size }
+        var copySpliceCursor = effectiveTargets.size - spliceSizes.sum()
+        if (copySpliceCursor < 0) return ExecutionResult.error(state, "Invalid copied splice target structure")
+        val copiedSpliceTargets = spliceSizes.map { size ->
+            effectiveTargets.subList(copySpliceCursor, copySpliceCursor + size).also { copySpliceCursor += size }.toList()
+        }
         val copiedSpellComp = sourceSpell.copy(
             casterId = copyController,
             chosenModes = effectiveModes,
             modeTargetsOrdered = effectiveModeTargets,
-            modeTargetRequirements = effectiveModeRequirements
+            modeTargetRequirements = effectiveModeRequirements,
+            splicedTargetsOrdered = copiedSpliceTargets
         )
 
         var container = ComponentContainer.of(copiedCardComp, copiedSpellComp)
@@ -2192,8 +2209,7 @@ class StackResolver(
         val splicedRequirementCount = spellComponent.splicedCardNames.sumOf { name ->
             cardRegistry.getCard(name)?.script?.targetRequirements?.size ?: 0
         }
-        val splicedSlotCount = SpliceCasts
-            .splicedTargetSlotCounts(spellComponent.splicedCardNames, cardRegistry).sum()
+        val splicedSlotCount = spellComponent.splicedTargetsOrdered.sumOf { it.size }
 
         if (spellEffect != null) {
             val allTargetRequirements = state.getEntity(spellId)?.get<TargetsComponent>()?.targetRequirements ?: emptyList()

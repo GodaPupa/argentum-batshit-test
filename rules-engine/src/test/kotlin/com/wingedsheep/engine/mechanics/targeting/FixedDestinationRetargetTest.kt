@@ -108,4 +108,18 @@ class FixedDestinationRetargetTest : FunSpec({
             targetingSourceType = com.wingedsheep.engine.handlers.TargetingSourceType.ABILITY,
             sourceSnapshot = EntitySnapshot(old, colors = emptySet(), typeLine = artifact.typeLine)).isNullOrBlank() shouldBe false
     }
+    test("missing source without departure snapshot cannot establish legality") {
+        val ability = ActivatedAbilityOnStackComponent(EntityId("missing-source"), "source", caster,
+            com.wingedsheep.sdk.dsl.Effects.DrawCards(1))
+        val before = state().updateEntity(stack) { it.without<SpellOnStackComponent>().with(ability) }
+        FixedDestinationRetarget.legalSlots(before, stack, target(next)) shouldBe emptyList()
+    }
+    test("stale captured source origin without departure snapshot cannot borrow new visit") {
+        val before = state()
+        val ability = ActivatedAbilityOnStackComponent(old, "source", caster,
+            com.wingedsheep.sdk.dsl.Effects.DrawCards(1), objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
+                captured = true, origin = com.wingedsheep.engine.state.ObjectRef(old, 999)))
+        val updated = before.updateEntity(stack) { it.without<SpellOnStackComponent>().with(ability) }
+        FixedDestinationRetarget.legalSlots(updated, stack, target(next)) shouldBe emptyList()
+    }
 })

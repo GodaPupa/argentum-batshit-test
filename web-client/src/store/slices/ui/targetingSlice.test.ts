@@ -131,6 +131,21 @@ describe('targetingSlice — multi-target back navigation', () => {
     store.getState().confirmTargeting('test-epoch')
 
     expect(store.getState().targetingState).toBeNull()
-    expect(advancePipeline).toHaveBeenCalledWith({ type: 'targeting', selectedTargets: [id('a'), id('c')] })
+    expect(advancePipeline).toHaveBeenCalledWith({ type: 'targeting', selectedTargets: [id('a'), id('c')], announcedTargetCounts: [1, 1] })
+  })
+})
+
+
+describe('announced target cardinalities', () => {
+  it('carries zero for an omitted first group instead of inferring flat target ownership', () => {
+    const { store, advancePipeline } = makeStore()
+    const action = store.getState().pipelineState!.accumulatedAction
+    const initial = twoRequirementState(action)
+    store.getState().startTargeting({ ...initial, minTargets: 0,
+      targetRequirements: initial.targetRequirements!.map((req, index) => ({ ...req, minTargets: index === 0 ? 0 : 1 })) })
+    store.getState().confirmTargeting('test-epoch')
+    store.getState().addTarget(id('c'))
+    store.getState().confirmTargeting('test-epoch')
+    expect(advancePipeline).toHaveBeenCalledWith({ type: 'targeting', selectedTargets: [id('c')], announcedTargetCounts: [0, 1] })
   })
 })

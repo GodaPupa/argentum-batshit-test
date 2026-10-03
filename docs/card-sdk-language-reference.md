@@ -13534,3 +13534,7 @@ resolution executor is introduced. The existing Yes/No decision belongs to the
 drawing player, and its source identifies the public graveyard card. The client
 keyword label is `DREDGE`. The mtgish emitter preserves the numeric argument through
 `KeywordAbility.dredge(N)`; unsupported numeric shapes remain scaffolded.
+
+### Fixed-destination single-slot retargeting
+
+`Effects.ChangeOneTargetTo(stackObject = EffectTarget.ContextTarget(0), destination = EffectTarget.Self)` changes exactly one legal announced target slot of a spell or ability to the fixed destination permanent. It retains other targets, announced group cardinalities, modal/splice slices, and divided allocations. No legal slot produces no change; multiple legal slots ask the effect's controller which slot to change. The choice captures both object visits and revalidates on resume. Targeting legality uses the original spell/ability's controller and source characteristics, including complete departure snapshots; ward remains a resulting target trigger. This primitive does not authorize selecting a different destination.

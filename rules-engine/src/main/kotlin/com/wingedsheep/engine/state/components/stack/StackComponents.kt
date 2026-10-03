@@ -58,6 +58,8 @@ data class SpellOnStackComponent(
      * own targets and a spliced card's `ContextTarget(0)` means its own first target.
      */
     val splicedTargetsOrdered: List<List<ChosenTarget>> = emptyList(),
+    /** Announced per-splice group widths, including omitted optional requirements. */
+    val splicedTargetRequirements: List<List<TargetRequirement>> = emptyList(),
     val chosenModes: List<Int> = emptyList(),  // For modal spells (700.2). Ordered; same index may repeat when allowRepeat.
     /** True once cast-time modal selection completed, including a legal choice of zero modes. */
     val modalSelectionCompleted: Boolean = false,

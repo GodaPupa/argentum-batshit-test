@@ -23,6 +23,17 @@ object FixedDestinationRetarget {
         val controller = spell?.casterId ?: activated?.controllerId ?: triggered?.controllerId ?: return emptyList()
         val source = if (spell != null) stackObjectId else activated?.sourceId ?: triggered?.sourceId ?: return emptyList()
         val snapshot = activated?.lastKnownSourceSnapshot ?: triggered?.lastKnownSourceSnapshot
+        if (spell == null && snapshot == null) {
+            if (!state.hasEntity(source)) return emptyList()
+            val references = activated?.objectReferences ?: triggered?.objectReferences
+            if (references?.captured == true &&
+                (references.origin == null || !state.isCurrentObject(references.origin))) return emptyList()
+            val entry = activated?.sourceBattlefieldTimestamp ?: triggered?.sourceBattlefieldTimestamp
+            if (entry != null && state.getEntity(source)
+                    ?.get<com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent>()?.timestamp != entry) {
+                return emptyList()
+            }
+        }
         // Partial historical snapshots cannot establish source-type targeting legality.
         if (snapshot != null && (snapshot.colors == null || snapshot.typeLine == null)) return emptyList()
         val projected = state.projectedState.getProjectedValues(source)

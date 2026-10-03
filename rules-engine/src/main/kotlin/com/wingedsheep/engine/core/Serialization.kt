@@ -382,6 +382,7 @@ val engineSerializersModule = SerializersModule {
         subclass(SecretBidContinuation::class)
         subclass(OpenLifeBidContinuation::class)
         subclass(ContestedRetargetContinuation::class)
+        subclass(FixedDestinationRetargetContinuation::class)
         subclass(DistributeCountersContinuation::class)
         subclass(RemoveAnyNumberOfCountersContinuation::class)
         subclass(PayAnyAmountOfLifeAsEntersContinuation::class)

@@ -326,7 +326,7 @@ class TargetValidator {
         // Check player-level protection, e.g. The One Ring's "protection from everything" (Rule 702.16).
         // A protected player can't be the target of a source matching one of its protection scopes.
         if (target is ChosenTarget.Player &&
-            PlayerProtectionRules.isProtectedFromSource(state, target.playerId, sourceId, casterId)
+            PlayerProtectionRules.isProtectedFromSource(state, target.playerId, sourceId, casterId, sourceSnapshot)
         ) {
             return "Target player has protection from this source"
         }

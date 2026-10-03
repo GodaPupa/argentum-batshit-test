@@ -3910,6 +3910,11 @@ object Effects {
     /**
      * Change the target of target spell or ability with a single target.
      */
+    fun ChangeOneTargetTo(
+        stackObject: com.wingedsheep.sdk.scripting.targets.EffectTarget = com.wingedsheep.sdk.scripting.targets.EffectTarget.ContextTarget(0),
+        destination: com.wingedsheep.sdk.scripting.targets.EffectTarget = com.wingedsheep.sdk.scripting.targets.EffectTarget.Self,
+    ): Effect = com.wingedsheep.sdk.scripting.effects.ChangeOneTargetToEffect(stackObject, destination)
+
     fun ChangeTarget(
         newTargetMustBePlayer: Boolean = false,
         onlyIfCurrentTargetIsController: Boolean = false,

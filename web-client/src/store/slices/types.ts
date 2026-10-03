@@ -862,7 +862,7 @@ export type PhaseResult =
   | { type: 'blightVariable'; blightAmount: number }
   | { type: 'payXLife'; payXLifeAmount: number }
   | { type: 'manaColorChoice'; color: string }
-  | { type: 'targeting'; selectedTargets: EntityId[] }
+  | { type: 'targeting'; selectedTargets: EntityId[]; announcedTargetCounts?: number[] }
   | { type: 'damageDistribution'; distribution: Record<EntityId, number> }
 
 /**
