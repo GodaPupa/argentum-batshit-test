@@ -13538,3 +13538,15 @@ not cast another spell or trigger replicate again.
 ### Umbra armor destruction replacement
 
 `Keyword.UMBRA_ARMOR` on an attached Aura replaces destruction of its enchanted permanent with removing all marked damage and destroying the Aura. Competing regeneration, shield-counter, damage-removal, and armor instances are chosen by the affected permanent controller through the existing option decision. Replacement and batch remainders are durable continuation frames.
+
+
+### Protection attachment activation history
+
+Color-protection static grants may set `retainsPreexistingControlledAttachments`. Each grant
+records its own source/host object references, grant index, granting controller, color, and
+activation epoch. At the atomic transition where the grant starts applying, matching controlled
+Aura and Equipment object references already attached to the host are captured immutably.
+Simultaneous attachments participate in the same capture; successive composite instructions
+reconcile separately, so a later attachment receives no retroactive exception. Legality reads
+this history without authoring it. Missing history fails closed. Detachment prunes retained
+objects; source/host zone changes cannot reuse an earlier object's exception.

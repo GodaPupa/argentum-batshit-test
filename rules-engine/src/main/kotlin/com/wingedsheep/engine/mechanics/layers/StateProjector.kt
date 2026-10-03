@@ -582,7 +582,7 @@ class StateProjector(
             val continuousEffectComponent = container.get<ContinuousEffectSourceComponent>()
             if (continuousEffectComponent != null) {
                 val textReplacement = container.get<TextReplacementComponent>()
-                effects.addAll(continuousEffectComponent.effects.map { effect ->
+                effects.addAll(continuousEffectComponent.effects.mapIndexed { grantIndex, effect ->
                     val effectiveFilter = if (textReplacement != null && effect.affectsFilter != null) {
                         effect.affectsFilter.applyTextReplacement(textReplacement)
                     } else {
@@ -597,7 +597,9 @@ class StateProjector(
                         sourceCondition = effect.sourceCondition,
                         affectsFilter = effectiveFilter,
                         groupId = effect.groupId,
-                        retainsSourceAttachment = effect.retainsSourceAttachment
+                        retainsSourceAttachment = effect.retainsSourceAttachment,
+                        retainsPreexistingControlledAttachments = effect.retainsPreexistingControlledAttachments,
+                        protectionGrantIndex = grantIndex
                     )
                 })
             }

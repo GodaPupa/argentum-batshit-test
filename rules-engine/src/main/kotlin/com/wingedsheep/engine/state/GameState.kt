@@ -44,6 +44,9 @@ import kotlinx.serialization.EncodeDefault
 @KeepGeneratedSerializer
 @Serializable(with = LegacyGameStateSerializer::class)
 data class GameState(
+    /** Immutable activation-time protection attachment exceptions; never sampled by an SBA. */
+    val protectionAttachmentActivations: List<com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentActivation> = emptyList(),
+    val nextProtectionAttachmentEpoch: Long = 1L,
     /** All entities in the game, keyed by their ID */
     val entities: Map<EntityId, ComponentContainer> = emptyMap(),
 

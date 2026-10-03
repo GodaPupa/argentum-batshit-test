@@ -176,7 +176,7 @@ class UnattachedAurasCheck(
                     newState = next
                     events.addAll(auraEvents)
                 } else if (
-                    hostProtectedFromAttachmentColor(projected, entityId, cardComponent, attachedTo.targetId)
+                    hostProtectedFromAttachmentColor(state, projected, entityId, cardComponent, attachedTo.targetId)
                 ) {
                     // CR 702.16c/d: the host has protection from one of this attachment's colors
                     // (gained after the attachment landed — e.g. White Ward's pro-white sends an
@@ -286,6 +286,7 @@ class UnattachedAurasCheck(
 
     /** Each matching protection grant must independently allow this attachment to remain. */
     private fun hostProtectedFromAttachmentColor(
+        state: com.wingedsheep.engine.state.GameState,
         projected: ProjectedState,
         attachmentId: EntityId,
         attachmentCard: CardComponent,
@@ -298,7 +299,8 @@ class UnattachedAurasCheck(
             else {
                 val matching = grants.filter { it.color == color.name }
                 matching.isEmpty() || matching.any { grant ->
-                    !(grant.retainsSourceAttachment && grant.sourceId == attachmentId)
+                    !((grant.retainsSourceAttachment && grant.sourceId == attachmentId) ||
+                        com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.retains(state, hostId, attachmentId, grant))
                 }
             }
         }

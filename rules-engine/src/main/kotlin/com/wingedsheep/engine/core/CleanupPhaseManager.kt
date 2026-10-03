@@ -1149,7 +1149,7 @@ class CleanupPhaseManager(
                 }
             }
 
-            return newState
+            return com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, newState)
         }
 
         /**

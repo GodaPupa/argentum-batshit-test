@@ -103,7 +103,9 @@ class StateBasedActionChecker(
             // `state` is the pass-start snapshot: everything this pass performs is one
             // simultaneous event (CR 704.3), so a check that must see the battlefield as it
             // stood before the batch started gets it rather than reconstructing it.
-            val result = check.check(newState, state, pendingTriggerSources)
+            val rawResult = check.check(newState, state, pendingTriggerSources)
+            // Reconcile only activations caused by this SBA event, never bootstrap current grants.
+            val result = rawResult.copy(state = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(newState, rawResult.newState))
 
             if (result.isPaused) {
                 // Return paused with events accumulated so far + this check's events
