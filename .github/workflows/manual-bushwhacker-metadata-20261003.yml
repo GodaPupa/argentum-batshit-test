@@ -1,0 +1,36 @@
+name: Manual Reckless Bushwhacker exact metadata
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Preserve exact printings and ruling responses
+      shell: bash
+      run: |
+        mkdir -p /tmp/manual-bushwhacker-metadata
+        python3 - <<'PYCODE'
+        import urllib.request,json,pathlib,hashlib
+        out=pathlib.Path('/tmp/manual-bushwhacker-metadata')
+        req=urllib.request.Request('https://api.scryfall.com/cards/named?exact=Reckless%20Bushwhacker&set=ogw',headers={'User-Agent':'Argentum-Qualification/1.0','Accept':'application/json'})
+        raw=urllib.request.urlopen(req,timeout=30).read();c=json.loads(raw)
+        assert c['name']=='Reckless Bushwhacker' and c['set']=='ogw'
+        (out/'reckless-bushwhacker-ogw.json').write_bytes(raw)
+        ruling=urllib.request.urlopen(urllib.request.Request(c['rulings_uri'],headers={'User-Agent':'Argentum-Qualification/1.0','Accept':'application/json'}),timeout=30).read()
+        (out/'reckless-bushwhacker-rulings.json').write_bytes(ruling)
+        (out/'sha256.json').write_text(json.dumps({p.name:hashlib.sha256(p.read_bytes()).hexdigest() for p in out.glob('*.json')},indent=2)+'\n')
+        PYCODE
+    - uses: actions/upload-artifact@v7
+      if: always()
+      with:
+        name: manual-bushwhacker-metadata-${{ github.run_id }}
+        path: /tmp/manual-bushwhacker-metadata/
+        if-no-files-found: error
+        retention-days: 90
+'on':
+  push:
+    branches:
+    - validation/manual-bushwhacker-metadata-20261003
+    paths:
+    - .github/workflows/manual-bushwhacker-metadata-20261003.yml
