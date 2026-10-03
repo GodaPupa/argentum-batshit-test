@@ -128,4 +128,18 @@ jobs:
          missing=[c['requested_name'] for c in deck['cards'] if not c['registry_resolved']]
          summary[deck['deck_id']]={'resolved':100-len(missing),'missing':missing}
         assert summary['manual-transmission-v07']['resolved']==94+len(admissions)
-        (out/'registry-summary.json').write_text(json.dumps({'decks':summary,'
+        (out/'registry-summary.json').write_text(json.dumps({'decks':summary,'only_registry_delta':deltas,'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}},indent=2)+'\n');digest()
+        PYCODE
+    - uses: actions/upload-artifact@v7
+      if: always()
+      with:
+        name: manual-composition-${{ github.run_id }}
+        path: ${{ env.OUT }}/
+        if-no-files-found: error
+        retention-days: 90
+'on':
+  push:
+    branches:
+    - validation/manual-metamorph-copy-entry-20261003
+    paths:
+    - .github/workflows/manual-metamorph-copy-entry-20261003.yml
