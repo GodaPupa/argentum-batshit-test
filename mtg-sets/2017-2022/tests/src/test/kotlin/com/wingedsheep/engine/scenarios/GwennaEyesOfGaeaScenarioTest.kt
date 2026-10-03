@@ -3,7 +3,6 @@ package com.wingedsheep.engine.scenarios
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.ColorChosenResponse
-import com.wingedsheep.engine.core.Outcome
 import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.engine.support.GameTestDriver
@@ -21,7 +20,6 @@ import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 
 class GwennaEyesOfGaeaScenarioTest : FunSpec({
     val creatureSpell = CardDefinition.creature(
@@ -79,7 +77,7 @@ class GwennaEyesOfGaeaScenarioTest : FunSpec({
             val gwenna = d.putCreatureOnBattlefield(me, GwennaEyesOfGaea.name)
             d.activateGwennaForTwoGreen(me, gwenna)
             val creature = d.putCardInHand(me, creatureSpell.name)
-            d.submit(CastSpell(me, creature, paymentStrategy = PaymentStrategy.FromPool)).outcome shouldBe Outcome.Done
+            d.submit(CastSpell(me, creature, paymentStrategy = PaymentStrategy.FromPool)).isSuccess shouldBe true
         }
         run {
             val d = fixture()
@@ -87,7 +85,7 @@ class GwennaEyesOfGaeaScenarioTest : FunSpec({
             val gwenna = d.putCreatureOnBattlefield(me, GwennaEyesOfGaea.name)
             d.activateGwennaForTwoGreen(me, gwenna)
             val sorcery = d.putCardInHand(me, noncreatureSpell.name)
-            d.submit(CastSpell(me, sorcery, paymentStrategy = PaymentStrategy.FromPool)).outcome shouldNotBe Outcome.Done
+            d.submit(CastSpell(me, sorcery, paymentStrategy = PaymentStrategy.FromPool)).isSuccess shouldBe false
         }
     }
 
@@ -97,7 +95,7 @@ class GwennaEyesOfGaeaScenarioTest : FunSpec({
         val gwenna = d.putCreatureOnBattlefield(me, GwennaEyesOfGaea.name)
         val source = d.putCreatureOnBattlefield(me, abilityCreature.name)
         d.activateGwennaForTwoGreen(me, gwenna)
-        d.submit(ActivateAbility(me, source, abilityCreature.activatedAbilities.single().id)).outcome shouldBe Outcome.Done
+        d.submit(ActivateAbility(me, source, abilityCreature.activatedAbilities.single().id)).isSuccess shouldBe true
     }
 
     test("casting a power-five creature puts a counter on Gwenna and untaps it") {
@@ -107,8 +105,9 @@ class GwennaEyesOfGaeaScenarioTest : FunSpec({
         d.tapPermanent(gwenna)
         d.isTapped(gwenna) shouldBe true
         val creature = d.putCardInHand(me, largeCreature.name)
-        d.submit(CastSpell(me, creature, paymentStrategy = PaymentStrategy.FromPool)).outcome shouldBe Outcome.Done
-        d.bothPass()
+        d.submit(CastSpell(me, creature, paymentStrategy = PaymentStrategy.FromPool)).isSuccess shouldBe true
+        d.bothPass().isSuccess shouldBe true
+        d.bothPass().isSuccess shouldBe true
         d.state.projectedState.getPower(gwenna) shouldBe 3
         d.isTapped(gwenna) shouldBe false
     }
