@@ -1,0 +1,97 @@
+name: Izzet repeated optional costs qualification
+on:
+  push:
+    branches: [diagnostic/izzet-repeated-costs-20261003]
+    paths: [.github/workflows/izzet-repeated-costs-20261003.yml]
+permissions:
+  contents: read
+concurrency:
+  group: izzet-repeated-costs-20261003
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/izzet-repeated-costs-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source-only successor and workflow-only validation child
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='f498082c63651756a681bf2ff390164332e60567';parent='d5729950a65fb10e0b32424d74c9ccb57ed2dfcf';workflow='.github/workflows/izzet-repeated-costs-20261003.yml'
+          expected={'docs/card-sdk-language-reference.md': '06552e53f376acefb0d0f4f901b58e33cebfae03', 'mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/core/ManaCost.kt': 'd0688e4586f22355b81ec884bc41933c56eca4ce', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt': '02197695340890fc80008896fd96814fb743d87a', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt': '3036f8b51de08853577cdc26967d93eaa6cfd41d', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/OptionalCostContinuation.kt': '367e4134a43c8ea40c409b32cea9b9d7b066e0ca', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt': '06db41f2526ad5a6588ec03a6880f9de1379dea1', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/DynamicAmountEvaluator.kt': '05f5fb939ff5d65aac15307185b65fc8c86a6706', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastManaQuote.kt': 'fe9aa43852cb1d539e617c725a66113a7141e9fe', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt': 'db9c1f5b3eb822e6555682498054d605ce39e424', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CastModalContinuationResumer.kt': '223acfc2bfe2f9ed1fe1f5e87669862b3597609a', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/EnumerationContext.kt': '1921663ec73a1af74022f587dc54bd09b2d87f36', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt': 'b6c91f99ba1709714e0909deefa6a8572a713635', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt': '997f6d55bd80057f2e3777a699c82e9bca56810a', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt': '10ad6b395bdb62723163331b3058e4460a94bada', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt': 'b7ef27540e11e921ebd0f66f9f7f41341762d489', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt': 'a7ca9c8a642cc83475ad043acdc7ace5fb0b2aa0', 'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RepeatedOptionalCostTest.kt': '87417a128f3cab4c43ddae5a93ba60ca7f0ca1d5'}
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse','HEAD^^')==parent
+          assert git('rev-parse',source+'^{tree}')=='2a1f29eae16f9e3f3b12be8c558da23ee73e9b59'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          assert git('diff','--name-only',parent,source).splitlines()==sorted(expected)
+          assert not git('status','--porcelain')
+          for p,blob in expected.items(): assert git('hash-object',p)==blob,p
+          binding={'source_head':source,'source_tree':'2a1f29eae16f9e3f3b12be8c558da23ee73e9b59','parent_source_head':parent,
+            'validation_head':git('rev-parse','HEAD'),'validation_tree':git('rev-parse','HEAD^{tree}'),
+            'source_git_blobs':expected,'source_sha256':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in expected},
+            'workflow_sha256':hashlib.sha256(pathlib.Path(workflow).read_bytes()).hexdigest(),
+            'scope':'REPEATED_OPTIONAL_COST_SHARED_QUALIFICATION','registry_not_executed':True,'exact_card_admission':False,
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}}
+          (out/'source-binding.json').write_text(json.dumps(binding,indent=2)+'\n')
+          PYCODE
+      - name: Compile and run repeated costs plus affected kicker and historical copy regressions
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --continue --max-workers=1 \
+            -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.RepeatedOptionalCostTest --tests com.wingedsheep.engine.scenarios.KickerConditionTest --tests com.wingedsheep.engine.scenarios.CastKickerFromZoneTest --tests com.wingedsheep.engine.scenarios.HistoricalSpellCopyTest \
+            2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+      - name: Preserve all actual prerequisite cases and failures; no registry or admission
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']);out.mkdir(parents=True,exist_ok=True)
+          expected={'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.RepeatedOptionalCostTest.xml': 11, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.KickerConditionTest.xml': 2, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CastKickerFromZoneTest.xml': 3, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.HistoricalSpellCopyTest.xml': 10}
+          suites=[];problems=[]
+          for cls,count in expected.items():
+            p=pathlib.Path(cls)
+            if not p.exists(): problems.append('Missing '+str(p));continue
+            shutil.copy2(p,out/p.name)
+            root=ET.parse(p).getroot();cases=root.findall('.//testcase')
+            totals={k:int(root.get(k,'0')) for k in ('tests','failures','errors','skipped')}
+            suites.append({'class':cls,**totals,'actual_cases':len(cases)})
+            if totals!={'tests':count,'failures':0,'errors':0,'skipped':0} or len(cases)!=count:
+              problems.append(cls+': '+json.dumps(totals)+' actual='+str(len(cases)))
+          (out/'summary.json').write_text(json.dumps({'suites':suites,'problems':problems,'expected_tests':sum(expected.values())},indent=2)+'\n')
+          files=sorted(p for p in out.iterdir() if p.is_file())
+          (out/'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in files))
+          if problems: raise SystemExit('\n'.join(problems))
+          PYCODE
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: izzet-repeated-costs-${{ github.run_id }}
+          path: ${{ env.OUT }}
+          if-no-files-found: error
+          retention-days: 90
+
