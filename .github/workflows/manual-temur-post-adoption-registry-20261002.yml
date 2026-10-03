@@ -1,0 +1,43 @@
+name: Manual Temur post-adoption registry
+on:
+  push:
+    branches: ["validation/manual-temur-post-adoption-registry-20261002"]
+    paths: [".github/workflows/manual-temur-post-adoption-registry-20261002.yml"]
+permissions:
+  contents: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+      - name: Bind published Temur bytes
+        run: |
+          test "$(git rev-parse HEAD^)" = "f4760f29567ca64c724ac0b1f6ab40f23c875247"
+          test "$(git hash-object mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/frf/cards/TemurSabertooth.kt)" = "60866f4ef465eef5cec68a9984be0fc4d5d78941"
+          test "$(git hash-object mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TemurSabertoothScenarioTest.kt)" = "c96c82c536a562cbaf79e9771e23d8dee39849d0"
+      - name: Run zero-game eight-deck registry audit
+        run: |
+          mkdir -p /tmp/manual-temur/source-audit /tmp/manual-temur/registry
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out /tmp/manual-temur/source-audit
+          MT_P2_AUDIT_INPUT=/tmp/manual-temur/source-audit/registry-requests.json MT_P2_AUDIT_OUTPUT=/tmp/manual-temur/registry bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest
+          cat /tmp/manual-temur/registry/registry-report.json
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-temur-post-adoption-registry-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/manual-temur/
+          if-no-files-found: error
+          retention-days: 90
