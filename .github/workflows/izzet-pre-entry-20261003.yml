@@ -1,0 +1,132 @@
+name: Izzet serialized pre-entry qualification
+on:
+  push:
+    branches: [validation/izzet-pre-entry-20261003]
+    paths: [.github/workflows/izzet-pre-entry-20261003.yml]
+permissions:
+  contents: read
+concurrency:
+  group: izzet-pre-entry-20261003
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/izzet-pre-entry-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source-only successor and workflow-only validation child
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='e86331ad7da7774e295b89341d11017049c97ab0';parent='9e6e6aba1244f9741f750821af8be18e038ed1f4';workflow='.github/workflows/izzet-pre-entry-20261003.yml'
+          expected={'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PreEntryContinuation.kt': '4ef23f376a0438ced9337dd5222328a5e85c7167', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt': '924cb5fdc157684261258ff7ca0e0139be2014c6', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt': '0ba76856032fa169256a0459e69212e9ffddea06', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt': '39c704efd054029b525a9f730c603254130781c7', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PreEntryCoordinator.kt': '52d08156c9215aeee77fb735752cbb5c2bdad925', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EffectExecutorRegistry.kt': '13cebd17aa9954b51bfd7be87313fcc4e8323325', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt': '758c84dab9dfe6312f456c3c1b2ec89fcce00c3e', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/MoveToZoneEffectExecutor.kt': '57063f77fb428e7304da64a7f1bdaac4bc138260', 'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PendingPermanentEntryTest.kt': '99066bbb8db9e35d4fa4daaf6ff3cd9adc744aa3', 'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ProtectionNoncastEntryDiagnosticTest.kt': 'd9916bb79dad10eecc69e438b63b4905cef1001c', 'mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmr/cards/BenevolentBlessing.kt': 'c298f8a64104f1997d7d8edb7704af965fd88953', 'mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BenevolentBlessingScenarioTest.kt': 'f4420db3463d7d0d66a84debe4d2f2b07f162018', 'mtg-sets/2017-2022/tests/build.gradle.kts': 'b781bde985764e241fcdb9a6d3b728aa1cc45f43', 'docs/architecture-principles.md': '43a95bc4d96e2a8a276247e3f400d4a9777bacb9', 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/ReturnSelfToBattlefieldAttachedExecutor.kt': '36df157c8da4452e60c9bb7064d072c142787d0b'}
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse','HEAD^^')==parent
+          assert git('rev-parse',source+'^{tree}')=='6d35abab9e6d054d426c34267ae244946ef0feb6'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          assert git('diff','--name-only',parent,source).splitlines()==sorted(expected)
+          assert not git('status','--porcelain')
+          assert git('hash-object','gym/src/test/kotlin/com/wingedsheep/gym/izzet/IzzetPosition1RegistryInventoryTest.kt')=='197a99e6c17885bb70511916893d3a33de217feb'
+          for p,blob in expected.items(): assert git('hash-object',p)==blob,p
+          binding={'source_head':source,'source_tree':'6d35abab9e6d054d426c34267ae244946ef0feb6','parent_source_head':parent,
+            'validation_head':git('rev-parse','HEAD'),'validation_tree':git('rev-parse','HEAD^{tree}'),
+            'source_git_blobs':expected,'source_sha256':{p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in expected},
+            'workflow_sha256':hashlib.sha256(pathlib.Path(workflow).read_bytes()).hexdigest(),
+            'scope':'ISOLATED_SERIALIZED_PRE_ENTRY_MECHANICS','registry_not_executed':False,'exact_card_admission':False,
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}}
+          (out/'source-binding.json').write_text(json.dumps(binding,indent=2)+'\n')
+          PYCODE
+      - name: Qualify protection lifecycle and exact Benevolent Blessing
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --continue --max-workers=1 \
+            -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.PendingPermanentEntryTest --tests com.wingedsheep.engine.scenarios.ProtectionNoncastEntryDiagnosticTest --tests com.wingedsheep.engine.scenarios.ProtectionAttachmentLifecycleTest --tests com.wingedsheep.engine.scenarios.ProtectionAttachmentProvenanceTest :mtg-sets:2017-2022:tests:test --tests com.wingedsheep.engine.scenarios.BenevolentBlessingScenarioTest \
+            2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+      - name: Unchanged Position-1 reinventory
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain --max-workers=1 -PkotlinCompileParallelism=1 -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :gym:test --tests com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest \
+            2>&1 | tee "$OUT/registry.log"
+          rc=${PIPESTATUS[0]}
+          set -e
+          XML=gym/build/test-results/test/TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml
+          test -f "$XML"; cp "$XML" "$OUT/"
+          REGISTRY_RC="$rc" python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT'])
+          root=ET.parse(out/'TEST-com.wingedsheep.gym.izzet.IzzetPosition1RegistryInventoryTest.xml').getroot()
+          cases=list(root.iter('testcase')); suffix=' is registered in current runtime'
+          assert int(root.attrib['tests'])==55 and len(cases)==55
+          assert len({c.attrib['name'] for c in cases})==55
+          assert all(c.attrib['name'].endswith(suffix) and c.find('skipped') is None and c.find('error') is None for c in cases)
+          reg=[]; miss=[]
+          for c in cases:
+              card=c.attrib['name'][:-len(suffix)]
+              (reg if c.find('failure') is None else miss).append(card)
+          expected=set()
+          assert {'Cosmic Hunger','Lose Focus','Everflowing Chalice','Snake Umbra'}.issubset(reg)
+          assert len(reg)==55 and set(miss)==expected, (len(reg), sorted(miss))
+          assert int(os.environ['REGISTRY_RC'])==0
+          (out/'registry-summary.json').write_text(json.dumps({
+              'registered':len(reg),'missing':len(miss),'missing_names':sorted(miss),
+              'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}
+          },indent=2,sort_keys=True)+'\n')
+          PY
+      - name: Preserve exact mechanics and unchanged inventory evidence
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PYCODE'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']);out.mkdir(parents=True,exist_ok=True)
+          expected={'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PendingPermanentEntryTest.xml': 7, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ProtectionNoncastEntryDiagnosticTest.xml': 1, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ProtectionAttachmentLifecycleTest.xml': 16, 'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.ProtectionAttachmentProvenanceTest.xml': 8, 'mtg-sets/2017-2022/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.BenevolentBlessingScenarioTest.xml': 11}
+          suites=[];problems=[]
+          for cls,count in expected.items():
+            p=pathlib.Path(cls)
+            if not p.exists(): problems.append('Missing '+str(p));continue
+            shutil.copy2(p,out/p.name)
+            root=ET.parse(p).getroot();cases=root.findall('.//testcase')
+            totals={k:int(root.get(k,'0')) for k in ('tests','failures','errors','skipped')}
+            suites.append({'class':cls,**totals,'actual_cases':len(cases)})
+            if totals!={'tests':count,'failures':0,'errors':0,'skipped':0} or len(cases)!=count:
+              problems.append(cls+': '+json.dumps(totals)+' actual='+str(len(cases)))
+          (out/'summary.json').write_text(json.dumps({'suites':suites,'problems':problems,'expected_tests':sum(expected.values())},indent=2)+'\n')
+          if not (out/'registry-summary.json').exists(): problems.append('Missing unchanged registry checkpoint')
+          files=sorted(p for p in out.iterdir() if p.is_file())
+          (out/'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+p.name+'\n' for p in files))
+          if problems: raise SystemExit('\n'.join(problems))
+          PYCODE
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: izzet-pre-entry-${{ github.run_id }}
+          path: ${{ env.OUT }}
+          if-no-files-found: error
+          retention-days: 90
+
