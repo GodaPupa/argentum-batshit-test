@@ -795,19 +795,16 @@ class StackResolver(
         modeTargetRequirements: Map<Int, List<TargetRequirement>>? = null,
         copyIndex: Int? = null,
         copyTotal: Int? = null,
-        controllerId: EntityId? = null
+        controllerId: EntityId? = null,
+        sourceSnapshot: com.wingedsheep.engine.state.components.stack.SpellCopySnapshot? = null
     ): ExecutionResult {
-        val sourceContainer = state.getEntity(sourceSpellId)
+        val snapshot = sourceSnapshot ?: com.wingedsheep.engine.state.components.stack.SpellCopySnapshot.capture(state, sourceSpellId)
             ?: return ExecutionResult.error(state, "Source spell not found: $sourceSpellId")
-        // CR 707.10: a spell that can't be copied yields no copy. Succeed without change.
-        if (sourceContainer.has<com.wingedsheep.engine.state.components.identity.CantBeCopiedComponent>()) {
-            return ExecutionResult.success(state)
-        }
-        val sourceCard = sourceContainer.get<CardComponent>()
-            ?: return ExecutionResult.error(state, "Source is not a card: $sourceSpellId")
-        val sourceSpell = sourceContainer.get<SpellOnStackComponent>()
-            ?: return ExecutionResult.error(state, "Source is not a spell on stack: $sourceSpellId")
-        val sourceTargets = sourceContainer.get<TargetsComponent>()
+        if (snapshot.reference.entityId != sourceSpellId) return ExecutionResult.error(state, "Mismatched copy source")
+        if (snapshot.cantBeCopied) return ExecutionResult.success(state)
+        val sourceCard = snapshot.card
+        val sourceSpell = snapshot.spell
+        val sourceTargets = snapshot.targets
 
         val (copyId, stateWithId) = state.newEntity()
         val copyController = controllerId ?: sourceSpell.casterId
@@ -2367,7 +2364,7 @@ class StackResolver(
         cardComponent: CardComponent?,
     ): ExecutionResult {
         if (state.logicalZone(spellId)?.zoneType != Zone.STACK) return ExecutionResult.success(state)
-        var newState = if (spellId in state.stack) state.copy(stack = state.stack.filterNot { it == spellId }) else state
+        var newState = state.removeFromStack(spellId)
         val events = mutableListOf<GameEvent>()
         // Rule 112.3b: a copy of a spell ceases to exist when it leaves the stack —
         // it does not go to a graveyard or exile.
