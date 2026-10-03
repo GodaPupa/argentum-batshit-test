@@ -38,7 +38,7 @@ jobs:
           out=pathlib.Path(os.environ["OUT"])
           source="ad6bde239aac9dab60f231ee2ba7c86e9f1c59a7"
           parent="5055df90b530e00f9dd044e1dab57e9b18ddc7f7"
-          workflow=".github/workflows/manual-disciple-preentry-20261003.yml"
+          workflow=".github/workflows/manual-disciple-preentry-ordering-20261003.yml"
           expected={
             "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt":"bc0172c3b53db87aee5f959f0ffadaddef2f5c58",
             "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt":"73c12bd58b13cede961b94618ab4ecf9052ddffe",
@@ -96,7 +96,7 @@ jobs:
           (out/"actual-cases.json").write_text(json.dumps(row,indent=2)+"\n")
           assert not row["missing"],row
           assert len(row["cases"])==7,row
-          assert len({c["name"] for c in row["cases"]})==6,row
+          assert len({c["name"] for c in row["cases"]})==7,row
           assert not any(c["failure"] or c["error"] or c["skipped"] for c in row["cases"]),row
           PY
 
