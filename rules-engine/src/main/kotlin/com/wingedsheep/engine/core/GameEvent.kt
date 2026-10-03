@@ -98,6 +98,10 @@ data class ZoneChangeEvent(
     @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
     @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
     val entryTriggersAlreadyProcessed: Boolean = false,
+    /** Frozen cast origin of an entering permanent spell; null for direct puts and spell copies. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val castFromZone: Zone? = null,
 ) : GameEvent {
     init {
         require(!entryTriggersAlreadyProcessed || toZone == Zone.BATTLEFIELD) {

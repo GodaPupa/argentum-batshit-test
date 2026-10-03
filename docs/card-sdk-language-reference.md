@@ -10115,6 +10115,15 @@ answer it and would silently return `false`.
   the markers and are correctly excluded. Used by **The Sibsig Ceremony** (a plain `WasCast` there
   would test the enchantment, not the entering creature). Resolution-only.
 - `WasCastFromHand` — cast specifically from hand.
+- `TriggeringEntityEnteredOrWasCastFromZone(zone, ownedByController = false)` — tests the captured direct-entry or cast origin
+  of the triggering battlefield object. The origin travels from the exact entry event through target
+  choices, the stack, copies and serialized continuations; departure or a later battlefield visit cannot
+  replace it. Direct library entry and casting from a library are both expressible with `Zone.LIBRARY`.
+  Set `ownedByController = true` for "your library": captured ownership must match the trigger's
+  controller. Entry from another player's library under your control does not satisfy that query.
+  The new general query fails closed when historical entry origin is absent, and is resolution-only.
+  The legacy graveyard facade also reads the captured entry when present, retaining its prior marker
+  fallback only for contexts without captured origin. No card names or controller-global exemptions.
 - `WasCastFromZone(zone)` — cast from a specific zone. For resolving spells it reads the spell's
   cast-origin; for a permanent already on the battlefield it falls back to the cast-origin marker
   stamped as it entered (`HAND` → `CastFromHandComponent`, `GRAVEYARD` → `CastFromGraveyardComponent`,
