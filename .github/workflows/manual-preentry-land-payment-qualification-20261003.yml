@@ -1,0 +1,126 @@
+name: Manual pre-entry land payment qualification
+on:
+  push:
+    branches: [validation/manual-preentry-land-payment-20261003]
+    paths: [.github/workflows/manual-preentry-land-payment-qualification-20261003.yml]
+permissions:
+  contents: read
+concurrency:
+  group: manual-preentry-land-payment-qualification
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/manual-preentry-land-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*a): return subprocess.check_output(['git',*a],text=True).strip()
+          source='10d0236c78983381bc7e3fb0f28078ec60400bfe'
+          parent='e36d759dd18f3e34f42cae4c7959c1b0a6d29909'
+          workflow='.github/workflows/manual-preentry-land-payment-qualification-20261003.yml'
+          expected={
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt':'14d40507fa13d00ee2225533526d1add85b3842f',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt':'c37600dfcc76502f303bd7548573b7acabaa5476',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt':'54ea2c4b954f70273204f0f7aa3c65ce77b7ccb9',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/life/LifePaymentService.kt':'46e8f4989bf0347e08ca434eb98febabe7c40bfb',
+            'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PreEntryLandPlayPaymentTest.kt':'89aa804b5d5c2da50ae5343edd3ff5527941421d',
+          }
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse',source+'^')==parent
+          assert git('rev-parse',source+'^{tree}')=='bfa75215fe6ffcad32418ac82a9dd6b8bc16bd4a'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          assert git('diff','--name-only',parent,source).splitlines()==sorted(expected)
+          for p,b in expected.items(): assert git('hash-object',p)==b,(p,git('hash-object',p),b)
+          (out/'source-binding.json').write_text(json.dumps({'source':source,'parent':parent,'tree':'bfa75215fe6ffcad32418ac82a9dd6b8bc16bd4a','blobs':expected},indent=2)+'\n')
+          PY
+      - name: Disable optional coverage instrumentation
+        shell: bash
+        run: |
+          cat > "$OUT/no-coverage.gradle" <<'GRADLE'
+          allprojects { p ->
+            p.plugins.withId('org.jetbrains.kotlinx.kover') {
+              p.extensions.getByName('kover').currentProject {
+                instrumentation { disabledForAll.set(true) }
+              }
+            }
+          }
+          GRADLE
+      - name: Run focused pre-entry and land regressions
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --init-script "$OUT/no-coverage.gradle" --no-daemon --no-configuration-cache \
+            --console=plain --continue --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :rules-engine:test \
+            --tests com.wingedsheep.engine.scenarios.PreEntryLandPlayPaymentTest \
+            --tests com.wingedsheep.engine.scenarios.SelfEntersTappedOffStackEntryScenarioTest \
+            --tests com.wingedsheep.engine.scenarios.LegendRuleLandDropTest \
+            --tests com.wingedsheep.engine.scenarios.AdditionalLandPlaysTest \
+            2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+      - name: Audit actual XML
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']); rows=[]
+          expected={
+            'PreEntryLandPlayPaymentTest':5,
+            'LegendRuleLandDropTest':3,
+            'AdditionalLandPlaysTest':3,
+          }
+          root=pathlib.Path('rules-engine/build/test-results/test')
+          for cls,count in expected.items():
+            matches=list(root.glob('TEST-*'+cls+'.xml'))
+            row={'class':cls,'expected':count,'missing':len(matches)!=1,'cases':[]}
+            if len(matches)==1:
+              p=matches[0]; shutil.copyfile(p,out/p.name)
+              row['sha256']=hashlib.sha256(p.read_bytes()).hexdigest()
+              row['cases']=[{'name':c.attrib['name'],'failure':c.find('failure') is not None,'error':c.find('error') is not None,'skipped':c.find('skipped') is not None} for c in ET.parse(p).getroot().findall('testcase')]
+            rows.append(row)
+          # SelfEntersTapped has a larger evolving suite: require existence and every selected case green.
+          matches=list(root.glob('TEST-*SelfEntersTappedOffStackEntryScenarioTest.xml'))
+          row={'class':'SelfEntersTappedOffStackEntryScenarioTest','expected_at_least':10,'missing':len(matches)!=1,'cases':[]}
+          if len(matches)==1:
+            p=matches[0]; shutil.copyfile(p,out/p.name)
+            row['sha256']=hashlib.sha256(p.read_bytes()).hexdigest()
+            row['cases']=[{'name':c.attrib['name'],'failure':c.find('failure') is not None,'error':c.find('error') is not None,'skipped':c.find('skipped') is not None} for c in ET.parse(p).getroot().findall('testcase')]
+          rows.append(row)
+          (out/'actual-cases.json').write_text(json.dumps(rows,indent=2)+'\n')
+          assert all(not r['missing'] for r in rows),rows
+          for r in rows[:3]: assert len(r['cases'])==r['expected'],r
+          assert len(rows[3]['cases'])>=rows[3]['expected_at_least'],rows[3]
+          assert not any(c['failure'] or c['error'] or c['skipped'] for r in rows for c in r['cases']),rows
+          assert (out/'gradle-exit-code.txt').read_text().strip()=='0'
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-preentry-land-payment-${{ github.run_id }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
