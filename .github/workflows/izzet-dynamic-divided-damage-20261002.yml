@@ -1,0 +1,50 @@
+name: Izzet dynamic divided-damage cast validation
+on:
+  push:
+    branches: ["validation/izzet-dynamic-divided-damage-20261002"]
+    paths: [".github/workflows/izzet-dynamic-divided-damage-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OUT: /tmp/izzet-dynamic-divided-${{ github.run_id }}
+      GRADLE_USER_HOME: /tmp/izzet-dynamic-divided-gradle-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact shared source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "968cf005485f7e334710e712a6d007bdd7b72b4a"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/izzet-dynamic-divided-damage-20261002.yml"
+          test "$(git rev-parse HEAD^^)" = "09faac37c22dc1bc28a3761faded25b9e9223fb0"
+          test "$(git hash-object rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt)" = "2b8b55319716169ccf3d5f2b1687395c45046344"
+          test "$(git hash-object rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/DynamicDividedDamageCastValidationTest.kt)" = "f9233768c060be255f9463a50f1d5f54224b2d7b"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > "$OUT/source.txt"
+          printf '%s\n' 'BOUNDED_SHARED_DYNAMIC_DIVIDED_DAMAGE_AUTHOR_VALIDATION_ONLY_NO_CARD_ADMISSION_NO_GAMEPLAY_AUTHORITY' > "$OUT/authority.txt"
+      - name: Compile rules-engine tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact dynamic divided-damage validation regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            :rules-engine:test --tests com.wingedsheep.engine.scenarios.DynamicDividedDamageCastValidationTest 2>&1 | tee "$OUT/dynamic-divided.log"
+          cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DynamicDividedDamageCastValidationTest.xml "$OUT/"
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: izzet-dynamic-divided-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
