@@ -103,7 +103,9 @@ data class ModalContinuation(
 data class PreTargetedEffectEntry(
     val effect: @Serializable Effect,
     val targets: List<ChosenTarget>,
-    val targetRequirements: List<@Serializable TargetRequirement>
+    val targetRequirements: List<@Serializable TargetRequirement>,
+    val targetVisits: List<com.wingedsheep.engine.state.components.stack.TargetVisit?> = emptyList(),
+    val alignedTargets: List<ChosenTarget?>? = null
 )
 
 /**

@@ -42,14 +42,14 @@ object FixedDestinationRetarget {
         val subtypes = snapshot?.subtypes ?: projected?.subtypes ?: card?.typeLine?.subtypes?.map { it.value }?.toSet().orEmpty()
         val validator = TargetValidator()
         return previous.targets.indices.filter { slot ->
-            if (previous.targets[slot] == destination) return@filter false
+            if (previous.targets[slot] == destination && previous.isCurrentSlot(state, slot)) return@filter false
             val replaced = previous.targets.toMutableList().also { it[slot] = destination }
             validator.validateTargets(state, replaced, previous.targetRequirements, controller,
                 sourceColors = colors.mapNotNullTo(mutableSetOf()) { name -> Color.entries.firstOrNull { it.name == name } },
                 sourceSubtypes = subtypes, sourceId = source, xValue = spell?.xValue ?: activated?.xValue ?: triggered?.xValue,
                 targetingSourceType = if (spell != null) TargetingSourceType.SPELL else TargetingSourceType.ABILITY,
                 announcedTargetCounts = counts, validateOnlySlots = setOf(slot), sourceSnapshot = snapshot) == null &&
-                TargetingEvents.replaceTargets(state, stackObjectId, replaced).error == null
+                TargetingEvents.replaceTargets(state, stackObjectId, replaced, setOf(slot)).error == null
         }
     }
 
@@ -58,6 +58,6 @@ object FixedDestinationRetarget {
         if (slot !in legalSlots(state, stackObjectId, destination)) return EffectResult.success(state)
         val previous = state.getEntity(stackObjectId)!!.get<TargetsComponent>()!!
         return TargetingEvents.replaceTargets(state, stackObjectId,
-            previous.targets.toMutableList().also { it[slot] = destination })
+            previous.targets.toMutableList().also { it[slot] = destination }, setOf(slot))
     }
 }

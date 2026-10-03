@@ -17,7 +17,7 @@ object TargetingEvents {
      * Keeping a target, including moving it between slots, does not make it become a target again.
      * The targeting source and controller are the original spell/ability, never the redirect effect.
      */
-    fun replaceTargets(state: GameState, stackObjectId: EntityId, targets: List<ChosenTarget>): EffectResult {
+    fun replaceTargets(state: GameState, stackObjectId: EntityId, targets: List<ChosenTarget>, refreshedSlots: Set<Int> = emptySet()): EffectResult {
         if (stackObjectId !in state.stack) return EffectResult.success(state)
         val objectEntity = state.getEntity(stackObjectId) ?: return EffectResult.success(state)
         val previous = objectEntity.get<TargetsComponent>() ?: return EffectResult.success(state)
@@ -27,7 +27,7 @@ object TargetingEvents {
             ?: objectEntity.get<ActivatedAbilityOnStackComponent>()?.controllerId
             ?: objectEntity.get<TriggeredAbilityOnStackComponent>()?.controllerId
             ?: return EffectResult.success(state)
-        if (previous.targets == targets) return EffectResult.success(state)
+        if (previous.targets == targets && refreshedSlots.isEmpty()) return EffectResult.success(state)
 
         // Target-changing effects replace slots, not the number of announced targets.
         if (targets.size != previous.targets.size) return EffectResult.error(state, "Target slot count cannot change")
@@ -72,6 +72,7 @@ object TargetingEvents {
             remapAllocation(allocation) ?: return EffectResult.error(state, "Ambiguous modal divided allocation")
         }
         val captured = TargetsComponent.capture(state, targets, previous.targetRequirements, previous.announcedTargetCounts)
+            .inheritingVisits(previous, refreshedSlots)
         // Retained targets keep their old object-identity stamps, even if that object has blinked.
         val retainedStamps = previous.targetEntryStamps.filterKeys { id ->
             targets.any { it is ChosenTarget.Permanent && it.entityId == id }
@@ -92,7 +93,8 @@ object TargetingEvents {
         }
         val events = mutableListOf<GameEvent>()
         for (target in targets.distinct()) {
-            if (target !in previous.targets) {
+            if (target !in previous.targets || refreshedSlots.any { targets.getOrNull(it) == target } &&
+                previous.targets.indices.none { previous.targets[it] == target && previous.isCurrentSlot(state, it) }) {
                 updated = emit(updated, target, stackObjectId, controllerId, events, sourceIsSpell = spell != null)
             }
         }

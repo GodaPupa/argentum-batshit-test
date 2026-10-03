@@ -713,14 +713,16 @@ class StackResolver(
          * meta-trigger can key on it.
          */
         causedByAttack: Boolean = false,
-        announcedTargetCounts: List<Int>? = null
+        announcedTargetCounts: List<Int>? = null,
+        inheritedTargets: TargetsComponent? = null
     ): ExecutionResult {
         // Create a new entity for the ability on the stack
         val (abilityId, stateWithId) = state.newEntity()
 
         var container = ComponentContainer.of(ability)
         if (targets.isNotEmpty()) {
-            container = container.with(TargetsComponent.capture(state, targets, targetRequirements, announcedTargetCounts))
+            container = container.with(TargetsComponent.capture(state, targets, targetRequirements, announcedTargetCounts)
+                .let { captured -> inheritedTargets?.let { captured.inheritingVisits(it) } ?: captured })
         }
 
         var newState = stateWithId.withEntity(abilityId, container)
@@ -851,7 +853,8 @@ class StackResolver(
 
         var container = ComponentContainer.of(copiedCardComp, copiedSpellComp)
         if (effectiveTargets.isNotEmpty()) {
-            container = container.with(TargetsComponent.capture(state, effectiveTargets, effectiveRequirements, sourceTargets?.announcedTargetCounts))
+            container = container.with(TargetsComponent.capture(state, effectiveTargets, effectiveRequirements, sourceTargets?.announcedTargetCounts)
+                .let { captured -> sourceTargets?.let { captured.inheritingVisits(it, if (targets.isNotEmpty()) effectiveTargets.indices.toSet() else emptySet()) } ?: captured })
         }
         container = container.with(
             CopyOfComponent(
@@ -902,13 +905,15 @@ class StackResolver(
         costsTap: Boolean = false,
         isExhaust: Boolean = false,
         cantBeCopied: Boolean = false,
-        announcedTargetCounts: List<Int>? = null
+        announcedTargetCounts: List<Int>? = null,
+        inheritedTargets: TargetsComponent? = null
     ): ExecutionResult {
         val (abilityId, stateWithId) = state.newEntity()
 
         var container = ComponentContainer.of(ability)
         if (targets.isNotEmpty()) {
-            container = container.with(TargetsComponent.capture(state, targets, targetRequirements, announcedTargetCounts))
+            container = container.with(TargetsComponent.capture(state, targets, targetRequirements, announcedTargetCounts)
+                .let { captured -> inheritedTargets?.let { captured.inheritingVisits(it) } ?: captured })
         }
         // CR 707.10e — "This ability can't be copied": tag the ability instance on the stack so a
         // copy-ability effect (e.g. Gogo, Master of Mimicry) makes no copy of it.
@@ -1023,14 +1028,16 @@ class StackResolver(
         val resolvedTargets: List<ChosenTarget>
         val alignedResolvedTargets: List<ChosenTarget?>
         if (targetsComponent != null && targetsComponent.targets.isNotEmpty()) {
-            val validTargets = validateTargets(
+            val alignedValidation = validateTargets(
                 state, targetsComponent.targets, sourceColors, sourceSubtypes,
                 spellComponent.casterId, targetsComponent.targetRequirements,
                 sourceId = spellId,
                 targetingSourceType = TargetingSourceType.SPELL,
                 xValue = spellComponent.xValue,
+                targetComponent = targetsComponent,
                 targetEntryStamps = targetsComponent.targetEntryStamps
             )
+            val validTargets = alignedValidation.filterNotNull()
             if (validTargets.isEmpty()) {
                 // Bestow (CR 702.103e): if the only target is illegal as the spell resolves,
                 // the bestow effect ends instead of the spell fizzling. Restore the card's
@@ -1059,7 +1066,7 @@ class StackResolver(
                 return fizzleSpell(state, spellId, cardComponent, spellComponent)
             }
             resolvedTargets = validTargets
-            alignedResolvedTargets = buildAlignedValidated(targetsComponent.targets, validTargets)
+            alignedResolvedTargets = alignedValidation
         } else {
             resolvedTargets = targetsComponent?.targets ?: emptyList()
             alignedResolvedTargets = resolvedTargets
@@ -2205,7 +2212,14 @@ class StackResolver(
         // that consumes "all targets" would swallow the spliced card's as well.
         // A spell with no effect of its own can't be a splice host in practice (a splice card is
         // spliced onto a spell that has text), so the tail lives inside the `spellEffect != null` guard.
-        val spliceEntries = buildSpliceEntries(spellComponent)
+        var spliceCursor = (state.getEntity(spellId)?.get<TargetsComponent>()?.targets?.size ?: 0) - spellComponent.splicedTargetsOrdered.sumOf { it.size }
+        val slotComponent = state.getEntity(spellId)?.get<TargetsComponent>()
+        val spliceEntries = buildSpliceEntries(spellComponent).map { entry ->
+            val start = spliceCursor
+            spliceCursor += entry.targets.size
+            entry.copy(targetVisits = entry.targets.indices.map { slotComponent?.visitAt(start + it) },
+                alignedTargets = alignedTargets.drop(start).take(entry.targets.size))
+        }
         val splicedRequirementCount = spellComponent.splicedCardNames.sumOf { name ->
             cardRegistry.getCard(name)?.script?.targetRequirements?.size ?: 0
         }
@@ -2238,6 +2252,7 @@ class StackResolver(
                 // references — ContextTarget(n), EntityReference.Target(n), ContextPlayer(n) —
                 // resolve by ORIGINAL slot and don't shift onto a later still-valid target.
                 alignedTargets = mainAlignedTargets,
+                targetVisits = mainAlignedTargets.indices.map { slotComponent?.visitAt(it) },
                 // A pay-X-life additional cost (AdditionalCost.PayXLife, e.g. Vicious Rivalry) feeds
                 // its declared X through the same X slot read by DynamicAmount.XValue and the
                 // ManaValue*X predicates. Such a card never also carries an {X} mana cost, so
@@ -2772,7 +2787,7 @@ class StackResolver(
         // targets it carries are the stored ones — legality is 608.2b's business, not the context's.
         val resolvedTargets2 = targetsComponent?.targets ?: emptyList()
         val targetReqs = targetsComponent?.targetRequirements ?: emptyList()
-        val context = EffectContext.forTriggeredAbility(
+        var context = EffectContext.forTriggeredAbility(
             abilityComponent,
             targets = resolvedTargets2,
             targetRequirements = targetReqs
@@ -2812,7 +2827,7 @@ class StackResolver(
         val sourceColors = sourceCard?.colors ?: emptySet()
         val sourceSubtypes = sourceCard?.typeLine?.subtypes?.map { it.value }?.toSet() ?: emptySet()
         if (targetsComponent != null && targetsComponent.targets.isNotEmpty()) {
-            val validTargets = validateTargets(
+            val alignedValidation = validateTargets(
                 state, targetsComponent.targets, sourceColors, sourceSubtypes,
                 abilityComponent.controllerId, targetsComponent.targetRequirements,
                 sourceId = abilityComponent.sourceId,
@@ -2820,9 +2835,11 @@ class StackResolver(
                 xValue = abilityComponent.xValue,
                 triggeringEntityId = abilityComponent.triggeringEntityId,
                 triggeringPlayerId = abilityComponent.triggeringPlayerId,
+                targetComponent = targetsComponent,
                 targetEntryStamps = targetsComponent.targetEntryStamps,
                 storedCollections = abilityComponent.carriedPipeline?.storedCollections ?: emptyMap(),
             )
+            val validTargets = alignedValidation.filterNotNull()
             if (validTargets.isEmpty()) {
                 // Fizzle - remove ability entity
                 val newState = state.removeEntity(abilityId)
@@ -2837,6 +2854,9 @@ class StackResolver(
                     )
                 )
             }
+            context = context.copy(targets = validTargets, alignedTargets = alignedValidation,
+                targetVisits = targetsComponent.targets.indices.map { targetsComponent.visitAt(it) },
+                pipeline = context.pipeline.copy(namedTargets = EffectContext.buildNamedTargets(targetReqs, alignedValidation)))
         }
 
         // Execute the effect
@@ -2906,14 +2926,16 @@ class StackResolver(
         val activatedTargets: List<ChosenTarget>
         val alignedActivatedTargets: List<ChosenTarget?>
         if (targetsComponent != null && targetsComponent.targets.isNotEmpty()) {
-            val validTargets = validateTargets(
+            val alignedValidation = validateTargets(
                 state, targetsComponent.targets, sourceColors, sourceSubtypes,
                 abilityComponent.controllerId, targetsComponent.targetRequirements,
                 sourceId = abilityComponent.sourceId,
                 xValue = abilityComponent.xValue,
                 targetingSourceType = TargetingSourceType.ABILITY,
+                targetComponent = targetsComponent,
                 targetEntryStamps = targetsComponent.targetEntryStamps
             )
+            val validTargets = alignedValidation.filterNotNull()
             if (validTargets.isEmpty()) {
                 val newState = state.removeEntity(abilityId)
                 return ExecutionResult.success(
@@ -2928,7 +2950,7 @@ class StackResolver(
                 )
             }
             activatedTargets = validTargets
-            alignedActivatedTargets = buildAlignedValidated(targetsComponent.targets, validTargets)
+            alignedActivatedTargets = alignedValidation
         } else {
             activatedTargets = targetsComponent?.targets ?: emptyList()
             alignedActivatedTargets = activatedTargets
@@ -2946,6 +2968,7 @@ class StackResolver(
             objectReferences = abilityComponent.objectReferences,
             targets = activatedTargets,
             alignedTargets = alignedActivatedTargets,
+            targetVisits = targetsComponent?.targets?.indices?.map { targetsComponent.visitAt(it) } ?: emptyList(),
             sacrificedPermanents = abilityComponent.sacrificedPermanents,
             xValue = abilityComponent.xValue,
             tappedPermanents = abilityComponent.tappedPermanents,
@@ -3515,6 +3538,7 @@ class StackResolver(
          * back in the meantime is a different object and no longer a legal target (CR 400.7).
          */
         targetEntryStamps: Map<EntityId, Long> = emptyMap(),
+        targetComponent: TargetsComponent? = null,
         /**
          * Pipeline collections available at resolution time (e.g. the amassed Army under
          * `EntityReference.AmassedArmy`, from a `ReflexiveTriggerEffect`'s carried pipeline) — the
@@ -3523,7 +3547,7 @@ class StackResolver(
          * target wrongly fails re-validation as unresolvable.
          */
         storedCollections: Map<String, List<EntityId>> = emptyMap()
-    ): List<ChosenTarget> {
+    ): List<ChosenTarget?> {
         // Always project state for shroud/hexproof checks (Rule 702.18, 702.11)
         val projected = state.projectedState
         val predicateContext = PredicateContext(
@@ -3535,11 +3559,13 @@ class StackResolver(
             storedCollections = storedCollections,
         )
 
-        return targets.filterIndexed { index, target ->
+        return targets.mapIndexed { index, target ->
+            val valid = run {
+            if (targetComponent?.isCurrentSlot(state, index) == false) return@run false
             when (target) {
                 is ChosenTarget.Player -> {
                     // Player is valid if they exist and haven't lost...
-                    if (!state.hasEntity(target.playerId)) return@filterIndexed false
+                    if (!state.hasEntity(target.playerId)) return@run false
                     // ...and (CR 608.2b) the player-target restriction still holds. A player who
                     // gained life above the threshold, or whose "lost life this turn" never
                     // happened, is removed at resolution.
@@ -3554,17 +3580,17 @@ class StackResolver(
 
                 is ChosenTarget.Permanent -> {
                     // Permanent is valid if still on battlefield
-                    if (target.entityId !in state.getBattlefield()) return@filterIndexed false
+                    if (target.entityId !in state.getBattlefield()) return@run false
 
                     // ...and if it's still the same object. A permanent blinked in response
                     // (Personify, Cloudshift) reuses its entity id here, but it returned as a new
                     // object (CR 400.7) that was never targeted, so the target is illegal.
-                    if (TargetsComponent.isDifferentObject(state, target.entityId, targetEntryStamps)) {
-                        return@filterIndexed false
+                    if (targetComponent == null && TargetsComponent.isDifferentObject(state, target.entityId, targetEntryStamps)) {
+                        return@run false
                     }
 
                     // Check shroud — can't be targeted by anyone (Rule 702.18)
-                    if (projected.hasKeyword(target.entityId, "SHROUD")) return@filterIndexed false
+                    if (projected.hasKeyword(target.entityId, "SHROUD")) return@run false
 
                     // "Can't be the target of spells" (Lurker) — spells only, so an ability
                     // resolving against the same permanent is unaffected. Mirrors the cast-time
@@ -3573,20 +3599,20 @@ class StackResolver(
                     if (targetingSourceType == TargetingSourceType.SPELL &&
                         projected.hasKeyword(target.entityId, AbilityFlag.CANT_BE_TARGETED_BY_SPELLS)
                     ) {
-                        return@filterIndexed false
+                        return@run false
                     }
 
                     // Check hexproof — can't be targeted by opponents (Rule 702.11)
                     val entityController = projected.getController(target.entityId)
                         ?: state.getEntity(target.entityId)?.get<ControllerComponent>()?.playerId
                     val hexproofSuppressed = HexproofSuppression.isSuppressedForCaster(state, projected, target.entityId, controllerId)
-                    if (!hexproofSuppressed && projected.hasKeyword(target.entityId, "HEXPROOF") && entityController != controllerId) return@filterIndexed false
+                    if (!hexproofSuppressed && projected.hasKeyword(target.entityId, "HEXPROOF") && entityController != controllerId) return@run false
 
                     // Check hexproof from color (Rule 702.11b)
                     if (!hexproofSuppressed && entityController != controllerId) {
                         for (color in sourceColors) {
                             if (projected.hasKeyword(target.entityId, "HEXPROOF_FROM_${color.name}")) {
-                                return@filterIndexed false
+                                return@run false
                             }
                         }
                         // ...and from the source's card types, e.g. "hexproof from instants"
@@ -3598,7 +3624,7 @@ class StackResolver(
                                         "HEXPROOF_FROM_CARDTYPE_${cardType.uppercase()}"
                                     )
                                 ) {
-                                    return@filterIndexed false
+                                    return@run false
                                 }
                             }
                         }
@@ -3611,7 +3637,7 @@ class StackResolver(
                                 target.entityId,
                             )
                         ) {
-                            return@filterIndexed false
+                            return@run false
                         }
                     }
 
@@ -3623,18 +3649,18 @@ class StackResolver(
                             state, target.entityId, sourceId, targetingSourceType
                         )
                     ) {
-                        return@filterIndexed false
+                        return@run false
                     }
 
                     // Check protection from source colors/subtypes (Rule 702.16)
                     for (color in sourceColors) {
                         if (projected.hasKeyword(target.entityId, "PROTECTION_FROM_${color.name}")) {
-                            return@filterIndexed false
+                            return@run false
                         }
                     }
                     for (subtype in sourceSubtypes) {
                         if (projected.hasKeyword(target.entityId, "PROTECTION_FROM_SUBTYPE_${subtype.uppercase()}")) {
-                            return@filterIndexed false
+                            return@run false
                         }
                     }
                     // Check protection from the source's card type, e.g. "protection from creatures"
@@ -3650,7 +3676,7 @@ class StackResolver(
                         }
                         for (cardType in sourceCardTypes) {
                             if (projected.hasKeyword(target.entityId, "PROTECTION_FROM_CARDTYPE_${cardType.uppercase()}")) {
-                                return@filterIndexed false
+                                return@run false
                             }
                         }
                     }
@@ -3658,7 +3684,7 @@ class StackResolver(
                     // Check protection from each opponent (Rule 702.16e)
                     if (projected.hasKeyword(target.entityId, "PROTECTION_FROM_EACH_OPPONENT") &&
                         entityController != null && entityController != controllerId) {
-                        return@filterIndexed false
+                        return@run false
                     }
 
                     // Re-validate target filter (Rule 608.2b)
@@ -3671,7 +3697,7 @@ class StackResolver(
                         !projected.isPlaneswalker(target.entityId) &&
                         !projected.isBattle(target.entityId)
                     ) {
-                        return@filterIndexed false
+                        return@run false
                     }
                     val filter = extractTargetFilter(requirement)
                     if (filter != null) {
@@ -3679,7 +3705,7 @@ class StackResolver(
                                 state, projected, target.entityId, filter.baseFilter, predicateContext
                             )
                         ) {
-                            return@filterIndexed false
+                            return@run false
                         }
                     }
 
@@ -3697,28 +3723,8 @@ class StackResolver(
                     target.spellEntityId in state.stack
                 }
             }
-        }
-    }
-
-    /**
-     * Project [validTargets] (the compacted output of [validateTargets]) back onto
-     * [originalTargets] positions, returning a list parallel to [originalTargets] with
-     * `null` in slots whose target was dropped by 608.2b validation. Walks both lists
-     * in order — [validateTargets] preserves the relative ordering of survivors — so the
-     * mapping is unambiguous even when two original targets compare structurally equal.
-     */
-    private fun buildAlignedValidated(
-        originalTargets: List<ChosenTarget>,
-        validTargets: List<ChosenTarget>
-    ): List<ChosenTarget?> {
-        var v = 0
-        return originalTargets.map { orig ->
-            if (v < validTargets.size && validTargets[v] === orig) {
-                v++
-                orig
-            } else {
-                null
             }
+            if (valid) target else null
         }
     }
 

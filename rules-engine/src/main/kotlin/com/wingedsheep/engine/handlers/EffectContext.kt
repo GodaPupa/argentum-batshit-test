@@ -103,6 +103,8 @@ data class EffectContext(
      * amount's `Target(0)` power read would land on the surviving opponent's creature.
      */
     val alignedTargets: List<ChosenTarget?> = emptyList(),
+    /** Visit identity aligned to original announced positions. */
+    val targetVisits: List<com.wingedsheep.engine.state.components.stack.TargetVisit?> = emptyList(),
     /**
      * The X chosen for an X-cost spell/ability. Also reused by `ChooseNumberThenEffect` to
      * carry a "choose a number" value into the inner effect (read via `CardPredicate.ManaValueEqualsX`,

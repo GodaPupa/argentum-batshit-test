@@ -462,12 +462,42 @@ data class AbilityOnStackComponent(
  *           captured when the targets were chosen — see [capture].
  */
 @Serializable
+data class TargetVisit(
+    val objectRef: com.wingedsheep.engine.state.ObjectRef? = null,
+    val battlefieldEntryStamp: Long? = null,
+)
+
+@Serializable
 data class TargetsComponent(
     val targets: List<ChosenTarget>,
     val targetRequirements: List<TargetRequirement> = emptyList(),
     val targetEntryStamps: Map<EntityId, Long> = emptyMap(),
-    val announcedTargetCounts: List<Int>? = null
+    val announcedTargetCounts: List<Int>? = null,
+    /** Aligned visits; unlike entity-keyed stamps, independent slots can name different visits. */
+    val targetVisits: List<TargetVisit?> = emptyList()
 ) : Component {
+
+    fun visitAt(index: Int): TargetVisit? = targetVisits.getOrNull(index)
+        ?: (targets.getOrNull(index) as? ChosenTarget.Permanent)?.entityId?.let { id ->
+            targetEntryStamps[id]?.let { TargetVisit(battlefieldEntryStamp = it) }
+        }
+
+    fun isCurrentSlot(state: GameState, index: Int): Boolean {
+        val visit = visitAt(index) ?: return true
+        val target = targets.getOrNull(index) ?: return false
+        if (visit.objectRef != null && !state.isCurrentObject(visit.objectRef)) return false
+        val permanent = target as? ChosenTarget.Permanent
+        return permanent == null || visit.battlefieldEntryStamp == null ||
+            entryStamp(state, permanent.entityId) == visit.battlefieldEntryStamp
+    }
+
+    /** Preserve each inherited slot's visit; recapture only an explicitly changed selection. */
+    fun inheritingVisits(previous: TargetsComponent, refreshedSlots: Set<Int> = emptySet()): TargetsComponent = copy(
+        targetVisits = targets.mapIndexed { index, target ->
+            if (index !in refreshedSlots && previous.targets.getOrNull(index) == target) previous.visitAt(index)
+            else targetVisits.getOrNull(index)
+        }
+    )
 
     companion object {
         /**
@@ -498,6 +528,16 @@ data class TargetsComponent(
                 ?.let { counts -> targetRequirements.mapIndexed { index, requirement -> requirement.withCount(counts[index]) } }
                 ?: targetRequirements,
             announcedTargetCounts = announcedTargetCounts ?: com.wingedsheep.engine.mechanics.targeting.AnnouncedTargetGroups.counts(targetRequirements, targets.size),
+            targetVisits = targets.map { target ->
+                val id = when (target) {
+                    is ChosenTarget.Permanent -> target.entityId
+                    is ChosenTarget.Spell -> target.spellEntityId
+                    is ChosenTarget.Card -> target.cardId
+                    is ChosenTarget.Player -> null
+                }
+                id?.let { TargetVisit(state.objectRef(it),
+                    if (target is ChosenTarget.Permanent) entryStamp(state, it) else null) }
+            },
             targetEntryStamps = targets.filterIsInstance<ChosenTarget.Permanent>()
                 .filter { it.entityId in state.getBattlefield() }
                 .associate { it.entityId to entryStamp(state, it.entityId) }
