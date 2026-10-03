@@ -1,0 +1,202 @@
+name: Manual exact Disciple of Freyalise qualification
+on:
+  push:
+    branches: [validation/manual-disciple-exact-20261003]
+    paths: [.github/workflows/manual-disciple-exact-qualification-20261003.yml]
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-disciple-exact-qualification
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 80
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/manual-disciple-exact-${{ github.run_id }}
+      MT_P2_AUDIT_INPUT: /tmp/manual-disciple-exact-${{ github.run_id }}/registry-requests.json
+      MT_P2_AUDIT_OUTPUT: /tmp/manual-disciple-exact-${{ github.run_id }}/registry
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 4
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Bind exact source-only Disciple candidate and promoted 98 registry baseline
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='0a91a57fa98046de1fae9953c851047223dcbbbc'
+          shared='ad6bde239aac9dab60f231ee2ba7c86e9f1c59a7'
+          live='5055df90b530e00f9dd044e1dab57e9b18ddc7f7'
+          workflow='.github/workflows/manual-disciple-exact-qualification-20261003.yml'
+          expected={
+            'mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/model/CardDefinition.kt':'4c40f8fa07fc515894beb2b06bddb5dc3f7a5a50',
+            'mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt':'27e537442f9b593e603c2d4104fed0364ee53eef',
+            'mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt':'26a7c2db5a1ef803c49b52dd7d82b0f9dbcbccf2',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt':'bc0172c3b53db87aee5f959f0ffadaddef2f5c58',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt':'73c12bd58b13cede961b94618ab4ecf9052ddffe',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt':'e76cf4af6bbe40c76aec7f0ca9c84a74242a11ae',
+            'rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PreEntryLandPlayPaymentTest.kt':'b1d1eb18713eb5d5cd300e0c91bba0c97c2d5e7d',
+          }
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse',source+'^')==shared
+          assert git('rev-parse',shared+'^')==live
+          assert git('rev-parse',source+'^{tree}')=='02bb2ab3261c78548f269e196c0ddd182652a7bd'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          actual=git('diff','--name-only',live,source).splitlines()
+          assert actual==sorted(expected),(actual,sorted(expected))
+          assert not any(p.startswith('.github/workflows/') for p in actual)
+          for p,blob in expected.items():
+            assert git('hash-object',p)==blob,(p,git('hash-object',p),blob)
+          assert not git('status','--porcelain')
+          (out/'source-binding.json').write_text(json.dumps({
+            'source_head':source,'source_tree':git('rev-parse',source+'^{tree}'),
+            'shared_repair_head':shared,'promoted_parent_live':live,
+            'validation_head':git('rev-parse','HEAD'),
+            'source_blobs':expected,
+            'preserved_shared_failure':37155410777,
+            'preserved_validation_plumbing_failures':[37160832494,37160921927],
+            'promoted_bushwhacker_run':37155360095,
+            'promoted_bushwhacker_artifact':11285971445,
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0},
+          },indent=2)+'\n')
+          PY
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28"             "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/11285971445/zip"             -o "$OUT/promoted-98.zip"
+          unzip -p "$OUT/promoted-98.zip" registry-requests.json > "$MT_P2_AUDIT_INPUT"
+          unzip -p "$OUT/promoted-98.zip" registry/registry-report.json > "$OUT/prior-registry-report.json"
+          test "$(sha256sum "$MT_P2_AUDIT_INPUT" | awk '{print $1}')" = "09b8617057b9bd42fb6501f993588c9bf769e1f0af0c73426ca963da07d20084"
+
+      - name: Configure validation-only execution without coverage instrumentation
+        shell: bash
+        run: |
+          cat > "$OUT/no-coverage.gradle" <<'GRADLE'
+          allprojects { p ->
+            p.plugins.withId('org.jetbrains.kotlinx.kover') {
+              p.extensions.getByName('kover').currentProject {
+                instrumentation { disabledForAll.set(true) }
+              }
+            }
+          }
+          GRADLE
+
+      - name: Run generalized pre-entry cases, exact Disciple cases, and unchanged registry audit
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --init-script "$OUT/no-coverage.gradle" --no-daemon --no-configuration-cache             --console=plain --continue --max-workers=1 -PkotlinCompileParallelism=1             -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g             :rules-engine:test --tests com.wingedsheep.engine.scenarios.PreEntryLandPlayPaymentTest             :mtg-sets:2024:tests:test --tests com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest             :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest             2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+
+      - name: Audit actual cases and exact frozen-registry delta
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']); out.mkdir(parents=True,exist_ok=True)
+          suites={
+            'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PreEntryLandPlayPaymentTest.xml':7,
+            'mtg-sets/2024/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest.xml':7,
+            'gym/build/test-results/test/TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml':1,
+          }
+          rows=[]
+          for name,count in suites.items():
+            p=pathlib.Path(name)
+            row={'path':name,'expected':count,'missing':not p.exists(),'cases':[]}
+            if p.exists():
+              shutil.copyfile(p,out/p.name)
+              row['xml_sha256']=hashlib.sha256(p.read_bytes()).hexdigest()
+              row['cases']=[{'name':c.attrib['name'],'failure':c.find('failure') is not None,
+                'error':c.find('error') is not None,'skipped':c.find('skipped') is not None}
+                for c in ET.parse(p).getroot().findall('testcase')]
+            rows.append(row)
+          (out/'actual-cases.json').write_text(json.dumps(rows,indent=2)+'\n')
+          assert all(not r['missing'] for r in rows),rows
+          assert all(len(r['cases'])==r['expected'] for r in rows),rows
+          assert all(len({c['name'] for c in r['cases']})==r['expected'] for r in rows),rows
+          assert not any(c['failure'] or c['error'] or c['skipped'] for r in rows for c in r['cases']),rows
+          assert (out/'gradle-exit-code.txt').read_text().strip()=='0'
+
+          before=json.loads((out/'prior-registry-report.json').read_text())
+          after_path=out/'registry/registry-report.json'
+          after=json.loads(after_path.read_text())
+          for report in (before,after):
+            assert report['schema']=='mt-phase2-live-registry-audit-v1'
+            assert report['status']=='INVENTORY_ONLY_NOT_RULES_OR_PILOT_QUALIFICATION'
+            assert report['execution_allowed'] is False
+            assert report['actual_deck_games_initialized']==0 and report['official_outcomes']==0
+            assert len(report['decks'])==8
+            assert all(d['physical_cards']==len(d['cards'])==100 for d in report['decks'])
+            assert all(c['rules_qualified'] is False for d in report['decks'] for c in d['cards'])
+
+          b={(d['deck_id'],c['index']):c for d in before['decks'] for c in d['cards']}
+          a={(d['deck_id'],c['index']):c for d in after['decks'] for c in d['cards']}
+          assert b.keys()==a.keys() and len(a)==800
+          changed=[]
+          for key in sorted(a):
+            bc,ac=b[key],a[key]
+            # Frozen requests and every field except registry resolution must remain identical.
+            for field in bc:
+              if field in {'registry_resolved','resolved_name'}: continue
+              assert bc[field]==ac[field],(key,field,bc[field],ac[field])
+            if (bc['registry_resolved'],bc.get('resolved_name')) != (ac['registry_resolved'],ac.get('resolved_name')):
+              changed.append((key,bc['requested_name'],bc['registry_resolved'],ac['registry_resolved'],ac.get('resolved_name')))
+          assert changed==[(('manual-transmission-v07',55),'Disciple of Freyalise',False,True,'Disciple of Freyalise')],changed
+
+          summary={}
+          for deck in after['decks']:
+            missing=[c['requested_name'] for c in deck['cards'] if not c['registry_resolved']]
+            summary[deck['deck_id']]={'resolved':100-len(missing),'unresolved':len(missing),'missing':missing}
+          assert summary['manual-transmission-v07']=={
+            'resolved':99,'unresolved':1,'missing':['Amphin Mutineer']
+          },summary['manual-transmission-v07']
+          assert sum(v['unresolved'] for v in summary.values())==304,summary
+          (out/'registry-summary.json').write_text(json.dumps({
+            'decks':summary,
+            'prior_manual_resolved':98,'current_manual_resolved':99,
+            'only_delta':changed,
+            'prior_unresolved_physical_entries':305,'current_unresolved_physical_entries':304,
+            'registry_report_sha256':hashlib.sha256(after_path.read_bytes()).hexdigest(),
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0},
+          },indent=2)+'\n')
+          PY
+
+      - name: Digest evidence
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          out=pathlib.Path(os.environ['OUT']);out.mkdir(parents=True,exist_ok=True)
+          (out/'evidence-sha256.json').write_text(json.dumps({
+            str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted(out.rglob('*'))
+            if p.is_file() and p.name not in {'evidence-sha256.json','promoted-98.zip'}
+          },indent=2)+'\n')
+          PY
+
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-disciple-exact-${{ github.run_id }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
