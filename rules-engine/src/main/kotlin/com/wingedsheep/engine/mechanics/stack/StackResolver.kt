@@ -988,7 +988,7 @@ class StackResolver(
         val (_, poppedState) = state.popFromStack()
 
         // Determine what type of item this is
-        return when {
+        val result = when {
             container.has<SpellOnStackComponent>() ->
                 resolveSpell(poppedState, topId, container)
 
@@ -1001,6 +1001,7 @@ class StackResolver(
             else ->
                 ExecutionResult.error(state, "Unknown stack item type")
         }
+        return result.copy(state = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, result.newState))
     }
 
     /**
@@ -2081,7 +2082,7 @@ class StackResolver(
                 ?.get<com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent>()?.timestamp,
             oldObject = state.objectRef(spellId), newObject = newState.objectRef(spellId),
         ))
-        return newState to counterEvents
+        return com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, newState) to counterEvents
     }
 
 

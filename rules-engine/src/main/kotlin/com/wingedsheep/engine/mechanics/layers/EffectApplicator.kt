@@ -273,7 +273,7 @@ internal class EffectApplicator(
                 }
                 is Modification.GrantProtectionFromColor -> {
                     values.keywords.add("PROTECTION_FROM_${mod.color}")
-                    values.colorProtectionGrants.add(ColorProtectionGrant(mod.color, effect.sourceId, projectedValues[effect.sourceId]?.controllerId ?: effect.controllerId, effect.timestamp, effect.fromStaticAbility && effect.retainsSourceAttachment))
+                    values.colorProtectionGrants.add(ColorProtectionGrant(mod.color, effect.sourceId, projectedValues[effect.sourceId]?.controllerId ?: effect.controllerId, effect.timestamp, effect.fromStaticAbility && effect.retainsSourceAttachment, effect.fromStaticAbility && effect.retainsPreexistingControlledAttachments, effect.protectionGrantIndex))
                 }
                 is Modification.GrantProtectionFromCardType -> {
                     values.keywords.add("PROTECTION_FROM_CARDTYPE_${mod.cardType.uppercase()}")
@@ -283,7 +283,7 @@ internal class EffectApplicator(
                         ?.chosenColor()
                     if (chosenColor != null) {
                         values.keywords.add("PROTECTION_FROM_${chosenColor.name}")
-                    values.colorProtectionGrants.add(ColorProtectionGrant(chosenColor.name, effect.sourceId, projectedValues[effect.sourceId]?.controllerId ?: effect.controllerId, effect.timestamp, effect.fromStaticAbility && effect.retainsSourceAttachment))
+                    values.colorProtectionGrants.add(ColorProtectionGrant(chosenColor.name, effect.sourceId, projectedValues[effect.sourceId]?.controllerId ?: effect.controllerId, effect.timestamp, effect.fromStaticAbility && effect.retainsSourceAttachment, effect.fromStaticAbility && effect.retainsPreexistingControlledAttachments, effect.protectionGrantIndex))
                     }
                 }
                 is Modification.GrantHexproofFromOwnColors -> {
@@ -309,7 +309,7 @@ internal class EffectApplicator(
                             if (other.controllerId != sourceController) continue
                             for (colorName in other.colors) {
                                 values.keywords.add("PROTECTION_FROM_$colorName")
-                    values.colorProtectionGrants.add(ColorProtectionGrant(colorName, effect.sourceId, projectedValues[effect.sourceId]?.controllerId ?: effect.controllerId, effect.timestamp, effect.fromStaticAbility && effect.retainsSourceAttachment))
+                    values.colorProtectionGrants.add(ColorProtectionGrant(colorName, effect.sourceId, projectedValues[effect.sourceId]?.controllerId ?: effect.controllerId, effect.timestamp, effect.fromStaticAbility && effect.retainsSourceAttachment, effect.fromStaticAbility && effect.retainsPreexistingControlledAttachments, effect.protectionGrantIndex))
                             }
                         }
                     }

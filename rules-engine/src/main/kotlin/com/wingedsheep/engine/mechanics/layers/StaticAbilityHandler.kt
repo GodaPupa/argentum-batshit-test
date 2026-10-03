@@ -616,6 +616,7 @@ class StaticAbilityHandler(
                 ContinuousEffectData(
                     modification = Modification.GrantProtectionFromChosenColor,
                     retainsSourceAttachment = ability.retainsSourceAttachment,
+                    retainsPreexistingControlledAttachments = ability.retainsPreexistingControlledAttachments,
                     affectsFilter = convertGroupFilter(ability.filter)
                 )
             }
@@ -641,6 +642,7 @@ class StaticAbilityHandler(
                 ContinuousEffectData(
                     modification = Modification.GrantProtectionFromControlledColors,
                     retainsSourceAttachment = ability.retainsSourceAttachment,
+                    retainsPreexistingControlledAttachments = ability.retainsPreexistingControlledAttachments,
                     affectsFilter = convertGroupFilter(ability.filter)
                 )
             }
@@ -826,6 +828,7 @@ class StaticAbilityHandler(
                 ContinuousEffectData(
                     modification = Modification.GrantProtectionFromColor(ability.color.name),
                     retainsSourceAttachment = ability.retainsSourceAttachment,
+                    retainsPreexistingControlledAttachments = ability.retainsPreexistingControlledAttachments,
                     affectsFilter = convertGroupFilter(ability.filter)
                 )
             }

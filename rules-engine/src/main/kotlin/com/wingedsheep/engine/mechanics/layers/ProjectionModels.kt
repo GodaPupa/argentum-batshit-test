@@ -41,7 +41,9 @@ data class ContinuousEffectData(
      * generating ability in Layer 6. Null for single-layer abilities, which need no grouping.
      */
     val groupId: String? = null,
-    val retainsSourceAttachment: Boolean = false
+    val retainsSourceAttachment: Boolean = false,
+    val retainsPreexistingControlledAttachments: Boolean = false,
+    val protectionGrantIndex: Int = 0
 ) {
     val layer: Layer get() = modification.layer
     val sublayer: Sublayer? get() = modification.sublayer
@@ -236,7 +238,9 @@ data class ContinuousEffect(
      * effects (Giant Growth, an activated pump, a lingering "until end of turn" grant).
      */
     val fromStaticAbility: Boolean = true,
-    val retainsSourceAttachment: Boolean = false
+    val retainsSourceAttachment: Boolean = false,
+    val retainsPreexistingControlledAttachments: Boolean = false,
+    val protectionGrantIndex: Int = 0
 ) {
     val layer: Layer get() = modification.layer
     val sublayer: Sublayer? get() = modification.sublayer

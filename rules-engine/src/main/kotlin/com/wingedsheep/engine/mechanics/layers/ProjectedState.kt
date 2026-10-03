@@ -43,7 +43,9 @@ data class ColorProtectionGrant(
     val sourceId: EntityId?,
     val controllerId: EntityId?,
     val timestamp: Long,
-    val retainsSourceAttachment: Boolean = false
+    val retainsSourceAttachment: Boolean = false,
+    val retainsPreexistingControlledAttachments: Boolean = false,
+    val protectionGrantIndex: Int = 0
 )
 
 data class ProjectedValues(
