@@ -41,6 +41,7 @@ class DiscipleOfFreyaliseScenarioTest : ScenarioTestBase() {
                 .withCardInHand(1, "Disciple of Freyalise")
                 .withLandsOnBattlefield(1, "Forest", 6)
                 .withCardOnBattlefield(1, "Centaur Courser")
+                .withCardOnBattlefield(1, "Llanowar Elves")
                 .withCardOnBattlefield(1, "Glorious Anthem")
                 .withCardInLibrary(1, "Forest")
                 .withCardInLibrary(1, "Forest")
@@ -136,14 +137,14 @@ class DiscipleOfFreyaliseScenarioTest : ScenarioTestBase() {
             val game = scenario()
                 .withPlayers("Player", "Opponent")
                 .withCardInHand(1, "Disciple of Freyalise")
-                .withLifeTotal(1, 3)
+                .withLifeTotal(1, 2)
                 .withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
             val id = game.findCardsInHand(1, "Disciple of Freyalise").single()
             game.execute(PlayLand(game.player1Id, id, asBackFace = true)).error shouldBe null
             game.hasPendingDecision() shouldBe false
-            game.getLifeTotal(1) shouldBe 3
+            game.getLifeTotal(1) shouldBe 2
             game.state.getEntity(id)!!.has<TappedComponent>() shouldBe true
         }
 
