@@ -20,6 +20,7 @@ import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.Deck
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.KeywordAbility
 import com.wingedsheep.sdk.scripting.EventPattern
 import com.wingedsheep.sdk.scripting.GameObjectFilter
 import com.wingedsheep.sdk.scripting.TriggerBinding
@@ -99,6 +100,14 @@ class BecomesTargetPlayerAndAbilityAxesTest : FunSpec({
         }
     }
 
+    val redirectWardBear = card("Redirect Ward Bear") {
+        manaCost = "{1}{G}"
+        typeLine = "Creature — Bear"
+        power = 2
+        toughness = 2
+        keywordAbility(KeywordAbility.ward("{4}"))
+    }
+
     // ---- observers ----------------------------------------------------------
 
     /** Loki's exact shape: an ability you control, players included, once each turn. */
@@ -166,7 +175,7 @@ class BecomesTargetPlayerAndAbilityAxesTest : FunSpec({
     }
 
     val extras = listOf(
-        playerPinger, playerDrain, playerAndCreatureSpell, retargeter,
+        playerPinger, playerDrain, playerAndCreatureSpell, retargeter, redirectWardBear,
         lokiLike, abilityObjectObserver, anySourcePlayerObserver, plainObserver, spellObserver,
     )
 
@@ -284,26 +293,7 @@ class BecomesTargetPlayerAndAbilityAxesTest : FunSpec({
             }
         }
 
-        /**
-         * **Characterization of a known bug, not endorsement.** The three retarget/reselect sites
-         * (`ManaPaymentContinuationResumer.resumeChangeSpellTarget`, `ContestedRetargetLogic.advance`,
-         * `ReselectTargetRandomlyExecutor`) rewrite a stack object's `TargetsComponent` without
-         * emitting any [BecomesTargetEvent] — for players *and* for permanents alike.
-         *
-         * That is **wrong** under the rules, not an open question: CR 115.9c counts the objects and
-         * players chosen as targets when the spell or ability was put on the stack "(as modified by
-         * effects that changed those targets)", so a redirected object *is* one of its targets, and
-         * by CR 603.2e a "becomes" trigger fires at the moment the named event happens — which for a
-         * redirect is the moment the new object becomes a target. So ward (CR 702.21a) and every
-         * other becomes-target trigger *should* fire on a Spellskite/Misdirection redirect and do
-         * not.
-         *
-         * The bug predates this change and is orthogonal to it (the player half rides on the four
-         * target-*declaration* sites), so it is pinned here rather than fixed — a fix newly wakes
-         * ward across the whole pool and needs its own unit. This test therefore locks in
-         * current-and-wrong behaviour: when that unit lands, **invert** this test, don't delete it.
-         */
-        test("changing a spell's target to a player emits no BecomesTargetEvent (known bug, CR 115.9c)") {
+        test("changing a spell's target to a player emits BecomesTargetEvent") {
             val driver = createDriver()
             // Both spells are cast by the same player, back to back, so priority never has to
             // change hands; an empty battlefield leaves the opposing player as the only legal
@@ -327,10 +317,39 @@ class BecomesTargetPlayerAndAbilityAxesTest : FunSpec({
             decision.shouldNotBeNull()
 
             val result = driver.submitCardSelection(driver.player1, listOf(driver.player1))
-            withClue("the retarget path is silent for every target kind today") {
-                becomesTargetEvents(result) shouldHaveSize 0
-            }
+            val event = becomesTargetEvents(result).single()
+            event.targetEntityId shouldBe driver.player1
+            event.sourceEntityId shouldBe boltOnStack
+            event.controllerId shouldBe driver.player1
+            event.sourceIsSpell shouldBe true
+            event.targetIsPlayer shouldBe true
         }
+    }
+
+    test("redirecting an opposing spell to ward creates a ward trigger and counters the spell") {
+        val driver = createDriver()
+        val bear = driver.putCreatureOnBattlefield(driver.player2, "Redirect Ward Bear")
+        driver.giveMana(driver.player1, Color.RED, 1)
+        val bolt = driver.putCardInHand(driver.player1, "Lightning Bolt")
+        driver.castSpell(driver.player1, bolt, listOf(driver.player2)).error shouldBe null
+        val boltOnStack = driver.state.stack.single()
+        driver.giveMana(driver.player1, Color.BLUE, 1)
+        val redirect = driver.putCardInHand(driver.player1, "Test Retargeter")
+        driver.castSpellWithTargets(driver.player1, redirect, listOf(ChosenTarget.Spell(boltOnStack))).error shouldBe null
+        driver.bothPass()
+        (driver.state.pendingDecision as? SelectCardsDecision).shouldNotBeNull()
+        val result = driver.submitCardSelection(driver.player1, listOf(bear))
+        result.error shouldBe null
+        becomesTargetEvents(result).single().targetEntityId shouldBe bear
+        val ward = driver.state.stack.mapNotNull {
+            driver.state.getEntity(it)?.get<TriggeredAbilityOnStackComponent>()
+        }.single()
+        ward.targetingSourceEntityId shouldBe boltOnStack
+        ward.controllerId shouldBe driver.player2
+        driver.bothPass()
+        driver.state.stack.contains(boltOnStack) shouldBe false
+        driver.findPermanent(driver.player2, "Redirect Ward Bear") shouldNotBe null
+        driver.getGraveyardCardNames(driver.player1).contains("Lightning Bolt") shouldBe true
     }
 
     // =========================================================================

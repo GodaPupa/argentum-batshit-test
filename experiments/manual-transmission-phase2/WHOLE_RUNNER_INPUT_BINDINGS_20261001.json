@@ -1,0 +1,84 @@
+{
+  "schema": "manual-phase2-whole-runner-input-bindings-v1",
+  "date_utc": "2026-10-01",
+  "authority": "PROSPECTIVE_BINDING_ONLY_NO_EXECUTION_AUTHORITY",
+  "source_head": "b3bd708413ccdd43a62dfae3d7f1dda5cd7a1b16",
+  "governing_protocol": {
+    "path": "experiments/manual-transmission-phase2/protocol-r1.json",
+    "blob": "f605dc2ce4273a26a6e2387a2c6e4048e4012a79",
+    "protocol_id": "MT_V07_PHASE2_CEDH_MULTIPLAYER_R1_2026_09_24"
+  },
+  "hardware": {
+    "path": "experiments/manual-transmission/control/v0.7.decklist.txt",
+    "blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "declared_sha256": "6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111",
+    "cards": 100
+  },
+  "opponent_admission": {
+    "path": "experiments/manual-transmission-phase2/opponent-admission-r1.json",
+    "blob": "4ec806565081f7570e8cff0c92569b8a7fd788e5",
+    "status": "EXACT_IDENTITIES_RE_ADMITTED_PRE_OUTCOME_SUPPORT_QUALIFICATION_PENDING"
+  },
+  "opponents": {
+    "blue-farm": {
+      "source_blob": "b22137a54b1ff5d1ce1d5e3347cefa4992e2d92d",
+      "complete_100_sha256": "164cef506c6069f1c69f46b1dfa5ff50449d3dae56df77a086ff04b7ab0e31e8"
+    },
+    "hashaton": {
+      "source_blob": "00f6e2a08da14e56fdb8b8d56a7982fa6b7aef02",
+      "complete_100_sha256": "69eddcf540a05382f4d870a34426831274696db7d3767d8ebb5d75486a051870"
+    },
+    "kinnan": {
+      "source_blob": "26e9e40fa9aac070ae47e20ee1ee9ba5a053c49d",
+      "complete_100_sha256": "e36cda0598aad4acf0ee75de48cfc3d767240463d35f17666dcf1d22e22dbceb"
+    },
+    "magda": {
+      "source_blob": "4ca3397a0cce21ec98fd764bc3ffe4668781ff88",
+      "complete_100_sha256": "328879aec8d8095eea6d38f43ddc3746e69209dd45726826eec8eb4c8976ed4a"
+    },
+    "rogsi": {
+      "source_blob": "a70bbde77a40af45d95d2aa8ae2fb94a62fc4009",
+      "complete_100_sha256": "d17b520fcacf951fd31cbe909bf154ab24a6efe884f9baa8c91a7e621ce16a26"
+    },
+    "shorikai": {
+      "source_blob": "9cba05825e76bb7743cce4e80005cb47b8088dd4",
+      "complete_100_sha256": "9fedd6fdf069e09f34fb4619dedf63cb95db003524572e1b9dbe602329c7b380"
+    },
+    "sisay": {
+      "source_blob": "b2f7a511dda72cef6fa3c937e44c9e04d5f84a91",
+      "complete_100_sha256": "25d6794046a80dba919ec19a4491bb6ce8ef799b0d2de2afbaac377592b66580"
+    }
+  },
+  "accepted_policy_evidence": {
+    "race_final": {
+      "path": "experiments/manual-transmission/policies/RACE-FINAL-R1.md",
+      "blob": "525dc7e44730af7f1241e0a439d12349410e5cdd",
+      "status": "ACCEPTED"
+    },
+    "matrix_status": {
+      "path": "experiments/manual-transmission/MATRIX_STATUS.md",
+      "blob": "34083c2d87c5e41b01c2208068930da0f40ae8ba",
+      "all_seven_overlays": "QUALIFIED exact enumeration + independent audit"
+    },
+    "bounded_elasticity_conclusion": {
+      "path": "experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md",
+      "blob": "dbf081b0c6e205c65750866adcb6f7d43f532caf",
+      "limitation": "policy/timing evidence, not cEDH gameplay win-rate evidence"
+    }
+  },
+  "runtime_components": {
+    "PhaseTwoPilotBoundary": "321c4234b4670284d8c9fa9b7a0ef819e3ccc8fb",
+    "PhaseTwoTelemetryAdapter": "44608301d535a2114073d80c06d5ca0480c40043",
+    "ManualPhaseTwoOpeningActionPolicy": "386abff9f86495f099677ac9006cc0f37a2efb13",
+    "ManualPhaseTwoPriorityConservationPolicy": "8fec7b06ed4d20ac138b4f0d0500fc6d39926d4e",
+    "ManualPhaseTwoPublicOpponentAxes": "8372b475e77849127439060902a06b0b2da8fdf2",
+    "ManualPhaseTwoRaceOverlayRouter": "600f783b0891249343cb57e91847ea714758f515",
+    "ManualPhaseTwoUniqueCommanderCastPolicy": "0b408d285989c8c789e829f2b580ac4930ec963c"
+  },
+  "remaining_binding_gap": [
+    "Seal the executable Cruise/Sport/Race policy composition map to these accepted component blobs; do not infer gear behavior solely from prose.",
+    "Bind each of the three protocol pod templates to the exact admitted opponent complete-100 digests above.",
+    "Then implement the trusted initializer/whole-runner/replay seam under WHOLE_RUNNER_MINIMAL_INTEGRATION_SCOPE_20261001.json."
+  ],
+  "official_counters_delta": 0
+}

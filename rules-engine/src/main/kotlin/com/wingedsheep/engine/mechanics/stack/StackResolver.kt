@@ -22,7 +22,6 @@ import com.wingedsheep.engine.state.FACE_DOWN_DISPLAY_NAME
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
-import com.wingedsheep.engine.state.components.battlefield.TargetedByControllerThisTurnComponent
 import com.wingedsheep.engine.state.components.battlefield.ClassLevelComponent
 import com.wingedsheep.engine.state.components.battlefield.SagaComponent
 import com.wingedsheep.engine.state.components.battlefield.CastFromHandComponent
@@ -675,35 +674,7 @@ class StackResolver(
         controllerId: EntityId,
         events: MutableList<GameEvent>,
         sourceIsSpell: Boolean
-    ): GameState {
-        val isSpell = target is ChosenTarget.Spell
-        val isPlayer = target is ChosenTarget.Player
-        val targetEntityId = when (target) {
-            is ChosenTarget.Permanent -> target.entityId
-            is ChosenTarget.Spell -> target.spellEntityId
-            is ChosenTarget.Player -> target.playerId
-            is ChosenTarget.Card -> return state
-        }
-        val targetName = if (isPlayer) {
-            state.getEntity(targetEntityId)?.get<PlayerComponent>()?.name ?: "Unknown"
-        } else {
-            state.getEntity(targetEntityId)?.get<CardComponent>()?.name ?: "Unknown"
-        }
-        val firstTime = isSpell || !hasBeenTargetedByController(state, targetEntityId, controllerId)
-        events.add(
-            BecomesTargetEvent(
-                targetEntityId,
-                targetName,
-                sourceEntityId,
-                controllerId,
-                firstTime,
-                targetIsSpell = isSpell,
-                sourceIsSpell = sourceIsSpell,
-                targetIsPlayer = isPlayer
-            )
-        )
-        return if (isSpell) state else markTargetedByController(state, targetEntityId, controllerId)
-    }
+    ): GameState = TargetingEvents.emit(state, target, sourceEntityId, controllerId, events, sourceIsSpell)
 
     /**
      * Put a triggered ability on the stack.
@@ -1186,7 +1157,8 @@ class StackResolver(
                         powerOverride = entersAsCopy.powerOverride,
                         toughnessOverride = entersAsCopy.toughnessOverride,
                         exileCopiedCard = entersAsCopy.exileCopiedCard,
-                        additionalCounters = entersAsCopy.additionalCounters
+                        additionalCounters = entersAsCopy.additionalCounters,
+                        exceptions = entersAsCopy.exceptions
                     )
                     return state.suspendForDecision(
                         question = { decisionId ->
@@ -1453,6 +1425,8 @@ class StackResolver(
         // Captured before the `updateEntity` block below strips it; applied on entry further down.
         val graveyardCastRider =
             state.getEntity(spellId)?.get<com.wingedsheep.engine.state.components.stack.GraveyardCastRiderComponent>()
+        val commanderManaEntryCounters = state.getEntity(spellId)
+            ?.get<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
 
         // For Auras: get the target before removing TargetsComponent. The target is usually a
         // permanent, but "enchant player" Auras (Grievous Wound) attach to a player — both are
@@ -1477,6 +1451,7 @@ class StackResolver(
         val resolvingAsSpellCopy = copyOf != null && copyOf.originalCardComponent == null
         var newState = state.updateEntity(spellId) { c ->
             var updated = c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
                 .without<TargetsComponent>()
                 .without<com.wingedsheep.engine.state.components.stack.GraveyardCastRiderComponent>()
                 .with(ControllerComponent(controllerId))
@@ -1844,6 +1819,17 @@ class StackResolver(
             counterEvents.addAll(riderEvents)
         }
 
+        // Mana-spent entry riders survive choices/copy replacement, then apply before ETB snapshots.
+        // Combine all Palace mana contributions before applying counter-placement modifiers.
+        if (commanderManaEntryCounters != null) {
+            val (entryState, entryEvents) = EntersWithReplacements.placeEntryCounters(
+                newState, spellId, CounterTypeFilter.PlusOnePlusOne, commanderManaEntryCounters.count,
+                controllerId, cardComponent?.name ?: ""
+            )
+            newState = entryState
+            counterEvents.addAll(entryEvents)
+        }
+
         // Handle the intrinsic entry counters of a planeswalker (starting loyalty, CR 306.5b) or a
         // battle (printed defense, CR 310.4b). This is the cast pipeline's entry point for those
         // intrinsic entry replacements — it runs here, while the permanent is still on the stack,
@@ -2051,6 +2037,7 @@ class StackResolver(
             spellId, nameVisibleToAll(newState, spellId, cardComponent?.name ?: "Unknown"),
             Zone.STACK, Zone.BATTLEFIELD, cardComponent?.ownerId ?: controllerId,
             xValue = spellComponent.xValue,
+            castFromZone = spellComponent.castFromZone.takeUnless { resolvingAsSpellCopy },
             enteredBattlefieldTimestamp = newState.getEntity(spellId)
                 ?.get<com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent>()?.timestamp,
             oldObject = state.objectRef(spellId), newObject = newState.objectRef(spellId),
@@ -2708,7 +2695,9 @@ class StackResolver(
         val destZoneKey = ZoneKey(ownerId, destZone)
 
         var newState = state.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = newState.addToZone(destZoneKey, spellId)
         val destinationObject = newState.objectRef(spellId)
@@ -3107,7 +3096,9 @@ class StackResolver(
         // Remove stack components and reset any Prototype characteristics now that the card has
         // become a new object outside the stack/battlefield.
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
@@ -3171,7 +3162,9 @@ class StackResolver(
         val destinationObject = newState.objectRef(spellId)
 
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
@@ -3234,7 +3227,9 @@ class StackResolver(
         // Remove stack components and optionally grant the counter's controller a free recast
         // (Kheru Spellsnatcher).
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
         if (grantFreeCast) {
@@ -3312,7 +3307,9 @@ class StackResolver(
         val exileZone = ZoneKey(ownerId, Zone.EXILE)
         newState = newState.addToZone(exileZone, spellId)
         newState = newState.updateEntity(spellId) { c ->
-            c.without<SpellOnStackComponent>().without<TargetsComponent>()
+            c.without<SpellOnStackComponent>()
+                .without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
+                .without<TargetsComponent>()
         }
         newState = restoreTemporaryCastCharacteristicsAfterStackExit(newState, spellId)
 
@@ -3943,30 +3940,6 @@ class StackResolver(
         }
         return false
     }
-
-    // =========================================================================
-    // Valiant / "first time targeted" tracking
-    // =========================================================================
-
-    /**
-     * Check if the target entity has already been targeted by the given controller this turn.
-     */
-    private fun hasBeenTargetedByController(state: GameState, targetId: EntityId, controllerId: EntityId): Boolean {
-        val component = state.getEntity(targetId)?.get<TargetedByControllerThisTurnComponent>()
-        return component?.hasBeenTargetedBy(controllerId) == true
-    }
-
-    /**
-     * Mark the target entity as having been targeted by the given controller this turn.
-     */
-    private fun markTargetedByController(state: GameState, targetId: EntityId, controllerId: EntityId): GameState {
-        return state.updateEntity(targetId) { container ->
-            val existing = container.get<TargetedByControllerThisTurnComponent>()
-                ?: TargetedByControllerThisTurnComponent()
-            container.with(existing.withController(controllerId))
-        }
-    }
-
 
     /**
      * Create the appropriate decision and continuation for an EntersWithChoice replacement effect.

@@ -68,6 +68,7 @@ data class TriggeredAbilityContinuation(
      *  (CR 603.10), preserved across target selection for the intervening-"if"'s second check. */
     val triggerLastKnownSubtypes: Set<String>? = null,
     val triggerLastKnownCardTypes: Set<String>? = null,
+    val triggerEntryOrigin: com.wingedsheep.engine.event.BattlefieldEntryOrigin? = null,
     val triggerLastKnownDamageDealtByPlayers: Map<EntityId, Int>? = null,
     /** Creatures blocking/blocked by the trigger's source on leave-battlefield (CR 509 LKI, Abu Ja'far). */
     val triggerLastKnownBlockingOrBlockedByIds: List<EntityId>? = null,
@@ -171,6 +172,7 @@ data class TriggerDamageDistributionContinuation(
      *  (CR 603.10), preserved across target selection for the intervening-"if"'s second check. */
     val triggerLastKnownSubtypes: Set<String>? = null,
     val triggerLastKnownCardTypes: Set<String>? = null,
+    val triggerEntryOrigin: com.wingedsheep.engine.event.BattlefieldEntryOrigin? = null,
     val triggerLastKnownDamageDealtByPlayers: Map<EntityId, Int>? = null,
     /** Creatures blocking/blocked by the trigger's source on leave-battlefield (CR 509 LKI, Abu Ja'far). */
     val triggerLastKnownBlockingOrBlockedByIds: List<EntityId>? = null,

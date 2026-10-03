@@ -263,6 +263,7 @@ data class EffectContext(
      * were a creature". Null when the trigger wasn't driven by a permanent leaving the battlefield.
      */
     val triggerLastKnownCardTypes: Set<String>? = null,
+    val triggerEntryOrigin: com.wingedsheep.engine.event.BattlefieldEntryOrigin? = null,
     /** The entity that caused the trigger to fire (e.g., creature that dealt damage for Aurification) */
     val triggeringEntityId: EntityId? = null,
     /** The player associated with the trigger event (e.g., the player who cast a spell for SpellCastEvent) */
@@ -631,6 +632,7 @@ data class EffectContext(
             triggerLastKnownCounters = ability.triggerLastKnownCounters,
             triggerLastKnownSubtypes = ability.triggerLastKnownSubtypes,
             triggerLastKnownCardTypes = ability.triggerLastKnownCardTypes,
+            triggerEntryOrigin = ability.triggerEntryOrigin,
             triggerLastKnownDamageDealtByPlayers = ability.triggerLastKnownDamageDealtByPlayers,
             triggerLastKnownBlockingOrBlockedByIds = ability.triggerLastKnownBlockingOrBlockedByIds,
             triggeringEntityId = ability.triggeringEntityId,

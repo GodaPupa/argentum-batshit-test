@@ -2162,10 +2162,11 @@ object Conditions {
     fun TriggeringSpellManaSpentAtLeast(amount: Int): ConditionInterface =
         com.wingedsheep.sdk.scripting.conditions.TriggeringSpellManaSpentAtLeast(amount)
 
-    /**
-     * If the triggering entity entered or was cast from a graveyard.
-     * Used by Twilight Diviner: "if they entered or were cast from a graveyard".
-     */
+    /** Historical direct-entry or cast origin of the triggering battlefield object. */
+    fun TriggeringEntityEnteredOrWasCastFromZone(zone: Zone, ownedByController: Boolean = false): ConditionInterface =
+        com.wingedsheep.sdk.scripting.conditions.TriggeringEntityEnteredOrWasCastFromZone(zone, ownedByController)
+
+    /** If the triggering entity entered or was cast from a graveyard. Used by Twilight Diviner. */
     val TriggeringEntityEnteredOrWasCastFromGraveyard: ConditionInterface =
         com.wingedsheep.sdk.scripting.conditions.TriggeringEntityEnteredOrWasCastFromGraveyard
 

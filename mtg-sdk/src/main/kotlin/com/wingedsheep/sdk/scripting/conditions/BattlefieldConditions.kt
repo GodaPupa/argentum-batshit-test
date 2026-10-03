@@ -118,6 +118,16 @@ data class TriggeringSpellManaSpentAtLeast(val amount: Int) : Condition {
     override val description: String = "if at least $amount mana was spent to cast it"
 }
 
+/** Checks the triggering entry's captured direct-entry or cast origin, for any zone. */
+@SerialName("TriggeringEntityEnteredOrWasCastFromZone")
+@Serializable
+data class TriggeringEntityEnteredOrWasCastFromZone(
+    val zone: com.wingedsheep.sdk.core.Zone,
+    val ownedByController: Boolean = false,
+) : Condition {
+    override val description: String = "if it entered or was cast from ${zone.displayName.lowercase()}"
+}
+
 /**
  * Condition: "if it entered or was cast from a graveyard".
  * True when the triggering entity has either EnteredFromGraveyardComponent (reanimated

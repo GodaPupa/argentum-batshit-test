@@ -1,0 +1,51 @@
+{
+  "schema": "manual-phase2-swan-song-card-coverage-freeze-v1",
+  "date_utc": "2026-10-01",
+  "authority": "PROSPECTIVE_SOURCE_ONLY_NO_EXECUTION_AUTHORITY",
+  "base_commit": "9e0d3ce3aa9d9f322d21e05a86efd76c9fdbe73c",
+  "parent_registry_diagnostic": {
+    "run": 36933952681,
+    "artifact": 11197282992,
+    "artifact_sha256": "dd6e4d2212cfbc7b019cf62241fea38040e366c1900ba2005c0b8cb2fbffeb42",
+    "total_missing_physical": 322
+  },
+  "selected_identity": "Swan Song",
+  "impact": {
+    "admitted_opponents": [
+      "blue-farm",
+      "rogsi",
+      "kinnan",
+      "sisay",
+      "shorikai"
+    ],
+    "deck_count": 5
+  },
+  "selection_reason": "High-reuse absent card using existing qualified primitives: stack spell targeting, counter effect, target-controller token creation, blue Bird token with flying. No new engine subsystem or pilot strategy.",
+  "reusable_primitives": [
+    "An Offer You Can't Refuse: create tokens for target spell controller then counter",
+    "Murmuring Mystic/Pongify: flying creature token creation",
+    "TargetSpell + composable TargetFilter over stack card types"
+  ],
+  "required_card_identity": {
+    "mana_cost": "{U}",
+    "type_line": "Instant",
+    "rules": [
+      "Counter target enchantment, instant, or sorcery spell.",
+      "Its controller creates a 2/2 blue Bird creature token with flying."
+    ]
+  },
+  "qualification_cases": [
+    "Counter an instant; its controller receives exactly one 2/2 blue Bird with flying.",
+    "Counter an enchantment; its controller receives the Bird.",
+    "Reject a creature spell as an illegal target.",
+    "Reject an artifact spell as an illegal target."
+  ],
+  "adoption_rule": "Definition/test/snapshot adoption only after changed-source review plus fresh bounded mechanics qualification and one-time audit.",
+  "prohibited": [
+    "no broad Manual capability/gameplay",
+    "no opponent pilot qualification",
+    "no seed/allocation/claim/game",
+    "no unrelated card batch"
+  ],
+  "official_counters_delta": 0
+}

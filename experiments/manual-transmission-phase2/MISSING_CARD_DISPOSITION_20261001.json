@@ -1,0 +1,38 @@
+{
+  "schema": "manual-phase2-missing-card-disposition-v1",
+  "date_utc": "2026-10-01",
+  "authority": "SOURCE_INVENTORY_ONLY_NO_CARD_COMPETENCE_OR_GAME_AUTHORITY",
+  "diagnostic": {
+    "run": 36933952681,
+    "artifact": 11197282992,
+    "artifact_sha256": "dd6e4d2212cfbc7b019cf62241fea38040e366c1900ba2005c0b8cb2fbffeb42"
+  },
+  "method": [
+    "Exact canonical repository tree scanned at Manual whole-runner source checkpoint.",
+    "Exact-name repository content search performed for all twelve Manual missing identities.",
+    "No canonical definition or alternate implementation text was found for any of the twelve.",
+    "Absence of a card implementation is not treated as proof that every mechanic primitive needed by that card is absent."
+  ],
+  "categories": {
+    "canonical_definition_registration_only": [],
+    "existing_implementation_requires_qualification": [],
+    "no_canonical_card_implementation_found": [
+      "Gwenna, Eyes of Gaea",
+      "Fblthp, the Lost",
+      "Reckless Bushwhacker",
+      "Amphin Mutineer",
+      "Spellskite",
+      "Malevolent Hermit",
+      "Phyrexian Metamorph",
+      "Glen Elendra Archmage",
+      "Temur Sabertooth",
+      "Disciple of Freyalise",
+      "Veil of Summer",
+      "Opal Palace"
+    ],
+    "demonstrated_unsupported_engine_primitive": []
+  },
+  "disposition": "All 12 Manual missing identities currently require card-level implementation work or later discovery of an independently evidenced implementation; none is eligible for registration-only adoption from the live canonical tree.",
+  "next_priority": "Do not bulk-implement all twelve. Select the smallest requirement-driven card batch only after mapping each missing card to already-supported versus genuinely missing primitives and whole-pilot reachability.",
+  "official_counters_delta": 0
+}

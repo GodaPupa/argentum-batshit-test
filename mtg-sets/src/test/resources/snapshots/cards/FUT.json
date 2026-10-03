@@ -229,6 +229,70 @@
     ]
 }
 
+// Pact of Negation
+{
+    "name": "Pact of Negation",
+    "manaCost": "{0}",
+    "typeLine": "Instant",
+    "oracleText": "Counter target spell.\nAt the beginning of your next upkeep, pay {3}{U}{U}. If you don't, you lose the game.",
+    "script": {
+        "spellEffect": {
+            "type": "Composite",
+            "effects": [
+                "Counter",
+                {
+                    "type": "CreateDelayedTrigger",
+                    "step": "UPKEEP",
+                    "effect": {
+                        "type": "Gated",
+                        "gate": {
+                            "type": "Gate.MayPay",
+                            "cost": {
+                                "type": "PayManaCost",
+                                "cost": "{3}{U}{U}"
+                            }
+                        },
+                        "then": {
+                            "type": "Composite",
+                            "effects": []
+                        },
+                        "otherwise": {
+                            "type": "LoseGame",
+                            "target": {
+                                "type": "PlayerRef",
+                                "player": "You"
+                            },
+                            "message": "Pact of Negation upkeep payment was not paid"
+                        }
+                    },
+                    "timing": "NextTurn",
+                    "fireOnPlayer": {
+                        "type": "PlayerRef",
+                        "player": "You"
+                    }
+                }
+            ]
+        },
+        "targetRequirements": [
+            {
+                "type": "TargetObject",
+                "filter": {
+                    "baseFilter": {},
+                    "zone": "Stack"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "42",
+        "rarity": "RARE",
+        "artist": "Jason Chan"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Thornweald Archer
 {
     "name": "Thornweald Archer",

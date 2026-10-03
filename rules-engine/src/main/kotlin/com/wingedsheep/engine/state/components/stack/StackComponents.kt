@@ -217,6 +217,7 @@ data class TriggeredAbilityOnStackComponent(
      */
     val triggerLastKnownSubtypes: Set<String>? = null,
     val triggerLastKnownCardTypes: Set<String>? = null,
+    val triggerEntryOrigin: com.wingedsheep.engine.event.BattlefieldEntryOrigin? = null,
     /** Per-player damage dealt to the trigger's source this turn, captured at LTB time (Grothama). */
     val triggerLastKnownDamageDealtByPlayers: Map<EntityId, Int>? = null,
     /** Creatures blocking/blocked by the trigger's source on leave-battlefield (CR 509 LKI, Abu Ja'far). */
@@ -601,3 +602,11 @@ data class GraveyardCastRiderComponent(
     val entersWithCounter: com.wingedsheep.sdk.core.CounterType? = null,
     val addedSubtype: String? = null
 ) : Component
+
+/**
+ * Entry counters promised by commander-color mana spent on this commander spell. Captured at
+ * cast-commit and summed once per mana actually spent; removed on resolution or zone change.
+ * A countered spell never enters and therefore never receives these counters.
+ */
+@Serializable
+data class CommanderManaEntryCountersComponent(val count: Int) : Component
