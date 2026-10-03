@@ -1,0 +1,69 @@
+name: Manual Gwenna post-adoption registry diagnostic
+on:
+  push:
+    branches: ["validation/manual-gwenna-post-adoption-registry-20261002"]
+    paths: [".github/workflows/manual-gwenna-post-adoption-registry-20261002.yml"]
+permissions: {contents: read}
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_USER_HOME: /tmp/manual-gwenna-registry-${{ github.run_id }}
+      OUT: /tmp/manual-gwenna-registry-evidence-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/checkout@v6
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - name: Bind exact published Gwenna source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir "$OUT"
+          test "$(git rev-parse HEAD^)" = "b02f5c79088fab1a080a9d1998569af625b126d2"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-gwenna-post-adoption-registry-20261002.yml"
+          test "$(git hash-object mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bro/cards/GwennaEyesOfGaea.kt)" = "72f2a62bf2682baecbcc704bb85ea0a31766ff73"
+          test "$(git hash-object mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GwennaEyesOfGaeaScenarioTest.kt)" = "dde9d18c351a4fd9efc42ba4da09e18dc552618d"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source.txt"
+          printf '%s\n' 'ZERO_GAME_REGISTRY_DIAGNOSTIC_ONLY' > "$OUT/authority.txt"
+      - name: Inventory exact eight frozen decks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out "$OUT/source-audit"
+          MT_P2_AUDIT_INPUT="$OUT/source-audit/registry-requests.json" \
+          MT_P2_AUDIT_OUTPUT="$OUT/registry" \
+            bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+              :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest 2>&1 | tee "$OUT/registry.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml "$OUT/"
+          python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ["OUT"])
+          root=ET.parse(out/"TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml").getroot()
+          assert {k:int(root.attrib[k]) for k in ("tests","failures","errors","skipped")} == {"tests":1,"failures":0,"errors":0,"skipped":0}
+          report=json.loads((out/"registry/registry-report.json").read_text())
+          rows=[]
+          for d in report["decks"]:
+              missing=[c["requested_name"] for c in d["cards"] if not c["registry_resolved"]]
+              rows.append({"deck_id":d["deck_id"],"missing":len(missing),"missing_names":missing})
+          summary={
+              "schema":"manual-post-gwenna-registry-v1",
+              "decks":rows,
+              "total_missing":sum(x["missing"] for x in rows),
+              "official_counters_delta":{"allocations":0,"claims":0,"games":0,"outcomes":0},
+          }
+          (out/"registry-summary.json").write_text(json.dumps(summary,sort_keys=True,indent=2)+"\n")
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-gwenna-post-adoption-registry-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
