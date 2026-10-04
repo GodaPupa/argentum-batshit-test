@@ -1,0 +1,50 @@
+name: Pest Phase-B v5.1 authorized chain structural validation
+on:
+  push:
+    branches: ["validation/pest-phase-b-v5-1-authorized-chain-20261004"]
+    paths: [".github/workflows/pest-phase-b-v5-1-authorized-chain-validation-20261004.yml"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: bf80aaa908521a7165af59b6343f119bfff7904d
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Run frozen execution verifier against exact I-R-M chain
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "bf80aaa908521a7165af59b6343f119bfff7904d"
+          python3 -I -S - <<'PY'
+          import importlib.util, os
+          from pathlib import Path
+          path=Path("scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py")
+          spec=importlib.util.spec_from_file_location("v5gate",path)
+          m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+          os.environ["GITHUB_REPOSITORY"]="GodaPupa/argentum-batshit-test"
+          os.environ["GITHUB_EVENT_NAME"]="push"
+          os.environ["GITHUB_REF"]="refs/heads/pest/phase-b-sharded-v5-execute-20261004"
+          os.environ["GITHUB_SHA"]="bf80aaa908521a7165af59b6343f119bfff7904d"
+          os.environ["GITHUB_RUN_ATTEMPT"]="1"
+          result=m.verify(
+              Path.cwd(),
+              "docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json",
+              "execution",
+          )
+          print(result)
+          assert result["status"]=="STRUCTURALLY_BOUND_FRESH_V5_REVIEW_AND_AUTHORIZATION_REQUIRED"
+          assert result["implementation"]=="b5402d973979428008ed2703e8737bae61a38c19"
+          assert result["receipt"]=="344431aa233f80ed068c7b50561912b0bfe18ecb"
+          assert result["marker"]=="bf80aaa908521a7165af59b6343f119bfff7904d"
+          PY
+      - name: Confirm no behavioral inputs were materialized
+        shell: bash
+        run: |
+          set -euo pipefail
+          test ! -e /tmp/pest-phase-b-v5-inputs-0-20261004
+          test ! -e /tmp/pest-phase-b-v5-evidence-0-20261004
