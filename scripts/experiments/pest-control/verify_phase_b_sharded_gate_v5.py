@@ -81,6 +81,80 @@ def verify_shards(plan):
     require(all(re.fullmatch('[0-9a-f]{64}', h) for h in hashes), 'shard digest format')
     require(len(set(hashes)) == 32, 'shard digests must be distinct')
 
+def load_json_file(path):
+    p = Path(path)
+    require(p.is_absolute(), 'run-history path must be absolute')
+    require(p.resolve(strict=True) == p and p.is_file() and not p.is_symlink(),
+            'aliased/non-file run-history input')
+    raw = p.read_bytes()
+    require(0 < len(raw) <= 16 * 1024 * 1024, 'run-history JSON size')
+    return strict_json(raw)
+
+def load_text_file(path):
+    p = Path(path)
+    require(p.is_absolute(), 'run-history header path must be absolute')
+    require(p.resolve(strict=True) == p and p.is_file() and not p.is_symlink(),
+            'aliased/non-file run-history headers')
+    raw = p.read_bytes()
+    require(len(raw) <= 1024 * 1024, 'run-history headers size')
+    return raw.decode('utf-8', errors='strict')
+
+def verify_run_history(plan, current, inventory, headers, expected_run_id, expected_head_sha):
+    policy = plan['global_one_original']
+    branch = policy['execution_branch']
+    workflow_path = policy['workflow_path']
+    require(policy['event'] == 'push', 'run-history event policy drift')
+    require(policy['required_run_attempt'] == 1, 'run-attempt policy drift')
+    require(policy['required_run_number'] == 1, 'run-number policy drift')
+    require(policy['maximum_matching_runs'] == 1, 'run-count policy drift')
+    require(policy['inventory_per_page'] == 100, 'inventory page-size policy drift')
+    require(policy['cancel_in_progress'] is False, 'concurrency cancellation policy drift')
+    require(type(policy['concurrency_group']) is str and policy['concurrency_group'],
+            'concurrency group policy drift')
+
+    require(type(current) is dict, 'current run object')
+    require(str(current['id']) == str(expected_run_id), 'current run id drift')
+    require(type(current['workflow_id']) is int and current['workflow_id'] > 0, 'workflow id')
+    require(current['path'] == workflow_path, 'execution workflow path drift')
+    require(current['event'] == policy['event'], 'current run event drift')
+    require(current['head_branch'] == branch, 'current run branch drift')
+    require(current['head_sha'] == expected_head_sha, 'current run head drift')
+    require(current['run_attempt'] == policy['required_run_attempt'], 'current run attempt drift')
+    require(current['run_number'] == policy['required_run_number'], 'current run number proves prior run')
+    require(current['status'] in ('queued', 'in_progress'), 'current run state drift')
+    require(current.get('conclusion') is None, 'current run already concluded')
+    require(current['repository']['full_name'] == plan['repository'], 'current run repository drift')
+    require(current['head_repository']['full_name'] == plan['repository'], 'current head repository drift')
+
+    require(type(inventory) is dict, 'run inventory object')
+    require(type(inventory['total_count']) is int, 'run inventory count type')
+    runs = inventory['workflow_runs']
+    require(type(runs) is list, 'run inventory list type')
+    require(inventory['total_count'] == len(runs), 'incomplete run inventory page')
+    require(inventory['total_count'] == policy['maximum_matching_runs'],
+            'prior or competing execution workflow run exists')
+    require('rel="next"' not in headers.lower(), 'paginated run inventory is ambiguous')
+    require(len(runs) == 1, 'exactly one matching execution run required')
+    observed = runs[0]
+    require(observed['id'] == current['id'], 'inventory current-run mismatch')
+    require(observed['workflow_id'] == current['workflow_id'], 'inventory workflow mismatch')
+    require(observed['path'] == workflow_path, 'inventory workflow path drift')
+    require(observed['event'] == policy['event'], 'inventory event drift')
+    require(observed['head_branch'] == branch, 'inventory branch drift')
+    require(observed['head_sha'] == expected_head_sha, 'inventory head drift')
+    require(observed['run_attempt'] == policy['required_run_attempt'], 'inventory attempt drift')
+    require(observed['run_number'] == policy['required_run_number'], 'inventory run-number drift')
+    require(observed['repository']['full_name'] == plan['repository'], 'inventory repository drift')
+    require(observed['head_repository']['full_name'] == plan['repository'], 'inventory head repository drift')
+    return {
+        'status': 'SOLE_GLOBAL_EXECUTION_RUN_CONFIRMED_BEFORE_BEHAVIOR',
+        'run_id': current['id'],
+        'workflow_id': current['workflow_id'],
+        'run_number': current['run_number'],
+        'run_attempt': current['run_attempt'],
+        'head_sha': current['head_sha'],
+    }
+
 def implementation(root, implementation_sha, plan):
     commit(root, implementation_sha)
     base = commit(root, plan['source_commit'])
@@ -96,6 +170,19 @@ def implementation(root, implementation_sha, plan):
             'bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71',
             'global plan digest drift')
     verify_shards(plan)
+    policy = plan['global_one_original']
+    require(policy['workflow_path'] == plan['workflow_path'], 'run-history workflow binding')
+    require(policy['execution_ref'] == plan['execution_ref'], 'run-history ref binding')
+    require(policy['execution_branch'] == plan['execution_ref'].removeprefix('refs/heads/'),
+            'run-history branch binding')
+    require(policy['event'] == 'push', 'run-history event binding')
+    require(policy['required_run_attempt'] == 1 and policy['required_run_number'] == 1,
+            'run-history first-run binding')
+    require(policy['maximum_matching_runs'] == 1 and policy['inventory_per_page'] == 100,
+            'run-history inventory binding')
+    require(policy['cancel_in_progress'] is False, 'run-history concurrency binding')
+    require(policy['concurrency_group'] == 'pest-phase-b-v5-single-aggregate-original-20261004',
+            'run-history concurrency group drift')
 
     allowed = plan['gate_files']
     require(len(allowed) == len(set(allowed)) == 3, 'exact three gate additions required')
@@ -113,13 +200,30 @@ def implementation(root, implementation_sha, plan):
         require(current.get(path, (None, None, None))[2] == sha, 'protected source blob drift: ' + path)
     return current
 
-def verify(root, plan_path, mode, implementation_sha=None):
+def verify(root, plan_path, mode, implementation_sha=None, current_run_path=None,
+           run_inventory_path=None, inventory_headers_path=None):
     root = root.resolve(strict=True)
     require(git(root, 'rev-parse', '--show-toplevel').decode().strip() == str(root), 'repository root')
     head = commit(root, git(root, 'rev-parse', 'HEAD').decode().strip())
     head_tree = entries(root, head)
     plan = strict_json(read_working(root, plan_path, head_tree))
     require(plan['plan_path'] == plan_path, 'plan location')
+
+    if mode == 'run-history':
+        require(os.environ.get('GITHUB_REPOSITORY') == plan['repository'], 'repository event')
+        require(os.environ.get('GITHUB_EVENT_NAME') == 'push' and
+                os.environ.get('GITHUB_REF') == plan['execution_ref'], 'run-history event/ref')
+        require(os.environ.get('GITHUB_RUN_ATTEMPT') == '1', 'run-history attempt')
+        require(os.environ.get('GITHUB_SHA') == head, 'run-history head')
+        require(current_run_path and run_inventory_path and inventory_headers_path,
+                'run-history evidence paths required')
+        current = load_json_file(current_run_path)
+        inventory = load_json_file(run_inventory_path)
+        headers = load_text_file(inventory_headers_path)
+        return verify_run_history(
+            plan, current, inventory, headers,
+            os.environ.get('GITHUB_RUN_ID'), head,
+        )
 
     if mode == 'implementation':
         require(implementation_sha == head, 'inspect checked-out exact implementation')
@@ -212,7 +316,13 @@ def verify(root, plan_path, mode, implementation_sha=None):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--plan', required=True)
-    parser.add_argument('--mode', required=True, choices=['implementation','execution'])
+    parser.add_argument('--mode', required=True, choices=['implementation','execution','run-history'])
     parser.add_argument('--implementation')
+    parser.add_argument('--current-run')
+    parser.add_argument('--run-inventory')
+    parser.add_argument('--inventory-headers')
     args = parser.parse_args()
-    print(json.dumps(verify(Path.cwd(), args.plan, args.mode, args.implementation), sort_keys=True))
+    print(json.dumps(verify(
+        Path.cwd(), args.plan, args.mode, args.implementation,
+        args.current_run, args.run_inventory, args.inventory_headers,
+    ), sort_keys=True))
