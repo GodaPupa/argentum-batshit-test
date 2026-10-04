@@ -160,10 +160,14 @@ def verify(root, plan_path, mode, implementation_sha=None):
     require(receipt['reviewed_blobs'] == expected_map, 'complete reviewed blob map')
     require(re.fullmatch('[0-9a-f]{64}', receipt['external_review_record_sha256']) is not None,
             'review record binding')
+    require(receipt['external_review_record_sha256'] != plan['inherited_v3_review']['sha256'],
+            'inherited v3 review cannot approve v4')
     require(marker['external_review_record_sha256'] == receipt['external_review_record_sha256'],
             'review record mismatch')
     require(re.fullmatch('[0-9a-f]{64}', marker['execution_authorization_record_sha256']) is not None,
             'separate execution authorization binding')
+    require(receipt['external_review_record_sha256'] != marker['execution_authorization_record_sha256'],
+            'review and execution authorization must be separate records')
     require(marker['execution_authorization_record_sha256'] != plan['consumed_v3_original']['authorization_sha256'],
             'consumed v3 authorization cannot be reused')
     for p in paths:
