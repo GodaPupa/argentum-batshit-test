@@ -1,0 +1,60 @@
+name: Pest Phase-B v5.2 final structure validation only
+on:
+  push:
+    branches: ["validation/pest-phase-b-v5-2-final-structure-20261004"]
+    paths: [".github/workflows/pest-phase-b-v5-2-final-structure-validation-20261004.yml"]
+permissions:
+  contents: read
+
+jobs:
+  structure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-v5-2-final-structure-gradle-20261004
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd
+          fetch-depth: 0
+      - name: Verify exact clean candidate and corrected bindings
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd"
+          test "$(git rev-parse HEAD^{tree})" = "e7c37f620c8cefa0352742e38635ca196e887637"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5_2.py             --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json             --mode implementation --implementation 5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd
+          /usr/bin/python3.10 -I -S - <<'PY'
+          import pathlib, subprocess
+          root=pathlib.Path(".")
+          expected={
+            ".github/workflows/pest-phase-b-sharded-v5-2-20261004.yml",
+            "docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json",
+            "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardExecutionTest.kt",
+            "scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5_2.py",
+          }
+          changed=set(subprocess.check_output([
+            "git","diff","--name-only","b5402d973979428008ed2703e8737bae61a38c19..HEAD"
+          ],text=True).splitlines())
+          assert changed==expected,(changed,expected)
+          wf=(root/".github/workflows/pest-phase-b-sharded-v5-2-20261004.yml").read_text()
+          newq="branch=pest%2Fphase-b-sharded-v5-2-execute-20261004&event=push&per_page=100"
+          oldq="branch=pest%2Fphase-b-sharded-v5-execute-20261004&event=push&per_page=100"
+          assert wf.count(newq)==1
+          assert oldq not in wf
+          test=(root/"gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardExecutionTest.kt").read_text()
+          assert "timeout = 3.hours" in test
+          assert "invocationTimeout = 3.hours" in test
+          print("FINAL_V5_2_STRUCTURE_VALIDATION_OK")
+          PY
+      - name: Compile repaired shard test without executing behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :gym:compileTestKotlin
