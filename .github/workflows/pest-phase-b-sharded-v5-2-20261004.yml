@@ -1,0 +1,389 @@
+name: Pest Phase-B v5.2 exact 32-shard aggregate behavioral candidate
+on:
+  push:
+    branches: ["pest/phase-b-sharded-v5-2-execute-20261004"]
+    paths: ["docs/experiments/pest-control/PHASE_B_SHARDED_V5_2_EXECUTION_MARKER_20261004.json"]
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pest-phase-b-v5-2-single-aggregate-original-20261004
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-phase-b-v5-2-preflight-gradle-20261004
+      PEST_PHASE_B_RUN_HISTORY_ROOT: /tmp/pest-phase-b-v5-2-run-history-${{ github.run_id }}-${{ github.run_attempt }}
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact fresh v5 review, gate and separate authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(uname -m)" = x86_64
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5_2.py \
+            --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json --mode execution
+      - name: Enforce global one-aggregate-original workflow history
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          test ! -e "$PEST_PHASE_B_RUN_HISTORY_ROOT" && test ! -L "$PEST_PHASE_B_RUN_HISTORY_ROOT"
+          mkdir "$PEST_PHASE_B_RUN_HISTORY_ROOT"
+          curl -L --fail --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            -D "$PEST_PHASE_B_RUN_HISTORY_ROOT/current-run.headers" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            -o "$PEST_PHASE_B_RUN_HISTORY_ROOT/current-run.json"
+          WORKFLOW_ID=$(/usr/bin/python3.10 -I -S - <<'PY'
+          import json, os, pathlib
+          p=pathlib.Path(os.environ["PEST_PHASE_B_RUN_HISTORY_ROOT"])/"current-run.json"
+          value=json.loads(p.read_text())["workflow_id"]
+          assert type(value) is int and value > 0
+          print(value)
+          PY
+          )
+          curl -L --fail --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            -D "$PEST_PHASE_B_RUN_HISTORY_ROOT/run-inventory.headers" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW_ID/runs?branch=pest%2Fphase-b-sharded-v5-2-execute-20261004&event=push&per_page=100" \
+            -o "$PEST_PHASE_B_RUN_HISTORY_ROOT/run-inventory.json"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5_2.py \
+            --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json \
+            --mode run-history \
+            --current-run "$PEST_PHASE_B_RUN_HISTORY_ROOT/current-run.json" \
+            --run-inventory "$PEST_PHASE_B_RUN_HISTORY_ROOT/run-inventory.json" \
+            --inventory-headers "$PEST_PHASE_B_RUN_HISTORY_ROOT/run-inventory.headers" \
+            | tee "$PEST_PHASE_B_RUN_HISTORY_ROOT/guard-result.json"
+
+      - name: Preserve global run-history guard evidence before behavior
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v5-2-run-history-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.PEST_PHASE_B_RUN_HISTORY_ROOT }}/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Re-run registry preflight without accepted truth
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain :gym:test \
+            --tests com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest
+
+  phase-b-shard:
+    needs: preflight
+    strategy:
+      fail-fast: false
+      max-parallel: 32
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-phase-b-v5-2-shard-${{ matrix.shard }}-gradle-20261004
+      PEST_PHASE_B_INPUT_ROOT: /tmp/pest-phase-b-v5-2-inputs-${{ matrix.shard }}-20261004
+      PEST_PHASE_B_EVIDENCE_ROOT: /tmp/pest-phase-b-v5-2-evidence-${{ matrix.shard }}-20261004
+      PEST_PHASE_B_SHARD_INDEX: ${{ matrix.shard }}
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+
+      - name: Derive exact frozen shard contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          INDEX="$PEST_PHASE_B_SHARD_INDEX" /usr/bin/python3.10 -I -S - <<'PY'
+          import json, os, pathlib
+          plan=json.loads(pathlib.Path("docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json").read_text())
+          i=int(os.environ["INDEX"])
+          assert 0 <= i < 32 and plan["shards"][i]["index"] == i
+          s=plan["shards"][i]
+          with open(os.environ["GITHUB_ENV"],"a") as f:
+              f.write(f"PEST_PHASE_B_EXPECTED_SHARD_ROWS={s['expected_rows']}\n")
+              f.write(f"PEST_PHASE_B_EXPECTED_SHARD_PLAN_SHA256={s['plan_sha256']}\n")
+          PY
+
+      - name: Bind exact v5 I/R/M and initialize shard evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5_2.py \
+            --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json --mode execution
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$PEST_PHASE_B_INPUT_ROOT" && test ! -L "$PEST_PHASE_B_INPUT_ROOT"
+          test ! -e "$PEST_PHASE_B_EVIDENCE_ROOT" && test ! -L "$PEST_PHASE_B_EVIDENCE_ROOT"
+          mkdir "$PEST_PHASE_B_INPUT_ROOT" "$PEST_PHASE_B_EVIDENCE_ROOT"
+          git rev-parse HEAD HEAD^{tree} > "$PEST_PHASE_B_EVIDENCE_ROOT/marker-source.txt"
+          git rev-parse HEAD^^ HEAD^^^{tree} > "$PEST_PHASE_B_EVIDENCE_ROOT/implementation-source.txt"
+          git ls-tree -r HEAD^^ > "$PEST_PHASE_B_EVIDENCE_ROOT/implementation-tree.txt"
+          "$JAVA_HOME/bin/java" -version 2> "$PEST_PHASE_B_EVIDENCE_ROOT/java-version.txt"
+
+      - name: Materialize only accepted immutable truth inputs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5_2.py \
+            --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json --mode execution
+          for spec in \
+            "base 11080047971 8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f" \
+            "supplement 11088938274 1bbe8b92f01e69cd679b36375ef4168893267e783441ba5d1b81c76166f0cf4a"; do
+            set -- $spec; label=$1; artifact=$2; digest=$3
+            dir="$PEST_PHASE_B_INPUT_ROOT/$label"
+            mkdir "$dir"
+            curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact/zip" -o "$dir/artifact.zip"
+            unzip -t "$dir/artifact.zip" >/dev/null
+            mkdir "$dir/unpacked"
+            unzip -q "$dir/artifact.zip" -d "$dir/unpacked"
+            LABEL="$label" DIGEST="$digest" ROOT="$dir/unpacked" /usr/bin/python3.10 -I -S - <<'PY'
+          import hashlib, os, pathlib
+          root=pathlib.Path(os.environ["ROOT"]).resolve()
+          digest=os.environ["DIGEST"]; label=os.environ["LABEL"]
+          matches=[]
+          for p in root.rglob("*"):
+              if p.is_symlink(): raise SystemExit("symlink in accepted artifact: "+str(p))
+              if not p.is_file(): continue
+              if hashlib.sha256(p.read_bytes()).hexdigest()==digest: matches.append(p)
+          assert len(matches)==1,(label,digest,[str(p) for p in matches])
+          target=root.parent/(label+".accepted.json")
+          target.write_bytes(matches[0].read_bytes())
+          os.chmod(target,0o444)
+          PY
+          done
+          echo "PEST_PHASE_B_ACCEPTED_BASE=$PEST_PHASE_B_INPUT_ROOT/base/base.accepted.json" >> "$GITHUB_ENV"
+          echo "PEST_PHASE_B_ACCEPTED_SUPPLEMENT=$PEST_PHASE_B_INPUT_ROOT/supplement/supplement.accepted.json" >> "$GITHUB_ENV"
+          echo "PEST_PHASE_B_RUN_ID=phase-b-v5-2-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT-shard-$PEST_PHASE_B_SHARD_INDEX" >> "$GITHUB_ENV"
+          echo "PEST_PHASE_B_SOURCE_COMMIT=$(git rev-parse HEAD^^)" >> "$GITHUB_ENV"
+
+      - name: Execute this shard of the one aggregate original
+        shell: bash
+        run: |
+          set -euo pipefail
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5_2.py \
+            --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json --mode execution
+          date -u +%s > "$PEST_PHASE_B_EVIDENCE_ROOT/test-start.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain --info :gym:test \
+            --tests com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest \
+            2>&1 | tee "$PEST_PHASE_B_EVIDENCE_ROOT/tests.log"
+          date -u +%s > "$PEST_PHASE_B_EVIDENCE_ROOT/test-end.txt"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest.xml \
+            "$PEST_PHASE_B_EVIDENCE_ROOT/"
+
+          /usr/bin/python3.10 -I -S - <<'PY'
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          root=pathlib.Path(os.environ["PEST_PHASE_B_EVIDENCE_ROOT"])
+          run_id=os.environ["PEST_PHASE_B_RUN_ID"]
+          shard=int(os.environ["PEST_PHASE_B_SHARD_INDEX"])
+          expected_rows=int(os.environ["PEST_PHASE_B_EXPECTED_SHARD_ROWS"])
+          expected_sha=os.environ["PEST_PHASE_B_EXPECTED_SHARD_PLAN_SHA256"]
+          xml=root/"TEST-com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest.xml"
+          suite=ET.parse(xml).getroot()
+          assert suite.attrib["name"]=="com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest"
+          assert int(suite.attrib["tests"])==1
+          assert all(int(suite.attrib[k])==0 for k in ("failures","errors","skipped"))
+          d=root/run_id
+          summary=json.loads((d/"summary.json").read_text())
+          partition=json.loads((d/"partition.json").read_text())
+          assert summary["expected_rows"]==expected_rows==summary["completed_rows"]
+          assert summary["mismatches"]==summary["unknowns"]==summary["exceptions"]==0
+          assert summary["plan_sha256"]==expected_sha
+          assert partition["shard_index"]==shard and partition["shard_count"]==32
+          assert partition["expected_shard_rows"]==expected_rows
+          assert partition["shard_plan_sha256"]==expected_sha
+          assert partition["global_plan_sha256"]=="bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71"
+          marker=json.loads(pathlib.Path(
+            "docs/experiments/pest-control/PHASE_B_SHARDED_V5_2_EXECUTION_MARKER_20261004.json"
+          ).read_text())
+          qualifying={
+            "schema":"pest-phase-b-v5-2-qualifying-shard-summary-v1",
+            "authority":"SHARD_EVIDENCE_FOR_SEPARATE_AGGREGATE_AUDIT_ONLY",
+            "aggregate_run_id":os.environ["GITHUB_RUN_ID"],
+            "run_attempt":int(os.environ["GITHUB_RUN_ATTEMPT"]),
+            "marker_commit":os.environ["GITHUB_SHA"],
+            "implementation_commit":os.environ["PEST_PHASE_B_SOURCE_COMMIT"],
+            "review_record_sha256":marker["external_review_record_sha256"],
+            "execution_authorization_record_sha256":marker["execution_authorization_record_sha256"],
+            "shard_index":shard,
+            "shard_count":32,
+            "expected_rows":expected_rows,
+            "completed_rows":summary["completed_rows"],
+            "mismatches":summary["mismatches"],
+            "unknowns":summary["unknowns"],
+            "exceptions":summary["exceptions"],
+            "shard_plan_sha256":expected_sha,
+            "global_plan_sha256":partition["global_plan_sha256"],
+            "journal_sha256":summary["journal_sha256"],
+            "official_counters_delta":0
+          }
+          (root/f"qualifying-shard-{shard}.json").write_text(
+            json.dumps(qualifying,sort_keys=True)+"\n"
+          )
+          PY
+
+      - name: Preserve complete or incomplete shard evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v5-2-shard-evidence-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.shard }}
+          path: |
+            /tmp/pest-phase-b-v5-2-evidence-${{ matrix.shard }}-20261004/
+            docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json
+            docs/experiments/pest-control/evidence/PHASE_B_SHARDED_GATE_V5_2_ACCEPTANCE_20261004.json
+            docs/experiments/pest-control/PHASE_B_SHARDED_V5_2_EXECUTION_MARKER_20261004.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Publish qualifying shard summary
+        if: success()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v5-2-shard-summary-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.shard }}
+          path: /tmp/pest-phase-b-v5-2-evidence-${{ matrix.shard }}-20261004/qualifying-shard-${{ matrix.shard }}.json
+          if-no-files-found: error
+          retention-days: 90
+
+  aggregate:
+    needs: phase-b-shard
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+
+      - name: Audit all 32 qualifying shard summaries and artifact inventory
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          mkdir aggregate-audit
+          curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID/artifacts?per_page=100" \
+            -o aggregate-audit/artifacts.json
+
+          GH_TOKEN="$GH_TOKEN" /usr/bin/python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          root=pathlib.Path("aggregate-audit")
+          inventory=json.loads((root/"artifacts.json").read_text())["artifacts"]
+          gate=json.loads(pathlib.Path(
+              "docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json"
+          ).read_text())
+          marker=json.loads(pathlib.Path(
+              "docs/experiments/pest-control/PHASE_B_SHARDED_V5_2_EXECUTION_MARKER_20261004.json"
+          ).read_text())
+          implementation=subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()
+          by_name={}
+          for a in inventory:
+              by_name.setdefault(a["name"],[]).append(a)
+          run=os.environ["GITHUB_RUN_ID"]; attempt=os.environ["GITHUB_RUN_ATTEMPT"]
+          assert attempt=="1"
+          summaries=[]
+          artifact_bindings=[]
+          for i in range(32):
+              raw_name=f"pest-phase-b-v5-2-shard-evidence-{run}-{attempt}-{i}"
+              summary_name=f"pest-phase-b-v5-2-shard-summary-{run}-{attempt}-{i}"
+              assert len(by_name.get(raw_name,[]))==1,("raw artifact inventory",i,by_name.get(raw_name))
+              assert len(by_name.get(summary_name,[]))==1,("summary artifact inventory",i,by_name.get(summary_name))
+              raw=by_name[raw_name][0]; art=by_name[summary_name][0]
+              zip_path=root/f"summary-{i}.zip"
+              subprocess.run([
+                  "curl","-L","--fail","--retry","3",
+                  "-H",f"Authorization: Bearer {os.environ['GH_TOKEN']}",
+                  "-H","Accept: application/vnd.github+json",
+                  f"https://api.github.com/repos/{os.environ['GITHUB_REPOSITORY']}/actions/artifacts/{art['id']}/zip",
+                  "-o",str(zip_path)
+              ],check=True)
+              subprocess.run(["unzip","-q",str(zip_path),"-d",str(root/f"summary-{i}")],check=True)
+              files=list((root/f"summary-{i}").glob("qualifying-shard-*.json"))
+              assert len(files)==1
+              s=json.loads(files[0].read_text())
+              assert s["schema"]=="pest-phase-b-v5-2-qualifying-shard-summary-v1"
+              assert s["aggregate_run_id"]==run and s["run_attempt"]==1
+              frozen=gate["shards"][i]
+              assert frozen["index"]==i
+              assert s["shard_index"]==i and s["shard_count"]==32
+              assert s["expected_rows"]==frozen["expected_rows"]
+              assert s["completed_rows"]==s["expected_rows"]
+              assert s["shard_plan_sha256"]==frozen["plan_sha256"]
+              assert s["mismatches"]==s["unknowns"]==s["exceptions"]==0
+              assert s["global_plan_sha256"]==gate["planner_identity"]["plan_sha256"]
+              assert s["implementation_commit"]==implementation
+              assert s["marker_commit"]==os.environ["GITHUB_SHA"]
+              assert s["review_record_sha256"]==marker["external_review_record_sha256"]
+              assert s["execution_authorization_record_sha256"]==marker["execution_authorization_record_sha256"]
+              summaries.append(s)
+              artifact_bindings.append({
+                  "shard_index":i,
+                  "evidence_artifact_id":raw["id"],
+                  "evidence_artifact_digest":raw.get("digest"),
+                  "evidence_artifact_size_in_bytes":raw["size_in_bytes"],
+                  "summary_artifact_id":art["id"],
+                  "summary_artifact_digest":art.get("digest"),
+              })
+          assert sum(s["completed_rows"] for s in summaries)==34912840
+          assert len({s["shard_plan_sha256"] for s in summaries})==32
+          assert len({s["implementation_commit"] for s in summaries})==1
+          assert len({s["marker_commit"] for s in summaries})==1
+          assert len({s["review_record_sha256"] for s in summaries})==1
+          assert len({s["execution_authorization_record_sha256"] for s in summaries})==1
+          result={
+              "schema":"pest-phase-b-v5-2-aggregate-workflow-result-v1",
+              "authority":"AGGREGATE_ORIGINAL_FOR_SEPARATE_AUDIT_ONLY",
+              "aggregate_run_id":run,
+              "run_attempt":1,
+              "shard_count":32,
+              "completed_rows":34912840,
+              "mismatches":0,
+              "unknowns":0,
+              "exceptions":0,
+              "global_plan_sha256":"bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71",
+              "implementation_commit":summaries[0]["implementation_commit"],
+              "marker_commit":summaries[0]["marker_commit"],
+              "review_record_sha256":summaries[0]["review_record_sha256"],
+              "execution_authorization_record_sha256":summaries[0]["execution_authorization_record_sha256"],
+              "artifacts":artifact_bindings,
+              "official_counters_delta":0
+          }
+          raw=(json.dumps(result,sort_keys=True)+"\n").encode()
+          (root/"aggregate-result.json").write_bytes(raw)
+          (root/"aggregate-result.sha256").write_text(hashlib.sha256(raw).hexdigest()+"\n")
+          PY
+
+      - name: Preserve aggregate candidate for separate audit
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v5-2-aggregate-result-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            aggregate-audit/aggregate-result.json
+            aggregate-audit/aggregate-result.sha256
+            aggregate-audit/artifacts.json
+          if-no-files-found: error
+          retention-days: 90
