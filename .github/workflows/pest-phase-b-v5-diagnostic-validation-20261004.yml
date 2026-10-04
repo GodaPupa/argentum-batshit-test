@@ -24,7 +24,7 @@ jobs:
           set -euo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
           test "$(git rev-parse HEAD^)" = "d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a"
-          test "$(git rev-parse d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a^3)" = "b472c3f8fe3f3e724614e080d529e2868209fb96"
+          test "$(git rev-parse d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a~3)" = "b472c3f8fe3f3e724614e080d529e2868209fb96"
           test "$(git rev-parse b472c3f8fe3f3e724614e080d529e2868209fb96:gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt)" = "afeadb1f10ca23972bf197fa4cedcc626e8551c4"
           test "$(git rev-parse d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a:gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt)" = "afeadb1f10ca23972bf197fa4cedcc626e8551c4"
           test "$(git rev-parse d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a:gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt)" = "ce1be5ea615104953b7319182878f4135baac07e"
