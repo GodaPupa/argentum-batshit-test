@@ -1,0 +1,194 @@
+name: Manual Encore current-live composition qualification v3
+on:
+  push:
+    branches: [validation/manual-encore-live-compose-v3-20261003]
+    paths: [.github/workflows/manual-encore-live-compose-v3-qualification-20261003.yml]
+permissions:
+  contents: read
+  actions: read
+  issues: write
+concurrency:
+  group: manual-encore-live-compose-v3
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/manual-encore-live-compose-v3-${{ github.run_id }}
+      MT_P2_AUDIT_INPUT: /tmp/manual-encore-live-compose-v3-${{ github.run_id }}/registry-requests.json
+      MT_P2_AUDIT_OUTPUT: /tmp/manual-encore-live-compose-v3-${{ github.run_id }}/registry
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 6
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact current-live composition
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PY'
+          import json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='4eddc0e894ca43b9e3c4d5295664d8b23ed03625'
+          live='2b3e3959e2d8034ea598c0662bf84225780bd2e4'
+          workflow='.github/workflows/manual-encore-live-compose-v3-qualification-20261003.yml'
+          expected={
+            'mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/TokenEffects.kt':'20b5b229c40e52471fa521bc18ecdb9838c69931',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CleanupPhaseManager.kt':'d59d9f9a94b7e5f8cbeda1095f3dea255c3d5c8a',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt':'b808927454ca9735e83843b578d0b72fecdcc24b',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/EncoreCopiesExecutor.kt':'c6119eacfe16d666d3aecaf043a05b808d1b5bfa',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenExecutors.kt':'81b799d5a1365131c8be4a3036d3a606e2908ae0',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/AttackPhaseManager.kt':'a726400214f397e569435fb682bc88179e403b9f',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/combat/CombatComponents.kt':'c58426238403b7994dd19d93aae9d3a2a72b564f',
+            'rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/encore/EncoreEngineTest.kt':'23703257a89f04dfd4b5784fe8ec163ec97e7d99',
+          }
+          disciple={
+            'mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/model/CardDefinition.kt':'4c40f8fa07fc515894beb2b06bddb5dc3f7a5a50',
+            'mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/DiscipleOfFreyalise.kt':'27e537442f9b593e603c2d4104fed0364ee53eef',
+            'mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/DiscipleOfFreyaliseScenarioTest.kt':'d505cc84d7046951b9eeeacfbe53032ce7ff38d0',
+          }
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse',source+'^')==live
+          assert git('rev-parse',source+'^{tree}')=='945460049cbbbcd2e099c1c44dd8afc941ed642e'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          actual=git('diff','--name-only',live,source).splitlines()
+          assert actual==sorted(expected),(actual,sorted(expected))
+          assert not any(p.startswith('.github/workflows/') for p in actual)
+          for p,b in expected.items(): assert git('hash-object',p)==b,(p,git('hash-object',p),b)
+          for p,b in disciple.items(): assert git('hash-object',p)==b,(p,git('hash-object',p),b)
+          (out/'source-binding.json').write_text(json.dumps({
+            'source_head':source,'source_tree':git('rev-parse',source+'^{tree}'),
+            'current_live_parent':live,'source_blobs':expected,'disciple_blobs_preserved':disciple,
+            'generalized_encore_success_run':37166920342,
+            'generalized_encore_artifact':11289682758,
+            'generalized_encore_artifact_sha256':'67d5a159d055fe1cf73cd639e7e033432d1c505e903244542afc0f1fe01a1c01',
+            'preserved_failed_run':37166097784,
+            'preserved_failed_artifact':11288819204,
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}
+          },indent=2)+'\n')
+          PY
+          curl -fsSL -H "Authorization: Bearer $GH_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" \
+            "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/11288673657/zip" \
+            -o "$OUT/prior-99.zip"
+          unzip -p "$OUT/prior-99.zip" registry-requests.json > "$MT_P2_AUDIT_INPUT"
+          test "$(sha256sum "$MT_P2_AUDIT_INPUT" | awk '{print $1}')" = "09b8617057b9bd42fb6501f993588c9bf769e1f0af0c73426ca963da07d20084"
+      - name: Configure validation-only execution without coverage instrumentation
+        shell: bash
+        run: |
+          cat > "$OUT/no-coverage.gradle" <<'GRADLE'
+          allprojects { p ->
+            p.plugins.withId('org.jetbrains.kotlinx.kover') {
+              p.extensions.getByName('kover').currentProject {
+                instrumentation { disabledForAll.set(true) }
+              }
+            }
+          }
+          GRADLE
+      - name: Run Encore, Disciple preservation, and unchanged registry audit
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --init-script "$OUT/no-coverage.gradle" --no-daemon --no-configuration-cache \
+            --console=plain --continue --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :rules-engine:test --tests com.wingedsheep.engine.mechanics.encore.EncoreEngineTest \
+            --tests com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest \
+            --tests com.wingedsheep.engine.scenarios.PreEntryLandPlayPaymentTest \
+            :mtg-sets:2024:tests:test --tests com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest \
+            :gym:test --tests com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest \
+            2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+      - name: Audit actual cases and unchanged 99-of-100 registry
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']); out.mkdir(parents=True,exist_ok=True)
+          suites={
+            'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.encore.EncoreEngineTest.xml':5,
+            'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest.xml':14,
+            'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PreEntryLandPlayPaymentTest.xml':6,
+            'mtg-sets/2024/tests/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.DiscipleOfFreyaliseScenarioTest.xml':7,
+            'gym/build/test-results/test/TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml':1,
+          }
+          rows=[]
+          for name,count in suites.items():
+            p=pathlib.Path(name); row={'path':name,'expected':count,'missing':not p.exists(),'cases':[]}
+            if p.exists():
+              shutil.copyfile(p,out/p.name)
+              row['xml_sha256']=hashlib.sha256(p.read_bytes()).hexdigest()
+              row['cases']=[{'name':c.attrib['name'],'failure':c.find('failure') is not None,
+                'error':c.find('error') is not None,'skipped':c.find('skipped') is not None}
+                for c in ET.parse(p).getroot().findall('testcase')]
+            rows.append(row)
+          (out/'actual-cases.json').write_text(json.dumps(rows,indent=2)+'\n')
+          assert sum(len(r['cases']) for r in rows)==33,rows
+          assert all(not r['missing'] and len(r['cases'])==r['expected'] for r in rows),rows
+          assert all(len({c['name'] for c in r['cases']})==r['expected'] for r in rows),rows
+          assert not any(c['failure'] or c['error'] or c['skipped'] for r in rows for c in r['cases']),rows
+          assert (out/'gradle-exit-code.txt').read_text().strip()=='0'
+          rp=out/'registry/registry-report.json'; report=json.loads(rp.read_text())
+          assert report['schema']=='mt-phase2-live-registry-audit-v1'
+          assert report['execution_allowed'] is False
+          assert report['actual_deck_games_initialized']==0 and report['official_outcomes']==0
+          assert len(report['decks'])==8
+          summary={}
+          for deck in report['decks']:
+            assert deck['physical_cards']==len(deck['cards'])==100
+            assert all(c['rules_qualified'] is False for c in deck['cards'])
+            missing=[c['requested_name'] for c in deck['cards'] if not c['registry_resolved']]
+            summary[deck['deck_id']]={'resolved':100-len(missing),'unresolved':len(missing),'missing':missing}
+          assert summary['manual-transmission-v07']=={'resolved':99,'unresolved':1,'missing':['Amphin Mutineer']},summary
+          assert sum(v['unresolved'] for v in summary.values())==304,summary
+          (out/'registry-summary.json').write_text(json.dumps({
+            'decks':summary,'manual_resolved':99,'manual_missing':['Amphin Mutineer'],
+            'frozen_request_sha256':'09b8617057b9bd42fb6501f993588c9bf769e1f0af0c73426ca963da07d20084',
+            'registry_report_sha256':hashlib.sha256(rp.read_bytes()).hexdigest(),
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0}
+          },indent=2)+'\n')
+          PY
+      - name: Digest evidence
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          out=pathlib.Path(os.environ['OUT'])
+          (out/'evidence-sha256.json').write_text(json.dumps({
+            str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted(out.rglob('*'))
+            if p.is_file() and p.name not in {'evidence-sha256.json','prior-99.zip'}
+          },indent=2)+'\n')
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-encore-live-compose-v3-${{ github.run_id }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Report exact run to PR 218
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          JOB_STATUS: ${{ job.status }}
+        shell: bash
+        run: |
+          body="MANUAL ENCORE CURRENT-LIVE COMPOSITION V3: run \`$GITHUB_RUN_ID\`, head \`$GITHUB_SHA\`, job \`$JOB_STATUS\`. https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          gh api "repos/$GITHUB_REPOSITORY/issues/218/comments" -f body="$body"
