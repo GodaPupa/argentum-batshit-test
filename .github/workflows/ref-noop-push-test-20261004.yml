@@ -1,0 +1,11 @@
+name: Git ref no-op push semantics test
+on:
+  push:
+    branches: ["validation/github-ref-noop-push-test-20261004"]
+permissions:
+  contents: read
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo ref-noop-probe
