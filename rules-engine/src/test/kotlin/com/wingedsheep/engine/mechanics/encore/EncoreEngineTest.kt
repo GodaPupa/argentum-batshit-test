@@ -15,6 +15,7 @@ import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.OwnerComponent
 import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.state.components.player.PlayerLostComponent
+import com.wingedsheep.engine.state.components.player.LossReason
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Phase
@@ -71,7 +72,7 @@ class EncoreEngineTest : ScenarioTestBase() {
 
             game.execute(activation).error shouldBe null
             game.isInGraveyard(1, witness.name) shouldBe false
-            sourceId in game.state.getZone(game.player1Id, Zone.EXILE) shouldBe true
+            (sourceId in game.state.getZone(game.player1Id, Zone.EXILE)) shouldBe true
 
             game.resolveStack().lastOrNull()?.error shouldBe null
             val tokens = game.state.getBattlefield(game.player1Id)
@@ -180,7 +181,7 @@ class EncoreEngineTest : ScenarioTestBase() {
             var state = initialized.state
             val controller = state.turnOrder[0]
             val departed = state.turnOrder[2]
-            state = state.updateEntity(departed) { it.with(PlayerLostComponent) }
+            state = state.updateEntity(departed) { it.with(PlayerLostComponent(LossReason.CONCESSION)) }
             val (sourceId, withId) = state.newEntity()
             state = withId.withEntity(
                 sourceId,
