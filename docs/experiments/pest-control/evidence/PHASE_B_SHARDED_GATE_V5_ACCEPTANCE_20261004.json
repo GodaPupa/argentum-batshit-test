@@ -1,0 +1,213 @@
+{
+  "schema": "pest-phase-b-sharded-v5-1-gate-acceptance-receipt-v1",
+  "date_utc": "2026-10-04",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "gate_id": "pest-phase-b-v5-sharded-complete-bank-20261004",
+  "source_commit": "704523fe34d6215b24e8ad1e32f916b9ed9e3ffd",
+  "reviewed_implementation_commit": "b5402d973979428008ed2703e8737bae61a38c19",
+  "reviewed_tree": "5c2e0ca05064ec04b9483cf369195238b2bb2042",
+  "reviewed_blobs": {
+    ".github/workflows/pest-phase-b-sharded-v5-20261004.yml": "58ec3b87793b203195f2d79892f917562deadc95",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt": "4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+    "docs/experiments/pest-control/CURRENT_PAIR_PHASE_B_KEEP_BOTTOM_FREEZE_20260930.json": "ffacfc28c80c29246fbed33c26f8d52e7e5625c8",
+    "docs/experiments/pest-control/PHASE_B_PRODUCTION_EXECUTION_SUPPORT_SCOPE_20261001.json": "23392c092c1ccfaf504b1a574ee07ff32e5d0c10",
+    "docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json": "c050b67248974ed41dc0a2ada8519d18a6b1b971",
+    "docs/experiments/pest-control/PHASE_B_SHARDED_ORIGINAL_V5_PROPOSAL_20261004.json": "a02929ca2abd34015588094dd655caf47eed36b7",
+    "docs/experiments/pest-control/evidence/PHASE_B_V4_1_ORIGINAL_37187075370_AUDIT_20261004.json": "abb0afae45f2fd0ec280cdce4161ea121288bc65",
+    "gym/build.gradle.kts": "2238be35b18fb9da893e72205cc09efd8a807bc4",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceiving.kt": "1936f537b737fb1b839e53fae0a727aab7a0f0ab",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt": "0b97d5ec62850c27d53f0ac71822885d81bb861c",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt": "8cda0fcaa7a3ecfab11d00b2aafddca1f13c7577",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt": "c9229e730fd81a5e6ddb7104b50a14eb9c8726ae",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBKeepBottomActor.kt": "526c877458fbd346d8e521119adb9ec70e7116a7",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt": "afeadb1f10ca23972bf197fa4cedcc626e8551c4",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankRunner.kt": "a5797843c7773338edd5f9d21c496ee1fd19a4c9",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt": "ce1be5ea615104953b7319182878f4135baac07e",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardRunner.kt": "831d252daa3118e013fdb0229e216ff6b546010f",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBShardGeometry.kt": "293e4dd1e848b641008dcf6c19818003628db2ec",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankExecutionTest.kt": "f597defeefe196c481cf27b405a412165db4104a",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRegistry.kt": "36d1815953d44585bc82c5204ac5c4d2e320c7ba",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRegistryPreflightTest.kt": "e2171750b71af67a9ab87f372e1acb2938507faf",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardExecutionTest.kt": "8959089cda963031f98d07b524e2a167d7c7e5ff",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBShardGeometryTest.kt": "b88f5eb3786a2eb90427edd5098d21f4279e59fb",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBShardPlanIdentityTest.kt": "88f6571032ed0a84b3a1d8a1837c007c49598631",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBV5DiagnosticRegressionTest.kt": "b43afa0dceac5cd9bd392e5ed0e7dd26c1485c69",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/model/MtgSet.kt": "8eb6515166b39b525cb8f645301bb43c22a9ffa1",
+    "mtg-sets/src/main/kotlin/com/wingedsheep/mtg/sets/MtgSetCatalog.kt": "4a9da4cedf013284e6838e2e592a269af9012dfe",
+    "scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py": "343be03008706b0a8a44aa2c8a0b30632efcad13",
+    "scripts/gradle-locked": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d"
+  },
+  "external_review_record_sha256": "14c9f2d094246b98efcad5633948e970e4d6d6163042ed1f86b4d904bedc792a",
+  "external_review_disposition": "ACCEPTABLE_FOR_PHASE_B_V5_SHARDED_SOURCE_SCOPE",
+  "execution_authorization_record_sha256": "e8744a55487d9c7abe756806e164da86fe16d5182adc0d1b4d48fcb3e9aa6b95",
+  "decision": "ACCEPT_EXACT_PEST_PHASE_B_V5_SHARDED_ONE_AGGREGATE_BEHAVIORAL_ORIGINAL",
+  "maximum_originals": 1,
+  "official_counters_delta": 0,
+  "planner_identity": {
+    "expected_rows": 34912840,
+    "plan_sha256": "bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71"
+  },
+  "shards": [
+    {
+      "index": 0,
+      "expected_rows": 1091027,
+      "plan_sha256": "054eb321aef8811daee391daca86feb5c9cd6be4ed4cab0388fd3c91c998ecb8"
+    },
+    {
+      "index": 1,
+      "expected_rows": 1091027,
+      "plan_sha256": "b2af1ec75512aa1abc4c78efdff28d76ce17a932c7ea7127a01d20b80fb04f42"
+    },
+    {
+      "index": 2,
+      "expected_rows": 1091027,
+      "plan_sha256": "de0f6fefcff27d261da67059be83543fab11d5a9f8b5898a940526d80cc2a625"
+    },
+    {
+      "index": 3,
+      "expected_rows": 1091027,
+      "plan_sha256": "c93d3acbd0e2908f5c2c81260bb967b001ad64e53540ced60866e34106939dc2"
+    },
+    {
+      "index": 4,
+      "expected_rows": 1091027,
+      "plan_sha256": "c9a1dcb4bdfec78fb76ce4454885d22385ede0cba5e91d6d8dd2b0f6832b4dd3"
+    },
+    {
+      "index": 5,
+      "expected_rows": 1091027,
+      "plan_sha256": "91149de756f4d18925bddba32f5cd5f09d6607bdd2c436c63dddc47e2543d51b"
+    },
+    {
+      "index": 6,
+      "expected_rows": 1091027,
+      "plan_sha256": "99de4c3684459bbfb494767115901feaf69d3f48f28cf7acee0c710127cce877"
+    },
+    {
+      "index": 7,
+      "expected_rows": 1091027,
+      "plan_sha256": "f5fcaaad2e9071d0a3b145c13f94005d9e2ff52b13136a9a54a404cfd8eb1b77"
+    },
+    {
+      "index": 8,
+      "expected_rows": 1091026,
+      "plan_sha256": "cb1c5b28f03604d25835d2be382e450f0314fbc0147140eebab1019caa318e54"
+    },
+    {
+      "index": 9,
+      "expected_rows": 1091026,
+      "plan_sha256": "18ff916c776ada7279011b76b396c170245332cb56a5cd35c668875e28531ad3"
+    },
+    {
+      "index": 10,
+      "expected_rows": 1091026,
+      "plan_sha256": "be146685f6ee8581327b76b73def9acf453adcf6b7b20da1ad3e0dfb5aa201ed"
+    },
+    {
+      "index": 11,
+      "expected_rows": 1091026,
+      "plan_sha256": "a882df34d8f66b7fa61e175a93c6ea20c96f7c866dcee1f8b1947698242713c8"
+    },
+    {
+      "index": 12,
+      "expected_rows": 1091026,
+      "plan_sha256": "d3b73177da527d94c5926c35ab8d5c1e7d0edefc85f2212e7c0a13c0dcef9c7a"
+    },
+    {
+      "index": 13,
+      "expected_rows": 1091026,
+      "plan_sha256": "e2e5376feaa5b4e0fd6509073088b428ed7fa3d119ecbc582d20740e5d522396"
+    },
+    {
+      "index": 14,
+      "expected_rows": 1091026,
+      "plan_sha256": "ccebb7c576520779a578ebaeb8885bf448daaae9f6f084c97f02a7afee60b854"
+    },
+    {
+      "index": 15,
+      "expected_rows": 1091026,
+      "plan_sha256": "eb5af077bdbe06b7f2ac523fe88baf83a5595dd197322f5402a36f959439893f"
+    },
+    {
+      "index": 16,
+      "expected_rows": 1091026,
+      "plan_sha256": "6883221069e973f10188be02acc755639cb1823febb69a106f1028085e1b354e"
+    },
+    {
+      "index": 17,
+      "expected_rows": 1091026,
+      "plan_sha256": "b7c72f92c7d1cecdb91907cfaf0770bc1f198fafd5dbf947e72c543dc6ab0a0f"
+    },
+    {
+      "index": 18,
+      "expected_rows": 1091026,
+      "plan_sha256": "4791076fdba9f3e542fb3383fa6e26adf3e6354cb940163b96d1c49e7f628ef1"
+    },
+    {
+      "index": 19,
+      "expected_rows": 1091026,
+      "plan_sha256": "05c226d4800711e5cabc18a99c9e217bc54634fd1715df330cf9cfde015d297b"
+    },
+    {
+      "index": 20,
+      "expected_rows": 1091026,
+      "plan_sha256": "e2855aec673e82b003466545596081ef044018a88834bc19f5192222643e4036"
+    },
+    {
+      "index": 21,
+      "expected_rows": 1091026,
+      "plan_sha256": "cd76369c1e01a834fc8f8a69eae03c47d149fa8d7ff34ed6599ba2a7f2f01005"
+    },
+    {
+      "index": 22,
+      "expected_rows": 1091026,
+      "plan_sha256": "5b93e6d48fa7e472c235a42342af740dabc0512e2897a238be8446f89126e7d2"
+    },
+    {
+      "index": 23,
+      "expected_rows": 1091026,
+      "plan_sha256": "e95926365d27ca99bd6ed727a70300b07a4dac478af302cd3e720f03a3efb560"
+    },
+    {
+      "index": 24,
+      "expected_rows": 1091026,
+      "plan_sha256": "810444baf4d1a451f7d1d13003e30949e4f02e74f33bb46f5c3440c9e567b87e"
+    },
+    {
+      "index": 25,
+      "expected_rows": 1091026,
+      "plan_sha256": "e309e4de2e98cf33c495ec0d65da92f422660c8cdef708917a309767bd23ee10"
+    },
+    {
+      "index": 26,
+      "expected_rows": 1091026,
+      "plan_sha256": "f51304e9b1c87d188384c4cc7699811b177bcc0b41fb187d943f6867e52a8101"
+    },
+    {
+      "index": 27,
+      "expected_rows": 1091026,
+      "plan_sha256": "8db46da8d90fe370e58cef929b98ef98ac4e82a18912a9c1c1b8dee8f873700a"
+    },
+    {
+      "index": 28,
+      "expected_rows": 1091026,
+      "plan_sha256": "c5deb0aefd8a238eb2e52ac62b59951c3c3b5fec6de4dc20022def197c453196"
+    },
+    {
+      "index": 29,
+      "expected_rows": 1091026,
+      "plan_sha256": "9cec00ad5a0361ab58b06fa6cd646d20697c5bd780c95f72ee93e8fa7bcd1d1e"
+    },
+    {
+      "index": 30,
+      "expected_rows": 1091026,
+      "plan_sha256": "d24e7c9231d9b03d9ccfef4f201fcafa551899e89e89114808d109537f7380c8"
+    },
+    {
+      "index": 31,
+      "expected_rows": 1091026,
+      "plan_sha256": "9fef1f8678f76aa57172ca025086347567d0a54272de286e116a125ddabd8985"
+    }
+  ],
+  "scope": "Pest Phase-B v5.1 one bounded 32-shard aggregate raw-vs-lawful comparison original only; no gameplay authority."
+}
