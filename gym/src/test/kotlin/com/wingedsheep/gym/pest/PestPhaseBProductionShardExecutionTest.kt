@@ -3,6 +3,7 @@ package com.wingedsheep.gym.pest
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import java.nio.file.Path
+import kotlin.time.Duration.Companion.hours
 
 /**
  * Prospective single-shard entrypoint. A future reviewed aggregate gate must supply every input,
