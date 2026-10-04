@@ -1,0 +1,135 @@
+name: Pest Phase-B registry repair v4 non-behavioral validation
+on:
+  push:
+    branches: ["validation/pest-phase-b-registry-repair-v4-20261004"]
+    paths: [".github/workflows/pest-phase-b-registry-repair-v4-validation-20261004.yml"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/pest-phase-b-registry-repair-v4-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 88bad44bb0b3457be751ba2754d12d9a8d9b8094
+          fetch-depth: 20
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source repair and prospective v4 gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD)" = "88bad44bb0b3457be751ba2754d12d9a8d9b8094"
+          test "$(git rev-parse HEAD^{tree})" = "ad1bd2eeff5dafb837531aad6d0108557d822398"
+          python3 -I -S scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py             --plan docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json             --mode implementation --implementation 88bad44bb0b3457be751ba2754d12d9a8d9b8094 | tee "$OUT/gate-structure.json"
+          python3 - <<'PY'
+          import json,pathlib,subprocess,hashlib,os
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*a): return subprocess.check_output(['git',*a],text=True).strip()
+          repair_base='70ad80f741c14fbc9123c58d523bc792afdee00f'
+          predecessor='3306d4c23a11b605451db7c3866f694b0ca053c4'
+          source='88bad44bb0b3457be751ba2754d12d9a8d9b8094'
+          repair_paths=[
+            'gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankExecutionTest.kt',
+            'gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRegistry.kt',
+            'gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRegistryPreflightTest.kt',
+          ]
+          gate_paths=[
+            '.github/workflows/pest-phase-b-complete-bank-v4-20261004.yml',
+            'docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json',
+            'scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py',
+          ]
+          assert git('diff','--name-only',predecessor,repair_base).splitlines()==sorted(repair_paths)
+          assert git('diff','--name-only',repair_base,source).splitlines()==sorted(gate_paths)
+          helper=pathlib.Path(repair_paths[1]).read_text()
+          preflight=pathlib.Path(repair_paths[2]).read_text()
+          execution=pathlib.Path(repair_paths[0]).read_text()
+          assert 'register(set.cards)' in helper and 'register(set.basicLands)' in helper
+          assert 'PestPhaseBProductionRegistry.build()' in preflight
+          assert 'PestPhaseBProductionRegistry.build()' in execution
+          forbidden=[
+            'EngineAiPlayerController','PestPhaseBAcceptedTruth','PestPhaseBProductionRowComparator',
+            'PestPhaseBKeepBottomActor','GameInitializer','SecureRandom','Random.Default',
+            'System.nanoTime','UUID.randomUUID','PEST_PHASE_B_ACCEPTED_BASE',
+            'PEST_PHASE_B_ACCEPTED_SUPPLEMENT'
+          ]
+          for symbol in forbidden:
+            assert symbol not in helper,(symbol,'helper')
+            assert symbol not in preflight,(symbol,'preflight')
+          fixture='gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt'
+          assert git('hash-object',fixture)=='c9229e730fd81a5e6ddb7104b50a14eb9c8726ae'
+          fixture_text=pathlib.Path(fixture).read_text()
+          assert 'GameInitializer' not in fixture_text
+          assert 'GameRng.seeded(FIXTURE_RNG_SEED)' in fixture_text
+          plan=json.loads(pathlib.Path('docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json').read_text())
+          assert plan['hold'] is True and plan['official_counters_delta']==0
+          assert plan['planner_identity']=={
+            'expected_rows':34912840,
+            'plan_sha256':'bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71',
+            'status':'UNCHANGED'
+          }
+          assert plan['consumed_v3_original']['run']==37176046871
+          assert plan['consumed_v3_original']['actual_rows']==0
+          assert plan['consumed_v3_original']['authorization_sha256']=='d7bef4c44bd59539247affa93f3e71fbcb5ef8da4b9a4b14aace04df6bea90b2'
+          (out/'source-binding.json').write_text(json.dumps({
+            'source_head':source,
+            'source_tree':git('rev-parse',source+'^{tree}'),
+            'source_repair_base':repair_base,
+            'repair_paths':repair_paths,
+            'gate_paths':gate_paths,
+            'official_counters_delta':0,
+            'accepted_truth_loaded':False,
+            'raw_controller_invoked':False,
+            'complete_bank_dispatched':False,
+          },indent=2)+'\n')
+          PY
+      - name: Compile repaired test harness only
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain             --max-workers=1 -PkotlinCompileParallelism=1             -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g             :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Run exact registry and deterministic-fixture preflight only
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain             --max-workers=1 -PkotlinCompileParallelism=1             -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g             :gym:test --tests com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest             2>&1 | tee "$OUT/preflight.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest.xml "$OUT/"
+      - name: Audit exact preflight result
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT'])
+          xml=out/'TEST-com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest.xml'
+          root=ET.parse(xml).getroot()
+          cases=root.findall('testcase')
+          assert root.attrib['name']=='com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest'
+          assert len(cases)==2
+          assert not any(c.find('failure') is not None or c.find('error') is not None or c.find('skipped') is not None for c in cases)
+          (out/'result.json').write_text(json.dumps({
+            'tests':2,'failures':0,'errors':0,'skipped':0,
+            'scope':'REGISTRY_AND_DETERMINISTIC_FIXTURE_PREFLIGHT_ONLY',
+            'accepted_truth_loaded':False,
+            'raw_controller_invoked':False,
+            'lawful_actor_invoked':False,
+            'game_initializer_invoked':False,
+            'fresh_entropy_introduced':False,
+            'complete_bank_dispatched':False,
+            'official_counters_delta':0
+          },sort_keys=True)+'\n')
+          PY
+      - name: Preserve non-behavioral validation evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-registry-repair-v4-${{ github.run_id }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
