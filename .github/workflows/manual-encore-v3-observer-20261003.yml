@@ -1,0 +1,45 @@
+name: Manual Encore v3 observer
+on:
+  push:
+    branches: [validation/manual-encore-v3-observer-20261003]
+    paths: [.github/workflows/manual-encore-v3-observer-20261003.yml]
+permissions:
+  contents: read
+  actions: read
+  issues: write
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+      TARGET_BRANCH: validation/manual-encore-serialization-v3-20261003
+      TARGET_SHA: 5a3a1bf97b724da41e7713343e91795ea037424a
+    steps:
+      - name: Observe exact validation run and report to PR 218
+        shell: bash
+        run: |
+          set -euo pipefail
+          found=""
+          for i in $(seq 1 60); do
+            data="$(gh api "repos/${GITHUB_REPOSITORY}/actions/runs?branch=${TARGET_BRANCH}&per_page=20")"
+            found="$(jq -c --arg sha "$TARGET_SHA" '
+              [.workflow_runs[] | select(.head_sha == $sha)]
+              | sort_by(.created_at) | last // empty
+            ' <<<"$data")"
+            if [[ -n "$found" ]]; then
+              status="$(jq -r '.status' <<<"$found")"
+              if [[ "$status" == "completed" ]]; then break; fi
+            fi
+            sleep 10
+          done
+          if [[ -z "$found" ]]; then
+            body="MANUAL ENCORE V3 OBSERVER: no Actions run found for exact validation head \`$TARGET_SHA\` on \`$TARGET_BRANCH\` within observer window."
+          else
+            run_id="$(jq -r '.id' <<<"$found")"
+            status="$(jq -r '.status' <<<"$found")"
+            conclusion="$(jq -r '.conclusion // "null"' <<<"$found")"
+            html="$(jq -r '.html_url' <<<"$found")"
+            body="MANUAL ENCORE V3 OBSERVER: exact validation head \`$TARGET_SHA\` -> run \`$run_id\`, status \`$status\`, conclusion \`$conclusion\`. $html"
+          fi
+          gh api "repos/${GITHUB_REPOSITORY}/issues/218/comments" -f body="$body"
