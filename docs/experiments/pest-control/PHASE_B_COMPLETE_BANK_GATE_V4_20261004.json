@@ -1,0 +1,151 @@
+{
+  "schema": "argentum-prospective-qualification-gate-v1",
+  "authority": "PREPARATION_ONLY_NO_EXECUTION_AUTHORITY",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "maximum_originals": 1,
+  "official_counters_delta": 0,
+  "hold": true,
+  "lane": "pest",
+  "gate_id": "pest-phase-b-complete-frozen-bank-v4-registry-repair-20261004",
+  "base_commit": "70ad80f741c14fbc9123c58d523bc792afdee00f",
+  "workflow_path": ".github/workflows/pest-phase-b-complete-bank-v4-20261004.yml",
+  "plan_path": "docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json",
+  "guard_path": "scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py",
+  "gate_files": [
+    ".github/workflows/pest-phase-b-complete-bank-v4-20261004.yml",
+    "docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json",
+    "scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py"
+  ],
+  "registry_repair": {
+    "predecessor_implementation": "3306d4c23a11b605451db7c3866f694b0ca053c4",
+    "predecessor_tree": "5ada794d4b92fd501fdeaf53f6c5ef3daec3177d",
+    "source_repair_tree": "825757042a5227cce53c10ad4726f1924ac195b1",
+    "changed_paths": [
+      "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankExecutionTest.kt",
+      "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRegistry.kt",
+      "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRegistryPreflightTest.kt"
+    ],
+    "execution_test_path": "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankExecutionTest.kt",
+    "old_execution_test_blob": "9cf6cdc2f44ce911b1c386189379a9f37bd395c0",
+    "new_blobs": {
+      "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankExecutionTest.kt": "f597defeefe196c481cf27b405a412165db4104a",
+      "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRegistry.kt": "36d1815953d44585bc82c5204ac5c4d2e320c7ba",
+      "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRegistryPreflightTest.kt": "e2171750b71af67a9ab87f372e1acb2938507faf"
+    },
+    "unchanged_blobs": {
+      "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt": "afeadb1f10ca23972bf197fa4cedcc626e8551c4",
+      "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt": "c9229e730fd81a5e6ddb7104b50a14eb9c8726ae",
+      "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt": "4adca33a97be8aeca099b513f61e9f4133f655b1",
+      "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankRunner.kt": "a5797843c7773338edd5f9d21c496ee1fd19a4c9",
+      "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt": "ce1be5ea615104953b7319182878f4135baac07e",
+      "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBKeepBottomActor.kt": "526c877458fbd346d8e521119adb9ec70e7116a7",
+      "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt": "bb8e2247dc64a64403094c691d83b8eed53048bd",
+      "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceiving.kt": "1936f537b737fb1b839e53fae0a727aab7a0f0ab",
+      "ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt": "4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+      "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/model/MtgSet.kt": "8eb6515166b39b525cb8f645301bb43c22a9ffa1",
+      "mtg-sets/src/main/kotlin/com/wingedsheep/mtg/sets/MtgSetCatalog.kt": "4a9da4cedf013284e6838e2e592a269af9012dfe",
+      "gym/build.gradle.kts": "2238be35b18fb9da893e72205cc09efd8a807bc4"
+    },
+    "root_cause": "The consumed v3 execution entrypoint registered MtgSet.cards only. MtgSet.cards excludes basic lands by contract, while the frozen Phase-B specs require Forest. The repair factors the entrypoint registry to register both set.cards and set.basicLands and adds a non-behavioral preflight over both frozen specs.",
+    "scope_limit": "Registry completeness/test harness only; no planner, truth, raw controller, lawful actor, comparator, journal, deterministic fixture, GameInitializer, or entropy-policy change."
+  },
+  "protected_blobs": {
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankExecutionTest.kt": "f597defeefe196c481cf27b405a412165db4104a",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRegistry.kt": "36d1815953d44585bc82c5204ac5c4d2e320c7ba",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRegistryPreflightTest.kt": "e2171750b71af67a9ab87f372e1acb2938507faf",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt": "afeadb1f10ca23972bf197fa4cedcc626e8551c4",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt": "c9229e730fd81a5e6ddb7104b50a14eb9c8726ae",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt": "4adca33a97be8aeca099b513f61e9f4133f655b1",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankRunner.kt": "a5797843c7773338edd5f9d21c496ee1fd19a4c9",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt": "ce1be5ea615104953b7319182878f4135baac07e",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBKeepBottomActor.kt": "526c877458fbd346d8e521119adb9ec70e7116a7",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt": "bb8e2247dc64a64403094c691d83b8eed53048bd",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonM5TruthReceiving.kt": "1936f537b737fb1b839e53fae0a727aab7a0f0ab",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlanTest.kt": "48daca63cc467963520243999910fc876cfd3434",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProtectedRemovalRegressionTest.kt": "85fa8f5800b9bd57db4388fb2f704cb5e6a8d1b5",
+    "docs/experiments/pest-control/CURRENT_PAIR_PHASE_B_KEEP_BOTTOM_FREEZE_20260930.json": "ffacfc28c80c29246fbed33c26f8d52e7e5625c8",
+    "docs/experiments/pest-control/PHASE_B_PRODUCTION_EXECUTION_SUPPORT_SCOPE_20261001.json": "23392c092c1ccfaf504b1a574ee07ff32e5d0c10",
+    "scripts/gradle-locked": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt": "4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/model/MtgSet.kt": "8eb6515166b39b525cb8f645301bb43c22a9ffa1",
+    "mtg-sets/src/main/kotlin/com/wingedsheep/mtg/sets/MtgSetCatalog.kt": "4a9da4cedf013284e6838e2e592a269af9012dfe",
+    "gym/build.gradle.kts": "2238be35b18fb9da893e72205cc09efd8a807bc4"
+  },
+  "receipt_path": "docs/experiments/pest-control/evidence/PHASE_B_COMPLETE_BANK_GATE_V4_ACCEPTANCE_20261004.json",
+  "marker_path": "docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_V4_EXECUTION_MARKER_20261004.json",
+  "execution_ref": "refs/heads/pest/phase-b-complete-bank-v4-execute-20261004",
+  "required_decision": "ACCEPT_EXACT_PEST_PHASE_B_COMPLETE_BANK_V4_REGISTRY_REPAIR_ONE_BEHAVIORAL_ORIGINAL",
+  "consumed_v3_original": {
+    "run": 37176046871,
+    "attempt": 1,
+    "artifact": 11292912629,
+    "artifact_sha256": "2a186cdf216e590997cc90e42483881314748797d34e7b3d45ad77190fff7ccc",
+    "implementation": "3306d4c23a11b605451db7c3866f694b0ca053c4",
+    "receipt": "a73d71796daeead823b2653c0e88390283c083bc",
+    "marker": "7c7b4d128d55d0eeaadea171c7e2f334de2361ed",
+    "authorization_sha256": "d7bef4c44bd59539247affa93f3e71fbcb5ef8da4b9a4b14aace04df6bea90b2",
+    "disposition": "PHASE_B_V3_ORIGINAL_INCOMPLETE_REJECT_FOR_PARITY — AUTHORIZATION CONSUMED",
+    "actual_rows": 0,
+    "failure": "Card not found in registry: Forest",
+    "immutable": true
+  },
+  "inherited_v3_review": {
+    "sha256": "8299f3e64309f64d147cd6f06d8ab9c063839c66abeb0da6acc035b2ead1af67",
+    "disposition": "ACCEPTABLE_FOR_PHASE_B_V3_SOURCE_SCOPE",
+    "validity": "UNCHANGED_PLANNER_REGRESSION_LOGIC_ONLY__DOES_NOT_APPROVE_MODIFIED_REGISTRY_TEST_OR_V4_GATE"
+  },
+  "planner_identity": {
+    "expected_rows": 34912840,
+    "plan_sha256": "bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71",
+    "status": "UNCHANGED"
+  },
+  "accepted_inputs": {
+    "base": {
+      "artifact": 11080047971,
+      "sha256": "8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f",
+      "rows": 6850
+    },
+    "supplement": {
+      "artifact": 11088938274,
+      "sha256": "1bbe8b92f01e69cd679b36375ef4168893267e783441ba5d1b81c76166f0cf4a",
+      "rows": 692
+    },
+    "combined_rows": 7542,
+    "validation_policy": "MUST_NOT_BE_LOADED_BEHAVIORALLY_BY_SOURCE_REPAIR_VALIDATION"
+  },
+  "nonbehavioral_preflight": {
+    "class": "com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest",
+    "expected_tests": 2,
+    "requirements": [
+      "Use the exact registry helper shared by the Phase-B production execution entrypoint.",
+      "Resolve every distinct card name in both frozen Phase-B deck specs.",
+      "Resolve Forest explicitly.",
+      "Construct one deterministic fixture from pest and one from monster.",
+      "Do not load accepted truth or call the production bank runner/comparator.",
+      "Do not invoke EngineAiPlayerController or the lawful keep/bottom actor.",
+      "Preserve the unchanged deterministic fixture source with fixed GameRng seed; no GameInitializer or fresh entropy."
+    ]
+  },
+  "external_prerequisites": [
+    "Fresh non-author review limited to the three-path registry repair plus v4 gate re-binding.",
+    "Fresh separate execution authorization for any future complete-bank original; the consumed v3 authorization is forbidden.",
+    "Trusted pre-marker inspection of exact I/R/M tips and workflow inventory after fresh review/authorization."
+  ],
+  "requirements": [
+    "Complete exactly 34,912,840 planned rows with unchanged plan SHA-256 bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71.",
+    "Exact accepted-input digest/schema binding; no truth regeneration.",
+    "Production registry must resolve every frozen Phase-B deck card, including basic lands, before accepted truth is materialized for a future original.",
+    "No silent skipped rows or implicit fixture regeneration.",
+    "Durable mismatch/unknown/exception records; incomplete prefix preserved; summary forbidden unless coverage complete.",
+    "Unchanged raw/lawful separation, planner, deterministic fixture, production comparator and journal.",
+    "No GameInitializer, fresh entropy, allocation, claim, game initialization or gameplay."
+  ],
+  "acceptance": "ZERO_MISMATCHES_ZERO_UNKNOWNS_ZERO_EXCEPTIONS_COMPLETE_34912840_ROWS_ONLY_CANDIDATE_FOR_SEPARATE_AUDIT",
+  "non_authority": [
+    "No execution authorization in this gate.",
+    "No acceptance from non-behavioral validation alone.",
+    "No reuse of consumed v3 review for modified registry/gate bytes.",
+    "No reuse of consumed v3 execution authorization.",
+    "No C2-A2/gameplay admission."
+  ]
+}
