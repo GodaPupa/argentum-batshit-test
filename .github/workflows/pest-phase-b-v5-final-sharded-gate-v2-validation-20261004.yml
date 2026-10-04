@@ -1,0 +1,370 @@
+name: Pest Phase-B v5 final sharded gate non-behavioral validation
+on:
+  push:
+    branches: ["validation/pest-phase-b-v5-final-sharded-gate-v2-20261004"]
+    paths: [".github/workflows/pest-phase-b-v5-final-sharded-gate-v2-validation-20261004.yml"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OUT: /tmp/pest-phase-b-v5-final-gate-${{ github.run_id }}
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 2db13cd35c023a60baff04323acb2fd1833e0513
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Bind exact final candidate and implementation-mode verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD)" = "2db13cd35c023a60baff04323acb2fd1833e0513"
+          test "$(git rev-parse HEAD^{tree})" = "008dfca86da9ab698db25d0830167d8587a8208f"
+          python3 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py \
+            --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json \
+            --mode implementation --implementation 2db13cd35c023a60baff04323acb2fd1833e0513 | tee "$OUT/implementation-verifier.json"
+          python3 - <<'PY' | tee "$OUT/source-binding.txt"
+          import json, pathlib, subprocess
+          def git(*args): return subprocess.check_output(["git",*args],text=True).strip()
+          source="704523fe34d6215b24e8ad1e32f916b9ed9e3ffd"
+          repair="d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a"
+          current="2db13cd35c023a60baff04323acb2fd1833e0513"
+          expected_gate=sorted([
+            ".github/workflows/pest-phase-b-sharded-v5-20261004.yml",
+            "docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json",
+            "scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py",
+          ])
+          actual=git("diff","--name-only",source,current).splitlines()
+          assert actual==expected_gate,(actual,expected_gate)
+          assert subprocess.call(["git","merge-base","--is-ancestor",repair,current])==0
+          expected={
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt":"0b97d5ec62850c27d53f0ac71822885d81bb861c",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt":"8cda0fcaa7a3ecfab11d00b2aafddca1f13c7577",
+            "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBV5DiagnosticRegressionTest.kt":"b43afa0dceac5cd9bd392e5ed0e7dd26c1485c69",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardRunner.kt":"831d252daa3118e013fdb0229e216ff6b546010f",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBShardGeometry.kt":"293e4dd1e848b641008dcf6c19818003628db2ec",
+            "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardExecutionTest.kt":"8959089cda963031f98d07b524e2a167d7c7e5ff",
+            "ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt":"4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt":"ce1be5ea615104953b7319182878f4135baac07e",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt":"afeadb1f10ca23972bf197fa4cedcc626e8551c4",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt":"c9229e730fd81a5e6ddb7104b50a14eb9c8726ae",
+          }
+          for path,sha in expected.items():
+              actual_sha=git("rev-parse",f"HEAD:{path}")
+              assert actual_sha==sha,(path,actual_sha,sha)
+          plan=json.loads(pathlib.Path("docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json").read_text())
+          assert plan["authority"]=="PREPARATION_ONLY_NO_EXECUTION_AUTHORITY" and plan["hold"] is True
+          assert plan["source_commit"]==source
+          assert plan["source_tree"]=="72c4caa704d19f7ff1fc793c6557578c219a4dfc"
+          assert plan["required_review_disposition"]=="ACCEPTABLE_FOR_PHASE_B_V5_SHARDED_SOURCE_SCOPE"
+          assert plan["planner_identity"]=={
+            "expected_rows":34912840,
+            "plan_sha256":"bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71"
+          }
+          shards=plan["shards"]
+          assert len(shards)==32 and [s["index"] for s in shards]==list(range(32))
+          assert sum(s["expected_rows"] for s in shards)==34912840
+          assert [s["expected_rows"] for s in shards[:8]]==[1091027]*8
+          assert [s["expected_rows"] for s in shards[8:]]==[1091026]*24
+          assert len({s["plan_sha256"] for s in shards})==32
+          assert plan["accepted_inputs"]["base"]["sha256"]=="8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f"
+          assert plan["accepted_inputs"]["supplement"]["sha256"]=="1bbe8b92f01e69cd679b36375ef4168893267e783441ba5d1b81c76166f0cf4a"
+          forbidden=set(plan["forbidden_record_sha256"])
+          assert {
+            "8299f3e64309f64d147cd6f06d8ab9c063839c66abeb0da6acc035b2ead1af67",
+            "d7bef4c44bd59539247affa93f3e71fbcb5ef8da4b9a4b14aace04df6bea90b2",
+            "3aecd3327cc46ecd8bca1e7c9d746ef7137462bc6e2c7ae4029394bf55c3a373",
+            "bec77baa40a9e293bf5eeb0d6a04b0b879277c57bd42b84980059c91fd07f21e",
+          } <= forbidden
+          assert not pathlib.Path(plan["receipt_path"]).exists()
+          assert not pathlib.Path(plan["marker_path"]).exists()
+          print("PASS exact-final-source-binding")
+          print("PASS frozen-global-plan-and-32-shard-inventory")
+          print("PASS consumed-record-forbidden-set")
+          print("PASS no-receipt-no-marker")
+          PY
+
+      - name: Run non-behavioral v5 regression and shard identity tests
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain --max-workers=1 \
+            :gym:test \
+            --tests com.wingedsheep.gym.pest.PestPhaseBV5DiagnosticRegressionTest \
+            --tests com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest \
+            --tests com.wingedsheep.gym.pest.PestPhaseBShardGeometryTest \
+            --tests com.wingedsheep.gym.pest.PestPhaseBShardPlanIdentityTest \
+            2>&1 | tee "$OUT/tests.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBV5DiagnosticRegressionTest.xml "$OUT/"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest.xml "$OUT/"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBShardGeometryTest.xml "$OUT/"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBShardPlanIdentityTest.xml "$OUT/"
+
+      - name: Exercise execution verifier fail-closed paths synthetically
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "$OUT/verifier-synthetic.txt"
+          import importlib.util, json, os, pathlib, subprocess
+          root=pathlib.Path.cwd().resolve()
+          plan_path="docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json"
+          plan=json.loads(pathlib.Path(plan_path).read_text())
+          spec=importlib.util.spec_from_file_location("v5gate","scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py")
+          m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+          impl="2db13cd35c023a60baff04323acb2fd1833e0513"; head="a"*40; receipt_sha="b"*40
+          receipt_path=plan["receipt_path"]; marker_path=plan["marker_path"]
+          real_blobs={}
+          for p in sorted(set(plan["gate_files"])|set(plan["protected_blobs"])):
+              real_blobs[p]=subprocess.check_output(["git","rev-parse",f"HEAD:{p}"],text=True).strip()
+          tree={p:("100644","blob",sha) for p,sha in real_blobs.items()}
+          head_tree=dict(tree)
+          head_tree[receipt_path]=("100644","blob","c"*40)
+          head_tree[marker_path]=("100644","blob","d"*40)
+          reviewed_tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip()
+          expected_map={p:tree[p][2] for p in sorted(tree)}
+          fresh_review="1"*64; fresh_auth="2"*64
+          def make_records(review=fresh_review,auth=fresh_auth,disposition=None,planner=None,shards=None):
+              receipt={
+                "reviewed_implementation_commit":impl,
+                "source_commit":plan["source_commit"],"gate_id":plan["gate_id"],
+                "maximum_originals":1,"official_counters_delta":0,
+                "decision":plan["required_decision"],
+                "external_review_disposition":disposition or plan["required_review_disposition"],
+                "planner_identity":planner or plan["planner_identity"],
+                "shards":shards or plan["shards"],
+                "reviewed_tree":reviewed_tree,
+                "reviewed_blobs":expected_map,
+                "external_review_record_sha256":review,
+              }
+              marker={
+                "reviewed_implementation_commit":impl,
+                "source_commit":plan["source_commit"],"gate_id":plan["gate_id"],
+                "maximum_originals":1,"official_counters_delta":0,
+                "receipt_commit":receipt_sha,"receipt_blob":"c"*40,
+                "external_review_record_sha256":review,
+                "execution_authorization_record_sha256":auth,
+                "aggregate_originals":1,"shard_count":32,
+                "partition_rule":plan["partition_rule"],
+              }
+              return receipt,marker
+          state={}
+          def fake_git(_root,*args):
+              if args==("rev-parse","--show-toplevel"): return (str(root)+"\n").encode()
+              if args==("rev-parse","HEAD"): return (head+"\n").encode()
+              if args==("rev-parse",impl+"^{tree}"): return (reviewed_tree+"\n").encode()
+              if args==("status","--porcelain","--untracked-files=all"): return b""
+              raise AssertionError(("git",args))
+          m.git=fake_git
+          m.commit=lambda _r,ref:ref
+          m.parents=lambda _r,ref:[receipt_sha] if ref==head else ([impl] if ref==receipt_sha else [])
+          m.entries=lambda _r,ref: head_tree if ref==head else tree
+          m.implementation=lambda _r,ref,_p:tree
+          m.exact_added=lambda *_a,**_k:None
+          os.environ.update({
+            "GITHUB_REPOSITORY":plan["repository"],"GITHUB_EVENT_NAME":"push",
+            "GITHUB_REF":plan["execution_ref"],"GITHUB_SHA":head,"GITHUB_RUN_ATTEMPT":"1"
+          })
+          def execute(receipt,marker,shard=None,row=None,digest=None,attempt="1"):
+              os.environ["GITHUB_RUN_ATTEMPT"]=attempt
+              for k in ("PEST_PHASE_B_SHARD_INDEX","PEST_PHASE_B_EXPECTED_SHARD_ROWS","PEST_PHASE_B_EXPECTED_SHARD_PLAN_SHA256"):
+                  os.environ.pop(k,None)
+              if shard is not None:
+                  os.environ["PEST_PHASE_B_SHARD_INDEX"]=str(shard)
+                  if row is not None: os.environ["PEST_PHASE_B_EXPECTED_SHARD_ROWS"]=str(row)
+                  if digest is not None: os.environ["PEST_PHASE_B_EXPECTED_SHARD_PLAN_SHA256"]=digest
+              payloads={
+                plan_path:json.dumps(plan).encode(),
+                receipt_path:json.dumps(receipt).encode(),
+                marker_path:json.dumps(marker).encode(),
+              }
+              m.read_working=lambda _r,path,_t: payloads.get(path,b"protected")
+              return m.verify(root,plan_path,"execution")
+          def expect_fail(name,receipt,marker,message,**kwargs):
+              try: execute(receipt,marker,**kwargs)
+              except (ValueError,KeyError) as e:
+                  assert str(e)==message,(name,str(e),message)
+                  print("PASS",name,"->",str(e)); return
+              raise AssertionError(name+" unexpectedly passed")
+          r,mk=make_records()
+          assert execute(r,mk)["status"]=="STRUCTURALLY_BOUND_FRESH_V5_REVIEW_AND_AUTHORIZATION_REQUIRED"
+          print("PASS fresh-distinct-review-authorization")
+          r,mk=make_records(review=plan["forbidden_record_sha256"][0])
+          expect_fail("stale-review-rejected",r,mk,"stale/consumed record cannot approve v5")
+          r,mk=make_records(auth=plan["forbidden_record_sha256"][-1])
+          expect_fail("consumed-authorization-rejected",r,mk,"stale/consumed record cannot authorize v5")
+          r,mk=make_records(review="3"*64,auth="3"*64)
+          expect_fail("review-auth-collision-rejected",r,mk,"review and authorization must be distinct")
+          r,mk=make_records(disposition="WRONG")
+          expect_fail("review-disposition-bound",r,mk,"review disposition drift")
+          badplan=dict(plan["planner_identity"]); badplan["expected_rows"]-=1
+          r,mk=make_records(planner=badplan)
+          expect_fail("global-plan-bound",r,mk,"reviewed global plan drift")
+          badshards=[dict(x) for x in plan["shards"]]; badshards[0]["expected_rows"]-=1
+          r,mk=make_records(shards=badshards)
+          expect_fail("shard-inventory-bound",r,mk,"reviewed shard inventory drift")
+          r,mk=make_records()
+          expect_fail("rerun-attempt-rejected",r,mk,"event head/attempt",attempt="2")
+          r,mk=make_records()
+          expect_fail("out-of-range-shard-rejected",r,mk,"shard index range",shard=32,row=1,digest="0"*64)
+          s=plan["shards"][31]
+          r,mk=make_records()
+          expect_fail("shard-row-env-bound",r,mk,"shard row env drift",shard=31,row=s["expected_rows"]+1,digest=s["plan_sha256"])
+          r,mk=make_records()
+          expect_fail("shard-digest-env-bound",r,mk,"shard digest env drift",shard=31,row=s["expected_rows"],digest="0"*64)
+          r,mk=make_records()
+          assert execute(r,mk,shard=31,row=s["expected_rows"],digest=s["plan_sha256"])["status"]=="STRUCTURALLY_BOUND_FRESH_V5_REVIEW_AND_AUTHORIZATION_REQUIRED"
+          print("PASS exact-shard-env-admitted")
+          PY
+
+      - name: Validate aggregate workflow fail-closed contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "$OUT/aggregate-contract.txt"
+          import json,pathlib,re
+          workflow=pathlib.Path(".github/workflows/pest-phase-b-sharded-v5-20261004.yml").read_text()
+          plan=json.loads(pathlib.Path("docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json").read_text())
+          required=[
+            "fail-fast: false","max-parallel: 32",
+            "if: always()","if: success()",
+            'test "$GITHUB_RUN_ATTEMPT" = "1"',
+            'assert len(by_name.get(raw_name,[]))==1',
+            'assert len(by_name.get(summary_name,[]))==1',
+            'assert s["completed_rows"]==s["expected_rows"]',
+            'assert s["shard_plan_sha256"]==frozen["plan_sha256"]',
+            'assert s["mismatches"]==s["unknowns"]==s["exceptions"]==0',
+            'assert sum(s["completed_rows"] for s in summaries)==34912840',
+            '"authority":"AGGREGATE_ORIGINAL_FOR_SEPARATE_AUDIT_ONLY"',
+          ]
+          for token in required: assert token in workflow,token
+          matrix=re.search(r'shard: \[([^\]]+)\]',workflow)
+          assert matrix
+          indices=[int(x.strip()) for x in matrix.group(1).split(",")]
+          assert indices==list(range(32))
+          marker="a"*40; impl="b"*40; review="1"*64; auth="2"*64
+          def summaries():
+              return [{
+                "shard_index":s["index"],"shard_count":32,
+                "expected_rows":s["expected_rows"],"completed_rows":s["expected_rows"],
+                "shard_plan_sha256":s["plan_sha256"],
+                "mismatches":0,"unknowns":0,"exceptions":0,
+                "global_plan_sha256":plan["planner_identity"]["plan_sha256"],
+                "implementation_commit":impl,"marker_commit":marker,
+                "review_record_sha256":review,
+                "execution_authorization_record_sha256":auth,
+              } for s in plan["shards"]]
+          def audit(ss,raw_counts=None,summary_counts=None,attempt=1):
+              assert attempt==1
+              raw_counts=raw_counts or {i:1 for i in range(32)}
+              summary_counts=summary_counts or {i:1 for i in range(32)}
+              assert len(ss)==32
+              by_index={}
+              for s in ss:
+                  assert s["shard_index"] not in by_index
+                  by_index[s["shard_index"]]=s
+              for i in range(32):
+                  assert raw_counts.get(i,0)==1
+                  assert summary_counts.get(i,0)==1
+                  s=by_index[i]; frozen=plan["shards"][i]
+                  assert s["shard_count"]==32
+                  assert s["expected_rows"]==frozen["expected_rows"]
+                  assert s["completed_rows"]==s["expected_rows"]
+                  assert s["shard_plan_sha256"]==frozen["plan_sha256"]
+                  assert s["mismatches"]==s["unknowns"]==s["exceptions"]==0
+                  assert s["global_plan_sha256"]==plan["planner_identity"]["plan_sha256"]
+                  assert s["implementation_commit"]==impl and s["marker_commit"]==marker
+                  assert s["review_record_sha256"]==review
+                  assert s["execution_authorization_record_sha256"]==auth
+              assert sum(s["completed_rows"] for s in ss)==34912840
+              assert len({s["shard_plan_sha256"] for s in ss})==32
+              return True
+          assert audit(summaries())
+          print("PASS aggregate-valid-32-shard-inventory")
+          def fail(name,mutator):
+              ss=summaries(); raw={i:1 for i in range(32)}; summ={i:1 for i in range(32)}; attempt=1
+              value=mutator(ss,raw,summ,attempt)
+              if value is not None: attempt=value
+              try: audit(ss,raw,summ,attempt)
+              except AssertionError: print("PASS",name); return
+              raise AssertionError(name+" unexpectedly passed")
+          fail("missing-shard-summary",lambda ss,r,s,a:ss.pop())
+          fail("duplicate-shard-summary",lambda ss,r,s,a:ss.__setitem__(31,dict(ss[30])))
+          fail("missing-raw-artifact",lambda ss,r,s,a:r.__setitem__(7,0))
+          fail("duplicate-raw-artifact",lambda ss,r,s,a:r.__setitem__(7,2))
+          fail("missing-summary-artifact",lambda ss,r,s,a:s.__setitem__(8,0))
+          fail("duplicate-summary-artifact",lambda ss,r,s,a:s.__setitem__(8,2))
+          fail("incomplete-shard",lambda ss,r,s,a:ss[3].__setitem__("completed_rows",ss[3]["completed_rows"]-1))
+          fail("mismatch-shard",lambda ss,r,s,a:ss[4].__setitem__("mismatches",1))
+          fail("unknown-shard",lambda ss,r,s,a:ss[5].__setitem__("unknowns",1))
+          fail("exception-shard",lambda ss,r,s,a:ss[6].__setitem__("exceptions",1))
+          fail("wrong-shard-digest",lambda ss,r,s,a:ss[9].__setitem__("shard_plan_sha256","0"*64))
+          fail("wrong-global-digest",lambda ss,r,s,a:ss[10].__setitem__("global_plan_sha256","0"*64))
+          fail("wrong-implementation",lambda ss,r,s,a:ss[11].__setitem__("implementation_commit","0"*40))
+          fail("wrong-marker",lambda ss,r,s,a:ss[12].__setitem__("marker_commit","0"*40))
+          fail("wrong-review",lambda ss,r,s,a:ss[13].__setitem__("review_record_sha256","0"*64))
+          fail("wrong-authorization",lambda ss,r,s,a:ss[14].__setitem__("execution_authorization_record_sha256","0"*64))
+          fail("rerun-attempt-two",lambda ss,r,s,a:2)
+          PY
+
+      - name: Audit validation result
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET,subprocess
+          out=pathlib.Path(os.environ["OUT"])
+          classes=[
+            "PestPhaseBV5DiagnosticRegressionTest",
+            "PestPhaseBProductionRegistryPreflightTest",
+            "PestPhaseBShardGeometryTest",
+            "PestPhaseBShardPlanIdentityTest",
+          ]
+          totals={"tests":0,"failures":0,"errors":0,"skipped":0}
+          for cls in classes:
+              p=out/f"TEST-com.wingedsheep.gym.pest.{cls}.xml"
+              r=ET.parse(p).getroot()
+              for k in totals: totals[k]+=int(r.attrib.get(k,0))
+          assert totals["failures"]==totals["errors"]==totals["skipped"]==0
+          verifier=(out/"verifier-synthetic.txt").read_text()
+          aggregate=(out/"aggregate-contract.txt").read_text()
+          assert verifier.count("PASS ")>=10
+          assert aggregate.count("PASS ")>=16
+          result={
+            "schema":"pest-phase-b-v5-final-sharded-gate-validation-v1",
+            "authority":"NON_BEHAVIORAL_SOURCE_GATE_VALIDATION_ONLY",
+            "candidate_commit":"2db13cd35c023a60baff04323acb2fd1833e0513",
+            "candidate_tree":"008dfca86da9ab698db25d0830167d8587a8208f",
+            "source_commit":"704523fe34d6215b24e8ad1e32f916b9ed9e3ffd",
+            "gate_blob":subprocess.check_output(["git","rev-parse","HEAD:docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json"],text=True).strip(),
+            "workflow_blob":subprocess.check_output(["git","rev-parse","HEAD:.github/workflows/pest-phase-b-sharded-v5-20261004.yml"],text=True).strip(),
+            "verifier_blob":subprocess.check_output(["git","rev-parse","HEAD:scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py"],text=True).strip(),
+            "tests":totals,
+            "global_rows":34912840,
+            "global_plan_sha256":"bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71",
+            "shard_count":32,
+            "behavioral_original_dispatched":False,
+            "accepted_truth_loaded":False,
+            "raw_controller_invoked":False,
+            "official_counters_delta":0,
+          }
+          (out/"result.json").write_text(json.dumps(result,sort_keys=True)+"\n")
+          PY
+
+      - name: Preserve final gate validation evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v5-final-sharded-gate-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
