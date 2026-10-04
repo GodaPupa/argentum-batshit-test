@@ -6,11 +6,9 @@ import com.wingedsheep.engine.core.EngineServices
 import com.wingedsheep.engine.core.GameConfig
 import com.wingedsheep.engine.core.GameInitializer
 import com.wingedsheep.engine.core.PlayerConfig
-import com.wingedsheep.engine.core.engineSerializersModule
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.ComponentContainer
-import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
 import com.wingedsheep.engine.state.components.combat.MustAttackDefenderThisTurnComponent
@@ -20,6 +18,7 @@ import com.wingedsheep.engine.state.components.identity.TokenComponent
 import com.wingedsheep.engine.state.components.player.LossReason
 import com.wingedsheep.engine.state.components.player.PlayerLostComponent
 import com.wingedsheep.engine.support.GameTestDriver
+import com.wingedsheep.engine.support.SerializationTestSupport
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.mtg.sets.definitions.cmr.cards.AmphinMutineer
 import com.wingedsheep.sdk.core.Color
@@ -36,9 +35,6 @@ import io.kotest.matchers.collections.shouldContain
 import io.kotest.matchers.collections.shouldNotContain
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 /**
  * Exact Amphin Mutineer qualification. General Encore invariants also live in EncoreEngineTest;
@@ -152,12 +148,7 @@ class AmphinMutineerScenarioTest : FunSpec({
         d.state.getEntity(token)?.get<MustAttackDefenderThisTurnComponent>()?.defenderId shouldBe d.player2
         d.state.delayedTriggers.size shouldBe 1
 
-        val json = Json {
-            serializersModule = engineSerializersModule
-            allowStructuredMapKeys = true
-            encodeDefaults = true
-        }
-        val restored = json.decodeFromString<GameState>(json.encodeToString(d.state))
+        val restored = SerializationTestSupport.roundTrip(d.state)
         restored.getEntity(token)?.get<MustAttackDefenderThisTurnComponent>()?.defenderId shouldBe d.player2
         restored.delayedTriggers.size shouldBe 1
     }
