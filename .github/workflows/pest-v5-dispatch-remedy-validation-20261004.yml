@@ -1,0 +1,92 @@
+name: Pest v5.1 dispatch remedy chain validation
+on:
+  push:
+    branches: ["validation/pest-v5-dispatch-remedy-20261004"]
+    paths: [".github/workflows/pest-v5-dispatch-remedy-validation-20261004.yml"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: bbdd90a4e7988ee1fa69f45fcb97f7c20d7e369f
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate exact I R2 M2 chain and frozen verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          I=b5402d973979428008ed2703e8737bae61a38c19
+          R2=fa0632552fe54aef9d61a83d202d123e96532c53
+          M2=bbdd90a4e7988ee1fa69f45fcb97f7c20d7e369f
+          OLD_M=bf80aaa908521a7165af59b6343f119bfff7904d
+          RECEIPT=docs/experiments/pest-control/evidence/PHASE_B_SHARDED_GATE_V5_ACCEPTANCE_20261004.json
+          MARKER=docs/experiments/pest-control/PHASE_B_SHARDED_V5_EXECUTION_MARKER_20261004.json
+          PLAN=docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json
+          GUARD=scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py
+          test "$(git rev-parse HEAD)" = "$M2"
+          test "$(git rev-parse HEAD^)" = "$R2"
+          test "$(git rev-parse HEAD^^)" = "$I"
+          test "$(git rev-parse "$R2:$RECEIPT")" = 7322a3be2be73095981747da40df88011cc7cc49
+          test "$(git rev-parse "$M2:$MARKER")" = 0bc93ffd74fee3b256fb7ef511446c960fa9e9c0
+          test "$(git rev-parse "$I:.github/workflows/pest-phase-b-sharded-v5-20261004.yml")" = 58ec3b87793b203195f2d79892f917562deadc95
+          test "$(git rev-parse "$I:$PLAN")" = c050b67248974ed41dc0a2ada8519d18a6b1b971
+          test "$(git rev-parse "$I:$GUARD")" = 343be03008706b0a8a44aa2c8a0b30632efcad13
+          test "$(git diff --name-only "$I" "$R2")" = "$RECEIPT"
+          test "$(git diff --name-only "$R2" "$M2")" = "$MARKER"
+          git diff --name-only "$OLD_M" "$M2" | grep -Fx "$MARKER" >/dev/null
+          python3 - <<'PY'
+          import json, pathlib
+          receipt=json.loads(pathlib.Path("docs/experiments/pest-control/evidence/PHASE_B_SHARDED_GATE_V5_ACCEPTANCE_20261004.json").read_text())
+          marker=json.loads(pathlib.Path("docs/experiments/pest-control/PHASE_B_SHARDED_V5_EXECUTION_MARKER_20261004.json").read_text())
+          gate=json.loads(pathlib.Path("docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json").read_text())
+          assert receipt["reviewed_implementation_commit"]=="b5402d973979428008ed2703e8737bae61a38c19"
+          assert receipt["reviewed_tree"]=="5c2e0ca05064ec04b9483cf369195238b2bb2042"
+          assert receipt["external_review_record_sha256"]=="14c9f2d094246b98efcad5633948e970e4d6d6163042ed1f86b4d904bedc792a"
+          assert receipt["execution_authorization_record_sha256"]=="c1fb768a95df77027f74192a635ea238a44f267a2360e7352004c8ffb9494101"
+          assert receipt["external_review_disposition"]==gate["required_review_disposition"]
+          assert receipt["planner_identity"]==gate["planner_identity"]
+          assert receipt["shards"]==gate["shards"]
+          assert marker["receipt_commit"]=="fa0632552fe54aef9d61a83d202d123e96532c53"
+          assert marker["receipt_blob"]=="7322a3be2be73095981747da40df88011cc7cc49"
+          assert marker["external_review_record_sha256"]==receipt["external_review_record_sha256"]
+          assert marker["execution_authorization_record_sha256"]=="c1fb768a95df77027f74192a635ea238a44f267a2360e7352004c8ffb9494101"
+          assert marker["execution_authorization_record_sha256"] not in set(gate["forbidden_record_sha256"])
+          assert marker["external_review_record_sha256"] != marker["execution_authorization_record_sha256"]
+          assert marker["supersedes_inert_marker"]=="bf80aaa908521a7165af59b6343f119bfff7904d"
+          assert receipt["supersedes_inert_receipt"]=="344431aa233f80ed068c7b50561912b0bfe18ecb"
+          assert marker["aggregate_originals"]==1 and marker["shard_count"]==32
+          assert marker["partition_rule"]==gate["partition_rule"]
+          PY
+          env             GITHUB_REPOSITORY=GodaPupa/argentum-batshit-test             GITHUB_EVENT_NAME=push             GITHUB_REF=refs/heads/pest/phase-b-sharded-v5-execute-20261004             GITHUB_SHA="$M2"             GITHUB_RUN_ATTEMPT=1             /usr/bin/python3 -I -S "$GUARD" --plan "$PLAN" --mode execution             | tee verifier-result.json
+          python3 - <<'PY'
+          import json
+          r=json.load(open("verifier-result.json"))
+          assert r["status"]=="STRUCTURALLY_BOUND_FRESH_V5_REVIEW_AND_AUTHORIZATION_REQUIRED"
+          assert r["implementation"]=="b5402d973979428008ed2703e8737bae61a38c19"
+          assert r["receipt"]=="fa0632552fe54aef9d61a83d202d123e96532c53"
+          assert r["marker"]=="bbdd90a4e7988ee1fa69f45fcb97f7c20d7e369f"
+          json.dump({
+            "status":"PASS_NONBEHAVIORAL_DISPATCH_REMEDY_CHAIN",
+            "accepted_truth_loaded":False,
+            "shard_behavior_executed":False,
+            "I":"b5402d973979428008ed2703e8737bae61a38c19",
+            "R2":"fa0632552fe54aef9d61a83d202d123e96532c53",
+            "M2":"bbdd90a4e7988ee1fa69f45fcb97f7c20d7e369f",
+            "receipt_blob":"7322a3be2be73095981747da40df88011cc7cc49",
+            "marker_blob":"0bc93ffd74fee3b256fb7ef511446c960fa9e9c0",
+            "amended_authorization_sha256":"c1fb768a95df77027f74192a635ea238a44f267a2360e7352004c8ffb9494101"
+          },open("dispatch-remedy-validation.json","w"),sort_keys=True)
+          PY
+      - name: Preserve dispatch-remedy validation evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-v5-dispatch-remedy-validation-${{ github.run_id }}
+          path: |
+            verifier-result.json
+            dispatch-remedy-validation.json
+          if-no-files-found: error
+          retention-days: 90
