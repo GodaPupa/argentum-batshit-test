@@ -245,6 +245,13 @@ jobs:
           import hashlib, json, os, pathlib, subprocess
           root=pathlib.Path("aggregate-audit")
           inventory=json.loads((root/"artifacts.json").read_text())["artifacts"]
+          gate=json.loads(pathlib.Path(
+              "docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json"
+          ).read_text())
+          marker=json.loads(pathlib.Path(
+              "docs/experiments/pest-control/PHASE_B_SHARDED_V5_EXECUTION_MARKER_20261004.json"
+          ).read_text())
+          implementation=subprocess.check_output(["git","rev-parse","HEAD^^"],text=True).strip()
           by_name={}
           for a in inventory:
               by_name.setdefault(a["name"],[]).append(a)
@@ -272,10 +279,18 @@ jobs:
               s=json.loads(files[0].read_text())
               assert s["schema"]=="pest-phase-b-v5-qualifying-shard-summary-v1"
               assert s["aggregate_run_id"]==run and s["run_attempt"]==1
+              frozen=gate["shards"][i]
+              assert frozen["index"]==i
               assert s["shard_index"]==i and s["shard_count"]==32
+              assert s["expected_rows"]==frozen["expected_rows"]
               assert s["completed_rows"]==s["expected_rows"]
+              assert s["shard_plan_sha256"]==frozen["plan_sha256"]
               assert s["mismatches"]==s["unknowns"]==s["exceptions"]==0
-              assert s["global_plan_sha256"]=="bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71"
+              assert s["global_plan_sha256"]==gate["planner_identity"]["plan_sha256"]
+              assert s["implementation_commit"]==implementation
+              assert s["marker_commit"]==os.environ["GITHUB_SHA"]
+              assert s["review_record_sha256"]==marker["external_review_record_sha256"]
+              assert s["execution_authorization_record_sha256"]==marker["execution_authorization_record_sha256"]
               summaries.append(s)
               artifact_bindings.append({
                   "shard_index":i,
