@@ -1,0 +1,274 @@
+name: Pest Phase-B v5.1 global one-original non-behavioral validation
+on:
+  push:
+    branches: ["validation/pest-phase-b-v5-1-global-one-original-20261004"]
+    paths: [".github/workflows/pest-phase-b-v5-1-global-one-original-validation-20261004.yml"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      OUT: /tmp/pest-phase-b-v5-1-global-one-original-${{ github.run_id }}
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: b5402d973979428008ed2703e8737bae61a38c19
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+
+      - name: Bind exact v5.1 successor and implementation-mode verifier
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD)" = "b5402d973979428008ed2703e8737bae61a38c19"
+          test "$(git rev-parse HEAD^{tree})" = "5c2e0ca05064ec04b9483cf369195238b2bb2042"
+          python3 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py \
+            --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json \
+            --mode implementation --implementation b5402d973979428008ed2703e8737bae61a38c19 | tee "$OUT/implementation-verifier.json"
+          python3 - <<'PY' | tee "$OUT/source-binding.txt"
+          import json,pathlib,subprocess
+          def git(*args): return subprocess.check_output(["git",*args],text=True).strip()
+          predecessor="2db13cd35c023a60baff04323acb2fd1833e0513"
+          source="704523fe34d6215b24e8ad1e32f916b9ed9e3ffd"
+          repair="d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a"
+          current="b5402d973979428008ed2703e8737bae61a38c19"
+          exact_v51=sorted([
+            ".github/workflows/pest-phase-b-sharded-v5-20261004.yml",
+            "docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json",
+            "scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py",
+          ])
+          assert git("diff","--name-only",predecessor,current).splitlines()==exact_v51
+          assert git("diff","--name-only",source,current).splitlines()==exact_v51
+          assert subprocess.call(["git","merge-base","--is-ancestor",repair,current])==0
+          expected={
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestMonsterLondonPredicateVector.kt":"0b97d5ec62850c27d53f0ac71822885d81bb861c",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt":"8cda0fcaa7a3ecfab11d00b2aafddca1f13c7577",
+            "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBV5DiagnosticRegressionTest.kt":"b43afa0dceac5cd9bd392e5ed0e7dd26c1485c69",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardRunner.kt":"831d252daa3118e013fdb0229e216ff6b546010f",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBShardGeometry.kt":"293e4dd1e848b641008dcf6c19818003628db2ec",
+            "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardExecutionTest.kt":"8959089cda963031f98d07b524e2a167d7c7e5ff",
+            "ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt":"4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt":"ce1be5ea615104953b7319182878f4135baac07e",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt":"afeadb1f10ca23972bf197fa4cedcc626e8551c4",
+            "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt":"c9229e730fd81a5e6ddb7104b50a14eb9c8726ae",
+          }
+          for path,sha in expected.items():
+              assert git("rev-parse",f"HEAD:{path}")==sha,path
+          plan=json.loads(pathlib.Path("docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json").read_text())
+          p=plan["global_one_original"]
+          assert p["workflow_path"]==plan["workflow_path"]
+          assert p["execution_ref"]==plan["execution_ref"]
+          assert p["execution_branch"]=="pest/phase-b-sharded-v5-execute-20261004"
+          assert p["event"]=="push"
+          assert p["required_run_attempt"]==1
+          assert p["required_run_number"]==1
+          assert p["maximum_matching_runs"]==1
+          assert p["inventory_per_page"]==100
+          assert p["concurrency_group"]=="pest-phase-b-v5-single-aggregate-original-20261004"
+          assert p["cancel_in_progress"] is False
+          assert plan["planner_identity"]=={
+            "expected_rows":34912840,
+            "plan_sha256":"bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71"
+          }
+          shards=plan["shards"]
+          assert len(shards)==32 and [s["index"] for s in shards]==list(range(32))
+          assert sum(s["expected_rows"] for s in shards)==34912840
+          assert len({s["plan_sha256"] for s in shards})==32
+          assert not pathlib.Path(plan["receipt_path"]).exists()
+          assert not pathlib.Path(plan["marker_path"]).exists()
+          print("PASS exact-v5.1-three-path-gate-delta")
+          print("PASS all-phase-b-semantic-blobs-unchanged")
+          print("PASS global-one-original-policy-bound")
+          print("PASS no-receipt-no-marker")
+          PY
+
+      - name: Run non-behavioral v5 regression and shard identity tests
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain --max-workers=1 \
+            :gym:test \
+            --tests com.wingedsheep.gym.pest.PestPhaseBV5DiagnosticRegressionTest \
+            --tests com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest \
+            --tests com.wingedsheep.gym.pest.PestPhaseBShardGeometryTest \
+            --tests com.wingedsheep.gym.pest.PestPhaseBShardPlanIdentityTest \
+            2>&1 | tee "$OUT/tests.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBV5DiagnosticRegressionTest.xml "$OUT/"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest.xml "$OUT/"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBShardGeometryTest.xml "$OUT/"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBShardPlanIdentityTest.xml "$OUT/"
+
+      - name: Exercise global workflow-run uniqueness fail-closed cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "$OUT/run-history-synthetic.txt"
+          import copy, importlib.util, json, pathlib
+          plan=json.loads(pathlib.Path("docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json").read_text())
+          spec=importlib.util.spec_from_file_location("v51gate","scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py")
+          m=importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+          policy=plan["global_one_original"]
+          run_id=424242
+          head="a"*40
+          workflow_id=777
+          def base_run(**updates):
+              value={
+                "id":run_id,"workflow_id":workflow_id,"path":plan["workflow_path"],
+                "event":"push","head_branch":policy["execution_branch"],"head_sha":head,
+                "run_attempt":1,"run_number":1,"status":"in_progress","conclusion":None,
+                "repository":{"full_name":plan["repository"]},
+                "head_repository":{"full_name":plan["repository"]},
+              }
+              value.update(updates)
+              return value
+          def inventory(current,*others,total=None):
+              runs=[copy.deepcopy(current),*[copy.deepcopy(x) for x in others]]
+              return {"total_count":len(runs) if total is None else total,"workflow_runs":runs}
+          def verify(current,inv,headers="HTTP/2 200\n"):
+              return m.verify_run_history(plan,current,inv,headers,str(run_id),head)
+          current=base_run()
+          result=verify(current,inventory(current))
+          assert result["status"]=="SOLE_GLOBAL_EXECUTION_RUN_CONFIRMED_BEFORE_BEHAVIOR"
+          print("PASS sole-current-run-admissible")
+          def expect_fail(name,current,inv,message,headers="HTTP/2 200\n"):
+              try: verify(current,inv,headers)
+              except (ValueError,KeyError) as e:
+                  assert str(e)==message,(name,str(e),message)
+                  print("PASS",name,"->",str(e)); return
+              raise AssertionError(name+" unexpectedly passed")
+          cases=[
+            ("prior-completed",base_run(id=1,status="completed",conclusion="success",head_sha="1"*40)),
+            ("prior-failed",base_run(id=2,status="completed",conclusion="failure",head_sha="2"*40)),
+            ("prior-cancelled",base_run(id=3,status="completed",conclusion="cancelled",head_sha="3"*40)),
+            ("prior-timed-out",base_run(id=4,status="completed",conclusion="timed_out",head_sha="4"*40)),
+            ("another-in-progress",base_run(id=5,status="in_progress",conclusion=None,head_sha="5"*40)),
+            ("another-queued",base_run(id=6,status="queued",conclusion=None,head_sha="6"*40)),
+            ("second-distinct-marker-chain",base_run(id=7,status="queued",conclusion=None,head_sha="7"*40)),
+          ]
+          for name,other in cases:
+              expect_fail(name,current,inventory(current,other),"prior or competing execution workflow run exists")
+          attempt2=base_run(run_attempt=2)
+          expect_fail("current-attempt-two",attempt2,inventory(attempt2),"current run attempt drift")
+          run2=base_run(run_number=2)
+          expect_fail("run-number-advanced-even-if-history-deleted",run2,inventory(run2),"current run number proves prior run")
+          expect_fail("incomplete-inventory-page",current,inventory(current,total=2),"incomplete run inventory page")
+          expect_fail("paginated-inventory",current,inventory(current),"paginated run inventory is ambiguous",
+                      'HTTP/2 200\nlink: <https://api.github.com/x?page=2>; rel="next"\n')
+          bad={"total_count":1,"workflow_runs":[]}
+          expect_fail("ambiguous-count-list",current,bad,"incomplete run inventory page")
+          try:
+              m.strict_json(b'{"total_count":1,"total_count":2,"workflow_runs":[]}')
+          except ValueError as e:
+              assert str(e)=="duplicate JSON key: total_count"
+              print("PASS duplicate-json-key-rejected")
+          else: raise AssertionError("duplicate JSON key unexpectedly passed")
+          print("PASS API HTTP failure is shell-fatal via curl --fail (statically checked separately)")
+          PY
+
+      - name: Exercise execution verifier and aggregate fail-closed contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "$OUT/gate-contract.txt"
+          import json,pathlib,re
+          workflow=pathlib.Path(".github/workflows/pest-phase-b-sharded-v5-20261004.yml").read_text()
+          plan=json.loads(pathlib.Path("docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json").read_text())
+          required=[
+            "concurrency:","group: pest-phase-b-v5-single-aggregate-original-20261004",
+            "cancel-in-progress: false",
+            "Enforce global one-aggregate-original workflow history",
+            "Preserve global run-history guard evidence before behavior",
+            "/actions/runs/$GITHUB_RUN_ID",
+            "/actions/workflows/$WORKFLOW_ID/runs?branch=pest%2Fphase-b-sharded-v5-execute-20261004&event=push&per_page=100",
+            "--mode run-history",
+            "fail-fast: false","max-parallel: 32",
+            "if: always()","if: success()",
+            'test "$GITHUB_RUN_ATTEMPT" = "1"',
+            'assert len(by_name.get(raw_name,[]))==1',
+            'assert len(by_name.get(summary_name,[]))==1',
+            'assert s["completed_rows"]==s["expected_rows"]',
+            'assert s["shard_plan_sha256"]==frozen["plan_sha256"]',
+            'assert s["mismatches"]==s["unknowns"]==s["exceptions"]==0',
+            'assert sum(s["completed_rows"] for s in summaries)==34912840',
+            '"authority":"AGGREGATE_ORIGINAL_FOR_SEPARATE_AUDIT_ONLY"',
+            "curl -L --fail --retry 3",
+          ]
+          for token in required: assert token in workflow,token
+          matrix=re.search(r'shard: \[([^\]]+)\]',workflow)
+          assert matrix
+          assert [int(x.strip()) for x in matrix.group(1).split(",")]==list(range(32))
+          # Ordering: history evidence must be durably uploaded before registry preflight can finish preflight job.
+          assert workflow.index("Enforce global one-aggregate-original workflow history") < workflow.index("Re-run registry preflight without accepted truth")
+          assert workflow.index("Preserve global run-history guard evidence before behavior") < workflow.index("Re-run registry preflight without accepted truth")
+          print("PASS workflow-concurrency-and-history-guard-precede-behavior")
+          print("PASS exact-32-shard-matrix-and-aggregate-contract-retained")
+          print("PASS API-failure-fails-closed-via-curl-fail")
+          PY
+
+      - name: Audit validation result
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET,subprocess
+          out=pathlib.Path(os.environ["OUT"])
+          classes=[
+            "PestPhaseBV5DiagnosticRegressionTest",
+            "PestPhaseBProductionRegistryPreflightTest",
+            "PestPhaseBShardGeometryTest",
+            "PestPhaseBShardPlanIdentityTest",
+          ]
+          totals={"tests":0,"failures":0,"errors":0,"skipped":0}
+          for cls in classes:
+              r=ET.parse(out/f"TEST-com.wingedsheep.gym.pest.{cls}.xml").getroot()
+              for k in totals: totals[k]+=int(r.attrib.get(k,0))
+          assert totals["failures"]==totals["errors"]==totals["skipped"]==0
+          history=(out/"run-history-synthetic.txt").read_text()
+          contract=(out/"gate-contract.txt").read_text()
+          assert history.count("PASS ")>=14
+          assert contract.count("PASS ")>=3
+          def git(*args): return subprocess.check_output(["git",*args],text=True).strip()
+          result={
+            "schema":"pest-phase-b-v5-1-global-one-original-validation-v1",
+            "authority":"NON_BEHAVIORAL_SOURCE_GATE_VALIDATION_ONLY",
+            "predecessor":"2db13cd35c023a60baff04323acb2fd1833e0513",
+            "candidate_commit":"b5402d973979428008ed2703e8737bae61a38c19",
+            "candidate_tree":"5c2e0ca05064ec04b9483cf369195238b2bb2042",
+            "changed_paths":[
+              ".github/workflows/pest-phase-b-sharded-v5-20261004.yml",
+              "docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json",
+              "scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py",
+            ],
+            "gate_blob":git("rev-parse","HEAD:docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json"),
+            "workflow_blob":git("rev-parse","HEAD:.github/workflows/pest-phase-b-sharded-v5-20261004.yml"),
+            "verifier_blob":git("rev-parse","HEAD:scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py"),
+            "tests":totals,
+            "global_rows":34912840,
+            "global_plan_sha256":"bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71",
+            "shard_count":32,
+            "global_uniqueness_guard":"STATIC_CONCURRENCY_PLUS_RUN_NUMBER_ONE_PLUS_SOLE_EXACT_WORKFLOW_REF_PUSH_HISTORY",
+            "behavioral_original_dispatched":False,
+            "accepted_truth_loaded":False,
+            "raw_controller_invoked":False,
+            "new_execution_authorization_consumed":False,
+            "official_counters_delta":0,
+          }
+          (out/"result.json").write_text(json.dumps(result,sort_keys=True)+"\n")
+          PY
+
+      - name: Preserve v5.1 global uniqueness validation evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v5-1-global-one-original-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
