@@ -1,7 +1,5 @@
 package com.wingedsheep.gym.pest
 
-import com.wingedsheep.engine.registry.CardRegistry
-import com.wingedsheep.mtg.sets.MtgSetCatalog
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import java.nio.file.Path
@@ -21,8 +19,7 @@ class PestPhaseBProductionBankExecutionTest : FunSpec({
         val runId = required("PEST_PHASE_B_RUN_ID")
         val source = required("PEST_PHASE_B_SOURCE_COMMIT")
 
-        val registry = CardRegistry()
-        MtgSetCatalog.all.forEach { registry.register(it.cards) }
+        val registry = PestPhaseBProductionRegistry.build()
 
         val result = PestPhaseBProductionBankRunner.run(
             registry = registry,
