@@ -1,0 +1,274 @@
+name: Pest Phase-B v4.1 review freshness non-behavioral validation
+on:
+  push:
+    branches: ["validation/pest-phase-b-v4-1-review-freshness-20261004"]
+    paths: [".github/workflows/pest-phase-b-v4-1-review-freshness-validation-20261004.yml"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/pest-phase-b-v4-1-review-freshness-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: b472c3f8fe3f3e724614e080d529e2868209fb96
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact one-path successor and run implementation guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          test "$(git rev-parse HEAD)" = "b472c3f8fe3f3e724614e080d529e2868209fb96"
+          test "$(git rev-parse HEAD^)" = "88bad44bb0b3457be751ba2754d12d9a8d9b8094"
+          test "$(git rev-parse HEAD^{tree})" = "14188c029e9c78364d3de97aad7a8c5023a840b0"
+          mapfile -t changed < <(git diff --name-only 88bad44bb0b3457be751ba2754d12d9a8d9b8094 HEAD)
+          test "${#changed[@]}" -eq 1
+          test "${changed[0]}" = "scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py"
+          test "$(git rev-parse 88bad44bb0b3457be751ba2754d12d9a8d9b8094:scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py)" = "9ff8c7f8cb7dd1ee004aad4529f9668e37a361d8"
+          test "$(git rev-parse HEAD:scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py)" = "07c6fb4e86fe91d9b5e1b80a0a8589cd44bdf51a"
+          python3 -I -S scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py \
+            --plan docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json \
+            --mode implementation --implementation b472c3f8fe3f3e724614e080d529e2868209fb96 | tee "$OUT/gate-structure.json"
+          git diff --stat 88bad44bb0b3457be751ba2754d12d9a8d9b8094 HEAD | tee "$OUT/delta-stat.txt"
+          git diff --unified=20 88bad44bb0b3457be751ba2754d12d9a8d9b8094 HEAD -- \
+            scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py > "$OUT/verifier.diff"
+      - name: Compile unchanged Kotlin test harness
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+      - name: Re-run exact non-behavioral registry preflight
+        shell: bash
+        run: |
+          set -o pipefail
+          bash scripts/gradle-locked --no-daemon --no-configuration-cache --console=plain \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :gym:test --tests com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest \
+            2>&1 | tee "$OUT/preflight.log"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest.xml "$OUT/"
+      - name: Exercise verifier freshness checks with synthetic in-memory records
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "$OUT/freshness-harness.log"
+          import importlib.util
+          import json
+          import os
+          from pathlib import Path
+
+          module_path = Path("scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py")
+          spec = importlib.util.spec_from_file_location("pest_v4_verifier", module_path)
+          m = importlib.util.module_from_spec(spec)
+          spec.loader.exec_module(m)
+
+          root = Path.cwd().resolve()
+          plan_path = "docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json"
+          receipt_path = "synthetic/receipt.json"
+          marker_path = "synthetic/marker.json"
+          gate_path = "synthetic/gate"
+          protected_path = "synthetic/protected"
+          head = "a" * 40
+          receipt_commit = "b" * 40
+          implementation_commit = "c" * 40
+          reviewed_tree = "d" * 40
+          receipt_blob = "e" * 40
+          gate_blob = "1" * 40
+          protected_blob = "2" * 40
+          inherited_review = "8299f3e64309f64d147cd6f06d8ab9c063839c66abeb0da6acc035b2ead1af67"
+          consumed_authorization = "d7bef4c44bd59539247affa93f3e71fbcb5ef8da4b9a4b14aace04df6bea90b2"
+          fresh_review = "1" * 64
+          fresh_authorization = "2" * 64
+
+          tree = {
+              gate_path: ("100644", "blob", gate_blob),
+              protected_path: ("100644", "blob", protected_blob),
+          }
+          head_tree = dict(tree)
+          head_tree[receipt_path] = ("100644", "blob", receipt_blob)
+          head_tree[marker_path] = ("100644", "blob", "f" * 40)
+
+          plan = {
+              "plan_path": plan_path,
+              "repository": "GodaPupa/argentum-batshit-test",
+              "execution_ref": "refs/heads/synthetic-execution",
+              "base_commit": "0" * 40,
+              "gate_id": "synthetic-v4",
+              "maximum_originals": 1,
+              "official_counters_delta": 0,
+              "receipt_path": receipt_path,
+              "marker_path": marker_path,
+              "required_decision": "SYNTHETIC_ACCEPT",
+              "gate_files": [gate_path],
+              "protected_blobs": {protected_path: protected_blob},
+              "inherited_v3_review": {"sha256": inherited_review},
+              "consumed_v3_original": {"authorization_sha256": consumed_authorization},
+          }
+
+          def fake_git(_root, *args):
+              if args == ("rev-parse", "--show-toplevel"):
+                  return (str(root) + "\n").encode()
+              if args == ("rev-parse", "HEAD"):
+                  return (head + "\n").encode()
+              if args == ("rev-parse", implementation_commit + "^{tree}"):
+                  return (reviewed_tree + "\n").encode()
+              if args == ("status", "--porcelain", "--untracked-files=all"):
+                  return b""
+              raise AssertionError(("unexpected git call", args))
+
+          m.git = fake_git
+          m.commit = lambda _root, ref: ref
+          m.parents = lambda _root, ref: [receipt_commit] if ref == head else ([implementation_commit] if ref == receipt_commit else [])
+          m.entries = lambda _root, ref: head_tree if ref == head else tree
+          m.implementation = lambda _root, ref, _plan: tree
+          m.exact_added = lambda *_args, **_kwargs: None
+
+          os.environ.update({
+              "GITHUB_REPOSITORY": plan["repository"],
+              "GITHUB_EVENT_NAME": "push",
+              "GITHUB_REF": plan["execution_ref"],
+              "GITHUB_SHA": head,
+              "GITHUB_RUN_ATTEMPT": "1",
+          })
+
+          def run_case(review_digest, authorization_digest):
+              receipt = {
+                  "reviewed_implementation_commit": implementation_commit,
+                  "base_commit": plan["base_commit"],
+                  "gate_id": plan["gate_id"],
+                  "maximum_originals": 1,
+                  "official_counters_delta": 0,
+                  "decision": plan["required_decision"],
+                  "reviewed_tree": reviewed_tree,
+                  "reviewed_blobs": {
+                      gate_path: gate_blob,
+                      protected_path: protected_blob,
+                  },
+                  "external_review_record_sha256": review_digest,
+              }
+              marker = {
+                  "reviewed_implementation_commit": implementation_commit,
+                  "base_commit": plan["base_commit"],
+                  "gate_id": plan["gate_id"],
+                  "maximum_originals": 1,
+                  "official_counters_delta": 0,
+                  "receipt_commit": receipt_commit,
+                  "receipt_blob": receipt_blob,
+                  "external_review_record_sha256": review_digest,
+                  "execution_authorization_record_sha256": authorization_digest,
+              }
+              payloads = {
+                  plan_path: json.dumps(plan).encode(),
+                  receipt_path: json.dumps(receipt).encode(),
+                  marker_path: json.dumps(marker).encode(),
+              }
+              m.read_working = lambda _root, path, _tree: payloads.get(path, b"synthetic")
+              return m.verify(root, plan_path, "execution")
+
+          def expect_fail(name, review_digest, authorization_digest, expected):
+              try:
+                  run_case(review_digest, authorization_digest)
+              except ValueError as exc:
+                  assert str(exc) == expected, (name, str(exc), expected)
+                  print("PASS", name, "->", str(exc))
+                  return
+              raise AssertionError(name + " unexpectedly passed")
+
+          expect_fail(
+              "inherited-v3-review-rejected",
+              inherited_review,
+              fresh_authorization,
+              "inherited v3 review cannot approve v4",
+          )
+          expect_fail(
+              "review-authorization-collision-rejected",
+              fresh_review,
+              fresh_review,
+              "review and execution authorization must be separate records",
+          )
+          expect_fail(
+              "consumed-v3-authorization-still-rejected",
+              fresh_review,
+              consumed_authorization,
+              "consumed v3 authorization cannot be reused",
+          )
+          result = run_case(fresh_review, fresh_authorization)
+          assert result["status"] == "STRUCTURALLY_BOUND_FRESH_REVIEW_AND_AUTHORIZATION_REQUIRED"
+          print("PASS distinct-fresh-looking-review-and-authorization-accepted-by-new-checks")
+          PY
+      - name: Audit non-behavioral result
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          import os
+          import pathlib
+          import subprocess
+          import xml.etree.ElementTree as ET
+
+          out = pathlib.Path(os.environ["OUT"])
+          xml = out / "TEST-com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest.xml"
+          suite = ET.parse(xml).getroot()
+          cases = suite.findall("testcase")
+          assert suite.attrib["name"] == "com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest"
+          assert len(cases) == 2
+          assert not any(c.find("failure") is not None or c.find("error") is not None or c.find("skipped") is not None for c in cases)
+          log = (out / "freshness-harness.log").read_text()
+          for marker in (
+              "PASS inherited-v3-review-rejected",
+              "PASS review-authorization-collision-rejected",
+              "PASS consumed-v3-authorization-still-rejected",
+              "PASS distinct-fresh-looking-review-and-authorization-accepted-by-new-checks",
+          ):
+              assert marker in log, marker
+          def git(*args):
+              return subprocess.check_output(["git", *args], text=True).strip()
+          plan = json.loads(pathlib.Path("docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json").read_text())
+          assert plan["planner_identity"]["expected_rows"] == 34912840
+          assert plan["planner_identity"]["plan_sha256"] == "bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71"
+          result = {
+              "scope": "V4_1_VERIFIER_FRESHNESS_AND_EXISTING_REGISTRY_PREFLIGHT_ONLY",
+              "source_head": "b472c3f8fe3f3e724614e080d529e2868209fb96",
+              "source_tree": git("rev-parse", "HEAD^{tree}"),
+              "parent": git("rev-parse", "HEAD^"),
+              "old_verifier_blob": "9ff8c7f8cb7dd1ee004aad4529f9668e37a361d8",
+              "new_verifier_blob": git("rev-parse", "HEAD:scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py"),
+              "changed_paths": ["scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py"],
+              "preflight_tests": 2,
+              "preflight_failures": 0,
+              "inherited_v3_review_rejected": True,
+              "review_authorization_collision_rejected": True,
+              "consumed_v3_authorization_rejected": True,
+              "distinct_fresh_records_pass_new_checks": True,
+              "expected_rows": 34912840,
+              "plan_sha256": "bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71",
+              "accepted_truth_loaded": False,
+              "raw_controller_invoked": False,
+              "lawful_actor_invoked": False,
+              "production_comparator_invoked": False,
+              "complete_bank_dispatched": False,
+              "game_initializer_invoked": False,
+              "official_counters_delta": 0,
+          }
+          (out / "result.json").write_text(json.dumps(result, sort_keys=True) + "\n")
+          PY
+      - name: Preserve v4.1 non-behavioral validation evidence
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v4-1-review-freshness-${{ github.run_id }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
