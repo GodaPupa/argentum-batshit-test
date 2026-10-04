@@ -1,0 +1,122 @@
+name: Pest Phase-B registry-complete exact complete-bank v4 behavioral candidate
+on:
+  push:
+    branches: ["pest/phase-b-complete-bank-v4-execute-20261004"]
+    paths: ["docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_V4_EXECUTION_MARKER_20261004.json"]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  phase-b:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-phase-b-complete-gradle-v4-20261004
+      PEST_PHASE_B_INPUT_ROOT: /tmp/pest-phase-b-accepted-inputs-v4-20261004
+      PEST_PHASE_B_EVIDENCE_ROOT: /tmp/pest-phase-b-complete-evidence-v4-20261004
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact fresh review, gate disposition and separate authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(uname -m)" = x86_64
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py             --plan docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json --mode execution
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$PEST_PHASE_B_INPUT_ROOT" && test ! -L "$PEST_PHASE_B_INPUT_ROOT"
+          test ! -e "$PEST_PHASE_B_EVIDENCE_ROOT" && test ! -L "$PEST_PHASE_B_EVIDENCE_ROOT"
+          mkdir "$PEST_PHASE_B_INPUT_ROOT" "$PEST_PHASE_B_EVIDENCE_ROOT"
+          git rev-parse HEAD HEAD^{tree} > "$PEST_PHASE_B_EVIDENCE_ROOT/source.txt"
+          git ls-tree -r HEAD > "$PEST_PHASE_B_EVIDENCE_ROOT/source-tree.txt"
+          "$JAVA_HOME/bin/java" -version 2> "$PEST_PHASE_B_EVIDENCE_ROOT/java-version.txt"
+      - name: Re-run exact non-behavioral registry preflight before truth materialization
+        shell: bash
+        run: |
+          set -euo pipefail
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py             --plan docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json --mode execution
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :gym:test             --tests com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest
+      - name: Materialize only accepted immutable truth inputs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py             --plan docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json --mode execution
+          for spec in "base 11080047971 8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f" "supplement 11088938274 1bbe8b92f01e69cd679b36375ef4168893267e783441ba5d1b81c76166f0cf4a"; do
+            set -- $spec; label=$1; artifact=$2; digest=$3
+            dir="$PEST_PHASE_B_INPUT_ROOT/$label"
+            mkdir "$dir"
+            curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json'               "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact/zip" -o "$dir/artifact.zip"
+            unzip -t "$dir/artifact.zip" >/dev/null
+            mkdir "$dir/unpacked"
+            unzip -q "$dir/artifact.zip" -d "$dir/unpacked"
+            LABEL="$label" DIGEST="$digest" ROOT="$dir/unpacked" /usr/bin/python3.10 -I -S - <<'PY'
+          import hashlib,os,pathlib
+          root=pathlib.Path(os.environ['ROOT']).resolve()
+          digest=os.environ['DIGEST']; label=os.environ['LABEL']
+          matches=[]
+          for p in root.rglob('*'):
+              if p.is_symlink(): raise SystemExit('symlink in accepted artifact: '+str(p))
+              if not p.is_file(): continue
+              h=hashlib.sha256(p.read_bytes()).hexdigest()
+              if h==digest: matches.append(p)
+          assert len(matches)==1,(label,digest,[str(p) for p in matches])
+          target=root.parent/(label+'.accepted.json')
+          target.write_bytes(matches[0].read_bytes())
+          os.chmod(target,0o444)
+          print(label,str(target),digest)
+          PY
+          done
+          echo "PEST_PHASE_B_ACCEPTED_BASE=$PEST_PHASE_B_INPUT_ROOT/base/base.accepted.json" >> "$GITHUB_ENV"
+          echo "PEST_PHASE_B_ACCEPTED_SUPPLEMENT=$PEST_PHASE_B_INPUT_ROOT/supplement/supplement.accepted.json" >> "$GITHUB_ENV"
+          echo "PEST_PHASE_B_RUN_ID=phase-b-v4-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT" >> "$GITHUB_ENV"
+          echo "PEST_PHASE_B_SOURCE_COMMIT=$GITHUB_SHA" >> "$GITHUB_ENV"
+      - name: Execute exactly one complete frozen-bank original
+        shell: bash
+        run: |
+          set -euo pipefail
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_complete_bank_gate_v4.py             --plan docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json --mode execution
+          date -u +%s > "$PEST_PHASE_B_EVIDENCE_ROOT/test-start.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain --info :gym:test             --tests com.wingedsheep.gym.pest.PestPhaseBProductionBankExecutionTest             2>&1 | tee "$PEST_PHASE_B_EVIDENCE_ROOT/tests.log"
+          date -u +%s > "$PEST_PHASE_B_EVIDENCE_ROOT/test-end.txt"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBProductionBankExecutionTest.xml             "$PEST_PHASE_B_EVIDENCE_ROOT/"
+          /usr/bin/python3.10 -I -S - <<'PY'
+          import json,os,pathlib,xml.etree.ElementTree as ET
+          root=pathlib.Path(os.environ['PEST_PHASE_B_EVIDENCE_ROOT'])
+          xml=root/'TEST-com.wingedsheep.gym.pest.PestPhaseBProductionBankExecutionTest.xml'
+          suite=ET.parse(xml).getroot()
+          assert suite.attrib['name']=='com.wingedsheep.gym.pest.PestPhaseBProductionBankExecutionTest'
+          assert int(suite.attrib['tests'])==1
+          assert all(int(suite.attrib[k])==0 for k in ('failures','errors','skipped'))
+          summaries=list(root.glob('phase-b-v4-*/summary.json'))
+          assert len(summaries)==1
+          summary=json.loads(summaries[0].read_text())
+          assert summary['expected_rows']==34912840 and summary['completed_rows']==34912840
+          assert summary['mismatches']==0 and summary['unknowns']==0 and summary['exceptions']==0
+          assert summary['plan_sha256']=='bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71'
+          (root/'workflow-result.json').write_text(json.dumps({
+            'authority':'PHASE_B_V4_ORIGINAL_FOR_SEPARATE_AUDIT_ONLY',
+            'expected_rows':34912840,'completed_rows':34912840,
+            'mismatches':0,'unknowns':0,'exceptions':0,
+            'plan_sha256':summary['plan_sha256'],'official_counters_delta':0
+          },sort_keys=True)+'\n')
+          PY
+      - name: Preserve complete or incomplete original
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-complete-bank-v4-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            /tmp/pest-phase-b-complete-evidence-v4-20261004/
+            docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json
+            docs/experiments/pest-control/evidence/PHASE_B_COMPLETE_BANK_GATE_V4_ACCEPTANCE_20261004.json
+            docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_V4_EXECUTION_MARKER_20261004.json
+          if-no-files-found: error
+          retention-days: 90
