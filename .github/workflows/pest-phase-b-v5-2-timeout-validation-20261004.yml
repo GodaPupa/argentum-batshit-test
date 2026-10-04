@@ -1,0 +1,175 @@
+name: Pest Phase-B v5.2 timeout repair validation only
+on:
+  push:
+    branches: ["validation/pest-phase-b-v5-2-timeout-repair-20261004"]
+    paths: [".github/workflows/pest-phase-b-v5-2-timeout-validation-20261004.yml"]
+permissions:
+  contents: read
+  actions: read
+
+jobs:
+  structure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-v5-2-timeout-structure-gradle-20261004
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 1fb3aac31a895d509aab7c729a7eaec9627c7c76
+          fetch-depth: 0
+      - name: Verify exact frozen candidate structure
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD)" = "1fb3aac31a895d509aab7c729a7eaec9627c7c76"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5_2.py \
+            --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json \
+            --mode implementation --implementation 1fb3aac31a895d509aab7c729a7eaec9627c7c76
+      - name: Compile repaired shard test without executing it
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain :gym:compileTestKotlin
+
+  representative-shard:
+    needs: structure
+    runs-on: ubuntu-latest
+    timeout-minutes: 220
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-v5-2-timeout-representative-gradle-20261004
+      PEST_PHASE_B_INPUT_ROOT: /tmp/pest-v5-2-timeout-representative-inputs-20261004
+      PEST_PHASE_B_EVIDENCE_ROOT: /tmp/pest-v5-2-timeout-representative-evidence-20261004
+      PEST_PHASE_B_SHARD_INDEX: "10"
+      PEST_PHASE_B_EXPECTED_SHARD_ROWS: "1091026"
+      PEST_PHASE_B_EXPECTED_SHARD_PLAN_SHA256: be146685f6ee8581327b76b73def9acf453adcf6b7b20da1ad3e0dfb5aa201ed
+      PEST_PHASE_B_SOURCE_COMMIT: 1fb3aac31a895d509aab7c729a7eaec9627c7c76
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: 1fb3aac31a895d509aab7c729a7eaec9627c7c76
+          fetch-depth: 0
+      - name: Prove validation-only boundary and initialize evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$GITHUB_REF" = "refs/heads/validation/pest-phase-b-v5-2-timeout-repair-20261004"
+          test "$GITHUB_REF" != "refs/heads/pest/phase-b-sharded-v5-2-execute-20261004"
+          test "$(git rev-parse HEAD)" = "$PEST_PHASE_B_SOURCE_COMMIT"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5_2.py \
+            --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_2_20261004.json \
+            --mode implementation --implementation "$PEST_PHASE_B_SOURCE_COMMIT"
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e "$PEST_PHASE_B_INPUT_ROOT" && test ! -L "$PEST_PHASE_B_INPUT_ROOT"
+          test ! -e "$PEST_PHASE_B_EVIDENCE_ROOT" && test ! -L "$PEST_PHASE_B_EVIDENCE_ROOT"
+          mkdir "$PEST_PHASE_B_INPUT_ROOT" "$PEST_PHASE_B_EVIDENCE_ROOT"
+          printf "%s\n" "TIMEOUT_REPAIR_VALIDATION_ONLY_NO_EXECUTION_AUTHORITY" > "$PEST_PHASE_B_EVIDENCE_ROOT/authority.txt"
+          git rev-parse HEAD HEAD^{tree} > "$PEST_PHASE_B_EVIDENCE_ROOT/candidate-source.txt"
+          "$JAVA_HOME/bin/java" -version 2> "$PEST_PHASE_B_EVIDENCE_ROOT/java-version.txt"
+          echo "PEST_PHASE_B_RUN_ID=phase-b-v5-2-timeout-validation-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT-shard-10" >> "$GITHUB_ENV"
+      - name: Materialize exact accepted immutable truth inputs for representative validation
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for spec in \
+            "base 11080047971 8d7e3e97a4dc70aab696b2d27012e410d57598d477f7b97689f4de5b442f348f" \
+            "supplement 11088938274 1bbe8b92f01e69cd679b36375ef4168893267e783441ba5d1b81c76166f0cf4a"; do
+            set -- $spec; label=$1; artifact=$2; digest=$3
+            dir="$PEST_PHASE_B_INPUT_ROOT/$label"
+            mkdir "$dir"
+            curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" \
+              "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact/zip" -o "$dir/artifact.zip"
+            unzip -t "$dir/artifact.zip" >/dev/null
+            mkdir "$dir/unpacked"
+            unzip -q "$dir/artifact.zip" -d "$dir/unpacked"
+            LABEL="$label" DIGEST="$digest" ROOT="$dir/unpacked" /usr/bin/python3.10 -I -S - <<'PY'
+import hashlib, os, pathlib
+root=pathlib.Path(os.environ["ROOT"]).resolve()
+digest=os.environ["DIGEST"]; label=os.environ["LABEL"]
+matches=[]
+for p in root.rglob("*"):
+    if p.is_symlink(): raise SystemExit("symlink in accepted artifact: "+str(p))
+    if not p.is_file(): continue
+    if hashlib.sha256(p.read_bytes()).hexdigest()==digest: matches.append(p)
+assert len(matches)==1,(label,digest,[str(p) for p in matches])
+target=root.parent/(label+".accepted.json")
+target.write_bytes(matches[0].read_bytes())
+os.chmod(target,0o444)
+PY
+          done
+          echo "PEST_PHASE_B_ACCEPTED_BASE=$PEST_PHASE_B_INPUT_ROOT/base/base.accepted.json" >> "$GITHUB_ENV"
+          echo "PEST_PHASE_B_ACCEPTED_SUPPLEMENT=$PEST_PHASE_B_INPUT_ROOT/supplement/supplement.accepted.json" >> "$GITHUB_ENV"
+      - name: Execute one representative shard only for timeout-repair validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          date -u +%s > "$PEST_PHASE_B_EVIDENCE_ROOT/test-start.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain --info :gym:test \
+            --tests com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest \
+            2>&1 | tee "$PEST_PHASE_B_EVIDENCE_ROOT/tests.log"
+          date -u +%s > "$PEST_PHASE_B_EVIDENCE_ROOT/test-end.txt"
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest.xml \
+            "$PEST_PHASE_B_EVIDENCE_ROOT/"
+      - name: Audit representative completion without creating execution authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          /usr/bin/python3.10 -I -S - <<'PY'
+import json, os, pathlib, xml.etree.ElementTree as ET
+root=pathlib.Path(os.environ["PEST_PHASE_B_EVIDENCE_ROOT"])
+run_id=os.environ["PEST_PHASE_B_RUN_ID"]
+xml=root/"TEST-com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest.xml"
+suite=ET.parse(xml).getroot()
+assert suite.attrib["name"]=="com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest"
+assert int(suite.attrib["tests"])==1
+assert all(int(suite.attrib[k])==0 for k in ("failures","errors","skipped"))
+summary=json.loads((root/run_id/"summary.json").read_text())
+partition=json.loads((root/run_id/"partition.json").read_text())
+assert summary["expected_rows"]==1091026==summary["completed_rows"]==summary["matches"]
+assert summary["mismatches"]==summary["unknowns"]==summary["exceptions"]==0
+assert summary["plan_sha256"]=="be146685f6ee8581327b76b73def9acf453adcf6b7b20da1ad3e0dfb5aa201ed"
+assert partition["shard_index"]==10 and partition["shard_count"]==32
+assert partition["global_plan_sha256"]=="bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71"
+start=int((root/"test-start.txt").read_text()); end=int((root/"test-end.txt").read_text())
+result={
+  "schema":"pest-phase-b-v5-2-timeout-repair-validation-v1",
+  "authority":"VALIDATION_ONLY_NO_EXECUTION_OR_PARITY_AUTHORITY",
+  "candidate_commit":os.environ["PEST_PHASE_B_SOURCE_COMMIT"],
+  "shard_index":10,
+  "expected_rows":summary["expected_rows"],
+  "completed_rows":summary["completed_rows"],
+  "matches":summary["matches"],
+  "mismatches":summary["mismatches"],
+  "unknowns":summary["unknowns"],
+  "exceptions":summary["exceptions"],
+  "wall_seconds_gradle_step":end-start,
+  "old_v5_1_same_shard_timeout_ms":600000,
+  "official_counters_delta":0
+}
+(root/"validation-result.json").write_text(json.dumps(result,sort_keys=True)+"\n")
+print(json.dumps(result,sort_keys=True))
+PY
+      - name: Preserve timeout-repair validation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-v5-2-timeout-repair-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-v5-2-timeout-representative-evidence-20261004/
+          if-no-files-found: error
+          retention-days: 90
