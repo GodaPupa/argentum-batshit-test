@@ -1,0 +1,133 @@
+name: Manual generalized Encore engine qualification
+on:
+  push:
+    branches: [validation/manual-encore-engine-20261003]
+    paths: [.github/workflows/manual-encore-engine-qualification-20261003.yml]
+permissions:
+  contents: read
+concurrency:
+  group: manual-encore-engine-qualification
+  cancel-in-progress: false
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+      OUT: /tmp/manual-encore-engine-${{ github.run_id }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 3
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Bind exact source-only candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,subprocess
+          out=pathlib.Path(os.environ['OUT'])
+          def git(*args): return subprocess.check_output(['git',*args],text=True).strip()
+          source='5cbe0caed93c73646d0b859b635bf38260a9f570'
+          parent='6744ceda270bd704b2d79f915267b6607efcde26'
+          workflow='.github/workflows/manual-encore-engine-qualification-20261003.yml'
+          expected={
+            'mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/TokenEffects.kt':'20b5b229c40e52471fa521bc18ecdb9838c69931',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/combat/CombatComponents.kt':'c58426238403b7994dd19d93aae9d3a2a72b564f',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/AttackPhaseManager.kt':'a726400214f397e569435fb682bc88179e403b9f',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CleanupPhaseManager.kt':'d59d9f9a94b7e5f8cbeda1095f3dea255c3d5c8a',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenExecutors.kt':'81b799d5a1365131c8be4a3036d3a606e2908ae0',
+            'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/EncoreCopiesExecutor.kt':'c6119eacfe16d666d3aecaf043a05b808d1b5bfa',
+            'rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/encore/EncoreEngineTest.kt':'c0f2287a3f0f851adf2c63fff6af3e8d4c54f1af',
+          }
+          assert git('rev-parse','HEAD')==os.environ['GITHUB_SHA']
+          assert git('rev-parse','HEAD^')==source
+          assert git('rev-parse',source+'^')==parent
+          assert git('rev-parse',source+'^{tree}')=='5c13f496194e816e2aab1b0fb046859ccd3daadd'
+          assert git('diff','--name-only',source,'HEAD').splitlines()==[workflow]
+          assert git('diff','--name-only',parent,source).splitlines()==sorted(expected)
+          for p,b in expected.items(): assert git('hash-object',p)==b,(p,git('hash-object',p),b)
+          (out/'source-binding.json').write_text(json.dumps({
+            'source_head':source,'source_tree':git('rev-parse',source+'^{tree}'),
+            'parent_live':parent,'source_blobs':expected,
+            'official_counters_delta':{'allocations':0,'claims':0,'games':0,'outcomes':0},
+          },indent=2)+'\n')
+          PY
+      - name: Configure validation-only execution without coverage instrumentation
+        shell: bash
+        run: |
+          cat > "$OUT/no-coverage.gradle" <<'GRADLE'
+          allprojects { p ->
+            p.plugins.withId('org.jetbrains.kotlinx.kover') {
+              p.extensions.getByName('kover').currentProject {
+                instrumentation { disabledForAll.set(true) }
+              }
+            }
+          }
+          GRADLE
+      - name: Run Encore and shared attacking-token regressions
+        shell: bash
+        run: |
+          set -uo pipefail
+          set +e
+          bash scripts/gradle-locked --init-script "$OUT/no-coverage.gradle" --no-daemon --no-configuration-cache \
+            --console=plain --continue --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            :rules-engine:test --tests com.wingedsheep.engine.mechanics.encore.EncoreEngineTest \
+            --tests com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest \
+            2>&1 | tee "$OUT/qualification.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$OUT/gradle-exit-code.txt"
+          exit "$rc"
+      - name: Audit actual cases
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib,shutil,xml.etree.ElementTree as ET
+          out=pathlib.Path(os.environ['OUT']); out.mkdir(parents=True,exist_ok=True)
+          suites={
+            'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mechanics.encore.EncoreEngineTest.xml':5,
+            'rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.handlers.effects.token.AttackingTokenDefenderChoiceTest.xml':14,
+          }
+          rows=[]
+          for name,count in suites.items():
+            p=pathlib.Path(name); row={'path':name,'expected':count,'missing':not p.exists(),'cases':[]}
+            if p.exists():
+              shutil.copyfile(p,out/p.name)
+              row['xml_sha256']=hashlib.sha256(p.read_bytes()).hexdigest()
+              row['cases']=[{'name':c.attrib['name'],'failure':c.find('failure') is not None,
+                'error':c.find('error') is not None,'skipped':c.find('skipped') is not None}
+                for c in ET.parse(p).getroot().findall('testcase')]
+            rows.append(row)
+          (out/'actual-cases.json').write_text(json.dumps(rows,indent=2)+'\n')
+          assert all(not r['missing'] and len(r['cases'])==r['expected'] for r in rows),rows
+          assert all(len({c['name'] for c in r['cases']})==r['expected'] for r in rows),rows
+          assert not any(c['failure'] or c['error'] or c['skipped'] for r in rows for c in r['cases']),rows
+          assert (out/'gradle-exit-code.txt').read_text().strip()=='0'
+          PY
+      - name: Digest evidence
+        if: always()
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib,json,os,pathlib
+          out=pathlib.Path(os.environ['OUT'])
+          (out/'evidence-sha256.json').write_text(json.dumps({
+            str(p.relative_to(out)):hashlib.sha256(p.read_bytes()).hexdigest()
+            for p in sorted(out.rglob('*')) if p.is_file() and p.name!='evidence-sha256.json'
+          },indent=2)+'\n')
+          PY
+      - if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: manual-encore-engine-${{ github.run_id }}
+          path: ${{ env.OUT }}/
+          if-no-files-found: error
+          retention-days: 90
