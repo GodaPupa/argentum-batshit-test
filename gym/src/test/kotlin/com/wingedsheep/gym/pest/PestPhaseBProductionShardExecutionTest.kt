@@ -3,13 +3,14 @@ package com.wingedsheep.gym.pest
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import java.nio.file.Path
+import kotlin.time.Duration.Companion.hours
 
 /**
  * Prospective single-shard entrypoint. A future reviewed aggregate gate must supply every input,
  * shard identity and evidence path. This test grants no execution authority by itself.
  */
 class PestPhaseBProductionShardExecutionTest : FunSpec({
-    test("execute exactly one frozen deterministic Phase-B shard") {
+    test("execute exactly one frozen deterministic Phase-B shard").config(timeout = 3.hours) {
         fun required(name: String): String =
             requireNotNull(System.getenv(name)?.takeIf { it.isNotBlank() }) { "Missing $name" }
 
