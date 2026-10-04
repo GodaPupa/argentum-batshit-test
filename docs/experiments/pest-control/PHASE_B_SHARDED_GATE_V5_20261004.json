@@ -278,5 +278,18 @@
     "No receipt or marker authority from source validation or source review alone.",
     "Consumed v3 and v4.1 authorizations are permanently non-reusable.",
     "No gameplay, seed generation, allocation, claim, pilot admission, game, or outcome authority."
-  ]
+  ],
+  "global_one_original": {
+    "workflow_path": ".github/workflows/pest-phase-b-sharded-v5-20261004.yml",
+    "execution_ref": "refs/heads/pest/phase-b-sharded-v5-execute-20261004",
+    "execution_branch": "pest/phase-b-sharded-v5-execute-20261004",
+    "event": "push",
+    "required_run_attempt": 1,
+    "required_run_number": 1,
+    "maximum_matching_runs": 1,
+    "inventory_per_page": 100,
+    "concurrency_group": "pest-phase-b-v5-single-aggregate-original-20261004",
+    "cancel_in_progress": false,
+    "policy": "The current run must be workflow run_number 1 and the sole exact-workflow/execution-branch push run returned by GitHub Actions history. Any prior, competing, rerun, deleted-history run-number advance, pagination ambiguity, API failure, or additional matching run fails closed before accepted truth or behavioral shard execution."
+  }
 }
