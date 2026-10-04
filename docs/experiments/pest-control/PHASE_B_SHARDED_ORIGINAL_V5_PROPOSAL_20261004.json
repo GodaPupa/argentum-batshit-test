@@ -1,0 +1,87 @@
+{
+  "schema": "pest-phase-b-sharded-original-v5-proposal-v1",
+  "date_utc": "2026-10-04",
+  "authority": "DESIGN_ONLY_NO_EXECUTION_AUTHORITY",
+  "base_candidate": {
+    "branch": "candidate/pest-phase-b-v5-m4-journal-repair-20261004",
+    "head": "d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a",
+    "base_v4_1": "b472c3f8fe3f3e724614e080d529e2868209fb96"
+  },
+  "motivating_original": {
+    "run": 37187075370,
+    "artifact": 11305795411,
+    "artifact_sha256": "66a57dd7fcf08646e1d2b9cd860ead91ac8c9cc3e0a67384c9648b18d88a09a3",
+    "completed_prefix_rows": 5025285,
+    "expected_rows": 34912840,
+    "elapsed_limit_hours": 6,
+    "conclusion": "cancelled",
+    "preserved_mismatches": 2176,
+    "disposition": "INCOMPLETE_REJECT_FOR_PARITY__AUTHORIZATION_CONSUMED"
+  },
+  "global_plan": {
+    "rows": 34912840,
+    "sha256": "bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71"
+  },
+  "geometry": {
+    "aggregate_originals": 1,
+    "shard_count": 32,
+    "partition_rule": "global_zero_based_row_ordinal_mod_32_equals_shard_index",
+    "shard_indices": "0..31",
+    "expected_rows": {
+      "shards_0_through_7": 1091027,
+      "shards_8_through_31": 1091026,
+      "sum": 34912840
+    },
+    "ordering": "Each shard preserves the original global planner order after filtering by the partition rule.",
+    "rationale": "At v4.1 observed prefix throughput, one monolithic job cannot finish inside the six-hour job limit. Thirty-two fixed shards put about 1.09M behavioral rows in each job and leave substantial timeout margin."
+  },
+  "original_semantics": {
+    "consumption": "A future separately authorized aggregate original is consumed when the first behavioral shard begins. All 32 shards belong to that one aggregate original.",
+    "reruns": "No shard retry, matrix retry, replacement shard, replacement aggregate original, second marker chain, or rerun is permitted after behavioral execution begins.",
+    "missing_shard": "Any missing, cancelled, timed-out, failed, or incomplete shard makes the aggregate original incomplete and non-qualifying.",
+    "source_binding": "Every shard must bind the same exact implementation, tree, gate, review digest, authorization digest, accepted truth digests, global plan identity and aggregate run identity.",
+    "official_counters_delta": 0
+  },
+  "shard_evidence": {
+    "required_claim_fields": [
+      "aggregate_run_id",
+      "shard_index",
+      "shard_count",
+      "expected_shard_rows",
+      "global_plan_sha256",
+      "shard_plan_sha256",
+      "source_commit",
+      "review_record_sha256",
+      "execution_authorization_record_sha256"
+    ],
+    "shard_plan_identity": "A nonbehavioral preflight must compute all 32 shard row counts and SHA-256 digests in one deterministic pass over the frozen global plan before any future execution authorization.",
+    "journal": "Each shard preserves its own durable row journal. The journal repair must record non-null lawful keep/bottom values exactly rather than overwriting them with UNKNOWN.",
+    "preservation": "Each shard artifact is uploaded with if: always(). A complete shard additionally emits a small signed-by-content summary artifact; raw journals remain separate for exact audit."
+  },
+  "aggregate_acceptance": [
+    "exactly 32 distinct shard indices 0..31",
+    "all 32 shards complete",
+    "each shard completed_rows equals its prospectively frozen expected_shard_rows",
+    "sum completed_rows equals 34,912,840",
+    "all shard plan SHA-256 values equal the prospectively frozen per-shard identities",
+    "all shards bind the same exact reviewed source/gate/review/authorization/input identities",
+    "sum mismatches equals 0",
+    "sum unknowns equals 0",
+    "sum exceptions equals 0",
+    "global plan SHA-256 equals bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71"
+  ],
+  "required_before_execution": [
+    "v5 M4 and journal repair validation",
+    "fresh independent source review of the exact semantic repair",
+    "implementation and nonbehavioral validation of the 32-shard geometry and aggregation gate",
+    "fresh independent review of the exact sharded execution gate",
+    "new explicit one-time user execution authorization bound to the final exact implementation/gate"
+  ],
+  "prohibited": [
+    "treating this proposal as execution authority",
+    "reusing the consumed v4.1 authorization",
+    "reusing the v4.1 marker or execution branch",
+    "behavioral execution before a fresh reviewed gate and new explicit authorization",
+    "gameplay, seed generation, allocation, claim, game or outcome exposure"
+  ]
+}
