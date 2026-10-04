@@ -7,6 +7,10 @@ permissions:
   contents: read
   actions: read
 
+concurrency:
+  group: pest-phase-b-v5-single-aggregate-original-20261004
+  cancel-in-progress: false
+
 jobs:
   preflight:
     runs-on: ubuntu-latest
@@ -17,6 +21,7 @@ jobs:
     env:
       JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
       GRADLE_USER_HOME: /tmp/pest-phase-b-v5-preflight-gradle-20261004
+      PEST_PHASE_B_RUN_HISTORY_ROOT: /tmp/pest-phase-b-v5-run-history-${{ github.run_id }}-${{ github.run_attempt }}
       TZ: UTC
     steps:
       - uses: actions/checkout@v6
@@ -29,6 +34,49 @@ jobs:
           test "$(uname -m)" = x86_64
           /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py \
             --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json --mode execution
+      - name: Enforce global one-aggregate-original workflow history
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          test ! -e "$PEST_PHASE_B_RUN_HISTORY_ROOT" && test ! -L "$PEST_PHASE_B_RUN_HISTORY_ROOT"
+          mkdir "$PEST_PHASE_B_RUN_HISTORY_ROOT"
+          curl -L --fail --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            -D "$PEST_PHASE_B_RUN_HISTORY_ROOT/current-run.headers" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID" \
+            -o "$PEST_PHASE_B_RUN_HISTORY_ROOT/current-run.json"
+          WORKFLOW_ID=$(/usr/bin/python3.10 -I -S - <<'PY'
+          import json, os, pathlib
+          p=pathlib.Path(os.environ["PEST_PHASE_B_RUN_HISTORY_ROOT"])/"current-run.json"
+          value=json.loads(p.read_text())["workflow_id"]
+          assert type(value) is int and value > 0
+          print(value)
+          PY
+          )
+          curl -L --fail --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            -D "$PEST_PHASE_B_RUN_HISTORY_ROOT/run-inventory.headers" \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/workflows/$WORKFLOW_ID/runs?branch=pest%2Fphase-b-sharded-v5-execute-20261004&event=push&per_page=100" \
+            -o "$PEST_PHASE_B_RUN_HISTORY_ROOT/run-inventory.json"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_phase_b_sharded_gate_v5.py \
+            --plan docs/experiments/pest-control/PHASE_B_SHARDED_GATE_V5_20261004.json \
+            --mode run-history \
+            --current-run "$PEST_PHASE_B_RUN_HISTORY_ROOT/current-run.json" \
+            --run-inventory "$PEST_PHASE_B_RUN_HISTORY_ROOT/run-inventory.json" \
+            --inventory-headers "$PEST_PHASE_B_RUN_HISTORY_ROOT/run-inventory.headers" \
+            | tee "$PEST_PHASE_B_RUN_HISTORY_ROOT/guard-result.json"
+
+      - name: Preserve global run-history guard evidence before behavior
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v5-run-history-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ env.PEST_PHASE_B_RUN_HISTORY_ROOT }}/
+          if-no-files-found: error
+          retention-days: 90
+
       - name: Re-run registry preflight without accepted truth
         shell: bash
         run: |
