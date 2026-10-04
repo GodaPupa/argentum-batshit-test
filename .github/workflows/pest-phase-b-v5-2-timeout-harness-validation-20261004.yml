@@ -1,0 +1,112 @@
+name: Pest Phase-B v5.2 timeout-harness nonbehavioral validation
+on:
+  push:
+    branches: ["validation/pest-phase-b-v5-2-timeout-harness-20261004"]
+    paths: [".github/workflows/pest-phase-b-v5-2-timeout-harness-validation-20261004.yml"]
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-phase-b-v5-2-timeout-validation-gradle-20261004
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact clean candidate delta and timeout geometry
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "8a5989a2a5a6e1f7a807dc025dba60f69be69e5e"
+          test "$(git rev-list --count b5402d973979428008ed2703e8737bae61a38c19..8a5989a2a5a6e1f7a807dc025dba60f69be69e5e)" = "1"
+          mapfile -t changed < <(git diff --name-only b5402d973979428008ed2703e8737bae61a38c19 8a5989a2a5a6e1f7a807dc025dba60f69be69e5e)
+          test "${#changed[@]}" = "1"
+          test "${changed[0]}" = "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardExecutionTest.kt"
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardExecutionTest.kt")
+          s=p.read_text()
+          assert "import kotlin.time.Duration.Companion.hours" in s
+          assert '.config(timeout = 3.hours)' in s
+          assert 3*60*60 > 600
+          assert 3*60 < 240
+          print("TIMEOUT_GEOMETRY_OK: test=10800s > kotest_default=600s and test=180m < job=240m")
+          PY
+
+      - name: Compile exact candidate test source without executing Phase-B
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :gym:compileTestKotlin
+
+      - name: Prove Kotest per-test timeout override is honored using transient nonbehavioral sentinel
+        shell: bash
+        run: |
+          set -euo pipefail
+          sentinel="gym/src/test/kotlin/com/wingedsheep/gym/pest/PestTimeoutOverrideSentinelValidationTest.kt"
+          cat > "$sentinel" <<'KOTLIN'
+          package com.wingedsheep.gym.pest
+
+          import io.kotest.core.spec.style.FunSpec
+          import kotlin.time.Duration.Companion.seconds
+
+          class PestTimeoutOverrideSentinelValidationTest : FunSpec({
+              test("per-test timeout override sentinel").config(timeout = 1.seconds) {
+                  Thread.sleep(2000)
+              }
+          })
+          KOTLIN
+          set +e
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :gym:test             --tests com.wingedsheep.gym.pest.PestTimeoutOverrideSentinelValidationTest             > /tmp/pest-timeout-sentinel.log 2>&1
+          rc=$?
+          set -e
+          cat /tmp/pest-timeout-sentinel.log
+          rm -f "$sentinel"
+          test "$rc" -ne 0
+          grep -E 'timed out waiting for 1000 ms|timed out waiting for 1s|1000ms' /tmp/pest-timeout-sentinel.log
+          ! grep -q '600000 ms' /tmp/pest-timeout-sentinel.log
+          echo "PER_TEST_TIMEOUT_OVERRIDE_RUNTIME_PROVEN"
+
+      - name: Preserve nonbehavioral validation record
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p timeout-validation
+          python3 - <<'PY'
+          import hashlib, json, pathlib, subprocess
+          p=pathlib.Path("gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardExecutionTest.kt")
+          record={
+            "schema":"pest-phase-b-v5-2-timeout-harness-nonbehavioral-validation-v1",
+            "authority":"NONBEHAVIORAL_VALIDATION_ONLY_NO_EXECUTION_AUTHORITY",
+            "predecessor":"b5402d973979428008ed2703e8737bae61a38c19",
+            "candidate":"8a5989a2a5a6e1f7a807dc025dba60f69be69e5e",
+            "candidate_test_blob":subprocess.check_output(["git","rev-parse","8a5989a2a5a6e1f7a807dc025dba60f69be69e5e:gym/src/test/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionShardExecutionTest.kt"],text=True).strip(),
+            "candidate_test_sha256":hashlib.sha256(p.read_bytes()).hexdigest(),
+            "configured_test_timeout_seconds":10800,
+            "observed_kotest_default_timeout_seconds":600,
+            "workflow_job_timeout_minutes":240,
+            "compile_only_phase_b":True,
+            "accepted_truth_loaded":False,
+            "phase_b_runner_executed":False,
+            "official_original_created":False,
+            "official_counters_delta":0
+          }
+          raw=(json.dumps(record,sort_keys=True,separators=(",",":"))+"\n").encode()
+          pathlib.Path("timeout-validation/record.json").write_bytes(raw)
+          pathlib.Path("timeout-validation/record.sha256").write_text(hashlib.sha256(raw).hexdigest()+"\n")
+          PY
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v5-2-timeout-harness-nonbehavioral-validation-${{ github.run_id }}
+          path: timeout-validation/
+          if-no-files-found: error
+          retention-days: 90
