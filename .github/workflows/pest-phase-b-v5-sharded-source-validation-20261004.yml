@@ -34,13 +34,13 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p /tmp/pest-phase-b-v5-sharded-source-validation
-          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:test \
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info :gym:test \
             --tests com.wingedsheep.gym.pest.PestPhaseBV5DiagnosticRegressionTest \
             --tests com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest \
             --tests com.wingedsheep.gym.pest.PestPhaseBShardGeometryTest \
             --tests com.wingedsheep.gym.pest.PestPhaseBShardPlanIdentityTest \
             2>&1 | tee /tmp/pest-phase-b-v5-sharded-source-validation/tests.log
-          grep '^PEST_PHASE_B_SHARD ' /tmp/pest-phase-b-v5-sharded-source-validation/tests.log > /tmp/pest-phase-b-v5-sharded-source-validation/shard-identities.txt
+          grep -F 'PEST_PHASE_B_SHARD index=' /tmp/pest-phase-b-v5-sharded-source-validation/tests.log | sed 's/^.*PEST_PHASE_B_SHARD /PEST_PHASE_B_SHARD /' > /tmp/pest-phase-b-v5-sharded-source-validation/shard-identities.txt
           test "$(wc -l < /tmp/pest-phase-b-v5-sharded-source-validation/shard-identities.txt)" -eq 32
       - name: Record source identity
         shell: bash
