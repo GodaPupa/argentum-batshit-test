@@ -67,11 +67,19 @@ internal class PestPhaseBComparisonJournal private constructor(
                 put("key", key)
                 put("disposition", result.disposition)
                 put("raw_keep", result.rawKeep)
-                result.lawfulKeep?.let { put("lawful_keep", it) } ?: put("lawful_keep", JsonPrimitive("UNKNOWN"))
+                if (result.lawfulKeep != null) {
+                    put("lawful_keep", result.lawfulKeep)
+                } else {
+                    put("lawful_keep", JsonPrimitive("UNKNOWN"))
+                }
                 put("raw_bottom", buildJsonArray { result.rawBottomIds.forEach { add(JsonPrimitive(it)) } })
-                result.lawfulBottomIds?.let { ids ->
-                    put("lawful_bottom", buildJsonArray { ids.forEach { add(JsonPrimitive(it)) } })
-                } ?: put("lawful_bottom", JsonPrimitive("UNKNOWN"))
+                if (result.lawfulBottomIds != null) {
+                    put("lawful_bottom", buildJsonArray {
+                        result.lawfulBottomIds.forEach { add(JsonPrimitive(it)) }
+                    })
+                } else {
+                    put("lawful_bottom", JsonPrimitive("UNKNOWN"))
+                }
                 put("keep_reason", result.keepReason)
                 put("bottom_reason", result.bottomReason)
             }, forceNow = result.disposition != "MATCH_ROW_ONLY_NOT_BANK_COVERAGE")
