@@ -1,0 +1,45 @@
+{
+  "schema": "sphinx-stage-e-whole-runner-minimal-integration-scope-v1",
+  "date_utc": "2026-10-01",
+  "authority": "PROSPECTIVE_SOURCE_SCOPE_ONLY_NO_EXECUTION_AUTHORITY",
+  "base_commit": "1651644ff0e638a0b5e77b26d9c670109b7defd2",
+  "accepted_engine_integration_original": {
+    "run": 36919339121,
+    "artifact": 11190744522,
+    "artifact_sha256": "9c876673e1f412954aab772f83e5a5f4567e28e5e8b35256428918eb729615d4",
+    "decision": "ACCEPT_SPHINX_ENGINE_FIXTURE_SIX_CASE_INTEGRATION_SCOPE_ONLY"
+  },
+  "governing_freeze": "sphinx-approach/STAGE_E_WHOLE_GAME_RUNNER_COLLECTOR_FREEZE_20260930.json",
+  "reuse_without_reopening": [
+    "SphinxStageEWholeActor fail-closed composition and previously reviewed component seams",
+    "SphinxStageEInitializedSeat/ActorAdapter masked ActorInput boundary",
+    "accepted Ponder transition journal/recovery/replay substrate",
+    "SphinxStageEWriteAheadJournal and FixtureReplay",
+    "SphinxStageEEngineFixture complete state/RNG/event codec/owner just qualified"
+  ],
+  "minimum_new_implementation": [
+    "Trusted runner composes exact frozen Stage-E own/opponent Deck bytes and explicit prospective fixture seed/starting seat into SphinxStageEEngineFixture.",
+    "Each decision builds only ActorInput for the current actor and routes through SphinxStageEWholeActor with current ActorEpoch; Unqualified is terminal CAPABILITY_STOP.",
+    "No raw GameState/seed/opponent hidden zones enter actor code; accepted actions alone cross back to trusted owner.",
+    "Collector pins source/deck/opponent/pilot/runtime identities, ordered accepted action records, stop class and terminal engine envelope.",
+    "Strict replay reconstructs initialization and accepted actions and requires every continuity envelope/hash to match."
+  ],
+  "required_negative_cases": [
+    "unqualified nonempty combat",
+    "ambiguous multiple accepted casts",
+    "stale ActorEpoch",
+    "changed frozen deck bytes",
+    "changed transition record",
+    "interrupted journal prefix",
+    "replay state drift",
+    "pilot hidden-information injection"
+  ],
+  "prohibited": [
+    "no fallback policy",
+    "no retry of consumed attempt",
+    "no official Stage-E allocation/game",
+    "no performance interpretation"
+  ],
+  "next_gate": "Implement only the missing trusted whole-runner/collector composition and deterministic qualification fixtures, compile, source-review changed bytes, then separately authorize one bounded whole-runner qualification original.",
+  "official_counters_delta": 0
+}

@@ -169,6 +169,7 @@ internal object SphinxStageEWholeActor {
             in interactionCounters -> SphinxStageEComponentCall.COUNTERSPELL
             in setupDraws -> SphinxStageEComponentCall.SETUP_DRAW
             in deployments -> SphinxStageEComponentCall.DEPLOYMENT
+            "Snap" -> SphinxStageEComponentCall.SNAP
             "Deem Inferior" -> SphinxStageEComponentCall.DEEM_INFERIOR
             else -> return unqualified(input, "No reviewed component routing for ${card.name}")
         }

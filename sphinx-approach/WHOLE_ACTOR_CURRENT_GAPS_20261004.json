@@ -1,0 +1,120 @@
+{
+  "schema": "sphinx-stage-e-whole-actor-current-gap-inventory-v1",
+  "date_utc": "2026-10-04",
+  "authority": "PROSPECTIVE_SOURCE_GAP_INVENTORY_ONLY_NO_EXECUTION_AUTHORITY",
+  "inventory_parent_head": "367f1b733af58a5400f084a28c32129b4389f0e5",
+  "accepted_snap_composition": {
+    "head": "e7cbd74976623d3a5ecbd7bf3fae4ea5ebcc416b",
+    "tree": "206b4258e32e2cb56d96abe6b4d0f46e020890d3",
+    "base": "ba630821dc2b33ff35d56bb87a7eac6e0ce12bd8",
+    "whole_actor_blob": "63ad03689f7ebe9551ea7ab3d344f1703ea9eb96",
+    "disposition": "ACCEPTABLE_FOR_SOURCE_COMPOSITION_SCOPE",
+    "pr_receiving_comment": 5975984634,
+    "reviewer_artifact_limitation": "Independent reviewer did not independently hash artifact 11197937489."
+  },
+  "prospective_binding": {
+    "path": "sphinx-approach/WHOLE_RUNNER_INPUT_BINDINGS_20261001.json",
+    "blob": "00f89bad2e943620064415e938a27e3beb82cd4b",
+    "authority": "PROSPECTIVE_BINDING_ONLY_NO_EXECUTION_AUTHORITY"
+  },
+  "current_source_blobs": {
+    "SphinxStageEWholeActor": "63ad03689f7ebe9551ea7ab3d344f1703ea9eb96",
+    "SphinxStageEInitializedSeat": "93ec8d40ab07b3b703e6e45b5324ac103e45d81b",
+    "SphinxStageEOpeningActor": "8be1831af807c77e0e45807eb248c1b99b172d28",
+    "SphinxStageEActorAdapter": "0c77037507e07c912cc034af5be067b13d301d0b",
+    "SphinxStageEVisibleChoice": "3ffb0c200de6f2e1f554f7296fe343a27788ba6c",
+    "SphinxStageEPonderMemory": "e3b164db3e8a24c8ed09683bfb266a939d6a6a08"
+  },
+  "current_routed_surfaces": [
+    "London KeepHand/TakeMulligan, BottomCards, and currently offered basic-Island PlayLand through SphinxStageEOpeningActor.",
+    "Actor-owned visible SelectCardsDecision/SearchLibraryDecision/ReorderLibraryDecision/YesNoDecision only for the source-bound policies implemented by SphinxStageEVisibleChoice; Ponder shuffle additionally requires accepted SphinxStageEPonderMemory.",
+    "No-cast forced empty DeclareAttackers and forced empty DeclareBlockers menus.",
+    "No-cast sole PassPriority menu.",
+    "Single or fail-closed multi-cast dispatch for Counterspell/Spell Pierce/Dispel via COUNTERSPELL; Mental Note/Thought Scour/Brainstorm/Ponder/Preordain/Lorien Revealed normal casts via SETUP_DRAW; Tolarian Terror/Cryptic Serpent/Goliath Sphinx via DEPLOYMENT; Snap via SNAP; Deem Inferior via DEEM_INFERIOR; Artful Dodge FLASHBACK via ARTFUL_DODGE_FLASHBACK; Sleep of the Dead ESCAPE via SLEEP_ESCAPE.",
+    "Multi-cast windows fail closed if any cast is unqualified; exactly one reviewed proposal may survive; more than one accepted proposal remains Unqualified rather than ranked."
+  ],
+  "exact_remaining_unqualified_or_incomplete_surfaces": [
+    {
+      "id": "GAP-OPPONENT-PACKAGES",
+      "surface": "Opponent package identities and mappings",
+      "state": "UNRESOLVED",
+      "detail": "No frozen Stage-E opponent deck packages are selected in the live Sphinx source or prior recorded decisions. Opponent-owned continuations and target/question coverage therefore cannot yet be declared complete."
+    },
+    {
+      "id": "GAP-APPROACH-CAST",
+      "surface": "Sphinx's Approach cast action",
+      "state": "UNQUALIFIED",
+      "detail": "WholeActor has source-bound Approach resolution choices in VisibleChoice but decideRoutedCast has no Sphinx's Approach card-name route, so the cast action itself remains Unqualified."
+    },
+    {
+      "id": "GAP-NONEMPTY-COMBAT",
+      "surface": "Nonempty attack/block declarations, combat assignment, and post-block priority",
+      "state": "UNQUALIFIED",
+      "detail": "WholeActor only proposes forced empty attackers/blockers. Nonempty combat and assignment remain outside the reviewed composition."
+    },
+    {
+      "id": "GAP-PRIORITY-MANA",
+      "surface": "Ordinary priority and mana/action scheduling",
+      "state": "UNQUALIFIED",
+      "detail": "PassPriority is composed only when it is the sole legal action. Menus containing other non-cast actions, mana-ability sequencing, and broader response scheduling remain unqualified."
+    },
+    {
+      "id": "GAP-LORIEN-CYCLING",
+      "surface": "Lorien Revealed landcycling activation",
+      "state": "UNQUALIFIED",
+      "detail": "Normal Lórien cast and its visible Island search policy exist, but the typecycling activation is not a CastSpell route in WholeActor."
+    },
+    {
+      "id": "GAP-ALT-COST",
+      "surface": "Alternative-cost coverage",
+      "state": "PARTIAL",
+      "detail": "Only exact Artful Dodge FLASHBACK and Sleep of the Dead ESCAPE graveyard routes are composed. Other alternative costs and normal hand casts of those identities are not inferred from those seams."
+    },
+    {
+      "id": "GAP-TYPED-QUESTIONS",
+      "surface": "Typed decisions outside current visible-choice kinds/sources",
+      "state": "UNQUALIFIED",
+      "detail": "ChooseOption and other decision kinds, unsupported source names/constraints, and typed continuations not handled by SelectCards/SearchLibrary/ReorderLibrary/YesNo remain Unqualified. This includes opponent-owned response continuations such as Deem Inferior placement choice and Spell Pierce pay/decline until opponent packages/policies are frozen."
+    },
+    {
+      "id": "GAP-MULTICAST-RANKING",
+      "surface": "Multiple simultaneously accepted cast proposals",
+      "state": "UNQUALIFIED",
+      "detail": "The existing discriminator never invents a ranking. More than one accepted proposal returns Unqualified."
+    },
+    {
+      "id": "GAP-TARGET-RANKING",
+      "surface": "General target ranking for bounded unique-target seams",
+      "state": "INCOMPLETE_BUT_FAIL_CLOSED",
+      "detail": "Snap, Deem Inferior, Artful Dodge flashback, and Sleep escape use bounded unique-target policies. Multiple qualifying targets do not gain an invented general removal/combat ranking."
+    },
+    {
+      "id": "GAP-TRIGGER-ORDER-OTHER",
+      "surface": "Remaining trigger-order, mana-source, and acquired-card surfaces",
+      "state": "UNQUALIFIED",
+      "detail": "No blanket policy is inferred for unreviewed trigger ordering, mana-source choices, cards outside the frozen own list, or other action/decision shapes."
+    }
+  ],
+  "finite_pilot_inventory": {
+    "status": "NOT_FREEZABLE_YET",
+    "reason": [
+      "Opponent deck packages are still unselected, so opponent-triggered reachable surfaces are incomplete.",
+      "The current source-backed Unqualified/incomplete surfaces above have not been reconciled into a complete equal-opportunity numbered bank.",
+      "The earlier 64-per-identity geometry was explicitly deferred; no replacement numeric geometry has been independently adopted."
+    ],
+    "new_distinct_checks_per_identity": null,
+    "total_new_distinct_checks": null,
+    "execution_attempts": 0
+  },
+  "whole_runner_gate": {
+    "status": "NOT_YET_JUSTIFIED",
+    "reason": "Do not implement or qualify the trusted whole-runner/collector until opponent packages and finite pilot qualification inventory are actually frozen and remaining reachable Unqualified surfaces are dispositioned.",
+    "governing_scope": "sphinx-approach/WHOLE_RUNNER_MINIMAL_INTEGRATION_SCOPE_20261001.json"
+  },
+  "official_counters": {
+    "allocations": 0,
+    "claims": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}
