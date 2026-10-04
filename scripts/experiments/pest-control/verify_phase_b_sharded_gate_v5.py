@@ -157,6 +157,10 @@ def verify(root, plan_path, mode, implementation_sha=None):
                 'counter drift')
 
     require(receipt['decision'] == plan['required_decision'], 'no exact gate acceptance')
+    require(receipt['external_review_disposition'] == plan['required_review_disposition'],
+            'review disposition drift')
+    require(receipt['planner_identity'] == plan['planner_identity'], 'reviewed global plan drift')
+    require(receipt['shards'] == plan['shards'], 'reviewed shard inventory drift')
     require(marker['receipt_commit'] == receipt_sha, 'receipt commit binding')
     require(marker['receipt_blob'] == head_tree[plan['receipt_path']][2], 'receipt blob binding')
     require(receipt['reviewed_tree'] == git(root, 'rev-parse', implementation_sha + '^{tree}').decode().strip(),
