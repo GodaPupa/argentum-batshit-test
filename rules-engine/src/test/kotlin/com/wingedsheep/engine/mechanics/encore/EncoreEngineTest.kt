@@ -211,6 +211,40 @@ class EncoreEngineTest : ScenarioTestBase() {
                 ?.get<MustAttackDefenderThisTurnComponent>()?.defenderId shouldBe activeOpponent
         }
 
+        test("designated Encore attack is not mandatory when that opponent charges an attack tax") {
+            val game = scenario()
+                .withPlayers("Player", "Opponent")
+                .withCardOnBattlefield(1, "Grizzly Bears", summoningSickness = false)
+                .withCardOnBattlefield(2, "Propaganda")
+                .withActivePlayer(1)
+                .inPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
+                .build()
+            val attacker = game.findPermanent("Grizzly Bears")!!
+            game.state = game.state.updateEntity(attacker) {
+                it.with(MustAttackDefenderThisTurnComponent(game.player2Id))
+            }
+
+            // A requirement can't force its controller to pay {2}; declaring nobody is legal.
+            game.execute(DeclareAttackers(game.player1Id, emptyMap())).error shouldBe null
+        }
+
+        test("designated Encore attack is not mandatory when the attacker itself has a sacrifice attack cost") {
+            val game = scenario()
+                .withPlayers("Player", "Opponent")
+                .withCardOnBattlefield(1, "Leviathan", tapped = false, summoningSickness = false)
+                .withLandsOnBattlefield(1, "Island", 2)
+                .withActivePlayer(1)
+                .inPhase(Phase.COMBAT, Step.DECLARE_ATTACKERS)
+                .build()
+            val attacker = game.findPermanent("Leviathan")!!
+            game.state = game.state.updateEntity(attacker) {
+                it.with(MustAttackDefenderThisTurnComponent(game.player2Id))
+            }
+
+            // Even though the two-Island cost is affordable, the requirement doesn't force payment.
+            game.execute(DeclareAttackers(game.player1Id, emptyMap())).error shouldBe null
+        }
+
         test("cleanup clears designated-defender requirement") {
             val game = scenario()
                 .withPlayers()

@@ -727,7 +727,15 @@ internal class AttackPhaseManager(
         val projected = state.projectedState
         val ctx = AttackCheckContext(state, projected, attackerId, attackingPlayer, cardRegistry)
         if (attackRestrictionRules.any { it.check(ctx) != null }) return false
-        return attackDefenderRules.none { it.check(ctx, defenderId) != null }
+        if (attackDefenderRules.any { it.check(ctx, defenderId) != null }) return false
+
+        // CR 508.1d: a requirement to attack never compels its controller to pay a cost in
+        // order to make that attack possible. Encore's "attacks that opponent this turn if able"
+        // therefore imposes no requirement when this exact attacker→defender declaration would
+        // require a mana tax (Propaganda) or a non-mana attack cost (Leviathan).
+        if (calculateTotalAttackTax(state, mapOf(attackerId to defenderId), projected) > 0) return false
+        if (AttackSacrificeCosts.requirementFor(state, attackerId, cardRegistry) != null) return false
+        return true
     }
 
     /**
