@@ -211,6 +211,19 @@ data class MustAttackPlayerComponent(
 data object MustAttackThisTurnComponent : Component
 
 /**
+ * One-turn combat requirement: this creature must attack [defenderId] this turn if able.
+ *
+ * Unlike [MustAttackThisTurnComponent], this does not permit choosing another defender. It models
+ * effects such as Encore that pair each created token with one specific opponent. The requirement
+ * is ignored when that player is no longer an opponent or this creature cannot legally attack that
+ * player, and is removed during cleanup.
+ */
+@Serializable
+data class MustAttackDefenderThisTurnComponent(
+    val defenderId: EntityId
+) : Component
+
+/**
  * Marker component letting a creature attack this turn as though it didn't have defender.
  *
  * Added by [com.wingedsheep.sdk.scripting.effects.CanAttackDespiteDefenderThisTurnEffect] (e.g. Krotiq

@@ -176,12 +176,18 @@ class ModalEffectExecutor(
         effect: ModalEffect,
         context: EffectContext
     ): EffectResult {
+        var slotCursor = 0
         val entries = buildModeEntries(
             effect,
             chosenModes = context.chosenModes,
             modeTargetsOrdered = context.modeTargetsOrdered,
             modeTargetRequirements = context.modeTargetRequirements
-        )
+        ).map { entry ->
+            val start = slotCursor
+            slotCursor += entry.targets.size
+            entry.copy(targetVisits = context.targetVisits.drop(start).take(entry.targets.size),
+                alignedTargets = if (context.alignedTargets.isEmpty()) null else context.alignedTargets.drop(start).take(entry.targets.size))
+        }
         val sourceName = context.sourceId?.let { id -> state.getEntity(id)?.get<CardComponent>()?.name }
         val baseCtx = PreTargetedEffectContext(
             controllerId = context.controllerId,
@@ -282,38 +288,22 @@ internal fun processPreTargetedEffectQueue(
     val head = entries.first()
     val tail = entries.drop(1)
 
-    // 608.2b per-mode fizzle: if the mode required targets and at least one is now illegal,
-    // skip the mode entirely. Partial per-target filtering is a future refinement — for now
-    // we mirror the all-or-nothing shape used by the resolution-time ModalContinuation path.
-    val cardComponent = ctx.sourceId?.let { state.getEntity(it)?.get<CardComponent>() }
-    val sourceColors = cardComponent?.colors ?: emptySet()
-    val sourceSubtypes = cardComponent?.typeLine?.subtypes?.map { it.value }?.toSet() ?: emptySet()
-
-    val validationError = if (head.targetRequirements.isNotEmpty()) {
-        targetValidator.validateTargets(
-            state = state,
-            targets = head.targets,
-            requirements = head.targetRequirements,
-            casterId = ctx.controllerId,
-            sourceColors = sourceColors,
-            sourceSubtypes = sourceSubtypes,
-            sourceId = ctx.sourceId,
-            // The chosen X, threaded exactly as the cast and activation paths do. Without it an
-            // X-clamped mode ("up to X target creatures", Profane Command) re-validates against
-            // the *static* placeholder count of 1, so every legal cast declaring two or more
-            // targets fails this re-check — and because a failed re-check silently skips the
-            // mode rather than erroring, the mode simply did nothing.
-            xValue = ctx.xValue,
-            // This path re-validates a mode whose targets were already chosen and already checked
-            // at cast/activation time, and the effect context does not record whether the modal
-            // came from a spell or an ability — so it declares ANY rather than guessing. A
-            // spell-only restriction is therefore enforced on the way in, not re-enforced here.
-            targetingSourceType = TargetingSourceType.ANY
-        )
-    } else null
-
-    if (validationError != null) {
-        // Skip this mode; drain the rest.
+    // Keep original slot positions through every queued mode/splice and serialized pause.
+    val sourceCard = ctx.sourceId?.let { state.getEntity(it)?.get<CardComponent>() }
+    val slots = com.wingedsheep.engine.state.components.stack.TargetsComponent(
+        targets = head.targets, targetRequirements = head.targetRequirements, targetVisits = head.targetVisits)
+    val aligned = head.targets.mapIndexed { index, target ->
+        if (head.alignedTargets != null && head.alignedTargets.getOrNull(index) == null ||
+            !slots.isCurrentSlot(state, index)) null
+        else if (head.targetRequirements.isNotEmpty() && targetValidator.validateTargets(
+                state = state, targets = head.targets, requirements = head.targetRequirements,
+                casterId = ctx.controllerId, sourceColors = sourceCard?.colors ?: emptySet(),
+                sourceSubtypes = sourceCard?.typeLine?.subtypes?.map { it.value }?.toSet() ?: emptySet(),
+                sourceId = ctx.sourceId, xValue = ctx.xValue,
+                targetingSourceType = TargetingSourceType.ANY, validateOnlySlots = setOf(index)) != null) null
+        else target
+    }
+    if (head.targets.isNotEmpty() && aligned.all { it == null }) {
         return processPreTargetedEffectQueue(state, tail, ctx, effectExecutor, targetValidator, accumulatedEvents)
     }
 
@@ -322,13 +312,15 @@ internal fun processPreTargetedEffectQueue(
         objectReferences = ctx.objectReferences,
         controllerId = ctx.controllerId,
         xValue = ctx.xValue,
-        targets = head.targets,
+        targets = aligned.filterNotNull(),
+        alignedTargets = aligned,
+        targetVisits = head.targetVisits,
         // The enclosing resolution's pipeline, with this mode's own named targets laid over it.
         // A bare `PipelineState(namedTargets = …)` here dropped every stored collection, number
         // and chosen value the resolution had accumulated before the modal.
         pipeline = ctx.pipeline.copy(
             namedTargets = ctx.pipeline.namedTargets +
-                EffectContext.buildNamedTargets(head.targetRequirements, head.targets)
+                EffectContext.buildNamedTargets(head.targetRequirements, aligned)
         ),
         triggeringEntityId = ctx.triggeringEntityId
     )

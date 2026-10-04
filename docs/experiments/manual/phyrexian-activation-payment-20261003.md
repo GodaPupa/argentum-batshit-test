@@ -1,0 +1,5 @@
+# Elected Phyrexian ability payment
+
+The shared Explicit payment strategy already serializes elected Phyrexian pip colors and the client already offers mana/life selection on activated abilities. Activation now lowers those exact pips into existing Mana and PayLife cost atoms before cost reductions. Invalid colors, multiplicity, and unaffordable combined life costs fail without mutation. The normal cost pipeline pays life and emits payment events once per activation, including repeated activations. No new action, effect, client protocol, or card-specific branch is introduced.
+
+Exact Spellskite test elects the life branch explicitly. Separate mechanic tests cover floating mana preservation, mixed payment, invalid elections, aggregate life affordability, and repeat-stop affordability; client tests preserve the preexisting UI contract. This remains an isolated candidate pending focused qualification; no registry admission or gameplay authorization is inferred. Counters: 0 allocations / 0 claims / 0 games / 0 outcomes.

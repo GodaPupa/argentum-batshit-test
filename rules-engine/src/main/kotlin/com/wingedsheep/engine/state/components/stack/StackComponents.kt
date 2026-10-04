@@ -10,6 +10,7 @@ import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.AbilityId
 import com.wingedsheep.sdk.scripting.ChoiceSlot
 import com.wingedsheep.sdk.scripting.effects.Effect
+import com.wingedsheep.sdk.scripting.targets.withCount
 import com.wingedsheep.sdk.scripting.targets.TargetRequirement
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -57,6 +58,8 @@ data class SpellOnStackComponent(
      * own targets and a spliced card's `ContextTarget(0)` means its own first target.
      */
     val splicedTargetsOrdered: List<List<ChosenTarget>> = emptyList(),
+    /** Announced per-splice group widths, including omitted optional requirements. */
+    val splicedTargetRequirements: List<List<TargetRequirement>> = emptyList(),
     val chosenModes: List<Int> = emptyList(),  // For modal spells (700.2). Ordered; same index may repeat when allowRepeat.
     /** True once cast-time modal selection completed, including a legal choice of zero modes. */
     val modalSelectionCompleted: Boolean = false,
@@ -217,6 +220,7 @@ data class TriggeredAbilityOnStackComponent(
      */
     val triggerLastKnownSubtypes: Set<String>? = null,
     val triggerLastKnownCardTypes: Set<String>? = null,
+    val triggerEntryOrigin: com.wingedsheep.engine.event.BattlefieldEntryOrigin? = null,
     /** Per-player damage dealt to the trigger's source this turn, captured at LTB time (Grothama). */
     val triggerLastKnownDamageDealtByPlayers: Map<EntityId, Int>? = null,
     /** Creatures blocking/blocked by the trigger's source on leave-battlefield (CR 509 LKI, Abu Ja'far). */
@@ -458,11 +462,42 @@ data class AbilityOnStackComponent(
  *           captured when the targets were chosen — see [capture].
  */
 @Serializable
+data class TargetVisit(
+    val objectRef: com.wingedsheep.engine.state.ObjectRef? = null,
+    val battlefieldEntryStamp: Long? = null,
+)
+
+@Serializable
 data class TargetsComponent(
     val targets: List<ChosenTarget>,
     val targetRequirements: List<TargetRequirement> = emptyList(),
-    val targetEntryStamps: Map<EntityId, Long> = emptyMap()
+    val targetEntryStamps: Map<EntityId, Long> = emptyMap(),
+    val announcedTargetCounts: List<Int>? = null,
+    /** Aligned visits; unlike entity-keyed stamps, independent slots can name different visits. */
+    val targetVisits: List<TargetVisit?> = emptyList()
 ) : Component {
+
+    fun visitAt(index: Int): TargetVisit? = targetVisits.getOrNull(index)
+        ?: (targets.getOrNull(index) as? ChosenTarget.Permanent)?.entityId?.let { id ->
+            targetEntryStamps[id]?.let { TargetVisit(battlefieldEntryStamp = it) }
+        }
+
+    fun isCurrentSlot(state: GameState, index: Int): Boolean {
+        val visit = visitAt(index) ?: return true
+        val target = targets.getOrNull(index) ?: return false
+        if (visit.objectRef != null && !state.isCurrentObject(visit.objectRef)) return false
+        val permanent = target as? ChosenTarget.Permanent
+        return permanent == null || visit.battlefieldEntryStamp == null ||
+            entryStamp(state, permanent.entityId) == visit.battlefieldEntryStamp
+    }
+
+    /** Preserve each inherited slot's visit; recapture only an explicitly changed selection. */
+    fun inheritingVisits(previous: TargetsComponent, refreshedSlots: Set<Int> = emptySet()): TargetsComponent = copy(
+        targetVisits = targets.mapIndexed { index, target ->
+            if (index !in refreshedSlots && previous.targets.getOrNull(index) == target) previous.visitAt(index)
+            else targetVisits.getOrNull(index)
+        }
+    )
 
     companion object {
         /**
@@ -485,10 +520,24 @@ data class TargetsComponent(
         fun capture(
             state: GameState,
             targets: List<ChosenTarget>,
-            targetRequirements: List<TargetRequirement> = emptyList()
+            targetRequirements: List<TargetRequirement> = emptyList(),
+            announcedTargetCounts: List<Int>? = null
         ): TargetsComponent = TargetsComponent(
             targets = targets,
-            targetRequirements = targetRequirements,
+            targetRequirements = (announcedTargetCounts ?: com.wingedsheep.engine.mechanics.targeting.AnnouncedTargetGroups.counts(targetRequirements, targets.size))
+                ?.let { counts -> targetRequirements.mapIndexed { index, requirement -> requirement.withCount(counts[index]) } }
+                ?: targetRequirements,
+            announcedTargetCounts = announcedTargetCounts ?: com.wingedsheep.engine.mechanics.targeting.AnnouncedTargetGroups.counts(targetRequirements, targets.size),
+            targetVisits = targets.map { target ->
+                val id = when (target) {
+                    is ChosenTarget.Permanent -> target.entityId
+                    is ChosenTarget.Spell -> target.spellEntityId
+                    is ChosenTarget.Card -> target.cardId
+                    is ChosenTarget.Player -> null
+                }
+                id?.let { TargetVisit(state.objectRef(it),
+                    if (target is ChosenTarget.Permanent) entryStamp(state, it) else null) }
+            },
             targetEntryStamps = targets.filterIsInstance<ChosenTarget.Permanent>()
                 .filter { it.entityId in state.getBattlefield() }
                 .associate { it.entityId to entryStamp(state, it.entityId) }
@@ -601,3 +650,11 @@ data class GraveyardCastRiderComponent(
     val entersWithCounter: com.wingedsheep.sdk.core.CounterType? = null,
     val addedSubtype: String? = null
 ) : Component
+
+/**
+ * Entry counters promised by commander-color mana spent on this commander spell. Captured at
+ * cast-commit and summed once per mana actually spent; removed on resolution or zone change.
+ * A countered spell never enters and therefore never receives these counters.
+ */
+@Serializable
+data class CommanderManaEntryCountersComponent(val count: Int) : Component

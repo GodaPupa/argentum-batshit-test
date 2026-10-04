@@ -26,6 +26,26 @@ class ModalAndCloneContinuationResumer(
     private val services: com.wingedsheep.engine.core.EngineServices
 ) : ContinuationResumerModule {
 
+    private fun resumePreEntry(state: GameState, continuation: PreEntryContinuation,
+        response: DecisionResponse, checkForMore: CheckForMore): ExecutionResult {
+        val result = com.wingedsheep.engine.handlers.effects.PreEntryCoordinator(services.cardRegistry)
+            .resume(state, continuation, response, services.effectExecutorRegistry::execute)
+        if (!result.isSuccess) return result.toExecutionResult()
+        val resumed = exposeCollectionsToNextFrame(result.state,
+            continuation.operation.context.pipeline.storedCollections + result.updatedCollections)
+        if (result.triggersAlreadyProcessed) return checkForMore(resumed, result.events)
+        val entryEvents = result.events.filterIsInstance<ZoneChangeEvent>().filter { it.toZone == Zone.BATTLEFIELD }
+        val triggers = services.triggerDetector.detectTriggers(resumed, entryEvents)
+        val events = result.events.map { event -> if (event is ZoneChangeEvent && event.toZone == Zone.BATTLEFIELD)
+            event.copy(entryTriggersAlreadyProcessed = true) else event }
+        if (triggers.isNotEmpty()) {
+            val triggered = services.triggerProcessor.processTriggers(resumed, triggers)
+            if (triggered.isPaused) return ExecutionResult.propagatePause(triggered.state, events + triggered.events)
+            return checkForMore(triggered.state, events + triggered.events)
+        }
+        return checkForMore(resumed, events)
+    }
+
     private val dynamicAmountEvaluator = DynamicAmountEvaluator()
 
     override fun resumers(): List<ContinuationResumer<*>> = listOf(
@@ -35,6 +55,8 @@ class ModalAndCloneContinuationResumer(
         resumer(CloneEntersOnBattlefieldContinuation::class, ::resumeCloneEntersOnBattlefield),
         resumer(EntersWithChoiceSpellContinuation::class, ::resumeEntersWithChoiceSpell),
         resumer(EntersWithChoiceOnBattlefieldContinuation::class, ::resumeEntersWithChoiceOnBattlefield),
+        resumer(PreEntryContinuation::class, ::resumePreEntry),
+        resumer(PreEntryLandPlayPaymentContinuation::class, ::resumePreEntryLandPlayPayment),
         resumer(PayLifeOrEnterTappedLandContinuation::class, ::resumePayLifeOrEnterTappedLand),
         resumer(PayLifeOrEnterTappedSpellContinuation::class, ::resumePayLifeOrEnterTappedSpell),
         resumer(RevealCountersContinuation::class, ::resumeRevealCounters),
@@ -243,16 +265,17 @@ class ModalAndCloneContinuationResumer(
         nameOverride: String?,
         powerOverride: Int?,
         toughnessOverride: Int?,
+        copyExceptions: com.wingedsheep.sdk.scripting.effects.CopyExceptions,
     ): GameState {
         // The riders are the same "except …" clause every other copy path carries (CR 707.9b), so
         // they go through the one engine-side implementation rather than a fourth hand-rolled copy.
-        val exceptions = com.wingedsheep.sdk.scripting.effects.CopyExceptions(
+        val exceptions = copyExceptions.over(com.wingedsheep.sdk.scripting.effects.CopyExceptions(
             nameOverride = nameOverride,
             addedKeywords = additionalKeywords.toSet(),
             addedSubtypes = additionalSubtypes.map { com.wingedsheep.sdk.core.Subtype(it) }.toSet(),
             powerOverride = powerOverride,
             toughnessOverride = toughnessOverride,
-        )
+        ))
         val copiedCardComponent = CopyExceptionApplier.apply(
             targetCardComponent.copy(
                 ownerId = newOwnerId,
@@ -355,6 +378,7 @@ class ModalAndCloneContinuationResumer(
                     nameOverride = continuation.nameOverride,
                     powerOverride = continuation.powerOverride,
                     toughnessOverride = continuation.toughnessOverride,
+                    copyExceptions = continuation.exceptions,
                 )
 
                 // "except it enters with X additional +1/+1 counters on it" (Altered Ego) — part of
@@ -459,6 +483,7 @@ class ModalAndCloneContinuationResumer(
                     nameOverride = continuation.nameOverride,
                     powerOverride = continuation.powerOverride,
                     toughnessOverride = continuation.toughnessOverride,
+                    copyExceptions = continuation.exceptions,
                 )
             }
         }
@@ -885,6 +910,28 @@ class ModalAndCloneContinuationResumer(
         }
 
         return checkForMore(newState, entryEvents)
+    }
+
+    /**
+     * Resume the serialized optional-payment decision before a land has entered.
+     *
+     * The handler revalidates the exact ObjectRef/source zone and performs payment before calling
+     * the ordinary land-play transaction. A nested "play a land" effect can have frames below this
+     * question, so synchronous completion must continue draining the continuation stack.
+     */
+    fun resumePreEntryLandPlayPayment(
+        state: GameState,
+        continuation: PreEntryLandPlayPaymentContinuation,
+        response: DecisionResponse,
+        checkForMore: CheckForMore,
+    ): ExecutionResult {
+        if (response !is YesNoResponse) {
+            return ExecutionResult.error(state, "Expected yes/no response for pre-entry land payment")
+        }
+        val result = com.wingedsheep.engine.handlers.actions.land.PlayLandHandler.create(services)
+            .resumePreEntryLifePayment(state, continuation, response.choice)
+        if (result.error != null || result.isPaused) return result
+        return checkForMore(result.state, result.events)
     }
 
     /**

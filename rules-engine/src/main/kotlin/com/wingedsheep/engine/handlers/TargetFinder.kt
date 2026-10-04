@@ -123,6 +123,8 @@ class TargetFinder(
                     }
                 if (excludeId != null) baseTargets.filter { it != excludeId } else baseTargets
             }
+        }.filterNot { id -> !ignoreTargetingRestrictions &&
+            com.wingedsheep.engine.mechanics.targeting.PlayerColorHexproof.appliesFromSource(state, id, controllerId, sourceId)
         }
     }
 
@@ -628,7 +630,9 @@ class TargetFinder(
         controllerId: EntityId,
         sourceId: EntityId?
     ): Boolean {
-        if (entityController == controllerId || sourceId == null) return false
+        val currentController = projected.getController(entityId) ?: return false
+        if (!state.isOpponentOf(controllerId, currentController) || sourceId == null) return false
+        if (com.wingedsheep.engine.mechanics.targeting.HexproofSuppression.isSuppressedForCaster(state, projected, entityId, controllerId)) return false
         // Try projected colors first (for permanents on the battlefield),
         // then fall back to base CardComponent colors (for spells in hand/on stack)
         var sourceColors = projected.getColors(sourceId)
@@ -678,3 +682,4 @@ class TargetFinder(
         return targets
     }
 }
+

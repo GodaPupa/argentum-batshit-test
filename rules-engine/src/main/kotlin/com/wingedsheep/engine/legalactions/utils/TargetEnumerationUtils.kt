@@ -115,6 +115,12 @@ class TargetEnumerationUtils(
                 }
                 permanents + spells
             }
+        }.filterNot { id ->
+            com.wingedsheep.engine.mechanics.targeting.PlayerColorHexproof.appliesFromSource(state, id, playerId, sourceId) ||
+                (id in state.getBattlefield() && sourceId != null &&
+                    state.projectedState.getController(id)?.let { state.isOpponentOf(playerId, it) } == true &&
+                    !HexproofSuppression.isSuppressedForCaster(state, state.projectedState, id, playerId) &&
+                    hasHexproofFromSource(state, id, sourceId))
         }
     }
 
@@ -149,7 +155,8 @@ class TargetEnumerationUtils(
             if (projected.hasKeyword(entityId, Keyword.HEXPROOF) && entityController != playerId &&
                 !HexproofSuppression.isSuppressedForCaster(state, projected, entityId, playerId)
             ) return@filter false
-            if (entityController != playerId && sourceId != null &&
+            if (projected.getController(entityId)?.let { state.isOpponentOf(playerId, it) } == true && sourceId != null &&
+                !HexproofSuppression.isSuppressedForCaster(state, projected, entityId, playerId) &&
                 hasHexproofFromSource(state, entityId, sourceId)
             ) return@filter false
             if (projected.hasKeyword(entityId, Keyword.SHROUD)) return@filter false
@@ -465,3 +472,4 @@ class TargetEnumerationUtils(
         }
     }
 }
+

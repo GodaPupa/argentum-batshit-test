@@ -344,8 +344,11 @@ class ActivateAbilityHandler(
         // cost is locked in here, before costs are paid. Then apply generic equip-cost reduction
         // (Éowyn) and finally Forge Anew's free-first-equip.
         val equipTargetIdForCost = action.targets.filterIsInstance<ChosenTarget.Permanent>().firstOrNull()?.entityId
-        val costWithDefinedX =
-            castPermissionUtils.applyDefinedXValue(rawCost, ability, state, action.sourceId, action.playerId)
+        val costWithDefinedX = withElectedPhyrexianLifeCost(
+            castPermissionUtils.applyDefinedXValue(rawCost, ability, state, action.sourceId, action.playerId),
+            (action.paymentStrategy as? PaymentStrategy.Explicit)?.phyrexianLifePayments.orEmpty(),
+            state.lifeTotal(action.playerId)
+        ) ?: return "Invalid or unaffordable Phyrexian life payment"
         // Order matters: each step prices the cost the previous one produced. The last one lowers
         // an attached-permanent mana cost (Merseine) to a plain mana atom, so nothing downstream
         // has to know that shape existed.
@@ -603,7 +606,8 @@ class ActivateAbilityHandler(
                 // and X-bounded "mana value X or less" reanimation targets (Fabrication Foundry)
                 // need the chosen X to validate — mirror the spell path.
                 xValue = effectiveXValue,
-                targetingSourceType = TargetingSourceType.ABILITY
+                targetingSourceType = TargetingSourceType.ABILITY,
+                announcedTargetCounts = action.announcedTargetCounts
             )
             if (targetError != null) {
                 return targetError
@@ -748,8 +752,11 @@ class ActivateAbilityHandler(
         // Finally relax colored requirements when "mana of any type can be spent" applies (Sharkey).
         val equipTargetIdForCost = action.targets.filterIsInstance<ChosenTarget.Permanent>().firstOrNull()?.entityId
         val definedXValue = castPermissionUtils.definedXValue(state, ability, action.sourceId, action.playerId)
-        val costWithDefinedX =
-            castPermissionUtils.applyDefinedXValue(rawCost, ability, state, action.sourceId, action.playerId)
+        val costWithDefinedX = withElectedPhyrexianLifeCost(
+            castPermissionUtils.applyDefinedXValue(rawCost, ability, state, action.sourceId, action.playerId),
+            (action.paymentStrategy as? PaymentStrategy.Explicit)?.phyrexianLifePayments.orEmpty(),
+            state.lifeTotal(action.playerId)
+        ) ?: return ExecutionResult.error(state, "Invalid or unaffordable Phyrexian life payment")
         val effectiveCost = castPermissionUtils.relaxAbilityCostColorsIfAny(
             state, action.sourceId,
             castPermissionUtils.applyFreeFirstEquipDiscount(
@@ -1498,6 +1505,10 @@ class ActivateAbilityHandler(
         }
 
         // Pay the cost (using effective cost with text replacements applied)
+        if ((action.paymentStrategy as? PaymentStrategy.Explicit)?.phyrexianLifePayments?.isNotEmpty() == true &&
+            lifeCostAmount(costForPayment) > currentState.lifeTotal(action.playerId)) {
+            return ExecutionResult.error(state, "Insufficient life for Phyrexian ability payment")
+        }
         val costResult = costHandler.payAbilityCost(
             currentState,
             costForPayment,
@@ -1981,6 +1992,7 @@ class ActivateAbilityHandler(
         var stackResult = stackResolver.putActivatedAbility(
             currentState, abilityOnStack, action.targets,
             targetRequirements = effectiveTargetReqs,
+            announcedTargetCounts = action.announcedTargetCounts,
             costsTap = hasTapCost(effectiveCost),
             isExhaust = ability.isExhaust,
             cantBeCopied = ability.cantBeCopied
@@ -1991,6 +2003,8 @@ class ActivateAbilityHandler(
         // Handle repeated activations (repeatCount > 1)
         if (action.repeatCount > 1) {
             for (i in 2..action.repeatCount) {
+                if ((action.paymentStrategy as? PaymentStrategy.Explicit)?.phyrexianLifePayments?.isNotEmpty() == true &&
+                    lifeCostAmount(effectiveCost) > currentState.lifeTotal(action.playerId)) break
                 // Re-read mana pool from current state
                 val repeatPoolComponent = currentState.getEntity(action.playerId)?.get<ManaPoolComponent>()
                     ?: ManaPoolComponent()
@@ -2009,6 +2023,8 @@ class ActivateAbilityHandler(
                 if (manaCost != null) {
                     val autoTapResult = autoTapForManaCost(currentState, action.playerId, repeatPool, manaCost, sourceName, 0, abilityContext = executeAbilityContext)
                         ?: break // Can't afford — stop early
+                    if ((action.paymentStrategy as? PaymentStrategy.Explicit)?.phyrexianLifePayments?.isNotEmpty() == true &&
+                        lifeCostAmount(effectiveCost) > autoTapResult.newState.lifeTotal(action.playerId)) break
                     currentState = autoTapResult.newState
                     repeatPool = autoTapResult.newPool
                     events.addAll(autoTapResult.events)
@@ -2073,6 +2089,7 @@ class ActivateAbilityHandler(
                 val repeatStackResult = stackResolver.putActivatedAbility(
                     currentState, repeatAbilityOnStack, action.targets,
                     targetRequirements = effectiveTargetReqs,
+            announcedTargetCounts = action.announcedTargetCounts,
                     isExhaust = ability.isExhaust,
                 )
                 currentState = repeatStackResult.newState
@@ -2376,6 +2393,35 @@ class ActivateAbilityHandler(
     /**
      * Extract the ManaCost from an ability cost, if present.
      */
+    private fun lifeCostAmount(cost: AbilityCost): Long = when (cost) {
+        is AbilityCost.Composite -> cost.costs.sumOf(::lifeCostAmount)
+        is AbilityCost.Atom -> (cost.atom as? CostAtom.PayLife)?.amount?.toLong() ?: 0L
+        else -> 0L
+    }
+
+    /** Lower the elected pips into ordinary life costs before pricing or payment.
+     * Payment, events, repeated activation and suspension then use the existing cost pipeline.
+     */
+    private fun withElectedPhyrexianLifeCost(cost: AbilityCost, payments: List<Color>, life: Int): AbilityCost? {
+        if (payments.isEmpty()) return cost
+        fun flatten(value: AbilityCost): List<AbilityCost> =
+            if (value is AbilityCost.Composite) value.costs.flatMap(::flatten) else listOf(value)
+        val remaining = payments.toMutableList()
+        val lowered = flatten(cost).map { part ->
+            val mana = part.manaCostOrNull ?: return@map part
+            val chosen = mutableListOf<Color>()
+            for (pip in mana.phyrexianSymbols) {
+                if (remaining.remove(pip.color)) chosen.add(pip.color)
+            }
+            AbilityCost.Atom(CostAtom.Mana(mana.withPhyrexianPaidByLife(chosen) ?: return null))
+        }
+        if (remaining.isNotEmpty()) return null
+        val electedLife = payments.size.toLong() * 2
+        val otherLife = lowered.sumOf { ((it as? AbilityCost.Atom)?.atom as? CostAtom.PayLife)?.amount?.toLong() ?: 0L }
+        if (electedLife + otherLife > life.toLong()) return null
+        return AbilityCost.Composite(lowered + AbilityCost.Atom(CostAtom.PayLife(electedLife.toInt())))
+    }
+
     private fun extractManaCost(cost: AbilityCost): ManaCost? = when (cost) {
         is AbilityCost.Atom -> cost.manaCostOrNull
         is AbilityCost.Composite -> cost.costs.firstNotNullOfOrNull { it.manaCostOrNull }

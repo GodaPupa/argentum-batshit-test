@@ -4,6 +4,7 @@ import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.sdk.scripting.effects.CopyExceptions
 import com.wingedsheep.sdk.scripting.effects.BudgetMode
 import com.wingedsheep.sdk.scripting.effects.Effect
 import com.wingedsheep.sdk.scripting.effects.EffectChoice
@@ -102,7 +103,9 @@ data class ModalContinuation(
 data class PreTargetedEffectEntry(
     val effect: @Serializable Effect,
     val targets: List<ChosenTarget>,
-    val targetRequirements: List<@Serializable TargetRequirement>
+    val targetRequirements: List<@Serializable TargetRequirement>,
+    val targetVisits: List<com.wingedsheep.engine.state.components.stack.TargetVisit?> = emptyList(),
+    val alignedTargets: List<ChosenTarget?>? = null
 )
 
 /**
@@ -255,6 +258,7 @@ data class ModalTargetContinuation(
  *   only when a copy was actually made — declining the copy declines the counters too.
  */
 @Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 data class CloneEntersContinuation(
     val spellId: EntityId,
     val controllerId: EntityId,
@@ -266,7 +270,9 @@ data class CloneEntersContinuation(
     val powerOverride: Int? = null,
     val toughnessOverride: Int? = null,
     val exileCopiedCard: Boolean = false,
-    val additionalCounters: DynamicAmount? = null
+    val additionalCounters: DynamicAmount? = null,
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val exceptions: CopyExceptions = CopyExceptions.None
 ) : AnswerContinuation
 
 /**
@@ -291,6 +297,7 @@ data class CloneEntersContinuation(
  *   as a copy. See [CloneEntersContinuation.additionalCounters].
  */
 @Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 data class CloneEntersOnBattlefieldContinuation(
     val entityId: EntityId,
     val controllerId: EntityId,
@@ -305,7 +312,9 @@ data class CloneEntersOnBattlefieldContinuation(
     val additionalCounters: DynamicAmount? = null,
     /** Actual entry refs, retained across every as-enters decision. */
     val entryOldObject: com.wingedsheep.engine.state.ObjectRef? = null,
-    val entryNewObject: com.wingedsheep.engine.state.ObjectRef? = null
+    val entryNewObject: com.wingedsheep.engine.state.ObjectRef? = null,
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val exceptions: CopyExceptions = CopyExceptions.None
 ) : AnswerContinuation
 
 /**
@@ -428,6 +437,22 @@ data class EntersWithChoiceOnBattlefieldContinuation(
  * @property lifeCost The amount of life to pay if they choose yes
  * @property fromZone The zone the land was played from (for the ZoneChangeEvent)
  */
+/**
+ * Resume a land play whose optional life payment was announced before battlefield placement.
+ *
+ * The source remains in its original zone while the decision is pending. [source] and [sourceZone]
+ * bind the continuation to that exact object visit; [action] retains the chosen MDFC face and
+ * player. The resumer revalidates the land play and commits payment + entry exactly once.
+ */
+@Serializable
+data class PreEntryLandPlayPaymentContinuation(
+    val action: PlayLand,
+    val source: com.wingedsheep.engine.state.ObjectRef,
+    val sourceZone: com.wingedsheep.engine.state.ZoneKey,
+    val lifeCost: Int,
+    val duringResolution: Boolean = false,
+) : AnswerContinuation
+
 @Serializable
 data class PayLifeOrEnterTappedLandContinuation(
     val landId: EntityId,

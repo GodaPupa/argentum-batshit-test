@@ -862,7 +862,8 @@ class CastSpellHandler(
                     sourceSubtypes = validationDef.typeLine.subtypes.map { it.value }.toSet(),
                     sourceId = action.cardId,
                     xValue = action.xValue,
-                    targetingSourceType = TargetingSourceType.SPELL
+                    targetingSourceType = TargetingSourceType.SPELL,
+                    announcedTargetCounts = action.announcedTargetCounts
                 )
                 if (targetError != null) {
                     return targetError
@@ -2525,6 +2526,7 @@ class CastSpellHandler(
             cardDef?.cardFaces?.getOrNull(idx)?.manaCost
         }
         val chosenTargetIdsForPayment = action.targets.map { it.toEntityId() }
+        var selectedAlternativeCost: AlternativeCostType? = null
         var effectiveCost = if (playForFreeInExecute) {
             if (cardDef != null) costCalculator.calculateEffectiveCostWithAlternativeBase(
                 currentState, cardDef, ManaCost.ZERO, action.playerId, chosenTargetIdsForPayment
@@ -2550,18 +2552,22 @@ class CastSpellHandler(
             // Branches gated by [CastSpell.altAllows] — mirrors validate(); honors the player's
             // explicit alternative-cost choice instead of a fixed priority order.
             if (action.altAllows(AlternativeCostType.FLASHBACK) && flashbackAbility != null && zoneResolver.hasFlashbackPermission(currentState, action.playerId, action.cardId)) {
+                selectedAlternativeCost = AlternativeCostType.FLASHBACK
                 costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, flashbackAbility.cost, action.playerId, chosenTargetIdsForPayment)
             } else if (action.altAllows(AlternativeCostType.HARMONIZE) && harmonizeAbility != null && zoneResolver.hasHarmonizePermission(currentState, action.playerId, action.cardId)) {
+                selectedAlternativeCost = AlternativeCostType.HARMONIZE
                 costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, harmonizeAbility.cost, action.playerId, chosenTargetIdsForPayment)
             } else if (action.altAllows(AlternativeCostType.MAYHEM) &&
                 MayhemGrants.effectiveMayhem(currentState, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator) != null &&
                 zoneResolver.hasMayhemPermission(currentState, action.playerId, action.cardId)) {
+                    selectedAlternativeCost = AlternativeCostType.MAYHEM
                 // Mayhem cost (CR 702.187) — cast from graveyard for its mayhem cost.
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     currentState, cardDef, MayhemGrants.effectiveMayhem(currentState, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator)!!.cost, action.playerId
                 , chosenTargetIdsForPayment)
             } else if (action.altAllows(AlternativeCostType.ESCAPE) &&
                 zoneResolver.hasEscapePermission(currentState, action.playerId, action.cardId)) {
+                    selectedAlternativeCost = AlternativeCostType.ESCAPE
                 // Escape cost (CR 702.138a) — mirror validate() exactly. The non-mana exile
                 // payment is validated and executed separately through the additional-cost rail.
                 val escapeAbility = zoneResolver.escapeAbility(currentState, action.playerId, action.cardId)
@@ -2572,11 +2578,13 @@ class CastSpellHandler(
             } else if (action.altAllows(AlternativeCostType.DISTURB) &&
                 DisturbCasts.printedDisturb(cardDef) != null &&
                 zoneResolver.disturbCastFace(currentState, action.playerId, action.cardId) != null) {
+                    selectedAlternativeCost = AlternativeCostType.DISTURB
                 // Disturb cost (CR 702.146a) — mirrors validate().
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     currentState, cardDef, DisturbCasts.printedDisturb(cardDef)!!.cost, action.playerId
                 , chosenTargetIdsForPayment)
             } else if (action.altAllows(AlternativeCostType.MODAL_BACK_FACE) && modalBackFace != null) {
+                selectedAlternativeCost = AlternativeCostType.MODAL_BACK_FACE
                 // Modal DFC back face (CR 712.11b) — mirrors validate().
                 costCalculator.calculateEffectiveCostWithAlternativeBase(
                     currentState, cardDef, modalBackFace.manaCost, action.playerId
@@ -2589,6 +2597,7 @@ class CastSpellHandler(
                     currentState, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator
                 )
                 if (action.altAllows(AlternativeCostType.WARP) && warpAbility != null && zoneResolver.hasWarpPermission(currentState, action.playerId, action.cardId)) {
+                    selectedAlternativeCost = AlternativeCostType.WARP
                     costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, warpAbility.cost, action.playerId, chosenTargetIdsForPayment)
                 } else {
                     // Check sneak cost (CR 702.190 — mana portion; the bounce is paid separately).
@@ -2605,12 +2614,16 @@ class CastSpellHandler(
                     // after the mana payment, per CR 601.2f–h).
                     val emergeAbility = EmergeCasts.printedEmerge(cardDef)
                     if (action.altAllows(AlternativeCostType.SNEAK) && sneakCost != null) {
+                        selectedAlternativeCost = AlternativeCostType.SNEAK
                         costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, sneakCost, action.playerId, chosenTargetIdsForPayment)
                     } else if (action.altAllows(AlternativeCostType.WEB_SLINGING) && webSlingingAbility != null) {
+                        selectedAlternativeCost = AlternativeCostType.WEB_SLINGING
                         costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, webSlingingAbility.cost, action.playerId, chosenTargetIdsForPayment)
                     } else if (action.altAllows(AlternativeCostType.EVOKE) && evokeAbility != null) {
+                        selectedAlternativeCost = AlternativeCostType.EVOKE
                         costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, evokeAbility.cost, action.playerId, chosenTargetIdsForPayment)
                     } else if (action.altAllows(AlternativeCostType.EMERGE) && emergeAbility != null) {
+                        selectedAlternativeCost = AlternativeCostType.EMERGE
                         // CR 702.119a — mirrors validate(): emerge cost reduced by an amount of
                         // generic mana equal to the sacrificed creature's mana value.
                         EmergeCasts.reduceForSacrifice(
@@ -2619,6 +2632,7 @@ class CastSpellHandler(
                             action.additionalCostPayment?.sacrificedPermanents?.firstOrNull()
                         )
                     } else if (action.altAllows(AlternativeCostType.DASH) && dashAbility != null && zoneResolver.hasDashPermission(currentState, action.playerId, action.cardId)) {
+                        selectedAlternativeCost = AlternativeCostType.DASH
                         costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, dashAbility.cost, action.playerId, chosenTargetIdsForPayment)
                     } else {
                         // Bestow changes the spell's type before pricing its alternative cost.
@@ -2633,6 +2647,7 @@ class CastSpellHandler(
                             currentState, action.cardId, cardDef, action.playerId, cardRegistry, predicateEvaluator
                         ) else null
                         if (action.alternativeCostType == AlternativeCostType.BESTOW && bestowAbility != null) {
+                            selectedAlternativeCost = AlternativeCostType.BESTOW
                             val bestowDef = cardDef.copy(
                                 typeLine = com.wingedsheep.engine.state.components.identity.BestowComponent.auraType(cardDef.typeLine)
                             )
@@ -2640,19 +2655,24 @@ class CastSpellHandler(
                                 currentState, bestowDef, bestowAbility.cost, action.playerId
                             , chosenTargetIdsForPayment)
                         } else if (action.altAllows(AlternativeCostType.IMPENDING) && impendingAbility != null) {
+                            selectedAlternativeCost = AlternativeCostType.IMPENDING
                             costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, impendingAbility.cost, action.playerId, chosenTargetIdsForPayment)
                         } else if (action.altAllows(AlternativeCostType.CLEAVE) && cleaveAbility != null) {
+                            selectedAlternativeCost = AlternativeCostType.CLEAVE
                             costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, cleaveAbility.cost, action.playerId, chosenTargetIdsForPayment)
                         } else if (action.altAllows(AlternativeCostType.MIRACLE) && miracleAbility != null) {
+                            selectedAlternativeCost = AlternativeCostType.MIRACLE
                             costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, miracleAbility.cost, action.playerId, chosenTargetIdsForPayment)
                         } else {
                             val selfAltCost = cardDef.script.selfAlternativeCost
                             if (action.altAllows(AlternativeCostType.SELF_ALTERNATIVE) && selfAltCost != null) {
+                                selectedAlternativeCost = AlternativeCostType.SELF_ALTERNATIVE
                                 val altMana = selfAltCost.manaCost
                                 costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, altMana, action.playerId, chosenTargetIdsForPayment)
                             } else if (action.altAllows(AlternativeCostType.GRANTED)) {
                                 val altCosts = costCalculator.findAlternativeCastingCosts(currentState, action.playerId)
                                 if (altCosts.isNotEmpty()) {
+                                    selectedAlternativeCost = AlternativeCostType.GRANTED
                                     costCalculator.calculateEffectiveCostWithAlternativeBase(currentState, cardDef, altCosts.first().manaCost, action.playerId, chosenTargetIdsForPayment)
                                 } else {
                                     cardComponent.manaCost
@@ -3953,6 +3973,7 @@ class CastSpellHandler(
             } else null,
             damageDistribution = action.damageDistribution,
             targetRequirements = spellTargetRequirements,
+            announcedTargetCounts = action.announcedTargetCounts,
             exiledCardCount = exiledCardCount,
             additionalCostBlightAmount = action.additionalCostPayment?.blightAmount ?: 0,
             additionalCostPayXLifeAmount = payXLifeAmount,
@@ -4001,7 +4022,7 @@ class CastSpellHandler(
             // Every enumerated alternative-cost offer names its mechanic explicitly, so this is the
             // declared choice rather than a guess. Descriptive only — the rules consequences of each
             // mechanic ride the `was*` flags above.
-            alternativeCost = action.alternativeCostType?.takeIf { action.useAlternativeCost },
+            alternativeCost = selectedAlternativeCost,
             castOriginState = state
         )
 
@@ -5168,6 +5189,27 @@ class CastSpellHandler(
 
         is com.wingedsheep.sdk.scripting.effects.ManaSpellRider.GrantsKeywordWhenSpent ->
             applyKeywordGrantRider(state, action, rider.keyword, rider.spellFilter) to emptyList()
+
+        com.wingedsheep.sdk.scripting.effects.ManaSpellRider.CommanderCastEntryCounters ->
+            applyCommanderEntryCounterRider(state, action) to emptyList()
+    }
+
+    /** Freeze the command-zone cast count after cast-commit, once per mana actually spent. */
+    private fun applyCommanderEntryCounterRider(state: GameState, action: CastSpell): GameState {
+        val registry = state.getEntity(action.playerId)
+            ?.get<com.wingedsheep.engine.state.components.identity.CommanderRegistryComponent>()
+            ?: return state
+        if (action.cardId !in registry.commanderIds) return state
+        val commander = state.getEntity(action.cardId)
+            ?.get<com.wingedsheep.engine.state.components.identity.CommanderComponent>()
+            ?: return state
+        if (commander.ownerId != action.playerId || commander.castsFromCommandZone <= 0) return state
+        return state.updateEntity(action.cardId) { c ->
+            val prior = c.get<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()?.count ?: 0
+            c.with(com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent(
+                prior + commander.castsFromCommandZone
+            ))
+        }
     }
 
     /**

@@ -12,6 +12,7 @@ import com.wingedsheep.engine.state.components.combat.AttackersDeclaredThisTurnC
 import com.wingedsheep.engine.state.components.combat.GoadedComponent
 import com.wingedsheep.engine.state.components.combat.MustAttackPlayerComponent
 import com.wingedsheep.engine.state.components.combat.MustAttackThisTurnComponent
+import com.wingedsheep.engine.state.components.combat.MustAttackDefenderThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackedThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackersThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.AttackingComponent
@@ -137,6 +138,13 @@ internal class AttackPhaseManager(
         val mustAttackThisTurnValidation = validateMustAttackThisTurnRequirements(state, attackingPlayer, attackers)
         if (mustAttackThisTurnValidation != null) {
             return ExecutionResult.error(state, mustAttackThisTurnValidation)
+        }
+
+        // Check creature-specific defender requirements (Encore and similar effects).
+        val mustAttackDefenderValidation =
+            validateMustAttackDefenderThisTurnRequirements(state, attackingPlayer, attackers)
+        if (mustAttackDefenderValidation != null) {
+            return ExecutionResult.error(state, mustAttackDefenderValidation)
         }
 
         // Check projected must-attack requirements (Grand Melee)
@@ -683,6 +691,46 @@ internal class AttackPhaseManager(
     }
 
     /**
+     * Validate one-turn creature-specific defender requirements.
+     *
+     * "Attack that opponent this turn if able" is narrower than a generic must-attack effect:
+     * if the designated opponent cannot legally be attacked, the creature is free to stay home
+     * (and is not redirected to some other opponent). Conversely, while that exact attack is legal,
+     * omitting the creature or choosing a different defender violates the requirement.
+     */
+    private fun validateMustAttackDefenderThisTurnRequirements(
+        state: GameState,
+        attackingPlayer: EntityId,
+        attackers: Map<EntityId, EntityId>
+    ): String? {
+        for (attackerId in state.getBattlefield()) {
+            val requirement = state.getEntity(attackerId)
+                ?.get<MustAttackDefenderThisTurnComponent>() ?: continue
+            if (!canAttackSpecificDefender(state, attackingPlayer, attackerId, requirement.defenderId)) continue
+
+            val chosen = attackers[attackerId]
+            val cardName = state.getEntity(attackerId)?.get<CardComponent>()?.name ?: "Creature"
+            if (chosen == null || chosen != requirement.defenderId) {
+                return "$cardName must attack its designated defender this turn if able"
+            }
+        }
+        return null
+    }
+
+    private fun canAttackSpecificDefender(
+        state: GameState,
+        attackingPlayer: EntityId,
+        attackerId: EntityId,
+        defenderId: EntityId,
+    ): Boolean {
+        if (defenderId !in state.getOpponents(attackingPlayer)) return false
+        val projected = state.projectedState
+        val ctx = AttackCheckContext(state, projected, attackerId, attackingPlayer, cardRegistry)
+        if (attackRestrictionRules.any { it.check(ctx) != null }) return false
+        return attackDefenderRules.none { it.check(ctx, defenderId) != null }
+    }
+
+    /**
      * Validate goaded-creature requirements (CR 701.15b–c).
      *
      * Per CR 701.15b a goaded creature has two combat requirements:
@@ -837,7 +885,17 @@ internal class AttackPhaseManager(
             }
         }
 
-        // 3. Projected mustAttack (static ability like Valley Dasher, Grand Melee) or a granted
+        // 3. Creature-specific designated-defender requirements (Encore). Only preselect it when
+        // that exact opponent is still a legal defender; otherwise "if able" imposes nothing.
+        for (attackerId in validAttackers) {
+            val requirement = state.getEntity(attackerId)
+                ?.get<MustAttackDefenderThisTurnComponent>() ?: continue
+            if (canAttackSpecificDefender(state, attackingPlayer, attackerId, requirement.defenderId)) {
+                mandatory.add(attackerId)
+            }
+        }
+
+        // 4. Projected mustAttack (static ability like Valley Dasher, Grand Melee) or a granted
         // entity-scoped MustAttack (Carnage's reanimated target), which never reaches projection.
         for (attackerId in validAttackers) {
             if (mustAttackThisCombat(state, attackerId)) {
@@ -845,7 +903,7 @@ internal class AttackPhaseManager(
             }
         }
 
-        // 4. GoadedComponent (CR 701.15b) — individual creatures
+        // 5. GoadedComponent (CR 701.15b) — individual creatures
         for (attackerId in validAttackers) {
             val container = state.getEntity(attackerId) ?: continue
             if (container.has<GoadedComponent>()) {

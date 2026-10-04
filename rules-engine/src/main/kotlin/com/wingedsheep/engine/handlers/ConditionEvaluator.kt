@@ -436,6 +436,15 @@ class ConditionEvaluator(
             is com.wingedsheep.sdk.scripting.conditions.PlayerAttackedPlayerThisTurn ->
                 evaluateAttackedPlayerThisTurnCtx(state, condition, ctx)
             is PlayerCastSpellsThisTurn -> evaluateCastSpellsThisTurnCtx(state, condition, ctx)
+            is com.wingedsheep.sdk.scripting.conditions.YouOrTeammateCastSpellThisTurn -> {
+                // Surge (CR 702.117): a prior spell cast by either the caster or any teammate
+                // satisfies the permission. GameState.teamOf() deliberately degrades to [you] in
+                // non-team games, so this is one rule path for 1v1, FFA, Team-vs-Team and 2HG.
+                val controllerId = ctx.controllerId
+                controllerId != null && state.teamOf(controllerId).any { teammateId ->
+                    state.spellsCastThisTurnByPlayer[teammateId]?.isNotEmpty() == true
+                }
+            }
             is com.wingedsheep.sdk.scripting.conditions.PlayerDrewCardsThisTurn -> {
                 if (condition.atLeast <= 0) true
                 else {
@@ -631,7 +640,9 @@ class ConditionEvaluator(
                 // spell exists both read true — the bag only exists once it resolves.
                 val sourceId = ctx.sourceId
                 val declaredThisCast = (ctx as? Resolution)?.effectContext?.declaredCostSlot
-                if (declaredThisCast == condition.slot) {
+                if (condition.slot == ChoiceSlot.ALTERNATIVE_COST) {
+                    sourceAlternativeCost(state, ctx) != null
+                } else if (declaredThisCast == condition.slot) {
                     true
                 } else {
                     sourceId != null &&
@@ -641,7 +652,9 @@ class ConditionEvaluator(
             }
             is CastChoiceIs -> {
                 val sourceId = ctx.sourceId
-                sourceId != null &&
+                if (condition.slot == ChoiceSlot.ALTERNATIVE_COST) {
+                    sourceAlternativeCost(state, ctx)?.name?.equals(condition.value, ignoreCase = true) == true
+                } else sourceId != null &&
                     castChoiceMatches(state.getEntity(sourceId), condition.slot, condition.value)
             }
             is CastTimeFlagSet -> {
@@ -668,6 +681,13 @@ class ConditionEvaluator(
                 ifResolution { evaluateTriggeringSpellCastWithoutPayingMana(state, it) }
             is com.wingedsheep.sdk.scripting.conditions.TriggeringSpellManaSpentAtLeast ->
                 ifResolution { evaluateTriggeringSpellManaSpentAtLeast(state, condition.amount, it) }
+            is com.wingedsheep.sdk.scripting.conditions.TriggeringEntityEnteredOrWasCastFromZone ->
+                ifResolution { context ->
+                    context.triggerEntryOrigin?.let { origin ->
+                        origin.enteredOrWasCastFrom(condition.zone) &&
+                            (!condition.ownedByController || origin.ownerId == context.controllerId)
+                    } == true
+                }
             is TriggeringEntityEnteredOrWasCastFromGraveyard ->
                 ifResolution { evaluateTriggeringEntityEnteredOrWasCastFromGraveyard(state, it) }
             is TriggeringEntityHadMinusOneMinusOneCounter ->
@@ -1569,6 +1589,28 @@ class ConditionEvaluator(
         return context.wasWaterbendPaid
     }
 
+    /** Payment history belongs to the originating object, not an actionable Self after a move. */
+    private fun sourceAlternativeCost(
+        state: GameState,
+        context: ConditionEvaluationContext,
+    ): com.wingedsheep.engine.core.AlternativeCostType? {
+        val sourceId = context.sourceId ?: return null
+        val resolution = (context as? Resolution)?.effectContext
+        if (resolution != null) {
+            val origin = resolution.objectReferences.origin
+            if (resolution.objectReferences.captured) {
+                if (origin == null) return null
+                if (!state.isCurrentObject(origin)) {
+                    return resolution.lastKnownSourceSnapshot
+                        ?.takeIf { it.objectRef == origin }?.alternativeCost
+                }
+            }
+        }
+        val entity = state.getEntity(sourceId) ?: return null
+        return entity.get<CastChoicesComponent>()?.alternativeCost
+            ?: entity.get<com.wingedsheep.engine.state.components.stack.SpellOnStackComponent>()?.alternativeCost
+    }
+
     /** Compare the value locked into [slot] on [entity]'s cast-choices bag to [value] as text. */
     private fun castChoiceMatches(
         entity: com.wingedsheep.engine.state.ComponentContainer?,
@@ -1763,6 +1805,7 @@ class ConditionEvaluator(
         state: GameState,
         context: EffectContext
     ): Boolean {
+        context.triggerEntryOrigin?.let { return it.enteredOrWasCastFrom(Zone.GRAVEYARD) }
         val entityId = context.triggeringEntityId ?: return false
         val entity = state.getEntity(entityId) ?: return false
         return entity.has<com.wingedsheep.engine.state.components.battlefield.CastFromGraveyardComponent>() ||

@@ -780,3 +780,13 @@ data class ActivateAbilityControllerTargetContinuation(
     val action: ActivateAbility,
     val requirements: List<TargetRequirement>
 ) : AnswerContinuation
+
+/** Both visits are frozen; resuming cannot redirect to a returned permanent or replacement stack object. */
+@Serializable
+data class FixedDestinationRetargetContinuation(
+    val stackObject: com.wingedsheep.engine.state.ObjectRef,
+    val destination: com.wingedsheep.engine.state.ObjectRef,
+    val slots: List<Int>,
+    val originalTargets: List<ChosenTarget>,
+    val objectReferences: com.wingedsheep.engine.handlers.ObjectReferenceEnvironment = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(),
+) : AnswerContinuation

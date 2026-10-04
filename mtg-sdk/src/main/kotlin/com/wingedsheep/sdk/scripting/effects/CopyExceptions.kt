@@ -20,8 +20,8 @@ import kotlinx.serialization.Serializable
  * [CreateTokenCopyOfSourceEffect]), or enters as a copy (`EntersAsCopy`, Clone/Sakashima).
  *
  * Every one of those effects takes a `CopyExceptions` directly, so a new exception added here is
- * immediately expressible on all of them. The two token effects additionally keep their historical
- * flat riders (`addedSupertypes`, `overridePower`, `addCardTypes`, …) because ~20 card definitions
+ * immediately expressible on all of them. The token effects and `EntersAsCopy` additionally keep their historical
+ * flat riders (`addedSupertypes`, `overridePower`, `addCardTypes`, `additionalSubtypes`, …) because existing card definitions
  * and their serialized shape depend on them; those riders are folded into this type via [over], and
  * are frozen — **a new copy exception goes here, never onto another flat rider.**
  *

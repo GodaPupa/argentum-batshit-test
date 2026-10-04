@@ -172,7 +172,11 @@ class CastModalContinuationResumer(
             cardId = continuation.cardId,
             casterId = continuation.casterId,
             cardName = cardName,
-            baseCastAction = continuation.baseCastAction,
+            baseCastAction = continuation.baseCastAction.copy(announcedTargetCounts =
+                continuation.baseCastAction.announcedTargetCounts.orEmpty() +
+                    continuation.modes[continuation.chosenModeIndices[continuation.currentOrdinal]].targetRequirements.indices.map {
+                        response.selectedTargets[it].orEmpty().size
+                    }),
             modes = continuation.modes,
             chosenModeIndices = continuation.chosenModeIndices,
             resolvedModeTargets = newResolvedTargets,

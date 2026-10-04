@@ -312,7 +312,7 @@ class ActivateAbilityXCostContinuationResumer(
         if (chosen.size < expectedMin) {
             return ExecutionResult.error(state, "Not enough targets chosen")
         }
-        val replay = continuation.action.copy(targets = chosen)
+        val replay = continuation.action.copy(targets = chosen, announcedTargetCounts = continuation.requirements.indices.map { response.selectedTargets[it].orEmpty().size })
         return reenter(handler.execute(state, replay), checkForMore)
     }
 

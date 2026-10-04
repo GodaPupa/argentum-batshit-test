@@ -19,6 +19,9 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 enum class ChoiceSlot {
+    /** Actual selected alternative cost, read as its stable name (e.g. SELF_ALTERNATIVE). */
+    ALTERNATIVE_COST,
+
     /** A color chosen as the object entered (e.g. Riptide Replicator "choose a color"). */
     COLOR,
 

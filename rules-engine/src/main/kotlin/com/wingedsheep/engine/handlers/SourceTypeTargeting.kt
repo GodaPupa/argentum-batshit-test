@@ -45,11 +45,12 @@ object SourceTypeTargeting {
         state: GameState,
         targetId: EntityId,
         sourceId: EntityId?,
-        targetingSourceType: TargetingSourceType
+        targetingSourceType: TargetingSourceType,
+        sourceCardTypesOverride: Set<String>? = null
     ): Boolean {
         if (targetingSourceType == TargetingSourceType.SPELL || sourceId == null) return false
         val projected = state.projectedState
-        return sourceCardTypes(state, sourceId).any { type ->
+        return (sourceCardTypesOverride ?: sourceCardTypes(state, sourceId)).any { type ->
             projected.hasKeyword(targetId, keyword(type))
         }
     }

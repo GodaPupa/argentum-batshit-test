@@ -170,7 +170,7 @@ export const createTargetingSlice: SliceCreator<TargetingSlice> = (set, get) => 
         // All requirements filled
         const allTargets = [...allSelected.flat()]
         set({ targetingState: null })
-        get().advancePipeline({ type: 'targeting', selectedTargets: allTargets })
+        get().advancePipeline({ type: 'targeting', selectedTargets: allTargets, announcedTargetCounts: allSelected.map((group) => group.length) })
         return
       }
 
@@ -179,6 +179,7 @@ export const createTargetingSlice: SliceCreator<TargetingSlice> = (set, get) => 
       get().advancePipeline({
         type: 'targeting',
         selectedTargets: [...targetingState.selectedTargets],
+        announcedTargetCounts: [targetingState.selectedTargets.length],
       })
     }
   },

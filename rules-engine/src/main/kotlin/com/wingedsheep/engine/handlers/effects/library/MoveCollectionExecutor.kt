@@ -462,7 +462,7 @@ class MoveCollectionExecutor(
         val destZone = destination.zone
 
         // When moving to battlefield, detect auras that need target selection (Rule 303.4f)
-        if (destZone == Zone.BATTLEFIELD && targetFinder != null) {
+        if (destZone == Zone.BATTLEFIELD && targetFinder != null && context.preEntryOperation == null) {
             val auraCards = mutableListOf<EntityId>()
             val nonAuraCards = mutableListOf<EntityId>()
 
@@ -782,7 +782,7 @@ class MoveCollectionExecutor(
             // A permanent leaving the battlefield always goes to its owner's hand/library/exile/
             // graveyard — never to a "destination player" chosen by the effect — so routing
             // collapses to ownerId for those cases regardless of the destination's nominal player.
-            val actualDestPlayerId = when {
+            val actualDestPlayerId = context.preEntryOperation?.entries?.firstOrNull { it.source.entityId == cardId }?.controller ?: when {
                 (moveType == MoveType.Sacrifice || moveType == MoveType.Destroy) && destZone == Zone.GRAVEYARD -> ownerId
                 destZone == Zone.HAND && fromZone == Zone.BATTLEFIELD -> ownerId
                 destZone == Zone.EXILE && fromZone == Zone.BATTLEFIELD -> ownerId
@@ -827,6 +827,15 @@ class MoveCollectionExecutor(
                 newState, cardId, destZone, entryOptions, fromZoneKey
             )
             newState = transitionResult.state
+            if (transitionResult.actualDestination == Zone.BATTLEFIELD) {
+                context.preEntryOperation?.entries?.firstOrNull { it.source.entityId == cardId }?.host?.let { host ->
+                    newState = newState.updateEntity(cardId) { it.with(AttachedToComponent(host.entityId)) }
+                    newState = newState.updateEntity(host.entityId) { c ->
+                        val attachments = c.get<AttachmentsComponent>() ?: AttachmentsComponent(emptyList())
+                        c.with(attachments.copy(attachedIds = attachments.attachedIds + cardId))
+                    }
+                }
+            }
             events.addAll(transitionResult.events)
 
             // Apply "enters with counters" replacement effects when a permanent enters the

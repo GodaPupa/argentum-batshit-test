@@ -22,6 +22,12 @@ import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.core.Step
 import com.wingedsheep.sdk.model.EntityId
 
+/** Historical entry facts, captured from the entry event rather than a later battlefield visit. */
+@kotlinx.serialization.Serializable
+data class BattlefieldEntryOrigin(val fromZone: Zone?, val castFromZone: Zone? = null, val ownerId: EntityId? = null) {
+    fun enteredOrWasCastFrom(zone: Zone): Boolean = fromZone == zone || castFromZone == zone
+}
+
 /**
  * Context information about what caused a trigger.
  */
@@ -74,6 +80,8 @@ data class TriggerContext(
      * [lastKnownSubtypes]. Null when the trigger's source never left the battlefield.
      */
     val lastKnownCardTypes: Set<String>? = null,
+    /** Entry/cast origin of the triggering battlefield object; survives its departure or return. */
+    val entryOrigin: BattlefieldEntryOrigin? = null,
     /**
      * Last-known counter map (counter-type-string → count) when the triggering source left
      * the battlefield. Used by triggers that move every counter onto another permanent
@@ -218,6 +226,8 @@ data class TriggerContext(
         fun fromEvent(event: com.wingedsheep.engine.core.GameEvent): TriggerContext {
             return when (event) {
                 is ZoneChangeEvent -> TriggerContext(
+                    entryOrigin = if (event.toZone == Zone.BATTLEFIELD)
+                        BattlefieldEntryOrigin(event.fromZone, event.castFromZone, event.ownerId) else null,
                     triggeringSnapshot = event.lastKnown,
                     triggeringEntityId = event.entityId,
                     triggeringOrigin = if (event.toZone == Zone.BATTLEFIELD) event.newObject else event.oldObject,

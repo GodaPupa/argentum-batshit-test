@@ -103,6 +103,8 @@ data class EffectContext(
      * amount's `Target(0)` power read would land on the surviving opponent's creature.
      */
     val alignedTargets: List<ChosenTarget?> = emptyList(),
+    /** Visit identity aligned to original announced positions. */
+    val targetVisits: List<com.wingedsheep.engine.state.components.stack.TargetVisit?> = emptyList(),
     /**
      * The X chosen for an X-cost spell/ability. Also reused by `ChooseNumberThenEffect` to
      * carry a "choose a number" value into the inner effect (read via `CardPredicate.ManaValueEqualsX`,
@@ -263,6 +265,7 @@ data class EffectContext(
      * were a creature". Null when the trigger wasn't driven by a permanent leaving the battlefield.
      */
     val triggerLastKnownCardTypes: Set<String>? = null,
+    val triggerEntryOrigin: com.wingedsheep.engine.event.BattlefieldEntryOrigin? = null,
     /** The entity that caused the trigger to fire (e.g., creature that dealt damage for Aurification) */
     val triggeringEntityId: EntityId? = null,
     /** The player associated with the trigger event (e.g., the player who cast a spell for SpellCastEvent) */
@@ -429,7 +432,8 @@ data class EffectContext(
      * fails closed instead of `StackOverflowError`. Lives on the (immutable) context rather than
      * on the shared registry so it stays correct under the AI's parallel state evaluation.
      */
-    val resolutionDepth: Int = 0
+    val resolutionDepth: Int = 0,
+    val preEntryOperation: com.wingedsheep.engine.core.PreEntryOperation? = null
 ) {
     val activatedAbilityId: com.wingedsheep.sdk.scripting.AbilityId?
         get() = activatedAbility?.id
@@ -631,6 +635,7 @@ data class EffectContext(
             triggerLastKnownCounters = ability.triggerLastKnownCounters,
             triggerLastKnownSubtypes = ability.triggerLastKnownSubtypes,
             triggerLastKnownCardTypes = ability.triggerLastKnownCardTypes,
+            triggerEntryOrigin = ability.triggerEntryOrigin,
             triggerLastKnownDamageDealtByPlayers = ability.triggerLastKnownDamageDealtByPlayers,
             triggerLastKnownBlockingOrBlockedByIds = ability.triggerLastKnownBlockingOrBlockedByIds,
             triggeringEntityId = ability.triggeringEntityId,

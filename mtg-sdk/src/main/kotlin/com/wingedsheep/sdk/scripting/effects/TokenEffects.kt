@@ -335,6 +335,22 @@ data class CreateTokenCopyOfSourceEffect(
 }
 
 /**
+ * Encore's shared token-copy payload (CR 702.141): for each opponent, create a token copy of the
+ * source. Those tokens gain haste, must attack their corresponding opponent this turn if able,
+ * and are sacrificed at the beginning of the next end step.
+ *
+ * The mana cost and "exile this card from your graveyard" payment are intentionally not embedded
+ * here: Encore is an activated ability, so ordinary [com.wingedsheep.sdk.scripting.ActivatedAbility]
+ * cost/zone/timing machinery owns those rules. This effect is only the reusable resolution half.
+ */
+@SerialName("EncoreCopies")
+@Serializable
+data object EncoreCopiesEffect : Effect {
+    override val description: String =
+        "For each opponent, create a token copy of this card. Those tokens gain haste and attack those opponents this turn if able. Sacrifice them at the beginning of the next end step."
+}
+
+/**
  * Create a token that's a copy of an equipped/attached creature.
  * Used for equipment cards like Helm of the Host that create copies of the equipped creature.
  *

@@ -1673,6 +1673,13 @@ object Effects {
      * For players: adds PlayerHexproofComponent.
      * For permanents: creates a floating effect granting the Hexproof keyword.
      */
+    /** Fixed-color hexproof. Players support EndOfTurn and Permanent durations. */
+    fun GrantHexproofFromColors(
+        colors: Set<Color>,
+        target: EffectTarget = EffectTarget.ContextTarget(0),
+        duration: Duration = Duration.EndOfTurn
+    ): Effect = com.wingedsheep.sdk.scripting.effects.GrantHexproofFromColorsEffect(colors, target, duration)
+
     fun GrantHexproof(target: EffectTarget = EffectTarget.Controller, duration: Duration = Duration.EndOfTurn): Effect =
         GrantEvasionKeywordEffect(Keyword.HEXPROOF, target, duration)
 
@@ -3910,6 +3917,11 @@ object Effects {
     /**
      * Change the target of target spell or ability with a single target.
      */
+    fun ChangeOneTargetTo(
+        stackObject: com.wingedsheep.sdk.scripting.targets.EffectTarget = com.wingedsheep.sdk.scripting.targets.EffectTarget.ContextTarget(0),
+        destination: com.wingedsheep.sdk.scripting.targets.EffectTarget = com.wingedsheep.sdk.scripting.targets.EffectTarget.Self,
+    ): Effect = com.wingedsheep.sdk.scripting.effects.ChangeOneTargetToEffect(stackObject, destination)
+
     fun ChangeTarget(
         newTargetMustBePlayer: Boolean = false,
         onlyIfCurrentTargetIsController: Boolean = false,
@@ -5680,3 +5692,4 @@ object Effects {
         duration: com.wingedsheep.sdk.scripting.Duration = com.wingedsheep.sdk.scripting.Duration.EndOfTurn
     ): Effect = GrantFlashToSpellsEffect(target, spellFilter, duration)
 }
+

@@ -69,15 +69,9 @@ class ReselectTargetRandomlyExecutor : EffectExecutor<ReselectTargetRandomlyEffe
         val newTarget = buildChosenTarget(stateAfterPick, chosenTargetId, currentTarget)
             ?: return EffectResult.success(stateAfterPick)
 
-        // 6. Update the target on the stack entity
-        val newTargetsComponent = TargetsComponent.capture(
-            stateAfterPick,
-            listOf(newTarget),
-            targetsComponent.targetRequirements
+        val retarget = com.wingedsheep.engine.mechanics.stack.TargetingEvents.replaceTargets(
+            stateAfterPick, triggeringEntityId, listOf(newTarget)
         )
-        val newState = stateAfterPick.updateEntity(triggeringEntityId) { container ->
-            container.with(newTargetsComponent)
-        }
 
         // 7. Emit event for the game log
         val spellName = stackEntity.get<CardComponent>()?.name
@@ -101,7 +95,7 @@ class ReselectTargetRandomlyExecutor : EffectExecutor<ReselectTargetRandomlyEffe
             emptyList()
         }
 
-        return EffectResult.success(newState, events)
+        return EffectResult.success(retarget.state, events + retarget.events)
     }
 
     /**

@@ -166,7 +166,8 @@ class EffectExecutorRegistry(
                     "(EffectExecutorCoverageTest guards this at build time)."
             )
         val instructionContext = context.withCurrentObjectReferences(state)
-        val result = executor.execute(state, effect, instructionContext)
+        val result = PreEntryCoordinator(cardRegistry).prepare(state, effect, instructionContext, ::execute)
+            ?: executor.execute(state, effect, instructionContext)
         val events = com.wingedsheep.engine.event.captureBattlefieldEntrySnapshots(result.state, result.events)
         val references = instructionContext.objectReferences.authorize(events)
         return result.copy(events = events,

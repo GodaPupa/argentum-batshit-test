@@ -664,6 +664,26 @@ recorded responses while keeping their player and choice payloads.
 - **Deterministic replay.** The continuation stack is part of `GameState`. A replay log of actions
   deterministically reproduces the exact sequence of decisions and resumptions.
 
+#### Direct permanent entry transactions
+
+`PreEntryOperation` holds a direct single or collection battlefield-entry instruction outside the
+battlefield while mandatory entry choices are pending. It serializes source visits and zones,
+controllers, attachment-host visits, complete batch position, and the original effect context.
+
+The copy consumer snapshots eligible candidate visits and copiable card components before any
+batch member enters. It collects the copy selection first, applies typed copy exceptions through
+`CopyExceptionApplier`, and obtains subsequent choices from the copied definition. The printed
+card remains unchanged in its source zone throughout the pause. Final commit installs copy identity
+and its departure-restoration record before placement, then attachments and entry events. No copied
+counters, tapped state, or temporary modifications are transferred. Stale source, host, and selected
+copy visits fail closed. No new client decision type is needed.
+
+The initial routes are fixed-zone `MoveCollection`, `MoveToZone`, and fixed attached returns.
+Copy replacements with additional counter/tapped/exile riders or mana-spent gates delegate to
+the existing route before any partial replacement is consumed; those consumers need a separate
+adapter before entry snapshots can be qualified. Transformed/face-down entry and arbitrary `OnEnterRunEffect` replacement orchestration retain their
+existing boundaries. These transactions do not introduce gameplay authority.
+
 ### 2.5 Explicit Event Emission
 
 **Principle:** Every state mutation emits an explicit, typed event.

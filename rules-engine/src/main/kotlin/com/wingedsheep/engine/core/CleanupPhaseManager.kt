@@ -27,6 +27,7 @@ import com.wingedsheep.engine.state.components.combat.BlockedOrWasBlockedByLegen
 import com.wingedsheep.engine.state.components.combat.CanAttackDespiteDefenderThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.GoadedComponent
 import com.wingedsheep.engine.state.components.combat.MustAttackThisTurnComponent
+import com.wingedsheep.engine.state.components.combat.MustAttackDefenderThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackedThisTurnComponent
 import com.wingedsheep.engine.state.components.combat.PlayerAttackersLastTurnComponent
 import com.wingedsheep.engine.state.components.combat.BlockedThisTurnComponent
@@ -666,6 +667,11 @@ class CleanupPhaseManager(
                 if (shroud?.removeOn == PlayerEffectRemoval.EndOfTurn) {
                     result = result.without<PlayerShroudComponent>()
                 }
+                result.get<com.wingedsheep.engine.state.components.player.PlayerHexproofFromColorsComponent>()?.let { scoped ->
+                    val remaining = scoped.grants.filterNot { it.removeOn == PlayerEffectRemoval.EndOfTurn }
+                    result = if (remaining.isEmpty()) result.without<com.wingedsheep.engine.state.components.player.PlayerHexproofFromColorsComponent>()
+                        else result.with(scoped.copy(grants = remaining))
+                }
                 val hexproof = result.get<PlayerHexproofComponent>()
                 if (hexproof?.removeOn == PlayerEffectRemoval.EndOfTurn) {
                     result = result.without<PlayerHexproofComponent>()
@@ -1129,6 +1135,16 @@ class CleanupPhaseManager(
                 newState = newState.updateEntity(entityId) { it.without<MustAttackThisTurnComponent>() }
             }
 
+            // Remove creature-specific designated-defender requirements (Encore and similar).
+            val creaturesWithSpecificAttack = newState.entities.filter { (_, container) ->
+                container.has<MustAttackDefenderThisTurnComponent>()
+            }.keys
+            for (entityId in creaturesWithSpecificAttack) {
+                newState = newState.updateEntity(entityId) {
+                    it.without<MustAttackDefenderThisTurnComponent>()
+                }
+            }
+
             // Remove CanAttackDespiteDefenderThisTurnComponent (Krotiq Nestguard's "can attack
             // this turn as though it didn't have defender" activated ability).
             val creaturesWithCanAttackDespiteDefender = newState.entities.filter { (_, container) ->
@@ -1175,3 +1191,4 @@ class CleanupPhaseManager(
         }
     }
 }
+

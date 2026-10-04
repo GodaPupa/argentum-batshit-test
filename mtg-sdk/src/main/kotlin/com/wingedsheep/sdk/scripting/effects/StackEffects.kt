@@ -1313,3 +1313,13 @@ data class ReturnSpellOrPermanentToOwnersHandEffect(
 ) : Effect {
     override val description: String = "Return target spell or permanent to its owner's hand"
 }
+
+/** Change exactly one legal announced target slot to a fixed permanent. */
+@Serializable
+@SerialName("ChangeOneTargetTo")
+data class ChangeOneTargetToEffect(
+    val stackObject: EffectTarget = EffectTarget.ContextTarget(0),
+    val destination: EffectTarget = EffectTarget.Self,
+) : Effect {
+    override val description: String = "Change a target of ${stackObject.description} to ${destination.description}"
+}

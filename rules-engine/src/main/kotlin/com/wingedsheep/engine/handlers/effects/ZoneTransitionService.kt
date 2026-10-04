@@ -412,6 +412,7 @@ object ZoneTransitionService {
                 entityId = entityId,
                 battlefieldEntryTimestamp = container.get<BattlefieldEntryTimestampComponent>()?.timestamp,
                 objectRef = oldObject,
+                alternativeCost = container.get<com.wingedsheep.engine.state.components.battlefield.CastChoicesComponent>()?.alternativeCost,
                 colors = state.projectedState.getColors(entityId),
                 ownerId = ownerId,
                 name = cardComponent.name,
@@ -873,6 +874,11 @@ object ZoneTransitionService {
             newState = newState.updateEntity(entityId) { c ->
                 c.without<CommanderZoneChoiceAskedComponent>()
             }
+        }
+
+        // A mana-spent rider belongs to the spell object, never a later incarnation of the card.
+        newState = newState.updateEntity(entityId) { c ->
+            c.without<com.wingedsheep.engine.state.components.stack.CommanderManaEntryCountersComponent>()
         }
 
         // 8. Emit ZoneChangeEvent. A battlefield exit is a sacrifice (CR 701.21) when the central

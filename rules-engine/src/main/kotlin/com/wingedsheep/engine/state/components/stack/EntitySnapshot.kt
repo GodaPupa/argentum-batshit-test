@@ -182,6 +182,8 @@ data class EntitySnapshot(
     val damageSources: Set<DamageSourceLki> = emptySet(),
     /** The cast-time {X} carried by `CastChoicesComponent`, so dies/leaves triggers read `DynamicAmount.CastX`. */
     val castX: Int? = null,
+    /** Paid alternative-cost truth belonging to [objectRef], never a later visit. */
+    val alternativeCost: com.wingedsheep.engine.core.AlternativeCostType? = null,
     /**
      * True if this permanent was face down (CR 708) when it left the battlefield.
      *
@@ -228,6 +230,8 @@ data class EntitySnapshot(
                 wasFaceDown = state.getEntity(entityId)?.has<FaceDownComponent>() == true,
                 wasToken = state.getEntity(entityId)?.has<TokenComponent>() == true,
                 objectRef = state.objectRef(entityId),
+                alternativeCost = state.getEntity(entityId)
+                    ?.get<com.wingedsheep.engine.state.components.battlefield.CastChoicesComponent>()?.alternativeCost,
                 colors = projected.getColors(entityId),
                 ownerId = state.getEntity(entityId)?.get<CardComponent>()?.ownerId,
                 typeLine = projectedTypeLine(state, entityId),

@@ -101,7 +101,17 @@ class StateProjector(
             "Entry projection requires the state captured before battlefield placement"
         }
         val entering = requireNotNull(prepared.getEntity(enteringId))
-        val evaluationState = beforeEntry.withEntity(enteringId, entering)
+        var evaluationState = beforeEntry.withEntity(enteringId, entering)
+        // The entering object can still physically belong to a nonbattlefield source zone in the
+        // authoritative pre-entry state (a land in hand, a card in exile, etc.). This projection is
+        // hypothetical only, so detach that membership in the scratch state before inserting the
+        // same entity into the scratch battlefield. Preserve the authoritative state and object
+        // history untouched; this only prevents duplicate-zone membership during CR 614.12 preview.
+        evaluationState.logicalZone(enteringId)?.let { origin ->
+            if (enteringId in evaluationState.getZone(origin)) {
+                evaluationState = evaluationState.removeFromZone(origin, enteringId)
+            }
+        }
         val subjectState = evaluationState.addToZone(
             com.wingedsheep.engine.state.ZoneKey(controllerId, com.wingedsheep.sdk.core.Zone.BATTLEFIELD),
             enteringId,
