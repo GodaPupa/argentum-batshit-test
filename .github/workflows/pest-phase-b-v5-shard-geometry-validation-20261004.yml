@@ -1,0 +1,41 @@
+name: Pest Phase-B v5 shard geometry validation
+on:
+  push:
+    branches: ["validation/pest-phase-b-v5-shard-geometry-20261004"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-phase-b-v5-shard-geometry-gradle-20261004
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Verify design source ancestor
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git merge-base --is-ancestor b0ded5347ad8fd9576cef964aa22d6acb2614995 "$GITHUB_SHA"
+          test -z "$(git diff --name-only b0ded5347ad8fd9576cef964aa22d6acb2614995..HEAD -- ':!.github/workflows/pest-phase-b-v5-shard-geometry-validation-20261004.yml')"
+      - name: Run shard geometry tests only
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:test \
+            --tests com.wingedsheep.gym.pest.PestPhaseBShardGeometryTest
+      - name: Preserve validation
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v5-shard-geometry-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBShardGeometryTest.xml
+          if-no-files-found: warn
+          retention-days: 30
