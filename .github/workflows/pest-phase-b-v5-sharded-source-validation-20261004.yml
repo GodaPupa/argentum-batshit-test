@@ -1,0 +1,58 @@
+name: Pest Phase-B v5 sharded source validation
+on:
+  push:
+    branches: ["validation/pest-phase-b-v5-sharded-source-20261004"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-phase-b-v5-sharded-source-gradle-20261004
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Verify exact source ancestor and unchanged raw semantics
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          git merge-base --is-ancestor b91231d9b1fb6a71e169165515cbe2a8dfb6507e "$GITHUB_SHA"
+          test -z "$(git diff --name-only b91231d9b1fb6a71e169165515cbe2a8dfb6507e..HEAD -- ':!.github/workflows/pest-phase-b-v5-sharded-source-validation-20261004.yml')"
+          test "$(git rev-parse b91231d9b1fb6a71e169165515cbe2a8dfb6507e:ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt)" = "4f020ea2406e9bd6a87ec389685b48f15df4c5a3"
+          test "$(git rev-parse b91231d9b1fb6a71e169165515cbe2a8dfb6507e:gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt)" = "ce1be5ea615104953b7319182878f4135baac07e"
+          test "$(git rev-parse b91231d9b1fb6a71e169165515cbe2a8dfb6507e:gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankRunner.kt)" = "a5797843c7773338edd5f9d21c496ee1fd19a4c9"
+          test "$(git rev-parse b91231d9b1fb6a71e169165515cbe2a8dfb6507e:gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt)" = "afeadb1f10ca23972bf197fa4cedcc626e8551c4"
+      - name: Compile and run exact nonbehavioral v5 source tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pest-phase-b-v5-sharded-source-validation
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:test \
+            --tests com.wingedsheep.gym.pest.PestPhaseBV5DiagnosticRegressionTest \
+            --tests com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest \
+            --tests com.wingedsheep.gym.pest.PestPhaseBShardGeometryTest \
+            --tests com.wingedsheep.gym.pest.PestPhaseBShardPlanIdentityTest \
+            2>&1 | tee /tmp/pest-phase-b-v5-sharded-source-validation/tests.log
+          grep '^PEST_PHASE_B_SHARD ' /tmp/pest-phase-b-v5-sharded-source-validation/tests.log > /tmp/pest-phase-b-v5-sharded-source-validation/shard-identities.txt
+          test "$(wc -l < /tmp/pest-phase-b-v5-sharded-source-validation/shard-identities.txt)" -eq 32
+      - name: Record source identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse b91231d9b1fb6a71e169165515cbe2a8dfb6507e b91231d9b1fb6a71e169165515cbe2a8dfb6507e^{tree} > /tmp/pest-phase-b-v5-sharded-source-validation/source.txt
+          git diff --stat b472c3f8fe3f3e724614e080d529e2868209fb96..b91231d9b1fb6a71e169165515cbe2a8dfb6507e > /tmp/pest-phase-b-v5-sharded-source-validation/diff-stat.txt
+      - name: Preserve validation
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v5-sharded-source-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-phase-b-v5-sharded-source-validation/
+          if-no-files-found: warn
+          retention-days: 30
