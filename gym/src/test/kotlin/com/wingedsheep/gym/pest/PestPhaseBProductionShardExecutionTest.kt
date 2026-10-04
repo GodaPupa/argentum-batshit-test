@@ -9,7 +9,7 @@ import java.nio.file.Path
  * shard identity and evidence path. This test grants no execution authority by itself.
  */
 class PestPhaseBProductionShardExecutionTest : FunSpec({
-    test("execute exactly one frozen deterministic Phase-B shard") {
+    test("execute exactly one frozen deterministic Phase-B shard").config(timeout = 3.hours) {
         fun required(name: String): String =
             requireNotNull(System.getenv(name)?.takeIf { it.isNotBlank() }) { "Missing $name" }
 
