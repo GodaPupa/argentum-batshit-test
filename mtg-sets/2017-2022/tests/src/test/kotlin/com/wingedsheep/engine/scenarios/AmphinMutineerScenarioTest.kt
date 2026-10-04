@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.EngineServices
 import com.wingedsheep.engine.core.GameConfig
 import com.wingedsheep.engine.core.GameInitializer
@@ -173,6 +174,8 @@ class AmphinMutineerScenarioTest : FunSpec({
             d.submitTargetSelection(d.player1, emptyList()).error shouldBe null
         }
         while (d.stackSize > 0) d.bothPass()
+        d.passPriorityUntil(Step.DECLARE_ATTACKERS)
+        d.submit(DeclareAttackers(d.player1, mapOf(token to d.player2))).error shouldBe null
         d.passPriorityUntil(Step.END)
         while (d.stackSize > 0) d.bothPass()
         d.passPriorityUntil(Step.CLEANUP)
