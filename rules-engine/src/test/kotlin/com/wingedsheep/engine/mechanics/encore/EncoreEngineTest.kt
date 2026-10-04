@@ -152,9 +152,11 @@ class EncoreEngineTest : ScenarioTestBase() {
             val tokens = result.state.getBattlefield(controller)
                 .filter { result.state.getEntity(it)?.has<TokenComponent>() == true }
             tokens.size shouldBe 2
-            tokens.map {
+            val assignmentsBefore = tokens.associateWith {
                 result.state.getEntity(it)?.get<MustAttackDefenderThisTurnComponent>()?.defenderId
-            } shouldBe opponents
+            }
+            assignmentsBefore.values.toList() shouldBe opponents
+            assignmentsBefore.values.toSet().size shouldBe 2
             tokens.forEach {
                 result.state.getEntity(it)?.get<AttackingComponent>() shouldBe null
                 result.state.projectedState.hasKeyword(it, Keyword.HASTE) shouldBe true
@@ -162,9 +164,10 @@ class EncoreEngineTest : ScenarioTestBase() {
             result.state.delayedTriggers.size shouldBe 2
 
             val restored = json.decodeFromString<GameState>(json.encodeToString(result.state))
-            tokens.map {
+            val assignmentsAfter = tokens.associateWith {
                 restored.getEntity(it)?.get<MustAttackDefenderThisTurnComponent>()?.defenderId
-            } shouldBe opponents
+            }
+            assignmentsAfter shouldBe assignmentsBefore
             restored.delayedTriggers.size shouldBe 2
         }
 
