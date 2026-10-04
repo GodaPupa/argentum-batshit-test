@@ -64,7 +64,11 @@ object PestMonsterLondonPredicateVectorExtractor {
         val early = spells.filter { it.cmc <= earlyHorizon }
         val produced = lands.flatMapTo(mutableSetOf()) { it.colorsProduced }
         val castable = early.count { card ->
-            card.colorsRequired.isEmpty() || card.colorsRequired.any { it in produced }
+            // colorsRequired is the set of distinct colored symbols that the frozen current-pair
+            // spell actually requires. Every required color must be represented by a visible
+            // physical land source; using any() incorrectly treated multicolor {B}{G} spells as
+            // color-functional from a Forest-only hand.
+            card.colorsRequired.isEmpty() || card.colorsRequired.all { it in produced }
         }
         val mismatch = early.size - castable
         val colorFunctional = early.isNotEmpty() && (mismatch < 3 || castable >= 2)
