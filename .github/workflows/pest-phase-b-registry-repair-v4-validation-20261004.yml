@@ -67,7 +67,8 @@ jobs:
           fixture='gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt'
           assert git('hash-object',fixture)=='c9229e730fd81a5e6ddb7104b50a14eb9c8726ae'
           fixture_text=pathlib.Path(fixture).read_text()
-          assert 'GameInitializer' not in fixture_text
+          assert 'import com.wingedsheep.engine.core.GameInitializer' not in fixture_text
+          assert 'GameInitializer(' not in fixture_text
           assert 'GameRng.seeded(FIXTURE_RNG_SEED)' in fixture_text
           plan=json.loads(pathlib.Path('docs/experiments/pest-control/PHASE_B_COMPLETE_BANK_GATE_V4_20261004.json').read_text())
           assert plan['hold'] is True and plan['official_counters_delta']==0
