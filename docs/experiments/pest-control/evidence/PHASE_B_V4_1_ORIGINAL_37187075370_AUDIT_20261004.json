@@ -1,0 +1,69 @@
+{
+  "schema": "pest-phase-b-v4-1-original-37187075370-audit-v1",
+  "date_utc": "2026-10-04",
+  "source_original": {
+    "run": 37187075370,
+    "attempt": 1,
+    "marker_head": "b27c11e38113cdf2d48968cf8c0583fd609247a6",
+    "implementation": "b472c3f8fe3f3e724614e080d529e2868209fb96",
+    "implementation_tree": "14188c029e9c78364d3de97aad7a8c5023a840b0",
+    "review_sha256": "3aecd3327cc46ecd8bca1e7c9d746ef7137462bc6e2c7ae4029394bf55c3a373",
+    "authorization_sha256": "bec77baa40a9e293bf5eeb0d6a04b0b879277c57bd42b84980059c91fd07f21e",
+    "authorization_status": "CONSUMED",
+    "plan_rows": 34912840,
+    "plan_sha256": "bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71",
+    "github_conclusion": "cancelled",
+    "timeout_minutes": 360
+  },
+  "artifact": {
+    "id": 11305795411,
+    "name": "pest-phase-b-complete-bank-v4-37187075370-1",
+    "sha256": "66a57dd7fcf08646e1d2b9cd860ead91ac8c9cc3e0a67384c9648b18d88a09a3",
+    "compressed_size_bytes": 228899457,
+    "journal_size_bytes": 3217682873,
+    "zip_sha256_reverified": true
+  },
+  "journal_audit": {
+    "intents": 5025285,
+    "results": 5025285,
+    "dangling_intents": 0,
+    "match_row_only_not_bank_coverage": 5023109,
+    "mismatches": 2176,
+    "unqualified_rows": 0,
+    "exception_records": 0,
+    "completed_fraction": 0.143938018219085,
+    "summary_json_present": false,
+    "test_end_present": false,
+    "final_test_xml_present": false
+  },
+  "mismatch_structure": {
+    "deck": "pest",
+    "raw_keep_false_count": 2176,
+    "unique_name_multiset_ordinals": 208,
+    "mulligan_counts": {
+      "0": 832,
+      "1": 1344
+    },
+    "first_key": "0|000000009910|0|000000000000|0|0",
+    "first_hand": {
+      "Forest": 3,
+      "Chainer's Edict": 2,
+      "Pest Mascot": 1,
+      "Weather the Storm": 1
+    },
+    "diagnosis": "All 208 unique mismatch hand classes change M4 colorFunctional from true to false when the lawful extractor requires every distinct colored symbol represented by a visible source instead of any one represented color. The frozen current-pair spell inventory contains ordinary colored symbols only in this scope, so this matches the frozen raw M4 test.",
+    "remaining_mismatch_classes_after_m4_reclassification": 0
+  },
+  "observability_finding": {
+    "affected_fields": [
+      "lawful_keep",
+      "lawful_bottom"
+    ],
+    "observed_serialization": "UNKNOWN despite non-null comparator values",
+    "cause": "JsonObjectBuilder.put returns the prior nullable value; using ?.let { put(...) } ?: put(UNKNOWN) overwrites first insertion with UNKNOWN.",
+    "effect": "Journal observability defect only; does not rescue the incomplete or mismatch-bearing original."
+  },
+  "disposition": "PEST_PHASE_B_V4_1_ORIGINAL_INCOMPLETE_REJECT_FOR_PARITY__TIMEOUT_WITH_MISMATCH_PREFIX__AUTHORIZATION_CONSUMED",
+  "rerun_authority": false,
+  "official_counters_delta": 0
+}
