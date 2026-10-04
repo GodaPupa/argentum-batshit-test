@@ -72,10 +72,9 @@
   ],
   "required_before_execution": [
     "v5 M4 and journal repair validation",
-    "fresh independent source review of the exact semantic repair",
-    "implementation and nonbehavioral validation of the 32-shard geometry and aggregation gate",
-    "fresh independent review of the exact sharded execution gate",
-    "new explicit one-time user execution authorization bound to the final exact implementation/gate"
+    "nonbehavioral validation of the exact 32-shard geometry, shard runner, and aggregate coverage identities",
+    "one fresh independent review of the final exact v5 implementation covering the semantic repair, sharding source, workflow, gate, verifier, and fail-closed aggregate-original semantics",
+    "new explicit one-time user execution authorization bound to that exact reviewed implementation and fresh review record"
   ],
   "prohibited": [
     "treating this proposal as execution authority",
@@ -83,5 +82,6 @@
     "reusing the v4.1 marker or execution branch",
     "behavioral execution before a fresh reviewed gate and new explicit authorization",
     "gameplay, seed generation, allocation, claim, game or outcome exposure"
-  ]
+  ],
+  "review_strategy": "ONE_FRESH_FINAL_IMPLEMENTATION_REVIEW__NOT_SEPARATE_SOURCE_AND_GATE_REVIEWS"
 }
