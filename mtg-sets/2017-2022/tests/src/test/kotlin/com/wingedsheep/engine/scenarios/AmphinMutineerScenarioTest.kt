@@ -218,14 +218,22 @@ class AmphinMutineerScenarioTest : FunSpec({
         val chosen = mutableListOf<EntityId>()
         guard = 0
         while (chosen.size < 2 && guard++ < 20) {
-            val pending = d.pendingDecision
-            if (pending is com.wingedsheep.engine.core.ChooseTargetsDecision) {
-                val target = if (bearA !in chosen) bearA else bearB
-                pending.legalTargets.getValue(0) shouldContain target
-                d.submitTargetSelection(controller, listOf(target)).error shouldBe null
-                chosen += target
-            } else {
-                d.passPriority(d.state.priorityPlayerId.shouldNotBeNull()).error shouldBe null
+            when (val pending = d.pendingDecision) {
+                is com.wingedsheep.engine.core.ChooseOptionDecision -> {
+                    d.submitDecision(
+                        controller,
+                        com.wingedsheep.engine.core.OptionChosenResponse(pending.id, 0),
+                    ).error shouldBe null
+                }
+                is com.wingedsheep.engine.core.ChooseTargetsDecision -> {
+                    val target = if (bearA !in chosen) bearA else bearB
+                    pending.legalTargets.getValue(0) shouldContain target
+                    d.submitTargetSelection(controller, listOf(target)).error shouldBe null
+                    chosen += target
+                }
+                else -> {
+                    d.passPriority(d.state.priorityPlayerId.shouldNotBeNull()).error shouldBe null
+                }
             }
         }
         chosen shouldBe listOf(bearA, bearB)
