@@ -1,0 +1,56 @@
+name: Pest Phase-B v5 M4+journal diagnostic validation
+on:
+  push:
+    branches: ["validation/pest-phase-b-v5-m4-journal-repair-20261004"]
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-phase-b-v5-diagnostic-gradle-20261004
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Verify exact diagnostic candidate ancestry and protected unchanged blobs
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a"
+          test "$(git rev-parse d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a^3)" = "b472c3f8fe3f3e724614e080d529e2868209fb96"
+          test "$(git rev-parse b472c3f8fe3f3e724614e080d529e2868209fb96:gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt)" = "afeadb1f10ca23972bf197fa4cedcc626e8551c4"
+          test "$(git rev-parse d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a:gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt)" = "afeadb1f10ca23972bf197fa4cedcc626e8551c4"
+          test "$(git rev-parse d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a:gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt)" = "ce1be5ea615104953b7319182878f4135baac07e"
+          test "$(git rev-parse d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a:gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionBankRunner.kt)" = "a5797843c7773338edd5f9d21c496ee1fd19a4c9"
+          test "$(git rev-parse d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a:ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt)" = "4f020ea2406e9bd6a87ec389685b48f15df4c5a3"
+      - name: Compile and run only diagnostic plus registry preflight tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:test \
+            --tests com.wingedsheep.gym.pest.PestPhaseBV5DiagnosticRegressionTest \
+            --tests com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest
+      - name: Record validation result
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pest-phase-b-v5-diagnostic-validation
+          git rev-parse HEAD HEAD^{tree} > /tmp/pest-phase-b-v5-diagnostic-validation/source.txt
+          git diff --stat b472c3f8fe3f3e724614e080d529e2868209fb96..d7898bd3b5dc54ca518bbd22fd7287d984d2ae3a > /tmp/pest-phase-b-v5-diagnostic-validation/candidate-diff-stat.txt
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBV5DiagnosticRegressionTest.xml /tmp/pest-phase-b-v5-diagnostic-validation/
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.pest.PestPhaseBProductionRegistryPreflightTest.xml /tmp/pest-phase-b-v5-diagnostic-validation/
+      - name: Preserve validation
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: pest-phase-b-v5-diagnostic-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-phase-b-v5-diagnostic-validation/
+          if-no-files-found: warn
+          retention-days: 30
