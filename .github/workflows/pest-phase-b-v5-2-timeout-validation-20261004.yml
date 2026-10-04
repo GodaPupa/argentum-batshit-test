@@ -98,19 +98,19 @@ jobs:
             mkdir "$dir/unpacked"
             unzip -q "$dir/artifact.zip" -d "$dir/unpacked"
             LABEL="$label" DIGEST="$digest" ROOT="$dir/unpacked" /usr/bin/python3.10 -I -S - <<'PY'
-import hashlib, os, pathlib
-root=pathlib.Path(os.environ["ROOT"]).resolve()
-digest=os.environ["DIGEST"]; label=os.environ["LABEL"]
-matches=[]
-for p in root.rglob("*"):
-    if p.is_symlink(): raise SystemExit("symlink in accepted artifact: "+str(p))
-    if not p.is_file(): continue
-    if hashlib.sha256(p.read_bytes()).hexdigest()==digest: matches.append(p)
-assert len(matches)==1,(label,digest,[str(p) for p in matches])
-target=root.parent/(label+".accepted.json")
-target.write_bytes(matches[0].read_bytes())
-os.chmod(target,0o444)
-PY
+          import hashlib, os, pathlib
+          root=pathlib.Path(os.environ["ROOT"]).resolve()
+          digest=os.environ["DIGEST"]; label=os.environ["LABEL"]
+          matches=[]
+          for p in root.rglob("*"):
+              if p.is_symlink(): raise SystemExit("symlink in accepted artifact: "+str(p))
+              if not p.is_file(): continue
+              if hashlib.sha256(p.read_bytes()).hexdigest()==digest: matches.append(p)
+          assert len(matches)==1,(label,digest,[str(p) for p in matches])
+          target=root.parent/(label+".accepted.json")
+          target.write_bytes(matches[0].read_bytes())
+          os.chmod(target,0o444)
+          PY
           done
           echo "PEST_PHASE_B_ACCEPTED_BASE=$PEST_PHASE_B_INPUT_ROOT/base/base.accepted.json" >> "$GITHUB_ENV"
           echo "PEST_PHASE_B_ACCEPTED_SUPPLEMENT=$PEST_PHASE_B_INPUT_ROOT/supplement/supplement.accepted.json" >> "$GITHUB_ENV"
@@ -131,40 +131,40 @@ PY
         run: |
           set -euo pipefail
           /usr/bin/python3.10 -I -S - <<'PY'
-import json, os, pathlib, xml.etree.ElementTree as ET
-root=pathlib.Path(os.environ["PEST_PHASE_B_EVIDENCE_ROOT"])
-run_id=os.environ["PEST_PHASE_B_RUN_ID"]
-xml=root/"TEST-com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest.xml"
-suite=ET.parse(xml).getroot()
-assert suite.attrib["name"]=="com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest"
-assert int(suite.attrib["tests"])==1
-assert all(int(suite.attrib[k])==0 for k in ("failures","errors","skipped"))
-summary=json.loads((root/run_id/"summary.json").read_text())
-partition=json.loads((root/run_id/"partition.json").read_text())
-assert summary["expected_rows"]==1091026==summary["completed_rows"]==summary["matches"]
-assert summary["mismatches"]==summary["unknowns"]==summary["exceptions"]==0
-assert summary["plan_sha256"]=="be146685f6ee8581327b76b73def9acf453adcf6b7b20da1ad3e0dfb5aa201ed"
-assert partition["shard_index"]==10 and partition["shard_count"]==32
-assert partition["global_plan_sha256"]=="bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71"
-start=int((root/"test-start.txt").read_text()); end=int((root/"test-end.txt").read_text())
-result={
-  "schema":"pest-phase-b-v5-2-timeout-repair-validation-v1",
-  "authority":"VALIDATION_ONLY_NO_EXECUTION_OR_PARITY_AUTHORITY",
-  "candidate_commit":os.environ["PEST_PHASE_B_SOURCE_COMMIT"],
-  "shard_index":10,
-  "expected_rows":summary["expected_rows"],
-  "completed_rows":summary["completed_rows"],
-  "matches":summary["matches"],
-  "mismatches":summary["mismatches"],
-  "unknowns":summary["unknowns"],
-  "exceptions":summary["exceptions"],
-  "wall_seconds_gradle_step":end-start,
-  "old_v5_1_same_shard_timeout_ms":600000,
-  "official_counters_delta":0
-}
-(root/"validation-result.json").write_text(json.dumps(result,sort_keys=True)+"\n")
-print(json.dumps(result,sort_keys=True))
-PY
+          import json, os, pathlib, xml.etree.ElementTree as ET
+          root=pathlib.Path(os.environ["PEST_PHASE_B_EVIDENCE_ROOT"])
+          run_id=os.environ["PEST_PHASE_B_RUN_ID"]
+          xml=root/"TEST-com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest.xml"
+          suite=ET.parse(xml).getroot()
+          assert suite.attrib["name"]=="com.wingedsheep.gym.pest.PestPhaseBProductionShardExecutionTest"
+          assert int(suite.attrib["tests"])==1
+          assert all(int(suite.attrib[k])==0 for k in ("failures","errors","skipped"))
+          summary=json.loads((root/run_id/"summary.json").read_text())
+          partition=json.loads((root/run_id/"partition.json").read_text())
+          assert summary["expected_rows"]==1091026==summary["completed_rows"]==summary["matches"]
+          assert summary["mismatches"]==summary["unknowns"]==summary["exceptions"]==0
+          assert summary["plan_sha256"]=="be146685f6ee8581327b76b73def9acf453adcf6b7b20da1ad3e0dfb5aa201ed"
+          assert partition["shard_index"]==10 and partition["shard_count"]==32
+          assert partition["global_plan_sha256"]=="bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71"
+          start=int((root/"test-start.txt").read_text()); end=int((root/"test-end.txt").read_text())
+          result={
+            "schema":"pest-phase-b-v5-2-timeout-repair-validation-v1",
+            "authority":"VALIDATION_ONLY_NO_EXECUTION_OR_PARITY_AUTHORITY",
+            "candidate_commit":os.environ["PEST_PHASE_B_SOURCE_COMMIT"],
+            "shard_index":10,
+            "expected_rows":summary["expected_rows"],
+            "completed_rows":summary["completed_rows"],
+            "matches":summary["matches"],
+            "mismatches":summary["mismatches"],
+            "unknowns":summary["unknowns"],
+            "exceptions":summary["exceptions"],
+            "wall_seconds_gradle_step":end-start,
+            "old_v5_1_same_shard_timeout_ms":600000,
+            "official_counters_delta":0
+          }
+          (root/"validation-result.json").write_text(json.dumps(result,sort_keys=True)+"\n")
+          print(json.dumps(result,sort_keys=True))
+          PY
       - name: Preserve timeout-repair validation evidence
         if: always()
         uses: actions/upload-artifact@v7
