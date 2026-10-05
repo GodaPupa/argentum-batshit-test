@@ -1,0 +1,78 @@
+name: Pest C2 P07 fresh source-bound replay qualification v2
+on:
+  push:
+    branches: ["pest/c2-p07-fresh-replay-qualification-v2-20261005"]
+    paths:
+      - ".github/workflows/pest-c2-p07-fresh-replay-v2-qualification-20261005.yml"
+      - "docs/experiments/pest-control/PEST_C2_P07_FRESH_REPLAY_QUALIFICATION_20261005.json"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestCurrentPairC2ReplayJournal.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestCurrentPairC2ReplayJournalTest.kt"
+      - "scripts/experiments/pest-control/verify_pest_c2_p07_fresh_replay_qualification.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pest-c2-p07-fresh-replay-v2-qualification-20261005
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-c2-p07-replay-${{ github.run_id }}-${{ github.run_attempt }}
+      TZ: UTC
+      OUT: /tmp/pest-c2-p07-replay
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+
+      - name: Verify exact fresh replay package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p "$OUT"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_pest_c2_p07_fresh_replay_qualification.py             docs/experiments/pest-control/PEST_C2_P07_FRESH_REPLAY_QUALIFICATION_20261005.json             | tee "$OUT/verifier-result.json"
+
+      - name: Enforce non-gameplay executable boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          for f in             gym/src/main/kotlin/com/wingedsheep/gym/pest/PestCurrentPairC2ReplayJournal.kt             gym/src/test/kotlin/com/wingedsheep/gym/pest/PestCurrentPairC2ReplayJournalTest.kt; do
+            if grep -nE '^[[:space:]]*import .*GameInitializer|^[[:space:]]*import .*GameEnvironment|withRngSeed\(|MonsterTronSmokeAssignment|OfficialGame|stepExactlyOne\(|ProductionDriver' "$f"; then
+              echo "forbidden gameplay surface referenced by P07 replay qualification" >&2
+              exit 1
+            fi
+          done
+
+      - name: Run fresh current-pair replay journal qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :gym:test             --tests com.wingedsheep.gym.pest.PestCurrentPairC2ReplayJournalTest             2>&1 | tee "$OUT/replay.log"
+
+      - name: Preserve fresh replay qualification evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT/xml"
+          find gym/build/test-results/test -name 'TEST-com.wingedsheep.gym.pest.PestCurrentPairC2ReplayJournalTest.xml' -type f -exec cp {} "$OUT/xml/" \; || true
+          git rev-parse HEAD > "$OUT/head.txt"
+          git rev-parse 'HEAD^{tree}' > "$OUT/tree.txt"
+          printf '%s\n' 'NON_OFFICIAL_SOURCE_REPLAY_QUALIFICATION_ONLY_NO_C2_ADMISSION' > "$OUT/scope.txt"
+          cp docs/experiments/pest-control/PEST_C2_P07_FRESH_REPLAY_QUALIFICATION_20261005.json "$OUT/"
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-c2-p07-fresh-replay-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-c2-p07-replay/
+          if-no-files-found: error
+          retention-days: 90

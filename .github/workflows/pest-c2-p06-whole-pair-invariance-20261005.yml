@@ -1,0 +1,72 @@
+name: Pest C2 P06 whole-pair hidden-state invariance qualification v3
+on:
+  push:
+    branches: ["pest/c2-p06-whole-pair-invariance-v3-20261005"]
+    paths:
+      - ".github/workflows/pest-c2-p06-whole-pair-invariance-20261005.yml"
+      - "docs/experiments/pest-control/PEST_C2_P06_WHOLE_PAIR_INVARIANCE_20261005.json"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestCurrentPairC2P06HiddenInvarianceTest.kt"
+      - "scripts/experiments/pest-control/verify_pest_c2_p06_whole_pair_invariance.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pest-c2-p06-whole-pair-invariance-v3-20261005
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-c2-p06-invariance-${{ github.run_id }}-${{ github.run_attempt }}
+      TZ: UTC
+      OUT: /tmp/pest-c2-p06-invariance
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+
+      - name: Verify exact whole-pair invariance package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p "$OUT"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_pest_c2_p06_whole_pair_invariance.py             docs/experiments/pest-control/PEST_C2_P06_WHOLE_PAIR_INVARIANCE_20261005.json             | tee "$OUT/verifier-result.json"
+
+      - name: Run whole-pair hidden permutation and observation boundary bank
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :gym:test             --tests com.wingedsheep.gym.actorinput.PestCurrentPairC2P06HiddenInvarianceTest             --tests com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest             --tests com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest             2>&1 | tee "$OUT/gym-invariance.log"
+
+      - name: Run current determinizer invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :ai:test             --tests com.wingedsheep.ai.engine.hidden.DeterminizerInvariantsTest             2>&1 | tee "$OUT/ai-determinizer.log"
+
+      - name: Preserve invariance qualification evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT/xml"
+          find . -path '*/build/test-results/test/TEST-*.xml' -type f             \( -name '*PestCurrentPairC2P06HiddenInvarianceTest.xml'             -o -name '*ActorObservationBoundaryTest.xml'             -o -name '*ActorAuthorizedLibrarySearchOrderTest.xml'             -o -name '*DeterminizerInvariantsTest.xml' \)             -exec cp {} "$OUT/xml/" \;
+          git rev-parse HEAD > "$OUT/head.txt"
+          git rev-parse 'HEAD^{tree}' > "$OUT/tree.txt"
+          printf '%s\n' 'NON_GAMEPLAY_INVARIANCE_QUALIFICATION_ONLY_NO_C2_ADMISSION' > "$OUT/scope.txt"
+          cp docs/experiments/pest-control/PEST_C2_P06_WHOLE_PAIR_INVARIANCE_20261005.json "$OUT/"
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-c2-p06-whole-pair-invariance-v3-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-c2-p06-invariance/
+          if-no-files-found: error
+          retention-days: 90
