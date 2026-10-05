@@ -1,0 +1,260 @@
+{
+  "schema": "pest-current-pair-c2-p03-p04-finite-closure-v1",
+  "date_utc": "2026-10-05",
+  "authority": "SOURCE_POLICY_QUALIFICATION_ONLY_NO_C2_ADMISSION_NO_GAMEPLAY",
+  "status": "FROZEN_FINITE_CURRENT_PAIR_SURFACE_CANDIDATE_PENDING_VALIDATION",
+  "source_parent": {
+    "commit": "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd",
+    "tree": "e7c37f620c8cefa0352742e38635ca196e887637"
+  },
+  "exact_pair": {
+    "pest_main_sha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster_main_sha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f"
+  },
+  "accepted_predecessor_evidence": {
+    "source_rebind_run": 37310809639,
+    "source_rebind_head": "21dc85ac88c2f0ea138d66ab9ff2118f4e63b357",
+    "source_rebind_artifact": 11345496531,
+    "source_rebind_artifact_digest": "sha256:318da70eeee91466c7248cad3080044ecedadf6424770137852e9f39b85ec7b2",
+    "source_rebind_manifest_blob": "0f299f7d9d52b6c06d2c80888394aea823b1b511",
+    "monster_policy_run": 37312421562,
+    "monster_policy_head": "cf1d9727d4af57952a66d2b3339d97aa8ccea6c7",
+    "monster_policy_artifact": 11346498738,
+    "monster_policy_artifact_digest": "sha256:36ea5871dd2cbe8ae3ad027d54e2678036dd544bc4455551f91f226bce06edd9",
+    "monster_policy_manifest_blob": "aaf171c4ed80937828fbf85a4e94baf128915178"
+  },
+  "reachability_basis": {
+    "exact_interactive_card_source_rows": 20,
+    "non_basic_definition_rows_rebound": 33,
+    "actor_relative_policy_rule": "ObservationAdapter, ActorActionMenu, Strategist and DecisionResponder route by current actor/playerId rather than hard-coded seat; the exact Monster advisor is likewise playerId-relative. Play/draw affects reachable state, not a separate policy implementation.",
+    "starts": [
+      "play",
+      "draw"
+    ],
+    "seats": [
+      0,
+      1
+    ],
+    "current_observation_adapter": "17cbc1bdb65d9da597eff9811c1b4fb2f7cefee0"
+  },
+  "finite_surface_inventory": [
+    {
+      "id": "P03-01",
+      "kind": "priority",
+      "source": "ordinary priority and legal pass",
+      "proof": "ActorPriorityObservationTest HP01",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P03-02",
+      "kind": "priority",
+      "source": "declaration baton before post-block priority",
+      "proof": "ActorPriorityObservationTest HP02",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P03-03",
+      "kind": "payment",
+      "source": "serialized mana payment baton",
+      "proof": "ActorPriorityObservationTest HP03",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P03-04",
+      "kind": "action",
+      "source": "Pest current action generation/selection",
+      "proof": "PestControlAgentDecisionTest current 86-case bank",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P03-05",
+      "kind": "action",
+      "source": "Monster current exact-60 action policy",
+      "proof": "PestMonsterTronPolicyAuditTest plus accepted run 37312421562",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P03-06",
+      "kind": "additional_cost",
+      "source": "Bone Shards sacrifice-or-discard fork",
+      "proof": "BoneShardsScenarioTest + AutomaticAdditionalCostPaymentAiTest + Pest policy cases",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P03-07",
+      "kind": "additional_cost",
+      "source": "Crop Rotation land sacrifice",
+      "proof": "Monster policy exact-60 qualification + rebound Crop definition",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P03-08",
+      "kind": "search",
+      "source": "Expedition Map land search",
+      "proof": "Monster policy exact-60 qualification + AuthorizedLibrarySearchChoiceTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P03-09",
+      "kind": "search",
+      "source": "Generous Ent Forestcycling payment/search",
+      "proof": "TypecyclingTest + Pest Forestcycles policy case",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P03-10",
+      "kind": "cascade",
+      "source": "Maelstrom Colossus free-cast branch",
+      "proof": "CascadeKeywordTest + MaelstromColossusCascadeScenarioTest + Monster cascade readiness predecessor",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P03-11",
+      "kind": "trigger_order",
+      "source": "simultaneous trigger ordering and APNAP placement",
+      "proof": "TriggerOrderingScenarioTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P03-12",
+      "kind": "payment",
+      "source": "pair mana abilities / any-color mana choice",
+      "proof": "GiantsBoulderScenarioTest plus current DecisionResponder mana-selection source binding",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P04-01",
+      "kind": "search",
+      "source": "authorized own-library offered physical order",
+      "proof": "AuthorizedLibrarySearchChoiceTest + ActorAuthorizedLibrarySearchOrderTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P04-02",
+      "kind": "search",
+      "source": "Ancient Stirrings eligible colorless selection",
+      "proof": "PestMonsterTronPolicyAuditTest exact pair case",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P04-03",
+      "kind": "reorder",
+      "source": "Ancient Stirrings remainder ordering",
+      "proof": "PestCurrentPairC2P03P04DecisionSurfaceTest direct ReorderLibraryDecision",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P04-04",
+      "kind": "scry",
+      "source": "Candy Trail and Giant's Boulder scry",
+      "proof": "ScryTriggerScenarioTest + GiantsBoulderScenarioTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P04-05",
+      "kind": "surveil",
+      "source": "Conduit Pylons surveil",
+      "proof": "SurveilNTest + rebound Conduit Pylons definition",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P04-06",
+      "kind": "target",
+      "source": "Bojuka Bog player/graveyard target",
+      "proof": "PestMonsterTronPolicyAuditTest exact pair case",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P04-07",
+      "kind": "target",
+      "source": "Rooftop Percher up-to-two and Pinnacle Kill-Ship up-to-one optional targets",
+      "proof": "PestCurrentPairC2P03P04DecisionSurfaceTest + DecisionResponderTargetProbeTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P04-08",
+      "kind": "target",
+      "source": "Cast Down / Chainer's Edict / Giant's Boulder target groups",
+      "proof": "PestControlAgentDecisionTest + ChainersEdictScenarioTest + GiantsBoulderScenarioTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P04-09",
+      "kind": "action",
+      "source": "Follow the Lumarets top-four select-up-to-one/two group",
+      "proof": "FollowTheLumaretsScenarioTest + Pest current Follow policy cases",
+      "status": "QUALIFICATION_BOUND"
+    }
+  ],
+  "engine_internal_random_no_player_choice": [
+    {
+      "source": "Follow the Lumarets remainder random order",
+      "classification": "engine RNG effect, no pending player choice"
+    },
+    {
+      "source": "Haunted Fengraf random creature choice",
+      "classification": "engine RNG effect, no pending player choice"
+    },
+    {
+      "source": "Cascade nonchosen exiles random bottom order",
+      "classification": "engine RNG effect, no pending player choice"
+    }
+  ],
+  "protected_blobs": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "17cbc1bdb65d9da597eff9811c1b4fb2f7cefee0",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt": "7af655daf3e6a94333255e0c7396ff64bc652bce",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt": "d8dd4cb300746dbc7dc4840220e970dd180ce20d",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "090b6fb24392b06a32034030d937baca768e2201",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt": "43bbad79273806f56703fad420e9f6a495d05309",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt": "2d070f45a8e07f0ba7d46ec6a56727bd6402728a",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "69ae4cc111288a4e6a283f5b566cc140153a2bdf",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt": "526b21d188ffdfe2f08e92ea7514f7ac111d6b1a",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorAuthorizedLibrarySearchOrderTest.kt": "628d8ab01442cb7e4488c643d463eed4b6b59d2d",
+    "ai/src/test/kotlin/com/wingedsheep/ai/engine/PestControlAgentDecisionTest.kt": "e4cd250e5a639beaf46ef1842c2cd89aca6345e0",
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronPolicyAuditTest.kt": "d7a3dfd9ca2d43d5495aea6a924893ed4bd99376",
+    "ai/src/test/kotlin/com/wingedsheep/ai/engine/AutomaticAdditionalCostPaymentAiTest.kt": "634d94df5320e86fc92c5019d088c5c262380a25",
+    "ai/src/test/kotlin/com/wingedsheep/ai/engine/DecisionResponderTargetProbeTest.kt": "d33e698df83c09f91b2d7763a74f917e8164f073",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/library/AuthorizedLibrarySearchChoiceTest.kt": "920f82e00433a6260c275a3d30b6d0d036670f14",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TriggerOrderingScenarioTest.kt": "244bd141c6578fddeb3b0f7631b46c4aa5154fff",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/TypecyclingTest.kt": "4aad58b2f3a39c0678f2ab5861da30e50ee43071",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CascadeKeywordTest.kt": "a7b753cd5fb9825569ee457857f2e34c33afc9c7",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/SurveilNTest.kt": "01285c9da1d9952438dafac04fa30c473b79678b",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ScryTriggerScenarioTest.kt": "ec2c0367115110013bd1cc516edcd953385e74a5",
+    "mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ChainersEdictScenarioTest.kt": "700e31638c0c7f18e531741be95cfde2f256a424",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BoneShardsScenarioTest.kt": "eca967ffc7a92b806f50ddc06df30f0560aa70a7",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MaelstromColossusCascadeScenarioTest.kt": "8a246c8d989a8855c4f57c40ff4316180c9b520f",
+    "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FollowTheLumaretsScenarioTest.kt": "49770f44c89afa2530d6e80372bb1fcb235448fe",
+    "mtg-sets/2026/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GiantsBoulderScenarioTest.kt": "86a9859371873ac2e73db544459b3a40935f1160",
+    "ai/src/test/kotlin/com/wingedsheep/ai/engine/PestCurrentPairC2P03P04DecisionSurfaceTest.kt": "094e3c03dfef3265c9a81ba7364644087784e7fd",
+    "scripts/experiments/pest-control/verify_pest_c2_p03_p04_finite_closure.py": "81509497633a43f20aacbc71d97137fc3c48722b",
+    ".github/workflows/pest-c2-p03-p04-finite-closure-20261005.yml": "0e25482f6450ff74d0645d270f3b886f59fc2dc0"
+  },
+  "acceptance_if_validation_success": {
+    "C2P03": "SATISFIED_CURRENT_FINITE_PAIR_ACTION_PAYMENT_SURFACE",
+    "C2P04": "SATISFIED_CURRENT_FINITE_PAIR_PENDING_CHOICE_SURFACE"
+  },
+  "limitations": [
+    "This closes source/policy admission qualification only; it is not an official gameplay sample.",
+    "Engine-internal random effects are classified as non-player choices and remain covered by hidden/randomness boundaries rather than P04 response authority.",
+    "No claim is made about sideboard or opponents outside the exact frozen Pest/Monster preboard pair."
+  ],
+  "prohibited": [
+    "official_seed_generation",
+    "allocation",
+    "official_claim",
+    "official_game_initialization",
+    "gameplay",
+    "official_action_submission",
+    "outcome_exposure",
+    "monster_tron_activation",
+    "spy_combo_execution",
+    "phase_b_rerun_or_retry",
+    "reuse_consumed_phase_b_authority"
+  ],
+  "official_counters": {
+    "allocations": 0,
+    "claims": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}

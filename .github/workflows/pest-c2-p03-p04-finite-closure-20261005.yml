@@ -1,0 +1,86 @@
+name: Pest C2 P03-P04 finite current-pair closure qualification
+on:
+  push:
+    branches: ["pest/c2-p03-p04-finite-closure-20261005"]
+    paths:
+      - ".github/workflows/pest-c2-p03-p04-finite-closure-20261005.yml"
+      - "ai/src/test/kotlin/com/wingedsheep/ai/engine/PestCurrentPairC2P03P04DecisionSurfaceTest.kt"
+      - "docs/experiments/pest-control/PEST_C2_P03_P04_FINITE_CLOSURE_20261005.json"
+      - "scripts/experiments/pest-control/verify_pest_c2_p03_p04_finite_closure.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pest-c2-p03-p04-finite-closure-20261005
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-c2-p03-p04-finite-${{ github.run_id }}-${{ github.run_attempt }}
+      TZ: UTC
+      OUT: /tmp/pest-c2-p03-p04-finite
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+
+      - name: Verify exact finite current-pair surface package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p "$OUT"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_pest_c2_p03_p04_finite_closure.py             docs/experiments/pest-control/PEST_C2_P03_P04_FINITE_CLOSURE_20261005.json             | tee "$OUT/verifier-result.json"
+
+      - name: Run current pair policy and direct decision regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :ai:test             --tests com.wingedsheep.ai.engine.PestControlAgentDecisionTest             --tests com.wingedsheep.ai.arena.PestMonsterTronPolicyAuditTest             --tests com.wingedsheep.ai.engine.AutomaticAdditionalCostPaymentAiTest             --tests com.wingedsheep.ai.engine.DecisionResponderTargetProbeTest             --tests com.wingedsheep.ai.engine.PestCurrentPairC2P03P04DecisionSurfaceTest             2>&1 | tee "$OUT/ai-policy.log"
+
+      - name: Run current observation priority and authorized-look regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :gym:test             --tests com.wingedsheep.gym.actorinput.ActorPriorityObservationTest             --tests com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest             2>&1 | tee "$OUT/gym-observation.log"
+
+      - name: Run generic current decision mechanics used by the exact pair
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :rules-engine:test             --tests com.wingedsheep.engine.scenarios.TriggerOrderingScenarioTest             --tests com.wingedsheep.engine.scenarios.TypecyclingTest             --tests com.wingedsheep.engine.scenarios.CascadeKeywordTest             --tests com.wingedsheep.engine.handlers.effects.SurveilNTest             --tests com.wingedsheep.engine.scenarios.ScryTriggerScenarioTest             --tests com.wingedsheep.engine.handlers.effects.library.AuthorizedLibrarySearchChoiceTest             2>&1 | tee "$OUT/rules-decision.log"
+
+      - name: Run exact-card scenario mechanics for pair-only branches
+        shell: bash
+        run: |
+          set -euo pipefail
+          for cls in ChainersEdictScenarioTest BoneShardsScenarioTest MaelstromColossusCascadeScenarioTest FollowTheLumaretsScenarioTest GiantsBoulderScenarioTest; do
+            python3 scripts/test-class "$cls" --rerun-tasks --no-build-cache --no-configuration-cache --console=plain               2>&1 | tee "$OUT/$cls.log"
+          done
+
+      - name: Preserve finite qualification evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT/xml"
+          find . -path '*/build/test-results/test/TEST-*.xml' -type f             \( -name '*PestControlAgentDecisionTest.xml'             -o -name '*PestMonsterTronPolicyAuditTest.xml'             -o -name '*AutomaticAdditionalCostPaymentAiTest.xml'             -o -name '*DecisionResponderTargetProbeTest.xml'             -o -name '*PestCurrentPairC2P03P04DecisionSurfaceTest.xml'             -o -name '*ActorPriorityObservationTest.xml'             -o -name '*ActorAuthorizedLibrarySearchOrderTest.xml'             -o -name '*TriggerOrderingScenarioTest.xml'             -o -name '*TypecyclingTest.xml'             -o -name '*CascadeKeywordTest.xml'             -o -name '*SurveilNTest.xml'             -o -name '*ScryTriggerScenarioTest.xml'             -o -name '*AuthorizedLibrarySearchChoiceTest.xml'             -o -name '*ChainersEdictScenarioTest.xml'             -o -name '*BoneShardsScenarioTest.xml'             -o -name '*MaelstromColossusCascadeScenarioTest.xml'             -o -name '*FollowTheLumaretsScenarioTest.xml'             -o -name '*GiantsBoulderScenarioTest.xml' \)             -exec cp {} "$OUT/xml/" \;
+          git rev-parse HEAD > "$OUT/head.txt"
+          git rev-parse 'HEAD^{tree}' > "$OUT/tree.txt"
+          printf '%s\n' 'SOURCE_POLICY_QUALIFICATION_ONLY_NO_C2_ADMISSION_NO_GAMEPLAY' > "$OUT/scope.txt"
+          cp docs/experiments/pest-control/PEST_C2_P03_P04_FINITE_CLOSURE_20261005.json "$OUT/"
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-c2-p03-p04-finite-closure-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-c2-p03-p04-finite/
+          if-no-files-found: error
+          retention-days: 90
