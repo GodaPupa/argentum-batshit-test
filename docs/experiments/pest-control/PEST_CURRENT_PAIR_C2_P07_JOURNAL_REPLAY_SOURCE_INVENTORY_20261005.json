@@ -1,0 +1,74 @@
+{
+  "schema": "pest-current-pair-c2-p07-journal-replay-source-inventory-v1",
+  "date_utc": "2026-10-05",
+  "status": "CURRENT_JOURNAL_REPLAY_SOURCE_INVENTORIED__FRESH_PAIR_REPLAY_OPEN",
+  "authority": "SOURCE_ONLY_NO_OFFICIAL_CLAIM_NO_C2_ADMISSION_NO_GAMEPLAY",
+  "source_parent": {
+    "commit": "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd",
+    "tree": "e7c37f620c8cefa0352742e38635ca196e887637"
+  },
+  "protected_blobs": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlPreboardContract.kt": "e8a4347063d7d1424a5f90e5fdd9b0cc3b104de3",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt": "5192fb0190cf44f6b766ee7c296d3c1e2a8244e2",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt": "8cda0fcaa7a3ecfab11d00b2aafddca1f13c7577",
+    "docs/experiments/pest-control/goldfish-sample-1-fresh-regression-replay-accepted.json": "863b0c84106bf726e7a13a58485926817a7fd163"
+  },
+  "current_source_inventory": {
+    "preboard_contract": {
+      "role": "contains frozen source identities and preboard audit/record structures",
+      "reusable_scope": "source identity and record-shape evidence only"
+    },
+    "monster_operational_stack": {
+      "role": "contains durable ATTEMPT / initialization-entry / RESULT machinery and exact-one submission tracing",
+      "reusable_scope": "source architecture only",
+      "prohibition": "must not be invoked before separately reviewed Monster activation/execution authority"
+    },
+    "phase_b_comparison_journal": {
+      "role": "durable INTENT/RESULT/EXCEPTION journal plus claim.json discipline",
+      "reusable_scope": "journal durability design evidence only",
+      "incompatibility": "scope is PEST_MONSTER_PHASE_B_KEEP_BOTTOM_ONLY, not a current-pair C2 gameplay replay"
+    }
+  },
+  "historical_replay_disposition": {
+    "path": "docs/experiments/pest-control/goldfish-sample-1-fresh-regression-replay-accepted.json",
+    "blob": "863b0c84106bf726e7a13a58485926817a7fd163",
+    "deck_version": "Pest Control v1.0",
+    "agent_profile": "production-candidate-expiring",
+    "historical_seed_count": 30,
+    "historical_game_count": 30,
+    "disposition": "INCOMPATIBLE_WITH_EXACT_CURRENT_PEST_MONSTER_C2_PAIR_REPLAY",
+    "reasons": [
+      "goldfish/solitaire regression evidence is not the exact Pest-vs-Monster current pair",
+      "its historical seeds and games are predecessor evidence only and may not be reused as current official allocation/claim/game authority",
+      "it does not bind current Monster policy, current ObservationAdapter, or the C2-A2 admission package"
+    ]
+  },
+  "c2p07": {
+    "component_status": "CURRENT_JOURNAL_AND_DURABILITY_SOURCE_IDENTITIES_BOUND",
+    "gate_status": "OPEN_FRESH_SOURCE_BOUND_CURRENT_PAIR_REPLAY",
+    "required_next": [
+      "define a non-official deterministic current-pair source/replay fixture that does not create an official gameplay claim",
+      "bind exact current pair source/policy/runner identities and replay bytes",
+      "qualify fresh replay equivalence under a source-only or synthetic boundary",
+      "preserve separate official counters at zero"
+    ]
+  },
+  "prohibited": [
+    "reuse_historical_goldfish_seeds",
+    "official_seed_generation",
+    "allocation",
+    "official_claim",
+    "game_initialization",
+    "gameplay",
+    "outcome_exposure",
+    "monster_tron_activation",
+    "spy_combo_execution",
+    "phase_b_rerun_or_retry"
+  ],
+  "official_counters": {
+    "allocations": 0,
+    "claims": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}

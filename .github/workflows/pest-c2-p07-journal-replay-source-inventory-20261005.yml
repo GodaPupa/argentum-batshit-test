@@ -1,0 +1,38 @@
+name: Pest C2 P07 journal replay source inventory
+on:
+  push:
+    branches: ["pest/c2-p07-journal-replay-source-inventory-20261005"]
+    paths:
+      - ".github/workflows/pest-c2-p07-journal-replay-source-inventory-20261005.yml"
+      - "docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P07_JOURNAL_REPLAY_SOURCE_INVENTORY_20261005.json"
+      - "scripts/experiments/pest-control/verify_pest_current_pair_c2_p07_journal_replay_source_inventory.py"
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Verify current journal/replay source inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/verify_pest_current_pair_c2_p07_journal_replay_source_inventory.py             docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P07_JOURNAL_REPLAY_SOURCE_INVENTORY_20261005.json             | tee /tmp/p07-source.json
+      - name: Preserve source-only evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/p07
+          cp /tmp/p07-source.json /tmp/p07/
+          cp docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P07_JOURNAL_REPLAY_SOURCE_INVENTORY_20261005.json /tmp/p07/
+          printf '%s\n' 'SOURCE_ONLY_NO_OFFICIAL_CLAIM_NO_C2_ADMISSION_NO_GAMEPLAY' > /tmp/p07/scope.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-p07-journal-replay-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/p07/
+          if-no-files-found: error
+          retention-days: 90
