@@ -1,0 +1,70 @@
+name: Pest C2-A2 current-pair source qualification only
+on:
+  push:
+    branches: ["pest/c2-a2-post-phase-b-source-20261005"]
+    paths:
+      - ".github/workflows/pest-current-pair-c2-a2-source-qualify-20261005.yml"
+      - "docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_A2_POST_PHASE_B_GAP_20261005.json"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/PestCurrentPairC2A2SourceInventoryTest.kt"
+      - "scripts/experiments/pest-control/verify_pest_current_pair_c2_a2_post_phase_b.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pest-c2-a2-post-phase-b-source-20261005
+  cancel-in-progress: false
+
+jobs:
+  source-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-c2-a2-source-gradle-${{ github.run_id }}-${{ github.run_attempt }}
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+
+      - name: Verify exact post-Phase-B source package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_pest_current_pair_c2_a2_post_phase_b.py             docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_A2_POST_PHASE_B_GAP_20261005.json             | tee /tmp/pest-c2-a2-verifier.json
+
+      - name: Enforce source-only test boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          test_file=gym/src/test/kotlin/com/wingedsheep/gym/PestCurrentPairC2A2SourceInventoryTest.kt
+          ! grep -E 'GameInitializer|GameEnvironment|withRngSeed|ProductionDriver|DurableAttempts|stepExactlyOne|drive\(' "$test_file"
+
+      - name: Run deterministic current-pair source inventory regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :gym:test             --tests com.wingedsheep.gym.PestCurrentPairC2A2SourceInventoryTest
+
+      - name: Preserve source-only qualification evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pest-c2-a2-source-evidence
+          git rev-parse HEAD > /tmp/pest-c2-a2-source-evidence/head.txt
+          git rev-parse 'HEAD^{tree}' > /tmp/pest-c2-a2-source-evidence/tree.txt
+          printf '%s\n' 'SOURCE_QUALIFICATION_ONLY_NO_ADMISSION_NO_GAMEPLAY' > /tmp/pest-c2-a2-source-evidence/scope.txt
+          cp /tmp/pest-c2-a2-verifier.json /tmp/pest-c2-a2-source-evidence/
+          cp docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_A2_POST_PHASE_B_GAP_20261005.json /tmp/pest-c2-a2-source-evidence/
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.PestCurrentPairC2A2SourceInventoryTest.xml /tmp/pest-c2-a2-source-evidence/
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-a2-post-phase-b-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-c2-a2-source-evidence/
+          if-no-files-found: error
+          retention-days: 90
