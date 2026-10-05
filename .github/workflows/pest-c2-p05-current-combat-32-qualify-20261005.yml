@@ -1,0 +1,118 @@
+name: Pest C2 P05 current-byte 32-case combat qualification
+on:
+  push:
+    branches: ["pest/c2-p05-current-combat-32-qualify-20261005"]
+    paths:
+      - ".github/workflows/pest-c2-p05-current-combat-32-qualify-20261005.yml"
+      - "docs/experiments/pest-control/PEST_C2_P05_CURRENT_COMBAT_32_QUALIFICATION_20261005.json"
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0, persist-credentials: false}
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+
+      - name: Bind exact current-byte source candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib,json,pathlib,subprocess
+          parent="5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd"
+          path=pathlib.Path("docs/experiments/pest-control/PEST_C2_P05_CURRENT_COMBAT_32_QUALIFICATION_20261005.json")
+          m=json.loads(path.read_text())
+          assert m["schema"]=="pest-current-pair-c2-p05-current-combat-32-qualification-v1"
+          assert m["authority"]=="NON_GAMEPLAY_COMPONENT_QUALIFICATION_ONLY_REQUIRES_INDEPENDENT_REVIEW"
+          assert subprocess.check_output(["git","rev-parse","HEAD^"],text=True).strip()==parent
+          actual=sorted(subprocess.check_output(["git","diff","--name-only",parent+"..HEAD"],text=True).splitlines())
+          assert actual==sorted([
+            ".github/workflows/pest-c2-p05-current-combat-32-qualify-20261005.yml",
+            "docs/experiments/pest-control/PEST_C2_P05_CURRENT_COMBAT_32_QUALIFICATION_20261005.json",
+          ])
+          for filename,blob in m["protected_git_blobs"].items():
+              got=subprocess.check_output(["git","rev-parse","HEAD:"+filename],text=True).strip()
+              assert got==blob,(filename,got,blob)
+          assert sum(len(b["case_names"]) for b in m["banks"])==32
+          out=pathlib.Path("build/reports/pest-c2-p05-current32"); out.mkdir(parents=True)
+          hashes={p:hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in m["protected_git_blobs"]}
+          (out/"source-provenance.json").write_text(json.dumps({
+            "head":subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip(),
+            "tree":subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip(),
+            "protected_sha256":hashes,
+            "official_games":0,
+            "gameplay_authorized":False,
+          },sort_keys=True,indent=2)+"\n")
+          PY
+
+      - name: Execute frozen current 32 combat regression cases
+        shell: bash
+        run: |
+          set +e
+          set -o pipefail
+          mkdir -p build/reports/pest-c2-p05-current32
+          just test-class CombatAssignmentCurrentRulesTest             --tests '*CombatResolutionBoardTest' --tests '*CombatDamageAssignmentTest'             --tests '*BandingTrampleDrainScenarioTest' --rerun --info --stacktrace             --max-workers=1 -PkotlinCompileParallelism=1             -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g             2>&1 | tee build/reports/pest-c2-p05-current32/qualification.log
+          status=${PIPESTATUS[0]}
+          printf '%s\n' "$status" > build/reports/pest-c2-p05-current32/command-exit-status.txt
+          exit 0
+
+      - name: Reconcile exact case identities
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json,pathlib,xml.etree.ElementTree as ET
+          m=json.loads(pathlib.Path("docs/experiments/pest-control/PEST_C2_P05_CURRENT_COMBAT_32_QUALIFICATION_20261005.json").read_text())
+          out=pathlib.Path("build/reports/pest-c2-p05-current32")
+          errors=[]; rows=[]; actual=0
+          try:
+              status=int((out/"command-exit-status.txt").read_text().strip())
+              if status!=0: errors.append(f"test command exit {status}")
+          except Exception as e: errors.append("missing command status: "+str(e))
+          for bank in m["banks"]:
+              cls=bank["class"]
+              xml=pathlib.Path("rules-engine/build/test-results/test")/("TEST-"+cls+".xml")
+              row={"class":cls,"expected_cases":len(bank["case_names"])}
+              if not xml.is_file():
+                  errors.append("missing XML "+cls); rows.append(row); continue
+              root=ET.parse(xml).getroot()
+              tests=int(root.attrib.get("tests","0")); failures=int(root.attrib.get("failures","0"))
+              errs=int(root.attrib.get("errors","0")); skipped=int(root.attrib.get("skipped","0"))
+              names=[x.attrib.get("name","") for x in root.findall("testcase")]
+              row.update({"tests":tests,"failures":failures,"errors":errs,"skipped":skipped,"case_names":names})
+              actual+=tests
+              if tests!=len(bank["case_names"]) or set(names)!=set(bank["case_names"]):
+                  errors.append("case identity mismatch "+cls)
+              if failures or errs or skipped: errors.append("nonpassing cases "+cls)
+              rows.append(row)
+          if actual!=32: errors.append(f"actual cases {actual} != 32")
+          result={
+            "schema":"pest-c2-p05-current-combat-32-result-v1",
+            "status":"PASS_REQUIRES_INDEPENDENT_CURRENT_C2P05_REVIEW" if not errors else "FAILED",
+            "actual_cases":actual,"errors":errors,"banks":rows,
+            "official_games":0,"gameplay_authorized":False,
+            "c2p05_whole_pair_admitted":False
+          }
+          (out/"current32-audit.json").write_text(json.dumps(result,sort_keys=True,indent=2)+"\n")
+          print(json.dumps({"status":result["status"],"actual_cases":actual,"errors":errors}))
+          raise SystemExit(1 if errors else 0)
+          PY
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-c2-p05-current-combat-32-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/reports/pest-c2-p05-current32/
+          if-no-files-found: error
+          retention-days: 90

@@ -1,0 +1,116 @@
+{
+  "schema": "pest-current-pair-c2-p05-current-combat-32-qualification-v1",
+  "date_utc": "2026-10-05",
+  "status": "FROZEN_CURRENT_BYTE_32_CASE_QUALIFICATION_CANDIDATE_NO_ADMISSION",
+  "authority": "NON_GAMEPLAY_COMPONENT_QUALIFICATION_ONLY_REQUIRES_INDEPENDENT_REVIEW",
+  "source_parent": {
+    "commit": "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd",
+    "tree": "e7c37f620c8cefa0352742e38635ca196e887637"
+  },
+  "predecessor": {
+    "receiving_blob": "bb3246061aee837ff37ead67fd903bca268b021e",
+    "independent_source_review_blob": "326c2e2ffab0df94f64fa8b50671f7a950b1d26b",
+    "independent_artifact_review_blob": "28e3a050dde2ac7125c71396939fa448895d5332",
+    "accepted_prior_run": 36263357221,
+    "accepted_prior_artifact": 10912249211,
+    "current_rebind_failure_run": 37311026984,
+    "current_rebind_failure": "PendingDecision.kt SHA-256 drift from prior accepted component"
+  },
+  "protected_git_blobs": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt": "93f1240a7d64750d888d812e00c0266c934a457d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt": "d3c80ae6077571db17292e34a447dc4329a6f62d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt": "dc1f52c160432bf9fcdf421e60ce46dabd0e4313",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CombatContinuationResumer.kt": "7dac54a45af972aff7abb6678d47593ffe76404e",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageManager.kt": "40425b8faa8d74b33aa16feda9fa198bc5f7841c",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageUtils.kt": "a9b30fe2915b38480ee8e48cf57821a29911ce12",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/DamageCalculator.kt": "dd804fe2f66f42b6e4526d384a8271a3294e3178",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatAssignmentCurrentRulesTest.kt": "926665bb7fc93be18a90d5fffcc2ae75195ad95f",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatResolutionBoardTest.kt": "1faa4c80d16379477631f94af6beaf15a95fb52a",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatDamageAssignmentTest.kt": "da650f3c1baebd42368afafd9d91e4cfff4893b5",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BandingTrampleDrainScenarioTest.kt": "47956ba5921a493643c31ea511a7e6e882920fc0",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/ScenarioTestBase.kt": "25c4e0fc143ad8b4d2bb5a29aeb7d67fcf023ece",
+    "rules-engine/build.gradle.kts": "bd186f2dbcbb49b876706c9a1381f951e5521093",
+    "mtg-sdk/build.gradle.kts": "be5a1880a3316fd88a5eeb945a256efddfc3c6cd",
+    "build.gradle.kts": "8c5298acbab5eae78f5ee612046317889666c83e",
+    "settings.gradle.kts": "b3cf7d0b70c58c6c4d5b214588f48ca5660d902e",
+    "justfile": "8e3c25afce213f719e7b9d9ac723e33b288b06a9",
+    "scripts/test-class": "bbc870dc1590dddf04648efa1c0d8810eb835653",
+    "scripts/gradle-locked": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d"
+  },
+  "banks": [
+    {
+      "class": "com.wingedsheep.engine.scenarios.CombatAssignmentCurrentRulesTest",
+      "case_names": [
+        "attacker freely divides four damage as two each among three-toughness blockers",
+        "blocker freely divides four damage as two each among three-toughness attackers",
+        "all damage may be assigned to one creature even beyond lethal",
+        "board underassignment overassignment and negative assignments reject atomically",
+        "serialized legacy assignment accepts a nonlethal split without imposing target order",
+        "legacy underassignment overassignment and negative amounts reject atomically",
+        "trample cannot assign to the defender before every blocker has lethal damage",
+        "marked and concurrent lethal damage permit trample and preserve the other chooser's plan",
+        "deathtouch trample assigns one lethal damage per blocker and the remainder to the defender",
+        "banding changes the chooser while preserving the same free nonlethal division",
+        "changed nonowned unknown and duplicate edges reject while unchanged full-board echoes remain valid",
+        "a blocked source with no remaining recipients assigns zero and cannot invent targets"
+      ]
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.CombatResolutionBoardTest",
+      "case_names": [
+        "trample attacker blocked by two creatures emits a CombatResolutionDecision with a drain edge",
+        "banded trampler cannot drain damage to player while the blocker is below band-lethal",
+        "bipartite crusher between two manually-assigned attackers emits BLOCKER_TO_ATTACKER edges",
+        "pure bipartite (no trample, no banding) still emits a CombatResolutionDecision",
+        "banding attacker: BLOCKER_TO_ATTACKER edges have minimum=0 (lethal-first bypassed)",
+        "two 8/4 tramplers double-blocked: emits two-step CR 510.1c flow with defender second",
+        "two 8/4 tramplers double-blocked: defender concentrates damage and kills one attacker",
+        "non-trample attacker with single blocker does not emit a resolution decision",
+        "non-trample attacker with power < blocker lethal: defaults validate cleanly",
+        "banding overassignment: 3-attacker band cooperates to kill two 3/3 blockers"
+      ]
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.CombatDamageAssignmentTest",
+      "case_names": [
+        "trample creature with single blocker presents a damage board with a drain edge",
+        "trample creature with custom damage assignment - all to blocker",
+        "multiple blockers: board defaults to lethal-first order then drains",
+        "deathtouch + trample assigns 1 damage per blocker, rest to player",
+        "deathtouch 1/1 kills larger creature via 704.5h",
+        "single blocker without trample - no decision needed, auto-assigned",
+        "auto-resolve uses default assignments for trample",
+        "Daunting Defender - default assignment accounts for prevention and kills Cleric",
+        "Daunting Defender - player assigns minimum (toughness only) and Cleric survives"
+      ]
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.BandingTrampleDrainScenarioTest",
+      "case_names": [
+        "banded trampler may drain its full 2 to the player when a non-trample band-mate covers lethal"
+      ]
+    }
+  ],
+  "expected_cases": 32,
+  "c2p05_scope": [
+    "ordinary full-budget combat assignment",
+    "current board ownership and legality",
+    "trample with concurrent positive deathtouch",
+    "retained banding chooser fixtures"
+  ],
+  "not_established": [
+    "exact Pest/Monster whole-pilot attack declaration coverage",
+    "exact Pest/Monster whole-pilot block declaration coverage",
+    "post-block priority/action/payment coverage",
+    "separate 27-stage post-block bank",
+    "C2P05 whole-pair gate",
+    "C2-A2 admission",
+    "gameplay authority"
+  ],
+  "official_counters": {
+    "allocations": 0,
+    "claims": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}
