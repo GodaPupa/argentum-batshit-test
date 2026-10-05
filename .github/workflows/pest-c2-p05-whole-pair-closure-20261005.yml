@@ -1,0 +1,78 @@
+name: Pest C2 P05 whole-pair combat post-block closure qualification v2
+on:
+  push:
+    branches: ["pest/c2-p05-whole-pair-closure-v2-20261005"]
+    paths:
+      - ".github/workflows/pest-c2-p05-whole-pair-closure-20261005.yml"
+      - "ai/src/test/kotlin/com/wingedsheep/ai/engine/PestCurrentPairC2P05PolicyCombatTest.kt"
+      - "docs/experiments/pest-control/PEST_C2_P05_WHOLE_PAIR_CLOSURE_20261005.json"
+      - "scripts/experiments/pest-control/verify_pest_c2_p05_whole_pair_closure.py"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pest-c2-p05-whole-pair-closure-v2-20261005
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-c2-p05-whole-${{ github.run_id }}-${{ github.run_attempt }}
+      TZ: UTC
+      OUT: /tmp/pest-c2-p05-whole
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+
+      - name: Verify exact whole-pair combat source package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p "$OUT"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_pest_c2_p05_whole_pair_closure.py             docs/experiments/pest-control/PEST_C2_P05_WHOLE_PAIR_CLOSURE_20261005.json             | tee "$OUT/verifier-result.json"
+
+      - name: Run exact Pest Monster combat policy bridge
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :ai:test             --tests com.wingedsheep.ai.engine.PestCurrentPairC2P05PolicyCombatTest             2>&1 | tee "$OUT/pair-policy.log"
+
+      - name: Run current canonical post-block priority bank
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :rules-engine:test             --tests com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest             2>&1 | tee "$OUT/postblock.log"
+
+      - name: Run current actor priority projection bank
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :gym:test             --tests com.wingedsheep.gym.actorinput.ActorPriorityObservationTest             2>&1 | tee "$OUT/priority-projection.log"
+
+      - name: Preserve whole-pair qualification evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT/xml"
+          find . -path '*/build/test-results/test/TEST-*.xml' -type f             \( -name '*PestCurrentPairC2P05PolicyCombatTest.xml'             -o -name '*PostBlockDeclarationPriorityScenarioTest.xml'             -o -name '*ActorPriorityObservationTest.xml' \)             -exec cp {} "$OUT/xml/" \;
+          git rev-parse HEAD > "$OUT/head.txt"
+          git rev-parse 'HEAD^{tree}' > "$OUT/tree.txt"
+          printf '%s\n' 'SOURCE_POLICY_QUALIFICATION_ONLY_NO_C2_ADMISSION_NO_GAMEPLAY' > "$OUT/scope.txt"
+          cp docs/experiments/pest-control/PEST_C2_P05_WHOLE_PAIR_CLOSURE_20261005.json "$OUT/"
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-c2-p05-whole-pair-closure-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-c2-p05-whole/
+          if-no-files-found: error
+          retention-days: 90
