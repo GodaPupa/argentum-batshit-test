@@ -1,0 +1,173 @@
+{
+  "schema": "pest-current-pair-c2-p05-whole-pair-closure-v1",
+  "date_utc": "2026-10-05",
+  "authority": "SOURCE_POLICY_QUALIFICATION_ONLY_NO_C2_ADMISSION_NO_GAMEPLAY",
+  "status": "FROZEN_CURRENT_PAIR_COMBAT_POSTBLOCK_CANDIDATE_PENDING_VALIDATION",
+  "source_parent": {
+    "commit": "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd",
+    "tree": "e7c37f620c8cefa0352742e38635ca196e887637"
+  },
+  "exact_pair": {
+    "pest_main_sha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster_main_sha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f"
+  },
+  "accepted_predecessor_evidence": {
+    "current_combat_run": 37311504539,
+    "current_combat_head": "ba1434a57a7de6c28ae857569f8ea15a2ae6b795",
+    "current_combat_artifact": 11346153011,
+    "current_combat_artifact_digest": "sha256:67f5c0e69f807f48b3f2afad2aca8adefbd3d6f62fa6a344968d157eafbc9047",
+    "current_combat_cases": 32,
+    "current_combat_manifest_blob": "68205c5497a5352bb3e284e197cccb86bf994b11",
+    "failed_predecessor_run": 37311026984,
+    "failed_predecessor_classification": "FAILED_SOURCE_REBIND_ATTEMPT_NOT_REUSED_NOT_RERUN"
+  },
+  "policy_routing": {
+    "pest_policy": "AiProfile.PRODUCTION_CANDIDATE_EXPIRING",
+    "monster_policy": "PestMonsterTronPolicy.profile = PRODUCTION_CANDIDATE_EXPIRING + tutor/Ornament/Bog advisor module",
+    "combat_route": "Strategist delegates DeclareAttackers/DeclareBlockers to CombatAdvisor; Monster advisor module contains no combat override",
+    "pair_relevant_keywords": [
+      "MENACE",
+      "TRAMPLE",
+      "REACH",
+      "FLYING"
+    ],
+    "pair_irrelevant_engine_only_examples": [
+      "BANDING",
+      "DEATHTOUCH",
+      "FIRST_STRIKE"
+    ],
+    "note": "The accepted 32-case bank is broader than pair reachability; whole-pair closure relies only on the subset plus exact-pair policy bridge and current post-block priority qualification."
+  },
+  "finite_whole_pair_inventory": [
+    {
+      "id": "P05-01",
+      "kind": "attack",
+      "source": "Pest attacker declaration on real Pest trample creature",
+      "proof": "PestCurrentPairC2P05PolicyCombatTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P05-02",
+      "kind": "attack",
+      "source": "Monster attacker declaration on real Bramble Wurm",
+      "proof": "PestCurrentPairC2P05PolicyCombatTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P05-03",
+      "kind": "block",
+      "source": "Monster block against real Pest trample",
+      "proof": "PestCurrentPairC2P05PolicyCombatTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P05-04",
+      "kind": "evasion",
+      "source": "Pest Reach blocks Monster Flying",
+      "proof": "PestCurrentPairC2P05PolicyCombatTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P05-05",
+      "kind": "multiblock",
+      "source": "Monster two-blocker response to Pest Menace",
+      "proof": "PestCurrentPairC2P05PolicyCombatTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P05-06",
+      "kind": "trample",
+      "source": "current combat damage assignment and multi-block/trample rules",
+      "proof": "accepted current 32-case combat artifact 11346153011",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P05-07",
+      "kind": "postblock_priority",
+      "source": "final block declaration restores active-player priority, including trigger/payment/concession continuations",
+      "proof": "PostBlockDeclarationPriorityScenarioTest current 14-test source bank",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P05-08",
+      "kind": "postblock_priority",
+      "source": "actor projection distinguishes declaration/payment baton from real priority",
+      "proof": "ActorPriorityObservationTest HP01-HP04",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P05-09",
+      "kind": "postblock_response",
+      "source": "exact Pest preboard Cast Down is legal in current post-block response window",
+      "proof": "PestCurrentPairC2P05PolicyCombatTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P05-10",
+      "kind": "combat_trigger",
+      "source": "post-block trigger ordering/payment handoff before priority",
+      "proof": "PostBlockDeclarationPriorityScenarioTest PB05-PB16",
+      "status": "QUALIFICATION_BOUND"
+    }
+  ],
+  "historical_blocker_reconciliation": {
+    "path": "docs/experiments/pest-control/tier-one-post-block-priority-blocker.json",
+    "blob": "e34618d5010d2f103c26119920021ae86d97ebf0",
+    "classification": "HISTORICAL_PRE_REPAIR_BLOCKER_NOT_CURRENT_AUTHORITY",
+    "current_repair_proof": "current PostBlockDeclarationPriorityScenarioTest + ActorPriorityObservationTest are protected and re-executed by this qualification"
+  },
+  "protected_blobs": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt": "d0cbcadb8f34570a4107898e41ee8b0743bc4b46",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt": "d8dd4cb300746dbc7dc4840220e970dd180ce20d",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt": "43bbad79273806f56703fad420e9f6a495d05309",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt": "2d070f45a8e07f0ba7d46ec6a56727bd6402728a",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "69ae4cc111288a4e6a283f5b566cc140153a2bdf",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CombatResolution.kt": "93f1240a7d64750d888d812e00c0266c934a457d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CombatContinuationResumer.kt": "7dac54a45af972aff7abb6678d47593ffe76404e",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageManager.kt": "40425b8faa8d74b33aa16feda9fa198bc5f7841c",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDamageUtils.kt": "a9b30fe2915b38480ee8e48cf57821a29911ce12",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/DamageCalculator.kt": "dd804fe2f66f42b6e4526d384a8271a3294e3178",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatAssignmentCurrentRulesTest.kt": "926665bb7fc93be18a90d5fffcc2ae75195ad95f",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatResolutionBoardTest.kt": "1faa4c80d16379477631f94af6beaf15a95fb52a",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CombatDamageAssignmentTest.kt": "da650f3c1baebd42368afafd9d91e4cfff4893b5",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/BandingTrampleDrainScenarioTest.kt": "47956ba5921a493643c31ea511a7e6e882920fc0",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PostBlockDeclarationPriorityScenarioTest.kt": "a50dc0cc004b5d965206d76a940b8efb814dc023",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPriorityObservationTest.kt": "526b21d188ffdfe2f08e92ea7514f7ac111d6b1a",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/stx/cards/BloodResearcher.kt": "2b97fa55fe1f489453b9c331acbd887d7e91dabc",
+    "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/sos/cards/PestMascot.kt": "1598e5283c635c1be70011ade68dfa38fc5483aa",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/eld/cards/FierceWitchstalker.kt": "113b3b4c268fe592d790549288d0264efd1a8d1b",
+    "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ltr/cards/GenerousEnt.kt": "eb2dc664f794b69442d479525537404ba4201875",
+    "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ecl/cards/RooftopPercher.kt": "c793b9938c0ce545c15daae20b90663fa766d82a",
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/vow/cards/BrambleWurm.kt": "29d677e2398389c4adb3bf2888b9d0a5f4a6f39f",
+    "ai/src/test/kotlin/com/wingedsheep/ai/engine/PestCurrentPairC2P05PolicyCombatTest.kt": "c86304c002bc2fee47629b33f2bbaca9c3306436",
+    "scripts/experiments/pest-control/verify_pest_c2_p05_whole_pair_closure.py": "997fcbd3950f3ed9e48013dbcefb5d3061ccce93",
+    ".github/workflows/pest-c2-p05-whole-pair-closure-20261005.yml": "265925dcc74c548e3cd0eaffb3d67263681ad6fb"
+  },
+  "acceptance_if_validation_success": {
+    "C2P05": "SATISFIED_CURRENT_PAIR_COMBAT_POSTBLOCK_SURFACE"
+  },
+  "limitations": [
+    "No official game is initialized or played.",
+    "The 32-case engine bank is reused by exact current artifact identity rather than rerun.",
+    "Generic combat mechanics unreachable by the frozen pair are not promoted into pair requirements."
+  ],
+  "prohibited": [
+    "official_seed_generation",
+    "allocation",
+    "official_claim",
+    "official_game_initialization",
+    "gameplay",
+    "official_action_submission",
+    "outcome_exposure",
+    "monster_tron_activation",
+    "spy_combo_execution",
+    "phase_b_rerun_or_retry",
+    "reuse_consumed_phase_b_authority"
+  ],
+  "official_counters": {
+    "allocations": 0,
+    "claims": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}
