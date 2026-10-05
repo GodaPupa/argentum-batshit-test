@@ -1,0 +1,264 @@
+{
+  "schema": "pest-current-pair-c2-a2-post-phase-b-gap-v1",
+  "date_utc": "2026-10-05",
+  "status": "POST_PHASE_B_SOURCE_QUALIFICATION_IN_PROGRESS_NO_ADMISSION",
+  "authority": "SOURCE_QUALIFICATION_ONLY_NO_ADMISSION_NO_GAMEPLAY",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "pr": 216,
+  "source_parent": {
+    "commit": "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd",
+    "tree": "e7c37f620c8cefa0352742e38635ca196e887637",
+    "role": "reviewed Phase-B v5.2 implementation source; receipt/marker execution chain is not reused"
+  },
+  "prospective_predecessor": {
+    "path": "docs/experiments/pest-control/tier-one-monster-c2-a2-current-prospective-integration-20260930.json",
+    "blob": "7a1fd74d5c5a5eb9c709b471c87f64a7a1eb97a9",
+    "status": "PROSPECTIVE_CURRENT_INTEGRATION_NO_ADMISSION"
+  },
+  "phase_b_v5_2_terminal": {
+    "run": 37258189059,
+    "workflow": "Pest Phase-B v5.2 exact 32-shard aggregate behavioral candidate",
+    "event": "push",
+    "run_number": 1,
+    "run_attempt": 1,
+    "implementation_commit": "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd",
+    "implementation_tree": "e7c37f620c8cefa0352742e38635ca196e887637",
+    "receipt_commit": "8eba645b14ad83fa331155975d0713301fa2e883",
+    "marker_commit": "4acfe18b243b11123836a2e9403986bb360077e4",
+    "qualifying_review_comment": 5987100239,
+    "qualifying_review_sha256": "4cc0e1390408f2b96ed90659c3c14876fc895f6fbf191702d5f08d6c6bb81c0e",
+    "consumed_authorization_comment": 5987167353,
+    "consumed_authorization_sha256": "c57b5f5a212c2b4bf340336f8d01b6bfa8187c364658aa80018a32f47fcca224",
+    "consumption_comment": 5987411964,
+    "terminal_audit_comment": 5994236266,
+    "aggregate_artifact": 11328302918,
+    "aggregate_artifact_zip_sha256": "47fa3eca8b08dff73c65a0d25763d31a21c3c4a7057e3a42d1fbf6a91100044c",
+    "aggregate_result_json_sha256": "116bd630d563e9095ecda45ca6aa2e70191f20528fc581d89e6aaee635fab8a5",
+    "shard_count": 32,
+    "completed_rows": 34912840,
+    "mismatches": 0,
+    "unknowns": 0,
+    "exceptions": 0,
+    "global_plan_sha256": "bcc577b1596c7b37b7f14f0c70d68fefafcf569de3b74f561a0b8317e6e1cc71",
+    "authority": "AGGREGATE_ORIGINAL_FOR_SEPARATE_AUDIT_ONLY",
+    "official_counters_delta": 0,
+    "execution_authority": "PERMANENTLY_CONSUMED_NO_RERUN_RETRY_REPLACEMENT_OR_REDISPATCH"
+  },
+  "exact_pair": {
+    "pest_main_sha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster_main_sha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f",
+    "pest_main_source_blob": "e8a4347063d7d1424a5f90e5fdd9b0cc3b104de3",
+    "monster_main_source_blob": "e854685633cd7157929a59715deb289d45c1e341"
+  },
+  "phase_b_scope_proof": {
+    "physical_plan_blob": "afeadb1f10ca23972bf197fa4cedcc626e8551c4",
+    "deterministic_fixture_blob": "c9229e730fd81a5e6ddb7104b50a14eb9c8726ae",
+    "production_row_comparator_blob": "ce1be5ea615104953b7319182878f4135baac07e",
+    "lawful_keep_bottom_actor_blob": "526c877458fbd346d8e521119adb9ec70e7116a7",
+    "current_pair_keep_bottom_freeze_blob": "ffacfc28c80c29246fbed33c26f8d52e7e5625c8",
+    "production_support_scope_blob": "23392c092c1ccfaf504b1a574ee07ff32e5d0c10",
+    "enumerated_dimensions": [
+      "exact frozen Pest and Monster 60-card mains",
+      "all frozen seven-card name multisets",
+      "mulligan counts 0,1,2",
+      "seat 0 and seat 1",
+      "play and draw starts",
+      "all ordered physical bottom identities observable by the frozen raw/lawful algorithms"
+    ],
+    "compared_outputs": [
+      "raw keep/mulligan vs lawful keep/mulligan",
+      "raw ordered physical bottom IDs vs lawful ordered physical bottom IDs"
+    ],
+    "acceptance": "complete 34,912,840-row plan with zero mismatch, zero unknown, zero exception"
+  },
+  "historical_rebinding": {
+    "finite_bank_evidence_map_blob": "5a552aa87bdaee9ef02183a0c2fc654c18dbe4b6",
+    "exact_main_card_source_inventory_blob": "cd1eefdb98c5c8a8e43064548af7d68e480e4192",
+    "non_basic_card_definition_blobs_checked": 33,
+    "non_basic_card_definition_blobs_unchanged": 33,
+    "unchanged_pilot_components": {
+      "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt": "7af655daf3e6a94333255e0c7396ff64bc652bce",
+      "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt": "d8dd4cb300746dbc7dc4840220e970dd180ce20d",
+      "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "090b6fb24392b06a32034030d937baca768e2201"
+    },
+    "stale_boundary": {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt",
+      "historical_blob": "e4554db18f4bae14c30612677f5bf7f57e4c868f",
+      "current_blob": "17cbc1bdb65d9da597eff9811c1b4fb2f7cefee0",
+      "consequence": "historical whole-pilot receipts cannot be auto-promoted; current pending-decision/look projection must be requalified"
+    },
+    "rule": "reuse accepted components only by exact byte identity and compatible scope; historical narrow cases do not sum to current completeness"
+  },
+  "current_policy_sources": {
+    "monster_policy_blob": "2d070f45a8e07f0ba7d46ec6a56727bd6402728a",
+    "monster_advisor_blob": "69ae4cc111288a4e6a283f5b566cc140153a2bdf",
+    "monster_policy_audit_test_blob": "d7a3dfd9ca2d43d5495aea6a924893ed4bd99376",
+    "monster_policy_readiness_blob": "f0f375fb114bb211e4101dbb81625a2f7a31ded4",
+    "monster_policy_readiness_test_blob": "04c52ce6c0be204faa06bfeb012924561e9a895f",
+    "note": "current public-state policy probes exist, but they do not establish finite C2P03/C2P04 completeness"
+  },
+  "gates": {
+    "C2P01": {
+      "requirement": "Current exact Pest London keep decision plus physical bottom ordering over the finite reachable current predicate-vector bank for both play/draw starts.",
+      "status": "SATISFIED_BY_PHASE_B_V5_2_TERMINAL_PARITY",
+      "basis": "exact Phase-B v5.2 complete plan includes Pest, both seats/starts, mulligans 0..2 and every observable physical bottom identity; terminal aggregate is complete with zero mismatch/unknown/exception",
+      "authority": "KEEP_BOTTOM_SOURCE_GATE_ONLY_NO_ADMISSION"
+    },
+    "C2P02": {
+      "requirement": "Current exact Monster keep decision plus physical bottom ordering for both starts/seats over its finite reachable opening bank.",
+      "status": "SATISFIED_BY_PHASE_B_V5_2_TERMINAL_PARITY",
+      "basis": "exact Phase-B v5.2 complete plan includes Monster, both seats/starts, mulligans 0..2 and every observable physical bottom identity; terminal aggregate is complete with zero mismatch/unknown/exception",
+      "authority": "KEEP_BOTTOM_SOURCE_GATE_ONLY_NO_ADMISSION"
+    },
+    "C2P03": {
+      "status": "OPEN_CURRENT_COMPLETENESS",
+      "reusable": [
+        "33 exact non-basic card-definition blobs remain unchanged",
+        "ActorActionMenu blob unchanged",
+        "Strategist blob unchanged",
+        "DecisionResponder blob unchanged",
+        "narrow historical land/Crop/Map/Ent/response/combat components remain scoped evidence",
+        "current Monster public-state tutor/payment policy probes exist"
+      ],
+      "blockers": [
+        "ObservationAdapter drift requires current source qualification",
+        "no exact finite current reachable priority/action/payment inventory",
+        "alternative costs/payment/trigger-order/response-pass/random-cascade variants not proven complete",
+        "both seats/starts and whole-pair policy not proven complete"
+      ]
+    },
+    "C2P04": {
+      "status": "OPEN_CURRENT_COMPLETENESS",
+      "reusable": [
+        "current Monster advisor covers selected Map/Crop/Stirrings/Bog public decisions",
+        "historical Stirrings/scry/surveil/Bog/optional-target fixtures remain narrow evidence by exact identity only"
+      ],
+      "blockers": [
+        "ObservationAdapter current authorized-look projection is not rebound by current completeness evidence",
+        "no finite current inventory of all offered groups",
+        "Stirrings selection/remainder ordering and all reachable scry/surveil/optional-target/look surfaces not proven complete"
+      ]
+    },
+    "C2P05": {
+      "status": "OPEN_CURRENT_PAIR_COVERAGE",
+      "reusable": [
+        "shared current combat receiving blob bb3246061aee837ff37ead67fd903bca268b021e contains 32 engine combat cases and keeps gameplay disabled"
+      ],
+      "blockers": [
+        "shared receiving record itself is PROSPECTIVE_RECEIVING_SOURCE_REVIEW_REQUIRED",
+        "engine combat primitives do not establish exact Pest/Monster whole-pilot attack/block/post-block policy coverage",
+        "separate 27-stage post-block/current-pair coverage remains unbound"
+      ]
+    },
+    "C2P06": {
+      "status": "OPEN_WHOLE_PAIR_INVARIANCE",
+      "reusable": [
+        "generic DeterminizerInvariantsTest blob f15471b769e06a1e878f7f6c32618ea3ff87d72c",
+        "Phase-B lawful keep/bottom seam prohibited hidden library authority"
+      ],
+      "blockers": [
+        "no exact Pest/Monster whole-pair policy invariance bank under hidden-state permutations",
+        "current ObservationAdapter projection changed and must be included in the invariant boundary"
+      ]
+    },
+    "C2P07": {
+      "status": "OPEN_SOURCE_BOUND_REPLAY",
+      "reusable": [
+        "PestControlPreboardContract contains source audit/journal structures",
+        "Monster Tron operational stack contains durable intent/result machinery but remains future execution machinery and must not be invoked",
+        "Phase-B comparison journal is not a C2 gameplay claim/replay"
+      ],
+      "blockers": [
+        "no fresh source-bound current-pair replay qualification",
+        "no exact C2 pair journal/replay receipt",
+        "official gameplay claim is prohibited and is not created by this package"
+      ]
+    }
+  },
+  "current_shared_combat": {
+    "receiving_path": "lab-coordinator/shared-capabilities/current-combat-receiving.json",
+    "receiving_blob": "bb3246061aee837ff37ead67fd903bca268b021e",
+    "status": "PROSPECTIVE_RECEIVING_SOURCE_REVIEW_REQUIRED",
+    "declared_cases": 32,
+    "gameplay_authorized": false,
+    "official_games": 0
+  },
+  "hidden_invariance_reference": {
+    "path": "ai/src/test/kotlin/com/wingedsheep/ai/engine/hidden/DeterminizerInvariantsTest.kt",
+    "blob": "f15471b769e06a1e878f7f6c32618ea3ff87d72c",
+    "scope": "generic hidden-state invariants only; not current-pair policy completeness"
+  },
+  "journal_replay_reference": {
+    "preboard_contract_blob": "e8a4347063d7d1424a5f90e5fdd9b0cc3b104de3",
+    "monster_operational_stack_blob": "5192fb0190cf44f6b766ee7c296d3c1e2a8244e2",
+    "phase_b_comparison_journal_blob": "8cda0fcaa7a3ecfab11d00b2aafddca1f13c7577",
+    "status": "SOURCE_COMPONENTS_PRESENT_FRESH_C2_PAIR_REPLAY_ABSENT"
+  },
+  "source_qualification_delta": {
+    "verifier_blob": "12192ed718957e5de47765dd56efd86c8502c0e3",
+    "source_inventory_test_blob": "90b09f98eaa1b93b5a8986c5dfcfc1d8907ab15e",
+    "workflow_blob": "13d860940c9ca93fabb2c248bc88c1c4925b7c12",
+    "workflow_authority": "SOURCE_ONLY_NO_ACCEPTED_TRUTH_NO_RAW_PHASE_B_NO_GAMEINITIALIZER_NO_GAMEPLAY",
+    "supersedes_failed_source_validation": {
+      "run": 37310131308,
+      "head": "0d7fe8f40078437777a7bd4eef01cbb887561f8e",
+      "disposition": "STATIC_GUARD_FALSE_POSITIVE_BEFORE_KOTLIN_TEST",
+      "structural_verifier": "PASS",
+      "failing_step": "Enforce source-only test boundary",
+      "cause": "guard matched prohibited API names in explanatory comment text rather than executable imports/calls",
+      "gameplay_or_behavior_executed": false,
+      "authority_consumed": false
+    }
+  },
+  "protected_blobs": {
+    "docs/experiments/pest-control/tier-one-monster-c2-a2-current-prospective-integration-20260930.json": "7a1fd74d5c5a5eb9c709b471c87f64a7a1eb97a9",
+    "docs/experiments/pest-control/CURRENT_PAIR_PHASE_B_KEEP_BOTTOM_FREEZE_20260930.json": "ffacfc28c80c29246fbed33c26f8d52e7e5625c8",
+    "docs/experiments/pest-control/PHASE_B_PRODUCTION_EXECUTION_SUPPORT_SCOPE_20261001.json": "23392c092c1ccfaf504b1a574ee07ff32e5d0c10",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBPhysicalPlan.kt": "afeadb1f10ca23972bf197fa4cedcc626e8551c4",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBDeterministicFixtureSupport.kt": "c9229e730fd81a5e6ddb7104b50a14eb9c8726ae",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBProductionRowComparator.kt": "ce1be5ea615104953b7319182878f4135baac07e",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBKeepBottomActor.kt": "526c877458fbd346d8e521119adb9ec70e7116a7",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlPreboardContract.kt": "e8a4347063d7d1424a5f90e5fdd9b0cc3b104de3",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronAdmission.kt": "e854685633cd7157929a59715deb289d45c1e341",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "17cbc1bdb65d9da597eff9811c1b4fb2f7cefee0",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt": "7af655daf3e6a94333255e0c7396ff64bc652bce",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt": "d8dd4cb300746dbc7dc4840220e970dd180ce20d",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "090b6fb24392b06a32034030d937baca768e2201",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt": "2d070f45a8e07f0ba7d46ec6a56727bd6402728a",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "69ae4cc111288a4e6a283f5b566cc140153a2bdf",
+    "ai/src/test/kotlin/com/wingedsheep/ai/arena/PestMonsterTronPolicyAuditTest.kt": "d7a3dfd9ca2d43d5495aea6a924893ed4bd99376",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronPolicyReadiness.kt": "f0f375fb114bb211e4101dbb81625a2f7a31ded4",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPolicyReadinessTest.kt": "04c52ce6c0be204faa06bfeb012924561e9a895f",
+    "lab-coordinator/shared-capabilities/current-combat-receiving.json": "bb3246061aee837ff37ead67fd903bca268b021e",
+    "ai/src/test/kotlin/com/wingedsheep/ai/engine/hidden/DeterminizerInvariantsTest.kt": "f15471b769e06a1e878f7f6c32618ea3ff87d72c",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt": "5192fb0190cf44f6b766ee7c296d3c1e2a8244e2",
+    ".github/workflows/pest-current-pair-c2-a2-source-qualify-20261005.yml": "13d860940c9ca93fabb2c248bc88c1c4925b7c12",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestCurrentPairC2A2SourceInventoryTest.kt": "90b09f98eaa1b93b5a8986c5dfcfc1d8907ab15e",
+    "scripts/experiments/pest-control/verify_pest_current_pair_c2_a2_post_phase_b.py": "12192ed718957e5de47765dd56efd86c8502c0e3"
+  },
+  "next_source_work": [
+    "C2P03/C2P04: construct exact current reachable action/payment/pending-choice inventory rooted in current ObservationAdapter and exact pair policies; qualify only finite declared surfaces",
+    "C2P05: bind current shared combat authority to exact pair policy attack/block/post-block surfaces without gameplay",
+    "C2P06: add whole-pair policy hidden-state permutation invariance boundary covering current observation projection",
+    "C2P07: qualify fresh non-official source-bound pair journal/replay without creating an official gameplay claim",
+    "Only after all seven gates are genuinely satisfied may a PEST_CURRENT_PAIR_C2_A2_ADMISSION_CANDIDATE be frozen for independent review"
+  ],
+  "prohibited": [
+    "seed_generation",
+    "allocation",
+    "claim",
+    "game_initialization",
+    "gameplay",
+    "outcome_exposure",
+    "monster_tron_activation",
+    "spy_combo_execution",
+    "phase_b_rerun_or_retry",
+    "reuse_consumed_phase_b_authority"
+  ],
+  "official_counters": {
+    "allocations": 0,
+    "claims": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}
