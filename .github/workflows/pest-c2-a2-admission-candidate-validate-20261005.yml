@@ -1,0 +1,107 @@
+name: Pest current-pair C2-A2 admission candidate structural validation
+on:
+  push:
+    branches: ["pest/c2-a2-admission-candidate-20261005"]
+    paths:
+      - ".github/workflows/pest-c2-a2-admission-candidate-validate-20261005.yml"
+      - "docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_A2_ADMISSION_CANDIDATE_20261005.json"
+      - "scripts/experiments/pest-control/verify_pest_current_pair_c2_a2_admission_candidate.py"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pest-c2-a2-admission-candidate-20261005
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      TZ: UTC
+      OUT: /tmp/pest-c2-a2-candidate
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+
+      - name: Verify exact frozen C2-A2 candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p "$OUT"
+          /usr/bin/python3 -I -S scripts/experiments/pest-control/verify_pest_current_pair_c2_a2_admission_candidate.py             docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_A2_ADMISSION_CANDIDATE_20261005.json             | tee "$OUT/verifier-result.json"
+
+      - name: Verify controlling artifact metadata and ZIP digests
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          /usr/bin/python3 - <<'PY' > "$OUT/artifacts.tsv"
+          import json
+          m=json.load(open("docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_A2_ADMISSION_CANDIDATE_20261005.json"))
+          for label,e in sorted(m["evidence"].items()):
+              print(label, e["artifact"], e["artifact_digest"], sep="\t")
+          PY
+          while IFS=$'\t' read -r label artifact digest; do
+            curl -L --fail --retry 3               -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json'               "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact"               -o "$OUT/$label.meta.json"
+            LABEL="$label" EXPECTED="$digest" META="$OUT/$label.meta.json" /usr/bin/python3 - <<'PY'
+          import json,os
+          m=json.load(open(os.environ["META"]))
+          assert not m["expired"], (os.environ["LABEL"],"expired")
+          assert m.get("digest")==os.environ["EXPECTED"], (os.environ["LABEL"],m.get("digest"),os.environ["EXPECTED"])
+          PY
+            curl -L --fail --retry 3               -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json'               "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/$artifact/zip"               -o "$OUT/$label.zip"
+            actual=$(sha256sum "$OUT/$label.zip" | awk '{print $1}')
+            test "sha256:$actual" = "$digest"
+          done < "$OUT/artifacts.tsv"
+
+      - name: Verify no official Monster smoke activation occurred
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3             -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json'             "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/runs?branch=pest-control%2Fofficial-attempts%2Fmonster-tron-smoke-v1&per_page=100"             -o "$OUT/monster-official-runs.json"
+          /usr/bin/python3 - <<'PY'
+          import json
+          d=json.load(open("/tmp/pest-c2-a2-candidate/monster-official-runs.json"))
+          assert d["total_count"]==0, d["total_count"]
+          PY
+          test "$(git diff --name-only HEAD^..HEAD | grep -Ec 'official-attempt|execution-authorization|official-smoke|seed|claim' || true)" = 0
+
+      - name: Enforce current replay component remains non-game-driving
+        shell: bash
+        run: |
+          set -euo pipefail
+          f=gym/src/main/kotlin/com/wingedsheep/gym/pest/PestCurrentPairC2ReplayJournal.kt
+          if grep -nE '^[[:space:]]*import .*GameInitializer|^[[:space:]]*import .*GameEnvironment|MonsterTronSmokeAssignment|OfficialGame|stepExactlyOne\(|ProductionDriver|withRngSeed\(' "$f"; then
+            echo "replay component acquired a gameplay surface" >&2
+            exit 1
+          fi
+
+      - name: Preserve final structural validation evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD > "$OUT/head.txt"
+          git rev-parse 'HEAD^{tree}' > "$OUT/tree.txt"
+          git rev-parse HEAD^ > "$OUT/implementation-head.txt"
+          git rev-parse 'HEAD^^{tree}' > "$OUT/phase-b-tree.txt" || true
+          printf '%s\n' 'SOURCE_GATE_CANDIDATE_ONLY__NO_GAMEPLAY_AUTHORITY' > "$OUT/scope.txt"
+          cp docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_A2_ADMISSION_CANDIDATE_20261005.json "$OUT/"
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-c2-a2-admission-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-c2-a2-candidate/
+          if-no-files-found: error
+          retention-days: 90
