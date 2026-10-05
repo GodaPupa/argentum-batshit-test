@@ -1,0 +1,52 @@
+{
+  "schema": "pest-current-pair-c2-p03-p04-monster-policy-qualification-v1",
+  "date_utc": "2026-10-05",
+  "status": "FROZEN_SEEDLESS_EXACT_60_POLICY_COMPONENT_QUALIFICATION",
+  "authority": "NON_GAMEPLAY_POLICY_COMPONENT_ONLY_NO_C2_ADMISSION",
+  "source_parent": {
+    "commit": "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd",
+    "tree": "e7c37f620c8cefa0352742e38635ca196e887637"
+  },
+  "exact_pair": {
+    "pest_main_sha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster_main_sha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f"
+  },
+  "protected_blobs": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronAdmission.kt": "e854685633cd7157929a59715deb289d45c1e341",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronReadiness.kt": "0797b808a776001d5f77d8c81d9f91cbb72078dc",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronPolicyCalibration.kt": "059058951bca232dceef5f0c11963f8c04f9eb45",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronPolicyReadiness.kt": "f0f375fb114bb211e4101dbb81625a2f7a31ded4",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPolicyCalibrationTest.kt": "cd192f30c5d6ba50882cd273fb957685c8f8b70a",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPolicyReadinessTest.kt": "04c52ce6c0be204faa06bfeb012924561e9a895f",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronCascadeReadinessTest.kt": "05297067fba410d32a4f661fd1381a6bdd81c832",
+    "scripts/gradle-locked": "cc9068f411a40af2ba47ed2bbbf8031cc26d8d5d"
+  },
+  "qualified_component_cases": [
+    "Expedition Map missing-Tron-piece target",
+    "Crop Rotation spare/duplicate land sacrifice plus missing-Tron-piece target",
+    "Ancient Stirrings missing-Tron-piece preference",
+    "Bojuka Bog opposing-graveyard target",
+    "free Cascade normal-vs-Prototype choice and decline of uncastable hit",
+    "exact-60 registry/Cascade source readiness with official state held at zero"
+  ],
+  "lane_disposition": {
+    "C2P03": "PARTIAL_SEEDLESS_MONSTER_POLICY_COMPONENT_QUALIFIED__FINITE_WHOLE_PAIR_ACTION_PAYMENT_REACHABILITY_OPEN",
+    "C2P04": "PARTIAL_SEEDLESS_MONSTER_PENDING_COMPONENT_QUALIFIED__FINITE_WHOLE_PAIR_OFFERED_GROUP_COMPLETENESS_OPEN"
+  },
+  "not_established": [
+    "Pest whole-pilot priority/action/payment completeness",
+    "all payment alternatives and restricted mana selections",
+    "all response/pass and trigger-order variants",
+    "all Stirrings remainder-ordering and generic pending-choice groups",
+    "both-seat/both-start finite reachability across the exact pair",
+    "C2P03 or C2P04 full satisfaction",
+    "C2-A2 admission",
+    "gameplay authority"
+  ],
+  "official_counters": {
+    "allocations": 0,
+    "claims": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}

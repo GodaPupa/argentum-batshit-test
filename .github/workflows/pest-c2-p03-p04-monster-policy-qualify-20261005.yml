@@ -1,0 +1,81 @@
+name: Pest C2 P03-P04 seedless Monster policy qualification
+on:
+  push:
+    branches: ["pest/c2-p03-p04-monster-policy-qualify-20261005"]
+    paths:
+      - ".github/workflows/pest-c2-p03-p04-monster-policy-qualify-20261005.yml"
+      - "docs/experiments/pest-control/PEST_C2_P03_P04_MONSTER_POLICY_QUALIFICATION_20261005.json"
+
+permissions:
+  contents: read
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/pest-c2-p03-p04-policy-${{ github.run_id }}-${{ github.run_attempt }}
+      PEST_MONSTER_TRON_POLICY_REPORT: /tmp/pest-policy/policy-calibration.txt
+      PEST_MONSTER_TRON_CASCADE_REPORT: /tmp/pest-policy/cascade-readiness.txt
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+
+      - name: Bind exact source-only policy component
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          python3 - <<'PY'
+          import json,pathlib,subprocess
+          P="5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd"
+          m=json.loads(pathlib.Path("docs/experiments/pest-control/PEST_C2_P03_P04_MONSTER_POLICY_QUALIFICATION_20261005.json").read_text())
+          assert m["schema"]=="pest-current-pair-c2-p03-p04-monster-policy-qualification-v1"
+          assert m["authority"]=="NON_GAMEPLAY_POLICY_COMPONENT_ONLY_NO_C2_ADMISSION"
+          assert subprocess.check_output(["git","rev-parse","HEAD^"],text=True).strip()==P
+          actual=sorted(subprocess.check_output(["git","diff","--name-only",P+"..HEAD"],text=True).splitlines())
+          assert actual==sorted([
+            ".github/workflows/pest-c2-p03-p04-monster-policy-qualify-20261005.yml",
+            "docs/experiments/pest-control/PEST_C2_P03_P04_MONSTER_POLICY_QUALIFICATION_20261005.json",
+          ])
+          for p,b in m["protected_blobs"].items():
+              assert subprocess.check_output(["git","rev-parse","HEAD:"+p],text=True).strip()==b,p
+          for p in [
+            "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPolicyCalibrationTest.kt",
+            "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronPolicyReadinessTest.kt",
+            "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronCascadeReadinessTest.kt",
+          ]:
+              text=pathlib.Path(p).read_text()
+              for forbidden in ("GameInitializer","GameEnvironment","withRngSeed","stepExactlyOne"):
+                  assert forbidden not in text,(p,forbidden)
+          PY
+
+      - name: Run seedless exact-60 policy component tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pest-policy
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache             --rerun-tasks --console=plain :gym:test             --tests com.wingedsheep.gym.PestControlTierOneMonsterTronPolicyCalibrationTest             --tests com.wingedsheep.gym.PestControlTierOneMonsterTronPolicyReadinessTest             --tests com.wingedsheep.gym.PestControlTierOneMonsterTronCascadeReadinessTest
+
+      - name: Preserve non-game policy evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pest-policy/evidence
+          cp /tmp/pest-policy/*.txt /tmp/pest-policy/evidence/ 2>/dev/null || true
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.PestControlTierOneMonsterTronPolicyCalibrationTest.xml /tmp/pest-policy/evidence/
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.PestControlTierOneMonsterTronPolicyReadinessTest.xml /tmp/pest-policy/evidence/
+          cp gym/build/test-results/test/TEST-com.wingedsheep.gym.PestControlTierOneMonsterTronCascadeReadinessTest.xml /tmp/pest-policy/evidence/
+          cp docs/experiments/pest-control/PEST_C2_P03_P04_MONSTER_POLICY_QUALIFICATION_20261005.json /tmp/pest-policy/evidence/
+          printf '%s\n' 'NON_GAMEPLAY_POLICY_COMPONENT_ONLY_NO_C2_ADMISSION' > /tmp/pest-policy/evidence/scope.txt
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-p03-p04-monster-policy-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-policy/evidence/
+          if-no-files-found: error
+          retention-days: 90
