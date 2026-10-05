@@ -1,0 +1,40 @@
+name: Pest C2 P05 current combat component source rebind
+on:
+  push:
+    branches: ["pest/c2-p05-combat-component-rebind-20261005"]
+    paths:
+      - ".github/workflows/pest-current-pair-c2-p05-combat-component-rebind-20261005.yml"
+      - "docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P05_COMBAT_COMPONENT_REBIND_20261005.json"
+      - "scripts/experiments/pest-control/verify_pest_current_pair_c2_p05_combat_component_rebind.py"
+
+permissions:
+  contents: read
+
+jobs:
+  rebind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Rebind independently accepted combat component to current bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/verify_pest_current_pair_c2_p05_combat_component_rebind.py             docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P05_COMBAT_COMPONENT_REBIND_20261005.json             | tee /tmp/c2-p05-rebind.json
+      - name: Preserve source-only evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/c2-p05
+          cp /tmp/c2-p05-rebind.json /tmp/c2-p05/
+          cp docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P05_COMBAT_COMPONENT_REBIND_20261005.json /tmp/c2-p05/
+          git rev-parse HEAD > /tmp/c2-p05/head.txt
+          git rev-parse 'HEAD^{tree}' > /tmp/c2-p05/tree.txt
+          printf '%s\n' 'SOURCE_REBIND_ONLY_NO_C2_ADMISSION_NO_GAMEPLAY' > /tmp/c2-p05/scope.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-p05-combat-component-rebind-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/c2-p05/
+          if-no-files-found: error
+          retention-days: 90

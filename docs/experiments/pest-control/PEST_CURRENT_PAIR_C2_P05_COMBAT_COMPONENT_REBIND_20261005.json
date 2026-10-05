@@ -1,0 +1,61 @@
+{
+  "schema": "pest-current-pair-c2-p05-combat-component-rebind-v1",
+  "date_utc": "2026-10-05",
+  "status": "CURRENT_INDEPENDENTLY_ACCEPTED_COMBAT_32_COMPONENT_REBOUND__PAIR_POST_BLOCK_OPEN",
+  "authority": "SOURCE_REBIND_ONLY_NO_C2_ADMISSION_NO_GAMEPLAY",
+  "source_parent": {
+    "commit": "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd",
+    "tree": "e7c37f620c8cefa0352742e38635ca196e887637"
+  },
+  "receiving": {
+    "path": "lab-coordinator/shared-capabilities/current-combat-receiving.json",
+    "blob": "bb3246061aee837ff37ead67fd903bca268b021e",
+    "declared_status": "PROSPECTIVE_RECEIVING_SOURCE_REVIEW_REQUIRED",
+    "declared_cases": 32
+  },
+  "independent_source_review": {
+    "path": "lab-coordinator/shared-capabilities/evidence/current-combat-36263357221/independent-source-review.json",
+    "blob": "326c2e2ffab0df94f64fa8b50671f7a950b1d26b",
+    "disposition": "ACCEPT_FOR_FIXED_32_CASE_COMBINED_RECEIVING_QUALIFICATION",
+    "reviewed_source": "94082eb1cba1a995d7056dce64c1d62cc4c7139f",
+    "reviewed_tree": "e7738b4564a639ee47f8b86dbe30790a86e3f9f1"
+  },
+  "independent_artifact_review": {
+    "path": "lab-coordinator/shared-capabilities/evidence/current-combat-36263357221/independent-artifact-review.json",
+    "blob": "28e3a050dde2ac7125c71396939fa448895d5332",
+    "verdict": "ACCEPT_TARGETED_CURRENT_COMBAT_32_RECEIVING_ONLY",
+    "run_id": 36263357221,
+    "artifact_id": 10912249211,
+    "archive_sha256": "baded5b4847ae3c71d9db49e7a39d1277c54d4cb1aec53c904085c0363563ed5",
+    "actual_cases": 32,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "c2p05": {
+    "component_status": "SATISFIED_SHARED_ENGINE_COMBAT_32_COMPONENT_BY_CURRENT_BYTE_REBIND_IF_VERIFIER_PASSES",
+    "gate_status": "OPEN_CURRENT_PAIR_WHOLE_PILOT_POST_BLOCK",
+    "remaining": [
+      "exact Pest/Monster whole-pilot attack declaration coverage",
+      "exact Pest/Monster whole-pilot block declaration coverage",
+      "post-block priority/action/payment surfaces for the exact pair",
+      "separate 27-stage post-block bank or an exact justified successor inventory",
+      "pair-specific policy binding to current ObservationAdapter/Strategist/DecisionResponder"
+    ]
+  },
+  "prohibited": [
+    "seed_generation",
+    "allocation",
+    "claim",
+    "game_initialization",
+    "gameplay",
+    "outcome_exposure",
+    "monster_tron_activation"
+  ],
+  "official_counters": {
+    "allocations": 0,
+    "claims": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}
