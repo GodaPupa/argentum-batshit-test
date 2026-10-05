@@ -1,0 +1,27 @@
+name: Pest C2 P06 hidden source inventory
+on:
+  push:
+    branches: ["pest/c2-p06-hidden-source-inventory-20261005"]
+    paths:
+      - ".github/workflows/pest-c2-p06-hidden-source-inventory-20261005.yml"
+      - "docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P06_HIDDEN_SOURCE_INVENTORY_20261005.json"
+      - "scripts/experiments/pest-control/verify_pest_current_pair_c2_p06_hidden_source_inventory.py"
+permissions: {contents: read}
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/verify_pest_current_pair_c2_p06_hidden_source_inventory.py docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P06_HIDDEN_SOURCE_INVENTORY_20261005.json | tee /tmp/p06.json
+      - run: |
+          mkdir -p /tmp/p06e
+          cp /tmp/p06.json /tmp/p06e/
+          cp docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P06_HIDDEN_SOURCE_INVENTORY_20261005.json /tmp/p06e/
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-p06-hidden-source-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/p06e/
+          retention-days: 90

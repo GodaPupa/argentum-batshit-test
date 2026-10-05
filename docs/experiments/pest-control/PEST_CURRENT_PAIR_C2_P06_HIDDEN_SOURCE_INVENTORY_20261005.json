@@ -1,0 +1,40 @@
+{
+  "schema": "pest-current-pair-c2-p06-hidden-source-inventory-v1",
+  "date_utc": "2026-10-05",
+  "status": "SOURCE_INVARIANCE_SURFACE_INVENTORIED__WHOLE_PAIR_PERMUTATION_PROOF_OPEN",
+  "authority": "SOURCE_ONLY_NO_C2_ADMISSION_NO_GAMEPLAY",
+  "source_parent": {
+    "commit": "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd",
+    "tree": "e7c37f620c8cefa0352742e38635ca196e887637"
+  },
+  "protected_blobs": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt": "7d78e440dad02de8a855fc016bdfb75d3fbd109e",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt": "43bbad79273806f56703fad420e9f6a495d05309",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt": "598e620f829f0caf9ba0272f50a094c0b87e3c6e",
+    "ai/src/test/kotlin/com/wingedsheep/ai/engine/hidden/DeterminizerInvariantsTest.kt": "f15471b769e06a1e878f7f6c32618ea3ff87d72c",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt": "4f020ea2406e9bd6a87ec389685b48f15df4c5a3",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "17cbc1bdb65d9da597eff9811c1b4fb2f7cefee0",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt": "d8dd4cb300746dbc7dc4840220e970dd180ce20d",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "090b6fb24392b06a32034030d937baca768e2201",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt": "2d070f45a8e07f0ba7d46ec6a56727bd6402728a",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "69ae4cc111288a4e6a283f5b566cc140153a2bdf",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/hidden/HiddenSlotRewrite.kt": "c8e05d156e42b4136df5feab28c3f23f78ce5ef9",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/hidden/HiddenWorldMaterializer.kt": "3fbf4e5b6f5c43650f160423e90c3077ce937211"
+  },
+  "source_findings": [
+    "PRODUCTION_CANDIDATE enables determinizeHiddenInformation and the current EXPIRING lineage inherits it.",
+    "AIPlayer supplies Determinizer.sampleForSearch as Strategist stateSampler when the profile enables hidden determinization.",
+    "Determinizer samples hidden identities/order while retaining public/in-flight structural constraints.",
+    "ObservationAdapter suppresses hidden library positions and exposes only explicitly authorized current-decision own-library looks.",
+    "EngineAiPlayerController typed-cycling mulligan shortcut observes target existence and chooses a representative by intrinsic definition identity, not hidden library position.",
+    "Current Monster advisor has no direct raw library-order authority."
+  ],
+  "gate_status": "OPEN_WHOLE_PAIR_PERMUTATION_INVARIANCE",
+  "required_next": "bounded exact-pair policy equivalence under hidden hand/library identity and order permutations at representative reachable C2 action/decision surfaces",
+  "official_counters": {
+    "allocations": 0,
+    "claims": 0,
+    "games": 0,
+    "outcomes": 0
+  }
+}

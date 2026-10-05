@@ -1,0 +1,30 @@
+#!/usr/bin/env python3
+import json,pathlib,subprocess,sys
+P="5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd"
+def git(*a): return subprocess.check_output(["git",*a],text=True).strip()
+def die(x): raise SystemExit(x)
+def main():
+ d=json.loads(pathlib.Path(sys.argv[1]).read_text())
+ if d["schema"]!="pest-current-pair-c2-p06-hidden-source-inventory-v1": die("schema")
+ if d["authority"]!="SOURCE_ONLY_NO_C2_ADMISSION_NO_GAMEPLAY": die("authority")
+ if git("rev-parse","HEAD^")!=P: die("parent")
+ exp=sorted([".github/workflows/pest-c2-p06-hidden-source-inventory-20261005.yml","docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P06_HIDDEN_SOURCE_INVENTORY_20261005.json","scripts/experiments/pest-control/verify_pest_current_pair_c2_p06_hidden_source_inventory.py"])
+ act=sorted(git("diff","--name-only",P+"..HEAD").splitlines())
+ if act!=exp: die("delta")
+ for p,b in d["protected_blobs"].items():
+  if git("rev-parse","HEAD:"+p)!=b: die("drift "+p)
+ profile=pathlib.Path("ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt").read_text()
+ ai=pathlib.Path("ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt").read_text()
+ det=pathlib.Path("ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt").read_text()
+ obs=pathlib.Path("gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt").read_text()
+ eng=pathlib.Path("ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt").read_text()
+ adv=pathlib.Path("ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt").read_text()
+ if 'val PRODUCTION_CANDIDATE = PRODUCTION.copy(' not in profile or 'determinizeHiddenInformation = true' not in profile: die("profile")
+ if 'stateSampler = if (profile.determinizeHiddenInformation)' not in ai or 'determinizer.sampleForSearch' not in ai: die("AIPlayer")
+ if 'fun sampleForSearch' not in det or 'Even the viewer\'s own library order is hidden' not in det: die("determinizer")
+ if 'Library positions are absent' not in obs or 'currentOwnLibraryLooks' not in obs: die("observation")
+ if '.minByOrNull' not in eng or 'cardDefinitionId.orEmpty()' not in eng: die("mulligan order independence source")
+ if 'getLibrary(' in adv or 'Zone.LIBRARY' in adv: die("monster advisor raw library authority")
+ if d["gate_status"].startswith("SATISFIED"): die("gate overpromotion")
+ print(json.dumps({"schema":"pest-c2-p06-hidden-source-inventory-result-v1","status":"PASS","head":git("rev-parse","HEAD"),"tree":git("rev-parse","HEAD^{tree}"),"gate_status":d["gate_status"],"official_counters_delta":0},sort_keys=True))
+if __name__=="__main__": main()
