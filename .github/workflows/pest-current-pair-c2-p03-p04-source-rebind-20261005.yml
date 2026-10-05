@@ -1,0 +1,40 @@
+name: Pest C2 P03-P04 current source rebind
+on:
+  push:
+    branches: ["pest/c2-p03-p04-source-rebind-20261005"]
+    paths:
+      - ".github/workflows/pest-current-pair-c2-p03-p04-source-rebind-20261005.yml"
+      - "docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P03_P04_SOURCE_REBIND_20261005.json"
+      - "scripts/experiments/pest-control/verify_pest_current_pair_c2_p03_p04_source_rebind.py"
+
+permissions:
+  contents: read
+
+jobs:
+  rebind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Verify exact current P03/P04 source rebind
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/verify_pest_current_pair_c2_p03_p04_source_rebind.py             docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P03_P04_SOURCE_REBIND_20261005.json             | tee /tmp/p03-p04-source-rebind.json
+      - name: Preserve source-rebind evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/p03-p04
+          cp /tmp/p03-p04-source-rebind.json /tmp/p03-p04/
+          cp docs/experiments/pest-control/PEST_CURRENT_PAIR_C2_P03_P04_SOURCE_REBIND_20261005.json /tmp/p03-p04/
+          git rev-parse HEAD > /tmp/p03-p04/head.txt
+          git rev-parse 'HEAD^{tree}' > /tmp/p03-p04/tree.txt
+          printf '%s\n' 'SOURCE_INVENTORY_ONLY_NO_C2_ADMISSION_NO_GAMEPLAY' > /tmp/p03-p04/scope.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: pest-c2-p03-p04-source-rebind-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/p03-p04/
+          if-no-files-found: error
+          retention-days: 90
