@@ -1,0 +1,152 @@
+{
+  "schema": "pest-current-pair-c2-p07-fresh-replay-qualification-v1",
+  "date_utc": "2026-10-05",
+  "authority": "NON_OFFICIAL_SOURCE_REPLAY_QUALIFICATION_ONLY_NO_C2_ADMISSION",
+  "status": "FROZEN_FRESH_CURRENT_PAIR_REPLAY_V2_CANDIDATE_PENDING_VALIDATION",
+  "source_parent": {
+    "commit": "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd",
+    "tree": "e7c37f620c8cefa0352742e38635ca196e887637"
+  },
+  "exact_pair": {
+    "pest_main_sha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster_main_sha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f"
+  },
+  "accepted_predecessor_evidence": {
+    "source_inventory_run": 37312150290,
+    "source_inventory_head": "3c4706d816f2d2eda73dc5badfedc57b1125b4d4",
+    "source_inventory_artifact": 11346043451,
+    "source_inventory_artifact_digest": "sha256:c4d65d67ab5a0cf6c3e586e862fddba21fae7ba76f7c3b02081489a2b6dbc107",
+    "source_inventory_manifest_blob": "09c6a3335ac602ee6592c3204c6650cd93124bf5",
+    "predecessor_disposition": "CURRENT_JOURNAL_REPLAY_SOURCE_INVENTORIED__FRESH_PAIR_REPLAY_OPEN"
+  },
+  "replay_contract": {
+    "scope": "synthetic/non-official current-pair action-event replay only",
+    "package_binding": [
+      "exact current source commit/tree",
+      "exact Pest/Monster main hashes",
+      "current ObservationAdapter/ActorActionMenu",
+      "current Strategist/DecisionResponder",
+      "Pest production-candidate profile source",
+      "current Monster policy/advisor"
+    ],
+    "durable_ordering": "INTENT is forced to disk before RESULT is accepted; each RESULT is forced immediately",
+    "no_clobber": "CREATE_NEW directory/files reject duplicate run ids and overwrites",
+    "duplicate_rejection": "sequences must be contiguous and exactly one INTENT/RESULT pair per sequence",
+    "replay": "reparse exact journal bytes, require action identity and event JSON validity, require terminal only on final RESULT, verify summary digest/count",
+    "official_scope": "no official claim, seed, allocation, initialization, action submission, game, or outcome"
+  },
+  "finite_replay_inventory": [
+    {
+      "id": "P07-01",
+      "kind": "package_binding",
+      "proof": "PestCurrentPairC2ReplayJournal package.json exact identity comparison",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P07-02",
+      "kind": "intent_before_result",
+      "proof": "recordResult rejects absent pending INTENT; INTENT force precedes RESULT force",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P07-03",
+      "kind": "duplicate_rejection",
+      "proof": "contiguous sequence state machine rejects duplicate/out-of-order sequence",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P07-04",
+      "kind": "no_clobber",
+      "proof": "CREATE_NEW run directory/package/journal and duplicate-run test",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P07-05",
+      "kind": "incomplete_prefix",
+      "proof": "finish rejects unmatched INTENT and replay rejects missing/incomplete summary/journal",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P07-06",
+      "kind": "deterministic_replay",
+      "proof": "exact journal bytes reparse to identical action/event semantics and SHA-256",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P07-07",
+      "kind": "terminal_consistency",
+      "proof": "terminal RESULT must be final and finish requires explicit terminal record",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P07-08",
+      "kind": "action_event_consistency",
+      "proof": "RESULT action bytes must exactly equal durable INTENT; every event must parse as JSON",
+      "status": "QUALIFICATION_BOUND"
+    }
+  ],
+  "current_source_bindings": {
+    "observation_adapter_blob": "17cbc1bdb65d9da597eff9811c1b4fb2f7cefee0",
+    "actor_action_menu_blob": "7af655daf3e6a94333255e0c7396ff64bc652bce",
+    "strategist_blob": "d8dd4cb300746dbc7dc4840220e970dd180ce20d",
+    "decision_responder_blob": "090b6fb24392b06a32034030d937baca768e2201",
+    "pest_profile_blob": "43bbad79273806f56703fad420e9f6a495d05309",
+    "monster_policy_blob": "2d070f45a8e07f0ba7d46ec6a56727bd6402728a",
+    "monster_advisor_blob": "69ae4cc111288a4e6a283f5b566cc140153a2bdf",
+    "preboard_contract_blob": "e8a4347063d7d1424a5f90e5fdd9b0cc3b104de3",
+    "phase_b_journal_blob": "8cda0fcaa7a3ecfab11d00b2aafddca1f13c7577",
+    "monster_operational_stack_blob": "5192fb0190cf44f6b766ee7c296d3c1e2a8244e2"
+  },
+  "protected_blobs": {
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "17cbc1bdb65d9da597eff9811c1b4fb2f7cefee0",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt": "7af655daf3e6a94333255e0c7396ff64bc652bce",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt": "d8dd4cb300746dbc7dc4840220e970dd180ce20d",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "090b6fb24392b06a32034030d937baca768e2201",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt": "43bbad79273806f56703fad420e9f6a495d05309",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt": "2d070f45a8e07f0ba7d46ec6a56727bd6402728a",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "69ae4cc111288a4e6a283f5b566cc140153a2bdf",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlPreboardContract.kt": "e8a4347063d7d1424a5f90e5fdd9b0cc3b104de3",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestPhaseBComparisonJournal.kt": "8cda0fcaa7a3ecfab11d00b2aafddca1f13c7577",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt": "5192fb0190cf44f6b766ee7c296d3c1e2a8244e2",
+    "gym/src/main/kotlin/com/wingedsheep/gym/pest/PestCurrentPairC2ReplayJournal.kt": "036d9dfb00dcb0faf468afd30a13bbdf4305f707",
+    "gym/src/test/kotlin/com/wingedsheep/gym/pest/PestCurrentPairC2ReplayJournalTest.kt": "6cf71bdbdb3cb962535b456dffd75c81bfc7e2ba",
+    "scripts/experiments/pest-control/verify_pest_c2_p07_fresh_replay_qualification.py": "942436252964e2ebb5d3209e7d40c76fd5dfaa5b",
+    ".github/workflows/pest-c2-p07-fresh-replay-qualification-20261005.yml": "c6f8fbb1680a0f5ef444077ba73d04530744a0fd"
+  },
+  "acceptance_if_validation_success": {
+    "C2P07": "SATISFIED_CURRENT_PAIR_SOURCE_BOUND_FRESH_REPLAY"
+  },
+  "limitations": [
+    "Synthetic replay qualifies durability/replay mechanics and exact current-pair source binding only; it is not gameplay evidence.",
+    "No official gameplay claim or Monster Tron durable attempt is created.",
+    "No official seed vector is read or generated and no GameEnvironment or GameInitializer is invoked."
+  ],
+  "prohibited": [
+    "official_seed_generation",
+    "allocation",
+    "official_claim",
+    "official_game_initialization",
+    "gameplay",
+    "official_action_submission",
+    "outcome_exposure",
+    "monster_tron_activation",
+    "spy_combo_execution",
+    "phase_b_rerun_or_retry",
+    "reuse_consumed_phase_b_authority"
+  ],
+  "official_counters": {
+    "allocations": 0,
+    "claims": 0,
+    "games": 0,
+    "outcomes": 0
+  },
+  "infrastructure_cancelled_v1": {
+    "run": 37365003224,
+    "head": "35752293cd6f3fa8bb29927e0e5ad49b261f6530",
+    "classification": "GITHUB_HOSTED_RUNNER_INFRASTRUCTURE_CANCELLATION_BEFORE_STEPS__NO_REPLAY_RESULT",
+    "job_conclusion": "cancelled",
+    "logs": "absent",
+    "artifacts": 0,
+    "source_change_from_v1": "none"
+  }
+}
