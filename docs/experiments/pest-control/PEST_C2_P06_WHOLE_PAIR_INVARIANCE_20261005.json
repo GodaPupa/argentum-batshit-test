@@ -1,0 +1,201 @@
+{
+  "schema": "pest-current-pair-c2-p06-whole-pair-invariance-v1",
+  "date_utc": "2026-10-05",
+  "authority": "NON_GAMEPLAY_INVARIANCE_QUALIFICATION_ONLY_NO_C2_ADMISSION",
+  "status": "FROZEN_WHOLE_PAIR_HIDDEN_INVARIANCE_V3_CANDIDATE_PENDING_VALIDATION",
+  "source_parent": {
+    "commit": "5106ecf6abe473f7c3d9089946b2a3c4c38a3bbd",
+    "tree": "e7c37f620c8cefa0352742e38635ca196e887637"
+  },
+  "exact_pair": {
+    "pest_main_sha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster_main_sha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f"
+  },
+  "accepted_predecessor_evidence": {
+    "source_inventory_run": 37311687079,
+    "source_inventory_head": "aaef3fe9b9ef54b67c05a31bcaa5542a329435b6",
+    "source_inventory_artifact": 11346790841,
+    "source_inventory_artifact_digest": "sha256:f922da1f9b27e6bbda293be9342a0188b1cc3b18260ab667d1fa2a0b2f52ce7c",
+    "source_inventory_manifest_blob": "69aca81f35129075c2db849114ed7e5a09120a65",
+    "predecessor_disposition": "SOURCE_INVARIANCE_SURFACE_INVENTORIED__WHOLE_PAIR_PERMUTATION_PROOF_OPEN"
+  },
+  "invariance_contract": {
+    "lawful_inputs": [
+      "current actor public state",
+      "own hand and public zones",
+      "currently authorized own-library look group only",
+      "previously revealed identity that remains lawfully known",
+      "current legal action / pending-decision domains",
+      "derived public mechanics"
+    ],
+    "forbidden_inputs": [
+      "unknown opponent hand identity",
+      "opponent hidden library identity/order",
+      "own hidden library order outside an authorized look",
+      "irrelevant hidden entity permutation"
+    ],
+    "randomness_boundary": "Compared positions install the same caller-owned fixed test RNG. No official seed namespace is read or generated."
+  },
+  "finite_permutation_inventory": [
+    {
+      "id": "P06-01",
+      "kind": "opponent_hidden_hand_identity",
+      "policy": "Pest",
+      "proof": "PestCurrentPairC2P06HiddenInvarianceTest hidden Monster hand swap",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P06-02",
+      "kind": "opponent_hidden_library_order",
+      "policy": "Pest",
+      "proof": "PestCurrentPairC2P06HiddenInvarianceTest hidden Monster library reversal",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P06-03",
+      "kind": "own_hidden_library_order",
+      "policy": "Pest",
+      "proof": "PestCurrentPairC2P06HiddenInvarianceTest Pest library reversal + ActorObservationBoundaryTest",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P06-04",
+      "kind": "pair_policy_output",
+      "policy": "Pest",
+      "proof": "semantic Pest action invariant under combined hidden-only permutation",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P06-05",
+      "kind": "opponent_hidden_hand_identity",
+      "policy": "Monster",
+      "proof": "PestCurrentPairC2P06HiddenInvarianceTest hidden Pest hand swap",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P06-06",
+      "kind": "opponent_hidden_library_order",
+      "policy": "Monster",
+      "proof": "PestCurrentPairC2P06HiddenInvarianceTest hidden Pest library reversal",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P06-07",
+      "kind": "pair_policy_output",
+      "policy": "Monster",
+      "proof": "semantic Monster action invariant under combined hidden-only permutation",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P06-08",
+      "kind": "observation_projection",
+      "policy": "both",
+      "proof": "current ObservationAdapter canonical payload unchanged under hidden-only permutations + ActorObservationBoundaryTest 28-case bank",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P06-09",
+      "kind": "authorized_look",
+      "policy": "both",
+      "proof": "ActorAuthorizedLibrarySearchOrderTest current source-bound look/order proof",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P06-10",
+      "kind": "revealed_identity",
+      "policy": "both",
+      "proof": "ActorObservationBoundaryTest known/revealed neighbor cases + DeterminizerInvariantsTest revealed-card pins",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P06-11",
+      "kind": "randomness_boundary",
+      "policy": "both",
+      "proof": "same fixed caller-owned test RNG across compared materialized worlds + ActorObservationBoundaryTest authoritative RNG exclusion",
+      "status": "QUALIFICATION_BOUND"
+    },
+    {
+      "id": "P06-12",
+      "kind": "own_hidden_library_order",
+      "policy": "both",
+      "proof": "DeterminizerInvariantsTest viewer does not retain own library order",
+      "status": "QUALIFICATION_BOUND"
+    }
+  ],
+  "protected_blobs": {
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt": "7d78e440dad02de8a855fc016bdfb75d3fbd109e",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt": "43bbad79273806f56703fad420e9f6a495d05309",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt": "598e620f829f0caf9ba0272f50a094c0b87e3c6e",
+    "ai/src/test/kotlin/com/wingedsheep/ai/engine/hidden/DeterminizerInvariantsTest.kt": "f15471b769e06a1e878f7f6c32618ea3ff87d72c",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/hidden/HiddenSlotRewrite.kt": "c8e05d156e42b4136df5feab28c3f23f78ce5ef9",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/hidden/HiddenWorldMaterializer.kt": "3fbf4e5b6f5c43650f160423e90c3077ce937211",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ObservationAdapter.kt": "17cbc1bdb65d9da597eff9811c1b4fb2f7cefee0",
+    "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorActionMenu.kt": "7af655daf3e6a94333255e0c7396ff64bc652bce",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorObservationBoundaryTest.kt": "5d9ebb717697fafdd166fa1c5468fb57922e4d0f",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorAuthorizedLibrarySearchOrderTest.kt": "628d8ab01442cb7e4488c643d463eed4b6b59d2d",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt": "d8dd4cb300746dbc7dc4840220e970dd180ce20d",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt": "090b6fb24392b06a32034030d937baca768e2201",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/PestMonsterTronPolicy.kt": "2d070f45a8e07f0ba7d46ec6a56727bd6402728a",
+    "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/PestMonsterTronAdvisorModule.kt": "69ae4cc111288a4e6a283f5b566cc140153a2bdf",
+    "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/PestCurrentPairC2P06HiddenInvarianceTest.kt": "f180945f672102b3f52cb010ad69013d12c80082",
+    "scripts/experiments/pest-control/verify_pest_c2_p06_whole_pair_invariance.py": "520257a9f25452e29599b5df77e658e04be4b09a",
+    ".github/workflows/pest-c2-p06-whole-pair-invariance-20261005.yml": "b8145387e96d261c80e54f8c655a93f8333c65a3"
+  },
+  "acceptance_if_validation_success": {
+    "C2P06": "SATISFIED_CURRENT_WHOLE_PAIR_HIDDEN_STATE_INVARIANCE"
+  },
+  "limitations": [
+    "This proves current exact pair policy/observation invariance for the finite hidden-state classes above; it is not gameplay evidence.",
+    "Authorized current library looks are intentionally observable and are tested as an exception rather than hidden.",
+    "No official entropy, seed, allocation, claim, game, action submission, or outcome is created."
+  ],
+  "prohibited": [
+    "official_seed_generation",
+    "allocation",
+    "official_claim",
+    "official_game_initialization",
+    "gameplay",
+    "official_action_submission",
+    "outcome_exposure",
+    "monster_tron_activation",
+    "spy_combo_execution",
+    "phase_b_rerun_or_retry",
+    "reuse_consumed_phase_b_authority"
+  ],
+  "official_counters": {
+    "allocations": 0,
+    "claims": 0,
+    "games": 0,
+    "outcomes": 0
+  },
+  "failed_predecessor_attempt": {
+    "run": 37359158920,
+    "head": "e18e5738dab378ad0e4b4b10bfd8944bb6df49fb",
+    "artifact": 11366455123,
+    "artifact_digest": "sha256:0523244c7839a32ce7d43b43ce4a0182cdc5cd82fdc459d1d0fa23e1970325b8",
+    "classification": "STALE_OR_INCORRECT_SOURCE_BINDING__NO_INVARIANCE_RESULT"
+  },
+  "binding_repair": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/hidden/HiddenSlotRewrite.kt": {
+      "stale": "c8e05d8b31f08768f4604b647189c2b66088d06d",
+      "current": "c8e05d156e42b4136df5feab28c3f23f78ce5ef9",
+      "semantic_change": false,
+      "reason": "stale/nonexistent git blob pin; current file is the exact Phase-B-I source used by the candidate"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/hidden/HiddenWorldMaterializer.kt": {
+      "stale": "3fbf4e728277280efff9f85a24e336e5388f638d",
+      "current": "3fbf4e5b6f5c43650f160423e90c3077ce937211",
+      "semantic_change": false,
+      "reason": "stale/nonexistent git blob pin; current file is the exact Phase-B-I source used by the candidate"
+    }
+  },
+  "infrastructure_cancelled_v2": {
+    "run": 37364566623,
+    "head": "c3c55b1f9fcf082a5fe85b9a29246bf3fac4fc3f",
+    "classification": "GITHUB_HOSTED_RUNNER_INFRASTRUCTURE_CANCELLATION_BEFORE_STEPS__NO_INVARIANCE_RESULT",
+    "job_conclusion": "cancelled",
+    "logs": "absent",
+    "artifacts": 0,
+    "source_change_from_v2": "none"
+  }
+}
