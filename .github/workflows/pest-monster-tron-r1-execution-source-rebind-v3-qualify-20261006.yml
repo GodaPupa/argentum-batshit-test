@@ -1,0 +1,158 @@
+name: Pest Monster Tron R1 execution-source rebind v3 qualification
+
+on:
+  push:
+    branches: ["pest/monster-tron-r1-execution-source-rebind-v3-20261006"]
+    paths:
+      - ".github/workflows/pest-monster-tron-r1-execution-source-rebind-v3-qualify-20261006.yml"
+      - "docs/experiments/pest-control/PEST_MONSTER_TRON_R1_EXECUTION_SOURCE_REBIND_V3_20261006.json"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOneShotBoundary.kt"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronR1ExecutionIdentity.kt"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronR1InputLoader.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronR1RebindTest.kt"
+      - "scripts/experiments/pest-control/build_pest_monster_tron_r1_input.py"
+      - "scripts/experiments/pest-control/verify_pest_monster_tron_r1_execution_source_rebind_v3.py"
+      - "scripts/pest-monster-tron-r1-one-shot-claim.py"
+      - "tools/tests/test_pest_monster_tron_r1_one_shot_claim.py"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pest-monster-tron-r1-execution-source-rebind-v3-20261006
+  cancel-in-progress: false
+
+env:
+  JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+  TZ: UTC
+
+jobs:
+  structural:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      OUT: /tmp/pest-r1-rebind-v3-structural
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Verify exact construction delta and fail-closed source identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p "$OUT"
+          python3 scripts/experiments/pest-control/verify_pest_monster_tron_r1_execution_source_rebind_v3.py \
+            | tee "$OUT/verifier-result.json"
+          sha256sum docs/experiments/pest-control/PEST_MONSTER_TRON_R1_EXECUTION_SOURCE_REBIND_V3_20261006.json \
+            | tee "$OUT/rebind-manifest.sha256"
+          git rev-parse HEAD > "$OUT/head.txt"
+          git rev-parse 'HEAD^{tree}' > "$OUT/tree.txt"
+          printf '%s\n' 'REBIND_QUALIFICATION_ONLY__NO_A2__NO_CLAIM__NO_GAMEPLAY' > "$OUT/scope.txt"
+
+      - name: Verify live official-attempt refs remain fail-closed
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/git/matching-refs/heads/pest-control/official-attempts" \
+            -o "$OUT/live-official-attempt-refs.json"
+          python3 - <<'PY'
+          import json
+          p="/tmp/pest-r1-rebind-v3-structural/live-official-attempt-refs.json"
+          refs=json.load(open(p))
+          got={r["ref"]:r["object"]["sha"] for r in refs}
+          old="refs/heads/pest-control/official-attempts/monster-tron-smoke-v1"
+          new="refs/heads/pest-control/official-attempts/monster-tron-replacement-smoke-r1"
+          assert got.get(old)=="1c2e253ad7f5a7652304f7c9aaafc30e547a481e", got.get(old)
+          assert new not in got, got.get(new)
+          print(json.dumps({"historical_claim":got[old],"future_r1_claim_ref":"ABSENT","claims_created_by_this_validation":0},sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-tron-r1-rebind-v3-structural-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-r1-rebind-v3-structural/
+          if-no-files-found: error
+          retention-days: 90
+
+  claim_helper:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      OUT: /tmp/pest-r1-rebind-v3-claim
+    steps:
+      - uses: actions/checkout@v6
+      - name: Run deterministic no-network R1 claim fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 tools/tests/test_pest_monster_tron_r1_one_shot_claim.py 2>&1 | tee "$OUT/claim-helper-tests.log"
+          printf '%s\n' 'FAKE_API_ONLY__NO_NETWORK__NO_REAL_CLAIM' > "$OUT/scope.txt"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-tron-r1-rebind-v3-claim-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-r1-rebind-v3-claim/
+          if-no-files-found: error
+          retention-days: 90
+
+  loader_and_rebind:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      GRADLE_USER_HOME: /tmp/pest-r1-rebind-v3-gradle-${{ github.run_id }}-${{ github.run_attempt }}
+      OUT: /tmp/pest-r1-rebind-v3-loader
+      PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP: /tmp/pest-r1-rebind-v3-input.zip
+      PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ACK: LOAD_FROZEN_MONSTER_TRON_R1_FOR_VALIDATION_ONLY
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Build deterministic R1 transport archive from frozen source
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p "$OUT"
+          python3 scripts/experiments/pest-control/build_pest_monster_tron_r1_input.py \
+            --repo-root . --output "$PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP"
+          test "$(sha256sum "$PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP" | awk '{print $1}')" = \
+            "e9ddafe0a7aec28cb07950f2f1d5908a31af677ff58415e809117575f46d6817"
+          sha256sum "$PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP" | tee "$OUT/input-archive.sha256"
+
+      - name: Qualify only the changed R1 identity and loader surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain :gym:test \
+            --tests com.wingedsheep.gym.PestControlTierOneMonsterTronR1RebindTest \
+            2>&1 | tee "$OUT/r1-rebind-test.log"
+          printf '%s\n' 'CHANGED_SURFACE_ONLY__NO_GAME_INITIALIZATION__NO_GAMEPLAY' > "$OUT/scope.txt"
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-tron-r1-rebind-v3-loader-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-r1-rebind-v3-loader/
+          if-no-files-found: error
+          retention-days: 90
