@@ -28,6 +28,7 @@ def main():
     c2 = m["accepted_c2"]
     assert c2["commit"] == C2 and c2["tree"] == C2_TREE
     assert c2["identifier_sha256"] == "421a75c0aad541d9604840b1757c790c7f313155a215e55bdc156858514e2659"
+    assert m["r1"]["members"] == [8509670981736218459, -8564666863904712979, -8259800499619080267, 3489680325849498530]
     assert m["c2_review"]["receipt_comment"] == 6016599830
     assert m["c2_review"]["canonical_sha256"] == "f43347936391ceb3c6176eba5856a1c118d54ee16c5d81a0c46987ebc87e3a8d"
 

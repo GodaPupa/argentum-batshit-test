@@ -2,7 +2,7 @@ name: Pest Monster Tron R1 A2 source-admission blocker evidence
 
 on:
   push:
-    branches: ["pest/monster-tron-r1-a2-source-admission-blocker-v5-20261006"]
+    branches: ["pest/monster-tron-r1-a2-source-admission-blocker-v6-20261006"]
     paths:
       - ".github/workflows/pest-monster-tron-r1-a2-source-admission-blocker-validate-20261006.yml"
       - "docs/experiments/pest-control/PEST_MONSTER_TRON_R1_A2_SOURCE_ADMISSION_BLOCKER_20261006.json"
@@ -13,7 +13,7 @@ permissions:
   actions: read
 
 concurrency:
-  group: pest-monster-tron-r1-a2-source-admission-blocker-v5-20261006
+  group: pest-monster-tron-r1-a2-source-admission-blocker-v6-20261006
   cancel-in-progress: false
 
 jobs:
