@@ -94,4 +94,15 @@ class PestControlTierOneMonsterTronR1RebindTest : FunSpec({
             )
         }
     }
+    test("R1 execution surface stays distinct from immutable historical smoke identity") {
+        PEST_MONSTER_TRON_SMOKE_BLOCK_ID shouldBe
+            "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_SMOKE_4"
+        PEST_MONSTER_TRON_R1_BLOCK_ID shouldBe
+            "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_REPLACEMENT_SMOKE_4_R1"
+        (PEST_MONSTER_TRON_R1_BLOCK_ID == PEST_MONSTER_TRON_SMOKE_BLOCK_ID) shouldBe false
+        MONSTER_TRON_CLAIM_REF shouldBe PEST_MONSTER_TRON_R1_FUTURE_CLAIM_REF
+        MONSTER_TRON_OFFICIAL_WORKFLOW shouldBe
+            ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml"
+    }
+
 })
