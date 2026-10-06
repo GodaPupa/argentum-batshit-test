@@ -98,15 +98,15 @@ internal fun monsterTronFrozenMemberPins(): Map<String, String> = linkedMapOf(
     "ordered-members.txt" to PEST_MONSTER_TRON_R1_VECTOR_SHA256,
     "assignments.csv" to PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256,
     "freeze-manifest.json" to PEST_MONSTER_TRON_R1_FREEZE_MANIFEST_SHA256,
-    "quarantine.json" to PEST_MONSTER_TRON_FROZEN_SMOKE_QUARANTINE_SHA256,
-    "artifacts.sha256" to PEST_MONSTER_TRON_FROZEN_SMOKE_CHECKSUMS_SHA256,
+    "quarantine.json" to PEST_MONSTER_TRON_R1_QUARANTINE_SHA256,
+    "artifacts.sha256" to PEST_MONSTER_TRON_R1_CHECKSUMS_SHA256,
 )
 
 object PestControlTierOneMonsterTronFrozenArtifactVerifier {
     fun inspect(archive: ByteArray): MonsterTronFrozenArtifactInspection =
         inspectMonsterTronPinnedArchive(
             archive = archive,
-            expectedArchiveSha256 = PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256,
+            expectedArchiveSha256 = PEST_MONSTER_TRON_R1_ARCHIVE_SHA256,
             expectedMembers = monsterTronFrozenMemberPins(),
         )
 }
@@ -357,7 +357,7 @@ object PestControlTierOneMonsterTronOfficialExecutionInputLoader {
         require(inspection.verified) {
             "frozen artifact verification failed: ${inspection.errors.joinToString()}"
         }
-        require(inspection.archiveSha256 == PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256)
+        require(inspection.archiveSha256 == PEST_MONSTER_TRON_R1_ARCHIVE_SHA256)
 
         val assignments = PestControlTierOneMonsterTronAssignmentDecoder.decode(snapshot)
         require(assignments.size == PEST_MONSTER_TRON_SMOKE_GAMES)
@@ -371,7 +371,7 @@ object PestControlTierOneMonsterTronOfficialExecutionInputLoader {
         )
 
         val identity = MonsterTronSmokeVectorIdentity(
-            freezeCommit = PEST_MONSTER_TRON_FROZEN_SMOKE_SOURCE,
+            freezeCommit = PEST_MONSTER_TRON_R1_FREEZE_COMMIT,
             orderedVectorSha256 = PEST_MONSTER_TRON_R1_VECTOR_SHA256,
             assignmentCsvSha256 = PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256,
             freezeManifestSha256 = PEST_MONSTER_TRON_R1_FREEZE_MANIFEST_SHA256,
