@@ -13,10 +13,10 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.util.concurrent.atomic.AtomicBoolean
 
-internal const val MONSTER_TRON_ENGINE_BASELINE = "a224ef0008a2b85e2c2c106df9959678782e765d"
+internal const val MONSTER_TRON_ENGINE_BASELINE = "433df3310efe31c49f27034b50e6d8d7e60561f7"
 internal const val MONSTER_TRON_RULES_SHA256 = "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca"
-internal const val MONSTER_TRON_OFFICIAL_WORKFLOW = ".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml"
-internal const val MONSTER_TRON_CLAIM_REF = "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1"
+internal const val MONSTER_TRON_OFFICIAL_WORKFLOW = ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml"
+internal const val MONSTER_TRON_CLAIM_REF = PEST_MONSTER_TRON_R1_FUTURE_CLAIM_REF
 
 /**
  * The sole official wrapper takes no seed, assignment, vector identity, or Boolean durability proof
@@ -101,7 +101,7 @@ internal object PestControlTierOneMonsterTronOneShotBoundary {
             "execution checkout is not clean"
         }
         verifyMonsterTronBaseline(commands)
-        val input = PestControlTierOneMonsterTronOfficialExecutionInputLoader
+        val input = PestControlTierOneMonsterTronR1InputLoader
             .loadForAuthorizedExecutionFromEnvironment()
         require(monsterTronSealedInputErrors(input).isEmpty())
         val rules = Files.readAllBytes(Path.of(env("PEST_MONSTER_TRON_RULES_ARCHIVE")))
@@ -115,7 +115,7 @@ internal object PestControlTierOneMonsterTronOneShotBoundary {
         // Read-only API authentication of canonical ref, commit, tree, blob and exact payload.
         // A locally invented receipt cannot authorize initialization.
         commands.required("AUTHENTICATE_DURABLE_CLAIM", listOf(
-            "python3", "scripts/pest-monster-tron-one-shot-claim.py",
+            "python3", "scripts/pest-monster-tron-r1-one-shot-claim.py",
             "--verify-receipt", receiptPath.toString(), "--source-sha", source,
             "--run-id", env("GITHUB_RUN_ID"), "--run-attempt", "1",
         ))
@@ -140,7 +140,7 @@ internal object PestControlTierOneMonsterTronOneShotBoundary {
         durableMonsterTronWrite(output.resolve("preexecution.json"), jsonBytes(buildJsonObject {
             put("schema", "pest-monster-tron-one-shot-preexecution-v1")
             put("protocol_id", PEST_MONSTER_TRON_PREBOARD_PROTOCOL_ID)
-            put("block_id", PEST_MONSTER_TRON_SMOKE_BLOCK_ID)
+            put("block_id", PEST_MONSTER_TRON_R1_BLOCK_ID)
             put("execution_source_sha", sealed.source)
             put("engine_baseline_sha", MONSTER_TRON_ENGINE_BASELINE)
             put("vector_sha256", input.vectorIdentity.orderedVectorSha256)
@@ -220,7 +220,7 @@ internal object PestControlTierOneMonsterTronOneShotBoundary {
         val summary = buildJsonObject {
             put("schema", "pest-monster-tron-one-shot-summary-v1")
             put("protocol_id", PEST_MONSTER_TRON_PREBOARD_PROTOCOL_ID)
-            put("block_id", PEST_MONSTER_TRON_SMOKE_BLOCK_ID)
+            put("block_id", PEST_MONSTER_TRON_R1_BLOCK_ID)
             put("execution_source_sha", sealed.source)
             put("engine_baseline_sha", MONSTER_TRON_ENGINE_BASELINE)
             put("claim_commit_sha", sealed.receipt.getValue("claim_commit_sha"))
@@ -250,15 +250,15 @@ internal object PestControlTierOneMonsterTronOneShotBoundary {
 
 /** Strict official-boundary binding; synthetic construction primitives cannot satisfy this. */
 internal fun monsterTronSealedInputErrors(input: MonsterTronOfficialExecutionInput): List<String> = buildList {
-    if (input.archiveSha256 != PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256) add("archive mismatch")
+    if (input.archiveSha256 != PEST_MONSTER_TRON_R1_ARCHIVE_SHA256) add("archive mismatch")
     if (input.vectorIdentity != MonsterTronSmokeVectorIdentity(
-        PEST_MONSTER_TRON_FROZEN_SMOKE_SOURCE, PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256,
-        PEST_MONSTER_TRON_FROZEN_SMOKE_ASSIGNMENTS_SHA256, PEST_MONSTER_TRON_FROZEN_SMOKE_MANIFEST_SHA256,
+        PEST_MONSTER_TRON_R1_FREEZE_COMMIT, PEST_MONSTER_TRON_R1_VECTOR_SHA256,
+        PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256, PEST_MONSTER_TRON_R1_FREEZE_MANIFEST_SHA256,
     )) add("freeze identity mismatch")
     if (input.seeds != input.assignments.map { it.seed }) add("assignment membership mismatch")
     if (input.assignments.map { it.gameNumber } != listOf(1, 2, 3, 4)) add("assignment sequence mismatch")
     if (monsterTronDigest(input.seeds.joinToString("\n", postfix = "\n").toByteArray(Charsets.UTF_8)) !=
-        PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256) add("actual vector digest mismatch")
+        PEST_MONSTER_TRON_R1_VECTOR_SHA256) add("actual vector digest mismatch")
     input.assignments.zip(PestControlTierOneMonsterTronSmokeHarness.cellTemplate()).forEach { (row, cell) ->
         if (row.gameNumber != cell.gameNumber || row.pestSeat != cell.pestSeat || row.startingDeck != cell.startingDeck ||
             row.monsterTronSeat == row.pestSeat || row.seedHex != monsterTronSeedHex(row.seed)) add("cell mismatch")
@@ -267,14 +267,14 @@ internal fun monsterTronSealedInputErrors(input: MonsterTronOfficialExecutionInp
 
 internal fun monsterTronClaimReceiptErrors(receipt: JsonObject, source: String, runId: String, workflowSha: String): List<String> = buildList {
     val expected = mapOf(
-        "schema" to "pest-monster-tron-exclusive-claim-receipt-v1", "block_id" to PEST_MONSTER_TRON_SMOKE_BLOCK_ID,
+        "schema" to "pest-monster-tron-exclusive-claim-receipt-v1", "block_id" to PEST_MONSTER_TRON_R1_BLOCK_ID,
         "claim_ref" to MONSTER_TRON_CLAIM_REF, "execution_source_sha" to source,
         "engine_baseline_sha" to MONSTER_TRON_ENGINE_BASELINE, "workflow_source_sha" to workflowSha,
         "workflow_run_id" to runId, "workflow_run_attempt" to "1", "reserved_games" to "4",
-        "vector_sha256" to PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256,
-        "archive_sha256" to PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256,
-        "assignments_sha256" to PEST_MONSTER_TRON_FROZEN_SMOKE_ASSIGNMENTS_SHA256,
-        "freeze_source_sha" to PEST_MONSTER_TRON_FROZEN_SMOKE_SOURCE,
+        "vector_sha256" to PEST_MONSTER_TRON_R1_VECTOR_SHA256,
+        "archive_sha256" to PEST_MONSTER_TRON_R1_ARCHIVE_SHA256,
+        "assignments_sha256" to PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256,
+        "freeze_source_sha" to PEST_MONSTER_TRON_R1_FREEZE_COMMIT,
         "claim_confirmed" to "true", "execution_allowed" to "false",
     )
     expected.forEach { (key, value) -> if ((receipt[key] as? JsonPrimitive)?.content != value) add("claim $key mismatch") }
@@ -408,7 +408,7 @@ internal fun recordMonsterTronBoundaryEntryFailure(outputRoot: Path, source: Str
     require(Files.isDirectory(outputRoot)) { "entry failure requires the existing artifact directory" }
     durableMonsterTronWrite(outputRoot.resolve("boundary-entry-error.json"), jsonBytes(buildJsonObject {
         put("schema", "pest-monster-tron-boundary-entry-failure-v1")
-        put("block_id", PEST_MONSTER_TRON_SMOKE_BLOCK_ID)
+        put("block_id", PEST_MONSTER_TRON_R1_BLOCK_ID)
         put("execution_source_sha", source?.takeIf { it.matches(Regex("[0-9a-f]{40}")) }?.let(::JsonPrimitive) ?: JsonNull)
         put("phase", "SEALED_INPUT_VALIDATION")
         put("failure_type", failure.javaClass.name)
