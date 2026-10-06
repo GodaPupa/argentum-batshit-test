@@ -153,7 +153,7 @@
     "repository_runner_surface_guard_required": true
   },
   "protected_implementation_blobs": {
-    "scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py": "94985653c6a1a5ca2b60d011ea917c2eeda42b67",
+    "scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py": "022f5a68723839b4c05f386ea60289cd580fa546",
     ".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml": "f2e9b5fd0bac4580ca386b310ec6c83efd1f5964"
   },
   "official_counters": {
@@ -197,6 +197,15 @@
       "receipt_comment": 6008608271,
       "sha256": "5b382918fc83b51027b4eb180d642afdcfdde5e4029ef536032e2a17c30f0251",
       "canonicalization": "UTF8_LF_EXACTLY_ONE_TERMINAL_LF"
+    },
+    "contract_hardening_syntax_repair": {
+      "predecessor_commit": "5e81fccd77173468bd440f47ab943613284cc137",
+      "failed_runs": [
+        37408095937,
+        37408099198
+      ],
+      "classification": "VALIDATION_SOURCE_SERIALIZATION_DEFECT__LITERAL_BACKSLASH_N_IN_FUNCTION_SIGNATURE__FAILED_AT_AST_PARSE__NO_ARTIFACT_OR_AUTHORITY_PATH_REACHED",
+      "repair": "REPLACE_LITERAL_BACKSLASH_N_TOKENS_IN_FUNCTION_SIGNATURE_WITH_ACTUAL_LF_ONLY"
     }
   },
   "validation_entropy_contract": {

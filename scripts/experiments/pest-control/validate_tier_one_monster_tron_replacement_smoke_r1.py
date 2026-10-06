@@ -700,7 +700,12 @@ def build_fixture_bundle(
     }
 
 
-def run_adversarial_checks(\n    excluded: set[int],\n    exclusion_audit: dict[str, object],\n    output_root: Path,\n    contract: dict[str, object],\n) -> dict[str, object]:
+def run_adversarial_checks(
+    excluded: set[int],
+    exclusion_audit: dict[str, object],
+    output_root: Path,
+    contract: dict[str, object],
+) -> dict[str, object]:
     valid = fixture_members()
     if member_errors(valid, excluded):
         raise ValueError("fixed fixture failed baseline validation")
