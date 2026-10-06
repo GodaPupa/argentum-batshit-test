@@ -34,6 +34,8 @@ C2_SOURCE_GATE_COMMIT = "d2d249c96e9a3917666efbbb5b35bc37a53a46ec"
 C2_SOURCE_GATE_AUTHORITY = "SOURCE_GATE_CANDIDATE_ONLY__NO_GAMEPLAY_AUTHORITY"
 R1_REVIEW_REQUEST_COMMENT = 6005652423
 R1_ACCEPTANCE_COMMENT = 6007834588
+R1_CANONICAL_RECEIPT_COMMENT = 6008608271
+R1_CANONICAL_REVIEW_SHA256 = "5b382918fc83b51027b4eb180d642afdcfdde5e4029ef536032e2a17c30f0251"
 PROPOSAL_BLOB = "f319d6d9e84608f5c251ce805cb669a7799b6c6b"
 STOPPING_RULE_BLOB = "6c737d8bb7af58cccc7cafbb60a6abe9876695ae"
 FAILURE_AUDIT_MD_BLOB = "e249682d8c052ff96c9e4c8a68c0785a4f0e97f2"
@@ -278,6 +280,9 @@ def seedfree_contract_errors(manifest: dict[str, object]) -> list[str]:
     expect("r1 review request", review.get("request_comment"), R1_REVIEW_REQUEST_COMMENT)
     expect("r1 acceptance", review.get("acceptance_comment"), R1_ACCEPTANCE_COMMENT)
     expect("r1 disposition", review.get("disposition"), "ACCEPTED")
+    expect("r1 canonical receipt", review.get("canonical_receipt_comment"), R1_CANONICAL_RECEIPT_COMMENT)
+    expect("r1 canonical review sha256", review.get("canonical_review_sha256"), R1_CANONICAL_REVIEW_SHA256)
+    expect("r1 canonicalization", review.get("canonicalization"), "UTF8_LF_EXACTLY_ONE_TERMINAL_LF")
     expect(
         "r1 accepted scope",
         review.get("accepted_scope"),
