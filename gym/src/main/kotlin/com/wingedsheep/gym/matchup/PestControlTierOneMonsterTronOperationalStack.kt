@@ -95,18 +95,18 @@ data class MonsterTronFrozenArtifactInspection(
 }
 
 internal fun monsterTronFrozenMemberPins(): Map<String, String> = linkedMapOf(
-    "ordered-seeds.txt" to PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256,
-    "assignments.csv" to PEST_MONSTER_TRON_FROZEN_SMOKE_ASSIGNMENTS_SHA256,
-    "freeze-manifest.json" to PEST_MONSTER_TRON_FROZEN_SMOKE_MANIFEST_SHA256,
-    "quarantined-vector.json" to PEST_MONSTER_TRON_FROZEN_SMOKE_QUARANTINE_SHA256,
-    "artifacts.sha256" to PEST_MONSTER_TRON_FROZEN_SMOKE_CHECKSUMS_SHA256,
+    "ordered-seeds.txt" to PEST_MONSTER_TRON_R1_VECTOR_SHA256,
+    "assignments.csv" to PEST_MONSTER_TRON_R1_INPUT_ASSIGNMENTS_SHA256,
+    "freeze-manifest.json" to PEST_MONSTER_TRON_R1_FREEZE_MANIFEST_SHA256,
+    "quarantined-vector.json" to PEST_MONSTER_TRON_R1_QUARANTINE_SHA256,
+    "artifacts.sha256" to PEST_MONSTER_TRON_R1_INPUT_CHECKSUMS_SHA256,
 )
 
 object PestControlTierOneMonsterTronFrozenArtifactVerifier {
     fun inspect(archive: ByteArray): MonsterTronFrozenArtifactInspection =
         inspectMonsterTronPinnedArchive(
             archive = archive,
-            expectedArchiveSha256 = PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256,
+            expectedArchiveSha256 = PEST_MONSTER_TRON_R1_ARCHIVE_SHA256,
             expectedMembers = monsterTronFrozenMemberPins(),
         )
 }
@@ -248,7 +248,7 @@ internal fun decodeMonsterTronAssignmentText(
         }
         val expected = listOf(
             PEST_MONSTER_TRON_PREBOARD_PROTOCOL_ID,
-            PEST_MONSTER_TRON_SMOKE_BLOCK_ID,
+            PEST_MONSTER_TRON_R1_BLOCK_ID,
             (index + 1).toString(),
             seeds[index].toString(),
             monsterTronSeedHex(seeds[index]),
@@ -299,7 +299,7 @@ object PestControlTierOneMonsterTronGameAdapter {
 
         return MonsterTronSmokeProvenance(
             protocolId = PEST_MONSTER_TRON_PREBOARD_PROTOCOL_ID,
-            blockId = PEST_MONSTER_TRON_SMOKE_BLOCK_ID,
+            blockId = PEST_MONSTER_TRON_R1_BLOCK_ID,
             sourceCommit = sourceCommit,
             freezeCommit = vectorIdentity.freezeCommit,
             orderedVectorSha256 = vectorIdentity.orderedVectorSha256,
@@ -357,7 +357,7 @@ object PestControlTierOneMonsterTronOfficialExecutionInputLoader {
         require(inspection.verified) {
             "frozen artifact verification failed: ${inspection.errors.joinToString()}"
         }
-        require(inspection.archiveSha256 == PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256)
+        require(inspection.archiveSha256 == PEST_MONSTER_TRON_R1_ARCHIVE_SHA256)
 
         val assignments = PestControlTierOneMonsterTronAssignmentDecoder.decode(snapshot)
         require(assignments.size == PEST_MONSTER_TRON_SMOKE_GAMES)
@@ -367,14 +367,14 @@ object PestControlTierOneMonsterTronOfficialExecutionInputLoader {
         require(
             monsterTronDigest(
                 seeds.joinToString("\n", postfix = "\n").toByteArray(Charsets.UTF_8)
-            ) == PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256
+            ) == PEST_MONSTER_TRON_R1_VECTOR_SHA256
         )
 
         val identity = MonsterTronSmokeVectorIdentity(
-            freezeCommit = PEST_MONSTER_TRON_FROZEN_SMOKE_SOURCE,
-            orderedVectorSha256 = PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256,
-            assignmentCsvSha256 = PEST_MONSTER_TRON_FROZEN_SMOKE_ASSIGNMENTS_SHA256,
-            freezeManifestSha256 = PEST_MONSTER_TRON_FROZEN_SMOKE_MANIFEST_SHA256,
+            freezeCommit = PEST_MONSTER_TRON_R1_FREEZE_COMMIT,
+            orderedVectorSha256 = PEST_MONSTER_TRON_R1_VECTOR_SHA256,
+            assignmentCsvSha256 = PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256,
+            freezeManifestSha256 = PEST_MONSTER_TRON_R1_FREEZE_MANIFEST_SHA256,
         )
 
         assignments.zip(PestControlTierOneMonsterTronSmokeHarness.cellTemplate())
@@ -412,9 +412,9 @@ object PestControlTierOneMonsterTronAuthorizedInitializer {
             "Monster Tron execution authorization is not green"
         }
         require(durableAttemptRecorded) { "durable attempt marker is required before initialization" }
-        require(vectorIdentity.orderedVectorSha256 == PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256)
-        require(vectorIdentity.assignmentCsvSha256 == PEST_MONSTER_TRON_FROZEN_SMOKE_ASSIGNMENTS_SHA256)
-        require(vectorIdentity.freezeManifestSha256 == PEST_MONSTER_TRON_FROZEN_SMOKE_MANIFEST_SHA256)
+        require(vectorIdentity.orderedVectorSha256 == PEST_MONSTER_TRON_R1_VECTOR_SHA256)
+        require(vectorIdentity.assignmentCsvSha256 == PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256)
+        require(vectorIdentity.freezeManifestSha256 == PEST_MONSTER_TRON_R1_FREEZE_MANIFEST_SHA256)
         require(executionCommit.isMonsterTronLowerHex(40) && executionCommit != "0".repeat(40))
 
         val readinessErrors = PestControlTierOneMonsterTronReadiness.validationErrors(
@@ -598,7 +598,7 @@ internal class MonsterTronDurableAttempts private constructor(
 
             val parent = evidenceRoot.toRealPath()
             require(Files.isDirectory(parent))
-            val directory = parent.resolve(PEST_MONSTER_TRON_SMOKE_BLOCK_ID)
+            val directory = parent.resolve(PEST_MONSTER_TRON_R1_BLOCK_ID)
             Files.createDirectory(directory)
             forceMonsterTronDirectory(parent)
             val vectorHash = monsterTronDigest(
@@ -609,7 +609,7 @@ internal class MonsterTronDurableAttempts private constructor(
                 directory.resolve("claim.txt"),
                 (
                     "schema=monster-tron-durable-attempts-v1\n" +
-                        "blockId=$PEST_MONSTER_TRON_SMOKE_BLOCK_ID\n" +
+                        "blockId=$PEST_MONSTER_TRON_R1_BLOCK_ID\n" +
                         "executionSourceCommit=$executionSourceCommit\n" +
                         "qualifiedRunner=$PEST_V2_QUALIFIED_RUNNER\n" +
                         "orderedVectorSha256=$vectorHash\n" +
@@ -694,9 +694,9 @@ class PestControlTierOneMonsterTronAuthorizedExecutionCoordinator(
         require(assignments.map { it.gameNumber } == (1..PEST_MONSTER_TRON_SMOKE_GAMES).toList())
         require(assignments.map { it.seed }.distinct().size == PEST_MONSTER_TRON_SMOKE_GAMES)
         require(assignments.none { it.seed == 0L })
-        require(vectorIdentity.orderedVectorSha256 == PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256)
-        require(vectorIdentity.assignmentCsvSha256 == PEST_MONSTER_TRON_FROZEN_SMOKE_ASSIGNMENTS_SHA256)
-        require(vectorIdentity.freezeManifestSha256 == PEST_MONSTER_TRON_FROZEN_SMOKE_MANIFEST_SHA256)
+        require(vectorIdentity.orderedVectorSha256 == PEST_MONSTER_TRON_R1_VECTOR_SHA256)
+        require(vectorIdentity.assignmentCsvSha256 == PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256)
+        require(vectorIdentity.freezeManifestSha256 == PEST_MONSTER_TRON_R1_FREEZE_MANIFEST_SHA256)
         assignments.zip(PestControlTierOneMonsterTronSmokeHarness.cellTemplate()).forEach {
                 (assignment, cell) ->
             require(assignment.gameNumber == cell.gameNumber)
