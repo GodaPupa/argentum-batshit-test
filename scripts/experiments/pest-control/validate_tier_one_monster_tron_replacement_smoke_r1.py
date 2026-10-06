@@ -304,18 +304,73 @@ def csv_bytes(rows: list[dict[str, object]]) -> bytes:
     return output.getvalue().encode()
 
 
+def quarantine_candidate_members(
+    output: Path,
+    members: list[int],
+    fixture_label: str,
+) -> tuple[bytes, str]:
+    if output.exists() and any(output.iterdir()):
+        raise ValueError("candidate output directory must be absent or empty; no-clobber/no-reroll")
+    output.mkdir(parents=True, exist_ok=True)
+    vector = ("\\n".join(str(member) for member in members) + "\\n").encode()
+    record = {
+        "schema": "pest-monster-tron-replacement-smoke-r1-seedfree-quarantine-v1",
+        "authority": "NONEXPERIMENTAL_VALIDATION_ONLY__NO_PRODUCTION_ENTROPY__NO_GAMEPLAY",
+        "block_id": R1_BLOCK,
+        "fixture_label": fixture_label,
+        "candidate_member_count": len(members),
+        "candidate_members_decimal": members,
+        "candidate_members_hex": [member_hex(member) for member in members],
+        "candidate_vector_sha256": sha256(vector),
+        "status": "NONEXPERIMENTAL_FIXTURE_QUARANTINED_BEFORE_VALIDATION",
+        "production_entropy_requested": False,
+        "can_supply_official_result": False,
+        "reroll_or_replacement_permitted": False,
+    }
+    data = canonical_json(record)
+    write_new_fsynced(output / "quarantined-vector.json", data)
+    return vector, sha256(data)
+
+
+def quarantine_and_validate_members(
+    output: Path,
+    members: list[int],
+    excluded: set[int],
+    fixture_label: str,
+) -> tuple[bytes, str]:
+    vector, quarantine_sha256 = quarantine_candidate_members(output, members, fixture_label)
+    errors = member_errors(members, excluded)
+    if errors:
+        write_new_fsynced(
+            output / "invalid-retired.json",
+            canonical_json({
+                "schema": "pest-monster-tron-replacement-smoke-r1-seedfree-invalid-v1",
+                "block_id": R1_BLOCK,
+                "fixture_label": fixture_label,
+                "errors": errors,
+                "candidate_members_decimal": members,
+                "candidate_vector_sha256": sha256(vector),
+                "quarantine_sha256": quarantine_sha256,
+                "disposition": "INVALID_FIXTURE_RETAINED_NO_REROLL",
+                "production_entropy_requested": False,
+                "can_supply_official_result": False,
+                "reroll_or_replacement_permitted": False,
+            }),
+        )
+        raise ValueError(f"quarantined fixture is invalid: {errors}")
+    return vector, quarantine_sha256
+
+
 def build_fixture_bundle(
     output: Path,
     excluded: set[int],
     exclusion_audit: dict[str, object],
     live_claim_audit: dict[str, object],
 ) -> dict[str, object]:
-    if output.exists() and any(output.iterdir()):
-        raise ValueError("output directory must be absent or empty")
     members = fixture_members()
-    errors = member_errors(members, excluded)
-    if errors:
-        raise ValueError(f"fixed fixture is invalid: {errors}")
+    vector, quarantine_sha256 = quarantine_and_validate_members(
+        output, members, excluded, "fixed-valid-r1-four-cell-fixture"
+    )
 
     rows: list[dict[str, object]] = []
     for game, (member, cell) in enumerate(zip(members, CELLS, strict=True), 1):
@@ -336,7 +391,6 @@ def build_fixture_bundle(
             "monster_tron_pilot": MONSTER_PILOT,
         })
 
-    vector = ("\n".join(str(member) for member in members) + "\n").encode()
     assignments = csv_bytes(rows)
     manifest = {
         "schema": "pest-monster-tron-replacement-smoke-r1-seedfree-fixture-v1",
@@ -370,6 +424,14 @@ def build_fixture_bundle(
             "members_decimal": members,
             "members_hex": [member_hex(member) for member in members],
             "can_supply_official_result": False,
+        },
+        "durable_quarantine": {
+            "quarantined_before_validation": True,
+            "quarantine_file": "quarantined-vector.json",
+            "quarantine_sha256": quarantine_sha256,
+            "create_only": True,
+            "fsynced": True,
+            "reroll_or_replacement_permitted": False,
         },
         "collision_audit": {
             "minimum_excluded_identity_count": len(excluded),
@@ -417,9 +479,10 @@ def build_fixture_bundle(
     for name, data in artifacts.items():
         write_new_fsynced(output / name, data)
     checksums = {name: sha256(data) for name, data in artifacts.items()}
+    checksums["quarantined-vector.json"] = sha256((output / "quarantined-vector.json").read_bytes())
     write_new_fsynced(
         output / "artifacts.sha256",
-        ("\n".join(f"{digest}  {name}" for name, digest in sorted(checksums.items())) + "\n").encode(),
+        ("\\n".join(f"{digest}  {name}" for name, digest in sorted(checksums.items())) + "\\n").encode(),
     )
     return {
         "status": "SEED_FREE_R1_FIXTURE_VALIDATED",
@@ -428,15 +491,22 @@ def build_fixture_bundle(
         "fixture_vector_sha256": sha256(vector),
         "fixture_assignments_sha256": sha256(assignments),
         "fixture_manifest_sha256": checksums["fixture-manifest.json"],
+        "quarantine_sha256": quarantine_sha256,
+        "quarantined_before_validation": True,
+        "no_reroll_no_clobber": True,
         "production_entropy_requested": False,
         "official_counters": manifest["official_counters"],
     }
 
 
-def run_adversarial_checks(excluded: set[int]) -> dict[str, object]:
+def run_adversarial_checks(excluded: set[int], output_root: Path) -> dict[str, object]:
     valid = fixture_members()
     if member_errors(valid, excluded):
         raise ValueError("fixed fixture failed baseline validation")
+    if output_root.exists() and any(output_root.iterdir()):
+        raise ValueError("adversarial output directory must be absent or empty")
+    output_root.mkdir(parents=True, exist_ok=True)
+
     retired = min(excluded)
     cases = {
         "zero": [0, valid[1], valid[2], valid[3]],
@@ -444,15 +514,52 @@ def run_adversarial_checks(excluded: set[int]) -> dict[str, object]:
         "retired_overlap": [retired, valid[1], valid[2], valid[3]],
         "short": valid[:3],
     }
-    observed: dict[str, list[str]] = {}
+    observed: dict[str, object] = {}
     for label, members in cases.items():
-        errors = member_errors(members, excluded)
-        if not errors:
+        case_dir = output_root / label
+        try:
+            quarantine_and_validate_members(case_dir, members, excluded, f"adversarial-{label}")
+        except ValueError as failure:
+            errors = member_errors(members, excluded)
+            if not errors:
+                raise AssertionError(f"adversarial case {label} failed without a validation error") from failure
+        else:
             raise AssertionError(f"adversarial case {label} was not rejected")
-        observed[label] = errors
+
+        quarantine_path = case_dir / "quarantined-vector.json"
+        invalid_path = case_dir / "invalid-retired.json"
+        if not quarantine_path.is_file() or not invalid_path.is_file():
+            raise AssertionError(f"adversarial case {label} did not preserve quarantine and invalid receipt")
+        if (case_dir / "fixture-assignments.csv").exists() or (case_dir / "fixture-manifest.json").exists():
+            raise AssertionError(f"adversarial case {label} produced accepted fixture artifacts")
+        quarantine_before = quarantine_path.read_bytes()
+        invalid = json.loads(invalid_path.read_bytes())
+        if invalid.get("errors") != errors or invalid.get("disposition") != "INVALID_FIXTURE_RETAINED_NO_REROLL":
+            raise AssertionError(f"adversarial case {label} invalid receipt mismatch")
+
+        try:
+            quarantine_and_validate_members(case_dir, valid, excluded, f"forbidden-reroll-{label}")
+        except ValueError:
+            pass
+        else:
+            raise AssertionError(f"adversarial case {label} allowed a second attempt")
+        if quarantine_path.read_bytes() != quarantine_before:
+            raise AssertionError(f"adversarial case {label} clobbered its original quarantine")
+
+        observed[label] = {
+            "errors": errors,
+            "quarantine_retained": True,
+            "invalid_receipt_retained": True,
+            "second_attempt_refused": True,
+            "quarantine_unchanged_after_second_attempt": True,
+        }
+
     return {
         "status": "PASS",
         "cases": observed,
+        "durable_quarantine_before_validation": True,
+        "invalid_candidates_retained": True,
+        "no_clobber_no_reroll": True,
         "production_entropy_requested": False,
         "gameplay_reachable": False,
     }
@@ -495,6 +602,7 @@ def main() -> None:
     parser.add_argument("--original-monster-dir", type=Path, required=True)
     parser.add_argument("--live-refs-json", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path)
+    parser.add_argument("--adversarial-output-dir", type=Path)
     args = parser.parse_args()
 
     root = Path(__file__).resolve().parents[3]
@@ -520,7 +628,9 @@ def main() -> None:
             "live_claim_audit": live_claim_audit,
         }
     elif args.adversarial_self_test:
-        result = run_adversarial_checks(excluded)
+        if args.adversarial_output_dir is None:
+            parser.error("--adversarial-output-dir is required with --adversarial-self-test")
+        result = run_adversarial_checks(excluded, args.adversarial_output_dir)
     else:
         if args.output_dir is None:
             parser.error("--output-dir is required with --validate-fixture")

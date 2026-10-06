@@ -93,6 +93,8 @@ jobs:
           assert not (roots & forbidden_imports),sorted(roots & forbidden_imports)
           forbidden_tokens=["GameInitializer","stepExactlyOne(","ProductionDriver","pest-monster-tron-one-shot-claim.py"]
           assert not any(token in text for token in forbidden_tokens),[t for t in forbidden_tokens if t in text]
+          for required in ["quarantined-vector.json","INVALID_FIXTURE_RETAINED_NO_REROLL","os.O_EXCL"]:
+              assert required in text,required
           wf=Path(".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml").read_text()
           forbidden_workflow_tokens=["workflow_"+"dispatch","--"+"generate","os."+"urandom"]
           assert not any(token in wf for token in forbidden_workflow_tokens),[token for token in forbidden_workflow_tokens if token in wf]
@@ -172,9 +174,30 @@ jobs:
             --prior-terror-replication-dir "$OUT/terror-replication" \
             --original-monster-dir "$OUT/original-monster" \
             --live-refs-json "$OUT/live-official-attempt-refs.json" \
+            --adversarial-output-dir "$OUT/adversarial-cases" \
             | tee "$OUT/adversarial.json"
           grep -Fq '"status": "PASS"' "$OUT/adversarial.json"
           grep -Fq '"production_entropy_requested": false' "$OUT/adversarial.json"
+          grep -Fq '"durable_quarantine_before_validation": true' "$OUT/adversarial.json"
+          grep -Fq '"no_clobber_no_reroll": true' "$OUT/adversarial.json"
+          python3 - <<'PY' | tee "$OUT/adversarial-artifact-audit.json"
+          import json
+          from pathlib import Path
+          root=Path("/tmp/pest-monster-tron-r1-seedfree/adversarial-cases")
+          expected={"zero","duplicate","retired_overlap","short"}
+          assert {p.name for p in root.iterdir() if p.is_dir()}==expected
+          for label in expected:
+              case=root/label
+              q=json.loads((case/"quarantined-vector.json").read_text())
+              bad=json.loads((case/"invalid-retired.json").read_text())
+              assert q["status"]=="NONEXPERIMENTAL_FIXTURE_QUARANTINED_BEFORE_VALIDATION"
+              assert q["reroll_or_replacement_permitted"] is False
+              assert bad["disposition"]=="INVALID_FIXTURE_RETAINED_NO_REROLL"
+              assert bad["reroll_or_replacement_permitted"] is False
+              assert not (case/"fixture-assignments.csv").exists()
+              assert not (case/"fixture-manifest.json").exists()
+          print(json.dumps({"status":"PASS","cases":sorted(expected),"durable_quarantine":True,"no_clobber_no_reroll":True},sort_keys=True))
+          PY
 
       - name: Validate fixed nonexperimental four-cell R1 fixture
         shell: bash
@@ -206,6 +229,13 @@ jobs:
           assert m["gameplay_authorized"] is False
           assert m["outcome_exposure_authorized"] is False
           assert m["automatic_second_replacement_authorized"] is False
+          assert m["durable_quarantine"]["quarantined_before_validation"] is True
+          assert m["durable_quarantine"]["create_only"] is True
+          assert m["durable_quarantine"]["fsynced"] is True
+          assert m["durable_quarantine"]["reroll_or_replacement_permitted"] is False
+          q=(root/"quarantined-vector.json").read_bytes()
+          import hashlib
+          assert hashlib.sha256(q).hexdigest()==m["durable_quarantine"]["quarantine_sha256"]
           assert m["official_counters"]=={"new_seeds":0,"new_claims":0,"new_games":0,"new_outcomes":0}
           rows=list(csv.DictReader((root/"fixture-assignments.csv").open()))
           assert [(r["pest_seat"],r["monster_tron_seat"],r["starting_deck"],r["pest_play_draw"]) for r in rows]==[

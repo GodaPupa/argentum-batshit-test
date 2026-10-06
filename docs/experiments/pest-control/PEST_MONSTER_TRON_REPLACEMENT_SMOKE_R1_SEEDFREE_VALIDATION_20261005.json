@@ -126,11 +126,15 @@
     "game_initializations_permitted": 0,
     "actions_permitted": 0,
     "outcomes_permitted": 0,
-    "automatic_second_replacement": false
+    "automatic_second_replacement": false,
+    "durable_quarantine_before_validation_required": true,
+    "invalid_candidate_retention_required": true,
+    "no_clobber_no_reroll_required": true,
+    "quarantine_create_only_fsync_required": true
   },
   "protected_implementation_blobs": {
-    "scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py": "a9d2ef1692d5beabb731ff57697d3daf66710af4",
-    ".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml": "af4d04fecd3bd7f94eb2c889e38981ef18b2eabf"
+    "scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py": "8cf984b4da8dca66b5d285b30314723336d086bd",
+    ".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml": "38b8713cc7bdc095350ec9ba3a179582005c5800"
   },
   "official_counters": {
     "new_seeds": 0,
@@ -142,6 +146,11 @@
   "recovery_history": {
     "predecessor_commit": "f2bb5600f75ff2336642a9b4978cae68fc422241",
     "classification": "VALIDATION_SOURCE_GUARD_SELF_MATCH__NO_ENTROPY_NO_CLAIM_NO_GAMEPLAY",
-    "repair": "WORKFLOW_GUARD_LITERAL_SPLIT_ONLY__VALIDATOR_AND_PROTOCOL_SEMANTICS_UNCHANGED"
+    "repair": "WORKFLOW_GUARD_LITERAL_SPLIT_ONLY__VALIDATOR_AND_PROTOCOL_SEMANTICS_UNCHANGED",
+    "scope_gap_repair": {
+      "predecessor_commit": "ccca7735977ec386315b00a91f6caec07c2cc9be",
+      "classification": "VALIDATION_COVERAGE_GAP__DURABLE_QUARANTINE_NO_REROLL_NOT_YET_DEMONSTRATED__NO_ENTROPY_NO_CLAIM_NO_GAMEPLAY",
+      "repair": "ADD_CREATE_ONLY_FSYNCED_PREVALIDATION_QUARANTINE__INVALID_RETENTION__SECOND_ATTEMPT_REFUSAL_FIXTURES"
+    }
   }
 }
