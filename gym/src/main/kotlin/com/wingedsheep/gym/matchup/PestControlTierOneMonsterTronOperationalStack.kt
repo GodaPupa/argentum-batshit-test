@@ -99,7 +99,7 @@ internal fun monsterTronFrozenMemberPins(): Map<String, String> = linkedMapOf(
     "assignments.csv" to PEST_MONSTER_TRON_R1_INPUT_ASSIGNMENTS_SHA256,
     "freeze-manifest.json" to PEST_MONSTER_TRON_R1_FREEZE_MANIFEST_SHA256,
     "quarantined-vector.json" to PEST_MONSTER_TRON_R1_QUARANTINE_SHA256,
-    "artifacts.sha256" to PEST_MONSTER_TRON_R1_CHECKSUMS_SHA256,
+    "artifacts.sha256" to PEST_MONSTER_TRON_R1_INPUT_CHECKSUMS_SHA256,
 )
 
 object PestControlTierOneMonsterTronFrozenArtifactVerifier {
