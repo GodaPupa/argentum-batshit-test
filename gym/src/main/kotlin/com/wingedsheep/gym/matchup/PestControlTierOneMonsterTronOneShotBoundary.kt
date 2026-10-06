@@ -13,10 +13,10 @@ import java.time.LocalDate
 import java.time.ZoneOffset
 import java.util.concurrent.atomic.AtomicBoolean
 
-internal const val MONSTER_TRON_ENGINE_BASELINE = "a224ef0008a2b85e2c2c106df9959678782e765d"
+internal const val MONSTER_TRON_ENGINE_BASELINE = "433df3310efe31c49f27034b50e6d8d7e60561f7"
 internal const val MONSTER_TRON_RULES_SHA256 = "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca"
-internal const val MONSTER_TRON_OFFICIAL_WORKFLOW = ".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml"
-internal const val MONSTER_TRON_CLAIM_REF = "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1"
+internal const val MONSTER_TRON_OFFICIAL_WORKFLOW = ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml"
+internal const val MONSTER_TRON_CLAIM_REF = PEST_MONSTER_TRON_R1_FUTURE_CLAIM_REF
 
 /**
  * The sole official wrapper takes no seed, assignment, vector identity, or Boolean durability proof
@@ -115,7 +115,7 @@ internal object PestControlTierOneMonsterTronOneShotBoundary {
         // Read-only API authentication of canonical ref, commit, tree, blob and exact payload.
         // A locally invented receipt cannot authorize initialization.
         commands.required("AUTHENTICATE_DURABLE_CLAIM", listOf(
-            "python3", "scripts/pest-monster-tron-one-shot-claim.py",
+            "python3", "scripts/pest-monster-tron-r1-one-shot-claim.py",
             "--verify-receipt", receiptPath.toString(), "--source-sha", source,
             "--run-id", env("GITHUB_RUN_ID"), "--run-attempt", "1",
         ))
