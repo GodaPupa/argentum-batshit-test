@@ -1,0 +1,74 @@
+{
+  "schema": "pest-monster-tron-r1-execution-source-rebind-v3-v1",
+  "authority": "EXACT_R1_EXECUTION_SOURCE_IDENTITY_REBIND_CONSTRUCTION_AND_QUALIFICATION_ONLY__NO_A2__NO_CLAIM__NO_GAMEPLAY",
+  "status": "CANDIDATE_PENDING_QUALIFICATION",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "branch": "pest/monster-tron-r1-execution-source-rebind-v3-20261006",
+  "accepted_c2": {
+    "commit": "38e834c1275a861e87487195842fb4d98e373ee7",
+    "tree": "72f5369af53ecb5430548ce43288f5453fcd2d9c",
+    "identifier": "421a75c0aad541d9604840b1757c790c7f313155a215e55bdc156858514e2659",
+    "qualification_run": 37419249525,
+    "disposition": "ACCEPTED_FOR_EXACT_VECTOR_SPECIFIC_EXECUTION_C2_ONLY"
+  },
+  "construction_authority": {
+    "v8_commit": "782b98b8616adbd314c4992dee4a3dbef9adff91",
+    "v8_tree": "944e48c9439cb42bbfa44d4e72c8b16ada2a2660",
+    "receipt_comment": 6020536273,
+    "canonical_review_sha256": "9d105e5c2b69772dc7f3fda01a02865e8b0bac12514c5afc826b9decb850ef10",
+    "disposition": "ACCEPTED_FOR_EXACT_R1_EXECUTION_SOURCE_IDENTITY_REBIND_CONSTRUCTION_ONLY__NO_A2__NO_CLAIM__NO_GAMEPLAY"
+  },
+  "r1": {
+    "block_id": "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_REPLACEMENT_SMOKE_4_R1",
+    "freeze_commit": "41716f6918ec559ee60b14815b5b0f23d3aaf38a",
+    "freeze_tree": "eddfe0f11b132349876470943e9ae57ebe0487e1",
+    "raw_sha256": "0804de7809cc8eaad0f92adb3f26cbb0d564aa92011a39143859aefd30c67a31",
+    "ordered_vector_sha256": "8cdba4018aac3f423d92981581b628a8647e15be1f916a32c81ca1aef6ccff89",
+    "assignments_sha256": "edd4d831ed0e9cd319ce908e71cca117203a1f5970e00441f3c9310f10e412c7",
+    "members": [
+      "8509670981736218459",
+      "-8564666863904712979",
+      "-8259800499619080267",
+      "3489680325849498530"
+    ],
+    "future_claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-replacement-smoke-r1",
+    "historical_claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+    "historical_claim_commit": "1c2e253ad7f5a7652304f7c9aaafc30e547a481e"
+  },
+  "preserved": {
+    "accepted_c2_smoke_harness_blob": "305097a2f3e78de60345af4e33a32ef39a8099f5"
+  },
+  "expected_delta_paths": [
+    ".github/workflows/pest-monster-tron-r1-execution-source-rebind-v3-qualify-20261006.yml",
+    "docs/experiments/pest-control/PEST_MONSTER_TRON_R1_EXECUTION_SOURCE_REBIND_V3_20261006.json",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOneShotBoundary.kt",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronR1ExecutionIdentity.kt",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronR1InputLoader.kt",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronR1RebindTest.kt",
+    "scripts/experiments/pest-control/build_pest_monster_tron_r1_input.py",
+    "scripts/experiments/pest-control/verify_pest_monster_tron_r1_execution_source_rebind_v3.py",
+    "scripts/pest-monster-tron-r1-one-shot-claim.py",
+    "tools/tests/test_pest_monster_tron_r1_one_shot_claim.py"
+  ],
+  "qualification": {
+    "jobs": [
+      "structural",
+      "claim_helper",
+      "loader_and_rebind"
+    ],
+    "broad_c2_reexecution_required": false,
+    "official_workflow_created_by_this_gate": false,
+    "claim_creation_permitted": false,
+    "a2_activation_permitted": false,
+    "runner_enablement_permitted": false,
+    "gameplay_permitted": false
+  },
+  "counters": {
+    "frozen_seeds": 4,
+    "claims": 0,
+    "games": 0,
+    "actions": 0,
+    "outcomes": 0
+  }
+}
