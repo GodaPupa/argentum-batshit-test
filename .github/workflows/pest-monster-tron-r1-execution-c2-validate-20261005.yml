@@ -1,0 +1,208 @@
+name: Pest Monster Tron R1 vector-specific execution C2 qualification
+
+on:
+  push:
+    branches: ["pest/monster-tron-r1-execution-c2-20261005"]
+    paths:
+      - ".github/workflows/pest-monster-tron-r1-execution-c2-validate-20261005.yml"
+      - "docs/experiments/pest-control/PEST_MONSTER_TRON_R1_EXECUTION_C2_20261005.json"
+      - "scripts/experiments/pest-control/verify_pest_monster_tron_r1_execution_c2.py"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pest-monster-tron-r1-execution-c2-20261005
+  cancel-in-progress: false
+
+env:
+  JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+  TZ: UTC
+
+jobs:
+  structural:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      OUT: /tmp/pest-r1-execution-c2-structural
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Verify exact vector-specific C2 package
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          mkdir -p "$OUT"
+          /usr/bin/python3.10 -I -S scripts/experiments/pest-control/verify_pest_monster_tron_r1_execution_c2.py \
+            docs/experiments/pest-control/PEST_MONSTER_TRON_R1_EXECUTION_C2_20261005.json \
+            | tee "$OUT/verifier-result.json"
+          sha256sum docs/experiments/pest-control/PEST_MONSTER_TRON_R1_EXECUTION_C2_20261005.json \
+            | tee "$OUT/execution-c2-manifest.sha256"
+          git rev-parse HEAD > "$OUT/head.txt"
+          git rev-parse 'HEAD^{tree}' > "$OUT/tree.txt"
+          printf '%s\n' 'EXECUTION_C2_QUALIFICATION_ONLY__RUNNER_DISABLED__NO_CLAIM__NO_GAMEPLAY' > "$OUT/scope.txt"
+      - name: Verify source-gate artifact metadata
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/11375319944" \
+            -o "$OUT/source-gate-artifact.json"
+          /usr/bin/python3.10 - <<'PY'
+          import json
+          p="/tmp/pest-r1-execution-c2-structural/source-gate-artifact.json"
+          m=json.load(open(p))
+          assert not m["expired"]
+          assert m["digest"]=="sha256:6a393c22c0dc16df00a09e398cebfae3ed8344d336b31add03312e4d8c8a9610"
+          PY
+      - name: Verify live official-attempt refs remain fail-closed
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/git/matching-refs/heads/pest-control/official-attempts" \
+            -o "$OUT/live-official-attempt-refs.json"
+          /usr/bin/python3.10 - <<'PY'
+          import json
+          refs=json.load(open("/tmp/pest-r1-execution-c2-structural/live-official-attempt-refs.json"))
+          got={r["ref"]:r["object"]["sha"] for r in refs}
+          assert got=={
+            "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1":
+              "1c2e253ad7f5a7652304f7c9aaafc30e547a481e"
+          }, got
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-tron-r1-execution-c2-structural-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-r1-execution-c2-structural/
+          if-no-files-found: error
+          retention-days: 90
+
+  decision_policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      GRADLE_USER_HOME: /tmp/pest-r1-c2-decision-${{ github.run_id }}-${{ github.run_attempt }}
+      OUT: /tmp/pest-r1-execution-c2-decision
+    steps:
+      - uses: actions/checkout@v6
+      - name: Qualify decision and Monster policy surfaces
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain :ai:test \
+            --tests com.wingedsheep.ai.arena.PestMonsterTronPolicyAuditTest \
+            --tests com.wingedsheep.ai.engine.PestControlAgentDecisionTest \
+            --tests com.wingedsheep.ai.engine.AutomaticAdditionalCostPaymentAiTest \
+            --tests com.wingedsheep.ai.engine.DecisionResponderTargetProbeTest \
+            2>&1 | tee "$OUT/decision-policy.log"
+          printf '%s\n' 'NO_OFFICIAL_GAMEPLAY' > "$OUT/scope.txt"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-tron-r1-execution-c2-decision-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-r1-execution-c2-decision/
+          if-no-files-found: error
+          retention-days: 90
+
+  combat_observation:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      GRADLE_USER_HOME: /tmp/pest-r1-c2-combat-${{ github.run_id }}-${{ github.run_attempt }}
+      OUT: /tmp/pest-r1-execution-c2-combat
+    steps:
+      - uses: actions/checkout@v6
+      - name: Qualify pair combat policy
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain :ai:test \
+            --tests com.wingedsheep.ai.engine.PestCurrentPairC2P05PolicyCombatTest \
+            2>&1 | tee "$OUT/pair-combat.log"
+      - name: Qualify post-block rules bank
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain :rules-engine:test \
+            --tests com.wingedsheep.engine.scenarios.PostBlockDeclarationPriorityScenarioTest \
+            2>&1 | tee "$OUT/postblock.log"
+      - name: Qualify actor priority observation
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain :gym:test \
+            --tests com.wingedsheep.gym.actorinput.ActorPriorityObservationTest \
+            2>&1 | tee "$OUT/actor-priority.log"
+          printf '%s\n' 'NO_OFFICIAL_GAMEPLAY' > "$OUT/scope.txt"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-tron-r1-execution-c2-combat-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-r1-execution-c2-combat/
+          if-no-files-found: error
+          retention-days: 90
+
+  hidden_replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      GRADLE_USER_HOME: /tmp/pest-r1-c2-hidden-${{ github.run_id }}-${{ github.run_attempt }}
+      OUT: /tmp/pest-r1-execution-c2-hidden
+    steps:
+      - uses: actions/checkout@v6
+      - name: Qualify hidden-state observation and replay journal
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain :gym:test \
+            --tests com.wingedsheep.gym.actorinput.PestCurrentPairC2P06HiddenInvarianceTest \
+            --tests com.wingedsheep.gym.actorinput.ActorObservationBoundaryTest \
+            --tests com.wingedsheep.gym.actorinput.ActorAuthorizedLibrarySearchOrderTest \
+            --tests com.wingedsheep.gym.pest.PestCurrentPairC2ReplayJournalTest \
+            2>&1 | tee "$OUT/hidden-replay.log"
+      - name: Qualify determinizer invariants
+        shell: bash
+        run: |
+          set -euo pipefail
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache \
+            --rerun-tasks --console=plain :ai:test \
+            --tests com.wingedsheep.ai.engine.hidden.DeterminizerInvariantsTest \
+            2>&1 | tee "$OUT/determinizer.log"
+          printf '%s\n' 'NO_OFFICIAL_GAMEPLAY' > "$OUT/scope.txt"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-tron-r1-execution-c2-hidden-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-r1-execution-c2-hidden/
+          if-no-files-found: error
+          retention-days: 90
