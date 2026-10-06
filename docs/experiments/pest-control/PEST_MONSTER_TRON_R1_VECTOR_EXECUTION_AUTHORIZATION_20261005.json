@@ -1,0 +1,94 @@
+{
+  "schema": "pest-monster-tron-r1-vector-specific-execution-authorization-v1",
+  "authority": "VECTOR_SPECIFIC_EXECUTION_AUTHORIZATION__RUNNER_STILL_DISABLED",
+  "status": "RECORDED__NO_EXECUTION_C2_APPROVAL__NO_A2__NO_CLAIM__NO_GAMEPLAY",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "r1_block": "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_REPLACEMENT_SMOKE_4_R1",
+  "freeze": {
+    "branch": "pest/monster-tron-r1-production-freeze-20261005",
+    "quarantine_commit": "69bbc0a3f46055dee5aa1772f97f2dd6268cf24b",
+    "quarantine_tree": "80054543eb04059020e903a21c3a1e3620271956",
+    "final_commit": "41716f6918ec559ee60b14815b5b0f23d3aaf38a",
+    "final_tree": "eddfe0f11b132349876470943e9ae57ebe0487e1",
+    "receipt_comment": 6009739743
+  },
+  "vector": {
+    "ordered_members_decimal": [
+      8509670981736218459,
+      -8564666863904712979,
+      -8259800499619080267,
+      3489680325849498530
+    ],
+    "raw_sha256": "0804de7809cc8eaad0f92adb3f26cbb0d564aa92011a39143859aefd30c67a31",
+    "ordered_vector_sha256": "8cdba4018aac3f423d92981581b628a8647e15be1f916a32c81ca1aef6ccff89",
+    "assignment_sha256": "edd4d831ed0e9cd319ce908e71cca117203a1f5970e00441f3c9310f10e412c7",
+    "assignment_cells": [
+      {"game": 1, "pest_seat": 0, "monster_seat": 1, "starting_deck": "PEST_CONTROL", "pest_play_draw": "PLAY"},
+      {"game": 2, "pest_seat": 0, "monster_seat": 1, "starting_deck": "MONSTER_TRON", "pest_play_draw": "DRAW"},
+      {"game": 3, "pest_seat": 1, "monster_seat": 0, "starting_deck": "PEST_CONTROL", "pest_play_draw": "PLAY"},
+      {"game": 4, "pest_seat": 1, "monster_seat": 0, "starting_deck": "MONSTER_TRON", "pest_play_draw": "DRAW"}
+    ]
+  },
+  "exclusion": {
+    "count": 570,
+    "canonical_sha256": "70c936391c43533b71698574eb9b58cca123fa8deee472970e1a25478131cf15",
+    "overlap_count": 0
+  },
+  "quarantine_evidence": {
+    "quarantine_sha256": "c59ef02660abdc99a298bbb3aec9010d29ee745bcf8bfd48ccfe684f3787896b",
+    "authority_consumption_sha256": "fab5afc8bca303b7fa26134a60531108de68fc94e2040e22d6dee4f90e55b891",
+    "validation_sha256": "070fcad92d31bcd5e91d35e7a8293aebef73caa46c719a3a9c9c5d336e1ab17e",
+    "freeze_manifest_sha256": "8c678ac397016c1e68046e1101869967d9c9544594ae9af642f035bd11738e2a",
+    "checksum_inventory_sha256": "994a9e5b2d33cfe7d2e4010d3fb5c59a2a394936ff3f6fe092d13389275e3bd8"
+  },
+  "pair": {
+    "pest_main_sha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster_tron_main_sha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f"
+  },
+  "accepted_machinery": {
+    "head": "e10e4090573718d9275c92aaf0bfedb0dfdbaa00",
+    "tree": "a02d239810d776b81cb35da887e4f386d5a9a6a1",
+    "base": "d2d249c96e9a3917666efbbb5b35bc37a53a46ec",
+    "validator_blob": "022f5a68723839b4c05f386ea60289cd580fa546",
+    "workflow_blob": "f2e9b5fd0bac4580ca386b310ec6c83efd1f5964",
+    "manifest_blob": "53015afb37125aff37467d6d41ee08062ca99109"
+  },
+  "governing_protocol_blobs": {
+    "proposal": "f319d6d9e84608f5c251ce805cb669a7799b6c6b",
+    "stopping_rule": "6c737d8bb7af58cccc7cafbb60a6abe9876695ae",
+    "failure_audit_md": "e249682d8c052ff96c9e4c8a68c0785a4f0e97f2",
+    "failure_audit_json": "7d969100a0ad7e5c87c4a1de1c68821cf78a10e6"
+  },
+  "independent_review": {
+    "request_comment": 6009748980,
+    "receipt_comment": 6009970293,
+    "canonical_sha256": "21731aaa75055848d7866b4258a6ee21a8586ff7b904f8e82612a053659a89ae",
+    "disposition": "ACCEPTED_FOR_VECTOR_SPECIFIC_R1_EXECUTION_AUTHORIZATION_ONLY"
+  },
+  "historical_claim": {
+    "ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+    "commit": "1c2e253ad7f5a7652304f7c9aaafc30e547a481e",
+    "immutable": true,
+    "reuse_authorized": false
+  },
+  "future_r1_claim_ref": {
+    "ref": "refs/heads/pest-control/official-attempts/monster-tron-replacement-smoke-r1",
+    "state": "ABSENT",
+    "creation_authorized": false
+  },
+  "execution_c2": {
+    "state": "NOT_CREATED_OR_APPROVED_BY_THIS_RECORD",
+    "construction_authorized": true,
+    "approval_authorized": false
+  },
+  "a2": {"state": "INACTIVE", "activation_authorized": false},
+  "runner": {"state": "DISABLED", "enablement_authorized": false},
+  "counters": {
+    "frozen_seeds": 4,
+    "claims": 0,
+    "games": 0,
+    "actions": 0,
+    "outcomes": 0
+  },
+  "next_boundary": "CONSTRUCT_AND_QUALIFY_EXACT_VECTOR_SPECIFIC_EXECUTION_C2__NO_GAMEPLAY"
+}
