@@ -34,6 +34,16 @@ C2_SOURCE_GATE_COMMIT = "d2d249c96e9a3917666efbbb5b35bc37a53a46ec"
 C2_SOURCE_GATE_AUTHORITY = "SOURCE_GATE_CANDIDATE_ONLY__NO_GAMEPLAY_AUTHORITY"
 R1_REVIEW_REQUEST_COMMENT = 6005652423
 R1_ACCEPTANCE_COMMENT = 6007834588
+PROPOSAL_BLOB = "f319d6d9e84608f5c251ce805cb669a7799b6c6b"
+STOPPING_RULE_BLOB = "6c737d8bb7af58cccc7cafbb60a6abe9876695ae"
+FAILURE_AUDIT_MD_BLOB = "e249682d8c052ff96c9e4c8a68c0785a4f0e97f2"
+FAILURE_AUDIT_JSON_BLOB = "7d969100a0ad7e5c87c4a1de1c68821cf78a10e6"
+C2_SOURCE_GATE_MANIFEST_BLOB = "04aef8e817f0e4cbc74cdace6230474414c94454"
+IMPLEMENTATION_MANIFEST_PATH = (
+    "docs/experiments/pest-control/"
+    "PEST_MONSTER_TRON_REPLACEMENT_SMOKE_R1_SEEDFREE_VALIDATION_20261005.json"
+)
+SEEDFREE_AUTHORITY = "SEED_FREE_REPLACEMENT_MACHINERY_VALIDATION_ONLY__NO_ENTROPY_NO_GAMEPLAY"
 
 TERROR_SMOKE_ARTIFACT_ID = 10733086089
 TERROR_SMOKE_ARCHIVE_SHA256 = "bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961"
@@ -243,6 +253,192 @@ def verify_c2_source_gate(root: Path) -> None:
         raise ValueError("Phase-B authority mismatch")
     if manifest.get("official_counters") != {"allocations": 0, "claims": 0, "games": 0, "outcomes": 0}:
         raise ValueError("C2 source-gate official counters mismatch")
+
+
+def seedfree_contract_errors(manifest: dict[str, object]) -> list[str]:
+    errors: list[str] = []
+
+    def expect(label: str, actual: object, expected: object) -> None:
+        if actual != expected:
+            errors.append(f"{label}: expected={expected!r} actual={actual!r}")
+
+    expect("schema", manifest.get("schema"), "pest-monster-tron-replacement-smoke-r1-seedfree-validation-v1")
+    expect("authority", manifest.get("authority"), SEEDFREE_AUTHORITY)
+    expect("status", manifest.get("status"), "IMPLEMENTED_PENDING_VALIDATION")
+    expect(
+        "reviewed_base",
+        manifest.get("reviewed_base"),
+        {
+            "commit": C2_SOURCE_GATE_COMMIT,
+            "tree": "6f6ae97bb35a03a15037686d6c24bff4750ab789",
+        },
+    )
+
+    review = manifest.get("r1_protocol_review") or {}
+    expect("r1 review request", review.get("request_comment"), R1_REVIEW_REQUEST_COMMENT)
+    expect("r1 acceptance", review.get("acceptance_comment"), R1_ACCEPTANCE_COMMENT)
+    expect("r1 disposition", review.get("disposition"), "ACCEPTED")
+    expect(
+        "r1 accepted scope",
+        review.get("accepted_scope"),
+        "IMPLEMENT_AND_VALIDATE_BOUNDED_REPLACEMENT_MACHINERY_WITHOUT_ENTROPY_OR_GAMEPLAY",
+    )
+    expect("proposal blob", review.get("proposal_blob"), PROPOSAL_BLOB)
+    expect("stopping-rule blob", review.get("stopping_rule_blob"), STOPPING_RULE_BLOB)
+    expect("failure audit md blob", review.get("failure_audit_md_blob"), FAILURE_AUDIT_MD_BLOB)
+    expect("failure audit json blob", review.get("failure_audit_json_blob"), FAILURE_AUDIT_JSON_BLOB)
+
+    pair = manifest.get("exact_pair") or {}
+    expect("Pest main", pair.get("pest_main_sha256"), PEST_MAIN)
+    expect("Monster main", pair.get("monster_main_sha256"), MONSTER_TRON_MAIN)
+    expect("Pest pilot", pair.get("pest_pilot"), PEST_PILOT)
+    expect("Monster pilot", pair.get("monster_pilot"), MONSTER_PILOT)
+
+    c2 = manifest.get("c2_source_gate") or {}
+    expect("C2 source-gate commit", c2.get("commit"), C2_SOURCE_GATE_COMMIT)
+    expect("C2 source-gate manifest blob", c2.get("manifest_blob"), C2_SOURCE_GATE_MANIFEST_BLOB)
+    expect("C2 source-gate authority", c2.get("authority"), C2_SOURCE_GATE_AUTHORITY)
+    expect("C2 execution source", c2.get("execution_source_c2"), "NOT_CREATED_OR_PINNED_BY_THIS_GATE")
+    expect("Monster activation", c2.get("monster_activation"), "ABSENT_NOT_AUTHORIZED")
+    expect("Phase-B authority", c2.get("phase_b_authority"), "PERMANENTLY_CONSUMED_NO_REUSE")
+
+    historical = manifest.get("historical_attempt") or {}
+    expect("historical run", historical.get("run"), 36085093386)
+    expect("historical disposition", historical.get("disposition"), "REJECTED_INFRASTRUCTURE_BEFORE_INITIALIZATION")
+    expect("historical claim ref", historical.get("claim_ref"), ORIGINAL_CLAIM_REF)
+    expect("historical claim commit", historical.get("claim_commit"), ORIGINAL_CLAIM_COMMIT)
+    expect("historical immutable", historical.get("immutable"), True)
+    expect("historical retired assignments", historical.get("retired_assignment_count"), 4)
+    expect("historical per-game attempts", historical.get("per_game_attempts"), 0)
+    expect("historical initializations", historical.get("successful_initializations"), 0)
+    expect("historical actions", historical.get("actions"), 0)
+    expect("historical outcomes", historical.get("outcomes"), 0)
+    expect("historical retry authority", historical.get("retry_authorized"), False)
+
+    replacement = manifest.get("replacement") or {}
+    expect("R1 block", replacement.get("block_id"), R1_BLOCK)
+    expect("R1 parent block", replacement.get("parent_original_block_id"), ORIGINAL_BLOCK)
+    expect("R1 future claim", replacement.get("future_claim_ref"), R1_CLAIM_REF)
+    expect("R1 future claim state", replacement.get("future_claim_ref_state"), "ABSENT_NOT_AUTHORIZED")
+    expect(
+        "R1 assignment cells",
+        replacement.get("assignment_cells"),
+        [
+            {"game": 1, "pest_seat": 0, "monster_seat": 1, "starting_deck": "PEST_CONTROL", "pest_play_draw": "PLAY"},
+            {"game": 2, "pest_seat": 0, "monster_seat": 1, "starting_deck": "MONSTER_TRON", "pest_play_draw": "DRAW"},
+            {"game": 3, "pest_seat": 1, "monster_seat": 0, "starting_deck": "PEST_CONTROL", "pest_play_draw": "PLAY"},
+            {"game": 4, "pest_seat": 1, "monster_seat": 0, "starting_deck": "MONSTER_TRON", "pest_play_draw": "DRAW"},
+        ],
+    )
+
+    exclusion = manifest.get("exclusion_baseline") or {}
+    expect("inherited exclusion", exclusion.get("inherited_unique_count"), PRE_MONSTER_EXCLUSION_COUNT)
+    expect("original Monster member count", exclusion.get("original_monster_member_count"), 4)
+    expect("minimum exclusion", exclusion.get("minimum_unique_count"), R1_MINIMUM_EXCLUSION_COUNT)
+    expect("original Monster vector", exclusion.get("original_monster_vector_sha256"), ORIGINAL_MONSTER_VECTOR_SHA256)
+    expect("original Monster assignments", exclusion.get("original_monster_assignments_sha256"), ORIGINAL_MONSTER_ASSIGNMENTS_SHA256)
+
+    validation = manifest.get("validation_contract") or {}
+    expected_validation = {
+        "deterministic_fixture_only": True,
+        "fixture_can_supply_official_result": False,
+        "live_claim_reconciliation_required": True,
+        "historical_claim_must_remain_immutable": True,
+        "r1_claim_must_be_absent": True,
+        "unexpected_official_attempt_ref_fails_closed": True,
+        "os_urandom_calls_permitted": 0,
+        "production_entropy_calls_permitted": 0,
+        "claim_mutations_permitted": 0,
+        "game_initializations_permitted": 0,
+        "actions_permitted": 0,
+        "outcomes_permitted": 0,
+        "automatic_second_replacement": False,
+        "durable_quarantine_before_validation_required": True,
+        "invalid_candidate_retention_required": True,
+        "no_clobber_no_reroll_required": True,
+        "quarantine_create_only_fsync_required": True,
+    }
+    for key, expected in expected_validation.items():
+        expect(f"validation.{key}", validation.get(key), expected)
+
+    entropy = manifest.get("validation_entropy_contract") or {}
+    expected_entropy = {
+        "fixture_only": True,
+        "production_entropy_requested": False,
+        "promotable_to_production_seed": False,
+        "promotable_to_official_allocation": False,
+        "promotable_to_official_result": False,
+        "promotable_to_future_claim": False,
+    }
+    for key, expected in expected_entropy.items():
+        expect(f"validation_entropy.{key}", entropy.get(key), expected)
+
+    stopping = manifest.get("stopping_rule_contract") or {}
+    expected_stopping = {
+        "clean_smoke_game_count": 4,
+        "clean_smoke_replication_trigger": "ONE_FRESH_12_GAME_REPLICATION_REGARDLESS_OF_WINS",
+        "clean_replication_closes_axis_regardless_of_record": True,
+        "defective_r1_stops_replacement_gate": True,
+        "automatic_second_replacement": False,
+        "selective_game_replacement_permitted": False,
+        "partial_result_suppression_permitted": False,
+        "outcome_conditioned_extension_permitted": False,
+    }
+    for key, expected in expected_stopping.items():
+        expect(f"stopping.{key}", stopping.get(key), expected)
+
+    expect(
+        "official counters",
+        manifest.get("official_counters"),
+        {"new_seeds": 0, "new_claims": 0, "new_games": 0, "new_outcomes": 0},
+    )
+    return errors
+
+
+def verify_seedfree_contract(root: Path) -> dict[str, object]:
+    path = root / IMPLEMENTATION_MANIFEST_PATH
+    manifest = json.loads(path.read_bytes())
+    errors = seedfree_contract_errors(manifest)
+    if errors:
+        raise ValueError("seed-free R1 contract mismatch: " + "; ".join(errors))
+    return manifest
+
+
+def set_nested(mapping: dict[str, object], path: tuple[str, ...], value: object) -> None:
+    cursor = mapping
+    for key in path[:-1]:
+        child = cursor.get(key)
+        if not isinstance(child, dict):
+            raise AssertionError(f"contract path is not a mapping: {path}")
+        cursor = child
+    cursor[path[-1]] = value
+
+
+def run_contract_adversarial_checks(contract: dict[str, object]) -> dict[str, object]:
+    cases: dict[str, tuple[tuple[str, ...], object]] = {
+        "wrong_r1_block": (("replacement", "block_id"), ORIGINAL_BLOCK),
+        "wrong_pest_hash": (("exact_pair", "pest_main_sha256"), "0" * 64),
+        "wrong_monster_hash": (("exact_pair", "monster_main_sha256"), "1" * 64),
+        "wrong_c2_prerequisite": (("c2_source_gate", "commit"), "2" * 40),
+        "stale_proposal_blob": (("r1_protocol_review", "proposal_blob"), "3" * 40),
+        "stale_stopping_rule_blob": (("r1_protocol_review", "stopping_rule_blob"), "4" * 40),
+        "stale_failure_audit": (("r1_protocol_review", "failure_audit_json_blob"), "5" * 40),
+        "old_claim_identity_reuse": (("replacement", "future_claim_ref"), ORIGINAL_CLAIM_REF),
+        "second_r1_original": (("validation_contract", "automatic_second_replacement"), True),
+        "fixture_promoted_to_production_seed": (("validation_entropy_contract", "promotable_to_production_seed"), True),
+        "fixture_promoted_to_future_claim": (("validation_entropy_contract", "promotable_to_future_claim"), True),
+        "partial_result_suppression": (("stopping_rule_contract", "partial_result_suppression_permitted"), True),
+        "outcome_driven_continuation": (("stopping_rule_contract", "clean_smoke_replication_trigger"), "WIN_COUNT_DEPENDENT"),
+    }
+    observed: dict[str, list[str]] = {}
+    for label, (path, value) in cases.items():
+        mutated = json.loads(json.dumps(contract))
+        set_nested(mutated, path, value)
+        errors = seedfree_contract_errors(mutated)
+        if not errors:
+            raise AssertionError(f"contract adversarial case {label} was accepted")
+        observed[label] = errors
+    return {"status": "PASS", "cases": observed, "case_count": len(observed)}
 
 
 def verify_live_claim_refs(path: Path) -> dict[str, object]:
@@ -499,7 +695,7 @@ def build_fixture_bundle(
     }
 
 
-def run_adversarial_checks(excluded: set[int], output_root: Path) -> dict[str, object]:
+def run_adversarial_checks(\n    excluded: set[int],\n    exclusion_audit: dict[str, object],\n    output_root: Path,\n    contract: dict[str, object],\n) -> dict[str, object]:
     valid = fixture_members()
     if member_errors(valid, excluded):
         raise ValueError("fixed fixture failed baseline validation")
@@ -508,11 +704,18 @@ def run_adversarial_checks(excluded: set[int], output_root: Path) -> dict[str, o
     output_root.mkdir(parents=True, exist_ok=True)
 
     retired = min(excluded)
+    original_members = exclusion_audit.get("original_monster_members_decimal")
+    if not isinstance(original_members, list) or len(original_members) != 4:
+        raise AssertionError("original Monster retired members missing from exclusion audit")
     cases = {
         "zero": [0, valid[1], valid[2], valid[3]],
         "duplicate": [valid[0], valid[0], valid[2], valid[3]],
         "retired_overlap": [retired, valid[1], valid[2], valid[3]],
         "short": valid[:3],
+        **{
+            f"historical_monster_member_{index}": [member, valid[1], valid[2], valid[3]]
+            for index, member in enumerate(original_members, 1)
+        },
     }
     observed: dict[str, object] = {}
     for label, members in cases.items():
@@ -554,11 +757,15 @@ def run_adversarial_checks(excluded: set[int], output_root: Path) -> dict[str, o
             "quarantine_unchanged_after_second_attempt": True,
         }
 
+    contract_checks = run_contract_adversarial_checks(contract)
     return {
         "status": "PASS",
         "cases": observed,
+        "contract_cases": contract_checks["cases"],
+        "contract_case_count": contract_checks["case_count"],
         "durable_quarantine_before_validation": True,
         "invalid_candidates_retained": True,
+        "all_four_historical_monster_members_rejected": True,
         "no_clobber_no_reroll": True,
         "production_entropy_requested": False,
         "gameplay_reachable": False,
@@ -607,6 +814,7 @@ def main() -> None:
 
     root = Path(__file__).resolve().parents[3]
     verify_c2_source_gate(root)
+    contract = verify_seedfree_contract(root)
     source_guard = verify_new_source_is_entropy_free(Path(__file__).resolve())
     excluded, exclusion_audit = reconstruct_minimum_exclusion(
         root,
@@ -624,13 +832,16 @@ def main() -> None:
             "claim_creation_authorized": False,
             "gameplay_authorized": False,
             "source_guard": source_guard,
+            "contract_binding": {"status": "PASS", "error_count": 0},
             "exclusion_audit": exclusion_audit,
             "live_claim_audit": live_claim_audit,
         }
     elif args.adversarial_self_test:
         if args.adversarial_output_dir is None:
             parser.error("--adversarial-output-dir is required with --adversarial-self-test")
-        result = run_adversarial_checks(excluded, args.adversarial_output_dir)
+        result = run_adversarial_checks(
+            excluded, exclusion_audit, args.adversarial_output_dir, contract
+        )
     else:
         if args.output_dir is None:
             parser.error("--output-dir is required with --validate-fixture")

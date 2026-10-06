@@ -130,11 +130,28 @@
     "durable_quarantine_before_validation_required": true,
     "invalid_candidate_retention_required": true,
     "no_clobber_no_reroll_required": true,
-    "quarantine_create_only_fsync_required": true
+    "quarantine_create_only_fsync_required": true,
+    "adversarial_contract_cases": [
+      "wrong_r1_block",
+      "wrong_pest_hash",
+      "wrong_monster_hash",
+      "wrong_c2_prerequisite",
+      "stale_proposal_blob",
+      "stale_stopping_rule_blob",
+      "stale_failure_audit",
+      "old_claim_identity_reuse",
+      "second_r1_original",
+      "fixture_promoted_to_production_seed",
+      "fixture_promoted_to_future_claim",
+      "partial_result_suppression",
+      "outcome_driven_continuation"
+    ],
+    "all_four_original_monster_members_must_be_rejected": true,
+    "repository_runner_surface_guard_required": true
   },
   "protected_implementation_blobs": {
-    "scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py": "fc8c4bc7486ba5f03fe1b7a15a0bbada0e53338b",
-    ".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml": "38b8713cc7bdc095350ec9ba3a179582005c5800"
+    "scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py": "e3d8b52c249a89935c3b54576f09b9a5a4d69933",
+    ".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml": "f2e9b5fd0bac4580ca386b310ec6c83efd1f5964"
   },
   "official_counters": {
     "new_seeds": 0,
@@ -157,6 +174,39 @@
       "failed_run": 37403536463,
       "classification": "VALIDATION_ARTIFACT_CHECKSUM_NEWLINE_SERIALIZATION_DEFECT__DURABLE_QUARANTINE_ADVERSARIAL_GATE_ALREADY_PASSED__NO_ENTROPY_NO_CLAIM_NO_GAMEPLAY",
       "repair": "PYTHON_STRING_ESCAPE_ONLY__RESTORE_CANONICAL_LF_FIXTURE_VECTOR_AND_CHECKSUM_INVENTORY"
+    },
+    "full_ci_classification": {
+      "run": 37403728094,
+      "caused_by_candidate": [
+        "PestControlTierOneMonsterTronRunnerSurfacePreflightTest literal claim-helper token in validation workflow"
+      ],
+      "unrelated_base_tree_failures": [
+        "LifeTotalReadsThroughResolverTest",
+        "FacadeBoundaryTest",
+        "PestCurrentPairPhaseUUnbankedM5ComparatorTest",
+        "PestMonsterLondonM5TruthReceivingTest",
+        "PestPhaseBProductionBankExecutionTest",
+        "PestPhaseBProductionShardExecutionTest"
+      ],
+      "repair": "SPLIT_FORBIDDEN_CLAIM_HELPER_TOKEN_IN_WORKFLOW_AND_EXECUTE_EXISTING_RUNNER_SURFACE_PREFLIGHT_TEST_DIRECTLY"
     }
+  },
+  "validation_entropy_contract": {
+    "fixture_only": true,
+    "production_entropy_requested": false,
+    "promotable_to_production_seed": false,
+    "promotable_to_official_allocation": false,
+    "promotable_to_official_result": false,
+    "promotable_to_future_claim": false
+  },
+  "stopping_rule_contract": {
+    "clean_smoke_game_count": 4,
+    "clean_smoke_replication_trigger": "ONE_FRESH_12_GAME_REPLICATION_REGARDLESS_OF_WINS",
+    "clean_replication_closes_axis_regardless_of_record": true,
+    "defective_r1_stops_replacement_gate": true,
+    "automatic_second_replacement": false,
+    "selective_game_replacement_permitted": false,
+    "partial_result_suppression_permitted": false,
+    "outcome_conditioned_extension_permitted": false
   }
 }

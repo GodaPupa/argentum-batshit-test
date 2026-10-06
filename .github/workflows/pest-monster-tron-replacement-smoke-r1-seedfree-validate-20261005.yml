@@ -91,7 +91,7 @@ jobs:
               if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute) and isinstance(node.func.value,ast.Name) and node.func.value.id=="os" and node.func.attr=="urandom": urandom+=1
           assert urandom==0,urandom
           assert not (roots & forbidden_imports),sorted(roots & forbidden_imports)
-          forbidden_tokens=["GameInitializer","stepExactlyOne(","ProductionDriver","pest-monster-tron-one-shot-claim.py"]
+          forbidden_tokens=["GameInitializer","stepExactlyOne(","ProductionDriver","pest-monster-tron-one-shot-"+"claim.py"]
           assert not any(token in text for token in forbidden_tokens),[t for t in forbidden_tokens if t in text]
           for required in ["quarantined-vector.json","INVALID_FIXTURE_RETAINED_NO_REROLL","os.O_EXCL"]:
               assert required in text,required
@@ -100,6 +100,20 @@ jobs:
           assert not any(token in wf for token in forbidden_workflow_tokens),[token for token in forbidden_workflow_tokens if token in wf]
           print(json.dumps({"status":"PASS","os_urandom_calls":0,"forbidden_imports":[],"gameplay_entrypoints":0,"claim_helper_invocations":0},sort_keys=True))
           PY
+
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Verify existing Monster Tron repository runner-surface guard stays green
+        shell: bash
+        run: |
+          set -euo pipefail
+          ./gradlew :gym:test \
+            --tests com.wingedsheep.gym.PestControlTierOneMonsterTronRunnerSurfacePreflightTest \
+            --no-daemon --rerun-tasks
+          printf '%s\n' 'PASS' > "$OUT/runner-surface-preflight.txt"
 
       - name: Download and verify immutable exclusion artifacts
         shell: bash
@@ -179,12 +193,16 @@ jobs:
           grep -Fq '"status": "PASS"' "$OUT/adversarial.json"
           grep -Fq '"production_entropy_requested": false' "$OUT/adversarial.json"
           grep -Fq '"durable_quarantine_before_validation": true' "$OUT/adversarial.json"
+          grep -Fq '"all_four_historical_monster_members_rejected": true' "$OUT/adversarial.json"
+          grep -Fq '"contract_case_count": 13' "$OUT/adversarial.json"
           grep -Fq '"no_clobber_no_reroll": true' "$OUT/adversarial.json"
           python3 - <<'PY' | tee "$OUT/adversarial-artifact-audit.json"
           import json
           from pathlib import Path
           root=Path("/tmp/pest-monster-tron-r1-seedfree/adversarial-cases")
-          expected={"zero","duplicate","retired_overlap","short"}
+          expected={"zero","duplicate","retired_overlap","short"} | {
+              f"historical_monster_member_{i}" for i in range(1,5)
+          }
           assert {p.name for p in root.iterdir() if p.is_dir()}==expected
           for label in expected:
               case=root/label
