@@ -3,7 +3,7 @@ package com.wingedsheep.gym.matchup
 import com.wingedsheep.engine.registry.CardRegistry
 
 const val PEST_MONSTER_TRON_SMOKE_BLOCK_ID =
-    "${PEST_MONSTER_TRON_PREBOARD_PROTOCOL_ID}_NONEXPERIMENTAL_SMOKE_4"
+    "${PEST_MONSTER_TRON_PREBOARD_PROTOCOL_ID}_NONEXPERIMENTAL_REPLACEMENT_SMOKE_4_R1"
 const val PEST_MONSTER_TRON_SMOKE_GAMES = 4
 
 enum class MonsterTronStartingDeck { PEST_CONTROL, MONSTER_TRON }
