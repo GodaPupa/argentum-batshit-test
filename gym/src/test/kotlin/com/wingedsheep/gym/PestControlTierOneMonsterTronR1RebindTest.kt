@@ -94,6 +94,18 @@ class PestControlTierOneMonsterTronR1RebindTest : FunSpec({
             )
         }
     }
+    test("validation loader authenticates deterministic frozen R1 archive when supplied") {
+        if (System.getenv("PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP") != null) {
+            System.getenv("PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ACK") shouldBe
+                PEST_MONSTER_TRON_R1_INPUT_VALIDATE_ACK
+            val loaded = PestControlTierOneMonsterTronR1InputLoader.loadValidatedFromEnvironment()
+            loaded.seeds shouldBe exactSeeds
+            loaded.vectorIdentity.orderedVectorSha256 shouldBe PEST_MONSTER_TRON_R1_VECTOR_SHA256
+            loaded.vectorIdentity.assignmentCsvSha256 shouldBe PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256
+            loaded.vectorIdentity.freezeCommit shouldBe PEST_MONSTER_TRON_R1_FREEZE_COMMIT
+        }
+    }
+
     test("R1 execution surface stays distinct from immutable historical smoke identity") {
         PEST_MONSTER_TRON_SMOKE_BLOCK_ID shouldBe
             "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_SMOKE_4"
