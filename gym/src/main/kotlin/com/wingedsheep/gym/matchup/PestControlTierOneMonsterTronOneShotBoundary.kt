@@ -250,15 +250,15 @@ internal object PestControlTierOneMonsterTronOneShotBoundary {
 
 /** Strict official-boundary binding; synthetic construction primitives cannot satisfy this. */
 internal fun monsterTronSealedInputErrors(input: MonsterTronOfficialExecutionInput): List<String> = buildList {
-    if (input.archiveSha256 != PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256) add("archive mismatch")
+    if (input.archiveSha256 != PEST_MONSTER_TRON_R1_ARCHIVE_SHA256) add("archive mismatch")
     if (input.vectorIdentity != MonsterTronSmokeVectorIdentity(
-        PEST_MONSTER_TRON_FROZEN_SMOKE_SOURCE, PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256,
-        PEST_MONSTER_TRON_FROZEN_SMOKE_ASSIGNMENTS_SHA256, PEST_MONSTER_TRON_FROZEN_SMOKE_MANIFEST_SHA256,
+        PEST_MONSTER_TRON_R1_FREEZE_COMMIT, PEST_MONSTER_TRON_R1_VECTOR_SHA256,
+        PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256, PEST_MONSTER_TRON_R1_FREEZE_MANIFEST_SHA256,
     )) add("freeze identity mismatch")
     if (input.seeds != input.assignments.map { it.seed }) add("assignment membership mismatch")
     if (input.assignments.map { it.gameNumber } != listOf(1, 2, 3, 4)) add("assignment sequence mismatch")
     if (monsterTronDigest(input.seeds.joinToString("\n", postfix = "\n").toByteArray(Charsets.UTF_8)) !=
-        PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256) add("actual vector digest mismatch")
+        PEST_MONSTER_TRON_R1_VECTOR_SHA256) add("actual vector digest mismatch")
     input.assignments.zip(PestControlTierOneMonsterTronSmokeHarness.cellTemplate()).forEach { (row, cell) ->
         if (row.gameNumber != cell.gameNumber || row.pestSeat != cell.pestSeat || row.startingDeck != cell.startingDeck ||
             row.monsterTronSeat == row.pestSeat || row.seedHex != monsterTronSeedHex(row.seed)) add("cell mismatch")
@@ -271,10 +271,10 @@ internal fun monsterTronClaimReceiptErrors(receipt: JsonObject, source: String, 
         "claim_ref" to MONSTER_TRON_CLAIM_REF, "execution_source_sha" to source,
         "engine_baseline_sha" to MONSTER_TRON_ENGINE_BASELINE, "workflow_source_sha" to workflowSha,
         "workflow_run_id" to runId, "workflow_run_attempt" to "1", "reserved_games" to "4",
-        "vector_sha256" to PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256,
-        "archive_sha256" to PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256,
-        "assignments_sha256" to PEST_MONSTER_TRON_FROZEN_SMOKE_ASSIGNMENTS_SHA256,
-        "freeze_source_sha" to PEST_MONSTER_TRON_FROZEN_SMOKE_SOURCE,
+        "vector_sha256" to PEST_MONSTER_TRON_R1_VECTOR_SHA256,
+        "archive_sha256" to PEST_MONSTER_TRON_R1_ARCHIVE_SHA256,
+        "assignments_sha256" to PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256,
+        "freeze_source_sha" to PEST_MONSTER_TRON_R1_FREEZE_COMMIT,
         "claim_confirmed" to "true", "execution_allowed" to "false",
     )
     expected.forEach { (key, value) -> if ((receipt[key] as? JsonPrimitive)?.content != value) add("claim $key mismatch") }
