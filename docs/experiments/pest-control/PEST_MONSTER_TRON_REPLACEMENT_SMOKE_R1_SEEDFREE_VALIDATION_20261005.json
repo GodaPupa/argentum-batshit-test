@@ -1,0 +1,229 @@
+{
+  "schema": "pest-monster-tron-replacement-smoke-r1-seedfree-validation-v1",
+  "date_utc": "2026-10-05",
+  "authority": "SEED_FREE_REPLACEMENT_MACHINERY_VALIDATION_ONLY__NO_ENTROPY_NO_GAMEPLAY",
+  "status": "IMPLEMENTED_PENDING_VALIDATION",
+  "reviewed_base": {
+    "commit": "d2d249c96e9a3917666efbbb5b35bc37a53a46ec",
+    "tree": "6f6ae97bb35a03a15037686d6c24bff4750ab789"
+  },
+  "r1_protocol_review": {
+    "request_comment": 6005652423,
+    "acceptance_comment": 6007834588,
+    "disposition": "ACCEPTED",
+    "accepted_scope": "IMPLEMENT_AND_VALIDATE_BOUNDED_REPLACEMENT_MACHINERY_WITHOUT_ENTROPY_OR_GAMEPLAY",
+    "proposal_blob": "f319d6d9e84608f5c251ce805cb669a7799b6c6b",
+    "stopping_rule_blob": "6c737d8bb7af58cccc7cafbb60a6abe9876695ae",
+    "failure_audit_md_blob": "e249682d8c052ff96c9e4c8a68c0785a4f0e97f2",
+    "failure_audit_json_blob": "7d969100a0ad7e5c87c4a1de1c68821cf78a10e6",
+    "canonical_receipt_comment": 6008608271,
+    "canonical_review_sha256": "5b382918fc83b51027b4eb180d642afdcfdde5e4029ef536032e2a17c30f0251",
+    "canonicalization": "UTF8_LF_EXACTLY_ONE_TERMINAL_LF"
+  },
+  "exact_pair": {
+    "pest_main_sha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster_main_sha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f",
+    "pest_pilot": "AiProfile.PRODUCTION_CANDIDATE_EXPIRING",
+    "monster_pilot": "PestMonsterTronPolicy.profile:pest-monster-tron-policy-audit"
+  },
+  "c2_source_gate": {
+    "commit": "d2d249c96e9a3917666efbbb5b35bc37a53a46ec",
+    "manifest_blob": "04aef8e817f0e4cbc74cdace6230474414c94454",
+    "structural_run": 37384547777,
+    "structural_artifact": 11375319944,
+    "structural_artifact_digest": "sha256:6a393c22c0dc16df00a09e398cebfae3ed8344d336b31add03312e4d8c8a9610",
+    "source_review_comment": 6005638499,
+    "source_review_sha256": "83599adcfaafb32ef2339174f02fb2cf160f4f72aa30c61831fffb6d72f95c1f",
+    "authority": "SOURCE_GATE_CANDIDATE_ONLY__NO_GAMEPLAY_AUTHORITY",
+    "execution_source_c2": "NOT_CREATED_OR_PINNED_BY_THIS_GATE",
+    "monster_activation": "ABSENT_NOT_AUTHORIZED",
+    "phase_b_authority": "PERMANENTLY_CONSUMED_NO_REUSE"
+  },
+  "historical_attempt": {
+    "run": 36085093386,
+    "event": "workflow_dispatch",
+    "conclusion": "failure",
+    "activation_source": "ac2188f7fe1f67dd300d07b4c4e6b5b0c5d96814",
+    "execution_source": "8a425d8532395e3d4262fbb35cfbac71e96feeb5",
+    "block_id": "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_SMOKE_4",
+    "claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+    "claim_commit": "1c2e253ad7f5a7652304f7c9aaafc30e547a481e",
+    "disposition": "REJECTED_INFRASTRUCTURE_BEFORE_INITIALIZATION",
+    "immutable": true,
+    "retired_assignment_count": 4,
+    "per_game_attempts": 0,
+    "successful_initializations": 0,
+    "actions": 0,
+    "outcomes": 0,
+    "retry_authorized": false,
+    "replacement_authorized_by_failure_audit": false
+  },
+  "replacement": {
+    "block_id": "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_REPLACEMENT_SMOKE_4_R1",
+    "parent_original_block_id": "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_SMOKE_4",
+    "future_claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-replacement-smoke-r1",
+    "future_claim_ref_state": "ABSENT_NOT_AUTHORIZED",
+    "assignment_cells": [
+      {
+        "game": 1,
+        "pest_seat": 0,
+        "monster_seat": 1,
+        "starting_deck": "PEST_CONTROL",
+        "pest_play_draw": "PLAY"
+      },
+      {
+        "game": 2,
+        "pest_seat": 0,
+        "monster_seat": 1,
+        "starting_deck": "MONSTER_TRON",
+        "pest_play_draw": "DRAW"
+      },
+      {
+        "game": 3,
+        "pest_seat": 1,
+        "monster_seat": 0,
+        "starting_deck": "PEST_CONTROL",
+        "pest_play_draw": "PLAY"
+      },
+      {
+        "game": 4,
+        "pest_seat": 1,
+        "monster_seat": 0,
+        "starting_deck": "MONSTER_TRON",
+        "pest_play_draw": "DRAW"
+      }
+    ]
+  },
+  "exclusion_baseline": {
+    "accepted_terror_smoke_artifact": 10733086089,
+    "accepted_terror_smoke_zip_sha256": "bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961",
+    "accepted_terror_replication_artifact": 10773131628,
+    "accepted_terror_replication_zip_sha256": "4d3a19ef7febacb336911ff1271c14ab83a6ea1f99ed34ae154ae154d6ef5f25",
+    "accepted_terror_replication_vector_sha256": "445542e6cdf9902cc435b4db276a747e6b2200ff4f24ec9ac896b517a44bd34d",
+    "inherited_unique_count": 566,
+    "original_monster_freeze_artifact": 10836436268,
+    "original_monster_zip_sha256": "70b9a665fbb154342e2789c1b6b2c2fd912579431a6ae1f9ab289984d5e7801c",
+    "original_monster_vector_sha256": "1cace17d62bf9133bd834ac0ef7df3bbd29de141716f631764d465867975ab31",
+    "original_monster_assignments_sha256": "3e8c61d729d219261eb485600039b150d66e2e73e90f0f2e1450c7b48a57e098",
+    "original_monster_manifest_sha256": "12b2b0c6c8209fc557c2a2a524223c603b42ae6c7c7ce211cbd291db75fbf6a8",
+    "original_monster_member_count": 4,
+    "minimum_unique_count": 570,
+    "extension_policy": "FAIL_CLOSED_ON_ANY_LATER_RETIRED_RESERVED_OR_CLAIMED_IDENTITY; EXTEND_AND_REVIEW_BEFORE_PRODUCTION_FREEZE"
+  },
+  "validation_contract": {
+    "deterministic_fixture_only": true,
+    "fixture_can_supply_official_result": false,
+    "adversarial_cases": [
+      "zero",
+      "duplicate",
+      "retired_overlap",
+      "short_vector"
+    ],
+    "live_claim_reconciliation_required": true,
+    "historical_claim_must_remain_immutable": true,
+    "r1_claim_must_be_absent": true,
+    "unexpected_official_attempt_ref_fails_closed": true,
+    "os_urandom_calls_permitted": 0,
+    "production_entropy_calls_permitted": 0,
+    "claim_mutations_permitted": 0,
+    "game_initializations_permitted": 0,
+    "actions_permitted": 0,
+    "outcomes_permitted": 0,
+    "automatic_second_replacement": false,
+    "durable_quarantine_before_validation_required": true,
+    "invalid_candidate_retention_required": true,
+    "no_clobber_no_reroll_required": true,
+    "quarantine_create_only_fsync_required": true,
+    "adversarial_contract_cases": [
+      "wrong_r1_block",
+      "wrong_pest_hash",
+      "wrong_monster_hash",
+      "wrong_c2_prerequisite",
+      "stale_proposal_blob",
+      "stale_stopping_rule_blob",
+      "stale_failure_audit",
+      "old_claim_identity_reuse",
+      "second_r1_original",
+      "fixture_promoted_to_production_seed",
+      "fixture_promoted_to_future_claim",
+      "partial_result_suppression",
+      "outcome_driven_continuation"
+    ],
+    "all_four_original_monster_members_must_be_rejected": true,
+    "repository_runner_surface_guard_required": true
+  },
+  "protected_implementation_blobs": {
+    "scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py": "022f5a68723839b4c05f386ea60289cd580fa546",
+    ".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml": "f2e9b5fd0bac4580ca386b310ec6c83efd1f5964"
+  },
+  "official_counters": {
+    "new_seeds": 0,
+    "new_claims": 0,
+    "new_games": 0,
+    "new_outcomes": 0
+  },
+  "next_boundary": "INDEPENDENT_VALIDATION_AUDIT_THEN_SEPARATELY_RECORDED_ONE_SHOT_PRODUCTION_SEED_FREEZE_AUTHORITY_MAY_BE_CONSIDERED",
+  "recovery_history": {
+    "predecessor_commit": "f2bb5600f75ff2336642a9b4978cae68fc422241",
+    "classification": "VALIDATION_SOURCE_GUARD_SELF_MATCH__NO_ENTROPY_NO_CLAIM_NO_GAMEPLAY",
+    "repair": "WORKFLOW_GUARD_LITERAL_SPLIT_ONLY__VALIDATOR_AND_PROTOCOL_SEMANTICS_UNCHANGED",
+    "scope_gap_repair": {
+      "predecessor_commit": "ccca7735977ec386315b00a91f6caec07c2cc9be",
+      "classification": "VALIDATION_COVERAGE_GAP__DURABLE_QUARANTINE_NO_REROLL_NOT_YET_DEMONSTRATED__NO_ENTROPY_NO_CLAIM_NO_GAMEPLAY",
+      "repair": "ADD_CREATE_ONLY_FSYNCED_PREVALIDATION_QUARANTINE__INVALID_RETENTION__SECOND_ATTEMPT_REFUSAL_FIXTURES"
+    },
+    "checksum_inventory_repair": {
+      "predecessor_commit": "1e17af53a92fb0f89ae20b9f12c92134240a221a",
+      "failed_run": 37403536463,
+      "classification": "VALIDATION_ARTIFACT_CHECKSUM_NEWLINE_SERIALIZATION_DEFECT__DURABLE_QUARANTINE_ADVERSARIAL_GATE_ALREADY_PASSED__NO_ENTROPY_NO_CLAIM_NO_GAMEPLAY",
+      "repair": "PYTHON_STRING_ESCAPE_ONLY__RESTORE_CANONICAL_LF_FIXTURE_VECTOR_AND_CHECKSUM_INVENTORY"
+    },
+    "full_ci_classification": {
+      "run": 37403728094,
+      "caused_by_candidate": [
+        "PestControlTierOneMonsterTronRunnerSurfacePreflightTest literal claim-helper token in validation workflow"
+      ],
+      "unrelated_base_tree_failures": [
+        "LifeTotalReadsThroughResolverTest",
+        "FacadeBoundaryTest",
+        "PestCurrentPairPhaseUUnbankedM5ComparatorTest",
+        "PestMonsterLondonM5TruthReceivingTest",
+        "PestPhaseBProductionBankExecutionTest",
+        "PestPhaseBProductionShardExecutionTest"
+      ],
+      "repair": "SPLIT_FORBIDDEN_CLAIM_HELPER_TOKEN_IN_WORKFLOW_AND_EXECUTE_EXISTING_RUNNER_SURFACE_PREFLIGHT_TEST_DIRECTLY"
+    },
+    "canonical_review_receipt": {
+      "receipt_comment": 6008608271,
+      "sha256": "5b382918fc83b51027b4eb180d642afdcfdde5e4029ef536032e2a17c30f0251",
+      "canonicalization": "UTF8_LF_EXACTLY_ONE_TERMINAL_LF"
+    },
+    "contract_hardening_syntax_repair": {
+      "predecessor_commit": "5e81fccd77173468bd440f47ab943613284cc137",
+      "failed_runs": [
+        37408095937,
+        37408099198
+      ],
+      "classification": "VALIDATION_SOURCE_SERIALIZATION_DEFECT__LITERAL_BACKSLASH_N_IN_FUNCTION_SIGNATURE__FAILED_AT_AST_PARSE__NO_ARTIFACT_OR_AUTHORITY_PATH_REACHED",
+      "repair": "REPLACE_LITERAL_BACKSLASH_N_TOKENS_IN_FUNCTION_SIGNATURE_WITH_ACTUAL_LF_ONLY"
+    }
+  },
+  "validation_entropy_contract": {
+    "fixture_only": true,
+    "production_entropy_requested": false,
+    "promotable_to_production_seed": false,
+    "promotable_to_official_allocation": false,
+    "promotable_to_official_result": false,
+    "promotable_to_future_claim": false
+  },
+  "stopping_rule_contract": {
+    "clean_smoke_game_count": 4,
+    "clean_smoke_replication_trigger": "ONE_FRESH_12_GAME_REPLICATION_REGARDLESS_OF_WINS",
+    "clean_replication_closes_axis_regardless_of_record": true,
+    "defective_r1_stops_replacement_gate": true,
+    "automatic_second_replacement": false,
+    "selective_game_replacement_permitted": false,
+    "partial_result_suppression_permitted": false,
+    "outcome_conditioned_extension_permitted": false
+  }
+}
