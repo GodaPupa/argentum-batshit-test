@@ -1,0 +1,138 @@
+{
+  "schema": "pest-monster-tron-r1-a2-source-admission-blocker-v1",
+  "authority": "A2_SOURCE_ADMISSION_BLOCKER_EVIDENCE_ONLY__NO_SOURCE_REWRITE__NO_A2__NO_CLAIM__NO_GAMEPLAY",
+  "status": "FROZEN_EVIDENCE_SUCCESSOR_V4_PENDING_VALIDATION",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "accepted_c2": {
+    "branch": "pest/monster-tron-r1-execution-c2-20261005",
+    "commit": "38e834c1275a861e87487195842fb4d98e373ee7",
+    "tree": "72f5369af53ecb5430548ce43288f5453fcd2d9c",
+    "parent": "3e9e1d573a97e0030ce64242b41cc13f8f77440e",
+    "identifier_sha256": "421a75c0aad541d9604840b1757c790c7f313155a215e55bdc156858514e2659",
+    "qualification_run": 37419249525
+  },
+  "c2_review": {
+    "receipt_comment": 6016599830,
+    "canonical_sha256": "f43347936391ceb3c6176eba5856a1c118d54ee16c5d81a0c46987ebc87e3a8d",
+    "disposition": "ACCEPTED_FOR_EXACT_VECTOR_SPECIFIC_EXECUTION_C2_ONLY"
+  },
+  "r1": {
+    "block": "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_REPLACEMENT_SMOKE_4_R1",
+    "freeze_commit": "41716f6918ec559ee60b14815b5b0f23d3aaf38a",
+    "freeze_tree": "eddfe0f11b132349876470943e9ae57ebe0487e1",
+    "raw_sha256": "0804de7809cc8eaad0f92adb3f26cbb0d564aa92011a39143859aefd30c67a31",
+    "ordered_vector_sha256": "8cdba4018aac3f423d92981581b628a8647e15be1f916a32c81ca1aef6ccff89",
+    "assignment_sha256": "edd4d831ed0e9cd319ce908e71cca117203a1f5970e00441f3c9310f10e412c7",
+    "members": [
+      8509670981736219000,
+      -8564666863904713000,
+      -8259800499619080000,
+      3489680325849498600
+    ],
+    "pair": {
+      "pest_main_sha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+      "monster_tron_main_sha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f"
+    }
+  },
+  "historical_execution_surface": {
+    "disposition": "NOT_R1_CAPABLE__PINS_RETIRED_MONSTER_TRON_BLOCK_VECTOR_AND_CLAIM",
+    "old_block": "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_SMOKE_4",
+    "old_claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+    "old_vector_sha256": "1cace17d62bf9133bd834ac0ef7df3bbd29de141716f631764d465867975ab31",
+    "old_assignment_sha256": "3e8c61d729d219261eb485600039b150d66e2e73e90f0f2e1450c7b48a57e098",
+    "old_freeze_source": "4230ccaef2760fef54604f64b260dc897d618250",
+    "blobs": {
+      "scripts/pest-monster-tron-one-shot-claim.py": "403e10e198b6262fba871b1be53bd79731dcc682",
+      "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOneShotBoundary.kt": "c737c7ec752855ca3db68e3bbf94f237c41dc80a",
+      "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt": "5192fb0190cf44f6b766ee7c296d3c1e2a8244e2"
+    },
+    "consequence": "A2_CANNOT_SAFELY_ACTIVATE_ACCEPTED_C2_WITH_THE_REQUIRED_R1_VECTOR__A_SEPARATELY_REVIEWED_R1_EXECUTION_IDENTITY_REBIND_SOURCE_SUCCESSOR_IS_REQUIRED"
+  },
+  "current_rules_legality_admission": {
+    "admission_date_utc": "2026-10-06",
+    "official_rules_page": "https://magic.wizards.com/en/rules",
+    "current_rules_archive": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+    "expected_rules_sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+    "expected_effective_date": "2026-09-25",
+    "official_pauper_list": "https://magic.wizards.com/en/banned-restricted-list",
+    "latest_official_br_announcement": "https://magic.wizards.com/en/news/announcements/banned-and-restricted-august-10-2026",
+    "next_scheduled_br_announcement": "2026-10-12",
+    "historical_exact_main_legality_blob": "6ff6309640e169e919ed667dda580de3e236fa05",
+    "validation_requirement": "LIVE_RETRIEVE_AND_ARCHIVE_RULES_PAGE_RULES_BYTES_PAUER_LIST_AND_ALL_34_EXACT_MAIN_ORACLE_LEGALITY_RECORDS__FAIL_ON_ANY_DELTA"
+  },
+  "execution_limits": {
+    "starting_life": 20,
+    "max_actions_per_game": 12000,
+    "max_turns": 60,
+    "max_actions_per_turn": 500,
+    "process_cap_hours": 5,
+    "job_cap_hours": 6
+  },
+  "historical_claim": {
+    "ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+    "commit": "1c2e253ad7f5a7652304f7c9aaafc30e547a481e",
+    "immutable": true,
+    "reuse_authorized": false
+  },
+  "future_r1_claim_ref": {
+    "ref": "refs/heads/pest-control/official-attempts/monster-tron-replacement-smoke-r1",
+    "state": "ABSENT_REQUIRED",
+    "creation_authorized": false
+  },
+  "a2": {
+    "state": "INACTIVE",
+    "candidate_constructed": false,
+    "activation_authorized": false
+  },
+  "runner": {
+    "state": "DISABLED",
+    "enablement_authorized": false
+  },
+  "counters": {
+    "frozen_seeds": 4,
+    "claims": 0,
+    "games": 0,
+    "actions": 0,
+    "outcomes": 0
+  },
+  "validation_package_blobs": {
+    ".github/workflows/pest-monster-tron-r1-a2-source-admission-blocker-validate-20261006.yml": "5e27bbbe9ab00efb3198d0506a4ae277793be4b3",
+    "scripts/experiments/pest-control/verify_pest_monster_tron_r1_a2_source_admission_blocker.py": "f25e0931dd455f05b2ce28c315a5f34b51670f7d"
+  },
+  "next_boundary": "FRESH_INDEPENDENT_R1_EXECUTION_SOURCE_IDENTITY_REBIND_REVIEW_ONLY__STOP_BEFORE_SOURCE_CHANGE_OR_A2_CONSTRUCTION",
+  "failed_predecessor": {
+    "branch": "pest/monster-tron-r1-a2-source-admission-blocker-20261006",
+    "commit": "718c16dd3ba0dd27f64a4039934cb3fb11db7372",
+    "tree": "9273bab42d340246b8e98aa38ff4210e1caefb6c",
+    "run_id": 37466514552,
+    "run_attempt": 1,
+    "conclusion": "failure",
+    "artifact_id": 11414641670,
+    "artifact_digest": "sha256:2728f87a2fae83974198c5ce667842b93166a675347b3785d53a4ffe9c21c343",
+    "classification": "VALIDATION_PARSER_SCOPE_DEFECT__PAUPER_SECTION_CAPTURE_RAN_INTO_LATER_FORMATS__FALSE_POSITIVE_CROP_ROTATION_FOREST",
+    "source_or_protocol_delta_demonstrated": false,
+    "evidence_preserved": true
+  },
+  "repair": {
+    "scope": "VALIDATION_ONLY",
+    "change": "Bound Pauper parsing to the exact HTML section id=Pauper-banned and exact li card names; no execution/source/protocol change.",
+    "gameplay_authority_added": false,
+    "claim_authority_added": false,
+    "checkout_fetch_depth": 2,
+    "concurrency_group": "pest-monster-tron-r1-a2-source-admission-blocker-v4-20261006"
+  },
+  "supersedes_validation_candidate": {
+    "branch": "pest/monster-tron-r1-a2-source-admission-blocker-v2-20261006",
+    "commit": "914675c2a7b85684b71876af26be462297ebd37b",
+    "tree": "cee8befd7f73d3dacf5b310d0d1c425793934fbb",
+    "reason": "VALIDATION_CHECKOUT_OVERFETCH_ONLY__NO_SOURCE_OR_PROTOCOL_CHANGE",
+    "authority_added": false
+  },
+  "supersedes_validation_candidate_v3": {
+    "branch": "pest/monster-tron-r1-a2-source-admission-blocker-v3-20261006",
+    "commit": "d91e60a93be9b94ae3c4ce6060a2b3c6946be952",
+    "tree": "385e61617fc95b4ccf57bd5fe88eba702772461a",
+    "reason": "VALIDATION_ONLY_CONCURRENCY_SERIALIZATION__NO_SOURCE_OR_PROTOCOL_CHANGE",
+    "authority_added": false
+  }
+}
