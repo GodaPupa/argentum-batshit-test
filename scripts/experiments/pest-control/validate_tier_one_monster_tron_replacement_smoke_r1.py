@@ -312,7 +312,7 @@ def quarantine_candidate_members(
     if output.exists() and any(output.iterdir()):
         raise ValueError("candidate output directory must be absent or empty; no-clobber/no-reroll")
     output.mkdir(parents=True, exist_ok=True)
-    vector = ("\\n".join(str(member) for member in members) + "\\n").encode()
+    vector = ("\n".join(str(member) for member in members) + "\n").encode()
     record = {
         "schema": "pest-monster-tron-replacement-smoke-r1-seedfree-quarantine-v1",
         "authority": "NONEXPERIMENTAL_VALIDATION_ONLY__NO_PRODUCTION_ENTROPY__NO_GAMEPLAY",
@@ -482,7 +482,7 @@ def build_fixture_bundle(
     checksums["quarantined-vector.json"] = sha256((output / "quarantined-vector.json").read_bytes())
     write_new_fsynced(
         output / "artifacts.sha256",
-        ("\\n".join(f"{digest}  {name}" for name, digest in sorted(checksums.items())) + "\\n").encode(),
+        ("\n".join(f"{digest}  {name}" for name, digest in sorted(checksums.items())) + "\n").encode(),
     )
     return {
         "status": "SEED_FREE_R1_FIXTURE_VALIDATED",

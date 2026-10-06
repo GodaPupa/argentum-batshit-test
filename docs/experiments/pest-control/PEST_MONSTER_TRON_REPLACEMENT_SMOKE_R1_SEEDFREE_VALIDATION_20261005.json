@@ -133,7 +133,7 @@
     "quarantine_create_only_fsync_required": true
   },
   "protected_implementation_blobs": {
-    "scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py": "8cf984b4da8dca66b5d285b30314723336d086bd",
+    "scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py": "fc8c4bc7486ba5f03fe1b7a15a0bbada0e53338b",
     ".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml": "38b8713cc7bdc095350ec9ba3a179582005c5800"
   },
   "official_counters": {
@@ -151,6 +151,12 @@
       "predecessor_commit": "ccca7735977ec386315b00a91f6caec07c2cc9be",
       "classification": "VALIDATION_COVERAGE_GAP__DURABLE_QUARANTINE_NO_REROLL_NOT_YET_DEMONSTRATED__NO_ENTROPY_NO_CLAIM_NO_GAMEPLAY",
       "repair": "ADD_CREATE_ONLY_FSYNCED_PREVALIDATION_QUARANTINE__INVALID_RETENTION__SECOND_ATTEMPT_REFUSAL_FIXTURES"
+    },
+    "checksum_inventory_repair": {
+      "predecessor_commit": "1e17af53a92fb0f89ae20b9f12c92134240a221a",
+      "failed_run": 37403536463,
+      "classification": "VALIDATION_ARTIFACT_CHECKSUM_NEWLINE_SERIALIZATION_DEFECT__DURABLE_QUARANTINE_ADVERSARIAL_GATE_ALREADY_PASSED__NO_ENTROPY_NO_CLAIM_NO_GAMEPLAY",
+      "repair": "PYTHON_STRING_ESCAPE_ONLY__RESTORE_CANONICAL_LF_FIXTURE_VECTOR_AND_CHECKSUM_INVENTORY"
     }
   }
 }
