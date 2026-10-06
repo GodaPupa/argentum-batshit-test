@@ -1,7 +1,7 @@
 {
   "schema": "pest-monster-tron-r1-a2-source-admission-blocker-v1",
   "authority": "A2_SOURCE_ADMISSION_BLOCKER_EVIDENCE_ONLY__NO_SOURCE_REWRITE__NO_A2__NO_CLAIM__NO_GAMEPLAY",
-  "status": "FROZEN_EVIDENCE_SUCCESSOR_V6_PENDING_VALIDATION",
+  "status": "FROZEN_EVIDENCE_SUCCESSOR_V7_PENDING_VALIDATION",
   "repository": "GodaPupa/argentum-batshit-test",
   "accepted_c2": {
     "branch": "pest/monster-tron-r1-execution-c2-20261005",
@@ -96,8 +96,8 @@
     "outcomes": 0
   },
   "validation_package_blobs": {
-    ".github/workflows/pest-monster-tron-r1-a2-source-admission-blocker-validate-20261006.yml": "d60a1017b80fc310ca31ae997390fade3cf36bbc",
-    "scripts/experiments/pest-control/verify_pest_monster_tron_r1_a2_source_admission_blocker.py": "f25e0931dd455f05b2ce28c315a5f34b51670f7d"
+    ".github/workflows/pest-monster-tron-r1-a2-source-admission-blocker-validate-20261006.yml": "390a5fd5cfe0306ef68a6bd13547e7d344e717f9",
+    "scripts/experiments/pest-control/verify_pest_monster_tron_r1_a2_source_admission_blocker.py": "0b1ee5ef06da0b8675fcb631b26cb48fbf5c7fb1"
   },
   "next_boundary": "FRESH_INDEPENDENT_R1_EXECUTION_SOURCE_IDENTITY_REBIND_REVIEW_ONLY__STOP_BEFORE_SOURCE_CHANGE_OR_A2_CONSTRUCTION",
   "failed_predecessor": {
@@ -118,8 +118,8 @@
     "change": "Bound Pauper parsing to the exact HTML section id=Pauper-banned and exact li card names; no execution/source/protocol change.",
     "gameplay_authority_added": false,
     "claim_authority_added": false,
-    "checkout_fetch_depth": 2,
-    "concurrency_group": "pest-monster-tron-r1-a2-source-admission-blocker-v6-20261006",
+    "checkout_fetch_depth": 3,
+    "concurrency_group": "pest-monster-tron-r1-a2-source-admission-blocker-v7-20261006",
     "oracle_legality_retrieval": "ONE_BATCH_POST__SCRYFALL_COLLECTION__34_EXACT_IDENTITIES"
   },
   "supersedes_validation_candidate": {
@@ -135,6 +135,19 @@
     "tree": "385e61617fc95b4ccf57bd5fe88eba702772461a",
     "reason": "VALIDATION_ONLY_CONCURRENCY_SERIALIZATION__NO_SOURCE_OR_PROTOCOL_CHANGE",
     "authority_added": false
+  },
+  "failed_predecessor_v6": {
+    "branch": "pest/monster-tron-r1-a2-source-admission-blocker-v6-20261006",
+    "commit": "53ee737b479145ba21e38670b0b5962ab66c7f7f",
+    "tree": "d24f8176e4742c3de20396ea8d36f80845f35dac",
+    "run_id": 37468597809,
+    "run_attempt": 1,
+    "conclusion": "failure",
+    "artifact_id": 11415148619,
+    "artifact_digest": "sha256:54f35cb287c86c1f082add56c6352eddd33f983d4e5cf266632899e7f64f730b",
+    "classification": "VALIDATION_CHECKOUT_DEPTH_DEFECT__C2_GRANDPARENT_NOT_FETCHED__NO_RULES_REF_OR_SOURCE_MUTATION_STEP_EXECUTED",
+    "source_or_protocol_delta_demonstrated": false,
+    "evidence_preserved": true
   },
   "superseded_validation_candidate_v5": {
     "branch": "pest/monster-tron-r1-a2-source-admission-blocker-v5-20261006",
