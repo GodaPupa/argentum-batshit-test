@@ -94,9 +94,8 @@ jobs:
           forbidden_tokens=["GameInitializer","stepExactlyOne(","ProductionDriver","pest-monster-tron-one-shot-claim.py"]
           assert not any(token in text for token in forbidden_tokens),[t for t in forbidden_tokens if t in text]
           wf=Path(".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml").read_text()
-          assert "workflow_dispatch" not in wf
-          assert "--generate" not in wf
-          assert "os.urandom" not in wf
+          forbidden_workflow_tokens=["workflow_"+"dispatch","--"+"generate","os."+"urandom"]
+          assert not any(token in wf for token in forbidden_workflow_tokens),[token for token in forbidden_workflow_tokens if token in wf]
           print(json.dumps({"status":"PASS","os_urandom_calls":0,"forbidden_imports":[],"gameplay_entrypoints":0,"claim_helper_invocations":0},sort_keys=True))
           PY
 
