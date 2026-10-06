@@ -1,0 +1,238 @@
+name: Pest Monster Tron replacement smoke R1 seed-free validation
+
+on:
+  push:
+    branches:
+      - "pest/monster-tron-replacement-r1-seedfree-validation-20261005"
+    paths:
+      - "scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py"
+      - ".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml"
+      - "docs/experiments/pest-control/PEST_MONSTER_TRON_REPLACEMENT_SMOKE_R1_SEEDFREE_VALIDATION_20261005.json"
+  pull_request:
+    paths:
+      - "scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py"
+      - ".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml"
+      - "docs/experiments/pest-control/PEST_MONSTER_TRON_REPLACEMENT_SMOKE_R1_SEEDFREE_VALIDATION_20261005.json"
+
+permissions:
+  actions: read
+  contents: read
+
+concurrency:
+  group: pest-monster-tron-replacement-smoke-r1-seedfree-validation-20261005
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OUT: /tmp/pest-monster-tron-r1-seedfree
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Verify accepted protocol boundary and exact three-file implementation delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          BASE=d2d249c96e9a3917666efbbb5b35bc37a53a46ec
+          git merge-base --is-ancestor "$BASE" HEAD
+          test "$(git rev-parse HEAD:docs/experiments/pest-control/tier-one-monster-tron-replacement-smoke-r1-proposal.md)" = "f319d6d9e84608f5c251ce805cb669a7799b6c6b"
+          test "$(git rev-parse HEAD:docs/experiments/pest-control/tier-one-qualification-stopping-rule.md)" = "6c737d8bb7af58cccc7cafbb60a6abe9876695ae"
+          test "$(git rev-parse HEAD:docs/experiments/pest-control/tier-one-monster-tron-one-shot-failure-audit.md)" = "e249682d8c052ff96c9e4c8a68c0785a4f0e97f2"
+          test "$(git rev-parse HEAD:docs/experiments/pest-control/tier-one-monster-tron-one-shot-failure-audit.json)" = "7d969100a0ad7e5c87c4a1de1c68821cf78a10e6"
+          git diff --name-only "$BASE"..HEAD | sort > "$OUT/delta.txt"
+          cat > "$OUT/expected-delta.txt" <<'EOF'
+          .github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml
+          docs/experiments/pest-control/PEST_MONSTER_TRON_REPLACEMENT_SMOKE_R1_SEEDFREE_VALIDATION_20261005.json
+          scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py
+          EOF
+          diff -u "$OUT/expected-delta.txt" "$OUT/delta.txt"
+
+      - name: Verify manifest pins exact implementation blobs and preserves zero authority counters
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "$OUT/manifest-check.json"
+          import json, subprocess
+          from pathlib import Path
+          path=Path("docs/experiments/pest-control/PEST_MONSTER_TRON_REPLACEMENT_SMOKE_R1_SEEDFREE_VALIDATION_20261005.json")
+          m=json.loads(path.read_text())
+          assert m["authority"]=="SEED_FREE_REPLACEMENT_MACHINERY_VALIDATION_ONLY__NO_ENTROPY_NO_GAMEPLAY"
+          assert m["status"]=="IMPLEMENTED_PENDING_VALIDATION"
+          assert m["r1_protocol_review"]["acceptance_comment"]==6007834588
+          assert m["replacement"]["future_claim_ref_state"]=="ABSENT_NOT_AUTHORIZED"
+          assert m["official_counters"]=={"new_seeds":0,"new_claims":0,"new_games":0,"new_outcomes":0}
+          for p,sha in m["protected_implementation_blobs"].items():
+              actual=subprocess.check_output(["git","rev-parse",f"HEAD:{p}"], text=True).strip()
+              assert actual==sha,(p,actual,sha)
+          print(json.dumps({"status":"PASS","protected_blob_count":len(m["protected_implementation_blobs"])},sort_keys=True))
+          PY
+
+      - name: Enforce seed-free and non-gameplay implementation surface
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "$OUT/source-guard.json"
+          import ast, json
+          from pathlib import Path
+          script=Path("scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py")
+          text=script.read_text()
+          tree=ast.parse(text)
+          forbidden_imports={"random","secrets","subprocess","socket","requests","httpx","urllib"}
+          roots=set()
+          urandom=0
+          for node in ast.walk(tree):
+              if isinstance(node,ast.Import): roots.update(a.name.split('.')[0] for a in node.names)
+              if isinstance(node,ast.ImportFrom) and node.module: roots.add(node.module.split('.')[0])
+              if isinstance(node,ast.Call) and isinstance(node.func,ast.Attribute) and isinstance(node.func.value,ast.Name) and node.func.value.id=="os" and node.func.attr=="urandom": urandom+=1
+          assert urandom==0,urandom
+          assert not (roots & forbidden_imports),sorted(roots & forbidden_imports)
+          forbidden_tokens=["GameInitializer","stepExactlyOne(","ProductionDriver","pest-monster-tron-one-shot-claim.py"]
+          assert not any(token in text for token in forbidden_tokens),[t for t in forbidden_tokens if t in text]
+          wf=Path(".github/workflows/pest-monster-tron-replacement-smoke-r1-seedfree-validate-20261005.yml").read_text()
+          assert "workflow_dispatch" not in wf
+          assert "--generate" not in wf
+          assert "os.urandom" not in wf
+          print(json.dumps({"status":"PASS","os_urandom_calls":0,"forbidden_imports":[],"gameplay_entrypoints":0,"claim_helper_invocations":0},sort_keys=True))
+          PY
+
+      - name: Download and verify immutable exclusion artifacts
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT/terror-smoke" "$OUT/terror-replication" "$OUT/original-monster"
+
+          curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/10733086089/zip" -o "$OUT/terror-smoke.zip"
+          echo "bbf9f20e834f27f838e37de78c905c213a8917651818367360a8e8a140914961  $OUT/terror-smoke.zip" | sha256sum -c -
+          unzip -q "$OUT/terror-smoke.zip" -d "$OUT/terror-smoke"
+          (cd "$OUT/terror-smoke" && sha256sum -c artifacts.sha256)
+
+          curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/10773131628/zip" -o "$OUT/terror-replication.zip"
+          echo "4d3a19ef7febacb336911ff1271c14ab83a6ea1f99ed34ae154ae154d6ef5f25  $OUT/terror-replication.zip" | sha256sum -c -
+          unzip -q "$OUT/terror-replication.zip" -d "$OUT/terror-replication"
+          (cd "$OUT/terror-replication" && sha256sum -c artifacts.sha256)
+
+          curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/actions/artifacts/10836436268/zip" -o "$OUT/original-monster.zip"
+          echo "70b9a665fbb154342e2789c1b6b2c2fd912579431a6ae1f9ab289984d5e7801c  $OUT/original-monster.zip" | sha256sum -c -
+          unzip -q "$OUT/original-monster.zip" -d "$OUT/original-monster"
+          (cd "$OUT/original-monster" && sha256sum -c artifacts.sha256)
+          echo "1cace17d62bf9133bd834ac0ef7df3bbd29de141716f631764d465867975ab31  $OUT/original-monster/ordered-seeds.txt" | sha256sum -c -
+          echo "3e8c61d729d219261eb485600039b150d66e2e73e90f0f2e1450c7b48a57e098  $OUT/original-monster/assignments.csv" | sha256sum -c -
+          echo "12b2b0c6c8209fc557c2a2a524223c603b42ae6c7c7ce211cbd291db75fbf6a8  $OUT/original-monster/freeze-manifest.json" | sha256sum -c -
+
+      - name: Reconcile live official-attempt refs without creating or updating any ref
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3 -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/git/matching-refs/heads/pest-control/official-attempts/" \
+            -o "$OUT/live-official-attempt-refs.json"
+          python3 - <<'PY' | tee "$OUT/live-ref-summary.json"
+          import json
+          p=json.load(open("/tmp/pest-monster-tron-r1-seedfree/live-official-attempt-refs.json"))
+          refs={x["ref"]:x["object"]["sha"] for x in p}
+          assert refs.get("refs/heads/pest-control/official-attempts/monster-tron-smoke-v1")=="1c2e253ad7f5a7652304f7c9aaafc30e547a481e"
+          assert "refs/heads/pest-control/official-attempts/monster-tron-replacement-smoke-r1" not in refs
+          assert set(refs)=={"refs/heads/pest-control/official-attempts/monster-tron-smoke-v1"},refs
+          print(json.dumps({"status":"PASS","historical_claim_immutable":True,"r1_claim_present":False,"official_attempt_ref_count":len(refs)},sort_keys=True))
+          PY
+
+      - name: Reconstruct minimum 570-member exclusion universe
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py \
+            --preflight \
+            --prior-terror-smoke-dir "$OUT/terror-smoke" \
+            --prior-terror-replication-dir "$OUT/terror-replication" \
+            --original-monster-dir "$OUT/original-monster" \
+            --live-refs-json "$OUT/live-official-attempt-refs.json" \
+            | tee "$OUT/preflight.json"
+          grep -Fq '"minimum_exclusion_count": 570' "$OUT/preflight.json"
+          grep -Fq '"production_entropy_requested": false' "$OUT/preflight.json"
+          grep -Fq '"r1_claim_ref_present": false' "$OUT/preflight.json"
+
+      - name: Run adversarial zero duplicate retired-overlap and short-vector checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py \
+            --adversarial-self-test \
+            --prior-terror-smoke-dir "$OUT/terror-smoke" \
+            --prior-terror-replication-dir "$OUT/terror-replication" \
+            --original-monster-dir "$OUT/original-monster" \
+            --live-refs-json "$OUT/live-official-attempt-refs.json" \
+            | tee "$OUT/adversarial.json"
+          grep -Fq '"status": "PASS"' "$OUT/adversarial.json"
+          grep -Fq '"production_entropy_requested": false' "$OUT/adversarial.json"
+
+      - name: Validate fixed nonexperimental four-cell R1 fixture
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT/fixture"
+          rmdir "$OUT/fixture"
+          python3 scripts/experiments/pest-control/validate_tier_one_monster_tron_replacement_smoke_r1.py \
+            --validate-fixture \
+            --prior-terror-smoke-dir "$OUT/terror-smoke" \
+            --prior-terror-replication-dir "$OUT/terror-replication" \
+            --original-monster-dir "$OUT/original-monster" \
+            --live-refs-json "$OUT/live-official-attempt-refs.json" \
+            --output-dir "$OUT/fixture" \
+            | tee "$OUT/fixture-summary.json"
+          (cd "$OUT/fixture" && sha256sum -c artifacts.sha256)
+          python3 - <<'PY' | tee "$OUT/fixture-audit.json"
+          import csv,json
+          from pathlib import Path
+          root=Path("/tmp/pest-monster-tron-r1-seedfree/fixture")
+          m=json.loads((root/"fixture-manifest.json").read_text())
+          assert m["authority"]=="NONEXPERIMENTAL_VALIDATION_ONLY__NO_PRODUCTION_ENTROPY__NO_GAMEPLAY"
+          assert m["block_id"]=="PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_REPLACEMENT_SMOKE_4_R1"
+          assert m["collision_audit"]["minimum_excluded_identity_count"]==570
+          assert m["production_entropy_requested"] is False
+          assert m["production_seed_freeze_authorized"] is False
+          assert m["claim_creation_authorized"] is False
+          assert m["game_initialization_authorized"] is False
+          assert m["gameplay_authorized"] is False
+          assert m["outcome_exposure_authorized"] is False
+          assert m["automatic_second_replacement_authorized"] is False
+          assert m["official_counters"]=={"new_seeds":0,"new_claims":0,"new_games":0,"new_outcomes":0}
+          rows=list(csv.DictReader((root/"fixture-assignments.csv").open()))
+          assert [(r["pest_seat"],r["monster_tron_seat"],r["starting_deck"],r["pest_play_draw"]) for r in rows]==[
+            ("SEAT_ZERO","SEAT_ONE","PEST_CONTROL","PLAY"),
+            ("SEAT_ZERO","SEAT_ONE","MONSTER_TRON","DRAW"),
+            ("SEAT_ONE","SEAT_ZERO","PEST_CONTROL","PLAY"),
+            ("SEAT_ONE","SEAT_ZERO","MONSTER_TRON","DRAW"),
+          ]
+          print(json.dumps({"status":"PASS","rows":4,"minimum_exclusion_count":570,"official_counters":m["official_counters"]},sort_keys=True))
+          PY
+
+      - name: Preserve seed-free validation evidence
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          git rev-parse HEAD > "$OUT/head.txt"
+          git rev-parse 'HEAD^{tree}' > "$OUT/tree.txt"
+          git rev-parse d2d249c96e9a3917666efbbb5b35bc37a53a46ec > "$OUT/reviewed-base.txt"
+          printf '%s\n' 'SEED_FREE_REPLACEMENT_MACHINERY_VALIDATION_ONLY__NO_ENTROPY_NO_GAMEPLAY' > "$OUT/authority.txt"
+          cp docs/experiments/pest-control/PEST_MONSTER_TRON_REPLACEMENT_SMOKE_R1_SEEDFREE_VALIDATION_20261005.json "$OUT/"
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-tron-replacement-r1-seedfree-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-monster-tron-r1-seedfree/
+          if-no-files-found: error
+          retention-days: 90
