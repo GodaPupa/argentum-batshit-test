@@ -95,10 +95,10 @@ data class MonsterTronFrozenArtifactInspection(
 }
 
 internal fun monsterTronFrozenMemberPins(): Map<String, String> = linkedMapOf(
-    "ordered-seeds.txt" to PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256,
+    "ordered-members.txt" to PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256,
     "assignments.csv" to PEST_MONSTER_TRON_FROZEN_SMOKE_ASSIGNMENTS_SHA256,
     "freeze-manifest.json" to PEST_MONSTER_TRON_FROZEN_SMOKE_MANIFEST_SHA256,
-    "quarantined-vector.json" to PEST_MONSTER_TRON_FROZEN_SMOKE_QUARANTINE_SHA256,
+    "quarantine.json" to PEST_MONSTER_TRON_FROZEN_SMOKE_QUARANTINE_SHA256,
     "artifacts.sha256" to PEST_MONSTER_TRON_FROZEN_SMOKE_CHECKSUMS_SHA256,
 )
 
@@ -187,14 +187,14 @@ internal object PestControlTierOneMonsterTronAssignmentDecoder {
         ZipInputStream(ByteArrayInputStream(snapshot)).use { zip ->
             while (true) {
                 val entry = zip.nextEntry ?: break
-                if (entry.name == "ordered-seeds.txt" || entry.name == "assignments.csv") {
+                if (entry.name == "ordered-members.txt" || entry.name == "assignments.csv") {
                     members[entry.name] = zip.readBytes()
                 }
                 zip.closeEntry()
             }
         }
         return decodeMonsterTronAssignmentText(
-            strictMonsterTronUtf8(members.getValue("ordered-seeds.txt")),
+            strictMonsterTronUtf8(members.getValue("ordered-members.txt")),
             strictMonsterTronUtf8(members.getValue("assignments.csv")),
         )
     }
