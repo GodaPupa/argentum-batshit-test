@@ -1,0 +1,221 @@
+name: Pest Monster Tron R1 A2 source-admission blocker evidence
+
+on:
+  push:
+    branches: ["pest/monster-tron-r1-a2-source-admission-blocker-v8-20261006"]
+    paths:
+      - ".github/workflows/pest-monster-tron-r1-a2-source-admission-blocker-validate-20261006.yml"
+      - "docs/experiments/pest-control/PEST_MONSTER_TRON_R1_A2_SOURCE_ADMISSION_BLOCKER_20261006.json"
+      - "scripts/experiments/pest-control/verify_pest_monster_tron_r1_a2_source_admission_blocker.py"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pest-monster-tron-r1-a2-source-admission-blocker-v8-20261006
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      OUT: /tmp/pest-r1-a2-source-admission
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+
+      - name: Verify exact evidence-only package and accepted-C2 mismatch
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          python3 scripts/experiments/pest-control/verify_pest_monster_tron_r1_a2_source_admission_blocker.py \
+            docs/experiments/pest-control/PEST_MONSTER_TRON_R1_A2_SOURCE_ADMISSION_BLOCKER_20261006.json \
+            | tee "$OUT/verifier-result.json"
+          sha256sum docs/experiments/pest-control/PEST_MONSTER_TRON_R1_A2_SOURCE_ADMISSION_BLOCKER_20261006.json \
+            | tee "$OUT/blocker-manifest.sha256"
+          git rev-parse HEAD > "$OUT/head.txt"
+          git rev-parse 'HEAD^{tree}' > "$OUT/tree.txt"
+          printf '%s\n' 'BLOCKER_EVIDENCE_ONLY__NO_A2__NO_CLAIM__NO_GAMEPLAY' > "$OUT/scope.txt"
+
+      - name: Verify current official rules, Pauper list, and exact-main Oracle legality
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, pathlib, time
+          from datetime import datetime, timezone
+          from html.parser import HTMLParser
+          from urllib.parse import quote
+          from urllib.request import Request, urlopen
+
+          out = pathlib.Path("/tmp/pest-r1-a2-source-admission")
+          out.mkdir(parents=True, exist_ok=True)
+          UA = "Argentum-R1-Admission-Audit/1.0"
+
+          def get(url):
+              req = Request(url, headers={"User-Agent": UA, "Accept": "*/*"})
+              with urlopen(req, timeout=45) as r:
+                  return r.read()
+
+          def sha(b):
+              return hashlib.sha256(b).hexdigest()
+
+          checked = datetime.now(timezone.utc)
+          assert checked.date().isoformat() == "2026-10-06", checked.isoformat()
+
+          rules_page_url = "https://magic.wizards.com/en/rules"
+          rules_url = "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt"
+          rules_page = get(rules_page_url)
+          rules = get(rules_url)
+          out.joinpath("official-rules-page.html").write_bytes(rules_page)
+          out.joinpath("MagicCompRules-20260925.txt").write_bytes(rules)
+          rules_digest = sha(rules)
+          assert rules_digest == "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca", rules_digest
+          assert b"These rules are effective as of September 25, 2026." in rules
+          assert b"20260925" in rules_page or b"2026%200925" in rules_page or b"MagicCompRules" in rules_page
+
+          br_url = "https://magic.wizards.com/en/banned-restricted-list"
+          br = get(br_url)
+          out.joinpath("official-banned-restricted.html").write_bytes(br)
+
+          html=br.decode("utf-8", "replace")
+          marker='<section id="Pauper-banned"'
+          start=html.find(marker)
+          end=html.find("</section>", start)
+          assert start >= 0 and end > start
+          pauper_html=html[start:end]
+
+          class PauperList(HTMLParser):
+              def __init__(self):
+                  super().__init__(); self.in_li=False; self.buf=""; self.items=[]
+              def handle_starttag(self, tag, attrs):
+                  if tag == "li":
+                      self.in_li=True; self.buf=""
+              def handle_data(self, data):
+                  if self.in_li:
+                      self.buf += data
+              def handle_endtag(self, tag):
+                  if tag == "li" and self.in_li:
+                      self.items.append(" ".join(self.buf.split()))
+                      self.in_li=False
+          parser=PauperList()
+          parser.feed(pauper_html)
+          banned_cards=parser.items
+          assert len(banned_cards) >= 30, banned_cards
+          out.joinpath("pauper-banned-section.txt").write_text("\n".join(banned_cards)+"\n")
+
+          historical_path=pathlib.Path("docs/experiments/pest-control/tier-one-monster-tron-one-shot-legality-source.json")
+          historical_raw=historical_path.read_bytes()
+          historical=json.loads(historical_raw)
+          assert historical["unique_main_identities"] == 34
+          assert all(c["pauper_legality"] == "legal" for c in historical["cards"])
+          names=[c["name"] for c in historical["cards"]]
+          banned_names={n.casefold() for n in banned_cards[1:]}
+          intersection=sorted(n for n in names if n.casefold() in banned_names)
+          assert not intersection, intersection
+
+          payload=json.dumps({"identifiers":[{"name":n} for n in names]}).encode()
+          req=Request(
+              "https://api.scryfall.com/cards/collection",
+              data=payload,
+              headers={"User-Agent":UA,"Accept":"application/json","Content-Type":"application/json"},
+              method="POST"
+          )
+          with urlopen(req, timeout=60) as r:
+              batch=json.loads(r.read())
+          assert len(batch.get("data", [])) == len(names), (len(batch.get("data", [])), len(names), batch.get("not_found"))
+          by_name={c["name"].casefold():c for c in batch["data"]}
+
+          current=[]
+          deltas=[]
+          for old in historical["cards"]:
+              card=by_name[old["name"].casefold()]
+              row={
+                  "name": card["name"],
+                  "oracle_id": card["oracle_id"],
+                  "oracle_text": card.get("oracle_text", ""),
+                  "pauper_legality": card["legalities"]["pauper"],
+                  "scryfall_uri": card["scryfall_uri"]
+              }
+              current.append(row)
+              if row["oracle_id"] != old["oracle_id"] or row["oracle_text"] != old["oracle_text"] or row["pauper_legality"] != old["pauper_legality"]:
+                  deltas.append({"name": old["name"], "historical": old, "current": row})
+
+          current=sorted(current, key=lambda x:x["name"])
+          current_raw=(json.dumps({
+              "schema":"pest-monster-tron-current-oracle-legality-20261006-v1",
+              "checked_at_utc":checked.isoformat(),
+              "source":"https://api.scryfall.com/cards/collection",
+              "scope":"EXACT_PREBOARD_60_VS_60__34_IDENTITIES",
+              "cards":current
+          }, sort_keys=True, separators=(",",":"))+"\n").encode()
+          out.joinpath("current-oracle-legality.json").write_bytes(current_raw)
+          out.joinpath("oracle-legality-delta.json").write_text(json.dumps(deltas, indent=2, sort_keys=True)+"\n")
+          assert not deltas, deltas
+
+          ann_url="https://magic.wizards.com/en/news/announcements/banned-and-restricted-august-10-2026"
+          ann=get(ann_url)
+          out.joinpath("official-br-announcement-20260810.html").write_bytes(ann)
+          ann_text=ann.decode("utf-8","replace")
+          assert "Pauper" in ann_text and "No changes" in ann_text
+          assert "October 12, 2026" in ann_text
+
+          summary={
+              "schema":"pest-monster-tron-r1-current-rules-legality-admission-v1",
+              "checked_at_utc":checked.isoformat(),
+              "rules_page_url":rules_page_url,
+              "rules_page_sha256":sha(rules_page),
+              "rules_archive_url":rules_url,
+              "rules_archive_effective_date":"2026-09-25",
+              "rules_archive_sha256":rules_digest,
+              "historical_legality_blob_sha1":"6ff6309640e169e919ed667dda580de3e236fa05",
+              "historical_legality_json_sha256":sha(historical_raw),
+              "current_oracle_legality_sha256":sha(current_raw),
+              "unique_main_identities":len(current),
+              "oracle_legality_delta_count":len(deltas),
+              "pauper_banned_page_url":br_url,
+              "pauper_banned_page_sha256":sha(br),
+              "exact_main_banned_intersection":intersection,
+              "latest_br_announcement_url":ann_url,
+              "latest_br_announcement_sha256":sha(ann),
+              "latest_pauper_change_disposition":"NO_CHANGES_ON_2026-08-10",
+              "next_scheduled_br_announcement":"2026-10-12",
+              "disposition":"NO_RELEVANT_CURRENT_RULES_OR_LEGALITY_DELTA_DETECTED__SOURCE_IDENTITY_BLOCKER_REMAINS"
+          }
+          out.joinpath("current-rules-legality-summary.json").write_text(json.dumps(summary, indent=2, sort_keys=True)+"\n")
+          print(json.dumps(summary, sort_keys=True))
+          PY
+
+      - name: Verify live claim refs remain fail-closed
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/git/matching-refs/heads/pest-control/official-attempts" \
+            -o "$OUT/live-official-attempt-refs.json"
+          python3 - <<'PY'
+          import json
+          p="/tmp/pest-r1-a2-source-admission/live-official-attempt-refs.json"
+          refs=json.load(open(p))
+          got={r["ref"]:r["object"]["sha"] for r in refs}
+          old="refs/heads/pest-control/official-attempts/monster-tron-smoke-v1"
+          new="refs/heads/pest-control/official-attempts/monster-tron-replacement-smoke-r1"
+          assert got.get(old)=="1c2e253ad7f5a7652304f7c9aaafc30e547a481e", got.get(old)
+          assert new not in got, got.get(new)
+          print(json.dumps({"historical_claim":got[old],"future_r1_claim_ref":"ABSENT","claims_created_by_this_validation":0},sort_keys=True))
+          PY
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-tron-r1-a2-source-admission-blocker-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-r1-a2-source-admission/
+          if-no-files-found: error
+          retention-days: 90
