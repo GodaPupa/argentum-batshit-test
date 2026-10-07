@@ -9,7 +9,7 @@ def git(*args): return subprocess.check_output(["git",*args],cwd=ROOT,text=True)
 m=json.loads(MAN.read_text()); w=REAL.read_text(); g=GUARD.read_text(); t=TEST.read_text(); q=QUAL.read_text()
 assert git("merge-base",V31,"HEAD")==V31
 assert git("rev-parse",V31+"^{tree}")==V31_TREE
-assert git("rev-list","--count",V31+"..HEAD")=="1"
+assert int(git("rev-list","--count",V31+"..HEAD"))==m["construction_commits_from_v3_1"]==2
 changed=set(git("diff","--name-only",V31,"HEAD").splitlines()); assert changed==set(m["changed_paths"]),(changed,m["changed_paths"])
 assert m["authority"]=="CANDIDATE_ONLY__A2_INACTIVE__NO_CLAIM__NO_GAMEPLAY" and m["branch"]==BRANCH
 assert m["accepted_v3_1"]["commit"]==V31 and m["accepted_v3_1"]["tree"]==V31_TREE
