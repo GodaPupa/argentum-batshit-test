@@ -66,7 +66,9 @@ jobs:
           git diff --exit-code "$ENGINE_BASELINE_SHA" HEAD -- mtg-sdk rules-engine ai/src/main mtg-sets gym/src/main \
             ':!gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOneShotBoundary.kt' \
             ':!gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt' \
-            ':!gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt'
+            ':!gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt' \
+            ':!gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronR1ExecutionIdentity.kt' \
+            ':!gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronR1InputLoader.kt'
           test -z "$(git status --porcelain --untracked-files=all)"
       - name: Verify exact frozen vector and current effective rules before claiming
         env:
