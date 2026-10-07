@@ -1,0 +1,56 @@
+name: Work C Sphinx landcycling qualification
+on:
+  push:
+    branches: ["validation/work-c-sphinx-landcycle-v2-20261007"]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: extractions/setup-just@v3
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Compile and run only the six new landcycling cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir evidence
+          test "$(git rev-parse HEAD^)" = "db4fe5ab105af95a2308a6b51e020d4f7dc26843"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > evidence/source.txt
+          git ls-tree -r HEAD > evidence/source-tree.txt
+          java -version 2> evidence/java-version.txt
+          sha256sum "$JAVA_HOME/bin/java" > evidence/java.sha256
+          just test-class SphinxStageELandcyclingTest --no-daemon --no-build-cache --console=plain 2>&1 | tee evidence/qualification.log
+          python3 - <<'PY'
+          import pathlib,xml.etree.ElementTree as E
+          paths=list(pathlib.Path("gym/build/test-results/test").glob("TEST-*.xml"))
+          assert len(paths)==1,paths
+          root=E.parse(paths[0]).getroot()
+          assert root.attrib["name"]=="com.wingedsheep.gym.sphinx.SphinxStageELandcyclingTest"
+          assert int(root.attrib["tests"])==6
+          assert all(int(root.attrib[k])==0 for k in ("failures","errors","skipped"))
+          assert len(list(root.iter("testcase")))==6
+          print("RESULT 6/6")
+          PY
+      - name: Preserve original even on failure
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p evidence
+          if test -d gym/build/test-results/test; then cp -a gym/build/test-results/test evidence/test-results; fi
+          find evidence -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > evidence/SHA256SUMS
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: work-c-sphinx-landcycle-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
