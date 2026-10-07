@@ -1,0 +1,85 @@
+{
+  "schema": "izzet-position1-post-registry-admission-gaps-v1",
+  "date_utc": "2026-10-06",
+  "authority": "PROSPECTIVE_SOURCE_GAP_INVENTORY_ONLY_NO_EXECUTION_AUTHORITY",
+  "current_source": {
+    "head": "2acd2765d7f00051bb39b9fe63361d80a9617525",
+    "mechanics_head": "ecd0b5049fee1cde89448a968682bd0b4980cce9",
+    "mechanics_tree": "1f3b875b31cb4a0fa143e728c31188d1e4124987",
+    "mechanics_run": 37143113720,
+    "mechanics_artifact": 11281401677,
+    "mechanics_artifact_sha256": "98a4438b04f946d19901bde19d38fd476b67f4b3bbf0235df96e8c79c010c6bf",
+    "mechanics_cases": "46/46",
+    "registry": "55/55"
+  },
+  "snapshot_qualification": {
+    "run": 37146354190,
+    "artifact": 11282850765,
+    "artifact_sha256": "5fb121878e21a5c3c2c6e7aa16bb5d07429eca3a2c30c06cc65dd7424ed963ba",
+    "delta": "Benevolent Blessing added only; no existing snapshot card removed or changed"
+  },
+  "governing_existing_scope": [
+    {
+      "path": "experiments/izzet-science/POSITION1_OWLBEAR_QUALIFICATION_FREEZE_20260930.json",
+      "blob": "3a878fc278bdda16ae03794b2e26af0438e3a825",
+      "relevance": "Explicitly mechanics-only and prohibits whole Position-1 pilot/opponent/replay/gameplay authority."
+    },
+    {
+      "path": "experiments/izzet-science/POSITION1_MISSING_IDENTITY_DISPOSITION_20261002.json",
+      "blob": "b76c8dc0ae65fc957867ea3aaf27fb00298beb55",
+      "relevance": "Historical source-triage/adoption tracking only; no gameplay authority."
+    }
+  ],
+  "admission_finding": "INTERNAL_POSITION1_REGISTRY_AND_MECHANICS_COMPLETION_DOES_NOT_DEFINE_A_WHOLE_PILOT_OR_EXPERIMENT_RUNNER",
+  "barriers": [
+    {
+      "id": "IZ-ADM-1",
+      "class": "WHOLE_PILOT_ACTION_DECISION_COVERAGE",
+      "status": "BLOCKING",
+      "detail": "No finite source-bound inventory demonstrates that a Position-1 pilot can choose every reachable legal action and typed decision. Exact card support does not establish strategic action selection."
+    },
+    {
+      "id": "IZ-ADM-2",
+      "class": "SOURCE_BOUND_PROPOSAL_IDENTITY",
+      "status": "BLOCKING",
+      "detail": "No current Izzet runner gate binds proposals to the exact masked observation, current actor/priority epoch, legal action identity and typed-decision identity with fail-closed stale/unknown handling."
+    },
+    {
+      "id": "IZ-ADM-3",
+      "class": "HIDDEN_INFORMATION_BOUNDARY",
+      "status": "BLOCKING",
+      "detail": "No current Izzet whole-pilot qualification proves the pilot receives only its permitted information set and cannot inspect opponent private zones, authoritative RNG or raw engine state."
+    },
+    {
+      "id": "IZ-ADM-4",
+      "class": "OPPONENT_IDENTITY_AND_COMPETENCE",
+      "status": "BLOCKING_PROJECT_INPUT",
+      "detail": "No current PR source freezes the exact opponent package identities and complete executable opponent pilots required for a whole experiment. Do not invent opponent identities to close this gap."
+    },
+    {
+      "id": "IZ-ADM-5",
+      "class": "DURABLE_RUNNER_REPLAY_COLLECTOR",
+      "status": "BLOCKING",
+      "detail": "No accepted Izzet whole-runner seam owns durable attempt identity before initialization, append-only accepted transitions, strict replay, source/runtime/deck/policy/opponent pins and raw stop classification."
+    },
+    {
+      "id": "IZ-ADM-6",
+      "class": "EXACT_EXPERIMENT_BLOCK",
+      "status": "BLOCKING",
+      "detail": "No source freezes a gameplay-admission block, seed/allocation schedule, retry/replacement rule or one-shot runner authority. None may be inferred from the 55/55 registry."
+    }
+  ],
+  "finite_whole_pilot_inventory": "NOT_FREEZABLE_YET",
+  "trusted_whole_runner": "NOT_YET_JUSTIFIED",
+  "next_gate": "Freeze a prospective Position-1 whole-pilot/runner protocol that preserves exact current mechanics evidence, defines masked action/decision coverage and durability/replay requirements, and leaves opponent identities unresolved until project source supplies them. Obtain independent review of that freeze before implementing any authority-bearing runner.",
+  "prohibited": [
+    "no mechanics rerun solely for reassurance",
+    "no invented opponent identities",
+    "no seed generation",
+    "no allocation or claim",
+    "no game initialization",
+    "no inference of pilot competence from 55/55 registry",
+    "no hidden authority escalation"
+  ],
+  "official_counters_delta": 0
+}
