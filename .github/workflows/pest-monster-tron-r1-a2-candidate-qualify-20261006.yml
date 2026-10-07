@@ -16,6 +16,34 @@ concurrency:
   group: pest-monster-tron-r1-a2-candidate-20261006
   cancel-in-progress: true
 jobs:
+  announce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - name: Publish qualification start receipt
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json, os
+          from urllib.request import Request, urlopen
+          repo=os.environ["GITHUB_REPOSITORY"]
+          body=("PEST / MONSTER TRON R1 — A2 CANDIDATE QUALIFICATION STARTED\n\n"
+                f"- run \`{os.environ['GITHUB_RUN_ID']}\` attempt \`{os.environ['GITHUB_RUN_ATTEMPT']}\`\n"
+                f"- head \`{os.environ['GITHUB_SHA']}\`\n"
+                "- authority: QUALIFICATION_ONLY__NO_A2__NO_CLAIM__NO_GAMEPLAY\n")
+          data=json.dumps({"body":body}).encode()
+          req=Request(f"https://api.github.com/repos/{repo}/issues/216/comments",data=data,method="POST",
+                      headers={"Authorization":"Bearer "+os.environ["GH_TOKEN"],
+                               "Accept":"application/vnd.github+json","Content-Type":"application/json"})
+          with urlopen(req,timeout=40) as response:
+              print(json.load(response)["id"])
+          PY
   structural:
     runs-on: ubuntu-latest
     timeout-minutes: 20
