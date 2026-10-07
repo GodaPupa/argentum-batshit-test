@@ -5,6 +5,7 @@ import com.wingedsheep.engine.core.CastSpell
 import com.wingedsheep.engine.core.DeclareAttackers
 import com.wingedsheep.engine.core.DeclareBlockers
 import com.wingedsheep.engine.core.PassPriority
+import com.wingedsheep.engine.core.TypecycleCard
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.gym.actorinput.ActorChoiceSupport
 import com.wingedsheep.gym.actorinput.ActorEpoch
@@ -46,6 +47,11 @@ internal object SphinxStageEWholeActor {
             is SphinxStageEAdapterResult.Proposed -> return opening
             is SphinxStageEAdapterResult.Declined -> return opening
             is SphinxStageEAdapterResult.Unqualified -> Unit
+        }
+
+        if (input.legalActions.any { it.action is TypecycleCard && it.affordable } &&
+            input.legalActions.none { it.action is CastSpell && it.affordable }) {
+            return pilot.decideLandcycling(input, epoch)
         }
 
         val casts = input.legalActions.withIndex().filter { it.value.action is CastSpell }
