@@ -1,0 +1,85 @@
+{
+  "schema": "pest-monster-tron-r1-a2-candidate-v1",
+  "authority": "CANDIDATE_ONLY__A2_INACTIVE__NO_CLAIM__NO_GAMEPLAY",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "branch": "pest/monster-tron-r1-a2-candidate-20261006",
+  "accepted_v3_1": {
+    "branch": "pest/monster-tron-r1-execution-source-rebind-v3-1-20261006",
+    "commit": "dc22d47efa7b67442a6120b3a2aa8802c75d5a5a",
+    "tree": "74f02cfef8a9e66230012ca6b3af57ebd87a1717",
+    "canonical_review_comment": 6031436135,
+    "canonical_review_sha256": "e114679f1881c1f9208498f153bae81a8290b51f1c5818909c7d84ff9375ffb5",
+    "adoption_comment": 6031439226,
+    "disposition": "ACCEPTED_FOR_EXACT_R1_EXECUTION_SOURCE_REBIND_ONLY__NO_A2__NO_CLAIM__NO_GAMEPLAY"
+  },
+  "accepted_c2": {
+    "commit": "38e834c1275a861e87487195842fb4d98e373ee7",
+    "tree": "72f5369af53ecb5430548ce43288f5453fcd2d9c",
+    "identifier": "421a75c0aad541d9604840b1757c790c7f313155a215e55bdc156858514e2659"
+  },
+  "r1": {
+    "block": "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_REPLACEMENT_SMOKE_4_R1",
+    "freeze_commit": "41716f6918ec559ee60b14815b5b0f23d3aaf38a",
+    "freeze_tree": "eddfe0f11b132349876470943e9ae57ebe0487e1",
+    "raw_sha256": "0804de7809cc8eaad0f92adb3f26cbb0d564aa92011a39143859aefd30c67a31",
+    "vector_sha256": "8cdba4018aac3f423d92981581b628a8647e15be1f916a32c81ca1aef6ccff89",
+    "assignment_sha256": "edd4d831ed0e9cd319ce908e71cca117203a1f5970e00441f3c9310f10e412c7",
+    "archive_sha256": "e9ddafe0a7aec28cb07950f2f1d5908a31af677ff58415e809117575f46d6817",
+    "members": [
+      "8509670981736218459",
+      "-8564666863904712979",
+      "-8259800499619080267",
+      "3489680325849498530"
+    ],
+    "historical_claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+    "historical_claim_commit": "1c2e253ad7f5a7652304f7c9aaafc30e547a481e",
+    "future_claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-replacement-smoke-r1"
+  },
+  "official_workflow": {
+    "path": ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml",
+    "sha256": "80bf21c3c0577bd97384f64a250cfc3911e610e52cd91c3882e3d40c03197ffc",
+    "execution_source_sha": "dc22d47efa7b67442a6120b3a2aa8802c75d5a5a",
+    "execution_branch": "pest-control/tier1-monster-tron-r1-official-smoke",
+    "run_attempt": 1,
+    "activation_state": "INERT_UNTIL_SEPARATE_A2_ACCEPTANCE_AND_LATER_AUTHORIZED_BRANCH_DISPATCH",
+    "process_seconds": 18000,
+    "job_seconds": 21600,
+    "claim_reserve_seconds": 600,
+    "upload_reserve_seconds": 900,
+    "required_remaining_before_claim_seconds": 19500,
+    "rules_sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+    "refresh_required_on_or_after": "2026-10-12"
+  },
+  "reused_evidence_by_exact_blob": {
+    "claim_helper": "6ff7fcfa39c0f349d4a8bf7f189188be3ea29724",
+    "claim_tests": "3f431f8e6819cfe27ce2082562886e0fd0d371f1",
+    "r1_input_loader": "68193c024c75d632f7116c348c9a1f50c19187e1",
+    "r1_execution_identity": "66330e1b7d14c98ccb3b317507e4c752f10cdc52",
+    "operational_stack": "b2e5809597cb620662ea31fdae74b0f4222e5733",
+    "v3_1_baseline_regression_artifact_sha256": "c6f09c45a4f5f6c3bc9bb42bdb1f45d545d106dba17d15a274c2c642a988808b"
+  },
+  "changed_paths": [
+    ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml",
+    ".github/workflows/pest-monster-tron-r1-a2-candidate-qualify-20261006.yml",
+    "docs/experiments/pest-control/PEST_MONSTER_TRON_R1_A2_CANDIDATE_20261006.json",
+    "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt",
+    "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronRunnerSurfacePreflightTest.kt",
+    "scripts/experiments/pest-control/verify_pest_monster_tron_r1_a2_candidate.py"
+  ],
+  "qualification_scope": [
+    "exact direct-child ancestry from accepted V3.1",
+    "exact six-path candidate delta",
+    "real R1 official workflow exact bytes and source/branch/run-attempt pins",
+    "runner-surface guard exact R1 workflow path/hash pin while preserving historical pins",
+    "wrong path/bytes/source/branch/rerun/invented workflow fail closed",
+    "future R1 claim absent and historical claim immutable",
+    "qualification cannot dispatch official workflow or create claim/gameplay"
+  ],
+  "counters": {
+    "frozen_seeds": 4,
+    "claims": 0,
+    "games": 0,
+    "actions": 0,
+    "outcomes": 0
+  }
+}

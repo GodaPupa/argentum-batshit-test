@@ -60,6 +60,7 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
         result.officialActionsSubmitted shouldBe 0
         result.outcomeExposure shouldBe 0
         result.guardedOfficialWorkflowPresent shouldBe true
+        result.guardedR1OfficialWorkflowPresent shouldBe true
 
         val report = buildString {
             appendLine("schema=pest-monster-tron-runner-surface-preflight-v3")
@@ -69,6 +70,7 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
             appendLine("classes_audited=${result.classesAudited}")
             appendLine("legacy_construction_runner_state=${result.runnerState}")
             appendLine("guarded_official_workflow_present=${result.guardedOfficialWorkflowPresent}")
+            appendLine("guarded_r1_official_workflow_present=${result.guardedR1OfficialWorkflowPresent}")
             appendLine("official_games_authorized=0")
             appendLine("official_seeds_generated=0")
             appendLine("official_games_initialized=0")
@@ -121,6 +123,29 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
         content.contains("--verify-receipt") shouldBe false // The sealed source C performs remote verification.
         content.contains("--rerun-tasks --no-build-cache") shouldBe true
         content.contains("--kill-after=120s 5h") shouldBe true
+    }
+
+    test("R1 official workflow accepts only exact frozen bytes source branch and first attempt") {
+        val root = monsterTronRepositoryRoot()
+        val path = PestControlTierOneMonsterTronRunnerSurfacePreflight.R1_OFFICIAL_WORKFLOW_PATH
+        val content = Files.readString(root.resolve(path))
+        val methods = mapOf("PestControlTierOneMonsterTronPolicyReadiness" to
+            setOf("validationErrors", "executionActivationErrors"))
+        fun inspect(files: Map<String, String>) = PestControlTierOneMonsterTronRunnerSurfacePreflight.inspect(
+            MonsterTronRunnerSurfaceInventory(files, emptyMap(), methods))
+        inspect(mapOf(path to content)).green shouldBe true
+        inspect(mapOf(path to content)).guardedR1OfficialWorkflowPresent shouldBe true
+        inspect(mapOf(".github/workflows/invented-r1.yml" to content)).green shouldBe false
+        inspect(mapOf(path to content.replace("dc22d47efa7b67442a6120b3a2aa8802c75d5a5a", "main"))).green shouldBe false
+        inspect(mapOf(path to content.replace("refs/heads/pest-control/tier1-monster-tron-r1-official-smoke", "refs/heads/pest-control/tier1-monster-tron-r1-invented"))).green shouldBe false
+        inspect(mapOf(path to content.replace("github.run_attempt == 1", "true"))).green shouldBe false
+        inspect(mapOf(path to content.replace("if: always()", "if: success()"))).green shouldBe false
+        content.contains("workflow" + "_dispatch") shouldBe true
+        content.contains("EXECUTION_SOURCE_SHA: dc22d47efa7b67442a6120b3a2aa8802c75d5a5a") shouldBe true
+        content.contains("github.run_attempt == 1") shouldBe true
+        content.contains("refs/heads/pest-control/tier1-monster-tron-r1-official-smoke") shouldBe true
+        content.contains("--kill-after=120s 5h") shouldBe true
+        content.contains("if: always()") shouldBe true
     }
 
     test("invented execution workflow and callable method fail closed") {
