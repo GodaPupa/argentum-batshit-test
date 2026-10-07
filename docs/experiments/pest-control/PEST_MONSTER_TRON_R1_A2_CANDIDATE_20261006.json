@@ -82,7 +82,7 @@
     "actions": 0,
     "outcomes": 0
   },
-  "construction_commits_from_v3_1": 7,
+  "construction_commits_from_v3_1": 9,
   "qualification_observability": {
     "durable_receipt_pr": 216,
     "receipt_job_runs_after_both_lanes": "ALWAYS",
@@ -109,6 +109,11 @@
       "classification": "QUALIFICATION_TRIGGER_OBSERVABILITY_FALLBACK",
       "authority_effect": "NONE",
       "repair": "contents-api manifest-only branch commit used to emit ordinary push event; net candidate delta unchanged"
+    },
+    {
+      "classification": "PULL_REQUEST_QUALIFICATION_VISIBILITY_ROUTE",
+      "authority_effect": "NONE",
+      "repair": "add pull_request trigger to qualification workflow only so connected Actions reader can audit exact run; official A2 workflow remains inert"
     }
   ]
 }
