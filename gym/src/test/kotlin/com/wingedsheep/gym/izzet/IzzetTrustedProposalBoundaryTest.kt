@@ -13,6 +13,7 @@ import io.kotest.core.spec.style.FunSpec
 import io.kotest.assertions.throwables.shouldThrowAny
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
+import kotlinx.serialization.json.JsonPrimitive
 
 /** Parameter-free synthetic fixtures only. No Izzet strategy or opponent package is represented. */
 class IzzetTrustedProposalBoundaryTest : FunSpec({
@@ -67,7 +68,7 @@ class IzzetTrustedProposalBoundaryTest : FunSpec({
         val menu = open(s).pilotMenu()
         val encoded = menu.maskedObservation + menu.offers.joinToString { it.canonicalAction }
         for (id in s.getHand(other) + s.getLibrary(other) + s.getLibrary(actor))
-            encoded.contains(id.value) shouldBe false
+            encoded.contains(JsonPrimitive(id.value).toString()) shouldBe false
         encoded.contains("\"rng\"") shouldBe false
         encoded.contains("\"continuationStack\"") shouldBe false
         encoded.contains("\"entities\"") shouldBe false
