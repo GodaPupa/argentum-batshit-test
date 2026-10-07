@@ -1,0 +1,48 @@
+name: Industrial boundary safety repair v2 qualification
+on:
+  push:
+    branches: ["validation/industrial-boundary-safety-v2-20261007"]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with: {fetch-depth: 2, persist-credentials: false}
+      - name: Bind source and preserve identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/industrial-v2-evidence
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "db10b83d037dd52ff706e34cd14d0ebb2d9c90c5"
+          test "$(git rev-parse HEAD^{tree})" != ""
+          test "$(git rev-parse HEAD^^{tree})" = "f25943ad0c1c47d11b777c556a176644284f77da"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_complete_runtime_boundary.py)" = "b7f6ec4e93a2594982c47f43eecf946d71e0f603"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/test_r1_complete_runtime_boundary.py)" = "a0b9858239e6d8511b11a4be085026d0227256af"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/R1_BOUNDARY_SAFETY_REPAIR_SCOPE_20261007.json)" = "c22689d7fb1b20347f19d19255ca014dd288491e"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/industrial-boundary-safety-v2-qualification-20261007.yml"
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^{tree} > /tmp/industrial-v2-evidence/identities.txt
+          /usr/bin/python3.10 --version > /tmp/industrial-v2-evidence/python-version.txt
+          sha256sum /usr/bin/python3.10 > /tmp/industrial-v2-evidence/python-sha256.txt
+          cp industrial-waste/v2/r1_complete_runtime_boundary.py industrial-waste/v2/test_r1_complete_runtime_boundary.py industrial-waste/v2/R1_BOUNDARY_SAFETY_REPAIR_SCOPE_20261007.json /tmp/industrial-v2-evidence/
+      - name: Run only deterministic boundary fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd industrial-waste/v2
+          /usr/bin/python3.10 -B test_r1_complete_runtime_boundary.py 2>&1 | tee /tmp/industrial-v2-evidence/tests.log
+          /usr/bin/python3.10 -B -c 'import json; import r1_complete_runtime_boundary as b; print(json.dumps(b.closure_failure_record(),sort_keys=True))' > /tmp/industrial-v2-evidence/closure-failure.json
+      - name: Preserve original evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: industrial-boundary-safety-v2-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/industrial-v2-evidence/
+          if-no-files-found: error
+          retention-days: 90
