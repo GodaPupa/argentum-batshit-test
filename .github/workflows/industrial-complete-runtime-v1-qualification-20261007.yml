@@ -1,0 +1,45 @@
+name: Industrial complete-runtime v1 deterministic qualification
+on:
+  push:
+    branches: ["validation/industrial-complete-runtime-v1-20261007"]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact source candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "d65ac0c00d06f04e25473af914fee21cb139481a"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_complete_runtime_boundary.py)" = "d197efc8d03c2542624240ec98362c8df5198597"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/test_r1_complete_runtime_boundary.py)" = "3accd6b2f779222371e834cf019fe6ce0cf945b5"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/R1_COMPLETE_RUNTIME_IMPLEMENTATION_SCOPE_20261007.json)" = "bec181ae99bd43ebcc4eb0f35b23aa1cb388e2db"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/industrial-complete-runtime-v1-qualification-20261007.yml"
+      - name: Execute deterministic non-corpus boundary fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd industrial-waste/v2
+          /usr/bin/python3.10 -m py_compile r1_complete_runtime_boundary.py test_r1_complete_runtime_boundary.py
+          /usr/bin/python3.10 test_r1_complete_runtime_boundary.py 2>&1 | tee /tmp/industrial-complete-runtime-v1-tests.log
+      - name: Preserve source-bound qualification evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-complete-runtime-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            /tmp/industrial-complete-runtime-v1-tests.log
+            industrial-waste/v2/r1_complete_runtime_boundary.py
+            industrial-waste/v2/test_r1_complete_runtime_boundary.py
+            industrial-waste/v2/R1_COMPLETE_RUNTIME_IMPLEMENTATION_SCOPE_20261007.json
+          if-no-files-found: error
+          retention-days: 90
