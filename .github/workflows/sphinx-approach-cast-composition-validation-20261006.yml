@@ -27,8 +27,15 @@ jobs:
         run: |
           set -euo pipefail
           git config --global --add safe.directory "$GITHUB_WORKSPACE"
-          test "$(git rev-parse HEAD^)" = "871826305b4c7a0609ce0587f69976828294d7bf"
-          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/sphinx-approach-cast-composition-validation-20261006.yml"
+          git merge-base --is-ancestor "871826305b4c7a0609ce0587f69976828294d7bf" HEAD
+          mapfile -t DELTA < <(git diff --name-only "871826305b4c7a0609ce0587f69976828294d7bf" HEAD | sort)
+          printf '%s\n' "${DELTA[@]}" | grep -Fx ".github/workflows/sphinx-approach-cast-composition-validation-20261006.yml"
+          for path in "${DELTA[@]}"; do
+            case "$path" in
+              ".github/workflows/sphinx-approach-cast-composition-validation-20261006.yml"|"sphinx-approach/APPROACH_CAST_AUTHOR_VALIDATION_TRIGGER_20261006.txt") ;;
+              *) echo "unexpected validation delta: $path" >&2; exit 1 ;;
+            esac
+          done
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "8604f20d4898c93c1ac6972b60512e70c2e79b35"
           test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActorApproachRoutingTest.kt)" = "656812e7a78fee178248b754c77f95fa6aed7925"
           test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt)" = "0c77037507e07c912cc034af5be067b13d301d0b"
