@@ -1,0 +1,123 @@
+{
+  "schema": "pest-monster-tron-r1-a2-prep-lab-v1",
+  "authority": "NON_AUTHORITY_PREPARATION_ONLY__NO_A2__NO_CLAIM__NO_GAMEPLAY",
+  "source_review_state": "V3_1_INDEPENDENT_REVIEW_PENDING",
+  "repository": "GodaPupa/argentum-batshit-test",
+  "prospective_execution_source": {
+    "branch": "pest/monster-tron-r1-execution-source-rebind-v3-1-20261006",
+    "commit": "dc22d47efa7b67442a6120b3a2aa8802c75d5a5a",
+    "tree": "74f02cfef8a9e66230012ca6b3af57ebd87a1717",
+    "independent_review_request_comment": 6029519134,
+    "acceptance_required_before_a2_candidate_freeze": true
+  },
+  "accepted_v3": {
+    "commit": "7b4767f76c0a7190f0402124f4616a1354958c94",
+    "tree": "fa3102e5c431a1b9f2004fea968b944a7a22b4d3",
+    "canonical_review_comment": 6028742848,
+    "canonical_review_sha256": "8901c8600abadb8a2fdfdb9142b459e46b9ea29948f7364174a45e29f5bb99eb"
+  },
+  "accepted_c2": {
+    "commit": "38e834c1275a861e87487195842fb4d98e373ee7",
+    "tree": "72f5369af53ecb5430548ce43288f5453fcd2d9c",
+    "identifier": "421a75c0aad541d9604840b1757c790c7f313155a215e55bdc156858514e2659",
+    "qualification_run": 37419249525
+  },
+  "r1": {
+    "block": "PEST_CONTROL_V10_VS_MEHANSKE_MONSTER_TRON_2026_09_21_PREBOARD_V1_NONEXPERIMENTAL_REPLACEMENT_SMOKE_4_R1",
+    "freeze_commit": "41716f6918ec559ee60b14815b5b0f23d3aaf38a",
+    "freeze_tree": "eddfe0f11b132349876470943e9ae57ebe0487e1",
+    "raw_sha256": "0804de7809cc8eaad0f92adb3f26cbb0d564aa92011a39143859aefd30c67a31",
+    "archive_sha256": "e9ddafe0a7aec28cb07950f2f1d5908a31af677ff58415e809117575f46d6817",
+    "vector_sha256": "8cdba4018aac3f423d92981581b628a8647e15be1f916a32c81ca1aef6ccff89",
+    "assignment_sha256": "edd4d831ed0e9cd319ce908e71cca117203a1f5970e00441f3c9310f10e412c7",
+    "members": [
+      "8509670981736218459",
+      "-8564666863904712979",
+      "-8259800499619080267",
+      "3489680325849498530"
+    ],
+    "pest_main_sha256": "7be61a66e2c7654428043d56b411afb4d406f02dfcc4eb7f15a62295d4e906f5",
+    "monster_tron_main_sha256": "79ffc53ac331beafeb1ef4510ce174d01fb2685d963a4c1485f04edbf47c064f",
+    "future_claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-replacement-smoke-r1",
+    "historical_claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-smoke-v1",
+    "historical_claim_commit": "1c2e253ad7f5a7652304f7c9aaafc30e547a481e"
+  },
+  "caps": {
+    "starting_life": 20,
+    "max_actions_per_game": 12000,
+    "max_turns": 60,
+    "max_actions_per_turn": 500,
+    "process_seconds": 18000,
+    "job_seconds": 21600,
+    "claim_reserve_seconds": 600,
+    "upload_reserve_seconds": 900,
+    "required_remaining_before_claim_seconds": 19500,
+    "latest_safe_claim_elapsed_seconds": 2100
+  },
+  "rules_legal": {
+    "rules_effective_date": "2026-09-25",
+    "rules_sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+    "current_oracle_legality_sha256": "3f411dfd65efcfeb228c7d5bad46ca16e0dc5d3e758a710c07466f8c5855eb37",
+    "current_banned_intersection": [],
+    "next_scheduled_br_date": "2026-10-12",
+    "refresh_required_on_or_after": "2026-10-12"
+  },
+  "prospective_workflow": {
+    "final_path": ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml",
+    "lab_fixture_path": "docs/experiments/pest-control/pest-control-tier-one-monster-tron-r1-official-smoke.prospective.yml.txt",
+    "dispatch_in_lab": false,
+    "exact_execution_branch": "pest-control/tier1-monster-tron-r1-official-smoke",
+    "run_attempt": 1,
+    "claim_helper": "scripts/pest-monster-tron-r1-one-shot-claim.py",
+    "input_builder": "scripts/experiments/pest-control/build_pest_monster_tron_r1_input.py"
+  },
+  "qualification_matrix": {
+    "structural": [
+      "source review accepted",
+      "exact source/tree",
+      "accepted C2 id",
+      "vector/assignments/freeze",
+      "historical claim unchanged",
+      "future ref absent",
+      "A2 inactive",
+      "runner disabled"
+    ],
+    "workflow_guard": [
+      "exact bytes",
+      "source pin",
+      "dedicated ref only",
+      "run attempt 1",
+      "no inputs",
+      "runtime reserve preclaim",
+      "upload always",
+      "wrong ref/source/rerun rejected"
+    ],
+    "claim_receipt": [
+      "reuse 17-case fake/no-network bank by exact blob",
+      "no real claim",
+      "historical ref/vector rejected"
+    ],
+    "loader": [
+      "reuse V3 loader by exact blob unless source changes",
+      "execution ACK unused in qualification",
+      "authenticated remote receipt required"
+    ],
+    "runtime_failure": [
+      "5h process inside 6h job",
+      "25m combined reserve",
+      "no synthetic winner",
+      "journal and upload ordering"
+    ],
+    "rules_legal": [
+      "reuse current admission before 2026-10-12",
+      "refresh on/after 2026-10-12"
+    ]
+  },
+  "counters": {
+    "frozen_seeds": 4,
+    "claims": 0,
+    "games": 0,
+    "actions": 0,
+    "outcomes": 0
+  }
+}
