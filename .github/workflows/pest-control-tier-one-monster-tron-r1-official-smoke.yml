@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  EXECUTION_SOURCE_SHA: dc22d47efa7b67442a6120b3a2aa8802c75d5a5a
+  EXECUTION_SOURCE_SHA: ed35c3035d41a740aac1657708b2023b624cfc47
   ENGINE_BASELINE_SHA: 433df3310efe31c49f27034b50e6d8d7e60561f7
 
 jobs:
@@ -41,7 +41,7 @@ jobs:
           scripts/test-class PestControlTierOneMonsterTronRunnerSurfacePreflightTest --info --stacktrace
 
   execute:
-    if: github.event_name == 'workflow_dispatch' && github.run_attempt == 1 && github.ref == 'refs/heads/pest-control/tier1-monster-tron-r1-official-smoke'
+    if: github.event_name == 'workflow_dispatch' && github.run_attempt == 1 && github.ref == 'refs/heads/pest-control/tier1-monster-tron-r1-repaired-official-smoke'
     runs-on: ubuntu-latest
     timeout-minutes: 360
     permissions:
@@ -168,7 +168,7 @@ jobs:
           from pathlib import Path
           root = Path('build/pest-monster-tron-r1-official/execution')
           summary = json.loads((root / 'summary.json').read_text())
-          assert summary['execution_source_sha'] == 'dc22d47efa7b67442a6120b3a2aa8802c75d5a5a'
+          assert summary['execution_source_sha'] == 'ed35c3035d41a740aac1657708b2023b624cfc47'
           assert summary['disposition'] == 'VALIDATED'
           for field in ('attempted_games', 'initialization_entries', 'initialized_games', 'recorded_games'):
               assert summary[field] == [1, 2, 3, 4], field
