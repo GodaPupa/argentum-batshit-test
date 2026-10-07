@@ -1,0 +1,50 @@
+name: Work C Manual transition storage qualification
+on:
+  push:
+    branches: ["validation/work-c-manual-journal-20261007"]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Compile and run only literal transition fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir evidence
+          exec > >(tee evidence/qualification.log) 2>&1
+          test "$(git rev-parse HEAD^)" = "b31cc4302af0dacca0057e612d80c5cf3017d51e"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > evidence/source.txt
+          git ls-tree -r HEAD > evidence/source-tree.txt
+          java -version
+          curl --fail --location --output evidence/kotlin-compiler.zip https://github.com/JetBrains/kotlin/releases/download/v2.2.21/kotlin-compiler-2.2.21.zip
+          sha256sum evidence/kotlin-compiler.zip > evidence/compiler.sha256
+          unzip -q evidence/kotlin-compiler.zip -d /tmp/work-c-kotlin
+          /tmp/work-c-kotlin/kotlinc/bin/kotlinc -version
+          /tmp/work-c-kotlin/kotlinc/bin/kotlinc gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualTransitionJournal.kt experiments/manual-transmission-phase2/tests/ManualTransitionJournalSyntheticTest.kt -include-runtime -d evidence/fixtures.jar
+          java -cp evidence/fixtures.jar com.wingedsheep.gym.manual.ManualTransitionJournalSyntheticTest | tee evidence/tests.log
+          test "$(grep -c '^PASS ' evidence/tests.log)" = 10
+          grep -Fx 'RESULT 10/10' evidence/tests.log
+      - name: Preserve original including partial filesystem fixtures
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p evidence/filesystem
+          for directory in /tmp/manual-transition-test-*; do
+            if test -d "$directory"; then cp -a "$directory" evidence/filesystem/; fi
+          done
+          find evidence -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > evidence/SHA256SUMS
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: work-c-manual-journal-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
