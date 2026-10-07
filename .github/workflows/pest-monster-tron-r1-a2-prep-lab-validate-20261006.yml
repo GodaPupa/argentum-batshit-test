@@ -1,0 +1,68 @@
+name: Pest Monster Tron R1 A2 prep lab validation
+
+on:
+  push:
+    branches: ["pest/monster-tron-r1-a2-prep-lab-20261006"]
+    paths:
+      - ".github/workflows/pest-monster-tron-r1-a2-prep-lab-validate-20261006.yml"
+      - "docs/experiments/pest-control/PEST_MONSTER_TRON_R1_A2_PREP_LAB_20261006.json"
+      - "docs/experiments/pest-control/pest-control-tier-one-monster-tron-r1-official-smoke.prospective.yml.txt"
+      - "scripts/experiments/pest-control/verify_pest_monster_tron_r1_a2_prep_lab.py"
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pest-monster-tron-r1-a2-prep-lab-20261006
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Verify inert A2 preparation only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/pest-r1-a2-prep
+          python3 scripts/experiments/pest-control/verify_pest_monster_tron_r1_a2_prep_lab.py \
+            | tee /tmp/pest-r1-a2-prep/verifier-result.json
+          sha256sum docs/experiments/pest-control/PEST_MONSTER_TRON_R1_A2_PREP_LAB_20261006.json \
+            | tee /tmp/pest-r1-a2-prep/manifest.sha256
+          sha256sum docs/experiments/pest-control/pest-control-tier-one-monster-tron-r1-official-smoke.prospective.yml.txt \
+            | tee /tmp/pest-r1-a2-prep/prospective-workflow.sha256
+          git rev-parse HEAD | tee /tmp/pest-r1-a2-prep/head.txt
+          git rev-parse 'HEAD^{tree}' | tee /tmp/pest-r1-a2-prep/tree.txt
+          printf '%s\n' 'PREP_LAB_ONLY__NO_A2__NO_CLAIM__NO_GAMEPLAY' > /tmp/pest-r1-a2-prep/scope.txt
+      - name: Reconcile official-attempt refs read-only
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          curl -L --fail --retry 3 \
+            -H "Authorization: Bearer $GH_TOKEN" -H 'Accept: application/vnd.github+json' \
+            "https://api.github.com/repos/$GITHUB_REPOSITORY/git/matching-refs/heads/pest-control/official-attempts" \
+            -o /tmp/pest-r1-a2-prep/live-official-attempt-refs.json
+          python3 - <<'PY'
+          import json
+          refs=json.load(open('/tmp/pest-r1-a2-prep/live-official-attempt-refs.json'))
+          got={r['ref']:r['object']['sha'] for r in refs}
+          old='refs/heads/pest-control/official-attempts/monster-tron-smoke-v1'
+          new='refs/heads/pest-control/official-attempts/monster-tron-replacement-smoke-r1'
+          assert got.get(old)=='1c2e253ad7f5a7652304f7c9aaafc30e547a481e'
+          assert new not in got
+          print('FAIL_CLOSED_REFS_OK')
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-monster-tron-r1-a2-prep-lab-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-r1-a2-prep/
+          if-no-files-found: error
+          retention-days: 30
