@@ -82,7 +82,7 @@
     "actions": 0,
     "outcomes": 0
   },
-  "construction_commits_from_v3_1": 12,
+  "construction_commits_from_v3_1": 13,
   "qualification_observability": {
     "direct_actions_audit": "qualification PR #229 exposes pull_request run/jobs/artifacts to connected Actions reader",
     "auxiliary_comment_jobs": "REMOVED_AFTER_GITHUB_ACTIONS_403",
@@ -128,6 +128,17 @@
       "evidence_run": 37577181249,
       "failed_job": 112648829872,
       "repair": "emit the pure preflight error list before the existing fail-closed assertion; no guard semantics, workflow authority, claim state, or gameplay path changed"
+    },
+    {
+      "classification": "HISTORICAL_SOURCE_REBIND_QUALIFICATION_WORKFLOW_PIN_OMISSION",
+      "authority_effect": "NONE",
+      "evidence_run": 37579907122,
+      "failed_job": 112656945092,
+      "demonstrated_errors": [
+        ".github/workflows/pest-monster-tron-r1-execution-source-rebind-v3-qualify-20261006.yml",
+        ".github/workflows/pest-monster-tron-r1-execution-source-rebind-v3-1-qualify-20261006.yml"
+      ],
+      "repair": "preserve both accepted historical qualification workflows by exact path and SHA-256 only; relocation or byte mutation remains rejected and the forbidden-token scan is unchanged"
     }
   ]
 }

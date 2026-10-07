@@ -14,7 +14,7 @@ import java.nio.file.Files
 import java.nio.file.Path
 
 class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
-    test("repository permits only the two reviewed guarded workflows without executing games") {
+    test("repository permits only exact pinned reviewed Monster Tron workflows without executing games") {
         val root = monsterTronRepositoryRoot()
         val workflows = monsterTronTextFiles(root.resolve(".github/workflows"))
         val commands = listOf(
@@ -147,6 +147,25 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
         content.contains("refs/heads/pest-control/tier1-monster-tron-r1-official-smoke") shouldBe true
         content.contains("--kill-after=120s 5h") shouldBe true
         content.contains("if: always()") shouldBe true
+    }
+
+    test("historical V3 and V3.1 qualification workflows remain exact pinned and fail closed") {
+        val root = monsterTronRepositoryRoot()
+        val methods = mapOf("PestControlTierOneMonsterTronPolicyReadiness" to
+            setOf("validationErrors", "executionActivationErrors"))
+        fun inspect(files: Map<String, String>) = PestControlTierOneMonsterTronRunnerSurfacePreflight.inspect(
+            MonsterTronRunnerSurfaceInventory(files, emptyMap(), methods))
+
+        for (path in listOf(
+            PestControlTierOneMonsterTronRunnerSurfacePreflight.V3_REBIND_QUALIFICATION_WORKFLOW_PATH,
+            PestControlTierOneMonsterTronRunnerSurfacePreflight.V3_1_REBIND_QUALIFICATION_WORKFLOW_PATH,
+        )) {
+            val content = Files.readString(root.resolve(path))
+            inspect(mapOf(path to content)).green shouldBe true
+            inspect(mapOf(".github/workflows/invented-historical-qualify.yml" to content)).green shouldBe false
+            inspect(mapOf(path to (content + "\n# unauthorized mutation\n"))).green shouldBe false
+            content.contains("workflow" + "_dispatch") shouldBe false
+        }
     }
 
     test("invented execution workflow and callable method fail closed") {
