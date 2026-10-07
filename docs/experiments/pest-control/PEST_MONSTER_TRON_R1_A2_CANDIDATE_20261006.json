@@ -82,7 +82,7 @@
     "actions": 0,
     "outcomes": 0
   },
-  "construction_commits_from_v3_1": 4,
+  "construction_commits_from_v3_1": 5,
   "qualification_observability": {
     "durable_receipt_pr": 216,
     "receipt_job_runs_after_both_lanes": "ALWAYS",
@@ -94,6 +94,11 @@
       "classification": "A2_CANDIDATE_VERIFIER_CONSTRUCTION_COUNT_STALE_AFTER_OBSERVABILITY_HARDENING",
       "authority_effect": "NONE",
       "repair": "bind actual commit count to manifest instead of stale literal"
+    },
+    {
+      "classification": "SUPERSEDED_QUALIFICATION_RUN_QUEUEING_FROM_FIXED_CONCURRENCY",
+      "authority_effect": "NONE",
+      "repair": "cancel in-progress superseded qualification heads so only newest candidate can consume qualification capacity"
     }
   ]
 }

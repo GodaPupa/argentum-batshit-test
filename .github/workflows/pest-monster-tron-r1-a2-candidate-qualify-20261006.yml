@@ -14,7 +14,7 @@ permissions:
   actions: read
 concurrency:
   group: pest-monster-tron-r1-a2-candidate-20261006
-  cancel-in-progress: false
+  cancel-in-progress: true
 jobs:
   structural:
     runs-on: ubuntu-latest
