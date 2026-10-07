@@ -1,0 +1,88 @@
+name: Sphinx Approach cast composition author validation
+on:
+  push:
+    branches: ["validation/sphinx-approach-cast-composition-20261006"]
+    paths: [".github/workflows/sphinx-approach-cast-composition-validation-20261006.yml"]
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    env:
+      JAVA_HOME: /usr/lib/jvm/temurin-21-jdk-amd64
+      GRADLE_USER_HOME: /tmp/sphinx-approach-cast-validation-20261006
+      TZ: UTC
+    steps:
+      - uses: actions/checkout@v6
+        with: {fetch-depth: 0}
+      - name: Bind exact source-only candidate
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "871826305b4c7a0609ce0587f69976828294d7bf"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/sphinx-approach-cast-composition-validation-20261006.yml"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActor.kt)" = "8604f20d4898c93c1ac6972b60512e70c2e79b35"
+          test "$(git hash-object gym/src/test/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEWholeActorApproachRoutingTest.kt)" = "656812e7a78fee178248b754c77f95fa6aed7925"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEActorAdapter.kt)" = "0c77037507e07c912cc034af5be067b13d301d0b"
+          test "$(git hash-object gym/src/main/kotlin/com/wingedsheep/gym/sphinx/SphinxStageEPilotComponent.kt)" = "a783d5e2fc15acf2f17581c930ef33f72c30d7eb"
+          test ! -e "$GRADLE_USER_HOME" && test ! -L "$GRADLE_USER_HOME"
+          test ! -e build/reports/sphinx-approach-cast-validation-20261006
+          test ! -e gym/build/test-results/test
+          test -z "${JAVA_TOOL_OPTIONS:-}${JDK_JAVA_OPTIONS:-}${_JAVA_OPTIONS:-}${CLASSPATH:-}${JAVA_OPTS:-}${GRADLE_OPTS:-}"
+          mkdir -p build/reports/sphinx-approach-cast-validation-20261006
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > build/reports/sphinx-approach-cast-validation-20261006/source.txt
+          java -version 2> build/reports/sphinx-approach-cast-validation-20261006/java-version.txt
+          date -u +%s > build/reports/sphinx-approach-cast-validation-20261006/start-epoch.txt
+      - name: Compile and run exact composition regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          OUT=build/reports/sphinx-approach-cast-validation-20261006
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain :gym:compileTestKotlin 2>&1 | tee "$OUT/compile.log"
+          date -u +%s > "$OUT/test-start-epoch.txt"
+          bash scripts/gradle-locked --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain --info :gym:test --tests com.wingedsheep.gym.sphinx.SphinxStageEWholeActorApproachRoutingTest 2>&1 | tee "$OUT/tests.log"
+          date -u +%s > "$OUT/test-end-epoch.txt"
+          /usr/bin/python3.10 -I -S - <<'PY'
+          import datetime, hashlib, json, pathlib, xml.etree.ElementTree as ET
+          out=pathlib.Path('build/reports/sphinx-approach-cast-validation-20261006')
+          results=pathlib.Path('gym/build/test-results/test')
+          expected='com.wingedsheep.gym.sphinx.SphinxStageEWholeActorApproachRoutingTest'
+          file=results/('TEST-'+expected+'.xml')
+          files=list(results.glob('TEST-*.xml'))
+          assert [p.name for p in files] == [file.name]
+          raw=file.read_bytes()
+          suite=ET.fromstring(raw)
+          assert suite.tag=='testsuite' and suite.attrib['name']==expected
+          assert int(suite.attrib['tests'])==1
+          assert all(int(suite.attrib[k])==0 for k in ('failures','errors','skipped'))
+          assert len(list(suite.iter('testcase')))==1
+          low=int((out/'test-start-epoch.txt').read_text())
+          high=int((out/'test-end-epoch.txt').read_text())
+          stamp=datetime.datetime.fromisoformat(suite.attrib['timestamp'].replace('Z','+00:00'))
+          if stamp.tzinfo is None: stamp=stamp.replace(tzinfo=datetime.timezone.utc)
+          assert low-1 <= stamp.timestamp() <= high+1
+          (out/file.name).write_bytes(raw)
+          (out/'result.json').write_text(json.dumps({
+              'authority':'AUTHOR_VALIDATION_ONLY_NO_EXECUTION_AUTHORITY',
+              'suite':expected,'tests':1,'failures':0,'errors':0,'skipped':0,
+              'xml_sha256':hashlib.sha256(raw).hexdigest(),
+              'candidate_source':'871826305b4c7a0609ce0587f69976828294d7bf',
+              'official_counters_delta':0,'stage_e_admission':False
+          }, sort_keys=True)+'\n')
+          PY
+      - name: Preserve author validation evidence
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sphinx-approach-cast-validation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/reports/sphinx-approach-cast-validation-20261006/
+            gym/build/test-results/test/
+          if-no-files-found: error
+          retention-days: 90
