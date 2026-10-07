@@ -2,13 +2,13 @@ name: Pest Monster Tron R1 preflight fixture repair qualification
 
 on:
   push:
-    branches: ["pest/monster-tron-r1-preflight-repair-20261007"]
+    branches: ["pest/monster-tron-r1-preflight-repair-v2-20261007"]
 
 permissions:
   contents: read
 
 concurrency:
-  group: pest-monster-tron-r1-preflight-repair-20261007
+  group: pest-monster-tron-r1-preflight-repair-v2-20261007
   cancel-in-progress: false
 
 jobs:
@@ -31,8 +31,14 @@ jobs:
           java-version: '21'
       - name: Install repository task runner
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y just
+          set -euo pipefail
+          mkdir -p "$OUT" "$RUNNER_TEMP/pest-just"
+          curl --fail --location --retry 3 https://github.com/casey/just/releases/download/1.40.0/just-1.40.0-x86_64-unknown-linux-musl.tar.gz -o "$RUNNER_TEMP/pest-just/just.tar.gz"
+          printf '%s  %s\n' 181b91d0ceebe8a57723fb648ed2ce1a44d849438ce2e658339df4f8db5f1263 "$RUNNER_TEMP/pest-just/just.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/pest-just/just.tar.gz" -C "$RUNNER_TEMP/pest-just" just
+          echo "$RUNNER_TEMP/pest-just" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/pest-just/just" --version | tee "$OUT/just-version.txt"
+          "$RUNNER_TEMP/pest-just/just" --list > "$OUT/just-recipes.txt"
       - name: Record source delta and reconstruct unchanged pinned validation input
         shell: bash
         run: |
@@ -47,7 +53,7 @@ jobs:
             'gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronOneShotBoundaryTest.kt',
           }
           assert set(pathlib.Path('/tmp/pest-r1-preflight-repair/changed-paths.txt').read_text().splitlines()) == expected
-          assert subprocess.check_output(['git', 'rev-parse', 'HEAD^'], text=True).strip() == 'dc22d47efa7b67442a6120b3a2aa8802c75d5a5a'
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD^'], text=True).strip() == '06f8d61df52bf70547c6df4bff8eb4741bae298f'
           PY
           python3 scripts/experiments/pest-control/build_pest_monster_tron_r1_input.py --output "$PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP" | tee "$OUT/input-build.log"
           sha256sum "$PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP" > "$OUT/input.sha256"
