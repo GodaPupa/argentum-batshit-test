@@ -1,0 +1,134 @@
+name: Pest R1 repaired source and activation qualification
+
+on:
+  push:
+    branches: ["pest/monster-tron-r1-repaired-activation-qualify-20261007"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pest-r1-repaired-activation-qualification-20261007
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OUT: /tmp/pest-r1-repaired-activation
+      GRADLE_USER_HOME: /tmp/pest-r1-repaired-activation-gradle
+      PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP: /tmp/pest-r1-repaired-activation/freeze.zip
+      PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ACK: LOAD_FROZEN_MONSTER_TRON_R1_FOR_VALIDATION_ONLY
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: control
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/checkout@v6
+        with:
+          path: execution
+          ref: ed35c3035d41a740aac1657708b2023b624cfc47
+          fetch-depth: 1
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install pinned repository task runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT" "$RUNNER_TEMP/pest-just"
+          curl --fail --location --retry 3 https://github.com/casey/just/releases/download/1.40.0/just-1.40.0-x86_64-unknown-linux-musl.tar.gz -o "$RUNNER_TEMP/pest-just/just.tar.gz"
+          printf '%s  %s\n' 181b91d0ceebe8a57723fb648ed2ce1a44d849438ce2e658339df4f8db5f1263 "$RUNNER_TEMP/pest-just/just.tar.gz" | sha256sum --check
+          tar -xzf "$RUNNER_TEMP/pest-just/just.tar.gz" -C "$RUNNER_TEMP/pest-just" just
+          echo "$RUNNER_TEMP/pest-just" >> "$GITHUB_PATH"
+          "$RUNNER_TEMP/pest-just/just" --version | tee "$OUT/just-version.txt"
+      - name: Verify exact checkout, three-line workflow delta and GET-only claim binding
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 control/scripts/experiments/pest-control/verify_repaired_r1_activation_20261007.py \
+            --repo control --source execution | tee "$OUT/surface-and-receipt.json"
+          git -C control rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/qualification-source.txt"
+          git -C execution rev-parse HEAD HEAD^{tree} > "$OUT/execution-source.txt"
+          git -C control show 570751227244d555b6fc45793cc3c32917374089:.github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml > "$OUT/prospective-workflow.yml"
+      - name: Reconcile historical and prospective refs before qualification read-only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/heads/pest-control/official-attempts" > "$OUT/claim-refs-before.json"
+          gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/heads/pest-control/tier1-monster-tron-r1" > "$OUT/execution-refs-before.json"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/pest-r1-repaired-activation')
+          claims={r['ref']:r['object']['sha'] for r in json.loads((p/'claim-refs-before.json').read_text())}
+          refs={r['ref']:r['object']['sha'] for r in json.loads((p/'execution-refs-before.json').read_text())}
+          assert claims=={'refs/heads/pest-control/official-attempts/monster-tron-smoke-v1':'1c2e253ad7f5a7652304f7c9aaafc30e547a481e'}
+          assert refs=={'refs/heads/pest-control/tier1-monster-tron-r1-official-smoke':'7f5524d78cdf90311df02a89ab81e470ba8ce043'}
+          PY
+      - name: Load unchanged frozen bytes for validation only
+        working-directory: execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 origin 41716f6918ec559ee60b14815b5b0f23d3aaf38a
+          python3 scripts/experiments/pest-control/build_pest_monster_tron_r1_input.py --output "$PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP" | tee "$OUT/input-build.log"
+          echo "e9ddafe0a7aec28cb07950f2f1d5908a31af677ff58415e809117575f46d6817  $PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP" | sha256sum -c -
+      - name: Qualify repaired source with R1 rebind and boundary suites only
+        working-directory: execution
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = ed35c3035d41a740aac1657708b2023b624cfc47
+          just test-class PestControlTierOneMonsterTronOneShotBoundaryTest \
+            --tests com.wingedsheep.gym.PestControlTierOneMonsterTronR1RebindTest \
+            --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            2>&1 | tee "$OUT/qualification.log"
+      - name: Require exact suites and no skipped pinned-input validation
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "$OUT/qualification-summary.json"
+          import json, pathlib, xml.etree.ElementTree as ET
+          result={}
+          for name,count in [('PestControlTierOneMonsterTronOneShotBoundaryTest',11),('PestControlTierOneMonsterTronR1RebindTest',6)]:
+              root=ET.parse(pathlib.Path('execution/gym/build/test-results/test')/('TEST-com.wingedsheep.gym.'+name+'.xml')).getroot()
+              assert int(root.attrib['tests'])==count
+              assert all(int(root.attrib[k])==0 for k in ['failures','errors','skipped'])
+              result[name]=root.attrib
+          print(json.dumps({'suites':result,'execution_source':'ed35c3035d41a740aac1657708b2023b624cfc47','scope':'PREPARATION_ONLY_WITH_EXCLUDED_SYNTHETIC_FIXTURES','claims_created':0,'official_initializations':0,'official_actions':0,'official_outcomes':0},sort_keys=True))
+          PY
+      - name: Preserve test evidence and reconcile refs after qualification
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          if [ -d execution/gym/build/test-results/test ]; then cp -a execution/gym/build/test-results/test "$OUT/test-results"; fi
+          gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/heads/pest-control/official-attempts" > "$OUT/claim-refs-after.json"
+          gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/heads/pest-control/tier1-monster-tron-r1" > "$OUT/execution-refs-after.json"
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('/tmp/pest-r1-repaired-activation')
+          claims={r['ref']:r['object']['sha'] for r in json.loads((p/'claim-refs-after.json').read_text())}
+          refs={r['ref']:r['object']['sha'] for r in json.loads((p/'execution-refs-after.json').read_text())}
+          assert claims=={'refs/heads/pest-control/official-attempts/monster-tron-smoke-v1':'1c2e253ad7f5a7652304f7c9aaafc30e547a481e'}
+          assert refs=={'refs/heads/pest-control/tier1-monster-tron-r1-official-smoke':'7f5524d78cdf90311df02a89ab81e470ba8ce043'}
+          PY
+          find "$OUT" -type f ! -name evidence.sha256 -print0 | sort -z | xargs -0 sha256sum > "$OUT/evidence.sha256"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-r1-repaired-activation-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-r1-repaired-activation/
+          if-no-files-found: error
+          retention-days: 90
