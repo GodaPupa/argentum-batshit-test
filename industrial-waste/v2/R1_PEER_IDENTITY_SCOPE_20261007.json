@@ -1,0 +1,18 @@
+{
+  "schema": "industrial-peer-identity-local-failure-v0",
+  "status": "UNQUALIFIED_PLATFORM_PREREQUISITE_BLOCKED",
+  "authority_comment": 6045496535,
+  "parent": "572bf3ab40163e155739043f7dfa80b408612ac5",
+  "local_attempt": 1,
+  "test_methods": 19,
+  "errors": 19,
+  "cause": "AF_UNIX socket creation denied with EPERM at setUp before child launch or implementation execution. Local sandbox/platform prerequisite, not a successful adversarial rejection. No local retry.",
+  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
+  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
+  "files": {
+    "test_r1_peer_identity.py": "4f5a65ac3ae7006ad1a7eb405da8eec43f35e5e1e71a7a1bf5453684fd3c09c1",
+    "r1_peer_identity.py": "107b6a70ef420711f10a6bdab06e3cfd39afe343ca879c974cf15e8317e8fe99",
+    "R1_PEER_IDENTITY_LOCAL_FAILURE_20261007.log": "b25efdfd5f6e415cb3435495744058c2f8391e769b950f364b61df50194d0219"
+  },
+  "next_delta": "Separate parser-only fixtures from socket setup and add explicit non-skipping Linux/pidfd/Unix-socket prerequisite check; use pinned ordinary Actions qualification for successor, preserve original failure."
+}
