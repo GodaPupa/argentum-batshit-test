@@ -18,7 +18,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class GrantProtection(
     val color: Color,
-    val filter: GroupFilter = GroupFilter.attachedCreature()
+    val filter: GroupFilter = GroupFilter.attachedCreature(),
+    /** Only this grant allows its source Aura to remain attached. */
+    val retainsSourceAttachment: Boolean = false,
+    /** This grant retains eligible controlled attachments present when it starts applying. */
+    val retainsPreexistingControlledAttachments: Boolean = false
 ) : StaticAbility {
     override val description: String = "${filter.description} have protection from ${color.displayName.lowercase()}"
     override fun applyTextReplacement(replacer: TextReplacer): StaticAbility {
@@ -68,7 +72,11 @@ data class GrantProtectionFromCardType(
 @SerialName("GrantProtectionFromChosenColorToGroup")
 @Serializable
 data class GrantProtectionFromChosenColorToGroup(
-    val filter: GroupFilter = GroupFilter(GameObjectFilter.Companion.Creature.youControl())
+    val filter: GroupFilter = GroupFilter(GameObjectFilter.Companion.Creature.youControl()),
+    /** Only this grant allows its source Aura to remain attached. */
+    val retainsSourceAttachment: Boolean = false,
+    /** This grant retains eligible controlled attachments present when it starts applying. */
+    val retainsPreexistingControlledAttachments: Boolean = false
 ) : StaticAbility {
     override val description: String = "Creatures of the chosen group have protection from the chosen color"
     override fun applyTextReplacement(replacer: TextReplacer): StaticAbility {
@@ -164,7 +172,11 @@ data class GrantHexproofFromMulticoloredToGroup(
 @SerialName("GrantProtectionFromControlledColors")
 @Serializable
 data class GrantProtectionFromControlledColors(
-    val filter: GroupFilter = GroupFilter.attachedCreature()
+    val filter: GroupFilter = GroupFilter.attachedCreature(),
+    /** Only this grant allows its source Aura to remain attached. */
+    val retainsSourceAttachment: Boolean = false,
+    /** This grant retains eligible controlled attachments present when it starts applying. */
+    val retainsPreexistingControlledAttachments: Boolean = false
 ) : StaticAbility {
     override val description: String =
         "${filter.description} have protection from the colors of permanents you control"

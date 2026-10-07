@@ -83,6 +83,8 @@ class CostCalculator(
         chosenTargets: List<EntityId> = emptyList(),
         fromZone: Zone? = null,
         declaredCostSlot: ChoiceSlot? = null,
+        additionalMana: ManaCost = ManaCost.ZERO,
+        baseManaCost: ManaCost = cardDef.manaCost,
     ): ManaCost {
         var totalReduction = 0
         var totalIncrease = 0
@@ -174,7 +176,7 @@ class CostCalculator(
         // reductions; the mana component is floored at {0} (it can't be reduced below {0}). Apply
         // increases first so a reduction that overshoots {0} doesn't leave a stale increase behind
         // (e.g. {U} +{1} −{2} → {U}, not {1}{U}).
-        var effectiveCost = increaseGenericCost(cardDef.manaCost, totalIncrease)
+        var effectiveCost = increaseGenericCost(baseManaCost + additionalMana, totalIncrease)
         if (coloredIncreaseSymbols.isNotEmpty()) {
             effectiveCost = increaseColoredCost(effectiveCost, coloredIncreaseSymbols)
         }
@@ -1306,6 +1308,7 @@ class CostCalculator(
             CardPredicate.IsArtifact -> typeLine.isArtifact
             CardPredicate.IsEnchantment -> typeLine.isEnchantment
             CardPredicate.IsPlaneswalker -> CardType.PLANESWALKER in typeLine.cardTypes
+            is CardPredicate.HasCardType -> predicate.cardType in typeLine.cardTypes
             CardPredicate.IsInstant -> typeLine.isInstant
             CardPredicate.IsSorcery -> typeLine.isSorcery
             CardPredicate.HasAdventure -> cardDef.isAdventure
@@ -1323,6 +1326,7 @@ class CostCalculator(
             CardPredicate.IsToken -> false
             CardPredicate.IsNontoken -> true
             CardPredicate.IsLegendary -> typeLine.isLegendary
+            CardPredicate.IsSnow -> typeLine.supertypes.any { it.name == "SNOW" }
             CardPredicate.IsNonlegendary -> !typeLine.isLegendary
             CardPredicate.HasNonManaActivatedAbility -> cardDef.hasNonManaActivatedAbility
             CardPredicate.HasActivatedAbility -> cardDef.hasActivatedAbility
@@ -1847,7 +1851,14 @@ class CostCalculator(
         alternativeCost: ManaCost,
         casterId: EntityId? = null,
         chosenTargets: List<EntityId> = emptyList(),
+        additionalMana: ManaCost = ManaCost.ZERO,
+        declaredCostSlot: ChoiceSlot? = null,
     ): ManaCost {
+        if (casterId != null) return calculateEffectiveCost(
+            state, cardDef, casterId, chosenTargets,
+            declaredCostSlot = declaredCostSlot, additionalMana = additionalMana,
+            baseManaCost = alternativeCost
+        )
         var totalIncrease = 0
         for ((sourceId, ability) in scanBattlefieldModifySpellCost(state)) {
             val target = ability.target

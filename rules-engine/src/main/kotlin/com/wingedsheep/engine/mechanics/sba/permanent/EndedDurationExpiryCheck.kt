@@ -128,7 +128,7 @@ class EndedDurationExpiryCheck : StateBasedActionCheck {
      * durations. The returned set is always a subset of the input (the affected set only shrinks),
      * which is what makes the latch one-way.
      */
-    private fun activeAffectedEntities(
+    internal fun activeAffectedEntities(
         state: GameState,
         projected: ProjectedState,
         floating: ActiveFloatingEffect

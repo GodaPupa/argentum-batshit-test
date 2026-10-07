@@ -1,0 +1,114 @@
+{
+  "schema": "izzet-position1-missing-identity-disposition-v2",
+  "date_utc": "2026-10-02",
+  "authority": "SOURCE_TRIAGE_AND_ADOPTION_TRACKING_ONLY_NO_GAMEPLAY_AUTHORITY",
+  "baseline": {
+    "run": 36933345998,
+    "artifact": 11196234353,
+    "artifact_sha256": "81308d41e5fb918c72174dd472053b98e88afd178065507cf11563620e305cb1",
+    "registered": 14,
+    "missing": 41
+  },
+  "categories": {
+    "1_existing_definition_registration_only": [],
+    "2_existing_implementation_requires_or_is_under_exact_adoption": [
+      {"name":"Opal Palace","state":"shared compatibility + canonical adoption validation in progress","source_blob":"544a440160528f4a08211109936a55e263c39d19"},
+      {"name":"Vines of Vastwood","state":"exact previously accepted component source adopted; validation in progress","source_blob":"7fc212f250daf9c26dd6ca60feb8086f59dd6ed2"},
+      {"name":"Forge of Heroes","state":"exact previously accepted component source adopted; validation in progress","source_blob":"d81a0d3f9022564c5616473db6b1cf3e4a6feb76"},
+      {"name":"Cho-Manno's Blessing","state":"exact previously accepted 560-bank source adopted; validation in progress","source_blob":"d9c65d30a84d21ebbdc27494de4d9a23e975ae73"},
+      {"name":"Colossal Dreadmask","state":"exact previously accepted 560-bank source adopted; validation in progress","source_blob":"c766c45f9782eab665ace62571cfdda13255dc89"},
+      {"name":"Prismatic Strands","state":"exact previously accepted 560-bank source adopted; validation in progress","source_blob":"53502a126276f95645239073b2c446289dc05d76"},
+      {"name":"Ram Through","state":"exact previously accepted 560-bank source adopted; validation in progress","source_blob":"dd67a43a58d3a26ecbd07606a65c716685f67120"},
+      {"name":"Spirit Link","state":"exact previously accepted 560-bank source adopted; validation in progress","source_blob":"01229f432e088fc1ab8c3ed965ea0c5e73c5cdcf"},
+      {"name":"Goblin Electromancer","state":"five-case mechanics scope frozen; do not mutate pending source review + explicit authorization"},
+      {"name":"Afterlife","state":"exact historical canonical source adopted; focused validation in progress"},
+      {"name":"Alabaster Host Intercessor","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Brightwood Tracker","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Cosmic Hunger","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Deepwood Denizen","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Destroy Evil","state":"exact historical canonical source adopted; focused validation in progress"},
+      {"name":"Echoing Truth","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Fire // Ice","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Generous Gift","state":"exact historical canonical source adopted; focused validation in progress"},
+      {"name":"Guardian Naga // Banishing Coils","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Heliod's Pilgrim","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Ideas Unbound","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Ilysian Caryatid","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Izzet Guildmage","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Leafkin Druid","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Lose Focus","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Master's Rebuke","state":"exact historical canonical source adopted; focused validation in progress"},
+      {"name":"Pieces of the Puzzle","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Rolling Thunder","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Shardless Outlander","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Shattering Pulse","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Shrine Steward","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Skred","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Stave Off","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Temporal Isolation","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Ulvenwald Captive // Ulvenwald Abomination","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"},
+      {"name":"Whisperer of the Wilds","state":"canonical source + scenario test demonstrated in retained historical source tree; exact adoption/qualification pending"}
+    ],
+    "3_no_current_definition_demonstrated_primitives_appear_reusable": [],
+    "4_requires_distinct_mechanic_or_engine_qualification_before_batching": [
+      {"name":"Benevolent Blessing","gap":"No canonical source/test demonstrated in retained historical source tree; chosen-color protection Aura with self-Aura retention exception requires isolated implementation/qualification."},
+      {"name":"Snake Umbra","gap":"No canonical source/test demonstrated in retained historical source tree; totem armor replacement plus combat-damage draw Aura requires isolated implementation/qualification."},
+      {"name":"Capsize","gap":"Canonical historical definition/test were located, but direct adoption failed compilation because current source lacks KeywordAbility.buyback. Adoption was backed out; buyback support requires its own source/qualification scope before Capsize can re-enter the registry."},
+      {"name":"Star Compass","gap":"Canonical historical definition/test were located, but direct adoption failed compilation because current source lacks ManaColorSet.BasicLandsYouControlCouldProduce. Adoption was backed out; that mana-color selection primitive and its runtime handling require their own source/qualification scope."},
+      {"name":"Everflowing Chalice","gap":"Canonical historical definition/test were located and the definition itself compiled, but the exact scenario test cannot compile on current source because CastSpell no longer carries declaredCostRepeatCount. Current optional-cost enumeration prices one multikicker payment and exposes no repeat multiplicity. Adoption was backed out rather than silently degrade Multikicker to single Kicker; true repeat-count cast/payment/storage support requires its own source/qualification scope."}
+    ]
+  },
+  "next_high_leverage_batch": [
+    "Afterlife",
+    "Destroy Evil",
+    "Generous Gift",
+    "Master's Rebuke",
+    "then next small exact-adoption batch from category 2 after current validations"
+  ],
+  "prohibited": [
+    "do not retest Owlbear",
+    "do not mutate Goblin Electromancer pending review",
+    "do not batch category-4 mechanics together",
+    "no official seed/allocation/claim/game"
+  ],
+  "official_counters_delta": 0,
+  "history_sweep": {
+    "source_tree": "f92cdeaed8be104d98b1a971347cd9c2f089f779",
+    "finding": "30 of the 32 previously unclassified missing identities have canonical definition + scenario-test paths in this retained historical source tree; registry absence on current line is not implementation absence."
+  },
+  "compile_repair_checkpoint": {
+    "source_before_repair": "7a10e6033ec1a02fc131dd2c4ea66f5c760f2db2",
+    "failed_validation_run": 36975721064,
+    "demonstrated_blockers": ["missing Effects.PreventTargeting DSL helper","Capsize canonical source requires missing KeywordAbility.buyback"],
+    "disposition": "Restore exact PreventTargeting helper; back out Capsize adoption rather than import unreviewed buyback subsystem.",
+    "official_counters_delta": 0
+  },
+  "compile_repair_checkpoint_v2": {
+    "source_before_repair": "fcd8b792169bcbc0f7597a1a9b69c9cfeda0b00f",
+    "failed_validation_run": 36976258309,
+    "demonstrated_blockers": ["SerializableModification.PreventTargeting missing toModification exhaustiveness branch","TargetingRestrictionCreatedEvent missing ClientEvent exhaustiveness branch","Star Compass canonical source requires missing ManaColorSet.BasicLandsYouControlCouldProduce"],
+    "disposition": "Restore the two exact historical targeting exhaustiveness companions; back out Star Compass rather than import an unreviewed mana-color subsystem.",
+    "official_counters_delta": 0
+  },
+  "compile_repair_checkpoint_v3": {
+    "source_before_repair": "2b0fe1db0a29cbba91eceb8cf972a4d463f78781",
+    "failed_validation_run": 36976811935,
+    "demonstrated_blockers": ["Forge of Heroes canonical source requires GameObjectFilter.commander(), absent on that source line"],
+    "disposition": "Restore commander designation predicate, object-filter DSL, evaluator and focused regression coverage from retained canonical semantics.",
+    "official_counters_delta": 0
+  },
+  "compile_repair_checkpoint_v4": {
+    "source_before_repair": "5e28f7c1fa3c3a1bc60024cf2c1d55d398ae729f",
+    "failed_validation_run": 36985914075,
+    "demonstrated_blockers": ["BeginningPhaseManager untap-filter StatePredicate when missing IsCommander exhaustiveness/semantics","TriggerMatcher trigger-filter StatePredicate when missing IsCommander exhaustiveness/semantics","AffectsFilterResolver projection StatePredicate when missing IsCommander exhaustiveness/semantics"],
+    "disposition": "Restore exactly the three retained canonical IsCommander branches; no broader predicate redesign.",
+    "official_counters_delta": 0
+  },
+  "compile_repair_checkpoint_v5": {
+    "source_before_repair": "4d14f7065350e4135848bd10cff3f6fcfd672c31",
+    "failed_validation_run": 36986497367,
+    "demonstrated_blockers": ["EverflowingChaliceScenarioTest requires removed CastSpell.declaredCostRepeatCount API","current CastSpell carries only declaredCostSlot and current optional-cost enumeration prices one multikicker payment, so repeat multiplicity is not represented"],
+    "disposition": "Back out Everflowing Chalice definition/test and classify true multikicker multiplicity as a distinct mechanic gap; do not fake a one-kicker implementation.",
+    "official_counters_delta": 0
+  }
+}

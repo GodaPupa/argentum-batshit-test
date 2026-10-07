@@ -100,7 +100,7 @@ class TargetFinder(
          */
         pipelineContext: PredicateContext? = null
     ): List<EntityId> {
-        return when (requirement) {
+        val targets = when (requirement) {
             is TargetPlayer -> findPlayerTargets(state, requirement, controllerId, sourceId)
             is TargetOpponent -> findOpponentTargets(state, requirement, controllerId, sourceId)
             is AnyTarget -> findAnyTargets(state, controllerId, sourceId, targetingSourceType)
@@ -123,6 +123,9 @@ class TargetFinder(
                     }
                 if (excludeId != null) baseTargets.filter { it != excludeId } else baseTargets
             }
+        }
+        return if (ignoreTargetingRestrictions) targets else targets.filterNot {
+            com.wingedsheep.engine.mechanics.targeting.FloatingTargetingRestriction.prevents(state, it, controllerId)
         }
     }
 

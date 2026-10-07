@@ -26,6 +26,26 @@ class ModalAndCloneContinuationResumer(
     private val services: com.wingedsheep.engine.core.EngineServices
 ) : ContinuationResumerModule {
 
+    private fun resumePreEntry(state: GameState, continuation: PreEntryContinuation,
+        response: DecisionResponse, checkForMore: CheckForMore): ExecutionResult {
+        val result = com.wingedsheep.engine.handlers.effects.PreEntryCoordinator(services.cardRegistry)
+            .resume(state, continuation, response, services.effectExecutorRegistry::execute)
+        if (!result.isSuccess) return result.toExecutionResult()
+        val resumed = exposeCollectionsToNextFrame(result.state,
+            continuation.operation.context.pipeline.storedCollections + result.updatedCollections)
+        if (result.triggersAlreadyProcessed) return checkForMore(resumed, result.events)
+        val entryEvents = result.events.filterIsInstance<ZoneChangeEvent>().filter { it.toZone == Zone.BATTLEFIELD }
+        val triggers = services.triggerDetector.detectTriggers(resumed, entryEvents)
+        val events = result.events.map { event -> if (event is ZoneChangeEvent && event.toZone == Zone.BATTLEFIELD)
+            event.copy(entryTriggersAlreadyProcessed = true) else event }
+        if (triggers.isNotEmpty()) {
+            val triggered = services.triggerProcessor.processTriggers(resumed, triggers)
+            if (triggered.isPaused) return ExecutionResult.propagatePause(triggered.state, events + triggered.events)
+            return checkForMore(triggered.state, events + triggered.events)
+        }
+        return checkForMore(resumed, events)
+    }
+
     private val dynamicAmountEvaluator = DynamicAmountEvaluator()
 
     override fun resumers(): List<ContinuationResumer<*>> = listOf(
@@ -35,6 +55,7 @@ class ModalAndCloneContinuationResumer(
         resumer(CloneEntersOnBattlefieldContinuation::class, ::resumeCloneEntersOnBattlefield),
         resumer(EntersWithChoiceSpellContinuation::class, ::resumeEntersWithChoiceSpell),
         resumer(EntersWithChoiceOnBattlefieldContinuation::class, ::resumeEntersWithChoiceOnBattlefield),
+        resumer(PreEntryContinuation::class, ::resumePreEntry),
         resumer(PayLifeOrEnterTappedLandContinuation::class, ::resumePayLifeOrEnterTappedLand),
         resumer(PayLifeOrEnterTappedSpellContinuation::class, ::resumePayLifeOrEnterTappedSpell),
         resumer(RevealCountersContinuation::class, ::resumeRevealCounters),
@@ -836,6 +857,8 @@ class ModalAndCloneContinuationResumer(
                 }
             }
         }
+
+        newState = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, newState)
 
         // Check if the permanent has remaining choices to chain to (e.g. color + creature type).
         val entityContainer = newState.getEntity(entityId)

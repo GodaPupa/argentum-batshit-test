@@ -1407,6 +1407,7 @@ is PermanentsSacrificedEvent -> {
             is DiscardRequiredEvent,
             is LookedAtCardsEvent,
             is LibraryReorderedEvent,
+            is TargetingRestrictionCreatedEvent,
             is KeywordGrantedEvent,
             is CitysBlessingGainedEvent,
             is EnduringStoryGainedEvent,

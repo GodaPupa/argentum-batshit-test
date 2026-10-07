@@ -1669,6 +1669,16 @@ object Effects {
         ModifyStatsEffect(power, toughness, target)
 
     /**
+     * Prevent the selected players' spells and abilities from targeting this object or player.
+     * The selected players are fixed at resolution; this does not grant a removable ability.
+     */
+    fun PreventTargeting(
+        target: EffectTarget = EffectTarget.ContextTarget(0),
+        fromPlayers: Player = Player.EachOpponent,
+        duration: Duration = Duration.EndOfTurn
+    ): Effect = com.wingedsheep.sdk.scripting.effects.PreventTargetingEffect(target, fromPlayers, duration)
+
+    /**
      * Grant hexproof to a target (player or permanent) until end of turn.
      * For players: adds PlayerHexproofComponent.
      * For permanents: creates a floating effect granting the Hexproof keyword.

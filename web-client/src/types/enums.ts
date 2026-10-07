@@ -185,6 +185,7 @@ export enum Keyword {
   RIOT = 'RIOT',
   // Defense
   DEFENDER = 'DEFENDER',
+  UMBRA_ARMOR = 'UMBRA_ARMOR',
   INDESTRUCTIBLE = 'INDESTRUCTIBLE',
   HEXPROOF = 'HEXPROOF',
   SHROUD = 'SHROUD',
@@ -292,6 +293,7 @@ export const KeywordDisplayNames: Record<Keyword, string> = {
   [Keyword.RIOT]: 'Riot',
   [Keyword.DEFENDER]: 'Defender',
   [Keyword.INDESTRUCTIBLE]: 'Indestructible',
+  [Keyword.UMBRA_ARMOR]: 'Umbra armor',
   [Keyword.HEXPROOF]: 'Hexproof',
   [Keyword.SHROUD]: 'Shroud',
   [Keyword.WARD]: 'Ward',

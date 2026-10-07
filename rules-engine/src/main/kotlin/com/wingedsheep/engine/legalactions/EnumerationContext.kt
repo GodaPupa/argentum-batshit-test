@@ -51,6 +51,9 @@ class EnumerationContext(
     val turnManager: TurnManager,
     val mode: EnumerationMode = EnumerationMode.FULL
 ) {
+    val castManaQuote by lazy {
+        com.wingedsheep.engine.handlers.actions.spell.CastManaQuote(cardRegistry, costCalculator, conditionEvaluator, predicateEvaluator)
+    }
     val skipAutoTapPreview: Boolean get() = mode == EnumerationMode.ACTIONS_ONLY
     // Granted-keyword resolver (e.g., convoke granted by Eirdu via GrantKeywordToOwnSpells)
     val grantedKeywordResolver by lazy { GrantedKeywordResolver(cardRegistry) }
