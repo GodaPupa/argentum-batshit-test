@@ -18,6 +18,7 @@ data class MonsterTronRunnerSurfacePreflightResult(
     val officialActionsSubmitted: Int = 0,
     val outcomeExposure: Int = 0,
     val guardedOfficialWorkflowPresent: Boolean = false,
+    val guardedR1OfficialWorkflowPresent: Boolean = false,
 ) {
     val green: Boolean get() = errors.isEmpty()
 }
@@ -34,6 +35,12 @@ object PestControlTierOneMonsterTronRunnerSurfacePreflight {
 
     internal const val OFFICIAL_WORKFLOW_PATH = ".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml"
     internal const val OFFICIAL_WORKFLOW_SHA256 = "6f37cdb939ab310655f78d82ffd711c9f0f389b51e8bd6f6f1a84eb732b9fa3f"
+    internal const val R1_OFFICIAL_WORKFLOW_PATH = ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml"
+    internal const val R1_OFFICIAL_WORKFLOW_SHA256 = "80bf21c3c0577bd97384f64a250cfc3911e610e52cd91c3882e3d40c03197ffc"
+    internal const val V3_REBIND_QUALIFICATION_WORKFLOW_PATH = ".github/workflows/pest-monster-tron-r1-execution-source-rebind-v3-qualify-20261006.yml"
+    internal const val V3_REBIND_QUALIFICATION_WORKFLOW_SHA256 = "7822f712f4df32ef34540b6a38e8ba5bf2cbdbe092da78e276924a510107d109"
+    internal const val V3_1_REBIND_QUALIFICATION_WORKFLOW_PATH = ".github/workflows/pest-monster-tron-r1-execution-source-rebind-v3-1-qualify-20261006.yml"
+    internal const val V3_1_REBIND_QUALIFICATION_WORKFLOW_SHA256 = "15e58ebc7fc63b536134307be087869161e8e2afcede79bef7a72e57e7ffefe3"
 
     private val forbiddenContent = listOf(
         "tier-one-monster-tron-official-execution",
@@ -71,6 +78,9 @@ object PestControlTierOneMonsterTronRunnerSurfacePreflight {
             val expectedHash = when {
                 normalizedPath.endsWith(CONSTRUCTION_WORKFLOW_PATH) -> CONSTRUCTION_WORKFLOW_SHA256
                 normalizedPath.endsWith(OFFICIAL_WORKFLOW_PATH) -> OFFICIAL_WORKFLOW_SHA256
+                normalizedPath.endsWith(R1_OFFICIAL_WORKFLOW_PATH) -> R1_OFFICIAL_WORKFLOW_SHA256
+                normalizedPath.endsWith(V3_REBIND_QUALIFICATION_WORKFLOW_PATH) -> V3_REBIND_QUALIFICATION_WORKFLOW_SHA256
+                normalizedPath.endsWith(V3_1_REBIND_QUALIFICATION_WORKFLOW_PATH) -> V3_1_REBIND_QUALIFICATION_WORKFLOW_SHA256
                 else -> null
             }
             if (expectedHash != null && monsterTronDigest(content.toByteArray(Charsets.UTF_8)) != expectedHash) {
@@ -107,6 +117,9 @@ object PestControlTierOneMonsterTronRunnerSurfacePreflight {
             classesAudited = inventory.publicMethods.size,
             guardedOfficialWorkflowPresent = inventory.workflowFiles.keys.any {
                 it.replace('\\', '/').endsWith(OFFICIAL_WORKFLOW_PATH)
+            },
+            guardedR1OfficialWorkflowPresent = inventory.workflowFiles.keys.any {
+                it.replace('\\', '/').endsWith(R1_OFFICIAL_WORKFLOW_PATH)
             },
         )
     }
