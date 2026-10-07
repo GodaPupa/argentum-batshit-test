@@ -1,0 +1,69 @@
+{
+  "schema": "industrial-r1-boundary-safety-repair-scope-v2",
+  "authority": "IMPLEMENTATION_SOURCE_REVIEW_ONLY_NO_RUNTIME_ADMISSION",
+  "base_commit": "d65ac0c00d06f04e25473af914fee21cb139481a",
+  "base_tree": "10eff6e72987cefba5d6087454a9bd496f7c04f0",
+  "adopted_rule_commit": "cf7e623d9ae2d7095820578d919c8cea64cb9596",
+  "adopted_rule_blob": "5da4912ad51c478b33588eab13af5e7bd95448d5",
+  "review_receipt": 6032123880,
+  "adoption_receipt": 6032126209,
+  "v1_qualification": {
+    "run": 37622949694,
+    "attempt": 1,
+    "conclusion": "success",
+    "tests": 9,
+    "artifact": 11483166205,
+    "artifact_sha256": "e7dc4efcc4bb8cfe3aadc6bc045cd81f44858ad8fa9b4cf55fb3c207796a1401",
+    "artifact_test_sha256": "4bb003bb03afeae42568b349bdc77d057fa40a7a68952bac8bd42953becc4830",
+    "reported_prepublication_test_sha256": "74eadbc6b8f2a04cdc5adcf3305e4e46d5c9480719496cea6f8271b4d0a24db4",
+    "digest_disposition": "Actual CI artifact test bytes match Git blob 3accd6b2f779222371e834cf019fe6ce0cf945b5; checkpoint local-test SHA-256 does not identify those bytes. Preserve both; CI result remains scoped to actual Git bytes."
+  },
+  "v1_static_findings": [
+    "Category labels alone set complete_closure=true without complete resolved graphs or immutable inputs.",
+    "Root resolve() erased root/ancestor symlink evidence before symlink checks.",
+    "Versioned JAR entries were selected without Multi-Release: true.",
+    "Hidden definitions used caller-supplied names and generator labels without exact JDK/generator/Lookup/input evidence.",
+    "Attestation producer signed arbitrary caller-supplied worker identity using a caller-selected key.",
+    "Receiver did not bind expected worker PID/start/executable/nonce/launch identity; successful HMAC was not authenticated worker provenance.",
+    "No worker-side lifetime or attempted out-of-manifest load mechanism is implemented in v1."
+  ],
+  "repairs": [
+    "Inventory diagnostics have a separate versioned non-authoritative schema, preserve root paths, and explicitly deny complete closure.",
+    "Canonical manifest, name-only provenance verification, prepared-worker signing and admission APIs fail closed until the missing mechanisms exist.",
+    "Inspect lexical path ancestry before resolution; reject absolute/traversing roots, root/ancestor symlinks, hardlinks and overlapping roots.",
+    "Validate archive directory entries and special nodes, reject ambiguous manifests, and honor main-section multi-release opt-in.",
+    "Reject cyclic/disconnected loaders, empty processes, duplicate paths, agent/extension options, extra injection variables, duplicate JSON keys and non-finite numbers.",
+    "Provide explicit failure-only complete-runtime result with no manifest, attestation, admission or counter advancement."
+  ],
+  "qualification": {
+    "kind": "AUTHOR_SYNTHETIC_NON_CORPUS_ONLY",
+    "fixture_count": 28,
+    "local_runtime": "CPython 3.12.14",
+    "exact_pinned_runtime": "separate validation-only workflow child"
+  },
+  "files": {
+    "r1_complete_runtime_boundary.py": {
+      "sha256": "e27aa8a92a5c87ac4bf36ae5a01e1f6c721f0acde4181adbf4d32b3fb531f7d3"
+    },
+    "test_r1_complete_runtime_boundary.py": {
+      "sha256": "aeb49d9f7bd3b487ed224dfa05fbee7c1a8b53e7358357d95d37c6095523fa13"
+    }
+  },
+  "unresolved_implementation": [
+    "Prospective complete resolved build/runtime/native/import/loader graphs and accepted immutable 1339-file store bindings.",
+    "Isolated deterministic build and actual generated/transient reproduction; matching caller-supplied hashes are not reproduction evidence.",
+    "Constrained worker with ordinary definition membership and sole exact LambdaForm exception, all pinned generator/Lookup/input identities.",
+    "Worker-side immutable lifetime enforcement and attempted out-of-manifest load detection.",
+    "Authenticated process-channel key provisioning, receiver-created fresh single-use challenge, process identity and durable transition receipts."
+  ],
+  "review_request_scope": "Independent source review of exact safety repair and its explicit refusal behavior ONLY. Do not certify complete implementation or runtime admission. Determine whether a separately reviewed definition-time mechanism is needed under the governing no-agent rule before continuation.",
+  "downstream_gates": [
+    "complete remaining implementation",
+    "exact runtime/build qualification",
+    "independent complete implementation/source/admission review",
+    "separate sealed-launch acceptance",
+    "separate R1 permit"
+  ],
+  "no_receiving_capture_used": true,
+  "official_counters_delta": 0
+}

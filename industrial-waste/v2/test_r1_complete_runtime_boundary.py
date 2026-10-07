@@ -39,23 +39,23 @@ class CompleteRuntimeBoundaryTest(unittest.TestCase):
     def tearDown(self):
         self.t.cleanup()
 
-    def test_manifest_no_capture_membership(self):
-        manifest,digest=B.build_manifest(self.spec,self.r,self.env)
-        self.assertTrue(manifest["complete_closure"])
+    def test_inventory_has_no_capture_membership_or_closure_authority(self):
+        manifest,digest=B.build_inventory_candidate(self.spec,self.r,self.env)
+        self.assertFalse(manifest["complete_closure"])
         self.assertFalse(manifest["receiving_capture_membership_used"])
         self.assertEqual(len(digest),64)
 
     def test_missing_category_fails(self):
         self.spec["inventory_roots"]=self.spec["inventory_roots"][:-1]
         with self.assertRaisesRegex(B.BoundaryError,"incomplete closure"):
-            B.build_manifest(self.spec,self.r,self.env)
+            B.build_inventory_candidate(self.spec,self.r,self.env)
 
     def test_environment_fails_closed(self):
         with self.assertRaisesRegex(B.BoundaryError,"environment mismatch"):
-            B.build_manifest(self.spec,self.r,{**self.env,"HOME":"/tmp"})
+            B.build_inventory_candidate(self.spec,self.r,{**self.env,"HOME":"/tmp"})
         self.spec["allowed_environment"]={"PATH":"/bin"}
         with self.assertRaisesRegex(B.BoundaryError,"forbidden semantic"):
-            B.build_manifest(self.spec,self.r,{"PATH":"/bin"})
+            B.build_inventory_candidate(self.spec,self.r,{"PATH":"/bin"})
 
     def test_duplicate_zip_member_fails(self):
         archive=self.r/"duplicate.jar"
@@ -67,11 +67,12 @@ class CompleteRuntimeBoundaryTest(unittest.TestCase):
             "kind":"archive","loader_id":"app","ordinal":7
         }
         with self.assertRaisesRegex(B.BoundaryError,"duplicate ZIP"):
-            B.build_manifest(self.spec,self.r,self.env)
+            B.build_inventory_candidate(self.spec,self.r,self.env)
 
     def test_multi_release_and_duplicate_resolution(self):
         archive=self.r/"multi.jar"
         with zipfile.ZipFile(archive,"w") as out:
+            out.writestr("META-INF/MANIFEST.MF",b"Manifest-Version: 1.0\r\nMulti-Release: true\r\n\r\n")
             out.writestr("pkg/A.class",b"base")
             out.writestr("META-INF/versions/17/pkg/A.class",b"v17")
             out.writestr("META-INF/versions/22/pkg/A.class",b"v22")
@@ -79,17 +80,17 @@ class CompleteRuntimeBoundaryTest(unittest.TestCase):
             "logical_name":"resource","path":"multi.jar","category":"RESOURCE",
             "kind":"archive","loader_id":"app","ordinal":7
         }
-        manifest,_=B.build_manifest(self.spec,self.r,self.env)
+        manifest,_=B.build_inventory_candidate(self.spec,self.r,self.env)
         row=[x for x in manifest["effective_binaries"] if x["binary_name"]=="pkg.A"][0]
         self.assertEqual(row["multi_release_version"],17)
         (self.r/"build"/"pkg").mkdir()
         (self.r/"build"/"pkg"/"A.class").write_bytes(b"other")
         with self.assertRaisesRegex(B.BoundaryError,"ambiguous duplicate"):
-            B.build_manifest(self.spec,self.r,self.env)
+            B.build_inventory_candidate(self.spec,self.r,self.env)
         self.spec["duplicate_binary_resolution"]=[
             {"loader_id":"app","binary_name":"pkg.A","winner_root":"resource"}
         ]
-        B.build_manifest(self.spec,self.r,self.env)
+        B.build_inventory_candidate(self.spec,self.r,self.env)
 
     def test_generated_reproducibility_fails_closed(self):
         generated=self.r/"generated"
@@ -106,12 +107,12 @@ class CompleteRuntimeBoundaryTest(unittest.TestCase):
             "root":"generated","recipe_sha256":"4"*64,"generator_sha256":"5"*64,
             "input_sha256":["6"*64],"first_output_sha256":digest,"second_output_sha256":digest
         }]
-        B.build_manifest(self.spec,self.r,self.env)
+        B.build_inventory_candidate(self.spec,self.r,self.env)
         self.spec["generated_prelaunch"][0]["second_output_sha256"]="7"*64
         with self.assertRaisesRegex(B.BoundaryError,"non-reproducible"):
-            B.build_manifest(self.spec,self.r,self.env)
+            B.build_inventory_candidate(self.spec,self.r,self.env)
 
-    def test_hidden_rule_exact(self):
+    def test_name_only_hidden_provenance_is_rejected(self):
         good={
             "name":"java.lang.invoke.LambdaForm$MH/0x1",
             "source":"__JVM_LookupDefineClass__",
@@ -120,18 +121,19 @@ class CompleteRuntimeBoundaryTest(unittest.TestCase):
             "generator_binary":"java.lang.invoke.InvokerBytecodeGenerator",
             "definition_mechanism":"MethodHandles.Lookup.hiddenClass",
         }
-        self.assertTrue(B.verify_runtime_class_rows([good],set()))
+        with self.assertRaisesRegex(B.BoundaryError,"INCOMPLETE_RUNTIME_PROVENANCE"):
+            B.verify_runtime_class_rows([good],set())
         bad=dict(good)
         bad["name"]="jdk.proxy.$Proxy0/0x1"
-        with self.assertRaisesRegex(B.BoundaryError,"unpermitted"):
+        with self.assertRaisesRegex(B.BoundaryError,"INCOMPLETE_RUNTIME_PROVENANCE"):
             B.verify_runtime_class_rows([bad],set())
 
     def test_unknown_ordinary_class_fails(self):
         row={"name":"x.Unknown","source":"file:/x.jar","hidden":False}
-        with self.assertRaisesRegex(B.BoundaryError,"absent from manifest"):
+        with self.assertRaisesRegex(B.BoundaryError,"INCOMPLETE_RUNTIME_PROVENANCE"):
             B.verify_runtime_class_rows([row],{"x.Allowed"})
 
-    def test_attestation_single_use(self):
+    def test_unqualified_attestation_and_consumption_are_disabled(self):
         key=self.r/"key"
         key.write_bytes(b"k"*32)
         os.chmod(key,0o600)
@@ -151,13 +153,126 @@ class CompleteRuntimeBoundaryTest(unittest.TestCase):
             "nonce":"b"*64,
             "execution_owner":"owner",
         }
-        envelope=B.sign_attestation(payload,key)
-        expected={k:payload[k] for k in (
-            "manifest_sha256","source_commit","source_tree","runtime_receipt_sha256","execution_owner"
-        )}
-        B.verify_and_consume_attestation(envelope,key,expected,consumed)
-        with self.assertRaisesRegex(B.BoundaryError,"replayed"):
-            B.verify_and_consume_attestation(envelope,key,expected,consumed)
+        with self.assertRaisesRegex(B.BoundaryError,"INCOMPLETE_AUTHENTICATED_CHANNEL"):
+            B.sign_attestation(payload,key)
+        with self.assertRaisesRegex(B.BoundaryError,"INCOMPLETE_AUTHENTICATED_CHANNEL"):
+            B.verify_and_consume_attestation({"payload":payload},key,payload,consumed)
+        self.assertEqual(list(consumed.iterdir()),[])
+
+    def test_category_labels_cannot_emit_canonical_manifest(self):
+        with self.assertRaisesRegex(B.BoundaryError,"INCOMPLETE_CLOSURE"):
+            B.build_manifest(self.spec,self.r,self.env)
+
+    def test_root_symlink(self):
+        (self.r/"alias").symlink_to(self.r/"build",target_is_directory=True)
+        self.spec["inventory_roots"][0]["path"]="alias"
+        with self.assertRaisesRegex(B.BoundaryError,"symlink"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_ancestor_symlink(self):
+        (self.r/"alias").symlink_to(self.r/"build",target_is_directory=True)
+        self.spec["inventory_roots"][0].update(path="alias/x.txt",kind="file")
+        with self.assertRaisesRegex(B.BoundaryError,"symlink"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_hardlink_alias(self):
+        os.link(self.r/"build/x.txt",self.r/"resource/alias.txt")
+        with self.assertRaisesRegex(B.BoundaryError,"alias"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_overlapping_roots(self):
+        (self.r/"build/nested").mkdir()
+        self.spec["inventory_roots"][1]["path"]="build/nested"
+        with self.assertRaisesRegex(B.BoundaryError,"overlapping"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_missing_root(self):
+        self.spec["inventory_roots"][1]["path"]="absent"
+        with self.assertRaisesRegex(B.BoundaryError,"missing path"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_absolute_root(self):
+        self.spec["inventory_roots"][0]["path"]=str(self.r/"build")
+        with self.assertRaisesRegex(B.BoundaryError,"unsafe"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_loader_cycle(self):
+        self.spec["loader_topology"][1]["parent"]="app"
+        with self.assertRaisesRegex(B.BoundaryError,"cycle"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_empty_processes(self):
+        self.spec["ordered_processes"]=[]
+        with self.assertRaisesRegex(B.BoundaryError,"process ordinals"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_agent_option(self):
+        self.spec["ordered_processes"][0]["argv"].append("-javaagent:evil.jar")
+        with self.assertRaisesRegex(B.BoundaryError,"extension"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_native_injection_environment(self):
+        self.env["LD_PRELOAD"]="evil.so"
+        with self.assertRaisesRegex(B.BoundaryError,"forbidden semantic"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_duplicate_process_path(self):
+        self.spec["ordered_processes"][0]["classpath"]=["resource","resource"]
+        with self.assertRaisesRegex(B.BoundaryError,"duplicate process path"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_non_finite_json(self):
+        with self.assertRaisesRegex(B.BoundaryError,"non-finite"):
+            B.strict_json('{"value":NaN}')
+        with self.assertRaises(ValueError):
+            B.canonical({"value":float("inf")})
+
+    def test_duplicate_json(self):
+        with self.assertRaisesRegex(B.BoundaryError,"duplicate JSON"):
+            B.strict_json('{"value":1,"value":2}')
+
+    def test_archive_traversal_directory(self):
+        archive=self.r/"bad.jar"
+        with zipfile.ZipFile(archive,"w") as out:
+            out.writestr("../",b"")
+            out.writestr("A.class",b"a")
+        self.spec["inventory_roots"][7].update(path="bad.jar",kind="archive")
+        with self.assertRaisesRegex(B.BoundaryError,"unsafe"):
+            B.build_inventory_candidate(self.spec,self.r,self.env)
+
+    def test_multi_release_requires_manifest_opt_in(self):
+        archive=self.r/"plain.jar"
+        with zipfile.ZipFile(archive,"w") as out:
+            out.writestr("pkg/A.class",b"base")
+            out.writestr("META-INF/versions/17/pkg/A.class",b"v17")
+        self.spec["inventory_roots"][7].update(path="plain.jar",kind="archive")
+        inventory,_=B.build_inventory_candidate(self.spec,self.r,self.env)
+        self.assertEqual(inventory["effective_binaries"][0]["multi_release_version"],0)
+        self.assertEqual(len(inventory["entries"]),10)
+
+    def test_changed_jdk_changes_inventory_only(self):
+        before,digest=B.build_inventory_candidate(self.spec,self.r,self.env)
+        (self.r/"jdk/x.txt").write_bytes(b"changed JDK")
+        after,new_digest=B.build_inventory_candidate(self.spec,self.r,self.env)
+        self.assertNotEqual(digest,new_digest)
+        self.assertFalse(after["complete_closure"])
+        with self.assertRaises(B.BoundaryError):
+            B.build_manifest(self.spec,self.r,self.env)
+
+    def test_extra_resource_does_not_establish_closure(self):
+        (self.r/"resource/extra").write_bytes(b"extra")
+        inventory,_=B.build_inventory_candidate(self.spec,self.r,self.env)
+        self.assertFalse(inventory["complete_closure"])
+        self.assertTrue(any(r["member"]=="extra" for r in inventory["entries"]))
+        with self.assertRaises(B.BoundaryError):
+            B.build_manifest(self.spec,self.r,self.env)
+
+    def test_failure_record_has_no_authority(self):
+        record=B.closure_failure_record()
+        self.assertEqual(record["status"],"INCOMPLETE_CLOSURE")
+        for field in ("canonical_manifest_emitted","prepared_worker_attestation_emitted","admission_authorized"):
+            self.assertIs(record[field],False)
+        self.assertEqual(record["official_counters_delta"],0)
 
 if __name__=="__main__":
     unittest.main(verbosity=2)
