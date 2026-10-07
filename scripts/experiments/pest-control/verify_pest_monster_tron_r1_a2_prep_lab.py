@@ -58,7 +58,7 @@ for p in [
     "PestControlTierOneMonsterTronR1InputLoader.kt",
 ]:
     assert w.count(p) >= 1, p
-assert w.count(":(top,exclude)gym/src/main/kotlin/com/wingedsheep/gym/matchup/") >= 5
+assert w.count("':!gym/src/main/kotlin/com/wingedsheep/gym/matchup/") >= 5
 assert w.count("workflow_dispatch:")==1
 assert "--run-attempt \"$GITHUB_RUN_ATTEMPT\"" in w
 assert "R1_DETERMINISTIC_GIT_FREEZE" not in w
