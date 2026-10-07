@@ -1,18 +1,12 @@
 {
-  "schema": "industrial-peer-identity-local-failure-v0",
-  "status": "UNQUALIFIED_PLATFORM_PREREQUISITE_BLOCKED",
-  "authority_comment": 6045496535,
-  "parent": "572bf3ab40163e155739043f7dfa80b408612ac5",
-  "local_attempt": 1,
-  "test_methods": 19,
-  "errors": 19,
-  "cause": "AF_UNIX socket creation denied with EPERM at setUp before child launch or implementation execution. Local sandbox/platform prerequisite, not a successful adversarial rejection. No local retry.",
-  "python": "3.12.14 (main, Aug 25 2026, 14:00:49) [Clang 22.1.3 ]",
-  "platform": "Linux-6.18.44-x86_64-with-glibc2.39",
-  "files": {
-    "test_r1_peer_identity.py": "4f5a65ac3ae7006ad1a7eb405da8eec43f35e5e1e71a7a1bf5453684fd3c09c1",
-    "r1_peer_identity.py": "107b6a70ef420711f10a6bdab06e3cfd39afe343ca879c974cf15e8317e8fe99",
-    "R1_PEER_IDENTITY_LOCAL_FAILURE_20261007.log": "b25efdfd5f6e415cb3435495744058c2f8391e769b950f364b61df50194d0219"
-  },
-  "next_delta": "Separate parser-only fixtures from socket setup and add explicit non-skipping Linux/pidfd/Unix-socket prerequisite check; use pinned ordinary Actions qualification for successor, preserve original failure."
+  "schema": "industrial-linux-peer-identity-sample-v1",
+  "authority": {"rule_commit": "cf7e623d9ae2d7095820578d919c8cea64cb9596", "mechanism_commit": "572bf3ab40163e155739043f7dfa80b408612ac5", "mechanism_blob": "d7c8d0c6b8901be4279abca0e824ecbd8f4e0162", "implementation_adoption_comment": 6045496535},
+  "scope": "Sampled Linux pidfd, connect-time Unix peer credentials, boot/start-time and executable bytes comparison against supervisor-established expectations. Evidence only; not authenticated message transport or continuous process enforcement.",
+  "failure_history": {"branch": "industrial/r1-peer-identity-blocked-v0-20261007", "head": "4c39a70675a23ca002fcf66901d20184a7e010cb", "tree": "d4912ad642c0ce72d4535fd18586ef75e769a034", "local_attempt": 1, "result": "19 setup errors; Unix socket creation EPERM before implementation or child launch", "log_sha256": "b25efdfd5f6e415cb3435495744058c2f8391e769b950f364b61df50194d0219", "preservation": "Original source/test/scope/log frozen at v0. This child keeps original log and changes only tests and scope. No local rerun. Explicit non-skipping prerequisite and parser-only class replace repeated setup-error reporting; qualification moves to pinned ordinary Actions platform."},
+  "implemented": ["Compare SO_PEERCRED PID/UID/GID with trusted expected child, rejecting inherited-parent socketpair trap", "Duplicate pidfd/socket ownership; check pidfd proc fdinfo PID and exit poll before and after sampling", "Parse proc stat start ticks around executable inspection, reject stale PID/start and dead states", "Hash open kernel proc executable, compare inode/size/time metadata and current executable inode; reject missing/changing samples", "Compare boot identity and pinned expected executable digest", "Strict expected identity field/type checks; return explicit sample-only/non-authority result"],
+  "trust_assumptions": ["Genuine trusted Linux kernel and procfs; stable namespaces", "Trusted supervisor obtains and retains intended child pidfd without reap/reuse race, arranges post-exec connect and independently supplies expected identity", "Caller synchronizes fd lifetime while dup occurs", "Trusted interpreter and callers; no privileged malicious mutation"],
+  "limitations": ["SO_PEERCRED is connect-time identity, not current descriptor-holder authentication", "No defense against channel descriptor passing/leakage, later exec, identity changes or PID-namespace manipulation", "Samples are not atomic or continuous; executable metadata checks cannot establish immutable mappings/libraries/toolchain or catch every change-and-restore", "No signature, challenge protocol, VM guard, class-definition provenance or attempted-load coverage", "No permanent failure ledger in this sampler; the future supervisor must latch any sampling error", "No complete hidden provenance, canonical manifest, immutable deployment/platform acceptance, prepared-worker/admission/sealed/R1 authority"],
+  "primary_references": ["https://man7.org/linux/man-pages/man7/unix.7.html", "https://www.man7.org/linux/man-pages/man2/pidfd_open.2.html", "https://man7.org/linux/man-pages/man5/proc_pid_stat.5.html"],
+  "qualification": "19 synthetic non-corpus methods including real tiny post-exec Python socket fixtures, wrong process/bindings, inherited socketpair, exited child, invalid fd, malformed stat and injected uncertainty. No JVM or experiment is launched; pinned Actions run recorded separately.",
+  "review_requested": "Independent Reviewer B source and sampled-process-evidence semantics only. No self-adoption or integration with frozen sibling receiver/verifier/V2."
 }

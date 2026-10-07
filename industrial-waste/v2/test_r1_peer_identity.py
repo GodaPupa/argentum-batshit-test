@@ -13,6 +13,19 @@ CHILD = "import socket,sys; s=socket.socket(socket.AF_UNIX); s.connect(sys.argv[
 
 
 class PeerTests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # Fail explicitly if this platform cannot exercise the boundary. Never skip.
+        if not sys.platform.startswith('linux') or not hasattr(os, 'pidfd_open'):
+            raise RuntimeError('PLATFORM_BLOCKED: Linux pidfd required')
+        try:
+            with socket.socket(socket.AF_UNIX):
+                pass
+            fd = os.pidfd_open(os.getpid())
+            os.close(fd)
+        except OSError as exc:
+            raise RuntimeError('PLATFORM_BLOCKED: Unix socket/pidfd unavailable') from exc
+
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
         self.addCleanup(self.tmp.cleanup)
@@ -117,6 +130,8 @@ class PeerTests(unittest.TestCase):
         with patch('r1_peer_identity._alive', side_effect=alive): self.reject()
         self.assertEqual(len(calls),2)
 
+
+class StatParserTests(unittest.TestCase):
     def test_comm_parenthesis_parser(self):
         # suffix fields 3..22: state, 18 fillers, then starttime.
         raw = '123 (a ) spaced)) S ' + '0 '*18 + '999'
