@@ -82,12 +82,12 @@
     "actions": 0,
     "outcomes": 0
   },
-  "construction_commits_from_v3_1": 9,
+  "construction_commits_from_v3_1": 11,
   "qualification_observability": {
-    "durable_receipt_pr": 216,
-    "receipt_job_runs_after_both_lanes": "ALWAYS",
-    "receipt_mutation_scope": "PR_COMMENT_ONLY__NO_REFS__NO_CLAIM__NO_GAMEPLAY",
-    "least_privilege": "issues:write confined to receipt job only"
+    "direct_actions_audit": "qualification PR #229 exposes pull_request run/jobs/artifacts to connected Actions reader",
+    "auxiliary_comment_jobs": "REMOVED_AFTER_GITHUB_ACTIONS_403",
+    "checkout_binding": "PR_HEAD_SHA_NOT_SYNTHETIC_MERGE",
+    "receipt_mutation_scope": "NO_WORKFLOW_COMMENT_MUTATION__FINAL_DURABLE_RECEIPT_POSTED_BY_COORDINATOR_AFTER_AUDIT"
   },
   "prequalification_repairs": [
     {
@@ -114,6 +114,13 @@
       "classification": "PULL_REQUEST_QUALIFICATION_VISIBILITY_ROUTE",
       "authority_effect": "NONE",
       "repair": "add pull_request trigger to qualification workflow only so connected Actions reader can audit exact run; official A2 workflow remains inert"
+    },
+    {
+      "classification": "PULL_REQUEST_SYNTHETIC_MERGE_CHECKOUT_HARNESS_DEFECT",
+      "authority_effect": "NONE",
+      "evidence_run": 37576923359,
+      "failed_job": 112648067088,
+      "repair": "qualification checkout now pins pull_request.head.sha; auxiliary Actions comment jobs removed after independent 403 reporting-only failure"
     }
   ]
 }
