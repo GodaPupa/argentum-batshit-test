@@ -95,8 +95,14 @@ class SphinxStageELandcyclingTest : ScenarioTestBase() {
         }
         test("competing affordable spell stays unqualified") {
             val f = fixture()
-            val input = sealed(f.input.copy(legalActions = f.input.legalActions.map {
-                if (it.action is CastSpell) it.copy(affordable = true) else it }))
+            // The full enumerator omits unaffordable casts; explicitly supply the competing
+            // materialized offer for this policy-domain negative rather than mapping an empty set.
+            val cycleOffer = f.input.legalActions.single { it.action is TypecycleCard }
+            val competitor = cycleOffer.copy(action = CastSpell(f.seat.actorId,
+                (cycleOffer.action as TypecycleCard).cardId), actionType = "CastSpell",
+                affordable = true, isManaAbility = false)
+            val input = sealed(f.input.copy(legalActions = f.input.legalActions + competitor))
+            input.legalActions.count { it.action is CastSpell && it.affordable } shouldBe 1
             f.seat.decideLandcycling(input, f.epoch).shouldBeInstanceOf<SphinxStageEAdapterResult.Unqualified>()
         }
         test("opponent turn is outside the bounded scheduling window") {
