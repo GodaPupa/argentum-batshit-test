@@ -29,6 +29,26 @@ internal class ManualPhaseTwoFixtureRunner(
 
     companion object {
         /**
+         * Reserve identity before initialization, then attach create-only transition storage before
+         * any pilot submission. This binds declared source and exact identity bytes, not the truth
+         * of deck/policy/runtime claims, semantic replay, collector admission or pilot competence.
+         */
+        fun runNewJournaledFixture(
+            root: Path,
+            identity: ManualFixtureIdentity,
+            trustedInitializeRunner: () -> ManualPhaseTwoFixtureRunner,
+            trustedEncodeTrace: (PhaseTwoEngineTrace) -> ByteArray,
+        ): PhaseTwoEngineTrace {
+            val frozen = identity.copy(deckSha256 = identity.deckSha256.toList(),
+                pilotSha256 = identity.pilotSha256.toList())
+            return ManualPhaseTwoFixtureLifecycle.runNew(root, frozen, {
+                trustedInitializeRunner().also {
+                    it.telemetry.attachJournal(root.resolve(frozen.fixtureId).resolve("transitions"), frozen)
+                }
+            }, { it.runOnce() }, trustedEncodeTrace)
+        }
+
+        /**
          * Fixture-only trusted entry: reserve and force identity/intent before the factory may
          * initialize telemetry or construct pilots. The factory and trace codec must be source
          * reviewed separately. This does not add official admission or per-action write-ahead
@@ -44,3 +64,4 @@ internal class ManualPhaseTwoFixtureRunner(
         )
     }
 }
+

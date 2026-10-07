@@ -13,6 +13,7 @@ import com.wingedsheep.sdk.model.EntityId
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.*
 import java.security.MessageDigest
+import java.nio.file.Path
 
 @Serializable
 data class PhaseTwoObservation(val kind: String, val data: JsonObject)
@@ -72,6 +73,16 @@ class PhaseTwoTelemetryAdapter(
     private var stopObservation: PhaseTwoObservation? = null
     private var stopped = false
     private var sealed = false
+    private var journal: ManualTransitionJournal? = null
+
+    /** Trusted synthetic-runner seam. Identity claims still require external source admission. */
+    internal fun attachJournal(directory: Path, identity: ManualFixtureIdentity) {
+        check(journal == null && steps.isEmpty() && !stopped && !sealed)
+        require(identity.sourceCommit == engineSourceSha) { "Journal/engine source mismatch" }
+        journal = ManualTransitionJournal.create(directory, identity.bytes(), journalInitialEnvelope())
+    }
+
+    internal fun journalInitialEnvelope(): ByteArray = initialStateJson.toString().toByteArray(Charsets.UTF_8)
 
     /** Trusted engine/replay state. A policy must receive a separately qualified masked view. */
     var state: GameState = initialState
@@ -125,19 +136,44 @@ class PhaseTwoTelemetryAdapter(
         val traceRef = "engine-step:$sequence"
         val actionJson = JSON.encodeToJsonElement(GameAction.serializer(), action).jsonObject
         var result: ExecutionResult? = null
+        var phase = "ENGINE"
         try {
             require(action.playerId in playerIds) { "Action actor absent from roster" }
-            val actual = transition(before, action)
+            val intent = buildJsonObject {
+                put("sequence", sequence)
+                put("source", engineSourceSha)
+                put("before", beforeHash)
+                put("action", actionJson)
+            }.toString().toByteArray(Charsets.UTF_8)
+            phase = if (journal == null) "ENGINE" else "JOURNAL"
+            val apply = {
+                phase = "ENGINE"
+                transition(before, action).also { phase = "JOURNAL" }
+            }
+            val actual = journal?.transition(intent, apply) { response ->
+                buildJsonObject {
+                    put("sequence", sequence)
+                    put("classification", when {
+                        response.error == null -> "ACCEPTED"
+                        response.state == before && response.events.isEmpty() -> "REJECTED"
+                        else -> "INVALID_REJECTION"
+                    })
+                    put("response", JSON.encodeToJsonElement(ExecutionResult.serializer(), response))
+                }.toString().toByteArray(Charsets.UTF_8)
+            } ?: transition(before, action)
             result = actual
+            phase = "COLLECTOR"
             val observations = collect(before, action, actual, actionJson, traceRef)
+            phase = "JOURNAL"
+            if (actual.error != null) journal?.stop("ENGINE_REJECTED_ACTION")
+            else if (actual.state.gameOver) journal?.stop("ENGINE_TERMINAL")
             steps += PhaseTwoEngineStep(sequence, actionJson, beforeHash, digest(encodeState(actual.state)),
                 actual.error == null, actual.error, encodeEvents(actual.events), null, observations)
-            state = actual.state
+            state = if (actual.error == null) actual.state else before
             stopped = actual.error != null || actual.state.gameOver
             return actual
         } catch (failure: Exception) {
             val actual = result
-            val phase = if (actual == null) "ENGINE" else "COLLECTOR"
             val error = "${failure.javaClass.name}: ${failure.message}"
             val observed = mutableListOf<PhaseTwoObservation>()
             if (actual?.error == null && actual != null) observed += acceptedAction(action, actionJson, traceRef)
@@ -149,7 +185,10 @@ class PhaseTwoTelemetryAdapter(
                 actual?.let { runCatching { digest(encodeState(it.state)) }.getOrNull() },
                 actual?.let { it.error == null }, error,
                 actual?.let { runCatching { encodeEvents(it.events) }.getOrNull() }, phase, observed)
-            state = actual?.state ?: before
+            // Rejected or incompletely persisted responses never promote runner state.
+            state = before
+            try { journal?.stop("INTEGRITY_FAILURE") }
+            catch (storageFailure: Exception) { failure.addSuppressed(storageFailure) }
             throw failure
         }
     }
@@ -257,6 +296,8 @@ class PhaseTwoTelemetryAdapter(
     fun stop(kind: String, reason: String) {
         check(!sealed && !stopped) { "Trace already terminal or sealed" }
         require(kind in setOf("RESOURCE_CAP", "TIMEOUT", "INTEGRITY_FAILURE") && reason.isNotBlank())
+        stopped = true // A failed durable stop must consume this adapter too.
+        journal?.stop(kind)
         stopObservation = observation(kind) { put("reason", reason) }
         stopped = true
     }
@@ -327,3 +368,4 @@ class PhaseTwoTelemetryAdapter(
         }
     }
 }
+
