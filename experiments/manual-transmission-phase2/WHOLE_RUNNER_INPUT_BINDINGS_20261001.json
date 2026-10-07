@@ -1,8 +1,21 @@
 {
-  "schema": "manual-phase2-whole-runner-input-bindings-v1",
-  "date_utc": "2026-10-01",
+  "schema": "manual-phase2-whole-runner-input-bindings-v2",
+  "date_utc": "2026-10-06",
   "authority": "PROSPECTIVE_BINDING_ONLY_NO_EXECUTION_AUTHORITY",
-  "source_head": "b3bd708413ccdd43a62dfae3d7f1dda5cd7a1b16",
+  "source_head": "0e143f26e4a4a61c6de6d5b276c04ac232346b2c",
+  "source_tree": "632b5fef293da7d71462f31da9a2e58db593f9cd",
+  "registry_completion": {
+    "status": "INTERNAL_REGISTRY_MECHANICS_COMPLETE_NOT_GAMEPLAY_AUTHORITY",
+    "resolved": 100,
+    "unresolved": 0,
+    "qualification_run": 37169989965,
+    "artifact": 11291191475,
+    "artifact_sha256": "00465baeb05b9eee842afc8a05f093a02e8e737e5a37cfbaf644bb9fb1dd0d0a",
+    "mechanics_cases": "39/39",
+    "full_asserted_gate": "40/40",
+    "frozen_request_sha256": "09b8617057b9bd42fb6501f993588c9bf769e1f0af0c73426ca963da07d20084",
+    "registry_report_sha256": "887e0ac0ec05575e350873e6f2f0441a909db012386c21d63a2ac14ffe6078ef"
+  },
   "governing_protocol": {
     "path": "experiments/manual-transmission-phase2/protocol-r1.json",
     "blob": "f605dc2ce4273a26a6e2387a2c6e4048e4012a79",
@@ -49,6 +62,11 @@
       "complete_100_sha256": "25d6794046a80dba919ec19a4491bb6ce8ef799b0d2de2afbaac377592b66580"
     }
   },
+  "pod_template_bindings": {
+    "P01": ["manual-transmission-v07", "blue-farm", "rogsi", "kinnan"],
+    "P02": ["manual-transmission-v07", "sisay", "magda", "hashaton"],
+    "P03": ["manual-transmission-v07", "shorikai", "blue-farm", "rogsi"]
+  },
   "accepted_policy_evidence": {
     "race_final": {
       "path": "experiments/manual-transmission/policies/RACE-FINAL-R1.md",
@@ -73,12 +91,21 @@
     "ManualPhaseTwoPriorityConservationPolicy": "8fec7b06ed4d20ac138b4f0d0500fc6d39926d4e",
     "ManualPhaseTwoPublicOpponentAxes": "8372b475e77849127439060902a06b0b2da8fdf2",
     "ManualPhaseTwoRaceOverlayRouter": "600f783b0891249343cb57e91847ea714758f515",
-    "ManualPhaseTwoUniqueCommanderCastPolicy": "0b408d285989c8c789e829f2b580ac4930ec963c"
+    "ManualPhaseTwoUniqueCommanderCastPolicy": "0b408d285989c8c789e829f2b580ac4930ec963c",
+    "ManualPhaseTwoFixtureLifecycle": "f11281537cc1f582f32dc0aab4fbdea3cc58fdb1",
+    "ManualPhaseTwoFixtureRunner": "ea74fba66dfad36470b9ebe438570ce8b97f5c9b",
+    "ManualPhaseTwoStoredFixtureReplay": "ad2cc1ebaedd055104fb185f236427a9fd7e231a"
   },
+  "closed_binding_gaps": [
+    "The three protocol pod templates are now explicitly bound to the exact admitted opponent identities and complete-100 digests already frozen by opponent-admission-r1.json.",
+    "The current 100/100 mechanics and registry source head/tree are bound without claiming gameplay authority.",
+    "The previously accepted stored-fixture lifecycle/runner/replay component blobs are bound exactly and are unchanged."
+  ],
   "remaining_binding_gap": [
-    "Seal the executable Cruise/Sport/Race policy composition map to these accepted component blobs; do not infer gear behavior solely from prose.",
-    "Bind each of the three protocol pod templates to the exact admitted opponent complete-100 digests above.",
-    "Then implement the trusted initializer/whole-runner/replay seam under WHOLE_RUNNER_MINIMAL_INTEGRATION_SCOPE_20261001.json."
+    "No complete executable CRUISE/SPORT/RACE policy composition exists yet. Existing opening, commander, conservation and Race-overlay components are bounded seams and must not be promoted to complete gear policies by prose inference.",
+    "No complete executable opponent pilot exists for any admitted opponent identity. Commander-axis recognition and exact deck identity are not strategic competence.",
+    "No trusted four-seat whole-runner currently binds the exact deck/policy/opponent/runtime manifest before initialization, ActorEpoch/current-observation proposals, durable per-transition journal and strict replay as required by WHOLE_PILOT_OPPONENT_RUNNER_REPLAY_FREEZE_20260930.json.",
+    "No collector/runner admission or exact capability-pilot execution block may be frozen until those source surfaces are implemented, source-qualified and independently reviewed."
   ],
   "official_counters_delta": 0
 }
