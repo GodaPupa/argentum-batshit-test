@@ -4,6 +4,8 @@ import com.wingedsheep.gym.matchup.*
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import java.nio.file.Files
+import java.nio.file.Path
 
 class PestControlTierOneMonsterTronR1RebindTest : FunSpec({
     val exactSeeds = listOf(
@@ -117,4 +119,55 @@ class PestControlTierOneMonsterTronR1RebindTest : FunSpec({
             ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml"
     }
 
+
+    test("baseline guard admits reviewed R1 sealing wrappers but still rejects protected source drift") {
+        val root = Files.createTempDirectory("monster-tron-r1-baseline-")
+        Files.createDirectories(root.resolve("gym"))
+        r1FixtureCommand(root, "git", "init", "--quiet")
+        val wrappers = listOf(
+            "PestControlTierOneMonsterTronOneShotBoundary.kt",
+            "PestControlTierOneMonsterTronRunnerSurfacePreflight.kt",
+            "PestControlTierOneMonsterTronOperationalStack.kt",
+            "PestControlTierOneMonsterTronR1ExecutionIdentity.kt",
+            "PestControlTierOneMonsterTronR1InputLoader.kt",
+        ).map { "gym/src/main/kotlin/com/wingedsheep/gym/matchup/$it" }
+        val protected = "gym/src/main/protected-r1-probe.txt"
+        (wrappers + protected).forEach { path ->
+            Files.createDirectories(root.resolve(path).parent)
+            Files.writeString(root.resolve(path), "baseline\n")
+        }
+        r1FixtureCommit(root)
+        val baseline = r1FixtureCommand(root, "git", "rev-parse", "HEAD").trim()
+        wrappers.forEach { Files.writeString(root.resolve(it), "reviewed wrapper delta\n") }
+        r1FixtureCommit(root)
+        val commands = MonsterTronRepositoryCommands.discover(root.resolve("gym"))
+        verifyMonsterTronBaseline(commands, baseline)
+
+        Files.writeString(root.resolve(protected), "unreviewed protected delta\n")
+        r1FixtureCommit(root)
+        val failure = shouldThrow<MonsterTronRequiredCommandFailure> {
+            verifyMonsterTronBaseline(commands, baseline)
+        }
+        failure.commandLabel shouldBe "ENGINE_BASELINE"
+        failure.exitCode shouldBe 1
+        failure.sanitizedOutput.contains(protected) shouldBe true
+        wrappers.forEach { failure.sanitizedOutput.contains(it) shouldBe false }
+    }
+
 })
+
+
+private fun r1FixtureCommand(root: Path, vararg command: String): String {
+    val process = ProcessBuilder(command.toList()).directory(root.toFile()).redirectErrorStream(true).start()
+    val text = process.inputStream.bufferedReader().readText()
+    check(process.waitFor() == 0) { "R1 baseline fixture command failed" }
+    return text
+}
+
+private fun r1FixtureCommit(root: Path) {
+    r1FixtureCommand(root, "git", "add", ".")
+    r1FixtureCommand(
+        root, "git", "-c", "user.name=R1 fixture", "-c", "user.email=r1-fixture@example.invalid",
+        "commit", "--quiet", "-m", "R1 baseline fixture",
+    )
+}
