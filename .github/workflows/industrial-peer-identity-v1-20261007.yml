@@ -1,0 +1,49 @@
+name: Industrial peer identity v1 qualification
+on:
+  push:
+    branches: ["validation/industrial-peer-identity-v1-20261007"]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with: {fetch-depth: 2, persist-credentials: false}
+      - name: Bind and preserve
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/evidence
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "cec21e9984d3ddda219260bb0025173fbc42e0ba"
+          test "$(git rev-parse 'HEAD^{tree}')" != ""
+          test "$(git rev-parse 'HEAD^:')" = "0c0079b97cae36e2afd692e06785d4f27d2ac6ec"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/industrial-peer-identity-v1-20261007.yml"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/R1_PEER_IDENTITY_LOCAL_FAILURE_20261007.log)" = "19168fe97df07956fe20b619e454cbf6f6632611"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/R1_PEER_IDENTITY_SCOPE_20261007.json)" = "92a41ffa70399510006190a8f31a44fb1d72f2bf"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_peer_identity.py)" = "d891da1e0218626cc4ce9e1af239a8d1f5a23e68"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/test_r1_peer_identity.py)" = "2b981a543a904e39a6b90ca7dd35fb27af87dd35"
+          git rev-parse HEAD 'HEAD^{tree}' HEAD^ 'HEAD^:' > /tmp/evidence/identities.txt
+          /usr/bin/python3.10 --version > /tmp/evidence/python-version.txt
+          sha256sum /usr/bin/python3.10 > /tmp/evidence/python-sha256.txt
+          uname -a > /tmp/evidence/platform.txt
+          cp industrial-waste/v2/R1_PEER_IDENTITY_LOCAL_FAILURE_20261007.log industrial-waste/v2/R1_PEER_IDENTITY_SCOPE_20261007.json industrial-waste/v2/r1_peer_identity.py industrial-waste/v2/test_r1_peer_identity.py /tmp/evidence/
+      - name: Synthetic qualification only
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd industrial-waste/v2
+          /usr/bin/python3.10 -B test_r1_peer_identity.py 2>&1 | tee /tmp/evidence/tests.log
+      - name: Preserve original evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: industrial-peer-identity-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/evidence/
+          if-no-files-found: error
+          retention-days: 90
