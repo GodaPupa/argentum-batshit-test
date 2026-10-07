@@ -86,7 +86,7 @@ internal object SphinxStageEWholeActor {
                     "sole current legal action is pass priority",
                 )
             }
-            return unqualified(input, "No already-qualified whole-actor action")
+            return SphinxStageEOrdinaryPriority.decide(input, epoch, pilot.actorId)
         }
 
         if (casts.size == 1) {
@@ -186,3 +186,4 @@ internal object SphinxStageEWholeActor {
     private fun unqualified(input: ActorInput, reason: String) =
         SphinxStageEAdapterResult.Unqualified(input.bindingHash, reason)
 }
+
