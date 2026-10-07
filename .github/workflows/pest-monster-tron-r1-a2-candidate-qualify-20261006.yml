@@ -9,6 +9,14 @@ on:
       - "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronRunnerSurfacePreflightTest.kt"
       - "scripts/experiments/pest-control/verify_pest_monster_tron_r1_a2_candidate.py"
       - ".github/workflows/pest-monster-tron-r1-a2-candidate-qualify-20261006.yml"
+  pull_request:
+    paths:
+      - ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml"
+      - "docs/experiments/pest-control/PEST_MONSTER_TRON_R1_A2_CANDIDATE_20261006.json"
+      - "gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt"
+      - "gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronRunnerSurfacePreflightTest.kt"
+      - "scripts/experiments/pest-control/verify_pest_monster_tron_r1_a2_candidate.py"
+      - ".github/workflows/pest-monster-tron-r1-a2-candidate-qualify-20261006.yml"
 permissions:
   contents: read
   actions: read
