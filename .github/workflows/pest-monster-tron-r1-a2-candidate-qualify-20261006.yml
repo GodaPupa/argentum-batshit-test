@@ -24,34 +24,6 @@ concurrency:
   group: pest-monster-tron-r1-a2-candidate-20261006
   cancel-in-progress: true
 jobs:
-  announce:
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: read
-      issues: write
-    steps:
-      - name: Publish qualification start receipt
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import json, os
-          from urllib.request import Request, urlopen
-          repo=os.environ["GITHUB_REPOSITORY"]
-          body=("PEST / MONSTER TRON R1 — A2 CANDIDATE QUALIFICATION STARTED\n\n"
-                f"- run \`{os.environ['GITHUB_RUN_ID']}\` attempt \`{os.environ['GITHUB_RUN_ATTEMPT']}\`\n"
-                f"- head \`{os.environ['GITHUB_SHA']}\`\n"
-                "- authority: QUALIFICATION_ONLY__NO_A2__NO_CLAIM__NO_GAMEPLAY\n")
-          data=json.dumps({"body":body}).encode()
-          req=Request(f"https://api.github.com/repos/{repo}/issues/216/comments",data=data,method="POST",
-                      headers={"Authorization":"Bearer "+os.environ["GH_TOKEN"],
-                               "Accept":"application/vnd.github+json","Content-Type":"application/json"})
-          with urlopen(req,timeout=40) as response:
-              print(json.load(response)["id"])
-          PY
   structural:
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -61,6 +33,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
       - name: Verify exact A2 candidate delta and reused identities
         shell: bash
         run: |
@@ -107,6 +80,7 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
+          ref: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.sha || github.sha }}
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
@@ -126,70 +100,3 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
-  receipt:
-    if: always()
-    needs: [structural, runner_guard]
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: read
-      actions: read
-      issues: write
-    steps:
-      - uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
-      - name: Publish durable A2 candidate qualification receipt
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-          STRUCTURAL_RESULT: ${{ needs.structural.result }}
-          RUNNER_GUARD_RESULT: ${{ needs.runner_guard.result }}
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          import hashlib, json, os, subprocess
-          from pathlib import Path
-          from urllib.request import Request, urlopen
-
-          repo=os.environ["GITHUB_REPOSITORY"]
-          run_id=int(os.environ["GITHUB_RUN_ID"])
-          sha=os.environ["GITHUB_SHA"]
-          structural=os.environ["STRUCTURAL_RESULT"]
-          runner=os.environ["RUNNER_GUARD_RESULT"]
-          token=os.environ["GH_TOKEN"]
-          root=Path(".")
-          tree=subprocess.check_output(["git","rev-parse","HEAD^{tree}"],text=True).strip()
-          manifest=root/"docs/experiments/pest-control/PEST_MONSTER_TRON_R1_A2_CANDIDATE_20261006.json"
-          workflow=root/".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml"
-          def digest(path): return hashlib.sha256(path.read_bytes()).hexdigest()
-          req=Request(f"https://api.github.com/repos/{repo}/actions/runs/{run_id}/artifacts",
-                      headers={"Authorization":"Bearer "+token,"Accept":"application/vnd.github+json"})
-          with urlopen(req,timeout=40) as response:
-              artifacts=json.load(response).get("artifacts",[])
-          artifacts=[{"id":a["id"],"name":a["name"],"digest":a.get("digest"),"expired":a.get("expired",False)}
-                     for a in artifacts]
-          success=(structural=="success" and runner=="success")
-          body={
-            "schema":"pest-monster-tron-r1-a2-candidate-qualification-receipt-v1",
-            "disposition":"QUALIFIED_A2_CANDIDATE_ONLY__NO_A2__NO_CLAIM__NO_GAMEPLAY" if success
-                          else "A2_CANDIDATE_QUALIFICATION_FAILED__NO_A2__NO_CLAIM__NO_GAMEPLAY",
-            "run_id":run_id,"run_attempt":int(os.environ["GITHUB_RUN_ATTEMPT"]),
-            "head":sha,"tree":tree,
-            "structural_result":structural,"runner_guard_result":runner,
-            "manifest_sha256":digest(manifest),"official_workflow_sha256":digest(workflow),
-            "artifacts":artifacts,
-            "counters":{"frozen_seeds":4,"claims":0,"games":0,"actions":0,"outcomes":0},
-            "future_r1_claim_ref":"ABSENT_EXPECTED_AND_STRUCTURAL_LANE_ENFORCED",
-            "a2_active":False,"official_execution_dispatched":False
-          }
-          text=("PEST / MONSTER TRON R1 — A2 CANDIDATE QUALIFICATION RECEIPT\n\n"
-                +"\x60\x60\x60json\n"+json.dumps(body,sort_keys=True,indent=2)+"\n\x60\x60\x60\n")
-          data=json.dumps({"body":text}).encode()
-          post=Request(f"https://api.github.com/repos/{repo}/issues/216/comments",data=data,method="POST",
-                       headers={"Authorization":"Bearer "+token,"Accept":"application/vnd.github+json",
-                                "Content-Type":"application/json"})
-          with urlopen(post,timeout=40) as response:
-              result=json.load(response)
-          print(json.dumps({"comment_id":result["id"],"qualification_success":success},sort_keys=True))
-          PY
