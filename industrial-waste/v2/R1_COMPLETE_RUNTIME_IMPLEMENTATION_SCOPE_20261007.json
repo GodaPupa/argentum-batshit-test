@@ -1,0 +1,66 @@
+{
+  "schema": "industrial-r1-complete-runtime-implementation-scope-v1",
+  "date_utc": "2026-10-07",
+  "authority": "PROSPECTIVE_IMPLEMENTATION_CANDIDATE_ONLY_NO_R1_AUTHORITY",
+  "adopted_rule": {
+    "commit": "cf7e623d9ae2d7095820578d919c8cea64cb9596",
+    "tree": "17e980edc5c97606a30cfdcda4b68410713081ec",
+    "proposal_blob": "5da4912ad51c478b33588eab13af5e7bd95448d5",
+    "independent_review_comment": 6032123880,
+    "independent_review_sha256": "b5d87410891e9acc445783a253fc5c85ad52dd2bd9d0e27294d351784d1e4c05",
+    "disposition": "ADOPTABLE_AS_WRITTEN_FOR_IMPLEMENTATION_STAGE_ONLY"
+  },
+  "implementation_files": [
+    "industrial-waste/v2/r1_complete_runtime_boundary.py",
+    "industrial-waste/v2/test_r1_complete_runtime_boundary.py"
+  ],
+  "implemented_now": [
+    "Canonical expected-manifest construction from prospectively declared pre-launch roots only; receiving capture membership is hard-coded false in emitted authority.",
+    "Required complete-runtime category closure with fail-closed missing-category behavior.",
+    "Strict exact environment contract rejecting undeclared values and semantic injection variables.",
+    "Directory/file/archive byte inventory, duplicate ZIP rejection, symlink rejection, multi-release JAR effective class selection, and explicit duplicate binary resolution.",
+    "Generated/transient pre-launch provenance requires bound recipe/generator/input digests and two identical pre-launch output digests before manifest construction.",
+    "Runtime class-census verifier accepts ordinary manifest members and only the exact adopted java.base InvokerBytecodeGenerator -> LambdaForm$* lookup-defined hidden family.",
+    "Prepared-worker attestation binds manifest/source/tree/review/runtime receipt/executable/process instance/launch identity/nonce/execution owner using a protected local HMAC key.",
+    "Admission consumes launch identity durably with O_EXCL and fsync so the same prepared-worker attestation cannot be replayed."
+  ],
+  "deterministic_non_corpus_fixture_intent": [
+    "complete manifest success without receiving capture membership",
+    "missing closure category rejection",
+    "undeclared and forbidden environment rejection",
+    "duplicate ZIP member rejection",
+    "multi-release selection and ambiguous duplicate binary rejection/explicit resolution",
+    "generated output non-reproducibility rejection",
+    "exact LambdaForm hidden-family allow and unknown hidden-family reject",
+    "ordinary runtime class not present in manifest reject",
+    "single-use prepared-worker attestation and replay rejection"
+  ],
+  "prepublication_local_check": {
+    "runtime": "CPython 3.13 local isolated temporary fixtures",
+    "tests": 9,
+    "passed": 9,
+    "failed": 0,
+    "source_file_sha256": "e7c05a99bbbf226e8b958a9e817b927425ef3acf4d8ae5369da54c1dc44a6d85",
+    "test_file_sha256": "74eadbc6b8f2a04cdc5adcf3305e4e46d5c9480719496cea6f8271b4d0a24db4",
+    "limitation": "This was prepublication author validation of locally staged bytes; exact GitHub candidate qualification remains separate."
+  },
+  "still_required_before_any_sealed_launch": [
+    "Bind a real isolated qualification-build input specification covering the exact Gradle/build graph, accepted 1339-file store, all process paths, complete JDK/container/native/Python/launcher bytes, loader topology, immutable mounts and exact allowed environment.",
+    "Add the worker-side runtime receipt and lifetime recheck that supplies exact generator provenance fields for class-census verification and detects later executable/mount mutation.",
+    "Bind the prepared-worker HMAC key provisioning to a separately reviewed authenticated sealed process channel; repository source contains no key.",
+    "Qualify the exact implementation under the pinned runtime with deterministic non-corpus fixtures and complete source/blob evidence.",
+    "Obtain independent source/admission review of the exact implementation and qualification evidence.",
+    "Only after that may a separate sealed-launch acceptance gate be prepared; R1 permit remains later and separate."
+  ],
+  "prohibited": [
+    "no expected manifest generated from supplemental capture run 36912341177",
+    "no expected manifest adoption from this source candidate",
+    "no worker launch",
+    "no sealed-launch acceptance",
+    "no R1 permit",
+    "no seed generation",
+    "no allocation or claim",
+    "no game initialization or gameplay"
+  ],
+  "official_counters_delta": 0
+}
