@@ -297,7 +297,9 @@ internal fun verifyMonsterTronBaseline(
         ":(top)mtg-sdk", ":(top)rules-engine", ":(top)ai/src/main", ":(top)mtg-sets", ":(top)gym/src/main",
         ":(top,exclude)gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOneShotBoundary.kt",
         ":(top,exclude)gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronRunnerSurfacePreflight.kt",
-        ":(top,exclude)gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt"))
+        ":(top,exclude)gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronOperationalStack.kt",
+        ":(top,exclude)gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronR1ExecutionIdentity.kt",
+        ":(top,exclude)gym/src/main/kotlin/com/wingedsheep/gym/matchup/PestControlTierOneMonsterTronR1InputLoader.kt"))
 }
 
 private const val MONSTER_TRON_COMMAND_CAPTURE_BYTES = 16384
