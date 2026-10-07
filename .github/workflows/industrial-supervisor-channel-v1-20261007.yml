@@ -1,0 +1,51 @@
+name: Industrial supervisor channel v1 qualification
+on:
+  push:
+    branches: ["validation/industrial-supervisor-channel-v1-20261007"]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with: {fetch-depth: 2, persist-credentials: false}
+      - name: Bind source and runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/evidence
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "5817cf22c629a32d09b069a8f1e41ddfac3d2fea"
+          test "$(git rev-parse 'HEAD^:')" = "162a5b7961fcae2bec6175d89094c1f504ebb51b"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/industrial-supervisor-channel-v1-20261007.yml"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/R1_SUPERVISOR_CHANNEL_SCOPE_20261007.json)" = "1033fb7cc85392ae77eb99bf231bea21920408d5"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_evidence_verifier.py)" = "4a3028cf72982b2fd4c14fdb9577456664b70eec"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_peer_identity.py)" = "d891da1e0218626cc4ce9e1af239a8d1f5a23e68"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_receiver_evidence.py)" = "367845cb868990c8e31bb620aa8d0c0c9a1755a4"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_supervisor_channel.py)" = "4ab6cd6aa10145c1f0e081ea25224cc559f4e719"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/test_r1_supervisor_channel.py)" = "90338cf1229731a7c7ecfc66297121765225486a"
+          git rev-parse HEAD 'HEAD^{tree}' HEAD^ 'HEAD^:' > /tmp/evidence/identities.txt
+          /usr/bin/python3.10 --version > /tmp/evidence/python-version.txt
+          sha256sum /usr/bin/python3.10 > /tmp/evidence/python-sha256.txt
+          uname -a > /tmp/evidence/platform.txt
+          /usr/bin/python3.10 -c 'import hmac,hashlib,_hashlib,ssl,json,pathlib; print(json.dumps({"openssl":ssl.OPENSSL_VERSION,"modules":{m.__file__:hashlib.sha256(pathlib.Path(m.__file__).read_bytes()).hexdigest() for m in (hmac,hashlib,_hashlib,ssl)}},sort_keys=True))' > /tmp/evidence/crypto-runtime.json
+          cp industrial-waste/v2/R1_SUPERVISOR_CHANNEL_SCOPE_20261007.json industrial-waste/v2/r1_evidence_verifier.py industrial-waste/v2/r1_peer_identity.py industrial-waste/v2/r1_receiver_evidence.py industrial-waste/v2/r1_supervisor_channel.py industrial-waste/v2/test_r1_supervisor_channel.py /tmp/evidence/
+      - name: Synthetic authenticated channel qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd industrial-waste/v2
+          /usr/bin/python3.10 -B test_r1_supervisor_channel.py 2>&1 | tee /tmp/evidence/tests.log
+      - name: Preserve original evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: industrial-supervisor-channel-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/evidence/
+          if-no-files-found: error
+          retention-days: 90
