@@ -1,0 +1,225 @@
+{
+  "schema": "pest-monster-tron-replication-prospective-v1",
+  "status": "PROPOSED_DESIGN_ONLY",
+  "current_authority": {
+    "entropy": false,
+    "seed_allocation": false,
+    "dispatch": false,
+    "claim": false,
+    "initialization": false,
+    "gameplay": false,
+    "replication": false
+  },
+  "baseline": {
+    "source": "ed35c3035d41a740aac1657708b2023b624cfc47",
+    "tree": "34406e5a26aad6d6ebf64e9b1a1977e1b719b095",
+    "engine": "433df3310efe31c49f27034b50e6d8d7e60561f7",
+    "stopping_rule_blob": "6c737d8bb7af58cccc7cafbb60a6abe9876695ae",
+    "r1_proposal_blob": "f319d6d9e84608f5c251ce805cb669a7799b6c6b"
+  },
+  "prior_smoke": {
+    "review": 6046389902,
+    "adoption": 6046397725,
+    "run": 37676510705,
+    "attempt": 1,
+    "claim": "f165a7d19447d68a7db5984c36f1654179120eff",
+    "artifact": 11506879794,
+    "artifact_sha256": "e4dcf7eb85a08a6bc16a4f4b93c23ffb373b3a1e4a26dde2ced613329fa3fbaf",
+    "ordered_results": [
+      "W",
+      "W",
+      "L",
+      "W"
+    ],
+    "pooled": false,
+    "authority_consumed": true
+  },
+  "sample": {
+    "games": 12,
+    "rationale": "PREDECLARED_THREE_PER_CELL_DESCRIPTIVE_NOT_POWERED",
+    "outcome_conditioned": false,
+    "cells": [
+      {
+        "slot": 1,
+        "pest_seat": 0,
+        "monster_seat": 1,
+        "starting_deck": "PEST_CONTROL",
+        "pest_play_draw": "PLAY"
+      },
+      {
+        "slot": 2,
+        "pest_seat": 0,
+        "monster_seat": 1,
+        "starting_deck": "MONSTER_TRON",
+        "pest_play_draw": "DRAW"
+      },
+      {
+        "slot": 3,
+        "pest_seat": 1,
+        "monster_seat": 0,
+        "starting_deck": "PEST_CONTROL",
+        "pest_play_draw": "PLAY"
+      },
+      {
+        "slot": 4,
+        "pest_seat": 1,
+        "monster_seat": 0,
+        "starting_deck": "MONSTER_TRON",
+        "pest_play_draw": "DRAW"
+      },
+      {
+        "slot": 5,
+        "pest_seat": 0,
+        "monster_seat": 1,
+        "starting_deck": "PEST_CONTROL",
+        "pest_play_draw": "PLAY"
+      },
+      {
+        "slot": 6,
+        "pest_seat": 0,
+        "monster_seat": 1,
+        "starting_deck": "MONSTER_TRON",
+        "pest_play_draw": "DRAW"
+      },
+      {
+        "slot": 7,
+        "pest_seat": 1,
+        "monster_seat": 0,
+        "starting_deck": "PEST_CONTROL",
+        "pest_play_draw": "PLAY"
+      },
+      {
+        "slot": 8,
+        "pest_seat": 1,
+        "monster_seat": 0,
+        "starting_deck": "MONSTER_TRON",
+        "pest_play_draw": "DRAW"
+      },
+      {
+        "slot": 9,
+        "pest_seat": 0,
+        "monster_seat": 1,
+        "starting_deck": "PEST_CONTROL",
+        "pest_play_draw": "PLAY"
+      },
+      {
+        "slot": 10,
+        "pest_seat": 0,
+        "monster_seat": 1,
+        "starting_deck": "MONSTER_TRON",
+        "pest_play_draw": "DRAW"
+      },
+      {
+        "slot": 11,
+        "pest_seat": 1,
+        "monster_seat": 0,
+        "starting_deck": "PEST_CONTROL",
+        "pest_play_draw": "PLAY"
+      },
+      {
+        "slot": 12,
+        "pest_seat": 1,
+        "monster_seat": 0,
+        "starting_deck": "MONSTER_TRON",
+        "pest_play_draw": "DRAW"
+      }
+    ],
+    "official_seeds": null
+  },
+  "future_bindings": {
+    "source": null,
+    "tree": null,
+    "workflow": null,
+    "workflow_blob": null,
+    "vector": null,
+    "assignments": null,
+    "archive": null,
+    "exclusions": null,
+    "freeze_authority": null,
+    "execution_authority": null
+  },
+  "freeze": {
+    "entropy_calls": 1,
+    "entropy_bytes": 96,
+    "encoding": "SIGNED_BIG_ENDIAN_INT64",
+    "quarantine_before_decode": true,
+    "fsync_file_and_directory": true,
+    "remote_preservation_before_validation": true,
+    "complete_draw_rejection": true,
+    "minimum_exclusion_floor": 574,
+    "complete_live_inventory_required": true,
+    "reconcile_inventory_before_and_after": true,
+    "zero_duplicate_collision_rejected": true,
+    "unchanged_order": true,
+    "ambiguous_draw_consumed": true
+  },
+  "execution": {
+    "claim_ref": "refs/heads/pest-control/official-attempts/monster-tron-preboard-replication-12-v1",
+    "branch": "pest-control/tier1-monster-tron-replication-12-v1",
+    "names_only": true,
+    "dispatch_limit": 1,
+    "run_attempt": 1,
+    "claim_limit": 1,
+    "create_only": true,
+    "claim_reserves_whole_block": true,
+    "validation_ack_cannot_execute": true,
+    "fresh_exact_authority_required": true,
+    "process_cap_seconds": 18000,
+    "job_cap_seconds": 21600,
+    "claim_reserve_seconds": 600,
+    "upload_reserve_seconds": 900,
+    "preclaim_minimum_remaining_seconds": 19500
+  },
+  "caps": {
+    "starting_life": 20,
+    "actions_per_game": 12000,
+    "turns_per_game": 60,
+    "actions_per_turn": 500
+  },
+  "prohibited": {
+    "rerun": true,
+    "retry": true,
+    "reroll": true,
+    "replacement": true,
+    "reorder": true,
+    "selective_salvage": true,
+    "refill": true,
+    "replication_of_replication": true,
+    "outcome_shopping": true,
+    "early_performance_stop": true
+  },
+  "evidence": {
+    "create_new": true,
+    "attempt_before_initialization": true,
+    "initialization_entry_before_initialization": true,
+    "actual_initialization_separate": true,
+    "intent_before_submission": true,
+    "result_after_submission": true,
+    "exact_one_submission": true,
+    "raw_and_events": true,
+    "whole_inventory": true,
+    "always_upload": true,
+    "preserve_failures": true
+  },
+  "gates": [
+    "DESIGN",
+    "SEEDFREE_MACHINERY",
+    "FRESH_FREEZE_AUTHORITY_AND_ORIGINAL_AUDIT",
+    "EXACT_SOURCE_AND_ACTIVATION",
+    "PUBLICATION_AND_REF",
+    "FRESH_DISPATCH_AUTHORITY",
+    "INDEPENDENT_RESULT_ADOPTION"
+  ],
+  "failure": {
+    "preclaim": "PRESERVE_CONSUMED_DISPATCH_STOP",
+    "ambiguous_claim": "READ_ONLY_RECONCILE_NO_MUTATION_RETRY",
+    "postclaim": "REJECT_BLOCK_PRESERVE_PREFIX_RETIRE_VECTOR_STOP",
+    "legitimate_loss_or_draw": "RECORD_CONTINUE_FIXED_ORDER",
+    "failed_qualification": "PRESERVE_CLASSIFY_JUSTIFIED_SUCCESSOR_ONLY"
+  },
+  "stopping": {
+    "complete_accepted_twelve": "CLOSE_REGARDLESS_OF_RECORD",
+    "defect": "STOP_INDEPENDENT_CLASSIFICATION_NO_AUTOMATIC_REPLACEMENT",
+    "sample_extension": false
+  }
+}
