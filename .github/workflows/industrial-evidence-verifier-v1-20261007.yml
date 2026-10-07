@@ -1,0 +1,48 @@
+name: Industrial evidence verifier v1 qualification
+on:
+  push:
+    branches: ["validation/industrial-evidence-verifier-v1-20261007"]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with: {fetch-depth: 2, persist-credentials: false}
+      - name: Bind and preserve
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/evidence
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "e4ea14e056692ba89cf371e94c3bf5952a0918f2"
+          test "$(git rev-parse 'HEAD^{tree}')" != ""
+          test "$(git rev-parse 'HEAD^:')" = "eb0e2d23d64ee38e395786a94fec4a9f846160ce"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/industrial-evidence-verifier-v1-20261007.yml"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/R1_EVIDENCE_VERIFIER_SCOPE_20261007.json)" = "abb7efb154583a37a5c1de897cc2529ab8fe917c"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_evidence_verifier.py)" = "4a3028cf72982b2fd4c14fdb9577456664b70eec"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/test_r1_evidence_verifier.py)" = "ffcf274079e89f115d1ca91f6df2bae7869e59b7"
+          git rev-parse HEAD 'HEAD^{tree}' HEAD^ 'HEAD^:' > /tmp/evidence/identities.txt
+          /usr/bin/python3.10 --version > /tmp/evidence/python-version.txt
+          sha256sum /usr/bin/python3.10 > /tmp/evidence/python-sha256.txt
+          uname -a > /tmp/evidence/platform.txt
+          cp industrial-waste/v2/R1_EVIDENCE_VERIFIER_SCOPE_20261007.json industrial-waste/v2/r1_evidence_verifier.py industrial-waste/v2/test_r1_evidence_verifier.py /tmp/evidence/
+      - name: Synthetic qualification only
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd industrial-waste/v2
+          /usr/bin/python3.10 -B test_r1_evidence_verifier.py 2>&1 | tee /tmp/evidence/tests.log
+      - name: Preserve original evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: industrial-evidence-verifier-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/evidence/
+          if-no-files-found: error
+          retention-days: 90
