@@ -1,0 +1,80 @@
+{
+  "schema": "manual-phase2-whole-runner-current-admission-gaps-v1",
+  "date_utc": "2026-10-06",
+  "authority": "PROSPECTIVE_SOURCE_GAP_INVENTORY_ONLY_NO_EXECUTION_AUTHORITY",
+  "base_registry_head": "0e143f26e4a4a61c6de6d5b276c04ac232346b2c",
+  "base_registry_tree": "632b5fef293da7d71462f31da9a2e58db593f9cd",
+  "registry_status": "100_OF_100_INTERNAL_MECHANICS_COMPLETE",
+  "governing_freeze": {
+    "path": "experiments/manual-transmission-phase2/WHOLE_PILOT_OPPONENT_RUNNER_REPLAY_FREEZE_20260930.json",
+    "blob": "4119cfeb0f44e147bdd144e77f9b2c830ad36ef5"
+  },
+  "current_bindings": {
+    "path": "experiments/manual-transmission-phase2/WHOLE_RUNNER_INPUT_BINDINGS_20261001.json",
+    "blob_before_this_branch": "62f7a4f7883cf9b9b4dd0fdec11d205c770ecda6",
+    "status_on_this_branch": "REFRESHED_TO_CURRENT_100_OF_100_SOURCE_AND_EXACT_POD_BINDINGS"
+  },
+  "reusable_qualified_or_reviewed_surfaces": [
+    "PhaseTwoPilotBoundary masked own-information boundary",
+    "PhaseTwoTelemetryAdapter accepted-action telemetry/replay state",
+    "ManualPhaseTwoFixtureLifecycle durable reservation-before-factory behavior",
+    "ManualPhaseTwoFixtureRunner bounded four-seat fixture loop",
+    "ManualPhaseTwoStoredFixtureReplay read-only stored trace verification",
+    "ManualPhaseTwoOpeningActionPolicy bounded unique-land/pass seam",
+    "ManualPhaseTwoUniqueCommanderCastPolicy bounded unique-Animar-cast seam",
+    "ManualPhaseTwoPriorityConservationPolicy bounded SPORT/RACE public-stack seam",
+    "ManualPhaseTwoPublicOpponentAxes exact public commander identity classifier",
+    "ManualPhaseTwoRaceOverlayRouter exact accepted Race overlay binding"
+  ],
+  "barriers": [
+    {
+      "id": "M-WR-1",
+      "class": "WHOLE_GEAR_POLICY",
+      "status": "BLOCKING",
+      "detail": "CRUISE, SPORT and RACE do not yet have a complete executable policy composition covering every reachable action and typed-decision surface. Bounded seams fail closed outside their reviewed windows and cannot be treated as a whole pilot."
+    },
+    {
+      "id": "M-WR-2",
+      "class": "OPPONENT_PILOT_COMPETENCE",
+      "status": "BLOCKING",
+      "detail": "The seven exact opponent 100-card identities and three pod templates are frozen, but no complete executable opponent policy is qualified for those decks. Public commander-axis classification is identity binding only."
+    },
+    {
+      "id": "M-WR-3",
+      "class": "SOURCE_BOUND_ACTION_PROPOSAL",
+      "status": "BLOCKING",
+      "detail": "The trusted composition must bind every proposal to the exact current masked observation/action registry epoch and reject stale/unknown/illegal proposals without fallback or auto-pass."
+    },
+    {
+      "id": "M-WR-4",
+      "class": "DURABLE_TRANSITION_JOURNAL",
+      "status": "BLOCKING",
+      "detail": "Fixture lifecycle durability exists before initialization, but official admission still requires append-only durable intent/accepted-transition records sufficient to prove no accepted action is lost or replayed ambiguously across interruption."
+    },
+    {
+      "id": "M-WR-5",
+      "class": "STRICT_REPLAY_AND_COLLECTOR",
+      "status": "BLOCKING",
+      "detail": "Stored fixture replay is qualified only for bounded synthetic fixtures. The whole runner must bind initialization and the exact accepted transition stream, fail closed on drift/truncation, and emit only source/protocol/policy/opponent/runtime pins plus raw stop classification."
+    },
+    {
+      "id": "M-WR-6",
+      "class": "EXPERIMENT_BLOCK_AUTHORITY",
+      "status": "BLOCKING",
+      "detail": "No capability-pilot seed/allocation/game block may be frozen until M-WR-1 through M-WR-5 are implemented, source-qualified and independently reviewed. Registry 100/100 does not satisfy this gate."
+    }
+  ],
+  "finite_whole_pilot_inventory": "NOT_FREEZABLE_YET",
+  "trusted_whole_runner": "NOT_YET_JUSTIFIED",
+  "next_source_gate": "Implement only the smallest complete policy/opponent/runner composition needed to close M-WR-1 through M-WR-5, with deterministic negative fixtures for wrong gear, wrong opponent/list, hidden opponent hand access, stale proposal, illegal fallback, duplicate attempt claim, initializer failure, interrupted intent and replay drift. Freeze exact changed bytes and request independent source review before any bounded execution authorization.",
+  "prohibited": [
+    "no official seed generation",
+    "no official allocation or claim",
+    "no capability-pilot game",
+    "no primary-sample game",
+    "no inference of whole-pilot competence from registry completion",
+    "no mutation of frozen v0.7 hardware",
+    "no retry alias or outcome-dependent replacement"
+  ],
+  "official_counters_delta": 0
+}
