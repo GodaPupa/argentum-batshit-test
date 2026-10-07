@@ -48,6 +48,7 @@ class PestControlTierOneMonsterTronRunnerSurfacePreflightTest : FunSpec({
             )
         )
 
+        println("runner_surface_errors=" + result.errors.joinToString(" | "))
         result.errors shouldBe emptyList()
         result.green shouldBe true
         (result.workflowFilesAudited > 0) shouldBe true

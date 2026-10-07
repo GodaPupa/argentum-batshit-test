@@ -82,7 +82,7 @@
     "actions": 0,
     "outcomes": 0
   },
-  "construction_commits_from_v3_1": 11,
+  "construction_commits_from_v3_1": 12,
   "qualification_observability": {
     "direct_actions_audit": "qualification PR #229 exposes pull_request run/jobs/artifacts to connected Actions reader",
     "auxiliary_comment_jobs": "REMOVED_AFTER_GITHUB_ACTIONS_403",
@@ -121,6 +121,13 @@
       "evidence_run": 37576923359,
       "failed_job": 112648067088,
       "repair": "qualification checkout now pins pull_request.head.sha; auxiliary Actions comment jobs removed after independent 403 reporting-only failure"
+    },
+    {
+      "classification": "RUNNER_SURFACE_FULL_REPOSITORY_GUARD_FAILURE_DIAGNOSTIC",
+      "authority_effect": "NONE",
+      "evidence_run": 37577181249,
+      "failed_job": 112648829872,
+      "repair": "emit the pure preflight error list before the existing fail-closed assertion; no guard semantics, workflow authority, claim state, or gameplay path changed"
     }
   ]
 }
