@@ -25,7 +25,7 @@ class PestControlTierOneMonsterTronOneShotBoundaryTest : FunSpec({
     test("claimed official labels cannot make synthetic assignments eligible") {
         val assignments = oneShotFixtureAssignments()
         val input = MonsterTronOfficialExecutionInput(oneShotFixtureIdentity(), assignments.map { it.seed }, assignments,
-            PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256)
+            PEST_MONSTER_TRON_R1_ARCHIVE_SHA256)
         monsterTronSealedInputErrors(input) shouldBe listOf("actual vector digest mismatch")
         monsterTronSealedInputErrors(input.copy(vectorIdentity = oneShotFixtureIdentity().copy(freezeCommit = "f".repeat(40))))
             .contains("freeze identity mismatch") shouldBe true
@@ -37,7 +37,8 @@ class PestControlTierOneMonsterTronOneShotBoundaryTest : FunSpec({
         val receipt = oneShotFixtureReceipt()
         monsterTronClaimReceiptErrors(receipt, "1".repeat(40), "123", "2".repeat(40)) shouldBe emptyList()
         listOf("execution_source_sha", "workflow_source_sha", "workflow_run_id", "workflow_run_attempt",
-            "reserved_games", "vector_sha256", "freeze_source_sha", "claim_confirmed", "execution_allowed").forEach { field ->
+            "reserved_games", "block_id", "claim_ref", "vector_sha256", "archive_sha256",
+            "assignments_sha256", "freeze_source_sha", "claim_confirmed", "execution_allowed").forEach { field ->
             val altered = JsonObject(receipt + (field to JsonPrimitive("changed")))
             monsterTronClaimReceiptErrors(altered, "1".repeat(40), "123", "2".repeat(40)).isNotEmpty() shouldBe true
         }
@@ -205,12 +206,28 @@ class PestControlTierOneMonsterTronOneShotBoundaryTest : FunSpec({
         missing.message!!.contains("EXCLUDED_ARG_MUST_NOT_BE_LOGGED") shouldBe false
     }
 
-    val zip = System.getenv("PEST_MONSTER_TRON_EXECUTION_INPUT_ZIP")
-    val ack = System.getenv("PEST_MONSTER_TRON_EXECUTION_INPUT_ACK")
+    val zip = System.getenv("PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP")
+    val ack = System.getenv("PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ACK")
     test("pinned official bytes satisfy sealed binding without initialization").config(enabled = zip != null || ack != null) {
-        val input = PestControlTierOneMonsterTronOfficialExecutionInputLoader.loadValidatedFromEnvironment()
+        val input = PestControlTierOneMonsterTronR1InputLoader.loadValidatedFromEnvironment()
         monsterTronSealedInputErrors(input) shouldBe emptyList()
         input.assignments.size shouldBe 4
+        ack shouldBe PEST_MONSTER_TRON_R1_INPUT_VALIDATE_ACK
+        oneShotFixtureAssignments().none { it.seed in input.seeds } shouldBe true
+        // Validation-only acknowledgement cannot enable the execution loader.
+        shouldThrow<IllegalArgumentException> {
+            PestControlTierOneMonsterTronR1InputLoader.loadForAuthorizedExecutionFromEnvironment()
+        }.message shouldBe "exact R1 execution acknowledgement is required"
+        monsterTronSealedInputErrors(input.copy(archiveSha256 = "0".repeat(64))) shouldBe listOf("archive mismatch")
+        val identity = input.vectorIdentity
+        listOf(
+            identity.copy(freezeCommit = "0".repeat(40)),
+            identity.copy(orderedVectorSha256 = "0".repeat(64)),
+            identity.copy(assignmentCsvSha256 = "0".repeat(64)),
+            identity.copy(freezeManifestSha256 = "0".repeat(64)),
+        ).forEach { altered ->
+            monsterTronSealedInputErrors(input.copy(vectorIdentity = altered)) shouldBe listOf("freeze identity mismatch")
+        }
         println("sealed_input=VERIFIED; official_initializations=0; official_actions=0; outcomes=0")
     }
 })
@@ -222,8 +239,8 @@ private fun oneShotFixtureAssignments() = PestControlTierOneMonsterTronSmokeHarn
 }
 
 private fun oneShotFixtureIdentity() = MonsterTronSmokeVectorIdentity(
-    PEST_MONSTER_TRON_FROZEN_SMOKE_SOURCE, PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256,
-    PEST_MONSTER_TRON_FROZEN_SMOKE_ASSIGNMENTS_SHA256, PEST_MONSTER_TRON_FROZEN_SMOKE_MANIFEST_SHA256,
+    PEST_MONSTER_TRON_R1_FREEZE_COMMIT, PEST_MONSTER_TRON_R1_VECTOR_SHA256,
+    PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256, PEST_MONSTER_TRON_R1_FREEZE_MANIFEST_SHA256,
 )
 
 private fun oneShotFixtureGame(registry: CardRegistry) = PestControlTierOneMonsterTronAuthorizedInitializer.initialize(
@@ -232,7 +249,7 @@ private fun oneShotFixtureGame(registry: CardRegistry) = PestControlTierOneMonst
 
 private fun oneShotFixtureReceipt() = buildJsonObject {
     put("schema", "pest-monster-tron-exclusive-claim-receipt-v1")
-    put("block_id", PEST_MONSTER_TRON_SMOKE_BLOCK_ID)
+    put("block_id", PEST_MONSTER_TRON_R1_BLOCK_ID)
     put("claim_ref", MONSTER_TRON_CLAIM_REF)
     put("execution_source_sha", "1".repeat(40))
     put("engine_baseline_sha", MONSTER_TRON_ENGINE_BASELINE)
@@ -240,10 +257,10 @@ private fun oneShotFixtureReceipt() = buildJsonObject {
     put("workflow_run_id", 123)
     put("workflow_run_attempt", 1)
     put("reserved_games", 4)
-    put("vector_sha256", PEST_MONSTER_TRON_FROZEN_SMOKE_VECTOR_SHA256)
-    put("archive_sha256", PEST_MONSTER_TRON_FROZEN_SMOKE_ARCHIVE_SHA256)
-    put("assignments_sha256", PEST_MONSTER_TRON_FROZEN_SMOKE_ASSIGNMENTS_SHA256)
-    put("freeze_source_sha", PEST_MONSTER_TRON_FROZEN_SMOKE_SOURCE)
+    put("vector_sha256", PEST_MONSTER_TRON_R1_VECTOR_SHA256)
+    put("archive_sha256", PEST_MONSTER_TRON_R1_ARCHIVE_SHA256)
+    put("assignments_sha256", PEST_MONSTER_TRON_R1_ASSIGNMENTS_SHA256)
+    put("freeze_source_sha", PEST_MONSTER_TRON_R1_FREEZE_COMMIT)
     put("claim_confirmed", true)
     put("execution_allowed", false)
     listOf("claim_commit_sha", "claim_tree_sha", "claim_blob_sha", "execution_source_tree_sha").forEach { put(it, "3".repeat(40)) }

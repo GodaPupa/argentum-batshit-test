@@ -1,0 +1,113 @@
+name: Pest Monster Tron R1 preflight fixture repair qualification
+
+on:
+  push:
+    branches: ["pest/monster-tron-r1-preflight-repair-20261007"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pest-monster-tron-r1-preflight-repair-20261007
+  cancel-in-progress: false
+
+jobs:
+  preclaim_qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      OUT: /tmp/pest-r1-preflight-repair
+      GRADLE_USER_HOME: /tmp/pest-r1-preflight-repair-gradle
+      PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP: /tmp/pest-r1-preflight-repair/freeze.zip
+      PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ACK: LOAD_FROZEN_MONSTER_TRON_R1_FOR_VALIDATION_ONLY
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Install repository task runner
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y just
+      - name: Record source delta and reconstruct unchanged pinned validation input
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > "$OUT/source-identities.txt"
+          git diff --name-only dc22d47efa7b67442a6120b3a2aa8802c75d5a5a HEAD > "$OUT/changed-paths.txt"
+          python3 - <<'PY'
+          import pathlib, subprocess
+          expected = {
+            '.github/workflows/pest-monster-tron-r1-preflight-repair-qualify-20261007.yml',
+            'gym/src/test/kotlin/com/wingedsheep/gym/PestControlTierOneMonsterTronOneShotBoundaryTest.kt',
+          }
+          assert set(pathlib.Path('/tmp/pest-r1-preflight-repair/changed-paths.txt').read_text().splitlines()) == expected
+          assert subprocess.check_output(['git', 'rev-parse', 'HEAD^'], text=True).strip() == 'dc22d47efa7b67442a6120b3a2aa8802c75d5a5a'
+          PY
+          python3 scripts/experiments/pest-control/build_pest_monster_tron_r1_input.py --output "$PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP" | tee "$OUT/input-build.log"
+          sha256sum "$PEST_MONSTER_TRON_R1_EXECUTION_INPUT_ZIP" > "$OUT/input.sha256"
+      - name: Reconcile claim refs before qualification read-only
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/heads/pest-control/official-attempts" > "$OUT/claim-refs-before.json"
+          python3 - <<'PY'
+          import json
+          refs=json.load(open('/tmp/pest-r1-preflight-repair/claim-refs-before.json'))
+          got={r['ref']:r['object']['sha'] for r in refs}
+          assert got == {'refs/heads/pest-control/official-attempts/monster-tron-smoke-v1':'1c2e253ad7f5a7652304f7c9aaafc30e547a481e'}, got
+          PY
+      - name: Run R1 rebind and boundary fixtures only
+        shell: bash
+        run: |
+          set -euo pipefail
+          just test-class PestControlTierOneMonsterTronOneShotBoundaryTest \
+            --tests com.wingedsheep.gym.PestControlTierOneMonsterTronR1RebindTest \
+            --no-daemon --no-build-cache --no-configuration-cache --rerun-tasks --console=plain \
+            2>&1 | tee "$OUT/qualification.log"
+      - name: Require complete qualification with pinned input test executed
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "$OUT/qualification-summary.json"
+          import json, pathlib, xml.etree.ElementTree as ET
+          classes=['PestControlTierOneMonsterTronOneShotBoundaryTest','PestControlTierOneMonsterTronR1RebindTest']
+          result={}
+          for name, count in zip(classes,[11,6]):
+              root=ET.parse(pathlib.Path('gym/build/test-results/test') / ('TEST-com.wingedsheep.gym.'+name+'.xml')).getroot()
+              assert int(root.attrib['tests']) == count, root.attrib
+              assert all(int(root.attrib[k]) == 0 for k in ['failures','errors','skipped']), root.attrib
+              result[name]=root.attrib
+          print(json.dumps({'suites':result,'scope':'VALIDATION_ONLY_WITH_EXCLUDED_SYNTHETIC_REPLAY','claims_created':0,'official_initializations':0,'official_actions':0,'official_outcomes':0},sort_keys=True))
+          PY
+      - name: Preserve reports and reconcile claim refs after qualification
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$OUT"
+          if [ -d gym/build/test-results/test ]; then cp -a gym/build/test-results/test "$OUT/test-results"; fi
+          gh api "repos/$GITHUB_REPOSITORY/git/matching-refs/heads/pest-control/official-attempts" > "$OUT/claim-refs-after.json"
+          python3 - <<'PY'
+          import json
+          refs=json.load(open('/tmp/pest-r1-preflight-repair/claim-refs-after.json'))
+          got={r['ref']:r['object']['sha'] for r in refs}
+          assert got == {'refs/heads/pest-control/official-attempts/monster-tron-smoke-v1':'1c2e253ad7f5a7652304f7c9aaafc30e547a481e'}, got
+          PY
+          find "$OUT" -type f ! -name evidence.sha256 -print0 | sort -z | xargs -0 sha256sum > "$OUT/evidence.sha256"
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: pest-r1-preflight-repair-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/pest-r1-preflight-repair/
+          if-no-files-found: error
+          retention-days: 90
