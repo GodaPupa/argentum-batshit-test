@@ -50,6 +50,15 @@ for s in [
 ]:
     assert s in w, s
 assert "contents: write" in w, "prospective execution job needs reviewed future ref-write authority"
+for p in [
+    "PestControlTierOneMonsterTronOneShotBoundary.kt",
+    "PestControlTierOneMonsterTronRunnerSurfacePreflight.kt",
+    "PestControlTierOneMonsterTronOperationalStack.kt",
+    "PestControlTierOneMonsterTronR1ExecutionIdentity.kt",
+    "PestControlTierOneMonsterTronR1InputLoader.kt",
+]:
+    assert w.count(p) >= 1, p
+assert w.count(":(top,exclude)gym/src/main/kotlin/com/wingedsheep/gym/matchup/") >= 5
 assert w.count("workflow_dispatch:")==1
 assert "--run-attempt \"$GITHUB_RUN_ATTEMPT\"" in w
 assert "R1_DETERMINISTIC_GIT_FREEZE" not in w
