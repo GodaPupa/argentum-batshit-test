@@ -67,7 +67,7 @@
     "scripts/experiments/pest-control/verify_pest_monster_tron_r1_a2_candidate.py"
   ],
   "qualification_scope": [
-    "exact direct-child ancestry from accepted V3.1",
+    "exact ancestry and merge-base at accepted V3.1 with frozen six-path net delta",
     "exact six-path candidate delta",
     "real R1 official workflow exact bytes and source/branch/run-attempt pins",
     "runner-surface guard exact R1 workflow path/hash pin while preserving historical pins",
@@ -82,11 +82,18 @@
     "actions": 0,
     "outcomes": 0
   },
-  "construction_commits_from_v3_1": 3,
+  "construction_commits_from_v3_1": 4,
   "qualification_observability": {
     "durable_receipt_pr": 216,
     "receipt_job_runs_after_both_lanes": "ALWAYS",
     "receipt_mutation_scope": "PR_COMMENT_ONLY__NO_REFS__NO_CLAIM__NO_GAMEPLAY",
     "least_privilege": "issues:write confined to receipt job only"
-  }
+  },
+  "prequalification_repairs": [
+    {
+      "classification": "A2_CANDIDATE_VERIFIER_CONSTRUCTION_COUNT_STALE_AFTER_OBSERVABILITY_HARDENING",
+      "authority_effect": "NONE",
+      "repair": "bind actual commit count to manifest instead of stale literal"
+    }
+  ]
 }
