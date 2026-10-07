@@ -119,5 +119,27 @@
     "games": 0,
     "actions": 0,
     "outcomes": 0
+  },
+  "prep_history": [
+    {
+      "run_id": 37562471999,
+      "head": "6914e0de6f3a74c3b5aeb3550a9a00ce95513286",
+      "conclusion": "SUCCESS",
+      "classification": "SUPERSEDED_PREP_FIXTURE__THREE_PATH_SHELL_BASELINE_ALLOWLIST_WOULD_RECREATE_V3_DEFECT",
+      "authority_effect": "NONE"
+    },
+    {
+      "run_id": 37562641509,
+      "head": "c99fc941001dc394a1012c178f87b20d9af83750",
+      "classification": "SUPERSEDED_PREP_INTERMEDIATE__FIXTURE_REPAIRED_BEFORE_VERIFIER_REGRESSION_ASSERTION",
+      "authority_effect": "NONE"
+    }
+  ],
+  "required_a2_guard_delta": {
+    "existing_preflight_blob": "5321386007c99c91e94fe9521abec760a2b85075",
+    "existing_preflight_test_blob": "9eae23a9820db3e7af21ad3fdd5b619c31510964",
+    "requirement": "PIN_R1_OFFICIAL_WORKFLOW_PATH_AND_EXACT_SHA256_AS_ADDITIONAL_REVIEWED_GUARDED_WORKFLOW",
+    "preserve_existing_historical_workflow_pins": true,
+    "reject_wrong_path_or_byte_mutation": true
   }
 }
