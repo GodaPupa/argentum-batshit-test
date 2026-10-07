@@ -2,7 +2,9 @@ name: Sphinx Approach cast composition author validation
 on:
   push:
     branches: ["validation/sphinx-approach-cast-composition-20261006"]
-    paths: [".github/workflows/sphinx-approach-cast-composition-validation-20261006.yml"]
+    paths:
+      - ".github/workflows/sphinx-approach-cast-composition-validation-20261006.yml"
+      - "sphinx-approach/APPROACH_CAST_AUTHOR_VALIDATION_TRIGGER_20261006.txt"
 permissions:
   contents: read
   actions: read
