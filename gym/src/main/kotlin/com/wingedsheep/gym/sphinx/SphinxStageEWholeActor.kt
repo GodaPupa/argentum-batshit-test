@@ -15,9 +15,9 @@ import com.wingedsheep.sdk.core.Zone
 /**
  * Fail-closed composition of already-qualified Stage-E component seams.
  *
- * This source adds no new ranking rule. It only selects an existing component when the
- * current actor input makes that selection unambiguous. Ambiguous or uncovered surfaces
- * remain explicitly Unqualified for the prospective whole-pilot inventory.
+ * Existing component dispositions retain precedence. The only multi-proposal ranking is a
+ * stable tie-break between equivalent copies of one current deployment; other ambiguous or
+ * uncovered surfaces remain explicitly Unqualified.
  */
 internal object SphinxStageEWholeActor {
     private val setupDraws = setOf(
@@ -110,10 +110,8 @@ internal object SphinxStageEWholeActor {
         val proposed = routed.filterIsInstance<SphinxStageEAdapterResult.Proposed>()
         return when {
             proposed.size == 1 -> proposed.single()
-            proposed.size > 1 -> unqualified(
-                input,
-                "Multiple accepted current cast offers require a reviewed ranking policy",
-            )
+            proposed.size > 1 -> SphinxStageEEquivalentDeploymentRanking.choose(
+                input, epoch, pilot.actorId, proposed)
             routed.all { it is SphinxStageEAdapterResult.Declined } ->
                 SphinxStageEAdapterResult.Declined(
                     input.bindingHash,
@@ -186,4 +184,5 @@ internal object SphinxStageEWholeActor {
     private fun unqualified(input: ActorInput, reason: String) =
         SphinxStageEAdapterResult.Unqualified(input.bindingHash, reason)
 }
+
 
