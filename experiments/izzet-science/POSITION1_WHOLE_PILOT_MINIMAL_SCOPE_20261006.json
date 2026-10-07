@@ -1,0 +1,40 @@
+{
+  "schema": "izzet-position1-whole-pilot-minimal-scope-v1",
+  "date_utc": "2026-10-06",
+  "authority": "PROSPECTIVE_SOURCE_SCOPE_ONLY_NO_EXECUTION_AUTHORITY",
+  "base_head": "2acd2765d7f00051bb39b9fe63361d80a9617525",
+  "preserve_without_reopening": [
+    "mechanics source ecd0b5049fee1cde89448a968682bd0b4980cce9",
+    "mechanics run 37143113720 / artifact 11281401677 / 46 of 46 actual mechanics cases",
+    "unchanged 55-name Position-1 registry inventory at 55 of 55",
+    "snapshot qualification run 37146354190 / artifact 11282850765"
+  ],
+  "minimum_source_contract": [
+    "A masked Position-1 pilot boundary that never receives raw GameState, authoritative RNG state, opponent private zones or unmasked hidden decisions.",
+    "An explicit actor/priority/decision epoch in every proposal so stale proposals are rejected before engine submission.",
+    "A finite numbered action and typed-decision inventory whose unhandled surfaces fail closed rather than auto-pass or select an arbitrary legal action.",
+    "A trusted initializer/runner that binds exact source, deck, pilot, opponent, runtime and rules identities before initialization.",
+    "A durable unique attempt identity before initialization and append-only accepted-transition journal with strict replay of the exact initialization/action stream.",
+    "A collector that records source/protocol/pilot/opponent/runtime pins and raw stop classification only; no performance conclusion or synthetic outcome."
+  ],
+  "required_negative_cases": [
+    "hidden opponent hand access is unavailable",
+    "stale actor/priority epoch proposal rejects",
+    "unknown or illegal action identity rejects",
+    "unhandled typed decision rejects without fallback",
+    "duplicate attempt identity refuses initialization",
+    "initializer failure cannot become a completed attempt",
+    "interrupted accepted-transition intent remains detectably incomplete",
+    "replay drift or truncation fails closed",
+    "wrong source/deck/pilot/opponent/runtime binding rejects before initialization"
+  ],
+  "opponent_identity_rule": "No opponent identity is authorized by this scope. Exact opponents must come from a separate source-bound project decision or governing protocol; absence is a blocker, not permission to fabricate a matchup.",
+  "next_gate": "Independent source review of this prospective scope and the companion current-gap inventory. After acceptance, implement only the smallest masked pilot/runner/replay composition needed to satisfy the contract; freeze exact source and qualify deterministically before any separate gameplay-admission authority.",
+  "prohibited": [
+    "no official seed/allocation/claim/game",
+    "no opponent invention",
+    "no outcome collection",
+    "no registry or mechanics rerun unless a relevant source change invalidates exact prior evidence"
+  ],
+  "official_counters_delta": 0
+}
