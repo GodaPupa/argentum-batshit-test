@@ -1,0 +1,314 @@
+{
+  "schema": "industrial-r1-prospective-runtime-mechanism-proposal-v1",
+  "date_utc": "2026-10-07",
+  "status": "FROZEN_FOR_INDEPENDENT_RULE_MECHANISM_REVIEW_ONLY",
+  "authority": "PROPOSAL_ONLY_NO_IMPLEMENTATION_OR_EXECUTION_AUTHORITY",
+  "decision_requested": "ACCEPTABLE_AS_PROSPECTIVE_MECHANISM_DESIGN_ONLY_OR_REJECT_WITH_EXACT_GAPS",
+  "scope": {
+    "lane": "Industrial PR #214",
+    "purpose": "Decide whether a separately qualified VM-integrated boundary is an admissible prospective direction when stock-JDK evidence does not establish the adopted runtime guarantees.",
+    "not_a_v2_disposition": true,
+    "implementation_authorized": false,
+    "sealed_launch_authorized": false,
+    "r1_permit_authorized": false,
+    "claims_allocations_seeds_gameplay_authorized": false,
+    "gate": "Neither publication nor a design-only acceptance activates the mechanism. Independent acceptance of these exact bytes, canonical orchestrator adoption and an explicit bounded implementation authorization are required before any new mechanism implementation. Concrete source/runtime/manifest/platform acceptance and execution gates remain later."
+  },
+  "bindings": {
+    "base_commit": "cf7e623d9ae2d7095820578d919c8cea64cb9596",
+    "base_tree": "17e980edc5c97606a30cfdcda4b68410713081ec",
+    "adopted_proposal_path": "industrial-waste/v2/R1_COMPLETE_RUNTIME_BOUNDARY_ADOPTION_PROPOSAL_20261001.json",
+    "adopted_proposal_blob": "5da4912ad51c478b33588eab13af5e7bd95448d5",
+    "rule_review_comment": 6032123880,
+    "rule_adoption_comment": 6032126209,
+    "rule_review_sha256": "b5d87410891e9acc445783a253fc5c85ad52dd2bd9d0e27294d351784d1e4c05",
+    "governing_design_path": "industrial-waste/v2/R1_COMPLETE_RUNTIME_BOUNDARY_PROPOSAL.md",
+    "governing_design_blob": "a2161dda29fec1ac9e59f8a9e6b2c37b4d5a09cc",
+    "frozen_v2": {
+      "branch": "industrial/r1-boundary-safety-repair-v2-20261007",
+      "head": "db10b83d037dd52ff706e34cd14d0ebb2d9c90c5",
+      "tree": "f25943ad0c1c47d11b777c556a176644284f77da",
+      "review_request": 6039885293,
+      "relationship": "Read-only reference; not the base, not modified, not accepted by this proposal."
+    },
+    "supporting_capture": {
+      "run": 36912341177,
+      "artifact": 11190020145,
+      "use": "NOT_READ_OR_USED_TO_DEFINE_EXPECTED_MEMBERSHIP"
+    }
+  },
+  "evidence_limits": {
+    "result": "STOCK_JDK_COMPLETE_ENFORCEMENT_NOT_ESTABLISHED",
+    "method": "Read-only repository inspection, Java 21 specifications, immutable OpenJDK source inspection, and Linux documentation. No JVM, worker, synthetic runtime, build, capture, seed or gameplay executed.",
+    "meaning": "This is a bounded feasibility finding, not a proof that every possible no-agent construction is impossible.",
+    "installed_vendor_identity": "Repository platform-binding blob 911a2329e1fdc973b239fdb1b13a22aa9c44cf5f records Temurin 21.0.12+8-LTS. Upstream source with the matching version is reference evidence, not proof of exact vendor binary/source equivalence.",
+    "upstream": {
+      "repository": "openjdk/jdk21u",
+      "tag": "jdk-21.0.12+8",
+      "tag_object": "9aeb78a2b39c56356b792b7e5294377036ef0a19",
+      "commit": "9de4f68c88a0a1510373f291d1a95b1f6b0db8c8",
+      "blobs": [
+        {
+          "path": "src/hotspot/share/classfile/klassFactory.cpp",
+          "blob": "d433645069a48ad31a992799b04d2f9e0636da17",
+          "finding": "The class creation path conditions the class-file load hook on the class not being hidden."
+        },
+        {
+          "path": "src/java.base/share/classes/java/lang/invoke/InvokerBytecodeGenerator.java",
+          "blob": "28e5c3894db430ac65df01f69e7b516cd62dbfbd",
+          "finding": "The generator uses an internal hidden-class definer. Generator provenance must cover this internal path, not only public Lookup entry points."
+        },
+        {
+          "path": "src/hotspot/share/prims/jvm.cpp",
+          "blob": "7f0eddbda2718a16c8e935930e6766f1f611233b",
+          "finding": "Lookup definition is a distinct VM entry; the class-log source label is not a generator/input attestation."
+        }
+      ]
+    },
+    "facts": [
+      {
+        "id": "F1",
+        "source": "S1",
+        "finding": "Lookup can define a hidden class without ClassLoader.defineClass. A guard limited to that loader method cannot establish complete hidden coverage."
+      },
+      {
+        "id": "F2",
+        "source": "S2",
+        "finding": "JVMTI exposes class-load/prepare and byte-hook events, but creation notifications and a current loaded-class census do not constitute a complete record of failed requests or an authenticated generator-input history."
+      },
+      {
+        "id": "F3",
+        "source": "S3",
+        "finding": "A Java ClassFileTransformer exception does not veto loading; the transformation chain and attempted load continue. A rejection design based only on throwing there is unsound."
+      },
+      {
+        "id": "F4",
+        "source": "S4",
+        "finding": "Disabling attach removes that facility; it is not a proof of allowed definitions or a complete prevention/detection mechanism."
+      },
+      {
+        "id": "F5",
+        "source": "S5",
+        "finding": "fs-verity protects file data but not all metadata or pathname replacement. Its use alone does not bind the namespace."
+      },
+      {
+        "id": "F6",
+        "source": "S6",
+        "finding": "dm-verity requires a trusted root digest. Corruption-tolerant or reduced online checking options cannot satisfy the proposed strict failure behavior."
+      },
+      {
+        "id": "F7",
+        "source": "S7",
+        "finding": "SO_PEERCRED reflects credentials at connection/listen/socketpair creation. An inherited pre-fork socketpair must not be misrepresented as a post-exec worker identity proof."
+      },
+      {
+        "id": "F8",
+        "source": "S8",
+        "finding": "A pidfd can bind a process instance; creation/reaping conditions matter. PID strings and copied process metadata alone are insufficient."
+      }
+    ]
+  },
+  "alternatives": [
+    {
+      "id": "M0",
+      "mechanism": "Unmodified pinned JDK, immutable supply, exact launch arguments and retrospective logs",
+      "disposition": "Useful evidence components, not demonstrated sufficient",
+      "gap": "No established unforgeable ordinary/hidden generator provenance or complete attempted-request interlock; logs and polling can lag or omit denied operations. Complete prospective code-path proof could be reviewed separately, but is absent."
+    },
+    {
+      "id": "M1",
+      "mechanism": "Startup JVMTI/Java agent on otherwise stock JDK",
+      "disposition": "Not selected; not authorized",
+      "gap": "Introduces an agent contrary to the baseline; hidden byte-hook coverage is absent in the inspected upstream path; ordinary byte hooks are not a complete failed-request monitor. Java transformer exceptions do not veto. Merely permitting one agent would not solve the requirement."
+    },
+    {
+      "id": "M2",
+      "mechanism": "Statically built VM-integrated guard plus external trusted supervisor and admission receiver",
+      "disposition": "Selected prospective design for review only",
+      "gap": "Requires new trusted-toolchain/platform adoption and proof of complete entry-path coverage, generator-input provenance and concurrency interlocks. No implementation or performance claim is made."
+    }
+  ],
+  "proposed_rule_delta": {
+    "existing_rule_bytes_unchanged": true,
+    "change": "Permit consideration of exactly one independently reviewed, reproducibly built enforcement-only JDK/VM derivative and its supervisor as a new explicit trusted-toolchain boundary, replacing no stock-JDK identity until a separate exact platform acceptance.",
+    "not_an_agent_exception": "No Java/native/JVMTI agent, instrumentation transformer, dynamic attach, arbitrary class redefinition, custom application loader or runtime compiler becomes permitted. Built-in VM enforcement is nevertheless a material toolchain change and must not be relabeled as unchanged stock-JDK execution.",
+    "bytecode_and_semantics": "No changes to experiment code, ordinary class bytes, deck/protocol/seed rules or permitted hidden family. Guard additions may inspect, deny, suspend for durable authorization, and record. Any semantic change beyond that, additional VM optimization/generation family or JIT policy change needs separately scoped review.",
+    "early_start": "Guard and static native trust base operate before any class definition. There is no unobserved bootstrap allowance.",
+    "platform_consequence": "A patched VM cannot use the old Java executable digest or old container identity as proof. The complete new libjvm/JDK/module/native/container/compiler/build provenance must be pinned and independently accepted. Feasibility does not establish deployment availability."
+  },
+  "threat_model": {
+    "trusted": "Explicitly pinned supervisor, receiver, guard/VM, boot JDK classes, kernel, cryptographic verification code, build provenance, external durable ledger and operator-controlled host. Each is in the reviewed trust boundary.",
+    "untrusted": "Worker application requests, caller-selected names/digests/booleans, environment, writable output and scratch, unapproved paths, loaders, generators and third-party native code.",
+    "limits": "No claim to resist a compromised kernel/host/hypervisor, arbitrary native memory corruption inside the trusted VM, compromised compiler or broken cryptography. If those must be adversarial, this design is insufficient and requires a different isolation/attestation proposal.",
+    "host_role": "Existing orchestration-only host assumptions cannot silently become trusted-enforcement assumptions. Reviewer must explicitly approve the proposed trust boundary; if the deployment cannot supply it, block.",
+    "native_policy": "No arbitrary JNI, FFM native downcalls or library search fallback. Only the fully enumerated native closure and exact reviewed invocation paths. Native library presence alone is not permission for arbitrary DefineClass/RegisterNatives behavior."
+  },
+  "prospective_closure": {
+    "construction": "Independent seed-free qualification build before worker start and before any experimental claim; full resolved graphs and immutable inputs, never a receiving-load whitelist.",
+    "mandatory_bindings": [
+      "source commit/tree and complete build inputs",
+      "accepted 1339-file store, outer/manifest/file digests and resolved edges",
+      "exact JDK modules, executable, libjvm, generator and Lookup implementation bytes",
+      "ordered classpath/module-path/resource/loader/delegation graphs",
+      "all native dependencies, dynamic loader and import/executable chains",
+      "Python interpreter/stdlib/import graph, shell and launcher bytes",
+      "exact argv, cwd, explicit environment and immutable namespace/mount identities",
+      "every directory/archive member, reviewed duplicate precedence and multi-release behavior",
+      "executed reproducible recipes, tools, inputs and outputs for all generated/transient prelaunch bytes"
+    ],
+    "publication": "Missing or unverifiable edge emits failure only; no canonical manifest, attestation, admission, experimental claim, allocation, seed read or game.",
+    "generation": "Two copied or caller-supplied equal hashes are not a reproduction. Isolated repeated generation must execute pinned recipes with audited immutable inputs; drift is a failure, never normalization.",
+    "resource_policy": "Resources and service descriptors remain members even when never loaded. Native and Python closure are not inferred from Java class events."
+  },
+  "vm_guard_contract": {
+    "ordinary": "At the final byte-to-definition boundary, before visibility or initialization, bind module, loader identity/delegation, source root/member, exact raw bytes and length to the independently accepted manifest. Names, resource re-reads and CodeSource URLs alone never qualify.",
+    "paths": "Provide a reviewed source-level coverage map for bootstrap/built-in/framework loaders, JNI definitions, Lookup ordinary/hidden definitions, archived/CDS classes, error paths, initial and later loads. Disable CDS in the proposed profile unless an additional exact archival-creation path is independently covered. No assumption that one hook catches every path.",
+    "attempted_requests": "Observe resolution and definition requests before outcome, including unknown names/roots/loaders, missing expected bytes, failed parsing and denied native/resource loads. Assign an event before policy lookup. Unknown requests irreversibly latch failure even if application code catches the Java exception. Speculative/optional probes receive no blanket exemption; any necessary policy clarification needs prospective independent adoption.",
+    "arrays_primitives": "Separate VM-derived array/primitive identities from byte-backed classes, with explicit component/rank derivation; they cannot supply an arbitrary bytecode-definition loophole.",
+    "hidden": {
+      "family": "Only java.base/java.lang.invoke.InvokerBytecodeGenerator -> java.lang.invoke.LambdaForm$* through exact pinned Lookup hidden-definition path.",
+      "identity": "Pin module image plus every generator and Lookup implementation byte. VM validates an internal one-use generation provenance record bound to the actual generator operation and exact output buffer; caller labels, stack-name matching and family prefix alone are insufficient.",
+      "inputs": "Record complete generator object/input provenance graph: ordinary parent/interface/target definitions, call-site identities and transformations, pinned JDK inputs and sealed argv/environment. Internal IDs are evidence references, not arbitrary permitted membership. Unknown input origin, hidden-derived input chain without a rule proof, or unenumerable generator state fails closed.",
+      "token": "Generation provenance remains VM-internal, unavailable to application/JNI minting; consume once against the actual definition buffer and mechanism. Hashing output alone proves no input provenance.",
+      "boundaries": "No lambda-proxy/ProxyGenerator/Unsafe/custom-loader/generated non-hidden exception. No mutation, replacement or shadowing of ordinary members. Hidden suffix/address/multiplicity are not canonical ordinary members or retrospectively learned expectations.",
+      "qualification_limit": "The ability to obtain complete generator-input provenance is a blocking implementation proof obligation, not a capability claimed here."
+    },
+    "concurrency": "Failure latch, definition authorization and every admission boundary share a reviewed linearization protocol across all threads. No thread may define or initialize an unauthorized class while another waits for evidence. Buffer overflow, reentrancy, timeout, transport loss, missing event or uninstrumented path is terminal.",
+    "failure": "Deny prior to definition/next admission; after initialization quarantine under existing no-retry rules. A Java exception caught by the worker never clears the failure latch.",
+    "machine_code": "JIT-produced native code and VM stubs are distinct from generated class definitions. Any reliance on the pinned VM's existing JIT/stub machinery must be explicitly described and bound in the native/toolchain trust proof; this proposal grants no new runtime compiler, generated-class family, optimization rewrite or changed execution mode. If the adopted rule disallows the required behavior, obtain a separate clarification instead of treating it as implicit."
+  },
+  "lifetime_contract": {
+    "supply": "Use a reviewed read-only whole-filesystem image with a trusted verity root or an equivalently proven immutable namespace; protect metadata, pathname bindings and read data, not just individual initial hashes. No mutable bind-source aliases, undeclared overlays, alternate mounts or runtime code from writable scratch.",
+    "controls": "No network, capabilities, ptrace/attach, debug agent, namespace/mount changes, exec/fork escape, unmanifested native loading or file-descriptor passing to another worker. Qualify actual kernel controls; a list of requested container flags is not evidence of enforcement.",
+    "nuance": "noexec on scratch is not sufficient to stop JVM reading bytecode. Enforce membership at the VM boundary as well. Writable logs never become code or authority.",
+    "memory": "Trusted VM integrity and ordinary execution semantics are assumptions; immutable files do not prove memory integrity. Third-party native code requires explicit trust review.",
+    "duration": "Controls start before first definition and continue through terminal acknowledgement/process death. Runtime receipt is a running authenticated transition stream, not a startup snapshot."
+  },
+  "channel_and_receipt_contract": {
+    "roles": "External supervisor owns launch lifecycle and signing key; independent admission receiver validates receipts. Worker cannot choose or read signing key. Guard events are accepted only from the reviewed launched process/channel.",
+    "freshness": "Receiver generates cryptographically random challenge and launch ID; persist a unique reserved identity before process creation. Bind receiver identity, execution owner, boot identity, pidfd-bound process, process start, executable/JDK/guard/source/tree/manifest/rule/mechanism/review digests, exact namespace/mounts and allowed environment.",
+    "authentication": "Authenticate actual post-exec process credentials and pidfd association in the reviewed namespace. Do not equate inherited socketpair peer credentials with child identity. Prevent channel/FD inheritance, reconnect and cross-worker reuse. Kernel credentials authenticate a process, not its guard; trusted VM and isolation provide the remaining explicit assumption.",
+    "framing": "Versioned canonical UTF-8 messages, bounded lengths, duplicate-key/unknown-field rejection, monotonic sequence, previous-record digest, challenge, launch/process IDs, policy decision, definition/input digests and failure latch. No caller-provided verified boolean.",
+    "durability": "Supervisor signs canonical receipts outside worker. Durable append with full-write handling and file/directory fsync or a reviewed transactional equivalent; receiver independently validates chain and returns authenticated acknowledgements. Record intent before granting the guarded action, then record outcome. A lost acknowledgement never triggers re-execution.",
+    "prepared": "Only after full closure verification and gap-free startup events may supervisor issue PREPARED receipt. It is not a permit. Receiver atomically consumes this identity once when later separately authorized admission is attempted; PID/start/executable/nonce/review bindings must all match.",
+    "lifecycle": [
+      {
+        "from": "NEW",
+        "to": "RESERVED",
+        "condition": "Unique challenge/launch ID durably registered; not an experimental claim"
+      },
+      {
+        "from": "RESERVED",
+        "to": "STARTING",
+        "condition": "Separately authorized future launch only; process identity and channel bound"
+      },
+      {
+        "from": "STARTING",
+        "to": "PREPARED",
+        "condition": "Complete independently accepted closure and gap-free guard evidence"
+      },
+      {
+        "from": "PREPARED",
+        "to": "CONSUMED",
+        "condition": "Separate execution authorities present; one durable receiver transaction"
+      },
+      {
+        "from": "CONSUMED",
+        "to": "CLOSED",
+        "condition": "Verified terminal stream, authorized work complete, process death recorded"
+      },
+      {
+        "from": "ANY_NONTERMINAL",
+        "to": "FAILED_OR_QUARANTINED",
+        "condition": "Violation, death, I/O ambiguity, timeout or chain defect; identity permanently unusable"
+      }
+    ],
+    "recovery": "No reset to NEW, continuation after uncertain commit, key reuse as proof of freshness, replacement worker, replay, retry, seed refill or new experimental claim. On restart reconcile the ledger; orphan/uncertain identities terminate unusably. A hash chain without external durable state is not rollback resistance.",
+    "claim_separation": "Launch reservation and protocol-state consumption are mechanism terms only and confer no experimental claim/allocation authority. Existing preclaim, prepared-worker and R1 gates remain separate.",
+    "guard_endpoint": "Guard transport is a private VM-internal endpoint, not a Java API, caller-selected descriptor or generic signing service. The exact implementation must prove application code and approved native code cannot forge guard frames, reopen the endpoint through /proc/self/fd, pass it to another process, or bypass its sequence/failure state. Peer credentials alone do not provide this separation. Failure to prove it blocks the mechanism.",
+    "prepared_fields": [
+      "source_commit",
+      "source_tree",
+      "accepted_manifest_sha256",
+      "adopted_rule_sha256",
+      "mechanism_review_sha256",
+      "implementation_review_sha256",
+      "qualification_evidence_sha256",
+      "runtime_receipt_chain_head",
+      "worker_executable_and_jdk_image_sha256",
+      "guard_supervisor_receiver_sha256",
+      "execution_owner",
+      "receiver_identity",
+      "launch_id",
+      "receiver_challenge",
+      "boot_and_namespace_identity",
+      "pidfd_bound_worker_identity",
+      "worker_start_identity",
+      "immutable_mount_digest",
+      "argv_environment_digest",
+      "terminal_failure_latch"
+    ]
+  },
+  "qualification_requirements": [
+    "Exact source coverage audit proves all definition/request/error paths, including pre-main bootstrap, CDS disabled path, JNI/Lookup/internal hidden path and concurrent late requests; any uncovered path blocks.",
+    "Byte-bound fixtures for missing/extra/alias/symlink/hardlink/root/archive/JDK/native/Python/launcher mismatch; environment/argv/classpath/module-path/resource-order changes and duplicate/multi-release ambiguity.",
+    "Known-name different definition bytes; resource bytes equal but definition differs; wrong loader/module/root; unavailable expected member; attempted unknown load with exception caught; later load after preparation.",
+    "Exact allowed LambdaForm generator with all bound inputs; wrong generator/Lookup/JDK/input; spoofed family; token replay/buffer swap; ordinary shadowing; lambda-proxy and other unknown hidden families rejected.",
+    "Actual isolated generator recipe reproduction; non-reproducible transient output and fake equal-hash claims rejected.",
+    "Concurrent definition/admission/failure races; verifier reentrancy/deadlock, startup gaps, bounded-buffer exhaustion and supervisor disconnect all halt without unrecorded allow.",
+    "Post-start file replacement via aliases, namespace change, archive swap, native/library injection, write attempts and executable changes; kernel enforcement failures are fatal.",
+    "Wrong-worker PID/start/executable, pre-fork socket credential trap, recycled PID, leaked descriptor, copied envelope, stale/replayed nonce, wrong receiver/owner/source/review and cross-boot reuse.",
+    "Crash at every reserve/start/prepare/consume/ack/outcome boundary; partial write, disk-full, fsync failure, ledger rollback, reordered/duplicate/missing/truncated records and dropped terminal receipt produce permanent unusable identity.",
+    "No trusted mechanism introduced into actual worker or experimental input before proposal acceptance, orchestrator adoption and separate implementation authorization. No official corpus/game run is a qualification fixture."
+  ],
+  "unresolved_acceptance_blockers": [
+    "Exact derivative patch, build recipe, compiler/bootstrap JDK, module/native closure, signed release manifest and reproducibility evidence do not yet exist.",
+    "Complete VM-path and generator-input provenance are requirements to prove, not solved by this design text.",
+    "No concrete immutable deployment host/kernel/supervisor/receiver is qualified; ordinary GitHub Actions container qualification is insufficient.",
+    "No accepted complete prospective graph/manifest or authenticated channel implementation exists.",
+    "Independent reviewer must decide whether the proposed trust expansion and performance/semantic interference are acceptable; rejection preserves the stock-JDK/no-agent baseline unchanged."
+  ],
+  "review_questions": [
+    "Does the bounded evidence support NOT_ESTABLISHED for the full stock-JDK requirement without overclaiming universal impossibility or vendor-source equivalence?",
+    "Is the proposed VM-integrated toolchain direction admissible as a separate future trust boundary while all existing no-agent and hidden-family restrictions remain?",
+    "Are attempted-load semantics, generator input proof obligations, early-start and concurrency interlocks explicit enough to reject incomplete implementations?",
+    "Are host/kernel trust, immutable namespace, post-exec channel authentication, external durable state and irreversible crash handling adequate as prospective requirements?",
+    "Are scope and authority gates unambiguous: no implementation by this proposal, no V2 disposition, no concrete manifest/platform or execution acceptance?",
+    "If acceptable, return a design-only disposition bound to exact proposal head/tree/blob; otherwise state exact gaps. Do not self-adopt, issue runtime acceptance or authorize a launch."
+  ],
+  "sources": [
+    {
+      "id": "S1",
+      "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/invoke/MethodHandles.Lookup.html#defineHiddenClass(byte[],boolean,java.lang.invoke.MethodHandles.Lookup.ClassOption...)"
+    },
+    {
+      "id": "S2",
+      "url": "https://docs.oracle.com/en/java/javase/21/docs/specs/jvmti.html#ClassFileLoadHook"
+    },
+    {
+      "id": "S3",
+      "url": "https://docs.oracle.com/en/java/javase/21/docs/api/java.instrument/java/lang/instrument/ClassFileTransformer.html"
+    },
+    {
+      "id": "S4",
+      "url": "https://docs.oracle.com/en/java/javase/21/docs/specs/man/java.html"
+    },
+    {
+      "id": "S5",
+      "url": "https://docs.kernel.org/filesystems/fsverity.html"
+    },
+    {
+      "id": "S6",
+      "url": "https://docs.kernel.org/admin-guide/device-mapper/verity.html"
+    },
+    {
+      "id": "S7",
+      "url": "https://man7.org/linux/man-pages/man7/unix.7.html"
+    },
+    {
+      "id": "S8",
+      "url": "https://man7.org/linux/man-pages/man2/pidfd_open.2.html"
+    }
+  ],
+  "official_counters_delta": 0
+}
