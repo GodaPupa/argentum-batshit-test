@@ -82,7 +82,7 @@
     "actions": 0,
     "outcomes": 0
   },
-  "construction_commits_from_v3_1": 6,
+  "construction_commits_from_v3_1": 7,
   "qualification_observability": {
     "durable_receipt_pr": 216,
     "receipt_job_runs_after_both_lanes": "ALWAYS",
@@ -104,6 +104,11 @@
       "classification": "PUSH_RUN_ID_NOT_ENUMERABLE_BY_CONNECTED_ACTIONS_READER",
       "authority_effect": "NONE",
       "repair": "publish start receipt from qualification run so exact run id/head are auditable"
+    },
+    {
+      "classification": "QUALIFICATION_TRIGGER_OBSERVABILITY_FALLBACK",
+      "authority_effect": "NONE",
+      "repair": "contents-api manifest-only branch commit used to emit ordinary push event; net candidate delta unchanged"
     }
   ]
 }
