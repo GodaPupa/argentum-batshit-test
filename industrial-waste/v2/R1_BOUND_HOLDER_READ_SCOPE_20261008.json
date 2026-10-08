@@ -1,0 +1,52 @@
+{
+  "schema": "industrial-bound-holder-read-scope-v1",
+  "authority": {
+    "pr": 214,
+    "review_receipt": 6060826152,
+    "adoption": 6060852778,
+    "stage": "excluded implementation/qualification only"
+  },
+  "parent": {
+    "head": "8d7ca6cb3f1312c7a3485a3b6927d59c31fcb287",
+    "tree": "24da1beb70a8554c888334915ae3e7a1a1ca5832"
+  },
+  "mechanism": [
+    "Four original 32-byte root keys must be distinct before derivation.",
+    "HMAC-SHA256 client journal/challenge key is domain-separated and binds canonical full transport binding, provisioned deployment identity, and role-separated SHA256 identities of all four keys.",
+    "Exact unchanged VerifiedHolderRead receives the derived key. Its unchanged FreshnessClient authenticates all existing journal rows with that key before exposing any read.",
+    "Different configuration cannot authenticate retained journal history under the cryptographic assumptions. Configuration bytes are not an explicit persisted manifest; journal MACs bind their key derivation.",
+    "No second journal, cross-file transaction, rotation, migration, reset or configuration-change API. Legacy journals refuse; create=True is exclusive and never overwrites an existing path.",
+    "Nested transport, holder and witness authentication, durable ISSUE-before-exchange and ACCEPT-before-return remain delegated unchanged. Pending ISSUE cannot resume; uncertain writes remain terminal in the live object."
+  ],
+  "provisioning_required": [
+    "Independently authorized exact source/context label, client/holder/witness/instance and deployment 64-hex identities.",
+    "Four high-entropy distinct 32-byte keys with custody and separation from supervisor/other protocol keys; no key generation occurs here.",
+    "Trusted original revision and independently authenticated witness checkpoint; response-derived bootstrap forbidden.",
+    "Trusted retained nonrollback journal path/storage root with permissions, no privileged rewrite, replacement, copy or deletion; create=True permitted only for genuinely new provisioning.",
+    "Trusted launcher must require this component and prohibit bypass via inherited APIs, private attributes or replacement code. Python objects do not enforce hostile-caller isolation.",
+    "Any migration/rotation or adoption of old journals requires separately designed/reviewed authority; no downgrade fallback is supplied."
+  ],
+  "limits": [
+    "Deployment and source are provisioned labels, not measured code or authenticated remote host identities.",
+    "The same exact configuration on copied/reset storage is not clone-fenced; flock is local only. Whole-journal rollback and new-path bootstrap cannot be detected.",
+    "A caller possessing root key/material can derive the key or use direct witness/holder/client APIs; this is not a deployment-wide configuration authorizer or direct-bypass prevention.",
+    "No server-global persistent replay ledger, deployed network/TLS, confidentiality, time freshness, availability, timeout or callback reentrancy qualification.",
+    "No external nonrollback holder/witness service, VM attestation/definition provenance, toolchain/platform acceptance, complete manifest, sealed worker or R1 admission.",
+    "Synthetic keys/identities only; no official entropy/seeds/vectors/allocations/claims/markers/initializations/games/outcomes."
+  ],
+  "qualification": {
+    "file": "test_r1_bound_holder_read.py",
+    "cases": 23,
+    "scope": "new deterministic excluded fixtures only; predecessor suites not rerun"
+  },
+  "preserved_failures": [
+    {
+      "run": 37705094637,
+      "artifact": 11518339866,
+      "classification": "runtime identity recorder harness failure; zero witness fixtures",
+      "changed_harness_success": 37705340234,
+      "success_artifact": 11519158009
+    }
+  ],
+  "admission_authority": false
+}
