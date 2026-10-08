@@ -15,9 +15,9 @@ import com.wingedsheep.sdk.core.Zone
 /**
  * Fail-closed composition of already-qualified Stage-E component seams.
  *
- * Existing component dispositions retain precedence. The only multi-proposal ranking is a
- * stable tie-break between equivalent copies of one current deployment; other ambiguous or
- * uncovered surfaces remain explicitly Unqualified.
+ * Existing component dispositions retain precedence. Multi-proposal ranking is bounded to
+ * equivalent deployment copies, then the basic-Island-board Terror/Serpent policy. Other
+ * ambiguous or uncovered surfaces remain explicitly Unqualified.
  */
 internal object SphinxStageEWholeActor {
     private val setupDraws = setOf(
@@ -110,8 +110,11 @@ internal object SphinxStageEWholeActor {
         val proposed = routed.filterIsInstance<SphinxStageEAdapterResult.Proposed>()
         return when {
             proposed.size == 1 -> proposed.single()
-            proposed.size > 1 -> SphinxStageEEquivalentDeploymentRanking.choose(
-                input, epoch, pilot.actorId, proposed)
+            proposed.size > 1 -> when (val equivalent = SphinxStageEEquivalentDeploymentRanking.choose(
+                input, epoch, pilot.actorId, proposed)) {
+                is SphinxStageEAdapterResult.Proposed -> equivalent
+                else -> SphinxStageETerrorSerpentRanking.choose(input, epoch, pilot.actorId, proposed)
+            }
             routed.all { it is SphinxStageEAdapterResult.Declined } ->
                 SphinxStageEAdapterResult.Declined(
                     input.bindingHash,
@@ -184,5 +187,6 @@ internal object SphinxStageEWholeActor {
     private fun unqualified(input: ActorInput, reason: String) =
         SphinxStageEAdapterResult.Unqualified(input.bindingHash, reason)
 }
+
 
 
