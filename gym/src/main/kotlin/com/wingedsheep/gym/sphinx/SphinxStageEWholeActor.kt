@@ -16,7 +16,7 @@ import com.wingedsheep.sdk.core.Zone
  * Fail-closed composition of already-qualified Stage-E component seams.
  *
  * Existing component dispositions retain precedence. Multi-proposal ranking is bounded to
- * equivalent deployment copies, then the basic-Island-board Terror/Serpent policy. Other
+ * equivalent deployment copies, the basic-Island Terror/Serpent policy, then equivalent setup copies. Other
  * ambiguous or uncovered surfaces remain explicitly Unqualified.
  */
 internal object SphinxStageEWholeActor {
@@ -113,7 +113,10 @@ internal object SphinxStageEWholeActor {
             proposed.size > 1 -> when (val equivalent = SphinxStageEEquivalentDeploymentRanking.choose(
                 input, epoch, pilot.actorId, proposed)) {
                 is SphinxStageEAdapterResult.Proposed -> equivalent
-                else -> SphinxStageETerrorSerpentRanking.choose(input, epoch, pilot.actorId, proposed)
+                else -> when (val threats = SphinxStageETerrorSerpentRanking.choose(input, epoch, pilot.actorId, proposed)) {
+                    is SphinxStageEAdapterResult.Proposed -> threats
+                    else -> SphinxStageEEquivalentSetupRanking.choose(input, epoch, pilot.actorId, proposed)
+                }
             }
             routed.all { it is SphinxStageEAdapterResult.Declined } ->
                 SphinxStageEAdapterResult.Declined(
@@ -187,6 +190,7 @@ internal object SphinxStageEWholeActor {
     private fun unqualified(input: ActorInput, reason: String) =
         SphinxStageEAdapterResult.Unqualified(input.bindingHash, reason)
 }
+
 
 
 
