@@ -135,6 +135,8 @@ class CreateTokenCopyOfTargetExecutor(
         auraHostId: EntityId?,
         attackingDefenders: List<EntityId?>? = null,
         previouslyCreatedTokens: List<EntityId> = emptyList(),
+        // Entry predicates need the complete original battlefield/history, but no executable frames.
+        beforeEntry: GameState = state.copy(continuationStack = emptyList()),
     ): EffectResult {
         val targetId = context.resolveTarget(effect.target, state)
             ?: return EffectResult.success(state)
@@ -248,6 +250,7 @@ class CreateTokenCopyOfTargetExecutor(
                 .applyCreatedTokenEntryTap(
                     newState, tokenId, controllerId, definedTapped = effect.tapped,
                     attacking = defenders[index] != null,
+                    beforeEntry = beforeEntry,
                 )
             // Wire the host side of the attachment and announce it, so "becomes attached"
             // triggers (Eriette, the Beguiler) fire for an Aura token the same way they do when
@@ -350,6 +353,7 @@ class CreateTokenCopyOfTargetExecutor(
                         remaining = remaining,
                         attackingDefenders = defenders.drop(index + 1),
                         createdTokens = createdTokens.toList(),
+                        beforeEntry = beforeEntry,
                     )
                 )
                 val paused = com.wingedsheep.engine.handlers.effects.PermanentEntryReplacements

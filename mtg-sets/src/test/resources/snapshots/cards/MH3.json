@@ -254,6 +254,80 @@
     ]
 }
 
+// Eldrazi Repurposer
+{
+    "name": "Eldrazi Repurposer",
+    "manaCost": "{2}{G}",
+    "typeLine": "Creature — Eldrazi Drone",
+    "oracleText": "Devoid (This card has no color.)\nWhen you cast this spell and when this creature dies, create a 0/1 colorless Eldrazi Spawn creature token with \"Sacrifice this token: Add {C}.\"",
+    "creatureStats": {
+        "power": 3,
+        "toughness": 3
+    },
+    "keywords": [
+        "DEVOID"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": "CastThisSpellEvent",
+                "effect": {
+                    "type": "CreatePredefinedToken",
+                    "tokenType": "Eldrazi Spawn"
+                }
+            },
+            {
+                "id": "ability_2",
+                "trigger": {
+                    "type": "ZoneChangeEvent",
+                    "from": "Battlefield",
+                    "to": "Graveyard"
+                },
+                "effect": {
+                    "type": "CreatePredefinedToken",
+                    "tokenType": "Eldrazi Spawn"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "150",
+        "artist": "Daren Bader",
+        "flavorText": "\"I almost admire their ability to avoid waste. Almost.\"\n—General Tazri, allied commander",
+        "imageUri": "https://cards.scryfall.io/normal/front/3/7/37f79ba7-7b65-4387-b498-f770816ce8dd.jpg?1783911262",
+        "rulings": [
+            {
+                "date": "2024-06-07",
+                "text": "Eldrazi Repurposer's triggered ability will resolve before Eldrazi Repurposer does. If Eldrazi Repurposer is countered or otherwise leaves the stack in response to that triggered ability, the triggered ability will still resolve as normal."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "A card with devoid is just colorless. It's not colorless and the colors of mana in its mana cost."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "Other cards and abilities can give a card with devoid a color. If that happens, it's just the new color, not that color and colorless."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "Devoid works in all zones, not just on the battlefield."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "If a card loses devoid, it will still be colorless. This is because effects that change an object's color (like the one created by devoid) are considered before the object loses devoid."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "Devoid doesn't affect the color identity of the card for the purposes of the Commander variant. For example, while Abstruse Appropriation is colorless because it has devoid, its color identity is still white and black, and it can't be included in a Commander deck where the commander's color identity doesn't include both white and black."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "GREEN"
+    ]
+}
+
 // Faithful Watchdog
 {
     "name": "Faithful Watchdog",
@@ -529,6 +603,81 @@
     },
     "colorIdentityOverride": [
         "WHITE"
+    ]
+}
+
+// Hope-Ender Coatl
+{
+    "name": "Hope-Ender Coatl",
+    "manaCost": "{2}{U}",
+    "typeLine": "Creature — Eldrazi Snake",
+    "oracleText": "Devoid (This card has no color.)\nFlash\nWhen you cast this spell, counter target spell an opponent controls unless they pay {1}.\nFlying",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "keywords": [
+        "DEVOID",
+        "FLASH",
+        "FLYING"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": "CastThisSpellEvent",
+                "effect": {
+                    "type": "Counter",
+                    "condition": {
+                        "type": "CounterCondition.UnlessPaysMana",
+                        "cost": "{1}"
+                    }
+                },
+                "targetRequirement": {
+                    "type": "TargetObject",
+                    "filter": {
+                        "baseFilter": "ctrl:opponent",
+                        "zone": "Stack"
+                    },
+                    "id": "opponent spell"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "64",
+        "rarity": "UNCOMMON",
+        "artist": "Filip Burburan",
+        "imageUri": "https://cards.scryfall.io/normal/front/2/6/26973cad-26d7-4d42-a58a-85c3dce3b9fd.jpg?1783911290",
+        "rulings": [
+            {
+                "date": "2024-06-07",
+                "text": "Hope-Ender Coatl's triggered ability will resolve before Hope-Ender Coatl does. If Hope-Ender Coatl is countered or otherwise leaves the stack in response to that triggered ability, the triggered ability will still resolve as normal."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "A card with devoid is just colorless. It's not colorless and the colors of mana in its mana cost."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "Other cards and abilities can give a card with devoid a color. If that happens, it's just the new color, not that color and colorless."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "Devoid works in all zones, not just on the battlefield."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "If a card loses devoid, it will still be colorless. This is because effects that change an object's color (like the one created by devoid) are considered before the object loses devoid."
+            },
+            {
+                "date": "2024-06-07",
+                "text": "Devoid doesn't affect the color identity of the card for the purposes of the Commander variant. For example, while Abstruse Appropriation is colorless because it has devoid, its color identity is still white and black, and it can't be included in a Commander deck where the commander's color identity doesn't include both white and black."
+            }
+        ]
+    },
+    "colorIdentityOverride": [
+        "BLUE"
     ]
 }
 
@@ -1604,5 +1753,57 @@
     },
     "colorIdentityOverride": [
         "WHITE"
+    ]
+}
+
+// Writhing Chrysalis
+{
+    "name": "Writhing Chrysalis",
+    "manaCost": "{2}{R}{G}",
+    "typeLine": "Creature — Eldrazi Drone",
+    "oracleText": "Devoid (This card has no color.)\nWhen you cast this spell, create two 0/1 colorless Eldrazi Spawn creature tokens with \"Sacrifice this creature: Add {C}.\"\nReach\nWhenever you sacrifice another Eldrazi, put a +1/+1 counter on this creature.",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 3
+    },
+    "keywords": [
+        "DEVOID",
+        "REACH"
+    ],
+    "script": {
+        "triggeredAbilities": [
+            {
+                "id": "ability_1",
+                "trigger": "CastThisSpellEvent",
+                "effect": {
+                    "type": "CreatePredefinedToken",
+                    "tokenType": "Eldrazi Spawn",
+                    "count": 2
+                }
+            },
+            {
+                "id": "ability_2",
+                "trigger": {
+                    "type": "PermanentsSacrificedEvent",
+                    "filter": "creature Eldrazi",
+                    "perPermanent": true
+                },
+                "binding": "OTHER",
+                "effect": {
+                    "type": "AddCounters",
+                    "counterType": "+1/+1",
+                    "count": 1,
+                    "target": "Self"
+                }
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "208",
+        "artist": "Domenico Cava"
+    },
+    "colorIdentityOverride": [
+        "RED",
+        "GREEN"
     ]
 }

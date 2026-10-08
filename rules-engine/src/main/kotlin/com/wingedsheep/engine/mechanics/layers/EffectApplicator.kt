@@ -181,6 +181,15 @@ internal class EffectApplicator(
                 }
                 is Modification.RemoveType -> {
                     values.types.remove(mod.type)
+                    // Creature and kindred share their subtype vocabulary. Remove those
+                    // subtypes only when neither supporting card type remains; subtypes of
+                    // retained types (for example Shrine on an enchantment) stay intact.
+                    if (mod.type in setOf("CREATURE", "KINDRED") &&
+                        "CREATURE" !in values.types && "KINDRED" !in values.types) {
+                        val creatureTypes = com.wingedsheep.sdk.core.Subtype.ALL_CREATURE_TYPES.toSet()
+                        values.subtypes.removeAll { it in creatureTypes }
+                        values.types.removeAll { it in creatureTypes }
+                    }
                 }
                 is Modification.SetCreatureSubtypes -> {
                     val creatureTypes = com.wingedsheep.sdk.core.Subtype.ALL_CREATURE_TYPES.toSet()

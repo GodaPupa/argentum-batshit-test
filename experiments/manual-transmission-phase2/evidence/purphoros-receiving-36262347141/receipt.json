@@ -1,0 +1,85 @@
+{
+  "schema": "manual-phase2-purphoros-receiving-artifact-receipt-v1",
+  "status": "ACCEPTED_TARGETED_COMPONENT_AND_GENERATED_SNAPSHOT_ONLY",
+  "qualified_source": "3c453a01f40993633100824f393bb18fd54ea208",
+  "qualified_tree": "b76d0d5a5929efcacd4e72f1e207935dce9a1688",
+  "run_id": 36262347141,
+  "job_id": 108460445032,
+  "artifact_id": 10913007711,
+  "archive_bytes": 318610,
+  "archive_sha256": "dfac60251421b7dd9827944a64fe7e21fd81e89f59722c01b5d6b85e3d7e43cf",
+  "source_pins_verified": 45,
+  "actual_cases": 415,
+  "failures": 0,
+  "errors": 0,
+  "skips": 0,
+  "groups": {
+    "engine": 33,
+    "unchanged_purphoros": 25,
+    "authority_of_the_consuls": 2,
+    "aether_and_charming_prince": 12,
+    "content_snapshots_and_lint": 343
+  },
+  "independent_review": {
+    "reviewer": "/root/izzet",
+    "role": "Non-author source and original-artifact reviewer; no GitHub approval claimed",
+    "verdict": "ACCEPT_TARGETED_COMPONENT_AND_GENERATED_SNAPSHOT_ONLY",
+    "file": "izzet-independent-artifact-review.json",
+    "sha256": "8e112a30eac3374c05f4e2dc16a7ffcb107cd4b2d181d73505ab107cb6c77c2d"
+  },
+  "author_audit": {
+    "reviewer": "/root/manual",
+    "independent": false,
+    "file": "author-artifact-audit.json"
+  },
+  "original_25_fixture_sha256": "5003070a3a0064691edec48e2eb6ac1f80f68746017722ffda80f2bf5450e181",
+  "snapshot": {
+    "file": "mtg-sets/src/test/resources/snapshots/cards/THS.json",
+    "sha256": "b5e09edec9ab49c9dd78fdaed7fca40db65fcf1fa36ee61fdabb7555eacd78da",
+    "ordinary_generated_additions": [
+      "Purphoros, God of the Forge"
+    ],
+    "prior_records_unchanged": 76,
+    "received_commit": "d022f5df080284e88d8506ab620a1a6327f09fc8",
+    "received_tree": "8508bb1febce547c07823a72615abd2953a3f20c"
+  },
+  "assay": {
+    "agreements": 74,
+    "divergent": 0,
+    "grammar_uncovered": 3,
+    "authority": "Predictive tool evidence only; does not substitute for engine execution"
+  },
+  "retained_files": {
+    "author-artifact-audit.json": {
+      "bytes": 47028,
+      "sha256": "9198e540685a61528502dfcbadd72dce8b1b1bb019885ad5687a7c3297b8368a"
+    },
+    "izzet-independent-artifact-review.json": {
+      "bytes": 40483,
+      "sha256": "8e112a30eac3374c05f4e2dc16a7ffcb107cd4b2d181d73505ab107cb6c77c2d"
+    },
+    "izzet-independent-live-log-proof.json": {
+      "bytes": 7598,
+      "sha256": "326935c3fe95ee8eb562d49f8226ec67d32f9f13fcfdd598229c5c99efc0c54a"
+    },
+    "original-artifact.zip": {
+      "bytes": 318610,
+      "sha256": "dfac60251421b7dd9827944a64fe7e21fd81e89f59722c01b5d6b85e3d7e43cf"
+    }
+  },
+  "limits": [
+    "This receipt accepts only the declared 415-case component and ordinary generated snapshot. PR194 full integration remains incomplete.",
+    "The fixed original25 cases remain unchanged; component evidence does not qualify the entire reachable Manual or opponent card pool.",
+    "Effect-registry entry snapshots, entrants that depart before trigger matching, and direct cast/initializer/paused-producer boundaries require explicit receiving coverage.",
+    "A copy batch suspended by an as-enters choice must retain its original batch pre-entry state through every continuation; the resumed state after earlier sibling entries is not that state. The shared16 and this415 do not qualify their combined source.",
+    "Full receiving CI, canonical priority, complete actor and pilots, replay/runtime, capability admission and every frozen Phase2 gate remain required.",
+    "Technical failures in preserved prior attempts are not deck losses; no official experimental corpus was consumed."
+  ],
+  "hardware": "Manual Transmission v0.7",
+  "capability_games": 0,
+  "primary_games": 0,
+  "official_seeds_consumed": 0,
+  "official_initializations": 0,
+  "outcomes_exposed": 0,
+  "gameplay_authorized": false
+}

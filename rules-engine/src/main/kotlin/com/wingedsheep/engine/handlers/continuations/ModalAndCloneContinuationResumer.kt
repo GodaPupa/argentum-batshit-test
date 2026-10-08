@@ -1511,6 +1511,7 @@ class ModalAndCloneContinuationResumer(
             controllerId = continuation.controllerId,
             count = 1,
             auraHostId = hostId,
+            beforeEntry = continuation.beforeEntry,
         )
 
         val remaining = continuation.remaining - 1
@@ -1540,6 +1541,7 @@ class ModalAndCloneContinuationResumer(
             controllerId = continuation.controllerId,
             remaining = remaining,
             cardRegistry = services.cardRegistry,
+            beforeEntry = continuation.beforeEntry,
         )
         val events = created.events.toList() + next.events.toList()
         if (next.pendingDecision == null) return checkForMore(next.state, events)

@@ -1306,6 +1306,7 @@ class CostCalculator(
             CardPredicate.IsArtifact -> typeLine.isArtifact
             CardPredicate.IsEnchantment -> typeLine.isEnchantment
             CardPredicate.IsPlaneswalker -> CardType.PLANESWALKER in typeLine.cardTypes
+            is CardPredicate.HasCardType -> predicate.cardType in typeLine.cardTypes
             CardPredicate.IsInstant -> typeLine.isInstant
             CardPredicate.IsSorcery -> typeLine.isSorcery
             CardPredicate.HasAdventure -> cardDef.isAdventure
@@ -1323,6 +1324,7 @@ class CostCalculator(
             CardPredicate.IsToken -> false
             CardPredicate.IsNontoken -> true
             CardPredicate.IsLegendary -> typeLine.isLegendary
+            CardPredicate.IsSnow -> typeLine.supertypes.any { it.name == "SNOW" }
             CardPredicate.IsNonlegendary -> !typeLine.isLegendary
             CardPredicate.HasNonManaActivatedAbility -> cardDef.hasNonManaActivatedAbility
             CardPredicate.HasActivatedAbility -> cardDef.hasActivatedAbility

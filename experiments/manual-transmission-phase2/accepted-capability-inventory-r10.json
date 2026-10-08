@@ -1,0 +1,89 @@
+{
+  "schema": "mt-phase2-integrated-capability-requalification-r10",
+  "status": "ACCEPTED_CURRENT_INTEGRATED_SEED_FREE_COMPONENT_EVIDENCE",
+  "source_commit": "8af7d3bc573341c97cddf069a36a3c483eb850c3",
+  "predecessor": "accepted-capability-inventory-r9.json",
+  "resolves_pending_receipt": "world-breaker-revalidation-pending.json",
+  "validated_runs": {
+    "world_breaker_snapshot_sync": 36218680598,
+    "full_ci": 36219359394,
+    "capability_audit": 36219359370,
+    "telemetry_component": 36219359378,
+    "priority_after_resolution": 36219359347
+  },
+  "world_breaker_dedicated_gate": {
+    "implementation_commit": "b0f20e929631a73bff58f1dcb409739a23158e71",
+    "scenario_commit": "65e6ab2af4c8435d7f96d6c068d1754dc59aaa8e",
+    "capability_workflow_commit": "5cf175a2dfee136eb5c69dc8553160c58a8fcaec",
+    "snapshot_workflow_commit": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+    "generated_snapshot_commit": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+    "workflow_run_id": 36218680598,
+    "workflow_job_id": 108339672498,
+    "conclusion": "success",
+    "snapshot_regeneration": "PASS",
+    "unrelated_snapshot_drift_guard": "PASS",
+    "scenario": "WorldBreakerScenarioTest",
+    "scenario_cases": 2,
+    "scenario_failures": 0
+  },
+  "audited_engine_artifact": {
+    "id": 10898906337,
+    "name": "manual-transmission-phase2-engine-audit",
+    "size_in_bytes": 926401,
+    "github_sha256": "9b1037c0782b6947b9ac73e16948d3fdf23843cd7b2f14ec466c1187065c943c"
+  },
+  "source_audit_artifact": {
+    "id": 10898540823,
+    "name": "manual-transmission-phase2-source-audit",
+    "size_in_bytes": 27621150,
+    "github_sha256": "aec370c6949c831c5a8e0b2eb5221c354df86abb15cd4807567a6691a924c044"
+  },
+  "live_registry": {
+    "physical_entries": 800,
+    "manual_resolved": 83,
+    "manual_unresolved": 17,
+    "manual_unresolved_identities": [
+      "Gwenna, Eyes of Gaea",
+      "Fblthp, the Lost",
+      "Aether Channeler",
+      "Reckless Bushwhacker",
+      "Amphin Mutineer",
+      "Bane of Progress",
+      "Spellskite",
+      "Malevolent Hermit",
+      "Phyrexian Metamorph",
+      "Glen Elendra Archmage",
+      "Temur Sabertooth",
+      "Purphoros, God of the Forge",
+      "Disciple of Freyalise",
+      "Reality Shift",
+      "Veil of Summer",
+      "Pact of Negation",
+      "Opal Palace"
+    ]
+  },
+  "newly_accepted_component": {
+    "card": "World Breaker",
+    "printing": "OGW #126",
+    "qualified_surfaces": [
+      "Devoid keeps the card colorless while preserving green color identity",
+      "Reach is present on the exact card definition",
+      "The cast trigger targets and exiles an artifact, enchantment, or land independently before the creature spell resolves",
+      "{2}{C}, Sacrifice a land returns the exact World Breaker object from its owner's graveyard to hand",
+      "The activated ability uses a true colorless mana symbol in its exact cost"
+    ]
+  },
+  "hardware_disposition": "KEEP_V07",
+  "hardware_changed": false,
+  "official_counters": {
+    "seeds_generated": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "actions": 0,
+    "outcomes": 0,
+    "capability_games": "0/36",
+    "primary_games": "0/864"
+  },
+  "gameplay_authorized": false,
+  "next_gate": "Continue exact-card/mechanic coverage plus executable Cruise/Sport/Race and opponent pilots, typed collectors, replay, durable attempt journal and guarded execution. No v0.8 hardware change."
+}
