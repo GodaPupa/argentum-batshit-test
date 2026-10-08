@@ -1,0 +1,30 @@
+{
+  "schema": "industrial-checkpoint-recovery-publication-v1",
+  "authority": {"mechanism_implementation": 6045496535, "holder_review": 6051704538, "continuation": 6051713154},
+  "parent": {"head": "5a00b4799176b296f8a51567e7bb8aa880a836dd", "tree": "4b2ee69ef5e6d5c7064800367207baac82801293", "holder_blob": "3c0a7a2ad6809966331f8ec5d65166a8a432cfcc", "witness_blob": "a4efa3f26cfb4c03e1b5c3a98434d7e14889ee03"},
+  "delta": "Three added paths only. RecoveryHolder subclasses the exact accepted CheckpointHolder, preserving every predecessor byte. It adds two journal transitions and a synchronous recover operation. No network transport, client-freshness or deployment implementation is included in this narrow slice.",
+  "implemented": [
+    "Exact enrolled witness/instance/revision CAS and no preexisting pending intent before recovery",
+    "Full-write/fsync of RECOVERY_INTENT before the accepted AnchorWitness constructor is invoked with the exact holder-published checkpoint",
+    "The accepted witness validates its entire journal and old external checkpoint before appending RECOVER and abandoning all retained evidence",
+    "Read the exact final RECOVER record from the constructor-owned locked fd, with exact prior checkpoint row/tail and new authenticated checkpoint hash/count bindings",
+    "Durable RECOVERY_PUBLISH before returning the live reopened witness and new holder revision; admission_authority remains false",
+    "Exceptions after recovery intent preserve a permanent pending fence; any acquired witness is closed on failure",
+    "Existing RETAIN uncertainty cannot be cleared by recovery; RETAIN publication cannot clear RECOVERY intent and vice versa",
+    "Replay reconstructs recovery publication and revisions; the original holder reader refuses the new grammar rather than silently ignoring it"
+  ],
+  "compatibility": "Forward-only journal grammar extension. Existing clean accepted journals can be opened by RecoveryHolder. Once recovery events are appended, the unchanged original CheckpointHolder refuses that journal. This is intentional and requires independent adoption/deployment selection; no in-place source upgrade or journal rewrite is performed.",
+  "uncertainty": "A pending recovery cannot be resumed, imported or reset. Contention, wrong key, missing journal and path errors occurring after intent also permanently fence the identity. If intent bytes are lost after intent persistence reports failure, the witness was never invoked. If witness RECOVER bytes or publication bytes disappear after the witness call, separately retained holder intent remains blocking. If publication persists but its ACK is lost, the published revision survives; a later exact-CAS recovery is a distinct new abandonment transition, not replay of the old request.",
+  "trust_contract": [
+    "Same single-authority trusted-process/filesystem model as accepted holder. The holder journal must be independently retained outside the witness rollback domain; neither journal is made nonrollback by this code.",
+    "Trusted source-pinned integration exclusively owns holder/witness objects and storage. Python private fields are not isolation. Direct witness bypass prevention remains a deployment requirement.",
+    "Witness path is canonical and recorded in recovery intent; accepted O_NOFOLLOW traversal and same-fd validation are reused. Path enrollment, hostile namespace replacement, privileged same-size rewriting, and supply-chain/kernel/storage acceptance are not established.",
+    "Holder registry witness key and independently provisioned distinct supervisor key are trusted inputs. Provisioning/custody/rotation and server/host authentication remain unimplemented.",
+    "flock and PID checks apply only to one local journal/inherited object. No copied-journal or distributed clone/fork fencing or global identity authority is claimed.",
+    "Nonce correlation in inherited snapshots remains conditional. No persistent client revision floor, remote authenticated transport, lease, or global freshness guarantee is introduced.",
+    "Exact abandonment completeness derives from the accepted AnchorWitness replay and constructor, not merely record grammar. Journal replay authenticates holder records; it does not independently retain/reverify the entire witness transcript."
+  ],
+  "qualification": "35 new deterministic excluded synthetic unittest methods; local attempt 1 PASS. Recovery/retention and abandonment, accepted-journal compatibility and old-reader refusal, CAS/race/replay, pending intent cross-operation rejection, wrong source object state/key/path, intent and RECOVER persistence uncertainty, publication loss and ACK loss, fd cleanup, record substitution, fork use, short/zero writes. No unchanged predecessor suite rerun, network listener, VM or experimental worker.",
+  "still_open": ["independent nonrollback holder storage and deployment", "authenticated external-holder transport", "persistent client freshness and revision floors", "direct witness bypass prevention", "global enrollment/clone/fork fencing", "key custody and immutable platform", "consumption publication and capacity rollover", "full runtime lifetime/VM provenance/hidden generator and derivative toolchain", "complete canonical manifest and supervisor/receiver/admission review", "prepared worker, sealed launch and R1 permit"],
+  "review": "Independent Reviewer B exact-source, ordering, uncertainty and qualification review required before orchestrator adoption. No seeds, allocations, claims, gameplay, outcomes, sealed worker or R1 authority."
+}
