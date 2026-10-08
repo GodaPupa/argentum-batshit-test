@@ -1,0 +1,64 @@
+name: Industrial checkpoint recovery v1 qualification
+on:
+  push:
+    branches: ["validation/industrial-checkpoint-recovery-v1-20261008"]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    container:
+      image: catthehacker/ubuntu@sha256:7d51b26b65f00d97063cbda95699ee2aee2d4a7362f545ac29a4a18aaba7cfb3
+      options: --platform linux/amd64
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with: {fetch-depth: 2, persist-credentials: false}
+      - name: Bind source and runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/evidence
+          git config --global --add safe.directory "$GITHUB_WORKSPACE"
+          test "$(git rev-parse HEAD^)" = "c6d622fb5375cb6b597519bdda4eacfea57495c0"
+          test "$(git rev-parse 'HEAD^:')" = "6a265f7a7c0fbad231a73edc42bb0bfe2eadbe2f"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/industrial-checkpoint-recovery-v1-20261008.yml"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/R1_ANCHOR_WITNESS_SCOPE_20261007.json)" = "ab927ca509fd574c2c0e35e58d3ae19a9f48f4de"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_anchor_witness.py)" = "a4efa3f26cfb4c03e1b5c3a98434d7e14889ee03"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_evidence_verifier.py)" = "4a3028cf72982b2fd4c14fdb9577456664b70eec"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_peer_identity.py)" = "d891da1e0218626cc4ce9e1af239a8d1f5a23e68"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_receiver_evidence.py)" = "367845cb868990c8e31bb620aa8d0c0c9a1755a4"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_supervisor_channel.py)" = "4ab6cd6aa10145c1f0e081ea25224cc559f4e719"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/test_r1_anchor_witness.py)" = "fdee7eed4a6ad6bbc86346b1421c556a3140daf0"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/R1_CHECKPOINT_HOLDER_SCOPE_20261008.json)" = "b7362bed12ed4cdcb70415ff933f8204887bf614"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_checkpoint_holder.py)" = "3c0a7a2ad6809966331f8ec5d65166a8a432cfcc"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/test_r1_checkpoint_holder.py)" = "66b568ea5f27065d8235bec99c8d53a506992b42"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/R1_CHECKPOINT_RECOVERY_SCOPE_20261008.json)" = "9f404adc5c860fee566f67d403c21cc8626d9e0e"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/r1_checkpoint_recovery.py)" = "50d05797943757a3fffb65179e5d7e3a1ffbd667"
+          test "$(git rev-parse HEAD^:industrial-waste/v2/test_r1_checkpoint_recovery.py)" = "656908ec43c06151ea0d9b4579004b4a89311aed"
+          git rev-parse HEAD 'HEAD^{tree}' HEAD^ 'HEAD^:' | tee /tmp/evidence/identities.txt
+          /usr/bin/python3.10 --version | tee /tmp/evidence/python-version.txt
+          sha256sum /usr/bin/python3.10 | tee /tmp/evidence/python-sha256.txt
+          uname -a | tee /tmp/evidence/platform.txt
+          cp industrial-waste/v2/R1_ANCHOR_WITNESS_SCOPE_20261007.json industrial-waste/v2/r1_anchor_witness.py industrial-waste/v2/r1_evidence_verifier.py industrial-waste/v2/r1_peer_identity.py industrial-waste/v2/r1_receiver_evidence.py industrial-waste/v2/r1_supervisor_channel.py industrial-waste/v2/test_r1_anchor_witness.py industrial-waste/v2/R1_CHECKPOINT_HOLDER_SCOPE_20261008.json industrial-waste/v2/r1_checkpoint_holder.py industrial-waste/v2/test_r1_checkpoint_holder.py industrial-waste/v2/R1_CHECKPOINT_RECOVERY_SCOPE_20261008.json industrial-waste/v2/r1_checkpoint_recovery.py industrial-waste/v2/test_r1_checkpoint_recovery.py /tmp/evidence/
+          /usr/bin/python3.10 -c 'import hmac,hashlib,_hashlib,ssl,fcntl,json,pathlib,sys; modules=(hmac,hashlib,_hashlib,ssl,fcntl); assert all(getattr(m,"__file__",None) or (m.__spec__.origin=="built-in" and m.__name__ in sys.builtin_module_names) for m in modules); binary=hashlib.sha256(pathlib.Path(sys.executable).read_bytes()).hexdigest(); print(json.dumps({"openssl":ssl.OPENSSL_VERSION,"modules":{m.__name__:({"kind":"file","path":m.__file__,"sha256":hashlib.sha256(pathlib.Path(m.__file__).read_bytes()).hexdigest()} if getattr(m,"__file__",None) else {"kind":"built-in","origin":m.__spec__.origin,"interpreter":sys.executable,"interpreter_sha256":binary}) for m in modules}},sort_keys=True))' | tee /tmp/evidence/crypto-runtime.json
+      - name: Synthetic recovery qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          cd industrial-waste/v2
+          /usr/bin/python3.10 -B test_r1_checkpoint_recovery.py 2>&1 | tee /tmp/evidence/tests.log
+      - name: Preserve evidence digests
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          /usr/bin/python3.10 -c 'import pathlib,hashlib,json; p=pathlib.Path("/tmp/evidence"); d={f.name:hashlib.sha256(f.read_bytes()).hexdigest() for f in sorted(p.iterdir()) if f.is_file() and f.name!="evidence-sha256.json"}; s=json.dumps(d,sort_keys=True); (p/"evidence-sha256.json").write_text(s+"\n"); print(s)'
+      - name: Preserve original evidence
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        with:
+          name: industrial-checkpoint-recovery-v1-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/evidence/
+          if-no-files-found: error
+          retention-days: 90
