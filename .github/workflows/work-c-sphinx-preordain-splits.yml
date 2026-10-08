@@ -1,0 +1,53 @@
+name: Work C Sphinx Preordain splits
+on:
+  push:
+    branches: ["validation/work-c-sphinx-preordain-splits-20261008"]
+permissions:
+  contents: read
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: extractions/setup-just@v3
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Focused synthetic qualification
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir evidence
+          test "$(git rev-parse HEAD^)" = "f4263688c4e70390033597bff956200db698e779"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > evidence/source.txt
+          git ls-tree -r HEAD > evidence/source-tree.txt
+          java -version 2> evidence/java-version.txt
+          sha256sum "$JAVA_HOME/bin/java" > evidence/java.sha256
+          just test-class SphinxStageEPreordainSplitTest --no-daemon --no-build-cache --console=plain 2>&1 | tee evidence/qualification.log
+          python3 - <<'PY'
+          import pathlib,xml.etree.ElementTree as E
+          files=list(pathlib.Path("gym/build/test-results/test").glob("TEST-*.xml"))
+          assert len(files)==1,files
+          root=E.parse(files[0]).getroot()
+          assert root.attrib["name"]=="com.wingedsheep.gym.sphinx.SphinxStageEPreordainSplitTest",root.attrib
+          assert int(root.attrib["tests"])==6,root.attrib
+          assert all(int(root.attrib[k])==0 for k in ("failures","errors","skipped")),root.attrib
+          PY
+      - name: Preserve evidence
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p evidence
+          if test -d gym/build/test-results/test; then cp -r gym/build/test-results/test evidence/test-results; fi
+          find evidence -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > evidence/SHA256SUMS
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: sphinx-preordain-splits-integration-evidence
+          path: evidence
+          retention-days: 90
