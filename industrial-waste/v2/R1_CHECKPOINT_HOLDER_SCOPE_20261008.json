@@ -1,0 +1,30 @@
+{
+  "schema": "industrial-prospective-checkpoint-holder-v1",
+  "authority": {"implementation": 6045496535, "witness_review": 6050986663, "continuation": 6050994864},
+  "parent": {"head": "dc12796fbc0a421003b0765c350ad4f01e68fdcb", "tree": "b753a71a58c17131ab32800c077f4d420b38e356", "witness_blob": "a4efa3f26cfb4c03e1b5c3a98434d7e14889ee03"},
+  "scope": "An executable prospective checkpoint-holder and synchronous witness RETAIN coordinator. Three added files; every accepted predecessor byte remains unchanged. This is a single-authority trusted-process filesystem implementation and excluded synthetic model, not an independently deployed network service.",
+  "implemented": [
+    "Provisioned witness registry, distinct 256-bit keys, unique witness and instance enrollment within one authoritative retained journal",
+    "Authenticated chained holder journal, full-write/fsync before witness invocation or publication acknowledgement",
+    "Witness-key-authenticated checkpoints, holder-key-authenticated nonce-correlated snapshots; requesting client must supply a fresh unpredictable never-reused nonce and retain a revision floor",
+    "Serialized exact instance/revision compare-and-set before a global launch tombstone and RETAIN intent",
+    "Synchronous invocation of exact accepted AnchorWitness with byte-exact previously published checkpoint; no arbitrary publication API",
+    "Publication only after accepted RETAIN returns and a signed checkpoint advances exactly one row; holder revision advances for both intent and publication",
+    "Any exception after durable intent leaves that identity pending, with no resume, reset, refill, reenrollment or pending-completion API after restart",
+    "If unacknowledged witness RETAIN bytes disappear, separately retained holder intent still prevents reauthorization; if holder intent persistence fails, local RETAIN is never invoked",
+    "Publication ACK loss retains published state and global launch tombstone if bytes persist; loss of publication bytes leaves prior durable intent blocking"
+  ],
+  "trust_contract": [
+    "The holder journal must reside on independently administered durable non-rollback storage outside the witness rollback domain. This implementation does not establish that deployment or detect simultaneous holder/witness rollback.",
+    "Exactly one authoritative holder namespace/service must own the registry. flock coordinates one inode only; copied holder journals or independent holders are NOT fenced.",
+    "Trusted callers provision keys, registry, paths and exact source. Enrollment is not remote host attestation. Instance strings and key possession do not distinguish credential-sharing clones. CAS permits only one racing operation against a revision at this authority, not global distributed host uniqueness.",
+    "Trusted process integration must exclusively route RETAIN through this coordinator. Direct witness access or privileged/private method access can bypass it and must be withheld by separately qualified deployment.",
+    "Holder MAC and witness keys require external custody/provisioning/isolation. Symmetric authentication is not nonrepudiation. The source does not provision production secrets or a network-authenticated request transport.",
+    "Filesystem/kernel/fsync and stable private namespace are trusted; no hostile privileged or same-size live in-place rewrite, exhaustive power-loss, or independent storage-root acceptance is claimed.",
+    "A snapshot is nonce-correlated point-in-time evidence, not a lease or permanently current state. Subsequent RETAIN uses authoritative CAS. The client must independently enforce a persisted revision floor and never reuse a nonce.",
+    "Completed witnesses that restart append RECOVER and therefore require a future separately qualified recovery-publication protocol. This component refuses mismatched checkpoints; it does not invent recovery authority. Consumption publication, availability recovery and capacity rollover remain outside this slice."
+  ],
+  "qualification": "37 new deterministic synthetic unittest methods, local attempt 1 PASS. Positive publish/reopen; enrollment collisions; eight-way cloned-caller CAS race; replay; nonce/key/holder/checkpoint substitution; lost RETAIN, intent and publication bytes/ACKs; corrupt/reordered/partial/missing storage; alias/path/fork; short/zero writes; mutable configuration rejection. No unchanged predecessor suite rerun.",
+  "remaining": ["actual independent rollback-resistant holder and unique deployed authority", "network request authentication and client persistent freshness floors", "production key custody and storage roots", "distributed clone/fork fencing and direct-witness bypass prevention", "full supervisor/receiver and continuous lifetime enforcement", "VM provenance, full entry paths and hidden generator inputs", "reproducible derivative VM/toolchain and immutable platform/kernel/supply chain", "canonical manifest and complete admission review", "prepared worker, sealed launch and R1 permit"],
+  "authority_result": "Every successful retention/snapshot has admission_authority=false. No seed, allocation, claim, gameplay, sealed worker or experimental outcome. Independent Reviewer B exact-source review and orchestrator adoption required; author qualification is not acceptance."
+}
