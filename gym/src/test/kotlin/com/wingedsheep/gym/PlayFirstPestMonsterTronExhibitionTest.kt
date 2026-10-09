@@ -231,11 +231,12 @@ class PlayFirstPestMonsterTronExhibitionTest : FunSpec({
             }
 
             val terminal = env.state
+            val winnerSeat = terminal.winnerId?.let { players.indexOf(it) } ?: -1
             append(buildJsonObject {
                 put("recordType", "EXHIBITION_TERMINAL")
                 put("gameOver", terminal.gameOver)
                 put("winnerId", terminal.winnerId?.value ?: "")
-                put("winnerSeat", players.indexOf(terminal.winnerId))
+                put("winnerSeat", winnerSeat)
                 put("turn", terminal.turnNumber)
                 put("actions", actionCount)
                 put("lifeBySeat", JsonArray(players.map { JsonPrimitive(terminal.lifeTotal(it)) }))
@@ -243,7 +244,7 @@ class PlayFirstPestMonsterTronExhibitionTest : FunSpec({
                 put("formalExperimentCount", 0)
             })
             check(terminal.gameOver) { "No legitimate engine terminal; cannot claim a game" }
-            println("PLAY_FIRST_RESULT gameOver=true winnerSeat=" + players.indexOf(terminal.winnerId) +
+            println("PLAY_FIRST_RESULT gameOver=true winnerSeat=" + winnerSeat +
                 " turns=" + terminal.turnNumber + " actions=" + actionCount +
                 " trace=exhibition-original.jsonl NONOFFICIAL")
         } catch (failure: Throwable) {
