@@ -1,0 +1,76 @@
+# INACTIVE TEMPLATE. No fixture values or gameplay authority are supplied.
+# A separately approved future source-bound schedule must replace every REQUIRED value.
+# Store any executable successor separately; never edit/retry B01 or recreate G08.
+name: Play First separately approved isolated originals
+on:
+  push:
+    branches: [EXACT_FUTURE_VALIDATION_BRANCH_REQUIRED]
+permissions:
+  contents: read
+jobs:
+  one-original:
+    timeout-minutes: 95
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        include: [] # Future predeclared gameId/caseFile/caseDigest tuples, NOT selected here.
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 3
+      - name: Bind approved source and case before compiling
+        env:
+          CASE_FILE: ${{ matrix.caseFile }}
+          CASE_SHA256: ${{ matrix.caseDigest }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_RUN_ATTEMPT" = 1
+          test "$GITHUB_EVENT_NAME" = push
+          test "$(git rev-parse HEAD^)" = EXACT_APPROVED_SOURCE_SHA_REQUIRED
+          test "$GITHUB_REF" = refs/heads/EXACT_FUTURE_VALIDATION_BRANCH_REQUIRED
+          printf '%s  %s\n' "$CASE_SHA256" "$CASE_FILE" | sha256sum -c -
+          mkdir evidence
+          cp "$CASE_FILE" evidence/approved-case.json
+          git rev-parse HEAD HEAD^{tree} HEAD^ > evidence/source-identities.txt
+          printf '%s\n' "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > evidence/original-run.txt
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: extractions/setup-just@v3
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Compile without running any game
+        timeout-minutes: 30
+        run: |
+          set -o pipefail
+          ./gradlew :gym:testClasses --no-daemon --no-build-cache --console=plain 2>&1 | tee evidence/compile.log
+      - name: Execute exactly one fresh case under its own process budget
+        env:
+          PLAY_FIRST_ISOLATED_ACK: NEW_NONOFFICIAL_ORIGINAL_ONLY
+          PLAY_FIRST_ISOLATED_SOURCE_SHA: EXACT_APPROVED_SOURCE_SHA_REQUIRED
+          PLAY_FIRST_ISOLATED_CASE_FILE: ${{ github.workspace }}/${{ matrix.caseFile }}
+          PLAY_FIRST_ISOLATED_CASE_SHA256: ${{ matrix.caseDigest }}
+          CASE_ID: ${{ matrix.gameId }}
+        run: |
+          python3 scripts/play-first/isolated_case.py run --root "$PWD/evidence/case" --seconds 2700 --identity "$CASE_ID" -- just test-class PlayFirstIsolatedPestMonsterTronTest --no-daemon --no-build-cache --console=plain
+      - name: Classify original, never rerun it
+        if: always()
+        run: |
+          python3 scripts/play-first/isolated_case.py inspect --root "$PWD/evidence/case" --case evidence/approved-case.json > evidence/receiving.json
+      - name: Preserve original evidence including failures and missing XML
+        if: always()
+        run: |
+          mkdir -p evidence
+          if test -d gym/build/test-results/test; then cp -a gym/build/test-results/test evidence/test-results; fi
+          git diff --exit-code > evidence/source-after.diff
+          find evidence -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > evidence/SHA256SUMS
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: REQUIRED_NEW_BLOCK-${{ matrix.gameId }}-original-${{ github.run_id }}
+          path: evidence/
+          retention-days: 90
+          if-no-files-found: error
+          overwrite: false
