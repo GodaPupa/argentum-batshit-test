@@ -1,0 +1,102 @@
+name: Play First isolation v1 non-gameplay qualification
+on:
+  push:
+    branches: ["play-first/isolated-case-v1-validation-20261009"]
+permissions:
+  contents: read
+jobs:
+  qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 3
+      - name: Verify exact additive source and non-gameplay boundary
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          test "$GITHUB_EVENT_NAME" = "push"
+          test "$GITHUB_REF" = "refs/heads/play-first/isolated-case-v1-validation-20261009"
+          test "$(git rev-parse HEAD^)" = "e11e9f2bdd5e33de5a8d2f8b3139b1f34a150241"
+          test "$(git rev-parse HEAD^^)" = "80c6774d0362521ad438e8a23d5fa7e0701ad468"
+          test "$(git diff --name-status HEAD^ HEAD)" = "$(printf 'A\t.github/workflows/play-first-isolation-v1-qualification-20261009.yml')"
+          test -z "$(git status --porcelain=v1)"
+          mkdir -p evidence/source evidence/process-fixtures evidence/receiving-fixtures evidence/timing-fixtures
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > evidence/source-identities.txt
+          git ls-tree -r HEAD > evidence/source-tree.txt
+          printf '%s\n' "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > evidence/original-run.txt
+          printf '%s\n' 'AUTHORITY_COMMENT_6084057209' 'EXCLUDED_NON_GAMEPLAY_ONLY' 'NO_NEW_SAMPLE_OR_G08_REPLAY' 'OFFICIAL_GAMES=0' > evidence/scope.txt
+          python3 - <<'PY'
+          import os,pathlib,subprocess,shutil
+          expected={
+          'docs/experiments/play-first/isolation-v1/SCOPE.md':'d4e28f25e16696e731bffce12eaaff14630e64f6',
+          'docs/experiments/play-first/isolation-v1/future-workflow.yml.template':'9146d317aeb2a712fee96a12995aab41004e9be1',
+          'gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstIsolatedPestMonsterTronTest.kt':'4ce32fe3934a3e7eb01e60c46c6dac2056c209aa',
+          'gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstTimingFixtures.kt':'03edad4c3d3b6c52c1de4ea60467099465267757',
+          'gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstTimingJournal.kt':'8a045f725ea3b4e6a26fe2fcba083a378756baa9',
+          'gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstTimingJournalTest.kt':'972e272745947d8eab5fcc0eb1d4c4a06961fd54',
+          'scripts/play-first/isolated_case.py':'82358cd99cea809d72696aafccb2a702c380d64d',
+          'scripts/play-first/test_isolated_case.py':'b89b2cf26420dd41b6310d2379de516abf3b9eee',
+          'scripts/play-first/test_isolated_receiving.py':'413f61e966d35010ffa58674096b91205276e1e8'}
+          delta=subprocess.check_output(['git','diff','--name-status','HEAD^^','HEAD^'],text=True).splitlines()
+          assert sorted(delta)==sorted('A\t'+p for p in expected),delta
+          assert not any(k.startswith('PLAY_FIRST') and k.endswith('ACK') and v for k,v in os.environ.items())
+          for p,h in expected.items():
+              assert subprocess.check_output(['git','rev-parse','HEAD:'+p],text=True).strip()==h,p
+              q=pathlib.Path('evidence/source')/p;q.parent.mkdir(parents=True,exist_ok=True);shutil.copyfile(p,q)
+          shutil.copyfile('.github/workflows/play-first-isolation-v1-qualification-20261009.yml','evidence/source/qualification.yml')
+          PY
+      - name: Eighteen synthetic process and receiving checks
+        shell: bash
+        env:
+          PLAY_FIRST_PROCESS_FIXTURE_ROOT: ${{ github.workspace }}/evidence/process-fixtures
+          PLAY_FIRST_RECEIVING_FIXTURE_ROOT: ${{ github.workspace }}/evidence/receiving-fixtures
+        run: |
+          set -o pipefail
+          python3 --version > evidence/python-version.txt
+          python3 -m unittest discover -s scripts/play-first -p 'test_isolated_*.py' -v 2>&1 | tee evidence/python-original.log
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: extractions/setup-just@v3
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Compile complete adapter and run eight engine-free timing checks
+        if: always() && steps.source.outcome == 'success'
+        shell: bash
+        env:
+          PLAY_FIRST_TIMING_FIXTURE_ROOT: ${{ github.workspace }}/evidence/timing-fixtures
+        run: |
+          set -euo pipefail
+          java -version 2> evidence/java-version.txt
+          just test-class PlayFirstTimingJournalTest --no-daemon --no-build-cache --console=plain 2>&1 | tee evidence/kotlin-original.log
+          python3 - <<'PY'
+          import pathlib,xml.etree.ElementTree as ET
+          paths=list(pathlib.Path('gym/build/test-results/test').glob('TEST-*.xml'))
+          assert len(paths)==1,paths
+          r=ET.parse(paths[0]).getroot()
+          assert r.attrib['name']=='com.wingedsheep.gym.PlayFirstTimingJournalTest',r.attrib
+          assert int(r.attrib['tests'])==8,r.attrib
+          assert all(int(r.attrib[k])==0 for k in ('failures','errors','skipped')),r.attrib
+          print('EIGHT_ENGINE_FREE_TIMING_TESTS_PASS; EXHIBITION_ADAPTER_COMPILED_NOT_EXECUTED')
+          PY
+      - name: Preserve original qualification on success or failure
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p evidence
+          if test -d gym/build/test-results/test; then cp -a gym/build/test-results/test evidence/test-results; fi
+          git diff --exit-code > evidence/tracked-after.diff
+          git status --porcelain=v1 > evidence/status-after.txt
+          find evidence -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > evidence/SHA256SUMS
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: play-first-isolation-v1-nongame-original
+          path: evidence/
+          retention-days: 90
+          if-no-files-found: error
+          overwrite: false
