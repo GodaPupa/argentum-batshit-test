@@ -51,18 +51,22 @@ def supervise(command: list[str], cwd: Path, root: Path, seconds: float,
         raise ValueError('Invalid finite per-case budget')
     if not math.isfinite(grace) or not 0 < grace <= 10:
         raise ValueError('Invalid cleanup grace')
+    binding = {key: os.environ.get(key) for key in (
+        'GITHUB_RUN_ID', 'GITHUB_RUN_ATTEMPT', 'GITHUB_SHA', 'GITHUB_REF',
+        'PLAY_FIRST_ISOLATED_SOURCE_SHA', 'PLAY_FIRST_ISOLATED_CASE_SHA256')}
     root = Path(root).absolute()
     if root.parent.resolve() != root.parent or not root.parent.is_dir():
         raise ValueError('Parent must be an existing nonsymlink absolute directory')
     root.mkdir()  # refusal on an existing output, even if empty
     log = root / 'process.jsonl'
-    append(log, dict(recordType='PROCESS_INTENT', identity=identity, command=command,
+    append(log, dict(recordType='PROCESS_INTENT', identity=identity, runBinding=binding, command=command,
                      budgetSeconds=seconds, graceSeconds=grace, pid=os.getpid(),
                      monotonicNanos=time.monotonic_ns(), scope='NONOFFICIAL_OR_EXCLUDED_ONLY'))
     cancellation = {'signal': None}
     previous = {}
     child = None
-    result: dict[str, Any] = dict(identity=identity, processStatus='INCOMPLETE', returnCode=None)
+    result: dict[str, Any] = dict(identity=identity, processStatus='INCOMPLETE', returnCode=None,
+                                       runBinding=binding, cleanupUncertain=False, residualGroupKilled=False)
     def on_signal(number: int, _frame: Any) -> None:
         cancellation['signal'] = number
     def kill_group(number: int) -> bool:
@@ -112,6 +116,7 @@ def supervise(command: list[str], cwd: Path, root: Path, seconds: float,
             if result['processStatus'] == 'INCOMPLETE':
                 result['processStatus'] = 'EXITED_ZERO' if code == 0 else 'EXITED_NONZERO'
             if kill_group(signal.SIGKILL):
+                result['residualGroupKilled'] = True
                 append(log, dict(recordType='RESIDUAL_GROUP_KILLED'))
                 if result['processStatus'] == 'EXITED_ZERO':
                     result['processStatus'] = 'EXITED_WITH_RESIDUAL_GROUP'
@@ -136,8 +141,17 @@ def supervise(command: list[str], cwd: Path, root: Path, seconds: float,
     return result
 
 
+def _receiving_require(condition: bool, message: str) -> None:
+    if not condition:
+        raise ValueError(message)
+
+
 def inspect_case(root: Path, expected: dict[str, Any]) -> dict[str, Any]:
-    """Read-only original receiving; no repository imports or re-execution."""
+    """Legacy shape checks only. New operational receiving MUST use strict_receiving.py.
+
+    Kept for historical fixture compatibility; conditions now survive Python -O.
+    This legacy path does NOT satisfy the v2 trusted-pin or timing-coverage contract.
+    """
     summary: dict[str, Any] = dict(status='INCOMPLETE', engineTerminalObserved=False, errors=[])
     try:
         process = json.loads((root / 'process-result.json').read_text())
@@ -145,45 +159,45 @@ def inspect_case(root: Path, expected: dict[str, Any]) -> dict[str, Any]:
         pick = lambda kind: [r for r in rows if r.get('recordType') == kind]
         starts, init, intents, results, ends = [pick(k) for k in (
             'EXHIBITION_INTENT', 'INITIALIZED', 'ACTION_INTENT', 'ACTION_RESULT', 'EXHIBITION_TERMINAL')]
-        assert len(starts) == len(init) == 1 and not init[0]['gameOver'], 'one initialization/intent'
+        _receiving_require(len(starts) == len(init) == 1 and (not init[0]['gameOver']), 'one initialization/intent')
         start = starts[0]
         for key in ('blockId', 'gameId', 'pair', 'pestSeat', 'fixtureSeedHex', 'sourceCommit', 'authorizationComment'):
-            assert start[key] == expected[key], 'identity mismatch: ' + key
-        assert start['formalSeedAllocation'] is False and start['officialExecutionAuthorized'] is False
-        assert len(pick('MULLIGAN_COMPLETE')) == 1, 'mulligan completion'
-        assert [r['sequence'] for r in intents] == [r['sequence'] for r in results] == list(range(1, len(intents) + 1))
-        assert [r['recordType'] for r in rows if r['recordType'] in ('ACTION_INTENT', 'ACTION_RESULT')] == ['ACTION_INTENT', 'ACTION_RESULT'] * len(intents)
-        assert results and all(r['accepted'] is True for r in results), 'recorded submission rejection'
+            _receiving_require(start[key] == expected[key], 'identity mismatch: ' + key)
+        _receiving_require(start['formalSeedAllocation'] is False and start['officialExecutionAuthorized'] is False, 'legacy receiving condition failed')
+        _receiving_require(len(pick('MULLIGAN_COMPLETE')) == 1, 'mulligan completion')
+        _receiving_require([r['sequence'] for r in intents] == [r['sequence'] for r in results] == list(range(1, len(intents) + 1)), 'legacy receiving condition failed')
+        _receiving_require([r['recordType'] for r in rows if r['recordType'] in ('ACTION_INTENT', 'ACTION_RESULT')] == ['ACTION_INTENT', 'ACTION_RESULT'] * len(intents), 'legacy receiving condition failed')
+        _receiving_require(results and all((r['accepted'] is True for r in results)), 'recorded submission rejection')
         summary.update(actions=len(intents), rejected=0)
-        assert len(ends) == 1 and rows[-1] == ends[0], 'no unique final terminal'
+        _receiving_require(len(ends) == 1 and rows[-1] == ends[0], 'no unique final terminal')
         end = ends[0]
-        assert end['gameId'] == expected['gameId'] and end['pestSeat'] == expected['pestSeat']
-        assert end['gameOver'] is True and end['actions'] == len(intents) and end['formalExperimentCount'] == 0
-        assert results[-1]['gameOverAfter'] is True and end['lifeBySeat'] == results[-1]['lifeAfter']
+        _receiving_require(end['gameId'] == expected['gameId'] and end['pestSeat'] == expected['pestSeat'], 'legacy receiving condition failed')
+        _receiving_require(end['gameOver'] is True and end['actions'] == len(intents) and (end['formalExperimentCount'] == 0), 'legacy receiving condition failed')
+        _receiving_require(results[-1]['gameOverAfter'] is True and end['lifeBySeat'] == results[-1]['lifeAfter'], 'legacy receiving condition failed')
         event = [e for e in results[-1]['emittedEvents'] if e.get('type') == 'GameEndedEvent']
-        assert len(event) == 1 and (event[0].get('winnerId') or '') == end['winnerId']
-        seat = end['winnerSeat']; assert seat in (-1, 0, 1)
+        _receiving_require(len(event) == 1 and (event[0].get('winnerId') or '') == end['winnerId'], 'legacy receiving condition failed')
+        seat = end['winnerSeat']; _receiving_require(seat in (-1, 0, 1), 'winner seat')
         if seat >= 0:
-            assert end['winnerId'] == init[0]['player' + str(seat)]
+            _receiving_require(end['winnerId'] == init[0]['player' + str(seat)], 'legacy receiving condition failed')
         else:
-            assert end['winnerId'] == '', 'draw with nonempty winner'
+            _receiving_require(end['winnerId'] == '', 'draw with nonempty winner')
         summary['engineTerminalObserved'] = True
-        assert not pick('EXHIBITION_FAILED'), 'recorded case failure'
+        _receiving_require(not pick('EXHIBITION_FAILED'), 'recorded case failure')
         timing = [json.loads(line) for line in (root / 'timing.jsonl').read_text().splitlines()]
         opened = {}; seen = set()
         for record in timing:
             span = record['span']; kind = record['recordType']
-            assert record['identity']['gameId'] == expected['gameId']
-            assert record['identity']['sourceCommit'] == expected['sourceCommit']
+            _receiving_require(record['identity']['gameId'] == expected['gameId'], 'legacy receiving condition failed')
+            _receiving_require(record['identity']['sourceCommit'] == expected['sourceCommit'], 'legacy receiving condition failed')
             if kind == 'CALL_START':
-                assert span not in seen and span == len(seen) + 1
+                _receiving_require(span not in seen and span == len(seen) + 1, 'legacy receiving condition failed')
                 seen.add(span); opened[span] = record
             else:
                 prior = opened.pop(span)
-                assert record['phase'] == prior['phase'] and record['context'] == prior['context']
-                assert kind == 'CALL_END' and record['elapsedNanos'] >= 0
-        assert timing and not opened, 'missing or unfinished timing boundary'
-        assert process['processStatus'] == 'EXITED_ZERO', 'process did not exit cleanly'
+                _receiving_require(record['phase'] == prior['phase'] and record['context'] == prior['context'], 'legacy receiving condition failed')
+                _receiving_require(kind == 'CALL_END' and record['elapsedNanos'] >= 0, 'legacy receiving condition failed')
+        _receiving_require(timing and (not opened), 'missing or unfinished timing boundary')
+        _receiving_require(process['processStatus'] == 'EXITED_ZERO', 'process did not exit cleanly')
         summary.update(status='RECORDED_ENGINE_TERMINAL', winnerSeat=seat)
     except Exception as failure:
         summary['errors'].append(type(failure).__name__ + ': ' + str(failure))
