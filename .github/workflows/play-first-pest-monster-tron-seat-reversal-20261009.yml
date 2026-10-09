@@ -1,0 +1,97 @@
+name: Argentum Play First nonofficial Pest Monster Tron seat reversal
+on:
+  push:
+    branches: ["play-first/pest-monster-tron-seat-reversal-validation-20261009"]
+permissions:
+  contents: read
+jobs:
+  exhibition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 3
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: extractions/setup-just@v3
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Verify isolated exhibition source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          test "$(git rev-parse HEAD^)" = "b983ec3689a7cb6e850a3104a21238bb319aadfb"
+          test "$(git rev-parse HEAD^^)" = "53b09bd99dc009a479529d044b9bc81acfbe89c1"
+          test "$(git diff --name-only HEAD^^ HEAD^)" = "gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstPestMonsterTronSeatReversalTest.kt"
+          git rev-parse HEAD HEAD^{tree} HEAD^ > evidence/source-identities.txt
+          git status --porcelain=v1 > evidence/checkout-status.txt
+          java -version 2> evidence/java-version.txt
+          sha256sum gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstPestMonsterTronSeatReversalTest.kt > evidence/exhibition-source-sha256.txt
+          printf '%s\n' 'NONOFFICIAL_PLAY_FIRST_EXHIBITION_ONLY' 'NOT_A_FORMAL_PEST_GAME' 'OFFICIAL_GAMES_AUTHORIZED=0' 'NO_OFFICIAL_VECTOR_OR_CLAIM' 'SEAT_REVERSAL_COMPANION_TO_RUN_37889980098' 'MATCHED_NONOFFICIAL_SEED_REUSE_NOT_OFFICIAL_RETRY' > evidence/scope.txt
+      - name: Play exactly one opt-in exhibition game
+        shell: bash
+        env:
+          PLAY_FIRST_SEAT_REVERSAL_ACK: EXHIBITION_ONLY_SEAT_REVERSED_COMPANION_NO_OFFICIAL_CLAIM_20261009
+          PLAY_FIRST_SEAT_REVERSAL_SOURCE_SHA: b983ec3689a7cb6e850a3104a21238bb319aadfb
+          PLAY_FIRST_SEAT_REVERSAL_EVIDENCE_ROOT: /tmp/argentum-play-first-seat-reversal-original
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/argentum-play-first-seat-reversal-original
+          just test-class PlayFirstPestMonsterTronSeatReversalTest --no-daemon --no-build-cache --console=plain 2>&1 | tee evidence/execution.log
+          python3 - <<'PY'
+          import pathlib, xml.etree.ElementTree as ET
+          files = list(pathlib.Path("gym/build/test-results/test").glob("TEST-*.xml"))
+          assert len(files) == 1, files
+          r = ET.parse(files[0]).getroot()
+          assert r.attrib["name"] == "com.wingedsheep.gym.PlayFirstPestMonsterTronSeatReversalTest", r.attrib
+          assert int(r.attrib["tests"]) == 1, r.attrib
+          assert all(int(r.attrib[k]) == 0 for k in ("failures", "errors", "skipped")), r.attrib
+          PY
+          python3 - <<'PY'
+          import json, pathlib
+          src=pathlib.Path('/tmp/argentum-play-first-seat-reversal-original/exhibition-seat-reversal-original.jsonl')
+          rows=[json.loads(x) for x in src.read_text().splitlines()]
+          assert sum(r['recordType']=='EXHIBITION_INTENT' for r in rows)==1
+          intent=next(r for r in rows if r['recordType']=='EXHIBITION_INTENT')
+          assert intent['seat0Deck']=='mehanske Monster Tron',intent
+          assert intent['seat1Deck']=='Pest Control v1.0',intent
+          assert intent['matchedOriginalRunId']==37889980098,intent
+          assert intent['seatReversal'] is True,intent
+          assert intent['formalSeedAllocation'] is False,intent
+          assert sum(r['recordType']=='INITIALIZED' for r in rows)==1
+          terminals=[r for r in rows if r['recordType']=='EXHIBITION_TERMINAL']
+          assert len(terminals)==1 and terminals[0]['gameOver'],terminals
+          assert not any(r['recordType']=='EXHIBITION_FAILED' for r in rows)
+          intents=[r['sequence'] for r in rows if r['recordType']=='ACTION_INTENT']
+          results=[r['sequence'] for r in rows if r['recordType']=='ACTION_RESULT']
+          assert intents==results==list(range(1,len(intents)+1))
+          assert all(r['accepted'] for r in rows if r['recordType']=='ACTION_RESULT')
+          assert terminals[0]['actions']==len(intents)
+          assert terminals[0]['formalExperimentCount']==0
+          assert terminals[0]['seatReversal'] is True
+          assert terminals[0]['seat0Deck']=='mehanske Monster Tron'
+          assert terminals[0]['seat1Deck']=='Pest Control v1.0'
+          assert intent['fixtureSeedHex']=='0x504c415946495253'
+          print('EXHIBITION_CONFIRMED_ONE_ENGINE_TERMINAL actions=',len(intents),'winnerSeat=',terminals[0]['winnerSeat'])
+          PY
+      - name: Preserve original trace, failure evidence, XML and source
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p evidence/game
+          if test -d /tmp/argentum-play-first-seat-reversal-original; then
+            cp -a /tmp/argentum-play-first-seat-reversal-original/. evidence/game/
+          fi
+          if test -d gym/build/test-results/test; then
+            cp -a gym/build/test-results/test evidence/test-results
+          fi
+          find evidence -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > evidence/SHA256SUMS
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: play-first-pest-vs-monster-tron-seat-reversal-nonofficial
+          path: evidence/
+          retention-days: 90
