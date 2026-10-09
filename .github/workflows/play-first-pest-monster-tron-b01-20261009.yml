@@ -1,0 +1,154 @@
+name: Argentum Play First B01 eight nonofficial paired games
+on:
+  push:
+    branches: ["play-first/pest-monster-tron-eight-game-b01-validation-20261009"]
+permissions:
+  contents: read
+concurrency:
+  group: play-first-pest-tron-b01-20261009-original
+  cancel-in-progress: false
+jobs:
+  exhibition-block:
+    if: github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 3
+      - name: Verify exact source and original-only authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_RUN_ATTEMPT" = "1"
+          test "$GITHUB_EVENT_NAME" = "push"
+          test "$GITHUB_REF" = "refs/heads/play-first/pest-monster-tron-eight-game-b01-validation-20261009"
+          test "$(git rev-parse HEAD^)" = "80c6774d0362521ad438e8a23d5fa7e0701ad468"
+          test "$(git rev-parse HEAD^^)" = "b983ec3689a7cb6e850a3104a21238bb319aadfb"
+          test "$(git diff --name-status HEAD^^ HEAD^)" = "$(printf 'A\tgym/src/test/kotlin/com/wingedsheep/gym/PlayFirstPestMonsterTronEightGameBlockTest.kt')"
+          test "$(git diff --name-status HEAD^ HEAD)" = "$(printf 'A\t.github/workflows/play-first-pest-monster-tron-b01-20261009.yml')"
+          test "$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstPestMonsterTronEightGameBlockTest.kt)" = "85ed5b9db085dfcf3b4c340c2e5e09fd67476fd2"
+          test -z "$(git status --porcelain=v1)"
+          mkdir -p evidence/source
+          git rev-parse HEAD HEAD^{tree} HEAD^ HEAD^^ > evidence/source-identities.txt
+          git ls-tree -r HEAD > evidence/source-git-tree.txt
+          git status --porcelain=v1 > evidence/checkout-status.txt
+          cp gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstPestMonsterTronEightGameBlockTest.kt evidence/source/
+          cp .github/workflows/play-first-pest-monster-tron-b01-20261009.yml evidence/source/
+          printf '%s\n' "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" "$GITHUB_SHA" "$GITHUB_REF" > evidence/original-run.txt
+          printf '%s\n' 'PLAY_FIRST_PEST_TRON_B01_20261009' 'OWNER_AUTHORIZATION_COMMENT_6081552107' 'NONOFFICIAL_PLAY_FIRST_EXHIBITION_ONLY' 'EIGHT_NEW_GAMES_MAXIMUM' 'OFFICIAL_GAMES_AUTHORIZED=0' 'NO_FORMAL_VECTOR_OR_CLAIM' 'NO_RERUNS_OR_REPLACEMENTS' > evidence/scope.txt
+          python3 - <<'PY'
+          import json,pathlib
+          seeds=['0x504c4159424c3031','0x504c4159424c3032','0x504c4159424c3033','0x504c4159424c3034']
+          schedule=[{'gameId':f'G{2*p+s+1:02d}','pair':p+1,'pestSeat':s,'fixtureSeedHex':seed,'startingSeat':0} for p,seed in enumerate(seeds) for s in (0,1)]
+          pathlib.Path('evidence/predeclared-schedule.json').write_text(json.dumps(schedule,indent=2)+'\n')
+          PY
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: extractions/setup-just@v3
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Play the eight original opt-in exhibitions once
+        shell: bash
+        env:
+          PLAY_FIRST_B01_ACK: EIGHT_NONOFFICIAL_GAMES_ONLY_NO_RERUN_20261009
+          PLAY_FIRST_B01_SOURCE_SHA: 80c6774d0362521ad438e8a23d5fa7e0701ad468
+          PLAY_FIRST_B01_EVIDENCE_ROOT: /tmp/argentum-play-first-b01-20261009-original
+        run: |
+          set -euo pipefail
+          mkdir /tmp/argentum-play-first-b01-20261009-original
+          java -version 2> evidence/java-version.txt
+          just --version > evidence/just-version.txt
+          just test-class PlayFirstPestMonsterTronEightGameBlockTest --no-daemon --no-build-cache --console=plain 2>&1 | tee evidence/execution.log
+      - name: Classify every original without rerunning any game
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p evidence
+          python3 - <<'PY'
+          import json,pathlib,xml.etree.ElementTree as ET
+          root=pathlib.Path('/tmp/argentum-play-first-b01-20261009-original')
+          expected_seeds=['0x504c4159424c3031','0x504c4159424c3032','0x504c4159424c3033','0x504c4159424c3034']
+          summaries=[]
+          for n in range(1,9):
+              gid=f'G{n:02d}'
+              path=root/f'{gid}-original.jsonl'
+              summary={'gameId':gid,'pair':(n-1)//2+1,'pestSeat':(n-1)%2,'status':'INCOMPLETE','errors':[]}
+              if not path.exists():
+                  summary['errors'].append('MISSING_OR_UNSTARTED_ORIGINAL')
+                  summaries.append(summary)
+                  continue
+              try:
+                  rows=[json.loads(line) for line in path.read_text().splitlines()]
+                  select=lambda kind:[r for r in rows if r.get('recordType')==kind]
+                  starts=select('EXHIBITION_INTENT'); initialized=select('INITIALIZED')
+                  intents=select('ACTION_INTENT'); results=select('ACTION_RESULT')
+                  ends=select('EXHIBITION_TERMINAL'); faults=select('EXHIBITION_FAILED')
+                  summary.update(actions=len(intents),responses=len(results),rejected=sum(r.get('accepted') is not True for r in results),events=sum(len(r.get('emittedEvents',[])) for r in results),failures=faults)
+                  assert len(starts)==1 and starts[0]['gameId']==gid,'intent identity'
+                  start=starts[0]
+                  assert start['blockId']=='PLAY_FIRST_PEST_TRON_B01_20261009'
+                  assert start['authorizationComment']==6081552107
+                  assert start['pair']==summary['pair'] and start['pestSeat']==summary['pestSeat']
+                  assert start['fixtureSeedHex']==expected_seeds[(n-1)//2]
+                  assert start['sourceCommit']=='80c6774d0362521ad438e8a23d5fa7e0701ad468'
+                  assert start['formalSeedAllocation'] is False and start['officialExecutionAuthorized'] is False
+                  assert start['intendedBlockGames']==8 and start['intendedGamesThisCase']==1
+                  if faults:
+                      summary['status']='FAILED_ORIGINAL'
+                  else:
+                      assert len(initialized)==1 and initialized[0]['gameOver'] is False,'one genuine initialization'
+                      assert len(select('MULLIGAN_COMPLETE'))==1,'mulligan completion'
+                      assert [r['sequence'] for r in intents]==[r['sequence'] for r in results]==list(range(1,len(intents)+1)),'action pairing'
+                      action_rows=[r['recordType'] for r in rows if r.get('recordType') in ('ACTION_INTENT','ACTION_RESULT')]
+                      assert action_rows==['ACTION_INTENT','ACTION_RESULT']*len(intents),'ordered intent-response alternation'
+                      assert results and all(r['accepted'] is True for r in results),'accepted submissions'
+                      assert len(ends)==1 and ends[0] is rows[-1],'one final terminal'
+                      end=ends[0]
+                      assert end['gameOver'] is True and end['actions']==len(intents) and end['formalExperimentCount']==0
+                      assert end['pestSeat']==summary['pestSeat'] and end['gameId']==gid
+                      assert end['winnerSeat'] in (-1,0,1),'winner seat'
+                      assert end['lifeBySeat']==results[-1]['lifeAfter'] and results[-1]['gameOverAfter'] is True,'terminal state'
+                      ended=[e for e in results[-1]['emittedEvents'] if e.get('type')=='GameEndedEvent']
+                      assert len(ended)==1 and (ended[0].get('winnerId') or '')==end['winnerId'],'direct engine terminal event'
+                      if end['winnerSeat']>=0:
+                          assert end['winnerId']==initialized[0][f"player{end['winnerSeat']}"]
+                      summary.update(status='ENGINE_TERMINAL',winner=('DRAW' if end['winnerSeat']==-1 else 'PEST' if end['winnerSeat']==summary['pestSeat'] else 'MONSTER_TRON'),turn=end['turn'],lifeBySeat=end['lifeBySeat'],winnerSeat=end['winnerSeat'])
+              except Exception as exc:
+                  summary['errors'].append(type(exc).__name__+': '+str(exc))
+              summaries.append(summary)
+          xml_files=list(pathlib.Path('gym/build/test-results/test').glob('TEST-*.xml'))
+          xml_summary=[]
+          for path in xml_files:
+              try: xml_summary.append(ET.parse(path).getroot().attrib)
+              except Exception as exc: xml_summary.append({'parseError':str(exc)})
+          payload={'blockId':'PLAY_FIRST_PEST_TRON_B01_20261009','formalExperimentCount':0,'games':summaries,'xml':xml_summary}
+          pathlib.Path('evidence/block-original-summary.json').write_text(json.dumps(payload,indent=2,sort_keys=True)+'\n')
+          print(json.dumps(payload,indent=2))
+          assert len(xml_summary)==1 and xml_summary[0].get('name')=='com.wingedsheep.gym.PlayFirstPestMonsterTronEightGameBlockTest','exact focused XML'
+          assert int(xml_summary[0]['tests'])==8 and all(int(xml_summary[0][k])==0 for k in ('failures','errors','skipped')),'original XML reports failure or missing case'
+          assert all(s['status']=='ENGINE_TERMINAL' and not s['errors'] for s in summaries),'preserved failed/incomplete originals; no replacement authorized'
+          PY
+      - name: Preserve original traces, failures, XML, source and manifest
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/game
+          if test -d /tmp/argentum-play-first-b01-20261009-original; then
+            cp -a /tmp/argentum-play-first-b01-20261009-original/. evidence/game/
+          fi
+          if test -d gym/build/test-results/test; then
+            cp -a gym/build/test-results/test evidence/test-results
+          fi
+          git status --porcelain=v1 > evidence/checkout-status-after.txt
+          git diff --exit-code > evidence/tracked-source-after.diff
+          find evidence -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > evidence/SHA256SUMS
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: play-first-pest-tron-b01-eight-originals-nonofficial
+          path: evidence/
+          retention-days: 90
+          if-no-files-found: error
