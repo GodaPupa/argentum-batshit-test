@@ -55,8 +55,9 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
         val pestSeat = input.getValue("pestSeat").jsonPrimitive.int; require(pestSeat in 0..1)
         val intendedBlockGames = input.getValue("intendedBlockGames").jsonPrimitive.int; require(intendedBlockGames in 1..100)
         val authorizationComment = input.getValue("authorizationComment").jsonPrimitive.long
-        require(authorizationComment > 0 && authorizationComment !in setOf(6081552107L, 6084057209L)) {
-            "B01 and construction-only authority cannot authorize a new game"
+        require(authorizationComment > 0 && authorizationComment !in setOf(
+            6081552107L, 6084057209L, 6084643413L, 6086416012L)) {
+            "Past exhibition and non-gameplay approvals cannot authorize a new game"
         }
         val seedHex = input.getValue("fixtureSeedHex").jsonPrimitive.content
         require(seedHex.matches(Regex("0x[0-7][0-9a-f]{15}")))
@@ -96,7 +97,7 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
                 put("officialExecutionAuthorized", false)
                 put("formalSeedAllocation", false)
                 put("sourceCommit", sourceSha)
-                put("sourceParent", "e11e9f2bdd5e33de5a8d2f8b3139b1f34a150241")
+                put("sourceParent", "9a4230e0d2acbc38b1e8a7d3e6c3cda5dd41e459")
                 put("baselineMainCommit", "4816825fb6a4d6535f0365554d204bc964b7ad73")
                 put("pestMainSha256", PEST_CONTROL_V10_HASH)
                 put("monsterTronMainSha256", PEST_MONSTER_TRON_MAIN_SHA256)

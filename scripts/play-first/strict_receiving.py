@@ -152,6 +152,9 @@ def check_run(run: Any, pins: dict[str, Any]) -> None:
 
 
 def check_process(raw: dict[str, bytes], case: dict[str, Any], pins: dict[str, Any]) -> None:
+    # A launched supervisor always creates child.log, even if it is empty.
+    # An otherwise resealed manifest must not erase that required output.
+    require('case/child.log' in raw, 'missing captured child output')
     process = decode(raw['case/process-result.json'])
     log = rows(raw['case/process.jsonl'])
     run = pins['run']
@@ -214,6 +217,7 @@ def check_trace(trace: list[dict[str, Any]], case: dict[str, Any], pins: dict[st
     require(all(type(p) is str and p for p in players) and len(set(players)) == 2, 'player identities')
     spans: list[tuple[str, dict[str, str]]] = [(p, {}) for p in ('REGISTRY_CREATE', 'ENVIRONMENT_CREATE', 'INITIALIZE')]
     i, count, mulligans_done, last_result = 2, 0, False, None
+    last_turn_after = 0
     while i < len(trace) - 1:
         item = trace[i]
         if item['recordType'] == 'MULLIGAN_COMPLETE':
@@ -231,6 +235,9 @@ def check_trace(trace: list[dict[str, Any]], case: dict[str, Any], pins: dict[st
                 and item['sequence'] == result['sequence'] == count, 'action sequence')
         require(result.get('accepted') is True and result.get('rejectionReason', '') == '', 'rejected action')
         actor = item['actor']; require(actor in players and integer(item.get('turn'), 1) and item['turn'] <= 60, 'action actor/turn')
+        require(integer(result.get('turnAfter'), 1) and result['turnAfter'] >= item['turn'] >= last_turn_after,
+                'turn moved backward across recorded action/engine result')
+        last_turn_after = result['turnAfter']
         require(type(item.get('step')) is str and type(item.get('pendingDecision')) is str, 'action context')
         action = item['selectedAction']; require(type(action) is dict and action.get('playerId') == actor
                                                and type(action.get('type')) is str and bool(action['type']), 'selected action actor/type')

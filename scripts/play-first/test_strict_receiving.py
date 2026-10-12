@@ -145,13 +145,29 @@ class StrictReceivingTests(unittest.TestCase):
         self.assertEqual(json.loads(self.raw['approved-case.json'])['fixtureSeedHex'], '0x0000000000000001')
         self.assertEqual(self.inspect()['status'], 'PINNED_RECORD_CORRESPONDENCE_ONLY')
 
-    def test_adapter_delta_is_only_fixed_width_serialization(self):
+    def test_adapter_delta_preserves_original_v1_source_after_v2_and_authority_parity_adjustments(self):
         path = HERE.parents[1] / 'gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstIsolatedPestMonsterTronTest.kt'
         data = path.read_bytes()
         new = b'put("fixtureSeedHex", seedHex) // Preserve the validated fixed-width label, including leading zeroes.'
         old = b'put("fixtureSeedHex", "0x" + seed.toString(16))'
         self.assertEqual(data.count(new), 1)
-        previous = data.replace(new, old).replace(
+        # This successor changes only the historical-authority preflight list
+        # beyond V2's known fixed-width seed and source-parent substitutions.
+        successor_authorities = (b'''        require(authorizationComment > 0 && authorizationComment !in setOf(
+            6081552107L, 6084057209L, 6084643413L, 6086416012L)) {
+            "Past exhibition and non-gameplay approvals cannot authorize a new game"
+        }''')
+        v2_authorities = (b'''        require(authorizationComment > 0 && authorizationComment !in setOf(6081552107L, 6084057209L)) {
+            "B01 and construction-only authority cannot authorize a new game"
+        }''')
+        self.assertEqual(data.count(successor_authorities), 1)
+        # Reconstruct the immutable V2 blob first; then the older V1 blob.
+        v2_bytes = data.replace(successor_authorities, v2_authorities).replace(
+            b'put("sourceParent", "9a4230e0d2acbc38b1e8a7d3e6c3cda5dd41e459")',
+            b'put("sourceParent", "e11e9f2bdd5e33de5a8d2f8b3139b1f34a150241")')
+        self.assertEqual(hashlib.sha1(b'blob ' + str(len(v2_bytes)).encode() + b'\0' + v2_bytes).hexdigest(),
+                         '2313ee73fc5d4e69eef77e8bba6b4310002734c7')
+        previous = v2_bytes.replace(new, old).replace(
             b'put("sourceParent", "e11e9f2bdd5e33de5a8d2f8b3139b1f34a150241")',
             b'put("sourceParent", "80c6774d0362521ad438e8a23d5fa7e0701ad468")')
         self.assertEqual(hashlib.sha1(b'blob ' + str(len(previous)).encode() + b'\0' + previous).hexdigest(),
@@ -344,6 +360,29 @@ class StrictReceivingTests(unittest.TestCase):
             self.assertEqual(run.returncode, 1, run.stderr)
             self.assertEqual(json.loads(run.stdout)['status'], 'INCOMPLETE')
             (self.root / ('optimized' + flag + '.log')).write_text(run.stdout + run.stderr)
+
+    def test_required_child_output_file_cannot_be_silently_omitted(self):
+        # The supervisor always creates child.log, even when the child prints nothing.
+        # Re-sealing the supervisor manifest must not conceal its complete absence.
+        del self.raw['case/child.log']
+        self.refused()
+
+    def test_engine_result_cannot_reverse_recorded_turn(self):
+        # Deliberately fabricated negative fixture: the selected action is
+        # recorded on turn 42, yet the returned engine state claims turn 1.
+        # Matching the separate timing context must not make it acceptable.
+        def modify(items):
+            for record in items:
+                if record.get('recordType') == 'ACTION_INTENT' and record['sequence'] == 1:
+                    record['turn'] = 42
+                    break
+        self.change('case/original.jsonl', modify, True)
+        timing = [json.loads(x) for x in self.raw['case/timing.jsonl'].splitlines()]
+        for record in timing:
+            if record['phase'] == 'ENGINE_SUBMIT' and record['context'].get('sequence') == '1':
+                record['context']['turn'] = '42'
+        self.raw['case/timing.jsonl'] = jsonl(timing)
+        self.refused()
 
 
 class ActivationTests(unittest.TestCase):
