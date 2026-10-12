@@ -28,8 +28,9 @@ import java.security.MessageDigest
 
 /** Prepared adapter only. No fixed seed or sample, no B01/G08 resume path.
  * A future owner-approved case record and exact workflow activation are required to opt in.
- * These local checks bind supplied inputs; they do not authenticate a remote owner or prove
- * global exclusion completeness. One JVM case, same engine/decks/pilots as frozen B01.
+ * Positive authority requires the separate live GitHub gate, not an ID, ACK or
+ * self-asserted approval file. A trusted separately reviewed launcher/host and
+ * original case slot remain required; this is not cross-host exclusion proof.
  */
 class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
     val acknowledge = System.getenv("PLAY_FIRST_ISOLATED_ACK") == "NEW_NONOFFICIAL_ORIGINAL_ONLY"
@@ -50,20 +51,48 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
         val blockId = input.getValue("blockId").jsonPrimitive.content
         val gameId = input.getValue("gameId").jsonPrimitive.content
         require(blockId.matches(Regex("PLAY_FIRST_[A-Z0-9_]{1,80}")) && !blockId.contains("B01"))
-        require(gameId.matches(Regex("G[0-9]{2,4}")))
+        require(gameId.matches(Regex("G[0-9]{2,4}")) && gameId != "G08")
         val pair = input.getValue("pair").jsonPrimitive.int; require(pair > 0)
         val pestSeat = input.getValue("pestSeat").jsonPrimitive.int; require(pestSeat in 0..1)
         val intendedBlockGames = input.getValue("intendedBlockGames").jsonPrimitive.int; require(intendedBlockGames in 1..100)
         val authorizationComment = input.getValue("authorizationComment").jsonPrimitive.long
-        require(authorizationComment > 0 && authorizationComment !in setOf(
-            6081552107L, 6084057209L, 6084643413L, 6086416012L)) {
-            "Past exhibition and non-gameplay approvals cannot authorize a new game"
-        }
+        require(authorizationComment > 0)
         val seedHex = input.getValue("fixtureSeedHex").jsonPrimitive.content
         require(seedHex.matches(Regex("0x[0-7][0-9a-f]{15}")))
         val seed = seedHex.substring(2).toLong(16)
         require(seed != 0L && seed !in setOf(0x504C415946495253L, 0x504C4159424C3031L,
             0x504C4159424C3032L, 0x504C4159424C3033L, 0x504C4159424C3034L)) { "Prior exhibition originals cannot be replayed" }
+        // The files and environment carry claims only. The fixed separate gate
+        // must obtain actual owner decisions through its TLS GitHub transport.
+        val authorityRecord = Path.of(System.getenv("PLAY_FIRST_GAMEPLAY_AUTHORITY_RECORD")
+            ?: error("Missing external positive authority record"))
+        val runContextPath = Path.of(System.getenv("PLAY_FIRST_GAMEPLAY_RUN_CONTEXT")
+            ?: error("Missing exact externally approved run context"))
+        val runContext = Json.parseToJsonElement(Files.readString(runContextPath)).jsonObject
+        check(runContext.getValue("sourceCommit").jsonPrimitive.content == sourceSha)
+        check(runContext.getValue("sourceParent").jsonPrimitive.content == "7b2b3afc84bdea530bfd69e0fc2691a4c837ca23")
+        check(runContext.getValue("runId").jsonPrimitive.content == System.getenv("GITHUB_RUN_ID"))
+        check(runContext.getValue("validationCommit").jsonPrimitive.content == System.getenv("GITHUB_SHA"))
+        check(runContext.getValue("ref").jsonPrimitive.content == System.getenv("GITHUB_REF"))
+        check(runContext.getValue("runAttempt").jsonPrimitive.int == 1)
+        check(runContext.getValue("runNumber").jsonPrimitive.int == 1 && System.getenv("GITHUB_RUN_NUMBER") == "1")
+        val gateOutput = Files.createTempFile("argentum-authority-gate-", ".json")
+        val authority = try {
+            val gate = ProcessBuilder("python3", "-I", "scripts/play-first/gameplay_authority.py", "verify",
+                "--case", casePath.toAbsolutePath().toString(), "--run-context", runContextPath.toAbsolutePath().toString(),
+                "--record", authorityRecord.toAbsolutePath().toString(), "--purpose", "execution")
+                .redirectError(ProcessBuilder.Redirect.INHERIT).redirectOutput(gateOutput.toFile()).start()
+            check(gate.waitFor(180, java.util.concurrent.TimeUnit.SECONDS)) {
+                gate.destroyForcibly(); "External authority gate timed out; no initialization permitted"
+            }
+            check(gate.exitValue() == 0) { "External positive authority verification refused: ${Files.readString(gateOutput)}" }
+            Json.parseToJsonElement(Files.readString(gateOutput)).jsonObject.also {
+                check(it.getValue("contract").jsonPrimitive.content == "ARGENTUM_GAMEPLAY_AUTHORITY_V1")
+                check(it.getValue("provenance").jsonObject.getValue("origin").jsonPrimitive.content == "LIVE_GITHUB_TLS_OWNER_FACTS")
+                check(it.getValue("claims").jsonObject.getValue("caseSha256").jsonPrimitive.content == caseDigest)
+            }
+        } finally { Files.deleteIfExists(gateOutput) }
+        check(Files.readAllBytes(casePath).contentEquals(bytes)) { "Case changed during authority verification" }
         val root = Path.of(System.getenv("PLAY_FIRST_ISOLATED_EVIDENCE_ROOT") ?: error("Missing case root"))
             .toAbsolutePath().normalize()
         require(Files.isDirectory(root) && !Files.isSymbolicLink(root))
@@ -97,7 +126,9 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
                 put("officialExecutionAuthorized", false)
                 put("formalSeedAllocation", false)
                 put("sourceCommit", sourceSha)
-                put("sourceParent", "9a4230e0d2acbc38b1e8a7d3e6c3cda5dd41e459")
+                put("sourceParent", "7b2b3afc84bdea530bfd69e0fc2691a4c837ca23")
+                put("authorityContract", "ARGENTUM_GAMEPLAY_AUTHORITY_V1")
+                put("authorityDecisionBodySha256", authority.getValue("decisionBodySha256").jsonPrimitive.content)
                 put("baselineMainCommit", "4816825fb6a4d6535f0365554d204bc964b7ad73")
                 put("pestMainSha256", PEST_CONTROL_V10_HASH)
                 put("monsterTronMainSha256", PEST_MONSTER_TRON_MAIN_SHA256)

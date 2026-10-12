@@ -35,7 +35,7 @@ def sha(data):
 
 def fixture():
     run = dict(runId='1', runAttempt=1, runNumber=1, event='push', ref='refs/heads/EXCLUDED_SYNTHETIC_ONLY',
-               sourceCommit='1' * 40, sourceParent='a' * 40, sourceTree='2' * 40, validationCommit='3' * 40,
+               sourceCommit='1' * 40, sourceParent='7b2b3afc84bdea530bfd69e0fc2691a4c837ca23', sourceTree='2' * 40, validationCommit='3' * 40,
                validationTree='4' * 40, workflowPath='.github/workflows/EXCLUDED.yml', workflowBlob='5' * 40)
     case = dict(blockId='PLAY_FIRST_EXCLUDED_RECEIVER_UNIT_ONLY', gameId='G999', pair=1, pestSeat=0,
                 fixtureSeedHex='0x0000000000000001', authorizationComment=1,
@@ -90,6 +90,12 @@ def fixture():
            'case/original.jsonl': jsonl(trace), 'case/timing.jsonl': jsonl(timing),
            'case/process-result.json': encoded(process), 'case/process.jsonl': jsonl(process_log),
            'case/child.log': b'EXCLUDED SYNTHETIC BYTES; NO CHILD OR ENGINE WAS RUN\n'}
+    from test_gameplay_authority import synthetic_trusted_fixture
+    proof, _, _ = synthetic_trusted_fixture(raw['approved-case.json'], run)
+    pins['gameplayApproval'] = proof
+    trace[0]['authorityContract'] = proof['contract']
+    trace[0]['authorityDecisionBodySha256'] = proof['decisionBodySha256']
+    raw['case/original.jsonl'] = jsonl(trace)
     return raw, pins
 
 
@@ -104,6 +110,8 @@ class StrictReceivingTests(unittest.TestCase):
             self.addCleanup(self.tmp.cleanup)
             self.root = Path(self.tmp.name)
         self.raw, self.pins = fixture()
+        from test_gameplay_authority import synthetic_trusted_fixture
+        _, self.authority_client, self.authority_now = synthetic_trusted_fixture(self.raw['approved-case.json'], self.pins['run'])
 
     def change(self, path, edit, lines=False):
         value = [json.loads(x) for x in self.raw[path].splitlines()] if lines else json.loads(self.raw[path])
@@ -123,7 +131,7 @@ class StrictReceivingTests(unittest.TestCase):
         return self.root
 
     def inspect(self, reseal=True):
-        report = MOD.inspect_evidence(self.write(reseal), self.pins)
+        report = MOD.inspect_evidence(self.write(reseal), self.pins, _authority_client=self.authority_client, _authority_now=self.authority_now)
         (self.root / 'inspection-report.json').write_bytes(encoded(report))
         return report
 
@@ -145,33 +153,40 @@ class StrictReceivingTests(unittest.TestCase):
         self.assertEqual(json.loads(self.raw['approved-case.json'])['fixtureSeedHex'], '0x0000000000000001')
         self.assertEqual(self.inspect()['status'], 'PINNED_RECORD_CORRESPONDENCE_ONLY')
 
-    def test_adapter_delta_preserves_original_v1_source_after_v2_and_authority_parity_adjustments(self):
+    def test_adapter_game_body_remains_frozen_except_authority_stamp_and_parent(self):
         path = HERE.parents[1] / 'gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstIsolatedPestMonsterTronTest.kt'
         data = path.read_bytes()
-        new = b'put("fixtureSeedHex", seedHex) // Preserve the validated fixed-width label, including leading zeroes.'
-        old = b'put("fixtureSeedHex", "0x" + seed.toString(16))'
-        self.assertEqual(data.count(new), 1)
-        # This successor changes only the historical-authority preflight list
-        # beyond V2's known fixed-width seed and source-parent substitutions.
-        successor_authorities = (b'''        require(authorizationComment > 0 && authorizationComment !in setOf(
-            6081552107L, 6084057209L, 6084643413L, 6086416012L)) {
-            "Past exhibition and non-gameplay approvals cannot authorize a new game"
-        }''')
-        v2_authorities = (b'''        require(authorizationComment > 0 && authorizationComment !in setOf(6081552107L, 6084057209L)) {
-            "B01 and construction-only authority cannot authorize a new game"
-        }''')
-        self.assertEqual(data.count(successor_authorities), 1)
-        # Reconstruct the immutable V2 blob first; then the older V1 blob.
-        v2_bytes = data.replace(successor_authorities, v2_authorities).replace(
-            b'put("sourceParent", "9a4230e0d2acbc38b1e8a7d3e6c3cda5dd41e459")',
-            b'put("sourceParent", "e11e9f2bdd5e33de5a8d2f8b3139b1f34a150241")')
-        self.assertEqual(hashlib.sha1(b'blob ' + str(len(v2_bytes)).encode() + b'\0' + v2_bytes).hexdigest(),
-                         '2313ee73fc5d4e69eef77e8bba6b4310002734c7')
-        previous = v2_bytes.replace(new, old).replace(
-            b'put("sourceParent", "e11e9f2bdd5e33de5a8d2f8b3139b1f34a150241")',
-            b'put("sourceParent", "80c6774d0362521ad438e8a23d5fa7e0701ad468")')
-        self.assertEqual(hashlib.sha1(b'blob ' + str(len(previous)).encode() + b'\0' + previous).hexdigest(),
-                         '4ce32fe3934a3e7eb01e60c46c6dac2056c209aa')
+        original = subprocess.check_output(['git', '-C', str(HERE.parents[1]), 'show',
+            '7b2b3afc84bdea530bfd69e0fc2691a4c837ca23:gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstIsolatedPestMonsterTronTest.kt'])
+        self.assertEqual(hashlib.sha1(b'blob ' + str(len(original)).encode() + b'\0' + original).hexdigest(),
+                         '0006735c9f482168e8c19ad7796cb5bb9abc4d55')
+        anchor = b'        PlayFirstTimingJournal('
+        body = data[data.index(anchor):].replace(
+            b'put("sourceParent", "7b2b3afc84bdea530bfd69e0fc2691a4c837ca23")',
+            b'put("sourceParent", "9a4230e0d2acbc38b1e8a7d3e6c3cda5dd41e459")')
+        body = body.replace(b'                put("authorityContract", "ARGENTUM_GAMEPLAY_AUTHORITY_V1")\n', b'').replace(
+            b'                put("authorityDecisionBodySha256", authority.getValue("decisionBodySha256").jsonPrimitive.content)\n', b'')
+        self.assertEqual(body, original[original.index(anchor):])
+
+    def test_missing_positive_external_approval_is_rejected(self):
+        del self.pins['gameplayApproval']
+        self.refused()
+
+    def test_non_gameplay_live_decision_is_rejected(self):
+        self.authority_client.decision['body'] = 'SOURCE REPAIR ONLY. NO GAMEPLAY.'
+        self.refused()
+
+    def test_self_asserted_positive_approval_is_rejected(self):
+        self.pins['gameplayApproval'] = {'executionAuthorized': True, 'externalVerified': True}
+        self.refused()
+
+    def test_adapter_authority_contract_disagreement_is_rejected(self):
+        self.change('case/original.jsonl', lambda records: records[0].update(authorityContract='OLD_DENYLIST_ONLY'), True)
+        self.refused()
+
+    def test_adapter_authority_decision_body_disagreement_is_rejected(self):
+        self.change('case/original.jsonl', lambda records: records[0].update(authorityDecisionBodySha256='0' * 64), True)
+        self.refused()
 
     def test_supervisor_records_supplied_run_binding(self):
         spec = importlib.util.spec_from_file_location('supervisor_v2', HERE / 'isolated_case.py')
@@ -344,12 +359,12 @@ class StrictReceivingTests(unittest.TestCase):
 
     def test_symlink_refused(self):
         self.write(); (self.root / 'case/link').symlink_to(self.root / 'approved-case.json')
-        self.assertEqual(MOD.inspect_evidence(self.root, self.pins)['status'], 'INCOMPLETE')
+        self.assertEqual(MOD.inspect_evidence(self.root, self.pins, _authority_client=self.authority_client, _authority_now=self.authority_now)['status'], 'INCOMPLETE')
 
     def test_change_during_inspection(self):
         self.write(); actual = MOD.snapshot(self.root); changed = dict(actual); changed['case/child.log'] += b'changed'
         with patch.object(MOD, 'snapshot', side_effect=[actual, changed]):
-            self.assertEqual(MOD.inspect_evidence(self.root, self.pins)['status'], 'INCOMPLETE')
+            self.assertEqual(MOD.inspect_evidence(self.root, self.pins, _authority_client=self.authority_client, _authority_now=self.authority_now)['status'], 'INCOMPLETE')
 
     def test_optimized_python_keeps_rejection(self):
         self.change('case/process-result.json', lambda p: p.update(returnCode=2)); self.write()

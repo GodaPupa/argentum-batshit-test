@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """V2 read-only correspondence checks. Trusted pins MUST come from separate review.
 
-No engine imports, replay, run dispatch, owner authentication, or global uniqueness.
+No engine imports, replay, run dispatch, engine-origin proof, or global uniqueness.
 A positive synthetic packet is still synthetic. Never use the legacy v1 inspector
 as a substitute. All semantic checks below survive Python -O and -OO.
 """
@@ -16,6 +16,7 @@ import re
 import stat
 import subprocess
 from typing import Any
+from gameplay_authority import CONTRACT as AUTHORITY_CONTRACT, verify_record
 
 SCOPE = 'NONOFFICIAL_PLAY_FIRST_EXHIBITION_ONLY'
 HEX40 = re.compile(r'[0-9a-f]{40}')
@@ -126,11 +127,13 @@ def check_case(case: dict[str, Any], pins: dict[str, Any]) -> None:
     require(type(case) is dict and set(case) == keys, 'case schema')
     require(type(case['blockId']) is str and bool(re.fullmatch(r'PLAY_FIRST_[A-Z0-9_]{1,80}', case['blockId']))
             and 'B01' not in case['blockId'], 'block identity')
-    require(type(case['gameId']) is str and bool(re.fullmatch(r'G[0-9]{2,4}', case['gameId'])), 'game identity')
+    require(type(case['gameId']) is str and bool(re.fullmatch(r'G[0-9]{2,4}', case['gameId']))
+            and case['gameId'] != 'G08', 'game identity / no G08 continuation')
     require(integer(case['pair'], 1) and type(case['pestSeat']) is int and case['pestSeat'] in (0, 1), 'pair/seat')
     require(integer(case['intendedBlockGames'], 1) and case['intendedBlockGames'] <= 100, 'block size')
-    require(integer(case['authorizationComment'], 1) and case['authorizationComment'] not in
-            (6081552107, 6084057209, 6084643413, 6086416012), 'not a future game authority reference')
+    require(integer(case['authorizationComment'], 1), 'authority decision reference type')
+    # An ID and executionAuthorized are claims. verify_record separately fetches
+    # current owner decisions, issuer, supersession and exact source/run facts.
     seed = case['fixtureSeedHex']
     require(type(seed) is str and bool(re.fullmatch(r'0x[0-7][0-9a-f]{15}', seed)) and int(seed, 16) > 0,
             'fixed-width lowercase positive signed-int64 seed label required')
@@ -190,11 +193,14 @@ def check_process(raw: dict[str, bytes], case: dict[str, Any], pins: dict[str, A
         last = beat['elapsedSeconds']
 
 
-def check_trace(trace: list[dict[str, Any]], case: dict[str, Any], pins: dict[str, Any]) -> tuple[int, list[tuple[str, dict[str, str]]]]:
+def check_trace(trace: list[dict[str, Any]], case: dict[str, Any], pins: dict[str, Any], authority: dict[str, Any]) -> tuple[int, list[tuple[str, dict[str, str]]]]:
     require(len(trace) >= 6 and trace[0]['recordType'] == 'EXHIBITION_INTENT' and
             trace[1]['recordType'] == 'INITIALIZED' and trace[-1]['recordType'] == 'EXHIBITION_TERMINAL',
             'trace boundary ordering')
     start, init, end = trace[0], trace[1], trace[-1]
+    require(start.get('authorityContract') == AUTHORITY_CONTRACT and
+            start.get('authorityDecisionBodySha256') == authority['decisionBodySha256'],
+            'adapter/receiver positive authority contract disagreement')
     for key in ('blockId', 'gameId', 'pair', 'pestSeat', 'fixtureSeedHex', 'sourceCommit',
                 'authorizationComment', 'intendedBlockGames'):
         require(type(start.get(key)) is type(case[key]) and start[key] == case[key], 'trace case: ' + key)
@@ -297,7 +303,7 @@ def check_timing(timing: list[dict[str, Any]], spans: list[tuple[str, dict[str, 
                 'timing elapsed contradiction')
 
 
-def inspect_evidence(evidence: Path, pins: dict[str, Any]) -> dict[str, Any]:
+def inspect_evidence(evidence: Path, pins: dict[str, Any], *, _authority_client=None, _authority_now=None) -> dict[str, Any]:
     report: dict[str, Any] = {'status': 'INCOMPLETE', 'errors': [], 'gameplayAuthorized': False,
                                'authenticatedOrigin': False, 'engineReplayed': False}
     try:
@@ -311,13 +317,16 @@ def inspect_evidence(evidence: Path, pins: dict[str, Any]) -> dict[str, Any]:
         check_run(run, pins)
         check_case(case, pins)
         check_process(raw, case, pins)
+        authority = verify_record(raw['approved-case.json'], run, pins.get('gameplayApproval'),
+                                  _client=_authority_client, _now=_authority_now)
         trace = rows(raw['case/original.jsonl'])
-        seat, spans = check_trace(trace, case, pins)
+        seat, spans = check_trace(trace, case, pins, authority)
         check_timing(rows(raw['case/timing.jsonl']), spans, case, pins)
         require(raw == snapshot(evidence), 'evidence changed during read-only inspection')
         report.update(status='PINNED_RECORD_CORRESPONDENCE_ONLY', winnerSeat=seat,
                       actions=(len(spans) - 4) // 2, timingCalls=len(spans),
-                      caseSha256=pins['caseSha256'], manifestSha256=pins['manifestSha256'])
+                      caseSha256=pins['caseSha256'], manifestSha256=pins['manifestSha256'],
+                      authorityDecisionCorrespondence=authority)
     except Exception as error:
         report['errors'].append(type(error).__name__ + ': ' + str(error))
     return report
