@@ -28,7 +28,7 @@ import java.security.MessageDigest
 
 /** Prepared adapter only. No fixed seed or sample, no B01/G08 resume path.
  * A future owner-approved case record and exact workflow activation are required to opt in.
- * Positive authority requires the separate live GitHub gate, not an ID, ACK or
+ * Positive authority requires an independently verified run-specific release, not an ID, ACK or
  * self-asserted approval file. A trusted separately reviewed launcher/host and
  * original case slot remain required; this is not cross-host exclusion proof.
  */
@@ -42,11 +42,13 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
         val bytes = Files.readAllBytes(casePath)
         val caseDigest = MessageDigest.getInstance("SHA-256").digest(bytes).joinToString("") { "%02x".format(it) }
         check(caseDigest == System.getenv("PLAY_FIRST_ISOLATED_CASE_SHA256")) { "Case bytes do not match pinned digest" }
-        val input = Json.parseToJsonElement(bytes.toString(Charsets.UTF_8)).jsonObject
-        require(input.keys == setOf("blockId", "gameId", "pair", "pestSeat", "fixtureSeedHex", "authorizationComment",
-            "sourceCommit", "scope", "executionAuthorized", "intendedBlockGames"))
+        val intent = Json.parseToJsonElement(bytes.toString(Charsets.UTF_8)).jsonObject
+        require(intent.keys == setOf("contract", "case", "plan"))
+        check(intent.getValue("contract").jsonPrimitive.content == "ARGENTUM_GAMEPLAY_INTENT_V2")
+        val input = intent.getValue("case").jsonObject
+        require(input.keys == setOf("blockId", "gameId", "pair", "pestSeat", "fixtureSeedHex",
+            "sourceCommit", "scope", "intendedBlockGames"))
         check(input.getValue("scope").jsonPrimitive.content == "NONOFFICIAL_PLAY_FIRST_EXHIBITION_ONLY")
-        check(input.getValue("executionAuthorized").jsonPrimitive.boolean)
         check(input.getValue("sourceCommit").jsonPrimitive.content == sourceSha)
         val blockId = input.getValue("blockId").jsonPrimitive.content
         val gameId = input.getValue("gameId").jsonPrimitive.content
@@ -55,22 +57,22 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
         val pair = input.getValue("pair").jsonPrimitive.int; require(pair > 0)
         val pestSeat = input.getValue("pestSeat").jsonPrimitive.int; require(pestSeat in 0..1)
         val intendedBlockGames = input.getValue("intendedBlockGames").jsonPrimitive.int; require(intendedBlockGames in 1..100)
-        val authorizationComment = input.getValue("authorizationComment").jsonPrimitive.long
-        require(authorizationComment > 0)
         val seedHex = input.getValue("fixtureSeedHex").jsonPrimitive.content
         require(seedHex.matches(Regex("0x[0-7][0-9a-f]{15}")))
         val seed = seedHex.substring(2).toLong(16)
         require(seed != 0L && seed !in setOf(0x504C415946495253L, 0x504C4159424C3031L,
             0x504C4159424C3032L, 0x504C4159424C3033L, 0x504C4159424C3034L)) { "Prior exhibition originals cannot be replayed" }
         // The files and environment carry claims only. The fixed separate gate
-        // must obtain actual owner decisions through its TLS GitHub transport.
+        // must verify live owner decisions, an engine-free hold and a trusted
+        // atomic original reservation. Production backend is UNQUALIFIED and
+        // unavailable: this candidate cannot initialize an engine via ACK/files.
         val authorityRecord = Path.of(System.getenv("PLAY_FIRST_GAMEPLAY_AUTHORITY_RECORD")
             ?: error("Missing external positive authority record"))
         val runContextPath = Path.of(System.getenv("PLAY_FIRST_GAMEPLAY_RUN_CONTEXT")
             ?: error("Missing exact externally approved run context"))
         val runContext = Json.parseToJsonElement(Files.readString(runContextPath)).jsonObject
         check(runContext.getValue("sourceCommit").jsonPrimitive.content == sourceSha)
-        check(runContext.getValue("sourceParent").jsonPrimitive.content == "7b2b3afc84bdea530bfd69e0fc2691a4c837ca23")
+        check(runContext.getValue("sourceParent").jsonPrimitive.content == "c02505119423b526759d97afe5a501aa949b31f4")
         check(runContext.getValue("runId").jsonPrimitive.content == System.getenv("GITHUB_RUN_ID"))
         check(runContext.getValue("validationCommit").jsonPrimitive.content == System.getenv("GITHUB_SHA"))
         check(runContext.getValue("ref").jsonPrimitive.content == System.getenv("GITHUB_REF"))
@@ -78,20 +80,24 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
         check(runContext.getValue("runNumber").jsonPrimitive.int == 1 && System.getenv("GITHUB_RUN_NUMBER") == "1")
         val gateOutput = Files.createTempFile("argentum-authority-gate-", ".json")
         val authority = try {
-            val gate = ProcessBuilder("python3", "-I", "scripts/play-first/gameplay_authority.py", "verify",
+            val gate = ProcessBuilder("python3", "-I", "scripts/play-first/gameplay_authority.py", "verify-release",
                 "--case", casePath.toAbsolutePath().toString(), "--run-context", runContextPath.toAbsolutePath().toString(),
-                "--record", authorityRecord.toAbsolutePath().toString(), "--purpose", "execution")
+                "--record", authorityRecord.toAbsolutePath().toString())
                 .redirectError(ProcessBuilder.Redirect.INHERIT).redirectOutput(gateOutput.toFile()).start()
             check(gate.waitFor(180, java.util.concurrent.TimeUnit.SECONDS)) {
                 gate.destroyForcibly(); "External authority gate timed out; no initialization permitted"
             }
             check(gate.exitValue() == 0) { "External positive authority verification refused: ${Files.readString(gateOutput)}" }
             Json.parseToJsonElement(Files.readString(gateOutput)).jsonObject.also {
-                check(it.getValue("contract").jsonPrimitive.content == "ARGENTUM_GAMEPLAY_AUTHORITY_V1")
-                check(it.getValue("provenance").jsonObject.getValue("origin").jsonPrimitive.content == "LIVE_GITHUB_TLS_OWNER_FACTS")
+                check(it.getValue("contract").jsonPrimitive.content == "ARGENTUM_GAMEPLAY_AUTHORITY_V2")
+                check(it.getValue("stage").jsonPrimitive.content == "RUN_SPECIFIC_RELEASE_VERIFIED")
+                check(it.getValue("engineAllowed").jsonPrimitive.boolean)
+                check(it.getValue("provenance").jsonObject.getValue("origin").jsonPrimitive.content == "TRUSTED_EXTERNAL_LAUNCH_RELEASE")
                 check(it.getValue("claims").jsonObject.getValue("caseSha256").jsonPrimitive.content == caseDigest)
             }
         } finally { Files.deleteIfExists(gateOutput) }
+        val authorizationComment = authority.getValue("claims").jsonObject.getValue("decisionId").jsonPrimitive.long
+        require(authorizationComment > 0)
         check(Files.readAllBytes(casePath).contentEquals(bytes)) { "Case changed during authority verification" }
         val root = Path.of(System.getenv("PLAY_FIRST_ISOLATED_EVIDENCE_ROOT") ?: error("Missing case root"))
             .toAbsolutePath().normalize()
@@ -126,9 +132,10 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
                 put("officialExecutionAuthorized", false)
                 put("formalSeedAllocation", false)
                 put("sourceCommit", sourceSha)
-                put("sourceParent", "7b2b3afc84bdea530bfd69e0fc2691a4c837ca23")
-                put("authorityContract", "ARGENTUM_GAMEPLAY_AUTHORITY_V1")
+                put("sourceParent", "c02505119423b526759d97afe5a501aa949b31f4")
+                put("authorityContract", "ARGENTUM_GAMEPLAY_AUTHORITY_V2")
                 put("authorityDecisionBodySha256", authority.getValue("decisionBodySha256").jsonPrimitive.content)
+                put("authorityReleaseBodySha256", authority.getValue("releaseBodySha256").jsonPrimitive.content)
                 put("baselineMainCommit", "4816825fb6a4d6535f0365554d204bc964b7ad73")
                 put("pestMainSha256", PEST_CONTROL_V10_HASH)
                 put("monsterTronMainSha256", PEST_MONSTER_TRON_MAIN_SHA256)

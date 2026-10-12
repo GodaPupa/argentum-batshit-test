@@ -16,7 +16,7 @@ import re
 import stat
 import subprocess
 from typing import Any
-from gameplay_authority import CONTRACT as AUTHORITY_CONTRACT, verify_record
+from gameplay_authority import CONTRACT as AUTHORITY_CONTRACT, freeze_intent, verify_historical
 
 SCOPE = 'NONOFFICIAL_PLAY_FIRST_EXHIBITION_ONLY'
 HEX40 = re.compile(r'[0-9a-f]{40}')
@@ -122,8 +122,8 @@ def check_manifest(raw: dict[str, bytes], pin: str) -> None:
 
 
 def check_case(case: dict[str, Any], pins: dict[str, Any]) -> None:
-    keys = {'blockId', 'gameId', 'pair', 'pestSeat', 'fixtureSeedHex', 'authorizationComment',
-            'sourceCommit', 'scope', 'executionAuthorized', 'intendedBlockGames'}
+    keys = {'blockId', 'gameId', 'pair', 'pestSeat', 'fixtureSeedHex',
+            'sourceCommit', 'scope', 'intendedBlockGames'}
     require(type(case) is dict and set(case) == keys, 'case schema')
     require(type(case['blockId']) is str and bool(re.fullmatch(r'PLAY_FIRST_[A-Z0-9_]{1,80}', case['blockId']))
             and 'B01' not in case['blockId'], 'block identity')
@@ -131,15 +131,14 @@ def check_case(case: dict[str, Any], pins: dict[str, Any]) -> None:
             and case['gameId'] != 'G08', 'game identity / no G08 continuation')
     require(integer(case['pair'], 1) and type(case['pestSeat']) is int and case['pestSeat'] in (0, 1), 'pair/seat')
     require(integer(case['intendedBlockGames'], 1) and case['intendedBlockGames'] <= 100, 'block size')
-    require(integer(case['authorizationComment'], 1), 'authority decision reference type')
-    # An ID and executionAuthorized are claims. verify_record separately fetches
-    # current owner decisions, issuer, supersession and exact source/run facts.
+    # Immutable intent deliberately excludes future decision/run IDs. Historical
+    # authority is bound separately by an authenticated execution-time anchor.
     seed = case['fixtureSeedHex']
     require(type(seed) is str and bool(re.fullmatch(r'0x[0-7][0-9a-f]{15}', seed)) and int(seed, 16) > 0,
             'fixed-width lowercase positive signed-int64 seed label required')
     require(seed not in ('0x504c415946495253', '0x504c4159424c3031', '0x504c4159424c3032',
                          '0x504c4159424c3033', '0x504c4159424c3034'), 'historical original fixture')
-    require(case['scope'] == SCOPE and case['executionAuthorized'] is True, 'nonofficial case declaration')
+    require(case['scope'] == SCOPE, 'nonofficial case declaration')
     require(case['sourceCommit'] == pins['run']['sourceCommit'], 'case/source correspondence')
 
 
@@ -199,7 +198,8 @@ def check_trace(trace: list[dict[str, Any]], case: dict[str, Any], pins: dict[st
             'trace boundary ordering')
     start, init, end = trace[0], trace[1], trace[-1]
     require(start.get('authorityContract') == AUTHORITY_CONTRACT and
-            start.get('authorityDecisionBodySha256') == authority['decisionBodySha256'],
+            start.get('authorityDecisionBodySha256') == authority['decisionBodySha256'] and
+            start.get('authorityReleaseBodySha256') == authority['releaseBodySha256'],
             'adapter/receiver positive authority contract disagreement')
     for key in ('blockId', 'gameId', 'pair', 'pestSeat', 'fixtureSeedHex', 'sourceCommit',
                 'authorizationComment', 'intendedBlockGames'):
@@ -303,7 +303,7 @@ def check_timing(timing: list[dict[str, Any]], spans: list[tuple[str, dict[str, 
                 'timing elapsed contradiction')
 
 
-def inspect_evidence(evidence: Path, pins: dict[str, Any], *, _authority_client=None, _authority_now=None) -> dict[str, Any]:
+def inspect_evidence(evidence: Path, pins: dict[str, Any], *, _historical_anchor=None) -> dict[str, Any]:
     report: dict[str, Any] = {'status': 'INCOMPLETE', 'errors': [], 'gameplayAuthorized': False,
                                'authenticatedOrigin': False, 'engineReplayed': False}
     try:
@@ -313,12 +313,16 @@ def inspect_evidence(evidence: Path, pins: dict[str, Any], *, _authority_client=
         require(digest(raw['approved-case.json']) == pins['caseSha256'], 'case external pin mismatch')
         require(digest(raw['run-source.json']) == pins['runSourceSha256'], 'run-source byte pin mismatch')
         check_manifest(raw, pins['manifestSha256'])
-        case, run = decode(raw['approved-case.json']), decode(raw['run-source.json'])
+        # Filename retained for evidence tooling; its V2 bytes are immutable
+        # case-intent, not an executable approval or a provider-ID-bearing case.
+        intent = freeze_intent(raw['approved-case.json'])['intent']
+        case, run = dict(intent['case']), decode(raw['run-source.json'])
         check_run(run, pins)
         check_case(case, pins)
         check_process(raw, case, pins)
-        authority = verify_record(raw['approved-case.json'], run, pins.get('gameplayApproval'),
-                                  _client=_authority_client, _now=_authority_now)
+        authority = verify_historical(raw['approved-case.json'], run, pins.get('gameplayApproval'),
+                                      pins['manifestSha256'], _anchor=_historical_anchor)
+        case['authorizationComment'] = authority['claims']['decisionId']
         trace = rows(raw['case/original.jsonl'])
         seat, spans = check_trace(trace, case, pins, authority)
         check_timing(rows(raw['case/timing.jsonl']), spans, case, pins)

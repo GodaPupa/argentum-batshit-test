@@ -1,87 +1,173 @@
-# Positive authority contract: local review candidate only
+# Positive authority V2: staged release and historical correspondence
 
-This source repair grants no gameplay permission. The adopted Receiving V2 source,
-qualification, run 38278111122 and artifact 11759219913 remain frozen. No new
-workflow or game identity is selected here. G08 stays incomplete; B01 cannot replay.
+This local source implements controller decision 6131277544 on PR #231. It is
+an excluded contract candidate for independent Reviewer B review. It is not a
+qualified launcher, executable gameplay decision, controller adoption, or proof
+of engine correctness. Its sole parent is
+c02505119423b526759d97afe5a501aa949b31f4; the adapter emits that sourceParent.
+Accepted source 7b2b3afc84bdea530bfd69e0fc2691a4c837ca23 and original qualification
+run 38278111122 / artifact 11759219913 remain unchanged.
 
-## Separate external verification boundary
+## Trust roots and production refusal
 
-`scripts/play-first/gameplay_authority.py` is a read-only external gate that must
-run from a separately reviewed, trusted source/launcher/host. Neither a supplied
-comment ID, case hash, executionAuthorized boolean, environment variable nor
-generated record authenticates itself. `issue` obtains live GitHub facts; `verify`
-requires a record but independently obtains those facts again. There is no offline,
-fixture, alternate-host, credential override or environment-based authentication
-mode in the CLI. Transport uses the fixed GitHub HTTPS endpoint, normal certificate
-verification, and refuses redirects. API errors and incomplete pagination fail closed.
+A comment ID, digest, approval JSON, environment variable, ACK, runner claim,
+or artifact cannot authenticate itself. The fixed TLS GitHub reader obtains
+actual repository-owner facts, PR #231 comments, issuer ID/login/OWNER
+association, actual contents, complete controlling discussion, Git parents and
+trees, workflow blob and original run metadata. It follows no redirects and has
+no record-selected host, credential or CLI fixture mode.
 
-An eventual owner decision must begin `ARGENTUM_GAMEPLAY_AUTHORITY_V1` followed by
-a newline and exactly one strict JSON object. Its required fields are `contract`,
-`decisionId`, `issuerId`, `issuerLogin`, `caseSha256`, `blockId`, `gameId`, `scope`,
-`executionAuthorized`, `originalOnly`, `maxGames`, `run`, and `expiresAt`.
-The source defines the exact schema; duplicate keys and nonfinite values are refused.
-No actual positive decision or executable case is provided in this candidate.
+GitHub metadata alone cannot authenticate the executing host, an engine-free
+hold, atomic cross-host original consumption or actual execution time.
+Production release and historical-anchor backends are deliberately ABSENT.
+The CLI supplies neither backend. The adapter's fixed verify-release subprocess
+cannot succeed in this candidate. Files and environment cannot install a
+backend. Historical receiving without independently authenticated provenance
+returns INCOMPLETE with an explicit UNQUALIFIED error even if supplied hashes
+and approval claims match.
 
-The gate verifies the actual repository owner and actual decision issuer against
-the established GodaPupa account (326515697), the decision's controlling PR and URL,
-complete live decision contents, the exact approved case bytes, source/validation
-commit trees and sole parents, workflow blob, and the actual GitHub original push
-run. The `run` object binds every field in `RUN_KEYS`, including an exact run ID,
-run number 1, attempt 1, ref and workflow path. Execution also verifies the actual
-clean local Git checkout and requires the approved run to be in progress.
+The underscored trusted-code injection seams are exclusively excluded tests.
+Their service facts and transport are labeled
+SYNTHETIC_TRUSTED_FIXTURE_NOT_AUTHENTICATED. They are not genuine owner approval,
+TLS authentication, certified hosts, trusted timestamps or a cross-host ledger.
+Deserialized JSON, an arbitrary supplied object or a record-selected module
+cannot be deployed as a trusted backend. The adapter refuses synthetic origin.
 
-All issue comments, inline review comments and review submissions on PR #231 are
-searched with bounded complete pagination. Any subsequent owner discussion,
-including an unstructured revocation or consumed-case notice, invalidates the
-decision conservatively. A fresh, explicit owner disposition is then required.
-This avoids pretending that an incomplete word/ID denylist can detect revocations.
-The owner-specified expiry and a 60-second record age must also be satisfied.
+## Four separately bounded stages
 
-The emitted record contains the exact live claims, decision-body SHA-256, official
-decision URL, observed update time and owner-tail identity, verification time and
-transport origin. These are provenance and correspondence fields, not signatures.
-Record fields are compared with fresh independently fetched facts on each use.
-The test-only injected transport is marked
-`SYNTHETIC_TRUSTED_FIXTURE_NOT_AUTHENTICATED`; it is not selectable by CLI and Kotlin
-refuses that origin. No signing key or issuer attestation is invented.
+1. Immutable prelaunch intent. Freeze the exact bytes of an envelope containing
+   exactly contract, case and plan. Contract is ARGENTUM_GAMEPLAY_INTENT_V2.
+   Case contains blockId, gameId, pair, pestSeat, fixtureSeedHex, sourceCommit,
+   scope and intendedBlockGames. Plan contains sourceCommit, sourceParent,
+   sourceTree, validationCommit, validationTree, workflowPath, workflowBlob,
+   ref, push event, runNumber 1 and runAttempt 1. No future comment ID, runId,
+   executionAuthorized boolean or execution timestamp is in these bytes.
+   freeze_intent returns the byte SHA-256 and engineAllowed false; it allocates
+   nothing and issues no authority.
+2. Owner decision. After GitHub assigns a comment ID, verify_owner_decision
+   retrieves the actual owner comment and contents through fixed TLS transport.
+   Its body starts ARGENTUM_GAMEPLAY_OWNER_DECISION_V2 plus newline and strict
+   JSON with contract, intentSha256, scope, originalOnly true, maxGames 1 and
+   expiresAt. It contains neither its own ID nor a future run ID. The decision
+   binds the immutable intent. Complete issue/inline/review discussion is
+   searched, and exact source/workflow objects are checked without requesting
+   any run. This stage cannot release an engine or create an original slot.
+3. Non-gameplay hold. A future independently implemented and reviewed trusted
+   launcher may obtain a provider-assigned run ID in an engine-free hold.
+   Authenticated hold facts must bind intent digest, the complete run/head/ref/
+   workflow identity, independently observed time, engineStarted false and
+   originalSlotCreated false. JSON booleans are not host authentication. No
+   workflow, hold service or run is created here. Every launcher path, including
+   interruption and cancellation, must remain before any engine or slot.
+4. Run-specific release. A separate owner release comment, created after the
+   hold, starts ARGENTUM_GAMEPLAY_RUN_RELEASE_V2 plus newline and strict JSON:
+   contract, intentSha256, already-assigned ownerDecisionId, complete run identity
+   including now-assigned runId, scope, originalOnly true, maxGames 1, expiresAt.
+   The body does not contain its own future release ID. verify_release requires
+   an authenticated hold backend, fresh live owner/release contents, complete
+   supersession checks, actual provider run/head/ref and exact source/workflow
+   objects, original attempt/number, in-progress status and correct ordering.
+   The trusted service must atomically reserve exactly one original, recheck
+   authority and host/code, and prepare durable anchoring before returning.
+   Missing, altered, stale, revoked, consumed, cross-bound, interrupted or
+   incomplete stages fail closed. Earlier stages cannot enable initialization.
 
-## Matching consumers
+For existing evidence snapshot tooling, approved-case.json remains the filename;
+its V2 contents are now the immutable intent envelope. caseSha256 and the
+supervisor's PLAY_FIRST_ISOLATED_CASE_SHA256 pin those exact intent bytes.
+The actual owner comment ID is added to trace/timing identity only AFTER trusted
+verification, outside that digest. Trace stamps bind the V2 contract, owner
+decision body SHA-256, run-release body SHA-256 and case-input SHA-256. Kotlin
+delegates strict schema/plan checks to the same fixed Python gate before an
+original slot, timing journal or engine call. B01, G08 and previously frozen
+historical fixture labels remain rejected.
 
-The Python strict receiver requires `gameplayApproval` in the separately supplied
-pins, invokes the same gate, and checks the adapter's `authorityContract` and
-`authorityDecisionBodySha256` trace fields. Successful receiving still reports
-`PINNED_RECORD_CORRESPONDENCE_ONLY`, `gameplayAuthorized: false`,
-`authenticatedOrigin: false`, and `engineReplayed: false`. Owner-decision
-correspondence does not authenticate engine execution, decks, pilots, provenance,
-outcome equivalence or formal experiment admission.
+## Historical receiving at execution time
 
-Kotlin requires `PLAY_FIRST_GAMEPLAY_AUTHORITY_RECORD` and
-`PLAY_FIRST_GAMEPLAY_RUN_CONTEXT` as claim-file locations, compares platform run
-context, and invokes the fixed separate gate using isolated Python before creating
-an original slot, journal, registry, environment or game. Gate timeout or refusal
-fails closed. Case bytes are checked again after verification. The original
-exclusive trace slot and supervisor behavior are retained. The sourceParent emitted
-by this direct successor is 7b2b3afc84bdea530bfd69e0fc2691a4c837ca23.
+verify_historical has a different interface. It does not call the live release
+gate, obtain now, demand a fresh inspection record, or require the old approval
+to remain currently executable. The supplied historical record contains only
+contract, intentSha256, ownerDecisionId, releaseDecisionId and anchorRef.
+The reference is untrusted until a separately configured external service
+authenticates it. A self-declared timestamp or unsigned snapshot is rejected.
 
-## Unqualified and future owner-supplied requirements
+authenticate_historical must independently retrieve immutable provenance for
+the actual original execution, with these authenticated normative facts:
 
-The owner must separately supply a real positive gameplay decision, exact approved
-case bytes and digest, new reviewed source identity, game identity, approved
-validation/workflow/ref identities, exact original run ID, expiry and scoped
-publication/activation permission. None is allocated or authorized here.
+- Exact intent digest and complete source/run/workflow identity, with separately
+  established source correspondence.
+- Actual execution instant from a trusted host/provider mechanism, not case
+  JSON, runner-generated time, approval claims or the inspected artifact.
+- Actual owner and release decision VERSIONS valid at execution, including
+  independently authenticated issuer and complete contents.
+- Complete versioned issue/inline/review history through execution, including
+  edits, deletions and revocations hidden by today's mutable snapshots.
+  Incomplete history or contradictory same-comment versions before execution
+  fail closed. Today's TLS read alone cannot reconstruct that history.
+- Authenticated engine-free hold and staged ordering, expiry and release
+  freshness AT EXECUTION, no pre-execution revocation, supersession or prior
+  consumption. During the authorization interval, unrelated owner events
+  conservatively close authority; authenticated later events are excluded.
+- Original single-use consumption bound to intent, run and trusted instant,
+  exactly one original, and original payload manifest SHA-256. The manifest
+  pins complete child logs, process, trace and timing payloads.
 
-The gate authenticates remote owner facts under the trusted-host/TLS assumption.
-It does **not** prove that a local process is the named GitHub job, validate compiled
-JVM bytecode provenance, provide a trusted distributed single-use ledger, or exclude
-copies across hosts/slots. Environment correspondence and public run lookup are
-not runner attestation. A future independently reviewed trusted launcher must
-enforce runtime provenance and single original consumption outside untrusted case
-inputs; its concrete owner-supplied integration remains absent and unqualified.
-The existing CREATE_NEW slot prevents a duplicate in that trusted local slot only.
-Discussion/decision verification also has a finite observation window, not a
-transactional guarantee against a revocation after the last read. Live transport,
-revocation races, actual launcher integration and gameplay are not qualified by
-synthetic tests. Kotlin compilation is not claimed when tooling/modules are absent.
+Subsequent expiry, non-revoking comments, consumption receipts or revocation of
+future execution do not erase a proven original. Re-inspection of the same
+original is read-only and idempotent. Substituted intent/run/manifest or replayed
+consumption cannot reuse its anchor. Missing/forged provenance, self-declared
+time, incomplete attestation and pre-execution revocation fail closed.
 
-Independent Reviewer B must assess this exact successor and its retained evidence.
-No author-side check constitutes independent acceptance or controller adoption.
+The backend facts are normative because of independently reviewed
+authentication, not because a dictionary says sourceVerified true. No
+operational implementation of that authentication exists here. No signer, key,
+future gameplay decision, workflow, allocation or attestation was manufactured.
+
+The receiver continues reporting PINNED_RECORD_CORRESPONDENCE_ONLY.
+gameplayAuthorized, authenticatedOrigin and engineReplayed stay false.
+Correspondence proves neither engine correctness nor official experimental
+admission. Historical verification never grants another execution release.
+
+## External implementation and independent review gates
+
+The owner must separately supply a frozen reviewed intent/source/workflow and
+actual positive owner decision. The current repair authorization is not gameplay
+authority. A launcher/hold service needs separate implementation and independent
+review before a real hold exists. Trusted host/code attestation, live owner
+verification, durable cross-host atomic single use, last-moment revocation
+checks at reservation and immediately before initialization, and execution-time
+anchoring remain UNQUALIFIED. Reservation alone cannot attest that execution
+occurred: record the actual launch instant independently and bind the subsequent
+frozen manifest through authenticated provider evidence. Interrupted
+reservations must never become reusable originals or false execution anchors.
+
+The external service must establish authenticated reference retrieval, immutable
+version retention, edit/deletion history, host and artifact/provider origin,
+trusted time, revocation race handling and cross-host exclusion. No supplied
+URL, module, credential, signer, key or artifact may define that trust root.
+Deployment and any real hold/engine activation need distinct exact controller
+authority and independent review.
+
+Kotlin test-source compilation is OPEN: just, kotlinc and full materialized build
+modules are unavailable in this identity-only checkout. Static parity checks and
+frozen unrelated engine-body comparisons are not compilation or operational
+qualification. The Python contract fixtures qualify only excluded parsing,
+correspondence and fail-closed behavior.
+
+## Excluded reproduction and preservation
+
+Run these five Python unittest modules in normal, -O and -OO modes:
+test_isolated_case, test_isolated_receiving, test_authority_parity,
+test_strict_receiving, test_gameplay_authority. Do not invoke the Kotlin adapter,
+engine suite or accepted GitHub qualification. Tests use only reused fabricated
+labels, synthetic records and tiny excluded process-supervision children.
+
+The packet preserves c025 and its complete original review ZIP, baseline RED for
+both findings, every failed corrective attempt with source-at-failure, and final
+per-mode GREEN logs and exact test IDs. Positive fixture success is not genuine
+GitHub provenance. Independent Reviewer B must review the frozen source, both
+baseline findings, staged/historical contracts and unresolved external services.
+The implementing worker does not self-review, accept or adopt this candidate.
+
+Record unchanged: Monster Tron 7 wins, Pest Control 2 wins, G08 incomplete;
+formal counters unchanged. No publication or gameplay authorization is implied.

@@ -14,6 +14,7 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+from gameplay_authority import INTENT_CONTRACT
 
 HERE = Path(__file__).resolve().parent
 SPEC = importlib.util.spec_from_file_location('strict_receiving', HERE / 'strict_receiving.py')
@@ -35,12 +36,13 @@ def sha(data):
 
 def fixture():
     run = dict(runId='1', runAttempt=1, runNumber=1, event='push', ref='refs/heads/EXCLUDED_SYNTHETIC_ONLY',
-               sourceCommit='1' * 40, sourceParent='7b2b3afc84bdea530bfd69e0fc2691a4c837ca23', sourceTree='2' * 40, validationCommit='3' * 40,
+               sourceCommit='1' * 40, sourceParent='c02505119423b526759d97afe5a501aa949b31f4', sourceTree='2' * 40, validationCommit='3' * 40,
                validationTree='4' * 40, workflowPath='.github/workflows/EXCLUDED.yml', workflowBlob='5' * 40)
     case = dict(blockId='PLAY_FIRST_EXCLUDED_RECEIVER_UNIT_ONLY', gameId='G999', pair=1, pestSeat=0,
-                fixtureSeedHex='0x0000000000000001', authorizationComment=1,
-                sourceCommit=run['sourceCommit'], scope=MOD.SCOPE, executionAuthorized=True, intendedBlockGames=1)
-    pins = dict(run=run, caseSha256=sha(encoded(case)), runSourceSha256=sha(encoded(run)),
+                fixtureSeedHex='0x0000000000000001',
+                sourceCommit=run['sourceCommit'], scope=MOD.SCOPE, intendedBlockGames=1)
+    intent = dict(contract=INTENT_CONTRACT, case=case, plan={k:v for k,v in run.items() if k != 'runId'})
+    pins = dict(run=run, caseSha256=sha(encoded(intent)), runSourceSha256=sha(encoded(run)),
                 command=['EXCLUDED_COMMAND_NOT_EXECUTED'], budgetSeconds=10, graceSeconds=1,
                 pestMainSha256='6' * 64, monsterTronMainSha256='7' * 64)
     binding = dict(GITHUB_RUN_ID='1', GITHUB_RUN_ATTEMPT='1', GITHUB_SHA=run['validationCommit'], GITHUB_REF=run['ref'],
@@ -52,7 +54,7 @@ def fixture():
                    dict(recordType='PROCESS_STARTED', childPid=2, monotonicNanos=20),
                    dict(recordType='PROCESS_HEARTBEAT', elapsedSeconds=0.5),
                    dict(recordType='PROCESS_FINISHED', **process)]
-    start = dict(recordType='EXHIBITION_INTENT', **{k: v for k, v in case.items() if k != 'executionAuthorized'},
+    start = dict(recordType='EXHIBITION_INTENT', authorizationComment=1, **case,
                  sourceParent=run['sourceParent'], caseInputSha256=pins['caseSha256'], formalSeedAllocation=False, officialExecutionAuthorized=False,
                  experimentalResult=False, intendedGamesThisCase=1, startingSeat=0, maxActions=12000,
                  maxTurns=60, maxActionsPerTurn=500, seat0Deck='Pest Control v1.0', seat1Deck='mehanske Monster Tron',
@@ -79,22 +81,25 @@ def fixture():
         planned.extend([(phase, ctx), ('ENGINE_SUBMIT', dict(sequence=str(seq), actor=actor, turn='1', step=step))])
     trace.append(dict(recordType='EXHIBITION_TERMINAL', gameId='G999', pair=1, pestSeat=0, gameOver=True,
                       actions=6, turn=1, formalExperimentCount=0, scope=MOD.SCOPE, lifeBySeat=[1, 0], winnerId='fixture0', winnerSeat=0))
-    identity = {k: str(case[k]) for k in ('blockId', 'gameId', 'sourceCommit', 'authorizationComment')}
+    identity = {k: str(case[k]) for k in ('blockId', 'gameId', 'sourceCommit')}
+    identity['authorizationComment'] = '1'
     identity['caseInputSha256'] = pins['caseSha256']
     timing = []
     for span, (phase, context) in enumerate(planned, 1):
         common = dict(span=span, phase=phase, context=context, identity=identity, threadId=1)
         timing.extend([dict(recordType='CALL_START', monotonicNanos=span * 10, **common),
                        dict(recordType='CALL_END', monotonicNanos=span * 10 + 1, elapsedNanos=1, **common)])
-    raw = {'approved-case.json': encoded(case), 'run-source.json': encoded(run),
+    raw = {'approved-case.json': encoded(intent), 'run-source.json': encoded(run),
            'case/original.jsonl': jsonl(trace), 'case/timing.jsonl': jsonl(timing),
            'case/process-result.json': encoded(process), 'case/process.jsonl': jsonl(process_log),
            'case/child.log': b'EXCLUDED SYNTHETIC BYTES; NO CHILD OR ENGINE WAS RUN\n'}
     from test_gameplay_authority import synthetic_trusted_fixture
-    proof, _, _ = synthetic_trusted_fixture(raw['approved-case.json'], run)
-    pins['gameplayApproval'] = proof
+    record, anchor, _ = synthetic_trusted_fixture(raw['approved-case.json'], run)
+    proof = MOD.verify_historical(raw['approved-case.json'], run, record, '8' * 64, _anchor=anchor)
+    pins['gameplayApproval'] = record
     trace[0]['authorityContract'] = proof['contract']
     trace[0]['authorityDecisionBodySha256'] = proof['decisionBodySha256']
+    trace[0]['authorityReleaseBodySha256'] = proof['releaseBodySha256']
     raw['case/original.jsonl'] = jsonl(trace)
     return raw, pins
 
@@ -131,7 +136,9 @@ class StrictReceivingTests(unittest.TestCase):
         return self.root
 
     def inspect(self, reseal=True):
-        report = MOD.inspect_evidence(self.write(reseal), self.pins, _authority_client=self.authority_client, _authority_now=self.authority_now)
+        root = self.write(reseal)
+        self.authority_client.facts['manifestSha256'] = self.pins['manifestSha256']
+        report = MOD.inspect_evidence(root, self.pins, _historical_anchor=self.authority_client)
         (self.root / 'inspection-report.json').write_bytes(encoded(report))
         return report
 
@@ -150,7 +157,7 @@ class StrictReceivingTests(unittest.TestCase):
         self.assertFalse(report['engineReplayed'])
 
     def test_fixed_width_leading_zero_seed_preserved(self):
-        self.assertEqual(json.loads(self.raw['approved-case.json'])['fixtureSeedHex'], '0x0000000000000001')
+        self.assertEqual(json.loads(self.raw['approved-case.json'])['case']['fixtureSeedHex'], '0x0000000000000001')
         self.assertEqual(self.inspect()['status'], 'PINNED_RECORD_CORRESPONDENCE_ONLY')
 
     def test_adapter_game_body_remains_frozen_except_authority_stamp_and_parent(self):
@@ -162,10 +169,11 @@ class StrictReceivingTests(unittest.TestCase):
                          '0006735c9f482168e8c19ad7796cb5bb9abc4d55')
         anchor = b'        PlayFirstTimingJournal('
         body = data[data.index(anchor):].replace(
-            b'put("sourceParent", "7b2b3afc84bdea530bfd69e0fc2691a4c837ca23")',
+            b'put("sourceParent", "c02505119423b526759d97afe5a501aa949b31f4")',
             b'put("sourceParent", "9a4230e0d2acbc38b1e8a7d3e6c3cda5dd41e459")')
-        body = body.replace(b'                put("authorityContract", "ARGENTUM_GAMEPLAY_AUTHORITY_V1")\n', b'').replace(
+        body = body.replace(b'                put("authorityContract", "ARGENTUM_GAMEPLAY_AUTHORITY_V2")\n', b'').replace(
             b'                put("authorityDecisionBodySha256", authority.getValue("decisionBodySha256").jsonPrimitive.content)\n', b'')
+        body = body.replace(b'                put("authorityReleaseBodySha256", authority.getValue("releaseBodySha256").jsonPrimitive.content)\n', b'')
         self.assertEqual(body, original[original.index(anchor):])
 
     def test_missing_positive_external_approval_is_rejected(self):
@@ -187,6 +195,23 @@ class StrictReceivingTests(unittest.TestCase):
     def test_adapter_authority_decision_body_disagreement_is_rejected(self):
         self.change('case/original.jsonl', lambda records: records[0].update(authorityDecisionBodySha256='0' * 64), True)
         self.refused()
+
+    def test_receiver_adapter_release_hash_disagreement_rejected(self):
+        self.change('case/original.jsonl', lambda records: records[0].update(authorityReleaseBodySha256='0' * 64), True)
+        self.refused()
+
+    def test_production_historical_receiving_without_anchor_fails_closed(self):
+        root = self.write()
+        report = MOD.inspect_evidence(root, self.pins)
+        self.assertEqual(report['status'], 'INCOMPLETE')
+        self.assertIn('UNQUALIFIED', report['errors'][0])
+
+    def test_authenticated_historical_manifest_binding_cannot_be_reused(self):
+        root = self.write()
+        self.authority_client.facts['manifestSha256'] = '0' * 64
+        report = MOD.inspect_evidence(root, self.pins, _historical_anchor=self.authority_client)
+        self.assertEqual(report['status'], 'INCOMPLETE')
+        self.assertIn('artifact mismatch', report['errors'][0])
 
     def test_supervisor_records_supplied_run_binding(self):
         spec = importlib.util.spec_from_file_location('supervisor_v2', HERE / 'isolated_case.py')
@@ -359,12 +384,15 @@ class StrictReceivingTests(unittest.TestCase):
 
     def test_symlink_refused(self):
         self.write(); (self.root / 'case/link').symlink_to(self.root / 'approved-case.json')
-        self.assertEqual(MOD.inspect_evidence(self.root, self.pins, _authority_client=self.authority_client, _authority_now=self.authority_now)['status'], 'INCOMPLETE')
+        self.assertEqual(MOD.inspect_evidence(self.root, self.pins, _historical_anchor=self.authority_client)['status'], 'INCOMPLETE')
 
     def test_change_during_inspection(self):
         self.write(); actual = MOD.snapshot(self.root); changed = dict(actual); changed['case/child.log'] += b'changed'
+        self.authority_client.facts['manifestSha256'] = self.pins['manifestSha256']
         with patch.object(MOD, 'snapshot', side_effect=[actual, changed]):
-            self.assertEqual(MOD.inspect_evidence(self.root, self.pins, _authority_client=self.authority_client, _authority_now=self.authority_now)['status'], 'INCOMPLETE')
+            report = MOD.inspect_evidence(self.root, self.pins, _historical_anchor=self.authority_client)
+            self.assertEqual(report['status'], 'INCOMPLETE')
+            self.assertIn('evidence changed', report['errors'][0])
 
     def test_optimized_python_keeps_rejection(self):
         self.change('case/process-result.json', lambda p: p.update(returnCode=2)); self.write()
@@ -374,6 +402,7 @@ class StrictReceivingTests(unittest.TestCase):
                                   '--root', str(self.root), '--trusted-pins', str(path)], capture_output=True, text=True)
             self.assertEqual(run.returncode, 1, run.stderr)
             self.assertEqual(json.loads(run.stdout)['status'], 'INCOMPLETE')
+            self.assertIn('process status/return code', json.loads(run.stdout)['errors'][0])
             (self.root / ('optimized' + flag + '.log')).write_text(run.stdout + run.stderr)
 
     def test_required_child_output_file_cannot_be_silently_omitted(self):
