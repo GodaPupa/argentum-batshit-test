@@ -72,7 +72,7 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
             ?: error("Missing exact externally approved run context"))
         val runContext = Json.parseToJsonElement(Files.readString(runContextPath)).jsonObject
         check(runContext.getValue("sourceCommit").jsonPrimitive.content == sourceSha)
-        check(runContext.getValue("sourceParent").jsonPrimitive.content == "c02505119423b526759d97afe5a501aa949b31f4")
+        check(runContext.getValue("sourceParent").jsonPrimitive.content == "e79adf5770a803568a81be73a83fa8627c48c862")
         check(runContext.getValue("runId").jsonPrimitive.content == System.getenv("GITHUB_RUN_ID"))
         check(runContext.getValue("validationCommit").jsonPrimitive.content == System.getenv("GITHUB_SHA"))
         check(runContext.getValue("ref").jsonPrimitive.content == System.getenv("GITHUB_REF"))
@@ -80,7 +80,7 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
         check(runContext.getValue("runNumber").jsonPrimitive.int == 1 && System.getenv("GITHUB_RUN_NUMBER") == "1")
         val gateOutput = Files.createTempFile("argentum-authority-gate-", ".json")
         val authority = try {
-            val gate = ProcessBuilder("python3", "-I", "scripts/play-first/gameplay_authority.py", "verify-release",
+            val gate = ProcessBuilder("python3", "-I", "scripts/play-first/runtime_integration.py", "verify-release",
                 "--case", casePath.toAbsolutePath().toString(), "--run-context", runContextPath.toAbsolutePath().toString(),
                 "--record", authorityRecord.toAbsolutePath().toString())
                 .redirectError(ProcessBuilder.Redirect.INHERIT).redirectOutput(gateOutput.toFile()).start()
@@ -89,6 +89,8 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
             }
             check(gate.exitValue() == 0) { "External positive authority verification refused: ${Files.readString(gateOutput)}" }
             Json.parseToJsonElement(Files.readString(gateOutput)).jsonObject.also {
+                check(it.getValue("integrationContract").jsonPrimitive.content == "ARGENTUM_LOCAL_RUNTIME_INTEGRATION_V1")
+                check(it.getValue("productionQualified").jsonPrimitive.boolean)
                 check(it.getValue("contract").jsonPrimitive.content == "ARGENTUM_GAMEPLAY_AUTHORITY_V2")
                 check(it.getValue("stage").jsonPrimitive.content == "RUN_SPECIFIC_RELEASE_VERIFIED")
                 check(it.getValue("engineAllowed").jsonPrimitive.boolean)
@@ -132,7 +134,7 @@ class PlayFirstIsolatedPestMonsterTronTest : FunSpec({
                 put("officialExecutionAuthorized", false)
                 put("formalSeedAllocation", false)
                 put("sourceCommit", sourceSha)
-                put("sourceParent", "c02505119423b526759d97afe5a501aa949b31f4")
+                put("sourceParent", "e79adf5770a803568a81be73a83fa8627c48c862")
                 put("authorityContract", "ARGENTUM_GAMEPLAY_AUTHORITY_V2")
                 put("authorityDecisionBodySha256", authority.getValue("decisionBodySha256").jsonPrimitive.content)
                 put("authorityReleaseBodySha256", authority.getValue("releaseBodySha256").jsonPrimitive.content)

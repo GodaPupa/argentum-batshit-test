@@ -21,7 +21,7 @@ REPOSITORY = 'GodaPupa/argentum-batshit-test'
 PR = 231
 OWNER_ID = 326515697
 OWNER_LOGIN = 'GodaPupa'
-SOURCE_PARENT = 'c02505119423b526759d97afe5a501aa949b31f4'
+SOURCE_PARENT = 'e79adf5770a803568a81be73a83fa8627c48c862'
 SCOPE = 'NONOFFICIAL_PLAY_FIRST_EXHIBITION_ONLY'
 RUN_KEYS = {'runId', 'runAttempt', 'runNumber', 'event', 'ref', 'sourceCommit',
             'sourceParent', 'sourceTree', 'validationCommit', 'validationTree',

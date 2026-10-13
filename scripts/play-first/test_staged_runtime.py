@@ -594,13 +594,15 @@ class HistoricalInfrastructureTests(unittest.TestCase):
         self.assertEqual(self.inspect(),self.inspect())
         self.assertEqual(self.backend.anchor,original)
 
-    def test_adapter_and_production_default_trusted_interfaces_are_unchanged(self):
+    def test_integration_preserves_engine_body_and_production_denial(self):
         root=Path(__file__).resolve().parents[2]
-        paths=['scripts/play-first/gameplay_authority.py','scripts/play-first/strict_receiving.py',
-               'gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstIsolatedPestMonsterTronTest.kt']
-        for path in paths:
-            baseline=subprocess.check_output(['git','-C',str(root),'show','4d5d91bbff7ec5a6e75d5832eff0ee9ebd7debb6:'+path])
-            self.assertEqual((root/path).read_bytes(),baseline)
+        adapter='gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstIsolatedPestMonsterTronTest.kt'
+        baseline=subprocess.check_output(['git','-C',str(root),'show','4d5d91bbff7ec5a6e75d5832eff0ee9ebd7debb6:'+adapter])
+        current=(root/adapter).read_bytes().replace(AUTH.SOURCE_PARENT.encode(),b'c02505119423b526759d97afe5a501aa949b31f4')
+        marker=b'        PlayFirstTimingJournal('
+        self.assertEqual(current[current.index(marker):],baseline[baseline.index(marker):])
+        with self.assertRaisesRegex(ValueError,'UNQUALIFIED'):
+            AUTH.verify_historical(self.data,self.run,self.record,'8'*64)
 
     def test_prototype_has_no_engine_launcher_or_trace_creation_interface(self):
         source=Path(RT.__file__).read_text()

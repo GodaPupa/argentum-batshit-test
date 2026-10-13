@@ -1,10 +1,11 @@
 # Positive authority V2: staged release and historical correspondence
 
-This local source implements controller decision 6131277544 on PR #231. It is
+This local source implements the prior contracts and local integration decision
+6135339059 on PR #231. It is
 an excluded contract candidate for independent Reviewer B review. It is not a
 qualified launcher, executable gameplay decision, controller adoption, or proof
 of engine correctness. Its sole parent is
-c02505119423b526759d97afe5a501aa949b31f4; the adapter emits that sourceParent.
+e79adf5770a803568a81be73a83fa8627c48c862; the local integration successor emits that sourceParent.
 Accepted source 7b2b3afc84bdea530bfd69e0fc2691a4c837ca23 and original qualification
 run 38278111122 / artifact 11759219913 remain unchanged.
 
@@ -171,3 +172,37 @@ The implementing worker does not self-review, accept or adopt this candidate.
 
 Record unchanged: Monster Tron 7 wins, Pest Control 2 wins, G08 incomplete;
 formal counters unchanged. No publication or gameplay authorization is implied.
+
+
+## Bounded local integration successor
+
+`runtime_integration.py` composes the existing authority validators, engine-free
+`StagedRuntime`, and real single-file `LocalLedger`. The immutable stored intent,
+independently fetched synthetic owner/hold/release facts, and provider/source/run
+identities must agree before a release correspondence result. Reservation and
+consumption delegate to the existing transactional coordinator, which revalidates
+facts and retains cancelled, consumed or ambiguous keys. These are excluded local
+database states, never gameplay allocations or original trace slots.
+
+The receiver dispatches an explicitly injected integration object through the
+existing staged historical-envelope verifier. Its immutable/time references and
+complete ordered decision-version history are fetched from the separately
+supplied CODE fixture, not inferred from SQLite audit timestamps, case JSON or
+runner claims. Later expiry and comments do not erase at-execution correspondence.
+The old normalized-anchor underscored seam is retained for adopted synthetic
+regressions. Mixing these seams is rejected. No seam is exposed by CLI or JSON.
+
+The adapter calls the fixed integration CLI under isolated Python and additionally
+requires `productionQualified` before any journal, trace or engine initialization.
+That CLI has no production backend registration and always returns DENY. No file,
+environment variable, origin string or synthetic fixture can make it succeed.
+The isolated import bootstrap resolves only frozen co-located source modules.
+Every local integrated result has `engineAllowed: false`, `productionQualified:
+false`, and no authenticated production-origin or independently trusted time claim.
+
+The preceding Lane B prototype remains the implementation of local transactions;
+this glue does not upgrade its synthetic identity interfaces, local clock or local
+storage into production trust. Future live owner/provider authentication, trusted
+host/code hold, cross-host atomic enforcement, durable externally authenticated
+execution-time anchors, launcher integration and independent review remain separate
+gates. Workstream B feasibility materials are not automatically integrated.

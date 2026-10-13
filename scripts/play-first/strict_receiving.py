@@ -16,7 +16,8 @@ import re
 import stat
 import subprocess
 from typing import Any
-from gameplay_authority import CONTRACT as AUTHORITY_CONTRACT, freeze_intent, verify_historical
+from gameplay_authority import CONTRACT as AUTHORITY_CONTRACT, freeze_intent
+from runtime_integration import verify_historical
 
 SCOPE = 'NONOFFICIAL_PLAY_FIRST_EXHIBITION_ONLY'
 HEX40 = re.compile(r'[0-9a-f]{40}')
@@ -303,7 +304,7 @@ def check_timing(timing: list[dict[str, Any]], spans: list[tuple[str, dict[str, 
                 'timing elapsed contradiction')
 
 
-def inspect_evidence(evidence: Path, pins: dict[str, Any], *, _historical_anchor=None) -> dict[str, Any]:
+def inspect_evidence(evidence: Path, pins: dict[str, Any], *, _historical_anchor=None, _runtime_integration=None) -> dict[str, Any]:
     report: dict[str, Any] = {'status': 'INCOMPLETE', 'errors': [], 'gameplayAuthorized': False,
                                'authenticatedOrigin': False, 'engineReplayed': False}
     try:
@@ -321,7 +322,7 @@ def inspect_evidence(evidence: Path, pins: dict[str, Any], *, _historical_anchor
         check_case(case, pins)
         check_process(raw, case, pins)
         authority = verify_historical(raw['approved-case.json'], run, pins.get('gameplayApproval'),
-                                      pins['manifestSha256'], _anchor=_historical_anchor)
+                                      pins['manifestSha256'], _anchor=_historical_anchor, _integration=_runtime_integration)
         case['authorizationComment'] = authority['claims']['decisionId']
         trace = rows(raw['case/original.jsonl'])
         seat, spans = check_trace(trace, case, pins, authority)

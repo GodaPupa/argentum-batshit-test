@@ -14,7 +14,7 @@ import sys
 import tempfile
 import unittest
 from unittest.mock import patch
-from gameplay_authority import INTENT_CONTRACT
+from gameplay_authority import INTENT_CONTRACT, SOURCE_PARENT
 
 HERE = Path(__file__).resolve().parent
 SPEC = importlib.util.spec_from_file_location('strict_receiving', HERE / 'strict_receiving.py')
@@ -36,7 +36,7 @@ def sha(data):
 
 def fixture():
     run = dict(runId='1', runAttempt=1, runNumber=1, event='push', ref='refs/heads/EXCLUDED_SYNTHETIC_ONLY',
-               sourceCommit='1' * 40, sourceParent='c02505119423b526759d97afe5a501aa949b31f4', sourceTree='2' * 40, validationCommit='3' * 40,
+               sourceCommit='1' * 40, sourceParent=SOURCE_PARENT, sourceTree='2' * 40, validationCommit='3' * 40,
                validationTree='4' * 40, workflowPath='.github/workflows/EXCLUDED.yml', workflowBlob='5' * 40)
     case = dict(blockId='PLAY_FIRST_EXCLUDED_RECEIVER_UNIT_ONLY', gameId='G999', pair=1, pestSeat=0,
                 fixtureSeedHex='0x0000000000000001',
@@ -169,7 +169,7 @@ class StrictReceivingTests(unittest.TestCase):
                          '0006735c9f482168e8c19ad7796cb5bb9abc4d55')
         anchor = b'        PlayFirstTimingJournal('
         body = data[data.index(anchor):].replace(
-            b'put("sourceParent", "c02505119423b526759d97afe5a501aa949b31f4")',
+            b'put("sourceParent", "e79adf5770a803568a81be73a83fa8627c48c862")',
             b'put("sourceParent", "9a4230e0d2acbc38b1e8a7d3e6c3cda5dd41e459")')
         body = body.replace(b'                put("authorityContract", "ARGENTUM_GAMEPLAY_AUTHORITY_V2")\n', b'').replace(
             b'                put("authorityDecisionBodySha256", authority.getValue("decisionBodySha256").jsonPrimitive.content)\n', b'')

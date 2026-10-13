@@ -14,9 +14,9 @@ class PositiveAuthorityParityTests(unittest.TestCase):
         self.assertNotRegex(self.kotlin,r'authorizationComment\s*!in\s*setOf')
         self.assertNotRegex(self.python,r"case\['authorizationComment'\]\s+not in")
     def test_paths_separate_live_release_from_historical_at_execution_gate(self):
-        self.assertIn('freeze_intent, verify_historical',self.python)
+        self.assertIn('from runtime_integration import verify_historical',self.python)
         self.assertIn('authority = verify_historical(',self.python)
-        self.assertIn('ProcessBuilder("python3", "-I", "scripts/play-first/gameplay_authority.py", "verify-release",',self.kotlin)
+        self.assertIn('ProcessBuilder("python3", "-I", "scripts/play-first/runtime_integration.py", "verify-release",',self.kotlin)
         self.assertNotIn('verify_record(',self.python)
     def test_adapter_gate_precedes_any_original_slot_or_engine_initialization(self):
         gate=self.kotlin.index('check(gate.exitValue() == 0)')
