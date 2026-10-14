@@ -55,7 +55,7 @@ private fun profileSyntheticDecision(label: String, forestCount: Int, creatureCo
     check(System.getenv("PLAY_FIRST_ISOLATED_CASE_FILE").isNullOrBlank())
     check(System.getenv("ARGENTUM_SUCCESSOR_REQUEST_JSON").isNullOrBlank())
     System.getenv("GITHUB_REF")?.let {
-        check(it == "refs/heads/play-first/g10-latency-synthetic-validation-20261014")
+        check(it == "refs/heads/play-first/g10-latency-synthetic-validation-r2-20261014")
     }
     System.getenv("GITHUB_RUN_ATTEMPT")?.let { check(it == "1") }
 
