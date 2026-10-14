@@ -6,7 +6,7 @@
 
 - G10 frozen original: run 38628025826, attempt 1/1, cancelled; source 6d5c84b4e892603b356b68e29010fa41eebfe72d; game artifact 11931191541 (SHA-256 6e53c39bc1b603d2b4421d774ee8538e00fb3e511cd38ac6d3940ade40126b86).
 - Controller diagnostic checkpoint: daf1e28e30f77e26b899af2255d12e0c4d745b44, five additive source files, no production changes, no Actions runs.
-- Validation branch only: play-first/g10-latency-synthetic-validation-20261014.
+- Validation branch only: play-first/g10-latency-synthetic-validation-r2-20261014.
 - Test class: gym/src/test/kotlin/com/wingedsheep/gym/G10SyntheticDecisionAttributionTest.kt, disabled unless ARGENTUM_G10_SYNTHETIC_ATTRIBUTION=EXCLUDED_SYNTHETIC_STATE_ONLY.
 - Two deliberately artificial states: throwaway 40-Forest mirror fixture, a sparse 6-Forest/2-creature board and a dense 18-Forest/6-creature board, with three hand cards. These test-only cards and boards are **not** the frozen G10 decks, positions, seed, or previously accepted game journal.
 - One decision per fixture, no chosen action submission, no full game loop, no terminal-result evidence, no seed or case input. A GameTestDriver may initialize its throwaway synthetic test state; this is explicitly *not* G10 game initialization or new game execution.
@@ -24,3 +24,10 @@
 4. If LEGAL_ACTION_ENUMERATION stalls, narrow the synthetic probe inside legal-action enumeration/cost affordances without changing actions. If STRATEGY_CHOOSE_FROM stalls, narrow candidate materialization, simulation, mana payment, and rollout. If neither stalls, report non-reproduction and propose a closer *separately bounded synthetic* board without rehydrating or replaying G10.
 5. Apply no speculative timeout or move-changing fallback. Any proposed production performance repair requires its own exact diff, synthetic before/after regression and independent technical review.
 6. No gameplay workflow, no G10 rerun, no G11 original, no official outcome/counter until separately authorized and admitted.
+
+## R1 pre-job configuration failure (preserved)
+
+- Original synthetic validation branch: `play-first/g10-latency-synthetic-validation-20261014`, commit `72c89d9fcda74c47b2c458d556ae0cd7c41cadc7`, run `38650497401` (1/1), completed/FAILURE before any jobs. Zero game/test steps and no artifact; it is consumed and must not be rerun.
+- Root-cause lead for the pre-job failure: `jobs.synthetic.env` referenced `${{ runner.temp }}`, but `runner` context is unavailable at the job-level `env` key, as confirmed by GitHub Actions context-availability documentation. This is a workflow validation defect, not demonstrated AI behavior.
+- R2 is a separate validation-original workflow and branch. It uses a fixed `/tmp` prefix plus permitted `${{ github.run_id }}` in job-level `env`; its synthetic test's source-ref check is rebound accordingly. No change to production AI, the G10 source workflow, protected Environment, or frozen original evidence.
+- Do not retry, revise, or rewrite the R1 original workflow. Preserve both originals, including failure evidence.
