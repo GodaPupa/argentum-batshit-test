@@ -23,13 +23,14 @@ import urllib.request
 sys.path.insert(0,str(Path(__file__).resolve().parent))
 import gameplay_authority as auth
 import one_shot_actions as shot
+import successor_protocol as successor
 
-REQUEST='ARGENTUM_ONE_SHOT_REQUEST_V1'
-ENGINE_CASE='ARGENTUM_ONE_SHOT_ENGINE_CASE_V1'
-ENVIRONMENT='ARGENTUM_ONE_SHOT_OWNER_ENVIRONMENT_READBACK_V1'
+REQUEST='ARGENTUM_SUCCESSOR_REQUEST_V2'
+ENGINE_CASE='ARGENTUM_SUCCESSOR_ENGINE_CASE_V2'
+ENVIRONMENT='ARGENTUM_SUCCESSOR_OWNER_ENVIRONMENT_READBACK_V2'
 MODEL='OWNER_REVIEWED_GITHUB_ENVIRONMENT_ONE_WORKFLOW_NONOFFICIAL_ONLY'
 ADAPTER='gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstOneShotPestMonsterTronTest.kt'
-HOLD='ARGENTUM_ONE_SHOT_PROVIDER_HOLD_V1'
+HOLD='ARGENTUM_SUCCESSOR_PROVIDER_HOLD_V2'
 TOKEN_NAME='ARGENTUM_ONE_SHOT_GITHUB_TOKEN'
 
 class RunnerGitHub:
@@ -74,6 +75,7 @@ def request_record(data):
     shot.require(type(data) is bytes and 0<len(data)<=256*1024,'missing/bounded external one-shot request; DENY')
     value=auth.decode(data)
     shot.exact(value, {'contract','intentBytesBase64','caseBytesBase64','ownerDecisionId',
+        'allocationDecisionId','allocationBodySha256',
         'environmentVerificationId','environmentPolicy','environmentFacts'},'one-shot external request schema')
     shot.require(value['contract']==REQUEST,'external request contract')
     decoded=[]
@@ -107,23 +109,24 @@ def request_record(data):
     shot.integer(value['environmentVerificationId'],'actual Environment owner readback ID missing')
     shot.require(value['ownerDecisionId']!=value['environmentVerificationId'],'Environment readback and case decision must be separate')
     shot.verify_environment(value['environmentFacts'],value['environmentPolicy'],shot.REF)
+    successor.validate_request(value,frozen,case)
     return value,frozen,decoded[1]
 
 def environment_expected(request,frozen):
     return dict(contract=ENVIRONMENT,intentSha256=frozen['intentSha256'],environment=request['environmentPolicy'],
         configurationSha256=shot.digest(shot.canonical(request['environmentFacts'])),
         ownerInspectedExistingEnvironment=True,requiredReviewerProtectionVerified=True,
-        publicationPrerequisiteOnly=True,assuranceModel=MODEL)
+        publicationPrerequisiteOnly=True,assuranceModel=MODEL)|successor.binding(request)
 
 def owner_expected(request,frozen,environment_body_sha):
     return shot.owner_expected(frozen,request['environmentPolicy'])|dict(
         environmentVerificationId=request['environmentVerificationId'],environmentVerificationBodySha256=environment_body_sha,
-        executionAuthorized=True,assuranceModel=MODEL,formalAdmissionAuthorized=False)
+        executionAuthorized=True,assuranceModel=MODEL,formalAdmissionAuthorized=False)|successor.binding(request)
 
 def release_expected(request,frozen,context,hold_sha,env_sha):
     return shot.release_expected(frozen,request['environmentPolicy'],request['ownerDecisionId'],context,hold_sha)|dict(
         environmentVerificationId=request['environmentVerificationId'],environmentVerificationBodySha256=env_sha,
-        environmentStillProtected=True,executionAuthorized=True,assuranceModel=MODEL,formalAdmissionAuthorized=False)
+        environmentStillProtected=True,executionAuthorized=True,assuranceModel=MODEL,formalAdmissionAuthorized=False)|successor.binding(request)
 
 def decision(client,ident,contract,expected,now):
     record=client.get('issues/comments/'+str(ident))
@@ -205,14 +208,18 @@ def verify(data,root,*,context=None,hold=None,_client=None,_checkout=None,_now=N
         shot.require(auth.same_json(source_manifests(root),{k:frozen['intent']['source'][k] for k in ('engineSha256','deckSha256','pilotSha256')}),'source engine/deck/pilot manifests differ')
     else:_checkout(frozen)
     shot.require(auth.client_owner_matches(client),'actual repository/controller owner differs')
+    allocation,predecessor_evidence=successor.verify_allocation(client,request,frozen,now,decision)
     env,_,env_sha=decision(client,request['environmentVerificationId'],ENVIRONMENT,environment_expected(request,frozen),now)
     owner,_,owner_sha=decision(client,request['ownerDecisionId'],shot.OWNER,owner_expected(request,frozen,env_sha),now)
     shot.require(auth.utc(env['updated_at'])<=auth.utc(owner['created_at']),'owner decision predates Environment readback')
-    records=[env,owner];run=None;release_sha=None;release_id=None
+    shot.require(auth.utc(allocation['updated_at'])<=auth.utc(env['created_at']),
+        'Environment decision predates successor allocation')
+    records=[allocation,env,owner];run=None;release_sha=None;release_id=None
     if context is None:verify_prepublication_absence(client)
     if context is not None:
         run=client.get('actions/runs/'+str(context['runId']))
         shot.verify_provider(frozen,run,context,client.get('git/commits/'+frozen['intent']['source']['commit']))
+        successor.reject_previous_context(context,run)
         shot.verify_original_history(shot.run_history(client,run['workflow_id']),run)
         shot.require(type(run.get('created_at')) is str and
             auth.utc(env['updated_at'])<=auth.utc(run['created_at']) and
@@ -241,7 +248,8 @@ def verify(data,root,*,context=None,hold=None,_client=None,_checkout=None,_now=N
     # Last readback follows provider/history checks; this code never initializes.
     for record in records:shot.require(auth.same_json(record,client.get('issues/comments/'+str(record['id']))),'owner facts changed at final boundary')
     final=hold is not None
-    return dict(contract='ARGENTUM_ONE_SHOT_LIVE_GATE_V1',stage='RUN_SPECIFIC_RELEASE_VERIFIED' if final else ('ENGINE_FREE_PREFLIGHT' if context else 'PREPUBLICATION_OWNER_CORRESPONDENCE'),
+    return dict(contract='ARGENTUM_SUCCESSOR_LIVE_GATE_V2',stage='RUN_SPECIFIC_RELEASE_VERIFIED' if final else ('ENGINE_FREE_PREFLIGHT' if context else 'PREPUBLICATION_OWNER_CORRESPONDENCE'),
+        successor=successor.binding(request),predecessorEvidence=predecessor_evidence,
         engineAllowed=genuine and final,authenticatedOwnerDecision=genuine,
         authenticatedProductionOrigin=False,productionQualified=False,assuranceModel=MODEL,
         origin='LIVE_GITHUB_OWNER_AND_PROVIDER_READBACK' if genuine else shot.SYNTHETIC,
@@ -273,7 +281,7 @@ def main():
     parser.add_argument('--case',type=Path)
     args=parser.parse_args()
     if args.operation=='manifest-source':print(json.dumps(source_manifests(args.root),sort_keys=True));return 0
-    data=os.environ.get('ARGENTUM_ONE_SHOT_REQUEST_JSON','').encode()
+    data=os.environ.get('ARGENTUM_SUCCESSOR_REQUEST_JSON','').encode()
     # Missing activation input is refused before provider context or network.
     request_record(data)
     context=None if args.operation=='prepublication' else context_from_provider_environment()

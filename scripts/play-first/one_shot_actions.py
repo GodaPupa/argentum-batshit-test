@@ -20,15 +20,15 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import gameplay_authority as auth
 
-PARENT = '0d1ee8e3ca4c0a65e4213320970a754d5805cec3'
-PARENT_TREE = 'a8ba36fef955e87f5155f155f19f7a9a8b5411fd'
-BRANCH = 'play-first/one-shot-nonofficial-20261013'
+PARENT = '54e0fedbcd6c9c7e719ae4e8720f24fb2633fd2a'
+PARENT_TREE = '3792b023fd430030ad2d46937c0b1a8de1454f68'
+BRANCH = 'play-first/successor-nonofficial-v2'
 REF = 'refs/heads/' + BRANCH
-WORKFLOW = '.github/workflows/play-first-one-shot-nonofficial-20261013.yml'
+WORKFLOW = '.github/workflows/play-first-successor-nonofficial-v2.yml'
 CONFIG = 'docs/experiments/play-first/isolation-v2/ONE_SHOT_ACTIONS_INACTIVE.json'
-INTENT = 'ARGENTUM_ONE_SHOT_ACTIONS_INTENT_V1'
-OWNER = 'ARGENTUM_ONE_SHOT_ACTIONS_OWNER_V1'
-RELEASE = 'ARGENTUM_ONE_SHOT_ACTIONS_RELEASE_V1'
+INTENT = 'ARGENTUM_SUCCESSOR_ACTIONS_INTENT_V2'
+OWNER = 'ARGENTUM_SUCCESSOR_ACTIONS_OWNER_V2'
+RELEASE = 'ARGENTUM_SUCCESSOR_ACTIONS_RELEASE_V2'
 SYNTHETIC = 'UNAUTHENTICATED_SYNTHETIC_TEST_INPUT'
 SOURCE_KEYS = {'commit','tree','parent','engineSha256','deckSha256','pilotSha256'}
 WORKFLOW_KEYS = {'path','ref','blob','sha256'}

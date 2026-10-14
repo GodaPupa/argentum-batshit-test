@@ -33,7 +33,7 @@ import java.security.MessageDigest
  * owner live decision are mandatory; this is not cross-workflow exclusion proof.
  */
 class PlayFirstOneShotPestMonsterTronTest : FunSpec({
-    val acknowledge = System.getenv("PLAY_FIRST_ONE_SHOT_ACK") == "ONE_NONOFFICIAL_ORIGINAL_OWNER_REVIEWED_ENVIRONMENT"
+    val acknowledge = System.getenv("PLAY_FIRST_ONE_SHOT_ACK") == "SUCCESSOR_V2_ONE_NEW_NONOFFICIAL_ORIGINAL"
     test("one separately authorized isolated exhibition case").config(enabled = acknowledge, timeout = 45.minutes) {
         check(System.getenv("GITHUB_RUN_ATTEMPT") == "1") { "Original attempt only" }
         val sourceSha = System.getenv("PLAY_FIRST_ISOLATED_SOURCE_SHA") ?: error("Missing exact source")
@@ -44,7 +44,7 @@ class PlayFirstOneShotPestMonsterTronTest : FunSpec({
         check(caseDigest == System.getenv("PLAY_FIRST_ISOLATED_CASE_SHA256")) { "Case bytes do not match pinned digest" }
         val intent = Json.parseToJsonElement(bytes.toString(Charsets.UTF_8)).jsonObject
         require(intent.keys == setOf("contract", "case", "plan"))
-        check(intent.getValue("contract").jsonPrimitive.content == "ARGENTUM_ONE_SHOT_ENGINE_CASE_V1")
+        check(intent.getValue("contract").jsonPrimitive.content == "ARGENTUM_SUCCESSOR_ENGINE_CASE_V2")
         val input = intent.getValue("case").jsonObject
         require(input.keys == setOf("blockId", "gameId", "pair", "pestSeat", "fixtureSeedHex",
             "sourceCommit", "scope", "intendedBlockGames"))
@@ -53,15 +53,15 @@ class PlayFirstOneShotPestMonsterTronTest : FunSpec({
         val blockId = input.getValue("blockId").jsonPrimitive.content
         val gameId = input.getValue("gameId").jsonPrimitive.content
         require(blockId.matches(Regex("PLAY_FIRST_[A-Z0-9_]{1,80}")) && !blockId.contains("B01"))
-        require(gameId.matches(Regex("G[0-9]{2,4}")) && gameId != "G08")
+        require(gameId.matches(Regex("G[0-9]{2,4}")) && gameId != "G08" && gameId != "G09")
         val pair = input.getValue("pair").jsonPrimitive.int; require(pair > 0)
         val pestSeat = input.getValue("pestSeat").jsonPrimitive.int; require(pestSeat in 0..1)
-        val intendedBlockGames = input.getValue("intendedBlockGames").jsonPrimitive.int; require(intendedBlockGames in 1..100)
+        val intendedBlockGames = input.getValue("intendedBlockGames").jsonPrimitive.int; require(intendedBlockGames == 1)
         val seedHex = input.getValue("fixtureSeedHex").jsonPrimitive.content
         require(seedHex.matches(Regex("0x[0-7][0-9a-f]{15}")))
         val seed = seedHex.substring(2).toLong(16)
         require(seed != 0L && seed !in setOf(0x504C415946495253L, 0x504C4159424C3031L,
-            0x504C4159424C3032L, 0x504C4159424C3033L, 0x504C4159424C3034L)) { "Prior exhibition originals cannot be replayed" }
+            0x504C4159424C3032L, 0x504C4159424C3033L, 0x504C4159424C3034L, 0x3b2031cad7c657c4L)) { "Prior exhibition originals cannot be replayed" }
         // Distinct reduced-assurance path. ACK/files/context are never authority.
         // The fixed gate obtains actual live GitHub issuer/content, protected-
         // Environment owner readback and original provider run/history. It never
@@ -79,7 +79,7 @@ class PlayFirstOneShotPestMonsterTronTest : FunSpec({
             }
             check(gate.exitValue() == 0) { "Live one-shot gate refused: ${Files.readString(gateOutput)}" }
             Json.parseToJsonElement(Files.readString(gateOutput)).jsonObject.also {
-                check(it.getValue("contract").jsonPrimitive.content == "ARGENTUM_ONE_SHOT_LIVE_GATE_V1")
+                check(it.getValue("contract").jsonPrimitive.content == "ARGENTUM_SUCCESSOR_LIVE_GATE_V2")
                 check(it.getValue("stage").jsonPrimitive.content == "RUN_SPECIFIC_RELEASE_VERIFIED")
                 check(it.getValue("engineAllowed").jsonPrimitive.boolean)
                 check(it.getValue("authenticatedOwnerDecision").jsonPrimitive.boolean)
@@ -90,7 +90,7 @@ class PlayFirstOneShotPestMonsterTronTest : FunSpec({
                 check(it.getValue("caseSha256").jsonPrimitive.content == caseDigest)
                 val source = it.getValue("source").jsonObject
                 check(source.getValue("commit").jsonPrimitive.content == sourceSha)
-                check(source.getValue("parent").jsonPrimitive.content == "0d1ee8e3ca4c0a65e4213320970a754d5805cec3")
+                check(source.getValue("parent").jsonPrimitive.content == "54e0fedbcd6c9c7e719ae4e8720f24fb2633fd2a")
                 val context = it.getValue("context").jsonObject
                 check(context.getValue("runId").jsonPrimitive.content == System.getenv("GITHUB_RUN_ID"))
                 check(context.getValue("sha").jsonPrimitive.content == System.getenv("GITHUB_SHA"))
@@ -135,8 +135,8 @@ class PlayFirstOneShotPestMonsterTronTest : FunSpec({
                 put("officialExecutionAuthorized", false)
                 put("formalSeedAllocation", false)
                 put("sourceCommit", sourceSha)
-                put("sourceParent", "0d1ee8e3ca4c0a65e4213320970a754d5805cec3")
-                put("authorityContract", "ARGENTUM_ONE_SHOT_LIVE_GATE_V1")
+                put("sourceParent", "54e0fedbcd6c9c7e719ae4e8720f24fb2633fd2a")
+                put("authorityContract", "ARGENTUM_SUCCESSOR_LIVE_GATE_V2")
                 put("authorityAssuranceModel", "OWNER_REVIEWED_GITHUB_ENVIRONMENT_ONE_WORKFLOW_NONOFFICIAL_ONLY")
                 put("persistentCrossWorkflowSingleUse", false)
                 put("independentHostAttestation", false)

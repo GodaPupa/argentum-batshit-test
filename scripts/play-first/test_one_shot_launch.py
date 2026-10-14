@@ -6,6 +6,7 @@ from pathlib import Path
 import subprocess,sys,tempfile,unittest,urllib.error
 import one_shot_actions as shot
 import one_shot_launch as launch
+import successor_protocol as successor
 import gameplay_authority as auth
 import test_one_shot_actions as old
 
@@ -33,13 +34,25 @@ class LaunchFixture(old.SyntheticGitHub):
             caseBytesBase64=base64.b64encode(encoded(self.case)).decode(),ownerDecisionId=11,environmentVerificationId=10,
             environmentPolicy=self.protection.value['policy'],environmentFacts=self.protection.value['environment'])
         frozen=shot.freeze_intent(data)
+        self.allocation=old.comment(9,successor.ALLOCATION,successor.allocation_expected(frozen),stamp='2026-10-13T11:56:00Z')
+        self.request.update(allocationDecisionId=9,allocationBodySha256=shot.digest(self.allocation['body'].encode()))
         self.environment=old.comment(10,launch.ENVIRONMENT,launch.environment_expected(self.request,frozen),stamp='2026-10-13T11:57:00Z')
         self.owner=old.comment(11,shot.OWNER,launch.owner_expected(self.request,frozen,shot.digest(self.environment['body'].encode())))
         self.absent=True
+        p=successor.PREDECESSOR
+        self.predecessor=dict(id=p['runId'],workflow_id=p['workflowId'],run_number=1,run_attempt=1,head_sha=p['source'],head_branch=p['ref'].removeprefix('refs/heads/'),path=p['workflow'],event='push',status='completed',conclusion='failure',repository={'full_name':auth.REPOSITORY},head_repository={'full_name':auth.REPOSITORY},updated_at='2026-10-13T11:55:00Z')
+        self.predecessor_history=[deepcopy(self.predecessor)]
+        self.original_artifacts={p[k+'ArtifactId']:dict(id=p[k+'ArtifactId'],expired=False,digest='sha256:'+p[k+'Sha256'],workflow_run=dict(id=p['runId'],head_sha=p['source'])) for k in ('preflight','failure')}
     def get(self,path):
+        p=successor.PREDECESSOR
+        if path=='issues/comments/9':self.calls.append(path);return deepcopy(self.allocation)
+        if path=='actions/runs/'+str(p['runId']):self.calls.append(path);return deepcopy(self.predecessor)
+        if path.startswith('actions/workflows/'+str(p['workflowId'])+'/runs?'):self.calls.append(path);return dict(total_count=len(self.predecessor_history),workflow_runs=deepcopy(self.predecessor_history))
+        if path=='git/commits/'+p['source']:self.calls.append(path);return dict(sha=p['source'],tree=dict(sha=p['tree']),parents=[dict(sha=p['parent'])])
+        if path.startswith('actions/artifacts/'):self.calls.append(path);return deepcopy(self.original_artifacts[int(path.split('/')[-1])])
         if path=='issues/comments/10':self.calls.append(path);return deepcopy(self.environment)
         if path.startswith('issues/231/comments?'):
-            self.calls.append(path);return deepcopy([self.environment,self.owner]+([self.release] if self.release else [])+self.extra)
+            self.calls.append(path);return deepcopy([self.allocation,self.environment,self.owner]+([self.release] if self.release else [])+self.extra)
         if path.startswith(('git/ref/heads/','actions/workflows/play-first-')):
             self.calls.append(path)
             if self.absent:raise urllib.error.HTTPError('https://api.github.com/SYNTHETIC',404,'synthetic missing',{},None)
@@ -292,11 +305,11 @@ class OneShotLaunchTests(unittest.TestCase):
         self.f.request['caseBytesBase64']=base64.b64encode(encoded(self.f.case)+b' ').decode()
         with self.assertRaises(ValueError):self.verify()
     def test_cli_absent_request_denies_without_live_network_or_engine(self):
-        env=os.environ.copy();env.pop('ARGENTUM_ONE_SHOT_REQUEST_JSON',None)
+        env=os.environ.copy();env.pop('ARGENTUM_SUCCESSOR_REQUEST_JSON',None)
         p=subprocess.run([sys.executable,'-I',str(ROOT/'scripts/play-first/one_shot_launch.py'),'preflight'],env=env,capture_output=True)
         self.assertEqual(p.returncode,78);self.assertIn(b'REFUSED',p.stderr)
     def test_environment_activation_flag_is_never_a_trust_root(self):
-        env=os.environ.copy();env.update(ARGENTUM_ONE_SHOT_REQUEST_JSON='{}',ARGENTUM_GAMEPLAY_AUTHORIZED='true',ARGENTUM_ENVIRONMENT_PROTECTED='true')
+        env=os.environ.copy();env.update(ARGENTUM_SUCCESSOR_REQUEST_JSON='{}',ARGENTUM_GAMEPLAY_AUTHORIZED='true',ARGENTUM_ENVIRONMENT_PROTECTED='true')
         p=subprocess.run([sys.executable,'-I',str(ROOT/'scripts/play-first/one_shot_launch.py'),'gate'],env=env,capture_output=True)
         self.assertEqual(p.returncode,78)
     def test_new_adapter_gate_precedes_every_original_slot_and_initializer(self):
@@ -311,7 +324,7 @@ class OneShotLaunchTests(unittest.TestCase):
         path='gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstIsolatedPestMonsterTronTest.kt'
         original=subprocess.check_output(['git','show',shot.PARENT+':'+path],cwd=ROOT)
         self.assertEqual((ROOT/path).read_bytes(),original)
-        env=os.environ.copy();env.pop('ARGENTUM_ONE_SHOT_REQUEST_JSON',None)
+        env=os.environ.copy();env.pop('ARGENTUM_SUCCESSOR_REQUEST_JSON',None)
         p=subprocess.run([sys.executable,'-I',str(ROOT/'scripts/play-first/runtime_integration.py'),'verify-release'],env=env,capture_output=True)
         self.assertNotEqual(p.returncode,0)
     def test_workflow_only_game_step_has_ack_and_fresh_adapter_gate(self):
