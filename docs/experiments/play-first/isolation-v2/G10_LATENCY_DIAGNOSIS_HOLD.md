@@ -44,3 +44,11 @@ Frozen code at `ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt` first 
 `python3 -m unittest discover -s scripts/play-first -p 'test_g10_latency_forensics.py' -v`
 
 The tests use self-contained synthetic JSONL/ZIP fixtures and do not import the engine. With the real ZIP supplied separately, the original also undergoes exact SHA-256 and full evidence verification.
+
+## Opt-in excluded phase probe now implemented
+
+Two additional **test-source-only** files exist on this diagnostic branch: `gym/src/test/kotlin/com/wingedsheep/gym/G10DecisionPhaseProbe.kt` and `G10DecisionPhaseProbeFixtures.kt`. The pure generic seam reports a durable-sink-ready CALL_START/END/ERROR around distinct `LEGAL_ACTION_ENUMERATION` and `STRATEGY_CHOOSE_FROM` closures; it forwards the same legal-action list reference, returns the original selection without substitution, and preserves an original exception without retry. It does **not** plug into the published G10 launcher or modify the runtime AI.
+
+Local standalone Kotlin/JVM verification: `kotlinc G10DecisionPhaseProbe.kt G10DecisionPhaseProbeFixtures.kt -include-runtime -d /tmp/g10-probe.jar && java -jar /tmp/g10-probe.jar`, yielding **4/4 PASS** (synthetic identity, enumeration-error, strategy-error, simulated long-enumeration). This validates the measurement seam, **not** actual AI latency remediation, an engine replay, or GitHub runner compilation.
+
+The remaining blocker is **using this seam in an independently scoped synthetic real-AI state to identify the expensive internal stage**, followed by a separately reviewed narrow performance change if supported. No behavior-changing repair has been attempted, and no G11 allocation/publication/game has occurred.
