@@ -1,0 +1,146 @@
+{
+  "name": "Argentum one-shot nonofficial inactive candidate 20261013",
+  "on": {
+    "push": {
+      "branches": [
+        "play-first/one-shot-nonofficial-20261013"
+      ]
+    }
+  },
+  "permissions": {
+    "contents": "read",
+    "actions": "read"
+  },
+  "concurrency": {
+    "group": "argentum-one-shot-nonofficial-20261013",
+    "cancel-in-progress": false
+  },
+  "jobs": {
+    "preflight": {
+      "if": "github.repository == 'GodaPupa/argentum-batshit-test' && github.event_name == 'push' && github.ref == 'refs/heads/play-first/one-shot-nonofficial-20261013' && github.run_number == 1 && github.run_attempt == 1",
+      "runs-on": "ubuntu-24.04",
+      "timeout-minutes": 5,
+      "outputs": {
+        "protected_environment": "${{ steps.verify.outputs.protected_environment }}",
+        "activation_verified": "${{ steps.verify.outputs.activation_verified }}"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "fetch-depth": "2",
+            "persist-credentials": "false"
+          }
+        },
+        {
+          "name": "Verify exact source and live owner authority; no engine access",
+          "id": "verify",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$RUNNER_TEMP/one-shot-preflight-original\"\ngit rev-parse HEAD HEAD^{tree} HEAD^ > \"$RUNNER_TEMP/one-shot-preflight-original/source-identities.txt\"\ngit status --porcelain=v1 > \"$RUNNER_TEMP/one-shot-preflight-original/checkout-status.txt\"\npython3 --version > \"$RUNNER_TEMP/one-shot-preflight-original/python-version.txt\" 2>&1\npython3 -I scripts/play-first/one_shot_launch.py preflight --evidence \"$RUNNER_TEMP/one-shot-preflight-original\" 2>&1 | tee \"$RUNNER_TEMP/one-shot-preflight-original/verifier.log\"\n"
+        },
+        {
+          "name": "Preserve original preflight refusal or incomplete failure",
+          "if": "always()",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$RUNNER_TEMP/one-shot-preflight-original\"\npython3 -I scripts/play-first/one_shot_actions.py inventory --evidence \"$RUNNER_TEMP/one-shot-preflight-original\"\n"
+        },
+        {
+          "uses": "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+          "if": "always()",
+          "with": {
+            "name": "one-shot-nonofficial-20261013-preflight-original-${{ github.run_id }}-attempt-${{ github.run_attempt }}",
+            "path": "${{ runner.temp }}/one-shot-preflight-original/",
+            "if-no-files-found": "error",
+            "overwrite": false,
+            "retention-days": "90"
+          }
+        }
+      ]
+    },
+    "game": {
+      "needs": "preflight",
+      "if": "needs.preflight.result == 'success' && needs.preflight.outputs.activation_verified == 'true' && github.repository == 'GodaPupa/argentum-batshit-test' && github.event_name == 'push' && github.ref == 'refs/heads/play-first/one-shot-nonofficial-20261013' && github.run_number == 1 && github.run_attempt == 1",
+      "runs-on": "ubuntu-24.04",
+      "timeout-minutes": 60,
+      "environment": {
+        "name": "${{ needs.preflight.outputs.protected_environment }}"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "fetch-depth": "2",
+            "persist-credentials": "false"
+          }
+        },
+        {
+          "uses": "actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333",
+          "with": {
+            "name": "one-shot-nonofficial-20261013-preflight-original-${{ github.run_id }}-attempt-${{ github.run_attempt }}",
+            "path": "${{ env.PLAY_FIRST_ONE_SHOT_PREFLIGHT_EVIDENCE }}"
+          }
+        },
+        {
+          "uses": "actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961",
+          "with": {
+            "distribution": "temurin",
+            "java-version": "21"
+          }
+        },
+        {
+          "uses": "extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b"
+        },
+        {
+          "uses": "gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6",
+          "with": {
+            "cache-read-only": true
+          }
+        },
+        {
+          "name": "Reauthenticate run-specific release after Environment review",
+          "id": "prepare",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$PLAY_FIRST_ISOLATED_EVIDENCE_ROOT\"\npython3 -I scripts/play-first/one_shot_launch.py final --evidence \"$PLAY_FIRST_ONE_SHOT_PREFLIGHT_EVIDENCE\" 2>&1 | tee \"$PLAY_FIRST_ISOLATED_EVIDENCE_ROOT/final-verifier.log\"\npython3 -I -c 'import hashlib,os,pathlib; h=hashlib.sha256(pathlib.Path(os.environ[\"PLAY_FIRST_ISOLATED_CASE_FILE\"]).read_bytes()).hexdigest(); pathlib.Path(os.environ[\"GITHUB_OUTPUT\"]).open(\"a\").write(\"case_sha256=\"+h+\"\\n\")'\n"
+        },
+        {
+          "name": "One exact gated original; adapter rechecks live authority before initialization",
+          "shell": "bash",
+          "env": {
+            "PLAY_FIRST_ONE_SHOT_ACK": "ONE_NONOFFICIAL_ORIGINAL_OWNER_REVIEWED_ENVIRONMENT",
+            "PLAY_FIRST_ISOLATED_CASE_SHA256": "${{ steps.prepare.outputs.case_sha256 }}"
+          },
+          "run": "set -euo pipefail\njust test-class PlayFirstOneShotPestMonsterTronTest --no-daemon --no-build-cache --console=plain 2>&1 | tee \"$PLAY_FIRST_ISOLATED_EVIDENCE_ROOT/child.log\"\n"
+        },
+        {
+          "name": "Preserve original success, failure, cancellation and partial payloads",
+          "if": "always()",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$PLAY_FIRST_ISOLATED_EVIDENCE_ROOT\"\nif test -d gym/build/test-results/test; then cp -a gym/build/test-results/test \"$PLAY_FIRST_ISOLATED_EVIDENCE_ROOT/test-results\"; fi\nif test -d \"$PLAY_FIRST_ONE_SHOT_PREFLIGHT_EVIDENCE\"; then cp -a \"$PLAY_FIRST_ONE_SHOT_PREFLIGHT_EVIDENCE\" \"$PLAY_FIRST_ISOLATED_EVIDENCE_ROOT/preflight-received\"; fi\npython3 -I scripts/play-first/one_shot_actions.py inventory --evidence \"$PLAY_FIRST_ISOLATED_EVIDENCE_ROOT\"\n"
+        },
+        {
+          "uses": "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+          "if": "always()",
+          "with": {
+            "name": "one-shot-nonofficial-20261013-game-original-${{ github.run_id }}-attempt-${{ github.run_attempt }}",
+            "path": "${{ env.PLAY_FIRST_ISOLATED_EVIDENCE_ROOT }}/",
+            "if-no-files-found": "error",
+            "overwrite": false,
+            "retention-days": 90
+          }
+        }
+      ],
+      "env": {
+        "PLAY_FIRST_ISOLATED_SOURCE_SHA": "${{ github.sha }}",
+        "PLAY_FIRST_ISOLATED_CASE_FILE": "/tmp/argentum-one-shot-preflight-${{ github.run_id }}-attempt-${{ github.run_attempt }}/case.json",
+        "PLAY_FIRST_ISOLATED_EVIDENCE_ROOT": "/tmp/argentum-one-shot-game-${{ github.run_id }}-attempt-${{ github.run_attempt }}",
+        "PLAY_FIRST_ONE_SHOT_PREFLIGHT_EVIDENCE": "/tmp/argentum-one-shot-preflight-${{ github.run_id }}-attempt-${{ github.run_attempt }}"
+      }
+    }
+  },
+  "env": {
+    "ARGENTUM_ONE_SHOT_REQUEST_JSON": "${{ vars.ARGENTUM_ONE_SHOT_REQUEST_JSON }}",
+    "ARGENTUM_ONE_SHOT_GITHUB_TOKEN": "${{ github.token }}"
+  }
+}
