@@ -1,0 +1,127 @@
+ARGENTUM C4 V4 kernel supervisor implementation — LOCAL, UNQUALIFIED
+Parent: 8ca4b6b35fa503ca04d063400fa0824c0d5a6b79
+Parent tree: 5746487f4ab9ea00aa18c050bce7a278ac363981
+Parent ZIP SHA256: 0df66f12f3d5425720f1aedb5efc62cc1f1b7890a589b3516a61935112f5ce42
+
+DISPOSITION: IMPLEMENTED_PROBE_BACKEND_UNQUALIFIED / COMPILE_DISABLED / D2_OPEN.
+V4 adds real Linux syscall/backend source, not another claimed containment model.
+No privileged operation, supervisor worker launch, kernel enforcement or JVM ran during this
+implementation. Tests are pure validators, synthetic files and mocked boundaries.
+The source author is not independent Reviewer B or adopting authority.
+
+IMPLEMENTED PATH
+supervise_probe() is a callable OS backend for a future separately authorized
+active containment validation. It is not a command-line program. Its only exec
+image is /usr/bin/true, opened by FD and recorded by SHA256/inode. There is no
+caller-selected executable, compiler argv, environment permit, or JSON approval.
+compile_request() always refuses. preflight.py remains BLOCKED. Deleting that
+return does not reveal compiler orchestration; it was removed in V3.
+
+The backend requires actual UID/EUID 0; rejects an in-use worker UID, unsafe
+root-owned paths, symlinks, ambiguous cgroup2 mounts, non-root mount mappings,
+global root as parent, missing/unenabled memory delegation, writable migration
+ancestors, existing evidence paths, and missing cgroup.kill. It does not enable
+controllers or alter parent permissions. It creates an exclusive group itself,
+retains directory/counter FDs and boot/inode identities, and requires fresh zero
+creation counters before fork. Creation positives are retained as FAIL.
+
+The direct fork child waits on a CLOEXEC pipe. Parent joins it to cgroup.procs
+before releasing setup. Trusted setup unshares network/IPC/mount namespaces,
+makes mount propagation private, mounts private tmpfs at /tmp and /dev/shm,
+brings up only private loopback, clears environment and inherited descriptors,
+drops supplementary groups, all UID/GID identities and all capability sets,
+sets NoNewPrivs, and installs libseccomp. The parent verifies kernel /proc
+credentials/capabilities, Seccomp, NoNewPrivs, PID/start, membership, population
+and differing namespace identities while the child is still held pre-exec.
+Only then does it release the fixed image. Unknown capabilities fail closed.
+
+Filter denies namespace-changing calls and clone namespace bits, clone3 returns
+ENOSYS, and ordinary fork/thread clone remains possible. It denies mount/pivot,
+ptrace/process_vm_writev, pidfd_getfd, BPF, keyring and io_uring entry paths.
+AF_UNIX socket/socketpair are denied because pathname UNIX sockets can cross a
+network namespace. Network namespace has private loopback and no external link;
+external same-JDK and different-JDK daemons are unreachable by its IP stack.
+The worker's cgroup/ancestor interfaces remain root-owned and non-writable;
+capability/namespace recovery is blocked. This is proposed kernel enforcement
+source, not enforcement evidence from the runner. UID-exclusivity discovery is
+conservative and fails on racing/unreadable inventory. Root administrators and
+kernel are in the trusted computing base; a hostile privileged host is outside
+this claim. The supervisor source/launcher must itself be protected and pinned.
+
+Lifecycle uses pidfd for the known launcher and cgroup.kill for all descendants,
+including reparented/double-forked workers. It waits boundedly for populated=0,
+then reads the SAME held memory.events FD, saves evidence before removal, and
+retains cleanup failures. Missing counters, reset, identity changes or missing
+final drain cannot produce clean evidence. Positive intervals survive gaps.
+Parent stays outside the target. If pidfd_open fails before release, cleanup
+uses only its direct unreaped child (not an untrusted scanned PID).
+
+Before release the supervisor retains private /tmp and home directory FDs.
+Post-drain log capture follows those handles, not host /tmp. It rejects symlinks,
+aliased/nonregular files, replacement/size races and oversized collections;
+records raw copied bytes, hashes, inode, run and scope. Shared jvm_evidence.py
+retains V3 fatal/ambiguous/empty/missing-log rules, including required compiler,
+Gradle and Kotlin roles. A private-directory origin does not establish that any
+arbitrary worker log line is true or prove an individual JVM writer. The fixed
+true probe has NO compiler/JVM logs; missing roles cannot qualify C4.
+
+IMPORTANT REMAINING LIMITATIONS / NO SILENT PROTOCOL CHANGE
+1. No OS backend path has been executed; namespace support, delegation, filter
+   compatibility, privilege transitions, migration denial and drain remain
+   UNVERIFIED. Metadata probe 38815770299 / artifact 12010113214 reported Linux
+   6.17/cgroup v2/sudo policy; it did not prove these actions. The conductor
+   receipt was read; its provider artifact ZIP was not independently reverified
+   here. No consumed original was rerun.
+2. Private net has NO dependency-download egress. Cold R5/R6 builds cannot be
+   supported by this backend yet. No warm cache, compiler strategy change or
+   resource relaxation is substituted. A reviewed, narrowly controlled egress
+   design that still excludes external daemon IPC is a concrete remaining
+   integration requirement, with Gradle/Kotlin compatibility tests required.
+3. Fresh dedicated-UID HOME is a separate private sibling of root-only evidence;
+   all protected ancestors must be traversable. The worker directory is preserved,
+   never recursively deleted. Project/toolchain mounts and exact source binding
+   are not yet integrated; their reviewed adapter is required for compiler support.
+4. The backend's fixed probe timeout is 5s (maximum 15s), with 15s bounded drain.
+   It is NOT a replacement C4 budget. Original compile.sh, source pins, heaps,
+   workers, cache rules, 450s qualification and 600s/15s bounds are unchanged.
+   No C4 compiler timing or qualification path exists in this successor.
+5. There is no real JVM observation from a true-only probe. It cannot establish
+   all Gradle/Kotlin descendants or external-daemon exclusion during compilation.
+   Scope protection is implemented in source but actual qualification stays open.
+6. Runtime supervisor evidence is root-protected locally, not independently
+   authenticated owner/reviewer approval. No writable JSON or status object can
+   grant C4 PASS. Source-bound log parsing alone is not execution authority.
+7. libc/libseccomp are runtime dependencies. Missing syscall/filter/kernel support
+   refuses before exec. Neither was qualified on the hosted image in this turn.
+
+SUBSTANTIVE NON-AUTHOR REVIEWER B REQUEST
+Review exact V4 parent/tree/patch and replay local tests. Audit actual syscall
+ordering, error paths, identity/FD lifetimes, capability sets, seccomp ABI coverage,
+namespace route denial, cleanup and log capture. Falsify assumptions about UID
+exclusivity, inherited FDs, private IPC, symlink/race resistance and parent safety.
+Distinguish source implementation from real host proof and full compiler readiness.
+Decide whether a new bounded NON-COMPILER active containment qualification can
+be safely authorized, and require its fixed source/probe identity and adversarial
+child/grandchild workload to be reviewed separately. No request is dispatched
+or sent externally by this package; review is pending, never self-certified.
+
+Smallest next gate is independent source review. Only after review and NEW owner
+authorization may any privileged active containment test occur. This turn did
+not authorize one. A read-only metadata replay is unnecessary. Compiler egress
+and workspace integration remain separate local work before any cold compile.
+No GitHub writes, workflows, dispatch, cgroup writes, privilege-changing host tests,
+cold compiles, differential, G11, gameplay or official allocations occurred.
+
+HISTORICAL LIMITS
+Original C4 38780475153 remains INCOMPLETE, never verified-zero OOM. Discovery
+38798018237 and metadata 38815770299 remain separate nonqualifying originals.
+Frozen R5/R6 sources and previous packages remain unchanged; 72e14a...435c package
+referent discrepancy, missing Codespace/review-wrapper verification and reviewer
+provenance limitations remain. Observer neutrality is assumed, not demonstrated
+behavioral equivalence. Older V1–V3 notes remain historical, not V4 authority.
+
+Primary design references (not host qualification):
+https://docs.kernel.org/admin-guide/cgroup-v2.html
+https://man7.org/linux/man-pages/man2/unshare.2.html
+https://man7.org/linux/man-pages/man2/seccomp.2.html
+https://docs.kernel.org/userspace-api/no_new_privs.html
