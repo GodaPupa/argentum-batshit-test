@@ -1,0 +1,133 @@
+{
+  "actual_deck_adapter_qualified": false,
+  "baseline_accepted_inventory": "accepted-capability-inventory-r5.json",
+  "baseline_audit": "card-support-batch-r4-audit.json",
+  "baseline_commit": "5facc2dfcae8ccc175134ac1269d8c84fc549115",
+  "batch": "LIVE_OPPONENT_COUNT_DUAL_LANDS_R5",
+  "cards": [
+    {
+      "canonical_selection": "Earliest English commercial set after excluding promo/token/art_series/memorabilia printings; exact set lookup independently retrieved.",
+      "card": "Rejuvenating Springs",
+      "color_identity": [
+        "G",
+        "U"
+      ],
+      "colors": [],
+      "definition": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmr/cards/RejuvenatingSprings.kt",
+      "definition_sha256": "3b64b6df4d421bf24612a3c10ab063f463910e7820cf2a3d788419cc36617767",
+      "lookup_url": "https://api.scryfall.com/cards/named?exact=Rejuvenating%20Springs&set=cmr",
+      "mana_cost": "",
+      "oracle_id": "d1620449-930a-4895-a143-fd2a0a3c8b17",
+      "oracle_text": "This land enters tapped unless you have two or more opponents.\n{T}: Add {G} or {U}.",
+      "printing": {
+        "collector_number": "354",
+        "released_at": "2020-11-20",
+        "set": "cmr"
+      },
+      "scenario": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RejuvenatingSpringsScenarioTest.kt",
+      "scenario_cases": 10,
+      "scenario_sha256": "8bb41886be105e2c7f601c5994c695d99b9f0c3ab1c3dc7ff1c5c63e1aed4649",
+      "scryfall_id": "51e69910-0d90-48a0-af29-3cddaeec5151",
+      "source_response_sha256": "e781bdaeb67a8c9755f123194052dc183fb83e6de831a750d6bd82243860b527",
+      "source_url": "https://scryfall.com/card/cmr/354/rejuvenating-springs?utm_source=api",
+      "type_line": "Land"
+    },
+    {
+      "canonical_selection": "Earliest English commercial set after excluding promo/token/art_series/memorabilia printings; exact set lookup independently retrieved.",
+      "card": "Training Center",
+      "color_identity": [
+        "R",
+        "U"
+      ],
+      "colors": [],
+      "definition": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmr/cards/TrainingCenter.kt",
+      "definition_sha256": "b8775c365f282a3f4c089aeeb3eea63bf4e14fbc6a838d1741edc27b3cb17ca3",
+      "lookup_url": "https://api.scryfall.com/cards/named?exact=Training%20Center&set=cmr",
+      "mana_cost": "",
+      "oracle_id": "e3570ac7-c593-40e3-bbd6-ec3da6d8158d",
+      "oracle_text": "This land enters tapped unless you have two or more opponents.\n{T}: Add {U} or {R}.",
+      "printing": {
+        "collector_number": "358",
+        "released_at": "2020-11-20",
+        "set": "cmr"
+      },
+      "scenario": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TrainingCenterScenarioTest.kt",
+      "scenario_cases": 10,
+      "scenario_sha256": "59cdf09bdccb2a7a08cc9945c263bba7cc0b31fec597bf98a67202107bb67c98",
+      "scryfall_id": "b15c58c0-4d42-488e-bb9d-7a550d9ea5e6",
+      "source_response_sha256": "8dc8aacf664d937afde69a7aa5d63b47314d1a56f71dd83a06c46b1ae83ec10b",
+      "source_url": "https://scryfall.com/card/cmr/358/training-center?utm_source=api",
+      "type_line": "Land"
+    },
+    {
+      "canonical_selection": "Earliest English commercial set after excluding promo/token/art_series/memorabilia printings; exact set lookup independently retrieved.",
+      "card": "Spire Garden",
+      "color_identity": [
+        "G",
+        "R"
+      ],
+      "colors": [],
+      "definition": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bbd/cards/SpireGarden.kt",
+      "definition_sha256": "bc7cc8fe4921512379a37ae403935edab3e7c911b27cd22c137bbed31a96fa59",
+      "lookup_url": "https://api.scryfall.com/cards/named?exact=Spire%20Garden&set=bbd",
+      "mana_cost": "",
+      "oracle_id": "45fe016e-1a09-410c-bbe3-4663ba06c5b7",
+      "oracle_text": "This land enters tapped unless you have two or more opponents.\n{T}: Add {R} or {G}.",
+      "printing": {
+        "collector_number": "85",
+        "released_at": "2018-06-08",
+        "set": "bbd"
+      },
+      "scenario": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpireGardenScenarioTest.kt",
+      "scenario_cases": 10,
+      "scenario_sha256": "b8f90cc2785a4604d10c4906a07e46a835fe247a02f2eeb415f3e57fb78709cc",
+      "scryfall_id": "64943615-7543-4acd-a884-22ece8f0ed3e",
+      "source_response_sha256": "0d1ab2947f5468babb63ef647c2d3bf71b48e452084f73623518b5bb75f94ac4",
+      "source_url": "https://scryfall.com/card/bbd/85/spire-garden?utm_source=api",
+      "type_line": "Land"
+    }
+  ],
+  "cumulative_expected_junit_cases": 531,
+  "fixture_seed_policy": "9250925016L is an excluded deterministic regression fixture identifier for miniature same-card libraries. It never belongs to official seed registries, matched gear allocations or actual-deck samples.",
+  "frozen_hardware_sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1",
+  "gameplay_authorized": false,
+  "known_separate_readiness_blocker": "The CR 117.3b canonical post-resolution priority repair is separately owned and not included in these card definitions. Correct active-player continuation assertions are retained; any actual failure is implementation evidence requiring audit, never a deck loss or a reason to weaken them.",
+  "official_counters": {
+    "actions": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "outcomes": 0,
+    "seeds_generated": 0
+  },
+  "pending_prior_batch": "card-support-batch-r4.json",
+  "reviewed_prior_snapshot_contract": "card-support-batch-r4-audit.json: exactly Coiling Oracle DIS and Hope-Ender Coatl MH3 additions; no existing card-tree changes.",
+  "schema": "mt-phase2-exact-card-support-batch-v1",
+  "seed_generation_authorized": false,
+  "shared_mechanics": [
+    "Existing live PlayerCount(EachOpponent), Compare GTE2 and conditional EntersTapped replacement",
+    "Existing printed mana abilities, real PlayLand and concession handling",
+    "Existing serialization test bridge extended with two additive encode methods using its unchanged Json configuration and roundTrip contract"
+  ],
+  "snapshot_contract": {
+    "allowed_additions": {
+      "bbd": [
+        "Spire Garden"
+      ],
+      "cmr": [
+        "Rejuvenating Springs",
+        "Training Center"
+      ]
+    },
+    "allowed_existing_card_changes": [],
+    "expected_snapshot_roundtrip_cases": 340,
+    "new_set_scaffold": "BBD earliest commercial printing; incomplete and sealed unsupported",
+    "reject_unrelated_set_or_card_changes": true
+  },
+  "status": "IMPLEMENTED_PENDING_COMPILED_SCENARIOS_REGISTRY_AND_STRICT_SNAPSHOT_REVIEW",
+  "support_files": {
+    "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bbd/BattlebondSet.kt": "e886a3b12a34197eb68e784276d4275eddd7bbea7f682cb26e368921f8291ff6",
+    "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpponentCountLandScenarioSpec.kt": "ed1b1fa11294f836cd5357e23389dae557854994c34ae5c62eec058524518a88",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/SerializationTestSupport.kt": "bd2d48b9b086bd7a856402ee2353785d642f04a4382ab98cda831dc00a78dd6c"
+  },
+  "total_scenario_cases": 30
+}

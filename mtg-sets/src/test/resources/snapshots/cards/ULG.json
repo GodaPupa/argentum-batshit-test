@@ -200,25 +200,37 @@
                     "to": "Battlefield"
                 },
                 "effect": {
-                    "type": "ForEach",
-                    "space": "IterationSpace.Targets",
-                    "body": {
-                        "type": "TapUntap",
-                        "target": {
-                            "type": "ContextTarget",
-                            "index": 0
+                    "type": "Composite",
+                    "effects": [
+                        {
+                            "type": "GatherCards",
+                            "source": {
+                                "type": "BattlefieldMatching",
+                                "filter": "land"
+                            },
+                            "storeAs": "cloudLands"
                         },
-                        "tap": false
-                    }
-                },
-                "targetRequirement": {
-                    "type": "TargetObject",
-                    "count": 2,
-                    "optional": true,
-                    "filter": {
-                        "baseFilter": "land"
-                    },
-                    "id": "target"
+                        {
+                            "type": "SelectFromCollection",
+                            "from": "cloudLands",
+                            "selection": {
+                                "type": "ChooseUpTo",
+                                "count": {
+                                    "type": "Fixed",
+                                    "amount": 2
+                                }
+                            },
+                            "filter": "land",
+                            "storeSelected": "cloudUntap",
+                            "prompt": "Choose up to two lands to untap",
+                            "useTargetingUI": true
+                        },
+                        {
+                            "type": "TapUntapCollection",
+                            "collectionName": "cloudUntap",
+                            "tap": false
+                        }
+                    ]
                 }
             }
         ]
@@ -226,7 +238,13 @@
     "metadata": {
         "collectorNumber": "29",
         "artist": "Melissa A. Benson",
-        "imageUri": "https://cards.scryfall.io/normal/front/4/e/4e76d04a-0038-4b5b-a026-3056ee940da9.jpg"
+        "imageUri": "https://cards.scryfall.io/normal/front/4/e/4e76d04a-0038-4b5b-a026-3056ee940da9.jpg?1783946247",
+        "rulings": [
+            {
+                "date": "2022-12-08",
+                "text": "You choose which lands to untap as the triggered ability resolves. They aren't targeted, and they don't have to be lands that you control."
+            }
+        ]
     },
     "colorIdentityOverride": [
         "BLUE"
