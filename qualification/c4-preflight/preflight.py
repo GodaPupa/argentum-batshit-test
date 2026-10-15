@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """One cold compile per isolated hosted job. Never starts a test JVM."""
 import hashlib, json, os, pathlib, re, shutil, signal, subprocess, sys, time, traceback, threading
-from memory_collector import sample, assess
+from memory_collector import sample, assess, POSITIVE_STATUSES, CONTAINMENT_BLOCKER
 
 HERE = pathlib.Path(__file__).resolve().parent
 OUT = pathlib.Path(os.environ['RUNNER_TEMP']) / 'c4-evidence'
@@ -24,6 +24,46 @@ def snapshot():
     result['processes'] = run(['ps', '-eo', 'pid,ppid,pgid,rss,etimes,args'])
     return result
 
+
+def scan_failure_logs(records, required_kinds=('compiler', 'gradle', 'kotlin')):
+    """Scan attributed log bytes, retaining exact paths/hashes and diagnostic gaps."""
+    findings, gaps, receipts, seen = [], [], [], set()
+    signatures = [
+        r'^\s*(?:Exception in thread "[^"]+"\s+|Caused by:\s*)?java\.lang\.OutOfMemoryError(?:\s*:|\s*$)',
+        r'^\s*#\s*A fatal error has been detected by the Java Runtime Environment',
+        r'^\s*(?:.*\b)?(?:Gradle build daemon disappeared unexpectedly|Daemon compilation failed|Unable to connect to Kotlin compile daemon)',
+        r'^\s*(?:[eE]:\s*)?Using fallback strategy:\s*Compile without Kotlin daemon',
+    ]
+    for record in records:
+        entry = dict(record)
+        try:
+            data = pathlib.Path(record['path']).read_bytes()
+            entry.update(sha256=hashlib.sha256(data).hexdigest(), bytes=len(data))
+            text = data.decode('utf-8', errors='strict')
+            if not text.strip():
+                raise ValueError('empty log')
+            if not record.get('source_bound'):
+                gaps.append({'path': record['path'], 'reason': 'log process/origin attribution unverified'})
+            else:
+                seen.add(record['kind'])
+                for number, line in enumerate(text.splitlines(), 1):
+                    if any(re.search(pattern, line, re.I) for pattern in signatures):
+                        findings.append({'path': record['path'], 'sha256': entry['sha256'], 'line': number, 'text': line})
+        except (OSError, ValueError) as exc:
+            entry['error'] = str(exc); gaps.append({'path': record['path'], 'reason': str(exc)})
+        receipts.append(entry)
+    gaps.extend({'reason': 'required log kind missing', 'kind': k} for k in required_kinds if k not in seen)
+    return {'status': 'FAIL' if findings else ('INCOMPLETE' if gaps else 'NO_FATAL_SIGNATURE_OBSERVED'),
+            'findings': findings, 'gaps': gaps, 'logs': receipts, 'complete': not gaps}
+
+
+def qualification_status(memory, logs, process_scope, compile_ok):
+    if memory['status'] in POSITIVE_STATUSES or logs['status'] == 'FAIL':
+        return 'FAIL'
+    if not process_scope.get('qualifying'):
+        return 'BLOCKED'
+    return 'PASS' if compile_ok and memory.get('qualifying') and logs['complete'] else 'INCOMPLETE'
+
 def main():
     if REV not in PINS:
         raise ValueError('unknown revision')
@@ -31,6 +71,14 @@ def main():
     write('memory-discovery.json', discovery)
     if not discovery['available'] or not discovery.get('qualifying_scope'):
         raise ValueError('authoritative subtree OOM counters unavailable; compile not started')
+    # This local successor deliberately cannot start a compile. Sampling is not
+    # an enforced containment contract. Only a separately reviewed source change
+    # may replace this blocker; no runtime approval flag can bypass it.
+    write('process-scope.json', {'status': 'BLOCKED', 'qualifying': False, 'reason': CONTAINMENT_BLOCKER})
+    write('result.json', {'status': 'BLOCKED', 'revision': REV, 'reason': CONTAINMENT_BLOCKER,
+                          'compile_started': False})
+    return 2
+    # Retained compile orchestration below for review; unreachable while D2 open.
     sha, tree = PINS[REV]
     root = pathlib.Path(os.environ['RUNNER_TEMP']) / ('c4-source-' + REV)
     home = pathlib.Path(os.environ['RUNNER_TEMP']) / ('c4-gradle-' + REV)
@@ -86,29 +134,38 @@ def main():
     after = snapshot()
     write('memory-after.json', after)
     samples.append(after['memory_controller'])
+    log_records = [{'path': str(OUT / 'compile.log'), 'kind': 'compiler', 'source_bound': True}]
     for path in home.glob('daemon/**/*.log'):
         dest = OUT / 'daemon' / path.relative_to(home / 'daemon'); dest.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(path, dest)
+        log_records.append({'path': str(dest), 'origin': str(path), 'kind': 'gradle', 'source_bound': True})
     for base in [root, home, pathlib.Path('/tmp')]:
         for pattern in ['hs_err_pid*.log', 'kotlin-daemon*.log']:
             for path in base.rglob(pattern):
-                if path.is_file(): shutil.copy2(path, OUT / (hashlib.sha256(str(path).encode()).hexdigest()[:12] + '-' + path.name))
+                if path.is_file():
+                    dest = OUT / (hashlib.sha256(str(path).encode()).hexdigest()[:12] + '-' + path.name)
+                    shutil.copy2(path, dest)
+                    log_records.append({'path': str(dest), 'origin': str(path), 'kind': 'crash' if path.name.startswith('hs_err') else 'kotlin', 'source_bound': base in [root, home]})
+    log_scan = scan_failure_logs(log_records)
+    write('failure-log-assessment.json', log_scan)
     text = (OUT / 'compile.log').read_text(errors='replace')
     graph = re.findall(r'COMPILE_ONLY_TASK_GRAPH=(.*)', text)
     (OUT / 'task-graphs.json').write_text(json.dumps(graph, indent=2)+'\n')
     downloads = [line for line in text.splitlines() if re.search(r'download|https?://', line, re.I)]
     (OUT / 'download-lines.txt').write_text('\n'.join(downloads)+'\n')
-    bad = bool(re.search(r'daemon disappeared|daemon.*lost|OutOfMemoryError|unable to connect to Kotlin compile daemon|daemon compilation failed|using fallback strategy', text, re.I))
+    bad = log_scan['status'] == 'FAIL'
     compiled = ':ai:compileTestKotlin' in '\n'.join(graph) and 'BUILD SUCCESSFUL' in text and bool(list(root.glob('ai/build/classes/kotlin/test/**/R5R6DecisionDifferentialTest.class')))
     # Never promote timeout, missing task/class evidence, or daemon fallback to PASS.
     memory = assess(samples)
     write('memory-assessment.json', memory)
     telemetry_complete = memory['qualifying'] and not reader.is_alive()
     status = 'PASS' if proc.returncode == 0 and not timed_out and elapsed <= 450 and compiled and not bad and telemetry_complete else 'INCOMPLETE'
-    if memory['status'] == 'OOM_EVENTS_OBSERVED' or bad or (proc.returncode != 0 and not timed_out and re.search(r'Compilation error|OutOfMemoryError', text)):
+    if not log_scan['complete']:
+        status = 'INCOMPLETE'
+    if memory['status'] in POSITIVE_STATUSES or bad or (proc.returncode != 0 and not timed_out and re.search(r'Compilation error', text)):
         status = 'FAIL'
     write('result.json', {'status': status, 'revision': REV, 'exit_code': proc.returncode, 'wall_seconds': elapsed,
                          'within_450': elapsed <= 450, 'timed_out': timed_out, 'compiled_class_and_graph': compiled,
-                         'daemon_or_oom_evidence': bad or memory['status'] == 'OOM_EVENTS_OBSERVED',
+                         'daemon_or_oom_evidence': bad or memory['status'] in POSITIVE_STATUSES or log_scan['status'] == 'FAIL',
                          'oom_deltas': memory['deltas'], 'memory_status': memory['status'],
                          'telemetry_complete': telemetry_complete, 'warm_cache': False})
     return 0 if status == 'PASS' else 1

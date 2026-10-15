@@ -1,0 +1,89 @@
+ARGENTUM C4 Collector V2 — bounded LOCAL source repair
+Disposition: BLOCKED for compilation/qualification (D2). Local synthetic checks
+are PASS_LOCAL_SOURCE_ONLY, not hosted qualification or independent acceptance.
+
+Input: cd393b98af032fb3577f7df9fdc6132b04d187b5
+Tree: e984cff95bde559d4bf54048399b13ede6977770
+Parent of input: 33e67f71931a1feaf335b1520be6ddba33e0c2b6
+Input ZIP SHA256: cfb05c31e691ed53f5441cc09619261f1ab2a215e0b72094ef128d4e155268a7
+Attachment text 11.txt is the supplied V2 implementation contract. The separate
+D1 source-bound script was retrieved from Library item
+libfile_3a81c3cc320881919d88dde174d43712, not fabricated or inferred from a path.
+The remote /tmp Reviewer B mutation scripts were not available and not replayed.
+Hosted discovery 38798018237 / 12002124900 is a contract-reported referent only;
+its packet was not inspected here and it is not exact collector/JVM execution.
+
+D1: independently trustworthy adjacent or gap-spanning positive intervals survive
+unrelated missing evidence. Deltas identify one supporting interval, not an
+invented full-run aggregate. Positive evidence, gaps and interval completeness
+are separate. Changed identities, known contradictory missing-sample identity,
+malformed values and counter decreases cannot establish positive evidence.
+Missing evidence always prevents PASS. V1 reproduction and V2 correction use
+the same unchanged source-bound script against each hashed source snapshot.
+
+D2: process_inventory reads proc stat start ticks, PPID/session, cgroup, namespace
+and executable device/inode; repeats identity reads and preserves raw records.
+ProcessScope binds the launch PID/start and observed ancestry, tracks reparented
+identities, matches the pinned Java executable identity rather than name text,
+accepts nested cgroup membership and rejects migration/reuse/namespace mismatch,
+escapes, unbound JVMs, vanished identities and inventory errors. At least one
+bound JVM must be observed, but that is necessary and NOT sufficient.
+
+Precise blocker: polling cannot prove complete inventory, catch every short-lived
+or reparented-before-first-sample JVM, prove absence of between-poll migration,
+or establish authoritative exits for vanished identities. No enforced containment
+contract (kernel-enforced no-escape scope and authoritative lifecycle inventory)
+is implemented or validated. Therefore ProcessScope NEVER qualifies, and main()
+writes BLOCKED_D2 and RETURNS BEFORE fetch, toolchain subprocesses or compilation.
+There is no environment flag or approval JSON override. Audit helpers are tested
+synthetically; they are NOT a runtime containment implementation. Retained compile
+orchestration is unreachable, and needs separate reviewed integration if D2 is
+resolved. This is a narrower, versioned fail-closed design, not completion of D2.
+No cgroups are created, mounted or reconfigured; no PIDs killed by synthetic tests.
+
+D3: hierarchical v2 OBSERVED_ZERO is distinct from INSUFFICIENT_SCOPE for v1 or
+local-only zero. Positive v1 kills => OOM_KILLS_OBSERVED; local-only positives =>
+LOCAL_OOM_EVENTS_OBSERVED. All positives disqualify a compile; no kills-only zero
+means zero OOM events. Scope is the selected subtree, never host-global.
+D4: resolved memory.current/peak/max retain raw values, parsed values or reasons.
+These optional diagnostics cannot replace counters or establish thresholds.
+D5: attributed compiler/daemon/crash log bytes are hashed and scanned for actual
+Java heap OOM, fatal JVM header, daemon loss/fallback signatures. Missing, empty,
+unreadable, undecodable or unattributed required logs prevent PASS. A trusted
+fatal finding remains FAIL despite other log gaps. Informational OOM flag names
+and arbitrary unrelated /tmp crash files are not promoted to causal failures.
+Fresh Gradle home/source logs are treated as source-bound; /tmp logs lack process
+binding and remain gaps. Independent review must scrutinize this attribution.
+
+Preservation: R5/R6 production code, observer/probe, compile.sh, init script,
+heaps/workers/caches, 450s qualification, 600s/15s termination, workflow YAML and
+protocols are unchanged. Only collector, controller, focused tests, this note
+and the source hash manifest changed. Existing 32 tests were run on frozen v1;
+V2 retains them with one explicit assertion change for renamed v1 positive-kills
+status, and adds focused adversarial fixtures. Historical package and run results
+remain untouched. Historical C4 38780475153 remains INCOMPLETE, not zero OOM.
+The 72e14a...435c historical package identity discrepancy and missing Codespace/
+review-wrapper ZIP limitations remain; observer neutrality is still an assumption,
+with no behavioral-equivalence witness. Implementer is source author, not Reviewer
+B/controller. No new independent reviewer acceptance is claimed.
+
+SUBSTANTIVE NON-AUTHOR REVIEWER B REQUEST (not a self-certification)
+Review exact successor commit/tree/parent, patch and manifests. Replay V1 baseline,
+unchanged D1 script before/after, full V2 tests and adversarial cases. Attempt to
+falsify positive-preservation trust boundaries, scope labels, PID/start/namespace
+race handling, reparenting, optional diagnostics and fatal-log attribution.
+Confirm BLOCKED_D2 cannot start compile or be bypassed by runtime input. Decide
+whether the narrower blocked design is acceptable, and specify the minimum
+kernel-enforced containment/lifecycle contract before any qualification claim.
+Review must be performed by a substantive non-author Reviewer B; request is
+prepared here, not sent to an external person or represented as completed.
+
+Smallest NEXT proposed hosted test, only after fresh owner authorization and
+separate reviewer scrutiny: exact-hash collector execution on intended runner,
+3+ snapshots with one bounded child and reparented grandchild, no JVM/Gradle,
+no dependencies/caches/gameplay/OOM induction, <=60s, read-only permissions,
+new dispatch-only isolated workflow, raw proc/counter and lifecycle receipts,
+complete SHA256 manifest, always-upload partial evidence, no automatic retry.
+This cannot prove Gradle/Kotlin JVM containment or close C4. A later cold R5/R6
+compile original needs DIFFERENT authorization and a reviewed containment design.
+No consumed original may be rerun or replaced. No hosted action is authorized now.

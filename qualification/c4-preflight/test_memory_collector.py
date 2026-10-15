@@ -111,7 +111,7 @@ class CollectorTests(unittest.TestCase):
         self.put('/legacy/job/cgroup.procs','42\n')
         self.put('/legacy/job/memory.oom_control','oom_kill_disable 0\nunder_oom 0\noom_kill 3\n')
         a=sample(self.reader);self.assertTrue(a['available']);self.assertEqual(a['counters'],{'oom_kill':3});self.assertFalse(compare(a,sample(self.reader))['qualifying'])
-        self.put('/legacy/job/memory.oom_control','oom_kill_disable 0\nunder_oom 0\noom_kill 4\n');self.assertEqual(compare(a,sample(self.reader))['status'],'OOM_EVENTS_OBSERVED')
+        self.put('/legacy/job/memory.oom_control','oom_kill_disable 0\nunder_oom 0\noom_kill 4\n');self.assertEqual(compare(a,sample(self.reader))['status'],'OOM_KILLS_OBSERVED')
 
     def test_legacy_failcnt_not_substitute(self):
         self.put('/proc/self/cgroup','4:memory:/job\n');self.put('/proc/self/mountinfo','32 20 0:28 / /legacy rw - cgroup cgroup rw,memory\n')
