@@ -1,0 +1,142 @@
+{
+  "name": "Argentum G10 R6 decision-local sequence memo excluded qualification",
+  "on": {
+    "push": {
+      "branches": [
+        "play-first/g10-r6-decision-local-sequence-cache-20261014"
+      ]
+    }
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "concurrency": {
+    "group": "argentum-g10-r6-decision-memo-one-original-20261014",
+    "cancel-in-progress": false
+  },
+  "jobs": {
+    "performance": {
+      "if": "github.repository == 'GodaPupa/argentum-batshit-test' && github.event_name == 'push' && github.ref == 'refs/heads/play-first/g10-r6-decision-local-sequence-cache-20261014' && github.run_number == 1 && github.run_attempt == 1",
+      "runs-on": "ubuntu-24.04",
+      "timeout-minutes": 29,
+      "env": {
+        "ARGENTUM_G10_R6_PROFILE": "EXCLUDED_LATE_BOARD_ONLY",
+        "R6_EVIDENCE_DIR": "/tmp/argentum-r6-performance-${{ github.run_id }}"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "fetch-depth": 7,
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Verify exact one-original R6 source and no-gameplay scope",
+          "shell": "bash",
+          "run": "set -euo pipefail\ntest \"$(git rev-parse HEAD^)\" = '4d475f4c8f997df8d895e73f78663f40fdfc5834'\ntest \"$(git rev-parse HEAD~5)\" = 'b5195ad2d090d26a533aef5bf3fa6a486b5128c6'\ntest \"$(git diff --name-only HEAD^ HEAD)\" = '.github/workflows/g10-r6-decision-local-sequence-synthetic-20261014.yml'\ntest \"$(git diff --name-only HEAD~5 HEAD)\" = \"$(printf '%s\\n' '.github/workflows/g10-r6-decision-local-sequence-synthetic-20261014.yml' 'ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt' 'docs/experiments/play-first/isolation-v2/G10_R6_DECISION_LOCAL_SEQUENCE_MEMO_PROTOCOL.md' 'gym/src/test/kotlin/com/wingedsheep/gym/G10R6LateBoardDecisionMemoTest.kt' 'gym/src/test/kotlin/com/wingedsheep/gym/G10R6SparseDenseParityTest.kt')\"\ngit diff --check HEAD~5 HEAD\ntest \"$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt)\" = '9ad64c2cf141beca0f1091a801c0f7af3bb1e0c7'\ntest \"$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/FocalSourceChoiceSampler.kt)\" = '494d4921acc3f8877dc5be39904e3ac3ab832f7e'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/G10R6LateBoardDecisionMemoTest.kt)\" = '7d355a49d9cff41ac07359a98ab492db89842314'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/G10R6SparseDenseParityTest.kt)\" = 'f1edd0eda9b417d14891a99ce395548278bdfb6f'\ntest \"$(git rev-parse HEAD:docs/experiments/play-first/isolation-v2/G10_R6_DECISION_LOCAL_SEQUENCE_MEMO_PROTOCOL.md)\" = 'b2249f548875ecfa1afa8e8d3aa09cfa5c324db0'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstOneShotPestMonsterTronTest.kt)\" = '5ae14e0ed7212c317deecfa1cbd6a54a809c211a'\ntest \"$(git rev-parse HEAD:.github/workflows/play-first-successor-nonofficial-v2.yml)\" = '18c451f9c20e09e58a109c85c8d3c96c645d2558'\ntest -z \"${PLAY_FIRST_ONE_SHOT_ACK:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_ACK:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_CASE_FILE:-}\"\ntest -z \"${ARGENTUM_SUCCESSOR_REQUEST_JSON:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_SOURCE_SHA:-}\"\nmkdir -p \"$R6_EVIDENCE_DIR\"\ngit rev-parse HEAD HEAD^{tree} HEAD^ HEAD~5 > \"$R6_EVIDENCE_DIR/source-identities.txt\"\nprintf '%s\\n' 'R6_EXCLUDED_SYNTHETIC_ONLY_NO_GAME_NO_ORIGINAL_REPLAY' > \"$R6_EVIDENCE_DIR/scope-gate.txt\"\n"
+        },
+        {
+          "uses": "actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961",
+          "with": {
+            "distribution": "temurin",
+            "java-version": "21"
+          }
+        },
+        {
+          "uses": "extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b"
+        },
+        {
+          "uses": "gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6",
+          "with": {
+            "cache-read-only": true
+          }
+        },
+        {
+          "name": "Run sampler, sparse/dense controls and R6 synthetic late board only",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$R6_EVIDENCE_DIR\"\njava -version > \"$R6_EVIDENCE_DIR/java-version.txt\" 2>&1\ntimeout --signal=TERM --kill-after=30s 8m just test-class FocalSourceChoiceSamplerTest --no-daemon --no-build-cache --console=plain 2>&1 | tee \"$R6_EVIDENCE_DIR/sampler.log\"\ntest -s ai/build/test-results/test/TEST-com.wingedsheep.ai.engine.FocalSourceChoiceSamplerTest.xml\nmkdir -p \"$R6_EVIDENCE_DIR/sampler\"\ncp -a ai/build/test-results/test \"$R6_EVIDENCE_DIR/sampler/test-results\"\nif test -d ai/build/reports/tests/test; then cp -a ai/build/reports/tests/test \"$R6_EVIDENCE_DIR/sampler/test-report\"; fi\nprintf '%s\\n' 'SAMPLER_TEST_XML_CAPTURED' > \"$R6_EVIDENCE_DIR/sampler-complete.txt\"\ntimeout --signal=TERM --kill-after=30s 6m just test-class G10R6SparseDenseParityTest --no-daemon --no-build-cache --console=plain 2>&1 | tee \"$R6_EVIDENCE_DIR/control.log\"\ntest -s gym/build/test-results/test/TEST-com.wingedsheep.gym.G10R6SparseDenseParityTest.xml\nmkdir -p \"$R6_EVIDENCE_DIR/control\"\ncp -a gym/build/test-results/test \"$R6_EVIDENCE_DIR/control/test-results\"\nif test -d gym/build/reports/tests/test; then cp -a gym/build/reports/tests/test \"$R6_EVIDENCE_DIR/control/test-report\"; fi\nprintf '%s\\n' 'CONTROL_TEST_XML_CAPTURED' > \"$R6_EVIDENCE_DIR/control-complete.txt\"\nprintf '%s\\n' 'STARTED_NOT_PASS' > \"$R6_EVIDENCE_DIR/late-test-started.txt\"\ntimeout --signal=TERM --kill-after=30s 11m just test-class G10R6LateBoardDecisionMemoTest --no-daemon --no-build-cache --console=plain 2>&1 | tee \"$R6_EVIDENCE_DIR/late.log\"\ntest -s gym/build/test-results/test/TEST-com.wingedsheep.gym.G10R6LateBoardDecisionMemoTest.xml\nmkdir -p \"$R6_EVIDENCE_DIR/late\"\ncp -a gym/build/test-results/test \"$R6_EVIDENCE_DIR/late/test-results\"\nif test -d gym/build/reports/tests/test; then cp -a gym/build/reports/tests/test \"$R6_EVIDENCE_DIR/late/test-report\"; fi\nprintf '%s\\n' 'LATE_TEST_XML_CAPTURED' > \"$R6_EVIDENCE_DIR/late-complete.txt\"\n"
+        },
+        {
+          "name": "Preserve R6 synthetic partial/success/failure evidence",
+          "if": "always()",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$R6_EVIDENCE_DIR\"\nif test -d gym/build/test-results/test; then cp -a gym/build/test-results/test \"$R6_EVIDENCE_DIR/unclassified-last-gym-results\"; fi\nif test -d ai/build/test-results/test; then cp -a ai/build/test-results/test \"$R6_EVIDENCE_DIR/unclassified-last-ai-results\"; fi\nprintf '%s\\n' 'Unclassified partial test XML is not success evidence without class identity and completion marker' > \"$R6_EVIDENCE_DIR/xml-readme.txt\"\nprintf '%s\\n' 'R6_EXCLUDED_TEST_EVIDENCE_NO_GAMEPLAY_OR_FORMAL_ADMISSION' > \"$R6_EVIDENCE_DIR/evidence-scope.txt\"\nfind \"$R6_EVIDENCE_DIR\" -maxdepth 6 -type f -printf '%P %s bytes\\n' | sort > \"$R6_EVIDENCE_DIR/inventory.txt\"\n(cd \"$R6_EVIDENCE_DIR\" && find . -type f ! -name payload-sha256.txt -print0 | sort -z | xargs -0 sha256sum) > \"$R6_EVIDENCE_DIR/payload-sha256.txt\"\n"
+        },
+        {
+          "uses": "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+          "if": "always()",
+          "with": {
+            "name": "g10-r6-excluded-performance-${{ github.run_id }}-attempt-${{ github.run_attempt }}",
+            "path": "${{ env.R6_EVIDENCE_DIR }}/",
+            "if-no-files-found": "error",
+            "overwrite": false,
+            "retention-days": 90
+          }
+        }
+      ]
+    },
+    "regression": {
+      "if": "github.repository == 'GodaPupa/argentum-batshit-test' && github.event_name == 'push' && github.ref == 'refs/heads/play-first/g10-r6-decision-local-sequence-cache-20261014' && github.run_number == 1 && github.run_attempt == 1",
+      "runs-on": "ubuntu-24.04",
+      "timeout-minutes": 20,
+      "env": {
+        "R6_EVIDENCE_DIR": "/tmp/argentum-r6-regression-${{ github.run_id }}"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "fetch-depth": 7,
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Verify exact one-original R6 source and no-gameplay scope",
+          "shell": "bash",
+          "run": "set -euo pipefail\ntest \"$(git rev-parse HEAD^)\" = '4d475f4c8f997df8d895e73f78663f40fdfc5834'\ntest \"$(git rev-parse HEAD~5)\" = 'b5195ad2d090d26a533aef5bf3fa6a486b5128c6'\ntest \"$(git diff --name-only HEAD^ HEAD)\" = '.github/workflows/g10-r6-decision-local-sequence-synthetic-20261014.yml'\ntest \"$(git diff --name-only HEAD~5 HEAD)\" = \"$(printf '%s\\n' '.github/workflows/g10-r6-decision-local-sequence-synthetic-20261014.yml' 'ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt' 'docs/experiments/play-first/isolation-v2/G10_R6_DECISION_LOCAL_SEQUENCE_MEMO_PROTOCOL.md' 'gym/src/test/kotlin/com/wingedsheep/gym/G10R6LateBoardDecisionMemoTest.kt' 'gym/src/test/kotlin/com/wingedsheep/gym/G10R6SparseDenseParityTest.kt')\"\ngit diff --check HEAD~5 HEAD\ntest \"$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt)\" = '9ad64c2cf141beca0f1091a801c0f7af3bb1e0c7'\ntest \"$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/FocalSourceChoiceSampler.kt)\" = '494d4921acc3f8877dc5be39904e3ac3ab832f7e'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/G10R6LateBoardDecisionMemoTest.kt)\" = '7d355a49d9cff41ac07359a98ab492db89842314'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/G10R6SparseDenseParityTest.kt)\" = 'f1edd0eda9b417d14891a99ce395548278bdfb6f'\ntest \"$(git rev-parse HEAD:docs/experiments/play-first/isolation-v2/G10_R6_DECISION_LOCAL_SEQUENCE_MEMO_PROTOCOL.md)\" = 'b2249f548875ecfa1afa8e8d3aa09cfa5c324db0'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstOneShotPestMonsterTronTest.kt)\" = '5ae14e0ed7212c317deecfa1cbd6a54a809c211a'\ntest \"$(git rev-parse HEAD:.github/workflows/play-first-successor-nonofficial-v2.yml)\" = '18c451f9c20e09e58a109c85c8d3c96c645d2558'\ntest -z \"${PLAY_FIRST_ONE_SHOT_ACK:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_ACK:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_CASE_FILE:-}\"\ntest -z \"${ARGENTUM_SUCCESSOR_REQUEST_JSON:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_SOURCE_SHA:-}\"\nmkdir -p \"$R6_EVIDENCE_DIR\"\ngit rev-parse HEAD HEAD^{tree} HEAD^ HEAD~5 > \"$R6_EVIDENCE_DIR/source-identities.txt\"\nprintf '%s\\n' 'R6_EXCLUDED_SYNTHETIC_ONLY_NO_GAME_NO_ORIGINAL_REPLAY' > \"$R6_EVIDENCE_DIR/scope-gate.txt\"\n"
+        },
+        {
+          "uses": "actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961",
+          "with": {
+            "distribution": "temurin",
+            "java-version": "21"
+          }
+        },
+        {
+          "uses": "extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b"
+        },
+        {
+          "uses": "gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6",
+          "with": {
+            "cache-read-only": true
+          }
+        },
+        {
+          "name": "Run only existing Pest Control AI decision regression class",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$R6_EVIDENCE_DIR\"\njava -version > \"$R6_EVIDENCE_DIR/java-version.txt\" 2>&1\ntimeout --signal=TERM --kill-after=30s 12m just test-class PestControlAgentDecisionTest --no-daemon --no-build-cache --console=plain 2>&1 | tee \"$R6_EVIDENCE_DIR/ai-regression.log\"\ntest -s ai/build/test-results/test/TEST-com.wingedsheep.ai.engine.PestControlAgentDecisionTest.xml\nmkdir -p \"$R6_EVIDENCE_DIR/ai-regression\"\ncp -a ai/build/test-results/test \"$R6_EVIDENCE_DIR/ai-regression/test-results\"\nif test -d ai/build/reports/tests/test; then cp -a ai/build/reports/tests/test \"$R6_EVIDENCE_DIR/ai-regression/test-report\"; fi\nprintf '%s\\n' 'R6_EXISTING_AI_DECISION_XML_CAPTURED' > \"$R6_EVIDENCE_DIR/ai-regression-complete.txt\"\n"
+        },
+        {
+          "name": "Preserve R6 existing-AI partial/success/failure evidence",
+          "if": "always()",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$R6_EVIDENCE_DIR\"\nif test -d gym/build/test-results/test; then cp -a gym/build/test-results/test \"$R6_EVIDENCE_DIR/unclassified-last-gym-results\"; fi\nif test -d ai/build/test-results/test; then cp -a ai/build/test-results/test \"$R6_EVIDENCE_DIR/unclassified-last-ai-results\"; fi\nprintf '%s\\n' 'Unclassified partial test XML is not success evidence without class identity and completion marker' > \"$R6_EVIDENCE_DIR/xml-readme.txt\"\nprintf '%s\\n' 'R6_EXCLUDED_TEST_EVIDENCE_NO_GAMEPLAY_OR_FORMAL_ADMISSION' > \"$R6_EVIDENCE_DIR/evidence-scope.txt\"\nfind \"$R6_EVIDENCE_DIR\" -maxdepth 6 -type f -printf '%P %s bytes\\n' | sort > \"$R6_EVIDENCE_DIR/inventory.txt\"\n(cd \"$R6_EVIDENCE_DIR\" && find . -type f ! -name payload-sha256.txt -print0 | sort -z | xargs -0 sha256sum) > \"$R6_EVIDENCE_DIR/payload-sha256.txt\"\n"
+        },
+        {
+          "uses": "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+          "if": "always()",
+          "with": {
+            "name": "g10-r6-excluded-regression-${{ github.run_id }}-attempt-${{ github.run_attempt }}",
+            "path": "${{ env.R6_EVIDENCE_DIR }}/",
+            "if-no-files-found": "error",
+            "overwrite": false,
+            "retention-days": 90
+          }
+        }
+      ]
+    }
+  }
+}
