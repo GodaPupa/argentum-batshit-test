@@ -1,0 +1,86 @@
+name: ARGENTUM C4 cold compile only 20261015
+on:
+  workflow_dispatch:
+    inputs:
+      approval:
+        description: Exact source-bound C4 compile-only acknowledgement
+        required: true
+        type: string
+permissions:
+  contents: read
+concurrency:
+  group: argentum-c4-cold-compile-only-20261015
+  cancel-in-progress: false
+jobs:
+  cold-compile:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        revision: [R5, R6]
+    steps:
+      - name: Fail-closed original and approval gate before downloads
+        env:
+          APPROVAL: ${{ inputs.approval }}
+          WORKFLOW_REF: ${{ github.workflow_ref }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = GodaPupa/argentum-batshit-test
+          test "$GITHUB_EVENT_NAME" = workflow_dispatch
+          test "$GITHUB_REF" = refs/heads/infra/argentum-c4-cold-compile-20261015
+          test "$GITHUB_RUN_NUMBER/$GITHUB_RUN_ATTEMPT" = 1/1
+          test "$WORKFLOW_REF" = GodaPupa/argentum-batshit-test/.github/workflows/argentum-c4-cold-compile-20261015.yml@refs/heads/infra/argentum-c4-cold-compile-20261015
+          test "$APPROVAL" = C4_COMPILE_ONLY_ONCE_33e67f71931a1feaf335b1520be6ddba33e0c2b6
+          mkdir "$RUNNER_TEMP/c4-evidence"
+          printf '%s\n' "$GITHUB_SHA" > "$RUNNER_TEMP/c4-evidence/dispatch-commit.txt"
+          printf '%s\n' "$GITHUB_RUN_ID/$GITHUB_RUN_NUMBER/$GITHUB_RUN_ATTEMPT" > "$RUNNER_TEMP/c4-evidence/run-identity.txt"
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          ref: '33e67f71931a1feaf335b1520be6ddba33e0c2b6'
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify pinned implementation before toolchains
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = 33e67f71931a1feaf335b1520be6ddba33e0c2b6
+          test "$(git rev-parse 'HEAD^{tree}')" = ed87a9c5ea6a60d968ee0856095b593a614f3816
+          cd qualification/c4-preflight
+          sha256sum -c SOURCE_SHA256SUMS
+          cp SOURCE_SHA256SUMS "$RUNNER_TEMP/c4-evidence/implementation-SHA256SUMS"
+          cp "$GITHUB_EVENT_PATH" "$RUNNER_TEMP/c4-evidence/dispatch-event.json"
+      - uses: actions/setup-java@cf277c60eb25467037889841efdb72551f06f6c3
+        with:
+          distribution: microsoft
+          java-version: '21'
+      - name: Install exact official Just
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --max-time 120 --output "$RUNNER_TEMP/just.tar.gz" https://github.com/casey/just/releases/download/1.59.0/just-1.59.0-x86_64-unknown-linux-musl.tar.gz
+          echo "409044617b6f06517c1035e55ca38c8c856ff8b650e41bc2aa1ef82d5903a23e  $RUNNER_TEMP/just.tar.gz" | sha256sum -c -
+          mkdir "$RUNNER_TEMP/just-bin"
+          tar --no-same-owner -xzf "$RUNNER_TEMP/just.tar.gz" -C "$RUNNER_TEMP/just-bin" just
+          echo "$RUNNER_TEMP/just-bin" >> "$GITHUB_PATH"
+      - name: Compile frozen variant only
+        env:
+          C4_REVISION: ${{ matrix.revision }}
+        run: python3 qualification/c4-preflight/preflight.py
+      - name: Seal complete or partial evidence
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/c4-evidence"
+          cd "$RUNNER_TEMP/c4-evidence"
+          if ! test -f result.json; then printf '%s\n' '{"status":"INCOMPLETE","reason":"preflight did not finish"}' > result.json; fi
+          find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ always() }}
+        with:
+          name: argentum-c4-${{ matrix.revision }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/c4-evidence
+          if-no-files-found: error
+          retention-days: 90
