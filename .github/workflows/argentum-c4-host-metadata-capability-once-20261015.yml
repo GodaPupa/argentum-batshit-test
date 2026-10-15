@@ -1,0 +1,119 @@
+name: ARGENTUM C4 one-shot host metadata capability 20261015
+on:
+  push:
+    branches: [infra/argentum-c4-host-metadata-capability-once-20261015]
+permissions:
+  contents: read
+concurrency:
+  group: argentum-c4-host-metadata-capability-once-20261015
+  cancel-in-progress: false
+jobs:
+  metadata-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: One-shot source/event gate before any host inspection
+        shell: bash
+        env:
+          WORKFLOW_REF: ${{ github.workflow_ref }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = GodaPupa/argentum-batshit-test
+          test "$GITHUB_EVENT_NAME" = push
+          test "$GITHUB_REF" = refs/heads/infra/argentum-c4-host-metadata-capability-once-20261015
+          test "$GITHUB_RUN_NUMBER/$GITHUB_RUN_ATTEMPT" = 1/1
+          test "$WORKFLOW_REF" = GodaPupa/argentum-batshit-test/.github/workflows/argentum-c4-host-metadata-capability-once-20261015.yml@refs/heads/infra/argentum-c4-host-metadata-capability-once-20261015
+      - name: Read-only host metadata snapshot; no cgroup mutations, JDK or Gradle
+        shell: bash
+        run: |
+          set -euo pipefail
+          export C4_METADATA_OUTPUT="$RUNNER_TEMP/argentum-c4-host-metadata"
+          mkdir "$C4_METADATA_OUTPUT"
+          cat <<'ARGENTUM_PINNED_METADATA_PROBE' | base64 -d | gzip -dc > "$C4_METADATA_OUTPUT/probe.py"
+          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
+          5Sd2qM2rtVh9e+o0HiMuWe//0b4T8Z8qAAA=
+          ARGENTUM_PINNED_METADATA_PROBE
+          echo "0e20183451bce96d20b3917457dcc049711fb88cbe29093d246900c4351c2ad5  $C4_METADATA_OUTPUT/probe.py" | sha256sum -c -
+          timeout --signal=TERM --kill-after=5s 50s python3 -I -B "$C4_METADATA_OUTPUT/probe.py"
+      - name: Seal original evidence or precise incomplete result
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          o="$RUNNER_TEMP/argentum-c4-host-metadata"
+          mkdir -p "$o"
+          if ! test -f "$o/result.json"; then printf '%s\n' '{"status":"INCOMPLETE","reason":"metadata probe unavailable","historical_C4":"INCOMPLETE","D2_containment":"BLOCKED","C4_PASS":false}' > "$o/result.json"; fi
+          cd "$o"
+          find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ always() }}
+        with:
+          name: argentum-c4-host-metadata-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/argentum-c4-host-metadata
+          if-no-files-found: error
+          retention-days: 90
