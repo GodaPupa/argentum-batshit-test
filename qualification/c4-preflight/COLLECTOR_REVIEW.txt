@@ -1,0 +1,69 @@
+C4 collector-only successor — local review candidate, NOT execution authorization
+
+Historical run 38780475153, workflow 385829233, number/attempt 1/1 remains INCOMPLETE.
+R5 exit 0 / 283.904042634s; R6 exit 0 / 265.694491685s. Both <450s.
+The historical oom_delta=0 was a fallback from absent counters, not observed zero.
+Original evidence and its acceptance criteria are unchanged.
+
+Root cause: snapshot() assumed /sys/fs/cgroup/memory.events at mount root.
+It never resolved /proc/self/cgroup against /proc/self/mountinfo. The originals
+record unavailable paths but omitted those proc files, so the exact hosted
+layout and whether authoritative counters were accessible cannot be recovered.
+
+Design: parse both proc files; decode mount escapes; resolve mount-root-relative
+and namespace-relative paths; verify collector PID in cgroup.procs; retain raw
+inputs, counter bytes, boot and inode identities, scope and discovery failures.
+Use v2 memory.events oom and oom_kill as SEPARATE counters, never sum events and
+kills. Legacy memory.oom_control oom_kill is observable but kills-only, so cannot
+qualify the full OOM-event requirement. memory_localevents is limited scope and
+also nonqualifying. memory.failcnt, under_oom, logs and memory.events.local are
+not substitutes. Ambiguous mappings, malformed counters, migration, resets,
+missing intervals or unreadable files fail closed with null deltas.
+
+The controller gates before source fetch, and again before compile. Every
+sample interval must qualify. No changes to sources, compile commands, heaps,
+workers, cold homes, 450s qualification or 600s/15s termination limits.
+This Python gate is NOT yet a workflow step before setup-java/Just installation:
+the workflow is deliberately unchanged. Future integration must place a pinned
+collector-only discovery check before those installations. No workflow is
+published or activated by this successor.
+
+Scope: evidence covers the selected process cgroup subtree, not all host OOMs.
+Children normally inherit this cgroup. Review must validate hosted JVM descendants
+remain in that scope; shared cgroups may conservatively include unrelated events.
+No real OOM is induced. Synthetic success is not hosted portability qualification.
+
+Independent review requirements:
+- inspect exact parent/commit/tree and changed-file manifest;
+- replay synthetic tests and verify missing evidence never becomes zero;
+- review namespace mappings, PID verification, scope and counter continuity;
+- confirm unchanged frozen sources, task guards, workflow and resource settings;
+- assess child-process scope and approve any future workflow integration separately.
+The implementing assistant is not an independent reviewer. No behavioral
+comparison or equivalence witness exists from this work. Observer neutrality
+remains an assumption. Prior reviewer participation disclosures are preserved
+in the unchanged original package; no new independent approval is claimed.
+Historical 72e14a...435c names the compile-blocked package, not the remediation
+delta. Missing review-wrapper/Codespace ZIPs have not been verified.
+
+Smallest future hosted validation: separately authorize one new, short,
+dispatch-only collector discovery probe on the intended runner image, pinned
+collector source, read-only permissions, no checkout of behavioral code, no
+Gradle/JDK installation, no caches, no tests/gameplay/OOM induction, <=60 seconds,
+at least two samples, raw proc/counter receipts and SHA-256 evidence uploaded
+with always(), no automatic retry. Verify counter availability before expensive
+work. This probe validates portability ONLY and cannot repair historical evidence.
+
+Remaining C4 qualification: a separately authorized NEW cold-compile-only run
+of both unchanged R5/R6 pins, with validated collector integration and continuous
+authoritative counters through each compile, unchanged time/resource criteria,
+original logs and complete hashes. It must not rerun historical run 38780475153.
+An alternative single future cold-compile authorization may include the short
+fail-closed discovery gate first; it still needs explicit separate authorization.
+Behavioral activation remains unauthorized regardless of collector review.
+
+Technical references:
+https://docs.kernel.org/admin-guide/cgroup-v2.html (memory.events, namespaces)
+https://docs.kernel.org/admin-guide/cgroup-v1/memory.html (memory.oom_control)
+https://man7.org/linux/man-pages/man5/proc_pid_mountinfo.5.html
+https://man7.org/linux/man-pages/man7/cgroup_namespaces.7.html

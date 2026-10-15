@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """One cold compile per isolated hosted job. Never starts a test JVM."""
 import hashlib, json, os, pathlib, re, shutil, signal, subprocess, sys, time, traceback, threading
+from memory_collector import sample, assess
 
 HERE = pathlib.Path(__file__).resolve().parent
 OUT = pathlib.Path(os.environ['RUNNER_TEMP']) / 'c4-evidence'
@@ -16,9 +17,8 @@ def run(args, **kwargs):
     return subprocess.check_output(args, text=True, stderr=subprocess.STDOUT, **kwargs)
 
 def snapshot():
-    result = {'monotonic': time.monotonic()}
-    for name in ['/proc/meminfo', '/proc/pressure/memory', '/sys/fs/cgroup/memory.events',
-                 '/sys/fs/cgroup/memory.current', '/sys/fs/cgroup/memory.peak']:
+    result = {'monotonic': time.monotonic(), 'memory_controller': sample()}
+    for name in ['/proc/meminfo', '/proc/pressure/memory']:
         p = pathlib.Path(name)
         result[name] = p.read_text() if p.exists() else None
     result['processes'] = run(['ps', '-eo', 'pid,ppid,pgid,rss,etimes,args'])
@@ -27,6 +27,10 @@ def snapshot():
 def main():
     if REV not in PINS:
         raise ValueError('unknown revision')
+    discovery = sample()
+    write('memory-discovery.json', discovery)
+    if not discovery['available'] or not discovery.get('qualifying_scope'):
+        raise ValueError('authoritative subtree OOM counters unavailable; compile not started')
     sha, tree = PINS[REV]
     root = pathlib.Path(os.environ['RUNNER_TEMP']) / ('c4-source-' + REV)
     home = pathlib.Path(os.environ['RUNNER_TEMP']) / ('c4-gradle-' + REV)
@@ -52,6 +56,9 @@ def main():
                            'limit_seconds': 600, 'kill_grace_seconds': 15, 'qualification_seconds': 450})
     before = snapshot()
     write('memory-before.json', before)
+    samples = [discovery, before['memory_controller']]
+    if not assess(samples)['qualifying']:
+        raise ValueError('memory evidence failed before compile; compile not started')
     start = time.monotonic()
     timed_out = False
     with (OUT / 'compile.log').open('w') as log, (OUT / 'telemetry.jsonl').open('w') as telemetry:
@@ -63,7 +70,9 @@ def main():
                     timeline.write(json.dumps({'seconds': time.monotonic()-start, 'line': line})+'\n'); timeline.flush()
         reader = threading.Thread(target=capture, daemon=True); reader.start()
         while proc.poll() is None:
-            telemetry.write(json.dumps(snapshot()) + '\n'); telemetry.flush()
+            current = snapshot()
+            samples.append(current['memory_controller'])
+            telemetry.write(json.dumps(current) + '\n'); telemetry.flush()
             if time.monotonic() - start >= 600:
                 timed_out = True
                 os.killpg(proc.pid, signal.SIGTERM)
@@ -76,6 +85,7 @@ def main():
     elapsed = time.monotonic() - start
     after = snapshot()
     write('memory-after.json', after)
+    samples.append(after['memory_controller'])
     for path in home.glob('daemon/**/*.log'):
         dest = OUT / 'daemon' / path.relative_to(home / 'daemon'); dest.parent.mkdir(parents=True, exist_ok=True); shutil.copy2(path, dest)
     for base in [root, home, pathlib.Path('/tmp')]:
@@ -90,16 +100,17 @@ def main():
     bad = bool(re.search(r'daemon disappeared|daemon.*lost|OutOfMemoryError|unable to connect to Kotlin compile daemon|daemon compilation failed|using fallback strategy', text, re.I))
     compiled = ':ai:compileTestKotlin' in '\n'.join(graph) and 'BUILD SUCCESSFUL' in text and bool(list(root.glob('ai/build/classes/kotlin/test/**/R5R6DecisionDifferentialTest.class')))
     # Never promote timeout, missing task/class evidence, or daemon fallback to PASS.
-    def oom(s):
-        return sum(int(line.split()[1]) for line in (s['/sys/fs/cgroup/memory.events'] or '').splitlines() if line.split()[0] in ['oom', 'oom_kill'])
-    oom_delta = oom(after) - oom(before)
-    telemetry_complete = before['/sys/fs/cgroup/memory.events'] is not None and after['/sys/fs/cgroup/memory.events'] is not None and not reader.is_alive()
-    status = 'PASS' if proc.returncode == 0 and not timed_out and elapsed <= 450 and compiled and not bad and oom_delta == 0 and telemetry_complete else 'INCOMPLETE'
-    if bad or (proc.returncode != 0 and not timed_out and re.search(r'Compilation error|OutOfMemoryError', text)):
+    memory = assess(samples)
+    write('memory-assessment.json', memory)
+    telemetry_complete = memory['qualifying'] and not reader.is_alive()
+    status = 'PASS' if proc.returncode == 0 and not timed_out and elapsed <= 450 and compiled and not bad and telemetry_complete else 'INCOMPLETE'
+    if memory['status'] == 'OOM_EVENTS_OBSERVED' or bad or (proc.returncode != 0 and not timed_out and re.search(r'Compilation error|OutOfMemoryError', text)):
         status = 'FAIL'
     write('result.json', {'status': status, 'revision': REV, 'exit_code': proc.returncode, 'wall_seconds': elapsed,
                          'within_450': elapsed <= 450, 'timed_out': timed_out, 'compiled_class_and_graph': compiled,
-                         'daemon_or_oom_evidence': bad, 'oom_delta': oom_delta, 'telemetry_complete': telemetry_complete, 'warm_cache': False})
+                         'daemon_or_oom_evidence': bad or memory['status'] == 'OOM_EVENTS_OBSERVED',
+                         'oom_deltas': memory['deltas'], 'memory_status': memory['status'],
+                         'telemetry_complete': telemetry_complete, 'warm_cache': False})
     return 0 if status == 'PASS' else 1
 
 if __name__ == '__main__':
