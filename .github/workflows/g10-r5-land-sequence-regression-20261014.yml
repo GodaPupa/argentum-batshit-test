@@ -1,0 +1,80 @@
+{
+  "name": "Argentum R5 isolated existing land-sequence AI regression",
+  "on": {
+    "push": {
+      "branches": [
+        "play-first/g10-r5-land-sequence-regression-20261014"
+      ]
+    }
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "concurrency": {
+    "group": "argentum-r5-existing-ai-regression-original-20261014",
+    "cancel-in-progress": false
+  },
+  "jobs": {
+    "regression": {
+      "if": "github.repository == 'GodaPupa/argentum-batshit-test' && github.event_name == 'push' && github.ref == 'refs/heads/play-first/g10-r5-land-sequence-regression-20261014' && github.run_number == 1 && github.run_attempt == 1",
+      "runs-on": "ubuntu-24.04",
+      "timeout-minutes": 20,
+      "env": {
+        "ARGENTUM_R5_REGRESSION_EVIDENCE_DIR": "/tmp/argentum-r5-regression-${{ github.run_id }}"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "fetch-depth": 2,
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Verify R5 source and only existing AI test scope",
+          "shell": "bash",
+          "run": "set -euo pipefail\ntest \"$(git rev-parse HEAD^)\" = 'b5195ad2d090d26a533aef5bf3fa6a486b5128c6'\ntest \"$(git diff --name-only HEAD^ HEAD)\" = '.github/workflows/g10-r5-land-sequence-regression-20261014.yml'\ngit diff --check HEAD^ HEAD\ntest \"$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt)\" = '360c40b490458cfba82d43b29b2fcb0ea0913b68'\ntest \"$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/FocalSourceChoiceSampler.kt)\" = '494d4921acc3f8877dc5be39904e3ac3ab832f7e'\ntest \"$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/PestControlAgentDecisionTest.kt)\" = 'e4cd250e5a639beaf46ef1842c2cd89aca6345e0'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstOneShotPestMonsterTronTest.kt)\" = '5ae14e0ed7212c317deecfa1cbd6a54a809c211a'\ntest \"$(git rev-parse HEAD:.github/workflows/play-first-successor-nonofficial-v2.yml)\" = '18c451f9c20e09e58a109c85c8d3c96c645d2558'\ntest -z \"${PLAY_FIRST_ONE_SHOT_ACK:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_ACK:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_CASE_FILE:-}\"\ntest -z \"${ARGENTUM_SUCCESSOR_REQUEST_JSON:-}\"\nmkdir -p \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR\"\ngit rev-parse HEAD HEAD^{tree} HEAD^ > \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/source-identities.txt\"\nprintf '%s\\n' 'R5_SOURCE_ONLY_EXISTING_AI_REGRESSION_NO_GAMEPLAY' > \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/scope-gate.txt\"\n"
+        },
+        {
+          "uses": "actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961",
+          "with": {
+            "distribution": "temurin",
+            "java-version": "21"
+          }
+        },
+        {
+          "uses": "extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b"
+        },
+        {
+          "uses": "gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6",
+          "with": {
+            "cache-read-only": true
+          }
+        },
+        {
+          "name": "Run only PestControlAgentDecisionTest synthetic regressions",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR\"\njava -version > \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/java-version.txt\" 2>&1\ntimeout --signal=TERM --kill-after=30s 12m just test-class PestControlAgentDecisionTest --no-daemon --no-build-cache --console=plain 2>&1 | tee \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/child.log\"\ntest -s ai/build/test-results/test/TEST-com.wingedsheep.ai.engine.PestControlAgentDecisionTest.xml\nmkdir -p \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/named-ai-test\"\ncp -a ai/build/test-results/test \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/named-ai-test/test-results\"\nif test -d ai/build/reports/tests/test; then cp -a ai/build/reports/tests/test \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/named-ai-test/test-report\"; fi\nprintf '%s\\n' 'EXISTING_AI_DECISION_TEST_XML_SAVED' > \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/regression-complete.txt\"\n"
+        },
+        {
+          "name": "Preserve original existing AI test results or partial failure",
+          "shell": "bash",
+          "if": "always()",
+          "run": "set -euo pipefail\nmkdir -p \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR\"\nif test -d ai/build/test-results/test; then cp -a ai/build/test-results/test \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/unclassified-last-ai-results\"; fi\nprintf '%s\\n' 'Partial XML alone is not accepted test success' > \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/xml-readme.txt\"\nprintf '%s\\n' 'EXCLUDED_EXISTING_AI_TESTS_NOT_G10_G11_OR_OFFICIAL' > \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/evidence-scope.txt\"\nfind \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR\" -maxdepth 6 -type f -printf \"%P %s bytes\\n\" | sort > \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/inventory.txt\"\n(cd \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR\" && find . -type f ! -name payload-sha256.txt -print0 | sort -z | xargs -0 sha256sum) > \"$ARGENTUM_R5_REGRESSION_EVIDENCE_DIR/payload-sha256.txt\"\n"
+        },
+        {
+          "uses": "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+          "if": "always()",
+          "with": {
+            "name": "g10-r5-existing-ai-regression-${{ github.run_id }}-attempt-${{ github.run_attempt }}",
+            "path": "${{ env.ARGENTUM_R5_REGRESSION_EVIDENCE_DIR }}/",
+            "if-no-files-found": "error",
+            "overwrite": false,
+            "retention-days": 90
+          }
+        }
+      ]
+    }
+  }
+}
