@@ -379,6 +379,13 @@ class Strategist(
                 .maxByOrNull { i -> leafScores[i] }
         } else null
 
+        // Expensive land/setup/focal counterfactuals depend on this fixed evaluation
+        // state and player, not on which candidate leaf is currently being scored.
+        // Keep the complete computed result (including null) lazy and local to one
+        // chooseAction invocation. No cross-decision cache or search truncation.
+        val landPayoffForDecision = lazy(LazyThreadSafetyMode.NONE) {
+            bestLandUnlockedPayoffSequence(evaluationState, playerId)
+        }
         val adjusted = (firstCandidate until leaves.size).map { i ->
             val ordinaryAdjustment = adjustScore(
                 evaluationState,
@@ -389,6 +396,7 @@ class Strategist(
                 passScore,
                 passAlreadyWins,
                 leafEvents[i],
+                landPayoffForDecision = { landPayoffForDecision.value },
             )
             Triple(
                 leaves[i],
@@ -897,6 +905,7 @@ class Strategist(
         passScore: Double,
         passAlreadyWins: Boolean,
         leafEvents: List<com.wingedsheep.engine.core.GameEvent>,
+        landPayoffForDecision: () -> LandUnlockedPayoffSequence?,
     ): AdjustedScore {
         val cardName = resolveCardName(state, action) ?: return AdjustedScore(leafScore)
         val cast = action.action as? CastSpell
@@ -920,6 +929,7 @@ class Strategist(
         // lets observational counterfactuals compare equivalent complete lines.
         val sequencing = strategicSequencingAdjustment(
             state, leafState, action, playerId, leafScore, passScore,
+            landPayoffForDecision,
         )
         val expiringConditionSequencing = lifeGainEnhancedSequencingAdjustment(
             state, leafState, action, playerId, leafScore,
@@ -984,7 +994,7 @@ class Strategist(
                 false,
             )
         }
-        if (shouldDeferForLandUnlockedSequence(state, action, playerId)) {
+        if (shouldDeferForLandUnlockedSequence(state, action, playerId, landPayoffForDecision)) {
             return adjusted(
                 passScore - 1.0,
                 "sequencing policy: legal land play unlocks a superior same-turn line",
@@ -1525,6 +1535,7 @@ class Strategist(
         playerId: EntityId,
         leafScore: Double,
         passScore: Double,
+        landPayoffForDecision: () -> LandUnlockedPayoffSequence?,
     ): Double {
         var delta = 0.0
         val cast = action.action as? CastSpell
@@ -1550,7 +1561,7 @@ class Strategist(
 
         val landPlay = action.action as? PlayLand
         if (landPlay != null) {
-            val setup = bestLandUnlockedPayoffSequence(state, playerId)
+            val setup = landPayoffForDecision()
             if (setup != null && setup.landId == landPlay.cardId) {
                 delta += (setup.projectedScore - leafScore).coerceAtLeast(0.0)
             }
@@ -1891,9 +1902,10 @@ class Strategist(
         state: GameState,
         action: LegalAction,
         playerId: EntityId,
+        landPayoffForDecision: () -> LandUnlockedPayoffSequence?,
     ): Boolean {
         val cast = action.action as? CastSpell ?: return false
-        val payoffSequence = bestLandUnlockedPayoffSequence(state, playerId)
+        val payoffSequence = landPayoffForDecision()
         if (payoffSequence != null) {
             if (cast.cardId == payoffSequence.setupCardId) return true
             val selectedFocal = simulator.getLegalActions(state, playerId)
