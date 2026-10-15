@@ -226,6 +226,7 @@ def assess(samples):
             candidates.append((i, j, compare(a, b)))
     positives = [{'from': i, 'to': j, **r} for i, j, r in candidates if r['status'] in POSITIVE_STATUSES]
     result['positive_evidence'] = positives
+    result['delta_semantics'] = 'one supporting interval only; never an aggregate over overlaps or gaps'
     result['gaps'] = [i for i, r in enumerate(intervals) if r['status'] == 'INCOMPLETE']
     result['intervals_complete'] = complete
     result['qualifying'] = complete and all(x['qualifying'] for x in intervals) and result['qualifying']
@@ -293,13 +294,23 @@ class ProcessScope:
             if r['pid'] in indexed:
                 issues.append('duplicate/ambiguous PID')
             indexed[r['pid']] = r
-        relevant = {pid for pid, r in indexed.items() if (pid, r['start']) == self.launch or pid in self.known}
+        invalid = set()
+        for pid, r in indexed.items():
+            old = self.known.get(pid)
+            if old and old['start'] != r['start']:
+                invalid.add(pid)
+                issues.append('PID reuse: ancestry binding rejected: '+str(pid))
+            parent = indexed.get(r['ppid'])
+            if parent and parent['start'] > r['start']:
+                invalid.add(pid)
+                issues.append('parent start-tick regression: '+str(pid))
+        relevant = {pid for pid, r in indexed.items() if pid not in invalid and ((pid, r['start']) == self.launch or pid in self.known)}
         # Require observed parent identity; process names alone never bind a JVM.
         changed = True
         while changed:
             changed = False
             for pid, r in indexed.items():
-                if pid not in relevant and r['ppid'] in relevant:
+                if pid not in relevant and pid not in invalid and r['ppid'] in relevant:
                     parent = indexed[r['ppid']]
                     if parent['start'] <= r['start']:
                         relevant.add(pid); changed = True
