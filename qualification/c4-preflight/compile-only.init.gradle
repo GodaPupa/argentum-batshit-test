@@ -1,0 +1,6 @@
+gradle.taskGraph.whenReady { graph ->
+    if (graph.allTasks.any { it instanceof org.gradle.api.tasks.testing.Test || it instanceof org.gradle.api.tasks.JavaExec }) {
+        throw new GradleException('Compile-only authorization: Test/JavaExec task prohibited')
+    }
+    println('COMPILE_ONLY_TASK_GRAPH=' + graph.allTasks.collect { it.path }.join(','))
+}
