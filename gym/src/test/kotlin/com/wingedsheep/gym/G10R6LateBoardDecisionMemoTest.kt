@@ -58,7 +58,7 @@ private fun runR6SyntheticState(
     check(System.getenv("PLAY_FIRST_ISOLATED_CASE_FILE").isNullOrBlank())
     check(System.getenv("ARGENTUM_SUCCESSOR_REQUEST_JSON").isNullOrBlank())
     System.getenv("GITHUB_REF")?.let {
-        check(it == "refs/heads/play-first/g10-r6-decision-local-sequence-cache-20261014")
+        check(it == "refs/heads/play-first/g10-r6-evidence-capture-correction-20261014")
     }
     System.getenv("GITHUB_RUN_ATTEMPT")?.let { check(it == "1") }
 
