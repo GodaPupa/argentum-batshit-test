@@ -1778,20 +1778,21 @@ class Strategist(
             state.projectedState.hasType(id, "LAND") && state.getEntity(id)?.has<TappedComponent>() != true
         }
         val manaValue = legal.manaCostString?.let { ManaCost.parse(it).cmc } ?: sources.size
+        // The unbounded recursive enumerator performed C(n,k) explicit
+        // payment simulations inside nested hypothetical spell sequences.
+        // Preserve the unchanged automatic-payment baseline and exhaustive
+        // choices when at most 16 exist. For larger universes, use at most 16
+        // deterministic representatives; these are *approximate* heuristic
+        // counterfactuals, never legal-action or engine payment restrictions.
         val actions = buildList {
             add(selected)
-            fun choose(start: Int, remaining: Int, chosen: MutableList<EntityId>) {
-                if (remaining == 0) {
-                    add(selected.copy(paymentStrategy = PaymentStrategy.Explicit(chosen.toList())))
-                    return
-                }
-                for (index in start..sources.size - remaining) {
-                    chosen += sources[index]
-                    choose(index + 1, remaining - 1, chosen)
-                    chosen.removeAt(chosen.lastIndex)
+            if (manaValue in 1..sources.size) {
+                for (choice in FocalSourceChoiceSampler.combinations(sources.size, manaValue)) {
+                    add(selected.copy(paymentStrategy = PaymentStrategy.Explicit(
+                        choice.map { index -> sources[index] }
+                    )))
                 }
             }
-            if (manaValue in 1..sources.size) choose(0, manaValue, mutableListOf())
         }
         return actions.distinct().mapNotNull { action ->
             when (val result = simulator.simulate(state, action)) {
