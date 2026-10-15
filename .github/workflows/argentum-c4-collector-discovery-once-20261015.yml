@@ -1,0 +1,106 @@
+name: ARGENTUM C4 one-shot raw cgroup discovery 20261015
+on:
+  push:
+    branches: [infra/argentum-c4-collector-discovery-once-20261015]
+permissions:
+  contents: read
+concurrency:
+  group: argentum-c4-collector-discovery-once-20261015
+  cancel-in-progress: false
+jobs:
+  raw-discovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 2
+    steps:
+      - name: One-shot source and event gate
+        shell: bash
+        env:
+          WORKFLOW_REF: ${{ github.workflow_ref }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = GodaPupa/argentum-batshit-test
+          test "$GITHUB_EVENT_NAME" = push
+          test "$GITHUB_REF" = refs/heads/infra/argentum-c4-collector-discovery-once-20261015
+          test "$GITHUB_RUN_NUMBER/$GITHUB_RUN_ATTEMPT" = 1/1
+          test "$WORKFLOW_REF" = GodaPupa/argentum-batshit-test/.github/workflows/argentum-c4-collector-discovery-once-20261015.yml@refs/heads/infra/argentum-c4-collector-discovery-once-20261015
+      - name: Short read-only /proc and cgroup discovery
+        shell: bash
+        run: |
+          set -euo pipefail
+          export OUT="$RUNNER_TEMP/argentum-c4-collector-discovery"
+          mkdir -p "$OUT"
+          timeout --signal=TERM --kill-after=5s 45s python3 - <<'PY'
+          import json,os,pathlib,time,subprocess,re,traceback
+          O=pathlib.Path(os.environ['OUT']); pid=os.getpid()
+          def save(n,s):(O/n).write_text(s)
+          def get(p):
+           try:return pathlib.Path(p).read_text()
+           except OSError as e:return 'UNAVAILABLE: '+repr(e)+'\n'
+          cg=get('/proc/self/cgroup'); mi=get('/proc/self/mountinfo'); boot=get('/proc/sys/kernel/random/boot_id')
+          save('self-cgroup.txt',cg);save('mountinfo.txt',mi);save('boot-id.txt',boot)
+          save('source.txt',json.dumps({'source_sha':os.environ['GITHUB_SHA'],'run_id':os.environ['GITHUB_RUN_ID'],'attempt':os.environ['GITHUB_RUN_ATTEMPT'],'reference_collector_sha256':'9039d721566964339072cd7b6103450688f77466ec3d829c079ebd02ba08749f','c4_historical':'INCOMPLETE','purpose':'RAW_HOST_DISCOVERY_ONLY_NO_C4_ADMISSION'},indent=2)+'\n')
+          child=None; found=[]; errors=[]
+          try:
+           child=subprocess.Popen(['sleep','3']); time.sleep(.2)
+           child_cg=get('/proc/'+str(child.pid)+'/cgroup');save('child-cgroup.txt',child_cg)
+           for row in cg.splitlines():
+            f=row.split(':',2)
+            if len(f)!=3:continue
+            ver=2 if f[0]=='0' and not f[1] else 1 if 'memory' in f[1].split(',') else 0
+            if not ver:continue
+            group=pathlib.PurePosixPath(f[2])
+            if not group.is_absolute() or '..' in group.parts:continue
+            for line in mi.splitlines():
+             cols=line.split()
+             if '-' not in cols:continue
+             idx=cols.index('-')
+             if len(cols)!=idx+4:continue
+             fs=cols[idx+1];opts=set(cols[5].split(','))|set(cols[idx+3].split(','))
+             if not ((ver==2 and fs=='cgroup2') or (ver==1 and fs=='cgroup' and 'memory' in opts)):continue
+             root=pathlib.PurePosixPath(cols[3]);mount=pathlib.PurePosixPath(cols[4]);paths=[]
+             if group.is_relative_to(root):paths.append(mount/group.relative_to(root))
+             if str(root)!='/':paths.append(mount/group.relative_to('/'))
+             for d in paths:
+              try:
+               procs=get(str(d/'cgroup.procs'))
+               if str(pid) not in procs.split():continue
+               counter=d/('memory.events' if ver==2 else 'memory.oom_control')
+               a=get(str(counter));time.sleep(.55);b=get(str(counter))
+               save('resolved-counter-before.txt',a);save('resolved-counter-after.txt',b);save('resolved-procs.txt',procs)
+               def parse(s):
+                pairs=[r.split() for r in s.splitlines()];return {k:int(v) for k,v in pairs if len([k,v])==2 and v.isdigit()}
+               ca,cb=parse(a),parse(b);required=['oom','oom_kill'] if ver==2 else ['oom_kill']
+               good=all(k in ca and k in cb and cb[k]>=ca[k] for k in required)
+               found.append({'version':ver,'mount':str(mount),'root':str(root),'directory':str(d),'counter':str(counter),'identity':list((os.stat(counter).st_dev,os.stat(counter).st_ino)),'required_counters':required,'before':ca,'after':cb,'scope':'v2_subtree' if ver==2 and 'memory_localevents' not in opts else 'nonqualifying','verified':good,'child_in_procs':str(child.pid) in procs.split(),'child_same_membership':child_cg==cg})
+              except Exception as e:errors.append(repr(e))
+           uniq={tuple(x['identity']) for x in found}
+           qualifying=len(uniq)==1 and len(found)>=1 and all(x['verified'] and x['scope']=='v2_subtree' and x['child_in_procs'] and x['child_same_membership'] for x in found)
+           status='HOST_CONTROLLER_DISCOVERED' if qualifying else 'INCOMPLETE'
+           save('result.json',json.dumps({'status':status,'findings':found,'errors':errors,'historical_C4':'INCOMPLETE','C4_PASS':False,'collector_candidate_hosted_qualified':False},indent=2)+'\n')
+           print(status,'candidate_mounts',len(found))
+           raise SystemExit(0 if qualifying else 2)
+          except BaseException as e:
+           if not (O/'result.json').exists():save('result.json',json.dumps({'status':'INCOMPLETE','reason':repr(e),'traceback':traceback.format_exc(),'historical_C4':'INCOMPLETE'})+'\n')
+           raise
+          finally:
+           if child:
+            try:child.terminate();child.wait(timeout=2)
+            except (ProcessLookupError,subprocess.TimeoutExpired):child.kill();child.wait(timeout=2)
+          PY
+      - name: Seal partial or complete evidence
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          o="$RUNNER_TEMP/argentum-c4-collector-discovery"
+          mkdir -p "$o"
+          if ! test -f "$o/result.json"; then echo '{"status":"INCOMPLETE","reason":"probe did not finish","historical_C4":"INCOMPLETE"}' > "$o/result.json"; fi
+          cd "$o"
+          find . -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ always() }}
+        with:
+          name: argentum-c4-collector-discovery-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/argentum-c4-collector-discovery
+          if-no-files-found: error
+          retention-days: 90
