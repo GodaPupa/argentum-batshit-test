@@ -1,0 +1,81 @@
+{
+  "name": "Argentum G10 R4 excluded focal cache synthetic qualification",
+  "on": {
+    "push": {
+      "branches": [
+        "play-first/g10-r4-focal-first-cache-probe-20261014"
+      ]
+    }
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "concurrency": {
+    "group": "argentum-g10-r4-focal-cache-original-20261014",
+    "cancel-in-progress": false
+  },
+  "jobs": {
+    "qualify": {
+      "if": "github.repository == 'GodaPupa/argentum-batshit-test' && github.event_name == 'push' && github.ref == 'refs/heads/play-first/g10-r4-focal-first-cache-probe-20261014' && github.run_number == 1 && github.run_attempt == 1",
+      "runs-on": "ubuntu-24.04",
+      "timeout-minutes": 29,
+      "env": {
+        "ARGENTUM_G10_R4_PROFILE": "EXCLUDED_LATE_BOARD_ONLY",
+        "ARGENTUM_G10_R4_EVIDENCE_DIR": "/tmp/argentum-g10-r4-synthetic-${{ github.run_id }}"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "fetch-depth": 2,
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Fail closed on exact source and no-gameplay scope",
+          "shell": "bash",
+          "run": "set -euo pipefail\ntest \"$(git rev-parse HEAD^)\" = 'ae6cabd07552fe57b8e0a55d4db92f81da8729f5'\ntest \"$(git diff --name-only HEAD^ HEAD)\" = \"$(printf '%s\\n' '.github/workflows/g10-r4-focal-cache-synthetic-20261014.yml' 'ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt' 'docs/experiments/play-first/isolation-v2/G10_R4_FOCAL_CACHE_PROTOCOL.md' 'gym/src/test/kotlin/com/wingedsheep/gym/G10R4LateBoardCacheQualificationTest.kt' 'gym/src/test/kotlin/com/wingedsheep/gym/G10R4SparseDenseParityTest.kt')\"\ngit diff --check HEAD^ HEAD\ntest \"$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt)\" = 'a337a45157c527345b809eebbd4b50fddc2dce1f'\ntest \"$(git rev-parse HEAD:docs/experiments/play-first/isolation-v2/G10_R4_FOCAL_CACHE_PROTOCOL.md)\" = '3c6a4f5923ec15a2197edf6dee2c560431028434'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/G10R4LateBoardCacheQualificationTest.kt)\" = 'ae678549b0b34f1616442719aafd18b0fb9482c4'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/G10R4SparseDenseParityTest.kt)\" = '8df36d860bce9134d2f90234144d500b4d292989'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstOneShotPestMonsterTronTest.kt)\" = '5ae14e0ed7212c317deecfa1cbd6a54a809c211a'\ntest \"$(git rev-parse HEAD:.github/workflows/play-first-successor-nonofficial-v2.yml)\" = '18c451f9c20e09e58a109c85c8d3c96c645d2558'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/G10LateBoardSyntheticAttributionTest.kt)\" = '2816f37d22a57a828cf775d29a74a3eabb5ced6b'\ntest -z \"${PLAY_FIRST_ONE_SHOT_ACK:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_ACK:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_CASE_FILE:-}\"\ntest -z \"${ARGENTUM_SUCCESSOR_REQUEST_JSON:-}\"\nmkdir -p \"$ARGENTUM_G10_R4_EVIDENCE_DIR\"\ngit rev-parse HEAD HEAD^{tree} HEAD^ > \"$ARGENTUM_G10_R4_EVIDENCE_DIR/source-identities.txt\"\nprintf '%s\\n' 'R4_EXCLUDED_SYNTHETIC_SOURCE_ONLY_NO_GAMEPLAY' > \"$ARGENTUM_G10_R4_EVIDENCE_DIR/scope-gate.txt\"\n"
+        },
+        {
+          "uses": "actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961",
+          "with": {
+            "distribution": "temurin",
+            "java-version": "21"
+          }
+        },
+        {
+          "uses": "extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b"
+        },
+        {
+          "uses": "gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6",
+          "with": {
+            "cache-read-only": true
+          }
+        },
+        {
+          "name": "Run only excluded synthetic R2 controls followed by R3-equivalent R4 profile",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$ARGENTUM_G10_R4_EVIDENCE_DIR\"\njava -version > \"$ARGENTUM_G10_R4_EVIDENCE_DIR/java-version.txt\" 2>&1\n# Never execute full game classes or official experiments. This is one bounded test process.\ntimeout --signal=TERM --kill-after=30s 20m bash -c '\n    set -euo pipefail\n    just test-class G10R4SparseDenseParityTest --no-daemon --no-build-cache --console=plain\n    # Two separate Gradle invocations use the same XML output path. Save the\n    # R2 control XML before running the late-board test to prevent overwrite.\n    test -s gym/build/test-results/test/TEST-com.wingedsheep.gym.G10R4SparseDenseParityTest.xml\n    mkdir -p \"$ARGENTUM_G10_R4_EVIDENCE_DIR/control\"\n    cp -a gym/build/test-results/test \"$ARGENTUM_G10_R4_EVIDENCE_DIR/control/test-results\"\n    if test -d gym/build/reports/tests/test; then\n        cp -a gym/build/reports/tests/test \"$ARGENTUM_G10_R4_EVIDENCE_DIR/control/test-report\"\n    fi\n    printf '%s\\n' 'EXCLUDED_CONTROL_XML_CAPTURED' > \"$ARGENTUM_G10_R4_EVIDENCE_DIR/control-complete.txt\"\n    printf '%s\\n' 'STARTED_NOT_EVIDENCE_OF_PASS' > \"$ARGENTUM_G10_R4_EVIDENCE_DIR/late-test-started.txt\"\n    just test-class G10R4LateBoardCacheQualificationTest --no-daemon --no-build-cache --console=plain\n    test -s gym/build/test-results/test/TEST-com.wingedsheep.gym.G10R4LateBoardCacheQualificationTest.xml\n    mkdir -p \"$ARGENTUM_G10_R4_EVIDENCE_DIR/late\"\n    cp -a gym/build/test-results/test \"$ARGENTUM_G10_R4_EVIDENCE_DIR/late/test-results\"\n    if test -d gym/build/reports/tests/test; then\n        cp -a gym/build/reports/tests/test \"$ARGENTUM_G10_R4_EVIDENCE_DIR/late/test-report\"\n    fi\n    printf '%s\\n' 'EXCLUDED_LATE_XML_CAPTURED' > \"$ARGENTUM_G10_R4_EVIDENCE_DIR/late-complete.txt\"\n' 2>&1 | tee \"$ARGENTUM_G10_R4_EVIDENCE_DIR/child.log\"\n"
+        },
+        {
+          "name": "Preserve success/failure/timeout and partial excluded evidence",
+          "if": "always()",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$ARGENTUM_G10_R4_EVIDENCE_DIR\"\nif test -d gym/build/test-results/test; then cp -a gym/build/test-results/test \"$ARGENTUM_G10_R4_EVIDENCE_DIR/unclassified-last-test-results\"; fi\nif test -d gym/build/reports/tests/test; then cp -a gym/build/reports/tests/test \"$ARGENTUM_G10_R4_EVIDENCE_DIR/unclassified-last-test-report\"; fi\nprintf '%s\\n' 'unclassified-last-test-results must NEVER be read as control or late success without corroborating their own class XML and the completed markers' > \"$ARGENTUM_G10_R4_EVIDENCE_DIR/xml-readme.txt\"\nprintf '%s\\n' 'R4_SYNTHETIC_SOURCE_ONLY_NOT_G10_G11_OR_OFFICIAL' > \"$ARGENTUM_G10_R4_EVIDENCE_DIR/evidence-scope.txt\"\nfind \"$ARGENTUM_G10_R4_EVIDENCE_DIR\" -maxdepth 6 -type f -printf '%P %s bytes\\n' | sort > \"$ARGENTUM_G10_R4_EVIDENCE_DIR/inventory.txt\"\n(cd \"$ARGENTUM_G10_R4_EVIDENCE_DIR\" && find . -type f ! -name payload-sha256.txt -print0 | sort -z | xargs -0 sha256sum) > \"$ARGENTUM_G10_R4_EVIDENCE_DIR/payload-sha256.txt\"\n"
+        },
+        {
+          "uses": "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+          "if": "always()",
+          "with": {
+            "name": "g10-r4-excluded-focal-cache-${{ github.run_id }}-attempt-${{ github.run_attempt }}",
+            "path": "${{ env.ARGENTUM_G10_R4_EVIDENCE_DIR }}/",
+            "if-no-files-found": "error",
+            "overwrite": false,
+            "retention-days": 90
+          }
+        }
+      ]
+    }
+  }
+}

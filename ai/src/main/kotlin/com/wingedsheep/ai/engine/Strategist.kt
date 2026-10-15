@@ -1685,6 +1685,11 @@ class Strategist(
             return null
         }
 
+        // A focal-first counterfactual depends only on this immutable root state,
+        // player and the three card IDs. The setup/focal payment variants below
+        // repeatedly request identical computations. Keep both successful and
+        // null results local to this single search; never reuse across decisions.
+        val focalFirstScoreCache = mutableMapOf<Triple<EntityId, EntityId, EntityId>, Double?>()
         val legalNow = simulator.getLegalActions(state, playerId)
         val immediateEvents = legalNow.filter { isImmediateEventCast(state, it) }
         if (immediateEvents.isEmpty()) return null
@@ -1717,9 +1722,14 @@ class Strategist(
                         val focalId = (focal.action as CastSpell).cardId
                         castStatesWithSourceChoices(setupState, focal, playerId).asSequence().mapNotNull { completed ->
                             val setupFirstScore = evaluator.evaluate(completed, completed.projectedState, playerId)
-                            val focalFirstScore = focalFirstCompleteScore(
-                                state, playerId, focalId, land.cardId, setupId,
-                            ) ?: return@mapNotNull null
+                            val focalKey = Triple(land.cardId, setupId, focalId)
+                            val focalFirstScore = if (focalFirstScoreCache.containsKey(focalKey)) {
+                                focalFirstScoreCache[focalKey]
+                            } else {
+                                focalFirstCompleteScore(
+                                    state, playerId, focalId, land.cardId, setupId,
+                                ).also { focalFirstScoreCache[focalKey] = it }
+                            } ?: return@mapNotNull null
                             if (setupFirstScore <= focalFirstScore + MATERIAL_SEQUENCE_MARGIN) return@mapNotNull null
                             LandUnlockedPayoffSequence(
                                 land.cardId, setupId, focalId, setupFirstScore, focalFirstScore,
