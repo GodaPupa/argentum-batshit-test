@@ -348,7 +348,9 @@ sealed interface KeywordAbility {
          * onto the resolving permanent, and the payoff conditions and cast-trigger filters key
          * off it — so two mechanics on the same rail never read each other's declaration.
          */
-        val declaredSlot: ChoiceSlot = ChoiceSlot.KICKED
+        val declaredSlot: ChoiceSlot = ChoiceSlot.KICKED,
+        /** On casting, create a copy for each elected payment via one triggered ability. */
+        val copySpellForEachPayment: Boolean = false
     ) : KeywordAbility {
         init {
             require(manaCost != null || additionalCost != null) {
@@ -1433,6 +1435,24 @@ sealed interface KeywordAbility {
         fun kicker(cost: ManaCost): KeywordAbility = OptionalAdditionalCost(manaCost = cost)
 
         /**
+         * Create Buyback with a mana cost (CR 702.27). Buyback uses the generic optional
+         * additional-cost rail but stamps its own slot so it never reads as kicker.
+         */
+        fun buyback(cost: String): KeywordAbility = OptionalAdditionalCost(
+            manaCost = ManaCost.parse(cost),
+            displayPrefix = "Buyback",
+            branchesEffect = false,
+            declaredSlot = ChoiceSlot.BUYBACK,
+        )
+
+        fun buyback(cost: ManaCost): KeywordAbility = OptionalAdditionalCost(
+            manaCost = cost,
+            displayPrefix = "Buyback",
+            branchesEffect = false,
+            declaredSlot = ChoiceSlot.BUYBACK,
+        )
+
+        /**
          * Create Kicker with a non-mana additional cost (e.g., sacrifice a creature).
          */
         fun kicker(additionalCost: AdditionalCost): KeywordAbility =
@@ -1441,6 +1461,12 @@ sealed interface KeywordAbility {
         /**
          * Create Multikicker — a kicker whose cost can be paid any number of times.
          */
+        fun replicate(cost: String): KeywordAbility = OptionalAdditionalCost(
+            manaCost = ManaCost.parse(cost), multi = true, displayPrefix = "Replicate",
+            declaredSlot = ChoiceSlot.REPLICATED, branchesEffect = false,
+            copySpellForEachPayment = true
+        )
+
         fun multikicker(cost: String): KeywordAbility = OptionalAdditionalCost(
             manaCost = ManaCost.parse(cost),
             multi = true,

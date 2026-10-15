@@ -82,6 +82,8 @@ data class CastSpell(
      * is never mistaken for a kicked one.
      */
     val declaredCostSlot: ChoiceSlot? = null,
+    /** Announced optional additional-cost payments, keyed by mechanic. */
+    val optionalCostCounts: Map<ChoiceSlot, Int> = emptyMap(),
     /**
      * Whether the spell's *optional* waterbend additional cost was elected (Avatar: The Last
      * Airbender — [com.wingedsheep.sdk.scripting.SpellWaterbendCost] with `optional = true`).

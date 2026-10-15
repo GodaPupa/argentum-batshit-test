@@ -89,6 +89,18 @@ sealed interface ManaColorSet {
     }
 
     /**
+     * The union of colors that a basic land controlled by the resolving player could produce.
+     * Tapped state and unpayable activation costs are ignored; colorless production is ignored.
+     * This is deliberately narrower than [LandsCouldProduce] with [LandControllerScope.YOU]:
+     * nonbasic lands never widen the pool.
+     */
+    @SerialName("ManaColorSet.BasicLandsYouControlCouldProduce")
+    @Serializable
+    data object BasicLandsYouControlCouldProduce : ManaColorSet {
+        override val description: String = "any color that a basic land you control could produce"
+    }
+
+    /**
      * The union of colors among the cards currently exiled *with* the source permanent — the
      * cards recorded in its `LinkedExileComponent` (set by `MoveToZoneEffect(linkToSource = true)`)
      * that are still in the exile zone. Colors are read from each exiled card's base colors

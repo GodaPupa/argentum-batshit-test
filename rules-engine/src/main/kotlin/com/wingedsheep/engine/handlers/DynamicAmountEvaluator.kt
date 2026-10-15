@@ -224,7 +224,8 @@ class DynamicAmountEvaluator(
                         source?.blightAmountChoice() ?: context.additionalCostBlightAmount
                     // Any other numeric slot (e.g. CHOSEN_NUMBER for Shapeshifter) is read
                     // generically off the durable cast-choices bag as a NumberChoice.
-                    else -> source?.numberChoice(amount.slot) ?: 0
+                    else -> source?.numberChoice(amount.slot)
+                        ?: source?.get<SpellOnStackComponent>()?.optionalCostCounts?.get(amount.slot) ?: 0
                 }
             }
 

@@ -664,6 +664,24 @@ recorded responses while keeping their player and choice payloads.
 - **Deterministic replay.** The continuation stack is part of `GameState`. A replay log of actions
   deterministically reproduces the exact sequence of decisions and resumptions.
 
+#### Direct permanent entry choices
+
+`PreEntryOperation` suspends a direct battlefield-entry instruction before placement. It stores
+all entering source visits, source zones, controllers, attachment-host visits, choice cursors,
+and the original effect context. The existing color/type/mode/number/host decisions collect
+answers in the serialized operation; no permanent or attachment is visible during the pause.
+Only after every entry in the collection has its answers does the original zone executor commit
+placement and attachment. Stale source or host visits are skipped. The resumer forwards pipeline
+collections and detects the resulting entry events once before draining outer continuations.
+
+The initial scope is `EntersWithChoice` through `MoveToZone`, fixed attached return, and fixed-zone
+`MoveCollection`. Face-down and transformed entry continue through their existing paths.
+An entry batch containing an `EntersAsCopy` consumer delegates to the existing route before
+collecting any choices; consuming just the printed choice would assume an incorrect replacement order.
+Copy-entry, arbitrary `OnEnterRunEffect` replacements, and mixed per-card destinations remain
+separate boundaries; this operation is not a claim of complete replacement orchestration.
+No new decision protocol or client component is introduced.
+
 ### 2.5 Explicit Event Emission
 
 **Principle:** Every state mutation emits an explicit, typed event.
@@ -1906,3 +1924,16 @@ complexity:
 
 The result is a system where each layer has a clear, minimal responsibility — the SDK describes,
 the engine executes, the server orchestrates, and the client renders.
+
+### Historical spell-copy state
+
+A triggered copy can resolve after its original spell leaves the stack. Stack removal
+captures `SpellCopySnapshot` under the original object generation in
+`GameState.departedSpellCopies`. The snapshot contains copiable card characteristics,
+structured cast choices and target identities, not the original runtime component bag.
+These records persist for the game because delayed copies may outlive a turn boundary.
+Copy continuations carry the resolved snapshot across player input and serialization.
+Target selection evaluates a temporary prospective copy through the existing target
+finder; the actual copy is created only after selection. A captured source reference
+never resolves to a later casting of the same card. See
+`docs/experiments/izzet/historical-spell-copy-20261003.md` for the qualification contract.

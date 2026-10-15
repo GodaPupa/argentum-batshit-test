@@ -44,6 +44,9 @@ import kotlinx.serialization.EncodeDefault
 @KeepGeneratedSerializer
 @Serializable(with = LegacyGameStateSerializer::class)
 data class GameState(
+    /** Immutable activation-time protection attachment exceptions; never sampled by an SBA. */
+    val protectionAttachmentActivations: List<com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentActivation> = emptyList(),
+    val nextProtectionAttachmentEpoch: Long = 1L,
     /** All entities in the game, keyed by their ID */
     val entities: Map<EntityId, ComponentContainer> = emptyMap(),
 
@@ -52,6 +55,9 @@ data class GameState(
 
     /** Exile piles of departed battlefield visits, keyed by their unique entry timestamp. */
     val departedLinkedExile: Map<Long, List<EntityId>> = emptyMap(),
+
+    /** Historical copiable spell state keyed by the original stack object's generation. */
+    val departedSpellCopies: Map<Long, com.wingedsheep.engine.state.components.stack.SpellCopySnapshot> = emptyMap(),
 
     /** Outstanding zone-return one-shot effects, independent of the source's current abilities. */
     val zoneReturns: List<ZoneReturn> = emptyList(),
@@ -1083,7 +1089,7 @@ data class GameState(
     fun popFromStack(): Pair<EntityId?, GameState> {
         if (stack.isEmpty()) return null to this
         val top = stack.last()
-        return top to copy(stack = stack.dropLast(1))
+        return top to removeFromStack(top)
     }
 
     /**
@@ -1103,8 +1109,14 @@ data class GameState(
     /**
      * Remove a specific entity from the stack (for countering).
      */
-    fun removeFromStack(entityId: EntityId): GameState =
-        copy(stack = stack - entityId)
+    fun removeFromStack(entityId: EntityId): GameState {
+        if (entityId !in stack) return this
+        val current = if (objectRef(entityId) == null) initializeObjectIdentities() else this
+        val snapshot = com.wingedsheep.engine.state.components.stack.SpellCopySnapshot.capture(current, entityId)
+        return current.copy(stack = current.stack - entityId,
+            departedSpellCopies = if (snapshot == null) current.departedSpellCopies else
+                current.departedSpellCopies + (snapshot.reference.generation to snapshot))
+    }
 
     // =========================================================================
     // Convenience Zone Accessors

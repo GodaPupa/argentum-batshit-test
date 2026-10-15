@@ -574,7 +574,7 @@ object ZoneMovementUtils {
      * @param canRegenerate If false, regeneration shields are not checked (e.g. Wrath of God)
      * @return The execution result with updated state and events
      */
-    fun destroyPermanent(state: GameState, entityId: EntityId, canRegenerate: Boolean = true): EffectResult {
+    fun destroyPermanent(state: GameState, entityId: EntityId, canRegenerate: Boolean = true, byEffect: Boolean = true): EffectResult {
         val container = state.getEntity(entityId)
             ?: return EffectResult.error(state, "Entity not found: $entityId")
 
@@ -586,36 +586,7 @@ object ZoneMovementUtils {
             return EffectResult.success(state)
         }
 
-        // CR 122.1c: "If this permanent would be destroyed as the result of an effect, instead
-        // remove a shield counter from it." This is that destruction-by-effect chokepoint; the
-        // lethal-damage state-based action deliberately does not consult shield counters (see
-        // [consumeShieldCounter]).
-        //
-        // Checked before regeneration because CR 616.1 lets the permanent's controller order the
-        // applicable replacement effects, and the shield counter is strictly the better one to spend
-        // first: it costs no tap, doesn't remove the permanent from combat, doesn't clear marked
-        // damage, survives "can't be regenerated", and leaves any regeneration shield banked for
-        // later. It is *not* regeneration (per the official rulings) — hence its own branch rather
-        // than a synthesized regeneration shield.
-        consumeShieldCounter(state, entityId)?.let { (shieldedState, event) ->
-            return EffectResult.success(shieldedState, listOf(event))
-        }
-
-        // Check for regeneration shields
-        if (canRegenerate) {
-            val (shieldState, wasRegenerated) = applyRegenerationShields(state, entityId)
-            if (wasRegenerated) {
-                return applyRegenerationReplacement(shieldState, entityId)
-            }
-        }
-
-        // Check for remove-damage destruction shields (Pyramids). Independent of
-        // `canRegenerate` — Pyramids' replacement isn't a regeneration ability and isn't
-        // shut off by "can't be regenerated this turn" effects.
-        val (damageShieldState, wasShielded) = applyRemoveDamageShields(state, entityId)
-        if (wasShielded) {
-            return applyRemoveDamageReplacement(damageShieldState, entityId)
-        }
+        DestructionReplacements.replace(state, entityId, canRegenerate, byEffect)?.let { return it }
 
         // Delegate to ZoneTransitionService
         val result = ZoneTransitionService.moveToZone(state, entityId, Zone.GRAVEYARD)

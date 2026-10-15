@@ -371,7 +371,10 @@ data class ManaCost(val symbols: List<ManaSymbol>) {
     operator fun times(n: Int): ManaCost {
         require(n >= 0) { "Cannot multiply a mana cost by a negative number: $n" }
         if (n == 0) return ZERO
-        return (1 until n).fold(this) { acc, _ -> acc + this }
+        val generic = Math.multiplyExact(genericAmount, n)
+        val other = symbols.filterNot { it is ManaSymbol.Generic }
+        val repeated = if (other.isEmpty()) emptyList() else List(Math.multiplyExact(other.size, n)) { other[it % other.size] }
+        return ManaCost((if (generic > 0) listOf(ManaSymbol.generic(generic)) else emptyList()) + repeated)
     }
 
     override fun toString(): String = symbols.joinToString("")

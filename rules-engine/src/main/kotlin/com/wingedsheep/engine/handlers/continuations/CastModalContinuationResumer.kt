@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.handlers.continuations
 
+import com.wingedsheep.engine.core.OptionalCostCountContinuation
+import com.wingedsheep.engine.core.NumberChosenResponse
 import com.wingedsheep.engine.core.CancelDecisionResponse
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.CastModalModeSelectionContinuation
@@ -37,10 +39,28 @@ class CastModalContinuationResumer(
     private val castSpellHandler: CastSpellHandler by lazy { CastSpellHandler.create(services) }
 
     override fun resumers(): List<ContinuationResumer<*>> = listOf(
+        resumer(OptionalCostCountContinuation::class, ::resumeOptionalCostCount),
         resumer(CastModalModeSelectionContinuation::class, ::resumeCastModalModeSelection),
         resumer(CastModalTargetSelectionContinuation::class, ::resumeCastModalTargetSelection),
         resumer(CastSpellAdditionalCostContinuation::class, ::resumeCastSpellAdditionalCost)
     )
+
+    fun resumeOptionalCostCount(
+        state: GameState,
+        continuation: OptionalCostCountContinuation,
+        response: DecisionResponse,
+        @Suppress("UNUSED_PARAMETER") checkForMore: CheckForMore
+    ): ExecutionResult {
+        if (response !is NumberChosenResponse || response.number < 0)
+            return ExecutionResult.error(state, "Expected a nonnegative optional-cost count")
+        val action = continuation.action.copy(
+            optionalCostCounts = continuation.action.optionalCostCounts + (continuation.slot to response.number),
+            declaredCostSlot = continuation.slot.takeIf { response.number > 0 }
+        )
+        val ready = state.withPriority(action.playerId)
+        castSpellHandler.validate(ready, action)?.let { return ExecutionResult.error(state, it) }
+        return castSpellHandler.execute(ready, action)
+    }
 
     /**
      * Resume after the caster picks how to pay one selection-requiring additional cost on a free

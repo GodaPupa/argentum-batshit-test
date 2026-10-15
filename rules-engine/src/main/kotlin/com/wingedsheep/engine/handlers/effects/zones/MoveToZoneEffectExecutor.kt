@@ -88,7 +88,7 @@ class MoveToZoneEffectExecutor(
 
         // Resolve controller override for "under your control" effects
         val controllerOverride = effect.controllerOverride
-        val controllerId = if (controllerOverride != null && effect.destination == Zone.BATTLEFIELD) {
+        val controllerId = context.preEntryOperation?.entries?.firstOrNull { it.source.entityId == targetId }?.controller ?: if (controllerOverride != null && effect.destination == Zone.BATTLEFIELD) {
             context.resolveTarget(controllerOverride, state) ?: ownerId
         } else {
             ownerId
@@ -101,7 +101,7 @@ class MoveToZoneEffectExecutor(
         // during stack resolution and never reach this executor, and the explicit
         // "attached to ..." effect has its own executor, so a generic move-to-battlefield of an
         // Aura is always the choose-as-it-enters case.
-        if (effect.destination == Zone.BATTLEFIELD && effect.faceDown == null && cardComponent.typeLine.isAura) {
+        if (effect.destination == Zone.BATTLEFIELD && effect.faceDown == null && cardComponent.typeLine.isAura && context.preEntryOperation == null) {
             return attachAuraOnEnter(state, targetId, cardComponent, controllerId, context)
         }
 
@@ -123,6 +123,16 @@ class MoveToZoneEffectExecutor(
         )
 
         var resultState = transitionResult.state
+        if (transitionResult.actualDestination == Zone.BATTLEFIELD) {
+            context.preEntryOperation?.entries?.firstOrNull { it.source.entityId == targetId }?.host?.let { host ->
+                resultState = resultState.updateEntity(targetId) { it.with(com.wingedsheep.engine.state.components.battlefield.AttachedToComponent(host.entityId)) }
+                resultState = resultState.updateEntity(host.entityId) { c ->
+                    val attachments = c.get<com.wingedsheep.engine.state.components.battlefield.AttachmentsComponent>()
+                        ?: com.wingedsheep.engine.state.components.battlefield.AttachmentsComponent(emptyList())
+                    c.with(attachments.copy(attachedIds = (attachments.attachedIds + targetId).distinct()))
+                }
+            }
+        }
         val extraEvents = mutableListOf<com.wingedsheep.engine.core.GameEvent>()
 
         // Apply "enters with counters" replacement effects when a permanent enters the

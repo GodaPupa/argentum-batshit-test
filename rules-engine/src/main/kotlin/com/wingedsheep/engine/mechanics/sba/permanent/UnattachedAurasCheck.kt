@@ -176,7 +176,7 @@ class UnattachedAurasCheck(
                     newState = next
                     events.addAll(auraEvents)
                 } else if (
-                    hostProtectedFromAttachmentColor(projected, entityId, cardComponent, attachedTo.targetId)
+                    hostProtectedFromAttachmentColor(state, projected, entityId, cardComponent, attachedTo.targetId)
                 ) {
                     // CR 702.16c/d: the host has protection from one of this attachment's colors
                     // (gained after the attachment landed — e.g. White Ward's pro-white sends an
@@ -284,41 +284,25 @@ class UnattachedAurasCheck(
         else -> null
     }
 
-    /**
-     * True when the attached permanent's host has protection from one of the attachment's
-     * (projected) colors, CR 702.16c/d. An attachment whose own printed [GrantProtection]
-     * grants that color's protection is exempt — the Ward cycle's "This effect doesn't remove
-     * this Aura". (Approximation: the exemption is per-color rather than per-effect, so two
-     * same-color Wards on one host both survive where strict rules would remove each via the
-     * other's effect — an untracked-provenance corner case.)
-     */
+    /** Each matching protection grant must independently allow this attachment to remain. */
     private fun hostProtectedFromAttachmentColor(
+        state: com.wingedsheep.engine.state.GameState,
         projected: ProjectedState,
         attachmentId: EntityId,
         attachmentCard: CardComponent,
         hostId: EntityId
     ): Boolean {
         val colors = projected.getColors(attachmentId)
-        if (colors.isEmpty()) return false
-        val statics = cardRegistry.getCard(attachmentCard.cardDefinitionId)
-            ?.staticAbilities
-            .orEmpty()
-        // Dynamic protection grants (chosen color, colors of controlled permanents) can cover
-        // any color at any time — exempt the attachment from protection-removal entirely
-        // (Pledge of Loyalty's "This effect doesn't remove Pledge of Loyalty").
-        if (statics.any {
-                it is com.wingedsheep.sdk.scripting.GrantProtectionFromControlledColors ||
-                    it is com.wingedsheep.sdk.scripting.GrantProtectionFromChosenColorToGroup
-            }
-        ) return false
-        val selfGrantedColors: Set<Color> = statics
-            .filterIsInstance<GrantProtection>()
-            .map { it.color }
-            .toSet()
+        val grants = projected.colorProtectionGrants(hostId)
         return Color.entries.any { color ->
-            color.name in colors &&
-                color !in selfGrantedColors &&
-                projected.hasKeyword(hostId, "PROTECTION_FROM_${color.name}")
+            if (color.name !in colors || !projected.hasKeyword(hostId, "PROTECTION_FROM_${color.name}")) false
+            else {
+                val matching = grants.filter { it.color == color.name }
+                matching.isEmpty() || matching.any { grant ->
+                    !((grant.retainsSourceAttachment && grant.sourceId == attachmentId) ||
+                        com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.retains(state, hostId, attachmentId, grant))
+                }
+            }
         }
     }
 }

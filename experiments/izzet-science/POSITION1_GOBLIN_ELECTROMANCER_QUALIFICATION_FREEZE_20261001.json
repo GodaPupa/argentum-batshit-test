@@ -1,0 +1,48 @@
+{
+  "schema": "izzet-position1-goblin-electromancer-qualification-freeze-v1",
+  "date_utc": "2026-10-01",
+  "authority": "PROSPECTIVE_SOURCE_ONLY_NO_EXECUTION_AUTHORITY",
+  "base_commit": "5ddd5f8adc206a5da25ad690c9a732102e4835e3",
+  "parent_registry_diagnostic": {
+    "run": 36933345998,
+    "artifact": 11196234353,
+    "artifact_sha256": "81308d41e5fb918c72174dd472053b98e88afd178065507cf11563620e305cb1",
+    "registered": 14,
+    "missing": 41,
+    "decision": "ACCEPT_POST_OWLBEAR_POSITION1_REGISTRY_DIAGNOSTIC_ONLY"
+  },
+  "selected_identity": "Goblin Electromancer",
+  "selection_reason": "Smallest high-reuse missing identity using an already-implemented static generic spell-cost reduction primitive: ModifySpellCost + SpellCostTarget.YouCast(GameObjectFilter.InstantOrSorcery) + CostModification.ReduceGeneric(1). No new engine mechanic, target-choice, hidden-information or runtime surface is introduced.",
+  "reusable_primitive_evidence": {
+    "etherium_sculptor_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ala/cards/EtheriumSculptor.kt",
+    "jhoiras_familiar_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dom/cards/JhoirasFamiliar.kt",
+    "filter_primitive": "GameObjectFilter.InstantOrSorcery",
+    "modification": "CostModification.ReduceGeneric(1)",
+    "controller_scope": "SpellCostTarget.YouCast"
+  },
+  "required_card_identity": {
+    "mana_cost": "{U}{R}",
+    "type_line": "Creature — Goblin Wizard",
+    "power": 2,
+    "toughness": 2,
+    "rules": [
+      "Instant and sorcery spells you cast cost {1} less to cast."
+    ]
+  },
+  "qualification_cases": [
+    "A generic component of an instant/sorcery cost is reduced by exactly one while Goblin Electromancer is controlled on the battlefield.",
+    "Colored pips are never reduced.",
+    "Creature/non-instant-non-sorcery spells are not reduced.",
+    "An opponent's spells are not reduced by your Goblin Electromancer.",
+    "Without Goblin Electromancer on the battlefield the same spell retains its full cost."
+  ],
+  "adoption_rule": "Only after exact-source review plus fresh targeted mechanics qualification and one-time audit may the definition/test bytes be adopted for the Position-1 registry; registry presence alone remains non-authority.",
+  "prohibited": [
+    "no unrelated missing-card batch",
+    "no whole Position-1 pilot claim",
+    "no official seed/allocation/claim/gameplay",
+    "no Owlbear requalification"
+  ],
+  "next_gate": "Implement only Goblin Electromancer definition plus focused cost-reduction tests; compile/static validate; obtain independent changed-source review; separately authorize one bounded mechanics qualification original.",
+  "official_counters_delta": 0
+}

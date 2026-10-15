@@ -941,6 +941,7 @@ class CastZoneResolver(
                 is CardPredicate.IsLand -> card.typeLine.isLand
                 is CardPredicate.IsNonland -> !card.typeLine.isLand
                 is CardPredicate.IsPlaneswalker -> card.isPlaneswalker
+                is CardPredicate.HasCardType -> predicate.cardType in card.typeLine.cardTypes
                 is CardPredicate.IsPermanent -> card.typeLine.isPermanent
                 is CardPredicate.IsBasicLand -> card.typeLine.isBasicLand
                 is CardPredicate.HasAdventure -> card.hasAdventure
@@ -951,6 +952,7 @@ class CastZoneResolver(
                 is CardPredicate.HasCardTypeFromVariable -> false
                 // --- Supertypes ---
                 is CardPredicate.IsLegendary -> card.typeLine.isLegendary
+                is CardPredicate.IsSnow -> card.typeLine.supertypes.any { it.name == "SNOW" }
                 is CardPredicate.IsNonlegendary -> !card.typeLine.isLegendary
                 // --- Colors ---
                 is CardPredicate.HasColor -> predicate.color in card.colors

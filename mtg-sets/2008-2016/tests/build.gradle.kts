@@ -23,4 +23,6 @@ dependencies {
 
     testImplementation(libs.kotestRunner)
     testImplementation(libs.kotestAssertions)
+    // Opal Palace stack-component round-trip is asserted in this scenario test shard.
+    testImplementation(libs.kotlinxSerialization)
 }

@@ -28,6 +28,8 @@ data class SpellOnStackComponent(
      * declared. Carried onto the resolving permanent's cast-choices bag by `StackResolver`.
      */
     val declaredCostSlot: ChoiceSlot? = null,
+    /** Announced optional additional-cost payments, keyed by mechanic. */
+    val optionalCostCounts: Map<ChoiceSlot, Int> = emptyMap(),
     val wasBlightPaid: Boolean = false,  // For BlightOrPay additional cost — true if blight path was taken
     val wasWaterbendPaid: Boolean = false,  // For optional spell waterbend additional cost (Avatar) — true if "you may waterbend {N}" was paid; readable via WaterbendWasPaid
     /**
@@ -601,3 +603,11 @@ data class GraveyardCastRiderComponent(
     val entersWithCounter: com.wingedsheep.sdk.core.CounterType? = null,
     val addedSubtype: String? = null
 ) : Component
+
+/**
+ * Entry counters promised by commander-color mana spent on this commander spell. Captured at
+ * cast-commit and summed once per mana actually spent; removed on resolution or zone change.
+ * A countered spell never enters and therefore never receives these counters.
+ */
+@Serializable
+data class CommanderManaEntryCountersComponent(val count: Int) : Component

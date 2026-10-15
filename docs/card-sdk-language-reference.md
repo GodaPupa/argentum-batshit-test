@@ -13505,3 +13505,48 @@ resolution executor is introduced. The existing Yes/No decision belongs to the
 drawing player, and its source identifies the public graveyard card. The client
 keyword label is `DREDGE`. The mtgish emitter preserves the numeric argument through
 `KeywordAbility.dredge(N)`; unsupported numeric shapes remain scaffolded.
+
+### Protection source attachment retention
+
+`GrantProtection`, `GrantProtectionFromChosenColorToGroup`, and
+`GrantProtectionFromControlledColors` accept `retainsSourceAttachment = true`
+for the explicit “this effect doesn't remove this Aura” exception. The default
+is false. Each projected color-protection grant retains its own source and
+controller provenance; a different matching grant can still remove the Aura.
+This does not exempt any other controlled attachment or implement the separate
+“already attached” activation-time snapshot policy.
+
+
+### Repeated optional-cost announcements
+
+`CastSpell.optionalCostCounts` records the announced count by `ChoiceSlot`. Declaring a
+`OptionalAdditionalCost.multi` slot without a count asks the existing number-choice UI before
+payment. A zero count declines the slot. Positive counts are retained on the spell, its copies,
+and the resulting permanent's numeric cast choice. The printed or alternative base and elected
+additional mana are combined before cost increases and reductions. Free casting replaces only
+the base mana cost. Repeated non-mana costs require separate payment selection support and are
+rejected instead of reusing the same sacrificed/discarded objects.
+
+### Replicate spell copies
+
+`KeywordAbility.replicate(cost)` declares a repeated optional mana cost under
+`ChoiceSlot.REPLICATED`. `OptionalAdditionalCost.copySpellForEachPayment`
+creates one cast trigger with the elected copy count. Copies use existing
+new-target continuations and historical spell snapshots; creating a copy does
+not cast another spell or trigger replicate again.
+
+### Umbra armor destruction replacement
+
+`Keyword.UMBRA_ARMOR` on an attached Aura replaces destruction of its enchanted permanent with removing all marked damage and destroying the Aura. Competing regeneration, shield-counter, damage-removal, and armor instances are chosen by the affected permanent controller through the existing option decision. Replacement and batch remainders are durable continuation frames.
+
+
+### Protection attachment activation history
+
+Color-protection static grants may set `retainsPreexistingControlledAttachments`. Each grant
+records its own source/host object references, grant index, granting controller, color, and
+activation epoch. At the atomic transition where the grant starts applying, matching controlled
+Aura and Equipment object references already attached to the host are captured immutably.
+Simultaneous attachments participate in the same capture; successive composite instructions
+reconcile separately, so a later attachment receives no retroactive exception. Legality reads
+this history without authoring it. Missing history fails closed. Detachment prunes retained
+objects; source/host zone changes cannot reuse an earlier object's exception.

@@ -25,7 +25,7 @@ val BlueWard = card("Blue Ward") {
     oracleText = "Enchant creature\nEnchanted creature has protection from blue. This effect doesn't remove this Aura."
     auraTarget = Targets.Creature
     staticAbility {
-        ability = GrantProtection(Color.BLUE)
+        ability = GrantProtection(Color.BLUE, retainsSourceAttachment = true)
     }
     metadata {
         rarity = Rarity.UNCOMMON

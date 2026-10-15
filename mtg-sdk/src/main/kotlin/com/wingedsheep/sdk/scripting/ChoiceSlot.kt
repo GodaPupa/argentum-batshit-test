@@ -59,6 +59,16 @@ enum class ChoiceSlot {
     /** Whether the spell was kicked when cast (e.g. Skizzik). A present value means "kicked". */
     KICKED,
 
+    /** Number of elected replicate additional-cost payments. */
+    REPLICATED,
+
+    /**
+     * Whether a spell's **buyback** additional mana cost was declared and paid (CR 702.27).
+     * A present value means the buyback cost was paid. The stack resolver reads this only on
+     * successful resolution; a countered spell never gets the buyback destination replacement.
+     */
+    BUYBACK,
+
     /**
      * Whether the spell's **bargain** additional cost was declared when cast (CR 702.166b, Wilds of
      * Eldraine — "you may sacrifice an artifact, enchantment, or token as you cast this spell"). A

@@ -114,6 +114,9 @@ class StateProjector(
             } else {
                 val baseStats = cardComponent.baseStats
                 projectedValues[entityId] = MutableProjectedValues(
+                    colorProtectionGrants = container.get<ProtectionComponent>()?.colors.orEmpty().mapTo(mutableListOf()) {
+                        ColorProtectionGrant(it.name, entityId, container.get<ControllerComponent>()?.playerId, 0L)
+                    },
                     power = baseStats?.basePower,
                     toughness = baseStats?.baseToughness,
                     keywords = linkedSetOf<String>().apply {
@@ -406,6 +409,7 @@ class StateProjector(
                 toughness = v.toughness,
                 name = v.name,
                 keywords = v.keywords,
+                colorProtectionGrants = v.colorProtectionGrants.toList(),
                 colors = v.colors,
                 types = v.types,
                 subtypes = v.subtypes,
@@ -578,7 +582,7 @@ class StateProjector(
             val continuousEffectComponent = container.get<ContinuousEffectSourceComponent>()
             if (continuousEffectComponent != null) {
                 val textReplacement = container.get<TextReplacementComponent>()
-                effects.addAll(continuousEffectComponent.effects.map { effect ->
+                effects.addAll(continuousEffectComponent.effects.mapIndexed { grantIndex, effect ->
                     val effectiveFilter = if (textReplacement != null && effect.affectsFilter != null) {
                         effect.affectsFilter.applyTextReplacement(textReplacement)
                     } else {
@@ -592,7 +596,10 @@ class StateProjector(
                         affectedEntities = filterResolver.resolveAffectedEntities(state, entityId, effectiveFilter, projectedValues),
                         sourceCondition = effect.sourceCondition,
                         affectsFilter = effectiveFilter,
-                        groupId = effect.groupId
+                        groupId = effect.groupId,
+                        retainsSourceAttachment = effect.retainsSourceAttachment,
+                        retainsPreexistingControlledAttachments = effect.retainsPreexistingControlledAttachments,
+                        protectionGrantIndex = grantIndex
                     )
                 })
             }

@@ -227,7 +227,7 @@ class TurnManager(
             }
         }
 
-        return ExecutionResult.success(newState, events)
+        return ExecutionResult.success(com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, newState), events)
     }
 
     /**
@@ -294,7 +294,7 @@ class TurnManager(
                 PhaseChangedEvent(phase),
                 StepChangedEvent(step)
             )
-            return ExecutionResult.success(redirectedState, events)
+            return ExecutionResult.success(com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, redirectedState), events)
         }
     }
 
@@ -377,7 +377,7 @@ class TurnManager(
                 StepChangedEvent(Step.POSTCOMBAT_MAIN)
             )
             redirectedState = redirectedState.withPriority(activePlayer)
-            return ExecutionResult.success(redirectedState, events)
+            return ExecutionResult.success(com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, redirectedState), events)
         }
 
         // Leaving an *inserted* extra combat phase (Aurelia / Fear of Missing Out / the combat half
@@ -396,13 +396,14 @@ class TurnManager(
             var redirectedState = state
                 .updateEntity(activePlayer) { it.without<InAdditionalCombatPhaseComponent>() }
                 .copy(step = Step.END, phase = Phase.ENDING, priorityPassedBy = emptySet())
+            redirectedState = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, redirectedState)
             redirectedState = cleanupPhaseManager.performNextEndStepExpiry(redirectedState)
             val events = mutableListOf<GameEvent>(
                 PhaseChangedEvent(Phase.ENDING),
                 StepChangedEvent(Step.END)
             )
             redirectedState = redirectedState.withPriority(activePlayer)
-            return ExecutionResult.success(redirectedState, events)
+            return ExecutionResult.success(com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, redirectedState), events)
         }
 
         // Check for additional phases queued after the postcombat main phase (Aggravated Assault,
@@ -444,7 +445,7 @@ class TurnManager(
                 )
 
                 redirectedState = redirectedState.withPriority(activePlayer)
-                return ExecutionResult.success(redirectedState, events)
+                return ExecutionResult.success(com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, redirectedState), events)
             }
         }
 
@@ -477,13 +478,14 @@ class TurnManager(
 
                 // An "until the next end step" effect created during the previous end step wears
                 // off now, on entry to this additional one (CR 500.9).
-                redirectedState = cleanupPhaseManager.performNextEndStepExpiry(redirectedState)
+                redirectedState = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, redirectedState)
+            redirectedState = cleanupPhaseManager.performNextEndStepExpiry(redirectedState)
 
                 // Phase is unchanged (END and CLEANUP both live in the ending phase), so only the
                 // step-changed event is emitted — that re-fires the end-step triggers.
                 val events = mutableListOf<GameEvent>(StepChangedEvent(Step.END))
                 redirectedState = redirectedState.withPriority(activePlayer)
-                return ExecutionResult.success(redirectedState, events)
+                return ExecutionResult.success(com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, redirectedState), events)
             }
         }
 
@@ -523,6 +525,7 @@ class TurnManager(
             phase = nextPhase,
             priorityPassedBy = emptySet()
         )
+        newState = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, newState)
 
         val events = mutableListOf<GameEvent>()
 
@@ -544,7 +547,7 @@ class TurnManager(
                         events + untapResult.events
                     )
                 }
-                newState = untapResult.newState
+                newState = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(newState, untapResult.newState)
                 events.addAll(untapResult.events)
                 // Immediately advance past untap (no priority). Carry the untap-step events
                 // (untaps, and phase-ins from Rule 702.26) forward on the result so the caller's
@@ -572,7 +575,7 @@ class TurnManager(
                     )
                 }
                 if (!drawResult.isSuccess) return drawResult
-                newState = drawResult.newState
+                newState = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(newState, drawResult.newState)
                 events.addAll(drawResult.events)
                 // Check state-based actions after draw (Rule 704.3)
                 val sbaResult = sbaChecker.checkAndApply(newState)
@@ -628,7 +631,7 @@ class TurnManager(
                     ).withPriority(activePlayer)
                     events.add(PhaseChangedEvent(Phase.POSTCOMBAT_MAIN))
                     events.add(StepChangedEvent(Step.POSTCOMBAT_MAIN))
-                    return ExecutionResult.success(newState, events)
+                    return ExecutionResult.success(com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, newState), events)
                 }
                 // Engage a combat-phase-scoped hijack (Secret of Bloodbending) scheduled on the
                 // active player: their combat phase is now beginning, so input authority moves to
@@ -777,7 +780,7 @@ class TurnManager(
                         events.addAll(sbaResult.events)
                         if (newState.gameOver) {
                             newState = newState.copy(priorityPlayerId = null)
-                            return ExecutionResult.success(newState, events)
+                            return ExecutionResult.success(com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, newState), events)
                         }
                     } else {
                         newState = newState.updateEntity(member) { container ->
@@ -805,7 +808,7 @@ class TurnManager(
             }
         }
 
-        return ExecutionResult.success(newState, events)
+        return ExecutionResult.success(com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, newState), events)
     }
 
     /**
@@ -1087,7 +1090,7 @@ class TurnManager(
         )
 
         return ExecutionResult.success(
-            newState,
+            com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, newState),
             listOf(PhaseChangedEvent(step.phase), StepChangedEvent(step))
         )
     }

@@ -78,7 +78,7 @@ class ContinuationResumerRegistry {
         val references = continuation.objectReferences()?.copy(captured = true)
         val propagateThenContinue: CheckForMore = { nextState, events ->
             val updated = references?.authorize(events)
-            checkForMore(if (updated == null) nextState else propagateObjectReferences(nextState, updated), events)
+            checkForMore(com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, if (updated == null) nextState else propagateObjectReferences(nextState, updated)), events)
         }
         val result = resumer.resume(
             state,
@@ -88,7 +88,7 @@ class ContinuationResumerRegistry {
             propagateThenContinue,
         )
         val updated = references?.authorize(result.events)
-        return if (updated == null) result else result.copy(state = propagateObjectReferences(result.newState, updated))
+        return result.copy(state = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, if (updated == null) result.newState else propagateObjectReferences(result.newState, updated)))
     }
 
     /**
@@ -117,9 +117,10 @@ class ContinuationResumerRegistry {
         val references = top.objectReferences()?.copy(captured = true)
         val propagateThenContinue: CheckForMore = { nextState, nextEvents ->
             val updated = references?.authorize(nextEvents.drop(events.size))
-            checkForMore(if (updated == null) nextState else propagateObjectReferences(nextState, updated), nextEvents)
+            checkForMore(com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, if (updated == null) nextState else propagateObjectReferences(nextState, updated)), nextEvents)
         }
-        return resumer.autoResume(stateAfterPop, if (references == null) top else top.withObjectReferences(references), events, propagateThenContinue)
+        val result = resumer.autoResume(stateAfterPop, if (references == null) top else top.withObjectReferences(references), events, propagateThenContinue)
+        return result.copy(state = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, result.newState))
     }
 
     /**

@@ -322,6 +322,15 @@ class TargetValidator {
             is TargetOther -> validateSingleTarget(state, target, requirement.baseRequirement, casterId, sourceColors, sourceSubtypes, sourceId, xValue, allTargets, targetingSourceType)
         }
         if (error != null) return error
+        val targetEntityId = when (target) {
+            is ChosenTarget.Player -> target.playerId
+            is ChosenTarget.Permanent -> target.entityId
+            is ChosenTarget.Card -> target.cardId
+            is ChosenTarget.Spell -> target.spellEntityId
+        }
+        if (FloatingTargetingRestriction.prevents(state, targetEntityId, casterId)) {
+            return "This player cannot target that object or player with spells or abilities"
+        }
 
         // Check player-level protection, e.g. The One Ring's "protection from everything" (Rule 702.16).
         // A protected player can't be the target of a source matching one of its protection scopes.

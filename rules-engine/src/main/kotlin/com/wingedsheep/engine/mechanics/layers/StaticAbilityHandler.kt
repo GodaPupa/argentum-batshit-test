@@ -615,6 +615,8 @@ class StaticAbilityHandler(
             is GrantProtectionFromChosenColorToGroup -> {
                 ContinuousEffectData(
                     modification = Modification.GrantProtectionFromChosenColor,
+                    retainsSourceAttachment = ability.retainsSourceAttachment,
+                    retainsPreexistingControlledAttachments = ability.retainsPreexistingControlledAttachments,
                     affectsFilter = convertGroupFilter(ability.filter)
                 )
             }
@@ -639,6 +641,8 @@ class StaticAbilityHandler(
             is GrantProtectionFromControlledColors -> {
                 ContinuousEffectData(
                     modification = Modification.GrantProtectionFromControlledColors,
+                    retainsSourceAttachment = ability.retainsSourceAttachment,
+                    retainsPreexistingControlledAttachments = ability.retainsPreexistingControlledAttachments,
                     affectsFilter = convertGroupFilter(ability.filter)
                 )
             }
@@ -823,6 +827,8 @@ class StaticAbilityHandler(
             is GrantProtection -> {
                 ContinuousEffectData(
                     modification = Modification.GrantProtectionFromColor(ability.color.name),
+                    retainsSourceAttachment = ability.retainsSourceAttachment,
+                    retainsPreexistingControlledAttachments = ability.retainsPreexistingControlledAttachments,
                     affectsFilter = convertGroupFilter(ability.filter)
                 )
             }

@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.registry
 
 import com.wingedsheep.sdk.model.CardDefinition
+import com.wingedsheep.sdk.model.CardLayout
 
 /**
  * Registry for looking up card definitions by name.
@@ -24,6 +25,9 @@ import com.wingedsheep.sdk.model.CardDefinition
  */
 class CardRegistry(private val parent: CardRegistry? = null) {
     private val cardsByName = mutableMapOf<String, CardDefinition>()
+    // Lookup-only aliases for one physical multi-face card (for example "Front // Back").
+    // Aliases intentionally do not participate in allCardNames()/size/card-name choice pools.
+    private val cardsByAlias = mutableMapOf<String, CardDefinition>()
     // Secondary index: "CardName#CollectorNumber" -> CardDefinition (for variants like basic lands)
     private val cardsByNameAndNumber = mutableMapOf<String, CardDefinition>()
     // Reverse DFC index: back face name -> front face name
@@ -37,6 +41,8 @@ class CardRegistry(private val parent: CardRegistry? = null) {
      * carries no further `backFace` pointer — it stands alone as the back-face identity.
      */
     fun register(card: CardDefinition) {
+        // A real canonical name always outranks any older lookup alias with the same text.
+        cardsByAlias.remove(card.name)
         cardsByName[card.name] = card
         // Also register by name#collectorNumber for variants.
         // When setCode is present, use "Name#SetCode-CollectorNumber" to avoid collisions
@@ -60,6 +66,21 @@ class CardRegistry(private val parent: CardRegistry? = null) {
             }
             // Track the reverse mapping so scenario builders can find the front face.
             backFaceToFrontFace[backFace.name] = card.name
+            registerCompoundAlias(card, backFace.name)
+        }
+
+        // Adventurer cards are one physical card with a creature name and one Adventure name.
+        // Deck/inventory sources commonly bind that physical identity as "Creature // Adventure".
+        // Keep that form lookup-only: the Adventure face is not a standalone card-name choice.
+        if (card.layout == CardLayout.ADVENTURE && card.cardFaces.size == 1) {
+            registerCompoundAlias(card, card.cardFaces.single().name)
+        }
+    }
+
+    private fun registerCompoundAlias(card: CardDefinition, secondaryFaceName: String) {
+        val alias = "${card.name} // $secondaryFaceName"
+        if (alias != card.name && !cardsByName.containsKey(alias)) {
+            cardsByAlias.putIfAbsent(alias, card)
         }
     }
 
@@ -83,8 +104,8 @@ class CardRegistry(private val parent: CardRegistry? = null) {
     fun getCard(name: String): CardDefinition? {
         // First try exact match with collector number format
         cardsByNameAndNumber[name]?.let { return it }
-        // Fall back to name-only lookup, then to the parent registry for an overlay.
-        return cardsByName[name] ?: parent?.getCard(name)
+        // Fall back to canonical name, then lookup-only compound alias, then the parent overlay.
+        return cardsByName[name] ?: cardsByAlias[name] ?: parent?.getCard(name)
     }
 
     /**
@@ -184,6 +205,7 @@ class CardRegistry(private val parent: CardRegistry? = null) {
      */
     fun clear() {
         cardsByName.clear()
+        cardsByAlias.clear()
         cardsByNameAndNumber.clear()
         backFaceToFrontFace.clear()
     }

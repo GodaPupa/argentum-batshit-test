@@ -14,7 +14,7 @@ import kotlin.reflect.KClass
  * Executor for DestroyAllEquipmentOnTargetEffect.
  * Destroys all Equipment attached to the target permanent.
  */
-class DestroyAllEquipmentOnTargetExecutor : EffectExecutor<DestroyAllEquipmentOnTargetEffect> {
+class DestroyAllEquipmentOnTargetExecutor(private val cardRegistry: com.wingedsheep.engine.registry.CardRegistry) : EffectExecutor<DestroyAllEquipmentOnTargetEffect> {
 
     override val effectType: KClass<DestroyAllEquipmentOnTargetEffect> = DestroyAllEquipmentOnTargetEffect::class
 
@@ -48,19 +48,18 @@ class DestroyAllEquipmentOnTargetExecutor : EffectExecutor<DestroyAllEquipmentOn
             return EffectResult.success(state)
         }
 
-        // Destroy each equipment
-        var currentState = state
-        val allEvents = mutableListOf<com.wingedsheep.engine.core.GameEvent>()
-
-        for (equipmentId in equipmentIds) {
-            if (!currentState.getBattlefield().contains(equipmentId)) continue
-            val result = destroyPermanent(currentState, equipmentId)
-            if (result.isSuccess) {
-                currentState = result.state
-                allEvents.addAll(result.events)
-            }
-        }
-
-        return EffectResult.success(currentState, allEvents)
+        // Delegate to the same resumable collection operation used by other batch destruction.
+        val collection = "__attached_equipment_destruction"
+        return com.wingedsheep.engine.handlers.effects.library.MoveCollectionExecutor(cardRegistry).execute(
+            state,
+            com.wingedsheep.sdk.scripting.effects.MoveCollectionEffect(
+                from = collection,
+                destination = com.wingedsheep.sdk.scripting.effects.CardDestination.ToZone(
+                    com.wingedsheep.sdk.core.Zone.GRAVEYARD, com.wingedsheep.sdk.scripting.references.Player.You),
+                moveType = com.wingedsheep.sdk.scripting.effects.MoveType.Destroy
+            ),
+            context.copy(pipeline = context.pipeline.copy(storedCollections = context.pipeline.storedCollections +
+                (collection to equipmentIds)))
+        )
     }
 }

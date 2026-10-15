@@ -42,7 +42,8 @@ val FlickeringWard = card("Flickering Ward") {
 
     staticAbility {
         ability = GrantProtectionFromChosenColorToGroup(
-            filter = GroupFilter.attachedCreature()
+            filter = GroupFilter.attachedCreature(),
+            retainsSourceAttachment = true
         )
     }
 

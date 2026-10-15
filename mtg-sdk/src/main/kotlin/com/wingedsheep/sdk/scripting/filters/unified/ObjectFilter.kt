@@ -1,5 +1,6 @@
 package com.wingedsheep.sdk.scripting
 
+import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Subtype
@@ -306,6 +307,11 @@ data class GameObjectFilter(
     /** Restrict to monocolored objects (exactly one color). Colorless objects do not match. */
     fun monocolored() = copy(
         cardPredicates = cardPredicates + CardPredicate.IsMonocolored
+    )
+
+    /** Add a fixed card-type requirement, including types without a named convenience filter. */
+    fun withCardType(cardType: CardType) = copy(
+        cardPredicates = cardPredicates + CardPredicate.HasCardType(cardType)
     )
 
     /** Add a subtype requirement */
@@ -1153,6 +1159,11 @@ data class GameObjectFilter(
         statePredicates = statePredicates + StatePredicate.Or(
             listOf(StatePredicate.IsAttacking, StatePredicate.IsBlocking, StatePredicate.IsTapped)
         )
+    )
+
+    /** Must be a designated commander, irrespective of current card type or controller. */
+    fun commander() = copy(
+        statePredicates = statePredicates + StatePredicate.IsCommander
     )
 
     /** Must have entered the battlefield this turn */

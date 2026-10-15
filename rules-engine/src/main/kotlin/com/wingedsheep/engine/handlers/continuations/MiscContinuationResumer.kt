@@ -605,7 +605,8 @@ class MiscContinuationResumer(
             targetRequirements = continuation.spellTargetRequirements,
             copyIndex = copyIndex,
             copyTotal = continuation.totalCopies,
-            controllerId = continuation.controllerId
+            controllerId = continuation.controllerId,
+            sourceSnapshot = continuation.sourceSnapshot
         )
         if (!stackResult.isSuccess) return stackResult
         currentState = com.wingedsheep.engine.handlers.effects.stack.StormCopyEffectExecutor
@@ -623,9 +624,8 @@ class MiscContinuationResumer(
         // Prompt for next copy's targets
         val legalTargetsMap = mutableMapOf<Int, List<EntityId>>()
         for ((index, requirement) in continuation.spellTargetRequirements.withIndex()) {
-            val legalTargets = services.targetFinder.findLegalTargets(
-                currentState, requirement, continuation.controllerId, continuation.sourceId
-            )
+            val legalTargets = continuation.sourceSnapshot?.legalTargets(currentState, services.targetFinder, requirement, continuation.controllerId)
+                ?: services.targetFinder.findLegalTargets(currentState, requirement, continuation.controllerId, continuation.sourceId)
             legalTargetsMap[index] = legalTargets
         }
 
@@ -645,7 +645,8 @@ class MiscContinuationResumer(
                     sourceSpellId = continuation.sourceId,
                     copyIndex = nextCopyIndex,
                     copyTotal = continuation.totalCopies,
-                    controllerId = continuation.controllerId
+                    controllerId = continuation.controllerId,
+            sourceSnapshot = continuation.sourceSnapshot
                 )
                 if (!res.isSuccess) return res
                 loopState = com.wingedsheep.engine.handlers.effects.stack.StormCopyEffectExecutor
@@ -669,7 +670,8 @@ class MiscContinuationResumer(
             objectReferences = continuation.objectReferences,
             totalCopies = continuation.totalCopies,
             keywordsForCopy = continuation.keywordsForCopy,
-            removeLegendary = continuation.removeLegendary
+            removeLegendary = continuation.removeLegendary,
+            sourceSnapshot = continuation.sourceSnapshot
         )
         val targetReqInfos = continuation.spellTargetRequirements.mapIndexed { index, req ->
             TargetRequirementInfo(
@@ -731,7 +733,8 @@ class MiscContinuationResumer(
             totalCopies = continuation.totalCopies,
             priorEvents = emptyList(),
             keywordsForCopy = continuation.keywordsForCopy,
-            removeLegendary = continuation.removeLegendary
+            removeLegendary = continuation.removeLegendary,
+            sourceSnapshot = continuation.sourceSnapshot
         )
 
         if (result.isPaused) {

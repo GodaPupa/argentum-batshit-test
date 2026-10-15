@@ -31,7 +31,7 @@ val PledgeOfLoyalty = card("Pledge of Loyalty") {
     auraTarget = Targets.Creature
 
     staticAbility {
-        ability = GrantProtectionFromControlledColors()
+        ability = GrantProtectionFromControlledColors(retainsSourceAttachment = true)
     }
 
     metadata {

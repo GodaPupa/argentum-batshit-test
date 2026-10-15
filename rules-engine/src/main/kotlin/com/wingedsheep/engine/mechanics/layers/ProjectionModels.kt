@@ -40,7 +40,10 @@ data class ContinuousEffectData(
      * to apply — and reuse it in every later layer, and keep applying even if the source loses the
      * generating ability in Layer 6. Null for single-layer abilities, which need no grouping.
      */
-    val groupId: String? = null
+    val groupId: String? = null,
+    val retainsSourceAttachment: Boolean = false,
+    val retainsPreexistingControlledAttachments: Boolean = false,
+    val protectionGrantIndex: Int = 0
 ) {
     val layer: Layer get() = modification.layer
     val sublayer: Sublayer? get() = modification.sublayer
@@ -234,7 +237,10 @@ data class ContinuousEffect(
      * True for effects collected from a [ContinuousEffectSourceComponent]; false for floating
      * effects (Giant Growth, an activated pump, a lingering "until end of turn" grant).
      */
-    val fromStaticAbility: Boolean = true
+    val fromStaticAbility: Boolean = true,
+    val retainsSourceAttachment: Boolean = false,
+    val retainsPreexistingControlledAttachments: Boolean = false,
+    val protectionGrantIndex: Int = 0
 ) {
     val layer: Layer get() = modification.layer
     val sublayer: Sublayer? get() = modification.sublayer
@@ -728,6 +734,7 @@ internal data class MutableProjectedValues(
     var toughness: Int? = null,
     var name: String? = null,
     val keywords: MutableSet<String> = mutableSetOf(),
+    val colorProtectionGrants: MutableList<ColorProtectionGrant> = mutableListOf(),
     val colors: MutableSet<String> = mutableSetOf(),
     val types: MutableSet<String> = mutableSetOf(),
     val subtypes: MutableSet<String> = mutableSetOf(),

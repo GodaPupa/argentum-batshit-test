@@ -1,0 +1,18 @@
+{
+  "schema":"izzet-position1-owlbear-qualification-freeze-v1",
+  "date_utc":"2026-09-30",
+  "accepted_registry_diagnostic":{"run":36737814720,"artifact":11108461417,"artifact_sha256":"3b167d8da86a4f6800aea3bad4693a4fec26419508da80a466df88cc34c75205","decision":"ACCEPTED_POST_LLANOWAR_POSITION1_REGISTRY_DIAGNOSTIC","registered":13,"missing":42},
+  "selected_identity":"Owlbear",
+  "selection_reason":"Smallest requirement-driven missing identity with maximal reuse: ordinary creature definition, existing enters-battlefield trigger/draw-one primitive and existing trample keyword; no new choice, alternative-cost, modal, split-card, protection, buyback, conditional-mana or graveyard machinery.",
+  "required_card_identity":{"mana_cost":"{3}{G}{G}","type_line":"Creature — Bird Bear","power":4,"toughness":4,"rules":["Trample","When this creature enters, draw a card."]},
+  "qualification_cases":[
+    "Exact definition identity and trample keyword are registered.",
+    "Resolving Owlbear places the exact permanent on battlefield and its ETB trigger draws exactly one card.",
+    "The ETB trigger is stack-mediated and does not draw before the trigger resolves.",
+    "Trample uses the existing engine primitive; include one focused combat regression proving excess combat damage can reach the defending player after lethal blocker assignment."
+  ],
+  "adoption_rule":"Only after fresh exact-source mechanics qualification and independent artifact audit may definition/test/snapshot bytes be adopted; registry presence alone remains non-authority.",
+  "prohibited":["no whole Position-1 pilot claim","no opponent/commander/replay/gameplay authority","no unrelated missing-card batch"],
+  "next_gate":"Implement Owlbear definition plus focused mechanics tests, independently review exact source, execute one fresh qualification original, audit once, then adopt and re-inventory.",
+  "official_counters_delta":0
+}

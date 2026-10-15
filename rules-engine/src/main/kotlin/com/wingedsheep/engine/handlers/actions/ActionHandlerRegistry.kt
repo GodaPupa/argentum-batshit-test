@@ -60,7 +60,8 @@ class ActionHandlerRegistry {
     fun execute(state: GameState, action: GameAction): ExecutionResult {
         val handler = handlers[action::class] as? ActionHandler<GameAction>
             ?: return ExecutionResult.error(state, "No handler registered for action type: ${action::class.simpleName}")
-        return handler.execute(state, action)
+        val result = handler.execute(state, action)
+        return result.copy(state = com.wingedsheep.engine.mechanics.layers.ProtectionAttachmentLifecycle.reconcile(state, result.newState))
     }
 
     /**
