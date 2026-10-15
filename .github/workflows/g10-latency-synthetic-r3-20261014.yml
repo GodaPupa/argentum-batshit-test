@@ -1,0 +1,81 @@
+{
+  "name": "Argentum G10 R3 excluded synthetic late-board profiling",
+  "on": {
+    "push": {
+      "branches": [
+        "play-first/g10-latency-synthetic-r3-20261014"
+      ]
+    }
+  },
+  "permissions": {
+    "contents": "read"
+  },
+  "concurrency": {
+    "group": "argentum-g10-r3-excluded-synthetic-original-20261014",
+    "cancel-in-progress": false
+  },
+  "jobs": {
+    "profile": {
+      "if": "github.repository == 'GodaPupa/argentum-batshit-test' && github.event_name == 'push' && github.ref == 'refs/heads/play-first/g10-latency-synthetic-r3-20261014' && github.run_number == 1 && github.run_attempt == 1",
+      "runs-on": "ubuntu-24.04",
+      "timeout-minutes": 29,
+      "env": {
+        "ARGENTUM_G10_R3_PROFILE": "EXCLUDED_LATE_BOARD_ONLY",
+        "ARGENTUM_G10_R3_EVIDENCE_DIR": "/tmp/argentum-g10-r3-synthetic-${{ github.run_id }}"
+      },
+      "steps": [
+        {
+          "uses": "actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803",
+          "with": {
+            "ref": "${{ github.sha }}",
+            "fetch-depth": 2,
+            "persist-credentials": false
+          }
+        },
+        {
+          "name": "Verify sole source/workflow delta and no game authority",
+          "shell": "bash",
+          "run": "set -euo pipefail\ntest \"$(git rev-parse HEAD^)\" = '289e9cfe9080980e346ebf85bd61a73317627e01'\ntest \"$(git diff --name-only HEAD^ HEAD)\" = '.github/workflows/g10-latency-synthetic-r3-20261014.yml'\ntest \"$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt)\" = '7d78e440dad02de8a855fc016bdfb75d3fbd109e'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/PlayFirstOneShotPestMonsterTronTest.kt)\" = '5ae14e0ed7212c317deecfa1cbd6a54a809c211a'\ntest \"$(git rev-parse HEAD:.github/workflows/play-first-successor-nonofficial-v2.yml)\" = '18c451f9c20e09e58a109c85c8d3c96c645d2558'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/G10LateBoardSyntheticAttributionTest.kt)\" = '2816f37d22a57a828cf775d29a74a3eabb5ced6b'\ntest \"$(git rev-parse HEAD:docs/experiments/play-first/isolation-v2/G10_R3_LATE_BOARD_SYNTHETIC_PROFILE_PROTOCOL.md)\" = '6cfd898c86bcf5ee25ed52f062da783be409a626'\ntest \"$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/G10SyntheticDecisionAttributionTest.kt)\" = 'b121ed6add0d90ac1db86120cbef86adcf580ee3'\ntest -z \"${PLAY_FIRST_ONE_SHOT_ACK:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_ACK:-}\"\ntest -z \"${PLAY_FIRST_ISOLATED_CASE_FILE:-}\"\ntest -z \"${ARGENTUM_SUCCESSOR_REQUEST_JSON:-}\"\nmkdir -p \"$ARGENTUM_G10_R3_EVIDENCE_DIR\"\ngit rev-parse HEAD HEAD^{tree} HEAD^ > \"$ARGENTUM_G10_R3_EVIDENCE_DIR/source-identities.txt\"\nprintf '%s\\n' 'G10_R3_EXCLUDED_SYNTHETIC_ONLY_NO_GAMEPLAY' > \"$ARGENTUM_G10_R3_EVIDENCE_DIR/scope-gate.txt\"\n"
+        },
+        {
+          "uses": "actions/setup-java@b6effb05e454b25005698d916606bdc6ffcbf961",
+          "with": {
+            "distribution": "temurin",
+            "java-version": "21"
+          }
+        },
+        {
+          "uses": "extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b"
+        },
+        {
+          "uses": "gradle/actions/setup-gradle@3f5f9adaf7d9fecd50b5935e54106014257a94e6",
+          "with": {
+            "cache-read-only": true
+          }
+        },
+        {
+          "name": "Run only artificial R3 late-board AI decisions with bounded process",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$ARGENTUM_G10_R3_EVIDENCE_DIR\"\njava -version > \"$ARGENTUM_G10_R3_EVIDENCE_DIR/java-version.txt\" 2>&1\ntimeout --signal=TERM --kill-after=30s 20m just test-class G10LateBoardSyntheticAttributionTest --no-daemon --no-build-cache --console=plain 2>&1 | tee \"$ARGENTUM_G10_R3_EVIDENCE_DIR/child.log\"\n"
+        },
+        {
+          "name": "Preserve original R3 synthetic success failure timeout and partial evidence",
+          "if": "always()",
+          "shell": "bash",
+          "run": "set -euo pipefail\nmkdir -p \"$ARGENTUM_G10_R3_EVIDENCE_DIR\"\nif test -d gym/build/test-results/test; then cp -a gym/build/test-results/test \"$ARGENTUM_G10_R3_EVIDENCE_DIR/test-results\"; fi\nif test -d gym/build/reports/tests/test; then cp -a gym/build/reports/tests/test \"$ARGENTUM_G10_R3_EVIDENCE_DIR/test-report\"; fi\nprintf '%s\\n' 'SYNTHETIC_STATE_ONLY_NOT_G10_OR_G11_AND_NOT_OFFICIAL' > \"$ARGENTUM_G10_R3_EVIDENCE_DIR/evidence-scope.txt\"\nfind \"$ARGENTUM_G10_R3_EVIDENCE_DIR\" -maxdepth 6 -type f -printf '%P %s bytes\\n' | sort > \"$ARGENTUM_G10_R3_EVIDENCE_DIR/inventory.txt\"\n"
+        },
+        {
+          "uses": "actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9",
+          "if": "always()",
+          "with": {
+            "name": "g10-r3-excluded-late-board-${{ github.run_id }}-attempt-${{ github.run_attempt }}",
+            "path": "${{ env.ARGENTUM_G10_R3_EVIDENCE_DIR }}/",
+            "if-no-files-found": "error",
+            "overwrite": false,
+            "retention-days": 90
+          }
+        }
+      ]
+    }
+  }
+}
