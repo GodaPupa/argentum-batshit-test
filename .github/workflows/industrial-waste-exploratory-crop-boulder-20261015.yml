@@ -1,0 +1,42 @@
+name: Industrial Waste — Isolated Crop/Boulder Funding Regression
+
+on:
+  push:
+    branches:
+      - exploratory/iw-payment-witness-20261015
+    paths:
+      - .github/workflows/industrial-waste-exploratory-crop-boulder-20261015.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteExploratoryCropBoulderWitnessTest.kt
+permissions:
+  contents: read
+concurrency:
+  group: iw-nonofficial-crop-boulder-20261015
+  cancel-in-progress: false
+jobs:
+  regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      IW_DIAG_CROP_BOULDER: "true"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Run exact seed-free synthetic payment reproduction once
+        shell: bash
+        run: |
+          set -o pipefail
+          echo "NONOFFICIAL_DIAGNOSTIC_ONLY=true"
+          echo "SOURCE_HEAD=$(git rev-parse HEAD)"
+          ./gradlew :ai:test --tests '*IndustrialWasteExploratoryCropBoulderWitnessTest' \
+            --rerun-tasks --no-build-cache --no-daemon 2>&1 | tee /tmp/iw-crop-boulder-log.txt
+      - name: Preserve first-attempt test XML
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-crop-boulder-seed-free-first-diagnostic
+          path: |
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteExploratoryCropBoulderWitnessTest.xml
+          if-no-files-found: warn
+          retention-days: 14
