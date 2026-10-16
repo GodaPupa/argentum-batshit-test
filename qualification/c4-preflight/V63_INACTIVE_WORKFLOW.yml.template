@@ -1,0 +1,68 @@
+# INACTIVE LOCAL SOURCE TEMPLATE — NOT A GITHUB WORKFLOW AND NOT AUTHORIZED.
+# Exact source and workflow-child identity must be independently reviewed and
+# owner-approved before any publication. No hosted execution authority here.
+name: ARGENTUM C4 V6.3 isolated read-only target capability original
+on:
+  push:
+    branches: [infra/argentum-c4-v63-readonly-once-20261015]
+permissions:
+  contents: read
+concurrency:
+  group: argentum-c4-v63-readonly-once-20261015
+  cancel-in-progress: false
+jobs:
+  hint-only:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 3
+    steps:
+      - name: First-attempt context guard before host reads
+        shell: bash
+        env:
+          WORKFLOW_REF: ${{ github.workflow_ref }}
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REPOSITORY" = GodaPupa/argentum-batshit-test
+          test "$GITHUB_EVENT_NAME" = push
+          test "$GITHUB_REF" = refs/heads/infra/argentum-c4-v63-readonly-once-20261015
+          test "$GITHUB_RUN_NUMBER/$GITHUB_RUN_ATTEMPT" = 1/1
+          test "$WORKFLOW_REF" = GodaPupa/argentum-batshit-test/.github/workflows/argentum-c4-v63-readonly-20261015.yml@refs/heads/infra/argentum-c4-v63-readonly-once-20261015
+          test "$RUNNER_ENVIRONMENT" = github-hosted
+          test "$RUNNER_OS/$RUNNER_ARCH" = Linux/X64
+          test "$GITHUB_SHA" != "{{PINNED_SOURCE_SHA}}"
+          test "${#GITHUB_SHA}" = 40
+      - name: Exactly one source-pinned nonprivileged observation
+        shell: bash
+        env:
+          GITHUB_WORKFLOW_REF: ${{ github.workflow_ref }}
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/argentum-c4-v63-readonly"
+          mkdir "$out"
+          cat <<'ARGENTUM_V63_FROZEN_V62' | base64 -d | gzip -dc > "$out/v62_host_capability.py"
+{{INLINE_V62_GZIP_B64}}
+          ARGENTUM_V63_FROZEN_V62
+          cat <<'ARGENTUM_V63_FROZEN_WRAPPER' | base64 -d | gzip -dc > "$out/v63_target_runner.py"
+{{INLINE_V63_GZIP_B64}}
+          ARGENTUM_V63_FROZEN_WRAPPER
+          echo "{{PINNED_V62_SHA256}}  $out/v62_host_capability.py" | sha256sum -c -
+          echo "{{PINNED_V63_SHA256}}  $out/v63_target_runner.py" | sha256sum -c -
+          timeout --signal=TERM --kill-after=5s 45s python3 -I -B "$out/v63_target_runner.py" --target-observe --source-commit "{{PINNED_SOURCE_SHA}}" > "$out/result.json"
+      - name: Seal original evidence or an incomplete record
+        if: ${{ always() }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          out="$RUNNER_TEMP/argentum-c4-v63-readonly"
+          mkdir -p "$out"
+          if ! test -f "$out/result.json"; then
+            printf '%s\n' '{"contract":"ARGENTUM_C4_V63_UNATTESTED_TARGET_RUNNER_HINTS_V1","disposition":"INCOMPLETE_NO_RESULT","captured":false,"historical_C4":"INCOMPLETE","compile_enabled":false,"runtime_enforcement_qualified":false,"D2_qualified":false,"C4_PASS":false}' > "$out/result.json"
+          fi
+          cd "$out"
+          find . -maxdepth 1 -type f ! -name SHA256SUMS -print0 | sort -z | xargs -0 sha256sum > SHA256SUMS
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: ${{ always() }}
+        with:
+          name: argentum-c4-v63-readonly-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/argentum-c4-v63-readonly
+          if-no-files-found: error
+          retention-days: 90
