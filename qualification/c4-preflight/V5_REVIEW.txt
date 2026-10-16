@@ -1,0 +1,91 @@
+ARGENTUM C4 V5 — FIXED HELPER FROZEN; ADAPTER BLOCKED_HOST_PARENT
+
+Source-only implementation, not kernel enforcement certification.
+Parent V4 defc04acf75a9fa040ed7c43068d3b75cb730ec4 is unchanged.
+
+Implemented:
+- Static x86_64 Linux noncompiler C helper, exact source/ELF hashes in
+  adversarial_probe.py and helper-build.json. Built twice locally, identical.
+  No arguments/environment select an executable, action, path or network target.
+- Fixed denied-syscall cases, membership checks, exact inherited-FD inventory,
+  double fork/reparent and persistent descendant with 40-second safety alarm.
+  Launcher has a 45-second alarm. No helper execution was performed.
+- Fixed named preparation entry supervise_fixed_adversarial_v5(Path(evidence)).
+  It checks the frozen sibling image/source and always refuses BLOCKED_HOST_PARENT.
+  No approval JSON or environment value can activate it. CLI also refuses.
+- Offline synthetic receipt evaluator with explicit incomplete/positive semantics.
+  This is NOT a kernel evidence collector or authenticated receipt receiver.
+- Explicit writable fixture fixes V4 test portability without weakening checks.
+  Root suite passed. Non-root subprocess launch was denied by this environment
+  with PermissionError(1, Operation not permitted), before tests could execute.
+  Non-root replay remains REQUIRED; no success is claimed and no escalation used.
+
+Deliberate hard stop / incomplete adapter:
+The supplied metadata observes a systemd service with memory not enabled in its
+subtree_control. system.slice availability and sudo policy do not authorize
+parent mutation. No separately approved, protected, exclusive delegated parent
+has been demonstrated. The proposed fixed path /sys/fs/cgroup/argentum-c4-v5 is
+ONLY a source contract, NOT a claimed existing or authorized cgroup. Neither
+that path nor any systemd ancestor was read, created or modified here.
+V5 intentionally does not call or reconfigure V4's /usr/bin/true supervisor.
+It does NOT yet implement the held-FD executable launch, descendant observation,
+parent authority verification or lifecycle receipt production for the new ELF.
+These must be separately source-reviewed before an active host original is even
+proposed. The V4 source backend remains byte-identical and unqualified.
+No runnable hosted enforcement claim follows from freezing this helper.
+
+Formal expected outcomes (N1–N12 in V5_NEGATIVE_CASES.json):
+N1: helper double fork; reparent receipt plus independent descendant membership
+    and start identity required. A helper claim alone does not establish N1.
+N2: only fixed proposed parent's cgroup.procs attempted; EACCES/EPERM AND unchanged
+    membership required. Missing parent ENOENT is incomplete, not a denial pass.
+N3: setresuid/setresgid(0), CAP_SYS_ADMIN capset denied; seal retained.
+N4: unshare NEWNET, setns(self net), fixed tmpfs mount denied. Namespace IDs and
+    seccomp receipt required separately; errno cannot attribute DAC vs seccomp.
+N5: AF_UNIX socket/socketpair denied. No external socket connect attempted.
+N6: /proc/net/dev inspection only; private network namespace and absence of
+    external IPC must independently be observed. No network packets are sent.
+    This does not prove Gradle/Kotlin daemon isolation or controlled egress.
+N7: exact inherited descriptors 0/1/2 (directory scanner excludes its own FD).
+    Supervisor must independently bind stdio types/origins, close image/handshake
+    FDs across exec, and record scratch mounts/root/FD identity.
+N8: persistent descendant remains until cgroup.kill; its alarm exit CANNOT count
+    as a verified kill. Must observe alive/membership before kill, then drain,
+    final same-counter FD read before group removal. No PID-list host killing.
+N9: inherited tests model PID reuse, group inode/boot mismatch. All fail closed.
+N10: positive authoritative same-scope OOM survives other missing intervals;
+     unavailable, reset, v1 kills-only or local-only counters cannot mean zero.
+N11: failed drain/removal, missing logs/manifest/interval are incomplete; retained
+     positive OOM/fatal/escape remains FAIL. Log strings are not proof of truth.
+N12: compile_request and preflight remain byte-identical and refuse. No new
+     workflow or compiler path. Helper output never qualifies C4 or D2.
+
+Classification:
+BLOCKED_HOST_PARENT: no demonstrated safe, independently approved delegation.
+INCOMPLETE_RUNTIME: missing/ambiguous/partial evidence or lifecycle failure.
+NEGATIVE_CONTROL_OBSERVED: complete OFFLINE model fixture only in current V5;
+  not an actual host observation, compiler acceptance or authority token.
+FAIL: same-bound positive OOM/fatal/escape in synthetic model; no real such event
+  was generated. No C4_PASS or D2_QUALIFIED state is exposed.
+
+Historical preservation and disclosures:
+C4 original 38780475153 remains INCOMPLETE. R5 283.904 seconds and R6 265.694
+seconds/exit 0 do not repair missing authoritative memory counters.
+Discovery 38798018237 and metadata 38815770299 are nonqualifying originals;
+metadata artifact 12010113214 does not prove actual privileged containment.
+Historical 72e14a…435c referent discrepancy remains unresolved; missing Codespace
+ZIPs and native Reviewer B assessment archive have not been independently verified.
+V4 review receipt records reviewer-disclosed independence, not authenticated
+third-party attestation; root/nonroot fixture disagreement remains preserved.
+Observer neutrality is an assumption. No behavioral equivalence established.
+The V5 implementer authored this helper, evaluator and tests: not independent B.
+
+Smallest next gate:
+Substantively non-author Reviewer B must inspect exact source and ELF, rebuild,
+replay synthetic/mutation receipts and assess the hard stop. Obtain owner-side
+read-only evidence and policy for an exact safe delegated parent. Then complete
+and independently review the narrowly fixed privileged adapter (including
+bounded wait/reap/drain and executable/descriptor/lifecycle binding) in a new
+source successor before requesting any one-shot hosted execution authorization.
+No hosted request, publication, compiler invocation, R5/R6 behavioral comparison,
+G11, gameplay or historical reclassification is authorized by this package.

@@ -1,0 +1,67 @@
+{
+  "schema": "ARGENTUM_C4_LOCAL_ADVERSARIAL_NONCOMPILER_TEST_MATRIX_V1",
+  "status": "PROPOSAL_NOT_HOST_VALIDATED",
+  "source": "frozen V4; no hosted authority",
+  "cases": [
+    {
+      "id": "N1_REPARENT",
+      "action": "fixed child forks grandchild then exits",
+      "expected": "descendant remains within exclusive measured cgroup until bounded drain; no premature clean"
+    },
+    {
+      "id": "N2_MIGRATION",
+      "action": "dedicated unprivileged child attempts migration to specifically declared protected ancestor",
+      "expected": "failure or refusal; membership unchanged; no host ancestor policy mutation"
+    },
+    {
+      "id": "N3_PRIVILEGES",
+      "action": "attempt regain uid 0 / caps after seal",
+      "expected": "rejected, retained uid/gid and zero capabilities"
+    },
+    {
+      "id": "N4_NAMESPACES",
+      "action": "attempt setns/unshare/mount after seccomp",
+      "expected": "denial plus verified source-bound seccomp/namespace posture"
+    },
+    {
+      "id": "N5_UNIX_IPC",
+      "action": "attempt AF_UNIX socket and socketpair",
+      "expected": "denied, no inherited AF_UNIX descriptors"
+    },
+    {
+      "id": "N6_NETWORK_IPC",
+      "action": "inspect network namespace and pre-existing external daemon routes",
+      "expected": "no demonstrated external daemon IPC or egress; otherwise INCOMPLETE"
+    },
+    {
+      "id": "N7_FDS",
+      "action": "list inherited fd capabilities and compare exact allowed set",
+      "expected": "no leaked cgroup, pidfd, socket, or privileged dir fd"
+    },
+    {
+      "id": "N8_KILL_DRAIN",
+      "action": "hold descendant until authorized drain",
+      "expected": "only exclusive cgroup killed; observed populated zero, final counters same fd"
+    },
+    {
+      "id": "N9_IDENTITIES",
+      "action": "cause synthetic PID reuse or group inode/boot mismatch",
+      "expected": "fail closed; cannot reuse identity"
+    },
+    {
+      "id": "N10_OOM_GAPS",
+      "action": "synthetic positive counter across a gap, reset, or unreadable sample",
+      "expected": "observed positive always FAIL; unknown never observed zero"
+    },
+    {
+      "id": "N11_CLEANUP",
+      "action": "synthetic failed drain/rmdir, partial archive, missing logs",
+      "expected": "INCOMPLETE or FAIL; not admitted"
+    },
+    {
+      "id": "N12_HARD_STOP",
+      "action": "attempt to invoke compile_request or preflight through all exposed inputs",
+      "expected": "BLOCKED; no fetch/JVM/Gradle/Just/official action"
+    }
+  ]
+}

@@ -109,6 +109,7 @@ class SupervisorTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as d:
             p=Path(d);(p/'target').mkdir();(p/'alias').symlink_to(p/'target')
             with self.assertRaises(k.Refusal):k.safe_root_path(p/'alias')
+            os.chmod(p,0o777) # Explicit unsafe fixture; independent of ancestor ownership.
             with self.assertRaises(k.Refusal):k.safe_root_path(p)
 
     def test_log_capture_and_fatal_detection(self):

@@ -1,0 +1,41 @@
+{
+  "command": [
+    "/usr/bin/cc",
+    "-std=c11",
+    "-O2",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-misleading-indentation",
+    "-static",
+    "-fno-ident",
+    "-fno-record-gcc-switches",
+    "-Wl,--build-id=none",
+    "-Wl,-z,noexecstack",
+    "-Wl,-z,relro",
+    "-Wl,-z,now",
+    "-s",
+    "adversarial_helper.c",
+    "-o",
+    "adversarial-helper-v5.elf"
+  ],
+  "cwd": "directory containing adversarial_helper.c",
+  "environment": {
+    "PATH": "/usr/bin:/bin",
+    "LC_ALL": "C",
+    "SOURCE_DATE_EPOCH": "1792108800"
+  },
+  "compiler_version": "cc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\n",
+  "compiler_target": "x86_64-linux-gnu",
+  "compiler_sha256": "6117c52522997d2aaccb2b52b3c6bf42c0a6c5edb1d718431fed6b2fc5fec234",
+  "linker_version": "GNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n",
+  "libc_archive_sha256": "5f7c88bfb485b991d5e7ba6996673309c23bcd13852c75f5c423b1956555b942",
+  "source_sha256": "449429b3137d20f4f470f434877879e245c810a9876e89413c5aaae3327c73e6",
+  "elf_sha256": "5c94b6671b4be6e2fbfcf46fc20fc17229ed15912a650362bfd0b1ec78dcd9b6",
+  "elf_bytes": 849584,
+  "elf_mode": "0755",
+  "dependencies": "static glibc; no PT_INTERP or DT_NEEDED; Linux x86_64 syscall ABI required",
+  "rebuild_identical": true,
+  "executed": false,
+  "portability": "ELF inspected only; hosted loader/kernel compatibility unverified"
+}
