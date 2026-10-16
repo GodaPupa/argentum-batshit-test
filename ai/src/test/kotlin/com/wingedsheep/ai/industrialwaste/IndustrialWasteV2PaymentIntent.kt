@@ -138,8 +138,16 @@ internal class IndustrialWasteV2PaymentBinder(
             // suffix, including public conditional production such as both Tron branches.
             // Funding must help this exact selected cost, including its colored requirement.
             // It never becomes a speculative mana activation or a claim that colorless pays a pip.
+            // A pre-qualified, complete canonical witness may need a neutral first step:
+            // e.g. float colorless from the land selected for Crop Rotation, then pay
+            // Giant's Boulder's {1} filtering cost to obtain {G}. Reject a zero-progress
+            // first step only if the qualified suffix does not contain another funding
+            // action; never treat arbitrary nonprogress as an executable plan.
+            val completeFunding = requireNotNull(witness).funding
+            check(completeFunding.isNotEmpty()) { "Funding witness has no first action" }
             if (!autoPayable(augmented, player, action, cost, consumed) &&
-                pool(augmented, player).payPartial(cost).remainingCost.cmc >= remaining) return@mapNotNull null
+                pool(augmented, player).payPartial(cost).remainingCost.cmc >= remaining &&
+                completeFunding.size <= 1) return@mapNotNull null
             Triple(IndustrialWasteV2PublicActionPolicy.score(state, player, offered, funding), funding, offered)
         }
         val funding = candidates.sortedWith(compareByDescending<Triple<Int, ActivateAbility, LegalAction>> { it.first }
