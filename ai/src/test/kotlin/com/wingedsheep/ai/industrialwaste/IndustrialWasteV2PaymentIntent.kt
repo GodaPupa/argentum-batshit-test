@@ -150,7 +150,11 @@ internal class IndustrialWasteV2PaymentBinder(
                 completeFunding.size <= 1) return@mapNotNull null
             Triple(IndustrialWasteV2PublicActionPolicy.score(state, player, offered, funding), funding, offered)
         }
+        // Preserve the existing canonical source identity tie rather than lexicographic
+        // action serialization, which can order otherwise identical Tower activations
+        // differently after the complete-witness suffix option is admitted.
         val funding = candidates.sortedWith(compareByDescending<Triple<Int, ActivateAbility, LegalAction>> { it.first }
+            .thenBy { it.second.sourceId.value }
             .thenBy { it.second.toString() }).firstOrNull()?.second
             ?: error("Selected action requires explicit mana but no qualified nonconflicting funding action exists")
         record(IndustrialWasteV2PaymentIntentRecord("FUNDING_ACTION", intent, funding))
