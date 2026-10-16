@@ -1,0 +1,46 @@
+name: Industrial Waste — Exploratory Complete-Payment Witness Repair
+
+on:
+  push:
+    branches:
+      - exploratory/iw-payment-suffix-repair-20261015
+    paths:
+      - .github/workflows/industrial-waste-exploratory-payment-repair-20261015.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteV2PaymentIntent.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/industrialwaste/IndustrialWasteExploratoryCropBoulderRepairTest.kt
+permissions:
+  contents: read
+concurrency:
+  group: iw-nonofficial-payment-repair-20261015
+  cancel-in-progress: false
+jobs:
+  repair-qualification:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      IW_REPAIR_CROP_BOULDER: "true"
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with: {distribution: temurin, java-version: "21"}
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Execute targeted old and new payment tests only
+        shell: bash
+        run: |
+          set -o pipefail
+          echo "OFFICIAL_R1_EXECUTION=false"
+          echo "NO_ORIGINAL_8_CASE_RERUN=true"
+          echo "SOURCE_HEAD=$(git rev-parse HEAD)"
+          ./gradlew :ai:test --tests '*IndustrialWasteV2PaymentIntentTest' \
+            --tests '*IndustrialWasteExploratoryCropBoulderRepairTest' \
+            --rerun-tasks --no-build-cache --no-daemon 2>&1 | tee /tmp/iw-payment-repair-first-test.txt
+      - name: Preserve first-attempt original test XML
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: industrial-waste-payment-suffix-repair-first-qualification
+          path: |
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteV2PaymentIntentTest.xml
+            ai/build/test-results/test/TEST-com.wingedsheep.ai.industrialwaste.IndustrialWasteExploratoryCropBoulderRepairTest.xml
+          if-no-files-found: warn
+          retention-days: 14
