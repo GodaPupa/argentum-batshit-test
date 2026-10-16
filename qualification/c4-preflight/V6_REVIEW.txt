@@ -1,0 +1,72 @@
+V6 ROUTE B LOCAL SOURCE RECEIPT — PARTIAL IMPLEMENTATION
+
+Direct parent V5: 1e968451789bf724999e327a1978fa0dbd9b0331.
+V4/V5 source and ELF files are preserved byte-for-byte; V6 adds separate files.
+The conductor selected Route B. No Route A cgroup namespace or mount layer was
+implemented. The manager-created D / supervisor S / measured probe C topology
+is a contract, NOT an observed host arrangement or usable parent path.
+
+Implemented source:
+- Exact, nonexecuted transient-unit property contract; no hooks/restart/shell.
+- Strict offline D/S/C identity, ownership/ACL/delegation/population/namespace
+  checks; no fixture can grant runtime authority.
+- Separate V6 C and static x86_64 ELF, built twice identically; no ELF execution.
+  Migration uses existing S via protected O_PATH FD 3, with sealed binary scope
+  contract FD 4; no user target string or executable input. Scope ABI 72 bytes.
+- Same-FD hashing and drift checks, immutable executable memfd construction
+  source, child join/release and FD remapping source, independent-observer
+  prerequisites, exact-D memory enablement, exact-C kill/final/read/removal,
+  bounded WNOHANG reaping and partial journal/manifest failure handling source.
+- Strict offline negative-control evidence model; parent/kernel channel is
+  distinct from helper reports; zero/gaps/positive outcomes remain separated.
+
+Limits, deliberately not disguised as completed infrastructure:
+All privileged backend entries start with an unconditional refusal. Concrete
+backend operations below the refusal are dormant review source. Authenticated
+manager/HeldScope and independent event-observer providers are NOT implemented;
+V6_OBSERVER_DESIGN.txt defines their required contracts and interference limits.
+Thus no claim that this is a complete runnable supervisor or ready hosted probe.
+The new helper's target/delegation and actual kernel enforcement remain untested.
+The policy JSON has hosted_permission=false, but even changing it cannot grant
+execution: no runtime gate consumes it as authorization. compile_request refuses;
+existing preflight and compiler/workflows are unchanged. No activation switch.
+
+Meaningful development failure preserved:
+Initial synthetic import failed because this Python fcntl module lacked
+F_SEAL_SEAL and related constants. V6 now explicitly uses Linux UAPI values
+(F_ADD_SEALS=1033, F_GET_SEALS=1034; SEAL/SHRINK/GROW/WRITE bits 1/2/4/8), checked
+against the local linux/fcntl.h. This corrects Python symbol portability, not a
+claim of hosted sealing support. The failed log remains in evidence.
+
+Tests run in this author environment are synthetic/root-context Python only.
+No V6 non-root replay claimed: earlier credential transition was denied; no
+repeat sudo/setpriv/UID transition was attempted in V6. The conductor's separate
+141-case V5 non-root receipt is preserved as predecessor evidence, not V6 proof.
+No runtime model output is admitted as negative-control runtime qualification.
+The source-author double ELF build is not an independent matching-toolchain build.
+
+Mandatory flags:
+BLOCKED_HOST_PARENT=true
+runtime_enforcement_qualified=false
+compiler_enabled=false
+hosted_permission=false
+independent_observer_implemented=false
+manager_transport_implemented=false
+
+Next substantive non-author Reviewer B review must assess actual source/ELF,
+new descriptor contract, the dormant/unimplemented boundaries, exact unit
+properties, model false-clean paths, helper trust/observation limits and bounded
+cleanup including pre-join failure. Reviewer must disclose material participation.
+Only a subsequent source decision may complete the manager/observer/watchdog
+providers; then exact revised bytes require independent review before any new
+hosted authorization. Do not remove source gates merely to pass synthetic tests.
+
+Historical C4 run 38780475153 remains INCOMPLETE; successful compiler exits and
+283.904/265.694-second timings do not backfill absent OOM evidence. Discovery
+38798018237/artifact12002124900 and metadata38815770299/artifact12010113214 remain
+nonqualifying consumed originals. Historical 72e14a…435c referent and missing
+Codespace ZIPs remain unresolved. Observer neutrality remains an assumption;
+no behavioral equivalence is established. Conductor reports and prior reviewer
+participation disclosures are preserved, not converted into third-party authority.
+No publication, workflow, sudo, systemd creation, cgroup mutation, privileged
+ELF execution, R5/R6 compile, differential, G11, gameplay or original rerun occurred.

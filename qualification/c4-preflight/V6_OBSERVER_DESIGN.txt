@@ -1,0 +1,88 @@
+V6 ROUTE B — NONRUNNING OBSERVER AND MANAGER TRANSPORT DESIGN
+
+This file is design, not an implemented observation backend or a permit.
+The source functions _authenticated_manager_scope and _fixed_parent_observer
+unconditionally refuse. The dormant adapter cannot reach a mutating syscall.
+No dictionary returned by validate_scope_model is an authenticated authority.
+
+Manager provider still required:
+An authenticated, root-owned system-bus client bound to PID1 must read the exact
+unit Id, InvocationID, ControlGroup, MainPID/start identity, version, full effective
+unit properties and controller side effects. Recheck on every mutation boundary.
+Keep the ordinary runner's approval bytes separate from independently verified
+operator authority. Do not infer authority from NOPASSWD, source constants or a
+true JSON flag. No systemctl/systemd-run creation launcher is included.
+
+Required HeldScope implementation interface (not supplied by offline ModelScope):
+- holds dfd, sfd, controllers_fd, subtree_fd, boot, unit invocation, mount ID and
+  host cgroup/user/mount namespaces; protected nonce/evidence/source ownership;
+- reserved uid/gid/private_home and supervisor MainPID/start/pidfd;
+- revalidate_before_mutation, direct_d_pids, require_same_s, verify_new_c;
+- require_explicit_d_local_enable_authority and require_upstream_unchanged;
+- verify_preexec must read actual /proc/status/cgroup/ns/fd/mountinfo, compare
+  held child identity, D/S/C FDs and loaded seccomp filter. It must not merely
+  accept the offline schema's boolean fields.
+Creation of worker home, sealed evidence directory, FD closure and any staging
+must be owned by the protected provider. ModelScope intentionally lacks these
+methods so an offline fixture cannot accidentally be used as runtime authority.
+
+Independent observation provider still required:
+One possible narrow design is parent-side PTRACE_SEIZE of the held owned child
+before its release, with fixed exec/fork/vfork/clone/exit event coverage and
+bounded syscall-return observation. No arbitrary attach PID, trace program,
+path, register modification, syscall injection, BPF loading or generic tracing
+API. No such tracer is implemented or executed here.
+
+The reviewed observer would bind all fork event children to PID/start/pidfd,
+record C membership while stopped before continuation, identify exact sealed-FD
+ELF at exec, and independently capture the nine declared denial operations.
+Migration must address held root-owned S/cgroup.procs, not D: fstat/fstatfs,
+owner/mode/ACL, actual attempted object, ret=-1 and EPERM/EACCES, with before/after
+C identity. ENOENT, EBUSY, unsupported tracing or a missing event is INCOMPLETE.
+Capture process credentials, capability sets, NNP, actual seccomp policy and net/
+ipc/mount namespaces independently; verify cgroup and user namespace unchanged.
+Record the intermediate fork and reparent, then the persistent descendant still
+alive in C after launcher exit. Only then request exact-C kill/drain.
+
+Helper rows are subordinate reports. The sealed memfd nonce and matching JSON
+are correlation, not authentication. The helper receives only standard I/O,
+FD 3 (O_PATH S directory) and FD 4 (sealed 72-byte scope record). S is a deliberate,
+reviewable read-only descriptor exception for the negative migration target;
+O_PATH conveys no write permission, and controls must remain protected. FD 4
+contains no host path or executable command. S/C device/inode and UID/GID/nonce
+are independently supplied by the protected provider, never workflow input.
+A successful write is FAIL. A forged/missing helper row is insufficient evidence.
+
+Tracing interference must be reviewed: it changes timing, signal-stop behavior,
+parent/child observation and some privilege rules. Ptrace preventing an escape
+cannot be misrepresented as proof that a different untraced runtime would prevent
+it. Seccomp filter dumping has host capability/kernel configuration requirements.
+No tracing fallback may replace missing event coverage with polling certainty.
+
+Bound everything: proposed adapter phases setup 8 s, seal 5 s, observe 10 s,
+drain 10 s, finalization 5 s with ONE absolute 38 s total. Per-phase ceilings
+are clamped to that deadline. Helper launcher alarm=45 s and descendant=40 s
+are independent safety fallbacks, not successful drain evidence. Unit lifetime
+60 s and stop grace 5 s are last-resort bounds for THIS NONCOMPILER source only,
+not changed C4 compile timing criteria. Final values need independent review.
+Bound event count, bytes, filesystem reads/log copies and per-operation waits.
+A stopped/missing child, tracer loss, cancellation or missing end state refuses.
+
+Required observer methods referenced by dormant source:
+bind_held_child; require_trace_armed_without_gaps; observe_until_persistent;
+require_postexec_seal_and_live_descendant; require_all_owned_descendants_reaped;
+seal_scoped_logs; finalize_manifest_and_unit_receipt. They must return raw,
+source/run/object-bound receipts, not allow caller-supplied claims to qualify.
+
+Critical remaining cleanup boundary:
+A child can fail before pidfd acquisition or C join. It is still within the
+owned unit/S, but not covered by a C-only kill. A separately controlled, exact
+InvocationID watchdog must terminate that unit on this path or supervisor death.
+No numeric host-PID fallback is implemented. Similarly, failed kernel reads or
+filesystem fsync may outlive a Python deadline; the external unit bound provides
+containment only, not a successful receipt. No complete backend exists until
+this watchdog/transport and evidence handoff are implemented and reviewed.
+
+Therefore current source verdict is PARTIAL_IMPLEMENTATION, runtime
+BLOCKED_HOST_PARENT / INDEPENDENT_OBSERVER_NOT_IMPLEMENTED. No synthetic result
+closes D2. No compiler or JVM integration, egress or behavioral run is enabled.
