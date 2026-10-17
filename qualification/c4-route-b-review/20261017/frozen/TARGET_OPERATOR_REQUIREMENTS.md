@@ -1,0 +1,5 @@
+# Smallest next action
+
+Obtain an operator-controlled host capability binding (psychic lamp's underlying host only if its operator can provide it, otherwise a named alternative). First request bounded read-only operator evidence of host PID1/system bus credentials, host mount/namespace view, Delegate/DelegateSubgroup ABI, allowed delegated memory topology, BPF attachment mechanism and independent service location outside D/S/C. This is not permission to install, attach or enforce.
+
+Changed-source review can proceed concurrently on this partial package without repeating Decision A/B or frozen reviews. Resolve the explicit production glue gaps and pin real dependencies. A later source-bound deployment decision must name the operator, host/boot, exact reviewed binaries/units, delegation scope, watchdog independence, kernel loader hooks and bounded rollback/evidence rules. Only then can one separately authorized noncompiler qualification original be considered. Protected compiler, D2 and gameplay require their own gates; their admission protocols are not supplied here.

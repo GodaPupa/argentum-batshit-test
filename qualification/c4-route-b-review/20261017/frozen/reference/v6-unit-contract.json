@@ -1,0 +1,37 @@
+{
+  "schema": "ARGENTUM_C4_V6_ROUTE_B_UNIT_CONTRACT_1",
+  "installed": false,
+  "hosted_permission": false,
+  "manager_minimum_version": 254,
+  "unit_name": "argentum-c4-v6-probe.service",
+  "properties": {
+    "Type": "exec",
+    "User": "root",
+    "Group": "root",
+    "ExecStart": ["/opt/argentum-c4-v6/supervisor"],
+    "Delegate": ["memory"],
+    "DelegateSubgroup": "supervisor",
+    "Restart": "no",
+    "KillMode": "control-group",
+    "SendSIGKILL": true,
+    "RuntimeMaxSec": 60,
+    "TimeoutStopSec": 5,
+    "ExecStartPre": [],
+    "ExecStartPost": [],
+    "ExecReload": [],
+    "ExecStop": [],
+    "ExecStopPost": []
+  },
+  "scope": {
+    "D": "authenticated manager ControlGroup; no guessed path",
+    "S": "held D / supervisor; manager-created; supervisor only",
+    "C": "held D / probe; exclusive new empty child; fail on collision",
+    "upstream_changes": "prohibited unless separately approved and reviewed; this source grants none",
+    "worker_cgroup_ownership": "none; worker owns only private scratch/home",
+    "view": "normal host cgroup view; no cgroup or user namespace creation"
+  },
+  "phase_deadlines_seconds": {"setup": 8, "seal": 5, "observe": 10, "drain": 10, "finalize": 5},
+  "authority": "ABSENT: conductor authorizes source construction only; JSON is not a permit",
+  "runtime_gate": "unconditional refusal before operations; source change plus independent review required",
+  "capability_policy": "UNQUALIFIED: exact effective host capabilities and LSM restrictions must be reviewed; no automatic elevation"
+}
