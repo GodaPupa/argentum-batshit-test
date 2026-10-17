@@ -1,0 +1,12 @@
+# ARGENTUM C4 — V6.1 Independent Reviewer B source review request
+
+This is a request, **not a review or approval**. First disclose any material participation in architecture, implementation, repair, test qualification or prior review of this exact V6.1 candidate; a separate conversation alone does not establish independence.
+
+Review the parent commit and reconstructed tree/patch against the ORIGINAL_V6_FROZEN_UNMODIFIED.zip (SHA-256 `07de3f39873467fa76639da62bf55b7a633e8c449d903ea8c501a30ea285ae59`). Confirm the exact single V6 parent, unchanged V5/V6 originals/ELFs, complete source and package hashes, 32/32 scoped local tests and eight detected synthetic mutants. Re-run only the new focused suite if appropriate, not privileged, hosted or unrelated completed tests.
+
+1. **Manager:** evaluate whether proposed system bus/PID1 identity and introspection pins are sufficient; identify missing D-Bus transport, stable source provenance, PID1 peer credentials, effective `Delegate`/`DelegateSubgroup`, `fstatfs`/statx/ACL, actual `MainPID` pidfd-start and D-local controller authorization. A plausible dictionary cannot grant a runtime HeldScope.
+2. **Observer:** evaluate real kernel non-stopping backend feasibility for syscall enter/exit, target inode resolution of S (including openat permission denial), exec/fork/reparent/descendant image & creds/seccomp, per-CPU losses/unknown events and OOM precedence. Distinguish ptrace timing interference, kernel BTF availability and untrusted helper rows. No real BPF/perf backend implemented.
+3. **Watchdog:** assess exact boot/InvocationID/D FD race-bound cleanup, supervision before C join or pidfd acquisition, external survival, name/PID reuse prevention, bounded unit termination, and durable drain/journal proof. No external service or FD broker implemented.
+4. **Integration:** check source and adversarial-negative reachability. All runtime and compiler entrypoints must hard-refuse, including V6, V6.1 and historical C4. Positives should not be erased by unrelated evidence gaps, nor runtime PASS produced by three synthetic PASS-like summaries.
+
+Give **separate explicit source verdicts** M/O/W, integration, runtime, hosted enforcement and C4 compilation. In particular source-fixture consistency must NOT be promoted to operational readiness. Report the narrowest independently checkable host prerequisites and precise residual ambiguity. Do not issue any workflow/privileged/gameplay authorization. Do not claim signed or authenticated Github Reviewer B review based on this request.

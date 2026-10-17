@@ -1,0 +1,416 @@
+--- a/src/external_service.py
++++ b/src/external_service.py
+@@ -0,0 +1,101 @@
++"""External watchdog channel and selector loop, no installed daemon in this build."""
++import array
++import json
++import os
++import select
++import socket
++import struct
++import time
++from common import require,Blocked,deployment_barrier
++
++class Channel:
++    """Preconnected Unix seqpacket; peer lifetime pinned by launcher pidfd.
++
++    Root peer credential checks are necessary, not sufficient deployment proof.
++    The trusted launcher must bind PID/start/pidfd and attest location outside D/S/C.
++    """
++    def __init__(self,sock,binding,expected_peer):
++        self.sock=sock;self.binding=binding.__dict__;self.tx=0;self.rx=0
++        require(sock.getsockopt(socket.SOL_SOCKET,socket.SO_TYPE)==socket.SOCK_SEQPACKET,'channel type')
++        require(struct.unpack('3i',sock.getsockopt(socket.SOL_SOCKET,socket.SO_PEERCRED,12))==expected_peer,'channel peer')
++        sock.settimeout(1)
++    def send(self,kind,fd=None):
++        require(kind in {'REGISTER_D','ARMED','RELEASED','HEARTBEAT','OBSERVER_LOSS','C_JOIN_FAILURE','PIDFD_FAILURE','CANCEL'},'channel kind')
++        require((kind=='REGISTER_D')==(fd is not None),'FD message scope')
++        raw=json.dumps({'v':1,'seq':self.tx,'binding':self.binding,'kind':kind},sort_keys=True,separators=(',',':')).encode()
++        ancillary=[] if fd is None else [(socket.SOL_SOCKET,socket.SCM_RIGHTS,array.array('i',[fd]))]
++        # Reserve sequence before send; uncertain outcome cannot be retried.
++        self.tx+=1
++        require(self.sock.sendmsg([raw],ancillary)==len(raw),'uncertain channel send')
++    def receive(self):
++        data,anc,flags,_=self.sock.recvmsg(4096,socket.CMSG_SPACE(16*4),socket.MSG_CMSG_CLOEXEC)
++        fds=[]
++        try:
++            for level,kind,raw in anc:
++                if level==socket.SOL_SOCKET and kind==socket.SCM_RIGHTS:
++                    vals=array.array('i');vals.frombytes(raw[:len(raw)//vals.itemsize*vals.itemsize]);fds.extend(vals)
++                else:raise Blocked('unexpected ancillary record')
++            require(data and not flags&(socket.MSG_TRUNC|socket.MSG_CTRUNC),'channel EOF/truncated')
++            def unique(pairs):
++                d={}
++                for k,v in pairs:require(k not in d,'duplicate field');d[k]=v
++                return d
++            r=json.loads(data,object_pairs_hook=unique)
++            require(set(r)=={'v','seq','binding','kind'} and r['v']==1 and type(r['seq']) is int and r['seq']==self.rx and r['binding']==self.binding,'channel binding/sequence')
++            kind=r['kind'];require(kind in {'REGISTER_D','ARMED','RELEASED','HEARTBEAT','OBSERVER_LOSS','C_JOIN_FAILURE','PIDFD_FAILURE','CANCEL'},'channel kind')
++            require(len(fds)==(1 if kind=='REGISTER_D' else 0),'channel FD count')
++            self.rx+=1
++            return kind,(fds.pop() if fds else None)
++        finally:
++            for fd in fds:os.close(fd)
++
++class EventLoop:
++    """Bounded selector driver. No PID signals; no automatic termination retry."""
++    def __init__(self,controller,channel,wait,manager_inactive,clock=time.monotonic,heartbeat_seconds=1):
++        self.controller=controller;self.channel=channel;self.wait=wait;self.manager_inactive=manager_inactive;self.clock=clock
++        self.heartbeat_seconds=heartbeat_seconds;self.heartbeat_deadline=clock()+heartbeat_seconds;self.closed=False
++    def tick(self):
++        c=self.controller
++        require(not self.closed,'event loop terminal')
++        if c.state=='DRAINING':
++            self.wait(max(0,min(0.05,c.deadline-self.clock())))
++            c.drain_tick(self.manager_inactive())
++        elif c.state in ('ARMED','RELEASED'):
++            timeout=max(0,min(0.05,c.deadline-self.clock(),self.heartbeat_deadline-self.clock()))
++            events=self.wait(timeout)
++            death='pidfd' in events;observer_lost='observer' in events;pre_c=False;pre_pid=False
++            if 'channel' in events:
++                try:kind,fd=self.channel.receive()
++                except Exception:
++                    kind='CANCEL'
++                else:
++                    if fd is not None:
++                        os.close(fd);kind='CANCEL'
++                if kind=='HEARTBEAT':self.heartbeat_deadline=min(c.deadline,self.clock()+self.heartbeat_seconds)
++                elif kind=='RELEASED':c.release_record()
++                elif kind=='C_JOIN_FAILURE':pre_c=True
++                elif kind=='PIDFD_FAILURE':pre_pid=True
++                elif kind=='OBSERVER_LOSS':observer_lost=True
++                elif kind=='CANCEL':c.terminate('EXPLICIT_CANCEL')
++                else:c.terminate('EXPLICIT_CANCEL')
++            if c.state in ('ARMED','RELEASED'):c.detect(death,self.heartbeat_deadline,not observer_lost,pre_c,pre_pid)
++        self.closed=c.state in ('DONE','FAILED','INCOMPLETE_EVIDENCE')
++        return c.state
++    def run(self):
++        while not self.closed:self.tick()
++        return {'state':self.controller.state,'runtime_qualified':False}
++
++class PollWait:
++    def __init__(self,pidfd,channel_fd,observer_fd):
++        deployment_barrier()
++        require(len({pidfd,channel_fd,observer_fd})==3,'aliased event descriptors')
++        self.poll=select.poll();self.names={pidfd:'pidfd',channel_fd:'channel',observer_fd:'observer'}
++        for fd in self.names:self.poll.register(fd,select.POLLIN|select.POLLHUP|select.POLLERR)
++    def __call__(self,seconds):return {self.names[fd] for fd,mask in self.poll.poll(max(0,int(seconds*1000)))}
++
++def service_main():
++    deployment_barrier()
++    # A sealed inherited descriptor table and installation-bound production
++    # constructors must be supplied by the independent deployment review.
++
++if __name__=='__main__':service_main()
+--- a/src/integration.py
++++ b/src/integration.py
+@@ -0,0 +1,104 @@
++"""Route B integration coordinator. No operational authorization is minted.
++
++Live adapters remain sealed. Interfaces are exercised only with synthetic
++backends; identity-bearing records are not accepted as proof of host authority.
++"""
++import hashlib
++import os
++import stat
++from contextlib import ExitStack
++from common import require,Blocked,deployment_barrier
++
++class InstalledImage:
++    """Own a duplicate FD; hash the same regular file before/after the handshake."""
++    def __init__(self,fd,expected_sha,owner=0,max_bytes=32*1024*1024):
++        self.fd=os.dup(fd);self.expected_sha=expected_sha;self.owner=owner;self.max_bytes=max_bytes
++        try:self.identity=self.check()
++        except BaseException:self.close();raise
++    def check(self):
++        before=os.fstat(self.fd)
++        require(stat.S_ISREG(before.st_mode) and before.st_uid==self.owner and not before.st_mode&0o022,'untrusted installed image')
++        require(before.st_nlink==1 and 0<before.st_size<=self.max_bytes,'image size/link count')
++        h=hashlib.sha256();off=0
++        while off<before.st_size:
++            b=os.pread(self.fd,min(65536,before.st_size-off),off);require(bool(b),'short image read');h.update(b);off+=len(b)
++        after=os.fstat(self.fd)
++        key=lambda s:(s.st_dev,s.st_ino,s.st_size,s.st_mtime_ns,s.st_ctime_ns,s.st_mode,s.st_uid,s.st_gid)
++        require(key(before)==key(after) and h.hexdigest()==self.expected_sha,'installed image drift')
++        return key(after)
++    def revalidate(self):require(self.check()==self.identity,'installed inode replaced/modified')
++    def close(self):
++        if self.fd>=0:os.close(self.fd);self.fd=-1
++    @classmethod
++    def open_live(cls,root_fd,expected_sha):
++        deployment_barrier()
++        # root_fd is the independently authenticated /opt/argentum-c4-v6 directory.
++        fd=os.open('supervisor',os.O_RDONLY|os.O_NOFOLLOW|os.O_CLOEXEC,dir_fd=root_fd)
++        try:return cls(fd,expected_sha)
++        finally:os.close(fd)
++
++class ScopeEstablishment:
++    """One-shot mutation ordering; exact D only, no ancestor/controller fallback."""
++    def __init__(self,backend,journal):self.backend=backend;self.journal=journal;self.used=False
++    def establish(self):
++        require(not self.used,'scope attempt consumed');self.used=True
++        b=self.backend
++        b.revalidate_manager_and_held_d()
++        b.require_supervisor_in_manager_created_s()
++        b.require_external_watchdog_armed_for_d()
++        b.require_empty_d_and_absent_c()
++        baseline=b.upstream_snapshot()
++        # Revalidation occurs immediately before every allowed mutation.
++        for operation in ['enable_memory_at_d','create_exclusive_c']:
++            b.revalidate_manager_and_held_d();self.journal.append('SCOPE_MUTATION_INTENT',{'operation':operation})
++            getattr(b,operation)()
++            self.journal.append('SCOPE_MUTATION_RETURNED',{'operation':operation})
++        require(b.upstream_snapshot()==baseline,'upstream controller mutation')
++        scope=b.open_and_verify_dsc()
++        self.journal.append('HELD_SCOPE_ESTABLISHED',{})
++        return scope
++
++class FixedDWriter:
++    """Concrete fixed-name writes below held D; never called during local tests."""
++    def __init__(self,dfd,revalidate):
++        deployment_barrier()
++        self.fd=os.dup(dfd);self.revalidate=revalidate;self.memory_attempted=False;self.c_attempted=False
++    def enable_memory_at_d(self):
++        require(not self.memory_attempted,'memory enable consumed');self.revalidate()
++        fd=os.open('cgroup.subtree_control',os.O_WRONLY|os.O_NOFOLLOW|os.O_CLOEXEC,dir_fd=self.fd)
++        try:
++            self.revalidate();self.memory_attempted=True
++            require(os.write(fd,b'+memory')==7,'uncertain controller write')
++        finally:os.close(fd)
++    def create_exclusive_c(self):
++        require(not self.c_attempted,'C creation consumed');self.revalidate();self.c_attempted=True
++        os.mkdir('probe',0o755,dir_fd=self.fd)
++    def close(self):os.close(self.fd)
++
++class IntegratedPreparation:
++    """Connects verified installation, scope, observer and watchdog preparation.
++
++    Does not release an ELF or return a runtime permit. Candidate dependency
++    injection is not a replacement for reviewed production construction.
++    """
++    def __init__(self,manager,scope_factory,observer,watchdog,image,journal):
++        self.manager=manager;self.scope_factory=scope_factory;self.observer=observer;self.watchdog=watchdog;self.image=image;self.journal=journal;self.used=False
++    async def prepare(self,binding):
++        require(not self.used,'preparation consumed');self.used=True
++        self.image.revalidate()
++        await self.manager.bind()
++        await self.manager.revalidate(binding)
++        # Supervisor starts held at its own release gate. Watchdog registration
++        # covers the pre-C/pre-pidfd interval, before scope setup can fail.
++        self.watchdog.arm()
++        try:
++            scope=self.scope_factory.establish()
++            self.observer.prepare_bound_capture(scope,binding)
++            await self.manager.revalidate(binding);self.image.revalidate();scope.revalidate()
++            self.journal.append('PREPARED_NO_WORKER_RELEASE',{})
++            return {'status':'PREPARED_NOT_RUNTIME_QUALIFIED','runtime_qualified':False,'worker_released':False}
++        except BaseException:
++            # Invoke the existing single-attempt controller, not an ad hoc kill.
++            if self.watchdog.state in ('ARMED','RELEASED'):
++                self.watchdog.terminate('PRE_C_JOIN_FAILURE')
++            raise
+--- a/src/observer_lifecycle.py
++++ b/src/observer_lifecycle.py
+@@ -0,0 +1,35 @@
++"""Host-independent lifecycle; injected adapters confer no kernel authority."""
++from common import require,deployment_barrier
++class AttachmentLifecycle:
++    def __init__(self,provider,journal,binding,cpus):
++        self.provider=provider;self.journal=journal;self.binding=binding
++        self.cpus=frozenset(cpus);self.state='NEW';self.links=[]
++        require(self.cpus and all(type(c) is int and c>=0 for c in self.cpus),'CPU inventory')
++    def prepare_bound_capture(self,scope,binding):
++        require(self.state=='NEW' and binding==self.binding,'attachment binding/state')
++        self.state='ATTACHING'
++        try:
++            scope.revalidate();self.provider.validate_installation_and_kernel(binding)
++            require(frozenset(self.provider.online_cpus())==self.cpus,'CPU drift before attach')
++            self.links=list(self.provider.attach_reviewed_hooks(scope))
++            require(self.links and len(set(self.links))==len(self.links),'attachment links')
++            self.check_health();self.journal.append('ATTACHED_NOT_QUALIFIED',{'cpus':sorted(self.cpus)})
++            self.state='ATTACHED'
++        except BaseException:self.state='FAILED';raise
++    def check_health(self):
++        require(frozenset(self.provider.online_cpus())==self.cpus,'CPU hotplug: coverage invalid')
++        loss=self.provider.loss_counters()
++        require(set(loss)==self.cpus and all(type(v) is int and v==0 for v in loss.values()),'event loss or missing loss map')
++        self.provider.verify_links_and_maps(self.links,self.binding)
++    def finish_after_drain(self,drain_check):
++        require(self.state=='ATTACHED','observer lifecycle state')
++        # Production drain check must use held FD and exact invocation evidence.
++        require(drain_check() is True,'drain not verified');self.state='DRAINING'
++        try:
++            self.check_health();self.provider.flush_durable_events();self.check_health()
++            self.journal.append('ATTACH_TO_DRAIN_COMPLETE',{})
++            self.provider.detach_once(self.links);self.state='DETACHED'
++        except BaseException:self.state='FAILED';raise
++        return {'runtime_qualified':False,'kernel_authentication_proven':False}
++def construct_authenticated_provider():
++    deployment_barrier()
+--- a/src/watchdog.py
++++ b/src/watchdog.py
+@@ -102,7 +102,9 @@
+                 try:self.journal.append('KILL_INTENT',{})
+                 except Exception as exc:journal_error=exc
+             self.kill_attempted=True;self.backend.kill_once()
+-            if journal_error is None:self.journal.append('KILL_RETURNED',{})
++            if journal_error is None:
++                try:self.journal.append('KILL_RETURNED',{})
++                except Exception as exc:journal_error=exc
+             self.evidence_error=journal_error
+             self.state='DRAINING'
+         except BaseException:
+--- a/tests/test_integration.py
++++ b/tests/test_integration.py
+@@ -0,0 +1,151 @@
++import os,socket,tempfile,hashlib,unittest
++from test_candidates import B,Log,Backend
++from common import Blocked
++from integration import InstalledImage,ScopeEstablishment
++from external_service import Channel,EventLoop,service_main
++from observer_lifecycle import AttachmentLifecycle,construct_authenticated_provider
++from watchdog import Controller
++class IntegrationTests(unittest.TestCase):
++    def pair(self):
++        a,b=socket.socketpair(socket.AF_UNIX,socket.SOCK_SEQPACKET)
++        self.addCleanup(a.close);self.addCleanup(b.close);peer=(os.getpid(),os.getuid(),os.getgid())
++        return Channel(a,B,peer),Channel(b,B,peer)
++    def test_real_fd_escrow_cloexec(self):
++        a,b=self.pair()
++        with tempfile.TemporaryFile() as f:
++            a.send('REGISTER_D',f.fileno());kind,fd=b.receive()
++            try:
++                self.assertEqual(kind,'REGISTER_D');self.assertEqual(os.fstat(fd).st_ino,os.fstat(f.fileno()).st_ino);self.assertFalse(os.get_inheritable(fd))
++            finally:os.close(fd)
++    def test_replay_rejected(self):
++        a,b=self.pair();a.send('HEARTBEAT');b.receive();a.tx=0;a.send('HEARTBEAT')
++        with self.assertRaises(Blocked):b.receive()
++    def test_wrong_binding(self):
++        a,b=self.pair();a.binding=dict(a.binding,run='e'*32);a.send('HEARTBEAT')
++        with self.assertRaises(Blocked):b.receive()
++    def test_extra_fd_rejected(self):
++        a,b=self.pair()
++        with tempfile.TemporaryFile() as f:
++            with self.assertRaises(Blocked):a.send('HEARTBEAT',f.fileno())
++    def test_wrong_peer(self):
++        a,b=self.pair()
++        with self.assertRaises(Blocked):Channel(a.sock,B,(999,0,0))
++    def test_duplicate_json(self):
++        a,b=self.pair();a.sock.send(b'{"v":1,"v":1}')
++        with self.assertRaises(Blocked):b.receive()
++    def test_image_drift(self):
++        with tempfile.NamedTemporaryFile() as f:
++            f.write(b'original');f.flush();os.fchmod(f.fileno(),0o600)
++            im=InstalledImage(f.fileno(),hashlib.sha256(b'original').hexdigest(),os.getuid())
++            try:
++                im.revalidate();f.seek(0);f.write(b'modified');f.flush()
++                with self.assertRaises(Blocked):im.revalidate()
++            finally:im.close()
++    def test_image_permissions(self):
++        with tempfile.NamedTemporaryFile() as f:
++            f.write(b'x');f.flush();os.fchmod(f.fileno(),0o666)
++            with self.assertRaises(Blocked):InstalledImage(f.fileno(),hashlib.sha256(b'x').hexdigest(),os.getuid())
++    def scope(self,fail=False):
++        class S:
++            def __init__(self):self.calls=[]
++            def __getattr__(self,k):
++                def f():
++                    self.calls.append(k)
++                    if fail and k=='enable_memory_at_d':raise OSError('uncertain')
++                    if k=='upstream_snapshot':return 'same'
++                    if k=='open_and_verify_dsc':return self
++                return f
++        return S()
++    def test_scope_order_no_retry(self):
++        b=self.scope();s=ScopeEstablishment(b,Log());s.establish()
++        self.assertLess(b.calls.index('require_external_watchdog_armed_for_d'),b.calls.index('enable_memory_at_d'))
++        self.assertLess(b.calls.index('enable_memory_at_d'),b.calls.index('create_exclusive_c'))
++        with self.assertRaises(Blocked):s.establish()
++    def test_scope_uncertain_stops(self):
++        b=self.scope(True);s=ScopeEstablishment(b,Log())
++        with self.assertRaises(OSError):s.establish()
++        self.assertNotIn('create_exclusive_c',b.calls)
++        with self.assertRaises(Blocked):s.establish()
++    def loop(self,events):
++        b=Backend();c=Controller(B,b,Log(),10,lambda:0);c.arm()
++        return b,c,EventLoop(c,None,lambda timeout:events,lambda:True,lambda:0)
++    def test_supervisor_death_drain(self):
++        b,c,l=self.loop({'pidfd'});self.assertEqual(l.tick(),'DRAINING');b.pop=False
++        self.assertEqual(l.tick(),'DONE');self.assertEqual(b.calls,1)
++        with self.assertRaises(Blocked):l.tick()
++    def test_observer_loss(self):
++        b,c,l=self.loop({'observer'});l.tick();self.assertEqual(c.trigger,'OBSERVER_LOSS');self.assertEqual(b.calls,1)
++    def test_kill_failure_no_retry(self):
++        b,c,l=self.loop({'pidfd'});b.fail=True
++        with self.assertRaises(OSError):l.tick()
++        l.tick();self.assertEqual(b.calls,1);self.assertEqual(c.state,'FAILED')
++    def test_durable_return_failure_drains(self):
++        class BadLog(Log):
++            def append(self,k,d):
++                if k=='KILL_RETURNED':raise OSError('disk')
++                super().append(k,d)
++        b=Backend();c=Controller(B,b,BadLog(),10,lambda:0);c.arm();c.terminate('SUPERVISOR_DEATH');b.pop=False;c.drain_tick(True)
++        self.assertEqual(c.state,'INCOMPLETE_EVIDENCE');self.assertEqual(b.calls,1)
++    def test_barriers(self):
++        for f in [service_main,construct_authenticated_provider]:
++            with self.assertRaises(Blocked):f()
++class Provider:
++    def __init__(self):self.cpus={0,1};self.loss={0:0,1:0};self.calls=[];self.bad=False
++    def online_cpus(self):return self.cpus
++    def loss_counters(self):return self.loss
++    def validate_installation_and_kernel(self,b):
++        if self.bad:raise Blocked('source mismatch')
++    def attach_reviewed_hooks(self,s):return [11,12]
++    def verify_links_and_maps(self,l,b):pass
++    def flush_durable_events(self):self.calls.append('flush')
++    def detach_once(self,l):self.calls.append('detach')
++class Scope:
++    def revalidate(self):pass
++class ObserverIntegrationTests(unittest.TestCase):
++    def fixture(self):
++        p=Provider();return p,AttachmentLifecycle(p,Log(),B,{0,1})
++    def test_attach_drain(self):
++        p,o=self.fixture();o.prepare_bound_capture(Scope(),B);r=o.finish_after_drain(lambda:True)
++        self.assertFalse(r['kernel_authentication_proven']);self.assertEqual(p.calls,['flush','detach'])
++        with self.assertRaises(Blocked):o.finish_after_drain(lambda:True)
++    def test_hotplug(self):
++        p,o=self.fixture();o.prepare_bound_capture(Scope(),B);p.cpus.add(2)
++        with self.assertRaises(Blocked):o.check_health()
++    def test_loss_missing_map(self):
++        for loss in [{0:0},{0:0,1:1},{0:0,1:False}]:
++            p,o=self.fixture();o.prepare_bound_capture(Scope(),B);p.loss=loss
++            with self.assertRaises(Blocked):o.check_health()
++    def test_source_mismatch(self):
++        p,o=self.fixture();p.bad=True
++        with self.assertRaises(Blocked):o.prepare_bound_capture(Scope(),B)
++        self.assertEqual(o.state,'FAILED')
++    def test_drain_required(self):
++        p,o=self.fixture();o.prepare_bound_capture(Scope(),B)
++        with self.assertRaises(Blocked):o.finish_after_drain(lambda:False)
++        self.assertEqual(p.calls,[])
++class AdditionalIntegrationTests(unittest.TestCase):
++    def test_wrong_image_hash(self):
++        with tempfile.NamedTemporaryFile() as f:
++            f.write(b'original');f.flush();os.fchmod(f.fileno(),0o600)
++            with self.assertRaises(Blocked):InstalledImage(f.fileno(),'0'*64,os.getuid())
++    def test_prepare_positive_and_failure(self):
++        import asyncio
++        from integration import IntegratedPreparation
++        class Manager:
++            async def bind(self):pass
++            async def revalidate(self,b):pass
++        class Factory:
++            def establish(self):return Scope()
++        class Image:
++            def revalidate(self):pass
++        async def go(fail):
++            p=Provider();p.bad=fail;o=AttachmentLifecycle(p,Log(),B,{0,1})
++            b=Backend();c=Controller(B,b,Log(),10,lambda:0)
++            coordinator=IntegratedPreparation(Manager(),Factory(),o,c,Image(),Log())
++            if fail:
++                with self.assertRaises(Blocked):await coordinator.prepare(B)
++                self.assertEqual(b.calls,1);self.assertEqual(c.state,'DRAINING')
++            else:
++                r=await coordinator.prepare(B);self.assertFalse(r['worker_released']);self.assertFalse(r['runtime_qualified'])
++            with self.assertRaises(Blocked):await coordinator.prepare(B)
++        asyncio.run(go(False));asyncio.run(go(True))

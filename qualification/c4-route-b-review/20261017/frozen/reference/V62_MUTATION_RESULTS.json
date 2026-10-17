@@ -1,0 +1,65 @@
+{
+  "contract": "ARGENTUM_C4_V62_MUTATION_EVIDENCE_V1",
+  "killed": 8,
+  "mutants": [
+    {
+      "assertion_failure": true,
+      "case": "runtime-open",
+      "detected": true,
+      "return_code": 1,
+      "test": "test_default_no_authority_even_all_green"
+    },
+    {
+      "assertion_failure": true,
+      "case": "compiler-open",
+      "detected": true,
+      "return_code": 1,
+      "test": "test_default_no_authority_even_all_green"
+    },
+    {
+      "assertion_failure": true,
+      "case": "d2-open",
+      "detected": true,
+      "return_code": 1,
+      "test": "test_default_no_authority_even_all_green"
+    },
+    {
+      "assertion_failure": true,
+      "case": "target-spoof",
+      "detected": true,
+      "return_code": 1,
+      "test": "test_default_no_authority_even_all_green"
+    },
+    {
+      "assertion_failure": true,
+      "case": "dbus-source-spoof",
+      "detected": true,
+      "return_code": 1,
+      "test": "test_manager_never_gets_dbus_authority_from_socket"
+    },
+    {
+      "assertion_failure": true,
+      "case": "inode-source-spoof",
+      "detected": true,
+      "return_code": 1,
+      "test": "test_observer_btf_and_perm_flags_not_backend"
+    },
+    {
+      "assertion_failure": true,
+      "case": "watchdog-source-spoof",
+      "detected": true,
+      "return_code": 1,
+      "test": "test_watchdog_cgroup_kill_metadata_does_not_grant_termination"
+    },
+    {
+      "assertion_failure": true,
+      "case": "historical-c4-lie",
+      "detected": true,
+      "return_code": 1,
+      "test": "test_default_no_authority_even_all_green"
+    }
+  ],
+  "original_source_unchanged": true,
+  "source_sha256": "5728476d6fdd6b2b4a7849c2a91d1c3dda9d00a43c083e2b572eae9ada058282",
+  "total": 8
+}
