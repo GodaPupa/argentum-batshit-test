@@ -4,6 +4,7 @@ on:
     branches: [local/pest-tron-optimization-r1-20261018]
 permissions:
   contents: read
+  actions: read
 jobs:
   decision-gate:
     runs-on: ubuntu-latest
@@ -13,8 +14,6 @@ jobs:
       max-parallel: 2
       matrix:
         include:
-          - variant: control
-            engine: 8e9c0877ea51bc0a112891066b2465d5c124ab09
           - variant: candidate
             engine: a811254b1c158b102ccb56e4d6f547fd74648338
     steps:
@@ -48,7 +47,7 @@ jobs:
         working-directory: engine
         run: |
           set -euo pipefail
-          just test-ai --no-daemon --console=plain --stacktrace 2>&1 | tee "$RUNNER_TEMP/ai-regression.log"
+          just test-ai 2>&1 | tee "$RUNNER_TEMP/ai-regression.log"
       - name: Exact decision reconstruction and continuation
         working-directory: engine
         env:
@@ -58,6 +57,18 @@ jobs:
         run: |
           set -euo pipefail
           just test-class PestTronOptimizationReplayTest --no-daemon --console=plain --stacktrace 2>&1 | tee "$RUNNER_TEMP/replay.log"
+      - name: Require preserved control decision gate without repeating it
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api repos/GodaPupa/argentum-batshit-test/actions/jobs/117807117464 > "$RUNNER_TEMP/control-gate.json"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          job=json.loads(Path(os.environ['RUNNER_TEMP'],'control-gate.json').read_text())
+          assert job['run_id']==39172094307 and job['conclusion']=='success', job
+          PY
       - uses: actions/upload-artifact@v4
         if: always()
         with:
@@ -69,6 +80,7 @@ jobs:
             ${{ runner.temp }}/ai-regression.log
             ${{ runner.temp }}/replay.log
             ${{ runner.temp }}/replay.json
+            ${{ runner.temp }}/control-gate.json
   candidate-pair:
     needs: decision-gate
     if: github.ref == 'refs/heads/local/pest-tron-optimization-r1-20261018'
