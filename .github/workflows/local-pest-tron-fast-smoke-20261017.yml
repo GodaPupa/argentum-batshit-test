@@ -1,0 +1,130 @@
+name: Nonofficial FAST-PILOT Pest Control versus Monster Tron gameplay
+
+on:
+  push:
+    branches:
+      - local/pest-tron-fast-smoke-20261017
+
+permissions:
+  contents: read
+
+jobs:
+  local-engine-gameplay:
+    if: github.ref == 'refs/heads/local/pest-tron-fast-smoke-20261017'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - name: Checkout isolated branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Recover unchanged local runner from verified payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat tools/pest-tron-batch/source-part-0*.b64 | base64 --decode > "$RUNNER_TEMP/local-bundle.tar.xz"
+          echo "ca51dd78c6343f32d9cd6d014fa11a5a1ec75c870e019e6fcbef28252d2c03f8  $RUNNER_TEMP/local-bundle.tar.xz" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/local-bundle"
+          tar -xJf "$RUNNER_TEMP/local-bundle.tar.xz" -C "$RUNNER_TEMP/local-bundle"
+          for relative in \
+            gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchPlan.kt \
+            gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchPlanTest.kt \
+            gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchTest.kt \
+            tools/pest-tron-batch/summarize.py \
+            tools/pest-tron-batch/test_summarize.py; do
+            test ! -e "$relative" || { echo "Refusing collision at $relative"; exit 2; }
+            mkdir -p "$(dirname "$relative")"
+            cp "$RUNNER_TEMP/local-bundle/$relative" "$relative"
+          done
+          test -f gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchTest.kt
+          echo "RUNNER_RECOVERED_NONOFFICIAL"
+
+      - name: Use explicitly labeled fast pilot profiles (gameplay only)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          path = Path("gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchTest.kt")
+          text = path.read_text()
+          before = "if (seat == plan.pestSeat) AiProfile.PRODUCTION_CANDIDATE_EXPIRING\\n                                else PestMonsterTronPolicy.profile,"
+          after = "if (seat == plan.pestSeat) AiProfile.PRODUCTION_CANDIDATE_EXPIRING.copy(\\n                                    id = \\"local-fast-pest\\", rollouts = null, determinizeHiddenInformation = false\\n                                )\\n                                else PestMonsterTronPolicy.profile.copy(\\n                                    id = \\"local-fast-tron\\", rollouts = null, determinizeHiddenInformation = false\\n                                ),"
+          before = before.replace("\\\\n", "\\n")
+          after = after.replace("\\\\n", "\\n")
+          assert text.count(before) == 1, "Fast-profile patch source drift"
+          text = text.replace(before, after)
+          marker = 'put("purpose", "LOCAL_MAGIC_GAMEPLAY_BATCH")'
+          assert text.count(marker) == 1, "Metadata source drift"
+          text = text.replace(marker, marker + '\\n            put("aiMode", "LOCAL_FAST_NO_ROLLOUTS")')
+          path.write_text(text)
+          print("APPLIED_LOCAL_FAST_AI_MODE rollout=off, hidden_determinization=off, other profile settings retained")
+          PY
+
+      - name: Validate local transcript postprocessor fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -s tools/pest-tron-batch -p 'test_*.py' -v 2>&1 | tee "$RUNNER_TEMP/python-tests.log"
+
+      - name: Compile actual Kotlin game-engine test classpath
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew
+          ./gradlew :gym:compileTestKotlin --no-daemon --console=plain --stacktrace 2>&1 | tee "$RUNNER_TEMP/kotlin-compile.log"
+
+      - name: Run two swapped-seat engine games and scheduler tests
+        shell: bash
+        env:
+          MTG_BATCH_RUN: '1'
+          MTG_BATCH_GAMES: '2'
+          MTG_BATCH_SEED: '20261017'
+          MTG_BATCH_OUTPUT: ${{ github.workspace }}/gym/build/nonofficial-pest-tron-smoke-fast
+        run: |
+          set -euo pipefail
+          ./gradlew :gym:test --tests com.wingedsheep.gym.PestMonsterTronBatchPlanTest --tests com.wingedsheep.gym.PestMonsterTronBatchTest --no-daemon --console=plain --stacktrace 2>&1 | tee "$RUNNER_TEMP/smoke-gradle.log"
+          python3 tools/pest-tron-batch/summarize.py "$MTG_BATCH_OUTPUT" 2>&1 | tee "$RUNNER_TEMP/smoke-summary.log"
+          cat "$MTG_BATCH_OUTPUT/report.md"
+
+      - name: Explore 10 more local games only after valid smoke
+        shell: bash
+        env:
+          MTG_BATCH_RUN: '1'
+          MTG_BATCH_GAMES: '10'
+          MTG_BATCH_SEED: '20261018'
+          MTG_BATCH_OUTPUT: ${{ github.workspace }}/gym/build/nonofficial-pest-tron-explore-fast
+        run: |
+          set -euo pipefail
+          ./gradlew :gym:cleanTest :gym:test --tests com.wingedsheep.gym.PestMonsterTronBatchTest --no-daemon --console=plain --stacktrace 2>&1 | tee "$RUNNER_TEMP/explore-gradle.log"
+          python3 tools/pest-tron-batch/summarize.py "$MTG_BATCH_OUTPUT" 2>&1 | tee "$RUNNER_TEMP/explore-summary.log"
+          cat "$MTG_BATCH_OUTPUT/report.md"
+
+      - name: Preserve complete nonofficial logs including partial failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-pest-tron-fast-results-${{ github.run_number }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            gym/build/nonofficial-pest-tron-smoke-fast/
+            gym/build/nonofficial-pest-tron-explore-fast/
+            gym/build/test-results/test/
+            ${{ runner.temp }}/python-tests.log
+            ${{ runner.temp }}/kotlin-compile.log
+            ${{ runner.temp }}/smoke-gradle.log
+            ${{ runner.temp }}/smoke-summary.log
+            ${{ runner.temp }}/explore-gradle.log
+            ${{ runner.temp }}/explore-summary.log
