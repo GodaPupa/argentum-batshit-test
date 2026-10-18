@@ -1695,6 +1695,14 @@ class Strategist(
             }
         ) return null
 
+        // The comparator starts from this same immutable state, not from a payment variant's
+        // completed state. Recomputing its entire source-choice search for every completed
+        // setup-first line multiplies two exhaustive searches (late-game land counts make this
+        // take minutes or hours). Keep every candidate and score, but evaluate each comparator
+        // tuple only once in this invocation. Cache null too: an impossible reverse line must
+        // not trigger the same exhaustive search again. Nothing survives into another decision.
+        val focalFirstScores = mutableMapOf<Triple<EntityId, EntityId, EntityId>, Double?>()
+
         return legalNow.asSequence().mapNotNull { landAction ->
             val land = landAction.action as? PlayLand ?: return@mapNotNull null
             val landResult = simulator.simulate(state, land)
@@ -1717,9 +1725,13 @@ class Strategist(
                         val focalId = (focal.action as CastSpell).cardId
                         castStatesWithSourceChoices(setupState, focal, playerId).asSequence().mapNotNull { completed ->
                             val setupFirstScore = evaluator.evaluate(completed, completed.projectedState, playerId)
-                            val focalFirstScore = focalFirstCompleteScore(
-                                state, playerId, focalId, land.cardId, setupId,
-                            ) ?: return@mapNotNull null
+                            val comparisonKey = Triple(focalId, land.cardId, setupId)
+                            if (!focalFirstScores.containsKey(comparisonKey)) {
+                                focalFirstScores[comparisonKey] = focalFirstCompleteScore(
+                                    state, playerId, focalId, land.cardId, setupId,
+                                )
+                            }
+                            val focalFirstScore = focalFirstScores[comparisonKey] ?: return@mapNotNull null
                             if (setupFirstScore <= focalFirstScore + MATERIAL_SEQUENCE_MARGIN) return@mapNotNull null
                             LandUnlockedPayoffSequence(
                                 land.cardId, setupId, focalId, setupFirstScore, focalFirstScore,
