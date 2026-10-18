@@ -1,0 +1,108 @@
+name: Nonofficial Pest Tron bounded decision diagnostic
+on:
+  push:
+    branches: [local/pest-tron-decision-diagnostic-20261018]
+permissions:
+  contents: read
+jobs:
+  diagnostic:
+    if: github.ref == 'refs/heads/local/pest-tron-decision-diagnostic-20261018'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: e21404f9ad0a27ea7c5499cfb98118e540575a7a
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: just
+      - name: Recover pinned runner and add diagnostic-only timing
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat tools/pest-tron-batch/source-part-0*.b64 | base64 --decode > "$RUNNER_TEMP/runner.tar.xz"
+          echo "ca51dd78c6343f32d9cd6d014fa11a5a1ec75c870e019e6fcbef28252d2c03f8  $RUNNER_TEMP/runner.tar.xz" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/runner"
+          tar -xJf "$RUNNER_TEMP/runner.tar.xz" -C "$RUNNER_TEMP/runner"
+          cp "$RUNNER_TEMP/runner/gym/src/test/kotlin/com/wingedsheep/gym/"PestMonsterTronBatch*.kt gym/src/test/kotlin/com/wingedsheep/gym/
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchTest.kt')
+          s = p.read_text()
+          marker = 'put("purpose", "LOCAL_MAGIC_GAMEPLAY_BATCH")'
+          assert s.count(marker) == 1
+          s = s.replace(marker, marker + '\n            put("diagnosticOnly", true)\n            put("notBaselineResult", true)')
+          marker = '                        while (!env.isTerminal) {'
+          assert s.count(marker) == 1
+          s = s.replace(marker, '''                        val decisionExecutor = java.util.concurrent.Executors.newSingleThreadExecutor { runnable ->
+                                      Thread(runnable, "argentum-decision-diagnostic").apply { isDaemon = true }
+                                  }
+                                  val diagnosticFile = root.resolve("decision-diagnostics.log")
+                                  fun diagnostic(message: String) {
+                                      Files.writeString(diagnosticFile, java.time.Instant.now().toString() + " " + message + "\\n",
+                                          UTF_8, java.nio.file.StandardOpenOption.CREATE, java.nio.file.StandardOpenOption.APPEND)
+                                  }
+                                  while (!env.isTerminal) {''')
+          original = '''                            val action = if (decision != null) {
+                                          SubmitDecision(actor, agents[seat].respondToDecision(state, decision))
+                                      } else {
+                                          agents[seat].chooseAction(state)
+                                      }
+                                      submit(action)'''
+          assert s.count(original) == 1, 'Unexpected AI decision call site'
+          changed = '''                            diagnostic("START nextAction=${actions + 1} turn=${env.turnNumber} step=${state.step} seat=$seat pending=${decision != null}")
+                                      val future = decisionExecutor.submit(java.util.concurrent.Callable<GameAction> {
+                                          if (decision != null) SubmitDecision(actor, agents[seat].respondToDecision(state, decision))
+                                          else agents[seat].chooseAction(state)
+                                      })
+                                      var selected: GameAction? = null
+                                      for (sample in 1..4) {
+                                          try {
+                                              selected = future.get(30, java.util.concurrent.TimeUnit.SECONDS)
+                                              break
+                                          } catch (timeout: java.util.concurrent.TimeoutException) {
+                                              diagnostic("SLOW nextAction=${actions + 1} elapsedSeconds=${sample * 30}")
+                                              Thread.getAllStackTraces().filterKeys { it.name == "argentum-decision-diagnostic" }
+                                                  .forEach { (thread, frames) -> diagnostic("THREAD ${thread.name} ${thread.state}\\n" + frames.joinToString("\\n")) }
+                                              if (sample == 4) {
+                                                  future.cancel(true)
+                                                  decisionExecutor.shutdownNow()
+                                                  error("DIAGNOSTIC_ONLY: AI decision exceeded 120 seconds at action ${actions + 1}")
+                                              }
+                                          }
+                                      }
+                                      diagnostic("END nextAction=${actions + 1}")
+                                      submit(checkNotNull(selected))'''
+          s = s.replace(original, changed)
+          p.write_text(s)
+          PY
+      - name: Diagnose only previously interrupted seed and seat
+        shell: bash
+        env:
+          MTG_BATCH_RUN: '1'
+          MTG_BATCH_GAMES: '1'
+          MTG_BATCH_SEED: '20261021'
+          MTG_BATCH_OUTPUT: ${{ github.workspace }}/gym/build/nonofficial-pest-tron-decision-diagnostic
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew scripts/gradle-locked scripts/test-class
+          just test-class PestMonsterTronBatchTest --no-daemon --console=plain --stacktrace 2>&1 | tee "$RUNNER_TEMP/diagnostic-gradle.log"
+      - name: Preserve diagnostic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pest-tron-decision-diagnostic-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            gym/build/nonofficial-pest-tron-decision-diagnostic/
+            gym/build/test-results/test/
+            gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchTest.kt
+            ${{ runner.temp }}/diagnostic-gradle.log
