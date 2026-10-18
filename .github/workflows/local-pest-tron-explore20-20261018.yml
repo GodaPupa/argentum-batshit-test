@@ -1,0 +1,102 @@
+name: Nonofficial Pest Tron 20-game exploratory expansion
+on:
+  push:
+    branches: [local/pest-tron-explore20-20261018]
+permissions:
+  contents: read
+jobs:
+  seat-swapped-pair:
+    if: github.ref == 'refs/heads/local/pest-tron-explore20-20261018'
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        seed: ['2026101800', '2026101801', '2026101802', '2026101803', '2026101804', '2026101805', '2026101806', '2026101807', '2026101808', '2026101809']
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: 8e9c0877ea51bc0a112891066b2465d5c124ab09
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: just
+      - name: Restore unchanged original gameplay runner and validator
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat tools/pest-tron-batch/source-part-0*.b64 | base64 --decode > "$RUNNER_TEMP/runner.tar.xz"
+          echo "ca51dd78c6343f32d9cd6d014fa11a5a1ec75c870e019e6fcbef28252d2c03f8  $RUNNER_TEMP/runner.tar.xz" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/runner"
+          tar -xJf "$RUNNER_TEMP/runner.tar.xz" -C "$RUNNER_TEMP/runner"
+          cp "$RUNNER_TEMP/runner/gym/src/test/kotlin/com/wingedsheep/gym/"PestMonsterTronBatch*.kt gym/src/test/kotlin/com/wingedsheep/gym/
+          cp "$RUNNER_TEMP/runner/tools/pest-tron-batch/summarize.py" tools/pest-tron-batch/summarize.py
+      - name: Execute one fresh deterministic seat-swapped pair
+        shell: bash
+        env:
+          MTG_BATCH_RUN: '1'
+          MTG_BATCH_GAMES: '2'
+          MTG_BATCH_SEED: ${{ matrix.seed }}
+          MTG_BATCH_OUTPUT: ${{ github.workspace }}/gym/build/nonofficial-pest-tron-explore20-${{ matrix.seed }}
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew scripts/gradle-locked scripts/test-class
+          mkdir -p "$MTG_BATCH_OUTPUT"
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          seed = int(os.environ['MTG_BATCH_SEED'])
+          assert 2026101800 <= seed <= 2026101809
+          data = dict(evidenceGroup='EXPLORATORY_20', officialExperiment=False, diagnosticOnly=False,
+              originalEngineCommit='e21404f9ad0a27ea7c5499cfb98118e540575a7a',
+              correctedEngineCommit='8e9c0877ea51bc0a112891066b2465d5c124ab09', verificationRun=39117815882,
+              correctedRecoveryRun=39122511262, totalExpansionGames=20, totalPairs=10, pairNumber=seed-2026101800+1,
+              seed=str(seed), pestSeats=[0,1], startingSeat=0, profilesAndDecksUnchanged=True,
+              correction='Invocation-local reuse of invariant focal-first sequence scores; no candidate pruning or scoring change',
+              separateFromOriginalRecoveryAndDiagnostic=True)
+          Path(os.environ['MTG_BATCH_OUTPUT'],'expansion-provenance.json').write_text(json.dumps(data,indent=2)+'\n')
+          PY
+          just test-class PestMonsterTronBatchTest --no-daemon --console=plain --stacktrace 2>&1 | tee "$RUNNER_TEMP/explore20-gradle.log"
+      - name: Validate complete pair and produce human and machine summaries
+        shell: bash
+        env:
+          MTG_BATCH_OUTPUT: ${{ github.workspace }}/gym/build/nonofficial-pest-tron-explore20-${{ matrix.seed }}
+        run: |
+          set -euo pipefail
+          python3 tools/pest-tron-batch/summarize.py "$MTG_BATCH_OUTPUT" 2>&1 | tee "$RUNNER_TEMP/explore20-summary.log"
+          python3 - <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          sys.path.insert(0,'tools/pest-tron-batch')
+          import summarize
+          root=Path(os.environ['MTG_BATCH_OUTPUT'])
+          data=summarize.summarize(root)
+          assert data['completed']==2 and data['failed']==0
+          assert [r['pestSeat'] for r in data['rows']]==[0,1]
+          for row in data['rows']:
+              trace=summarize.read_jsonl(root/row['trace'])
+              events=[e for r in trace for e in r.get('emittedEvents',[]) if e['type']=='GameEndedEvent']
+              assert len(events)==1
+              row['terminationReason']=events[0]['reason']
+          (root/'validated-summary.json').write_text(json.dumps(data,indent=2)+'\n')
+          PY
+      - name: Preserve full traces including failed or interrupted attempts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pest-tron-explore20-${{ matrix.seed }}-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            gym/build/nonofficial-pest-tron-explore20-*/
+            gym/build/test-results/test/
+            tools/pest-tron-batch/summarize.py
+            ${{ runner.temp }}/explore20-gradle.log
+            ${{ runner.temp }}/explore20-summary.log
