@@ -998,6 +998,13 @@ class Strategist(
                 false,
             )
         }
+        if (shouldHoldLifeGainThroughEmptyCombat(state, action.action, playerId, cardName)) {
+            return adjusted(
+                passScore - 1.0,
+                "lifegain timing: preserve the spell through empty own combat for postcombat sequencing",
+                false,
+            )
+        }
         if (shouldHoldNullLifeGain(state, leafState, action.action, playerId, cardName)) {
             // Raw life has board-score value even when no game object can currently exploit it.
             // A pure gain spell with no pressure, payoff, or enabled follow-up is therefore a
@@ -1154,6 +1161,28 @@ class Strategist(
             .filter { state.getEntity(it)?.get<CardComponent>()?.isCreature == true }
             .sumOf { (state.projectedState.getPower(it) ?: 0).coerceAtLeast(0) }
         return (opposingPower + visibleRepeatableDamage) * 2 >= state.lifeTotal(playerId)
+    }
+
+    /**
+     * With no attackers and no stack object to answer, a pure life spell cannot change this
+     * combat. Retain it until the following main phase can compare deployment and Storm order.
+     * Never delay a defensive window, a response, or visible survival pressure. This is a
+     * timing heuristic, not a legality restriction or a claim about hidden opposing answers.
+     */
+    private fun shouldHoldLifeGainThroughEmptyCombat(
+        state: GameState,
+        action: GameAction,
+        playerId: EntityId,
+        cardName: String,
+    ): Boolean {
+        val cast = action as? CastSpell ?: return false
+        if (!intents.isPureLifeGainSpell(cardName, cast.faceIndex)) return false
+        if (!state.isActiveTurnFor(playerId) || state.phase != Phase.COMBAT) return false
+        if (state.step !in setOf(Step.DECLARE_ATTACKERS, Step.END_COMBAT)) return false
+        if (state.stack.isNotEmpty() || state.pendingDecision != null) return false
+        if (state.getEntity(playerId)?.has<AttackersDeclaredThisCombatComponent>() != true) return false
+        if (state.getBattlefield().any { state.getEntity(it)?.has<AttackingComponent>() == true }) return false
+        return !lifeGainNeededForSurvival(state, playerId)
     }
 
     private fun lifeGainNeededForSurvival(
