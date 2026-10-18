@@ -1,0 +1,102 @@
+name: Nonofficial Pest Tron incomplete-baseline recovery
+
+on:
+  push:
+    branches:
+      - local/pest-tron-recovery-20261018
+
+permissions:
+  contents: read
+
+jobs:
+  local-engine-gameplay:
+    if: github.ref == 'refs/heads/local/pest-tron-recovery-20261018'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        seed: ['20261021', '20261022']
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - name: Checkout isolated branch
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: e21404f9ad0a27ea7c5499cfb98118e540575a7a
+
+      - name: Java 21
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Recover unchanged local runner from verified payload
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat tools/pest-tron-batch/source-part-0*.b64 | base64 --decode > "$RUNNER_TEMP/local-bundle.tar.xz"
+          echo "ca51dd78c6343f32d9cd6d014fa11a5a1ec75c870e019e6fcbef28252d2c03f8  $RUNNER_TEMP/local-bundle.tar.xz" | sha256sum --check
+          mkdir -p "$RUNNER_TEMP/local-bundle"
+          tar -xJf "$RUNNER_TEMP/local-bundle.tar.xz" -C "$RUNNER_TEMP/local-bundle"
+          for relative in \
+            gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchPlan.kt \
+            gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchPlanTest.kt \
+            gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchTest.kt \
+            tools/pest-tron-batch/summarize.py \
+            tools/pest-tron-batch/test_summarize.py; do
+            test ! -e "$relative" || { echo "Refusing collision at $relative"; exit 2; }
+            mkdir -p "$(dirname "$relative")"
+            cp "$RUNNER_TEMP/local-bundle/$relative" "$relative"
+          done
+          test -f gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchTest.kt
+          echo "RUNNER_RECOVERED_NONOFFICIAL"
+
+      - name: Install just
+        uses: taiki-e/install-action@v2
+        with:
+          tool: just
+
+      - name: Run only unfinished baseline pair
+        shell: bash
+        env:
+          MTG_BATCH_RUN: '1'
+          MTG_BATCH_GAMES: '2'
+          MTG_BATCH_SEED: ${{ matrix.seed }}
+          MTG_BATCH_OUTPUT: ${{ github.workspace }}/gym/build/nonofficial-pest-tron-recovery-${{ matrix.seed }}
+        run: |
+          set -euo pipefail
+          chmod +x ./gradlew scripts/gradle-locked scripts/test-class
+          mkdir -p "$MTG_BATCH_OUTPUT"
+          python3 - <<'PYMETA'
+          import json, os
+          from pathlib import Path
+          seed = int(os.environ['MTG_BATCH_SEED'])
+          original = [7, 8] if seed == 20261021 else [9, 10]
+          mapping = dict(originalRun=39096754088, originalBatch='explore',
+                         originalGameNumbers=original, seed=str(seed),
+                         attemptKinds=['retry_interrupted', 'previously_unstarted'] if seed == 20261021 else ['previously_unstarted'] * 2,
+                         officialExperiment=False, engineCommit='e21404f9ad0a27ea7c5499cfb98118e540575a7a')
+          Path(os.environ['MTG_BATCH_OUTPUT'], 'recovery-mapping.json').write_text(json.dumps(mapping, indent=2)+'\n')
+          PYMETA
+          just test-class PestMonsterTronBatchTest --no-daemon --console=plain --stacktrace 2>&1 | tee "$RUNNER_TEMP/recovery-gradle.log"
+          python3 tools/pest-tron-batch/summarize.py "$MTG_BATCH_OUTPUT" 2>&1 | tee "$RUNNER_TEMP/recovery-summary.log"
+          cat "$MTG_BATCH_OUTPUT/report.md"
+
+      - name: Preserve complete nonofficial logs including partial failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: local-pest-tron-recovery-${{ matrix.seed }}-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            gym/build/nonofficial-pest-tron-recovery-*/
+            gym/build/test-results/test/
+            ${{ runner.temp }}/recovery-gradle.log
+            ${{ runner.temp }}/recovery-summary.log
