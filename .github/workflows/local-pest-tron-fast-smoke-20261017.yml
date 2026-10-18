@@ -51,27 +51,30 @@ jobs:
           test -f gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchTest.kt
           echo "RUNNER_RECOVERED_NONOFFICIAL"
 
-      - name: Use explicitly labeled fast pilot profiles (gameplay only)
+      - name: Apply explicit fast-AI pilot override
         shell: bash
         run: |
           set -euo pipefail
           python3 - <<'PY'
           from pathlib import Path
-          path = Path("gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchTest.kt")
-          text = path.read_text()
-          before = "if (seat == plan.pestSeat) AiProfile.PRODUCTION_CANDIDATE_EXPIRING\\n                                else PestMonsterTronPolicy.profile,"
-          after = "if (seat == plan.pestSeat) AiProfile.PRODUCTION_CANDIDATE_EXPIRING.copy(\\n                                    id = \\"local-fast-pest\\", rollouts = null, determinizeHiddenInformation = false\\n                                )\\n                                else PestMonsterTronPolicy.profile.copy(\\n                                    id = \\"local-fast-tron\\", rollouts = null, determinizeHiddenInformation = false\\n                                ),"
-          before = before.replace("\\\\n", "\\n")
-          after = after.replace("\\\\n", "\\n")
-          assert text.count(before) == 1, "Fast-profile patch source drift"
-          text = text.replace(before, after)
+          path = Path('gym/src/test/kotlin/com/wingedsheep/gym/PestMonsterTronBatchTest.kt')
+          source = path.read_text()
+          original = ('if (seat == plan.pestSeat) AiProfile.PRODUCTION_CANDIDATE_EXPIRING'
+                      + chr(10) + '                                else PestMonsterTronPolicy.profile,')
+          changed = ('if (seat == plan.pestSeat) AiProfile.PRODUCTION_CANDIDATE_EXPIRING.copy('
+                     + chr(10) + '                                    id = "local-fast-pest", rollouts = null, determinizeHiddenInformation = false'
+                     + chr(10) + '                                )'
+                     + chr(10) + '                                else PestMonsterTronPolicy.profile.copy('
+                     + chr(10) + '                                    id = "local-fast-tron", rollouts = null, determinizeHiddenInformation = false'
+                     + chr(10) + '                                ),')
+          assert source.count(original) == 1, 'Unexpected runner AI call site'
+          source = source.replace(original, changed)
           marker = 'put("purpose", "LOCAL_MAGIC_GAMEPLAY_BATCH")'
-          assert text.count(marker) == 1, "Metadata source drift"
-          text = text.replace(marker, marker + '\\n            put("aiMode", "LOCAL_FAST_NO_ROLLOUTS")')
-          path.write_text(text)
-          print("APPLIED_LOCAL_FAST_AI_MODE rollout=off, hidden_determinization=off, other profile settings retained")
+          assert source.count(marker) == 1, 'Unexpected batch intent marker'
+          source = source.replace(marker, marker + chr(10) + '            put("aiMode", "LOCAL_FAST_NO_ROLLOUTS")')
+          path.write_text(source)
+          print('APPLIED_LOCAL_FAST_AI_MODE rollout=off determinization=off; all other settings retained')
           PY
-
       - name: Validate local transcript postprocessor fixtures
         shell: bash
         run: |
