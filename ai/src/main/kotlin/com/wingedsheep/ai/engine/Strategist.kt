@@ -1550,6 +1550,7 @@ class Strategist(
 
         val landPlay = action.action as? PlayLand
         if (landPlay != null) {
+            delta += newlyUnlockedLandPayoff(state, leafState, playerId)
             val setup = bestLandUnlockedPayoffSequence(state, playerId)
             if (setup != null && setup.landId == landPlay.cardId) {
                 delta += (setup.projectedScore - leafScore).coerceAtLeast(0.0)
@@ -1664,6 +1665,39 @@ class Strategist(
         val followUp = bestLifeGainEnhancedFollowUp(state, leafState, playerId) ?: return 0.0
         return (followUp.projectedScore - leafScore).coerceAtLeast(0.0) +
             LIFEGAIN_FOLLOW_UP_UNLOCK_VALUE
+    }
+
+    /**
+     * A short rollout can prefer idle mana to a land that fixes a known spell's colour.
+     * Credit only the best newly affordable, fully resolved cast after an early land drop.
+     * The engine handles coloured costs, tapped sources, targets and additional payments;
+     * no guessed future draw or unconditional colour preference enters this term.
+     */
+    private fun newlyUnlockedLandPayoff(
+        state: GameState,
+        afterLand: GameState,
+        playerId: EntityId,
+    ): Double {
+        if (afterLand.projectedState.getBattlefieldControlledBy(playerId)
+                .count { afterLand.projectedState.hasType(it, "LAND") } > 4) return 0.0
+        val alreadyAffordable = simulator.getLegalActions(state, playerId)
+            .filter { it.affordable && it.action is CastSpell }
+            .map { (it.action as CastSpell).cardId }.toSet()
+        val baseline = evaluator.evaluate(afterLand, afterLand.projectedState, playerId)
+        return simulator.getLegalActions(afterLand, playerId).asSequence()
+            .filter { it.affordable && it.action is CastSpell &&
+                (it.action as CastSpell).cardId !in alreadyAffordable }
+            .mapNotNull { next ->
+                val filled = heuristicTargets(afterLand, next, playerId)
+                val result = simulator.simulate(afterLand, filled)
+                if (result !is SimulationResult.Terminal) return@mapNotNull null
+                val name = resolveCardName(afterLand, next) ?: return@mapNotNull null
+                if (shouldHoldNullForcedSacrifice(afterLand, result.state, filled, playerId, name)) {
+                    return@mapNotNull null
+                }
+                (evaluator.evaluate(result.state, result.state.projectedState, playerId) - baseline)
+                    .coerceAtLeast(0.0)
+            }.maxOrNull() ?: 0.0
     }
 
     /**
