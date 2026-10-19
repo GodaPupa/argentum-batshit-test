@@ -1,0 +1,48 @@
+name: Manual v0.8 Wan voluntary-X and frozen-deck safety gate
+on:
+  push:
+    branches: [gameplay/manual-v08-wan-safety-20261019]
+    paths:
+      - 'ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionV08WanCandidate.kt'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualV08WanSafetyTest.kt'
+      - '.github/workflows/manual-v08-wan-safety-20261019.yml'
+permissions:
+  contents: read
+jobs:
+  safety:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_V08_WAN_SAFETY_OUTPUT: ${{ github.workspace }}/wan-v08-safety-output
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind frozen source, exact candidate deck and existing card bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p wan-v08-safety-output
+          git rev-parse HEAD > wan-v08-safety-output/source-sha.txt
+          git rev-parse HEAD^{tree} > wan-v08-safety-output/tree-sha.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tla/cards/WanShiTongLibrarian.kt)" = "a8bb98cf7c08d153accdb5dbe0ce5d64ef7a73d3"
+          chmod +x gradlew scripts/gradle-locked
+      - name: Test selected legal X at 0-3 library cards and exact single deck slot
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualV08WanSafetyTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee wan-v08-safety-output/validation.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-v08-wan-safety-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            wan-v08-safety-output/
+            ai/build/test-results/test/
