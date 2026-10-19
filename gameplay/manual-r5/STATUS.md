@@ -1,0 +1,1 @@
+R5 in progress. Combo validation8/8 and draw audit3/3 passed. First Pact candidate6/7; diagnostic successor6/8. Both failed archives preserved. Corrected bounded combat walk currently under isolated Java21 validation at ad73ab5a249a1fc97c36dccc722ce8fdceeeb2c0, run39277485844. No composed R5 gameplay run has occurred. CURRENT and frozen deck unchanged.
