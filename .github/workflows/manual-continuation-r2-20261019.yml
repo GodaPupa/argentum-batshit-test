@@ -1,0 +1,41 @@
+name: Manual productive continuation revision
+on:
+  push:
+    branches: [gameplay/manual-continuation-r2-20261019]
+    paths:
+      - .github/workflows/manual-continuation-r2-20261019.yml
+      - ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualAnimarDevelopmentAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualAnimarProductiveContinuationTest.kt
+permissions:
+  contents: read
+jobs:
+  regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_ROUND2_ROOT: ${{ github.workspace }}
+      MANUAL_ROUND2_OUTPUT: ${{ github.workspace }}/continuation-output/policy
+      MANUAL_CONTINUATION_OUTPUT: ${{ github.workspace }}/continuation-output/counterexample
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Real archived continuation regression and existing policy tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p continuation-output
+          git rev-parse HEAD > continuation-output/source-sha.txt
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :ai:test --tests '*ManualAnimarProductiveContinuationTest' --tests '*ManualAnimarDevelopmentPolicyTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee continuation-output/regressions.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-continuation-regressions-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            continuation-output/
+            ai/build/test-results/test/
