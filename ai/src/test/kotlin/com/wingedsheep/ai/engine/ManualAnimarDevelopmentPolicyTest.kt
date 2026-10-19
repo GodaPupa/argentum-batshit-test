@@ -48,10 +48,18 @@ class ManualAnimarDevelopmentPolicyTest : ScenarioTestBase() {
                 evaluator.evaluate(game.state, game.state.projectedState, game.player1Id),
                 evaluator.evaluate(deployed.state, deployed.state.projectedState, game.player1Id), evaluator, sim)
         }
-        test("real affordable creature followup credits actual Animar trigger increment only") {
+        test("affordable creature with nonpositive followup value receives no development credit") {
             val c = context(board())
-            val score = ManualAnimarDevelopmentAdvisor.evaluateCast(c)
-            check(score != null && score > c.defaultScore) { "Expected measured real trigger gain: $score vs ${c.defaultScore}" }
+            val deployed = c.simulator.simulate(c.state, c.action.action) as SimulationResult.Terminal
+            val elf = c.simulator.getLegalActions(deployed.state, c.playerId).single {
+                it.affordable && it.action is CastSpell && deployed.state.getEntity((it.action as CastSpell).cardId)
+                    ?.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name == "Llanowar Elves"
+            }
+            val followed = c.simulator.simulate(deployed.state, elf.action) as SimulationResult.Terminal
+            val gain = c.evaluator.evaluate(followed.state, followed.state.projectedState, c.playerId) - c.defaultScore
+            check(gain <= 0.0) { "This minimal Llanowar fixture must be unproductive: $gain" }
+            println("MANUAL_LLANOWAR_FOLLOWUP_GAIN=$gain")
+            ManualAnimarDevelopmentAdvisor.evaluateCast(c) shouldBe null
         }
         test("no creature followup is a no-op") { ManualAnimarDevelopmentAdvisor.evaluateCast(context(board(null))) shouldBe null }
         test("creature in hand but unaffordable after Animar is a no-op") {
