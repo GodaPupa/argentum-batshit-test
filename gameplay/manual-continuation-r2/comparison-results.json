@@ -1,0 +1,4825 @@
+{
+  "gamesObserved": 40,
+  "matchedCells": 20,
+  "full40AttemptScheduleObserved": true,
+  "completedGames": 38,
+  "incompleteGames": 2,
+  "perSeat": [
+    {
+      "seat": 1,
+      "arm": "control",
+      "scheduledCellsObserved": 5,
+      "completed": 5,
+      "wins": 1,
+      "commanderCasts": 6,
+      "legalCommanderOpportunities": 102,
+      "legalCommanderDeclines": 96,
+      "deploymentGames": 4,
+      "meanPersonalTurnFirstCast": 5.75,
+      "meanPlayerTurns": 84.6,
+      "failures": []
+    },
+    {
+      "seat": 1,
+      "arm": "candidate",
+      "scheduledCellsObserved": 5,
+      "completed": 5,
+      "wins": 1,
+      "commanderCasts": 7,
+      "legalCommanderOpportunities": 37,
+      "legalCommanderDeclines": 30,
+      "deploymentGames": 4,
+      "meanPersonalTurnFirstCast": 5.25,
+      "meanPlayerTurns": 62.8,
+      "failures": []
+    },
+    {
+      "seat": 2,
+      "arm": "control",
+      "scheduledCellsObserved": 5,
+      "completed": 5,
+      "wins": 2,
+      "commanderCasts": 4,
+      "legalCommanderOpportunities": 34,
+      "legalCommanderDeclines": 30,
+      "deploymentGames": 4,
+      "meanPersonalTurnFirstCast": 11.5,
+      "meanPlayerTurns": 84.6,
+      "failures": []
+    },
+    {
+      "seat": 2,
+      "arm": "candidate",
+      "scheduledCellsObserved": 5,
+      "completed": 4,
+      "wins": 2,
+      "commanderCasts": 6,
+      "legalCommanderOpportunities": 26,
+      "legalCommanderDeclines": 20,
+      "deploymentGames": 4,
+      "meanPersonalTurnFirstCast": 8.25,
+      "meanPlayerTurns": 59.25,
+      "failures": [
+        "Bound reached before terminal game state"
+      ]
+    },
+    {
+      "seat": 3,
+      "arm": "control",
+      "scheduledCellsObserved": 5,
+      "completed": 5,
+      "wins": 1,
+      "commanderCasts": 5,
+      "legalCommanderOpportunities": 56,
+      "legalCommanderDeclines": 52,
+      "deploymentGames": 3,
+      "meanPersonalTurnFirstCast": 7.333333333333333,
+      "meanPlayerTurns": 84.6,
+      "failures": []
+    },
+    {
+      "seat": 3,
+      "arm": "candidate",
+      "scheduledCellsObserved": 5,
+      "completed": 5,
+      "wins": 2,
+      "commanderCasts": 5,
+      "legalCommanderOpportunities": 38,
+      "legalCommanderDeclines": 33,
+      "deploymentGames": 3,
+      "meanPersonalTurnFirstCast": 6.333333333333333,
+      "meanPlayerTurns": 67.8,
+      "failures": []
+    },
+    {
+      "seat": 4,
+      "arm": "control",
+      "scheduledCellsObserved": 5,
+      "completed": 5,
+      "wins": 1,
+      "commanderCasts": 3,
+      "legalCommanderOpportunities": 31,
+      "legalCommanderDeclines": 28,
+      "deploymentGames": 3,
+      "meanPersonalTurnFirstCast": 10,
+      "meanPlayerTurns": 84.6,
+      "failures": []
+    },
+    {
+      "seat": 4,
+      "arm": "candidate",
+      "scheduledCellsObserved": 5,
+      "completed": 4,
+      "wins": 1,
+      "commanderCasts": 4,
+      "legalCommanderOpportunities": 21,
+      "legalCommanderDeclines": 17,
+      "deploymentGames": 3,
+      "meanPersonalTurnFirstCast": 9,
+      "meanPlayerTurns": 78.25,
+      "failures": [
+        "null: Amphin Mutineer must attack its designated defender this turn if able"
+      ]
+    }
+  ],
+  "games": [
+    {
+      "status": "COMPLETE",
+      "seed": 202610190801,
+      "arm": "candidate",
+      "candidateSeat": 0,
+      "candidatePlayer": "manual-mirror-0",
+      "profilesBySeat": [
+        "manual-animar-development-r2",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1007,
+      "comboRelevantActionCount": 31,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 13,
+        "manual-mirror-3": 28,
+        "manual-mirror-2": 31,
+        "manual-mirror-1": 69
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 4,
+        "manual-mirror-3": 7,
+        "manual-mirror-2": 8,
+        "manual-mirror-1": 19
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 32,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 16
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 32,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 16
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 3248,
+      "accepted": 3248,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-2",
+      "playerTurnNumber": 73,
+      "durationMs": 17730,
+      "turnsByPlayer": {
+        "manual-mirror-0": 14,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 20,
+        "manual-mirror-3": 19
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": 28,
+        "manual-mirror-1": -27,
+        "manual-mirror-2": 40,
+        "manual-mirror-3": -9
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-0-seat-0-39207390012/continuation-output/games/seed-0-seat-0/candidate",
+      "initialStateSha256": "13d0767d2f3d48e63d0e984a1f2904ced3a9403281e16c4ac8113c4e6d7e8db2",
+      "actionsSha256": "e711b685ca80346a761ce89f33fd6bf439279ae4363d45fc49bbce9920b261ca",
+      "advisorAdjustedWindows": 2,
+      "advisorChosenWindows": 1,
+      "advisorChangedRankingWindows": 1,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 29,
+          "player": "manual-mirror-0",
+          "actionIndex": 1163,
+          "rawScore": 1.602211538461539,
+          "adjustedScore": 4.024711538461537,
+          "bestAlternativeScore": 3.207211538461539,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 1168,
+              "card": "Sylvan Safekeeper"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [],
+      "ballistaActivations": 0,
+      "eliminations": [
+        {
+          "index": 2436,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 3213,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 3248,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190801,
+      "arm": "control",
+      "candidateSeat": 0,
+      "candidatePlayer": "manual-mirror-0",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1501,
+      "comboRelevantActionCount": 57,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 13,
+        "manual-mirror-3": 28,
+        "manual-mirror-2": 31,
+        "manual-mirror-1": 46
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 4,
+        "manual-mirror-3": 7,
+        "manual-mirror-2": 8,
+        "manual-mirror-1": 12
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 17,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 16,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 16
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 17,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 16,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 16
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 4734,
+      "accepted": 4734,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-2",
+      "playerTurnNumber": 104,
+      "durationMs": 57537,
+      "turnsByPlayer": {
+        "manual-mirror-0": 21,
+        "manual-mirror-1": 28,
+        "manual-mirror-2": 28,
+        "manual-mirror-3": 27
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -22,
+        "manual-mirror-1": -28,
+        "manual-mirror-2": 40,
+        "manual-mirror-3": -52
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-0-seat-0-39207390012/continuation-output/games/seed-0-seat-0/control",
+      "initialStateSha256": "13d0767d2f3d48e63d0e984a1f2904ced3a9403281e16c4ac8113c4e6d7e8db2",
+      "actionsSha256": "83d8467648b39a2ab0d9c46a7fd3306ccc5b0f62bad46c91de30a931741d5940",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [],
+      "ballistaActivations": 0,
+      "eliminations": [
+        {
+          "index": 3860,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 4711,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 4734,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "RESOURCE_CAP",
+      "seed": 202610190801,
+      "arm": "candidate",
+      "candidateSeat": 1,
+      "candidatePlayer": "manual-mirror-1",
+      "profilesBySeat": [
+        "current",
+        "manual-animar-development-r2",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 377,
+      "comboRelevantActionCount": 221,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 13,
+        "manual-mirror-1": 22,
+        "manual-mirror-3": 28,
+        "manual-mirror-2": 31
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 4,
+        "manual-mirror-1": 6,
+        "manual-mirror-3": 7,
+        "manual-mirror-2": 8
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 5
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 4
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 5
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 4
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 4324,
+      "accepted": 4324,
+      "error": "Bound reached before terminal game state",
+      "gameOver": false,
+      "winner": null,
+      "playerTurnNumber": 32,
+      "durationMs": 12307,
+      "turnsByPlayer": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 8,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 8
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": 36,
+        "manual-mirror-1": 40,
+        "manual-mirror-2": 38,
+        "manual-mirror-3": 38
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-0-seat-1-39207390012/continuation-output/games/seed-0-seat-1/candidate",
+      "initialStateSha256": "13d0767d2f3d48e63d0e984a1f2904ced3a9403281e16c4ac8113c4e6d7e8db2",
+      "actionsSha256": "8474c97ff17548bbe8c003e08410c2e6376adfb69680291aca5889b7c9ccd976",
+      "advisorAdjustedWindows": 1,
+      "advisorChosenWindows": 1,
+      "advisorChangedRankingWindows": 1,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 22,
+          "player": "manual-mirror-1",
+          "actionIndex": 823,
+          "rawScore": 25.39535714285714,
+          "adjustedScore": 27.817857142857143,
+          "bestAlternativeScore": 26.440357142857142,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 828,
+              "card": "Arbor Elf"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 1,
+      "statueBattlefieldToHandReturns": 213,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [],
+      "ballistaActivations": 0,
+      "eliminations": []
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190801,
+      "arm": "control",
+      "candidateSeat": 1,
+      "candidatePlayer": "manual-mirror-1",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1501,
+      "comboRelevantActionCount": 57,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 13,
+        "manual-mirror-3": 28,
+        "manual-mirror-2": 31,
+        "manual-mirror-1": 46
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 4,
+        "manual-mirror-3": 7,
+        "manual-mirror-2": 8,
+        "manual-mirror-1": 12
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 17,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 16,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 16
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 17,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 16,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 16
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 4734,
+      "accepted": 4734,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-2",
+      "playerTurnNumber": 104,
+      "durationMs": 100553,
+      "turnsByPlayer": {
+        "manual-mirror-0": 21,
+        "manual-mirror-1": 28,
+        "manual-mirror-2": 28,
+        "manual-mirror-3": 27
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -22,
+        "manual-mirror-1": -28,
+        "manual-mirror-2": 40,
+        "manual-mirror-3": -52
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-0-seat-1-39207390012/continuation-output/games/seed-0-seat-1/control",
+      "initialStateSha256": "13d0767d2f3d48e63d0e984a1f2904ced3a9403281e16c4ac8113c4e6d7e8db2",
+      "actionsSha256": "83d8467648b39a2ab0d9c46a7fd3306ccc5b0f62bad46c91de30a931741d5940",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [],
+      "ballistaActivations": 0,
+      "eliminations": [
+        {
+          "index": 3860,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 4711,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 4734,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190801,
+      "arm": "candidate",
+      "candidateSeat": 2,
+      "candidatePlayer": "manual-mirror-2",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "manual-animar-development-r2",
+        "current"
+      ],
+      "scoredChoiceRecords": 1353,
+      "comboRelevantActionCount": 49,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 13,
+        "manual-mirror-2": 27,
+        "manual-mirror-3": 28,
+        "manual-mirror-1": 54
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 4,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 7,
+        "manual-mirror-1": 14
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 32,
+        "manual-mirror-2": 3,
+        "manual-mirror-3": 26
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 24
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 32,
+        "manual-mirror-2": 3,
+        "manual-mirror-3": 26
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 24
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 3608,
+      "accepted": 3608,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-2",
+      "playerTurnNumber": 72,
+      "durationMs": 77070,
+      "turnsByPlayer": {
+        "manual-mirror-0": 14,
+        "manual-mirror-1": 19,
+        "manual-mirror-2": 20,
+        "manual-mirror-3": 19
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 2
+      },
+      "life": {
+        "manual-mirror-0": 30,
+        "manual-mirror-1": -22,
+        "manual-mirror-2": 32,
+        "manual-mirror-3": -53
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-0-seat-2-39207390012/continuation-output/games/seed-0-seat-2/candidate",
+      "initialStateSha256": "13d0767d2f3d48e63d0e984a1f2904ced3a9403281e16c4ac8113c4e6d7e8db2",
+      "actionsSha256": "848b588bb802d1432b968541386225a6b3ee6ff33c84dd094de4a1994e4e5138",
+      "advisorAdjustedWindows": 1,
+      "advisorChosenWindows": 1,
+      "advisorChangedRankingWindows": 1,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 27,
+          "player": "manual-mirror-2",
+          "actionIndex": 1040,
+          "rawScore": -15.544204545454548,
+          "adjustedScore": -12.881704545454554,
+          "bestAlternativeScore": -14.269204545454546,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 1045,
+              "card": "Eternal Witness"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1687,
+          "actor": "manual-mirror-1",
+          "x": 4
+        },
+        {
+          "index": 2636,
+          "actor": "manual-mirror-2",
+          "x": 0
+        }
+      ],
+      "ballistaActivations": 4,
+      "eliminations": [
+        {
+          "index": 2540,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 3545,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 3608,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190801,
+      "arm": "control",
+      "candidateSeat": 2,
+      "candidatePlayer": "manual-mirror-2",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1501,
+      "comboRelevantActionCount": 57,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 13,
+        "manual-mirror-3": 28,
+        "manual-mirror-2": 31,
+        "manual-mirror-1": 46
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 4,
+        "manual-mirror-3": 7,
+        "manual-mirror-2": 8,
+        "manual-mirror-1": 12
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 17,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 16,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 16
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 17,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 16,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 16
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 4734,
+      "accepted": 4734,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-2",
+      "playerTurnNumber": 104,
+      "durationMs": 101708,
+      "turnsByPlayer": {
+        "manual-mirror-0": 21,
+        "manual-mirror-1": 28,
+        "manual-mirror-2": 28,
+        "manual-mirror-3": 27
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -22,
+        "manual-mirror-1": -28,
+        "manual-mirror-2": 40,
+        "manual-mirror-3": -52
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-0-seat-2-39207390012/continuation-output/games/seed-0-seat-2/control",
+      "initialStateSha256": "13d0767d2f3d48e63d0e984a1f2904ced3a9403281e16c4ac8113c4e6d7e8db2",
+      "actionsSha256": "83d8467648b39a2ab0d9c46a7fd3306ccc5b0f62bad46c91de30a931741d5940",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [],
+      "ballistaActivations": 0,
+      "eliminations": [
+        {
+          "index": 3860,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 4711,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 4734,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "ENGINE_REJECTION",
+      "seed": 202610190801,
+      "arm": "candidate",
+      "candidateSeat": 3,
+      "candidatePlayer": "manual-mirror-3",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "manual-animar-development-r2"
+      ],
+      "scoredChoiceRecords": 960,
+      "comboRelevantActionCount": 36,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 13,
+        "manual-mirror-3": 28,
+        "manual-mirror-2": 31,
+        "manual-mirror-1": 46
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 4,
+        "manual-mirror-3": 7,
+        "manual-mirror-2": 8,
+        "manual-mirror-1": 12
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 17,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 12
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 16,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 10
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 17,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 12
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 16,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 10
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 3562,
+      "accepted": 3561,
+      "error": "null: Amphin Mutineer must attack its designated defender this turn if able",
+      "gameOver": false,
+      "winner": null,
+      "playerTurnNumber": 78,
+      "durationMs": 32419,
+      "turnsByPlayer": {
+        "manual-mirror-0": 19,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 20,
+        "manual-mirror-3": 19
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 2
+      },
+      "life": {
+        "manual-mirror-0": -4,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 40,
+        "manual-mirror-3": 20
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-0-seat-3-39207390012/continuation-output/games/seed-0-seat-3/candidate",
+      "initialStateSha256": "13d0767d2f3d48e63d0e984a1f2904ced3a9403281e16c4ac8113c4e6d7e8db2",
+      "actionsSha256": "3adbcc0857198ee1ac0fa2f5129d9f3e2741a52e31adf806f1eccc1bfaf9849c",
+      "advisorAdjustedWindows": 2,
+      "advisorChosenWindows": 2,
+      "advisorChangedRankingWindows": 2,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 28,
+          "player": "manual-mirror-3",
+          "actionIndex": 1116,
+          "rawScore": 7.895160256410257,
+          "adjustedScore": 10.317660256410248,
+          "bestAlternativeScore": 8.600160256410255,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 1121,
+              "card": "Wall of Blossoms"
+            }
+          ]
+        },
+        {
+          "turn": 52,
+          "player": "manual-mirror-3",
+          "actionIndex": 2382,
+          "rawScore": -3.6274404761904875,
+          "adjustedScore": -1.2049404761904845,
+          "bestAlternativeScore": -2.822440476190471,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 2387,
+              "card": "Wood Elves"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 3341,
+          "actor": "manual-mirror-1",
+          "x": 4
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 3411,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190801,
+      "arm": "control",
+      "candidateSeat": 3,
+      "candidatePlayer": "manual-mirror-3",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1501,
+      "comboRelevantActionCount": 57,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 13,
+        "manual-mirror-3": 28,
+        "manual-mirror-2": 31,
+        "manual-mirror-1": 46
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 4,
+        "manual-mirror-3": 7,
+        "manual-mirror-2": 8,
+        "manual-mirror-1": 12
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 17,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 16,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 16
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 17,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 16,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": 16
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 4734,
+      "accepted": 4734,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-2",
+      "playerTurnNumber": 104,
+      "durationMs": 78241,
+      "turnsByPlayer": {
+        "manual-mirror-0": 21,
+        "manual-mirror-1": 28,
+        "manual-mirror-2": 28,
+        "manual-mirror-3": 27
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -22,
+        "manual-mirror-1": -28,
+        "manual-mirror-2": 40,
+        "manual-mirror-3": -52
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-0-seat-3-39207390012/continuation-output/games/seed-0-seat-3/control",
+      "initialStateSha256": "13d0767d2f3d48e63d0e984a1f2904ced3a9403281e16c4ac8113c4e6d7e8db2",
+      "actionsSha256": "83d8467648b39a2ab0d9c46a7fd3306ccc5b0f62bad46c91de30a931741d5940",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [],
+      "ballistaActivations": 0,
+      "eliminations": [
+        {
+          "index": 3860,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 4711,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 4734,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190802,
+      "arm": "candidate",
+      "candidateSeat": 0,
+      "candidatePlayer": "manual-mirror-0",
+      "profilesBySeat": [
+        "manual-animar-development-r2",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 649,
+      "comboRelevantActionCount": 15,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 16,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 33
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 5,
+        "manual-mirror-1": 6,
+        "manual-mirror-2": 10
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 4,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 4,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 2488,
+      "accepted": 2488,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-2",
+      "playerTurnNumber": 65,
+      "durationMs": 27436,
+      "turnsByPlayer": {
+        "manual-mirror-0": 21,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 21,
+        "manual-mirror-3": 3
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": -18,
+        "manual-mirror-1": -40,
+        "manual-mirror-2": 32,
+        "manual-mirror-3": 40
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-1-seat-0-39207390012/continuation-output/games/seed-1-seat-0/candidate",
+      "initialStateSha256": "5a80a6a0d9416f8ef6ec67182c67397c531c4a3fa52b0d85818730b97edaed80",
+      "actionsSha256": "9945b078544ca5e43f5bf6d4c37ade6d0c4c81d85248f74991b918d52ce18c68",
+      "advisorAdjustedWindows": 3,
+      "advisorChosenWindows": 2,
+      "advisorChangedRankingWindows": 2,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 16,
+          "player": "manual-mirror-0",
+          "actionIndex": 504,
+          "rawScore": 33.623125,
+          "adjustedScore": 36.045624999999994,
+          "bestAlternativeScore": 33.723125,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 508,
+              "card": "Elvish Mystic"
+            }
+          ]
+        },
+        {
+          "turn": 25,
+          "player": "manual-mirror-0",
+          "actionIndex": 870,
+          "rawScore": 42.56016806722689,
+          "adjustedScore": 45.222668067226905,
+          "bestAlternativeScore": 43.4976680672269,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 874,
+              "card": "Birds of Paradise"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 163,
+          "actor": "manual-mirror-1",
+          "x": 1
+        }
+      ],
+      "ballistaActivations": 0,
+      "eliminations": [
+        {
+          "index": 380,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 2463,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2488,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190802,
+      "arm": "control",
+      "candidateSeat": 0,
+      "candidatePlayer": "manual-mirror-0",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1623,
+      "comboRelevantActionCount": 40,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 16,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 27
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 5,
+        "manual-mirror-1": 6,
+        "manual-mirror-2": 8
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 38,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 11,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 36,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 38,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 3,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 36,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 3840,
+      "accepted": 3840,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 106,
+      "durationMs": 139694,
+      "turnsByPlayer": {
+        "manual-mirror-0": 26,
+        "manual-mirror-1": 39,
+        "manual-mirror-2": 38,
+        "manual-mirror-3": 3
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": -47,
+        "manual-mirror-1": 26,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 40
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-1-seat-0-39207390012/continuation-output/games/seed-1-seat-0/control",
+      "initialStateSha256": "5a80a6a0d9416f8ef6ec67182c67397c531c4a3fa52b0d85818730b97edaed80",
+      "actionsSha256": "55eff7b349e86c77d0538db06c96d6a766a38b2be3ea85f693018cb521b1682e",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 163,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 1507,
+          "actor": "manual-mirror-0",
+          "x": 4
+        },
+        {
+          "index": 3757,
+          "actor": "manual-mirror-2",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 380,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 3129,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 3840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190802,
+      "arm": "candidate",
+      "candidateSeat": 1,
+      "candidatePlayer": "manual-mirror-1",
+      "profilesBySeat": [
+        "current",
+        "manual-animar-development-r2",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 840,
+      "comboRelevantActionCount": 19,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-1": 14,
+        "manual-mirror-0": 16,
+        "manual-mirror-2": 27
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-1": 4,
+        "manual-mirror-0": 5,
+        "manual-mirror-2": 8
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 8,
+        "manual-mirror-2": 11,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 46,
+        "manual-mirror-1": 6,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 8,
+        "manual-mirror-2": 3,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 46,
+        "manual-mirror-1": 6,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 3124,
+      "accepted": 3124,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-0",
+      "playerTurnNumber": 79,
+      "durationMs": 21241,
+      "turnsByPlayer": {
+        "manual-mirror-0": 26,
+        "manual-mirror-1": 25,
+        "manual-mirror-2": 25,
+        "manual-mirror-3": 3
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": 34,
+        "manual-mirror-1": -37,
+        "manual-mirror-2": -1,
+        "manual-mirror-3": 40
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-1-seat-1-39207390012/continuation-output/games/seed-1-seat-1/candidate",
+      "initialStateSha256": "5a80a6a0d9416f8ef6ec67182c67397c531c4a3fa52b0d85818730b97edaed80",
+      "actionsSha256": "a6d5cab5dc0ae2ac66fdca0b2768fc127b8a3cd7affa8b9e65f37c76b83b0a50",
+      "advisorAdjustedWindows": 2,
+      "advisorChosenWindows": 2,
+      "advisorChangedRankingWindows": 2,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 14,
+          "player": "manual-mirror-1",
+          "actionIndex": 445,
+          "rawScore": -14.897499999999999,
+          "adjustedScore": -12.28,
+          "bestAlternativeScore": -13.195,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 449,
+              "card": "Foundation Breaker"
+            }
+          ]
+        },
+        {
+          "turn": 29,
+          "player": "manual-mirror-1",
+          "actionIndex": 1028,
+          "rawScore": -37.4896875,
+          "adjustedScore": -29.884687500000016,
+          "bestAlternativeScore": -35.5246875,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 1032,
+              "card": "Reckless Bushwhacker"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 163,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 1501,
+          "actor": "manual-mirror-0",
+          "x": 4
+        },
+        {
+          "index": 2409,
+          "actor": "manual-mirror-2",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 380,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 3099,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 3124,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190802,
+      "arm": "control",
+      "candidateSeat": 1,
+      "candidatePlayer": "manual-mirror-1",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1623,
+      "comboRelevantActionCount": 40,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 16,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 27
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 5,
+        "manual-mirror-1": 6,
+        "manual-mirror-2": 8
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 38,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 11,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 36,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 38,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 3,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 36,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 3840,
+      "accepted": 3840,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 106,
+      "durationMs": 69494,
+      "turnsByPlayer": {
+        "manual-mirror-0": 26,
+        "manual-mirror-1": 39,
+        "manual-mirror-2": 38,
+        "manual-mirror-3": 3
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": -47,
+        "manual-mirror-1": 26,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 40
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-1-seat-1-39207390012/continuation-output/games/seed-1-seat-1/control",
+      "initialStateSha256": "5a80a6a0d9416f8ef6ec67182c67397c531c4a3fa52b0d85818730b97edaed80",
+      "actionsSha256": "55eff7b349e86c77d0538db06c96d6a766a38b2be3ea85f693018cb521b1682e",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 163,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 1507,
+          "actor": "manual-mirror-0",
+          "x": 4
+        },
+        {
+          "index": 3757,
+          "actor": "manual-mirror-2",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 380,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 3129,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 3840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190802,
+      "arm": "candidate",
+      "candidateSeat": 2,
+      "candidatePlayer": "manual-mirror-2",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "manual-animar-development-r2",
+        "current"
+      ],
+      "scoredChoiceRecords": 404,
+      "comboRelevantActionCount": 6,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 16,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 21
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 5,
+        "manual-mirror-1": 6,
+        "manual-mirror-2": 6
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 30,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 29,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 30,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 29,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 1777,
+      "accepted": 1777,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-2",
+      "playerTurnNumber": 51,
+      "durationMs": 5914,
+      "turnsByPlayer": {
+        "manual-mirror-0": 17,
+        "manual-mirror-1": 14,
+        "manual-mirror-2": 17,
+        "manual-mirror-3": 3
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": -23,
+        "manual-mirror-1": -21,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 40
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-1-seat-2-39207390012/continuation-output/games/seed-1-seat-2/candidate",
+      "initialStateSha256": "5a80a6a0d9416f8ef6ec67182c67397c531c4a3fa52b0d85818730b97edaed80",
+      "actionsSha256": "ee4d6059cd7877c9b53319e1c3a73f970bfdabbb0279a64b8faa200e7e0bd75a",
+      "advisorAdjustedWindows": 1,
+      "advisorChosenWindows": 1,
+      "advisorChangedRankingWindows": 1,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 21,
+          "player": "manual-mirror-2",
+          "actionIndex": 701,
+          "rawScore": -4.659910714285715,
+          "adjustedScore": -2.9664285714285663,
+          "bestAlternativeScore": -3.4686607142857118,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 705,
+              "card": "Wall of Blossoms"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 163,
+          "actor": "manual-mirror-1",
+          "x": 1
+        }
+      ],
+      "ballistaActivations": 0,
+      "eliminations": [
+        {
+          "index": 380,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 1611,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 1777,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190802,
+      "arm": "control",
+      "candidateSeat": 2,
+      "candidatePlayer": "manual-mirror-2",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1623,
+      "comboRelevantActionCount": 40,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 16,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 27
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 5,
+        "manual-mirror-1": 6,
+        "manual-mirror-2": 8
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 38,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 11,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 36,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 38,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 3,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 36,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 3840,
+      "accepted": 3840,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 106,
+      "durationMs": 99644,
+      "turnsByPlayer": {
+        "manual-mirror-0": 26,
+        "manual-mirror-1": 39,
+        "manual-mirror-2": 38,
+        "manual-mirror-3": 3
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": -47,
+        "manual-mirror-1": 26,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 40
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-1-seat-2-39207390012/continuation-output/games/seed-1-seat-2/control",
+      "initialStateSha256": "5a80a6a0d9416f8ef6ec67182c67397c531c4a3fa52b0d85818730b97edaed80",
+      "actionsSha256": "55eff7b349e86c77d0538db06c96d6a766a38b2be3ea85f693018cb521b1682e",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 163,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 1507,
+          "actor": "manual-mirror-0",
+          "x": 4
+        },
+        {
+          "index": 3757,
+          "actor": "manual-mirror-2",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 380,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 3129,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 3840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190802,
+      "arm": "candidate",
+      "candidateSeat": 3,
+      "candidatePlayer": "manual-mirror-3",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "manual-animar-development-r2"
+      ],
+      "scoredChoiceRecords": 1623,
+      "comboRelevantActionCount": 40,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 16,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 27
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 5,
+        "manual-mirror-1": 6,
+        "manual-mirror-2": 8
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 38,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 11,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 36,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 38,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 3,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 36,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 3840,
+      "accepted": 3840,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 106,
+      "durationMs": 95986,
+      "turnsByPlayer": {
+        "manual-mirror-0": 26,
+        "manual-mirror-1": 39,
+        "manual-mirror-2": 38,
+        "manual-mirror-3": 3
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": -47,
+        "manual-mirror-1": 26,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 40
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-1-seat-3-39207390012/continuation-output/games/seed-1-seat-3/candidate",
+      "initialStateSha256": "5a80a6a0d9416f8ef6ec67182c67397c531c4a3fa52b0d85818730b97edaed80",
+      "actionsSha256": "55eff7b349e86c77d0538db06c96d6a766a38b2be3ea85f693018cb521b1682e",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 163,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 1507,
+          "actor": "manual-mirror-0",
+          "x": 4
+        },
+        {
+          "index": 3757,
+          "actor": "manual-mirror-2",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 380,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 3129,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 3840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190802,
+      "arm": "control",
+      "candidateSeat": 3,
+      "candidatePlayer": "manual-mirror-3",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1623,
+      "comboRelevantActionCount": 40,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 16,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 27
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 5,
+        "manual-mirror-1": 6,
+        "manual-mirror-2": 8
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 38,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 11,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 36,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 38,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 3,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 36,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 3840,
+      "accepted": 3840,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 106,
+      "durationMs": 128278,
+      "turnsByPlayer": {
+        "manual-mirror-0": 26,
+        "manual-mirror-1": 39,
+        "manual-mirror-2": 38,
+        "manual-mirror-3": 3
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": -47,
+        "manual-mirror-1": 26,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 40
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-1-seat-3-39207390012/continuation-output/games/seed-1-seat-3/control",
+      "initialStateSha256": "5a80a6a0d9416f8ef6ec67182c67397c531c4a3fa52b0d85818730b97edaed80",
+      "actionsSha256": "55eff7b349e86c77d0538db06c96d6a766a38b2be3ea85f693018cb521b1682e",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 163,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 1507,
+          "actor": "manual-mirror-0",
+          "x": 4
+        },
+        {
+          "index": 3757,
+          "actor": "manual-mirror-2",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 380,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 3129,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 3840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190803,
+      "arm": "candidate",
+      "candidateSeat": 0,
+      "candidatePlayer": "manual-mirror-0",
+      "profilesBySeat": [
+        "manual-animar-development-r2",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1080,
+      "comboRelevantActionCount": 12,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 25
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 7
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 2514,
+      "accepted": 2514,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-0",
+      "playerTurnNumber": 42,
+      "durationMs": 88834,
+      "turnsByPlayer": {
+        "manual-mirror-0": 12,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 11
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": -144,
+        "manual-mirror-2": -25,
+        "manual-mirror-3": -181
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-2-seat-0-39207390012/continuation-output/games/seed-2-seat-0/candidate",
+      "initialStateSha256": "6c72eba1ea59c3c59c36bf84117d1826298d91504a1d8607dd048d90c920a50e",
+      "actionsSha256": "ced57fb1d1e3059c0fbf0dce7074a3bb5cf241d7b65800204c246e011a993306",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1664,
+          "actor": "manual-mirror-0",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-3",
+          "x": 1
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 2180,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2424,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2514,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190803,
+      "arm": "control",
+      "candidateSeat": 0,
+      "candidatePlayer": "manual-mirror-0",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1080,
+      "comboRelevantActionCount": 12,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 25
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 7
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 2514,
+      "accepted": 2514,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-0",
+      "playerTurnNumber": 42,
+      "durationMs": 119006,
+      "turnsByPlayer": {
+        "manual-mirror-0": 12,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 11
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": -144,
+        "manual-mirror-2": -25,
+        "manual-mirror-3": -181
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-2-seat-0-39207390012/continuation-output/games/seed-2-seat-0/control",
+      "initialStateSha256": "6c72eba1ea59c3c59c36bf84117d1826298d91504a1d8607dd048d90c920a50e",
+      "actionsSha256": "ced57fb1d1e3059c0fbf0dce7074a3bb5cf241d7b65800204c246e011a993306",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1664,
+          "actor": "manual-mirror-0",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-3",
+          "x": 1
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 2180,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2424,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2514,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190803,
+      "arm": "candidate",
+      "candidateSeat": 1,
+      "candidatePlayer": "manual-mirror-1",
+      "profilesBySeat": [
+        "current",
+        "manual-animar-development-r2",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1080,
+      "comboRelevantActionCount": 12,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 25
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 7
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 2514,
+      "accepted": 2514,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-0",
+      "playerTurnNumber": 42,
+      "durationMs": 87948,
+      "turnsByPlayer": {
+        "manual-mirror-0": 12,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 11
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": -144,
+        "manual-mirror-2": -25,
+        "manual-mirror-3": -181
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-2-seat-1-39207390012/continuation-output/games/seed-2-seat-1/candidate",
+      "initialStateSha256": "6c72eba1ea59c3c59c36bf84117d1826298d91504a1d8607dd048d90c920a50e",
+      "actionsSha256": "ced57fb1d1e3059c0fbf0dce7074a3bb5cf241d7b65800204c246e011a993306",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1664,
+          "actor": "manual-mirror-0",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-3",
+          "x": 1
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 2180,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2424,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2514,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190803,
+      "arm": "control",
+      "candidateSeat": 1,
+      "candidatePlayer": "manual-mirror-1",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1080,
+      "comboRelevantActionCount": 12,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 25
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 7
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 2514,
+      "accepted": 2514,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-0",
+      "playerTurnNumber": 42,
+      "durationMs": 126048,
+      "turnsByPlayer": {
+        "manual-mirror-0": 12,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 11
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": -144,
+        "manual-mirror-2": -25,
+        "manual-mirror-3": -181
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-2-seat-1-39207390012/continuation-output/games/seed-2-seat-1/control",
+      "initialStateSha256": "6c72eba1ea59c3c59c36bf84117d1826298d91504a1d8607dd048d90c920a50e",
+      "actionsSha256": "ced57fb1d1e3059c0fbf0dce7074a3bb5cf241d7b65800204c246e011a993306",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1664,
+          "actor": "manual-mirror-0",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-3",
+          "x": 1
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 2180,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2424,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2514,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190803,
+      "arm": "candidate",
+      "candidateSeat": 2,
+      "candidatePlayer": "manual-mirror-2",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "manual-animar-development-r2",
+        "current"
+      ],
+      "scoredChoiceRecords": 1080,
+      "comboRelevantActionCount": 12,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 25
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 7
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 2514,
+      "accepted": 2514,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-0",
+      "playerTurnNumber": 42,
+      "durationMs": 81493,
+      "turnsByPlayer": {
+        "manual-mirror-0": 12,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 11
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": -144,
+        "manual-mirror-2": -25,
+        "manual-mirror-3": -181
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-2-seat-2-39207390012/continuation-output/games/seed-2-seat-2/candidate",
+      "initialStateSha256": "6c72eba1ea59c3c59c36bf84117d1826298d91504a1d8607dd048d90c920a50e",
+      "actionsSha256": "ced57fb1d1e3059c0fbf0dce7074a3bb5cf241d7b65800204c246e011a993306",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1664,
+          "actor": "manual-mirror-0",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-3",
+          "x": 1
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 2180,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2424,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2514,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190803,
+      "arm": "control",
+      "candidateSeat": 2,
+      "candidatePlayer": "manual-mirror-2",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1080,
+      "comboRelevantActionCount": 12,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 25
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 7
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 2514,
+      "accepted": 2514,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-0",
+      "playerTurnNumber": 42,
+      "durationMs": 114439,
+      "turnsByPlayer": {
+        "manual-mirror-0": 12,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 11
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": -144,
+        "manual-mirror-2": -25,
+        "manual-mirror-3": -181
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-2-seat-2-39207390012/continuation-output/games/seed-2-seat-2/control",
+      "initialStateSha256": "6c72eba1ea59c3c59c36bf84117d1826298d91504a1d8607dd048d90c920a50e",
+      "actionsSha256": "ced57fb1d1e3059c0fbf0dce7074a3bb5cf241d7b65800204c246e011a993306",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1664,
+          "actor": "manual-mirror-0",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-3",
+          "x": 1
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 2180,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2424,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2514,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190803,
+      "arm": "candidate",
+      "candidateSeat": 3,
+      "candidatePlayer": "manual-mirror-3",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "manual-animar-development-r2"
+      ],
+      "scoredChoiceRecords": 1080,
+      "comboRelevantActionCount": 12,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 25
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 7
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 2514,
+      "accepted": 2514,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-0",
+      "playerTurnNumber": 42,
+      "durationMs": 77310,
+      "turnsByPlayer": {
+        "manual-mirror-0": 12,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 11
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": -144,
+        "manual-mirror-2": -25,
+        "manual-mirror-3": -181
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-2-seat-3-39207390012/continuation-output/games/seed-2-seat-3/candidate",
+      "initialStateSha256": "6c72eba1ea59c3c59c36bf84117d1826298d91504a1d8607dd048d90c920a50e",
+      "actionsSha256": "ced57fb1d1e3059c0fbf0dce7074a3bb5cf241d7b65800204c246e011a993306",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1664,
+          "actor": "manual-mirror-0",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-3",
+          "x": 1
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 2180,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2424,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2514,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190803,
+      "arm": "control",
+      "candidateSeat": 3,
+      "candidatePlayer": "manual-mirror-3",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1080,
+      "comboRelevantActionCount": 12,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 25
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 7
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 8,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 0
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 2514,
+      "accepted": 2514,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-0",
+      "playerTurnNumber": 42,
+      "durationMs": 111146,
+      "turnsByPlayer": {
+        "manual-mirror-0": 12,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 9,
+        "manual-mirror-3": 11
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 0,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 0
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": -144,
+        "manual-mirror-2": -25,
+        "manual-mirror-3": -181
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-2-seat-3-39207390012/continuation-output/games/seed-2-seat-3/control",
+      "initialStateSha256": "6c72eba1ea59c3c59c36bf84117d1826298d91504a1d8607dd048d90c920a50e",
+      "actionsSha256": "ced57fb1d1e3059c0fbf0dce7074a3bb5cf241d7b65800204c246e011a993306",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1664,
+          "actor": "manual-mirror-0",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-3",
+          "x": 1
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 2180,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2424,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 2514,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190804,
+      "arm": "candidate",
+      "candidateSeat": 0,
+      "candidatePlayer": "manual-mirror-0",
+      "profilesBySeat": [
+        "manual-animar-development-r2",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 661,
+      "comboRelevantActionCount": 10,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-1": 29,
+        "manual-mirror-3": 32
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-1": 10,
+        "manual-mirror-3": 11
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 1609,
+      "accepted": 1609,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 49,
+      "durationMs": 11505,
+      "turnsByPlayer": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 19
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": -2,
+        "manual-mirror-3": 0
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-3-seat-0-39207390012/continuation-output/games/seed-3-seat-0/candidate",
+      "initialStateSha256": "3e805cc64bce4f28849cf759b690a67a4a2b1202fb4157e3fa2f88182eb41b99",
+      "actionsSha256": "e7944482bcc984283834a30960e4a47c779befb60db8a6dd8f94eddeac7b7833",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1277,
+          "actor": "manual-mirror-1",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 294,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 1609,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190804,
+      "arm": "control",
+      "candidateSeat": 0,
+      "candidatePlayer": "manual-mirror-0",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 661,
+      "comboRelevantActionCount": 10,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-1": 29,
+        "manual-mirror-3": 32
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-1": 10,
+        "manual-mirror-3": 11
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 1609,
+      "accepted": 1609,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 49,
+      "durationMs": 40270,
+      "turnsByPlayer": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 19
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": -2,
+        "manual-mirror-3": 0
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-3-seat-0-39207390012/continuation-output/games/seed-3-seat-0/control",
+      "initialStateSha256": "3e805cc64bce4f28849cf759b690a67a4a2b1202fb4157e3fa2f88182eb41b99",
+      "actionsSha256": "e7944482bcc984283834a30960e4a47c779befb60db8a6dd8f94eddeac7b7833",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1277,
+          "actor": "manual-mirror-1",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 294,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 1609,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190804,
+      "arm": "candidate",
+      "candidateSeat": 1,
+      "candidatePlayer": "manual-mirror-1",
+      "profilesBySeat": [
+        "current",
+        "manual-animar-development-r2",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 637,
+      "comboRelevantActionCount": 7,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-1": 27,
+        "manual-mirror-3": 42
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-1": 9,
+        "manual-mirror-3": 16
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 20
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 9,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 19
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 20
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 9,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 19
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 1465,
+      "accepted": 1465,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 45,
+      "durationMs": 11605,
+      "turnsByPlayer": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 18,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 17
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": 37,
+        "manual-mirror-2": -2,
+        "manual-mirror-3": -27
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-3-seat-1-39207390012/continuation-output/games/seed-3-seat-1/candidate",
+      "initialStateSha256": "3e805cc64bce4f28849cf759b690a67a4a2b1202fb4157e3fa2f88182eb41b99",
+      "actionsSha256": "bf9347a0c1691415a77fbfe4a9b374cec96567dc0db4a56cf9f64f697c351bac",
+      "advisorAdjustedWindows": 4,
+      "advisorChosenWindows": 2,
+      "advisorChangedRankingWindows": 2,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 27,
+          "player": "manual-mirror-1",
+          "actionIndex": 905,
+          "rawScore": -5.522142857142861,
+          "adjustedScore": -3.099642857142863,
+          "bestAlternativeScore": -4.247142857142864,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 908,
+              "card": "Elvish Visionary"
+            }
+          ]
+        },
+        {
+          "turn": 43,
+          "player": "manual-mirror-1",
+          "actionIndex": 1364,
+          "rawScore": 31.556365546218473,
+          "adjustedScore": 34.233865546218496,
+          "bestAlternativeScore": 32.10636554621847,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 1367,
+              "card": "Arbor Elf"
+            },
+            {
+              "index": 1372,
+              "card": "Purphoros, God of the Forge"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [],
+      "ballistaActivations": 0,
+      "eliminations": [
+        {
+          "index": 294,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 1464,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190804,
+      "arm": "control",
+      "candidateSeat": 1,
+      "candidatePlayer": "manual-mirror-1",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 661,
+      "comboRelevantActionCount": 10,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-1": 29,
+        "manual-mirror-3": 32
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-1": 10,
+        "manual-mirror-3": 11
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 1609,
+      "accepted": 1609,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 49,
+      "durationMs": 35169,
+      "turnsByPlayer": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 19
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": -2,
+        "manual-mirror-3": 0
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-3-seat-1-39207390012/continuation-output/games/seed-3-seat-1/control",
+      "initialStateSha256": "3e805cc64bce4f28849cf759b690a67a4a2b1202fb4157e3fa2f88182eb41b99",
+      "actionsSha256": "e7944482bcc984283834a30960e4a47c779befb60db8a6dd8f94eddeac7b7833",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1277,
+          "actor": "manual-mirror-1",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 294,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 1609,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190804,
+      "arm": "candidate",
+      "candidateSeat": 2,
+      "candidatePlayer": "manual-mirror-2",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "manual-animar-development-r2",
+        "current"
+      ],
+      "scoredChoiceRecords": 661,
+      "comboRelevantActionCount": 10,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-1": 29,
+        "manual-mirror-3": 32
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-1": 10,
+        "manual-mirror-3": 11
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 1609,
+      "accepted": 1609,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 49,
+      "durationMs": 12057,
+      "turnsByPlayer": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 19
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": -2,
+        "manual-mirror-3": 0
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-3-seat-2-39207390012/continuation-output/games/seed-3-seat-2/candidate",
+      "initialStateSha256": "3e805cc64bce4f28849cf759b690a67a4a2b1202fb4157e3fa2f88182eb41b99",
+      "actionsSha256": "e7944482bcc984283834a30960e4a47c779befb60db8a6dd8f94eddeac7b7833",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1277,
+          "actor": "manual-mirror-1",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 294,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 1609,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190804,
+      "arm": "control",
+      "candidateSeat": 2,
+      "candidatePlayer": "manual-mirror-2",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 661,
+      "comboRelevantActionCount": 10,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-1": 29,
+        "manual-mirror-3": 32
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-1": 10,
+        "manual-mirror-3": 11
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 1609,
+      "accepted": 1609,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 49,
+      "durationMs": 40583,
+      "turnsByPlayer": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 19
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": -2,
+        "manual-mirror-3": 0
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-3-seat-2-39207390012/continuation-output/games/seed-3-seat-2/control",
+      "initialStateSha256": "3e805cc64bce4f28849cf759b690a67a4a2b1202fb4157e3fa2f88182eb41b99",
+      "actionsSha256": "e7944482bcc984283834a30960e4a47c779befb60db8a6dd8f94eddeac7b7833",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1277,
+          "actor": "manual-mirror-1",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 294,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 1609,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190804,
+      "arm": "candidate",
+      "candidateSeat": 3,
+      "candidatePlayer": "manual-mirror-3",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "manual-animar-development-r2"
+      ],
+      "scoredChoiceRecords": 492,
+      "comboRelevantActionCount": 24,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-3": 26,
+        "manual-mirror-1": 29
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-3": 8,
+        "manual-mirror-1": 10
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 13,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 4
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 3
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 13,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 4
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 3
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 1436,
+      "accepted": 1436,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 43,
+      "durationMs": 7560,
+      "turnsByPlayer": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 17,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 16
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": 39,
+        "manual-mirror-2": -2,
+        "manual-mirror-3": -1
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-3-seat-3-39207390012/continuation-output/games/seed-3-seat-3/candidate",
+      "initialStateSha256": "3e805cc64bce4f28849cf759b690a67a4a2b1202fb4157e3fa2f88182eb41b99",
+      "actionsSha256": "9e38e1f014b6e2fd6598741b570a9426df4114c938a58847ed98cd2aa67c5cf2",
+      "advisorAdjustedWindows": 3,
+      "advisorChosenWindows": 1,
+      "advisorChangedRankingWindows": 1,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 26,
+          "player": "manual-mirror-3",
+          "actionIndex": 876,
+          "rawScore": 4.9542857142857155,
+          "adjustedScore": 5.91678571428571,
+          "bestAlternativeScore": 5.559285714285713,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 879,
+              "card": "Coiling Oracle"
+            },
+            {
+              "index": 887,
+              "card": "Amphin Mutineer"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [],
+      "ballistaActivations": 0,
+      "eliminations": [
+        {
+          "index": 294,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 1436,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190804,
+      "arm": "control",
+      "candidateSeat": 3,
+      "candidatePlayer": "manual-mirror-3",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 661,
+      "comboRelevantActionCount": 10,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-1": 29,
+        "manual-mirror-3": 32
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-1": 10,
+        "manual-mirror-3": 11
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 4,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 9
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 8
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 1609,
+      "accepted": 1609,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 49,
+      "durationMs": 39660,
+      "turnsByPlayer": {
+        "manual-mirror-0": 3,
+        "manual-mirror-1": 20,
+        "manual-mirror-2": 7,
+        "manual-mirror-3": 19
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 0,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": 40,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": -2,
+        "manual-mirror-3": 0
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-3-seat-3-39207390012/continuation-output/games/seed-3-seat-3/control",
+      "initialStateSha256": "3e805cc64bce4f28849cf759b690a67a4a2b1202fb4157e3fa2f88182eb41b99",
+      "actionsSha256": "e7944482bcc984283834a30960e4a47c779befb60db8a6dd8f94eddeac7b7833",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 1277,
+          "actor": "manual-mirror-1",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 2,
+      "eliminations": [
+        {
+          "index": 294,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)"
+        },
+        {
+          "index": 840,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 1609,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190805,
+      "arm": "candidate",
+      "candidateSeat": 0,
+      "candidatePlayer": "manual-mirror-0",
+      "profilesBySeat": [
+        "manual-animar-development-r2",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 962,
+      "comboRelevantActionCount": 28,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 17,
+        "manual-mirror-2": 23,
+        "manual-mirror-1": 38,
+        "manual-mirror-3": 60
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 5,
+        "manual-mirror-2": 6,
+        "manual-mirror-1": 10,
+        "manual-mirror-3": 15
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 20,
+        "manual-mirror-1": 32,
+        "manual-mirror-2": 3,
+        "manual-mirror-3": 12
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 18,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 11
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 20,
+        "manual-mirror-1": 32,
+        "manual-mirror-2": 3,
+        "manual-mirror-3": 12
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 18,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 11
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 4177,
+      "accepted": 4177,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 85,
+      "durationMs": 66683,
+      "turnsByPlayer": {
+        "manual-mirror-0": 20,
+        "manual-mirror-1": 23,
+        "manual-mirror-2": 22,
+        "manual-mirror-3": 20
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -4,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": -22,
+        "manual-mirror-3": -16
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-4-seat-0-39207390012/continuation-output/games/seed-4-seat-0/candidate",
+      "initialStateSha256": "318c822d5d856f0c13fb50067419421c45f78be1e9709e334081af61ad4e3c66",
+      "actionsSha256": "728424d4fb5f7a5e1bc72e1f6b671314de0955ea97e7bf33cf111898c94bf198",
+      "advisorAdjustedWindows": 4,
+      "advisorChosenWindows": 1,
+      "advisorChangedRankingWindows": 1,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 17,
+          "player": "manual-mirror-0",
+          "actionIndex": 593,
+          "rawScore": 20.2225,
+          "adjustedScore": 23.064999999999998,
+          "bestAlternativeScore": 22.4575,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 598,
+              "card": "Transit Mage"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 684,
+          "actor": "manual-mirror-2",
+          "x": 1
+        },
+        {
+          "index": 2058,
+          "actor": "manual-mirror-1",
+          "x": 2
+        },
+        {
+          "index": 2438,
+          "actor": "manual-mirror-0",
+          "x": 2
+        }
+      ],
+      "ballistaActivations": 9,
+      "eliminations": [
+        {
+          "index": 3895,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 3997,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 4177,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190805,
+      "arm": "control",
+      "candidateSeat": 0,
+      "candidatePlayer": "manual-mirror-0",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1937,
+      "comboRelevantActionCount": 17,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-2": 23,
+        "manual-mirror-0": 25,
+        "manual-mirror-3": 48,
+        "manual-mirror-1": 70
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-2": 6,
+        "manual-mirror-0": 7,
+        "manual-mirror-3": 12,
+        "manual-mirror-1": 18
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 39,
+        "manual-mirror-3": 5
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 37,
+        "manual-mirror-3": 4
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 39,
+        "manual-mirror-3": 5
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 37,
+        "manual-mirror-3": 4
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 6230,
+      "accepted": 6230,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-3",
+      "playerTurnNumber": 122,
+      "durationMs": 164528,
+      "turnsByPlayer": {
+        "manual-mirror-0": 30,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": 30,
+        "manual-mirror-3": 31
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -5,
+        "manual-mirror-1": -1,
+        "manual-mirror-2": -28,
+        "manual-mirror-3": 41
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-4-seat-0-39207390012/continuation-output/games/seed-4-seat-0/control",
+      "initialStateSha256": "318c822d5d856f0c13fb50067419421c45f78be1e9709e334081af61ad4e3c66",
+      "actionsSha256": "15466d7a20b55e01081bff7b9b2bb8ed5f32a3b3e5d34d532a3cb7dbece19734",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 680,
+          "actor": "manual-mirror-2",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 2743,
+          "actor": "manual-mirror-3",
+          "x": 4
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 6069,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 6169,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 6230,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190805,
+      "arm": "candidate",
+      "candidateSeat": 1,
+      "candidatePlayer": "manual-mirror-1",
+      "profilesBySeat": [
+        "current",
+        "manual-animar-development-r2",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 702,
+      "comboRelevantActionCount": 25,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-2": 23,
+        "manual-mirror-0": 25,
+        "manual-mirror-3": 48,
+        "manual-mirror-1": 54
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-2": 6,
+        "manual-mirror-0": 7,
+        "manual-mirror-3": 12,
+        "manual-mirror-1": 14
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 22,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 11,
+        "manual-mirror-3": 5
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 21,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 10,
+        "manual-mirror-3": 4
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 22,
+        "manual-mirror-1": 3,
+        "manual-mirror-2": 11,
+        "manual-mirror-3": 5
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 21,
+        "manual-mirror-1": 2,
+        "manual-mirror-2": 10,
+        "manual-mirror-3": 4
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 3471,
+      "accepted": 3471,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-1",
+      "playerTurnNumber": 71,
+      "durationMs": 62334,
+      "turnsByPlayer": {
+        "manual-mirror-0": 19,
+        "manual-mirror-1": 19,
+        "manual-mirror-2": 15,
+        "manual-mirror-3": 18
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 1,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": 0,
+        "manual-mirror-1": 40,
+        "manual-mirror-2": -12,
+        "manual-mirror-3": 0
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-4-seat-1-39207390012/continuation-output/games/seed-4-seat-1/candidate",
+      "initialStateSha256": "318c822d5d856f0c13fb50067419421c45f78be1e9709e334081af61ad4e3c66",
+      "actionsSha256": "2c4fe81db3298d5917e7e09cb81be7bf60beab8f657eea4d5439ae27f455bbf3",
+      "advisorAdjustedWindows": 1,
+      "advisorChosenWindows": 1,
+      "advisorChangedRankingWindows": 1,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 54,
+          "player": "manual-mirror-1",
+          "actionIndex": 2199,
+          "rawScore": 8.265972222222219,
+          "adjustedScore": 11.07847222222222,
+          "bestAlternativeScore": 10.645972222222237,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 2209,
+              "card": "Fblthp, the Lost"
+            },
+            {
+              "index": 2228,
+              "card": "Farhaven Elf"
+            },
+            {
+              "index": 2249,
+              "card": "Walking Ballista"
+            },
+            {
+              "index": 2263,
+              "card": "Amphin Mutineer"
+            },
+            {
+              "index": 2284,
+              "card": "Emrakul's Hatcher"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 680,
+          "actor": "manual-mirror-2",
+          "x": 1
+        },
+        {
+          "index": 2249,
+          "actor": "manual-mirror-1",
+          "x": 0
+        },
+        {
+          "index": 2964,
+          "actor": "manual-mirror-3",
+          "x": 4
+        }
+      ],
+      "ballistaActivations": 5,
+      "eliminations": [
+        {
+          "index": 2930,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 3471,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 3471,
+          "event": "PlayerLostEvent(playerId=manual-mirror-3, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190805,
+      "arm": "control",
+      "candidateSeat": 1,
+      "candidatePlayer": "manual-mirror-1",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1937,
+      "comboRelevantActionCount": 17,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-2": 23,
+        "manual-mirror-0": 25,
+        "manual-mirror-3": 48,
+        "manual-mirror-1": 70
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-2": 6,
+        "manual-mirror-0": 7,
+        "manual-mirror-3": 12,
+        "manual-mirror-1": 18
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 39,
+        "manual-mirror-3": 5
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 37,
+        "manual-mirror-3": 4
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 39,
+        "manual-mirror-3": 5
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 37,
+        "manual-mirror-3": 4
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 6230,
+      "accepted": 6230,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-3",
+      "playerTurnNumber": 122,
+      "durationMs": 224493,
+      "turnsByPlayer": {
+        "manual-mirror-0": 30,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": 30,
+        "manual-mirror-3": 31
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -5,
+        "manual-mirror-1": -1,
+        "manual-mirror-2": -28,
+        "manual-mirror-3": 41
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-4-seat-1-39207390012/continuation-output/games/seed-4-seat-1/control",
+      "initialStateSha256": "318c822d5d856f0c13fb50067419421c45f78be1e9709e334081af61ad4e3c66",
+      "actionsSha256": "15466d7a20b55e01081bff7b9b2bb8ed5f32a3b3e5d34d532a3cb7dbece19734",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 680,
+          "actor": "manual-mirror-2",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 2743,
+          "actor": "manual-mirror-3",
+          "x": 4
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 6069,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 6169,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 6230,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190805,
+      "arm": "candidate",
+      "candidateSeat": 2,
+      "candidatePlayer": "manual-mirror-2",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "manual-animar-development-r2",
+        "current"
+      ],
+      "scoredChoiceRecords": 1905,
+      "comboRelevantActionCount": 19,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-2": 23,
+        "manual-mirror-0": 25,
+        "manual-mirror-3": 48,
+        "manual-mirror-1": 70
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-2": 6,
+        "manual-mirror-0": 7,
+        "manual-mirror-3": 12,
+        "manual-mirror-1": 18
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 13,
+        "manual-mirror-2": 26,
+        "manual-mirror-3": 5
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 12,
+        "manual-mirror-2": 23,
+        "manual-mirror-3": 4
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 13,
+        "manual-mirror-2": 26,
+        "manual-mirror-3": 5
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 12,
+        "manual-mirror-2": 23,
+        "manual-mirror-3": 4
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 6318,
+      "accepted": 6318,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-3",
+      "playerTurnNumber": 125,
+      "durationMs": 190436,
+      "turnsByPlayer": {
+        "manual-mirror-0": 30,
+        "manual-mirror-1": 33,
+        "manual-mirror-2": 30,
+        "manual-mirror-3": 32
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 3,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -20,
+        "manual-mirror-1": 26,
+        "manual-mirror-2": -27,
+        "manual-mirror-3": 41
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-4-seat-2-39207390012/continuation-output/games/seed-4-seat-2/candidate",
+      "initialStateSha256": "318c822d5d856f0c13fb50067419421c45f78be1e9709e334081af61ad4e3c66",
+      "actionsSha256": "f26c5989e92ee3a5e0b3595a678cd55f1cd0ba6142cf748b16fb7ea3a59c24b5",
+      "advisorAdjustedWindows": 5,
+      "advisorChosenWindows": 2,
+      "advisorChangedRankingWindows": 2,
+      "advisorChangedRankingDetails": [
+        {
+          "turn": 95,
+          "player": "manual-mirror-2",
+          "actionIndex": 4740,
+          "rawScore": -72.10643186635836,
+          "adjustedScore": -69.68393186635836,
+          "bestAlternativeScore": -70.30643186635837,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 4745,
+              "card": "Fblthp, the Lost"
+            },
+            {
+              "index": 4758,
+              "card": "Llanowar Elves"
+            },
+            {
+              "index": 4767,
+              "card": "Eyeless Watcher"
+            }
+          ]
+        },
+        {
+          "turn": 115,
+          "player": "manual-mirror-2",
+          "actionIndex": 5880,
+          "rawScore": -19.11303751803759,
+          "adjustedScore": -16.690537518037576,
+          "bestAlternativeScore": -17.21303751803759,
+          "subsequentSameTurnCreatureCasts": [
+            {
+              "index": 5885,
+              "card": "Fyndhorn Elves"
+            }
+          ]
+        }
+      ],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 680,
+          "actor": "manual-mirror-2",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 2743,
+          "actor": "manual-mirror-3",
+          "x": 4
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 6162,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 6230,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190805,
+      "arm": "control",
+      "candidateSeat": 2,
+      "candidatePlayer": "manual-mirror-2",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1937,
+      "comboRelevantActionCount": 17,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-2": 23,
+        "manual-mirror-0": 25,
+        "manual-mirror-3": 48,
+        "manual-mirror-1": 70
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-2": 6,
+        "manual-mirror-0": 7,
+        "manual-mirror-3": 12,
+        "manual-mirror-1": 18
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 39,
+        "manual-mirror-3": 5
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 37,
+        "manual-mirror-3": 4
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 39,
+        "manual-mirror-3": 5
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 37,
+        "manual-mirror-3": 4
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 6230,
+      "accepted": 6230,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-3",
+      "playerTurnNumber": 122,
+      "durationMs": 233799,
+      "turnsByPlayer": {
+        "manual-mirror-0": 30,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": 30,
+        "manual-mirror-3": 31
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -5,
+        "manual-mirror-1": -1,
+        "manual-mirror-2": -28,
+        "manual-mirror-3": 41
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-4-seat-2-39207390012/continuation-output/games/seed-4-seat-2/control",
+      "initialStateSha256": "318c822d5d856f0c13fb50067419421c45f78be1e9709e334081af61ad4e3c66",
+      "actionsSha256": "15466d7a20b55e01081bff7b9b2bb8ed5f32a3b3e5d34d532a3cb7dbece19734",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 680,
+          "actor": "manual-mirror-2",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 2743,
+          "actor": "manual-mirror-3",
+          "x": 4
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 6069,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 6169,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 6230,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190805,
+      "arm": "candidate",
+      "candidateSeat": 3,
+      "candidatePlayer": "manual-mirror-3",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "manual-animar-development-r2"
+      ],
+      "scoredChoiceRecords": 1937,
+      "comboRelevantActionCount": 17,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-2": 23,
+        "manual-mirror-0": 25,
+        "manual-mirror-3": 48,
+        "manual-mirror-1": 70
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-2": 6,
+        "manual-mirror-0": 7,
+        "manual-mirror-3": 12,
+        "manual-mirror-1": 18
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 39,
+        "manual-mirror-3": 5
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 37,
+        "manual-mirror-3": 4
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 39,
+        "manual-mirror-3": 5
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 37,
+        "manual-mirror-3": 4
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 6230,
+      "accepted": 6230,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-3",
+      "playerTurnNumber": 122,
+      "durationMs": 90827,
+      "turnsByPlayer": {
+        "manual-mirror-0": 30,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": 30,
+        "manual-mirror-3": 31
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -5,
+        "manual-mirror-1": -1,
+        "manual-mirror-2": -28,
+        "manual-mirror-3": 41
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-4-seat-3-39207390012/continuation-output/games/seed-4-seat-3/candidate",
+      "initialStateSha256": "318c822d5d856f0c13fb50067419421c45f78be1e9709e334081af61ad4e3c66",
+      "actionsSha256": "15466d7a20b55e01081bff7b9b2bb8ed5f32a3b3e5d34d532a3cb7dbece19734",
+      "advisorAdjustedWindows": 2,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 680,
+          "actor": "manual-mirror-2",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 2743,
+          "actor": "manual-mirror-3",
+          "x": 4
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 6069,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 6169,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 6230,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    },
+    {
+      "status": "COMPLETE",
+      "seed": 202610190805,
+      "arm": "control",
+      "candidateSeat": 3,
+      "candidatePlayer": "manual-mirror-3",
+      "profilesBySeat": [
+        "current",
+        "current",
+        "current",
+        "current"
+      ],
+      "scoredChoiceRecords": 1937,
+      "comboRelevantActionCount": 17,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-2": 23,
+        "manual-mirror-0": 25,
+        "manual-mirror-3": 48,
+        "manual-mirror-1": 70
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-2": 6,
+        "manual-mirror-0": 7,
+        "manual-mirror-3": 12,
+        "manual-mirror-1": 18
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 39,
+        "manual-mirror-3": 5
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 37,
+        "manual-mirror-3": 4
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 49,
+        "manual-mirror-1": 11,
+        "manual-mirror-2": 39,
+        "manual-mirror-3": 5
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 47,
+        "manual-mirror-1": 10,
+        "manual-mirror-2": 37,
+        "manual-mirror-3": 4
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 6230,
+      "accepted": 6230,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-3",
+      "playerTurnNumber": 122,
+      "durationMs": 114168,
+      "turnsByPlayer": {
+        "manual-mirror-0": 30,
+        "manual-mirror-1": 31,
+        "manual-mirror-2": 30,
+        "manual-mirror-3": 31
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 2,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -5,
+        "manual-mirror-1": -1,
+        "manual-mirror-2": -28,
+        "manual-mirror-3": 41
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams",
+      "traceFolder": "manual-continuation-seed-4-seat-3-39207390012/continuation-output/games/seed-4-seat-3/control",
+      "initialStateSha256": "318c822d5d856f0c13fb50067419421c45f78be1e9709e334081af61ad4e3c66",
+      "actionsSha256": "15466d7a20b55e01081bff7b9b2bb8ed5f32a3b3e5d34d532a3cb7dbece19734",
+      "advisorAdjustedWindows": 0,
+      "advisorChosenWindows": 0,
+      "advisorChangedRankingWindows": 0,
+      "advisorChangedRankingDetails": [],
+      "repeatedSameTurnStatueCastGroups": 0,
+      "statueBattlefieldToHandReturns": 0,
+      "statueReturnDefinition": "Observed Statue battlefield-to-hand zone transitions; does not establish its own ETB caused the return",
+      "ballistaCasts": [
+        {
+          "index": 680,
+          "actor": "manual-mirror-2",
+          "x": 1
+        },
+        {
+          "index": 2230,
+          "actor": "manual-mirror-1",
+          "x": 1
+        },
+        {
+          "index": 2743,
+          "actor": "manual-mirror-3",
+          "x": 4
+        }
+      ],
+      "ballistaActivations": 6,
+      "eliminations": [
+        {
+          "index": 6069,
+          "event": "PlayerLostEvent(playerId=manual-mirror-0, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 6169,
+          "event": "PlayerLostEvent(playerId=manual-mirror-2, reason=LIFE_ZERO, message=null)"
+        },
+        {
+          "index": 6230,
+          "event": "PlayerLostEvent(playerId=manual-mirror-1, reason=LIFE_ZERO, message=null)"
+        }
+      ]
+    }
+  ]
+}
