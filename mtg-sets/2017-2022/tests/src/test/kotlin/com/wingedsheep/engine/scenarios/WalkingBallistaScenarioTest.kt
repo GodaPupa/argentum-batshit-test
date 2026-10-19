@@ -21,6 +21,35 @@ class WalkingBallistaScenarioTest : ScenarioTestBase() {
         game.state.getEntity(id)?.get<CountersComponent>()?.getCount(CounterType.PLUS_ONE_PLUS_ONE) ?: 0
 
     init {
+        test("Animar reduces total double X payment while Ballista still enters with chosen X counters") {
+            val game = scenario().withPlayers("Manual", "Opponent")
+                .withCardOnBattlefield(1, "Animar, Soul of Elements")
+                .withCardInHand(1, "Walking Ballista")
+                .withActivePlayer(1).inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val animar = game.findPermanent("Animar, Soul of Elements")!!
+            game.state = game.state.updateEntity(animar) {
+                it.with(CountersComponent().withAdded(CounterType.PLUS_ONE_PLUS_ONE, 6))
+            }
+            val cast = game.castXSpell(1, "Walking Ballista", xValue = 3)
+            cast.error shouldBe null
+            cast.events.filterIsInstance<ManaSpentEvent>().sumOf { it.total } shouldBe 0
+            game.resolveStack()
+            plusOne(game, game.findPermanent("Walking Ballista")!!) shouldBe 3
+            plusOne(game, animar) shouldBe 7
+        }
+
+        test("X zero Ballista dies even though Animar receives the creature cast counter") {
+            val game = scenario().withPlayers("Manual", "Opponent")
+                .withCardOnBattlefield(1, "Animar, Soul of Elements")
+                .withCardInHand(1, "Walking Ballista")
+                .withActivePlayer(1).inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val animar = game.findPermanent("Animar, Soul of Elements")!!
+            game.castXSpell(1, "Walking Ballista", xValue = 0).error shouldBe null
+            game.resolveStack()
+            game.findPermanent("Walking Ballista") shouldBe null
+            plusOne(game, animar) shouldBe 1
+        }
+
         test("Walking Ballista pays twice X and enters with exactly X +1/+1 counters") {
             val game = scenario()
                 .withPlayers("Manual", "Opponent")

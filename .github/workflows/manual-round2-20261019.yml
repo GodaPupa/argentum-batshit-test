@@ -1,0 +1,118 @@
+name: Manual Transmission Round 2
+on:
+  push:
+    branches: [gameplay/manual-round2-20261019]
+    paths:
+      - .github/workflows/manual-round2-20261019.yml
+      - ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualAnimarDevelopmentAdvisorModule.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualAnimarDevelopmentPolicyTest.kt
+      - ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualTransmissionRoundTwoComparisonTest.kt
+permissions:
+  contents: read
+jobs:
+  policy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_ROUND2_ROOT: ${{ github.workspace }}
+      MANUAL_ROUND2_OUTPUT: ${{ github.workspace }}/round2-output/policy
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Deterministic policy regressions and original trace replay
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p round2-output/policy
+          git rev-parse HEAD > round2-output/policy/source-sha.txt
+          sha256sum tools/manual-round2/original-12161685788.zip > round2-output/policy/original-artifact.sha256
+          chmod +x gradlew scripts/gradle-locked scripts/test-class
+          scripts/test-class ManualAnimarDevelopmentPolicyTest -Dbenchmark=true --no-daemon --console=plain --stacktrace 2>&1 | tee round2-output/policy/regressions.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-round2-policy-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            round2-output/policy/
+            ai/build/test-results/test/
+  mechanics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Actual rules actions and events
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p round2-output/mechanics
+          git rev-parse HEAD > round2-output/mechanics/source-sha.txt
+          chmod +x gradlew scripts/gradle-locked
+          status=0
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test --tests '*AnimarSoulOfElementsScenarioTest' --tests '*AncestralStatueScenarioTest' --tests '*PurphorosGodOfTheForgeScenarioTest' --no-daemon --console=plain --stacktrace 2>&1 | tee round2-output/mechanics/animar-statue-purphoros.log || status=1
+          scripts/gradle-locked :mtg-sets:2017-2022:tests:test --tests '*WalkingBallistaScenarioTest' --no-daemon --console=plain --stacktrace 2>&1 | tee round2-output/mechanics/ballista.log || status=1
+          scripts/gradle-locked :rules-engine:test --tests '*CommanderTaxTest' --tests '*CommanderSetupTest' --tests '*CommanderZoneRedirectTest' --no-daemon --console=plain --stacktrace 2>&1 | tee round2-output/mechanics/commander.log || status=1
+          exit "$status"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-round2-mechanics-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            round2-output/mechanics/
+            mtg-sets/2008-2016/tests/build/test-results/test/
+            mtg-sets/2017-2022/tests/build/test-results/test/
+            rules-engine/build/test-results/test/
+  comparison:
+    needs: policy
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [0, 1, 2, 3, 4]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_ROUND2_RUN: '1'
+      MANUAL_ROUND2_ROOT: ${{ github.workspace }}
+      MANUAL_ROUND2_OUTPUT: ${{ github.workspace }}/round2-output/games
+      MANUAL_ROUND2_SEED_INDEX: ${{ matrix.seed }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Four seats and two matched arms for this seed
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p round2-output/games
+          git rev-parse HEAD > round2-output/games/source-sha.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt > round2-output/games/deck.sha256
+          chmod +x gradlew scripts/gradle-locked
+          status=0
+          for seat in 0 1 2 3; do
+            export MANUAL_ROUND2_CANDIDATE_SEAT="$seat"
+            scripts/gradle-locked :ai:cleanTest :ai:test --tests com.wingedsheep.ai.engine.ManualTransmissionRoundTwoComparisonTest -Dbenchmark=true --no-daemon --console=plain --stacktrace 2>&1 | tee "round2-output/games/seed-${MANUAL_ROUND2_SEED_INDEX}-seat-${seat}.log" || status=1
+            mkdir -p "round2-output/games/test-results-seat-$seat"
+            cp -r ai/build/test-results/test/. "round2-output/games/test-results-seat-$seat/" || status=1
+          done
+          exit "$status"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-round2-seed-${{ matrix.seed }}-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: error
+          path: round2-output/games/
