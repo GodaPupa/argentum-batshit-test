@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.core.SpellFizzledEvent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
@@ -61,5 +62,27 @@ class BoneShardsScenarioTest : FunSpec({
 
         game.getGraveyardCardNames(player).contains("Ornithopter") shouldBe true
         game.findPermanent(opponent, "Grizzly Bears") shouldBe null
+    }
+
+    test("a legal target sacrificed as the cost is gone when the spell resolves") {
+        val game = game()
+        val player = game.activePlayer!!
+        val victim = game.putCreatureOnBattlefield(player, "Ornithopter")
+        val spell = game.putCardInHand(player, "Bone Shards")
+        game.giveMana(player, Color.BLACK, 1)
+
+        game.submit(CastSpell(
+            playerId = player,
+            cardId = spell,
+            chosenModes = listOf(0),
+            targets = listOf(ChosenTarget.Permanent(victim)),
+            additionalCostPayment = AdditionalCostPayment(sacrificedPermanents = listOf(victim)),
+        )).error shouldBe null
+        game.findPermanent(player, "Ornithopter") shouldBe null
+        game.stackSize shouldBe 1
+        while (game.stackSize > 0) game.bothPass()
+
+        game.events.filterIsInstance<SpellFizzledEvent>().single().cardName shouldBe "Bone Shards"
+        game.getGraveyardCardNames(player).containsAll(listOf("Ornithopter", "Bone Shards")) shouldBe true
     }
 })
