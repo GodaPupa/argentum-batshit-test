@@ -1254,6 +1254,7 @@ class CastSpellHandler(
                 // Price the branch the player actually announced — a "costs {2} less to cast if
                 // it's bargained" reduction is gated on the declaration (CR 702.166).
                 declaredCostSlot = action.declaredCostSlot,
+                announcedX = action.xValue,
             )
         } else {
             cardComponent.manaCost
@@ -1389,7 +1390,7 @@ class CastSpellHandler(
         // so the leftover reduction beyond any printed generic comes off the X mana paid.
         // For a "waterbend {X}" spell the X is already materialized as generic in the cost
         // (and reduced by the waterbend taps), so it must NOT also be charged as {X} mana.
-        val paymentXValue = if (cardDef?.script?.spellWaterbend?.isX == true) 0
+        val paymentXValue = if (!effectiveCost.hasX || cardDef?.script?.spellWaterbend?.isX == true) 0
             else harmonizePaymentXValue(state, action, cardDef, effectiveCost)
         return ComputedCastCost(costAfterImprovise, paymentXValue)
     }
@@ -2705,6 +2706,7 @@ class CastSpellHandler(
                 action.targets.map { it.toEntityId() },
                 fromZone = if (castingFromCommand) Zone.COMMAND else castSourceZone(currentState, action.cardId),
                 declaredCostSlot = action.declaredCostSlot,
+                announcedX = action.xValue,
             )
         } else {
             cardComponent.manaCost
@@ -3455,7 +3457,7 @@ class CastSpellHandler(
         // For a "waterbend {X}" spell the X is materialized as generic in the cost and paid by the
         // waterbend taps, so it isn't charged again as {X} mana here (action.xValue still feeds the
         // resolving effect via the stack).
-        val paymentXValue = if (cardDef?.script?.spellWaterbend?.isX == true) 0
+        val paymentXValue = if (!effectiveCost.hasX || cardDef?.script?.spellWaterbend?.isX == true) 0
             else harmonizePaymentXValue(currentState, action, cardDef, effectiveCost)
 
         // Apply alternative payment (Delve/Convoke/Harmonize)

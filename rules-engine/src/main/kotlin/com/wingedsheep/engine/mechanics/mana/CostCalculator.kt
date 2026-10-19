@@ -76,6 +76,8 @@ class CostCalculator(
      * @param casterId The player casting the spell
      * @return The effective mana cost after reductions
      */
+    private data class SpellCostQuote(val cost: ManaCost, val unusedGenericReduction: Int)
+
     fun calculateEffectiveCost(
         state: GameState,
         cardDef: CardDefinition,
@@ -83,7 +85,24 @@ class CostCalculator(
         chosenTargets: List<EntityId> = emptyList(),
         fromZone: Zone? = null,
         declaredCostSlot: ChoiceSlot? = null,
-    ): ManaCost {
+        announcedX: Int? = null,
+    ): ManaCost = calculateSpellCostQuote(state, cardDef, casterId, chosenTargets, fromZone, declaredCostSlot, announcedX).cost
+
+
+    /** Generic reduction left after printed costs, available to pay announced X generic mana. */
+    fun unusedGenericReductionForX(state: GameState, cardDef: CardDefinition, casterId: EntityId): Int =
+        if (cardDef.script.xManaRestriction.isNotEmpty()) 0
+        else calculateSpellCostQuote(state, cardDef, casterId).unusedGenericReduction
+
+    private fun calculateSpellCostQuote(
+        state: GameState,
+        cardDef: CardDefinition,
+        casterId: EntityId,
+        chosenTargets: List<EntityId> = emptyList(),
+        fromZone: Zone? = null,
+        declaredCostSlot: ChoiceSlot? = null,
+        announcedX: Int? = null,
+    ): SpellCostQuote {
         var totalReduction = 0
         var totalIncrease = 0
         val coloredReductionSymbols = mutableListOf<ManaSymbol>()
@@ -174,10 +193,16 @@ class CostCalculator(
         // reductions; the mana component is floored at {0} (it can't be reduced below {0}). Apply
         // increases first so a reduction that overshoots {0} doesn't leave a stale increase behind
         // (e.g. {U} +{1} −{2} → {U}, not {1}{U}).
-        var effectiveCost = increaseGenericCost(cardDef.manaCost, totalIncrease)
+        // Preserve ordinary symbolic X payment when no reduction spills into X. This keeps
+        // mana-spent-on-X accounting and restricted-X payment on their existing path.
+        val expandsX = announcedX != null && cardDef.manaCost.hasX && cardDef.script.xManaRestriction.isEmpty() &&
+            totalReduction > cardDef.manaCost.genericAmount + totalIncrease
+        val baseCost = if (expandsX) cardDef.manaCost.withXAs(announcedX!!) else cardDef.manaCost
+        var effectiveCost = increaseGenericCost(baseCost, totalIncrease)
         if (coloredIncreaseSymbols.isNotEmpty()) {
             effectiveCost = increaseColoredCost(effectiveCost, coloredIncreaseSymbols)
         }
+        val unusedGenericReduction = (totalReduction - effectiveCost.genericAmount).coerceAtLeast(0)
         effectiveCost = reduceGenericCost(effectiveCost, totalReduction)
         if (coloredReductionSymbols.isNotEmpty()) {
             effectiveCost = reduceColoredCost(effectiveCost, coloredReductionSymbols)
@@ -185,7 +210,7 @@ class CostCalculator(
         if (coloredReductionWithOverflow.isNotEmpty()) {
             effectiveCost = reduceColoredCostWithOverflow(effectiveCost, coloredReductionWithOverflow)
         }
-        return effectiveCost
+        return SpellCostQuote(effectiveCost, unusedGenericReduction)
     }
 
     /**

@@ -1,0 +1,72 @@
+name: Manual Round 2 reduced X correction
+on:
+  push:
+    branches: [gameplay/manual-round2-mechanics-20261019]
+    paths:
+      - .github/workflows/manual-round2-mana-fix-20261019.yml
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/CostCalculator.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt
+      - rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt
+permissions:
+  contents: read
+jobs:
+  mana-rules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env: {GRADLE_OPTS: -Dorg.gradle.daemon=false}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Reproduce reduced X fixes and related cost rules
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p mechanics-output/fix
+          git rev-parse HEAD > mechanics-output/fix/source-sha.txt
+          chmod +x gradlew scripts/gradle-locked
+          status=0
+          scripts/gradle-locked :mtg-sets:2017-2022:tests:test --tests '*WalkingBallistaScenarioTest' --tests '*HydroidKrasisScenarioTest' --no-daemon --console=plain --stacktrace 2>&1 | tee mechanics-output/fix/ballista-krasis.log || status=1
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test --tests '*AnimarSoulOfElementsScenarioTest' --tests '*AncestralStatueScenarioTest' --tests '*PurphorosGodOfTheForgeScenarioTest' --no-daemon --console=plain --stacktrace 2>&1 | tee mechanics-output/fix/animar-statue-purphoros.log || status=1
+          scripts/gradle-locked :rules-engine:test --tests '*CostCalculator*' --tests '*CommanderTaxTest' --tests '*CommanderSetupTest' --tests '*CommanderZoneRedirectTest' --tests '*XCost*' --no-daemon --console=plain --stacktrace 2>&1 | tee mechanics-output/fix/cost-rules.log || status=1
+          exit "$status"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-round2-mana-fix-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            mechanics-output/fix/
+            mtg-sets/2017-2022/tests/build/test-results/test/
+            mtg-sets/2008-2016/tests/build/test-results/test/
+            rules-engine/build/test-results/test/
+  actual-ai-discovery-after-fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_MECHANICS_OUTPUT: ${{ github.workspace }}/mechanics-output/discovery-after-fix
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Same CURRENT puzzle decisions with corrected engine
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p mechanics-output
+          git rev-parse HEAD > mechanics-output/source-sha.txt
+          chmod +x gradlew scripts/gradle-locked scripts/test-class
+          scripts/test-class ManualComboDiscoveryProbeTest -Dbenchmark=true --no-daemon --console=plain --stacktrace 2>&1 | tee mechanics-output/discovery-after-fix.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-round2-discovery-after-fix-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            mechanics-output/
+            ai/build/test-results/test/

@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.EngineServices
+import com.wingedsheep.engine.core.CastSpell
+import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.core.ActivateAbility
 import com.wingedsheep.engine.core.ManaSpentEvent
 import com.wingedsheep.engine.handlers.continuations.entityIdToChosenTarget
@@ -21,6 +24,58 @@ class WalkingBallistaScenarioTest : ScenarioTestBase() {
         game.state.getEntity(id)?.get<CountersComponent>()?.getCount(CounterType.PLUS_ONE_PLUS_ONE) ?: 0
 
     init {
+        test("five Animar counters reduce double X three to one and enumeration advertises X three") {
+            val game = scenario().withPlayers("Manual", "Opponent")
+                .withCardOnBattlefield(1, "Animar, Soul of Elements")
+                .withCardInHand(1, "Walking Ballista")
+                .withLandsOnBattlefield(1, "Forest", 1)
+                .withActivePlayer(1).inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val animar = game.findPermanent("Animar, Soul of Elements")!!
+            game.state = game.state.updateEntity(animar) {
+                it.with(CountersComponent().withAdded(CounterType.PLUS_ONE_PLUS_ONE, 5))
+            }
+            val services = EngineServices(cardRegistry)
+            val actions = LegalActionEnumerator(cardRegistry, services.manaSolver, services.costCalculator,
+                services.predicateEvaluator, services.conditionEvaluator, services.turnManager)
+                .enumerate(game.state, game.player1Id)
+            val ballistaId = game.state.getHand(game.player1Id).single()
+            actions.first { (it.action as? CastSpell)?.cardId == ballistaId }.maxAffordableX shouldBe 3
+            val cast = game.castXSpell(1, "Walking Ballista", xValue = 3)
+            cast.error shouldBe null
+            cast.events.filterIsInstance<ManaSpentEvent>().sumOf { it.total } shouldBe 1
+            game.resolveStack()
+            plusOne(game, game.findPermanent("Walking Ballista")!!) shouldBe 3
+        }
+
+        test("Animar reduces total double X payment while Ballista still enters with chosen X counters") {
+            val game = scenario().withPlayers("Manual", "Opponent")
+                .withCardOnBattlefield(1, "Animar, Soul of Elements")
+                .withCardInHand(1, "Walking Ballista")
+                .withActivePlayer(1).inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val animar = game.findPermanent("Animar, Soul of Elements")!!
+            game.state = game.state.updateEntity(animar) {
+                it.with(CountersComponent().withAdded(CounterType.PLUS_ONE_PLUS_ONE, 6))
+            }
+            val cast = game.castXSpell(1, "Walking Ballista", xValue = 3)
+            cast.error shouldBe null
+            cast.events.filterIsInstance<ManaSpentEvent>().sumOf { it.total } shouldBe 0
+            game.resolveStack()
+            plusOne(game, game.findPermanent("Walking Ballista")!!) shouldBe 3
+            plusOne(game, animar) shouldBe 7
+        }
+
+        test("X zero Ballista dies even though Animar receives the creature cast counter") {
+            val game = scenario().withPlayers("Manual", "Opponent")
+                .withCardOnBattlefield(1, "Animar, Soul of Elements")
+                .withCardInHand(1, "Walking Ballista")
+                .withActivePlayer(1).inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val animar = game.findPermanent("Animar, Soul of Elements")!!
+            game.castXSpell(1, "Walking Ballista", xValue = 0).error shouldBe null
+            game.resolveStack()
+            game.findPermanent("Walking Ballista") shouldBe null
+            plusOne(game, animar) shouldBe 1
+        }
+
         test("Walking Ballista pays twice X and enters with exactly X +1/+1 counters") {
             val game = scenario()
                 .withPlayers("Manual", "Opponent")

@@ -1,5 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ManaSpentEvent
+import io.kotest.matchers.shouldNotBe
 import com.wingedsheep.engine.mechanics.layers.StateProjector
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -32,6 +34,39 @@ class HydroidKrasisScenarioTest : ScenarioTestBase() {
     }
 
     init {
+        test("Animar reduces announced X but preserves Krasis colored pips and chosen X effects") {
+            val game = scenario().withPlayers("Manual", "Opponent")
+                .withCardOnBattlefield(1, "Animar, Soul of Elements")
+                .withCardInHand(1, "Hydroid Krasis")
+                .withCardInLibrary(1, "Forest").withCardInLibrary(1, "Forest")
+                .withLandsOnBattlefield(1, "Forest", 1).withLandsOnBattlefield(1, "Island", 1)
+                .withActivePlayer(1).inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val animar = game.findPermanent("Animar, Soul of Elements")!!
+            game.state = game.state.updateEntity(animar) {
+                it.with(CountersComponent().withAdded(CounterType.PLUS_ONE_PLUS_ONE, 4))
+            }
+            val cast = game.castXSpell(1, "Hydroid Krasis", xValue = 4)
+            cast.error shouldBe null
+            cast.events.filterIsInstance<ManaSpentEvent>().sumOf { it.total } shouldBe 2
+            game.resolveStack()
+            plusOneCounters(game, "Hydroid Krasis") shouldBe 4
+            game.getLifeTotal(1) shouldBe 22
+            game.state.getHand(game.player1Id).size shouldBe 2
+        }
+
+        test("Animar cannot replace Krasis missing blue pip even with excess counters") {
+            val game = scenario().withPlayers("Manual", "Opponent")
+                .withCardOnBattlefield(1, "Animar, Soul of Elements")
+                .withCardInHand(1, "Hydroid Krasis")
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withActivePlayer(1).inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val animar = game.findPermanent("Animar, Soul of Elements")!!
+            game.state = game.state.updateEntity(animar) {
+                it.with(CountersComponent().withAdded(CounterType.PLUS_ONE_PLUS_ONE, 20))
+            }
+            game.castXSpell(1, "Hydroid Krasis", xValue = 4).error shouldNotBe null
+        }
+
         context("Hydroid Krasis") {
 
             test("cast for X=6: gain 3 life, draw 3 cards, enters as a 6/6 with six +1/+1 counters") {

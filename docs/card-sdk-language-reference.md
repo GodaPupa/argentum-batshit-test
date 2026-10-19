@@ -7286,6 +7286,14 @@ staticAbility {
 
 **Spell cost statics — `ModifySpellCost`**
 
+Normal printed X-cost casts can apply excess generic reductions to the announced X amount before
+payment. This includes multiple X symbols: five generic reductions make X=3 on `{X}{X}` cost one
+mana, while the spell retains chosen X=3 for counters and effects. Legal hand-cast enumeration
+includes this excess reduction in its X ceiling. Ordinary X casts without excess reductions keep
+the existing X payment path. Spells with `xManaRestriction` retain the earlier payment path;
+reduction of that restricted X and alternative/from-zone X enumeration remain separate limitations.
+
+
 Replaces the per-shape cost classes. Use directly as the `ability` of a `staticAbility { }` block.
 
 ```kotlin
