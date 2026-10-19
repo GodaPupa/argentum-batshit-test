@@ -806,7 +806,8 @@ class CastSpellEnumerator : ActionEnumerator {
                 // cap in `pipelinePhases.ts`. Do it with the first improvise-{X} card.
                 val fixedCost = effectiveCost.cmc  // X contributes 0 to CMC
                 val xSymbolCount = effectiveCost.xCount.coerceAtLeast(1)
-                ((availableSources + delveAvailable + waterbendAvailable - fixedCost) / xSymbolCount)
+                ((availableSources + delveAvailable + waterbendAvailable +
+                    context.costCalculator.unusedGenericReductionForX(state, cardDef, playerId) - fixedCost) / xSymbolCount)
                     .coerceAtLeast(0)
             } else null
 
