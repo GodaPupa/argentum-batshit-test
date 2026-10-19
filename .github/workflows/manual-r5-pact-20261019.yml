@@ -1,0 +1,43 @@
+name: Manual R5 isolated Pact debt guard
+on:
+  push:
+    branches: [gameplay/manual-r5-pact-20261019]
+    paths: ['ai/**', '.github/workflows/manual-r5-pact-20261019.yml']
+permissions:
+  contents: read
+jobs:
+  pact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R5_PACT_OUTPUT: ${{ github.workspace }}/r5-output/pact
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Real Pact choices, payment and terminal response regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r5-output
+          git rev-parse HEAD > r5-output/source-sha.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR4Candidate.kt ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualAnimarDevelopmentAdvisorModule.kt gameplay/manual-r5/input/r4-integration-39270737788.zip > r5-output/preserved-inputs.sha256
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :ai:test --tests '*ManualPactDebt*RegressionTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r5-output/pact.log
+      - name: Existing real Pact mechanics
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests '*PactOfNegationScenarioTest' --tests '*PactOfNegationUnpaidScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r5-output/pact-rules.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r5-pact-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r5-output/
+            ai/build/test-results/test/
+            mtg-sets/2003-2007/tests/build/test-results/test/
