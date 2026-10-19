@@ -73,7 +73,45 @@ class ManualPactDebtArchiveRegressionTest : FunSpec({
                     val passValue = evaluator.evaluate(passed.state, passed.state.projectedState, action.playerId)
                     val raw = evaluator.evaluate(after.state, after.state.projectedState, action.playerId)
                     val ctx = CastContext(state, state.projectedState, action.playerId, offer, passValue, raw, evaluator, simulator)
-                    val debt = ManualPactDebtAdvisor.nextUpkeepDebt(ctx, after.state)
+                    val debt = Files.newBufferedWriter(output.resolve("debt-walk-$index.jsonl")).use { walk ->
+                        ManualPactDebtAdvisor.nextUpkeepDebt(ctx, after.state) { current, submitted, reason ->
+                            walk.write(buildJsonObject {
+                                put("turn", current.turnNumber); put("step", current.step.name)
+                                put("active", current.activePlayerId?.value); put("priority", current.priorityPlayerId?.value)
+                                put("action", submitted?.let { json.encodeToString<GameAction>(it) }); put("reason", reason)
+                            }.toString()); walk.newLine(); walk.flush()
+                        }
+                    }
+                    if (index == 393) {
+                        var legacy = after.state
+                        var legacyError: String? = null
+                        var legacyRejected: GameAction? = null
+                        Files.newBufferedWriter(output.resolve("legacy-step-only-walk-393.jsonl")).use { walk ->
+                            for (iteration in 0 until 256) {
+                                if (legacy.gameOver || action.playerId !in legacy.activePlayers ||
+                                    (legacy.turnNumber > state.turnNumber && legacy.activePlayerId == action.playerId && legacy.step == com.wingedsheep.sdk.core.Step.UPKEEP)) break
+                                val pending = legacy.pendingDecision
+                                val actor = pending?.playerId ?: legacy.priorityPlayerId ?: break
+                                val oldAction: GameAction = if (pending != null) SubmitDecision(actor,
+                                    com.wingedsheep.ai.engine.rollout.FastDecisionResponder().respond(legacy, pending, actor))
+                                    else if (legacy.step == com.wingedsheep.sdk.core.Step.DECLARE_ATTACKERS && legacy.activePlayerId == actor)
+                                        DeclareAttackers(actor, emptyMap())
+                                    else if (legacy.step == com.wingedsheep.sdk.core.Step.DECLARE_BLOCKERS)
+                                        DeclareBlockers(actor, emptyMap()) else PassPriority(actor)
+                                val oldResult = processor.process(legacy, oldAction).result
+                                walk.write(buildJsonObject { put("iteration", iteration); put("turn", legacy.turnNumber)
+                                    put("step", legacy.step.name); put("action", json.encodeToString<GameAction>(oldAction)); put("error", oldResult.error)
+                                }.toString()); walk.newLine(); walk.flush()
+                                if (oldResult.error != null) { legacyError = oldResult.error; legacyRejected = oldAction; break }
+                                legacy = oldResult.state
+                            }
+                        }
+                        evidence += buildJsonObject { put("index", index); put("legacyProjectionError", legacyError)
+                            put("legacyRejected", legacyRejected?.let { json.encodeToString<GameAction>(it) }); put("correctedDebt", debt.name) }
+                        Files.writeString(output.resolve("pact-decision-evidence.json"), JsonArray(evidence).toString())
+                        check(legacyError != null) { "Old step-only projection must reproduce its actual error" }
+                        check(legacyRejected is DeclareAttackers || legacyRejected is DeclareBlockers)
+                    }
                     val expected = if (index == 588) ManualPactDebtAdvisor.Debt.FUNDED else ManualPactDebtAdvisor.Debt.UNFUNDED
                     evidence += buildJsonObject { put("index", index); put("turn", state.turnNumber); put("actor", action.playerId.value)
                         put("debt", debt.name); put("rawScore", raw); put("passScore", passValue)

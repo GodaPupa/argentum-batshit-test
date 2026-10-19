@@ -24,29 +24,43 @@ object ManualPactDebtAdvisor : CardAdvisor {
     override val cardNames = setOf("Pact of Negation")
     internal enum class Debt { FUNDED, UNFUNDED, UNKNOWN }
 
-    internal fun nextUpkeepDebt(context: CastContext, after: GameState): Debt {
+    internal fun nextUpkeepDebt(context: CastContext, after: GameState,
+        observe: ((GameState, GameAction?, String?) -> Unit)? = null,
+    ): Debt {
         val processor = ActionProcessor(EngineServices(context.simulator.cardRegistry), computeUndo = false)
         val fast = FastDecisionResponder()
         var state = after
         repeat(256) {
-            if (state.gameOver || context.playerId !in state.activePlayers || state.getEntity(context.playerId)?.has<PlayerLostComponent>() == true) return Debt.UNKNOWN
+            if (state.gameOver || context.playerId !in state.activePlayers || state.getEntity(context.playerId)?.has<PlayerLostComponent>() == true) {
+                observe?.invoke(state, null, "UNKNOWN: game ended or pilot inactive before witness")
+                return Debt.UNKNOWN
+            }
             if (state.turnNumber > context.state.turnNumber && state.activePlayerId == context.playerId && state.step == Step.UPKEEP) {
-                return if (canAutoPayManaCost(state, context.playerId, ManaCost.parse("{3}{U}{U}"), context.simulator.cardRegistry))
+                val debt = if (canAutoPayManaCost(state, context.playerId, ManaCost.parse("{3}{U}{U}"), context.simulator.cardRegistry))
                     Debt.FUNDED else Debt.UNFUNDED
+                observe?.invoke(state, null, debt.name)
+                return debt
             }
             val pending = state.pendingDecision
-            val actor = pending?.playerId ?: state.priorityPlayerId ?: return Debt.UNKNOWN
+            val actor = pending?.playerId ?: state.priorityPlayerId ?: run {
+                observe?.invoke(state, null, "UNKNOWN: missing priority")
+                return Debt.UNKNOWN
+            }
             val action = if (pending != null) SubmitDecision(actor, fast.respond(state, pending, actor)) else {
-                if (state.step == Step.DECLARE_ATTACKERS && state.activePlayerId == actor)
-                    DeclareAttackers(actor, emptyMap())
-                else if (state.step == Step.DECLARE_BLOCKERS)
-                    DeclareBlockers(actor, emptyMap())
+                // A combat step still has ordinary priority after its declaration. Never submit
+                // a second declaration just because the global step name has not advanced.
+                if (state.step == Step.DECLARE_ATTACKERS || state.step == Step.DECLARE_BLOCKERS)
+                    context.simulator.getLegalActions(state, actor).firstOrNull {
+                        it.action is DeclareAttackers || it.action is DeclareBlockers
+                    }?.action ?: PassPriority(actor)
                 else PassPriority(actor)
             }
             val result = processor.process(state, action).result
+            observe?.invoke(state, action, result.error)
             if (result.error != null) return Debt.UNKNOWN
             state = result.state
         }
+        observe?.invoke(state, null, "UNKNOWN: 256-submission cap")
         return Debt.UNKNOWN
     }
 

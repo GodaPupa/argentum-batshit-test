@@ -1,5 +1,7 @@
 package com.wingedsheep.ai.engine
 
+import com.wingedsheep.ai.engine.advisor.CastContext
+import com.wingedsheep.ai.engine.advisor.modules.ManualPactDebtAdvisor
 import com.wingedsheep.ai.engine.advisor.modules.ManualPactDebtAdvisorModule
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
@@ -14,11 +16,11 @@ import kotlinx.serialization.json.*
 import java.nio.file.Files
 import java.nio.file.Path
 
-/** Diagnostic successor draft: tests actual choice versus a separately labelled legal protection fork. */
+/** Preservation contract: the candidate must actually protect and execute a lethal Ballista line. */
 class ManualPactDebtProtectionRegressionTest : ScenarioTestBase() {
     init {
         MtgSetCatalog.all.forEach { cardRegistry.register(it.cards); cardRegistry.register(it.basicLands) }
-        test("unfunded debt guard does not yet recognize protecting a lethal Ballista continuation") {
+        test("debt guard preserves actual lethal Ballista protection and AI damage continuation") {
             val builder = scenario().withPlayers("Manual", "Reference").withLifeTotal(2, 3)
                 .withCardOnBattlefield(1, "Animar, Soul of Elements")
                 .withCardInHand(1, "Walking Ballista").withCardInHand(1, "Pact of Negation")
@@ -50,15 +52,33 @@ class ManualPactDebtProtectionRegressionTest : ScenarioTestBase() {
             Files.writeString(output.resolve("choices.json"), buildJsonObject {
                 put("original", json.encodeToString<GameAction>(originalChoice))
                 put("guarded", json.encodeToString<GameAction>(guardedChoice))
-                put("legalProtectionFork", json.encodeToString<GameAction>(expectedProtection))
+                put("expectedProtectionContract", json.encodeToString<GameAction>(expectedProtection))
             }.toString())
+            val simulator = GameSimulator(cardRegistry)
+            val evaluator = AIPlayer.defaultEvaluator()
+            val offer = simulator.getLegalActions(before, game.player1Id).single {
+                (it.action as? CastSpell)?.cardId == expectedProtection.cardId
+            }.copy(action = expectedProtection)
+            val resolved = simulator.simulate(before, expectedProtection) as SimulationResult.Terminal
+            val passed = simulator.simulate(before, PassPriority(game.player1Id)) as SimulationResult.Terminal
+            val ctx = CastContext(before, before.projectedState, game.player1Id, offer,
+                evaluator.evaluate(passed.state, passed.state.projectedState, game.player1Id),
+                evaluator.evaluate(resolved.state, resolved.state.projectedState, game.player1Id), evaluator, simulator)
+            val debt = Files.newBufferedWriter(output.resolve("protection-debt-walk.jsonl")).use { walk ->
+                ManualPactDebtAdvisor.nextUpkeepDebt(ctx, resolved.state) { state, action, reason ->
+                    walk.write(buildJsonObject { put("turn", state.turnNumber); put("step", state.step.name)
+                        put("priority", state.priorityPlayerId?.value); put("action", action?.let { json.encodeToString<GameAction>(it) })
+                        put("reason", reason) }.toString()); walk.newLine(); walk.flush()
+                }
+            }
+            Files.writeString(output.resolve("debt.json"), buildJsonObject { put("assessment", debt.name)
+                put("quietStateIsTerminalWin", resolved.state.gameOver && resolved.state.winnerId == game.player1Id) }.toString())
             originalChoice shouldBe expectedProtection
-            guardedChoice shouldBe PassPriority(game.player1Id)
-            // Explicitly forced fork below proves the legal continuation, not that guarded AI chose it.
-            game.execute(expectedProtection).error shouldBe null
+            guardedChoice shouldBe expectedProtection
+            game.execute(guardedChoice).error shouldBe null
             game.resolveStack().forEach { it.error shouldBe null }
             game.state.getEntity(cast.cardId)?.get<CountersComponent>()?.getCount(CounterType.PLUS_ONE_PLUS_ONE) shouldBe 3
-            val pilots = game.state.turnOrder.associateWith { AIPlayer.create(cardRegistry, it, original) }
+            val pilots = game.state.turnOrder.associateWith { AIPlayer.create(cardRegistry, it, if (it == game.player1Id) guarded else AiProfile.CURRENT) }
             val actions = mutableListOf<String>()
             repeat(40) {
                 if (!game.state.gameOver) {
@@ -69,13 +89,13 @@ class ManualPactDebtProtectionRegressionTest : ScenarioTestBase() {
                     val result = game.execute(action)
                     actions += buildJsonObject { put("action", json.encodeToString<GameAction>(action)); put("error", result.error)
                         put("events", JsonArray(result.events.map { JsonPrimitive(it.toString()) })) }.toString()
-                    Files.writeString(output.resolve("legal-protection-fork-actions.jsonl"), actions.joinToString("\n", postfix = "\n"))
-                    Files.writeString(output.resolve("legal-protection-fork-final.json"), json.encodeToString(game.state))
+                    Files.writeString(output.resolve("actual-candidate-actions.jsonl"), actions.joinToString("\n", postfix = "\n"))
+                    Files.writeString(output.resolve("actual-candidate-final.json"), json.encodeToString(game.state))
                     check(result.error == null)
                 }
             }
-            Files.writeString(output.resolve("legal-protection-fork-actions.jsonl"), actions.joinToString("\n", postfix = "\n"))
-            Files.writeString(output.resolve("legal-protection-fork-final.json"), json.encodeToString(game.state))
+            Files.writeString(output.resolve("actual-candidate-actions.jsonl"), actions.joinToString("\n", postfix = "\n"))
+            Files.writeString(output.resolve("actual-candidate-final.json"), json.encodeToString(game.state))
             game.state.gameOver shouldBe true
             game.state.winnerId shouldBe game.player1Id
             check(actions.none { it.contains("DeclareAttackers") })
