@@ -10,6 +10,7 @@ import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.model.EntityId
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
 
 /** One owner per card; replace the R3 module explicitly rather than registering both. */
 object ManualBallistaContinuationAdvisorModule : CardAdvisorModule {
@@ -84,6 +85,8 @@ object ManualBallistaContinuationAdvisor : CardAdvisor {
             return finishShots(result.state, context.playerId, sim)?.let(::score)
         }
         if (name(context.state, action.cardId) != "Ancestral Statue") return null
+        if (context.state.getZone(ZoneKey(context.playerId, Zone.HAND)).none { name(context.state, it) == "Walking Ballista" })
+            return ManualStatueContinuationAdvisor.evaluateCast(context)
         if (!context.state.phase.isMainPhase || context.state.stack.isNotEmpty()) return ManualStatueContinuationAdvisor.evaluateCast(context)
         // Do not add another counter once the real Ballista exit already wins.
         if (castAndFinish(context.state, context.playerId, sim) != null) return context.passScore - 0.001
