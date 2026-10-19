@@ -1,0 +1,50 @@
+name: Manual R6 immutable R5 commander opportunity audit
+on:
+  push:
+    branches: [gameplay/manual-r6-animar-diagnostic-20261019]
+    paths: ['ai/**', '.github/workflows/manual-r6-animar-diagnostic-20261019.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R6_OUTPUT: ${{ github.workspace }}/r6-output
+      MANUAL_R6_R5_ARCHIVE: ${{ github.workspace }}/r6-input/r5-followup.zip
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Acquire exact R5 historical artifact and preserve identity
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r6-input r6-output
+          git rev-parse HEAD > r6-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r6-output/tree-sha.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          gh api -H "Accept: application/vnd.github+json" /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12206343752/zip > r6-input/r5-followup.zip
+          printf '%s  %s\n' '0562942a8b66a803e6e35265b5005220d3676b21869cca935e5cb1f2f66f71a7' r6-input/r5-followup.zip | sha256sum -c -
+          sha256sum r6-input/r5-followup.zip > r6-output/r5-input.sha256
+          chmod +x gradlew scripts/gradle-locked
+      - name: Real R5 trace replay and commander decision audit only
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualR6OpportunityReplayTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r6-output/validation.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r6-audit-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r6-output/
+            ai/build/test-results/test/
