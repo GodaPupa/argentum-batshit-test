@@ -98,6 +98,17 @@ class ManualR7BallistaAllocationRegressionTest : FunSpec({
                 "Positive case must score below passing, not merely add no bonus"
             }
 
+            val candidatePilot1609 = AIPlayer.create(registry, original1609.playerId,
+                ManualR7BallistaAllocationCandidate.profile)
+            val chosen1609 = candidatePilot1609.chooseAction(seed1609)
+            val wronglyRepeatsChip = (chosen1609 as? ActivateAbility)?.targets
+                ?.any { it is ChosenTarget.Permanent && it.entityId ==
+                    (original1609.targets.single() as ChosenTarget.Permanent).entityId } == true
+            Files.writeString(output.resolve("positive-ai-decision.txt"), chosen1609.toString())
+            check(!wronglyRepeatsChip) {
+                "Combined R7 pilot still selects the observed unkillable Animar chip: " + chosen1609
+            }
+
             val seed1610 = json.decodeFromString<GameState>(read("seed-202610191610-before-2764.json"))
             val first1610 = json.decodeFromString<GameAction>(
                 json.parseToJsonElement(read("replay-202610191610-progress.json"))
