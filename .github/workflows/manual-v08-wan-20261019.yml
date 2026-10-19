@@ -1,0 +1,48 @@
+name: Manual v0.8 Wan Shi Tong isolated rules and deck challenger
+on:
+  push:
+    branches: [gameplay/manual-v08-wan-shi-tong-probe-20261019]
+    paths:
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualV08WanChallengerTest.kt'
+      - 'gameplay/manual-v08-wan/**'
+      - '.github/workflows/manual-v08-wan-20261019.yml'
+permissions:
+  contents: read
+jobs:
+  targeted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind unchanged frozen R5 policy and original Wan implementation
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p manual-v08-wan-output
+          git rev-parse HEAD > manual-v08-wan-output/source-sha.txt
+          git rev-parse HEAD^{tree} > manual-v08-wan-output/tree-sha.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tla/cards/WanShiTongLibrarian.kt)" = "a8bb98cf7c08d153accdb5dbe0ce5d64ef7a73d3"
+          chmod +x gradlew scripts/gradle-locked
+      - name: Existing Wan tests plus actual Animar-X discount and exact challenger card count
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualV08WanChallengerTest' :mtg-sets:2025:tests:test --tests '*WanShiTongLibrarianScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee manual-v08-wan-output/validation.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-v08-wan-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            manual-v08-wan-output/
+            ai/build/test-results/test/
+            mtg-sets/2025/tests/build/test-results/test/
