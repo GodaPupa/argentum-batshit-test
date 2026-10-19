@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.ChooseOptionDecision
+import com.wingedsheep.engine.core.OptionChosenResponse
+import com.wingedsheep.engine.core.SubmitDecision
 import com.wingedsheep.engine.core.ManaSpentEvent
 import io.kotest.matchers.shouldNotBe
 import com.wingedsheep.engine.mechanics.layers.StateProjector
@@ -48,7 +51,11 @@ class HydroidKrasisScenarioTest : ScenarioTestBase() {
             val cast = game.castXSpell(1, "Hydroid Krasis", xValue = 4)
             cast.error shouldBe null
             cast.events.filterIsInstance<ManaSpentEvent>().sumOf { it.total } shouldBe 2
-            game.resolveStack()
+            repeat(8) {
+                val choice = game.state.pendingDecision as? ChooseOptionDecision
+                if (choice != null) game.execute(SubmitDecision(choice.playerId, OptionChosenResponse(choice.id, 0))).error shouldBe null
+                game.resolveStack()
+            }
             plusOneCounters(game, "Hydroid Krasis") shouldBe 4
             game.getLifeTotal(1) shouldBe 22
             game.state.getHand(game.player1Id).size shouldBe 2

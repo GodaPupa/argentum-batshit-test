@@ -31,6 +31,7 @@ jobs:
           scripts/gradle-locked :mtg-sets:2017-2022:tests:test --tests '*WalkingBallistaScenarioTest' --tests '*HydroidKrasisScenarioTest' --no-daemon --console=plain --stacktrace 2>&1 | tee mechanics-output/fix/ballista-krasis.log || status=1
           scripts/gradle-locked :mtg-sets:2008-2016:tests:test --tests '*AnimarSoulOfElementsScenarioTest' --tests '*AncestralStatueScenarioTest' --tests '*PurphorosGodOfTheForgeScenarioTest' --no-daemon --console=plain --stacktrace 2>&1 | tee mechanics-output/fix/animar-statue-purphoros.log || status=1
           scripts/gradle-locked :rules-engine:test --tests '*CostCalculator*' --tests '*CommanderTaxTest' --tests '*CommanderSetupTest' --tests '*CommanderZoneRedirectTest' --tests '*XCost*' --no-daemon --console=plain --stacktrace 2>&1 | tee mechanics-output/fix/cost-rules.log || status=1
+          scripts/gradle-locked :mtg-sets:2023:tests:test --tests '*UpTheBeanstalkScenarioTest' --no-daemon --console=plain --stacktrace 2>&1 | tee mechanics-output/fix/beanstalk.log || status=1
           exit "$status"
       - uses: actions/upload-artifact@v4
         if: always()
@@ -42,6 +43,7 @@ jobs:
             mtg-sets/2017-2022/tests/build/test-results/test/
             mtg-sets/2008-2016/tests/build/test-results/test/
             rules-engine/build/test-results/test/
+            mtg-sets/2023/tests/build/test-results/test/
   actual-ai-discovery-after-fix:
     runs-on: ubuntu-latest
     timeout-minutes: 30

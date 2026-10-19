@@ -1,5 +1,8 @@
 package com.wingedsheep.engine.scenarios
 
+import com.wingedsheep.engine.core.*
+import com.wingedsheep.sdk.core.Zone
+import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
@@ -23,6 +26,38 @@ class UpTheBeanstalkScenarioTest : ScenarioTestBase() {
         game.state.getEntity(id)?.get<CountersComponent>()?.getCount(CounterType.PLUS_ONE_PLUS_ONE) ?: 0
 
     init {
+        for (announcedX in listOf(0, 3)) {
+            test("Beanstalk uses Ballista stack mana value for announced X $announcedX and off stack X remains zero") {
+                val game = scenario().withPlayers("Manual", "Opponent")
+                    .withCardOnBattlefield(1, "Animar, Soul of Elements")
+                    .withCardOnBattlefield(1, "Up the Beanstalk")
+                    .withCardInHand(1, "Walking Ballista")
+                    .withCardInLibrary(1, "Forest").withCardInLibrary(1, "Forest")
+                    .withActivePlayer(1).inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+                val ballista = game.state.getHand(game.player1Id).single()
+                game.state.manaValueOf(ballista) shouldBe 0
+                val animar = game.findPermanent("Animar, Soul of Elements")!!
+                game.state = game.state.updateEntity(animar) {
+                    it.with(CountersComponent().withAdded(CounterType.PLUS_ONE_PLUS_ONE, 6))
+                }
+                val cast = game.castXSpell(1, "Walking Ballista", xValue = announcedX)
+                cast.error shouldBe null
+                cast.events.filterIsInstance<SpellCastEvent>().single().manaValue shouldBe announcedX * 2
+                game.state.manaValueOf(ballista) shouldBe announcedX * 2
+                repeat(8) {
+                    val choice = game.state.pendingDecision as? ChooseOptionDecision
+                    if (choice != null) game.execute(SubmitDecision(choice.playerId, OptionChosenResponse(choice.id, 0))).error shouldBe null
+                    game.resolveStack()
+                }
+                game.state.stack.size shouldBe 0
+                game.state.pendingDecision shouldBe null
+                game.state.getHand(game.player1Id).size shouldBe if (announcedX == 3) 1 else 0
+                game.state.manaValueOf(ballista) shouldBe 0
+                val destination = if (announcedX == 3) Zone.BATTLEFIELD else Zone.GRAVEYARD
+                game.state.getZone(ZoneKey(game.player1Id, destination)).contains(ballista) shouldBe true
+            }
+        }
+
         context("Up the Beanstalk — draws on enter and on expensive spells") {
             test("entering draws one card, then a mana value 6 spell draws another") {
                 val game = scenario()

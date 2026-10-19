@@ -1100,6 +1100,15 @@ data class GameState(
     fun isSpellOnStack(entityId: EntityId): Boolean =
         getEntity(entityId)?.has<SpellOnStackComponent>() == true
 
+    /** Mana value in the object's current zone; announced X contributes only while it is a spell. */
+    fun manaValueOf(entityId: EntityId): Int {
+        val entity = getEntity(entityId) ?: return 0
+        val card = entity.get<com.wingedsheep.engine.state.components.identity.CardComponent>() ?: return 0
+        val spell = entity.get<SpellOnStackComponent>() ?: return card.manaValue
+        if (spell.castFaceDown) return 0
+        return card.manaValue + (spell.xValue ?: 0) * card.manaCost.xCount
+    }
+
     /**
      * Remove a specific entity from the stack (for countering).
      */
