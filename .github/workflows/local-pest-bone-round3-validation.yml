@@ -1,0 +1,102 @@
+name: Round 3 Bone Shards candidate validation
+'on':
+  push:
+    branches:
+    - local/pest-bone-round3-20261018
+    paths:
+    - .github/workflows/local-pest-bone-round3-validation.yml
+permissions:
+  contents: read
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+jobs:
+  candidate-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+    - &id001
+      uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - &id002
+      uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '21'
+    - &id003
+      uses: gradle/actions/setup-gradle@v4
+    - &id004
+      uses: taiki-e/install-action@v2
+      with:
+        tool: just
+    - &id005
+      name: Restore verified diagnostic fixture
+      run: 'set -euo pipefail
+
+        base64 --decode tools/pest-bone-round3/candidate-tests.b64 > "$RUNNER_TEMP/diagnostic.tar.xz"
+
+        echo "c283e56dd33710dbff7083ff7783a68fd0a26ddd4658a6fcc8a911af3d62cf84  $RUNNER_TEMP/diagnostic.tar.xz"
+        | sha256sum --check
+
+        tar -xJf "$RUNNER_TEMP/diagnostic.tar.xz"
+
+        chmod +x gradlew scripts/gradle-locked scripts/test-class
+
+        '
+    - name: Verify correction at exact original decision
+      env:
+        MTG_REPLAY_TRACE: ${{ github.workspace }}/tools/pest-bone-round3/fixture.jsonl
+        MTG_REPLAY_REPORT: ${{ runner.temp }}/bone-shards-replay.json
+        MTG_REPLAY_EXPECT: candidate
+      run: 'set -o pipefail
+
+        just test-class BoneShardsReplayTest --no-daemon --console=plain --stacktrace
+        2>&1 | tee "$RUNNER_TEMP/replay.log"'
+    - name: Verify Bone Shards rules remain unchanged
+      run: 'set -o pipefail
+
+        just test-class BoneShardsScenarioTest --no-daemon --console=plain 2>&1 |
+        tee "$RUNNER_TEMP/bone-rules.log"'
+    - name: Preserve diagnostic evidence
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: bone-shards-candidate-replay-${{ github.run_id }}
+        retention-days: 30
+        path: '${{ runner.temp }}/replay.log
+
+          ${{ runner.temp }}/bone-shards-replay.json
+
+          gym/build/test-results/test/
+
+          gym/src/test/kotlin/com/wingedsheep/gym/BoneShardsReplayTest.kt
+
+          tools/pest-bone-round3/
+
+          ${{ runner.temp }}/bone-rules.log
+
+          mtg-sets/2017-2022/tests/build/test-results/test/'
+  ai-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+    - *id001
+    - *id002
+    - *id003
+    - *id004
+    - *id005
+    - name: Run complete AI regression gate including focused Bone Shards cases
+      run: 'set -o pipefail
+
+        just test-ai 2>&1 | tee "$RUNNER_TEMP/ai-tests.log"'
+    - name: Preserve AI gate evidence
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: bone-shards-ai-gate-${{ github.run_id }}
+        retention-days: 30
+        path: 'ai/build/test-results/test/
+
+          ${{ runner.temp }}/ai-tests.log
+
+          ai/src/test/kotlin/com/wingedsheep/ai/engine/BoneShardsJointValuationTest.kt'
