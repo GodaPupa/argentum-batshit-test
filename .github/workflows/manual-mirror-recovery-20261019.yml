@@ -1,0 +1,60 @@
+name: Manual Transmission real Animar mirror
+on:
+  push:
+    branches: [gameplay/manual-mirror-recovery-20261019]
+    paths:
+      - ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualTransmissionMirrorTest.kt
+      - tools/manual-mirror/**
+      - .github/workflows/manual-mirror-recovery-20261019.yml
+permissions:
+  contents: read
+jobs:
+  mirror:
+    if: github.ref == 'refs/heads/gameplay/manual-mirror-recovery-20261019'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_MIRROR_RUN: '1'
+      MANUAL_MIRROR_ROOT: ${{ github.workspace }}
+      MANUAL_MIRROR_OUTPUT: ${{ github.workspace }}/ai/build/manual-mirror
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Pin source and frozen input
+        run: |
+          mkdir -p ai/build/manual-mirror
+          git rev-parse HEAD > ai/build/manual-mirror/source-sha.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt > ai/build/manual-mirror/deck.sha256
+          java -version 2> ai/build/manual-mirror/java-version.txt
+      - name: Compile focused runner
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x gradlew scripts/gradle-locked scripts/test-class
+          scripts/gradle-locked :ai:compileTestKotlin --no-daemon --console=plain --stacktrace 2>&1 | tee ai/build/manual-mirror/compile.log
+      - name: Alias test, compiled audit, initialization smoke, then one game
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/test-class ManualTransmissionMirrorTest -Dbenchmark=true --no-daemon --console=plain --stacktrace 2>&1 | tee ai/build/manual-mirror/game.log
+      - name: Print exact outcome
+        if: always()
+        run: |
+          if test -f ai/build/manual-mirror/summary.json; then cat ai/build/manual-mirror/summary.json; fi
+      - name: Preserve partial failures and full gameplay
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-mirror-${{ github.run_id }}-${{ github.run_attempt }}
+          retention-days: 30
+          if-no-files-found: error
+          path: |
+            ai/build/manual-mirror/
+            ai/build/test-results/test/
