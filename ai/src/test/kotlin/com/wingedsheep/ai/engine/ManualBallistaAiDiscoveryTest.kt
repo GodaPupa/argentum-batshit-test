@@ -81,7 +81,10 @@ class ManualBallistaAiDiscoveryTest : ScenarioTestBase() {
                         put("sourceName", cardId?.let { state.getEntity(it)?.get<CardComponent>()?.name })
                         put("action", json.encodeToString<GameAction>(action))
                         put("animarCountersBefore", state.getEntity(animar)?.get<CountersComponent>()?.getCount(CounterType.PLUS_ONE_PLUS_ONE))
-                        put("availableBallistaCasts", JsonArray(legal.filter { it.affordable && (it.action as? CastSpell)?.cardId?.let { id -> state.getEntity(id)?.get<CardComponent>()?.name == "Walking Ballista" } == true }.map { JsonPrimitive(json.encodeToString<GameAction>(it.action)) }))
+                        put("availableBallistaCasts", JsonArray(legal.filter { it.affordable && (it.action as? CastSpell)?.cardId?.let { id -> state.getEntity(id)?.get<CardComponent>()?.name == "Walking Ballista" } == true }.map { offer -> buildJsonObject {
+                            put("action", json.encodeToString<GameAction>(offer.action)); put("hasXCost", offer.hasXCost)
+                            put("maxAffordableX", offer.maxAffordableX); put("minX", offer.minX)
+                        } }))
                         put("events", JsonArray(result.events.map { JsonPrimitive(it.toString()) }))
                         put("life", JsonArray(players.map { JsonPrimitive(game.state.lifeTotal(it)) }))
                         put("error", result.error?.toString()); put("pendingBefore", pending?.toString())

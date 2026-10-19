@@ -26,7 +26,8 @@ class ManualBallistaWitnessGuardTest : ScenarioTestBase() {
                 }
                 game.state = game.state.updateEntity(animar) { it.with(CountersComponent(mapOf(CounterType.PLUS_ONE_PLUS_ONE to 6))) }
                 val sim = GameSimulator(cardRegistry)
-                val legal = sim.getLegalActions(game.state, game.player1Id).single {
+                val legal = sim.getLegalActions(game.state, game.player1Id)
+                    .flatMap { if (it.hasXCost) XCostSelection.expandToX(game.state, it) else listOf(it) }.single {
                     it.affordable && (it.action as? CastSpell)?.xValue == 3
                 }
                 val after = sim.simulate(game.state, legal.action) as SimulationResult.Terminal

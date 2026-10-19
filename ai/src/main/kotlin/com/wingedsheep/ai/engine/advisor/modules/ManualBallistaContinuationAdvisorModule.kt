@@ -2,9 +2,11 @@ package com.wingedsheep.ai.engine.advisor.modules
 
 import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.SimulationResult
+import com.wingedsheep.ai.engine.XCostSelection
 import com.wingedsheep.ai.engine.advisor.*
 import com.wingedsheep.ai.engine.rollout.FastDecisionResponder
 import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -23,7 +25,7 @@ object ManualBallistaContinuationAdvisor : CardAdvisor {
     private const val MAX_STATUE_CASTS = 8
     private const val MAX_SHOTS = 160
     private fun name(state: GameState, id: EntityId) = state.getEntity(id)?.get<CardComponent>()?.name
-    private fun simulator(context: CastContext) = GameSimulator(context.simulator.cardRegistry).apply {
+    private fun simulator(registry: CardRegistry) = GameSimulator(registry).apply {
         decisionResolver = { state, decision ->
             val select = decision as? SelectCardsDecision
             val source = decision.context.sourceId
@@ -59,7 +61,8 @@ object ManualBallistaContinuationAdvisor : CardAdvisor {
         val actions = sim.getLegalActions(state, player).filter {
             val cast = it.action as? CastSpell
             it.affordable && cast != null && name(state, cast.cardId) == "Walking Ballista"
-        }.sortedByDescending { (it.action as CastSpell).xValue ?: 0 }.take(3)
+        }.flatMap { if (it.hasXCost) XCostSelection.expandToX(state, it) else listOf(it) }
+            .sortedByDescending { (it.action as CastSpell).xValue ?: 0 }.take(3)
         for (action in actions) {
             val result = sim.simulate(state, action.action) as? SimulationResult.Terminal ?: continue
             finishShots(result.state, player, sim)?.let { return it }
@@ -67,12 +70,41 @@ object ManualBallistaContinuationAdvisor : CardAdvisor {
         return null
     }
 
-    override fun respondToDecision(context: AdvisorDecisionContext): DecisionResponse? =
-        if (context.sourceCardName == "Ancestral Statue") ManualStatueContinuationAdvisor.respondToDecision(context) else null
+    private fun statueWitness(initial: GameState, player: EntityId, statue: EntityId, sim: GameSimulator): GameState? {
+        var state = initial
+        repeat(MAX_STATUE_CASTS) {
+            val cast = sim.getLegalActions(state, player).firstOrNull {
+                it.affordable && (it.action as? CastSpell)?.cardId == statue
+            } ?: return null
+            val result = sim.simulate(state, cast.action) as? SimulationResult.Terminal ?: return null
+            state = result.state
+            if (state.turnNumber != initial.turnNumber || state.activePlayerId != player ||
+                statue !in state.getZone(ZoneKey(player, Zone.HAND))) return null
+            castAndFinish(state, player, sim)?.let { return it }
+        }
+        return null
+    }
+
+    override fun respondToDecision(context: AdvisorDecisionContext): DecisionResponse? {
+        if (context.sourceCardName != "Ancestral Statue") return null
+        fun ordinary() = ManualStatueContinuationAdvisor.respondToDecision(context)
+        val decision = context.decision as? SelectCardsDecision ?: return ordinary()
+        if (decision.minSelections != 1 || decision.maxSelections != 1 ||
+            context.state.getZone(ZoneKey(context.playerId, Zone.HAND)).none { name(context.state, it) == "Walking Ballista" }) return ordinary()
+        val statue = decision.context.sourceId?.takeIf { it in decision.options && name(context.state, it) == "Ancestral Statue" }
+            ?: decision.options.singleOrNull { name(context.state, it) == "Ancestral Statue" } ?: return ordinary()
+        val response = CardsSelectedResponse(decision.id, listOf(statue))
+        val sim = simulator(context.simulator.cardRegistry)
+        val returned = sim.simulateDecision(context.state, response) as? SimulationResult.Terminal ?: return ordinary()
+        // The actual bounce must agree with the cast witness, including announced affordable X.
+        if (castAndFinish(returned.state, context.playerId, sim) != null ||
+            statueWitness(returned.state, context.playerId, statue, sim) != null) return response
+        return ordinary()
+    }
 
     override fun evaluateCast(context: CastContext): Double? {
         val action = context.action.action
-        val sim = simulator(context)
+        val sim = simulator(context.simulator.cardRegistry)
         fun score(terminal: GameState) = context.evaluator.evaluate(terminal, terminal.projectedState, context.playerId) / 2
         if (action is ActivateAbility && name(context.state, action.sourceId) == "Walking Ballista") {
             if (!context.action.requiresTargets) return null
@@ -90,19 +122,7 @@ object ManualBallistaContinuationAdvisor : CardAdvisor {
         if (!context.state.phase.isMainPhase || context.state.stack.isNotEmpty()) return ManualStatueContinuationAdvisor.evaluateCast(context)
         // Do not add another counter once the real Ballista exit already wins.
         if (castAndFinish(context.state, context.playerId, sim) != null) return context.passScore - 0.001
-        var state = context.state
-        repeat(MAX_STATUE_CASTS) {
-            val cast = sim.getLegalActions(state, context.playerId).firstOrNull {
-                it.affordable && (it.action as? CastSpell)?.cardId == action.cardId
-            } ?: return ManualStatueContinuationAdvisor.evaluateCast(context)
-            val result = sim.simulate(state, cast.action) as? SimulationResult.Terminal
-                ?: return ManualStatueContinuationAdvisor.evaluateCast(context)
-            state = result.state
-            if (state.turnNumber != context.state.turnNumber || state.activePlayerId != context.playerId ||
-                action.cardId !in state.getZone(ZoneKey(context.playerId, Zone.HAND)))
-                return ManualStatueContinuationAdvisor.evaluateCast(context)
-            castAndFinish(state, context.playerId, sim)?.let { return score(it) }
-        }
-        return ManualStatueContinuationAdvisor.evaluateCast(context)
+        return statueWitness(context.state, context.playerId, action.cardId, sim)?.let(::score)
+            ?: ManualStatueContinuationAdvisor.evaluateCast(context)
     }
 }
