@@ -1,7 +1,7 @@
 package com.wingedsheep.ai.engine.advisor.modules
 
 import com.wingedsheep.ai.engine.advisor.*
-import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.battlefield.DamageComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
