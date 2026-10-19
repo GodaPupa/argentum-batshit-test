@@ -94,11 +94,37 @@ class ManualAnimarDevelopmentPolicyTest : ScenarioTestBase() {
                 val sim = GameSimulator(cardRegistry)
                 val evaluator = AIPlayer.defaultEvaluator()
                 val audits = mutableListOf<JsonElement>()
+                val abilityBindings = linkedMapOf<String, JsonElement>()
+                val legalWindows = mutableListOf<JsonElement>()
                 val candidate = AiProfile.CURRENT.copy(id = "manual-animar-development-r1", advisorModules = listOf(ManualAnimarDevelopmentAdvisorModule))
                 for (line in entry("actions.jsonl").lineSequence().filter { it.isNotBlank() }) {
                     val row = json.parseToJsonElement(line).jsonObject
                     if (row["record"]?.jsonPrimitive?.content != "submit") continue
-                    val action = json.decodeFromString<GameAction>(row.getValue("action").jsonPrimitive.content)
+                    val archivedAction = json.decodeFromString<GameAction>(row.getValue("action").jsonPrimitive.content)
+                    // AbilityId is process-initialization ordinal data, not a stable card identity.
+                    // Rebind only a SINGLE actually legal ability on the SAME physical card.
+                    // Record every changed binding; preserve targets/costs/X and refuse ambiguity.
+                    val action = if (archivedAction is ActivateAbility) {
+                        val currentAbilities = sim.getLegalActions(state, archivedAction.playerId)
+                            .filter { it.affordable }.mapNotNull { it.action as? ActivateAbility }
+                            .filter { it.sourceId == archivedAction.sourceId }.map { it.abilityId }.distinct()
+                        if (archivedAction.abilityId in currentAbilities) archivedAction else {
+                            check(currentAbilities.size == 1) { "Ambiguous ability replay at ${row["index"]}: $currentAbilities" }
+                            val bound = currentAbilities.single()
+                            val key = "${row["sourceName"]}:${archivedAction.abilityId}:$bound"
+                            abilityBindings[key] = buildJsonObject { put("source", row["sourceName"]!!)
+                                put("archivedId", archivedAction.abilityId.value); put("runtimeId", bound.value)
+                                put("reason", "One unique legal activated ability on the same physical source; other action parameters unchanged") }
+                            archivedAction.copy(abilityId = bound)
+                        }
+                    } else archivedAction
+                    if (archivedAction !is SubmitDecision && state.activePlayerId == action.playerId && state.phase.isMainPhase) {
+                        val ids = state.getZone(ZoneKey(action.playerId, Zone.COMMAND)).toSet()
+                        if (ids.isNotEmpty() && sim.getLegalActions(state, action.playerId).any {
+                            it.affordable && (it.action as? CastSpell)?.cardId in ids
+                        }) legalWindows += buildJsonObject { put("index", row["index"]!!); put("player", action.playerId.value)
+                            put("turn", row["turn"]!!); put("declined", action !is CastSpell || action.cardId !in ids) }
+                    }
                     val found = opportunities.indexOfFirst { d ->
                         d["turnNumber"] == row["turn"] && d["playerId"]?.jsonPrimitive?.content == action.playerId.value &&
                         d.getValue("options").jsonArray.any { it.jsonObject["chosen"]?.jsonPrimitive?.booleanOrNull == true && it.jsonObject["action"] == json.parseToJsonElement(row.getValue("action").jsonPrimitive.content) }
@@ -122,13 +148,15 @@ class ManualAnimarDevelopmentPolicyTest : ScenarioTestBase() {
                         }
                     }
                     val result = processor.process(state, action).result
-                    result.error shouldBe null
+                    check(result.error == null) { "Archive replay ${row["index"]} ${row["sourceName"]}: ${result.error}" }
                     state = result.state
                 }
                 opportunities.size shouldBe 0
                 state.gameOver shouldBe true
                 state.winnerId?.value shouldBe "manual-mirror-3"
                 Files.writeString(output.resolve("original-opportunities.json"), JsonArray(audits).toString())
+                Files.writeString(output.resolve("ability-id-bindings.json"), JsonArray(abilityBindings.values.toList()).toString())
+                Files.writeString(output.resolve("original-legal-opportunities.json"), JsonArray(legalWindows).toString())
             }
         }
     }

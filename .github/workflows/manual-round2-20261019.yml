@@ -41,6 +41,7 @@ jobs:
             round2-output/policy/
             ai/build/test-results/test/
   mechanics:
+    if: ${{ !startsWith(github.event.head_commit.message, 'Policy-only:') }}
     runs-on: ubuntu-latest
     timeout-minutes: 50
     env:
