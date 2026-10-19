@@ -1,0 +1,43 @@
+name: Manual R4 Ballista mechanics
+on:
+  push:
+    branches: [gameplay/manual-r4-mechanics-20261019]
+    paths: ['rules-engine/**', 'mtg-sets/**', '.github/workflows/manual-r4-mechanics-20261019.yml']
+permissions:
+  contents: read
+jobs:
+  mechanics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_OUTPUT: ${{ github.workspace }}/r4-output/mechanics
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Reused correction, matrix and adjacent rules
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r4-output/mechanics
+          git rev-parse HEAD > r4-output/source-sha.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt > r4-output/preserved-inputs.sha256
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :mtg-sets:2017-2022:tests:test --tests '*WalkingBallistaScenarioTest' --tests '*HydroidKrasisScenarioTest' --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r4-output/mechanics/ballista-krasis.log
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test --tests '*AnimarSoulOfElementsScenarioTest' --tests '*AncestralStatueScenarioTest' --tests '*PurphorosGodOfTheForgeScenarioTest' --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r4-output/mechanics/animar-statue-purphoros.log
+          scripts/gradle-locked :rules-engine:test --tests '*CostCalculator*' --tests '*CommanderTaxTest' --tests '*CommanderSetupTest' --tests '*CommanderZoneRedirectTest' --tests '*XCost*' --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r4-output/mechanics/cost-rules.log
+          scripts/gradle-locked :mtg-sets:2023:tests:test --tests '*UpTheBeanstalkScenarioTest' --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r4-output/mechanics/beanstalk.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r4-mechanics-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r4-output/
+            mtg-sets/2017-2022/tests/build/test-results/test/
+            mtg-sets/2008-2016/tests/build/test-results/test/
+            rules-engine/build/test-results/test/
+            mtg-sets/2023/tests/build/test-results/test/

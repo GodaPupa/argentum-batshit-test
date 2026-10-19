@@ -301,10 +301,12 @@ class StackResolver(
         // decision: a disturb cast keeps the front's (CR 712.8c, `backFaceManaValue` non-null),
         // while a modal DFC cast as its back face has that face's own — The Sensational She-Hulk is
         // 6, not Jennifer Walters' 2. CastSpellHandler mirrors this for its CastSpellRecord.
-        val spellManaValue = prototype?.cost?.cmc
+        val spellManaValue = (prototype?.cost?.cmc
             ?: backFaceManaValue
             ?: transformedBackDef?.manaCost?.cmc
-            ?: cardComponent.manaValue
+            ?: cardComponent.manaValue) + if (!castFaceDown && prototype == null &&
+                backFaceManaValue == null && transformedBackDef == null
+            ) (xValue ?: 0) * cardComponent.manaCost.xCount else 0
 
         // CR 601.2b — a spell with `{X}` in its cost has X *announced as it is cast*; there is no
         // such thing as a spell on the stack whose X is undetermined. A caller that announced
