@@ -898,6 +898,16 @@ class Strategist(
         passAlreadyWins: Boolean,
         leafEvents: List<com.wingedsheep.engine.core.GameEvent>,
     ): AdjustedScore {
+        // Land actions have no spell/ability card name in resolveCardName. Evaluate their
+        // continuation before that early return, without applying spell timing/hold policies.
+        if (action.action is PlayLand) {
+            val payoff = newlyUnlockedLandPayoff(state, leafState, playerId)
+            return AdjustedScore(
+                leafScore + payoff,
+                note = payoff.takeIf { it > 0.0 }?.let { "land enables a productive known spell +%.2f".format(it) },
+                sequencingAdjustment = payoff,
+            )
+        }
         val cardName = resolveCardName(state, action) ?: return AdjustedScore(leafScore)
         val cast = action.action as? CastSpell
         val card = cast?.let { state.getEntity(it.cardId)?.get<CardComponent>() }
@@ -1550,7 +1560,6 @@ class Strategist(
 
         val landPlay = action.action as? PlayLand
         if (landPlay != null) {
-            delta += newlyUnlockedLandPayoff(state, leafState, playerId)
             val setup = bestLandUnlockedPayoffSequence(state, playerId)
             if (setup != null && setup.landId == landPlay.cardId) {
                 delta += (setup.projectedScore - leafScore).coerceAtLeast(0.0)
