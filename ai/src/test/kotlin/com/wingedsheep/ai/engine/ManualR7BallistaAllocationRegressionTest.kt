@@ -128,7 +128,20 @@ class ManualR7BallistaAllocationRegressionTest : FunSpec({
                 // Preserve R4 terminal protections; no new tactical penalty against
                 // a real nine-shot lethal removal line while shots accumulate.
                 negative.getValue("candidateScore") shouldBe negative.getValue("retainedAdvisorScore")
-                val processed = processor.process(state, first1610).result
+                // Serialized ability IDs are bound to the historical registry session.
+                // The scoring witness above correctly resolves the live source ability;
+                // use the same live legal action for authoritative ActionProcessor replay.
+                // Preserve the archived Animar target and require it remains valid.
+                val offered = sim.getLegalActions(state, first1610.playerId).single {
+                    it.affordable && it.requiresTargets &&
+                        (it.action as? ActivateAbility)?.sourceId == first1610.sourceId
+                }
+                val target = (first1610.targets.single() as ChosenTarget.Permanent).entityId
+                check(target in offered.validTargets.orEmpty()) {
+                    "Archived negative-control target ceased to be legal at shot " + (i + 1)
+                }
+                val liveShot = (offered.action as ActivateAbility).copy(targets = first1610.targets)
+                val processed = processor.process(state, liveShot).result
                 check(processed.error == null) {
                     "Actual nine-shot sequence rejected at step " + (i + 1) + ": " + processed.error
                 }
