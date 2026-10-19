@@ -1,6 +1,7 @@
 package com.wingedsheep.ai.engine
 
 import com.wingedsheep.ai.engine.advisor.modules.ManualStatueContinuationAdvisorModule
+import com.wingedsheep.ai.engine.advisor.modules.ManualBallistaContinuationAdvisorModule
 import com.wingedsheep.ai.insight.AiInsightSink
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.state.ZoneKey
@@ -22,11 +23,12 @@ class ManualBallistaAiDiscoveryTest : ScenarioTestBase() {
     init {
         MtgSetCatalog.all.forEach { cardRegistry.register(it.cards); cardRegistry.register(it.basicLands) }
         val statueProfile = AiProfile.CURRENT.copy(id = "manual-statue-continuation-r3", advisorModules = listOf(ManualStatueContinuationAdvisorModule))
-        for (profile in listOf(AiProfile.CURRENT, statueProfile)) for (puzzle in listOf("ready", "counter-build", "pod-counter-build")) {
+        val candidate = AiProfile.CURRENT.copy(id = "manual-ballista-continuation-r4", advisorModules = listOf(ManualBallistaContinuationAdvisorModule))
+        for (profile in listOf(AiProfile.CURRENT, statueProfile, candidate)) for (puzzle in listOf("ready", "counter-build", "pod-counter-build", "pod-ready")) {
             test("actual AI ${profile.id} $puzzle") {
-                val buildCounters = puzzle != "ready"
+                val buildCounters = puzzle.endsWith("counter-build")
                 val pod = puzzle.startsWith("pod")
-                val initialCounters = if (pod) 8 else if (buildCounters) 4 else 6
+                val initialCounters = if (pod) { if (buildCounters) 8 else 12 } else if (buildCounters) 4 else 6
                 val label = "${profile.id}-$puzzle"
                 val builder = scenario().withPlayers("Manual", "Reference").withLifeTotal(1, 40).withLifeTotal(2, if (pod) 2 else 3)
                     .withRngSeed(202610200901L).withCardOnBattlefield(1, "Animar, Soul of Elements")
@@ -104,6 +106,15 @@ class ManualBallistaAiDiscoveryTest : ScenarioTestBase() {
                 println("R4_BALLISTA_DISCOVERY=$summary")
                 check(error == null) { "Actual AI action failed: $error" }
                 check(index > 0)
+                if (profile.id == candidate.id) {
+                    check(game.state.gameOver && game.state.winnerId == game.player1Id) { "Actual candidate did not execute terminal damage: $summary" }
+                    val rows = records.map { json.parseToJsonElement(it).jsonObject }
+                    check(rows.none { it.getValue("action").jsonPrimitive.content.contains("DeclareAttackers") }) { "Combat cannot masquerade as Ballista payoff" }
+                    if (pod && buildCounters) {
+                        val statueCasts = rows.count { it["sourceName"]?.jsonPrimitive?.contentOrNull == "Ancestral Statue" && it.getValue("action").jsonPrimitive.content.contains("CastSpell") }
+                        check(statueCasts == 4) { "Expected actual four-cast bounded counter build, observed $statueCasts" }
+                    }
+                }
             }
         }
     }
