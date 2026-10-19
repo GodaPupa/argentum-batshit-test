@@ -57,6 +57,14 @@ object ManualBallistaContinuationAdvisor : CardAdvisor {
         return state.takeIf { it.gameOver && it.winnerId == player }
     }
 
+    /** Only exempt Pact debt when legal Ballista activations prove an engine terminal win.
+     * The witness does not predict future opponent plays or fabricate a damage shortcut. */
+    internal fun provesUncontestedBallistaWin(state: GameState, player: EntityId, registry: CardRegistry): Boolean {
+        if (state.gameOver || state.stack.isNotEmpty() || state.activePlayerId != player) return false
+        if (state.projectedState.getBattlefieldControlledBy(player).none { name(state, it) == "Walking Ballista" }) return false
+        return finishShots(state, player, simulator(registry)) != null
+    }
+
     private fun castAndFinish(state: GameState, player: EntityId, sim: GameSimulator): GameState? {
         val actions = sim.getLegalActions(state, player).filter {
             val cast = it.action as? CastSpell

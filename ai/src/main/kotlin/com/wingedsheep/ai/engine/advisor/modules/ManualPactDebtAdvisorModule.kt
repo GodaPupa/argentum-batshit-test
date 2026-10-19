@@ -76,7 +76,16 @@ object ManualPactDebtAdvisor : CardAdvisor {
             (!cast.state.gameOver || cast.state.winnerId == player)
         // A last-chance answer to actual immediate loss must remain available even without debt mana.
         if (losesImmediately && survives) return null
-        return if (nextUpkeepDebt(context, cast.state) == Debt.UNFUNDED)
-            minOf(context.defaultScore, context.passScore - 1.0) else null
+        if (nextUpkeepDebt(context, cast.state) != Debt.UNFUNDED) return null
+        // A counterspell protecting a *provable* lethal Ballista continuation is not
+        // gratuitous. Demand a rules-engine terminal witness after Pact, and no such
+        // witness after passing. The bounded Ballista witness respects targeting,
+        // counters and the real activation/priority engine.
+        if (survives && ManualBallistaContinuationAdvisor.provesUncontestedBallistaWin(
+                cast.state, player, context.simulator.cardRegistry
+            ) && (passed == null || !ManualBallistaContinuationAdvisor.provesUncontestedBallistaWin(
+                passed.state, player, context.simulator.cardRegistry
+            ))) return null
+        return minOf(context.defaultScore, context.passScore - 1.0)
     }
 }
