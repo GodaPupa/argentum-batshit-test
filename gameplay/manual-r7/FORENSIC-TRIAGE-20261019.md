@@ -55,3 +55,14 @@ Do not claim a gameplay win-rate improvement, implement a generic shot penalty, 
 ### Forensic CI
 
 An isolated read-only extraction test and authenticated GitHub Actions workflow were published on `gameplay/manual-r7-forensic-20261019`. The validation result is governed by its actual run receipt, not by publication of this note.
+
+## Verified forensic CI receipt
+
+- Exact forensic workflow source: `287ab5498ea44560ffd96c734c8c6860a16fbbd0`.
+- GitHub Actions [run 39324375067](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39324375067): **SUCCESS**, one targeted Kotlin forensic test passed.
+- GitHub artifact: `12221797778` (`manual-r7-forensic-39324375067`), size **22,039 bytes**.
+- Original artifact ZIP SHA-256: `a43ba8209eca2998acd9580c53aad8d9f71072b8f722324ee43da7d96cf3d7e8`, independently verified.
+- `forensic-summary.json`, both expanded action/result windows and both sets of relevant AI scoring records were preserved.
+- Seed 1609: 15/15 shots resolved, eight hit Animar (toughness ten) without removing it; the optimistic 38-damage-only combat subtraction still leaves 42 damage against 30 life.
+- Seed 1610: 10/10 shots resolved, nine hit the nine-toughness Animar and caused its battlefield departure.
+- **Formal disposition: TRACE FORENSICS COMPLETE; STRATEGIC POLICY DEFECT NOT YET PROVEN.** Targeted real-engine choice/priority fork remains the next justified investigation, not a general Ballista suppression policy.
