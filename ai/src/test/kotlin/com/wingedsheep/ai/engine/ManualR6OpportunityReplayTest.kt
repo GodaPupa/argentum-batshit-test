@@ -119,9 +119,9 @@ class ManualR6OpportunityReplayTest : FunSpec({
                         val others = state.turnOrder.filter { it != seat }
                         val doc = buildJsonObject {
                             put("index", index); put("turn", state.turnNumber); put("step", state.step.name)
-                            put("actualChoice", insight["chosenLabel"]); put("animarScore", target.getValue("score"))
-                            put("animarRawScore", target["rawScore"])
-                            put("baselinePassScore", insight["baselineScore"])
+                            put("actualChoice", insight.getValue("chosenLabel")); put("animarScore", target.getValue("score"))
+                            put("animarRawScore", target["rawScore"] ?: JsonNull)
+                            put("baselinePassScore", insight.getValue("baselineScore"))
                             put("boardEvalBefore", before); put("boardEvalAfterAnimar", castScore)
                             put("boardEvalAfterChosen", actualResult?.let {
                                 evaluator.evaluate(it.state, it.state.projectedState, seat) })
@@ -142,8 +142,8 @@ class ManualR6OpportunityReplayTest : FunSpec({
                             put("topCompetingScores", JsonArray(options.sortedByDescending {
                                 it["score"]?.jsonPrimitive?.doubleOrNull ?: Double.NEGATIVE_INFINITY
                             }.take(9).map { opt -> buildJsonObject {
-                                put("card", opt["cardName"]); put("label", opt["label"])
-                                put("score", opt["score"]); put("rawScore", opt["rawScore"])
+                                put("card", opt["cardName"] ?: JsonNull); put("label", opt["label"] ?: JsonNull)
+                                put("score", opt["score"] ?: JsonNull); put("rawScore", opt["rawScore"] ?: JsonNull)
                             } }))
                             put("interpretation", "Read-only state and one-ply legal alternatives; no forced action or predicted opponent response")
                         }
