@@ -54,7 +54,7 @@ class ManualEncoreRegressionTest : FunSpec({
                 val action = if (archived is ActivateAbility) {
                     val targeted = archived.targets.isNotEmpty()
                     val candidates = simulator.getLegalActions(state, archived.playerId).filter {
-                        it.affordable && (!targeted || it.requiresTargets) &&
+                        it.affordable && it.requiresTargets == targeted &&
                             (it.action as? ActivateAbility)?.sourceId == archived.sourceId
                     }
                     val ids = candidates.map { (it.action as ActivateAbility).abilityId }.distinct()
@@ -63,7 +63,7 @@ class ManualEncoreRegressionTest : FunSpec({
                         bindings += buildJsonObject { put("index", index); put("source", archived.sourceId.value)
                             put("archived", archived.abilityId.value); put("runtime", ids.single().value)
                             put("reason", if (targeted) "unique affordable targeted ability on same physical source; original targets preserved"
-                                else "unique affordable ability on same physical source")
+                                else "unique affordable untargeted ability on same physical source; original parameters preserved")
                             put("archivedTargetCount", archived.targets.size) }
                         archived.copy(abilityId = ids.single())
                     }
