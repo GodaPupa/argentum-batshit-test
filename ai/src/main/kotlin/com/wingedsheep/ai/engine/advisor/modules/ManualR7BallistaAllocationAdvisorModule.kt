@@ -47,7 +47,7 @@ object ManualR7BallistaCombinedAdvisor : CardAdvisor {
         val target = state.getEntity(targetId) ?: return null
         if (target.get<CardComponent>()?.typeLine?.isCreature != true) return null
         val targetController = target.get<ControllerComponent>()?.playerId ?: return null
-        if (!state.isOpponentTo(targetController, context.playerId)) return null
+        if (targetController !in state.getOpponents(context.playerId)) return null
         if (targetId !in state.projectedState.getBattlefieldControlledBy(targetController)) return null
 
         val counters = source.get<CountersComponent>()
