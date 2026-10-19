@@ -48,7 +48,7 @@ class ManualStatueContinuationRegressionTest : FunSpec({
                 if (index == 1345) {
                     Files.writeString(output.resolve("first-return-state.json"), json.encodeToString(state))
                     val player = action.playerId
-                    val chosen = AIPlayer.create(registry, player, profile).chooseAction(state) as SubmitDecision
+                    val chosen = SubmitDecision(player, AIPlayer.create(registry, player, profile).respondToDecision(state, requireNotNull(state.pendingDecision)))
                     val response = chosen.response as CardsSelectedResponse
                     check(response.selectedCards != listOf(com.wingedsheep.sdk.model.EntityId("e341"))) { "Candidate must exit counter-only loop" }
                     val result = processor.process(state, chosen).result

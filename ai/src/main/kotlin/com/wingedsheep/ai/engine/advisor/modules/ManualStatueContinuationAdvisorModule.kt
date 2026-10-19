@@ -40,6 +40,9 @@ object ManualStatueContinuationAdvisor : CardAdvisor {
 
     private fun readyExit(context: AdvisorDecisionContext, state: GameState, statue: EntityId): Boolean {
         val sim = simulation(context)
+        sim.decisionResolver = { current, decision ->
+            com.wingedsheep.ai.engine.rollout.FastDecisionResponder().respond(current, decision, decision.playerId)
+        }
         val before = context.evaluator.evaluate(state, state.projectedState, context.playerId)
         return sim.getLegalActions(state, context.playerId).filter {
             val cast = it.action as? CastSpell
