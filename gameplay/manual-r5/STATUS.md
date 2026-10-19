@@ -1,1 +1,7 @@
-R5 in progress. Combo validation8/8 and draw audit3/3 passed. First Pact candidate6/7; diagnostic successor6/8. Both failed archives preserved. Corrected bounded combat walk currently under isolated Java21 validation at ad73ab5a249a1fc97c36dccc722ce8fdceeeb2c0, run39277485844. No composed R5 gameplay run has occurred. CURRENT and frozen deck unchanged.
+R5 gameplay integration: VERIFIED COMPLETE for bounded opt-in validation at source 9d50d7efd0192e3d04b7bc2f57789e6508e536f7, run 39290732616 (73/73 total tests incl. one real 4-player game, 1,272/1,272 actions, zero rejections). Original game exposed new self-Pact at action 361 and unpaid loss at 468.
+
+R5 end-step survival successor: VERIFIED COMPLETE opt-in regression and bounded gameplay at source e2e92a199bb2c165625bf1505089e8420d91d8b2, run 39293363796 (74/74 incl. 4-player game, 2,571/2,571 actions, zero rejections). Same seed: actions 1-360 identical; action 361 corrected to PassPriority. Later legitimate Pact cast 1134 and {3}{U}{U} paid 1356. Winner seat 1 on turn 58 at 12 life. No unpaid Pact loss.
+
+Historical artifacts: R5 12206306434 (sha256 f6ebea7a6af4f14f6ff68f131d20fb7ccecb2a464c1a2ac8fa9de35639af1032); follow-up 12206343752 (sha256 0562942a8b66a803e6e35265b5005220d3676b21869cca935e5cb1f2f66f71a7). Detailed reports: REPORT-INTEGRATION-39290732616.md and REPORT-ENDSTEP-39293363796.md.
+
+Remaining strategic priorities: commander deployment (winner 0 casts despite 13 materialized legal scoring windows); near-deckout optional draws (audit only, unobserved in both samples); sampled combo execution. Frozen Manual Transmission v0.7 deck, AiProfile.CURRENT, and main unchanged. Official C4/D2 remains separate and unqualified. No further gameplay batch authorized or executed.
