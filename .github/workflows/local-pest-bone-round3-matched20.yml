@@ -1,0 +1,96 @@
+name: Round 3 Bone Shards matched 20-game candidate
+'on':
+  push:
+    branches:
+    - local/pest-bone-round3-20261018
+    paths:
+    - .github/workflows/local-pest-bone-round3-matched20.yml
+permissions:
+  contents: read
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+jobs:
+  seat-swapped-pair:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        seed:
+        - '2026101900'
+        - '2026101901'
+        - '2026101902'
+        - '2026101903'
+        - '2026101904'
+        - '2026101905'
+        - '2026101906'
+        - '2026101907'
+        - '2026101908'
+        - '2026101909'
+    env:
+      MTG_BATCH_RUN: '1'
+      MTG_BATCH_GAMES: '2'
+      MTG_BATCH_SEED: ${{ matrix.seed }}
+      MTG_BATCH_OUTPUT: ${{ github.workspace }}/gym/build/pest-bone-round3-${{ matrix.seed
+        }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '21'
+    - uses: gradle/actions/setup-gradle@v4
+    - uses: taiki-e/install-action@v2
+      with:
+        tool: just
+    - name: Restore SHA-bound matchup runner
+      shell: bash
+      run: 'set -euo pipefail
+
+        base64 --decode tools/pest-red-round2/runner.b64 > "$RUNNER_TEMP/runner.tar.xz"
+
+        echo "a8bccd1016ca652def1c33d07a649edc6bdf3096800df1bc19187ab3f83774fa  $RUNNER_TEMP/runner.tar.xz"
+        | sha256sum --check
+
+        tar -xJf "$RUNNER_TEMP/runner.tar.xz"
+
+        chmod +x gradlew scripts/gradle-locked scripts/test-class
+
+        '
+    - name: Execute exactly one seat-swapped pair
+      run: "set -euo pipefail\nmkdir -p \"$MTG_BATCH_OUTPUT\"\npython3 - <<'PY'\n\
+        import json,os\nfrom pathlib import Path\nseed=int(os.environ['MTG_BATCH_SEED'])\n\
+        assert 2026101900<=seed<=2026101909\np=dict(evidenceGroup='ROUND_3_BONE_SHARDS_CANDIDATE',officialExperiment=False,totalGames=20,\n\
+        \    baseEngineCommit='8e9c0877ea51bc0a112891066b2465d5c124ab09',runnerCommit=os.environ['GITHUB_SHA'],\n\
+        \    seed=str(seed),pestSeats=[0,1],startingSeat=0,unchangedDecks=True,baselineRun=39177384900,validationRun=39184258574,policyCorrection='resolved-friendly-removal-margin',candidateCodeCommit='a35ba1ae4758d49a0467280b6c74e42b8157ceb9',\n\
+        \    rejectedRound1CandidateIncluded=False,aiProfileBothSeats='PRODUCTION_CANDIDATE_EXPIRING')\n\
+        Path(os.environ['MTG_BATCH_OUTPUT'],'provenance.json').write_text(json.dumps(p,indent=2)+'\\\
+        n')\nPY\njust test-class PestMonoRedBatchTest --no-daemon --console=plain\
+        \ --stacktrace 2>&1 | tee \"$RUNNER_TEMP/gameplay.log\"\n"
+    - name: Validate pair and emit summaries
+      run: "set -euo pipefail\npython3 tools/pest-red-round2/summarize.py \"$MTG_BATCH_OUTPUT\"\
+        \npython3 - <<'PY'\nimport json,os,sys\nfrom pathlib import Path\nsys.path.insert(0,'tools/pest-red-round2')\n\
+        import summarize\nroot=Path(os.environ['MTG_BATCH_OUTPUT']);s=summarize.summarize(root)\n\
+        assert s['completed']==2 and s['failed']==0\nfor row in s['rows']:\n    t=summarize.read_jsonl(root/row['trace'])\n\
+        \    ends=[e for r in t for e in r.get('emittedEvents',[]) if e['type']=='GameEndedEvent']\n\
+        \    assert len(ends)==1\n    row['terminationReason']=ends[0]['reason']\n\
+        (root/'validated-summary.json').write_text(json.dumps(s,indent=2)+'\\n')\n\
+        PY\n"
+    - name: Preserve complete or interrupted traces
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: pest-bone-round3-${{ matrix.seed }}-${{ github.run_id }}
+        retention-days: 30
+        path: 'gym/build/pest-bone-round3-*/
+
+          gym/build/test-results/test/
+
+          ${{ runner.temp }}/gameplay.log
+
+          tools/pest-red-round2/
+
+          gym/src/test/kotlin/com/wingedsheep/gym/PestMonoRedBatch*.kt'
