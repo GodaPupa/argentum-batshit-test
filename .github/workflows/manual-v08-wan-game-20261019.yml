@@ -1,0 +1,54 @@
+name: Manual v0.8 Wan one bounded same-seed Commander challenger
+on:
+  push:
+    branches: [gameplay/manual-v08-wan-safety-20261019]
+    paths:
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualV08WanGameplaySmokeTest.kt'
+      - '.github/workflows/manual-v08-wan-game-20261019.yml'
+permissions:
+  contents: read
+jobs:
+  candidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_V08_GAME_OUTPUT: ${{ github.workspace }}/wan-v08-game-output
+      MANUAL_V08_WAN_GAME: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Freeze accepted v0.7, policy and exact experimental deck before gameplay
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p wan-v08-game-output
+          git rev-parse HEAD > wan-v08-game-output/source-sha.txt
+          git rev-parse HEAD^{tree} > wan-v08-game-output/tree-sha.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualPactDebtAdvisorModule.kt)" = "b8ace7c735f4561dc243ae6fa1fc197b16f61bc1"
+          chmod +x gradlew scripts/gradle-locked
+      - name: Require near-empty library and candidate composition regressions first
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualV08WanSafetyTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee wan-v08-game-output/safety-regressions.log
+      - name: Run exactly one four-player 100-card Wan challenger match against same-seed R7 control
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualV08WanGameplaySmokeTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee wan-v08-game-output/commander-mirror.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-v08-wan-game-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            wan-v08-game-output/
+            ai/build/test-results/test/
