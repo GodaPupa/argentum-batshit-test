@@ -85,10 +85,10 @@ class ManualR7BallistaAllocationRegressionTest : FunSpec({
             }
 
             val seed1609 = json.decodeFromString<GameState>(read("seed-202610191609-before-2659.json"))
-            val original1609 = json.decodeFromString<ActivateAbility>(
+            val original1609 = json.decodeFromString<GameAction>(
                 json.parseToJsonElement(read("replay-202610191609-progress.json"))
                     .jsonObject.getValue("originalAction").jsonPrimitive.content
-            )
+            ) as ActivateAbility
             val positive = score(seed1609, original1609, "1609-nonlethal-2659")
             check(positive.getValue("candidateScore") !is JsonNull) {
                 "Candidate must explicitly override ineffectual shot, not return null to default"
@@ -99,10 +99,10 @@ class ManualR7BallistaAllocationRegressionTest : FunSpec({
             }
 
             val seed1610 = json.decodeFromString<GameState>(read("seed-202610191610-before-2764.json"))
-            val first1610 = json.decodeFromString<ActivateAbility>(
+            val first1610 = json.decodeFromString<GameAction>(
                 json.parseToJsonElement(read("replay-202610191610-progress.json"))
                     .jsonObject.getValue("originalAction").jsonPrimitive.content
-            )
+            ) as ActivateAbility
             var state = seed1610
             repeat(9) { i ->
                 val negative = score(state, first1610, "1610-lethal-queued-shot-" + (i + 1))
