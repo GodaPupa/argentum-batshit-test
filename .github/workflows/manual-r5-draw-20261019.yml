@@ -1,0 +1,41 @@
+name: Manual R5 optional draw audit
+on:
+  push:
+    branches: [gameplay/manual-r5-draw-20261019]
+    paths: ['ai/**', '.github/workflows/manual-r5-draw-20261019.yml', 'gameplay/manual-r5/input/**']
+permissions:
+  contents: read
+jobs:
+  draw-audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R5_DRAW_OUTPUT: ${{ github.workspace }}/r5-draw-output
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Preserve source and immutable input hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r5-draw-output
+          git rev-parse HEAD > r5-draw-output/source-sha.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt gameplay/manual-r5/input/r4-integration-39270737788.zip > r5-draw-output/input-hashes.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Exact archive replay and genuine legal draw boundary cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualOptionalDraw*Test' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r5-draw-output/verification.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r5-draw-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r5-draw-output/
+            ai/build/test-results/test/
