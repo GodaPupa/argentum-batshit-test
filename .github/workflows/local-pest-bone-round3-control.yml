@@ -28,9 +28,9 @@ jobs:
     - name: Restore verified diagnostic fixture
       run: 'set -euo pipefail
 
-        base64 --decode tools/pest-bone-round3/diagnostic.b64 > "$RUNNER_TEMP/diagnostic.tar.xz"
+        base64 --decode tools/pest-bone-round3/diagnostic-v2.b64 > "$RUNNER_TEMP/diagnostic.tar.xz"
 
-        echo "fee6943bd7889f5173063295ceb0e0cb872f13734725a88cabd590cd9748e0b2  $RUNNER_TEMP/diagnostic.tar.xz"
+        echo "f9dce26f5645d720747c93b7bcebd0c112243ff74db87edea0653a329a0e14fb  $RUNNER_TEMP/diagnostic.tar.xz"
         | sha256sum --check
 
         tar -xJf "$RUNNER_TEMP/diagnostic.tar.xz"
