@@ -59,6 +59,21 @@ class ManualR7BallistaCounterForkTest : FunSpec({
                 .mapNotNull { it.action as? ActivateAbility }
                 .filter { it.sourceId == original.sourceId }.map { it.abilityId }.distinct()
             if (original.abilityId in offers) return original
+            if (offers.isEmpty()) {
+                // Exact accepted archive may contain a paid, target-bound activated ability
+                // not materialized by the generic AI legal-action enumerator.
+                // Do NOT invent an alias; submit the unchanged original to ActionProcessor
+                // and require its rules-engine validation to pass.
+                bindings += buildJsonObject {
+                    put("index", index)
+                    put("source", original.sourceId.value)
+                    put("archivedAbility", original.abilityId.value)
+                    put("enumerationCount", 0)
+                    put("unchangedArchivedActionSubmitted", true)
+                }
+                Files.writeString(out.resolve("ability-bindings.json"), JsonArray(bindings).toString())
+                return original
+            }
             check(offers.size == 1) {
                 "Archived ability cannot be uniquely rebound at " + index + ": " + offers
             }
