@@ -26,7 +26,15 @@ The multiplayer trace demonstrates a decision defect: a legal Ballista shot scor
 
 ## Candidate attempts
 
-The first opt-in execution candidate, source `564d644b054555dc5f347d0c2b74df4a6515b0f0`, failed `:ai:compileKotlin` in run `39265781482`: `ManualBallistaContinuationAdvisorModule.kt:50:81 Unresolved reference 'ChosenTarget'`. No tests or games ran on that source. Its raw failed archive is preserved. The missing import was corrected to `com.wingedsheep.engine.state.components.stack.ChosenTarget`; source `a83cbbf4e9e944bd3619bc5aa276561147e140d6` is awaiting validation. Four additional tests exercise the retained Purphoros, finite-body, Palinchron, and Ballista exits through the new wrapper itself.
+The first opt-in execution candidate, source `564d644b054555dc5f347d0c2b74df4a6515b0f0`, failed `:ai:compileKotlin` in run `39265781482`: `ManualBallistaContinuationAdvisorModule.kt:50:81 Unresolved reference 'ChosenTarget'`. No tests or games ran on that source. Its raw failed archive is preserved.
+
+After fixing the import, source `a83cbbf4e9e944bd3619bc5aa276561147e140d6`, run `39266802615`, compiled and ran 22 tests: **18 passed, four failed**. Both four-player candidate probes failed their strict damage-before-combat requirement. The counter-building probe ended the turn after 77 actions at `[40,-11,1,1]`. The ready probe reached a terminal result after 46 actions, but used combat; it is explicitly not accepted as a Ballista execution proof. Both protection guards failed their X-action lookup before exercising the guard.
+
+The planner and guard fixtures mistakenly assumed raw legal actions already contained a chosen X. They instead carry `xValue=null` plus `maxAffordableX`; the existing `XCostSelection.expandToX` API binds legitimate choices. This is a candidate API-use defect, not a new engine X-enumeration defect. R4 now also checks that its actual Statue response agrees with its bound-X terminal witness.
+
+The same trace exposed a real rules-engine defect: submissions 60–62 targeted previously eliminated player 2 and were accepted. `TargetFinder` selected from historical `turnOrder` with `hasEntity`, which remained true for a player marked left; `TargetValidator` also accepted that player. The narrow repair filters out inactive player identities and rejects explicit targeting of them before paying costs. A separate test uses a real Ballista cast, activated lethal damage, an actual player-left event, rejected re-targeting, and a legal shot at a remaining player.
+
+Source `329cdd4ecbe43e9d44901d26d88fbb5ed4d9a6f4` is running that targeting/matrix regression separately. AI source `bd0aeccba5b70a2e0ec20f28d1be953f9dc39578` is running the 22 execution/guard/exit tests with the same targeting change. These sources were published while validation was pending; commit wording does not establish a test result. Four tests exercise retained Purphoros, finite-body, Palinchron, and Ballista exits through the R4 wrapper itself.
 
 ## Preservation
 
