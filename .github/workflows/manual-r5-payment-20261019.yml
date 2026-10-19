@@ -1,0 +1,49 @@
+name: Manual R5 actual resolution-payment repair
+on:
+  push:
+    branches: [gameplay/manual-r5-payment-20261019]
+    paths: ['ai/**', 'rules-engine/**', '.github/workflows/manual-r5-payment-20261019.yml']
+permissions:
+  contents: read
+jobs:
+  composition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R5_COMBO_OUTPUT: ${{ github.workspace }}/r5-payment-output
+      MANUAL_R4_COMPOSITION_OUTPUT: ${{ github.workspace }}/r5-payment-output/retained-exits
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Preserve exact composed source and frozen input hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r5-payment-output
+          git rev-parse HEAD > r5-payment-output/source-sha.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualAnimarDevelopmentAdvisorModule.kt ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt > r5-payment-output/preserved-inputs.sha256
+          chmod +x gradlew scripts/gradle-locked
+      - name: Full-life payment, actual interruption and retained legal exits
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualResolutionPaymentRegressionTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r5-payment-output/validation.log
+      - name: Existing payment and Pact regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :rules-engine:test --tests '*GatedEffectScenarioTest' --tests '*PayManaCostRepeatedlyTest' :mtg-sets:2003-2007:tests:test --tests '*PactOfNegation*Test' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r5-payment-output/retained-regressions.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r5-payment-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r5-payment-output/
+            ai/build/test-results/test/
+            rules-engine/build/test-results/test/
+            mtg-sets/2003-2007/tests/build/test-results/test/

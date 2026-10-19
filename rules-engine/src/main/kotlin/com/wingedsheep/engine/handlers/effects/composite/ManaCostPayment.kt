@@ -2,6 +2,7 @@ package com.wingedsheep.engine.handlers.effects.composite
 
 import com.wingedsheep.engine.core.EffectResult
 import com.wingedsheep.engine.core.GameEvent
+import com.wingedsheep.engine.core.ManaSpentEvent
 import com.wingedsheep.engine.core.tap
 import com.wingedsheep.engine.mechanics.mana.ManaPool
 import com.wingedsheep.engine.mechanics.mana.ManaSolver
@@ -10,6 +11,7 @@ import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.player.ManaPoolComponent
 import com.wingedsheep.sdk.core.ManaCost
+import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.model.EntityId
 
 /**
@@ -60,11 +62,24 @@ fun payManaCostFromPool(
 
         for ((_, production) in solution.manaProduced) {
             currentPool = if (production.color != null) {
-                currentPool.add(production.color)
+                currentPool.add(production.color, production.amount)
             } else {
                 currentPool.addColorless(production.colorless)
             }
         }
+
+        // Printed multi-mana is already included above. Only aura tap-bonuses are extra.
+        for ((color, amount) in solution.bonusManaSpentByColor) {
+            currentPool = currentPool.add(color, amount)
+        }
+        val unspentColoredBonus = solution.remainingBonusMana.filter { it.countsTowardSpent && !it.colorless }
+        for (bonus in unspentColoredBonus) currentPool = currentPool.add(bonus.color, bonus.amount)
+        // Any-color bonus spent on generic has no chosen color in the quote. White is a legal
+        // choice for that already-consumed generic portion; fixed-color bonuses are all tallied.
+        val unassignedAnyColor = solution.sources.sumOf { it.bonusManaPerTap } -
+            solution.bonusManaSpentByColor.values.sum() - unspentColoredBonus.sumOf { it.amount }
+        if (unassignedAnyColor > 0) currentPool = currentPool.add(Color.WHITE, unassignedAnyColor)
+        currentPool = currentPool.addColorless(solution.sources.sumOf { it.bonusManaColorlessPerTap })
     }
 
     val newPool = currentPool.pay(cost)
@@ -83,6 +98,16 @@ fun payManaCostFromPool(
         )
     }
 
+    events += ManaSpentEvent(
+        playerId = player,
+        reason = "Pay $cost during resolution",
+        white = currentPool.white - newPool.white,
+        blue = currentPool.blue - newPool.blue,
+        black = currentPool.black - newPool.black,
+        red = currentPool.red - newPool.red,
+        green = currentPool.green - newPool.green,
+        colorless = currentPool.colorless - newPool.colorless
+    )
     return EffectResult.success(currentState, events)
 }
 
