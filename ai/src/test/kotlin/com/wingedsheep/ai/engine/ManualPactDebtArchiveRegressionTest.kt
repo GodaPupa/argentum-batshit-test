@@ -140,14 +140,25 @@ class ManualPactDebtArchiveRegressionTest : FunSpec({
                     val actor = action.playerId
                     val tappedBefore = before.projectedState.getBattlefieldControlledBy(actor).count { before.getEntity(it)?.has<TappedComponent>() == true }
                     val tappedAfter = state.projectedState.getBattlefieldControlledBy(actor).count { state.getEntity(it)?.has<TappedComponent>() == true }
+                    // This actual state has Wild Growth and Utopia Sprawl on one Forest:
+                    // five mana may be produced by fewer than five tapped sources.
+                    // Verify *real payment*, colored requirements, and resource use rather
+                    // than assuming every mana must come from a different land.
+                    val payment = result.events.filterIsInstance<ManaSpentEvent>().singleOrNull()
                     evidence += buildJsonObject { put("index", index); put("tappedBefore", tappedBefore); put("tappedAfter", tappedAfter)
+                        put("manaSpentEvent", payment?.toString())
                         put("events", JsonArray(result.events.map { JsonPrimitive(it.toString()) })); put("action", json.encodeToString<GameAction>(action)) }
                     Files.writeString(output.resolve("pact-decision-evidence.json"), JsonArray(evidence).toString())
                     Files.writeString(output.resolve("payment-619-before.json"), json.encodeToString(before))
                     Files.writeString(output.resolve("payment-619-after.json"), json.encodeToString(state))
                     check(state.getEntity(actor)?.has<PlayerLostComponent>() != true)
                     check(state.pendingDecision == null)
-                    check(tappedAfter - tappedBefore == 5) { "Five-source Pact payment must really tap five sources: before=$tappedBefore after=$tappedAfter" }
+                    check(payment != null) { "Pact payment must emit a real ManaSpentEvent, not only a Yes decision" }
+                    check(payment.playerId == actor && payment.total == 5 && payment.blue >= 2 &&
+                          payment.reason.contains("Pay {3}{U}{U}")) {
+                        "Pact payment must spend {3}{U}{U} (five total, at least two blue): $payment"
+                    }
+                    check(tappedAfter > tappedBefore) { "Pact must actually tap mana sources: before=$tappedBefore after=$tappedAfter" }
                     seen += index
                     break
                 }
