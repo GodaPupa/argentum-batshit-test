@@ -1,7 +1,6 @@
 package com.wingedsheep.ai.engine
 
 import com.wingedsheep.engine.core.CastSpell
-import com.wingedsheep.engine.core.GameSimulator
 import com.wingedsheep.engine.legalactions.LegalActionEnumerator
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
