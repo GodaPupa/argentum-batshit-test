@@ -67,11 +67,35 @@ class ManualR6ProspectiveWitnessDiagnosticTest : FunSpec({
                 state.turnNumber shouldBe turn
                 val commander = state.getZone(ZoneKey(seat, Zone.COMMAND)).single()
                 val available = sim.getLegalActions(state, seat)
-                val commanderOffer = available.single {
-                    it.affordable && (it.action as? CastSpell)?.cardId == commander
+                val animarOffers = available.filter {
+                    (it.action as? CastSpell)?.cardId == commander
                 }
+                val affordableAnimar = animarOffers.filter { it.affordable }
+                val intermediate = buildJsonObject {
+                    put("archivedAction", index)
+                    put("turn", turn)
+                    put("legalActionCount", available.size)
+                    put("animarOfferCount", animarOffers.size)
+                    put("affordableAnimarCount", affordableAnimar.size)
+                    put("commanderInCommandZone", true)
+                }
+                Files.writeString(out.resolve("intermediate-$index.json"), intermediate.toString())
+                println("R6_WITNESS_INTERMEDIATE=" + intermediate)
+                check(affordableAnimar.size == 1) {
+                    "Expected exactly one affordable Animar offer at $index; found ${affordableAnimar.size}"
+                }
+                val commanderOffer = affordableAnimar.single()
                 val cast = commanderOffer.action as CastSpell
-                val response = sim.simulate(state, cast) as? SimulationResult.Terminal
+                val simulated = sim.simulate(state, cast)
+                Files.writeString(out.resolve("intermediate-$index.json"), buildJsonObject {
+                    put("archivedAction", index)
+                    put("turn", turn)
+                    put("legalActionCount", available.size)
+                    put("animarOfferCount", animarOffers.size)
+                    put("affordableAnimarCount", affordableAnimar.size)
+                    put("commanderSimulationTerminal", simulated is SimulationResult.Terminal)
+                }.toString())
+                val response = simulated as? SimulationResult.Terminal
                     ?: error("Commander cast simulation was not terminal for action " + index)
                 val after = response.state
                 val beforeValue = evaluator.evaluate(state, state.projectedState, seat)
@@ -134,7 +158,7 @@ class ManualR6ProspectiveWitnessDiagnosticTest : FunSpec({
                     put("afterCommanderOnBattlefield",
                         commander in after.getZone(ZoneKey(seat, Zone.BATTLEFIELD)))
                     put("afterCommanderStackSize", after.stack.size)
-                    put("afterCommanderActivePlayer", after.activePlayerId.value)
+                    put("afterCommanderActivePlayer", after.activePlayerId?.value)
                     put("afterCommanderPriorityPlayer", after.priorityPlayerId?.value)
                     put("originalAdvisorCredit", finite((priorCredit ?: afterValue) - afterValue))
                     put("eligibleHandFollowupsBefore", without.size)
