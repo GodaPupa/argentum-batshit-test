@@ -281,6 +281,7 @@ class AIPlayer(
                     combatAdvisor = combatAdvisor,
                     advisorRegistry = advisorRegistry,
                     useMeaningfulFilter = profile.useMeaningfulFilter,
+                    sequenceLandsByUsableMana = profile.sequenceLandsByUsableMana,
                     budgetPolicy = profile.budgetPolicy,
                     intents = intents,
                     combatTricksWaitForBlocks = profile.combatTricksWaitForBlocks,
