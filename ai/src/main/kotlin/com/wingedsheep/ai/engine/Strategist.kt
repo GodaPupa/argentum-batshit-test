@@ -379,6 +379,10 @@ class Strategist(
                 .maxByOrNull { i -> leafScores[i] }
         } else null
 
+        val resolvedPassScore by lazy(LazyThreadSafetyMode.NONE) {
+            val resolvedPass = if (pass != null) leafStates.first() else evaluationState
+            evaluator.evaluate(resolvedPass, resolvedPass.projectedState, playerId)
+        }
         val adjusted = (firstCandidate until leaves.size).map { i ->
             val ordinaryAdjustment = adjustScore(
                 evaluationState,
@@ -389,6 +393,7 @@ class Strategist(
                 passScore,
                 passAlreadyWins,
                 leafEvents[i],
+                resolvedPassScore = { resolvedPassScore },
             )
             Triple(
                 leaves[i],
@@ -897,6 +902,7 @@ class Strategist(
         passScore: Double,
         passAlreadyWins: Boolean,
         leafEvents: List<com.wingedsheep.engine.core.GameEvent>,
+        resolvedPassScore: () -> Double,
     ): AdjustedScore {
         val cardName = resolveCardName(state, action) ?: return AdjustedScore(leafScore)
         val cast = action.action as? CastSpell
@@ -904,15 +910,30 @@ class Strategist(
         val intent = cast?.let { spell ->
             intents.forCast(cardName, spell)
         }
+        // Price the committed target and all payments together at the resolved boundary.
+        // A rollout can reward throwing away a friendly creature merely because its sampled
+        // continuation differs. Such an estimate is not evidence that paying that cost helped.
+        // Keep the existing rollout margin too: this only tightens friendly-removal admission,
+        // while action-created lethal/survival overrides and profitable death triggers remain.
+        val (removalLeafScore, removalPassScore) = if (cast != null &&
+            cast.targets.filterIsInstance<ChosenTarget.Permanent>().any {
+                state.projectedState.getController(it.entityId) == playerId
+            }
+        ) {
+            val resolvedLeaf = evaluator.evaluate(leafState, leafState.projectedState, playerId)
+            val resolvedPass = resolvedPassScore()
+            if (resolvedLeaf - resolvedPass < leafScore - passScore) resolvedLeaf to resolvedPass
+            else leafScore to passScore
+        } else leafScore to passScore
         val shouldHoldFriendlyRemoval = cast != null && card != null && intent != null &&
             SelfRemovalValuation.shouldHold(
-                state, leafState, playerId, intent, card, cast, leafScore, passScore,
+                state, leafState, playerId, intent, card, cast, removalLeafScore, removalPassScore,
                 passAlreadyWins, boardPresenceWeight,
             )
         val friendlyRemovalAudit = if (insightSink != null && cast != null && card != null && intent != null) {
             SelfRemovalValuation.assess(
                 state, leafState, leafEvents, playerId, intent, card, cast, action.manaCostString,
-                action.validTargets, leafScore, passScore, passAlreadyWins, boardPresenceWeight,
+                action.validTargets, removalLeafScore, removalPassScore, passAlreadyWins, boardPresenceWeight,
             )
         } else null
         // Compute the pure sequencing term even for a candidate that a later production hold gate
