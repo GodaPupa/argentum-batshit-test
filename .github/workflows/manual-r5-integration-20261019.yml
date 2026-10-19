@@ -1,0 +1,72 @@
+name: Manual R5 isolated survival integration and single Commander mirror
+on:
+  push:
+    branches: [gameplay/manual-r5-integration-20261019]
+    paths: ['ai/**', 'rules-engine/**', 'mtg-sets/2003-2007/tests/**', '.github/workflows/manual-r5-integration-20261019.yml']
+permissions:
+  contents: read
+jobs:
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_R4_SMOKE_OUTPUT: ${{ github.workspace }}/r5-output/unused-r4-smoke
+      MANUAL_R5_SMOKE_OUTPUT: ${{ github.workspace }}/r5-output/smoke
+      MANUAL_R5_PACT_OUTPUT: ${{ github.workspace }}/r5-output/pact
+      MANUAL_R4_COMPOSITION_OUTPUT: ${{ github.workspace }}/r5-output/composition
+      MANUAL_ROUND2_ROOT: ${{ github.workspace }}
+      MANUAL_ROUND2_OUTPUT: ${{ github.workspace }}/r5-output/legacy-r2
+      MANUAL_CONTINUATION_OUTPUT: ${{ github.workspace }}/r5-output/legacy-development
+      MANUAL_R3_ROOT: ${{ github.workspace }}
+      MANUAL_R3_OUTPUT: ${{ github.workspace }}/r5-output/legacy-r3
+      MANUAL_R4_OUTPUT: ${{ github.workspace }}/r5-output/original-ballista
+      MANUAL_R4_INTEGRATION_SMOKE: '0'
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Assert unchanged frozen inputs and archive bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r5-output
+          git rev-parse HEAD > r5-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r5-output/tree-sha.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR4Candidate.kt)" = "550f3d160e783ddb71c19bb9b045037165b69172"
+          test "$(sha256sum gameplay/manual-r5/input/r4-integration-39270737788.zip | cut -d' ' -f1)" = "bd541f2a72aa7ec229c115a83c4d59ef44d35131ee11322ac52a10f9e9d3c6d0"
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt > r5-output/preserved-frozen-inputs.sha256
+          chmod +x gradlew scripts/gradle-locked
+      - name: Pact archive, real protection, payment, opt-in and R4-composition regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualPactDebt*Test' --tests '*ManualResolutionPaymentRegressionTest' --tests '*ManualR5CandidateCompositionTest' --tests '*ManualR4Composition*Test' --tests '*ManualBallista*Test' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r5-output/ai-integration-regressions.log
+          cp -a ai/build/test-results/test r5-output/ai-integration-junit
+      - name: Retained engine and Pact payment mechanics regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :rules-engine:test --tests '*GatedEffectScenarioTest' --tests '*PayManaCostRepeatedlyTest' :mtg-sets:2003-2007:tests:test --tests '*PactOfNegation*Test' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r5-output/engine-regressions.log
+      - name: One new four-player Commander mirror if and only if regressions pass
+        env:
+          MANUAL_R5_INTEGRATION_SMOKE: '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualR4IntegrationSmokeTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r5-output/commander-mirror.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r5-integration-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r5-output/
+            ai/build/test-results/test/
+            rules-engine/build/test-results/test/
+            mtg-sets/2003-2007/tests/build/test-results/test/

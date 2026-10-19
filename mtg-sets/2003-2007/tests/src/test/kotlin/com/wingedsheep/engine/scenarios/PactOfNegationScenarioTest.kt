@@ -94,14 +94,19 @@ class PactOfNegationScenarioTest : ScenarioTestBase() {
 
             game.castSpell(2, "Grizzly Bears").error shouldBe null
             game.castPactAtCurrentSpell()
-            game.toPactControllerNextUpkeep()
-
-            game.answerYesNo(false).error shouldBe null
+            // There is no legal payment: the Gate.MayPay contract must skip the
+            // impossible Yes/No prompt and execute its lose-game branch.
+            game.passUntilPhase(Phase.ENDING, Step.END)
+            game.passUntilPhase(Phase.BEGINNING, Step.UPKEEP)
             game.resolveStack()
 
-            withClue("Declining the Pact payment loses the game") {
+            withClue("An unpayable Pact debt cannot offer a fictitious payment") {
+                game.getPendingDecision() shouldBe null
+            }
+            withClue("Unpayable Pact debt automatically eliminates the controller") {
                 game.state.gameOver shouldBe true
                 game.state.winnerId shouldBe game.player2Id
+                game.state.delayedTriggers.isEmpty() shouldBe true
             }
         }
     }

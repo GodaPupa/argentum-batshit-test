@@ -26,10 +26,11 @@ import java.security.MessageDigest
 /** Real compiled catalog, four real 100-card decks; no synthetic card replacement or fallback. */
 class ManualR4IntegrationSmokeTest : FunSpec({
     test("one fresh bounded four-player composed Commander smoke") {
-        if (System.getenv("MANUAL_R4_INTEGRATION_SMOKE") != "1") return@test
+        val isR5 = System.getenv("MANUAL_R5_INTEGRATION_SMOKE") == "1"
+        if (!isR5 && System.getenv("MANUAL_R4_INTEGRATION_SMOKE") != "1") return@test
         fun runArm(arm: String): Boolean {
         val root = Path.of(requireNotNull(System.getenv("MANUAL_R4_ROOT")))
-        val output = Path.of(requireNotNull(System.getenv("MANUAL_R4_SMOKE_OUTPUT"))).resolve("seed-202610191401")
+        val output = Path.of(requireNotNull(System.getenv(if (isR5) "MANUAL_R5_SMOKE_OUTPUT" else "MANUAL_R4_SMOKE_OUTPUT"))).resolve(if (isR5) "seed-202610191608" else "seed-202610191401")
         Files.createDirectories(output)
         check(!Files.exists(output.resolve("actions.jsonl"))) { "Refusing to overwrite a prior game" }
         val json = Json { serializersModule = engineSerializersModule; allowStructuredMapKeys = true }
@@ -43,7 +44,7 @@ class ManualR4IntegrationSmokeTest : FunSpec({
         val casts = linkedMapOf<String, Int>()
         val turnsByPlayer = linkedMapOf<String, Int>()
         val started = System.nanoTime()
-        val seed = 202610191401L
+        val seed = if (isR5) 202610191608L else 202610191401L
         val firstCommanderTurn = linkedMapOf<String, Int>()
         val firstCommanderPersonalTurn = linkedMapOf<String, Int>()
         val offered = linkedMapOf<String, Int>()
@@ -52,7 +53,7 @@ class ManualR4IntegrationSmokeTest : FunSpec({
         val legalDeclined = linkedMapOf<String, Int>()
         var scoredChoiceRecords = 0
         var comboRelevantActions = 0
-        fun profile(seat: Int) = ManualTransmissionR4Candidate.profile
+        fun profile(seat: Int) = if (isR5) ManualTransmissionR5Candidate.profile else ManualTransmissionR4Candidate.profile
         val actions = Files.newBufferedWriter(output.resolve("actions.jsonl"))
         val insights = Files.newBufferedWriter(output.resolve("decisions.jsonl"))
         try {
@@ -121,7 +122,7 @@ class ManualR4IntegrationSmokeTest : FunSpec({
             }
             Files.writeString(output.resolve("initial-state.json"), json.encodeToString(init.state))
             write("initialization.json", buildJsonObject {
-                put("seed", seed); put("profile", ManualTransmissionR4Candidate.profile.id); put("players", JsonArray(players.map { JsonPrimitive(it.value) }))
+                put("seed", seed); put("profile", profile(0).id); put("players", JsonArray(players.map { JsonPrimitive(it.value) }))
                 put("commanderPerSeat", commander); put("libraryBeforeDraw", 99); put("startingLife", 40)
                 put("openingPolicy", "All four players keep their seeded opening seven; no hand smoother")
                 put("initialized", true)
@@ -215,7 +216,7 @@ class ManualR4IntegrationSmokeTest : FunSpec({
             if (final != null) runCatching { Files.writeString(output.resolve("final-state.json"), json.encodeToString(final)) }
                 .onFailure { Files.writeString(output.resolve("snapshot-error.txt"), it.stackTraceToString()) }
             val summary = buildJsonObject {
-                put("status", status); put("seed", seed); put("profile", ManualTransmissionR4Candidate.profile.id)
+                put("status", status); put("seed", seed); put("profile", profile(0).id)
                 put("profilesBySeat", JsonArray((0..3).map { JsonPrimitive(profile(it).id) }))
                 put("scoredChoiceRecords", scoredChoiceRecords); put("comboRelevantActionCount", comboRelevantActions)
                 put("firstCommanderGlobalTurn", buildJsonObject { firstCommanderTurn.forEach { (id, n) -> put(id, n) } })
@@ -234,9 +235,10 @@ class ManualR4IntegrationSmokeTest : FunSpec({
                 put("comboAttempts", "Not automatically inferred; inspect complete action and decision streams")
             }
             write("summary.json", summary)
-            println("MANUAL_R4_INTEGRATION_RESULT=$summary")
+            println((if (isR5) "MANUAL_R5_INTEGRATION_RESULT=" else "MANUAL_R4_INTEGRATION_RESULT=") + summary)
         }
-        return status in setOf("COMPLETE", "RESOURCE_CAP") && error in setOf(null, "Bound reached before terminal game state") && accepted >= 64
+        return if (isR5) status == "COMPLETE" && error == null && accepted >= 64 && state?.winnerId != null
+            else status in setOf("COMPLETE", "RESOURCE_CAP") && error in setOf(null, "Bound reached before terminal game state") && accepted >= 64
         }
         // One small isolated game only; preserve an incomplete bounded prefix honestly.
         check(runArm("composed")) { "Composed smoke failed before 64 accepted actions or reported an execution error; inspect preserved evidence" }
