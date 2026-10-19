@@ -1,0 +1,72 @@
+name: Manual R3 encore isolated repair
+on:
+  push:
+    branches: [gameplay/manual-r3-encore-20261019]
+    paths: ['ai/**', '.github/workflows/manual-r3-encore-20261019.yml']
+permissions:
+  contents: read
+jobs:
+  regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_ROUND2_ROOT: ${{ github.workspace }}
+      MANUAL_R3_ROOT: ${{ github.workspace }}
+      MANUAL_R3_OUTPUT: ${{ github.workspace }}/r3-output/regressions
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Focused real-action regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r3-output
+          git rev-parse HEAD > r3-output/source-sha.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualAnimarDevelopmentAdvisorModule.kt > r3-output/preserved-inputs.sha256
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :ai:test --tests '*ManualEncore*RegressionTest' --tests '*CombatAdvisorTest' --tests '*CombatTaxAiTest' --tests '*ManualAnimarDevelopmentPolicyTest' --tests '*ManualAnimarProductiveContinuationTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r3-output/regressions.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r3-encore-regressions-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r3-output/
+            ai/build/test-results/test/
+  smoke:
+    needs: regressions
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_ROUND2_ROOT: ${{ github.workspace }}
+      MANUAL_R3_ROOT: ${{ github.workspace }}
+      MANUAL_R3_OUTPUT: ${{ github.workspace }}/r3-output/smoke
+      MANUAL_R3_SMOKE: '1'
+      MANUAL_R3_ENCORE_SMOKE: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Small deterministic isolated gameplay smoke
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r3-output
+          git rev-parse HEAD > r3-output/source-sha.txt
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualEncore*SmokeTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r3-output/smoke.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r3-encore-smoke-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r3-output/
+            ai/build/test-results/test/
