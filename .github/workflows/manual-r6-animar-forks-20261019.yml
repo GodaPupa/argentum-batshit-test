@@ -1,0 +1,50 @@
+name: Manual R6 bounded alternate-choice AI continuations
+on:
+  push:
+    branches: [gameplay/manual-r6-animar-forks-20261019]
+    paths: ['ai/**', '.github/workflows/manual-r6-animar-forks-20261019.yml']
+permissions:
+  contents: read
+  actions: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R6_AUDIT_ARCHIVE: ${{ github.workspace }}/r6-fork-input/r6-audit.zip
+      MANUAL_R6_FORK_OUTPUT: ${{ github.workspace }}/r6-fork-output
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Freeze original source and authenticated R6 diagnostic artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r6-fork-input r6-fork-output
+          git rev-parse HEAD > r6-fork-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r6-fork-output/tree-sha.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          gh api -H "Accept: application/vnd.github+json" /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12214265732/zip > r6-fork-input/r6-audit.zip
+          printf '%s  %s\n' '985f86cc30893b6243b429b033794d790653fd5bae6a42d2c4a5a1c00a49d7eb' r6-fork-input/r6-audit.zip | sha256sum -c -
+          sha256sum r6-fork-input/r6-audit.zip > r6-fork-output/retained-audit.sha256
+          chmod +x gradlew scripts/gradle-locked
+      - name: At most four labelled bounded actual-AI continuations
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualR6AnimarForkAnalysisTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r6-fork-output/validation.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r6-forks-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r6-fork-output/
+            ai/build/test-results/test/
