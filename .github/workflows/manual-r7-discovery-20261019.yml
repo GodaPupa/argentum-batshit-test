@@ -1,0 +1,55 @@
+name: Manual R7 observational Commander discovery
+on:
+  push:
+    branches: [gameplay/manual-r7-discovery-20261019]
+    paths:
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR7ObservationalHarnessTest.kt'
+      - '.github/workflows/manual-r7-discovery-20261019.yml'
+permissions:
+  contents: read
+jobs:
+  discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: ['202610191609', '202610191610']
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_R7_OUTPUT: ${{ github.workspace }}/r7-output
+      MANUAL_R7_SEED: ${{ matrix.seed }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind accepted R5 production source, frozen deck and predeclared seed
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r7-output
+          git rev-parse HEAD > r7-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r7-output/tree-sha.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualPactDebtAdvisorModule.kt)" = "b8ace7c735f4561dc243ae6fa1fc197b16f61bc1"
+          case "$MANUAL_R7_SEED" in 202610191609|202610191610) ;; *) echo "Unapproved seed"; exit 1 ;; esac
+          printf '%s\n' "$MANUAL_R7_SEED" > r7-output/seed.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Compile test and run one bounded genuine four-player R7 observation
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualR7ObservationalHarnessTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r7-output/validation-${{ matrix.seed }}.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r7-discovery-${{ matrix.seed }}-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r7-output/
+            ai/build/test-results/test/
