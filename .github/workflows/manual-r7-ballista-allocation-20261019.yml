@@ -1,0 +1,55 @@
+name: R7 Ballista narrow prospective allocation and lethal-preservation regressions
+on:
+  push:
+    branches: [gameplay/manual-r7-ballista-allocation-20261019]
+    paths:
+      - 'ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualR7BallistaAllocationCandidate.kt'
+      - 'ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualR7BallistaAllocationAdvisorModule.kt'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR7BallistaAllocationRegressionTest.kt'
+      - '.github/workflows/manual-r7-ballista-allocation-20261019.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  targeted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R7_FORK_ARCHIVE: ${{ github.workspace }}/r7-allocation-input/forks.zip
+      MANUAL_R7_ALLOCATION_OUTPUT: ${{ github.workspace }}/r7-allocation-output
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind unchanged R5 and acquire SHA verified R7 fork
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p r7-allocation-input r7-allocation-output
+          git rev-parse HEAD > r7-allocation-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r7-allocation-output/tree-sha.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualBallistaContinuationAdvisorModule.kt)" = "181c4c54f0cbbf39a7fdd788d890019b5ed81ea6"
+          gh api -H "Accept: application/vnd.github+json" /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12224335627/zip > r7-allocation-input/forks.zip
+          printf '%s  %s\n' 'cf638cfef6e88e63094c126ed8dc1dc5ad84bc200a071ddd22b5f0dc058e769b' r7-allocation-input/forks.zip | sha256sum -c -
+          chmod +x gradlew scripts/gradle-locked
+      - name: Verify source-bound positive and negative Ballista selection
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualR7BallistaAllocationRegressionTest' --tests '*ManualBallista*Test' --tests '*ManualPactDebtProtectionRegressionTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r7-allocation-output/targeted.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r7-allocation-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r7-allocation-output/
+            ai/build/test-results/test/
