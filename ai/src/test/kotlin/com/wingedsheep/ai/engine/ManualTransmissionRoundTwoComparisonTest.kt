@@ -54,7 +54,7 @@ class ManualTransmissionRoundTwoComparisonTest : FunSpec({
         val legalDeclined = linkedMapOf<String, Int>()
         var scoredChoiceRecords = 0
         var comboRelevantActions = 0
-        val candidateProfile = AiProfile.CURRENT.copy(id = "manual-animar-development-r1", advisorModules = listOf(ManualAnimarDevelopmentAdvisorModule))
+        val candidateProfile = AiProfile.CURRENT.copy(id = "manual-animar-development-r2", advisorModules = listOf(ManualAnimarDevelopmentAdvisorModule))
         val actions = Files.newBufferedWriter(output.resolve("actions.jsonl"))
         val insights = Files.newBufferedWriter(output.resolve("decisions.jsonl"))
         try {

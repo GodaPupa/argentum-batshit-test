@@ -22,6 +22,8 @@ object ManualAnimarDevelopmentAdvisorModule : CardAdvisorModule {
  * after deploying Animar versus casting it without Animar. Subtract the creature's ordinary
  * gain so neither its body nor its ETB is awarded for free. No fixed commander bonus,
  * future draws, mana refresh, tax bypass, or unexecuted multi-cast chain is assumed.
+ * A followup must itself improve the deployed board; a better but still negative
+ * continuation is not credit the ordinary pilot will collect.
  */
 object ManualAnimarDevelopmentAdvisor : CardAdvisor {
     override val cardNames = setOf("Animar, Soul of Elements")
@@ -60,6 +62,7 @@ object ManualAnimarDevelopmentAdvisor : CardAdvisor {
                 ?.getCount(CounterType.PLUS_ONE_PLUS_ONE) ?: 0
             if (counters <= initialCounters) continue
             val withGain = context.evaluator.evaluate(withResult.state, withResult.state.projectedState, player) - deployedValue
+            if (!withGain.isFinite() || withGain <= 0.0) continue
             val withoutGain = context.evaluator.evaluate(withoutResult.state, withoutResult.state.projectedState, player) - beforeValue
             val incremental = withGain - withoutGain
             if (incremental.isFinite() && incremental > best) best = incremental

@@ -39,3 +39,43 @@ jobs:
           path: |
             continuation-output/
             ai/build/test-results/test/
+  comparison:
+    needs: regressions
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        seed: [0, 1, 2, 3, 4]
+        seat: [0, 1, 2, 3]
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_ROUND2_RUN: '1'
+      MANUAL_ROUND2_ROOT: ${{ github.workspace }}
+      MANUAL_ROUND2_OUTPUT: ${{ github.workspace }}/continuation-output/games
+      MANUAL_ROUND2_SEED_INDEX: ${{ matrix.seed }}
+      MANUAL_ROUND2_CANDIDATE_SEAT: ${{ matrix.seat }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: One real matched cell with unchanged CURRENT references
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p continuation-output/games
+          git rev-parse HEAD > continuation-output/games/source-sha.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt > continuation-output/games/source-inputs.sha256
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualTransmissionRoundTwoComparisonTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee continuation-output/games/gameplay.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-continuation-seed-${{ matrix.seed }}-seat-${{ matrix.seat }}-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            continuation-output/games/
+            ai/build/test-results/test/

@@ -70,7 +70,7 @@ class ManualAnimarDevelopmentPolicyTest : ScenarioTestBase() {
             val commander = lethal.state.getZone(ZoneKey(lethal.player1Id, Zone.COMMAND)).single()
             lethal.state = lethal.state.updateEntity(commander) { it.with(CommanderComponent(lethal.player1Id)) }
                 .updateEntity(lethal.player1Id) { it.with(CommanderRegistryComponent(listOf(commander))) }
-            val profile = AiProfile.CURRENT.copy(id = "manual-animar-development-r1", advisorModules = listOf(ManualAnimarDevelopmentAdvisorModule))
+            val profile = AiProfile.CURRENT.copy(id = "manual-animar-development-r2", advisorModules = listOf(ManualAnimarDevelopmentAdvisorModule))
             val chosen = AIPlayer.create(cardRegistry, lethal.player1Id, profile).chooseAction(lethal.state)
             val resolved = GameSimulator(cardRegistry).simulate(lethal.state, chosen)
             check(resolved.state.gameOver && resolved.state.winnerId == lethal.player1Id) { "Lethal was not selected: $chosen" }
@@ -100,7 +100,7 @@ class ManualAnimarDevelopmentPolicyTest : ScenarioTestBase() {
                 val audits = mutableListOf<JsonElement>()
                 val abilityBindings = linkedMapOf<String, JsonElement>()
                 val legalWindows = mutableListOf<JsonElement>()
-                val candidate = AiProfile.CURRENT.copy(id = "manual-animar-development-r1", advisorModules = listOf(ManualAnimarDevelopmentAdvisorModule))
+                val candidate = AiProfile.CURRENT.copy(id = "manual-animar-development-r2", advisorModules = listOf(ManualAnimarDevelopmentAdvisorModule))
                 for (line in entry("actions.jsonl").lineSequence().filter { it.isNotBlank() }) {
                     val row = json.parseToJsonElement(line).jsonObject
                     if (row["record"]?.jsonPrimitive?.content != "submit") continue
