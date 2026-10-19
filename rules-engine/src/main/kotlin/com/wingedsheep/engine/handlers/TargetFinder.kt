@@ -123,6 +123,7 @@ class TargetFinder(
                     }
                 if (excludeId != null) baseTargets.filter { it != excludeId } else baseTargets
             }
+        }.filter { id -> id !in state.turnOrder || id in state.activePlayers
         }.filterNot { id -> !ignoreTargetingRestrictions &&
             com.wingedsheep.engine.mechanics.targeting.PlayerColorHexproof.appliesFromSource(state, id, controllerId, sourceId)
         }

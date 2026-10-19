@@ -3,6 +3,7 @@ package com.wingedsheep.ai.engine
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.mechanics.layers.ProjectedState
 import com.wingedsheep.engine.registry.CardRegistry
+import com.wingedsheep.engine.state.components.combat.MustAttackDefenderThisTurnComponent
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.model.EntityId
@@ -47,6 +48,7 @@ object CombatSeed {
         playerId: EntityId,
         cardRegistry: CardRegistry? = null,
         attackPenalty: (EntityId) -> Double = { 0.0 },
+        respectRequiredAttackDefenders: Boolean = false,
     ): AttackSeed {
         val validAttackers = legalAction.validAttackers ?: emptyList()
         val defendingPlayers = legalAction.validAttackTargets ?: emptyList()
@@ -65,8 +67,16 @@ object CombatSeed {
         val opponentCreatures = CombatMath.getOpponentUntappedCreatures(state, projected, opponentId)
         val mandatory = legalAction.mandatoryAttackers ?: emptyList()
 
+        // Enumeration already checks whether a designated defender can legally be attacked.
+        // Only its mandatory attackers qualify; stale/impossible requirements are not forced.
+        val required = if (respectRequiredAttackDefenders) mandatory.mapNotNull { attacker ->
+            state.getEntity(attacker)?.get<MustAttackDefenderThisTurnComponent>()
+                ?.defenderId?.takeIf { it in defendingPlayers }?.let { attacker to it }
+        }.toMap() else emptyMap()
+        fun defender(attacker: EntityId) = required[attacker] ?: opponentId
+
         // ── Lethal check: alpha-strike if damage gets through even with optimal blocking ──
-        if (CombatMath.isLethalAttack(state, projected, validAttackers, opponentCreatures, opponentLife)) {
+        if (required.values.all { it == opponentId } && CombatMath.isLethalAttack(state, projected, validAttackers, opponentCreatures, opponentLife)) {
             val alphaStrike = validAttackers.associateWith { opponentId }
             val affordable = CombatTaxBudget.affordableAttack(
                 state, projected, playerId, cardRegistry, alphaStrike, mandatory.toSet()
@@ -85,7 +95,7 @@ object CombatSeed {
 
         val seedMap = mutableMapOf<EntityId, EntityId>()
         for (entityId in mandatory) {
-            seedMap[entityId] = opponentId
+            seedMap[entityId] = defender(entityId)
         }
         for (entityId in validAttackers) {
             if (entityId in seedMap || entityId in discouraged) continue
@@ -102,7 +112,7 @@ object CombatSeed {
                 opponentCreatures.isEmpty() ||
                 isEvasive
             ) {
-                seedMap[entityId] = opponentId
+                seedMap[entityId] = defender(entityId)
                 continue
             }
 
@@ -112,7 +122,7 @@ object CombatSeed {
                 toughness > bPower
             }
             if (survivesAllBlockers) {
-                seedMap[entityId] = opponentId
+                seedMap[entityId] = defender(entityId)
                 continue
             }
 
@@ -125,7 +135,7 @@ object CombatSeed {
                 if (damageThrough > 0 &&
                     toughness > (opponentCreatures.minOfOrNull { projected.getPower(it) ?: 0 } ?: 0)
                 ) {
-                    seedMap[entityId] = opponentId
+                    seedMap[entityId] = defender(entityId)
                     continue
                 }
             }
@@ -139,7 +149,7 @@ object CombatSeed {
                     opponentCreatureCount = opponentCreatures.size
                 )
             ) {
-                seedMap[entityId] = opponentId
+                seedMap[entityId] = defender(entityId)
                 continue
             }
         }
@@ -180,7 +190,7 @@ object CombatSeed {
 
                 for (entityId in remaining) {
                     if (entityId != holdBack) {
-                        seedMap[entityId] = opponentId
+                        seedMap[entityId] = defender(entityId)
                     }
                 }
             }

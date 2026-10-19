@@ -302,6 +302,9 @@ class TargetValidator {
         targetingSourceType: TargetingSourceType = TargetingSourceType.ANY,
         sourceSnapshot: EntitySnapshot? = null
     ): String? {
+        if (target is ChosenTarget.Player && target.playerId !in state.activePlayers) {
+            return "Target player is no longer in the game"
+        }
         // A separately-chosen player target (target index 0 for "target player's graveyard"
         // spells) — lets a later requirement's filter resolve `OwnedByTargetPlayer` /
         // `ControlledByTargetPlayer` against the player already chosen for this same cast

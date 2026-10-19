@@ -630,11 +630,11 @@ class PredicateEvaluator {
 
             // Mana value predicates - face-down has CMC 0 (Rule 708.2)
             is CardPredicate.ManaValueEquals -> {
-                val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                 cmc == predicate.value
             }
             is CardPredicate.ManaValueAtMost -> {
-                val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                 cmc <= predicate.max
             }
             is CardPredicate.ManaValueEqualsX -> {
@@ -647,7 +647,7 @@ class PredicateEvaluator {
                 val xValue = context?.xValue
                 if (xValue == null) true
                 else {
-                    val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                    val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                     cmc == xValue
                 }
             }
@@ -658,40 +658,40 @@ class PredicateEvaluator {
                 val xValue = context?.xValue
                 if (xValue == null) true
                 else {
-                    val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                    val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                     cmc <= xValue
                 }
             }
             is CardPredicate.ManaValueAtLeast -> {
-                val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                 cmc >= predicate.min
             }
             is CardPredicate.ManaValueAtMostEntity -> {
                 val refEntityId = resolveEntityReference(state, predicate.reference, context) ?: return false
                 val refManaValue = state.getEntity(refEntityId)?.get<CardComponent>()?.manaValue ?: return false
-                val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                 cmc <= refManaValue
             }
             is CardPredicate.ManaValueAtMostEntityManaSpent -> {
                 val refEntityId = resolveEntityReference(state, predicate.reference, context) ?: return false
                 val manaSpent = ManaSpentReader.totalSpent(state, refEntityId)
-                val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                 cmc <= manaSpent
             }
             is CardPredicate.ManaValueAtMostColorsSpent -> {
                 val refEntityId = resolveEntityReference(state, predicate.reference, context) ?: return false
                 val colorsSpent = ManaSpentReader.distinctColorsSpent(state, refEntityId)
-                val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                 cmc <= colorsSpent
             }
             is CardPredicate.ManaValueAtMostDynamic -> {
                 val cap = evaluateDynamicCap(state, predicate.amount, context) ?: return false
-                val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                 cmc <= cap
             }
             is CardPredicate.ManaValueEqualsDynamic -> {
                 val want = evaluateDynamicCap(state, predicate.amount, context) ?: return false
-                val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                 cmc == want
             }
             is CardPredicate.PowerEqualsDynamic -> {
@@ -704,11 +704,11 @@ class PredicateEvaluator {
                 (projectedValues?.toughness ?: card.baseStats?.baseToughness) == want
             }
             CardPredicate.ManaValueIsEven -> {
-                val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                 cmc % 2 == 0
             }
             CardPredicate.ManaValueIsOdd -> {
-                val cmc = if (projectedValues?.isFaceDown == true) 0 else card.manaValue
+                val cmc = if (projectedValues?.isFaceDown == true) 0 else state.manaValueOf(entityId)
                 cmc % 2 != 0
             }
             CardPredicate.HasXInManaCost -> {

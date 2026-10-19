@@ -377,6 +377,8 @@ data class AiProfile(
     val priceLandsInHandAsMana: Boolean = false,
     /** Non-null profiles may only be selected automatically for this set. Arena selection stays explicit. */
     val restrictedToSet: String? = null,
+    /** Opt-in repair: retain engine-mandated per-creature defenders in combat plans. */
+    val respectRequiredAttackDefenders: Boolean = false,
 ) {
     companion object {
         /**

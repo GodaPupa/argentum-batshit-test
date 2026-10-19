@@ -1,0 +1,57 @@
+name: Manual R4 composed candidate single smoke
+on:
+  push:
+    branches: [gameplay/manual-r4-integration-20261019]
+    paths: ['ai/**', 'rules-engine/**', '.github/workflows/manual-r4-integration-20261019.yml']
+permissions:
+  contents: read
+jobs:
+  composition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_ROUND2_ROOT: ${{ github.workspace }}
+      MANUAL_ROUND2_OUTPUT: ${{ github.workspace }}/r4-output/legacy-r2
+      MANUAL_CONTINUATION_OUTPUT: ${{ github.workspace }}/r4-output/legacy-development
+      MANUAL_R3_ROOT: ${{ github.workspace }}
+      MANUAL_R3_OUTPUT: ${{ github.workspace }}/r4-output/legacy-r3
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_R4_OUTPUT: ${{ github.workspace }}/r4-output/original-ballista
+      MANUAL_R4_COMPOSITION_OUTPUT: ${{ github.workspace }}/r4-output/composition
+      MANUAL_R4_SMOKE_OUTPUT: ${{ github.workspace }}/r4-output/smoke
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Preserve exact composed source and frozen input hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r4-output
+          git rev-parse HEAD > r4-output/source-sha.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualAnimarDevelopmentAdvisorModule.kt ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt > r4-output/preserved-inputs.sha256
+          chmod +x gradlew scripts/gradle-locked
+      - name: Original isolated regressions plus composed profile checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualEncoreRegressionTest' --tests '*CombatAdvisorTest' --tests '*CombatTaxAiTest' --tests '*ManualStatue*RegressionTest' --tests '*ManualAnimarDevelopmentPolicyTest' --tests '*ManualAnimarProductiveContinuationTest' --tests '*ManualBallista*Test' --tests '*ManualR4Composition*Test' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r4-output/composition-regressions.log
+          cp -a ai/build/test-results/test r4-output/regression-junit
+      - name: One fresh deterministic Commander mirror after passing regressions
+        env:
+          MANUAL_R4_INTEGRATION_SMOKE: '1'
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualR4IntegrationSmokeTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r4-output/integration-smoke.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r4-integration-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r4-output/
+            ai/build/test-results/test/

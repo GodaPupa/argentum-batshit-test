@@ -50,6 +50,7 @@ class CombatAdvisor(
     private val priceCrackBackAsLife: Boolean = false,
     /** The composite evaluator's `life` coefficient, so the two are in the same units. */
     private val lifeWeight: Double = 1.0,
+    private val respectRequiredAttackDefenders: Boolean = false,
 ) {
     companion object {
         /**
@@ -107,6 +108,7 @@ class CombatAdvisor(
 
         val seed = CombatSeed.attackers(
             state, projected, legalAction, playerId, cardRegistry,
+            respectRequiredAttackDefenders = respectRequiredAttackDefenders,
             attackPenalty = { entityId ->
                 attackPenaltyFor(state, projected, listOf(entityId), playerId)
             },

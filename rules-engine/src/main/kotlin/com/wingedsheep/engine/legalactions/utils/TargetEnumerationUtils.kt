@@ -115,6 +115,7 @@ class TargetEnumerationUtils(
                 }
                 permanents + spells
             }
+        }.filter { id -> id !in state.turnOrder || id in state.activePlayers
         }.filterNot { id ->
             com.wingedsheep.engine.mechanics.targeting.PlayerColorHexproof.appliesFromSource(state, id, playerId, sourceId) ||
                 (id in state.getBattlefield() && sourceId != null &&
