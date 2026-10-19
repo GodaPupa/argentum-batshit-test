@@ -24,6 +24,10 @@ These are constructed rules-engine discovery positions, not sampled 100-card Com
 
 The multiplayer trace demonstrates a decision defect: a legal Ballista shot scored `318.2575` against passing at `319.66`, so both unchanged CURRENT and the R3 Statue candidate declined it. A successful single-opponent trace does not establish multiplayer combo execution.
 
+## Candidate attempts
+
+The first opt-in execution candidate, source `564d644b054555dc5f347d0c2b74df4a6515b0f0`, failed `:ai:compileKotlin` in run `39265781482`: `ManualBallistaContinuationAdvisorModule.kt:50:81 Unresolved reference 'ChosenTarget'`. No tests or games ran on that source. Its raw failed archive is preserved. The missing import was corrected to `com.wingedsheep.engine.state.components.stack.ChosenTarget`; source `a83cbbf4e9e944bd3619bc5aa276561147e140d6` is awaiting validation. Four additional tests exercise the retained Purphoros, finite-body, Palinchron, and Ballista exits through the new wrapper itself.
+
 ## Preservation
 
 Original R3 and R2 evidence remains unchanged. The frozen v0.7 deck and CURRENT policy remain unchanged. This report branch starts from `3057523a6bdd187eed83c886294edc9b9c728143`.
