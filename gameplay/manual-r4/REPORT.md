@@ -1,6 +1,6 @@
 # ARGENTUM — Manual Transmission R4
 
-Work in progress: mechanics passed; multiplayer AI repair and combined gameplay are pending.
+Work in progress: mechanics and AI execution passed; one remaining raw-target enumeration regression and combined gameplay are pending.
 
 ## Verified mechanics
 
@@ -34,7 +34,25 @@ The planner and guard fixtures mistakenly assumed raw legal actions already cont
 
 The same trace exposed a real rules-engine defect: submissions 60–62 targeted previously eliminated player 2 and were accepted. `TargetFinder` selected from historical `turnOrder` with `hasEntity`, which remained true for a player marked left; `TargetValidator` also accepted that player. The narrow repair filters out inactive player identities and rejects explicit targeting of them before paying costs. A separate test uses a real Ballista cast, activated lethal damage, an actual player-left event, rejected re-targeting, and a legal shot at a remaining player.
 
-Source `329cdd4ecbe43e9d44901d26d88fbb5ed4d9a6f4` is running that targeting/matrix regression separately. AI source `bd0aeccba5b70a2e0ec20f28d1be953f9dc39578` is running the 22 execution/guard/exit tests with the same targeting change. These sources were published while validation was pending; commit wording does not establish a test result. Four tests exercise retained Purphoros, finite-body, Palinchron, and Ballista exits through the R4 wrapper itself.
+Source `329cdd4ecbe43e9d44901d26d88fbb5ed4d9a6f4`, run `39268490241`, passed all 21 Ballista scenarios but failed the new departed-player test at line 44: the raw `LegalActionEnumerator` still advertised the departed player. The separate `TargetEnumerationUtils` path required the same active-player filter. Corrected targeting source `58a995ea96fad4503db20b539a27175392fc7585` is awaiting validation. No combined branch or game has been created yet.
+
+AI source `bd0aeccba5b70a2e0ec20f28d1be953f9dc39578`, run `39268527721`, **passed all 22 tests**. These sources were originally published while validation was pending; only the receipts establish test outcomes. Four tests exercise retained Purphoros, finite-body, Palinchron, and Ballista exits through the R4 wrapper itself. Both player-shroud and loss-prevention guards passed using actual bound-X casts.
+
+## Verified AI execution
+
+The constructed four-player counter-building position starts with Animar at eight counters, Statue and Ballista in hand, no mana, and three opponents at two life each. All 92 submissions were accepted; none were forced by the test driver.
+
+| Actual submission | Engine action |
+|---|---|
+| 1, 15, 29, 43 | Four zero-mana Statue casts, each generating an Animar counter; four actual self-return decisions |
+| 57 | Ballista cast at X=6 for zero mana, entering with six counters; Animar's subsequent cast trigger adds its thirteenth counter |
+| 66–69 | Four queued Ballista activations targeting players 2, 3, 4, 2 |
+| 86–87 | Remaining activations target surviving players 3 and 4 |
+| 92 | Sixth actual one-damage event completes the game; player 1 wins, life `[40,0,0,0]` |
+
+There were six real damage events and zero combat-damage events. Opponents received and exercised AI priority windows. The ready four-player X=6 position completed in 36 accepted actions with the same six-shot terminal result. CURRENT and R3 still decline the corresponding multiplayer shots and leave two opponents alive.
+
+This does not establish optimal sequencing: in the two-player counter-building position, R4 used 30 actions versus CURRENT's 27-action Ballista-bounce line. Both won. Planning is bounded to eight Statue casts, the top three legitimate X choices, and 160 hypothetical shots, with conditional opponent passing during planning. Actual gameplay can interrupt the plan. The verified positions are low-life fixtures, not full-life sampled Commander games, and no general infinite-combo or win-rate improvement is claimed.
 
 ## Preservation
 
