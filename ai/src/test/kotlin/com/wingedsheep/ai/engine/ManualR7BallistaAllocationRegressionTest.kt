@@ -1,5 +1,6 @@
 package com.wingedsheep.ai.engine
 
+import com.wingedsheep.ai.insight.AiInsightSink
 import com.wingedsheep.ai.engine.advisor.CastContext
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.ai.engine.advisor.modules.ManualBallistaContinuationAdvisor
@@ -14,6 +15,7 @@ import com.wingedsheep.sdk.core.CounterType
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.*
 import java.nio.file.Files
 import java.nio.file.Path
@@ -98,9 +100,15 @@ class ManualR7BallistaAllocationRegressionTest : FunSpec({
                 "Positive case must score below passing, not merely add no bonus"
             }
 
+            val scoredInsights = mutableListOf<String>()
             val candidatePilot1609 = AIPlayer.create(registry, original1609.playerId,
-                ManualR7BallistaAllocationCandidate.profile)
+                ManualR7BallistaAllocationCandidate.profile,
+                insightSink = AiInsightSink { _, insight ->
+                    scoredInsights += json.encodeToString(insight)
+                })
             val chosen1609 = candidatePilot1609.chooseAction(seed1609)
+            Files.writeString(output.resolve("positive-ai-scored-insights.jsonl"),
+                scoredInsights.joinToString("\n", postfix = "\n"))
             val wronglyRepeatsChip = (chosen1609 as? ActivateAbility)?.targets
                 ?.any { it is ChosenTarget.Permanent && it.entityId ==
                     (original1609.targets.single() as ChosenTarget.Permanent).entityId } == true
