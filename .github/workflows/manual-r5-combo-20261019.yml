@@ -1,0 +1,42 @@
+name: Manual R5 independent realistic combo validation
+on:
+  push:
+    branches: [gameplay/manual-r5-combo-20261019]
+    paths: ['ai/**', 'rules-engine/**', '.github/workflows/manual-r5-combo-20261019.yml']
+permissions:
+  contents: read
+jobs:
+  composition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R5_COMBO_OUTPUT: ${{ github.workspace }}/r5-combo-output
+      MANUAL_R4_COMPOSITION_OUTPUT: ${{ github.workspace }}/r5-combo-output/retained-exits
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Preserve exact composed source and frozen input hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r5-combo-output
+          git rev-parse HEAD > r5-combo-output/source-sha.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualAnimarDevelopmentAdvisorModule.kt ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt > r5-combo-output/preserved-inputs.sha256
+          chmod +x gradlew scripts/gradle-locked
+      - name: Full-life combo, actual interruption and retained legal exits
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualR5RealisticComboTest' --tests '*ManualR4CompositionDelegationTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r5-combo-output/validation.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r5-combo-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r5-combo-output/
+            ai/build/test-results/test/
