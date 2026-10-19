@@ -1,0 +1,64 @@
+name: Round 3 Bone Shards original decision replay
+'on':
+  push:
+    branches:
+    - local/pest-bone-round3-20261018
+    paths:
+    - .github/workflows/local-pest-bone-round3-control.yml
+permissions:
+  contents: read
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+jobs:
+  reproduce:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
+    - uses: actions/setup-java@v4
+      with:
+        distribution: temurin
+        java-version: '21'
+    - uses: gradle/actions/setup-gradle@v4
+    - uses: taiki-e/install-action@v2
+      with:
+        tool: just
+    - name: Restore verified diagnostic fixture
+      run: 'set -euo pipefail
+
+        base64 --decode tools/pest-bone-round3/diagnostic.b64 > "$RUNNER_TEMP/diagnostic.tar.xz"
+
+        echo "fee6943bd7889f5173063295ceb0e0cb872f13734725a88cabd590cd9748e0b2  $RUNNER_TEMP/diagnostic.tar.xz"
+        | sha256sum --check
+
+        tar -xJf "$RUNNER_TEMP/diagnostic.tar.xz"
+
+        chmod +x gradlew scripts/gradle-locked scripts/test-class
+
+        '
+    - name: Reproduce original decision and capture scoring
+      env:
+        MTG_REPLAY_TRACE: ${{ github.workspace }}/tools/pest-bone-round3/fixture.jsonl
+        MTG_REPLAY_REPORT: ${{ runner.temp }}/bone-shards-replay.json
+        MTG_REPLAY_EXPECT: control
+      run: 'set -o pipefail
+
+        just test-class BoneShardsReplayTest --no-daemon --console=plain --stacktrace
+        2>&1 | tee "$RUNNER_TEMP/replay.log"'
+    - name: Preserve diagnostic evidence
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: bone-shards-control-${{ github.run_id }}
+        retention-days: 30
+        path: '${{ runner.temp }}/replay.log
+
+          ${{ runner.temp }}/bone-shards-replay.json
+
+          gym/build/test-results/test/
+
+          gym/src/test/kotlin/com/wingedsheep/gym/BoneShardsReplayTest.kt
+
+          tools/pest-bone-round3/'
