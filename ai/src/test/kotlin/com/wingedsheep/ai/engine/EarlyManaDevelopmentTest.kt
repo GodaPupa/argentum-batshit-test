@@ -11,7 +11,7 @@ import io.kotest.matchers.types.shouldBeInstanceOf
 class EarlyManaDevelopmentTest : ScenarioTestBase() {
     private fun seeded() = scenario().withPlayers().withRngSeed(2026101901L)
     private fun selectedLand(game: TestGame): String? {
-        val action = AIPlayer.create(cardRegistry, game.player1Id, AiProfile.PRODUCTION_CANDIDATE_EXPIRING)
+        val action = AIPlayer.create(cardRegistry, game.player1Id, AiProfile.PRODUCTION_CANDIDATE_EXPIRING.copy(valueEarlyLandContinuations = true))
             .chooseAction(game.state).shouldBeInstanceOf<PlayLand>()
         return game.state.getEntity(action.cardId)?.get<CardComponent>()?.name
     }
