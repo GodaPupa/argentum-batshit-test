@@ -12,6 +12,7 @@ jobs:
     env:
       GRADLE_OPTS: -Dorg.gradle.daemon=false
       MANUAL_ROUND2_ROOT: ${{ github.workspace }}
+      MANUAL_ROUND2_OUTPUT: ${{ github.workspace }}/r3-output/legacy
       MANUAL_R3_ROOT: ${{ github.workspace }}
       MANUAL_R3_OUTPUT: ${{ github.workspace }}/r3-output/regressions
     steps:
@@ -44,6 +45,7 @@ jobs:
     env:
       GRADLE_OPTS: -Dorg.gradle.daemon=false
       MANUAL_ROUND2_ROOT: ${{ github.workspace }}
+      MANUAL_ROUND2_OUTPUT: ${{ github.workspace }}/r3-output/legacy
       MANUAL_R3_ROOT: ${{ github.workspace }}
       MANUAL_R3_OUTPUT: ${{ github.workspace }}/r3-output/smoke
       MANUAL_R3_SMOKE: '1'

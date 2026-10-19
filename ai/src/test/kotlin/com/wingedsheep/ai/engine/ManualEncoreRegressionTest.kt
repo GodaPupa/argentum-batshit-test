@@ -52,13 +52,19 @@ class ManualEncoreRegressionTest : FunSpec({
                 val index = row.getValue("index").jsonPrimitive.int
                 val archived = EncoreArchive.json.decodeFromString<GameAction>(row.getValue("action").jsonPrimitive.content)
                 val action = if (archived is ActivateAbility) {
-                    val ids = simulator.getLegalActions(state, archived.playerId).filter { it.affordable }
-                        .mapNotNull { it.action as? ActivateAbility }.filter { it.sourceId == archived.sourceId }
-                        .map { it.abilityId }.distinct()
+                    val targeted = archived.targets.isNotEmpty()
+                    val candidates = simulator.getLegalActions(state, archived.playerId).filter {
+                        it.affordable && (!targeted || it.requiresTargets) &&
+                            (it.action as? ActivateAbility)?.sourceId == archived.sourceId
+                    }
+                    val ids = candidates.map { (it.action as ActivateAbility).abilityId }.distinct()
                     if (archived.abilityId in ids) archived else {
                         check(ids.size == 1) { "Ambiguous binding at $index: $ids" }
                         bindings += buildJsonObject { put("index", index); put("source", archived.sourceId.value)
-                            put("archived", archived.abilityId.value); put("runtime", ids.single().value) }
+                            put("archived", archived.abilityId.value); put("runtime", ids.single().value)
+                            put("reason", if (targeted) "unique affordable targeted ability on same physical source; original targets preserved"
+                                else "unique affordable ability on same physical source")
+                            put("archivedTargetCount", archived.targets.size) }
                         archived.copy(abilityId = ids.single())
                     }
                 } else archived
@@ -90,6 +96,9 @@ class ManualEncoreRegressionTest : FunSpec({
         chosen.attackers[EntityId("e757")] shouldBe EntityId("manual-mirror-3")
         check(EntityId("e232") in legal.validAttackers!!)
         processor.process(state, chosen).result.error shouldBe null
+        val withOrdinaryAttacker = chosen.copy(attackers = chosen.attackers +
+            (EntityId("e232") to EntityId("manual-mirror-1")))
+        processor.process(state, withOrdinaryAttacker).result.error shouldBe null
         Files.writeString(EncoreArchive.output().resolve("corrected-attack.json"), EncoreArchive.json.encodeToString<GameAction>(chosen))
     }
     test("four-seat seed respects a different required defender and does not claim split lethal") {
