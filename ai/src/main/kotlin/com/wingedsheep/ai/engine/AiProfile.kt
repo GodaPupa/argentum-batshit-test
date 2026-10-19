@@ -139,6 +139,8 @@ data class AiProfile(
      * solve one or the other, never both.
      */
     val sequenceLandsByUsableMana: Boolean = false,
+    /** Opt-in early land scoring using newly legal, simulated spell continuations. */
+    val valueEarlyLandContinuations: Boolean = false,
     /**
      * A combat trick's window is the one where blocks are already in — not any step of combat.
      *
