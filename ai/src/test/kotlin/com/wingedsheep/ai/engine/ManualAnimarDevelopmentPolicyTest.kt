@@ -80,6 +80,10 @@ class ManualAnimarDevelopmentPolicyTest : ScenarioTestBase() {
             val root = System.getenv("MANUAL_ROUND2_ROOT")?.let { Path.of(it) } ?: return@test
             val output = Path.of(requireNotNull(System.getenv("MANUAL_ROUND2_OUTPUT"))).resolve("diagnosis")
             Files.createDirectories(output)
+            // Match the production catalog exactly. Scenario-only token definitions change minting.
+            val cardRegistry = com.wingedsheep.engine.registry.CardRegistry().apply {
+                MtgSetCatalog.all.forEach { register(it.cards); register(it.basicLands) }
+            }
             val json = Json { serializersModule = engineSerializersModule; allowStructuredMapKeys = true }
             ZipFile(root.resolve("tools/manual-round2/original-12161685788.zip").toFile()).use { zip ->
                 fun entry(name: String) = zip.getInputStream(zip.getEntry("manual-mirror/$name")).bufferedReader().readText()
