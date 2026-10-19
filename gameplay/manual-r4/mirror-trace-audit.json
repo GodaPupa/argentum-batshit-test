@@ -1,0 +1,974 @@
+{
+  "summary": {
+    "status": "COMPLETE",
+    "seed": 202610191401,
+    "profile": "manual-transmission-r4-composed",
+    "profilesBySeat": [
+      "manual-transmission-r4-composed",
+      "manual-transmission-r4-composed",
+      "manual-transmission-r4-composed",
+      "manual-transmission-r4-composed"
+    ],
+    "scoredChoiceRecords": 891,
+    "comboRelevantActionCount": 8,
+    "firstCommanderGlobalTurn": {
+      "manual-mirror-3": 21
+    },
+    "firstCommanderPersonalTurn": {
+      "manual-mirror-3": 7
+    },
+    "scoredCommanderOpportunityDecisions": {
+      "manual-mirror-0": 0,
+      "manual-mirror-1": 14,
+      "manual-mirror-2": 0,
+      "manual-mirror-3": 19
+    },
+    "scoredCommanderDeclinedDecisions": {
+      "manual-mirror-0": 0,
+      "manual-mirror-1": 14,
+      "manual-mirror-2": 0,
+      "manual-mirror-3": 16
+    },
+    "legalCommanderOpportunityDecisions": {
+      "manual-mirror-0": 0,
+      "manual-mirror-1": 14,
+      "manual-mirror-2": 0,
+      "manual-mirror-3": 18
+    },
+    "legalCommanderDeclinedDecisions": {
+      "manual-mirror-0": 0,
+      "manual-mirror-1": 14,
+      "manual-mirror-2": 0,
+      "manual-mirror-3": 15
+    },
+    "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+    "submitted": 1943,
+    "accepted": 1943,
+    "error": null,
+    "gameOver": true,
+    "winner": "manual-mirror-3",
+    "playerTurnNumber": 62,
+    "durationMs": 61566,
+    "turnsByPlayer": {
+      "manual-mirror-0": 2,
+      "manual-mirror-1": 28,
+      "manual-mirror-2": 5,
+      "manual-mirror-3": 27
+    },
+    "commanderCasts": {
+      "manual-mirror-0": 0,
+      "manual-mirror-1": 0,
+      "manual-mirror-2": 0,
+      "manual-mirror-3": 3
+    },
+    "life": {
+      "manual-mirror-0": 40,
+      "manual-mirror-1": 34,
+      "manual-mirror-2": 40,
+      "manual-mirror-3": 5
+    },
+    "comboAttempts": "Not automatically inferred; inspect complete action and decision streams"
+  },
+  "submittedRows": 1943,
+  "resultRows": 1943,
+  "acceptedRows": 1943,
+  "rejectedIndices": [],
+  "relevantActions": [
+    {
+      "index": 596,
+      "turn": 21,
+      "actor": "manual-mirror-3",
+      "source": "Animar, Soul of Elements",
+      "decisionSource": null,
+      "selectedCardNames": [],
+      "action": {
+        "type": "CastSpell",
+        "playerId": "manual-mirror-3",
+        "cardId": "e300"
+      },
+      "error": null,
+      "events": [
+        "AbilityActivatedEvent(sourceId=e376, sourceName=Hinterland Harbor, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e372, sourceName=Opal Palace, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e368, sourceName=Command Tower, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e373, sourceName=Yavimaya Coast, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "ManaSpentEvent(playerId=manual-mirror-3, reason=Cast Animar, Soul of Elements, white=0, blue=1, black=0, red=1, green=1, colorless=0)",
+        "SpellCastEvent(spellEntityId=e300, cardName=Animar, Soul of Elements, casterId=manual-mirror-3, targetNames=[], xValue=null, cardPresentation=EventCardPresentation(semanticName=Animar, Soul of Elements, publicName=Animar, Soul of Elements, identityViewers=[]), declaredCostSlot=null, totalManaSpent=3, distinctColorsSpent=3, spentManaSubtypes=[], spentManaSourceIds=[e376, e372, e368], chosenModesCount=0, manaValue=3, castFromZone=COMMAND, alternativeCost=null, sacrificedAsCostNames=[])"
+      ]
+    },
+    {
+      "index": 756,
+      "turn": 25,
+      "actor": "manual-mirror-3",
+      "source": "Animar, Soul of Elements",
+      "decisionSource": null,
+      "selectedCardNames": [],
+      "action": {
+        "type": "CastSpell",
+        "playerId": "manual-mirror-3",
+        "cardId": "e300"
+      },
+      "error": null,
+      "events": [
+        "AbilityActivatedEvent(sourceId=e391, sourceName=Forest, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e377, sourceName=Sulfur Falls, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e372, sourceName=Opal Palace, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e374, sourceName=Shivan Reef, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e373, sourceName=Yavimaya Coast, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e376, sourceName=Hinterland Harbor, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "ManaSpentEvent(playerId=manual-mirror-3, reason=Cast Animar, Soul of Elements, white=0, blue=1, black=0, red=1, green=2, colorless=1)",
+        "SpellCastEvent(spellEntityId=e300, cardName=Animar, Soul of Elements, casterId=manual-mirror-3, targetNames=[], xValue=null, cardPresentation=EventCardPresentation(semanticName=Animar, Soul of Elements, publicName=Animar, Soul of Elements, identityViewers=[]), declaredCostSlot=null, totalManaSpent=5, distinctColorsSpent=3, spentManaSubtypes=[Forest], spentManaSourceIds=[e391, e377, e372, e373, e376], chosenModesCount=0, manaValue=3, castFromZone=COMMAND, alternativeCost=null, sacrificedAsCostNames=[])"
+      ]
+    },
+    {
+      "index": 1095,
+      "turn": 33,
+      "actor": "manual-mirror-3",
+      "source": "Ancestral Statue",
+      "decisionSource": null,
+      "selectedCardNames": [],
+      "action": {
+        "type": "CastSpell",
+        "playerId": "manual-mirror-3",
+        "cardId": "e341"
+      },
+      "error": null,
+      "events": [
+        "AbilityActivatedEvent(sourceId=e374, sourceName=Shivan Reef, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e377, sourceName=Sulfur Falls, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e373, sourceName=Yavimaya Coast, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e376, sourceName=Hinterland Harbor, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "ManaSpentEvent(playerId=manual-mirror-3, reason=Cast Ancestral Statue, white=0, blue=1, black=0, red=0, green=1, colorless=2)",
+        "SpellCastEvent(spellEntityId=e341, cardName=Ancestral Statue, casterId=manual-mirror-3, targetNames=[], xValue=null, cardPresentation=EventCardPresentation(semanticName=Ancestral Statue, publicName=Ancestral Statue, identityViewers=[]), declaredCostSlot=null, totalManaSpent=4, distinctColorsSpent=2, spentManaSubtypes=[], spentManaSourceIds=[e374, e377, e373, e376], chosenModesCount=0, manaValue=4, castFromZone=HAND, alternativeCost=null, sacrificedAsCostNames=[])"
+      ]
+    },
+    {
+      "index": 1100,
+      "turn": 33,
+      "actor": "manual-mirror-3",
+      "source": null,
+      "decisionSource": "Ancestral Statue",
+      "selectedCardNames": [
+        "Imperial Recruiter"
+      ],
+      "action": {
+        "type": "SubmitDecision",
+        "playerId": "manual-mirror-3",
+        "response": {
+          "type": "CardsSelectedResponse",
+          "decisionId": "r72",
+          "selectedCards": [
+            "e343"
+          ]
+        }
+      },
+      "error": null,
+      "events": []
+    },
+    {
+      "index": 1430,
+      "turn": 47,
+      "actor": "manual-mirror-3",
+      "source": "Animar, Soul of Elements",
+      "decisionSource": null,
+      "selectedCardNames": [],
+      "action": {
+        "type": "CastSpell",
+        "playerId": "manual-mirror-3",
+        "cardId": "e300"
+      },
+      "error": null,
+      "events": [
+        "AbilityActivatedEvent(sourceId=e391, sourceName=Forest, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e396, sourceName=Island, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e399, sourceName=Mountain, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e394, sourceName=Forest, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e397, sourceName=Island, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e377, sourceName=Sulfur Falls, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "AbilityActivatedEvent(sourceId=e373, sourceName=Yavimaya Coast, controllerId=manual-mirror-3, abilityEntityId=null, costsTap=true, isManaAbility=true, isExhaust=false)",
+        "ManaSpentEvent(playerId=manual-mirror-3, reason=Cast Animar, Soul of Elements, white=0, blue=3, black=0, red=1, green=2, colorless=1)",
+        "SpellCastEvent(spellEntityId=e300, cardName=Animar, Soul of Elements, casterId=manual-mirror-3, targetNames=[], xValue=null, cardPresentation=EventCardPresentation(semanticName=Animar, Soul of Elements, publicName=Animar, Soul of Elements, identityViewers=[]), declaredCostSlot=null, totalManaSpent=7, distinctColorsSpent=3, spentManaSubtypes=[Forest, Island, Mountain], spentManaSourceIds=[e391, e396, e399, e394, e397, e377, e373], chosenModesCount=0, manaValue=3, castFromZone=COMMAND, alternativeCost=null, sacrificedAsCostNames=[])"
+      ]
+    },
+    {
+      "index": 1529,
+      "turn": 50,
+      "actor": "manual-mirror-1",
+      "source": "Walking Ballista",
+      "decisionSource": null,
+      "selectedCardNames": [],
+      "action": {
+        "type": "CastSpell",
+        "playerId": "manual-mirror-1",
+        "cardId": "e142"
+      },
+      "error": null,
+      "events": [
+        "ManaSpentEvent(playerId=manual-mirror-1, reason=Cast Walking Ballista, white=0, blue=0, black=0, red=0, green=0, colorless=0)",
+        "SpellCastEvent(spellEntityId=e142, cardName=Walking Ballista, casterId=manual-mirror-1, targetNames=[], xValue=0, cardPresentation=EventCardPresentation(semanticName=Walking Ballista, publicName=Walking Ballista, identityViewers=[]), declaredCostSlot=null, totalManaSpent=0, distinctColorsSpent=0, spentManaSubtypes=[], spentManaSourceIds=[], chosenModesCount=0, manaValue=0, castFromZone=HAND, alternativeCost=null, sacrificedAsCostNames=[])"
+      ]
+    },
+    {
+      "index": 1576,
+      "turn": 51,
+      "actor": "manual-mirror-3",
+      "source": "Walking Ballista",
+      "decisionSource": null,
+      "selectedCardNames": [],
+      "action": {
+        "type": "CastSpell",
+        "playerId": "manual-mirror-3",
+        "cardId": "e342",
+        "xValue": 2
+      },
+      "error": null,
+      "events": [
+        "ManaSpentEvent(playerId=manual-mirror-3, reason=Cast Walking Ballista, white=0, blue=0, black=0, red=0, green=0, colorless=0)",
+        "SpellCastEvent(spellEntityId=e342, cardName=Walking Ballista, casterId=manual-mirror-3, targetNames=[], xValue=2, cardPresentation=EventCardPresentation(semanticName=Walking Ballista, publicName=Walking Ballista, identityViewers=[]), declaredCostSlot=null, totalManaSpent=0, distinctColorsSpent=0, spentManaSubtypes=[], spentManaSourceIds=[], chosenModesCount=0, manaValue=4, castFromZone=HAND, alternativeCost=null, sacrificedAsCostNames=[])"
+      ]
+    },
+    {
+      "index": 1581,
+      "turn": 51,
+      "actor": "manual-mirror-3",
+      "source": "Walking Ballista",
+      "decisionSource": null,
+      "selectedCardNames": [],
+      "action": {
+        "type": "ActivateAbility",
+        "playerId": "manual-mirror-3",
+        "sourceId": "e342",
+        "abilityId": "ability_5072",
+        "targets": [
+          {
+            "type": "Permanent",
+            "entityId": "e128"
+          }
+        ]
+      },
+      "error": null,
+      "events": [
+        "AbilityActivatedEvent(sourceId=e342, sourceName=Walking Ballista, controllerId=manual-mirror-3, abilityEntityId=e588, costsTap=false, isManaAbility=false, isExhaust=false)"
+      ]
+    },
+    {
+      "index": 1582,
+      "turn": 51,
+      "actor": "manual-mirror-3",
+      "source": "Walking Ballista",
+      "decisionSource": null,
+      "selectedCardNames": [],
+      "action": {
+        "type": "ActivateAbility",
+        "playerId": "manual-mirror-3",
+        "sourceId": "e342",
+        "abilityId": "ability_5072",
+        "targets": [
+          {
+            "type": "Permanent",
+            "entityId": "e102"
+          }
+        ]
+      },
+      "error": null,
+      "events": [
+        "AbilityActivatedEvent(sourceId=e342, sourceName=Walking Ballista, controllerId=manual-mirror-3, abilityEntityId=e589, costsTap=false, isManaAbility=false, isExhaust=false)"
+      ]
+    }
+  ],
+  "archive": "gameplay/manual-r4/evidence/integration-39270737788.zip",
+  "entry": "r4-output/smoke/seed-202610191401",
+  "engineSource": "004ec925b3edc94f972d0141d1edb1e294e641b5",
+  "pactCasts": [
+    {
+      "index": 47,
+      "turn": 2,
+      "actor": "manual-mirror-0",
+      "action": {
+        "type": "CastSpell",
+        "playerId": "manual-mirror-0",
+        "cardId": "e66",
+        "targets": [
+          {
+            "type": "Spell",
+            "spellEntityId": "e154"
+          }
+        ]
+      },
+      "events": [
+        "ManaSpentEvent(playerId=manual-mirror-0, reason=Cast Pact of Negation, white=0, blue=0, black=0, red=0, green=0, colorless=0)",
+        "ZoneChangeEvent(entityId=e66, entityName=Pact of Negation, fromZone=HAND, toZone=STACK, ownerId=manual-mirror-0, lastKnown=null, enteredBattlefieldTimestamp=null, copyOfOriginalName=null, xValue=null, wasSacrificed=false, craftMaterial=false, oldObject=ObjectRef(entityId=e66, generation=403), newObject=ObjectRef(entityId=e66, generation=434), transitionCause=PRIMARY, requestedDestination=STACK, entrySnapshot=null, entryTriggersAlreadyProcessed=false, castFromZone=null)",
+        "SpellCastEvent(spellEntityId=e66, cardName=Pact of Negation, casterId=manual-mirror-0, targetNames=[Wild Growth], xValue=null, cardPresentation=EventCardPresentation(semanticName=Pact of Negation, publicName=Pact of Negation, identityViewers=[]), declaredCostSlot=null, totalManaSpent=0, distinctColorsSpent=0, spentManaSubtypes=[], spentManaSourceIds=[], chosenModesCount=0, manaValue=0, castFromZone=HAND, alternativeCost=null, sacrificedAsCostNames=[])",
+        "CommitCrimeEvent(playerId=manual-mirror-0, sourceEntityId=e66, sourceName=Pact of Negation)",
+        "TargetsChosenEvent(chooserId=manual-mirror-0, stackObjectId=e66, sourceName=Pact of Negation)",
+        "BecomesTargetEvent(targetEntityId=e154, targetName=Wild Growth, sourceEntityId=e66, controllerId=manual-mirror-0, firstTimeByThisController=true, targetIsSpell=true, sourceIsSpell=true, targetIsPlayer=false)"
+      ]
+    },
+    {
+      "index": 393,
+      "turn": 14,
+      "actor": "manual-mirror-2",
+      "action": {
+        "type": "CastSpell",
+        "playerId": "manual-mirror-2",
+        "cardId": "e266",
+        "targets": [
+          {
+            "type": "Spell",
+            "spellEntityId": "e328"
+          }
+        ]
+      },
+      "events": [
+        "ManaSpentEvent(playerId=manual-mirror-2, reason=Cast Pact of Negation, white=0, blue=0, black=0, red=0, green=0, colorless=0)",
+        "ZoneChangeEvent(entityId=e266, entityName=Pact of Negation, fromZone=HAND, toZone=STACK, ownerId=manual-mirror-2, lastKnown=null, enteredBattlefieldTimestamp=null, copyOfOriginalName=null, xValue=null, wasSacrificed=false, craftMaterial=false, oldObject=ObjectRef(entityId=e266, generation=476), newObject=ObjectRef(entityId=e266, generation=479), transitionCause=PRIMARY, requestedDestination=STACK, entrySnapshot=null, entryTriggersAlreadyProcessed=false, castFromZone=null)",
+        "SpellCastEvent(spellEntityId=e266, cardName=Pact of Negation, casterId=manual-mirror-2, targetNames=[Reckless Bushwhacker], xValue=null, cardPresentation=EventCardPresentation(semanticName=Pact of Negation, publicName=Pact of Negation, identityViewers=[]), declaredCostSlot=null, totalManaSpent=0, distinctColorsSpent=0, spentManaSubtypes=[], spentManaSourceIds=[], chosenModesCount=0, manaValue=0, castFromZone=HAND, alternativeCost=null, sacrificedAsCostNames=[])",
+        "CommitCrimeEvent(playerId=manual-mirror-2, sourceEntityId=e266, sourceName=Pact of Negation)",
+        "TargetsChosenEvent(chooserId=manual-mirror-2, stackObjectId=e266, sourceName=Pact of Negation)",
+        "BecomesTargetEvent(targetEntityId=e328, targetName=Reckless Bushwhacker, sourceEntityId=e266, controllerId=manual-mirror-2, firstTimeByThisController=true, targetIsSpell=true, sourceIsSpell=true, targetIsPlayer=false)"
+      ]
+    },
+    {
+      "index": 588,
+      "turn": 21,
+      "actor": "manual-mirror-1",
+      "action": {
+        "type": "CastSpell",
+        "playerId": "manual-mirror-1",
+        "cardId": "e166",
+        "targets": [
+          {
+            "type": "Spell",
+            "spellEntityId": "e359"
+          }
+        ]
+      },
+      "events": [
+        "ManaSpentEvent(playerId=manual-mirror-1, reason=Cast Pact of Negation, white=0, blue=0, black=0, red=0, green=0, colorless=0)",
+        "ZoneChangeEvent(entityId=e166, entityName=Pact of Negation, fromZone=HAND, toZone=STACK, ownerId=manual-mirror-1, lastKnown=null, enteredBattlefieldTimestamp=null, copyOfOriginalName=null, xValue=null, wasSacrificed=false, craftMaterial=false, oldObject=ObjectRef(entityId=e166, generation=523), newObject=ObjectRef(entityId=e166, generation=528), transitionCause=PRIMARY, requestedDestination=STACK, entrySnapshot=null, entryTriggersAlreadyProcessed=false, castFromZone=null)",
+        "SpellCastEvent(spellEntityId=e166, cardName=Pact of Negation, casterId=manual-mirror-1, targetNames=[Beast Within], xValue=null, cardPresentation=EventCardPresentation(semanticName=Pact of Negation, publicName=Pact of Negation, identityViewers=[]), declaredCostSlot=null, totalManaSpent=0, distinctColorsSpent=0, spentManaSubtypes=[], spentManaSourceIds=[], chosenModesCount=0, manaValue=0, castFromZone=HAND, alternativeCost=null, sacrificedAsCostNames=[])",
+        "CommitCrimeEvent(playerId=manual-mirror-1, sourceEntityId=e166, sourceName=Pact of Negation)",
+        "TargetsChosenEvent(chooserId=manual-mirror-1, stackObjectId=e166, sourceName=Pact of Negation)",
+        "BecomesTargetEvent(targetEntityId=e359, targetName=Beast Within, sourceEntityId=e166, controllerId=manual-mirror-1, firstTimeByThisController=true, targetIsSpell=true, sourceIsSpell=true, targetIsPlayer=false)"
+      ]
+    }
+  ],
+  "eliminationEvidence": [
+    {
+      "index": 133,
+      "turn": 5,
+      "action": {
+        "type": "PassPriority",
+        "playerId": "manual-mirror-2"
+      },
+      "events": [
+        "PlayerLostEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)",
+        "PlayerLeftGameEvent(playerId=manual-mirror-0, reason=CARD_EFFECT, removedObjectCount=100)"
+      ]
+    },
+    {
+      "index": 453,
+      "turn": 16,
+      "action": {
+        "type": "PassPriority",
+        "playerId": "manual-mirror-3"
+      },
+      "events": [
+        "PlayerLostEvent(playerId=manual-mirror-2, reason=CARD_EFFECT, message=Pact of Negation upkeep payment was not paid)",
+        "PlayerLeftGameEvent(playerId=manual-mirror-2, reason=CARD_EFFECT, removedObjectCount=101)"
+      ]
+    },
+    {
+      "index": 1943,
+      "turn": 62,
+      "action": {
+        "type": "PassPriority",
+        "playerId": "manual-mirror-3"
+      },
+      "events": [
+        "DrawFailedEvent(playerId=manual-mirror-1, reason=Library is empty)",
+        "GameEndedEvent(winnerId=manual-mirror-3, reason=CARD_EFFECT)"
+      ]
+    }
+  ],
+  "ballistaResolutionEvidence": [
+    {
+      "index": 1581,
+      "turn": 51,
+      "action": {
+        "type": "ActivateAbility",
+        "playerId": "manual-mirror-3",
+        "sourceId": "e342",
+        "abilityId": "ability_5072",
+        "targets": [
+          {
+            "type": "Permanent",
+            "entityId": "e128"
+          }
+        ]
+      },
+      "events": [
+        "CountersRemovedEvent(entityId=e342, counterType=+1/+1, amount=1, entityName=Walking Ballista, remainingCount=null, byDamagePrevention=false)",
+        "AbilityActivatedEvent(sourceId=e342, sourceName=Walking Ballista, controllerId=manual-mirror-3, abilityEntityId=e588, costsTap=false, isManaAbility=false, isExhaust=false)",
+        "CommitCrimeEvent(playerId=manual-mirror-3, sourceEntityId=e588, sourceName=Walking Ballista)",
+        "TargetsChosenEvent(chooserId=manual-mirror-3, stackObjectId=e588, sourceName=Walking Ballista)",
+        "BecomesTargetEvent(targetEntityId=e128, targetName=Reckless Bushwhacker, sourceEntityId=e588, controllerId=manual-mirror-3, firstTimeByThisController=true, targetIsSpell=false, sourceIsSpell=false, targetIsPlayer=false)"
+      ]
+    },
+    {
+      "index": 1582,
+      "turn": 51,
+      "action": {
+        "type": "ActivateAbility",
+        "playerId": "manual-mirror-3",
+        "sourceId": "e342",
+        "abilityId": "ability_5072",
+        "targets": [
+          {
+            "type": "Permanent",
+            "entityId": "e102"
+          }
+        ]
+      },
+      "events": [
+        "CountersRemovedEvent(entityId=e342, counterType=+1/+1, amount=1, entityName=Walking Ballista, remainingCount=null, byDamagePrevention=false)",
+        "AbilityActivatedEvent(sourceId=e342, sourceName=Walking Ballista, controllerId=manual-mirror-3, abilityEntityId=e589, costsTap=false, isManaAbility=false, isExhaust=false)",
+        "CommitCrimeEvent(playerId=manual-mirror-3, sourceEntityId=e589, sourceName=Walking Ballista)",
+        "TargetsChosenEvent(chooserId=manual-mirror-3, stackObjectId=e589, sourceName=Walking Ballista)",
+        "BecomesTargetEvent(targetEntityId=e102, targetName=Paradise Druid, sourceEntityId=e589, controllerId=manual-mirror-3, firstTimeByThisController=true, targetIsSpell=false, sourceIsSpell=false, targetIsPlayer=false)",
+        "CreatureDestroyedEvent(entityId=e342, name=Walking Ballista, reason=zero toughness, controllerId=manual-mirror-3)",
+        "ZoneChangeEvent(entityId=e342, entityName=Walking Ballista, fromZone=BATTLEFIELD, toZone=GRAVEYARD, ownerId=manual-mirror-3, lastKnown=EntitySnapshot(entityId=e342, power=0, toughness=0, subtypes=[Construct], supertypes=[], controllerId=manual-mirror-3, counters={}, keywords=[], lostAllAbilities=false, battlefieldEntryTimestamp=306, typeLine=Artifact Creature \u2014 Construct, cardDefinitionId=Walking Ballista#181, name=Walking Ballista, copyOfOriginalName=null, attachedTo=null, wasEquipped=false, attachmentIds=[], wasEnchanted=false, blockingOrBlockedByIds=[], wasAttacking=false, attackedDefenderId=null, wasToken=false, createdBy=null, wasSuspected=false, damageDealtByPlayers={}, damageSources=[], castX=null, alternativeCost=null, wasFaceDown=false, objectRef=ObjectRef(entityId=e342, generation=901), colors=[], ownerId=manual-mirror-3, grantedStaticAbilities=[]), enteredBattlefieldTimestamp=null, copyOfOriginalName=null, xValue=2, wasSacrificed=false, craftMaterial=false, oldObject=ObjectRef(entityId=e342, generation=901), newObject=ObjectRef(entityId=e342, generation=904), transitionCause=PRIMARY, requestedDestination=GRAVEYARD, entrySnapshot=null, entryTriggersAlreadyProcessed=false, castFromZone=null)"
+      ]
+    },
+    {
+      "index": 1583,
+      "turn": 51,
+      "action": {
+        "type": "PassPriority",
+        "playerId": "manual-mirror-3"
+      },
+      "events": [
+        "PriorityChangedEvent(playerId=manual-mirror-1)"
+      ]
+    },
+    {
+      "index": 1584,
+      "turn": 51,
+      "action": {
+        "type": "ActivateAbility",
+        "playerId": "manual-mirror-1",
+        "sourceId": "e108",
+        "abilityId": "ability_1672",
+        "targets": [
+          {
+            "type": "Permanent",
+            "entityId": "e128"
+          }
+        ],
+        "costPayment": {
+          "sacrificedPermanents": [
+            "e198"
+          ]
+        }
+      },
+      "events": [
+        "PermanentsSacrificedEvent(playerId=manual-mirror-1, permanentIds=[e198], permanentNames=[Mountain])",
+        "ZoneChangeEvent(entityId=e198, entityName=Mountain, fromZone=BATTLEFIELD, toZone=GRAVEYARD, ownerId=manual-mirror-1, lastKnown=EntitySnapshot(entityId=e198, power=null, toughness=null, subtypes=[Mountain], supertypes=[BASIC], controllerId=manual-mirror-1, counters={}, keywords=[], lostAllAbilities=false, battlefieldEntryTimestamp=283, typeLine=Basic Land \u2014 Mountain, cardDefinitionId=Mountain#HOB-192, name=Mountain, copyOfOriginalName=null, attachedTo=null, wasEquipped=false, attachmentIds=[], wasEnchanted=false, blockingOrBlockedByIds=[], wasAttacking=false, attackedDefenderId=null, wasToken=false, createdBy=null, wasSuspected=false, damageDealtByPlayers={}, damageSources=[], castX=null, alternativeCost=null, wasFaceDown=false, objectRef=ObjectRef(entityId=e198, generation=866), colors=[], ownerId=manual-mirror-1, grantedStaticAbilities=[]), enteredBattlefieldTimestamp=null, copyOfOriginalName=null, xValue=null, wasSacrificed=true, craftMaterial=false, oldObject=ObjectRef(entityId=e198, generation=866), newObject=ObjectRef(entityId=e198, generation=905), transitionCause=PRIMARY, requestedDestination=GRAVEYARD, entrySnapshot=null, entryTriggersAlreadyProcessed=false, castFromZone=null)",
+        "AbilityActivatedEvent(sourceId=e108, sourceName=Sylvan Safekeeper, controllerId=manual-mirror-1, abilityEntityId=e590, costsTap=false, isManaAbility=false, isExhaust=false)",
+        "TargetsChosenEvent(chooserId=manual-mirror-1, stackObjectId=e590, sourceName=Sylvan Safekeeper)",
+        "BecomesTargetEvent(targetEntityId=e128, targetName=Reckless Bushwhacker, sourceEntityId=e590, controllerId=manual-mirror-1, firstTimeByThisController=true, targetIsSpell=false, sourceIsSpell=false, targetIsPlayer=false)"
+      ]
+    },
+    {
+      "index": 1585,
+      "turn": 51,
+      "action": {
+        "type": "PassPriority",
+        "playerId": "manual-mirror-1"
+      },
+      "events": [
+        "PriorityChangedEvent(playerId=manual-mirror-3)"
+      ]
+    },
+    {
+      "index": 1586,
+      "turn": 51,
+      "action": {
+        "type": "PassPriority",
+        "playerId": "manual-mirror-3"
+      },
+      "events": [
+        "KeywordGrantedEvent(targetId=e128, targetName=Reckless Bushwhacker, keyword=shroud, sourceName=Sylvan Safekeeper)",
+        "AbilityResolvedEvent(sourceId=e108, description=Sylvan Safekeeper)",
+        "PriorityChangedEvent(playerId=manual-mirror-3)"
+      ]
+    },
+    {
+      "index": 1587,
+      "turn": 51,
+      "action": {
+        "type": "PassPriority",
+        "playerId": "manual-mirror-3"
+      },
+      "events": [
+        "PriorityChangedEvent(playerId=manual-mirror-1)"
+      ]
+    },
+    {
+      "index": 1588,
+      "turn": 51,
+      "action": {
+        "type": "PassPriority",
+        "playerId": "manual-mirror-1"
+      },
+      "events": [
+        "DamageDealtEvent(sourceId=e342, targetId=e102, amount=1, isCombatDamage=false, sourceName=Walking Ballista, targetName=Paradise Druid, targetIsPlayer=false, targetWasFaceDown=false, targetControllerId=manual-mirror-1, targetWasCreature=true, excessAmount=0, targetToughnessAtDamage=1, sourceTargetIdsAtDamage=null, sourceSnapshot=EntitySnapshot(entityId=e342, power=0, toughness=0, subtypes=[Construct], supertypes=[], controllerId=manual-mirror-3, counters={}, keywords=[], lostAllAbilities=false, battlefieldEntryTimestamp=306, typeLine=Artifact Creature \u2014 Construct, cardDefinitionId=Walking Ballista#181, name=Walking Ballista, copyOfOriginalName=null, attachedTo=null, wasEquipped=false, attachmentIds=[], wasEnchanted=false, blockingOrBlockedByIds=[], wasAttacking=false, attackedDefenderId=null, wasToken=false, createdBy=null, wasSuspected=false, damageDealtByPlayers={}, damageSources=[], castX=null, alternativeCost=null, wasFaceDown=false, objectRef=ObjectRef(entityId=e342, generation=901), colors=[], ownerId=manual-mirror-3, grantedStaticAbilities=[]), sourceWasOnBattlefield=false)",
+        "AbilityResolvedEvent(sourceId=e342, description=Walking Ballista)",
+        "CreatureDestroyedEvent(entityId=e102, name=Paradise Druid, reason=lethal damage, controllerId=manual-mirror-1)",
+        "ZoneChangeEvent(entityId=e102, entityName=Paradise Druid, fromZone=BATTLEFIELD, toZone=GRAVEYARD, ownerId=manual-mirror-1, lastKnown=EntitySnapshot(entityId=e102, power=2, toughness=1, subtypes=[Elf, Druid], supertypes=[], controllerId=manual-mirror-1, counters={}, keywords=[], lostAllAbilities=false, battlefieldEntryTimestamp=272, typeLine=Creature \u2014 Elf Druid, cardDefinitionId=Paradise Druid#171, name=Paradise Druid, copyOfOriginalName=null, attachedTo=null, wasEquipped=false, attachmentIds=[], wasEnchanted=false, blockingOrBlockedByIds=[], wasAttacking=false, attackedDefenderId=null, wasToken=false, createdBy=null, wasSuspected=false, damageDealtByPlayers={manual-mirror-3=1}, damageSources=[DamageSourceLki(sourceControllerId=manual-mirror-3, sourceSubtypes=[Construct], sourceWasCreature=true)], castX=null, alternativeCost=null, wasFaceDown=false, objectRef=ObjectRef(entityId=e102, generation=847), colors=[GREEN], ownerId=manual-mirror-1, grantedStaticAbilities=[]), enteredBattlefieldTimestamp=null, copyOfOriginalName=null, xValue=null, wasSacrificed=false, craftMaterial=false, oldObject=ObjectRef(entityId=e102, generation=847), newObject=ObjectRef(entityId=e102, generation=907), transitionCause=PRIMARY, requestedDestination=GRAVEYARD, entrySnapshot=null, entryTriggersAlreadyProcessed=false, castFromZone=null)",
+        "PriorityChangedEvent(playerId=manual-mirror-3)"
+      ]
+    },
+    {
+      "index": 1589,
+      "turn": 51,
+      "action": {
+        "type": "PassPriority",
+        "playerId": "manual-mirror-3"
+      },
+      "events": [
+        "PriorityChangedEvent(playerId=manual-mirror-1)"
+      ]
+    },
+    {
+      "index": 1590,
+      "turn": 51,
+      "action": {
+        "type": "PassPriority",
+        "playerId": "manual-mirror-1"
+      },
+      "events": [
+        "AbilityFizzledEvent(sourceId=e342, description=Walking Ballista, reason=All targets are invalid)",
+        "PriorityChangedEvent(playerId=manual-mirror-3)"
+      ]
+    }
+  ],
+  "sourceMetrics": {
+    "Animar, Soul of Elements": {
+      "castIndices": [
+        596,
+        756,
+        1430
+      ],
+      "activationIndices": []
+    },
+    "Ancestral Statue": {
+      "castIndices": [
+        1095
+      ],
+      "activationIndices": []
+    },
+    "Walking Ballista": {
+      "castIndices": [
+        1529,
+        1576
+      ],
+      "activationIndices": [
+        1581,
+        1582
+      ]
+    },
+    "Purphoros, God of the Forge": {
+      "castIndices": [],
+      "activationIndices": []
+    }
+  },
+  "statueDecisions": [
+    {
+      "index": 1100,
+      "turn": 33,
+      "actor": "manual-mirror-3",
+      "action": {
+        "type": "SubmitDecision",
+        "playerId": "manual-mirror-3",
+        "response": {
+          "type": "CardsSelectedResponse",
+          "decisionId": "r72",
+          "selectedCards": [
+            "e343"
+          ]
+        }
+      },
+      "selectedCardNames": [
+        "Imperial Recruiter"
+      ]
+    }
+  ],
+  "libraryReconstruction": {
+    "initialLibraries": {
+      "manual-mirror-0": 92,
+      "manual-mirror-1": 92,
+      "manual-mirror-2": 92,
+      "manual-mirror-3": 92
+    },
+    "reconstructedFinalLibraries": {
+      "manual-mirror-0": 0,
+      "manual-mirror-1": 0,
+      "manual-mirror-2": 0,
+      "manual-mirror-3": 44
+    },
+    "finalSnapshotLibraries": {
+      "manual-mirror-0": 0,
+      "manual-mirror-1": 0,
+      "manual-mirror-2": 0,
+      "manual-mirror-3": 44
+    },
+    "soulOfHarvestOptionalChoices": [
+      {
+        "index": 572,
+        "turn": 20,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 79,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r12",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 638,
+        "turn": 22,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 75,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r18",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 656,
+        "turn": 22,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 70,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r22",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 707,
+        "turn": 24,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 67,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r27",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 722,
+        "turn": 24,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 64,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r29",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 796,
+        "turn": 26,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 60,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r36",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 811,
+        "turn": 26,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 57,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r40",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 826,
+        "turn": 26,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 54,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r44",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 834,
+        "turn": 26,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 52,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r45",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 842,
+        "turn": 26,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 50,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r46",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1136,
+        "turn": 34,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 43,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r78",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1201,
+        "turn": 36,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 40,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r83",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1371,
+        "turn": 44,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 34,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r91",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1467,
+        "turn": 48,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 29,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r93",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1519,
+        "turn": 50,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 24,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r98",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1528,
+        "turn": 50,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 22,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r99",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1536,
+        "turn": 50,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 20,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r100",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1616,
+        "turn": 52,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 17,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r107",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1715,
+        "turn": 54,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 14,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r123",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1726,
+        "turn": 54,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 11,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r125",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1780,
+        "turn": 56,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 8,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r132",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1847,
+        "turn": 58,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 6,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r141",
+            "choice": true
+          }
+        }
+      },
+      {
+        "index": 1863,
+        "turn": 58,
+        "actor": "manual-mirror-1",
+        "libraryBefore": 2,
+        "action": {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-1",
+          "response": {
+            "type": "YesNoResponse",
+            "decisionId": "r143",
+            "choice": true
+          }
+        }
+      }
+    ]
+  }
+}
