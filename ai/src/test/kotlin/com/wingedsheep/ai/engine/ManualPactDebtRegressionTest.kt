@@ -106,6 +106,29 @@ class ManualPactDebtRegressionTest : ScenarioTestBase() {
             game.state.gameOver shouldBe false
             game.getLifeTotal(1) shouldBe 2
         }
+        test("opponent end-step pass discount cannot select unfunded Pact against own Veil") {
+            val builder = scenario().withPlayers("Manual", "Reference")
+                .withActivePlayer(2).inPhase(Phase.ENDING, Step.END)
+                .withCardInHand(1, "Veil of Summer").withCardInHand(1, "Pact of Negation")
+                .withLandsOnBattlefield(1, "Forest", 1)
+            repeat(20) { builder.withCardInLibrary(1, "Forest"); builder.withCardInLibrary(2, "Forest") }
+            val game = builder.build()
+            // The end step belongs to the opponent; wait for Manual's priority.
+            game.passPriority().error shouldBe null
+            val veil = game.findCardsInHand(1, "Veil of Summer").single()
+            game.execute(CastSpell(game.player1Id, veil)).error shouldBe null
+            val pact = CastSpell(game.player1Id, game.findCardsInHand(1, "Pact of Negation").single(),
+                listOf(ChosenTarget.Spell(veil)))
+            val ctx = context(game, pact)
+            val after = ctx.simulator.simulate(game.state, pact) as SimulationResult.Terminal
+            ManualPactDebtAdvisor.nextUpkeepDebt(ctx, after.state) shouldBe ManualPactDebtAdvisor.Debt.UNFUNDED
+            val score = requireNotNull(ManualPactDebtAdvisor.evaluateCast(ctx))
+            // Strategist lowers passScore by 1.5 on an opponent's end step.
+            check(score < ctx.passScore - 1.5) {
+                "Unfunded Pact must remain below the actual discounted pass score: pact=$score pass=${ctx.passScore}"
+            }
+            candidate(game).chooseAction(game.state) shouldBe PassPriority(game.player1Id)
+        }
         test("Pact protecting actual winning Bolt counterwar is chosen and resolves terminal win") {
             val game = scenario().withPlayers("Manual", "Reference").withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).withLifeTotal(2, 3)

@@ -86,6 +86,10 @@ object ManualPactDebtAdvisor : CardAdvisor {
             ) && (passed == null || !ManualBallistaContinuationAdvisor.provesUncontestedBallistaWin(
                 passed.state, player, context.simulator.cardRegistry
             ))) return null
-        return minOf(context.defaultScore, context.passScore - 1.0)
+        // On an opponent's end step, Strategist discounts passing by 1.5 AFTER
+        // advisor scoring. A one-point penalty can therefore still select an
+        // unfunded Pact (R5 game action 361: self-countered Veil, lost at 468).
+        // Keep the rejection below that discounted threshold with a margin.
+        return minOf(context.defaultScore, context.passScore - 3.0)
     }
 }
