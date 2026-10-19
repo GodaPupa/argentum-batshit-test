@@ -33,8 +33,11 @@ class ManualResolutionPaymentRegressionTest : ScenarioTestBase() {
             val quote = requireNotNull(ManaSolver(cardRegistry).solve(game.state, game.player1Id, cost))
             // Exact old reconstruction: printed production only, one colored mana regardless of amount.
             var legacyPool = ManaPool()
-            for ((_, production) in quote.manaProduced) legacyPool = if (production.color != null)
-                legacyPool.add(production.color) else legacyPool.addColorless(production.colorless)
+            for ((_, production) in quote.manaProduced) {
+                val printedColor = production.color
+                legacyPool = if (printedColor != null)
+                    legacyPool.add(printedColor) else legacyPool.addColorless(production.colorless)
+            }
             legacyPool.pay(cost) shouldBe null
             println("R5_ORIGINAL_PAYMENT_FAILURE quote=$quote reconstructed=$legacyPool cost=$cost")
             val result = pay(game, "{G}{G}")
