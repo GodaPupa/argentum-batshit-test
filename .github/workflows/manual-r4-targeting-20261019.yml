@@ -1,0 +1,34 @@
+name: Manual R4 departed-player targeting regression
+on:
+  push:
+    branches: [gameplay/manual-r4-targeting-20261019]
+permissions:
+  contents: read
+jobs:
+  targeting:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Real Ballista elimination and X-cost regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r4-output
+          git rev-parse HEAD > r4-output/source-sha.txt
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :mtg-sets:2017-2022:tests:test --tests '*WalkingBallistaDepartedPlayerTest' --tests '*WalkingBallistaScenarioTest' --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r4-output/targeting.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r4-targeting-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r4-output/
+            mtg-sets/2017-2022/tests/build/test-results/test/
