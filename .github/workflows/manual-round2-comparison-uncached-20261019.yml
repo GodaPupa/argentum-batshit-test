@@ -1,0 +1,52 @@
+name: Manual Round 2 actual uncached gameplay
+on:
+  push:
+    branches: [gameplay/manual-round2-20261019]
+    paths: [.github/workflows/manual-round2-comparison-uncached-20261019.yml]
+permissions:
+  contents: read
+# Candidate source unchanged from the six passing regressions in run 39198297756.
+# Environment seat values are not Gradle test inputs; disable cache and clean each rotation.
+jobs:
+  comparison:
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: [0, 1, 2, 3, 4]
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_ROUND2_RUN: '1'
+      MANUAL_ROUND2_ROOT: ${{ github.workspace }}
+      MANUAL_ROUND2_OUTPUT: ${{ github.workspace }}/round2-output/games
+      MANUAL_ROUND2_SEED_INDEX: ${{ matrix.seed }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Four seats and two matched arms for this seed
+        shell: bash
+        run: |
+          set -uo pipefail
+          mkdir -p round2-output/games
+          git rev-parse HEAD > round2-output/games/source-sha.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt > round2-output/games/deck.sha256
+          chmod +x gradlew scripts/gradle-locked
+          status=0
+          for seat in 0 1 2 3; do
+            export MANUAL_ROUND2_CANDIDATE_SEAT="$seat"
+            scripts/gradle-locked :ai:cleanTest :ai:test --tests com.wingedsheep.ai.engine.ManualTransmissionRoundTwoComparisonTest -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee "round2-output/games/seed-${MANUAL_ROUND2_SEED_INDEX}-seat-${seat}.log" || status=1
+            mkdir -p "round2-output/games/test-results-seat-$seat"
+            cp -r ai/build/test-results/test/. "round2-output/games/test-results-seat-$seat/" || status=1
+          done
+          exit "$status"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-round2-uncached-seed-${{ matrix.seed }}-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: error
+          path: round2-output/games/
