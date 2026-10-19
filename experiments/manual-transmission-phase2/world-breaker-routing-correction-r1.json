@@ -1,0 +1,41 @@
+{
+  "schema": "manual-world-breaker-existing-test-routing-correction-v1",
+  "source_base": "a36681568f024c4f3319df5cf9dc9bf4685adf5f",
+  "source_tree": "e9879d2f6dc37c5b7a3d38492816619c5c7b46a5",
+  "source_sha256": {
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WorldBreakerScenarioTest.kt": "dc1145cef8b75e3b50b514f353f24f83f7b1a5af8e03281dd5e16cc62ffbde0c",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/WorldBreaker.kt": "adc61a3cd149a896fc94749390e3da99660e87ee2d45cfd2f9a7dfb520ff6df5"
+  },
+  "discovered_hole": {
+    "run": 36267088335,
+    "artifact_id": 10913618798,
+    "artifact_sha256": "14c6d3be61ebfb2e70907939a6f8f3307b089785c8fd9055badc92fcb1df681c",
+    "actual_cases": 538,
+    "actual_suites": 34,
+    "world_breaker_class_present": false,
+    "reason": "The workflow requested WorldBreakerScenarioTest under2017-2022. Its exact existing test is under2008-2016. The otherwise successful invocation and538-case archive do not qualify these missing cases."
+  },
+  "required_class": "com.wingedsheep.engine.scenarios.WorldBreakerScenarioTest",
+  "required_xml": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.WorldBreakerScenarioTest.xml",
+  "required_cases": [
+    "cast trigger exiles a target land before World Breaker resolves",
+    "graveyard ability pays two generic plus one true colorless and sacrifices a land"
+  ],
+  "expected_new_cases": 2,
+  "original_538_cases_preserved": true,
+  "prospective_expected_capability_cases_same_source": 540,
+  "changes": [
+    "Move only the existing World Breaker selector from2017-2022 to2008-2016.",
+    "Add matching card/scenario path filters, exact existing card and test hashes before execution, and a required exact two-case raw XML audit after evidence capture.",
+    "Use the Gradle --rerun task option on each of the six existing card-scenario test tasks; preserve original requested scenarios and all remaining stages.",
+    "This changes no existing World Breaker test, production card, engine, pilot or experimental input."
+  ],
+  "prior_dedicated_history": "world-breaker-revalidation-pending.json and accepted-capability-inventory-r10.json preserve prior source-bound World Breaker history; this correction does not relabel those original attempts.",
+  "failed_attempt_policy": "Preserve any newly exposed failure. No expectation, production or frozen-policy change is authorized by this routing receipt.",
+  "phase2_protocol": "protocol-r1.json",
+  "gameplay_authorized": false,
+  "official_initializations": 0,
+  "capability_games_executed": 0,
+  "primary_games_executed": 0,
+  "hardware_changed": false
+}

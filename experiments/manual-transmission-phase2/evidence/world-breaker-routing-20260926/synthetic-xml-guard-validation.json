@@ -1,0 +1,60 @@
+{
+  "scope": "Synthetic XML guard checks only; no card, engine or gameplay fixture execution",
+  "workflow_sha256": "8aaae2060de58782301e14333d90e530e908d3f238be14c46d481c61f6d548be",
+  "cases": [
+    {
+      "fixture": "matching",
+      "exit": 0,
+      "expected_accept": true,
+      "audit_written": true
+    },
+    {
+      "fixture": "missing",
+      "exit": 1,
+      "expected_accept": false,
+      "audit_written": true
+    },
+    {
+      "fixture": "wrong_class",
+      "exit": 1,
+      "expected_accept": false,
+      "audit_written": true
+    },
+    {
+      "fixture": "one_case",
+      "exit": 1,
+      "expected_accept": false,
+      "audit_written": true
+    },
+    {
+      "fixture": "extra_case",
+      "exit": 1,
+      "expected_accept": false,
+      "audit_written": true
+    },
+    {
+      "fixture": "duplicate",
+      "exit": 1,
+      "expected_accept": false,
+      "audit_written": true
+    },
+    {
+      "fixture": "failure",
+      "exit": 1,
+      "expected_accept": false,
+      "audit_written": true
+    },
+    {
+      "fixture": "skipped",
+      "exit": 1,
+      "expected_accept": false,
+      "audit_written": true
+    },
+    {
+      "fixture": "root_count_mismatch",
+      "exit": 1,
+      "expected_accept": false,
+      "audit_written": true
+    }
+  ]
+}

@@ -28,8 +28,11 @@ import com.wingedsheep.sdk.model.EntityId
  * single id swept the non-active teammate's entire attack out of combat on the next SBA pass.
  * Every format without shared team turns reduces to the plain equality, unchanged.
  *
+ * A permanent that has ceased to be a creature also leaves combat, regardless of whether
+ * its controller changed. The check reads the current projected type, including conditional
+ * type changes. Regaining the creature type later does not restore removed combat markers.
  * Removal uses [CombatRemovalHelper] so dependent `BlockedComponent` / `BlockingComponent`
- * references stay consistent.
+ * references stay consistent; an attacker whose last blocker leaves remains blocked.
  */
 class ControlChangedRemovesFromCombatCheck : StateBasedActionCheck {
     override val name = "506.4 Controller-Changed Combat Removal"
@@ -45,6 +48,10 @@ class ControlChangedRemovesFromCombatCheck : StateBasedActionCheck {
             val isBlocking = container.has<BlockingComponent>()
             if (!isAttacking && !isBlocking) continue
 
+            if (!projected.isCreature(entityId)) {
+                toRemove.add(entityId)
+                continue
+            }
             val controllerId = projected.getController(entityId) ?: continue
             val mismatched = when {
                 isAttacking -> !state.isActiveTurnFor(controllerId)

@@ -1,0 +1,38 @@
+{
+  "actual_deck_capability_pilot_executed": false,
+  "disposition": "FIXTURE_REPRESENTATION_FAILURE_REQUIRES_CORRECTED_VALIDATION",
+  "engine_artifact_id": 10841951484,
+  "engine_artifact_sha256": "63cca69a1be1c6e95294164305fc26fff915872853369f32e398f5254b60226a",
+  "failure_cause": "All eight failing cases pass the projected token-controller assertion and fail only the next ownership assertion reading absent OwnerComponent. CreateTokenExecutor writes token ownership to CardComponent.ownerId. Correct that accessor while retaining the same expected owning player, controller, stats, colors and subtype assertions.",
+  "gameplay_authorized": false,
+  "next_validation": [
+    "Replay the corrected deterministic scenarios, preserving failed artifact and assertions.",
+    "Qualify exact non-target land choices for Cloud of Faeries and Peregrine Drake; preserve Cloud cycling.",
+    "Review compiled snapshots allowing exactly five new identities and those two intentional semantic corrections; reject unrelated tree drift."
+  ],
+  "observed_failures": 8,
+  "observed_passes": 14,
+  "observed_tests": 22,
+  "official_counters": {
+    "actions": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "outcomes": 0,
+    "seeds_generated": 0
+  },
+  "passed_classes": {
+    "AncestralStatueScenarioTest": 2,
+    "AnimarSoulOfElementsScenarioTest": 6,
+    "ParadiseDruidScenarioTest": 4
+  },
+  "passed_other_cases": [
+    "Pongify illegal-target fizzle creates no token",
+    "Rapid Hybridization illegal-target fizzle creates no token"
+  ],
+  "schema": "mt-phase2-seed-free-card-support-audit-v1",
+  "snapshot_state": "CI content reports exactly five expected added-card golden mismatches: CMD DTK WAR PLC GTC. All five corresponding JSON roundtrips pass; no snapshot update accepted yet.",
+  "source_artifact_id": 10841002842,
+  "source_artifact_sha256": "036e0a119e73a308dd52f52100869734c998618ed5ca4a1eae67e9e7fd060097",
+  "source_commit": "0bb3e1674b8c3f74671c08cbd830d493baa4be61",
+  "workflow_run": 36079828411
+}

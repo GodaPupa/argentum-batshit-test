@@ -1,0 +1,65 @@
+{
+  "schema": "manual-phase2-purphoros-engine-receiving-v1",
+  "scope": "EXCLUDED_FIXED_COMPONENT_QUALIFICATION_ONLY",
+  "hardware": "Manual Transmission v0.7",
+  "accepted_manual_base": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+  "original_purphoros_test_sha256": "5003070a3a0064691edec48e2eb6ac1f80f68746017722ffda80f2bf5450e181",
+  "original_purphoros_cases": 25,
+  "expected_suites": {
+    "PurphorosGodOfTheForgeScenarioTest": 25,
+    "AuthorityOfTheConsulsScenarioTest": 2,
+    "AetherChannelerScenarioTest": 10,
+    "CharmingPrinceScenarioTest": 2,
+    "CardDefinitionSnapshotTest": 340,
+    "CardLintTest": 3,
+    "FloatingEffectSerializationRoundTripTest": 6,
+    "ProjectionNumericConditionTest": 3,
+    "BattlefieldEntryProjectionTest": 6,
+    "SelfEntersTappedOffStackEntryScenarioTest": 11,
+    "TriggerMatcherIsNontokenTest": 3,
+    "TriggerMatcherIsPermanentTest": 2,
+    "TriggerMatcherNotSubtypeTest": 2
+  },
+  "expected_total_cases": 415,
+  "new_generic_fixture_banks": {
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/ProjectionNumericConditionTest.kt": {
+      "sha256": "f7f08023c862be4b8070aca08231c43ffca59cd8a41f7c3caee0bbeb02dcdaa5",
+      "cases": [
+        "Compare reads a prior control layer for both operands without a fallback projection",
+        "NumberMatches reads the same prior control layer without a fallback projection",
+        "resolution of fixed numeric conditions keeps projection lazy"
+      ]
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/layers/BattlefieldEntryProjectionTest.kt": {
+      "sha256": "621a7cf11307c7019c5a82496e5431a8cb0efe82b35a07c16f2ef49f31f1d9c9",
+      "cases": [
+        "the entering object's own mana cost is excluded from the pre-entry aggregate",
+        "the entrant's static effect applies to itself without changing other permanents",
+        "existing continuous effects apply to the hypothetical entering permanent",
+        "an entry recorded in the prepared state cannot satisfy its own pre-entry history gate",
+        "pre-entry aggregate evaluation preserves existing earlier-layer control changes",
+        "an already-entered state is rejected as a pre-entry checkpoint"
+      ]
+    }
+  },
+  "independent_source_review": {
+    "reviewer": "non-author agent /root",
+    "accepted_source_commits": [
+      "aab01cc4e01c4bfec7d6c881ef82d3a37d902e1a",
+      "f9b4c90c115d89ff61d6780ad648c31afa0e1656"
+    ],
+    "verdict": "ACCEPT_FOR_BOUNDED_RECEIVING_QUALIFICATION",
+    "review_is_not_github_approval": true
+  },
+  "preserved_limits": [
+    "This receiving gate does not admit a production actor or gameplay.",
+    "Already-departed entrants require receiving qualification of the accepted effect-registry entrySnapshot donor; direct initializer/cast producers were not qualified by that donor.",
+    "The additional-token rider API still receives the post-original-token state; complete simultaneous additional-token replacement qualification remains open.",
+    "Full repository CI and Manual combined-source compatibility remain separate."
+  ],
+  "pilot_development_budget_changed": false,
+  "gameplay_authorized": false,
+  "official_initializations": 0,
+  "capability_games": 0,
+  "primary_games": 0
+}

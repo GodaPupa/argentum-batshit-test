@@ -1,0 +1,47 @@
+{
+  "archived_incoming_manifest_blob": "2802a166803fb2bbc3224d8fbe031d1e02170c29",
+  "archived_incoming_manifest_sha256": "0c82c221bc73d9ec95decb0213fd0de6b62efe29b2e7e5b62eb17f9cf6ecf0e9",
+  "candidate": "31925d4501b6d14ab3d46a314f2ef0f64207e78b",
+  "changed_paths": [
+    "docs/engine-priority-after-resolution-sources.json",
+    "experiments/manual-transmission-phase2/evidence/main-receiving-20260927/priority-manifest-at-452faa13.json",
+    "experiments/manual-transmission-phase2/evidence/main-receiving-20260927/source-guard-diagnosis.json"
+  ],
+  "ci_checkout": "e62a3daa15a821caacf0818359807636a5b5b538",
+  "ci_vs_parent_document_paths": [
+    "izzet-science/evidence/receiving-20260927/independent-973-raw-review.json",
+    "izzet-science/evidence/receiving-20260927/independent-veteran-two-case-raw-review.json",
+    "lab-coordinator/CURRENT_STATUS.md",
+    "lab-coordinator/NEXT_CHAT_HANDOFF.md"
+  ],
+  "compatibility_disposition": "HOLD",
+  "component_acceptance_granted": false,
+  "disposition": "ACCEPT_RESTORATION_ONLY_FOR_PR211_FAST_FORWARD",
+  "gameplay_authorized": false,
+  "governing_authority": "experiments/manual-transmission-phase2/canonical-main-integration-r1.json requires inherited support/source gates selected on resulting exact HEAD.",
+  "main_merge_authorized": false,
+  "next_required_authority": [
+    "Independently review semantic compatibility of all14 remaining priority source deltas and postboard A/B source gaps against frozen case banks.",
+    "Create a prospective supplemental receiving source binding preserving original manifests and original guard failures.",
+    "Explicitly authorize whether the exact prior runtime-equivalent636-case evidence may discharge specific supplemental requirements; current exact-HEAD clause supplies no automatic equivalence waiver.",
+    "If waiver is not adopted, run only newly reviewed supplemental exact-source receiving checks after predeclared scope and launcher approval; do not rerun unchanged full CI.",
+    "Attacking-token provenance and other inherited receiving requirements remain separate and must be accounted for."
+  ],
+  "original636_evidence": "Retain as source-bound prior runtime evidence; this reviewer did not reopen or re-audit original artifacts. It does not itself satisfy unresolved frozen source guards.",
+  "parent": "452faa13b460f5c998bb90ff1182ac416deb329c",
+  "project_admission_granted": false,
+  "remaining_priority_engine_pin_mismatches": 14,
+  "restored_manifest_blob": "1d3f777b54d9ac84e1c05e1e1450ab10102bbfe8",
+  "restored_manifest_sha256": "c77208379a7d4149fc9ce52212b2725d0663088a5f399780447304e9f0554251",
+  "reviewer": "/root/compatibility_review",
+  "schema": "manual-manifest-restoration-independent-review-v1",
+  "tests_executed": 0,
+  "tree": "c87b70cb6e8ed04a5d79355d4c843da32f12dc5e",
+  "unchanged_ci_rerun_required_for_restoration": false,
+  "verified": [
+    "Restored manifest is byte-identical to acceptedff34ac8f.",
+    "Archived incoming manifest is byte-identical to parent452faa13.",
+    "Exactly three documentation/evidence files changed; no runtime, test, workflow, build or dependency file changed.",
+    "Parent452faa13 differs from original CI checkout e62a3daa only in four evidence/status documents."
+  ]
+}

@@ -1,0 +1,188 @@
+name: Manual Phase 2 Aether Channeler Qualification
+
+on:
+  push:
+    branches: [lab/manual-aether-channeler-20260926]
+    paths:
+      - mtg-sets/**/cards/AetherChanneler.kt
+      - mtg-sets/**/cards/AetherChannelerReprint.kt
+      - mtg-sets/**/scenarios/AetherChannelerScenarioTest.kt
+      - .github/workflows/manual-transmission-aether-channeler-qualification.yml
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-phase2-aether-channeler-qualification
+  cancel-in-progress: false
+
+jobs:
+  qualify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - name: Preserve and verify exact source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/reports/manual-aether-channeler
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          base = 'c6bfd808850d46010e077153f294dd01c7a8450f'
+          paths = [
+              'mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dmu/cards/AetherChanneler.kt',
+              'mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blc/cards/AetherChannelerReprint.kt',
+              'mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AetherChannelerScenarioTest.kt',
+              'rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/SerializationTestSupport.kt',
+              '.github/workflows/manual-transmission-aether-channeler-qualification.yml',
+          ]
+          receipt = {'requested_head': os.environ['GITHUB_SHA'],
+              'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(),
+              'tree': subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip(),
+              'accepted_project_base': base,
+              'checkout_status': subprocess.check_output(['git', 'status', '--porcelain'], text=True),
+              'files': {p: hashlib.sha256(pathlib.Path(p).read_bytes()).hexdigest() for p in paths}}
+          pathlib.Path('build/reports/manual-aether-channeler/source-binding.json').write_text(json.dumps(receipt, indent=2)+'\n')
+          assert receipt['head'] == receipt['requested_head'], receipt
+          assert receipt['checkout_status'] == '', receipt
+          subprocess.run(['git', 'merge-base', '--is-ancestor', base, 'HEAD'], check=True)
+          PY
+      - name: Exact card and existing modal-trigger scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2017-2022:tests:test \
+            --tests '*AetherChannelerScenarioTest' --tests '*CharmingPrinceScenarioTest' \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --info --stacktrace 2>&1 | tee build/reports/manual-aether-channeler/scenarios.log
+      - name: Require actual exact-card cases
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, pathlib, xml.etree.ElementTree as ET
+          root = pathlib.Path('mtg-sets/2017-2022/tests/build/test-results/test')
+          expected = {'AetherChannelerScenarioTest': 10, 'CharmingPrinceScenarioTest': 2}
+          seen, suites = set(), []
+          for path in sorted(root.glob('TEST-*.xml')):
+              tree = ET.parse(path).getroot()
+              name = tree.attrib['name'].rsplit('.', 1)[-1]
+              assert name in expected, name
+              cases = tree.findall('testcase')
+              assert len(cases) == expected[name], (name, len(cases))
+              assert all(all(case.find(k) is None for k in ('failure', 'error', 'skipped')) for case in cases), path
+              seen.add(name)
+              suites.append({'class': tree.attrib['name'], 'case_names': [case.attrib['name'] for case in cases],
+                  'xml_sha256': hashlib.sha256(path.read_bytes()).hexdigest()})
+          assert seen == set(expected), seen
+          pathlib.Path('build/reports/manual-aether-channeler/actual-cases.json').write_text(json.dumps(suites, indent=2)+'\n')
+          PY
+      - name: Generate ordinary card snapshots and run corpus lint
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:test --tests '*CardDefinitionSnapshotTest' --tests '*CardLintTest' \
+            -DupdateSnapshots=true --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --info --stacktrace 2>&1 | tee build/reports/manual-aether-channeler/generated-snapshots.log
+      - name: Refuse unrelated generated records and preserve exact generated bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, pathlib, re, subprocess
+          target = 'mtg-sets/src/test/resources/snapshots/cards/DMU.json'
+          changed = subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines()
+          assert changed in ([target], []), changed
+          before = subprocess.check_output(['git', 'show', 'HEAD:'+target], text=True)
+          after = pathlib.Path(target).read_text()
+          def records(text):
+              result = {}
+              for block in re.split(r'\n\n(?=// )', text.strip()):
+                  heading, body = block.split('\n', 1)
+                  assert heading.startswith('// '), heading
+                  name = heading[3:]
+                  assert name not in result, name
+                  result[name] = (body, json.loads(body))
+              return result
+          old, new = records(before), records(after)
+          assert set(new) - set(old) in ({'Aether Channeler'}, set())
+          assert not set(old) - set(new)
+          assert all(old[name] == new[name] for name in old), 'Existing card tree changed'
+          card = new['Aether Channeler'][1]
+          assert card['name'] == 'Aether Channeler' and card['manaCost'] == '{2}{U}'
+          out = pathlib.Path('build/reports/manual-aether-channeler')
+          (out/'DMU.json').write_bytes(pathlib.Path(target).read_bytes())
+          (out/'generated-delta.patch').write_bytes(subprocess.check_output(['git', 'diff', '--', target]))
+          (out/'generated-binding.json').write_text(json.dumps({'path': target,
+              'sha256': hashlib.sha256(pathlib.Path(target).read_bytes()).hexdigest(),
+              'added_records': sorted(set(new)-set(old)), 'unchanged_existing_records': len(old),
+              'printing_row_changes_card_trees': False, 'independent_review_required': True}, indent=2)+'\n')
+          PY
+          git diff --check
+      - name: Verify canonical printing and scaffolded presentation rows
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 scripts/check-card-printing.py 'Aether Channeler' --refresh \
+            2>&1 | tee build/reports/manual-aether-channeler/card-printing.log
+      - name: Provision ordinary Assay and draftability tools
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :oracle-assay:installDist :mtgish-tooling:installDist \
+            --max-workers=1 -PkotlinCompileParallelism=1 \
+            -Pkotlin.compiler.execution.strategy=in-process -Dorg.gradle.jvmargs=-Xmx4g \
+            --info --stacktrace 2>&1 | tee build/reports/manual-aether-channeler/tooling.log
+      - name: Preserve independent Oracle reading and draftability findings
+        shell: bash
+        run: |
+          set -euo pipefail
+          oracle-assay/build/install/oracle-assay/bin/oracle-assay parse 'Aether Channeler' \
+            2>&1 | tee build/reports/manual-aether-channeler/assay-parse.log
+          oracle-assay/build/install/oracle-assay/bin/oracle-assay explain 'Aether Channeler' \
+            2>&1 | tee build/reports/manual-aether-channeler/assay-explain.log
+          mtgish-tooling/build/install/mtgish-tooling/bin/mtgish-tooling fidelity --emit 'Aether Channeler' \
+            2>&1 | tee build/reports/manual-aether-channeler/coverage-fidelity.log
+          oracle-assay/build/install/oracle-assay/bin/oracle-assay differential --set DMU \
+            2>&1 | tee build/reports/manual-aether-channeler/assay-differential.log
+      - name: Record component-only disposition
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, os, pathlib
+          out = pathlib.Path('build/reports/manual-aether-channeler')
+          receipt = {'schema': 'manual-aether-channeler-targeted-qualification-v1',
+              'status': 'TARGETED_COMPONENT_PENDING_INDEPENDENT_ARTIFACT_REVIEW_AND_FINAL_SOURCE_INTEGRATION',
+              'source': json.loads((out/'source-binding.json').read_text()),
+              'run_id': os.environ['GITHUB_RUN_ID'], 'actual_cases': json.loads((out/'actual-cases.json').read_text()),
+              'generated': json.loads((out/'generated-binding.json').read_text()),
+              'assay_findings_require_classification': True,
+              'hardware': 'Manual Transmission v0.7', 'hardware_disposition': 'KEEP_V07',
+              'gameplay_admitted': False, 'official_initializations': 0, 'official_outcomes_exposed': 0}
+          (out/'targeted-qualification.json').write_text(json.dumps(receipt, indent=2)+'\n')
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-aether-channeler-qualification
+          path: |
+            build/reports/manual-aether-channeler/**
+            mtg-sets/2017-2022/tests/build/test-results/test/TEST-*.xml
+            mtg-sets/build/test-results/test/TEST-*.xml
+            mtg-sets/build/snapshots-actual/**
+          if-no-files-found: error
+          retention-days: 90

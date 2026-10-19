@@ -39,27 +39,33 @@ object EnterTappedReplacements {
      * [ControllerComponent] /
      * [com.wingedsheep.engine.state.components.identity.CardComponent] so the filter
      * (type/subtype/"you control") resolves correctly.
+     * [beforeEntry] is captured before placement; its battlefield and history govern the preview.
      */
     fun entersTapped(
         state: GameState,
         enteringEntityId: EntityId,
         enteringControllerId: EntityId,
+        beforeEntry: GameState,
     ): Boolean {
-        for (sourceId in state.getBattlefield()) {
+        val projected by lazy {
+            com.wingedsheep.engine.mechanics.layers.StateProjector()
+                .projectForEntry(beforeEntry, state, enteringEntityId, enteringControllerId)
+        }
+        for (sourceId in beforeEntry.getBattlefield()) {
             if (sourceId == enteringEntityId) continue
-            val container = state.getEntity(sourceId) ?: continue
+            val container = beforeEntry.getEntity(sourceId) ?: continue
             val replacementComponent = container.get<ReplacementEffectSourceComponent>() ?: continue
-            val sourceControllerId = container.get<ControllerComponent>()?.playerId ?: continue
+            val sourceControllerId = beforeEntry.projectedState.getController(sourceId) ?: continue
             for (effect in replacementComponent.replacementEffects) {
                 if (effect !is PermanentsEnterTapped) continue
-                if (!matchesEnterFilter(effect.appliesTo, enteringEntityId, sourceId, sourceControllerId, state)) continue
+                if (!matchesEnterFilter(effect.appliesTo, enteringEntityId, sourceId, sourceControllerId, projected)) continue
                 // Optional gate evaluated against the replacement *source*, mirroring
                 // RedirectDamage.condition — e.g. Ashling's Prerogative's tap clause applies only
                 // while the mode it chose as it entered is the one this effect was written for.
                 val gate = effect.condition
                 if (gate != null) {
                     val gateContext = EffectContext(sourceId = sourceId, controllerId = sourceControllerId)
-                    if (!conditionEvaluator.evaluate(state, gate, gateContext)) continue
+                    if (!conditionEvaluator.evaluate(beforeEntry, gate, gateContext)) continue
                 }
                 return true
             }
@@ -90,13 +96,14 @@ object EnterTappedReplacements {
         controllerId: EntityId,
         definedTapped: Boolean = false,
         attacking: Boolean = false,
+        beforeEntry: GameState,
     ): GameState {
-        val entersUntapped = EnterUntappedReplacements.entersUntapped(state, tokenId, controllerId)
+        val entersUntapped = EnterUntappedReplacements.entersUntapped(state, tokenId, controllerId, beforeEntry)
         return when {
             definedTapped && !attacking && entersUntapped ->
                 state.updateEntity(tokenId) { it.without<TappedComponent>() }
             !definedTapped && !entersUntapped &&
-                entersTapped(state, tokenId, controllerId) ->
+                entersTapped(state, tokenId, controllerId, beforeEntry) ->
                 state.updateEntity(tokenId) { it.with(TappedComponent) }
             else -> state
         }
@@ -114,7 +121,7 @@ object EnterTappedReplacements {
         enteringEntityId: EntityId,
         replacementSourceId: EntityId,
         sourceControllerId: EntityId,
-        state: GameState,
+        projected: com.wingedsheep.engine.mechanics.layers.ProjectedState,
     ): Boolean {
         if (event !is EventPattern.ZoneChangeEvent) return false
         if (event.to != Zone.BATTLEFIELD) return false
@@ -123,7 +130,7 @@ object EnterTappedReplacements {
             controllerId = sourceControllerId,
         )
         return predicateEvaluator.matches(
-            state, state.projectedState, enteringEntityId, event.filter, predicateContext
+            projected.getBaseState(), projected, enteringEntityId, event.filter, predicateContext
         )
     }
 }

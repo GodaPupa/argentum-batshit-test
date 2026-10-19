@@ -1,0 +1,21 @@
+{
+  "schema": "manual-before-entry-ai-callsite-review/v1",
+  "reviewer": "/root/sphinx",
+  "reviewer_is_non_author": true,
+  "disposition": "ACCEPT_FOR_RECEIVING_QUALIFICATION_ONLY",
+  "source": "a616fc427869800934c85283982f76a68462936c",
+  "tree": "18bfcc732661053c3251fbf7a6c4e4640f9d701a",
+  "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt",
+  "sha256": "9bbd70003433b6c6803f70d0f3a7b77a6cbaf82d89958af5b39ba4d6508b34f7",
+  "findings": [
+    "Diff changes only two entersUntapped/entersTapped call arguments, adding beforeEntry=state.",
+    "The private function input state precedes removeFromZone, simulated ControllerComponent assignment, and BattlefieldEntry.place. The original state is immutable and remains the real pre-entry planning snapshot; simulated is the post-entry hypothetical board.",
+    "Required APIs consume beforeEntry battlefield/history while projecting the actual entrant from simulated, so these are the correct distinct arguments.",
+    "No planning branch, score, policy order, threshold, action choice, deck or fixture changes."
+  ],
+  "limits": [
+    "No fixture executed by reviewer.",
+    "Source/API compatibility only; actual receiving CI, broader entrant semantics, AI/pilot qualification and gameplay admission remain separate.",
+    "No GitHub approval fabricated or submitted."
+  ]
+}

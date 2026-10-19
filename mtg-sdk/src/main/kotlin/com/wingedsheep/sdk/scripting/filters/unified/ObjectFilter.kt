@@ -1,5 +1,6 @@
 package com.wingedsheep.sdk.scripting
 
+import com.wingedsheep.sdk.core.CardType
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Subtype
@@ -309,6 +310,11 @@ data class GameObjectFilter(
     )
 
     /** Add a subtype requirement */
+    /** Match any fixed card type, including Battle, without narrowing to a named legacy filter. */
+    fun withCardType(cardType: CardType) = copy(
+        cardPredicates = cardPredicates + CardPredicate.HasCardType(cardType)
+    )
+
     fun withSubtype(subtype: Subtype) = copy(
         cardPredicates = cardPredicates + CardPredicate.HasSubtype(subtype)
     )

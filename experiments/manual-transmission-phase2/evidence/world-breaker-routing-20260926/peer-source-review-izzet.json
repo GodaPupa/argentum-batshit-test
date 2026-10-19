@@ -1,0 +1,25 @@
+{
+  "schema": "manual-world-breaker-routing-peer-review-v1",
+  "reviewer": "/root/izzet successor agent",
+  "non_author_agent_review": true,
+  "disposition": "ACCEPT_NARROW_ROUTING_SOURCE_FOR_EXISTING_FIXTURE_EXECUTION",
+  "files_sha256": {
+    ".github/workflows/manual-transmission-phase2-capability.yml": "8aaae2060de58782301e14333d90e530e908d3f238be14c46d481c61f6d548be",
+    "experiments/manual-transmission-phase2/world-breaker-routing-correction-r1.json": "91073e32103fdd94d975a1a3a271a071d26b892af0abbc1fae26ab70ec74c930"
+  },
+  "verification": [
+    "Read the complete candidate workflow and manifest and compared their exact two-file change with the original workflow.",
+    "Independently recomputed both frozen World Breaker source hashes and Git blob SHA1 values against the independently retrieved complete a3668156 tree e9879d2f. Read both existing case names and the actual two-case test source.",
+    "Verified the scenario selector multiset is unchanged: WorldBreakerScenarioTest moves from the wrong 2017-2022 test task to its actual 2008-2016 task. Each of all six existing scenario test task selectors receives the task-local --rerun flag.",
+    "Read the source preflight and fail-closed XML guard. Missing, wrong-class, duplicate, extra, skipped and failed cases cannot satisfy the two-case guard; root counts must agree. The always-run preservation precedes the guard and artifact upload remains always-run.",
+    "Reviewed the reported nine synthetic XML guard checks as guard-only development, without claiming independent engine execution.",
+    "Reconciled the original 538-case capability archive in the separate entry-receiving evidence review; it does not contain WorldBreakerScenarioTest.",
+    "The changed workflow remains PR-only with same-repository head restriction and no gameplay, entropy or claim action. Existing source-audit, registry, generic capability and snapshot stages remain unchanged."
+  ],
+  "limits": [
+    "540 is a prospective case count only. The corrected current workflow must actually execute and retain all required fresh cases before claiming that count.",
+    "This review admits publication and execution of a narrow existing-fixture routing correction. It is not a GitHub approval, acceptance of the resulting engine source, or Phase-2 gameplay admission.",
+    "Existing assertions, production code, hardware, pilots, experimental allocations and protocol are unchanged. Preserve any newly exposed failure; this review does not authorize expectation changes.",
+    "Freshness of the other existing workflow stages must be assessed from their eventual raw logs; their commands were outside this correction."
+  ]
+}

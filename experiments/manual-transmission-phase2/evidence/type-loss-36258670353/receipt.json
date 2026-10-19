@@ -1,0 +1,83 @@
+{
+  "schema": "manual-phase2-type-loss-receiving-component-v1",
+  "status": "ACCEPTED_IN_ISOLATED_MANUAL_ETB_RECEIVING_SOURCE",
+  "source": "8d76bbb7a8f6a8ea5332f2f1d88dadb12b289c39",
+  "tree": "21429f9ecc7f9c00827aba6d12211397eb7606b7",
+  "receiving_pr": 193,
+  "receiving_merge": "086f049467f82948a17ca0e52d321c0ff26952f9",
+  "baseline": {
+    "run_id": 36257704437,
+    "job_id": 108447522675,
+    "artifact_id": 10911456941,
+    "source": "05280369dd412c7cd697430abb835fcacf1e36d8",
+    "actual_cases": 7,
+    "passes": 2,
+    "failures": 5,
+    "errors": 0,
+    "skipped": 0,
+    "classification": "Five actual subtype/combat semantic failures, two retained-type negative controls passed."
+  },
+  "qualified": {
+    "run_id": 36258670353,
+    "job_id": 108450177513,
+    "artifact_id": 10911004149,
+    "actual_cases": 19,
+    "exact_type_loss_cases": 7,
+    "adjacent_cases": 12,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "independent_review": {
+    "reviewer": "root coordinator, non-author of the two production fixes and seven new fixtures",
+    "source_disposition": "ACCEPT_FOR_TARGETED_RECEIVING",
+    "artifact_review": "independent-artifact-review.json",
+    "artifact_disposition": "ACCEPT_TARGETED_19_CASE_COMPONENT_ONLY",
+    "github_approval_created": false
+  },
+  "receiving_ci": {
+    "run_id": 36258672414,
+    "conclusion": "success",
+    "required_jobs": 9,
+    "optional_coverage": "skipped",
+    "metadata_verified_by": "component author; independent source/artifact scope remains as stated in unchanged review",
+    "all_full_suite_test_cases_independently_audited": false
+  },
+  "payloads": {
+    "baseline-artifact.zip": {
+      "bytes": 237647,
+      "sha256": "9e25c7c9b6c63113258727f43a5ee2dc8c5502db22dfa18356c37ea3486c86c5"
+    },
+    "github-verification.json": {
+      "bytes": 2052,
+      "sha256": "409afbf007f09f60c85f43aa3b67a3a04c0c6415d80bf3c2c1f0f79c486d4b99"
+    },
+    "independent-artifact-review.json": {
+      "bytes": 2705,
+      "sha256": "0abdfaf3565485e60a3230c50c0b6d38750e1f6b9acf7d029dbd6314ba0640c3"
+    },
+    "qualified-artifact.zip": {
+      "bytes": 236765,
+      "sha256": "12e951430026943557ecc521e30b7dbacb9c3b99209f869b660e88bf92de27ee"
+    }
+  },
+  "limits": [
+    "This component removes creature subtypes only when neither CREATURE nor KINDRED supports them and preserves other retained-type subtypes.",
+    "Projected noncreatures use existing reciprocal combat cleanup; blocked status persists and creature-type restoration does not rejoin combat.",
+    "Acceptance is on this isolated ETB receiving source. Shared main and each other project require their own combined-source compatibility qualification.",
+    "Purphoros complete exact mechanics, ordinary snapshots and combined ETB batch acceptance remain separate."
+  ],
+  "purphoros_identity_promoted": false,
+  "manual_hardware": "v0.7",
+  "hardware_disposition": "KEEP_V07",
+  "deck_changes": false,
+  "gameplay_authorized": false,
+  "official_counters": {
+    "capability_completed": 0,
+    "capability_frozen_scope": 36,
+    "primary_completed": 0,
+    "primary_frozen_scope": 864,
+    "official_initializations": 0,
+    "official_outcomes_exposed": 0
+  }
+}

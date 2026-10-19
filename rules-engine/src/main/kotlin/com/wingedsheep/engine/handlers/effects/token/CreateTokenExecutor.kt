@@ -312,6 +312,7 @@ class CreateTokenExecutor(
             newState = EnterTappedReplacements.applyCreatedTokenEntryTap(
                 newState, tokenId, tokenControllerId,
                 definedTapped = effect.tapped, attacking = defenders[indexInBatch] != null,
+                beforeEntry = state,
             )
         }
 

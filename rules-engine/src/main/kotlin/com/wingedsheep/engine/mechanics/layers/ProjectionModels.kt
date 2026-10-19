@@ -9,6 +9,7 @@ import com.wingedsheep.sdk.scripting.conditions.Condition
 import com.wingedsheep.sdk.scripting.filters.unified.GroupFilter
 import com.wingedsheep.sdk.scripting.text.TextReplacer
 import com.wingedsheep.sdk.scripting.values.DynamicAmount
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 /**
@@ -312,12 +313,14 @@ sealed interface Modification {
 
     // --- Layer 4: Type-changing ---
 
+    // Match SerializableModification: "type" is the persistence JSON class discriminator,
+    // so static effect data must encode the card-type argument under its own field name.
     @Serializable
-    data class AddType(val type: String) : Modification {
+    data class AddType(@SerialName("cardType") val type: String) : Modification {
         override val layer get() = Layer.TYPE
     }
     @Serializable
-    data class RemoveType(val type: String) : Modification {
+    data class RemoveType(@SerialName("cardType") val type: String) : Modification {
         override val layer get() = Layer.TYPE
     }
 

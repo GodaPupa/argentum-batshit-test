@@ -1908,6 +1908,7 @@ class StackResolver(
         // Add to battlefield — clean up any may-play permission first (mirrors the same
         // cleanup done in resolveNonPermanentSpell before the card goes to the graveyard).
         newState = newState.removeMayPlayPermissionsForCard(spellId)
+        val beforeBattlefieldEntry = newState
         newState = com.wingedsheep.engine.handlers.effects.BattlefieldEntry
             .place(newState, controllerId, spellId)
 
@@ -1917,16 +1918,16 @@ class StackResolver(
         // permanent cast normally must ALSO be tapped by another permanent's global
         // PermanentsEnterTapped, matching the PlayLand (PlayLandHandler) and moveToZone /
         // reanimation (ZoneTransitionService) paths that already consult it. Checked after the
-        // entity is on the battlefield so its controller/type resolve for the filter. CR 614: an
+        // entity is prepared; the captured pre-placement state governs the filter preview. CR 614: an
         // applicable "enters untapped" replacement still wins, and a self-EntersTapped that already
         // tapped it stands. Sneak sets its own tapped-and-attacking state below, so skip it here.
         if (cardDef != null && !spellComponent.castFaceDown && !spellComponent.wasSneaked) {
             val alreadyTapped = newState.getEntity(spellId)?.has<TappedComponent>() == true
             val entersUntapped = com.wingedsheep.engine.handlers.effects.EnterUntappedReplacements
-                .entersUntapped(newState, spellId, controllerId)
+                .entersUntapped(newState, spellId, controllerId, beforeBattlefieldEntry)
             if (!alreadyTapped && !entersUntapped &&
                 com.wingedsheep.engine.handlers.effects.EnterTappedReplacements
-                    .entersTapped(newState, spellId, controllerId)
+                    .entersTapped(newState, spellId, controllerId, beforeBattlefieldEntry)
             ) {
                 newState = newState.updateEntity(spellId) { c -> c.with(TappedComponent) }
             }

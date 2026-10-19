@@ -1,0 +1,79 @@
+name: Manual Phase 2 Purphoros Authoring Probes
+
+on:
+  push:
+    branches: [lab/manual-etb-receiving-20260926]
+    paths:
+      - .github/workflows/manual-transmission-purphoros-authoring-probes.yml
+      - experiments/manual-transmission-phase2/sources/purphoros-r1/**
+
+permissions:
+  contents: read
+
+concurrency:
+  group: manual-phase2-purphoros-authoring-probes
+  cancel-in-progress: false
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GRADLE_LOCK_SLOTS: '1'
+      JAVA_TOOL_OPTIONS: -XX:MaxMetaspaceSize=768m
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v6
+      - uses: extractions/setup-just@f8a3cce218d9f83db3a2ecd90e41ac3de6cdfd9b
+      - name: Preserve exact source and run predictive probes before card authorship
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, subprocess
+          out = pathlib.Path('build/reports/manual-purphoros-authoring')
+          out.mkdir(parents=True, exist_ok=True)
+          card = pathlib.Path('mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/PurphorosGodOfTheForge.kt')
+          assert not card.exists(), 'Pre-authoring probes must precede the card definition'
+          source = subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip()
+          tree = subprocess.check_output(['git', 'rev-parse', 'HEAD^{tree}'], text=True).strip()
+          status = subprocess.check_output(['git', 'status', '--porcelain'], text=True)
+          assert source == os.environ['GITHUB_SHA'] and not status.strip()
+          sources = pathlib.Path('experiments/manual-transmission-phase2/sources/purphoros-r1')
+          binding = {'source': source, 'tree': tree, 'scope': 'PREDICTIVE_AUTHORING_PROBES_ONLY',
+              'card_definition_absent': True, 'official_initializations': 0,
+              'sources': {str(p): hashlib.sha256(p.read_bytes()).hexdigest() for p in sorted(sources.glob('*.json'))}}
+          (out/'source-binding.json').write_text(json.dumps(binding, indent=2)+'\n')
+          results = []
+          commands = [('assay-parse', ['just','assay','parse','"Purphoros, God of the Forge"']),
+              ('assay-explain', ['just','assay','explain','"Purphoros, God of the Forge"']),
+              ('draftability', ['just','coverage-fidelity','--emit','"Purphoros, God of the Forge"'])]
+          for name, command in commands:
+              try:
+                  result = subprocess.run(command, text=True, stdout=subprocess.PIPE,
+                      stderr=subprocess.STDOUT, timeout=600)
+                  output, code = result.stdout, result.returncode
+              except subprocess.TimeoutExpired as error:
+                  output = error.stdout or b''
+                  if isinstance(output, bytes): output = output.decode(errors='replace')
+                  output += '\nPROBE_TIMEOUT_AFTER_600_SECONDS\n'
+                  code = 124
+              (out/(name+'.txt')).write_text(output)
+              results.append({'name': name, 'command': command, 'exit_code': code,
+                  'output_sha256': hashlib.sha256(output.encode()).hexdigest()})
+              print(json.dumps(results[-1]), flush=True)
+          (out/'probe-results.json').write_text(json.dumps(results, indent=2)+'\n')
+          assert all(r['exit_code'] == 0 for r in results), results
+          PY
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: manual-purphoros-authoring-${{ github.sha }}
+          path: build/reports/manual-purphoros-authoring
+          retention-days: 30

@@ -81,7 +81,35 @@ class StateProjector(
     /**
      * Project the full game state with all continuous effects applied.
      */
-    fun project(state: GameState): ProjectedState {
+    fun project(state: GameState): ProjectedState = project(state, state, null)
+
+    /**
+     * CR 614.12: inspect an entering permanent as it would exist, before its entry happens.
+     * Existing continuous effects and its own self-applicable static effects determine its
+     * characteristics. Battlefield aggregates and history still read [beforeEntry], so the
+     * entering object does not contribute devotion or an entry event to its own replacement.
+     * [prepared] supplies only the entering object's chosen face and prepared components.
+     * The hypothetical zone insertion is immutable and emits no event or entry record.
+     */
+    fun projectForEntry(
+        beforeEntry: GameState,
+        prepared: GameState,
+        enteringId: EntityId,
+        controllerId: EntityId,
+    ): ProjectedState {
+        require(enteringId !in beforeEntry.allBattlefieldEntities()) {
+            "Entry projection requires the state captured before battlefield placement"
+        }
+        val entering = requireNotNull(prepared.getEntity(enteringId))
+        val evaluationState = beforeEntry.withEntity(enteringId, entering)
+        val subjectState = evaluationState.addToZone(
+            com.wingedsheep.engine.state.ZoneKey(controllerId, com.wingedsheep.sdk.core.Zone.BATTLEFIELD),
+            enteringId,
+        )
+        return project(subjectState, evaluationState, enteringId)
+    }
+
+    private fun project(state: GameState, evaluationState: GameState, enteringId: EntityId?): ProjectedState {
         val projectedValues = mutableMapOf<EntityId, MutableProjectedValues>()
         val dynamicStatEntities = mutableListOf<Pair<EntityId, CardComponent>>()
 
@@ -188,8 +216,13 @@ class StateProjector(
         // the freshly-resolved set) for ungrouped single-layer effects.
         val lockedGroups = HashMap<Pair<EntityId, String>, Set<EntityId>>()
         fun lockAffected(effect: ContinuousEffect, resolved: Set<EntityId>): Set<EntityId> {
-            val groupId = effect.groupId ?: return resolved
-            return lockedGroups.getOrPut(effect.sourceId to groupId) { resolved }
+            // A not-yet-entered source may apply its static ability to itself, but cannot
+            // change other permanents before entering. Resolved floating effects are separate.
+            val eligible = if (enteringId != null && effect.fromStaticAbility && effect.sourceId == enteringId) {
+                resolved.intersect(setOf(enteringId))
+            } else resolved
+            val groupId = effect.groupId ?: return eligible
+            return lockedGroups.getOrPut(effect.sourceId to groupId) { eligible }
         }
 
         // Earliest layer each group starts to apply. Per CR 613.6, a group that started applying
@@ -216,7 +249,7 @@ class StateProjector(
         val controlEffects = sortedEffects.filter { it.layer == Layer.CONTROL }
         for (rawEffect in controlEffects) {
             val effect = applyControllerGate(rawEffect, projectedValues)
-            effectApplicator.applyEffect(effect.copy(affectedEntities = lockAffected(effect, effect.affectedEntities)), state, projectedValues)
+            effectApplicator.applyEffect(effect.copy(affectedEntities = lockAffected(effect, effect.affectedEntities)), evaluationState, projectedValues)
         }
 
         // Re-resolve controller-dependent filters for layers 3-6 now that control is established
@@ -249,7 +282,7 @@ class StateProjector(
             filter != null && filterResolver.isCreatureDependentFilter(filter)
         }
         for (effect in plainTypeEffects) {
-            effectApplicator.applyEffect(effect, state, projectedValues)
+            effectApplicator.applyEffect(effect, evaluationState, projectedValues)
         }
         for (effect in creatureDependentTypeEffects) {
             val resolved = effect.affectsFilter
@@ -257,7 +290,7 @@ class StateProjector(
                 ?: effect.affectedEntities
             effectApplicator.applyEffect(
                 effect.copy(affectedEntities = lockAffected(effect, resolved)),
-                state,
+                evaluationState,
                 projectedValues
             )
         }
@@ -291,7 +324,7 @@ class StateProjector(
 
         // === Layers 5-6 (Color + Ability) ===
         for (effect in postTypeEffects) {
-            effectApplicator.applyEffect(effect, state, projectedValues)
+            effectApplicator.applyEffect(effect, evaluationState, projectedValues)
         }
 
         // Rule 122.1b: re-apply keyword counters after Layer 6.
@@ -317,7 +350,7 @@ class StateProjector(
         }
 
         // Resolve CDAs (Layer 7a) - evaluate dynamic power/toughness
-        resolveCDAs(state, projectedValues, dynamicStatEntities)
+        resolveCDAs(evaluationState, projectedValues, dynamicStatEntities)
 
         // Collect sources that generate RemoveAllAbilities effects. These sources (e.g., Humility)
         // should not have their own effects suppressed even when they themselves lose abilities,
@@ -376,7 +409,7 @@ class StateProjector(
         // Apply layer 7 continuous effects
         for (effect in resolvedLayer7Effects) {
             if (effect.layer == Layer.POWER_TOUGHNESS) {
-                effectApplicator.applyEffect(effect, state, projectedValues)
+                effectApplicator.applyEffect(effect, evaluationState, projectedValues)
             }
         }
 
@@ -386,7 +419,7 @@ class StateProjector(
         // Post-layer pass: grant CANT_BE_BLOCKED to creatures qualifying via
         // CantBeBlockedWhilePropertyAtMost (Tetsuko Umezawa, Fugitive; Stature, Size Shifter).
         // Must happen after all P/T layers so projected power/toughness is final.
-        applyCantBeBlockedWhilePropertyAtMost(state, projectedValues)
+        applyCantBeBlockedWhilePropertyAtMost(state, projectedValues, enteringId)
 
         // Post-layer pass: enforce the affected-power half of
         // [Duration.WhileSourceTappedAndAffectedPowerAtMostSource] (Old Man of the Sea).
@@ -432,6 +465,7 @@ class StateProjector(
         // hand/library/graveyard/exile) can honor it. Reads the source's *projected* controller (so
         // it follows control changes) and the creature type it was made with.
         val crossZoneGrants = sortedEffects.mapNotNull { effect ->
+            if (effect.fromStaticAbility && effect.sourceId == enteringId) return@mapNotNull null
             val mod = effect.modification as? Modification.AddChosenSubtype ?: return@mapNotNull null
             if (!mod.includeControlledSpells && !mod.includeOwnedCardsOutsideBattlefield) return@mapNotNull null
             val controllerId = projectedValues[effect.sourceId]?.controllerId ?: return@mapNotNull null
@@ -895,7 +929,8 @@ class StateProjector(
      */
     private fun applyCantBeBlockedWhilePropertyAtMost(
         state: GameState,
-        projectedValues: MutableMap<EntityId, MutableProjectedValues>
+        projectedValues: MutableMap<EntityId, MutableProjectedValues>,
+        enteringId: EntityId?,
     ) {
         for (sourceId in state.getBattlefield()) {
             val grant = state.getEntity(sourceId)
@@ -904,6 +939,7 @@ class StateProjector(
                 state, sourceId, grant.affects, projectedValues
             )
             for (entityId in affected) {
+                if (sourceId == enteringId && entityId != enteringId) continue
                 val values = projectedValues[entityId] ?: continue
                 if (!values.types.contains("CREATURE")) continue
                 val power = values.power

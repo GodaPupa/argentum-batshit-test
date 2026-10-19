@@ -1,0 +1,33 @@
+{
+  "schema": "MANUAL_PHASE2_AETHER_FAILED_ATTEMPT_R1",
+  "source_head": "750f4bd730cba3660874e427aeb49456549fb0ea",
+  "source_tree": "49d8c69933bb6b595225e0a38c110fb8edb79cd6",
+  "run_id": 36249870989,
+  "job_id": 108425767613,
+  "artifact_id": 10908891227,
+  "artifact_bytes": 230293,
+  "artifact_sha256": "cd353e367d9f8accd81798cc534400c738d9aa92b531cc999594cbe1c4e8cb52",
+  "classification": "FIXTURE_API_COMPILER_DEFECT",
+  "failing_stage": ":mtg-sets:2017-2022:tests:compileTestKotlin",
+  "compiler_diagnostics": [
+    "e: file:///home/runner/work/argentum-batshit-test/argentum-batshit-test/mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AetherChannelerScenarioTest.kt:147:41 Unresolved reference 'isLand'.",
+    "> Task :mtg-sets:2017-2022:tests:compileTestKotlin FAILED"
+  ],
+  "actual_executed_cases": 0,
+  "junit_xml_present": false,
+  "source_guard": "PASS",
+  "generation_printing_assay_stages": "NOT_EXECUTED",
+  "correction": "Use the receiving ProjectedState.hasType(entity, \"LAND\") API; do not change the land-exclusion assertion or card behavior.",
+  "corrected_test_sha256": "091f7a412bd6e025a5d7d78ccf5852ddc50e7d77d3b773f29176abe96e1aeaca",
+  "successor_qualification": "PENDING",
+  "execution_authorized": false,
+  "official_capability_games": 0,
+  "official_primary_games": 0,
+  "hardware": "KEEP_V07",
+  "independent_source_review": {
+    "reviewer": "ferocity-recycling coordinator (non-author)",
+    "disposition": "ACCEPT_FOR_TARGETED_SUCCESSOR",
+    "scope": "One-line correction uses receiving ProjectedState.hasType(EntityId, String) and preserves projected LAND exclusion; actual Kotlin qualification remains pending.",
+    "reviewed_test_sha256": "091f7a412bd6e025a5d7d78ccf5852ddc50e7d77d3b773f29176abe96e1aeaca"
+  }
+}

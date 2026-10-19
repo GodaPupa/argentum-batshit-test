@@ -144,7 +144,7 @@ class CreateTokenCopyOfChosenPermanentExecutor(
             // A token copy honors global "[filter] enter tapped" replacements (Authority of the
             // Consuls taps an opponent's token copy of a creature).
             newState = com.wingedsheep.engine.handlers.effects.EnterTappedReplacements
-                .applyCreatedTokenEntryTap(newState, tokenId, controllerId)
+                .applyCreatedTokenEntryTap(newState, tokenId, controllerId, beforeEntry = state)
 
             // As-enters "enters with counters" (CR 614.1c): the copied card's own EntersWithCounters
             // (a copy of a creature that "enters with a +1/+1 counter") plus global grants from other

@@ -1,0 +1,115 @@
+{
+  "schema": "manual-phase2-prospective-card-component-v1",
+  "status": "SOURCE_REVIEWED_PENDING_ACTUAL_EXACT_AND_COMBINED_RECEIVING_QUALIFICATION",
+  "card": "Purphoros, God of the Forge",
+  "canonical_printing": "THS 135",
+  "accepted_manual_lineage": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+  "batch_rule": "Existing Aether Channeler and Purphoros ETB batch; one combined acceptance boundary.",
+  "fixture_scope": "EXCLUDED_FIXED_DETERMINISTIC_CARD_SCENARIOS_NOT_PHASE2_GAMES",
+  "fixture_seed_hex": "0x50555250484f524f",
+  "prospective_exact_cases": 25,
+  "prospective_case_names": [
+    "spell remains a creature on stack and resolves to a legendary enchantment below devotion five",
+    "four other red pips plus its own pip meet the exact creature threshold",
+    "hybrid monocolored hybrid and Phyrexian symbols each contribute one red devotion",
+    "opposing permanents and mana symbols in rules text do not provide devotion",
+    "stealing a red permanent immediately removes its contribution from the previous controller",
+    "a stolen God uses the new controller's devotion",
+    "a creature entry deals two to every opponent in a four-player fixture while God is not a creature",
+    "opponent creature entry does not trigger the God",
+    "a noncreature entry does not trigger the God",
+    "two simultaneous creature tokens generate two independent damage triggers",
+    "an already triggered damage ability survives its source returning to hand",
+    "ability removal preserves the type-changing rule but disables later damage triggers",
+    "indestructible prevents destruction while God is a noncreature enchantment",
+    "indestructible prevents destruction while God is a creature",
+    "noncreature God can pump only creatures currently controlled as the ability resolves",
+    "creature God receives its own pump and repeated activations add independently",
+    "insufficient activation mana is rejected without changing returned or current state",
+    "counters remain while God is not a creature and apply when devotion restores its creature type",
+    "temporary pump ends through actual end-of-turn cleanup",
+    "a creature-targeted spell fizzles after a response lowers devotion below five",
+    "a declared attacking God leaves combat after a legal response lowers devotion",
+    "a declared blocking God leaves combat after devotion loss while the attacker remains blocked",
+    "entry replacement uses pre-entry devotion and creature trigger uses post-entry devotion with 3 other pips",
+    "entry replacement uses pre-entry devotion and creature trigger uses post-entry devotion with 4 other pips",
+    "entry replacement uses pre-entry devotion and creature trigger uses post-entry devotion with 5 other pips"
+  ],
+  "source_files": {
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/PurphorosGodOfTheForge.kt": "22d597835ffb1dcda107eaa1acec6a3209ecef034f61c11461aaab7eb01125d0",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PurphorosGodOfTheForgeScenarioTest.kt": "5003070a3a0064691edec48e2eb6ac1f80f68746017722ffda80f2bf5450e181",
+    "manual-scenarios/cards/p/purphoros-god-of-the-forge.json": "97fe00c98b5bcf2fd6ca6e1cda826751e3d370ca4146a005421dd28c4fe12446",
+    "experiments/manual-transmission-phase2/sources/purphoros-r1/printings.json": "afb1799aca35ba003de876733f2116ecac42eca7940f04d38cc7c33ed84c1729",
+    "experiments/manual-transmission-phase2/sources/purphoros-r1/rulings.json": "411760393b0f230cf18a35192444d4ec7a0d7a3ef61542dc1d73d46b2906f9fc",
+    "experiments/manual-transmission-phase2/sources/purphoros-r1/ths-135.json": "4f409788fa3970151b4dd9d21de706d4617b4a02e82926ee4d335b00f1c3910a"
+  },
+  "pre_authoring_probe": {
+    "run_id": 36257126929,
+    "artifact_id": 10910383422,
+    "artifact_sha256": "486c041a40c5e3cd92951a527165ad5cc701551cb52e45b654fcda87a7dc119a",
+    "all_three_commands_completed_before_definition_authorship": true,
+    "assay_decline_is_not_behavioral_acceptance": true
+  },
+  "known_generic_prerequisite": {
+    "diagnostic_source": "05280369dd412c7cd697430abb835fcacf1e36d8",
+    "diagnostic_run": 36257704437,
+    "actual_cases": 7,
+    "failures": 5,
+    "errors": 0,
+    "skips": 0,
+    "candidate_pr": 193,
+    "candidate_not_yet_accepted": true
+  },
+  "coverage": [
+    "Exact own-controller red devotion threshold including hybrid, monocolored hybrid, and Phyrexian symbols; exclude opposing and text-box pips.",
+    "Type only on battlefield, God subtype, legendary enchantment and indestructible; current projected control, ability loss, retained counters.",
+    "Each-opponent damage in four seats, another-only and own-control boundaries, two simultaneous creature tokens, pending trigger after source departure.",
+    "Mana-paid activation while noncreature; current resolution group snapshot, repeated activation, opposing/later creatures excluded, actual cleanup.",
+    "Target invalidation after devotion loss; removal of real declared attacker/blocker, retained blocked status and no combat reentry.",
+    "Pre-entry replacement characteristics excluding own pip and post-entry trigger characteristics including own pip at three, four, and five other pips."
+  ],
+  "replay": "Each cast, activation, explicit response, stack pass, decision and tested combat declaration submitted through the fixture wrapper replays the serialized prestate and compares error, full serialized state and ordered events. Initial board setup and driver step positioning are excluded fixture setup.",
+  "player_experience": {
+    "activation": "Existing ability action with explicit text: Creatures you control get +1/+0 until end of turn.",
+    "targets": "No activation target or damage target; each opponent is affected automatically.",
+    "static": "Projected creature/subtype/keyword/stats display, with ordinary existing combat legality.",
+    "developer_board": "manual-scenarios/cards/p/purphoros-god-of-the-forge.json",
+    "browser_runtime_acceptance": false
+  },
+  "expected_generated_delta": {
+    "path": "mtg-sets/src/test/resources/snapshots/cards/THS.json",
+    "new_record": "Purphoros, God of the Forge",
+    "every_existing_record": "unchanged"
+  },
+  "remaining": [
+    "All 25 actual cases on the receiving source; any failed reachable mechanic remains unresolved.",
+    "Aether ten and modal adjacent two cases on the combined source.",
+    "Ordinary generated snapshot, metadata/printing/image gates, corpus lint and classified Assay differential.",
+    "Required engine and complete receiving CI, replay/provenance and independent final artifact review.",
+    "Updated source/inventory acceptance before any resolved-card counter promotion."
+  ],
+  "hardware": "Manual Transmission v0.7",
+  "hardware_disposition": "KEEP_V07",
+  "deck_changes": false,
+  "card_resolved_identity_promoted": false,
+  "gameplay_authorized": false,
+  "official_counters": {
+    "capability_completed": 0,
+    "capability_frozen_scope": 36,
+    "primary_completed": 0,
+    "primary_frozen_scope": 864,
+    "official_initializations": 0,
+    "official_outcomes_exposed": 0
+  },
+  "independent_source_review": {
+    "reviewer": "non-author Izzet coordinator agent",
+    "reviewed_local_commit": "8418a73feb406a51f3d8099d67565c91b2a18394",
+    "reviewed_tree": "645de4f15f3169d63537f49309ad854829e2bb9e",
+    "card_sha256": "22d597835ffb1dcda107eaa1acec6a3209ecef034f61c11461aaab7eb01125d0",
+    "fixture_sha256": "5003070a3a0064691edec48e2eb6ac1f80f68746017722ffda80f2bf5450e181",
+    "verdict": "ACCEPT_FOR_RECEIVING_QUALIFICATION",
+    "actual_cases_reviewed": false,
+    "github_approval_created": false,
+    "scope": "Pure existing SDK composition and all 25 prospective cases reviewed; runtime, receiving repair, snapshots and full CI still required."
+  }
+}

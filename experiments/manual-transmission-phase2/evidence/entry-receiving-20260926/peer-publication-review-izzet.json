@@ -1,0 +1,101 @@
+{
+  "schema": "manual-entry-izzet-successor-peer-publication-review-v1",
+  "reviewer": "Successor Izzet task agent, non-author of Manual preservation bundle and its implementation",
+  "status": "PASS_BOUNDED_PRESERVATION_PUBLICATION",
+  "reviewed_at_utc": "2026-09-26T20:52:53.856524+00:00",
+  "reviewed_files": {
+    "receiving-merge-artifact.zip": {
+      "bytes": 342099,
+      "sha256": "7e4e094872b6e29a97858de38022e3fff98fd4c5ebcd98de833ae7a7713c221f"
+    },
+    "original-artifact.zip": {
+      "bytes": 342146,
+      "sha256": "2d274babf869df3b8cb127e751216cd9c5a779122f706b7c8030ccf938f4293e"
+    },
+    "receipt.json": {
+      "bytes": 6338,
+      "sha256": "dea3af44e5d8336d549d258a9e5ddcd150bb7ab53b0318f9b4be27ee0b0f13b4"
+    },
+    "github-metadata.json": {
+      "bytes": 22032,
+      "sha256": "2d9bc80ef6518e7c5809c4b9b81fa0a7c4a119dd52df310ce45c9ee80e00649f"
+    },
+    "successor-manual-artifact-audit.json": {
+      "bytes": 164837,
+      "sha256": "76ac3c3147346a0acb99c25c56eaada17b07096652215bebb6d4a54788fa6a7c"
+    },
+    "source-binding-subset.zip": {
+      "bytes": 1062588,
+      "sha256": "c036b9e75b3e59bca18d7a6cc1bf0ce29924b3541ea728c2a4d8cd3f1fb71e4d"
+    },
+    "git-tree-proof.json.gz": {
+      "bytes": 118580,
+      "sha256": "49ae390661ac2704f81b90413f74c354486080891179d45f966ee3d934826229"
+    },
+    "capability-artifact.zip": {
+      "bytes": 936667,
+      "sha256": "14c6d3be61ebfb2e70907939a6f8f3307b089785c8fd9055badc92fcb1df681c"
+    },
+    "capability-decoded-job-log.txt.gz": {
+      "bytes": 344509,
+      "sha256": "da60359caceb96b3458cd7fecefdd54e6e90b0deb557904f809dfedce6121db9"
+    }
+  },
+  "reviewed_receipt_sha256": "dea3af44e5d8336d549d258a9e5ddcd150bb7ab53b0318f9b4be27ee0b0f13b4",
+  "source": "b6d5ff1a902eede46ae290a1a36bda53a8aab36d",
+  "merge": "a36681568f024c4f3319df5cf9dc9bf4685adf5f",
+  "tree": "e9879d2f6dc37c5b7a3d38492816619c5c7b46a5",
+  "independently_verified": [
+    "Live PR196 is merged at the named source/base/merge; fresh Git commit read and complete nontruncated recursive tree resolve the exact e987 tree.",
+    "All retained file byte counts and SHA256 agree with the receipt; all3 original artifact ZIP digests and sizes match fresh GitHub artifact metadata.",
+    "Each original/receiving ZIP passes CRC and uniqueness checks and contains17 raw XML suites with451 distinct actual passing cases, zero failure/error/skip children; all6 stage exits are zero and all6 corresponding logs show actual fresh executor starts and BUILD SUCCESSFUL.",
+    "Capability ZIP contains34 raw XML suites with538 actual cases and no failure/error/skip; complete decoded capability job log contains9 fresh test executor starts.",
+    "All81 declared source bytes in the explicitly labeled83-member subset were independently SHA256-hashed and Git-blob-hashed against a fresh complete remote tree fetched by this reviewing agent.",
+    "Raw registry report recount gives Manual87resolved/13unresolved,8frozen100s total466resolved/334unresolved; registry does not assert rules or pilot qualification.",
+    "Receipt preserves missing historical Izzet review bytes without fabricating or replacing that reviewer, keeps source archive audit partial, and denies gameplay admission and performance evidence change."
+  ],
+  "registry_recount": {
+    "manual-transmission-v07": {
+      "resolved": 87,
+      "unresolved": 13
+    },
+    "blue-farm": {
+      "resolved": 59,
+      "unresolved": 41
+    },
+    "rogsi": {
+      "resolved": 56,
+      "unresolved": 44
+    },
+    "kinnan": {
+      "resolved": 56,
+      "unresolved": 44
+    },
+    "sisay": {
+      "resolved": 57,
+      "unresolved": 43
+    },
+    "magda": {
+      "resolved": 50,
+      "unresolved": 50
+    },
+    "hashaton": {
+      "resolved": 48,
+      "unresolved": 52
+    },
+    "shorikai": {
+      "resolved": 53,
+      "unresolved": 47
+    }
+  },
+  "limitations": [
+    "This approves publication of the enumerated preserved evidence and accurate scope, not a GitHub review approval or new gameplay admission.",
+    "Complete source archive outside the declared81 bindings was not independently audited.",
+    "Historical prior Izzet review hash is a reported provenance lead only; this reviewer did not recover those original review bytes.",
+    "No empirical deck-performance result is inferred from deterministic fixtures or registry coverage."
+  ],
+  "official_games_executed": 0,
+  "official_outcomes_exposed": 0,
+  "github_review_submission": false,
+  "independent_gameplay_admission": false
+}
