@@ -1,0 +1,238 @@
+[
+  {
+    "lane": "encore",
+    "stage": "first-regressions",
+    "source": "2c6ba88fe95b3fa2fa42f920d9637204bd423c73",
+    "run": 39211814880,
+    "artifact": 12168550760,
+    "size": 21877,
+    "sha256": "c66b56427e31e72a1afaea20f428382f8575643cd010dd321f34ad9a84acf4cb",
+    "file": "gameplay/manual-r3/evidence/encore-first-regressions.zip",
+    "tests": 86,
+    "testFailures": 2
+  },
+  {
+    "lane": "statue",
+    "stage": "first-regressions",
+    "source": "7b4edc9abdd145464d8a74c89e81f3399347a629",
+    "run": 39211977605,
+    "artifact": 12168386639,
+    "size": 75033,
+    "sha256": "3eb0719b8be26fea7c7d0360376fc67d208127dc62378f307d54eaa5c583556e",
+    "file": "gameplay/manual-r3/evidence/statue-first-regressions.zip",
+    "tests": 12,
+    "testFailures": 6
+  },
+  {
+    "lane": "encore",
+    "stage": "second-regressions",
+    "source": "243514eb22eb3aba64d61060b92a915bd2cf3fc5",
+    "run": 39212726461,
+    "artifact": 12168671856,
+    "size": 22084,
+    "sha256": "a5b0e23c944e434f0efeb2cb061d078eff4e04f44fecb33dbbf9f738ad737da7",
+    "file": "gameplay/manual-r3/evidence/encore-second-regressions.zip",
+    "tests": 86,
+    "testFailures": 1
+  },
+  {
+    "lane": "statue",
+    "stage": "second-regressions",
+    "source": "f4eaf6c1a3c979abd0b0cf353ac5c0030a14bd85",
+    "run": 39212764598,
+    "artifact": 12168104466,
+    "size": 78961,
+    "sha256": "9746bae6c9a6b86f1b5c5da95053028b3ec6b8a6ad75f792b60c93dd08b68d02",
+    "file": "gameplay/manual-r3/evidence/statue-second-regressions.zip",
+    "tests": 12,
+    "testFailures": 0
+  },
+  {
+    "lane": "statue",
+    "stage": "smoke",
+    "source": "f4eaf6c1a3c979abd0b0cf353ac5c0030a14bd85",
+    "run": 39212764598,
+    "artifact": 12168622032,
+    "size": 228586,
+    "sha256": "2e181470c45d04073d3387cfa4165abbdba2faa72fa15c23dc676ed0b8e0feb3",
+    "file": "gameplay/manual-r3/evidence/statue-smoke.zip",
+    "tests": 1,
+    "testFailures": 0,
+    "sameOriginalInitialState": true,
+    "firstChangedAction": 1345,
+    "statueCasts": 1,
+    "statueBattlefieldToHandReturns": 0,
+    "commanderCastsInTrace": {
+      "manual-mirror-0": 1,
+      "manual-mirror-1": 1,
+      "manual-mirror-2": 2,
+      "manual-mirror-3": 1
+    },
+    "finalPersonalTurns": {
+      "manual-mirror-0": 14,
+      "manual-mirror-1": 15,
+      "manual-mirror-2": 15,
+      "manual-mirror-3": 14
+    },
+    "summary": {
+      "status": "COMPLETE",
+      "seed": 202610190801,
+      "arm": "candidate",
+      "candidateSeat": 1,
+      "candidatePlayer": "manual-mirror-1",
+      "profilesBySeat": [
+        "manual-statue-continuation-r3",
+        "manual-animar-development-r2+statue-r3",
+        "manual-statue-continuation-r3",
+        "manual-statue-continuation-r3"
+      ],
+      "scoredChoiceRecords": 496,
+      "comboRelevantActionCount": 32,
+      "firstCommanderGlobalTurn": {
+        "manual-mirror-0": 13,
+        "manual-mirror-1": 22,
+        "manual-mirror-3": 28,
+        "manual-mirror-2": 31
+      },
+      "firstCommanderPersonalTurn": {
+        "manual-mirror-0": 4,
+        "manual-mirror-1": 6,
+        "manual-mirror-3": 7,
+        "manual-mirror-2": 8
+      },
+      "scoredCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 7,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 18
+      },
+      "scoredCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 6,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "legalCommanderOpportunityDecisions": {
+        "manual-mirror-0": 7,
+        "manual-mirror-1": 7,
+        "manual-mirror-2": 8,
+        "manual-mirror-3": 18
+      },
+      "legalCommanderDeclinedDecisions": {
+        "manual-mirror-0": 6,
+        "manual-mirror-1": 6,
+        "manual-mirror-2": 6,
+        "manual-mirror-3": 17
+      },
+      "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+      "submitted": 2758,
+      "accepted": 2758,
+      "error": null,
+      "gameOver": true,
+      "winner": "manual-mirror-2",
+      "playerTurnNumber": 58,
+      "durationMs": 46495,
+      "turnsByPlayer": {
+        "manual-mirror-0": 14,
+        "manual-mirror-1": 15,
+        "manual-mirror-2": 15,
+        "manual-mirror-3": 14
+      },
+      "commanderCasts": {
+        "manual-mirror-0": 1,
+        "manual-mirror-1": 1,
+        "manual-mirror-2": 2,
+        "manual-mirror-3": 1
+      },
+      "life": {
+        "manual-mirror-0": -5,
+        "manual-mirror-1": -22,
+        "manual-mirror-2": 24,
+        "manual-mirror-3": -29
+      },
+      "comboAttempts": "Not automatically inferred; inspect complete action and decision streams"
+    },
+    "actionsSha256": "fcc3912048f78f3ee9c373b8bbc9149b44f2be24f63086ea5f8f75ef6dccccc9",
+    "decisionsSha256": "4d204f88df8f9143d01b16f39cde1c10fccba7f0add074cb72d4536f343b373b",
+    "verifiedFinalLife": {
+      "manual-mirror-0": -5,
+      "manual-mirror-1": -22,
+      "manual-mirror-2": 24,
+      "manual-mirror-3": -29
+    }
+  },
+  {
+    "lane": "encore",
+    "stage": "third-regressions",
+    "source": "4146e119dd5310feed282d365040b7dc361e9087",
+    "run": 39213584704,
+    "artifact": 12167799995,
+    "size": 60875,
+    "sha256": "ef1ca0baa5aa347274f341d011e3d89964932aecf115c18acfe8f873c3e68b29",
+    "file": "gameplay/manual-r3/evidence/encore-third-regressions.zip",
+    "tests": 86,
+    "testFailures": 0
+  },
+  {
+    "lane": "encore",
+    "stage": "smoke",
+    "source": "4146e119dd5310feed282d365040b7dc361e9087",
+    "run": 39213584704,
+    "artifact": 12168634528,
+    "size": 132637,
+    "sha256": "353d02ffdfef6baab28533993278bd1b44fc6be937bd15f11f370976cca52889",
+    "file": "gameplay/manual-r3/evidence/encore-smoke.zip",
+    "tests": 1,
+    "testFailures": 0,
+    "archivedAcceptedPrefix": 3561,
+    "sameOriginalCheckpoint": true,
+    "commanderCastsInTrace": {
+      "manual-mirror-0": 0,
+      "manual-mirror-1": 1,
+      "manual-mirror-2": 0,
+      "manual-mirror-3": 1
+    },
+    "prefixCommanderCasts": {
+      "manual-mirror-0": 1,
+      "manual-mirror-1": 1,
+      "manual-mirror-2": 2,
+      "manual-mirror-3": 2
+    },
+    "wholeBranchedGameCommanderCasts": {
+      "manual-mirror-0": 1,
+      "manual-mirror-1": 2,
+      "manual-mirror-2": 2,
+      "manual-mirror-3": 3
+    },
+    "wholeBranchedGameAccepted": 4323,
+    "finalPersonalTurns": {
+      "manual-mirror-0": 19,
+      "manual-mirror-1": 25,
+      "manual-mirror-2": 26,
+      "manual-mirror-3": 25
+    },
+    "summary": {
+      "status": "COMPLETE",
+      "seed": 202610190801,
+      "archivedAcceptedPrefix": 3561,
+      "continuationAccepted": 762,
+      "turn": 95,
+      "winner": "manual-mirror-2",
+      "error": null,
+      "life": {
+        "manual-mirror-0": -4,
+        "manual-mirror-1": -3,
+        "manual-mirror-2": 5,
+        "manual-mirror-3": -2
+      }
+    },
+    "actionsSha256": "2ceefa8fbe88c7d1e0389c913b9fe221e92baff63e06df708debb2244c3d49d6",
+    "decisionsSha256": "950959c935f35e310a310e76b5b7803e9019ad8f4a5ccc0c2bacc601048454a1",
+    "verifiedFinalLife": {
+      "manual-mirror-0": -4,
+      "manual-mirror-1": -3,
+      "manual-mirror-2": 5,
+      "manual-mirror-3": -2
+    }
+  }
+]
