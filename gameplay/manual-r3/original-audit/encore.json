@@ -1,0 +1,111 @@
+{
+  "evidenceCommit": "a3a315bdd21d083099f05d89e45c3122498f8662",
+  "testedSource": "72749eed76c44de163ba5d91575de0d008e87391",
+  "archive": "gameplay/manual-continuation-r2/evidence/cells/manual-continuation-seed-0-seat-3-39207390012.zip",
+  "archiveSha256": "ae57686c12bdf09cd81bbbeccf64ee839dc3eff8143c1167863c43b3cc8c28b1",
+  "summary": {
+    "status": "ENGINE_REJECTION",
+    "seed": 202610190801,
+    "arm": "candidate",
+    "candidateSeat": 3,
+    "candidatePlayer": "manual-mirror-3",
+    "profilesBySeat": [
+      "current",
+      "current",
+      "current",
+      "manual-animar-development-r2"
+    ],
+    "scoredChoiceRecords": 960,
+    "comboRelevantActionCount": 36,
+    "firstCommanderGlobalTurn": {
+      "manual-mirror-0": 13,
+      "manual-mirror-3": 28,
+      "manual-mirror-2": 31,
+      "manual-mirror-1": 46
+    },
+    "firstCommanderPersonalTurn": {
+      "manual-mirror-0": 4,
+      "manual-mirror-3": 7,
+      "manual-mirror-2": 8,
+      "manual-mirror-1": 12
+    },
+    "scoredCommanderOpportunityDecisions": {
+      "manual-mirror-0": 7,
+      "manual-mirror-1": 17,
+      "manual-mirror-2": 7,
+      "manual-mirror-3": 12
+    },
+    "scoredCommanderDeclinedDecisions": {
+      "manual-mirror-0": 6,
+      "manual-mirror-1": 16,
+      "manual-mirror-2": 5,
+      "manual-mirror-3": 10
+    },
+    "legalCommanderOpportunityDecisions": {
+      "manual-mirror-0": 7,
+      "manual-mirror-1": 17,
+      "manual-mirror-2": 7,
+      "manual-mirror-3": 12
+    },
+    "legalCommanderDeclinedDecisions": {
+      "manual-mirror-0": 6,
+      "manual-mirror-1": 16,
+      "manual-mirror-2": 5,
+      "manual-mirror-3": 10
+    },
+    "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+    "submitted": 3562,
+    "accepted": 3561,
+    "error": "null: Amphin Mutineer must attack its designated defender this turn if able",
+    "gameOver": false,
+    "winner": null,
+    "playerTurnNumber": 78,
+    "durationMs": 32419,
+    "turnsByPlayer": {
+      "manual-mirror-0": 19,
+      "manual-mirror-1": 20,
+      "manual-mirror-2": 20,
+      "manual-mirror-3": 19
+    },
+    "commanderCasts": {
+      "manual-mirror-0": 1,
+      "manual-mirror-1": 1,
+      "manual-mirror-2": 2,
+      "manual-mirror-3": 2
+    },
+    "life": {
+      "manual-mirror-0": -4,
+      "manual-mirror-1": 20,
+      "manual-mirror-2": 40,
+      "manual-mirror-3": 20
+    },
+    "comboAttempts": "Not automatically inferred; inspect complete action and decision streams"
+  },
+  "rejectedSubmission": {
+    "comboRelevantAction": false,
+    "record": "submit",
+    "index": 3562,
+    "turn": 78,
+    "actor": "manual-mirror-2",
+    "step": "DECLARE_ATTACKERS",
+    "sourceName": null,
+    "pendingDecision": null,
+    "action": "{\"type\":\"DeclareAttackers\",\"playerId\":\"manual-mirror-2\",\"attackers\":{\"e756\":\"manual-mirror-1\",\"e757\":\"manual-mirror-1\",\"e232\":\"manual-mirror-1\"}}"
+  },
+  "rejection": {
+    "record": "result",
+    "index": 3562,
+    "error": "Amphin Mutineer must attack its designated defender this turn if able",
+    "events": [],
+    "life": [
+      -4,
+      20,
+      40,
+      20
+    ],
+    "gameOver": false,
+    "winner": null
+  },
+  "lastAcceptedIndex": 3561,
+  "engineRecordedEvents": []
+}

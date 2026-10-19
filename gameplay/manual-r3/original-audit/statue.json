@@ -1,0 +1,7566 @@
+{
+  "evidenceCommit": "a3a315bdd21d083099f05d89e45c3122498f8662",
+  "testedSource": "72749eed76c44de163ba5d91575de0d008e87391",
+  "archive": "gameplay/manual-continuation-r2/evidence/cells/manual-continuation-seed-0-seat-1-39207390012.zip",
+  "archiveSha256": "e1296c674f119f6d8a06d330de50eabd61a02c8e2f5cfe5bbff3206f49983e10",
+  "summary": {
+    "status": "RESOURCE_CAP",
+    "seed": 202610190801,
+    "arm": "candidate",
+    "candidateSeat": 1,
+    "candidatePlayer": "manual-mirror-1",
+    "profilesBySeat": [
+      "current",
+      "manual-animar-development-r2",
+      "current",
+      "current"
+    ],
+    "scoredChoiceRecords": 377,
+    "comboRelevantActionCount": 221,
+    "firstCommanderGlobalTurn": {
+      "manual-mirror-0": 13,
+      "manual-mirror-1": 22,
+      "manual-mirror-3": 28,
+      "manual-mirror-2": 31
+    },
+    "firstCommanderPersonalTurn": {
+      "manual-mirror-0": 4,
+      "manual-mirror-1": 6,
+      "manual-mirror-3": 7,
+      "manual-mirror-2": 8
+    },
+    "scoredCommanderOpportunityDecisions": {
+      "manual-mirror-0": 3,
+      "manual-mirror-1": 4,
+      "manual-mirror-2": 6,
+      "manual-mirror-3": 5
+    },
+    "scoredCommanderDeclinedDecisions": {
+      "manual-mirror-0": 2,
+      "manual-mirror-1": 3,
+      "manual-mirror-2": 5,
+      "manual-mirror-3": 4
+    },
+    "legalCommanderOpportunityDecisions": {
+      "manual-mirror-0": 3,
+      "manual-mirror-1": 4,
+      "manual-mirror-2": 6,
+      "manual-mirror-3": 5
+    },
+    "legalCommanderDeclinedDecisions": {
+      "manual-mirror-0": 2,
+      "manual-mirror-1": 3,
+      "manual-mirror-2": 5,
+      "manual-mirror-3": 4
+    },
+    "opportunityDefinition": "Insight records containing a materialized Animar CastSpell option; repeated priority windows count separately; excludes unmaterialized legal opportunities",
+    "submitted": 4324,
+    "accepted": 4324,
+    "error": "Bound reached before terminal game state",
+    "gameOver": false,
+    "winner": null,
+    "playerTurnNumber": 32,
+    "durationMs": 12307,
+    "turnsByPlayer": {
+      "manual-mirror-0": 8,
+      "manual-mirror-1": 8,
+      "manual-mirror-2": 8,
+      "manual-mirror-3": 8
+    },
+    "commanderCasts": {
+      "manual-mirror-0": 1,
+      "manual-mirror-1": 1,
+      "manual-mirror-2": 1,
+      "manual-mirror-3": 1
+    },
+    "life": {
+      "manual-mirror-0": 36,
+      "manual-mirror-1": 40,
+      "manual-mirror-2": 38,
+      "manual-mirror-3": 38
+    },
+    "comboAttempts": "Not automatically inferred; inspect complete action and decision streams"
+  },
+  "cycles": [
+    {
+      "castIndex": 1332,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        3
+      ],
+      "counterEventIndices": [
+        1336
+      ],
+      "returnIndices": [
+        1345
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r35",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1346,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        2
+      ],
+      "counterEventIndices": [
+        1350
+      ],
+      "returnIndices": [
+        1359
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r36",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1360,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        1
+      ],
+      "counterEventIndices": [
+        1364
+      ],
+      "returnIndices": [
+        1373
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r37",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1374,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1378
+      ],
+      "returnIndices": [
+        1387
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r38",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1388,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1392
+      ],
+      "returnIndices": [
+        1401
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r39",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1402,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1406
+      ],
+      "returnIndices": [
+        1415
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r40",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1416,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1420
+      ],
+      "returnIndices": [
+        1429
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r41",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1430,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1434
+      ],
+      "returnIndices": [
+        1443
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r42",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1444,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1448
+      ],
+      "returnIndices": [
+        1457
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r43",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1458,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1462
+      ],
+      "returnIndices": [
+        1471
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r44",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1472,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1476
+      ],
+      "returnIndices": [
+        1485
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r45",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1486,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1490
+      ],
+      "returnIndices": [
+        1499
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r46",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1500,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1504
+      ],
+      "returnIndices": [
+        1513
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r47",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1514,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1518
+      ],
+      "returnIndices": [
+        1527
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r48",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1528,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1532
+      ],
+      "returnIndices": [
+        1541
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r49",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1542,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1546
+      ],
+      "returnIndices": [
+        1555
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r50",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1556,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1560
+      ],
+      "returnIndices": [
+        1569
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r51",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1570,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1574
+      ],
+      "returnIndices": [
+        1583
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r52",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1584,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1588
+      ],
+      "returnIndices": [
+        1597
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r53",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1598,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1602
+      ],
+      "returnIndices": [
+        1611
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r54",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1612,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1616
+      ],
+      "returnIndices": [
+        1625
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r55",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1626,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1630
+      ],
+      "returnIndices": [
+        1639
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r56",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1640,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1644
+      ],
+      "returnIndices": [
+        1653
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r57",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1654,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1658
+      ],
+      "returnIndices": [
+        1667
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r58",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1668,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1672
+      ],
+      "returnIndices": [
+        1681
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r59",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1682,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1686
+      ],
+      "returnIndices": [
+        1695
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r60",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1696,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1700
+      ],
+      "returnIndices": [
+        1709
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r61",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1710,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1714
+      ],
+      "returnIndices": [
+        1723
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r62",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1724,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1728
+      ],
+      "returnIndices": [
+        1737
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r63",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1738,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1742
+      ],
+      "returnIndices": [
+        1751
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r64",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1752,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1756
+      ],
+      "returnIndices": [
+        1765
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r65",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1766,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1770
+      ],
+      "returnIndices": [
+        1779
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r66",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1780,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1784
+      ],
+      "returnIndices": [
+        1793
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r67",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1794,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1798
+      ],
+      "returnIndices": [
+        1807
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r68",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1808,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1812
+      ],
+      "returnIndices": [
+        1821
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r69",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1822,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1826
+      ],
+      "returnIndices": [
+        1835
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r70",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1836,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1840
+      ],
+      "returnIndices": [
+        1849
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r71",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1850,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1854
+      ],
+      "returnIndices": [
+        1863
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r72",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1864,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1868
+      ],
+      "returnIndices": [
+        1877
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r73",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1878,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1882
+      ],
+      "returnIndices": [
+        1891
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r74",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1892,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1896
+      ],
+      "returnIndices": [
+        1905
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r75",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1906,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1910
+      ],
+      "returnIndices": [
+        1919
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r76",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1920,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1924
+      ],
+      "returnIndices": [
+        1933
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r77",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1934,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1938
+      ],
+      "returnIndices": [
+        1947
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r78",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1948,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1952
+      ],
+      "returnIndices": [
+        1961
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r79",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1962,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1966
+      ],
+      "returnIndices": [
+        1975
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r80",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1976,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1980
+      ],
+      "returnIndices": [
+        1989
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r81",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 1990,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        1994
+      ],
+      "returnIndices": [
+        2003
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r82",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2004,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2008
+      ],
+      "returnIndices": [
+        2017
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r83",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2018,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2022
+      ],
+      "returnIndices": [
+        2031
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r84",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2032,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2036
+      ],
+      "returnIndices": [
+        2045
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r85",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2046,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2050
+      ],
+      "returnIndices": [
+        2059
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r86",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2060,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2064
+      ],
+      "returnIndices": [
+        2073
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r87",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2074,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2078
+      ],
+      "returnIndices": [
+        2087
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r88",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2088,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2092
+      ],
+      "returnIndices": [
+        2101
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r89",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2102,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2106
+      ],
+      "returnIndices": [
+        2115
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r90",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2116,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2120
+      ],
+      "returnIndices": [
+        2129
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r91",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2130,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2134
+      ],
+      "returnIndices": [
+        2143
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r92",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2144,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2148
+      ],
+      "returnIndices": [
+        2157
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r93",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2158,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2162
+      ],
+      "returnIndices": [
+        2171
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r94",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2172,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2176
+      ],
+      "returnIndices": [
+        2185
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r95",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2186,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2190
+      ],
+      "returnIndices": [
+        2199
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r96",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2200,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2204
+      ],
+      "returnIndices": [
+        2213
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r97",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2214,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2218
+      ],
+      "returnIndices": [
+        2227
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r98",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2228,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2232
+      ],
+      "returnIndices": [
+        2241
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r99",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2242,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2246
+      ],
+      "returnIndices": [
+        2255
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r100",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2256,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2260
+      ],
+      "returnIndices": [
+        2269
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r101",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2270,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2274
+      ],
+      "returnIndices": [
+        2283
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r102",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2284,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2288
+      ],
+      "returnIndices": [
+        2297
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r103",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2298,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2302
+      ],
+      "returnIndices": [
+        2311
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r104",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2312,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2316
+      ],
+      "returnIndices": [
+        2325
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r105",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2326,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2330
+      ],
+      "returnIndices": [
+        2339
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r106",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2340,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2344
+      ],
+      "returnIndices": [
+        2353
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r107",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2354,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2358
+      ],
+      "returnIndices": [
+        2367
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r108",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2368,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2372
+      ],
+      "returnIndices": [
+        2381
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r109",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2382,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2386
+      ],
+      "returnIndices": [
+        2395
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r110",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2396,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2400
+      ],
+      "returnIndices": [
+        2409
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r111",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2410,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2414
+      ],
+      "returnIndices": [
+        2423
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r112",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2424,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2428
+      ],
+      "returnIndices": [
+        2437
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r113",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2438,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2442
+      ],
+      "returnIndices": [
+        2451
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r114",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2452,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2456
+      ],
+      "returnIndices": [
+        2465
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r115",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2466,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2470
+      ],
+      "returnIndices": [
+        2479
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r116",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2480,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2484
+      ],
+      "returnIndices": [
+        2493
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r117",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2494,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2498
+      ],
+      "returnIndices": [
+        2507
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r118",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2508,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2512
+      ],
+      "returnIndices": [
+        2521
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r119",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2522,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2526
+      ],
+      "returnIndices": [
+        2535
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r120",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2536,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2540
+      ],
+      "returnIndices": [
+        2549
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r121",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2550,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2554
+      ],
+      "returnIndices": [
+        2563
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r122",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2564,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2568
+      ],
+      "returnIndices": [
+        2577
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r123",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2578,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2582
+      ],
+      "returnIndices": [
+        2591
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r124",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2592,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2596
+      ],
+      "returnIndices": [
+        2605
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r125",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2606,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2610
+      ],
+      "returnIndices": [
+        2619
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r126",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2620,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2624
+      ],
+      "returnIndices": [
+        2633
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r127",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2634,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2638
+      ],
+      "returnIndices": [
+        2647
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r128",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2648,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2652
+      ],
+      "returnIndices": [
+        2661
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r129",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2662,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2666
+      ],
+      "returnIndices": [
+        2675
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r130",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2676,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2680
+      ],
+      "returnIndices": [
+        2689
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r131",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2690,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2694
+      ],
+      "returnIndices": [
+        2703
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r132",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2704,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2708
+      ],
+      "returnIndices": [
+        2717
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r133",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2718,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2722
+      ],
+      "returnIndices": [
+        2731
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r134",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2732,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2736
+      ],
+      "returnIndices": [
+        2745
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r135",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2746,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2750
+      ],
+      "returnIndices": [
+        2759
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r136",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2760,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2764
+      ],
+      "returnIndices": [
+        2773
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r137",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2774,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2778
+      ],
+      "returnIndices": [
+        2787
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r138",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2788,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2792
+      ],
+      "returnIndices": [
+        2801
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r139",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2802,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2806
+      ],
+      "returnIndices": [
+        2815
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r140",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2816,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2820
+      ],
+      "returnIndices": [
+        2829
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r141",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2830,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2834
+      ],
+      "returnIndices": [
+        2843
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r142",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2844,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2848
+      ],
+      "returnIndices": [
+        2857
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r143",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2858,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2862
+      ],
+      "returnIndices": [
+        2871
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r144",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2872,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2876
+      ],
+      "returnIndices": [
+        2885
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r145",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2886,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2890
+      ],
+      "returnIndices": [
+        2899
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r146",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2900,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2904
+      ],
+      "returnIndices": [
+        2913
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r147",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2914,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2918
+      ],
+      "returnIndices": [
+        2927
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r148",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2928,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2932
+      ],
+      "returnIndices": [
+        2941
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r149",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2942,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2946
+      ],
+      "returnIndices": [
+        2955
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r150",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2956,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2960
+      ],
+      "returnIndices": [
+        2969
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r151",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2970,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2974
+      ],
+      "returnIndices": [
+        2983
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r152",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2984,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        2988
+      ],
+      "returnIndices": [
+        2997
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r153",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 2998,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3002
+      ],
+      "returnIndices": [
+        3011
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r154",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3012,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3016
+      ],
+      "returnIndices": [
+        3025
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r155",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3026,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3030
+      ],
+      "returnIndices": [
+        3039
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r156",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3040,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3044
+      ],
+      "returnIndices": [
+        3053
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r157",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3054,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3058
+      ],
+      "returnIndices": [
+        3067
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r158",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3068,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3072
+      ],
+      "returnIndices": [
+        3081
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r159",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3082,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3086
+      ],
+      "returnIndices": [
+        3095
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r160",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3096,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3100
+      ],
+      "returnIndices": [
+        3109
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r161",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3110,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3114
+      ],
+      "returnIndices": [
+        3123
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r162",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3124,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3128
+      ],
+      "returnIndices": [
+        3137
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r163",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3138,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3142
+      ],
+      "returnIndices": [
+        3151
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r164",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3152,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3156
+      ],
+      "returnIndices": [
+        3165
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r165",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3166,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3170
+      ],
+      "returnIndices": [
+        3179
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r166",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3180,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3184
+      ],
+      "returnIndices": [
+        3193
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r167",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3194,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3198
+      ],
+      "returnIndices": [
+        3207
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r168",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3208,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3212
+      ],
+      "returnIndices": [
+        3221
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r169",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3222,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3226
+      ],
+      "returnIndices": [
+        3235
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r170",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3236,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3240
+      ],
+      "returnIndices": [
+        3249
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r171",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3250,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3254
+      ],
+      "returnIndices": [
+        3263
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r172",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3264,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3268
+      ],
+      "returnIndices": [
+        3277
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r173",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3278,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3282
+      ],
+      "returnIndices": [
+        3291
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r174",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3292,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3296
+      ],
+      "returnIndices": [
+        3305
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r175",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3306,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3310
+      ],
+      "returnIndices": [
+        3319
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r176",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3320,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3324
+      ],
+      "returnIndices": [
+        3333
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r177",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3334,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3338
+      ],
+      "returnIndices": [
+        3347
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r178",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3348,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3352
+      ],
+      "returnIndices": [
+        3361
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r179",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3362,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3366
+      ],
+      "returnIndices": [
+        3375
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r180",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3376,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3380
+      ],
+      "returnIndices": [
+        3389
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r181",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3390,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3394
+      ],
+      "returnIndices": [
+        3403
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r182",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3404,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3408
+      ],
+      "returnIndices": [
+        3417
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r183",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3418,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3422
+      ],
+      "returnIndices": [
+        3431
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r184",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3432,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3436
+      ],
+      "returnIndices": [
+        3445
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r185",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3446,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3450
+      ],
+      "returnIndices": [
+        3459
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r186",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3460,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3464
+      ],
+      "returnIndices": [
+        3473
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r187",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3474,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3478
+      ],
+      "returnIndices": [
+        3487
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r188",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3488,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3492
+      ],
+      "returnIndices": [
+        3501
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r189",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3502,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3506
+      ],
+      "returnIndices": [
+        3515
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r190",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3516,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3520
+      ],
+      "returnIndices": [
+        3529
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r191",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3530,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3534
+      ],
+      "returnIndices": [
+        3543
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r192",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3544,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3548
+      ],
+      "returnIndices": [
+        3557
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r193",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3558,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3562
+      ],
+      "returnIndices": [
+        3571
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r194",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3572,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3576
+      ],
+      "returnIndices": [
+        3585
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r195",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3586,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3590
+      ],
+      "returnIndices": [
+        3599
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r196",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3600,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3604
+      ],
+      "returnIndices": [
+        3613
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r197",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3614,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3618
+      ],
+      "returnIndices": [
+        3627
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r198",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3628,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3632
+      ],
+      "returnIndices": [
+        3641
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r199",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3642,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3646
+      ],
+      "returnIndices": [
+        3655
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r200",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3656,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3660
+      ],
+      "returnIndices": [
+        3669
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r201",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3670,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3674
+      ],
+      "returnIndices": [
+        3683
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r202",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3684,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3688
+      ],
+      "returnIndices": [
+        3697
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r203",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3698,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3702
+      ],
+      "returnIndices": [
+        3711
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r204",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3712,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3716
+      ],
+      "returnIndices": [
+        3725
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r205",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3726,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3730
+      ],
+      "returnIndices": [
+        3739
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r206",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3740,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3744
+      ],
+      "returnIndices": [
+        3753
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r207",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3754,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3758
+      ],
+      "returnIndices": [
+        3767
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r208",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3768,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3772
+      ],
+      "returnIndices": [
+        3781
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r209",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3782,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3786
+      ],
+      "returnIndices": [
+        3795
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r210",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3796,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3800
+      ],
+      "returnIndices": [
+        3809
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r211",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3810,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3814
+      ],
+      "returnIndices": [
+        3823
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r212",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3824,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3828
+      ],
+      "returnIndices": [
+        3837
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r213",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3838,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3842
+      ],
+      "returnIndices": [
+        3851
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r214",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3852,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3856
+      ],
+      "returnIndices": [
+        3865
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r215",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3866,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3870
+      ],
+      "returnIndices": [
+        3879
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r216",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3880,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3884
+      ],
+      "returnIndices": [
+        3893
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r217",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3894,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3898
+      ],
+      "returnIndices": [
+        3907
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r218",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3908,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3912
+      ],
+      "returnIndices": [
+        3921
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r219",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3922,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3926
+      ],
+      "returnIndices": [
+        3935
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r220",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3936,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3940
+      ],
+      "returnIndices": [
+        3949
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r221",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3950,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3954
+      ],
+      "returnIndices": [
+        3963
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r222",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3964,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3968
+      ],
+      "returnIndices": [
+        3977
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r223",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3978,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3982
+      ],
+      "returnIndices": [
+        3991
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r224",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 3992,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        3996
+      ],
+      "returnIndices": [
+        4005
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r225",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4006,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4010
+      ],
+      "returnIndices": [
+        4019
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r226",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4020,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4024
+      ],
+      "returnIndices": [
+        4033
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r227",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4034,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4038
+      ],
+      "returnIndices": [
+        4047
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r228",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4048,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4052
+      ],
+      "returnIndices": [
+        4061
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r229",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4062,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4066
+      ],
+      "returnIndices": [
+        4075
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r230",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4076,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4080
+      ],
+      "returnIndices": [
+        4089
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r231",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4090,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4094
+      ],
+      "returnIndices": [
+        4103
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r232",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4104,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4108
+      ],
+      "returnIndices": [
+        4117
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r233",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4118,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4122
+      ],
+      "returnIndices": [
+        4131
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r234",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4132,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4136
+      ],
+      "returnIndices": [
+        4145
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r235",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4146,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4150
+      ],
+      "returnIndices": [
+        4159
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r236",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4160,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4164
+      ],
+      "returnIndices": [
+        4173
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r237",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4174,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4178
+      ],
+      "returnIndices": [
+        4187
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r238",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4188,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4192
+      ],
+      "returnIndices": [
+        4201
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r239",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4202,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4206
+      ],
+      "returnIndices": [
+        4215
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r240",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4216,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4220
+      ],
+      "returnIndices": [
+        4229
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r241",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4230,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4234
+      ],
+      "returnIndices": [
+        4243
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r242",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4244,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4248
+      ],
+      "returnIndices": [
+        4257
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r243",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4258,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4262
+      ],
+      "returnIndices": [
+        4271
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r244",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4272,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4276
+      ],
+      "returnIndices": [
+        4285
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r245",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4286,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4290
+      ],
+      "returnIndices": [
+        4299
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r246",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4300,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4304
+      ],
+      "returnIndices": [
+        4313
+      ],
+      "returnSelections": [
+        {
+          "type": "SubmitDecision",
+          "playerId": "manual-mirror-3",
+          "response": {
+            "type": "CardsSelectedResponse",
+            "decisionId": "r247",
+            "selectedCards": [
+              "e341"
+            ]
+          }
+        }
+      ],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    },
+    {
+      "castIndex": 4314,
+      "turn": 32,
+      "actor": "manual-mirror-3",
+      "manaSpent": [
+        0
+      ],
+      "counterEventIndices": [
+        4318
+      ],
+      "returnIndices": [],
+      "returnSelections": [],
+      "lifeVectors": [
+        [
+          36,
+          40,
+          38,
+          38
+        ]
+      ]
+    }
+  ],
+  "casts": 214,
+  "returns": 213,
+  "incompleteLastCast": 4314,
+  "payoffObservation": "Animar counters increase; no observed life progress; final cast unfinished at resource cap"
+}
