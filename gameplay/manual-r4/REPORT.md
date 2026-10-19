@@ -1,6 +1,6 @@
 # ARGENTUM — Manual Transmission R4
 
-Work in progress: mechanics and AI execution passed; one remaining raw-target enumeration regression and combined gameplay are pending.
+Work in progress: separate mechanics, AI execution, and targeting validations passed; combined regression/gameplay execution is running.
 
 ## Verified mechanics
 
@@ -34,7 +34,7 @@ The planner and guard fixtures mistakenly assumed raw legal actions already cont
 
 The same trace exposed a real rules-engine defect: submissions 60–62 targeted previously eliminated player 2 and were accepted. `TargetFinder` selected from historical `turnOrder` with `hasEntity`, which remained true for a player marked left; `TargetValidator` also accepted that player. The narrow repair filters out inactive player identities and rejects explicit targeting of them before paying costs. A separate test uses a real Ballista cast, activated lethal damage, an actual player-left event, rejected re-targeting, and a legal shot at a remaining player.
 
-Source `329cdd4ecbe43e9d44901d26d88fbb5ed4d9a6f4`, run `39268490241`, passed all 21 Ballista scenarios but failed the new departed-player test at line 44: the raw `LegalActionEnumerator` still advertised the departed player. The separate `TargetEnumerationUtils` path required the same active-player filter. Corrected targeting source `58a995ea96fad4503db20b539a27175392fc7585` is awaiting validation. No combined branch or game has been created yet.
+Source `329cdd4ecbe43e9d44901d26d88fbb5ed4d9a6f4`, run `39268490241`, passed all 21 Ballista scenarios but failed the new departed-player test at line 44: the raw `LegalActionEnumerator` still advertised the departed player. The separate `TargetEnumerationUtils` path required the same active-player filter. Corrected targeting source `58a995ea96fad4503db20b539a27175392fc7585`, run `39269758906`, **passed 22/22 tests**. This verifies the real elimination, raw legal target exclusion, explicit rejection without counter payment, and remaining player's legal damage.
 
 AI source `bd0aeccba5b70a2e0ec20f28d1be953f9dc39578`, run `39268527721`, **passed all 22 tests**. These sources were originally published while validation was pending; only the receipts establish test outcomes. Four tests exercise retained Purphoros, finite-body, Palinchron, and Ballista exits through the R4 wrapper itself. Both player-shroud and loss-prevention guards passed using actual bound-X casts.
 
@@ -53,6 +53,16 @@ The constructed four-player counter-building position starts with Animar at eigh
 There were six real damage events and zero combat-damage events. Opponents received and exercised AI priority windows. The ready four-player X=6 position completed in 36 accepted actions with the same six-shot terminal result. CURRENT and R3 still decline the corresponding multiplayer shots and leave two opponents alive.
 
 This does not establish optimal sequencing: in the two-player counter-building position, R4 used 30 actions versus CURRENT's 27-action Ballista-bounce line. Both won. Planning is bounded to eight Statue casts, the top three legitimate X choices, and 160 hypothetical shots, with conditional opponent passing during planning. Actual gameplay can interrupt the plan. The verified positions are low-life fixtures, not full-life sampled Commander games, and no general infinite-combo or win-rate improvement is claimed.
+
+## Composition
+
+After all separate validations passed, the isolated integration branch `gameplay/manual-r4-integration-20261019` was created from preserved R3 report source `3057523a6bdd187eed83c886294edc9b9c728143`. Published source `004ec925b3edc94f972d0141d1edb1e294e641b5` is running Java 21 workflow `39270737788`.
+
+`composition-source-bindings.json` records exact Git blob identities for 26 reused paths from the validated sources. Seven new files provide the explicit composed profile, twelve composition regressions, one fresh mirror harness, and the gated workflow. The opt-in profile registers R2 Animar development plus R4 Ballista/Statue continuation and enables the Encore defender flag. R4 delegates ordinary Statue exits to the unchanged R3 advisor, avoiding duplicate card-advisor registration.
+
+The frozen deck SHA-256 remains `2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1`. The R2 advisor remains `62ee5847e8f76d5fe4fc3ebe4f115681eecca1805c9e42c237f34915e2522650`. CURRENT's companion definitions are byte-identical to the preserved baseline; the new Encore flag defaults to false.
+
+The workflow runs original failures and composition regressions before its one fresh four-player Commander mirror. The reserved seed is `202610191401`; bounds are 10,000 submitted actions, 200 global turns, 1,500 actions on one turn, and five minutes of gameplay. All four pilots explicitly use `manual-transmission-r4-composed`. No game has yet started, and no outcome is claimed pending execution.
 
 ## Preservation
 
