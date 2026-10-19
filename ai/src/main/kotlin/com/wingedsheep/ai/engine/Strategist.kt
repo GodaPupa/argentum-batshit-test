@@ -98,6 +98,8 @@ class Strategist(
      * `CastSpell: No valid targets available`" finding Phase 1 quantified and left open.
      */
     private val useMeaningfulFilter: Boolean = false,
+    /** Extend the opted-in land sequencing policy; frozen legacy profiles remain unchanged. */
+    private val sequenceLandsByUsableMana: Boolean = false,
     /** Phase 4b. How much search each decision may spend. */
     private val budgetPolicy: BudgetPolicy = LegacyBudgetPolicy,
     /**
@@ -900,7 +902,7 @@ class Strategist(
     ): AdjustedScore {
         // Land actions have no spell/ability card name in resolveCardName. Evaluate their
         // continuation before that early return, without applying spell timing/hold policies.
-        if (action.action is PlayLand) {
+        if (sequenceLandsByUsableMana && action.action is PlayLand) {
             val payoff = newlyUnlockedLandPayoff(state, leafState, playerId)
             return AdjustedScore(
                 leafScore + payoff,
