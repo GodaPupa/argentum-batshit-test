@@ -75,9 +75,13 @@ object ManualR7BallistaCombinedAdvisor : CardAdvisor {
         if (queuedElsewhere == 0 || remainingToKill <= counters + queuedAtTarget) return null
         if (!context.passScore.isFinite() || !context.defaultScore.isFinite()) return null
 
-        // Strategist may discount a priority pass after advisor scoring; keep a
-        // small safety margin below the raw pass score rather than returning
-        // null, which would incorrectly retain its high one-ply chip score.
-        return minOf(context.defaultScore, context.passScore - 3.0)
+        // The exact R7 pre-2659 trace awards a structural sequencing +5.0
+        // AFTER the card advisor's score replacement. A raw pass-minus-three
+        // floor therefore remains two points ABOVE passing and fails the
+        // actual pilot-choice regression even though direct advisor tests pass.
+        // Account for the observed +5.0 plus a bounded three-point margin.
+        // This applies only in the narrow public-state, insufficient-lethal-
+        // counters-with-other-shots-queued condition established above.
+        return minOf(context.defaultScore, context.passScore - 8.0)
     }
 }
