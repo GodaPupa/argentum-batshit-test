@@ -1,0 +1,37 @@
+name: Manual Round 2 CURRENT combo discovery
+on:
+  push:
+    branches: [gameplay/manual-round2-mechanics-20261019]
+    paths:
+      - .github/workflows/manual-round2-discovery-20261019.yml
+      - ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualComboDiscoveryProbeTest.kt
+permissions:
+  contents: read
+jobs:
+  discovery:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_MECHANICS_OUTPUT: ${{ github.workspace }}/mechanics-output/discovery
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Probe actual CURRENT decisions without supplied post-setup actions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p mechanics-output
+          git rev-parse HEAD > mechanics-output/source-sha.txt
+          chmod +x gradlew scripts/gradle-locked scripts/test-class
+          scripts/test-class ManualComboDiscoveryProbeTest -Dbenchmark=true --no-daemon --console=plain --stacktrace 2>&1 | tee mechanics-output/discovery.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-round2-discovery-${{ github.run_id }}
+          path: |
+            mechanics-output/
+            ai/build/test-results/test/
