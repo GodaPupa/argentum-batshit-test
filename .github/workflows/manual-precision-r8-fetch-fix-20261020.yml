@@ -1,0 +1,85 @@
+name: Manual Precision R8 fetched shock before-entry replacement repair (NO GAMES)
+on:
+  push:
+    branches: [research/manual-precision-r8-fetch-fix-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r8-fetch-fix-20261020.yml'
+permissions:
+  contents: read
+concurrency:
+  group: manual-precision-r8-fetch-repair
+  cancel-in-progress: false
+jobs:
+  fetched-shock-green:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 24}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Pin exact original RED and five source-bounded fixes only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r8-fetch-green
+          git rev-parse HEAD > r8-fetch-green/commit.txt
+          git rev-parse HEAD^{tree} > r8-fetch-green/tree.txt
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r8-fetch-fix-20261020"
+          test "$(git rev-parse HEAD^)" = "121796c423cf0f06ae018fdc9bc94eed7fe9435b"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r8-fetch-fix-20261020.yml"
+          git merge-base --is-ancestor 96d777375708130e2c97592292171f4d9e445c20 HEAD
+          test "$(git diff --name-only 96d777375708130e2c97592292171f4d9e445c20 HEAD | wc -l)" -eq 5
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PreEntryContinuation.kt)" = "867ae2eab5d5899099436f55289a6b399ad6b39b"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PreEntryCoordinator.kt)" = "3baae2b3585ab3fcbec36a385450b7e1d391bfc1"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt)" = "cebfe9bd04d91d36bba511dcf0877835ef88e177"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt)" = "3b7f4a6a14ea3f7d41bd06167ec114a8340b6255"
+          test "$(git rev-parse HEAD:mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MistyRainforestScenarioTest.kt)" = "964a741e014897736cbc15fada1adf64b559420a"
+          test "$(git rev-parse HEAD:mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WoodedFoothillsScenarioTest.kt)" = "765faa387801a27551df221182f4b9ab4c7e65db"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          echo ZERO_NEW_GAMES > r8-fetch-green/budget.txt
+          chmod +x scripts/gradle-locked gradlew
+      - name: Wooded Foothills choices for every applicable shockland
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2000-2002:tests:test \
+            --tests '*WoodedFoothillsScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r8-fetch-green/wooded.log
+      - name: Misty Rainforest choices for every applicable shockland
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test \
+            --tests '*MistyRainforestScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r8-fetch-green/misty.log
+      - name: Hand-played Breeding Pool Steam Vents Stomping Ground option regressions
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2003-2007:tests:test \
+            --tests '*BreedingPoolScenarioTest' \
+            --tests '*SteamVentsScenarioTest' \
+            --tests '*StompingGroundScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r8-fetch-green/hand-played-shocks.log
+      - name: Preserve source and JUnit even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: precision-r8-fetch-green-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            r8-fetch-green/
+            mtg-sets/2000-2002/tests/build/test-results/test/
+            mtg-sets/2008-2016/tests/build/test-results/test/
+            mtg-sets/2003-2007/tests/build/test-results/test/
