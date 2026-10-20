@@ -1,0 +1,72 @@
+name: Manual Precision R8 isolated Mana Confluence auto-payment repair NO GAMES
+on:
+  push:
+    branches: [research/manual-precision-r8-mana-fix-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r8-mana-fix-20261020.yml'
+permissions:
+  contents: read
+concurrency:
+  group: manual-precision-r8-mana-repair
+  cancel-in-progress: false
+jobs:
+  targeted-rules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Assert exact isolated engine change, unchanged decks and R5 profile
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r8-mana-green
+          git rev-parse HEAD > r8-mana-green/source-sha.txt
+          git rev-parse HEAD^{tree} > r8-mana-green/tree-sha.txt
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r8-mana-fix-20261020"
+          test "$(git rev-parse HEAD^)" = "3de8160f01b159b787871e53592a4f7a4d158adb"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r8-mana-fix-20261020.yml"
+          git merge-base --is-ancestor 96d777375708130e2c97592292171f4d9e445c20 HEAD
+          test "$(git diff --name-only 96d777375708130e2c97592292171f4d9e445c20 HEAD | wc -l)" -eq 2
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt)" = "149eae15569f5efa42c7fff6b4cd85afb4aaf384"
+          test "$(git rev-parse HEAD:mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaConfluenceScenarioTest.kt)" = "99a17745aadbe84fdf54c7c1af409dee5169f581"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          echo ZERO_NEW_GAMES > r8-mana-green/budget.txt
+          chmod +x scripts/gradle-locked gradlew
+      - name: Direct Mana Confluence, spell auto-payment and two nonspell auto-payment regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test \
+            --tests '*ManaConfluenceScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r8-mana-green/mana-confluence.log
+          echo FOUR_PATHS_GREEN > r8-mana-green/mana-green.txt
+      - name: Previously accepted City of Brass damage-trigger regression
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:1993-1999:tests:test \
+            --tests '*CityOfBrassScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r8-mana-green/city-of-brass.log
+      - name: Preserve targeted rules engine original JUnit reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r8-mana-fix-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r8-mana-green/
+            mtg-sets/2008-2016/tests/build/test-results/test/
+            mtg-sets/1993-1999/tests/build/test-results/test/
