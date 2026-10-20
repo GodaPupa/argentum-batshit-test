@@ -1,0 +1,59 @@
+name: Manual R15 exact archived decision-state replay
+on:
+  push:
+    branches: [gameplay/manual-r15-decision-replay-20261019]
+    paths:
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR15ExactDecisionReplayTest.kt'
+      - '.github/workflows/manual-r15-decision-replay-20261019.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R15_R8_1612_R5: ${{ github.workspace }}/r15-input/r8-r5-1612.zip
+      MANUAL_R15_R8_1612_R7: ${{ github.workspace }}/r15-input/r8-r7-1612.zip
+      MANUAL_R15_OUTPUT: ${{ github.workspace }}/r15-output
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify frozen sources and acquire accepted immutable R8 pairs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p r15-input r15-output
+          git rev-parse HEAD > r15-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r15-output/tree-sha.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12228089328/zip > r15-input/r8-r5-1612.zip
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12229530628/zip > r15-input/r8-r7-1612.zip
+          printf '%s  %s\n' '4f823fb61ac29ecc84582b4fd974200d2ba1d89664d906df802013d823f026a9' r15-input/r8-r5-1612.zip | sha256sum -c -
+          printf '%s  %s\n' '7ca290085e874cf4eaeee766224ba797d0dd9c5ab37d0b5cd72b04fc386c622c' r15-input/r8-r7-1612.zip | sha256sum -c -
+          chmod +x gradlew scripts/gradle-locked
+      - name: Replay only archived decisions and test legal alternatives
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualR15ExactDecisionReplayTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r15-output/validation.log
+          test -s r15-output/r15-replay-summary.json
+          test -s r15-output/state-before-1336.json
+          test -s r15-output/state-before-1497.json
+          test -s r15-output/state-before-1701.json
+          test -s r15-output/state-before-1998.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r15-exact-replay-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r15-output/
+            ai/build/test-results/test/
