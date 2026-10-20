@@ -1,0 +1,355 @@
+name: Manual Precision R1 Stage 1 CONTROL vs A four-game matched pilot
+# First-ever isolated, evidence-gated Precision Upgrade game workflow.
+on:
+  push:
+    branches: [gameplay/manual-precision-r1-stage1-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r1-stage1-20261020.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-precision-r1-stage1-authorized
+  cancel-in-progress: false
+
+jobs:
+  admission:
+    name: Reconcile original successful preflight and frozen source
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Admit exactly one workflow-only child of preflight-validated R1
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p precision-r1-admission
+          git rev-parse HEAD > precision-r1-admission/execution-source-sha.txt
+          git rev-parse HEAD^{tree} > precision-r1-admission/execution-tree-sha.txt
+          test "$GITHUB_REF" = "refs/heads/gameplay/manual-precision-r1-stage1-20261020"
+          test "$(git rev-parse HEAD^)" = "aafa138b1cbf6a7f4f024abdef716df4ae75e741"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r1-stage1-20261020.yml"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CONTROL.v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualPrecisionR1GameplayHarnessTest.kt)" = "d90de59f63a3791128809d845abf4ee09124dc1c"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt)" = "b4232ac2034b6d6163268ba8a72f4f628525ec5c"
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt experiments/manual-transmission/research/precision-upgrade-20261020/CONTROL.v0.7.decklist.txt experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt > precision-r1-admission/deck-hashes.sha256
+          grep -q '^2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1 ' precision-r1-admission/deck-hashes.sha256
+          grep -q '^5bfa4467962b105c70408f555c72b2908423342debb8e454acd0419c7b0a5fed ' precision-r1-admission/deck-hashes.sha256
+          echo "202610202111" > precision-r1-admission/seed-1.txt
+          echo "202610202112" > precision-r1-admission/seed-2.txt
+          echo "EXACT_FOUR_MATCHED_FOUR_PLAYER_GAMES_ONLY" > precision-r1-admission/budget.txt
+      - name: Verify successful original preflight run AND exact unexpired artifact digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39472941354 > precision-r1-admission/preflight-run.json
+          jq -e '.id == 39472941354 and .status == "completed" and .conclusion == "success" and .run_attempt == 1 and .head_sha == "aafa138b1cbf6a7f4f024abdef716df4ae75e741"' precision-r1-admission/preflight-run.json >/dev/null
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39472941354/artifacts > precision-r1-admission/preflight-artifacts.json
+          jq -e '[.artifacts[] | select(.id == 12287399974 and .name == "manual-precision-r1-source-preflight-39472941354" and .expired == false and .digest == "sha256:67cac362825c661e367a368eaf6df34f370a2b40c5a5411bedd58a0b14310fc8")] | length == 1' precision-r1-admission/preflight-artifacts.json >/dev/null
+      - name: Download exact original successful preflight artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: manual-precision-r1-source-preflight-39472941354
+          repository: GodaPupa/argentum-batshit-test
+          run-id: 39472941354
+          github-token: ${{ github.token }}
+          path: precision-r1-original-preflight
+      - name: Verify original artifact contents and card/rules/R5 evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("precision-r1-original-preflight")
+          def unique(name):
+              matches=list(root.rglob(name))
+              assert len(matches)==1, (name, len(matches))
+              return matches[0]
+          source=unique("source-sha.txt").read_text().strip()
+          assert source=="aafa138b1cbf6a7f4f024abdef716df4ae75e741", source
+          assert unique("no-gameplay.txt").read_text().strip()=="NO_PRECISION_GAMEPLAY_WAS_EXECUTED"
+          assert unique("challenger-b-gate.txt").read_text().strip()=="B_BLOCKED_NO_FIERCE_GUARDIANSHIP_CARD_DEFINITION"
+          logs=["compiled-catalog-and-initializer.log","city-of-brass.log","wooded-foothills.log",
+                "shocklands.log","mana-misty.log","bloom-tender.log","r5-regressions.log",
+                "worldly-tutor.log","challenger-c.log"]
+          for name in logs:
+              log=unique(name).read_text(errors="replace")
+              assert "BUILD SUCCESSFUL" in log, "Missing success evidence: "+name
+              assert "BUILD FAILED" not in log, "Failed original card gate: "+name
+          audit=json.loads(unique("card-coverage.json").read_text())
+          for card in ["ManaConfluence","CityOfBrass","BreedingPool","SteamVents","StompingGround",
+                       "MistyRainforest","WoodedFoothills"]:
+              assert audit[card]["catalogSourceExists"], "Missing registered source "+card
+              assert audit[card]["cardScenarioSourceExists"], "Missing scenario "+card
+          print("R1_ORIGINAL_PREFLIGHT_ARTIFACT_VERIFIED source="+source+" seven_lands=PASS R5=PASS")
+          Path("precision-r1-admission/admission-pass.txt").write_text(
+              "R1 original run 39472941354 source and all 7-land/R5 logs validated; Stage 1 four arms admitted\n"
+          )
+          PY
+      - name: Preserve admission evidence on failure or success
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r1-stage1-admission-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: precision-r1-admission/
+
+  gameplay:
+    name: Four-player ${{ matrix.arm }} / ${{ matrix.seed }}
+    needs: admission
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {arm: control, seed: '202610202111'}
+          - {arm: a, seed: '202610202111'}
+          - {arm: control, seed: '202610202112'}
+          - {arm: a, seed: '202610202112'}
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_PRECISION_OUTPUT: ${{ github.workspace }}/precision-r1-stage1-output
+      MANUAL_PRECISION_GAMEPLAY_AUTHORIZATION: EXPLICIT_PRECISION_PILOT
+      MANUAL_PRECISION_SEED: ${{ matrix.seed }}
+      MANUAL_PRECISION_PREDECLARED_SEED: ${{ matrix.seed }}
+      MANUAL_PRECISION_ARM: ${{ matrix.arm }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 2}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Independently bind this individual arm to exact source and declared seed
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p precision-r1-stage1-output
+          git rev-parse HEAD > precision-r1-stage1-output/source-sha.txt
+          git rev-parse HEAD^{tree} > precision-r1-stage1-output/source-tree-sha.txt
+          test "$(git rev-parse HEAD^)" = "aafa138b1cbf6a7f4f024abdef716df4ae75e741"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r1-stage1-20261020.yml"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualPrecisionR1GameplayHarnessTest.kt)" = "d90de59f63a3791128809d845abf4ee09124dc1c"
+          test "$MANUAL_PRECISION_SEED" = "$MANUAL_PRECISION_PREDECLARED_SEED"
+          case "$MANUAL_PRECISION_SEED" in 202610202111|202610202112) ;; *) echo "Unknown seed"; exit 1;; esac
+          case "$MANUAL_PRECISION_ARM" in control|a) ;; *) echo "B/C prohibited"; exit 1;; esac
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$MANUAL_PRECISION_GAMEPLAY_AUTHORIZATION" = EXPLICIT_PRECISION_PILOT
+          chmod +x gradlew scripts/gradle-locked
+      - name: Mandatory exactly 64 real accepted actions before any full game
+        shell: bash
+        env:
+          MANUAL_PRECISION_PREFIX_ONLY: '1'
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPrecisionR1GameplayHarnessTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee precision-r1-stage1-output/prefix-${{ matrix.arm }}-${{ matrix.seed }}.log
+          python3 - <<'PY'
+          import os,json
+          from pathlib import Path
+          seed=os.environ["MANUAL_PRECISION_SEED"]; arm=os.environ["MANUAL_PRECISION_ARM"]
+          d=Path("precision-r1-stage1-output")/(arm+"-seed-"+seed+"-prefix")
+          s=json.loads((d/"summary.json").read_text())
+          pre=json.loads((d/"r1-initializer-preflight.json").read_text())
+          bind=json.loads((d/"r1-arm-binding.json").read_text())
+          expected=0 if arm=="control" else 7
+          assert str(s["seed"])==seed and s["arm"]==arm and s["prefixOnly"] is True
+          assert s["status"]=="PREFIX_COMPLETE" and s["accepted"]==s["submitted"]==64
+          assert s["error"] is None and s["gameOver"] is False and s["winner"] is None
+          assert pre["passed"] is True and pre["positiveSeats"]==4 and pre["changedSlotCount"]==expected
+          assert bind["changedSlots"]==expected and bind["matchedInitializerPreflightVerified"] is True
+          assert bind["profile"]=="manual-transmission-r5-survival-opt-in"
+          assert bind["r7CombinedAdvisorAbsent"] and not bind["automaticAdoption"]
+          for file in ("initial-state.json","final-state.json","smoke-passed.txt","actions.jsonl","decisions.jsonl"):
+              assert (d/file).is_file(), file
+          print("PRECISION_R1_STAGE1_SMOKE_PASS seed="+seed+" arm="+arm+" actions=64 seats=4")
+          PY
+      - name: One bounded full four-player game, only after arm-specific smoke succeeds
+        shell: bash
+        env:
+          MANUAL_PRECISION_PREFIX_ONLY: '0'
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPrecisionR1GameplayHarnessTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee precision-r1-stage1-output/full-${{ matrix.arm }}-${{ matrix.seed }}.log
+          python3 - <<'PY'
+          import os,json
+          from pathlib import Path
+          seed=os.environ["MANUAL_PRECISION_SEED"]; arm=os.environ["MANUAL_PRECISION_ARM"]
+          d=Path("precision-r1-stage1-output")/(arm+"-seed-"+seed)
+          s=json.loads((d/"summary.json").read_text())
+          pre=json.loads((d/"r1-initializer-preflight.json").read_text())
+          bind=json.loads((d/"r1-arm-binding.json").read_text())
+          censors={"CENSORED_WALL_CLOCK","CENSORED_ACTION_BUDGET","CENSORED_TURN_BUDGET","CENSORED_PER_TURN_BUDGET"}
+          expected=0 if arm=="control" else 7
+          assert str(s["seed"])==seed and s["arm"]==arm and s["prefixOnly"] is False
+          assert s["accepted"]==s["submitted"] and s["accepted"]>=64 and s["error"] is None
+          assert s["status"] in censors | {"COMPLETE"}
+          assert pre["passed"] and pre["positiveSeats"]==4 and pre["changedSlotCount"]==expected
+          assert bind["changedSlots"]==expected and bind["matchedInitializerPreflightVerified"]
+          assert bind["profile"]=="manual-transmission-r5-survival-opt-in"
+          assert not bind["automaticAdoption"] and bind["r7CombinedAdvisorAbsent"]
+          for file in ("initial-state.json","final-state.json","smoke-passed.txt","actions.jsonl","decisions.jsonl","registry-audit.json"):
+              assert (d/file).is_file(),file
+          if s["status"]=="COMPLETE":
+              assert s["gameOver"] is True and s["winner"] is not None and s["censorReason"] is None
+          else:
+              assert s["gameOver"] is False and s["winner"] is None
+              assert s["censorReason"]==s["status"] and s["censorCheckpointSaved"] is True
+              assert (d/"censor-checkpoint.json").is_file()
+          print("PRECISION_R1_STAGE1_VALID_GAME seed="+seed+" arm="+arm+" status="+s["status"]+
+                " accepted="+str(s["accepted"])+" winner="+str(s["winner"]))
+          PY
+      - name: Preserve full original traces, source manifests and both original smoke/full logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r1-stage1-game-${{ matrix.arm }}-${{ matrix.seed }}-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            precision-r1-stage1-output/
+            ai/build/test-results/test/
+
+  audit:
+    name: Read-only same-seed CONTROL vs A four-player comparison
+    needs: [admission, gameplay]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: manual-precision-r1-stage1-game-*
+          path: precision-r1-audit-input
+          merge-multiple: false
+      - name: Preserve all four source-bound outcomes and first divergences
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p precision-r1-stage1-audit
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("precision-r1-audit-input")
+          output=Path("precision-r1-stage1-audit")
+          seeds=("202610202111","202610202112")
+          arms=("control","a")
+          observations={}
+          streams={}
+          for seed in seeds:
+              for arm in arms:
+                  matches=list(root.rglob(arm+"-seed-"+seed+"/summary.json")) if root.exists() else []
+                  key=(seed,arm)
+                  if len(matches)!=1:
+                      observations[key]={"seed":seed,"arm":arm,"available":False,"matchingSummaries":len(matches)}
+                      streams[key]=[]
+                      continue
+                  directory=matches[0].parent
+                  summary=json.loads(matches[0].read_text())
+                  bind=json.loads((directory/"r1-arm-binding.json").read_text())
+                  submits=[]
+                  for line in (directory/"actions.jsonl").read_text().splitlines():
+                      if not line.strip(): continue
+                      row=json.loads(line)
+                      if row.get("record")=="submit": submits.append(row)
+                  status=summary.get("status")
+                  winnerEligible=status=="COMPLETE" and summary.get("gameOver") is True
+                  expected=0 if arm=="control" else 7
+                  valid=(summary.get("error") is None and summary.get("accepted")==summary.get("submitted")
+                         and summary.get("accepted",0)>=64 and bind.get("changedSlots")==expected
+                         and bind.get("profile")=="manual-transmission-r5-survival-opt-in"
+                         and bind.get("matchedInitializerPreflightVerified") is True)
+                  observations[key]={
+                    "seed":seed,"arm":arm,"available":True,"validObservation":valid,
+                    "status":status,"completedTerminal":winnerEligible,
+                    "winner":summary.get("winner") if winnerEligible else None,
+                    "submitted":summary.get("submitted"),"accepted":summary.get("accepted"),
+                    "error":summary.get("error"),
+                    "firstCommanderGlobalTurn":summary.get("firstCommanderGlobalTurn"),
+                    "firstCommanderPersonalTurn":summary.get("firstCommanderPersonalTurn"),
+                    "commanderCasts":summary.get("commanderCasts"),
+                    "legalCommanderOpportunityDecisions":summary.get("legalCommanderOpportunityDecisions"),
+                    "legalCommanderDeclinedDecisions":summary.get("legalCommanderDeclinedDecisions"),
+                    "scoredCommanderOpportunityDecisions":summary.get("scoredCommanderOpportunityDecisions"),
+                    "scoredCommanderDeclinedDecisions":summary.get("scoredCommanderDeclinedDecisions"),
+                    "replacementActionCounts":summary.get("replacementActionCounts"),
+                    "comboRelevantActionCount":summary.get("comboRelevantActionCount"),
+                    "life":summary.get("life"),
+                    "binding":bind,
+                    "traceFile":str(directory/"actions.jsonl"),
+                  }
+                  streams[key]=submits
+          pairs=[]
+          for seed in seeds:
+              control=observations[(seed,"control")]
+              challenger=observations[(seed,"a")]
+              row={"seed":seed,"controlAvailable":control["available"],"challengerAAvailable":challenger["available"],
+                   "comparisonType":"two separate four-player mirrors with identical seats, policy and seed"}
+              if control["available"] and challenger["available"]:
+                  one=streams[(seed,"control")]; two=streams[(seed,"a")]
+                  difference=None
+                  for index in range(min(len(one),len(two))):
+                      c=(one[index].get("actor"),one[index].get("sourceName"),one[index].get("action"))
+                      a=(two[index].get("actor"),two[index].get("sourceName"),two[index].get("action"))
+                      if c!=a:
+                          difference={"index":one[index].get("index"),"controlSource":one[index].get("sourceName"),
+                                      "aSource":two[index].get("sourceName")}
+                          break
+                  if difference is None and len(one)!=len(two):
+                      difference={"index":"beyond shared trace","controlActions":len(one),"challengerAActions":len(two)}
+                  row.update({"controlStatus":control["status"],"challengerAStatus":challenger["status"],
+                              "controlWinner":control["winner"],"challengerAWinner":challenger["winner"],
+                              "pairedWinnerEligible":control["completedTerminal"] and challenger["completedTerminal"],
+                              "firstSubmittedActionDivergence":difference,
+                              "controlFirstCommanderPersonalTurn":control["firstCommanderPersonalTurn"],
+                              "challengerAFirstCommanderPersonalTurn":challenger["firstCommanderPersonalTurn"]})
+              pairs.append(row)
+          allobs=[observations[(seed,arm)] for seed in seeds for arm in arms]
+          completed=sum(x.get("completedTerminal",False) for x in allobs)
+          available=sum(x["available"] for x in allobs)
+          payload={"disposition":"R1_STAGE1_DESCRIPTIVE_ONLY_NOT_ADOPTED","source":"uploaded original matched-arm artifacts",
+                   "authorizedSeeds":list(seeds),"arms":list(arms),"authorizedMaxFullGames":4,
+                   "availableArmArtifacts":available,"completedTerminalGames":completed,
+                   "observations":allobs,"pairs":pairs,
+                   "limits":["No inference of deck superiority from two seeds.",
+                             "No winner comparison if a member is censored, invalid or missing.",
+                             "No direct claim of mana consistency without turn-level mana reconstruction.",
+                             "Replacement action counts do not enumerate all land plays or all mana choices."]}
+          (output/"comparison.json").write_text(json.dumps(payload,indent=2,ensure_ascii=False)+"\n")
+          lines=["# Manual Precision R1 Stage 1 — CONTROL vs A",
+                 "","Four games authorized; only original source-bound observations appear here.",
+                 "","No promotion and no official qualification; disposition remains descriptive.",""]
+          for o in allobs:
+              lines.append("- Seed "+o["seed"]+" "+o["arm"]+": status="+str(o.get("status","MISSING"))+
+                           ", accepted="+str(o.get("accepted","N/A"))+
+                           ", winner="+str(o.get("winner","N/A")))
+          for p in pairs:
+              lines+=["","## Matched seed "+p["seed"],
+                      "- Winner comparison eligible: "+str(p.get("pairedWinnerEligible",False)),
+                      "- First submitted action divergence: "+str(p.get("firstSubmittedActionDivergence"))]
+          (output/"REPORT.md").write_text("\n".join(lines)+"\n")
+          print("PRECISION_R1_STAGE1_AUDIT original_artifacts="+str(available)+"/4 terminal_games="+str(completed))
+          PY
+      - name: Upload independent read-only audit even for partial observations
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r1-stage1-audit-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: precision-r1-stage1-audit/
