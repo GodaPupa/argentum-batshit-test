@@ -1,0 +1,84 @@
+name: Manual identity R4 exact R22 seed-1622 replay (NO GAMES)
+on:
+  push:
+    branches: [research/manual-identity-r4-exact-1622-20261020]
+    paths:
+      - '.github/workflows/manual-identity-r4-exact-1622-20261020.yml'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualIdentityR4Exact1622ReplayTest.kt'
+      - 'experiments/manual-transmission/identity-r4/PROTOCOL.md'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  exact-archive-replay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_IDENTITY_R4_R22_ZIP: ${{ github.workspace }}/r4-original/r22-control-1622.zip
+      MANUAL_IDENTITY_R4_OUTPUT: ${{ github.workspace }}/r4-receipt
+      MANUAL_IDENTITY_R4_MODE: ARCHIVAL_REPLAY_ONLY
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 2}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify narrow one-commit source and frozen authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r4-receipt r4-original
+          git rev-parse HEAD > r4-receipt/source-sha.txt
+          test "$(git rev-parse HEAD^)" = "b63c40c2e2408d798fee1cc759a85ec8d4c4ae9b"
+          cat > /tmp/expected.txt <<'EOF'
+          .github/workflows/manual-identity-r4-exact-1622-20261020.yml
+          ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualIdentityR4Exact1622ReplayTest.kt
+          experiments/manual-transmission/identity-r4/PROTOCOL.md
+          EOF
+          git diff --name-only HEAD^ HEAD >/tmp/actual.txt
+          diff -u /tmp/expected.txt /tmp/actual.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt)" = "b4232ac2034b6d6163268ba8a72f4f628525ec5c"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md)" = "dbf081b0c6e205c65750866adcb6f7d43f532caf"
+          chmod +x gradlew scripts/gradle-locked
+          echo 'REPLAY_SOURCE_IDENTITY_PASS'
+      - name: Retrieve the exact original source ZIP once
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39435937911 |
+            jq -e '.status=="completed" and .conclusion=="success" and .head_sha=="10675d8dc3133294c035606f656f9e4d12d50939"' >/dev/null
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12271846670/zip > r4-original/r22-control-1622.zip
+          echo '418d9d30cef71a4d1c025d9986294f55c8be8d295555cbbaa3fc3a27c5d2ad22  r4-original/r22-control-1622.zip' | sha256sum -c -
+      - name: Run the archival source-fidelity and exact-state gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualIdentityR4Exact1622ReplayTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r4-receipt/build.log
+          test -s r4-receipt/result.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path('r4-receipt/result.json').read_text())
+          assert s['status']=='EXACT_ORIGINAL_STATE_REPLAY_VERIFIED'
+          assert s['archivedSubmissionsReplayed']==1513 and s['matchingEngineEventRows']==1513
+          assert s['prefix64FullSerializedStateEqual'] is True
+          assert len(s['observedWindows'])==7
+          assert s['fullGamesInitialized']==s['AIBehaviorsChanged']==s['cardsChanged']==s['defectsProven']==0
+          print('R4_ARCHIVAL_REPLAY_1513_PASS windows=7 full_games=0 corrections=0')
+          PY
+          sha256sum r4-receipt/result.json > r4-receipt/result.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-identity-r4-exact-seed1622
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r4-receipt/
+            ai/build/test-results/test/
