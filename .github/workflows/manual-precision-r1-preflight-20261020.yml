@@ -1,0 +1,86 @@
+name: Manual Precision R1 three-arm compile and exact-slot preflight (NO GAMES)
+on:
+  push:
+    branches: [gameplay/manual-precision-r1-runtime-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r1-preflight-20261020.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: manual-precision-r1-preflight
+  cancel-in-progress: false
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: .
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 2}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify R22 runtime ancestry and exact independently published deck bytes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p manual-precision-r1-preflight
+          git rev-parse HEAD > manual-precision-r1-preflight/source-sha.txt
+          git rev-parse HEAD^{tree} > manual-precision-r1-preflight/tree-sha.txt
+          git merge-base --is-ancestor 10675d8dc3133294c035606f656f9e4d12d50939 HEAD
+          root=experiments/manual-transmission/research/precision-upgrade-20261020
+          test "$(git rev-parse HEAD:$root/CONTROL.v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:$root/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:$root/CHALLENGER-B.precision.decklist.txt)" = fc217e1a282eec67cb0abf46b824fc1cd9e73c66
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR22MatchedWanGameplayHarnessTest.kt)" = 65821294b0e346ab3c400afb477d495088af0f0e
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR19MatchedSlotHelper.kt)" = 6bad1ca08be447ef74b60e23f729c13b90fdd261
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          sha256sum "$root/"*.decklist.txt > manual-precision-r1-preflight/deck-input-hashes.sha256
+          git diff --name-only 10675d8dc3133294c035606f656f9e4d12d50939 HEAD > manual-precision-r1-preflight/changed-files.txt
+          if grep -E '^(rules-engine/|mtg-sdk/|ai/src/main/|experiments/manual-transmission/control/)' manual-precision-r1-preflight/changed-files.txt; then
+            echo 'Forbidden frozen/source production change'; exit 1
+          fi
+          chmod +x gradlew scripts/gradle-locked
+      - name: Compile all three decks, source substitutions and real four-seat initializers (NO GAME ACTIONS)
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPrecisionR1PreflightTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 |
+            tee manual-precision-r1-preflight/compiled-catalog-and-initializer.log
+      - name: Explicit card-behavior coverage audit (no false semantics claims)
+        shell: bash
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          names = [
+             "ManaConfluence", "CityOfBrass", "BreedingPool", "SteamVents",
+             "StompingGround", "MistyRainforest", "WoodedFoothills",
+             "BloomTender", "WorldlyTutor", "FierceGuardianship",
+          ]
+          paths=subprocess.check_output(["git","ls-files","mtg-sets"],text=True).splitlines()
+          records={}
+          for n in names:
+              definitions=[p for p in paths if p.endswith("/cards/"+n+".kt")]
+              scenarios=[p for p in paths if p.endswith("/"+n+"ScenarioTest.kt")]
+              records[n]={"definitions":definitions,"scenarioTests":scenarios,
+                "catalogSourceExists":bool(definitions),"cardScenarioSourceExists":bool(scenarios)}
+          target=pathlib.Path("manual-precision-r1-preflight/card-coverage.json")
+          target.write_text(json.dumps(records,indent=2)+"\n")
+          print(json.dumps(records,indent=2))
+          PY
+      - name: Preserve preflight evidence, including failures
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-precision-r1-source-preflight
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            manual-precision-r1-preflight/
+            ai/build/test-results/test/
