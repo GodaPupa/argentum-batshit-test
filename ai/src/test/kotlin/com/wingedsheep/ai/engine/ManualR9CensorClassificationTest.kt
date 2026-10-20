@@ -1,5 +1,6 @@
 package com.wingedsheep.ai.engine
 
+import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.state.GameState
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
