@@ -1,0 +1,129 @@
+name: Manual R18 Wan Shi Tong v0.8 paired R5 Commander challenger
+on:
+  push:
+    branches: [gameplay/manual-r18-wan-challenger-20261019]
+    paths:
+      - '.github/workflows/manual-r18-wan-challenger-20261019.yml'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR18WanChallengerHarnessTest.kt'
+      - 'gameplay/manual-v08-wan/CHALLENGER.decklist.txt'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  challenger:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: ['202610191615', '202610191616']
+        arm: ['control', 'wan']
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_R18_OUTPUT: ${{ github.workspace }}/r18-output
+      MANUAL_R18_SEED: ${{ matrix.seed }}
+      MANUAL_R18_PREDECLARED_SEED: ${{ matrix.seed }}
+      MANUAL_R18_ARM: ${{ matrix.arm }}
+      MANUAL_R9_GAMEPLAY_AUTHORIZATION: EXPLICIT_NEW_SAMPLE
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Pin frozen control, original Wan challenger, policies, mechanics, and prior tests
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p r18-output
+          git rev-parse HEAD > r18-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r18-output/tree-sha.txt
+          case "$MANUAL_R18_SEED" in 202610191615|202610191616) ;; *) echo "Unapproved seed"; exit 1 ;; esac
+          case "$MANUAL_R18_ARM" in control|wan) ;; *) echo "Unapproved deck arm"; exit 1 ;; esac
+          test "$MANUAL_R18_PREDECLARED_SEED" = "$MANUAL_R18_SEED"
+          test "$MANUAL_R9_GAMEPLAY_AUTHORIZATION" = "EXPLICIT_NEW_SAMPLE"
+          if git grep -nE '202610191615|202610191616' ecf44018e94c55bc92937c5b95da8f46022a74b6 -- gameplay experiments; then
+            echo "A proposed seed was already recorded in the accepted R17 predecessor"; exit 1
+          fi
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:gameplay/manual-v08-wan/CHALLENGER.decklist.txt)" = "854cedf1f3f789c2ddc49c1f9004f2fa63431851"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualBallistaContinuationAdvisorModule.kt)" = "181c4c54f0cbbf39a7fdd788d890019b5ed81ea6"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualR7BallistaAllocationAdvisorModule.kt)" = "7359818f0d782581f0cb52af4319dcdbbb050202"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR9CensorProtocol.kt)" = "37733aee218e34ca6bb712f9bdc5be2935852737"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR9ProtocolObservationHarnessTest.kt)" = "bc7be89afe1e76f8b011cfa009b624c2bbdc6a15"
+          test "$(git rev-parse HEAD:mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tla/cards/WanShiTongLibrarian.kt)" = "a8bb98cf7c08d153accdb5dbe0ce5d64ef7a73d3"
+          for accepted_run in 39329172513 39333033942 39350147606; do
+            gh api "/repos/GodaPupa/argentum-batshit-test/actions/runs/$accepted_run" | jq -e '.status == "completed" and .conclusion == "success"'
+          done
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt gameplay/manual-v08-wan/CHALLENGER.decklist.txt > r18-output/deck-hashes.sha256
+          printf '%s\n' "$MANUAL_R18_SEED" > r18-output/seed.txt
+          printf '%s\n' "$MANUAL_R18_ARM" > r18-output/arm.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Exact deck-slot check and 64-action smoke before game
+        shell: bash
+        env:
+          MANUAL_R18_PREFIX_ONLY: '1'
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualR18WanChallengerHarnessTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r18-output/prefix-${{ matrix.arm }}-${{ matrix.seed }}.log
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          arm=os.environ["MANUAL_R18_ARM"]; seed=os.environ["MANUAL_R18_SEED"]
+          d=Path(f"r18-output/{arm}-seed-{seed}-prefix")
+          s=json.loads((d/"summary.json").read_text())
+          binding=json.loads((d/"r18-arm-binding.json").read_text())
+          assert s["arm"]==arm and str(s["seed"])==seed and s["prefixOnly"] is True
+          assert s["status"]=="PREFIX_COMPLETE" and s["submitted"]==s["accepted"]==64
+          assert s["error"] is None and s["gameOver"] is False and s["winner"] is None
+          assert binding["oneCardSwapVerified"] and binding["r7CombinedAdvisorAbsent"]
+          assert binding["profile"]=="manual-transmission-r5-survival-opt-in"
+          assert (d/"smoke-passed.txt").is_file()
+          print(f"R18_PREFIX_PASS seed={seed} arm={arm} actions=64")
+          PY
+      - name: One full four-player game under accepted R9 censor boundaries
+        shell: bash
+        if: success()
+        env:
+          MANUAL_R18_PREFIX_ONLY: '0'
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualR18WanChallengerHarnessTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r18-output/game-${{ matrix.arm }}-${{ matrix.seed }}.log
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          arm=os.environ["MANUAL_R18_ARM"]; seed=os.environ["MANUAL_R18_SEED"]
+          d=Path(f"r18-output/{arm}-seed-{seed}")
+          s=json.loads((d/"summary.json").read_text())
+          binding=json.loads((d/"r18-arm-binding.json").read_text())
+          assert s["arm"]==arm and str(s["seed"])==seed and s["prefixOnly"] is False
+          assert s["accepted"]==s["submitted"] and s["accepted"]>=64 and s["error"] is None
+          assert s["status"] in {"COMPLETE","CENSORED_WALL_CLOCK",
+            "CENSORED_ACTION_BUDGET","CENSORED_TURN_BUDGET","CENSORED_PER_TURN_BUDGET"}
+          assert binding["oneCardSwapVerified"] and binding["r7CombinedAdvisorAbsent"]
+          assert binding["profile"]=="manual-transmission-r5-survival-opt-in"
+          if s["status"]=="COMPLETE":
+            assert s["gameOver"] is True and s["winner"] is not None
+            assert s["censorReason"] is None
+          else:
+            assert s["gameOver"] is False and s["winner"] is None
+            assert s["censorReason"]==s["status"] and s["censorCheckpointSaved"] is True
+            assert (d/"censor-checkpoint.json").is_file()
+          assert (d/"actions.jsonl").is_file() and (d/"decisions.jsonl").is_file()
+          assert (d/"initial-state.json").is_file() and (d/"final-state.json").is_file()
+          assert (d/"wan-event-candidates.json").is_file()
+          print(f"R18_OBSERVATION_PASS seed={seed} arm={arm} status={s['status']} actions={s['accepted']} winner={s['winner']} wanCasts={s['wanCastCount']}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r18-wan-${{ matrix.arm }}-${{ matrix.seed }}-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r18-output/
+            ai/build/test-results/test/
