@@ -57,11 +57,11 @@ jobs:
           set -euo pipefail
           scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPrecisionR1PreflightTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 |
             tee manual-precision-r1-preflight/compiled-catalog-and-initializer.log
-      - name: Card behavior — City of Brass and Worldly Tutor
+      - name: Card behavior — City of Brass
         shell: bash
         run: |
           set -euo pipefail
-          scripts/gradle-locked :mtg-sets:1993-1999:tests:test --tests '*CityOfBrassScenarioTest' --tests '*WorldlyTutorScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/1993-land-tutor.log
+          scripts/gradle-locked :mtg-sets:1993-1999:tests:test --tests '*CityOfBrassScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/city-of-brass.log
       - name: Card behavior — Wooded Foothills
         shell: bash
         run: |
@@ -87,6 +87,11 @@ jobs:
         run: |
           set -euo pipefail
           scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPactDebt*Test' --tests '*ManualBallista*Test' --tests '*ManualStatue*Test' --tests '*ManualResolutionPaymentRegressionTest' --tests '*ManualR5CandidateCompositionTest' --tests '*ManualEncoreRegressionTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/r5-regressions.log
+      - name: Card behavior — Worldly Tutor
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:1993-1999:tests:test --tests '*WorldlyTutorScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/worldly-tutor.log
       - name: Challenger C exact nine-slot compiled initializer (NO GAMEPLAY)
         shell: bash
         run: |
