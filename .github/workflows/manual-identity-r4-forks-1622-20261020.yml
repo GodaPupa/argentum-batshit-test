@@ -1,0 +1,81 @@
+name: Manual identity R4 two original-state cast-vs-chosen forks (NO FULL GAMES)
+on:
+  push:
+    branches: [research/manual-identity-r4-forks-1622-20261020]
+    paths:
+      - '.github/workflows/manual-identity-r4-forks-1622-20261020.yml'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualIdentityR4CounterfactualForkTest.kt'
+      - 'experiments/manual-transmission/identity-r4/COUNTERFACTUAL_PROTOCOL.md'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  exact-state-two-forks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_IDENTITY_R4_FORK_ARCHIVE: ${{ github.workspace }}/r4-fork-input/r4-exact-verified.zip
+      MANUAL_IDENTITY_R4_FORK_OUTPUT: ${{ github.workspace }}/r4-fork-output
+      MANUAL_IDENTITY_R4_FORK_MODE: EXACT_TWO_ARCHIVED_STATES
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 2}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Exact parent, changes and frozen authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r4-fork-output r4-fork-input
+          test "$(git rev-parse HEAD^)" = "68a8e331c84ebf53575deab9951ec80ca75312a3"
+          cat > /tmp/r4-fork-expected.txt <<'EOF'
+          .github/workflows/manual-identity-r4-forks-1622-20261020.yml
+          ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualIdentityR4CounterfactualForkTest.kt
+          experiments/manual-transmission/identity-r4/COUNTERFACTUAL_PROTOCOL.md
+          EOF
+          git diff --name-only HEAD^ HEAD > /tmp/r4-fork-actual.txt
+          diff -u /tmp/r4-fork-expected.txt /tmp/r4-fork-actual.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualIdentityR4Exact1622ReplayTest.kt)" = "764ebf01527db01cc8c74a583876681f9034dbc1"
+          chmod +x gradlew scripts/gradle-locked
+          git rev-parse HEAD > r4-fork-output/source-sha.txt
+      - name: Download original verified exact state receipt
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39454771346 |
+            jq -e '.status=="completed" and .conclusion=="success" and .head_sha=="68a8e331c84ebf53575deab9951ec80ca75312a3"' >/dev/null
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12280017350/zip > r4-fork-input/r4-exact-verified.zip
+          echo 'd27a0b8bedc4377c1852cfde23f217e6b92c62a193bdf67972da7320be7ac492  r4-fork-input/r4-exact-verified.zip' | sha256sum -c -
+      - name: Exactly two original-state one-action forks
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualIdentityR4CounterfactualForkTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r4-fork-output/build.log
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          d=json.loads(Path("r4-fork-output/summary.json").read_text())
+          assert d["status"]=="EXACT_STATE_TWO_FORKS_EXECUTED_NO_PROVEN_DEFECT"
+          assert d["newGames"]==d["cardChanges"]==d["AiProfileCurrentChanges"]==d["defectsProven"]==0
+          assert len(d["opportunities"])==2
+          assert all(x["chosenOneActionEngineAccepted"] and x["animarOneActionEngineAccepted"] for x in d["opportunities"])
+          assert all(x["disposition"]=="INCONCLUSIVE_NOT_A_PROMOTION" for x in d["opportunities"])
+          print("R4_TWO_DIRECT_ONE_ACTION_FORKS_PASS no_new_games=1" if d["newGames"] else "R4_TWO_DIRECT_ONE_ACTION_FORKS_PASS no_new_games=0")
+          PY
+          sha256sum r4-fork-output/summary.json > r4-fork-output/summary.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-identity-r4-two-original-state-forks
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r4-fork-output/
+            ai/build/test-results/test/
