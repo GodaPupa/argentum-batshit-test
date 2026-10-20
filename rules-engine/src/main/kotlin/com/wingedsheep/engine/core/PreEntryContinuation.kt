@@ -23,7 +23,9 @@ data class PendingPermanentEntry(
     val copyCandidates: List<PendingEntryCopyCandidate> = emptyList(),
     val copyHandled: Boolean = false,
     val selectedCopy: PendingEntryCopyCandidate? = null,
-    val copiedCard: com.wingedsheep.engine.state.components.identity.CardComponent? = null
+    val copiedCard: com.wingedsheep.engine.state.components.identity.CardComponent? = null,
+    /** Accepted printed optional pay-life cost before this card enters from an effect, if offered. */
+    val shockLifePaymentAccepted: Boolean? = null,
 )
 
 @Serializable
@@ -39,7 +41,9 @@ data class PreEntryContinuation(
     val operation: PreEntryOperation,
     val choiceFormat: EntersWithChoiceOnBattlefieldContinuation? = null,
     val legalHosts: List<ObjectRef> = emptyList(),
-    val choosingCopy: Boolean = false
+    val choosingCopy: Boolean = false,
+    /** This suspension answers a printed pay-two-life as-this-enters shockland choice. */
+    val choosingShockPayment: Boolean = false,
 ) : AnswerContinuation
 
 /** Immutable copiable values announced before any member of the entry batch is placed. */
