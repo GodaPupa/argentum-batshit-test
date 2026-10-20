@@ -27,3 +27,11 @@ Required before any four-player Precision game:
 ## Experiment integrity
 
 Neither the newly published harness nor a CI run constitutes gameplay or qualification. Never count source checks as real card behavior, a nonterminal censor as a loss, or a candidate as adopted. No promotion into frozen v0.7 or `AiProfile.CURRENT` is authorized.
+
+## R1 execution delta (2026-10-20, after first CI failure)
+
+- Initial source/compiled workflow `39468179923` on `b59889e90df7d5e87813a5ef94cb5becfaae2895` successfully reached Kotlin compilation but produced three `NoSuchFileException` test failures. Cause: workflow `MANUAL_R4_ROOT: .` was relative to the Gradle test worker's module directory. This is harness configuration, **not** a card or deck behavioral failure. No actions/games were run.
+- The corrected workflow explicitly sets `MANUAL_R4_ROOT` to the absolute GitHub workspace, fetches sufficient R22 history, and keeps source identity checks.
+- The catalog/initializer tests are separated: `ManualPrecisionR1PreflightTest` validates CONTROL + A; `ManualPrecisionR1CandidateBPreflightTest` fails closed for B until missing cards are implemented. The isolated three-arm gameplay harness is still opt-in, and **no gameplay workflow is present or dispatched**.
+- Nine new **unqualified** single-card scenario tests were authored for Mana Confluence, City of Brass, Breeding Pool, Steam Vents, Stomping Ground, Misty Rainforest, Wooded Foothills, Bloom Tender, and Worldly Tutor. Passing them is required; their publication alone proves nothing about behavior. No test for missing Fierce Guardianship is claimed.
+- Corrected source/rules preflight workflow committed as `79bded6ba609e3cde0d6deb2492aaf0eaaa93607`, GitHub Actions run `39469732819` (status in progress at publication). Continue by auditing its **original** logs/artifacts before changing any code, and fix only demonstrated defects. Challenger B and gameplay remain blocked on exact rules support, independent of source-count checks.
