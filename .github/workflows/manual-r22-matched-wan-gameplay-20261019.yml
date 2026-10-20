@@ -1,0 +1,122 @@
+name: Manual R22 matched-slot Wan harness preparation (NO gameplay)
+on:
+  push:
+    branches: [gameplay/manual-r22-matched-wan-gameplay-20261019]
+    paths:
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR22MatchedWanGameplayHarnessTest.kt'
+      - '.github/workflows/manual-r22-matched-wan-gameplay-20261019.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 10}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Pin R21 predecessor, frozen identities, and exactly two test-only additions
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r22-output
+          git rev-parse HEAD > r22-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r22-output/tree-sha.txt
+          base=cdad9fc86cd575bb4e79508b115429270d62bc85
+          git merge-base --is-ancestor "$base" HEAD
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR21MatchedWanPreflightTest.kt)" = "77e5f36ba7b8ef01e33c3489becfdf4942550f90"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR20MatchedSlotInitializerTest.kt)" = "3845b501095d5eb503d7756ca7ef2d6add954e0d"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR19MatchedSlotHelper.kt)" = "6bad1ca08be447ef74b60e23f729c13b90fdd261"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR18WanChallengerHarnessTest.kt)" = "c5dd247102c28465213cc3bb9438c92b0c2a1385"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:gameplay/manual-v08-wan/CHALLENGER.decklist.txt)" = "854cedf1f3f789c2ddc49c1f9004f2fa63431851"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt)" = "b4232ac2034b6d6163268ba8a72f4f628525ec5c"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          git diff --name-only "$base" HEAD > r22-output/changed-files.txt
+          test "$(wc -l < r22-output/changed-files.txt)" -eq 2
+          while IFS= read -r path; do
+            case "$path" in
+              ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR22MatchedWanGameplayHarnessTest.kt|.github/workflows/manual-r22-matched-wan-gameplay-20261019.yml) ;;
+              *) echo "::error::Unauthorized R22 change: $path"; exit 1 ;;
+            esac
+          done < r22-output/changed-files.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt gameplay/manual-v08-wan/CHALLENGER.decklist.txt > r22-output/deck-hashes.sha256
+          printf 'PREPARATION_ONLY; NO_GAMEPLAY_AUTHORIZATION; NO_ACTIONS; NO_NEW_GAMES\n' > r22-output/scope.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Static auth, harness completeness, and R9 protocol guards
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR22MatchedWanGameplayHarnessTest.kt")
+          h=p.read_text()
+          for required in (
+              'MANUAL_R22_GAMEPLAY_AUTHORIZATION',
+              'EXPLICIT' + '_FOUR_GAME',
+              'MANUAL_R22_PREDECLARED_SEED',
+              'MANUAL_R22_PREFIX_ONLY',
+              'ManualR19MatchedSlotHelper.matchedChallengerNames',
+              'r22-initializer-preflight.json',
+              'ManualR9CensorProtocol.reached',
+              'ManualR9CensorProtocol.validObservation',
+              'ManualR9CensorProtocol.writeCensorCheckpoint',
+              'if (accepted == 64)',
+              'ActionProcessor(registry)',
+              'actions.jsonl',
+              'decisions.jsonl',
+              'wan-event-candidates.json',
+              'r22-arm-binding.json',
+          ):
+              assert required in h, f"Missing required harness component: {required}"
+          assert '... remainder follows' not in h
+          assert 'arm in setOf("control", "challenger")' in h
+          assert '202610191621L, 202610191622L' in h
+          workflow=Path(".github/workflows/manual-r22-matched-wan-gameplay-20261019.yml").read_text()
+          assert ('EXPLICIT' + '_FOUR_GAME') not in workflow
+          assert ('MANUAL_R22_' + 'GAMEPLAY_AUTHORIZATION:') not in workflow
+          assert ('workflow_' + 'dispatch:') not in workflow
+          print("R22_STRUCTURE_PASS full_loop=true authorized_only=true new_games=0")
+          PY
+      - name: Compile R22 complete harness without invoking R22 tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:compileTestKotlin --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r22-output/compile.log
+          printf 'R22_COMPILE_PASS; no gameplay invoked\n' > r22-output/compile-ok.txt
+      - name: Repeat accepted R21 initializer-only preflight; never run R22 gameplay
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualR21MatchedWanPreflightTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r22-output/r21-regression.log
+      - name: Verify four initializer-only tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          files=list(Path("ai/build/test-results/test").glob("TEST-*ManualR21MatchedWanPreflightTest*.xml"))
+          assert files,"R21 initializer JUnit XML missing"
+          totals={k:0 for k in ("tests","failures","errors","skipped")}
+          for file in files:
+              tree=ET.parse(file).getroot()
+              for k in totals: totals[k]+=int(tree.attrib.get(k,0))
+          assert totals=={"tests":4,"failures":0,"errors":0,"skipped":0},totals
+          print("R22_PREPARATION_PASS compile=true initializer_tests=4 failures=0 full_games=0")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r22-harness-preparation-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r22-output/
+            ai/build/test-results/test/
