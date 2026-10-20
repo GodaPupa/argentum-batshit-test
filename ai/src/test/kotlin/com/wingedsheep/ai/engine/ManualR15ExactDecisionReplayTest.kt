@@ -169,7 +169,7 @@ class ManualR15ExactDecisionReplayTest : FunSpec({
         var provenDefects = 0
         val combat = originals.getValue(1701)
         val combatPlayer = EntityId("manual-mirror-3")
-        combat.original is DeclareAttackers shouldBe true
+        (combat.original is DeclareAttackers) shouldBe true
         val legalAttack = sim.getLegalActions(combat.state, combatPlayer)
             .single { it.action is DeclareAttackers }
         val mandatory = legalAttack.mandatoryAttackers.orEmpty()
@@ -196,8 +196,8 @@ class ManualR15ExactDecisionReplayTest : FunSpec({
             put("actualPlanEngineAccepted", true)
             put("noAttackEngineAccepted", emptyResult.error == null)
             put("noAttackEngineError", emptyResult.error?.toString())
-            put("noAttacksReferenceScore", noAttack["score"])
-            put("chosenPlanScore", selectedAttack["score"])
+            put("noAttacksReferenceScore", noAttack["score"] ?: JsonNull)
+            put("chosenPlanScore", selectedAttack["score"] ?: JsonNull)
             put("sourceState", "state-before-1701.json")
             put("defectProven", false)
         }
@@ -206,7 +206,7 @@ class ManualR15ExactDecisionReplayTest : FunSpec({
         val actor = EntityId("manual-mirror-0")
         for (index in listOf(1336, 1497, 1998)) {
             val window = originals.getValue(index)
-            window.original is PassPriority shouldBe true
+            (window.original is PassPriority) shouldBe true
             val offered = sim.getLegalActions(window.state, actor).filter {
                 it.affordable &&
                     (it.action as? CastSpell)?.cardId?.let { id ->
@@ -222,7 +222,7 @@ class ManualR15ExactDecisionReplayTest : FunSpec({
                     it["actionType"]?.jsonPrimitive?.contentOrNull == "CastSpell"
             }
             val cast = json.decodeFromString<GameAction>(animar["action"].toString())
-            cast is CastSpell shouldBe true
+            (cast is CastSpell) shouldBe true
             val castResult = processor.process(window.state, cast).result
             val passResult = processor.process(window.state, PassPriority(actor)).result
             check(castResult.error == null && passResult.error == null) {
@@ -273,7 +273,7 @@ class ManualR15ExactDecisionReplayTest : FunSpec({
                 put("castScore", castScore)
                 put("passScore", passScore)
                 put("sourceState", "state-before-$index.json")
-                put("alternativeAction", animar["action"])
+                put("alternativeAction", animar["action"] ?: JsonNull)
                 put("defectProven", false)
                 put("conclusion", "Both real engine actions legal; one-ply pass scored higher; no causal improvement established")
             }
