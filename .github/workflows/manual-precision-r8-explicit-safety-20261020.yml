@@ -1,0 +1,70 @@
+name: R8 explicit-payment follow-up AI survival protections (NO GAMES)
+on:
+  push:
+    branches: [research/manual-precision-r8-explicit-safety-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r8-explicit-safety-20261020.yml'
+permissions:
+  contents: read
+concurrency:
+  group: manual-r8-explicit-safety
+  cancel-in-progress: false
+jobs:
+  accepted-protection-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind exact explicit source and unchanged frozen AI and decks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r8-explicit-safety-output
+          git rev-parse HEAD > r8-explicit-safety-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r8-explicit-safety-output/source-tree.txt
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r8-explicit-safety-20261020"
+          test "$(git rev-parse HEAD^)" = "91d8adbeb9a09d0944e365e20e82347daf79c5e3"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r8-explicit-safety-20261020.yml"
+          git merge-base --is-ancestor c3e3802185049a583e752a8aa8e068b34ec094ec HEAD
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt)" = "926b8b7b94ecbebf4b75f26fe91bfcd8a4a7a67f"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          echo ZERO_NEW_FULL_GAMES > r8-explicit-safety-output/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Exact Pact Ballista Statue combat Encore resolution and R5 controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualPactDebt*Test' --tests '*ManualBallista*Test' \
+            --tests '*ManualStatue*Test' --tests '*ManualResolutionPaymentRegressionTest' \
+            --tests '*ManualR5CandidateCompositionTest' --tests '*ManualEncoreRegressionTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain \
+            2>&1 | tee r8-explicit-safety-output/r5-regressions.log
+      - name: Frozen CONTROL and A catalog plus initializers
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualPrecisionR1PreflightTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain \
+            2>&1 | tee r8-explicit-safety-output/initializers.log
+      - name: Preserve all relevant regression evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-r8-explicit-safety-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r8-explicit-safety-output/
+            ai/build/test-results/test/
