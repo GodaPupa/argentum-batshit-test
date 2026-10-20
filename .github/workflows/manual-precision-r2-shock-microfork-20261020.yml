@@ -21,7 +21,7 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
-        with: {persist-credentials: false, fetch-depth: 3}
+        with: {persist-credentials: false, fetch-depth: 32}
       - uses: actions/setup-java@v4
         with: {distribution: temurin, java-version: '21'}
       - uses: gradle/actions/setup-gradle@v4
@@ -33,7 +33,7 @@ jobs:
           git rev-parse HEAD > r2-shock-output/execution-commit.txt
           git rev-parse HEAD^{tree} > r2-shock-output/execution-tree.txt
           test "$GITHUB_REF" = "refs/heads/research/manual-precision-r2-shock-microfork-20261020"
-          test "$(git rev-parse HEAD^)" = "757cc4f7a9825f0ea2c6b1f965a259d42087d55f"
+          test "$(git rev-parse HEAD^)" = "0a341a1276f2d727a6aad8919578834174536727"
           test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r2-shock-microfork-20261020.yml"
           git merge-base --is-ancestor 84e6347bbcdfa2990eb304051771007daf849ce9 HEAD
           test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualPrecisionR1GameplayHarnessTest.kt)" = "d90de59f63a3791128809d845abf4ee09124dc1c"
