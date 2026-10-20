@@ -51,3 +51,17 @@ The R9 workflow runs **only** `:ai:test --tests '*ManualR9CensorClassificationTe
 ## Next critical path
 
 After a complete successful targeted regression, publish the CI receipt and stop this infrastructure assignment. Any future paired gameplay sample requires a **separate, explicitly authorized** predeclared experiment and an independent review of completion/censoring rules. Do not automatically merge, promote R7, run new seeds, repeat R8, or combine independent Wan Shi Tong v0.8.
+
+## Source-bound completed R9 validation receipt
+
+**VERIFIED PASS — TARGETED PROTOCOL ONLY.**
+
+- Exact tested R9 source: `2378787b83f2265a3bc1c08069656910f5defc93`.
+- GitHub Actions [39350147606](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39350147606): **SUCCESS**; **6/6** Kotlin regression tests passed. The shell post-check also independently verified `protocol-audit.json` and the saved GameState checkpoint.
+- Uploaded original CI artifact: `12233131596`, `manual-r9-censor-protocol-39350147606`, **65,390 bytes**; ZIP SHA-256 `e58d46d866be85479c8a3f84b02c5b1d828bf1ec4002d585c18f74db3766c21e`. Downloaded and independently SHA-256 verified. The ZIP contains `r9-protocol-output/protocol-audit.json`, full nonterminal `censor-checkpoint.json`, `validation.log`, and the no-game receipt.
+- Original R8 R5 seed-1611 archive remains `RESOURCE_CAP` / old error, without rewriting its bytes. The **derived R9** classification of its unchanged state is `CENSORED_WALL_CLOCK` with `derivedEngineError=null`, saved GameState still global turn **54**, `gameOver=false`, winner null.
+- Paired original R7 accepted **3,445** versus capped original R5 accepted **3,330** → **shared action observation horizon 3,330**, `CENSORED_PAIR`, `winnerComparisonEligible=false`.
+- Tests covered 300,000-ms exact boundary, 300,001-ms typed censor, all other resource bounds, simultaneous-bound precedence, honest engine errors, exact prefix count, terminal validation, no winner imputation, paired-censor disqualification, original ZIP hash/source binding, and actual GameState checkpoint round trip.
+- The previous CI run [39349495462](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39349495462) **FAILED** at test Kotlin compilation because the test lacked the engine serializer import. Its failed artifact `12233220569`, SHA-256 `fa908e89b6d39c9153db4c5b416a47a134a857fc821d08e3337f9205215c673d` is preserved. A single import-only repair yielded the verified successor; it did not change any classifier rule or assertion.
+
+**Final R9 disposition: `PROTOCOL_VALIDATED` as an isolated, opt-in infrastructure candidate.** No R8 games rerun, no new Commander games, no frozen input or production AI changes, no promotion to `CURRENT` or `main`, and no official C4/D2 status change.
