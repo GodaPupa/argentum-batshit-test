@@ -56,8 +56,15 @@ class ManaConfluenceScenarioTest : ScenarioTestBase() {
                 .build()
             val before = game.getLifeTotal(1)
             val creature = game.findPermanent("Temur Sabertooth")!!
+            val land = game.findPermanent("Mana Confluence")!!
             val ability = cardRegistry.getCard("Temur Sabertooth")!!.activatedAbilities.single().id
-            game.execute(ActivateAbility(game.player1Id, creature, ability)).error shouldBe null
+            val attempted = game.execute(ActivateAbility(game.player1Id, creature, ability))
+            println("R8_TEMUR_DIAGNOSTIC lifeBefore=" + before +
+                " lifeAfter=" + game.getLifeTotal(1) +
+                " confluenceTapped=" + (game.state.getEntity(land)?.has<TappedComponent>() == true) +
+                " pending=" + game.getPendingDecision() +
+                " events=" + attempted.events)
+            attempted.error shouldBe null
             game.getLifeTotal(1) shouldBe before - 1
         }
 
