@@ -48,3 +48,28 @@ Exact original seed 202610202112 / Challenger A / Seat 1 / action 14:
 Before changing R5 or a frozen control, inspect the unchanged R5 AI's **actual next action and evaluation score** from both real primary-fork states. If it still chooses to pass rather than cast a now-affordable Arbor Elf, changing only the shock payment response will not realize the intended tempo. Any repair needs a separate opt-in policy lane with held-out regressions for justified declines.
 
 Budget: original twelve-game ceiling; four Stage 1 full games consumed, **eight remain**. No new full games in R2. Do not rerun prior seeds as fresh outcome evidence. Challenger A is still INCONCLUSIVE; Challenger B remains blocked on Fierce Guardianship, and C is not silently substituted. No adoption or promotion.
+
+
+## Additional R5 policy-continuation diagnostic — completed
+
+- Separate isolated original-state test source: 836df1cd72fb64585b6d14c1a0247380763b123d, on branch research/manual-precision-r2-r5-continuation-20261020.
+- [Original completed run 39483773523](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39483773523) SUCCESS.
+- Original artifact 12292258246, downloaded ZIP SHA-256 2beefef32352f9ee0b238443b45b4d490781167db9d9276251b3adba5cfb3e89.
+- Source input: exact R2 primary real-engine states from original artifact 12291623583 (frozen original state before the actual action-14 decision and both legal Yes/No after-states).
+- R5 evaluator **immediate postdecision leaf scores**, Seat 1: No = 4.65; Yes = 4.10, difference Yes−No = **−0.55**. These are direct BoardEvaluator scores, not independently logged internal DecisionResponder scores; the observed R5 response chose No.
+- On the actual No state (40 life, tapped Breeding Pool), R5's next action was PassPriority.
+- On the exact Yes state (38 life, untapped Breeding Pool), R5 did **not** choose its now-legal Arbor Elf. Its next action was **TypecycleCard(e40), Forestcycling Generous Ent**, score 8.65. The available cast of Arbor Elf was scored 4.635; the pass baseline was 4.10. Its chosen cycling action had a +5.00 structural sequencing adjustment and was engine-accepted.
+- This is a **two-stage optimization issue**: valuing payment and sequencing the subsequent action. Paying two life cannot be credited with a turn-one Arbor Elf under unchanged R5, because unchanged R5 would choose the cycling line. Do not equate legal castability with realized acceleration.
+
+### Decision-by-decision strategic disposition (not game-winning inference)
+
+- Seed 111 action 468, Steam Vents: **insufficient evidence of a suboptimal decline**; Spellskite remained affordable without payment and no extra hand spell was unlocked.
+- Seed 111 action 555, Steam Vents: **insufficient evidence**; Up the Beanstalk becomes affordable with payment, but its strategic value versus two life and passing was not compared through a longer R5 continuation.
+- Seed 111 action 599, Stomping Ground: **potential development miss, strategically inconclusive**; Fyndhorn Elves and Utopia Sprawl become affordable. Their actual selection under R5 and the opponents' immediate response are untested.
+- Seed 112 action 14, Breeding Pool: **reproducible missed legal Arbor Elf line, but no proven overall strategic defect**. Unchanged R5 would prefer Forestcycling Generous Ent after Yes, not Arbor Elf.
+- Seed 112 action 273, Stomping Ground: **insufficient evidence**; Chaos Warp gains immediate affordability, which is not proof it should be cast on the owner's turn.
+- Seed 112 action 1002, Breeding Pool: **insufficient evidence of suboptimality**; life is 34 and no additional hand spell becomes affordable.
+
+**Final R2 disposition: INCONCLUSIVE for policy correction; no automatic opt-in repair.** All six original choices are reconstructed and classified to the available evidence. The primary legal tempo opportunity is real; the full two-decision improvement is not proven. No AI policy, AiProfile.CURRENT, frozen v0.7, main, or actual gameplay outcome changed. The R1 four-game evidence remains immutable.
+
+**Recommended R3 critical path:** bounded exact-source NO-vs-YES R5 continuation only through the immediate personal turn or next own untap; compare actual Forestcycling, Arbor Elf, land access and next opportunity with an identical opponent policy. Then evaluate a strictly opt-in combined shock/continuation advisor if the evidence demonstrates a better line, with held-out justified-decline tests and no production/CURRENT changes. Do not start the remaining matched full-game sample until the evaluation-policy confound is resolved; eight full-game slots remain in the original ceiling.
