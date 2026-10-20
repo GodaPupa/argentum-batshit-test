@@ -1,0 +1,175 @@
+name: Manual R22 original four-arm evidence forensics (read-only)
+on:
+  push:
+    branches: [gameplay/manual-r22-original-artifact-audit-20261020]
+    paths:
+      - '.github/workflows/manual-r22-original-artifact-forensics-20261020.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  forensics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 2}
+      - name: Read-only receiving gate for exact authorized source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r22-forensic-input r22-forensic-output
+          test "$(git rev-parse HEAD^)" = "10675d8dc3133294c035606f656f9e4d12d50939"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-r22-original-artifact-forensics-20261020.yml"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR22MatchedWanGameplayHarnessTest.kt)" = "65821294b0e346ab3c400afb477d495088af0f0e"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          git rev-parse HEAD > r22-forensic-output/receiving-sha.txt
+          printf '%s\n' 'NO_GAMEPLAY; ORIGINAL_SHA256_BYTES; READ_ONLY_FORENSIC' > r22-forensic-output/scope.txt
+      - name: Download and SHA-verify all four immutable original game ZIPs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api "/repos/GodaPupa/argentum-batshit-test/actions/runs/39435937911" |
+            jq -e '.status == "completed" and .conclusion == "success" and .head_sha == "10675d8dc3133294c035606f656f9e4d12d50939"' > /dev/null
+          cat > r22-forensic-output/expected.sha256 <<'EOF'
+          d6a88192418856f1e5d10f6e50410dd9dafaba209c1637c4a639bbd51f7d0175  r22-forensic-input/control-202610191621.zip
+          659afd207d381645bd1b0363b3a9c0eb7ac5e95c3e3f3e4da3d7abdd092887ce  r22-forensic-input/challenger-202610191621.zip
+          418d9d30cef71a4d1c025d9986294f55c8be8d295555cbbaa3fc3a27c5d2ad22  r22-forensic-input/control-202610191622.zip
+          368f5d44d15c4869278d8c370e7e3f8fc37f8f45cfd81e2420ecde4daa95aece  r22-forensic-input/challenger-202610191622.zip
+          EOF
+          gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12271436974/zip" > r22-forensic-input/control-202610191621.zip
+          gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12272701088/zip" > r22-forensic-input/challenger-202610191621.zip
+          gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12271846670/zip" > r22-forensic-input/control-202610191622.zip
+          gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12272536522/zip" > r22-forensic-input/challenger-202610191622.zip
+          sha256sum -c r22-forensic-output/expected.sha256
+          sha256sum r22-forensic-input/*.zip > r22-forensic-output/received.sha256
+          echo 'R22_ORIGINAL_FOUR_ARCHIVES_SHA256_PASS' 
+      - name: Inspect actual card-level events and first-divergence witnesses
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import zipfile, json
+          source=Path("r22-forensic-input")
+          dst=Path("r22-forensic-output")
+          expected=[("202610191621","control"),("202610191621","challenger"),
+                    ("202610191622","control"),("202610191622","challenger")]
+          games={}
+          def load_json(path):return json.loads(path.read_text())
+          def lines(path):
+              return [json.loads(x) for x in path.read_text().splitlines() if x.strip()]
+          for seed,arm in expected:
+              archive=source/f"{arm}-{seed}.zip"
+              folder=dst/"unpacked"/f"{arm}-{seed}"
+              folder.mkdir(parents=True,exist_ok=True)
+              with zipfile.ZipFile(archive) as z:
+                  assert z.testzip() is None
+                  for info in z.infolist():
+                      assert not info.filename.startswith("/") and ".." not in Path(info.filename).parts
+                  z.extractall(folder)
+              matches=[p for p in folder.rglob("summary.json") if p.parent.name==f"{arm}-seed-{seed}"]
+              assert len(matches)==1,(seed,arm,matches)
+              directory=matches[0].parent
+              summary=load_json(directory/"summary.json")
+              init=load_json(directory/"r22-initializer-preflight.json")
+              binding=load_json(directory/"r22-arm-binding.json")
+              assert summary["status"]=="COMPLETE" and summary["gameOver"] and summary["error"] is None
+              assert summary["accepted"]==summary["submitted"] and summary["accepted"]>=64
+              assert str(summary["seed"])==seed and summary["arm"]==arm and summary["prefixOnly"] is False
+              assert init["passed"] and init["positiveSeats"]==4 and len(init["seats"])==4
+              assert binding["matchedSlotPreflightVerified"] and binding["oneCardSwapVerified"] and not binding["automaticAdoption"]
+              action_stream=lines(directory/"actions.jsonl")
+              submits={r["index"]:r for r in action_stream if r["record"]=="submit"}
+              results={r["index"]:r for r in action_stream if r["record"]=="result"}
+              assert len(submits)==len(results)==summary["accepted"]
+              assert sorted(submits)==list(range(1,summary["accepted"]+1))
+              assert sorted(results)==list(range(1,summary["accepted"]+1))
+              candidates=load_json(directory/"wan-event-candidates.json")
+              games[(seed,arm)]={"summary":summary,"submits":submits,"results":results,"candidates":candidates}
+          def earliest(left,right,kind):
+              actions=min(len(left["submits"]),len(right["submits"]))
+              for idx in range(1,actions+1):
+                  a=left["submits"][idx] if kind=="action" else left["results"][idx]
+                  b=right["submits"][idx] if kind=="action" else right["results"][idx]
+                  xa=(a["actor"],a["sourceName"],a["action"]) if kind=="action" else a["events"]
+                  xb=(b["actor"],b["sourceName"],b["action"]) if kind=="action" else b["events"]
+                  if xa!=xb:
+                      return {"actionIndex":idx,"control":xa,"challenger":xb}
+              return None
+          comparisons=[]
+          for seed in ("202610191621","202610191622"):
+              c=games[(seed,"control")];w=games[(seed,"challenger")]
+              firstA=earliest(c,w,"action");firstE=earliest(c,w,"event")
+              p={"seed":seed,"controlWinner":c["summary"]["winner"],"wanWinner":w["summary"]["winner"],
+                 "controlActions":c["summary"]["accepted"],"wanActions":w["summary"]["accepted"],
+                 "firstActionDivergence":firstA,"firstEventDivergence":firstE}
+              comparisons.append(p)
+              print("R22_FORENSIC_PAIR",seed,"controlWinner",p["controlWinner"],"wanWinner",p["wanWinner"],
+                    "firstAction",firstA["actionIndex"] if firstA else "NONE",
+                    "firstEvent",firstE["actionIndex"] if firstE else "NONE")
+          wan=games[("202610191622","challenger")]
+          indices=[i for i,x in wan["submits"].items() if x.get("sourceName")=="Wan Shi Tong, Librarian"]
+          assert len(indices)==wan["summary"]["wanCastCount"]==1
+          castIndex=indices[0]
+          assert castIndex==2233,(castIndex,wan["summary"]["wanCastActionIndices"])
+          window=[]
+          for i in range(max(1,castIndex-10),min(len(wan["results"]),castIndex+30)+1):
+              r=wan["results"][i]
+              relevant=[e for e in r["events"] if any(key in e for key in (
+                  "Wan Shi Tong","Draw","Counter","CardCast","SpellCast","Triggered","Ability"))]
+              if relevant:
+                  window.append({"actionIndex":i,"sourceName":wan["submits"][i].get("sourceName"),
+                                 "relevantEvents":relevant})
+          cardRows=[]
+          for seed,arm in expected:
+              g=games[(seed,arm)]
+              spells=[{"index":i,"sourceName":x["sourceName"],"action":x.get("action")} for i,x in g["submits"].items()
+                      if x.get("sourceName") in ("Wan Shi Tong, Librarian","Lifecrafter's Bestiary")]
+              cardRows.append({"seed":seed,"arm":arm,"status":g["summary"]["status"],
+                   "winner":g["summary"]["winner"],"turn":g["summary"]["playerTurnNumber"],
+                   "accepted":g["summary"]["accepted"],"cardActions":spells,
+                   "wanCastXs":g["summary"]["wanCastXs"],
+                   "wanCastCount":g["summary"]["wanCastCount"],
+                   "searchesWithWanAlreadyVisible":g["summary"]["searchesWithWanAlreadyVisible"],
+                   "observedFailedDraws":g["summary"]["observedFailedDraws"],
+                   "wanEventCandidateCount":len(g["candidates"])})
+          report={"sourceRun":39435937911,"sourceHead":"10675d8dc3133294c035606f656f9e4d12d50939",
+                  "originalZIPsSHA256Verified":4,"newGameplay":0,"games":cardRows,
+                  "pairs":comparisons,"wanCastActionIndex":castIndex,
+                  "wanCastWindow":window,"wanOriginalEventCandidates":wan["candidates"],
+                  "caveats":["ETB draw/counter attribution requires direct source-bound trigger evidence; proximity is not proof.",
+                             "Fauna Shaman's selection changes because Wan is a legal creature tutor choice; it is not a Wan battlefield trigger.",
+                             "Two paired seeds cannot establish win-rate superiority.",
+                             "Full equality of action/event streams for seed 1621 is compatible with an unobserved, never-played substitution."]}
+          (dst/"CARD_EFFECT_AUDIT.json").write_text(json.dumps(report,indent=2,ensure_ascii=False)+"\n")
+          lines=["# Manual R22 forensic receiving and card-level audit", "",
+                 "Four original GitHub Actions artifact ZIPs independently SHA-256 verified; no new games executed.",""]
+          for x in cardRows:
+              lines.append(f"- Seed {x['seed']} {x['arm']}: winner {x['winner']}; actions {x['accepted']}; terminal turn {x['turn']}; Wan casts {x['wanCastCount']}; card action count {len(x['cardActions'])}")
+          lines.extend(["","## First differences",""])
+          for x in comparisons:
+              lines.append(f"- Seed {x['seed']}: first action {x['firstActionDivergence']['actionIndex'] if x['firstActionDivergence'] else 'none'}; first event {x['firstEventDivergence']['actionIndex'] if x['firstEventDivergence'] else 'none'}")
+          lines.extend(["","## Wan cast evidence","",
+            f"- Challenger 1622 Wan cast index: {castIndex}; X: {wan['summary']['wanCastXs']}.",
+            f"- Original Wan event candidates: {len(wan['candidates'])}; focused related-event actions around cast: {len(window)}.",
+            "- See CARD_EFFECT_AUDIT.json for exact engine event strings. Do not infer cause from neighboring draws or counters.",
+            "","**Disposition:** Valid matched-slot descriptive sample; no automatic Wan adoption or performance conclusion."])
+          (dst/"REPORT.md").write_text("\n".join(lines)+"\n")
+          print("R22_FORENSIC_ORIGINAL_ARCHIVES_PASS 4/4")
+          print("R22_FORENSIC_WAN_CAST",castIndex,"x",wan["summary"]["wanCastXs"],
+                "searchesWhileVisible",wan["summary"]["searchesWithWanAlreadyVisible"])
+          for r in window[:30]:
+              print("R22_WAN_EVENT_WINDOW",r["actionIndex"],r["sourceName"],
+                    " || ".join(r["relevantEvents"])[:1500])
+          PY
+          rm -rf r22-forensic-output/unpacked
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r22-original-evidence-receiving-${{ github.run_id }}
+          retention-days: 30
+          path: r22-forensic-output/
