@@ -31,7 +31,7 @@ class ManualPrecisionR2ShockMicroforkTest : FunSpec({
             "84e6347bbcdfa2990eb304051771007daf849ce9")
         val initialText = read("initial-state.json")
         check(sha(initialText.toByteArray(Charsets.UTF_8)) ==
-            "cf00fb2f7c8f8cc7745639a081e403c9cfc988d0cbb09d017a4130a92696a8adf")
+            "cf00fb2f7c8f8cc7745639a081e403c9fc988d0cbb09d017a4130a92696a8adf")
         val json = Json { serializersModule = engineSerializersModule; allowStructuredMapKeys = true }
         val raw = read("actions.jsonl").lineSequence().filter(String::isNotBlank)
             .map { json.parseToJsonElement(it).jsonObject }.toList()
