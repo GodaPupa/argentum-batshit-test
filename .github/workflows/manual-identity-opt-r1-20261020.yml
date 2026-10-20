@@ -20,8 +20,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = "cf6181b9a96479dadbef1323b178934798ecf6f4"
-          expected="$(printf '%s\n' '.github/workflows/manual-identity-opt-r1-20261020.yml' 'experiments/manual-transmission/optimization/README.md' 'experiments/manual-transmission/optimization/identity_guard_r1.py' | sort)"
+          test "$(git rev-parse HEAD^)" = "cf726c306e253a0018390bcf455472114e2f685d"
+          test "$(git rev-parse HEAD^^)" = "cf6181b9a96479dadbef1323b178934798ecf6f4"
+          expected="$(printf '%s\n' '.github/workflows/manual-identity-opt-r1-20261020.yml' 'experiments/manual-transmission/optimization/identity_guard_r1.py' | sort)"
           observed="$(git diff --name-only HEAD^ HEAD | sort)"
           test "$observed" = "$expected"
           test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"

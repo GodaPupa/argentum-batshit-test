@@ -89,7 +89,7 @@ def audit(root):
         ("conclusion", conclusion, [
             "PASS_BOUNDED_POLICY_ELASTICITY_KEEP_V07",
             "Card changes authorized by the final gate: **0**",
-            "Cruise", "Sport", "Race", "not establish real-game",
+            "Cruise", "Sport", "Race", "does **not** establish real-game",
         ]),
     ]:
         missing = [x for x in markers if x not in content]
