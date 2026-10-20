@@ -217,9 +217,9 @@ class ManualPrecisionR1GameplayHarnessTest : FunSpec({
                 val sourceName = source?.let {
                     current.getEntity(it)?.get<CardComponent>()?.name
                 }
-                if (sourceName in changedCards.map { it.second })
-                    replacementActions[sourceName!!] = replacementActions.getOrDefault(sourceName, 0) + 1
-                if (sourceName in setOf(
+                if (sourceName != null && sourceName in changedCards.map { it.second })
+                    replacementActions[sourceName] = replacementActions.getOrDefault(sourceName, 0) + 1
+                if (sourceName != null && sourceName in setOf(
                     ManualPrecisionR1Inputs.COMMANDER, "Ancestral Statue",
                     "Walking Ballista", "Purphoros, God of the Forge"
                 )) comboRelevantActions++
