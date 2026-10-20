@@ -1,0 +1,107 @@
+name: Manual Precision R4 original-state second-turn three-arm microfork NO GAMES
+on:
+  push:
+    branches: [research/manual-precision-r4-second-turn-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r4-second-turn-20261020.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-precision-r4-original-second-turn
+  cancel-in-progress: false
+jobs:
+  exact-second-turn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      GH_TOKEN: ${{ github.token }}
+      MANUAL_R4_R3_ARCHIVE: ${{ github.workspace }}/r4-original-r3
+      MANUAL_R4_PRECISION_OUTPUT: ${{ github.workspace }}/r4-second-turn-output
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Source and frozen-authority gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r4-second-turn-output
+          git rev-parse HEAD > r4-second-turn-output/source-commit.txt
+          git rev-parse HEAD^{tree} > r4-second-turn-output/source-tree.txt
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r4-second-turn-20261020"
+          test "$(git rev-parse HEAD^)" = "3112e20fffc04cdfd95fbf62150648990cb6b443"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r4-second-turn-20261020.yml"
+          git merge-base --is-ancestor 50456046cc25878591df9a498f6e950aeb1a93b5 HEAD
+          test "$(git diff --name-only 50456046cc25878591df9a498f6e950aeb1a93b5 HEAD | wc -l)" -eq 2
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualPrecisionR3DevelopmentContinuationTest.kt)" = "d827c8968c1b2b2c83b52822a2addb49407adf81"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt)" = "b4232ac2034b6d6163268ba8a72f4f628525ec5c"
+          echo NO_NEW_FULL_FOUR_PLAYER_GAMES > r4-second-turn-output/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Verify successful original R3 run and exact immutable artifact digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39486360088 > r4-second-turn-output/r3-run.json
+          jq -e '.id==39486360088 and .status=="completed" and .conclusion=="success" and .head_sha=="50456046cc25878591df9a498f6e950aeb1a93b5"' r4-second-turn-output/r3-run.json >/dev/null
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39486360088/artifacts > r4-second-turn-output/r3-artifacts.json
+          jq -e '[.artifacts[] | select(.id==12294360902 and .name=="manual-precision-r3-early-continuation-39486360088" and .expired==false and .digest=="sha256:012a3d9deb37b70f9eceb606b2d7a9f493f49cd9f1748be76522fb9a594f6388")] | length == 1' r4-second-turn-output/r3-artifacts.json >/dev/null
+      - name: Download exact original three-state R3 artifact
+        uses: actions/download-artifact@v4
+        with:
+          repository: GodaPupa/argentum-batshit-test
+          run-id: 39486360088
+          name: manual-precision-r3-early-continuation-39486360088
+          github-token: ${{ github.token }}
+          path: r4-original-r3
+      - name: Verify original R3 three states and exact source report SHA-256
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=r4-original-r3/r3-early-output
+          test "$(sha256sum "$root/r3-early-continuation-summary.json" | cut -d' ' -f1)" = "19c805675e902bc012fd754313478037ae41c6857a634ddeb407dce71d73b7f2"
+          test "$(sha256sum "$root/r3-no-r5-endstate.json" | cut -d' ' -f1)" = "fb00c73279e64ca5b13c05ef9bef952e96ea1d864f1164cf417e8286192f62ac"
+          test "$(sha256sum "$root/r3-yes-r5-endstate.json" | cut -d' ' -f1)" = "70b12ac34651e0bbcdddc4d2cdcd62527f5a833c2ec2abc6585a5b87cbcd4af0"
+          test "$(sha256sum "$root/r3-yes-elf-r5-endstate.json" | cut -d' ' -f1)" = "ac2165c71b5f441d9d079010ad604bcbfc7ba4c51b87eae9d20f0b09b847d49a"
+          echo R3_SAVED_STATES_HASH_VERIFIED > r4-second-turn-output/r3-state-admission.txt
+      - name: Execute real R5 decisions to exactly turn-six entry (no full game)
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPrecisionR4SecondTurnContinuationTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r4-second-turn-output/r4-compile-and-test.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("r4-second-turn-output")
+          j=json.loads((p/"r4-second-turn-comparison.json").read_text())
+          assert j["status"]=="R4_REAL_ENGINE_SECOND_TURN_THREE_BRANCHES_COMPLETE"
+          assert j["sourceRun"]==39486360088 and j["sourceArtifact"]==12294360902
+          assert j["fullFourPlayerGames"]==j["productionChanges"]==j["candidatePromotions"]==0
+          assert len(j["branches"])==3
+          assert sorted(x["arm"] for x in j["branches"])==["no-r5","yes-elf-r5","yes-r5"]
+          for b in j["branches"]:
+              assert b["status"]=="SECOND_PERSONAL_TURN_FINISHED"
+              assert b["acceptedActions"]>0 and b["engineRejections"]==0
+              assert b["atTurnSix"]["turnNumber"]==6
+              assert not b["atTurnSix"]["gameOver"]
+              assert (p/("r4-"+b["arm"]+"-actions.jsonl")).exists()
+              assert (p/("r4-"+b["arm"]+"-endstate.json")).exists()
+          print("PRECISION_R4_SECOND_TURN_EXACT_BRANCHES_VALID")
+          PY
+      - name: Preserve individual branch actions, states, exact pins and JUnit even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r4-second-turn-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r4-second-turn-output/
+            ai/build/test-results/test/
