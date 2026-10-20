@@ -1,5 +1,6 @@
 package com.wingedsheep.ai.engine
 
+import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.ai.engine.advisor.CastContext
 import com.wingedsheep.ai.engine.advisor.modules.ManualAnimarDevelopmentAdvisor
 import com.wingedsheep.engine.core.*
@@ -50,6 +51,19 @@ class ManualR17AnimarProductiveWitnessSearchTest : FunSpec({
         val processor = ActionProcessor(registry)
         val sim = GameSimulator(registry)
         val evaluator = AIPlayer.defaultEvaluator()
+        // Mirror AIPlayer.compose: production attaches a DecisionResponder to its
+        // simulator. A bare GameSimulator stops at Imperial Recruiter's library
+        // search choice, omitting the same-turn development credit at action 1613.
+        val profile = ManualTransmissionR5Candidate.profile
+        val advisorRegistry = CardAdvisorRegistry()
+        profile.advisorModules.forEach { it.register(advisorRegistry) }
+        val responder = DecisionResponder(
+            sim, evaluator, advisorRegistry = advisorRegistry,
+            budgetPolicy = profile.budgetPolicy,
+        )
+        sim.decisionResolver = { paused, decision ->
+            responder.respond(paused, decision, decision.playerId)
+        }
         fun JsonObject.text(key: String) = this[key]?.jsonPrimitive?.contentOrNull
         fun JsonObject.number(key: String) = this[key]?.jsonPrimitive?.intOrNull
         fun JsonObject.real(key: String) = this[key]?.jsonPrimitive?.doubleOrNull
@@ -214,6 +228,7 @@ class ManualR17AnimarProductiveWitnessSearchTest : FunSpec({
                         put("recomputedBestIncrementalCredit", best)
                         put("recomputedAdvisorScore", advisor)
                         put("commanderInitialCounters", initialCounters)
+                        put("productionEquivalentDecisionResolver", true)
                         put("manualPolicyChanged", false)
                         put("defectProven", false)
                         put("simulatorCaveat", "Simulated stack resolution autopasses opponent priority; historical cast sequence independently witnessed normal opponent choices")
