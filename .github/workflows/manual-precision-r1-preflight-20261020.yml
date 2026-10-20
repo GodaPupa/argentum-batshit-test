@@ -1,4 +1,4 @@
-name: Manual Precision R1 three-arm compile and exact-slot preflight (NO GAMES)
+name: Manual Precision R1 catalog, matched slots and card scenarios (NO GAMES)
 # Self-triggered isolated branch preflight; does not contain any gameplay execution.
 on:
   push:
@@ -17,10 +17,10 @@ jobs:
     timeout-minutes: 55
     env:
       GRADLE_OPTS: -Dorg.gradle.daemon=false
-      MANUAL_R4_ROOT: .
+      MANUAL_R4_ROOT: ${{ github.workspace }}
     steps:
       - uses: actions/checkout@v4
-        with: {persist-credentials: false, fetch-depth: 16}
+        with: {persist-credentials: false, fetch-depth: 64}
       - uses: actions/setup-java@v4
         with: {distribution: temurin, java-version: '21'}
       - uses: gradle/actions/setup-gradle@v4
@@ -47,12 +47,42 @@ jobs:
             echo 'Forbidden frozen/source production change'; exit 1
           fi
           chmod +x gradlew scripts/gradle-locked
-      - name: Compile all three decks, source substitutions and real four-seat initializers (NO GAME ACTIONS)
+      - name: CONTROL and Challenger A compiled catalog and matched four-seat initializers (NO GAME ACTIONS)
         shell: bash
         run: |
           set -euo pipefail
           scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPrecisionR1PreflightTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 |
             tee manual-precision-r1-preflight/compiled-catalog-and-initializer.log
+      - name: Card behavior — City of Brass and Worldly Tutor
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:1993-1999:tests:test --tests '*CityOfBrassScenarioTest' --tests '*WorldlyTutorScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/1993-land-tutor.log
+      - name: Card behavior — Wooded Foothills
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2000-2002:tests:test --tests '*WoodedFoothillsScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/wooded-foothills.log
+      - name: Card behavior — three shocklands
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2003-2007:tests:test --tests '*BreedingPoolScenarioTest' --tests '*SteamVentsScenarioTest' --tests '*StompingGroundScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/shocklands.log
+      - name: Card behavior — Mana Confluence and Misty Rainforest
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test --tests '*ManaConfluenceScenarioTest' --tests '*MistyRainforestScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/mana-misty.log
+      - name: Card behavior — Bloom Tender
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2026:tests:test --tests '*BloomTenderScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/bloom-tender.log
+      - name: Challenger B compiled identity and matched slots (expected fail-closed if missing card)
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPrecisionR1CandidateBPreflightTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/challenger-b.log
       - name: Explicit card-behavior coverage audit (no false semantics claims)
         shell: bash
         if: always()
@@ -85,3 +115,8 @@ jobs:
           path: |
             manual-precision-r1-preflight/
             ai/build/test-results/test/
+            mtg-sets/1993-1999/tests/build/test-results/test/
+            mtg-sets/2000-2002/tests/build/test-results/test/
+            mtg-sets/2003-2007/tests/build/test-results/test/
+            mtg-sets/2008-2016/tests/build/test-results/test/
+            mtg-sets/2026/tests/build/test-results/test/
