@@ -13,12 +13,20 @@ private const val BESTIARY_R19 = "Lifecrafter’s Bestiary"
 private const val WAN_R19 = "Wan Shi Tong, Librarian"
 private const val COMMANDER_R19 = "Animar, Soul of Elements"
 
-private fun manualR19DeckNames(path: String): List<String> =
-    Files.readAllLines(Path.of(path)).flatMap { line ->
+private fun manualR19DeckNames(path: String): List<String> {
+    // Gradle :ai:test runs with ai/ as the working directory. Resolve upward to the
+    // repository root without depending on developer credentials or workflow-only env.
+    val workingDir = Path.of("").toAbsolutePath().normalize()
+    val resolved = generateSequence(workingDir) { it.parent }
+        .map { it.resolve(path) }
+        .firstOrNull { Files.isRegularFile(it) }
+        ?: error("R19 decklist not found: $path (from $workingDir)")
+    return Files.readAllLines(resolved).flatMap { line ->
         Regex("^(\\d+) (.+)$").matchEntire(line)?.let { m ->
             List(m.groupValues[1].toInt()) { m.groupValues[2] }
         } ?: emptyList()
     }
+}
 
 /** Strict pre-initialization comparison only; no GameInitializer or gameplay call. */
 class ManualR19MatchedSlotTest : FunSpec({
