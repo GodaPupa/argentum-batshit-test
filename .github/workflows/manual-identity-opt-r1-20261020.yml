@@ -15,14 +15,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-          fetch-depth: 2
+          fetch-depth: 4
       - name: Bind immutable parent and unchanged accepted files
         shell: bash
         run: |
           set -euo pipefail
-          test "$(git rev-parse HEAD^)" = "cf726c306e253a0018390bcf455472114e2f685d"
-          test "$(git rev-parse HEAD^^)" = "cf6181b9a96479dadbef1323b178934798ecf6f4"
-          expected="$(printf '%s\n' '.github/workflows/manual-identity-opt-r1-20261020.yml' 'experiments/manual-transmission/optimization/identity_guard_r1.py' | sort)"
+          test "$(git rev-parse HEAD^)" = "b8443811211667d92320d0d87daf03813762814e"
+          test "$(git rev-parse HEAD^^)" = "cf726c306e253a0018390bcf455472114e2f685d"
+          test "$(git rev-parse HEAD^^^)" = "cf6181b9a96479dadbef1323b178934798ecf6f4"
+          expected="$(printf '%s\n' '.github/workflows/manual-identity-opt-r1-20261020.yml' | sort)"
           observed="$(git diff --name-only HEAD^ HEAD | sort)"
           test "$observed" = "$expected"
           test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
