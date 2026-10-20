@@ -36,12 +36,16 @@ jobs:
           test "$(git rev-parse HEAD:$root/CONTROL.v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
           test "$(git rev-parse HEAD:$root/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
           test "$(git rev-parse HEAD:$root/CHALLENGER-B.precision.decklist.txt)" = fc217e1a282eec67cb0abf46b824fc1cd9e73c66
+          test "$(git rev-parse HEAD:$root/CHALLENGER-C.supported-core.decklist.txt)" = c9d5943f90ae85d5188d4335fa9d6aba7302acd3
           test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
           test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR22MatchedWanGameplayHarnessTest.kt)" = 65821294b0e346ab3c400afb477d495088af0f0e
           test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR19MatchedSlotHelper.kt)" = 6bad1ca08be447ef74b60e23f729c13b90fdd261
           test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
           test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
           sha256sum "$root/"*.decklist.txt > manual-precision-r1-preflight/deck-input-hashes.sha256
+          echo "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1  $root/CONTROL.v0.7.decklist.txt" | sha256sum --check
+          echo "5bfa4467962b105c70408f555c72b2908423342debb8e454acd0419c7b0a5fed  $root/CHALLENGER-A.mana.decklist.txt" | sha256sum --check
+          echo "a21de6b88c7d86d737a8841401814f1ee1ebb7dbb6758e300e265ddfdcf99aee  $root/CHALLENGER-B.precision.decklist.txt" | sha256sum --check
           git diff --name-only 10675d8dc3133294c035606f656f9e4d12d50939 HEAD > manual-precision-r1-preflight/changed-files.txt
           if grep -E '^(rules-engine/|mtg-sdk/|ai/src/main/|experiments/manual-transmission/control/)' manual-precision-r1-preflight/changed-files.txt; then
             echo 'Forbidden frozen/source production change'; exit 1
@@ -78,11 +82,65 @@ jobs:
         run: |
           set -euo pipefail
           scripts/gradle-locked :mtg-sets:2026:tests:test --tests '*BloomTenderScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/bloom-tender.log
-      - name: Challenger B compiled identity and matched slots (expected fail-closed if missing card)
+      - name: Previously accepted Pact, Ballista, Statue and R5 protections (NO GAMEPLAY)
         shell: bash
         run: |
           set -euo pipefail
-          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPrecisionR1CandidateBPreflightTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain 2>&1 | tee manual-precision-r1-preflight/challenger-b.log
+          scripts/gradle-locked :ai:cleanTest :ai:test             --tests '*ManualPactDebt*Test' --tests '*ManualBallista*Test'             --tests '*ManualStatue*Test' --tests '*ManualResolutionPaymentRegressionTest'             --tests '*ManualR5CandidateCompositionTest' --tests '*ManualEncoreRegressionTest'             -Dbenchmark=true --no-build-cache --no-daemon --console=plain             2>&1 | tee manual-precision-r1-preflight/r5-regressions.log
+      - name: Challenger C nine-slot compiled catalog and four-seat initialization (NO GAMEPLAY)
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test             --tests '*ManualPrecisionR1CandidateCPreflightTest'             -Dbenchmark=true --no-build-cache --no-daemon --console=plain             2>&1 | tee manual-precision-r1-preflight/challenger-c.log
+      - name: Challenger B fail-closed disposition from source (NO GAMEPLAY)
+        shell: bash
+        run: |
+          set -euo pipefail
+          if git ls-files mtg-sets | grep -q '/cards/FierceGuardianship.kt
+      - name: Explicit card-behavior coverage audit (no false semantics claims)
+        shell: bash
+        if: always()
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          names = [
+             "ManaConfluence", "CityOfBrass", "BreedingPool", "SteamVents",
+             "StompingGround", "MistyRainforest", "WoodedFoothills",
+             "BloomTender", "WorldlyTutor", "FierceGuardianship",
+          ]
+          paths=subprocess.check_output(["git","ls-files","mtg-sets"],text=True).splitlines()
+          records={}
+          for n in names:
+              definitions=[p for p in paths if p.endswith("/cards/"+n+".kt")]
+              scenarios=[p for p in paths if p.endswith("/"+n+"ScenarioTest.kt")]
+              records[n]={"definitions":definitions,"scenarioTests":scenarios,
+                "catalogSourceExists":bool(definitions),"cardScenarioSourceExists":bool(scenarios)}
+          target=pathlib.Path("manual-precision-r1-preflight/card-coverage.json")
+          target.write_text(json.dumps(records,indent=2)+"\n")
+          print(json.dumps(records,indent=2))
+          PY
+      - name: Preserve preflight evidence, including failures
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-precision-r1-source-preflight-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            manual-precision-r1-preflight/
+            ai/build/test-results/test/
+            mtg-sets/1993-1999/tests/build/test-results/test/
+            mtg-sets/2000-2002/tests/build/test-results/test/
+            mtg-sets/2003-2007/tests/build/test-results/test/
+            mtg-sets/2008-2016/tests/build/test-results/test/
+            mtg-sets/2026/tests/build/test-results/test/
+; then
+            echo 'B_SOURCE_PRESENT_NOT_YET_QUALIFIED' | tee manual-precision-r1-preflight/challenger-b-gate.txt
+            scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPrecisionR1CandidateBPreflightTest'               -Dbenchmark=true --no-build-cache --no-daemon --console=plain               2>&1 | tee manual-precision-r1-preflight/challenger-b.log
+          else
+            echo 'B_BLOCKED_NO_FIERCE_GUARDIANSHIP_CARD_DEFINITION' | tee manual-precision-r1-preflight/challenger-b-gate.txt
+          fi
+          echo 'NO_PRECISION_GAMEPLAY_WAS_EXECUTED' > manual-precision-r1-preflight/no-gameplay.txt
       - name: Explicit card-behavior coverage audit (no false semantics claims)
         shell: bash
         if: always()
