@@ -1,0 +1,87 @@
+name: Manual R21 matched Wan initializer preflight (no gameplay)
+on:
+  push:
+    branches: [gameplay/manual-r21-wan-preflight-20261019]
+    paths:
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR21MatchedWanPreflightTest.kt'
+      - '.github/workflows/manual-r21-wan-preflight-20261019.yml'
+permissions:
+  contents: read
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 2}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Pin R20, frozen control, unchanged engine, and unpublished new seeds
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r21-output
+          git rev-parse HEAD > r21-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r21-output/tree-sha.txt
+          test "$(git rev-parse HEAD^)" = "496040f83e81b8f9468d525212631b22a29a3dd0"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:gameplay/manual-v08-wan/CHALLENGER.decklist.txt)" = "854cedf1f3f789c2ddc49c1f9004f2fa63431851"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR19MatchedSlotHelper.kt)" = "6bad1ca08be447ef74b60e23f729c13b90fdd261"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR20MatchedSlotInitializerTest.kt)" = "3845b501095d5eb503d7756ca7ef2d6add954e0d"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt)" = "b4232ac2034b6d6163268ba8a72f4f628525ec5c"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR18WanChallengerHarnessTest.kt)" = "c5dd247102c28465213cc3bb9438c92b0c2a1385"
+          if git grep -n -E '202610191621|202610191622' HEAD^ -- ai/src/test gameplay experiments; then
+            echo "R21 proposed seed already present in inherited source; refuse preflight"
+            exit 1
+          fi
+          git diff --name-only HEAD^ HEAD > r21-output/changed-files.txt
+          test "$(wc -l < r21-output/changed-files.txt)" -eq 2
+          while IFS= read -r path; do
+            case "$path" in
+              ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR21MatchedWanPreflightTest.kt|.github/workflows/manual-r21-wan-preflight-20261019.yml) ;;
+              *) echo "Unexpected R21 modification: $path"; exit 1 ;;
+            esac
+          done < r21-output/changed-files.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt gameplay/manual-v08-wan/CHALLENGER.decklist.txt > r21-output/deck-hashes.sha256
+          printf 'PREPARATION_ONLY; INITIALIZER_ONLY; NO_GAMEPLAY; no seed rerolls\n' > r21-output/scope.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Verify both predeclared seeds by real initializer ONLY
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualR21MatchedWanPreflightTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r21-output/validation.log
+      - name: Verify all 4 Kotest/JUnit cases and 16 seat-level results
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          results=list(Path("ai/build/test-results/test").glob("TEST-*ManualR21MatchedWanPreflightTest*.xml"))
+          assert results,"R21 JUnit results missing"
+          totals={k:0 for k in ("tests","failures","errors","skipped")}
+          for f in results:
+              root=ET.parse(f).getroot()
+              for k in totals:
+                  totals[k]+=int(root.attrib.get(k,0))
+          assert totals=={"tests":4,"failures":0,"errors":0,"skipped":0},totals
+          log=Path("r21-output/validation.log").read_text()
+          for seed in ("202610191621","202610191622"):
+              assert sum(f"R21_MATCHED_SLOT_PASS seed={seed} seat={seat} shared=98 differences=1" in log for seat in range(4))==4
+              assert sum(f"R21_R18_NEGATIVE_PASS seed={seed} seat={seat} mismatches=6" in log for seat in range(4))==4
+          print("R21_PREFLIGHT_PASS tests=4 failures=0 seeds=2 seats=4 positive_checks=8 negative_checks=8 full_games=0")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r21-wan-preflight-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r21-output/
+            ai/build/test-results/test/
