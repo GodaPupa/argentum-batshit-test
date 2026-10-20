@@ -69,6 +69,12 @@ data class ZoneEntryOptions(
     val libraryPlacement: LibraryPlacement = LibraryPlacement.Top,
     val tapped: Boolean = false,
     val tappedAndAttacking: Boolean = false,
+    /**
+     * True only after an as-this-enters optional life payment was actually accepted and paid
+     * by a suspended off-stack entry operation. Overrides the entering card's own optional
+     * enters-tapped clause; never overrides separate forced-tapped global effects.
+     */
+    val shockLifePaymentAccepted: Boolean = false,
     val faceDown: Boolean = false,
     val morphData: MorphDataComponent? = null,
     /**
@@ -1487,7 +1493,7 @@ object ZoneTransitionService {
         // neither routes through this method; every *other* card-based entry — reanimation, a
         // return from exile, a search-library move — arrives here, and until this call each of
         // them entered untapped no matter what the card said.
-        val selfEntersTapped = !options.faceDown &&
+        val selfEntersTapped = !options.faceDown && !options.shockLifePaymentAccepted &&
             selfEntersTapped(withDayboundEntry, entityId, controllerId)
         val withTapResolved = when {
             // A tapped entry — asked for by the effect (ramp/fetch) or printed on the card itself
