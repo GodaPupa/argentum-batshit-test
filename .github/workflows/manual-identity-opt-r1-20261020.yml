@@ -1,0 +1,57 @@
+name: Manual identity-preserving optimization R1 source preflight (NO GAMES)
+on:
+  push:
+    branches: [research/manual-identity-opt-r1-20261020]
+    paths:
+      - '.github/workflows/manual-identity-opt-r1-20261020.yml'
+      - 'experiments/manual-transmission/identity-r1/**'
+permissions:
+  contents: read
+jobs:
+  provenance-and-identity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Verify isolated one-commit source and frozen authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "cf6181b9a96479dadbef1323b178934798ecf6f4"
+          cat > /tmp/manual-identity-expected.txt <<'EOF'
+          .github/workflows/manual-identity-opt-r1-20261020.yml
+          experiments/manual-transmission/identity-r1/PROTOCOL.md
+          experiments/manual-transmission/identity-r1/preflight.py
+          experiments/manual-transmission/identity-r1/test_preflight.py
+          EOF
+          git diff --name-only HEAD^ HEAD > /tmp/manual-identity-actual.txt
+          diff -u /tmp/manual-identity-expected.txt /tmp/manual-identity-actual.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md)" = "dbf081b0c6e205c65750866adcb6f7d43f532caf"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/protocols/same-hardware-elasticity-r1.json)" = "47f7f6458ee2e760ae961dfd6e56a87717a4ef67"
+          test "$(git rev-parse HEAD:gameplay/manual-v08-wan/CHALLENGER.decklist.txt)" = "854cedf1f3f789c2ddc49c1f9004f2fa63431851"
+          echo SOURCE_FROZEN_PASS
+      - name: Bounded seed-free structural regressions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -v -s experiments/manual-transmission/identity-r1 -p 'test_*.py'
+      - name: Generate read-only structural receipt
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p manual-identity-evidence
+          python3 experiments/manual-transmission/identity-r1/preflight.py --output manual-identity-evidence/identity-r1.json
+          git rev-parse HEAD > manual-identity-evidence/source-commit.txt
+          sha256sum manual-identity-evidence/identity-r1.json > manual-identity-evidence/receipt.sha256
+          echo "NO_GAMEPLAY; NO_HARDWARE_CHANGE; NO_CURRENT_CHANGE; NO_PROMOTION" > manual-identity-evidence/scope.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manual-identity-r1-preflight
+          retention-days: 30
+          if-no-files-found: error
+          path: manual-identity-evidence/
