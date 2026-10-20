@@ -1,0 +1,78 @@
+name: Manual R7 partial Cruise Sport Race composition (NO GAMES)
+on:
+  push:
+    branches: [research/manual-gear-r7-failclosed-composition-20261020]
+    paths:
+      - '.github/workflows/manual-gear-r7-failclosed-20261020.yml'
+      - 'gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPartialGearPilot.kt'
+      - 'gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPartialGearPilotTest.kt'
+      - 'experiments/manual-transmission/identity-r7/PROTOCOL.md'
+permissions:
+  contents: read
+jobs:
+  seedless-composition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify exact isolated change and immutability
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "7f5d5abd97f6fcd8ecd2983b60f82f09ad329a30"
+          cat > /tmp/expected.txt <<'EOF'
+          .github/workflows/manual-gear-r7-failclosed-20261020.yml
+          experiments/manual-transmission/identity-r7/PROTOCOL.md
+          gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPartialGearPilot.kt
+          gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPartialGearPilotTest.kt
+          EOF
+          git diff --name-only HEAD^ HEAD > /tmp/actual.txt
+          diff -u /tmp/expected.txt /tmp/actual.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:experiments/manual-transmission/protocols/same-hardware-elasticity-r1.json)" = 47f7f6458ee2e760ae961dfd6e56a87717a4ef67
+          test "$(git rev-parse HEAD:experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md)" = dbf081b0c6e205c65750866adcb6f7d43f532caf
+          test "$(git rev-parse HEAD:experiments/manual-transmission-phase2/protocol-r1.json)" = f605dc2ce4273a26a6e2387a2c6e4048e4012a79
+          test "$(git rev-parse HEAD:gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoOpeningActionPolicy.kt)" = 386abff9f86495f099677ac9006cc0f37a2efb13
+          test "$(git rev-parse HEAD:gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityConservationPolicy.kt)" = 8fec7b06ed4d20ac138b4f0d0500fc6d39926d4e
+          test "$(git rev-parse HEAD:gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoRaceOverlayRouter.kt)" = 600f783b0891249343cb57e91847ea714758f515
+          test "$(git rev-parse HEAD:gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoUniqueCommanderCastPolicy.kt)" = 0b408d285989c8c789e829f2b580ac4930ec963c
+          echo R7_FROZEN_SOURCE_PASS
+          chmod +x gradlew scripts/gradle-locked
+      - name: Compile and run excluded four-seat composition tests only
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r7-gear-evidence
+          scripts/gradle-locked :gym:test --tests '*ManualPhaseTwoPartialGearPilotTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r7-gear-evidence/test.log
+          test -s gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoPartialGearPilotTest.xml
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          root=ET.parse('gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoPartialGearPilotTest.xml').getroot()
+          assert int(root.attrib['tests'])>=20
+          assert int(root.attrib['failures'])==int(root.attrib['errors'])==int(root.attrib['skipped'])==0
+          print('R7_PASS_PARTIAL_COMPOSITION_ONLY tests='+root.attrib['tests']+' games=0 gear_completion=NO')
+          PY
+          echo 'PASS_PARTIAL_COMPOSITION_ONLY; NO_OFFICIAL_GAMES; NO_GEAR_COMPLETION; NO_PROMOTIONS' > r7-gear-evidence/scope.txt
+          git rev-parse HEAD > r7-gear-evidence/source-sha.txt
+          sha256sum r7-gear-evidence/test.log > r7-gear-evidence/test-log.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r7-partial-gear-composition
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r7-gear-evidence/
+            gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoPartialGearPilotTest.xml
