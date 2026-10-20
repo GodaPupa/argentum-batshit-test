@@ -30,5 +30,52 @@ class ManaConfluenceScenarioTest : ScenarioTestBase() {
             game.getLifeTotal(1) shouldBe before - 1
             game.state.getEntity(land)?.has<TappedComponent>() shouldBe true
         }
+
+        test("mana auto-payment for a creature spell charges one life") {
+            val game = scenario()
+                .withPlayers("Player1", "Player2")
+                .withCardOnBattlefield(1, "Mana Confluence")
+                .withCardInHand(1, "Llanowar Elves")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+            val before = game.getLifeTotal(1)
+            game.castSpell(1, "Llanowar Elves").error shouldBe null
+            game.getLifeTotal(1) shouldBe before - 1
+        }
+
+        test("nonspell Temur Sabertooth ability auto-payment charges Mana Confluence life") {
+            val game = scenario()
+                .withPlayers("Player1", "Player2")
+                .withCardOnBattlefield(1, "Mana Confluence")
+                .withCardOnBattlefield(1, "Forest")
+                .withCardOnBattlefield(1, "Temur Sabertooth")
+                .withCardOnBattlefield(1, "Llanowar Elves")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+            val before = game.getLifeTotal(1)
+            val creature = game.findPermanent("Temur Sabertooth")!!
+            val ability = cardRegistry.getCard("Temur Sabertooth")!!.activatedAbilities.single().id
+            game.execute(ActivateAbility(game.player1Id, creature, ability)).error shouldBe null
+            game.getLifeTotal(1) shouldBe before - 1
+        }
+
+        test("nonspell Purphoros ability auto-payment charges Mana Confluence life") {
+            val game = scenario()
+                .withPlayers("Player1", "Player2")
+                .withCardOnBattlefield(1, "Mana Confluence")
+                .withLandsOnBattlefield(1, "Forest", 2)
+                .withCardOnBattlefield(1, "Purphoros, God of the Forge")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+            val before = game.getLifeTotal(1)
+            val permanent = game.findPermanent("Purphoros, God of the Forge")!!
+            val ability = cardRegistry.getCard("Purphoros, God of the Forge")!!.activatedAbilities.single().id
+            game.execute(ActivateAbility(game.player1Id, permanent, ability)).error shouldBe null
+            game.getLifeTotal(1) shouldBe before - 1
+        }
+
     }
 }
