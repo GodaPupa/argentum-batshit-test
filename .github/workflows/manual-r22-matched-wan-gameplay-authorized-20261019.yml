@@ -1,0 +1,272 @@
+name: Manual R22 matched-slot Wan authorized four-game comparison
+on:
+  push:
+    branches: [gameplay/manual-r22-matched-wan-gameplay-authorized-20261019]
+    paths:
+      - '.github/workflows/manual-r22-matched-wan-gameplay-authorized-20261019.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-r22-authorized-${{ github.sha }}
+  cancel-in-progress: false
+jobs:
+  gameplay:
+    name: ${{ matrix.arm }} seed ${{ matrix.seed }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - seed: '202610191621'
+            arm: control
+          - seed: '202610191621'
+            arm: challenger
+          - seed: '202610191622'
+            arm: control
+          - seed: '202610191622'
+            arm: challenger
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_R22_OUTPUT: ${{ github.workspace }}/r22-game-output
+      MANUAL_R22_GAMEPLAY_AUTHORIZATION: EXPLICIT_FOUR_GAME
+      MANUAL_R22_SEED: ${{ matrix.seed }}
+      MANUAL_R22_PREDECLARED_SEED: ${{ matrix.seed }}
+      MANUAL_R22_ARM: ${{ matrix.arm }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 2}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Admit exactly one bound authorized seed/arm and immutable R22 source
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p r22-game-output
+          git rev-parse HEAD > r22-game-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r22-game-output/tree-sha.txt
+          test "$(git rev-parse HEAD^)" = "4fbd2bd04acd580acea88162fe64e85e93efe40b"
+          test "$(git rev-list --count HEAD^..HEAD)" -eq 1
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-r22-matched-wan-gameplay-authorized-20261019.yml"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR22MatchedWanGameplayHarnessTest.kt)" = "65821294b0e346ab3c400afb477d495088af0f0e"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR21MatchedWanPreflightTest.kt)" = "77e5f36ba7b8ef01e33c3489becfdf4942550f90"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR19MatchedSlotHelper.kt)" = "6bad1ca08be447ef74b60e23f729c13b90fdd261"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:gameplay/manual-v08-wan/CHALLENGER.decklist.txt)" = "854cedf1f3f789c2ddc49c1f9004f2fa63431851"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt)" = "b4232ac2034b6d6163268ba8a72f4f628525ec5c"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$MANUAL_R22_GAMEPLAY_AUTHORIZATION" = EXPLICIT_FOUR_GAME
+          test "$MANUAL_R22_PREDECLARED_SEED" = "$MANUAL_R22_SEED"
+          case "$MANUAL_R22_SEED" in 202610191621|202610191622) ;; *) echo "Unapproved seed"; exit 1;; esac
+          case "$MANUAL_R22_ARM" in control|challenger) ;; *) echo "Unapproved arm"; exit 1;; esac
+          for prior in 39429315945 39433875998; do
+            gh api "/repos/GodaPupa/argentum-batshit-test/actions/runs/$prior" |
+              jq -e '.status == "completed" and .conclusion == "success"' > /dev/null
+          done
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt gameplay/manual-v08-wan/CHALLENGER.decklist.txt > r22-game-output/frozen-input-hashes.sha256
+          printf '%s\n' "$MANUAL_R22_SEED" > r22-game-output/predeclared-seed.txt
+          printf '%s\n' "$MANUAL_R22_ARM" > r22-game-output/predeclared-arm.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Exactly 64 accepted actions required before any full game
+        shell: bash
+        env:
+          MANUAL_R22_PREFIX_ONLY: '1'
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualR22MatchedWanGameplayHarnessTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r22-game-output/prefix-${{ matrix.arm }}-${{ matrix.seed }}.log
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          root=Path("r22-game-output")
+          seed=os.environ["MANUAL_R22_SEED"];arm=os.environ["MANUAL_R22_ARM"]
+          d=root/f"{arm}-seed-{seed}-prefix"
+          s=json.loads((d/"summary.json").read_text())
+          pre=json.loads((d/"r22-initializer-preflight.json").read_text())
+          bind=json.loads((d/"r22-arm-binding.json").read_text())
+          assert str(s["seed"])==seed and s["arm"]==arm and s["prefixOnly"] is True
+          assert s["status"]=="PREFIX_COMPLETE" and s["accepted"]==s["submitted"]==64
+          assert s["error"] is None and not s["gameOver"] and s["winner"] is None
+          assert pre["passed"] is True and str(pre["seed"])==seed and pre["positiveSeats"]==4
+          assert pre["controlInputDifferingSlots"]==1 and pre["r18InputDifferingSlots"]==6
+          assert len(pre["seats"])==4
+          assert all(x["sharedLibraryCardsAligned"]==98 and x["oneReplacement"] and x["matchedEntityIdSlots"] for x in pre["seats"])
+          assert bind["oneCardSwapVerified"] and bind["matchedSlotPreflightVerified"]
+          assert bind["r7CombinedAdvisorAbsent"] and not bind["automaticAdoption"]
+          assert bind["profile"]=="manual-transmission-r5-survival-opt-in"
+          assert (d/"actions.jsonl").is_file() and (d/"decisions.jsonl").is_file()
+          assert (d/"initial-state.json").is_file() and (d/"final-state.json").is_file()
+          assert (d/"smoke-passed.txt").is_file()
+          print(f"R22_PREFIX_PASS seed={seed} arm={arm} accepted=64 matched_slots=4")
+          PY
+      - name: Exactly one bounded full game after successful prefix
+        if: success()
+        shell: bash
+        env:
+          MANUAL_R22_PREFIX_ONLY: '0'
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualR22MatchedWanGameplayHarnessTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r22-game-output/game-${{ matrix.arm }}-${{ matrix.seed }}.log
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          seed=os.environ["MANUAL_R22_SEED"];arm=os.environ["MANUAL_R22_ARM"]
+          d=Path("r22-game-output")/f"{arm}-seed-{seed}"
+          s=json.loads((d/"summary.json").read_text())
+          pre=json.loads((d/"r22-initializer-preflight.json").read_text())
+          bind=json.loads((d/"r22-arm-binding.json").read_text())
+          censors={"CENSORED_WALL_CLOCK","CENSORED_ACTION_BUDGET","CENSORED_TURN_BUDGET","CENSORED_PER_TURN_BUDGET"}
+          assert s["arm"]==arm and str(s["seed"])==seed and s["prefixOnly"] is False
+          assert s["accepted"]==s["submitted"] and s["accepted"]>=64 and s["error"] is None
+          assert s["status"] in censors|{"COMPLETE"}
+          assert pre["passed"] and str(pre["seed"])==seed and pre["positiveSeats"]==4 and len(pre["seats"])==4
+          assert bind["matchedSlotPreflightVerified"] and bind["oneCardSwapVerified"]
+          assert bind["profile"]=="manual-transmission-r5-survival-opt-in"
+          assert bind["r7CombinedAdvisorAbsent"] and not bind["automaticAdoption"]
+          assert (d/"smoke-passed.txt").is_file()
+          for name in ("actions.jsonl","decisions.jsonl","initial-state.json","final-state.json","wan-event-candidates.json","registry-audit.json","initialization.json"):
+              assert (d/name).is_file(),name
+          if s["status"]=="COMPLETE":
+              assert s["gameOver"] is True and s["winner"] is not None
+              assert s["censorReason"] is None
+          else:
+              assert s["gameOver"] is False and s["winner"] is None
+              assert s["censorReason"]==s["status"] and s["censorCheckpointSaved"] is True
+              assert (d/"censor-checkpoint.json").is_file()
+          print(f"R22_FULL_OBSERVATION_PASS seed={seed} arm={arm} status={s['status']} actions={s['accepted']} winner={s['winner']} wanCasts={s['wanCastCount']}")
+          PY
+      - name: Preserve both the smoke and full original evidence even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-r22-game-${{ matrix.arm }}-${{ matrix.seed }}-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r22-game-output/
+            ai/build/test-results/test/
+  audit:
+    name: Read-only paired result audit
+    needs: gameplay
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - uses: actions/download-artifact@v4
+        continue-on-error: true
+        with:
+          pattern: manual-r22-game-*
+          path: audit-input
+          merge-multiple: false
+      - name: Compare original actions, first divergence, and card-level evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p audit-output
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          output=Path("audit-output")
+          root=Path("audit-input")
+          arms={}
+          def rows(path):
+              if not path.is_file():return []
+              return [json.loads(x) for x in path.read_text().splitlines() if x.strip()]
+          for seed in ("202610191621","202610191622"):
+              for arm in ("control","challenger"):
+                  matches=list(root.rglob(f"{arm}-seed-{seed}/summary.json")) if root.exists() else []
+                  if len(matches)!=1:
+                      arms[(seed,arm)]={"seed":seed,"arm":arm,"available":False,"matching_summary_files":len(matches)}
+                      continue
+                  directory=matches[0].parent
+                  summary=json.loads(matches[0].read_text())
+                  bind=json.loads((directory/"r22-arm-binding.json").read_text())
+                  actions=rows(directory/"actions.jsonl")
+                  submits=[r for r in actions if r.get("record")=="submit"]
+                  results=[r for r in actions if r.get("record")=="result"]
+                  involvement=[
+                      {"index":r.get("index"),"sourceName":r.get("sourceName"),"record":"submit"}
+                      for r in submits if r.get("sourceName") in ("Lifecrafter's Bestiary","Wan Shi Tong, Librarian")
+                  ]
+                  event_mentions=[
+                      {"index":r.get("index"),"events":[e for e in r.get("events",[]) if "Wan Shi Tong" in e or "Lifecrafter" in e]}
+                      for r in results if any("Wan Shi Tong" in e or "Lifecrafter" in e for e in r.get("events",[]))
+                  ]
+                  arms[(seed,arm)]={"seed":seed,"arm":arm,"available":True,"status":summary.get("status"),
+                    "winner":summary.get("winner"),"gameOver":summary.get("gameOver"),
+                    "accepted":summary.get("accepted"),"submitted":summary.get("submitted"),
+                    "error":summary.get("error"),"wanCastCount":summary.get("wanCastCount"),
+                    "cardActions":involvement,"cardEventMentions":event_mentions,
+                    "matchedPreflight":bind.get("matchedSlotPreflightVerified"),
+                    "summaryPath":str(matches[0]),"_submits":submits,"_results":results}
+          def first_difference(left,right,kind):
+              n=min(len(left),len(right))
+              for i in range(n):
+                  a=left[i];b=right[i]
+                  if kind=="actions":
+                      aa=(a.get("actor"),a.get("sourceName"),a.get("action"))
+                      bb=(b.get("actor"),b.get("sourceName"),b.get("action"))
+                  else:
+                      aa=a.get("events");bb=b.get("events")
+                  if aa!=bb:
+                      return {"actionIndex":a.get("index"),"control":aa,"challenger":bb}
+              if len(left)!=len(right):
+                  return {"actionIndex":"after shared horizon","controlCount":len(left),"challengerCount":len(right)}
+              return None
+          pairs=[]
+          for seed in ("202610191621","202610191622"):
+              a=arms[(seed,"control")];b=arms[(seed,"challenger")]
+              row={"seed":seed,"controlAvailable":a["available"],"challengerAvailable":b["available"],
+                "method":"exact-index in-memory one-card substitution; four independently verified seat libraries"}
+              if a["available"] and b["available"]:
+                  row["controlStatus"]=a["status"];row["challengerStatus"]=b["status"]
+                  row["controlWinner"]=a["winner"];row["challengerWinner"]=b["winner"]
+                  row["firstSubmittedActionDivergence"]=first_difference(a["_submits"],b["_submits"],"actions")
+                  row["firstEngineEventDivergence"]=first_difference(a["_results"],b["_results"],"events")
+                  row["winnerComparisonEligible"]=a["status"]==b["status"]=="COMPLETE"
+                  row["controlCardActionCount"]=len(a["cardActions"])
+                  row["challengerCardActionCount"]=len(b["cardActions"])
+                  row["challengerWanCasts"]=b["wanCastCount"]
+                  row["interpretation"]="Descriptive paired observation only. First divergence is not automatically a card effect, and two seeds cannot establish card superiority."
+              pairs.append(row)
+          public_arms=[]
+          for seed in ("202610191621","202610191622"):
+              for arm in ("control","challenger"):
+                  public_arms.append({k:v for k,v in arms[(seed,arm)].items() if not k.startswith("_")})
+          payload={"disposition":"R22_FOUR_ARM_OBSERVATION","source":"immutable uploaded original matrix-arm artifacts",
+             "seeds":["202610191621","202610191622"],
+             "arms":public_arms,"pairs":pairs,
+             "warnings":["No inferred card-effect causality from merely different winners, turns, or first divergences.",
+             "No winner comparisons when either arm is censored.",
+             "Any missing or failed arm remains missing; never replace its seed or game."]}
+          (output/"comparison.json").write_text(json.dumps(payload,indent=2,ensure_ascii=False)+"\n")
+          lines=["# Manual R22 paired Wan vs Bestiary evidence", "",
+            "Source-bound, descriptive paired observations only; no automatic adoption or qualification.",""]
+          for arm in public_arms:
+              lines.append(f"- Seed {arm['seed']} {arm['arm']}: status={arm.get('status','MISSING')}, actions={arm.get('accepted','N/A')}, winner={arm.get('winner','N/A')}, Wan casts={arm.get('wanCastCount','N/A')}")
+          lines+=[""]
+          for p in pairs:
+              lines.append(f"## Seed {p['seed']}")
+              lines.append(f"- Paired completed winner comparison eligible: {p.get('winnerComparisonEligible',False)}")
+              lines.append(f"- First action divergence: {p.get('firstSubmittedActionDivergence')}")
+              lines.append(f"- First result event divergence: {p.get('firstEngineEventDivergence')}")
+          lines+=["","**Do not infer Wan superiority without evidence of actual substituted-card effects.**"]
+          (output/"REPORT.md").write_text("\n".join(lines)+"\n")
+          print("R22_READ_ONLY_AUDIT records="+str(sum(x["available"] for x in public_arms))+"/4")
+          for p in pairs:
+              print("R22_PAIRED_SUMMARY",p["seed"],"firstAction",p.get("firstSubmittedActionDivergence",{}),"firstEvent",p.get("firstEngineEventDivergence",{}))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r22-four-arm-read-only-audit-${{ github.run_id }}
+          retention-days: 30
+          path: audit-output/
