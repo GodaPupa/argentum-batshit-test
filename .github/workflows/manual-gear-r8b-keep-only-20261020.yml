@@ -1,0 +1,78 @@
+name: Manual R8b corrected forced Keep only (NO GAMES)
+on:
+  push:
+    branches: [research/manual-gear-r8b-keep-only-20261020]
+    paths:
+      - '.github/workflows/manual-gear-r8b-keep-only-20261020.yml'
+      - 'experiments/manual-transmission/identity-r8/PROTOCOL.md'
+      - 'gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoForcedPregamePolicy.kt'
+      - 'gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoForcedPregamePolicyTest.kt'
+permissions:
+  contents: read
+jobs:
+  corrected-forced-keep:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Enforce isolated correction, original source and frozen immutable inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "ebca1744848cc4bb508980ee1e1bfb0d6f68838d"
+          cat >/tmp/r8b-expected <<'EOF'
+          .github/workflows/manual-gear-r8b-keep-only-20261020.yml
+          experiments/manual-transmission/identity-r8/PROTOCOL.md
+          gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoForcedPregamePolicy.kt
+          gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoForcedPregamePolicyTest.kt
+          EOF
+          git diff --name-only HEAD^ HEAD >/tmp/r8b-actual
+          diff -u /tmp/r8b-expected /tmp/r8b-actual
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:experiments/manual-transmission/protocols/same-hardware-elasticity-r1.json)" = 47f7f6458ee2e760ae961dfd6e56a87717a4ef67
+          test "$(git rev-parse HEAD:experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md)" = dbf081b0c6e205c65750866adcb6f7d43f532caf
+          test "$(git rev-parse HEAD:experiments/manual-transmission-phase2/protocol-r1.json)" = f605dc2ce4273a26a6e2387a2c6e4048e4012a79
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/MulliganHandler.kt)" = 4298c7eb8eedecfe3c5695ee5d2bd9270f248fef
+          # A bottom-seven policy would hide a real bottom-order choice; reject any positive Bottom.
+          ! grep -q 'PhaseTwoPilotChoice.Bottom(' gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoForcedPregamePolicy.kt
+          echo R8B_SOURCE_AND_BOTTOM_ORDER_GUARDS_PASS
+          chmod +x gradlew scripts/gradle-locked
+      - name: Compile and test corrected pregame and inherited three gears
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r8b-evidence
+          scripts/gradle-locked :gym:test --tests '*ManualPhaseTwoForcedPregamePolicyTest' --tests '*ManualPhaseTwoPartialGearPilotTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r8b-evidence/tests.log
+          python3 - <<'PY'
+          import xml.etree.ElementTree as E
+          root='gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.'
+          testNames=['ManualPhaseTwoForcedPregamePolicyTest','ManualPhaseTwoPartialGearPilotTest']
+          items=[E.parse(root+n+'.xml').getroot() for n in testNames]
+          assert all(int(x.attrib['failures'])==int(x.attrib['errors'])==int(x.attrib['skipped'])==0 for x in items)
+          assert int(items[0].attrib['tests'])>=17 and int(items[1].attrib['tests'])==27
+          print('R8B_PASS_FORCED_KEEP_ONLY tests='+str(sum(int(x.attrib['tests']) for x in items))+' actual_games=0 full_gear_pilots=NO')
+          PY
+          printf '%s\n' 'PASS_FORCED_KEEP_ONLY; NO_BOTTOM_ORDER_INVENTED; NO_FULL_R3; NO_GAMES; NO_PROMOTION' > r8b-evidence/scope.txt
+          git rev-parse HEAD > r8b-evidence/source.txt
+          sha256sum r8b-evidence/tests.log > r8b-evidence/test-log.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r8b-corrected-forced-keep
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r8b-evidence/
+            gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoForcedPregamePolicyTest.xml
+            gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoPartialGearPilotTest.xml

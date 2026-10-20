@@ -9,8 +9,9 @@ import com.wingedsheep.sdk.core.Zone
  * This is deliberately NOT an implementation of the accepted R3 Balanced Mulligan
  * policy. No voluntary keep, voluntary mulligan or contested bottom ordering can
  * be inferred from the historical Phase-1 policy label. The only positive branches
- * are (a) the engine says further mulligans are disallowed, and (b) every physical
- * own-hand card must be bottomed, leaving no strategic selection.
+ * limited to the engine saying further mulligans are disallowed. Bottoming any
+ * positive number of cards remains strategic, including all seven: the order in
+ * [BottomCards] determines the physical order at the bottom of the library.
  *
  * Uses only an actor-masked TrainingObservation. No raw GameState, hidden cards,
  * future deck order, raw action IDs, generic AI or arbitrary fallback.
@@ -80,12 +81,9 @@ internal class ManualPhaseTwoForcedPregamePolicy(
                 }
                 PhaseTwoPilotChoice.Keep
             }
-            is PhaseTwoPilotPrompt.Bottom -> {
-                require(prompt.count == hand.size) {
-                    "Strategic R3 bottom selection remains unimplemented"
-                }
-                PhaseTwoPilotChoice.Bottom(hand.cards.map { it.entityId })
-            }
+            is PhaseTwoPilotPrompt.Bottom -> throw IllegalArgumentException(
+                "All London bottom selections retain strategic card/order choices; R3 unimplemented"
+            )
             PhaseTwoPilotPrompt.Engine -> error("Rejected by pregame prompt guard")
         }
     }

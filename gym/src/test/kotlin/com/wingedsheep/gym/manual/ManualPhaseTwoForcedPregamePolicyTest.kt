@@ -82,10 +82,12 @@ class ManualPhaseTwoForcedPregamePolicyTest : FunSpec({
                 observation(), PhaseTwoPilotPrompt.Mulligan(false)
             ) shouldBe PhaseTwoPilotChoice.Keep
         }
-        test("$role forced bottom-all chooses only physical own seven") {
-            ManualPhaseTwoPartialGearPilot(role).choose(
-                observation(), PhaseTwoPilotPrompt.Bottom(7)
-            ) shouldBe PhaseTwoPilotChoice.Bottom(seven)
+        test("$role rejects even bottom-all because bottom order remains strategic") {
+            shouldThrow<IllegalArgumentException> {
+                ManualPhaseTwoPartialGearPilot(role).choose(
+                    observation(), PhaseTwoPilotPrompt.Bottom(7)
+                )
+            }
         }
         test("$role refuses voluntary R3 keep or mulligan") {
             shouldThrow<IllegalArgumentException> {
