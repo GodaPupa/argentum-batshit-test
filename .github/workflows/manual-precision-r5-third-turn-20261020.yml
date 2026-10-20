@@ -1,0 +1,111 @@
+name: Manual Precision R5 original R4 states third-turn continuations NO FULL GAMES
+on:
+  push:
+    branches: [research/manual-precision-r5-third-turn-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r5-third-turn-20261020.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-precision-r5-third-turn-original-source
+  cancel-in-progress: false
+jobs:
+  third-turn-microfork:
+    runs-on: ubuntu-latest
+    timeout-minutes: 48
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      GH_TOKEN: ${{ github.token }}
+      MANUAL_R5_R4_ARCHIVE: ${{ github.workspace }}/r5-original-r4
+      MANUAL_R5_PRECISION_OUTPUT: ${{ github.workspace }}/r5-third-turn-output
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify only exact source-bound third-turn test plus workflow are added
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r5-third-turn-output
+          git rev-parse HEAD > r5-third-turn-output/execution-commit.txt
+          git rev-parse HEAD^{tree} > r5-third-turn-output/execution-tree.txt
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r5-third-turn-20261020"
+          test "$(git rev-parse HEAD^)" = "26b423e57053732128225cf7ef2a294bbe1f251a"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r5-third-turn-20261020.yml"
+          git merge-base --is-ancestor a8fdd3d072167d824468d0e7073b3f8f264e6a72 HEAD
+          test "$(git diff --name-only a8fdd3d072167d824468d0e7073b3f8f264e6a72 HEAD | wc -l)" -eq 2
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualPrecisionR4SecondTurnContinuationTest.kt)" = "c79a643fd87dd2d416556408a3ce011e6d9def00"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualPrecisionR5ThirdTurnContinuationTest.kt)" = "c64c9b99a9e5a1ab039953305e35229450850ad4"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt)" = "b4232ac2034b6d6163268ba8a72f4f628525ec5c"
+          echo 'ZERO ADDITIONAL FULL FOUR PLAYER GAMES' > r5-third-turn-output/game-budget.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Verify accepted original R4 run and exact ZIP digest
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39490896191 > r5-third-turn-output/r4-run.json
+          jq -e '.id==39490896191 and .status=="completed" and .conclusion=="success" and .run_attempt==1 and .head_sha=="a8fdd3d072167d824468d0e7073b3f8f264e6a72"' r5-third-turn-output/r4-run.json >/dev/null
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39490896191/artifacts > r5-third-turn-output/r4-artifacts.json
+          jq -e '[.artifacts[] | select(.id==12296381441 and .name=="manual-precision-r4-second-turn-39490896191" and .expired==false and .digest=="sha256:cfef51e23fe01f3676d9fc06821ace344b35460d4bdd31a884105968c7424a22")] | length==1' r5-third-turn-output/r4-artifacts.json >/dev/null
+      - name: Download three original R4 turn-six states
+        uses: actions/download-artifact@v4
+        with:
+          repository: GodaPupa/argentum-batshit-test
+          run-id: 39490896191
+          name: manual-precision-r4-second-turn-39490896191
+          github-token: ${{ github.token }}
+          path: r5-original-r4
+      - name: Verify byte-exact original R4 summary and three state hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=r5-original-r4/r4-second-turn-output
+          test "$(sha256sum "$root/r4-second-turn-comparison.json" | cut -d' ' -f1)" = "6f95f8b19e4b7b892677458dd2a4d458b24d909501068374a8ed3556254912a5"
+          test "$(sha256sum "$root/r4-no-r5-endstate.json" | cut -d' ' -f1)" = "1a13bbc3f452f799759f06272e61c1b832f05caa0a257c27c7492e102357fe71"
+          test "$(sha256sum "$root/r4-yes-r5-endstate.json" | cut -d' ' -f1)" = "a707fb6e95b9303b82d37e2c5c40fd34eecbdba9e3039581a211c21d6d1530e4"
+          test "$(sha256sum "$root/r4-yes-elf-r5-endstate.json" | cut -d' ' -f1)" = "ce85f9fe2099d96f2bd61067e3a661a802a9773506bd693fc162c799a8ee582b"
+          echo R5_ORIGINAL_R4_INPUT_STATES_VERIFIED > r5-third-turn-output/r4-state-admission.txt
+      - name: Run three real-engine R5-only bounded third-turn continuations
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualPrecisionR5ThirdTurnContinuationTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r5-third-turn-output/compiled-and-bounded-test.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=Path("r5-third-turn-output")
+          j=json.loads((d/"r5-third-turn-comparison.json").read_text())
+          assert j["status"]=="R5_REAL_ENGINE_THIRD_TURN_THREE_BRANCHES_COMPLETE"
+          assert j["sourceRun"]==39490896191 and j["sourceArtifact"]==12296381441
+          assert j["inputR4Source"]=="a8fdd3d072167d824468d0e7073b3f8f264e6a72"
+          assert j["stopAtGlobalTurn"]==10
+          assert j["fullFourPlayerGames"]==j["productionChanges"]==j["candidatePromotions"]==0
+          assert sorted(x["arm"] for x in j["branches"])==["no-r5","yes-elf-r5","yes-r5"]
+          for b in j["branches"]:
+              assert b["status"]=="THIRD_PERSONAL_TURN_FINISHED"
+              assert b["atTurnTen"]["turnNumber"]==10 and not b["atTurnTen"]["gameOver"]
+              assert b["acceptedActions"]>0 and b["engineRejections"]==0
+              assert (d/("r5-"+b["arm"]+"-actions.jsonl")).is_file()
+              assert (d/("r5-"+b["arm"]+"-endstate.json")).is_file()
+          print("ARGENTUM_R5_ALL_THIRD_TURN_MICROFORKS_VALIDATED_NO_FULL_GAMES")
+          PY
+      - name: Preserve original-state proof, action traces and failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r5-third-turn-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r5-third-turn-output/
+            ai/build/test-results/test/
