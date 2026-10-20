@@ -1,0 +1,100 @@
+name: Manual Precision R3 original-state three-branch bounded continuation (NO GAMES)
+on:
+  push:
+    branches: [research/manual-precision-r3-continuations-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r3-early-continuations-20261020.yml'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-precision-r3-first-early-sequence
+  cancel-in-progress: false
+jobs:
+  three-branches:
+    runs-on: ubuntu-latest
+    timeout-minutes: 48
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R3_OUTPUT: ${{ github.workspace }}/r3-early-output
+      MANUAL_R3_PRIMARY_ARCHIVE: ${{ github.workspace }}/r3-original
+      GH_${{ github.token }}: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Pin exact source and guard against gameplay and frozen changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r3-early-output
+          git rev-parse HEAD > r3-early-output/commit.txt
+          git rev-parse HEAD^{tree} > r3-early-output/tree.txt
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r3-continuations-20261020"
+          test "$(git rev-parse HEAD^)" = "298225099813b40abdcfffa0fbc3cccc4a431b68"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r3-early-continuations-20261020.yml"
+          git merge-base --is-ancestor 836df1cd72fb64585b6d14c1a0247380763b123d HEAD
+          test "$(git diff --name-only 836df1cd72fb64585b6d14c1a0247380763b123d HEAD | wc -l)" -eq 2
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          echo NO_FULL_COMMANDER_GAMES > r3-early-output/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Bind original R2 primary artifact and R5 continuation
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39481840733 > r3-early-output/r2-primary.json
+          jq -e '.status=="completed" and .conclusion=="success" and .head_sha=="37e5cdd9b550a3b42c1c93f5c1d73b2751955822"' r3-early-output/r2-primary.json >/dev/null
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39483773523 > r3-early-output/r2-r5.json
+          jq -e '.status=="completed" and .conclusion=="success" and .head_sha=="836df1cd72fb64585b6d14c1a0247380763b123d"' r3-early-output/r2-r5.json >/dev/null
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39481840733/artifacts > r3-early-output/r2-artifacts.json
+          jq -e '[.artifacts[]|select(.id==12291623583 and .expired==false and .digest=="sha256:901efcd0f81a0f98aa0fddd52b27b885108bbfe1ac99b092e28fa32b9844d91f")]|length==1' r3-early-output/r2-artifacts.json >/dev/null
+      - name: Download original Yes/No real-engine states
+        uses: actions/download-artifact@v4
+        with:
+          repository: GodaPupa/argentum-batshit-test
+          run-id: 39481840733
+          name: manual-precision-r2-shock-microfork-39481840733
+          github-token: ${{ github.token }}
+          path: r3-original
+      - name: Check original fork state hashes
+        shell: bash
+        run: |
+          set -euo pipefail
+          root=r3-original/r2-shock-output
+          test "$(sha256sum "$root/state-before-r0.json" | cut -d' ' -f1)" = "0df555d80bc0a4eab24577dd4cb6de0424564643597d2bd64379c9bde23014d0"
+          test "$(sha256sum "$root/state-after-no.json" | cut -d' ' -f1)" = "552cd7d26bf9965077d5ea8b0e502301d07fd171bbd99bbc745fe9ce0b25afd5"
+          test "$(sha256sum "$root/state-after-yes.json" | cut -d' ' -f1)" = "7e8373fd825b1f50c09158d25b45621152548ff8743c68ca604df13332366031"
+          echo ORIGINAL_R2_FORK_STATES_CONFIRMED > r3-early-output/fork-state-pins.txt
+      - name: Replay only bounded original-state three-branch continuations
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPrecisionR3DevelopmentContinuationTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r3-early-output/r3-test.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("r3-early-output")
+          x=json.loads((root/"r3-early-continuation-summary.json").read_text())
+          assert x["status"]=="R3_EXACT_THREE_BRANCH_BOUNDED_CONTINUATION"
+          assert x["productionChanges"]==0 and x["fullFourPlayerGames"]==0
+          assert x["sourceRun"]==39477314282 and x["primaryMicroforkRun"]==39481840733
+          assert sorted(z["arm"] for z in x["branches"])==["no-r5","yes-elf-r5","yes-r5"]
+          assert all(z["status"]=="NEXT_OWN_TURN_BOUNDARY" and z["engineRejections"]==0 for z in x["branches"])
+          assert all(z["firstNextOwnTurnBoundary"]["globalTurn"]>=5 for z in x["branches"])
+          print("R3_3_WAY_EARLY_CONTINUATION_VALIDATED")
+          PY
+      - name: Preserve original-state branch traces and failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r3-early-continuation-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r3-early-output/
+            ai/build/test-results/test/
