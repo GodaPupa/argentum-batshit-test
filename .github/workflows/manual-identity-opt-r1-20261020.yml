@@ -1,0 +1,37 @@
+name: Manual identity-preserving static guard R1 (NO GAMES)
+on:
+  push:
+    branches: [gameplay/manual-identity-opt-r1-20261020]
+    paths:
+      - '.github/workflows/manual-identity-opt-r1-20261020.yml'
+      - 'experiments/manual-transmission/optimization/**'
+permissions:
+  contents: read
+jobs:
+  identity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Bind immutable parent and unchanged accepted files
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "cf6181b9a96479dadbef1323b178934798ecf6f4"
+          expected="$(printf '%s\n' '.github/workflows/manual-identity-opt-r1-20261020.yml' 'experiments/manual-transmission/optimization/README.md' 'experiments/manual-transmission/optimization/identity_guard_r1.py' | sort)"
+          observed="$(git diff --name-only HEAD^ HEAD | sort)"
+          test "$observed" = "$expected"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md)" = "dbf081b0c6e205c65750866adcb6f7d43f532caf"
+          echo "MANUAL_IDENTITY_R1_SOURCE_BOUND_PASS"
+      - name: Validate exact original deck and reject three changed decks
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission/optimization/identity_guard_r1.py --self-test
+          python3 experiments/manual-transmission/optimization/identity_guard_r1.py --json
+          echo "NO_GAMEPLAY_INITIATED; NO_POLICY_ADOPTION; NO_HARDWARE_PROMOTION"
