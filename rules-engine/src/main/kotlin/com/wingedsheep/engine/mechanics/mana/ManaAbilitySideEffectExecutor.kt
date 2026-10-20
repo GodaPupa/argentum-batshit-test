@@ -141,9 +141,14 @@ class ManaAbilitySideEffectExecutor(
     ): ActivatedAbility? {
         val card = state.getEntity(sourceId)?.get<CardComponent>() ?: return null
         val cardDef = cardRegistry.getCard(card.cardDefinitionId) ?: return null
-        return cardDef.script.activatedAbilities
-            .filter { it.isManaAbility }
-            .firstOrNull { abilityProducesColor(it, producedColor) }
+        val manaAbilities = cardDef.script.activatedAbilities.filter { it.isManaAbility }
+        return manaAbilities.firstOrNull { abilityProducesColor(it, producedColor) }
+            // ManaSolver may leave producedColor null for a source used to cover generic
+            // cost, even though a unique "add any color" mana ability is what was activated.
+            // The solver already authorized and tapped this source. In that unambiguous case
+            // match the only printed mana ability so PayLife and other activation costs are
+            // not silently waived. Never guess between multiple different mana abilities.
+            ?: manaAbilities.singleOrNull()
     }
 
     fun runSideEffects(
