@@ -1,0 +1,82 @@
+name: Manual R9 read-only resource censor classification and archive regression
+on:
+  push:
+    branches: [gameplay/manual-r9-protocol-20261019]
+    paths:
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR9CensorProtocol.kt'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR9ProtocolObservationHarnessTest.kt'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR9CensorClassificationTest.kt'
+      - '.github/workflows/manual-r9-protocol-20261019.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  censor:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R9_PROTOCOL_OUTPUT: ${{ github.workspace }}/r9-protocol-output
+      MANUAL_R9_R8_CENSORED_ARCHIVE: ${{ github.workspace }}/r9-original-input/r8-r5-1611-censored.zip
+      MANUAL_R9_R8_COMPLETE_ARCHIVE: ${{ github.workspace }}/r9-original-input/r8-r7-1611-complete.zip
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind accepted unchanged source and two exact original R8 archives
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          test -z "${MANUAL_R9_GAMEPLAY_AUTHORIZATION:-}"
+          mkdir -p r9-original-input r9-protocol-output
+          git rev-parse HEAD > r9-protocol-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r9-protocol-output/tree-sha.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualR7BallistaAllocationCandidate.kt)" = "5bb856f37b9289ba09366401ad99228564d92a58"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualR7BallistaAllocationAdvisorModule.kt)" = "7359818f0d782581f0cb52af4319dcdbbb050202"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR8HeldoutHarnessTest.kt)" = "fc1d5637adbb75b5019b1ec249569889b3c22107"
+          gh api -H "Accept: application/vnd.github+json" /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12229835135/zip > r9-original-input/r8-r5-1611-censored.zip
+          printf '%s  %s\n' 'd7775db042d2e00f4ab6a7ea7e71e479a202841e476d917830bfe5de67a9b4b1' r9-original-input/r8-r5-1611-censored.zip | sha256sum -c -
+          gh api -H "Accept: application/vnd.github+json" /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12228479674/zip > r9-original-input/r8-r7-1611-complete.zip
+          printf '%s  %s\n' 'f563f47aafc1a4fb570aabb666c10d0108db982ff217598018a19bab5d9cf1cd' r9-original-input/r8-r7-1611-complete.zip | sha256sum -c -
+          printf '%s\n' 'R9 protocol regression only; zero gameplay executions' > r9-protocol-output/no-games.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Run typed synthetic and exact-original censored-state regressions ONLY
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -z "${MANUAL_R9_GAMEPLAY_AUTHORIZATION:-}"
+          scripts/gradle-locked :ai:test --tests '*ManualR9CensorClassificationTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r9-protocol-output/validation.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("r9-protocol-output/protocol-audit.json")
+          assert p.exists(), "No real original R8 censor audit produced"
+          a=json.loads(p.read_text())
+          assert a["originalR8Run"] == 39340369095
+          assert a["historicalStatusUntouched"] == "RESOURCE_CAP"
+          assert a["derivedR9Classification"] == "CENSORED_WALL_CLOCK"
+          assert a["derivedEngineError"] is None
+          assert a["originalAccepted"] == 3330
+          assert a["sharedActionHorizon"] == 3330
+          assert a["pairedR7CompletedAccepted"] == 3445
+          assert a["pairClassification"] == "CENSORED_PAIR"
+          assert a["winnerComparisonEligible"] is False
+          assert a["noNewGameStarted"] is True
+          assert Path("r9-protocol-output/reclassified-r8-original-1611/censor-checkpoint.json").exists()
+          print("R9_PROTOCOL_PASS archive-bound censor is not an engine error or a gameplay loss")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r9-censor-protocol-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r9-protocol-output/
+            ai/build/test-results/test/
