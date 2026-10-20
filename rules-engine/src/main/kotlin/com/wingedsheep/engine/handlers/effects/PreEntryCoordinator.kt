@@ -60,7 +60,12 @@ class PreEntryCoordinator(private val cards: CardRegistry) {
             it.additionalCounters != null || it.tappedIfCopied || it.exileCopiedCard || it.filterByTotalManaSpent
         } == true }) return null
         // Both consumers share one entry transaction; copy identity determines subsequent choices.
-        if (entries.none { entry -> entry.copyEffect != null || definition(state, entry)?.script?.replacementEffects?.any { it is EntersWithChoice } == true }) return null
+        if (entries.none { entry ->
+            entry.copyEffect != null ||
+                definition(state, entry)?.script?.replacementEffects?.any { it is EntersWithChoice } == true ||
+                (effect is MoveCollectionEffect && definition(state, entry)?.script?.replacementEffects
+                    ?.filterIsInstance<EntersTapped>()?.any { it.payLifeCost != null } == true)
+        }) return null
         return advance(state, PreEntryOperation(effect, context.copy(preEntryOperation = null), entries), execute)
     }
 
@@ -106,6 +111,29 @@ class PreEntryCoordinator(private val cards: CardRegistry) {
                     options = hosts, minSelections = 1, maxSelections = 1
                 ) }, PreEntryContinuation(operation, legalHosts = refs)))
             }
+            // A fetch/search puts a shockland on the battlefield without a land-play action.
+            // Suspend the collection BEFORE it moves, exactly as for pre-entry choice riders;
+            // otherwise ZoneTransitionService can only default to "declined / tapped".
+            if (operation.effect is MoveCollectionEffect && entry.shockLifePaymentAccepted == null) {
+                val lifeCost = definition(state, entry)?.script?.replacementEffects
+                    ?.filterIsInstance<EntersTapped>()?.firstOrNull { it.payLifeCost != null }
+                    ?.payLifeCost
+                if (lifeCost != null) {
+                    if (state.lifeTotal(entry.controller) < lifeCost) {
+                        // A payment a player cannot make cannot make the land enter untapped.
+                        operation = replace(operation, entry.copy(shockLifePaymentAccepted = false))
+                        continue
+                    }
+                    return EffectResult.from(state.suspendForDecision({ id -> YesNoDecision(
+                        id = id, playerId = entry.controller,
+                        prompt = "Pay $lifeCost life to have ${cc.name} enter untapped?",
+                        context = DecisionContext(
+                            sourceId = entry.source.entityId, sourceName = cc.name,
+                            phase = DecisionPhase.RESOLUTION
+                        ),
+                    ) }, PreEntryContinuation(operation, choosingShockPayment = true)))
+                }
+            }
             val choices = definition(state, entry)?.script?.replacementEffects?.filterIsInstance<EntersWithChoice>().orEmpty()
             if (entry.choiceCursor < choices.size) {
                 val paused = PermanentEntryReplacements.pauseForEntersWithChoice(state, entry.source.entityId,
@@ -134,6 +162,23 @@ class PreEntryCoordinator(private val cards: CardRegistry) {
         val operation = continuation.operation
         val entry = operation.entries[operation.cursor]
         if (!valid(state, entry)) return advance(state, replace(operation, entry.copy(skipped = true)), execute)
+        if (continuation.choosingShockPayment) {
+            val payment = (response as? YesNoResponse)?.choice
+                ?: return EffectResult.error(state, "Expected fetched shockland life-payment response")
+            val amount = definition(state, entry)?.script?.replacementEffects
+                ?.filterIsInstance<EntersTapped>()?.firstOrNull { it.payLifeCost != null }
+                ?.payLifeCost ?: return EffectResult.error(state, "Missing fetched shockland cost")
+            if (payment && state.lifeTotal(entry.controller) < amount)
+                return EffectResult.error(state, "Insufficient life to pay fetched shockland entry cost")
+            val paid = if (payment) {
+                com.wingedsheep.engine.handlers.effects.life.LifePaymentService
+                    .pay(state, entry.controller, amount)
+                    ?: return EffectResult.error(state, "Cannot pay fetched shockland entry cost")
+            } else state to emptyList()
+            val result = advance(paid.first, replace(operation,
+                entry.copy(shockLifePaymentAccepted = payment)), execute)
+            return result.copy(events = paid.second + result.events)
+        }
         if (continuation.choosingCopy) {
             val chosen = (response as? CardsSelectedResponse)?.selectedCards
                 ?: return EffectResult.error(state, "Expected copy selection")
