@@ -30,7 +30,7 @@ jobs:
           git rev-parse HEAD > r8-mana-green/source-sha.txt
           git rev-parse HEAD^{tree} > r8-mana-green/tree-sha.txt
           test "$GITHUB_REF" = "refs/heads/research/manual-precision-r8-mana-verified-20261020"
-          test "$(git rev-parse HEAD^)" = "16154c99fe380f5741d9ce3df956af7cefd01c3f"
+          test "$(git rev-parse HEAD^)" = "527ca30109cecfd58a2df1082dd8d36f6a6b4554"
           test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r8-mana-verified-20261020.yml"
           git merge-base --is-ancestor 96d777375708130e2c97592292171f4d9e445c20 HEAD
           test "$(git diff --name-only 96d777375708130e2c97592292171f4d9e445c20 HEAD | wc -l)" -eq 4
