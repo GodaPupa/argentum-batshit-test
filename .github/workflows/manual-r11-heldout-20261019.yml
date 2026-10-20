@@ -1,0 +1,121 @@
+name: Manual R11 held-out R5 versus R7 under accepted R9 censor protocol
+on:
+  push:
+    branches: [gameplay/manual-r11-heldout-20261019]
+    paths:
+      - '.github/workflows/manual-r11-heldout-20261019.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  heldout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    strategy:
+      fail-fast: false
+      matrix:
+        seed: ['202610191613', '202610191614']
+        profile: ['r5', 'r7']
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_R9_OUTPUT: ${{ github.workspace }}/r11-output
+      MANUAL_R9_GAMEPLAY_AUTHORIZATION: EXPLICIT_NEW_SAMPLE
+      MANUAL_R9_SEED: ${{ matrix.seed }}
+      MANUAL_R9_PREDECLARED_SEED: ${{ matrix.seed }}
+      MANUAL_R9_PROFILE: ${{ matrix.profile }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Pin the accepted R9 source, historical policy blobs, and declared R11 arm
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p r11-output
+          git rev-parse HEAD > r11-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r11-output/tree-sha.txt
+          case "$MANUAL_R9_SEED" in 202610191613|202610191614) ;; *) echo "Non-predeclared R11 seed"; exit 1 ;; esac
+          case "$MANUAL_R9_PROFILE" in r5|r7) ;; *) echo "Non-predeclared R11 profile"; exit 1 ;; esac
+          test "$MANUAL_R9_SEED" = "$MANUAL_R9_PREDECLARED_SEED"
+          test "$MANUAL_R9_GAMEPLAY_AUTHORIZATION" = "EXPLICIT_NEW_SAMPLE"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR4Candidate.kt)" = "550f3d160e783ddb71c19bb9b045037165b69172"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualR7BallistaAllocationCandidate.kt)" = "5bb856f37b9289ba09366401ad99228564d92a58"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualBallistaContinuationAdvisorModule.kt)" = "181c4c54f0cbbf39a7fdd788d890019b5ed81ea6"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualR7BallistaAllocationAdvisorModule.kt)" = "7359818f0d782581f0cb52af4319dcdbbb050202"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualPactDebtAdvisorModule.kt)" = "b8ace7c735f4561dc243ae6fa1fc197b16f61bc1"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR9CensorProtocol.kt)" = "37733aee218e34ca6bb712f9bdc5be2935852737"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR9ProtocolObservationHarnessTest.kt)" = "bc7be89afe1e76f8b011cfa009b624c2bbdc6a15"
+          receipt="$(gh api -H "Accept: application/vnd.github+json" /repos/GodaPupa/argentum-batshit-test/actions/runs/39350147606)"
+          printf '%s\n' "$receipt" | jq -e '.status=="completed" and .conclusion=="success" and .head_sha=="2378787b83f2265a3bc1c08069656910f5defc93"'
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt > r11-output/frozen-deck.sha256
+          printf '%s\n' "$MANUAL_R9_SEED" > r11-output/seed.txt
+          printf '%s\n' "$MANUAL_R9_PROFILE" > r11-output/profile.txt
+          printf '%s\n' 'R11 four-arm bounded one-run sample; no rerolls' > r11-output/protocol-declaration.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Independent 64 accepted-action prefix gate per seed and profile
+        shell: bash
+        env:
+          MANUAL_R9_PREFIX_ONLY: '1'
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualR9ProtocolObservationHarnessTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r11-output/prefix-${{ matrix.profile }}-${{ matrix.seed }}.log
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          arm=os.environ["MANUAL_R9_PROFILE"]; seed=os.environ["MANUAL_R9_SEED"]
+          p=Path(f"r11-output/{arm}-seed-{seed}-prefix")
+          s=json.loads((p/"summary.json").read_text())
+          assert s["profileName"]==arm and str(s["seed"])==seed and s["prefixOnly"] is True
+          assert s["status"]=="PREFIX_COMPLETE" and s["submitted"]==s["accepted"]==64
+          assert s["error"] is None and s["gameOver"] is False and s["winner"] is None
+          assert (p/"smoke-passed.txt").is_file()
+          print(f"R11_PREFIX_PASS profile={arm} seed={seed} accepted=64")
+          PY
+      - name: Exactly one full bounded four-player game per declared matrix arm
+        shell: bash
+        env:
+          MANUAL_R9_PREFIX_ONLY: '0'
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualR9ProtocolObservationHarnessTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r11-output/game-${{ matrix.profile }}-${{ matrix.seed }}.log
+          python3 - <<'PY'
+          import json,os
+          from pathlib import Path
+          arm=os.environ["MANUAL_R9_PROFILE"]; seed=os.environ["MANUAL_R9_SEED"]
+          p=Path(f"r11-output/{arm}-seed-{seed}")
+          s=json.loads((p/"summary.json").read_text())
+          assert s["profileName"]==arm and str(s["seed"])==seed and s["prefixOnly"] is False
+          assert s["accepted"]==s["submitted"] and s["accepted"]>=64 and s["error"] is None
+          assert s["status"] in {
+            "COMPLETE","CENSORED_WALL_CLOCK","CENSORED_ACTION_BUDGET",
+            "CENSORED_TURN_BUDGET","CENSORED_PER_TURN_BUDGET"}
+          if s["status"]=="COMPLETE":
+            assert s["gameOver"] is True and s["winner"] is not None
+            assert s["censorReason"] is None
+          else:
+            assert s["gameOver"] is False and s["winner"] is None
+            assert s["censorReason"]==s["status"] and s["censorCheckpointSaved"] is True
+            assert (p/"censor-checkpoint.json").is_file()
+          assert (p/"actions.jsonl").is_file() and (p/"decisions.jsonl").is_file()
+          assert (p/"initial-state.json").is_file() and (p/"final-state.json").is_file()
+          print(f"R11_OBSERVATION_PASS seed={seed} profile={arm} status={s['status']} accepted={s['accepted']} winner={s['winner']}")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r11-heldout-${{ matrix.profile }}-${{ matrix.seed }}-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r11-output/
+            ai/build/test-results/test/
