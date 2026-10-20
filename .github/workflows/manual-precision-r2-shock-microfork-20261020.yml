@@ -33,10 +33,11 @@ jobs:
           git rev-parse HEAD > r2-shock-output/execution-commit.txt
           git rev-parse HEAD^{tree} > r2-shock-output/execution-tree.txt
           test "$GITHUB_REF" = "refs/heads/research/manual-precision-r2-shock-microfork-20261020"
-          test "$(git rev-parse HEAD^)" = "32bdcdaac790438c725ac197312ebccf68008ebf"
+          test "$(git rev-parse HEAD^)" = "757cc4f7a9825f0ea2c6b1f965a259d42087d55f"
           test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r2-shock-microfork-20261020.yml"
           git merge-base --is-ancestor 84e6347bbcdfa2990eb304051771007daf849ce9 HEAD
           test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualPrecisionR1GameplayHarnessTest.kt)" = "d90de59f63a3791128809d845abf4ee09124dc1c"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualPrecisionR2ShockMicroforkTest.kt)" = "48704a5af388c88345b90fb9cfc32ac225bbf13c"
           test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
           test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
           test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
@@ -65,9 +66,9 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          echo "cf00fb2f7c8f8cc7745639a081e403c9cfc988d0cbb09d017a4130a92696a8adf  r2-original/precision-r1-stage1-output/a-seed-202610202112/initial-state.json" | sha256sum --check
+          echo "cf00fb2f7c8f8cc7745639a081e403c9fc988d0cbb09d017a4130a92696a8adf  r2-original/precision-r1-stage1-output/a-seed-202610202112/initial-state.json" | sha256sum --check
           echo "ae1c68d142b1661ed11102a2eb33238623ef94f4fda0e0ebc196f962d5e51d90  r2-original/precision-r1-stage1-output/a-seed-202610202112/actions.jsonl" | sha256sum --check
-          printf '%s\n' cf00fb2f7c8f8cc7745639a081e403c9cfc988d0cbb09d017a4130a92696a8adf > r2-shock-output/original-initial-hash.txt
+          printf '%s\n' cf00fb2f7c8f8cc7745639a081e403c9fc988d0cbb09d017a4130a92696a8adf > r2-shock-output/original-initial-hash.txt
           printf '%s\n' ae1c68d142b1661ed11102a2eb33238623ef94f4fda0e0ebc196f962d5e51d90 > r2-shock-output/original-actions-hash.txt
       - name: Replay 13 original actions and fork exact r0 two-life decision with ActionProcessor
         shell: bash
