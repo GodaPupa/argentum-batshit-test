@@ -810,6 +810,10 @@ class MoveCollectionExecutor(
                 libraryPlacement = libraryPlacement,
                 tapped = destination.placement == ZonePlacement.Tapped || destination.placement == ZonePlacement.TappedAndAttacking,
                 tappedAndAttacking = destination.placement == ZonePlacement.TappedAndAttacking,
+                // In a pre-entry collection continuation the controller accepted AND paid
+                // the shockland's optional two-life entry cost before this card moved.
+                shockLifePaymentAccepted = context.preEntryOperation?.entries
+                    ?.firstOrNull { it.source.entityId == cardId }?.shockLifePaymentAccepted == true,
                 faceDown = isBattlefieldFaceDown,
                 morphData = morphData,
                 faceDownMode = if (isBattlefieldFaceDown) faceDown else null,
