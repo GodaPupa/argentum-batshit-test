@@ -76,7 +76,7 @@ class ManualR16AnimarValuationTest : FunSpec({
                 }.copy(action = archived)
                 state.getEntity(archived.cardId)?.get<CardComponent>()?.name shouldBe
                     "Animar, Soul of Elements"
-                archived.cardId in state.getZone(ZoneKey(actor, Zone.COMMAND)) shouldBe true
+                (archived.cardId in state.getZone(ZoneKey(actor, Zone.COMMAND))) shouldBe true
                 val historicalPassScore = requireNotNull(chosen["score"]?.jsonPrimitive?.doubleOrNull)
                 val historicalCastScore = requireNotNull(animar["score"]?.jsonPrimitive?.doubleOrNull)
                 val historicalGap = historicalPassScore - historicalCastScore
@@ -116,6 +116,10 @@ class ManualR16AnimarValuationTest : FunSpec({
                     )
                 )
                 advisor shouldBe null
+                val independentCastEval = evaluator.evaluate(after, after.projectedState, actor)
+                val independentPassEval = (simulatedPass as? SimulationResult.Terminal)?.let {
+                    evaluator.evaluate(it.state, it.state.projectedState, actor)
+                }
                 val taxCount = state.getEntity(archived.cardId)
                     ?.get<CommanderComponent>()?.castsFromCommandZone
                 val record = buildJsonObject {
@@ -131,11 +135,13 @@ class ManualR16AnimarValuationTest : FunSpec({
                     put("originalPassScore", historicalPassScore)
                     put("originalAnimarCastScore", historicalCastScore)
                     put("originalPassScoreAdvantage", historicalGap)
+                    put("directBoardEvaluatorCastLeaf", independentCastEval)
+                    put("directBoardEvaluatorPassLeaf", independentPassEval?.let(::JsonPrimitive) ?: JsonNull)
                     put("originalAdvisorWouldAddDevelopmentCredit", advisor != null)
                     put("advisorOverrideScore", advisor?.let(::JsonPrimitive) ?: JsonNull)
                     put("rawCastEngineAccepted", direct.error == null)
                     put("rawPassEngineAccepted", passDirect.error == null)
-                    put("castImmediatelyPassedOpponentPriority", false)
+                    put("testDidNotForceOpponentPasses", true)
                     put("directCastNextPriorityPlayer", direct.state.priorityPlayerId?.value)
                     put("directCastStackSize", direct.state.stack.size)
                     put("simulatedCastQuietBoundary", simulatedCast::class.simpleName)
