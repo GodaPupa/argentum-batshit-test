@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.PaymentStrategy
 import com.wingedsheep.engine.core.ChooseColorDecision
 import com.wingedsheep.engine.core.ColorChosenResponse
 import com.wingedsheep.engine.state.components.battlefield.TappedComponent
@@ -78,6 +79,34 @@ class ManaConfluenceScenarioTest : ScenarioTestBase() {
             val ability = cardRegistry.getCard("Purphoros, God of the Forge")!!.activatedAbilities.single().id
             game.execute(ActivateAbility(game.player1Id, permanent, ability)).error shouldBe null
             game.getLifeTotal(1) shouldBe before - 1
+        }
+
+
+        test("explicit nonspell mana-source selection pays Confluence once") {
+            val game = scenario()
+                .withPlayers("Player1", "Player2")
+                .withCardOnBattlefield(1, "Mana Confluence")
+                .withCardOnBattlefield(1, "Forest")
+                .withCardOnBattlefield(1, "Temur Sabertooth")
+                // The other creature is only a return target, not a substitute mana source.
+                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = true)
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
+                .build()
+            val before = game.getLifeTotal(1)
+            val sabertooth = game.findPermanent("Temur Sabertooth")!!
+            val confluence = game.findPermanent("Mana Confluence")!!
+            val forest = game.findPermanent("Forest")!!
+            val ability = cardRegistry.getCard("Temur Sabertooth")!!.activatedAbilities.single().id
+            game.execute(ActivateAbility(
+                game.player1Id,
+                sabertooth,
+                ability,
+                paymentStrategy = PaymentStrategy.Explicit(listOf(confluence, forest))
+            )).error shouldBe null
+            game.getLifeTotal(1) shouldBe before - 1
+            game.state.getEntity(confluence)?.has<TappedComponent>() shouldBe true
+            game.state.getEntity(forest)?.has<TappedComponent>() shouldBe true
         }
 
     }
