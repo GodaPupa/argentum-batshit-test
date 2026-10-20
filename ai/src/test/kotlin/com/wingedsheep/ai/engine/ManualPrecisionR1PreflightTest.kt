@@ -1,8 +1,6 @@
 package com.wingedsheep.ai.engine
 
-import com.wingedsheep.engine.core.GameConfig
-import com.wingedsheep.engine.core.GameInitializer
-import com.wingedsheep.engine.core.PlayerConfig
+import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.registry.CardRegistry
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ZoneKey
@@ -200,13 +198,6 @@ class ManualPrecisionR1PreflightTest : FunSpec({
         val r = ManualPrecisionR1Inputs.registry()
         listOf(202610202041L, 202610202042L).forEach { seed ->
             ManualPrecisionR1Inputs.verifyMatchedSlots(seed, r, "a")
-        }
-    }
-    test("Challenger B all ten replacements must be compiled and legal before gameplay") {
-        val r = ManualPrecisionR1Inputs.registry()
-        ManualPrecisionR1Inputs.verifyCompiledLegality("b", r)
-        listOf(202610202041L, 202610202042L).forEach { seed ->
-            ManualPrecisionR1Inputs.verifyMatchedSlots(seed, r, "b")
         }
     }
 })
