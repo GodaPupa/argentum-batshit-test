@@ -1,0 +1,81 @@
+name: Manual R17 productive Animar deployment witness audit
+on:
+  push:
+    branches: [gameplay/manual-r17-animar-witness-20261019]
+    paths:
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR17AnimarProductiveWitnessSearchTest.kt'
+      - '.github/workflows/manual-r17-animar-witness-20261019.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  witness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R17_R8_ARCHIVE: ${{ github.workspace }}/r17-input/r8-seed-1612-r5.zip
+      MANUAL_R17_R15_ARCHIVE: ${{ github.workspace }}/r17-input/r15-original.zip
+      MANUAL_R17_R16_ARCHIVE: ${{ github.workspace }}/r17-input/r16-original.zip
+      MANUAL_R17_OUTPUT: ${{ github.workspace }}/r17-output
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify frozen policy and acquire SHA-bound originals
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p r17-input r17-output
+          git rev-parse HEAD > r17-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r17-output/tree-sha.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualAnimarDevelopmentAdvisorModule.kt)" = "b995dfc8d27dbc71da7785f7f708b0b0a442c3e8"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR16AnimarValuationTest.kt)" = "3a68ee71df8339756b03ced154e8277fc2faaba3"
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12228089328/zip > r17-input/r8-seed-1612-r5.zip
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12239496615/zip > r17-input/r15-original.zip
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12240223523/zip > r17-input/r16-original.zip
+          printf '%s  %s\n' '4f823fb61ac29ecc84582b4fd974200d2ba1d89664d906df802013d823f026a9' r17-input/r8-seed-1612-r5.zip | sha256sum -c -
+          printf '%s  %s\n' '251dc4cd30d955bbee3fef6172ca285664df78923859efa258299e5cd3fe7a5f' r17-input/r15-original.zip | sha256sum -c -
+          printf '%s  %s\n' '425f0ca27da8efb50738f127e1ef378027fa9fd88611f1cf72698be88f4cf1c2' r17-input/r16-original.zip | sha256sum -c -
+          printf '%s\n' 'Two actual historical Animar casts; three R16 no-creature negative controls; zero new games' > r17-output/scope.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Replay only original prefix and validate advisor credits
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualR17AnimarProductiveWitnessSearchTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r17-output/validation.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("r17-output")
+          rows=json.loads((root/"r17-productive-witnesses.json").read_text())
+          neg=json.loads((root/"r17-negative-controls.json").read_text())
+          summary=json.loads((root/"r17-summary.json").read_text())
+          assert [r["index"] for r in rows]==[930,1613]
+          assert [r["index"] for r in neg]==[1336,1497,1998]
+          assert summary["historicalActionsReplayed"]==1612
+          assert summary["exactOriginalEventMatches"]==1612
+          assert summary["positiveWitnessCount"]==2
+          assert summary["negativeControlCount"]==3
+          assert summary["defectsProven"]==0 and summary["newFullCommanderGames"]==0
+          for row in rows:
+            assert row["recomputedBestIncrementalCredit"]>0
+            assert row["recomputedAdvisorScore"]>row["rawCastScore"]
+            assert row["measuredFollowupOutcomes"], row["index"]
+          print("R17_ORIGINAL_WITNESS_PASS positives=2 negatives=3 original_actions=1612")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r17-animar-witness-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r17-output/
+            ai/build/test-results/test/
