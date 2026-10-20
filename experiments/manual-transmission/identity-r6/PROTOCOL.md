@@ -1,0 +1,7 @@
+# Manual Transmission identity R6 — opponent-policy-conditioned micro-forks
+
+Source: exact original R22 control seed 202610191622, action 1153, reconstructed in accepted R4 (run 39454771346 / artifact 12280017350). Parent R5 (run 39456950083 / artifact 12281183389) established that Paradise Druid → Animar and Animar → Paradise Druid are both affordable two-cast sequences under *automatic* stack resolution. Source ZIP bytes, checkpoint hash, predecessor runs and Git blobs are pinned.
+
+R6 independently executes each intervention from the *same* original GameState. Both initial alternative casts are accepted directly by ActionProcessor. During each spell's pending stack and decisions, the real opt-in R5 AI policy makes priority and decision responses for all four seats. Each response is submitted through ActionProcessor and logged. The choice of the second creature is only forced if the actual post-resolution legal-action enumerator offers the same-cost CastSpell. Maximum 48 AI responses per spell; censored states remain censored. No full game, GameInitializer, seed generation, or future turns.
+
+This is stronger than blind auto-pass but still only a bounded R5-AI-policy micro-fork, **not** a human-optimal or robust competitive head-to-head comparison. A single score/counter difference is not a proven defect. Do not modify frozen v0.7, any gear definition/overlay, AiProfile.CURRENT, production engine, main, or accepted qualification. No hardware or policy promotion is authorized. Respect historical KEEP_V07 and NO_PROVEN_DEFECT.

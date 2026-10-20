@@ -1,0 +1,90 @@
+name: Manual identity R6 bounded R5 opponent responses (NO GAMES)
+on:
+  push:
+    branches: [research/manual-identity-r6-opponent-response-20261020]
+    paths:
+      - '.github/workflows/manual-identity-r6-opponent-response-20261020.yml'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualIdentityR6OpponentResponse1153Test.kt'
+      - 'experiments/manual-transmission/identity-r6/PROTOCOL.md'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  opponent-forks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_IDENTITY_R6_MODE: EXPLICIT_ORIGINAL_1153_R5_RESPONSES
+      MANUAL_IDENTITY_R6_R4_ARCHIVE: ${{ github.workspace }}/r6-input/r4.zip
+      MANUAL_IDENTITY_R6_R5_ARCHIVE: ${{ github.workspace }}/r6-input/r5.zip
+      MANUAL_IDENTITY_R6_OUTPUT: ${{ github.workspace }}/r6-receipt
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 2}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Exact isolated source and frozen authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r6-input r6-receipt
+          git rev-parse HEAD > r6-receipt/source-sha.txt
+          test "$(git rev-parse HEAD^)" = "7f5d5abd97f6fcd8ecd2983b60f82f09ad329a30"
+          cat > /tmp/expected.txt <<'EOF'
+          .github/workflows/manual-identity-r6-opponent-response-20261020.yml
+          ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualIdentityR6OpponentResponse1153Test.kt
+          experiments/manual-transmission/identity-r6/PROTOCOL.md
+          EOF
+          git diff --name-only HEAD^ HEAD >/tmp/actual.txt
+          diff -u /tmp/expected.txt /tmp/actual.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md)" = "dbf081b0c6e205c65750866adcb6f7d43f532caf"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualIdentityR5Bounded1622ForksTest.kt)" = "4355dba628856f0446c0427919405e33ca874c94"
+          chmod +x gradlew scripts/gradle-locked
+      - name: Acquire both exact historical R4 and R5 ZIPs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39454771346 |
+            jq -e '.status=="completed" and .conclusion=="success" and .head_sha=="68a8e331c84ebf53575deab9951ec80ca75312a3"' >/dev/null
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39456950083 |
+            jq -e '.status=="completed" and .conclusion=="success" and .head_sha=="7f5d5abd97f6fcd8ecd2983b60f82f09ad329a30"' >/dev/null
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12280017350/zip > r6-input/r4.zip
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12281183389/zip > r6-input/r5.zip
+          echo 'd27a0b8bedc4377c1852cfde23f217e6b92c62a193bdf67972da7320be7ac492  r6-input/r4.zip' | sha256sum -c -
+          echo 'f223adc20c6a8713b745a3b786699e4876a036f1b5e253292b85d5b072604d51  r6-input/r5.zip' | sha256sum -c -
+      - name: Run bounded interactive R5-policy original 1153 forks
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:test --tests '*ManualIdentityR6OpponentResponse1153Test' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r6-receipt/build.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          s=json.loads(Path('r6-receipt/result.json').read_text())
+          assert s['status']=='R6_1153_R5_POLICY_RESPONSE_MICRO_FORKS_COMPLETE'
+          assert s['fullGamesInitialized']==s['newSeeds']==s['productionChanges']==s['hardwareChanges']==s['gearChanges']==s['defectsProven']==0
+          assert s['conclusion']=='NO_PROVEN_DEFECT' and s['automaticPromotion'] is False
+          for branch in ('druidFirst','animarFirst'):
+            x=s[branch]
+            assert x['firstResponseTranscript']['noForcedOpponentPasses']
+            assert x['futureTurnsPlayed']==0
+            assert x['strategicDefectProven'] is False
+          print('R6_TWO_BRANCH_R5_OPPONENT_PRIORITY_PASS game_count=0 promotions=0')
+          PY
+          sha256sum r6-receipt/result.json > r6-receipt/result.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-identity-r6-opponent-response
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r6-receipt/
+            ai/build/test-results/test/
