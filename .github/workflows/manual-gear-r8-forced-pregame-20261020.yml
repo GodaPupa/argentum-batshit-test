@@ -1,0 +1,84 @@
+name: Manual R8 masked forced-pregame composition (NO GAMES)
+on:
+  push:
+    branches: [research/manual-gear-r8-forced-pregame-20261020]
+    paths:
+      - '.github/workflows/manual-gear-r8-forced-pregame-20261020.yml'
+      - 'experiments/manual-transmission/identity-r8/PROTOCOL.md'
+      - 'gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoForcedPregamePolicy.kt'
+      - 'gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPartialGearPilot.kt'
+      - 'gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoForcedPregamePolicyTest.kt'
+permissions:
+  contents: read
+jobs:
+  r8-forced-pregame-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify isolated R8 scope and immutable accepted inputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "5ca8ee8d9cd798322a40fea34fd16ba3a8cfa517"
+          cat > /tmp/expected-files <<'EOF'
+          .github/workflows/manual-gear-r8-forced-pregame-20261020.yml
+          experiments/manual-transmission/identity-r8/PROTOCOL.md
+          gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoForcedPregamePolicy.kt
+          gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPartialGearPilot.kt
+          gym/src/test/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoForcedPregamePolicyTest.kt
+          EOF
+          git diff --name-only HEAD^ HEAD > /tmp/actual-files
+          diff -u /tmp/expected-files /tmp/actual-files
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md)" = dbf081b0c6e205c65750866adcb6f7d43f532caf
+          test "$(git rev-parse HEAD:experiments/manual-transmission/protocols/same-hardware-elasticity-r1.json)" = 47f7f6458ee2e760ae961dfd6e56a87717a4ef67
+          test "$(git rev-parse HEAD:experiments/manual-transmission-phase2/protocol-r1.json)" = f605dc2ce4273a26a6e2387a2c6e4048e4012a79
+          test "$(git rev-parse HEAD:gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoPriorityConservationPolicy.kt)" = 8fec7b06ed4d20ac138b4f0d0500fc6d39926d4e
+          test "$(git rev-parse HEAD:gym/src/main/kotlin/com/wingedsheep/gym/manual/ManualPhaseTwoRaceOverlayRouter.kt)" = 600f783b0891249343cb57e91847ea714758f515
+          echo R8_FROZEN_AUTHORITIES_PASS
+          chmod +x gradlew scripts/gradle-locked
+      - name: Run excluded four-seat masked pregame and inherited R7 pilot checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r8-evidence
+          scripts/gradle-locked :gym:test --tests '*ManualPhaseTwoForcedPregamePolicyTest' --tests '*ManualPhaseTwoPartialGearPilotTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r8-evidence/tests.log
+          python3 - <<'PY'
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          rows=[
+              Path('gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoForcedPregamePolicyTest.xml'),
+              Path('gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoPartialGearPilotTest.xml'),
+          ]
+          sums=[ET.parse(p).getroot() for p in rows]
+          assert all(int(t.attrib['failures'])==int(t.attrib['errors'])==int(t.attrib['skipped'])==0 for t in sums)
+          assert int(sums[0].attrib['tests'])>=17
+          assert int(sums[1].attrib['tests'])==27
+          total=sum(int(t.attrib['tests']) for t in sums)
+          print(f'R8_PASS_FORCED_PREGAME_ONLY cases={total} actual_games=0 full_gear_pilots=NO')
+          PY
+          printf '%s\n' 'PASS_FORCED_PREGAME_ONLY; NO_R3_FULL_MULLIGAN; NO_OFFICIAL_GAMES; NO_HARDWARE_CHANGE; NO_PROMOTION' > r8-evidence/scope.txt
+          git rev-parse HEAD > r8-evidence/head.txt
+          sha256sum r8-evidence/tests.log > r8-evidence/test-log.sha256
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r8-forced-pregame-proof
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r8-evidence/
+            gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoForcedPregamePolicyTest.xml
+            gym/build/test-results/test/TEST-com.wingedsheep.gym.manual.ManualPhaseTwoPartialGearPilotTest.xml

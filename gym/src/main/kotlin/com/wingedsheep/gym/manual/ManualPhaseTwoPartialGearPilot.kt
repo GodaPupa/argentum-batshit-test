@@ -19,6 +19,7 @@ internal class ManualPhaseTwoPartialGearPilot(
         }
     }
 
+    private val pregame = ManualPhaseTwoForcedPregamePolicy(role)
     private val opening = ManualPhaseTwoOpeningActionPolicy(role)
     private val commander = ManualPhaseTwoUniqueCommanderCastPolicy(role)
     private val conservation = if (role == ManualPhaseTwoPilotRole.CRUISE) null
@@ -28,8 +29,14 @@ internal class ManualPhaseTwoPartialGearPilot(
         observation: TrainingObservation,
         prompt: PhaseTwoPilotPrompt,
     ): PhaseTwoPilotChoice {
-        require(prompt == PhaseTwoPilotPrompt.Engine && observation.pendingDecision == null) {
-            "Unqualified $role mulligan/bottom/typed decision; no fallback"
+        // Pregame is a different trusted actor boundary: the outstanding mulligan
+        // seat need not hold ordinary stack priority. Only strictly forced choices
+        // are supported; strategically meaningful hands still fail closed.
+        if (prompt != PhaseTwoPilotPrompt.Engine) {
+            return pregame.choose(observation, prompt)
+        }
+        require(observation.pendingDecision == null) {
+            "Unqualified $role typed decision; no fallback"
         }
         val actor = observation.perspectivePlayerId
         require(!observation.terminated &&
