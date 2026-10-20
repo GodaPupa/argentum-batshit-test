@@ -1,0 +1,57 @@
+name: R8 explicit Confluence nonspell payment parity (NO GAMES)
+on:
+  push:
+    branches: [research/manual-precision-r8-explicit-mana-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r8-explicit-mana-20261020.yml'
+permissions:
+  contents: read
+concurrency:
+  group: manual-r8-explicit-mana-validation
+  cancel-in-progress: false
+jobs:
+  exact-cost:
+    runs-on: ubuntu-latest
+    timeout-minutes: 65
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify immutable source and exact isolated explicit-payment delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r8-explicit-mana-evidence
+          git rev-parse HEAD > r8-explicit-mana-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > r8-explicit-mana-evidence/tree-sha.txt
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r8-explicit-mana-20261020"
+          test "$(git rev-parse HEAD^)" = "4a79347cdc65780b8c9abde369b03d9d7776804c"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r8-explicit-mana-20261020.yml"
+          git merge-base --is-ancestor c3e3802185049a583e752a8aa8e068b34ec094ec HEAD
+          test "$(git diff --name-only c3e3802185049a583e752a8aa8e068b34ec094ec HEAD | wc -l)" -eq 3
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt)" = "926b8b7b94ecbebf4b75f26fe91bfcd8a4a7a67f"
+          test "$(git rev-parse HEAD:mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaConfluenceScenarioTest.kt)" = "4105dcc52c38a97524fff51381189bafd5311a88"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          echo ZERO_FULL_GAMES > r8-explicit-mana-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Real engine five-path Confluence cost regression including explicit choice
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test --tests '*ManaConfluenceScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r8-explicit-mana-evidence/confluence.log
+      - name: Preserve original targeted test evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-r8-explicit-mana-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            r8-explicit-mana-evidence/
+            mtg-sets/2008-2016/tests/build/test-results/test/
