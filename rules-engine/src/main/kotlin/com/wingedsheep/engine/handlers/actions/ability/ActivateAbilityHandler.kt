@@ -1313,11 +1313,16 @@ class ActivateAbilityHandler(
                         val solution = manaSolver.solve(
                             currentState, action.playerId, remainingCost, manaXValue, excludeSources = excluded, xManaRestriction = ability.xManaRestriction
                         ) ?: return ExecutionResult.error(state, "Selected mana sources cannot pay this ability's cost")
-                        for (source in solution.sources) {
-                            val (tappedState, tapEvent) = tap(currentState, source.entityId)
-                            currentState = tappedState
-                            tapEvent?.let(events::add)
-                        }
+                        // Explicitly selected sources still activate their full mana abilities.
+                        // Pay printed non-tap activation costs (Mana Confluence life payment),
+                        // emit ability-activation events and apply side effects exactly once,
+                        // just as on the AutoPay and spell-payment paths.
+                        val (afterExplicitTaps, explicitTapEvents) =
+                            manaAbilitySideEffectExecutor.tapSourcesWithSideEffects(
+                                currentState, solution, action.playerId
+                            )
+                        currentState = afterExplicitTaps
+                        events.addAll(explicitTapEvents)
                     }
                 }
                 else -> {
