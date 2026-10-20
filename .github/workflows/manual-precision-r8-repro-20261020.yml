@@ -1,0 +1,109 @@
+name: Manual Precision R8 reproduce manabase rules fidelity (NO GAMES)
+on:
+  push:
+    branches: [research/manual-precision-r8-rules-fidelity-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r8-repro-20261020.yml'
+permissions:
+  contents: read
+concurrency:
+  group: manual-precision-r8-red-original-source
+  cancel-in-progress: false
+jobs:
+  mana-confluence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 24}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind exact R7 and test-only witnesses
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r8-red-mana
+          git rev-parse HEAD > r8-red-mana/commit.txt
+          git rev-parse HEAD^{tree} > r8-red-mana/tree.txt
+          test "$(git rev-parse HEAD^)" = "5458b71bc0950e388650ea2d6257eca78afe2156"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r8-repro-20261020.yml"
+          git merge-base --is-ancestor cb6d0677a7c869a4cb4d5a7a567326ba955873eb HEAD
+          test "$(git rev-parse HEAD:mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaConfluenceScenarioTest.kt)" = "99a17745aadbe84fdf54c7c1af409dee5169f581"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt)" = "6e633dcb73320a38248e1913c38d5c4d77ef9cfb"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          echo ZERO_NEW_GAMES > r8-red-mana/game-budget.txt
+          chmod +x scripts/gradle-locked gradlew
+      - name: Mana Confluence direct, spell and nonspell ability scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test \
+            --tests '*ManaConfluenceScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r8-red-mana/targeted.log
+      - name: Preserve RED source and JUnit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: precision-r8-red-mana-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            r8-red-mana/
+            mtg-sets/2008-2016/tests/build/test-results/test/
+  fetched-shock:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 24}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Pin original fetch/shock definitions and scenario tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r8-red-fetch
+          git rev-parse HEAD > r8-red-fetch/commit.txt
+          git rev-parse HEAD^{tree} > r8-red-fetch/tree.txt
+          test "$(git rev-parse HEAD^)" = "5458b71bc0950e388650ea2d6257eca78afe2156"
+          test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r8-repro-20261020.yml"
+          test "$(git rev-parse HEAD:mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MistyRainforestScenarioTest.kt)" = "964a741e014897736cbc15fada1adf64b559420a"
+          test "$(git rev-parse HEAD:mtg-sets/2000-2002/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WoodedFoothillsScenarioTest.kt)" = "765faa387801a27551df221182f4b9ab4c7e65db"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt)" = "a55a5efe52cee8b4269f43ca940c3c17f1785cd1"
+          echo ZERO_NEW_GAMES > r8-red-fetch/game-budget.txt
+          chmod +x scripts/gradle-locked gradlew
+      - name: Wooded Foothills shock fetch Yes No scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2000-2002:tests:test \
+            --tests '*WoodedFoothillsScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r8-red-fetch/wooded.log
+      - name: Misty Rainforest shock fetch Yes No scenarios
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test \
+            --tests '*MistyRainforestScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r8-red-fetch/misty.log
+      - name: Preserve fetched-shock RED source and JUnit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: precision-r8-red-fetch-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            r8-red-fetch/
+            mtg-sets/2000-2002/tests/build/test-results/test/
+            mtg-sets/2008-2016/tests/build/test-results/test/
