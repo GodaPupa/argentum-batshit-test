@@ -30,10 +30,10 @@ jobs:
           git rev-parse HEAD > r8-mana-green/source-sha.txt
           git rev-parse HEAD^{tree} > r8-mana-green/tree-sha.txt
           test "$GITHUB_REF" = "refs/heads/research/manual-precision-r8-mana-verified-20261020"
-          test "$(git rev-parse HEAD^)" = "d6251f9c01d65160bdbec563387d8fcf3560685b"
+          test "$(git rev-parse HEAD^)" = "16154c99fe380f5741d9ce3df956af7cefd01c3f"
           test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r8-mana-verified-20261020.yml"
           git merge-base --is-ancestor 96d777375708130e2c97592292171f4d9e445c20 HEAD
-          test "$(git diff --name-only 96d777375708130e2c97592292171f4d9e445c20 HEAD | wc -l)" -eq 3
+          test "$(git diff --name-only 96d777375708130e2c97592292171f4d9e445c20 HEAD | wc -l)" -eq 4
           test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt)" = "149eae15569f5efa42c7fff6b4cd85afb4aaf384"
           test "$(git rev-parse HEAD:mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManaConfluenceScenarioTest.kt)" = "f4ceb6438be756d6785bd47d37af4d3e53378807"
           test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
