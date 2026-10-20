@@ -2483,21 +2483,18 @@ class ActivateAbilityHandler(
         var currentPool = pool
         val events = mutableListOf<GameEvent>()
 
-        for (source in solution.sources) {
-            val (tappedState, tapEvent) = tap(currentState, source.entityId)
-            currentState = tappedState
-            tapEvent?.let(events::add)
-            // Auto-tapping a source to pay an ability's mana cost activates that source's mana
-            // ability just as a manual tap would (CR 605.3) — emit the same activation event the
-            // shared cast/cycling/plot auto-tap path emits, so "whenever you activate an ability"
-            // triggers (Elrond, Moon-Reader) don't silently miss the fast path.
-            manaAbilitySideEffectExecutor.activationEvent(
-                currentState,
-                source.entityId,
-                solution.manaProduced[source.entityId]?.color,
-                playerId
-            )?.let(events::add)
-        }
+        // Auto-payment for nonspell abilities must use the SAME full mana-ability activation
+        // path as spell/cycling auto-payment. The old hand-written tap loop emitted
+        // TappedEvent + AbilityActivatedEvent but skipped the activated mana ability's
+        // own non-tap costs (Mana Confluence's PayLife(1)) and other side effects.
+        // The shared helper preserves those activation events and executes the cost/effect
+        // side effects exactly once, before mana is added to the ability-payment pool.
+        val (afterManaTaps, manaTapEvents) =
+            manaAbilitySideEffectExecutor.tapSourcesWithSideEffects(
+                currentState, solution, playerId
+            )
+        currentState = afterManaTaps
+        events.addAll(manaTapEvents)
 
         // Add produced mana to floating pool so costHandler.payAbilityCost can consume it.
         // When the source's ability is restricted (e.g. Steelswarm Operator's
