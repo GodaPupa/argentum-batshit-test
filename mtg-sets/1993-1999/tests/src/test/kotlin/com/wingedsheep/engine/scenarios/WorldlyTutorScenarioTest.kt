@@ -31,7 +31,7 @@ class WorldlyTutorScenarioTest : ScenarioTestBase() {
             game.selectCards(listOf(creature)).error shouldBe null
             game.resolveStack()
             game.findCardsInLibrary(1, "Grizzly Bears").single() shouldBe creature
-            game.state.getLibrary(game.player1Id).last() shouldBe creature
+            game.state.getLibrary(game.player1Id).first() shouldBe creature
             game.isInGraveyard(1, "Worldly Tutor") shouldBe true
             game.hasPendingDecision() shouldBe false
         }
