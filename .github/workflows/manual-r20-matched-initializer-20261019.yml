@@ -1,0 +1,78 @@
+name: Manual R20 matched-slot initializer verification
+on:
+  push:
+    branches: [gameplay/manual-r20-matched-initializer-20261019]
+    paths:
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR20MatchedSlotInitializerTest.kt'
+      - '.github/workflows/manual-r20-matched-initializer-20261019.yml'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 2}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Assert frozen identities and strictly initializer-only R20 scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r20-output
+          git rev-parse HEAD > r20-output/source-sha.txt
+          git rev-parse HEAD^{tree} > r20-output/tree-sha.txt
+          test "$(git rev-parse HEAD^)" = "ed36a3386c1f58b7c6242b234242b2fa0571c08b"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:gameplay/manual-v08-wan/CHALLENGER.decklist.txt)" = "854cedf1f3f789c2ddc49c1f9004f2fa63431851"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR19MatchedSlotHelper.kt)" = "6bad1ca08be447ef74b60e23f729c13b90fdd261"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR18WanChallengerHarnessTest.kt)" = "c5dd247102c28465213cc3bb9438c92b0c2a1385"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt)" = "b4232ac2034b6d6163268ba8a72f4f628525ec5c"
+          git diff --name-only HEAD^ HEAD > r20-output/changed-files.txt
+          test "$(wc -l < r20-output/changed-files.txt)" -eq 2
+          while IFS= read -r path; do
+            case "$path" in
+              ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualR20MatchedSlotInitializerTest.kt|.github/workflows/manual-r20-matched-initializer-20261019.yml) ;;
+              *) echo "R20 altered an unexpected path: $path"; exit 1 ;;
+            esac
+          done < r20-output/changed-files.txt
+          sha256sum experiments/manual-transmission/control/v0.7.decklist.txt gameplay/manual-v08-wan/CHALLENGER.decklist.txt > r20-output/input-hashes.sha256
+          chmod +x gradlew scripts/gradle-locked
+      - name: Verify initializer only; never execute a game action
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualR20MatchedSlotInitializerTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee r20-output/validation.log
+      - name: Verify two real Kotest/JUnit regressions passed
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          matches=list(Path("ai/build/test-results/test").glob("TEST-*ManualR20MatchedSlotInitializerTest*.xml"))
+          assert matches, "Missing R20 compiled JUnit results"
+          totals={k:0 for k in ("tests","failures","errors","skipped")}
+          for f in matches:
+              root=ET.parse(f).getroot()
+              for k in totals:
+                  totals[k]+=int(root.attrib.get(k,0))
+          assert totals=={"tests":2,"failures":0,"errors":0,"skipped":0},totals
+          print("R20_INITIALIZER_PASS tests=2 failures=0 errors=0 skipped=0 full_games=0")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r20-matched-initializer-${{ github.run_id }}
+          retention-days: 30
+          path: |
+            r20-output/
+            ai/build/test-results/test/
