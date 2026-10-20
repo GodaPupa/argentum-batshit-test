@@ -50,7 +50,10 @@ class ManaConfluenceScenarioTest : ScenarioTestBase() {
                 .withCardOnBattlefield(1, "Mana Confluence")
                 .withCardOnBattlefield(1, "Forest")
                 .withCardOnBattlefield(1, "Temur Sabertooth")
-                .withCardOnBattlefield(1, "Llanowar Elves")
+                // This second creature is a legal Sabertooth return target, NOT a mana
+                // source for this regression. Without sickness the solver can tap it
+                // and Forest, leaving Mana Confluence unused (correctly charging 0).
+                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = true)
                 .withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
