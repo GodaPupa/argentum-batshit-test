@@ -58,7 +58,7 @@ class ManualR19MatchedSlotTest : FunSpec({
             matchedLibrary.filter { it != WAN_R19 }
     }
 
-    test("published R18 section-ordered challenger is a negative control") {
+    test("published R18 section-ordered challenger fails exact-slot alignment") {
         val control = manualR19DeckNames(CONTROL_R19)
         val published = manualR19DeckNames(PUBLISHED_WAN_R19)
         val matched = ManualR19MatchedSlotHelper.matchedChallengerNames(
@@ -66,11 +66,13 @@ class ManualR19MatchedSlotTest : FunSpec({
         )
 
         published.size shouldBe 100
-        // Same cards, but a different input ordering. This is the R18 confound.
+        // The R18 section-order list keeps the 99 shared cards' *relative* order;
+        // that is not enough. Insertion at a different index shifts five shared slots.
         published.sorted() shouldBe matched.sorted()
-        published.indexOf(WAN_R19) shouldNotBe control.indexOf(BESTIARY_R19)
-        published.filter { it != WAN_R19 } shouldNotBe
+        published.filter { it != WAN_R19 } shouldBe
             control.filter { it != BESTIARY_R19 }
+        published.indexOf(WAN_R19) shouldNotBe control.indexOf(BESTIARY_R19)
+        control.indices.filter { control[it] != published[it] }.size shouldBe 6
         published shouldNotBe matched
     }
 
