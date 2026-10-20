@@ -95,7 +95,7 @@ class ManualR17AnimarProductiveWitnessSearchTest : FunSpec({
                 if (witness != null) {
                     val seat = EntityId(witness.seat)
                     record.text("actor") shouldBe witness.seat
-                    action is CastSpell shouldBe true
+                    (action is CastSpell) shouldBe true
                     val cmd = action as CastSpell
                     state.getEntity(cmd.cardId)?.get<CardComponent>()?.name shouldBe
                         "Animar, Soul of Elements"
@@ -234,11 +234,9 @@ class ManualR17AnimarProductiveWitnessSearchTest : FunSpec({
                 val referenceEvents = expected["events"]!!.jsonArray.map {
                     it.jsonPrimitive.content
                 }
-                result@ run {
-                    val actualEvents = processed.events.map { it.toString() }
-                    check(actualEvents == referenceEvents) {
-                        "Original event replay diverged at action $index"
-                    }
+                val actualEvents = processed.events.map { it.toString() }
+                check(actualEvents == referenceEvents) {
+                    "Original event replay diverged at action $index"
                 }
                 val expectedLife = expected["life"]!!.jsonArray.map { it.jsonPrimitive.int }
                 val currentLife = state.turnOrder.map { processed.state.lifeTotal(it) }
