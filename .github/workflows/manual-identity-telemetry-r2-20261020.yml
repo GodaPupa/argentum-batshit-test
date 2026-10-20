@@ -1,0 +1,77 @@
+name: Manual identity telemetry R2 original R22 evidence (NO GAMES)
+on:
+  push:
+    branches: [research/manual-identity-telemetry-r2-20261020]
+    paths:
+      - '.github/workflows/manual-identity-telemetry-r2-20261020.yml'
+      - 'experiments/manual-transmission/identity-r2/**'
+permissions:
+  contents: read
+  actions: read
+jobs:
+  original-telemetry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+      - name: Verify single-commit isolated receiver and immutable authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = "01999fecc66ee745aaece8c30f63e894b1c1269d"
+          cat > /tmp/r2-expected.txt <<'EOF'
+          .github/workflows/manual-identity-telemetry-r2-20261020.yml
+          experiments/manual-transmission/identity-r2/PROTOCOL.md
+          experiments/manual-transmission/identity-r2/telemetry.py
+          experiments/manual-transmission/identity-r2/test_telemetry.py
+          EOF
+          git diff --name-only HEAD^ HEAD > /tmp/r2-actual.txt
+          diff -u /tmp/r2-expected.txt /tmp/r2-actual.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/identity-r1/preflight.py)" = "52868dd4ed6ff11376ad0ec84979be1ade8230af"
+      - name: Run seed-free R1 and R2 structural tests only
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest discover -v -s experiments/manual-transmission/identity-r1 -p 'test_*.py'
+          python3 -m unittest discover -v -s experiments/manual-transmission/identity-r2 -p 'test_*.py'
+          python3 experiments/manual-transmission/identity-r1/preflight.py
+      - name: Verify source and SHA-256 download original four ZIPs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39435937911 |
+            jq -e '.status == "completed" and .conclusion == "success" and .head_sha == "10675d8dc3133294c035606f656f9e4d12d50939"' > /dev/null
+          mkdir -p r2-originals identity-r2-evidence
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12271436974/zip > r2-originals/control-202610191621.zip
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12272701088/zip > r2-originals/challenger-202610191621.zip
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12271846670/zip > r2-originals/control-202610191622.zip
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12272536522/zip > r2-originals/challenger-202610191622.zip
+          cat > identity-r2-evidence/expected.sha256 <<'EOF'
+          d6a88192418856f1e5d10f6e50410dd9dafaba209c1637c4a639bbd51f7d0175  r2-originals/control-202610191621.zip
+          659afd207d381645bd1b0363b3a9c0eb7ac5e95c3e3f3e4da3d7abdd092887ce  r2-originals/challenger-202610191621.zip
+          418d9d30cef71a4d1c025d9986294f55c8be8d295555cbbaa3fc3a27c5d2ad22  r2-originals/control-202610191622.zip
+          368f5d44d15c4869278d8c370e7e3f8fc37f8f45cfd81e2420ecde4daa95aece  r2-originals/challenger-202610191622.zip
+          EOF
+          sha256sum -c identity-r2-evidence/expected.sha256
+      - name: Extract source-bound descriptive original game telemetry
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission/identity-r2/telemetry.py --originals r2-originals --output identity-r2-evidence/telemetry.json
+          git rev-parse HEAD > identity-r2-evidence/source-commit.txt
+          sha256sum identity-r2-evidence/telemetry.json > identity-r2-evidence/telemetry.sha256
+          echo 'ORIGINAL_R22; R5_ONLY; NO_NEW_GAMES; NO_PROMOTIONS' > identity-r2-evidence/scope.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-identity-r2-original-telemetry
+          retention-days: 30
+          if-no-files-found: warn
+          path: identity-r2-evidence/
