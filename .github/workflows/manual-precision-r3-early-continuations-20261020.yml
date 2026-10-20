@@ -18,7 +18,7 @@ jobs:
       GRADLE_OPTS: -Dorg.gradle.daemon=false
       MANUAL_R3_OUTPUT: ${{ github.workspace }}/r3-early-output
       MANUAL_R3_PRIMARY_ARCHIVE: ${{ github.workspace }}/r3-original
-      GH_${{ github.token }}: ${{ github.token }}
+      GH_TOKEN: ${{ github.token }}
     steps:
       - uses: actions/checkout@v4
         with: {persist-credentials: false, fetch-depth: 32}
@@ -33,7 +33,7 @@ jobs:
           git rev-parse HEAD > r3-early-output/commit.txt
           git rev-parse HEAD^{tree} > r3-early-output/tree.txt
           test "$GITHUB_REF" = "refs/heads/research/manual-precision-r3-continuations-20261020"
-          test "$(git rev-parse HEAD^)" = "298225099813b40abdcfffa0fbc3cccc4a431b68"
+          test "$(git rev-parse HEAD^)" = "4050fce73fa66185623fff5d93e93911ad1ad202"
           test "$(git diff --name-only HEAD^ HEAD)" = ".github/workflows/manual-precision-r3-early-continuations-20261020.yml"
           git merge-base --is-ancestor 836df1cd72fb64585b6d14c1a0247380763b123d HEAD
           test "$(git diff --name-only 836df1cd72fb64585b6d14c1a0247380763b123d HEAD | wc -l)" -eq 2
