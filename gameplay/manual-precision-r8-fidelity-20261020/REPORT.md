@@ -1,6 +1,6 @@
 # ARGENTUM — Animar R8 Mana Base Rules Fidelity
 
-**STATUS: BOTH R7 ENGINE DISCREPANCIES REPRODUCED, ISOLATED REPAIRS VERIFIED IN TARGETED CI. FINAL EXPLICIT-SOURCE AI SAFETY CHECK PENDING. NO GAMES, MERGE OR PROMOTION.**
+**STATUS: R8 CLOSED IN ISOLATED RESEARCH — BOTH ENGINE FIDELITY DEFECTS REPAIRED, ALL TARGETED AND R5 SAFETY GATES PASSED. ZERO GAMES, MERGE OR PROMOTION.**
 
 Research report dated 2026-10-20; updated only after source-bound original evidence. This document is experimental and does not replace accepted frozen gameplay.
 
@@ -53,7 +53,7 @@ Original GREEN source: run 39514421498, commit c3e3802185049a583e752a8aa8e068b34
 
 The same combined run 39514421498 passed 46 original AI and deck-initializer regressions, including Pact debt/survival, Ballista, Statue, Encore/combat, resolution payment and the Manual R5 composition plus CONTROL/A exact-slot initializer. Original AI regression artifact 12307007776 ZIP SHA-256 12b0277801edb8fd0fc92703601bcba4fc1d3ae0c07866721a341c6b2752322c, independently SHA-256 verified.
 
-The additional explicit-source patch postdates that combined run; a source-bound repetition of the same R5 protections has been dispatched as run 39515726136 on branch research/manual-precision-r8-explicit-safety-20261020, commit 62e17ae7f5987dca2f8a9dba9ba01056ba74237d (tree 6f8f0fbc0dcbf71521582cc1e6a858c3c9aab400). **Its outcome is pending at this report's initial publication.** No claim of passing the follow-up safety gate is made until the original workflow completes successfully.
+The additional explicit-source patch postdates that combined run; a source-bound repetition of the same R5 protections has been dispatched as run 39515726136 on branch research/manual-precision-r8-explicit-safety-20261020, commit 62e17ae7f5987dca2f8a9dba9ba01056ba74237d (tree 6f8f0fbc0dcbf71521582cc1e6a858c3c9aab400). **Run 39515726136 completed SUCCESS**, including the identical Pact/Ballista/Statue/Encore/resolution/R5 regression suite and 3/3 original CONTROL+A catalog/initializer tests. Original artifact ID **12306923894**, ZIP SHA-256 **9554700b8f348af432809937e18e3d1a4eef7fdc94195041d64215632d84f2c6**, independently downloaded and SHA-256 checked. The log records **46 passing AI/initializer tests** and zero failures; final JUnit XML contains the 3 initializer tests (the earlier Gradle cleanTest writes are preserved in the job log). This is the final exact explicit-source safety gate.
 
 ## Decision and restrictions
 
@@ -63,4 +63,6 @@ The additional explicit-source patch postdates that combined run; a source-bound
 - Remaining caution: source fidelity for fetched shocks outside MoveCollectionEffect, low-life edge cases, multiple simultaneous replacement effects, and complicated explicit mana-source restrictions require additional held-out coverage if later applicable. Neither original ten-game win-rate comparison nor paper-build inferential confidence is magically upgraded by correcting the engine.
 - Preserve 10/12 full-game budget consumed; last two remain untouched. Challenger B remains separate/blocked pending a rules-faithful Fierce Guardianship implementation; Challenger C remains separate.
 
-Next step: require a successful repeat of accepted R5 survival protections on the exact final explicit-payment source. Then publish a final R8 closure identity, and determine whether a corrected-engine deck-qualification program is warranted with a freshly authorized budget rather than interpreting the two remaining slots as sufficient for a seven-swap causal conclusion.
+**FINAL DISPOSITION: Both original issues PROVEN RULES DEFECTS, both REPAIRED AND REGRESSION-VERIFIED IN A PINNED ISOLATED EXPERIMENTAL ENGINE SOURCE.** One ancillary explicit-source payment defect was also repaired and passed a new regression. All three R8 experimental safety jobs, the five-path Mana Confluence gate, and the follow-up R5 protection gate passed. No original R1/R6 game is a validation of the repaired engine; those ten game results remain historical evidence and must not be silently recomputed. The full-game budget remains 10 used and 2 unspent.
+
+**NEXT:** Keep these fixes isolated and propose an independent source-bound rules-engine review/qualification gate before any merge. Then decide whether a corrected-engine prospective comparison needs fresh, separately authorized full-game allocation. The last two original slots alone are insufficient to infer superiority of seven substitutions; do not spend or reroll them solely to chase a winner.
