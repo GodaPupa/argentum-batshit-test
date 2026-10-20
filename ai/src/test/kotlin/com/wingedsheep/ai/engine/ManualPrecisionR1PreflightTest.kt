@@ -26,7 +26,10 @@ internal object ManualPrecisionR1Inputs {
     const val ROOT = "experiments/manual-transmission/research/precision-upgrade-20261020/"
     const val COMMANDER = "Animar, Soul of Elements"
     const val FROZEN_BLOB = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
-    const val FROZEN_SHA256 = "6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111"
+    // Historical header declaration is NOT the SHA-256 of the published bytes.
+    const val DECLARED_FROZEN_SHA256 = "6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111"
+    // Measured by original GitHub Actions run 39469732819 from pinned frozen blob.
+    const val FROZEN_SHA256 = "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1"
 
     val LAND_SWAPS = listOf(
         "Path of Ancestry" to "Mana Confluence",
