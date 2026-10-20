@@ -43,6 +43,8 @@ internal object ManualPrecisionR1Inputs {
         "Rapid Hybridization" to "Fierce Guardianship",
     )
 
+    val SUPPORTED_CORE_SWAPS = ADDITIONAL_SWAPS.take(2)
+
     fun repoRoot(): Path = Path.of(requireNotNull(System.getenv("MANUAL_R4_ROOT")) {
         "MANUAL_R4_ROOT must identify the pinned checkout"
     })
@@ -51,6 +53,7 @@ internal object ManualPrecisionR1Inputs {
             "control" -> "CONTROL.v0.7.decklist.txt"
             "a" -> "CHALLENGER-A.mana.decklist.txt"
             "b" -> "CHALLENGER-B.precision.decklist.txt"
+            "c" -> "CHALLENGER-C.supported-core.decklist.txt"
             else -> error("Unrecognized Precision Upgrade arm: " + arm)
         }
         return repoRoot().resolve(ROOT).resolve(name)
@@ -74,7 +77,8 @@ internal object ManualPrecisionR1Inputs {
         check(bytes("control").contentEquals(frozen))
         check(sha256(frozen) == FROZEN_SHA256)
         check(original.size == 100 && original.count { it == COMMANDER } == 1)
-        for ((arm, swaps) in listOf("a" to LAND_SWAPS, "b" to (LAND_SWAPS + ADDITIONAL_SWAPS))) {
+        for ((arm, swaps) in listOf("a" to LAND_SWAPS, "b" to (LAND_SWAPS + ADDITIONAL_SWAPS),
+            "c" to (LAND_SWAPS + SUPPORTED_CORE_SWAPS))) {
             val candidate = names(arm)
             check(candidate.size == 100 && candidate.count { it == COMMANDER } == 1)
             val expected = original.toMutableList()
@@ -152,7 +156,12 @@ internal object ManualPrecisionR1Inputs {
     fun verifyMatchedSlots(seed: Long, registry: CardRegistry, arm: String) {
         val original = initialize("control", seed, registry)
         val challenger = initialize(arm, seed, registry)
-        val swaps = if (arm == "a") LAND_SWAPS else LAND_SWAPS + ADDITIONAL_SWAPS
+        val swaps = when (arm) {
+            "a" -> LAND_SWAPS
+            "b" -> LAND_SWAPS + ADDITIONAL_SWAPS
+            "c" -> LAND_SWAPS + SUPPORTED_CORE_SWAPS
+            else -> error("Unrecognized Precision arm: " + arm)
+        }
         val canonicalRemoved = swaps.map { ManualMirrorInput.resolve(it.first) }.toSet()
         val canonicalAdded = swaps.map { ManualMirrorInput.resolve(it.second) }.toSet()
         check(original.turnOrder == challenger.turnOrder)
