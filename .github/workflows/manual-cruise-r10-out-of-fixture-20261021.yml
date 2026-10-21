@@ -24,6 +24,8 @@ jobs:
       MANUAL_R10_ROOT: ${{ github.workspace }}
       MANUAL_R10_ARCHIVES: ${{ github.workspace }}/cruise-r10-originals
       MANUAL_R10_OUTPUT: ${{ github.workspace }}/cruise-r10-evidence/cases
+      MANUAL_R10_OLD_SOURCE_CHECKPOINT: ${{ github.workspace }}/cruise-r10-checkpoint-internal/bridge.json
+      MANUAL_R10_OLD_SOURCE_PROVENANCE: ${{ github.workspace }}/cruise-r10-checkpoint-internal/provenance.json
     steps:
       - uses: actions/checkout@v4
         with: {persist-credentials: false, fetch-depth: 60}
@@ -98,6 +100,45 @@ jobs:
           # counterpart. This is a prior-game artifact, not an added game.
           gh api '/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12298777958/zip' > cruise-r10-originals/R6-control-202610202141-original.zip
           printf '%s  %s\n' '031011134d10e3ae002ad7dc304ff7dafcc5e14f9a117c436e510dfb984349cb' cruise-r10-originals/R6-control-202610202141-original.zip | sha256sum -c -
+
+      - name: Independently source-bridge the sixth case from exact original R6 rules, not false R9 events
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-r10-checkpoint-internal
+          gh api '/repos/GodaPupa/argentum-batshit-test/actions/runs/39661843302' > cruise-r10-evidence/historic-source-run.json
+          jq -e '.id == 39661843302 and .status == "completed" and .conclusion == "success" and .head_sha == "7f7b7d3dc2eb300a8ae9d538e3ff9f8b3caf48c1"' cruise-r10-evidence/historic-source-run.json >/dev/null
+          gh api '/repos/GodaPupa/argentum-batshit-test/actions/runs/39661843302/artifacts' > cruise-r10-evidence/historic-source-artifacts.json
+          count=$(jq '[.artifacts[] | select(.name == "manual-cruise-r10-original-r6-checkpoint-39661843302" and .expired == false)] | length' cruise-r10-evidence/historic-source-artifacts.json)
+          test "$count" = "1"
+          artifact=$(jq -r '.artifacts[] | select(.name == "manual-cruise-r10-original-r6-checkpoint-39661843302") | .id' cruise-r10-evidence/historic-source-artifacts.json)
+          expected=$(jq -r '.artifacts[] | select(.name == "manual-cruise-r10-original-r6-checkpoint-39661843302") | .digest' cruise-r10-evidence/historic-source-artifacts.json)
+          test "${expected#sha256:}" != "$expected"
+          gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/$artifact/zip" > cruise-r10-checkpoint-internal/historic-artifact.zip
+          printf '%s  %s\n' "${expected#sha256:}" cruise-r10-checkpoint-internal/historic-artifact.zip | sha256sum -c -
+          unzip -q cruise-r10-checkpoint-internal/historic-artifact.zip -d cruise-r10-checkpoint-internal/extracted
+          checkpoint=$(find cruise-r10-checkpoint-internal/extracted -type f -name 'r10-original-r6-a-2143-before-3017.json')
+          provenance=$(find cruise-r10-checkpoint-internal/extracted -type f -name 'r10-original-r6-a-2143-provenance.json')
+          test "$(printf '%s\n' "$checkpoint" | wc -l)" -eq 1
+          test "$(printf '%s\n' "$provenance" | wc -l)" -eq 1
+          cp "$checkpoint" "$MANUAL_R10_OLD_SOURCE_CHECKPOINT"
+          cp "$provenance" "$MANUAL_R10_OLD_SOURCE_PROVENANCE"
+          python3 - <<'PY'
+          import hashlib,json,os
+          from pathlib import Path
+          p=json.loads(Path(os.environ['MANUAL_R10_OLD_SOURCE_PROVENANCE']).read_text())
+          contents=Path(os.environ['MANUAL_R10_OLD_SOURCE_CHECKPOINT']).read_bytes()
+          assert p['schema']=='ARGENTUM_R10_ORIGINAL_R6_SOURCE_PROVEN_CHECKPOINT_V1'
+          assert p['originalR6CommitSha']=='53a5162eb3659310b1878894a90ae58c244a6745'
+          assert p['exactOriginalAcceptedActionsReplayed']==3016
+          assert p['originalActionBefore']==3017
+          assert p['newFullGames']==0
+          assert hashlib.sha256(contents).hexdigest()==p['snapshotSha256']
+          print('CRUISE_R10_EXACT_SOURCE_BRIDGE_PASS originalR6=3016 newerR9EventTrace716=NONCOMPARABLE games=0')
+          PY
+          printf 'original_export_run=%s\noriginal_artifact_id=%s\noriginal_artifact_sha256=%s\n' '39661843302' "$artifact" "${expected#sha256:}" > cruise-r10-evidence/old-source-checkpoint-receipt.txt
 
       - name: Read-only replay of six previously unused R9 decisions plus timing and opponent counter window
         shell: bash
