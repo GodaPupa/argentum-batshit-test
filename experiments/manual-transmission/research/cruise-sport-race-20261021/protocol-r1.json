@@ -1,0 +1,107 @@
+{
+  "schema": "ARGENTUM_MANUAL_DECISION_PREP_R1",
+  "status": "SOURCE_PREPARATION_ONLY_NO_POLICY_NO_GAMES",
+  "dated": "2026-10-21",
+  "branch": "research/manual-cruise-sport-race-preflight-20261021",
+  "source_green_sha": "3ea58cae2cb087379a64608f0eb7373793aff2ed",
+  "source_green_tree": "ee5659722767283ee94eda24a9a736e1882af396",
+  "solver_blob": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93",
+  "source_ci_green": {
+    "run_id": 39622338973,
+    "artifact_id": 12356303078,
+    "archive_sha256": "009507befd259f6ea09ec1545e45e6355495932d86ba80c439d4ff3a1f3fe321",
+    "cases_total": 92,
+    "cases_failed": 0,
+    "cases_errored": 0,
+    "cases_skipped": 0,
+    "independent_suites": 23,
+    "scope": "eight multi-pip, 38 R9, 43 R5, three CONTROL-A preflight"
+  },
+  "adjacent_corroboration": {
+    "run_id": 39625031640,
+    "source_semantics": "same unchanged ManaSolver blob",
+    "status_at_publication": "launched; not counted as passed"
+  },
+  "protected": {
+    "main_sha": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "v07_decklist_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "challenger_a_blob": "7984a2e87d8ddbe023d45620414d25a61691a040",
+    "ai_profile_current_blob": "180918b2d7a59309e7b0617f2579fb2a6d06b7d5",
+    "r5_candidate_blob": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "accepted_r5_behavior": "unchanged",
+    "opponent_matrix": "separate accepted historical control, not edited"
+  },
+  "budget": {
+    "full_games_cap": 12,
+    "previous_r1_games": 4,
+    "previous_r6_games": 6,
+    "consumed_total": 10,
+    "reserved_remaining": 2,
+    "new_games_allowed": 0,
+    "initializers_and_source_replays_only": true
+  },
+  "lanes": [
+    {
+      "id": "CRUISE",
+      "independent": true,
+      "comparator": "R5",
+      "focus": "opening hands, color-realistic early Animar, creature follow-up",
+      "dispatch": "EngineAiPlayerController.decideMulligan and chooseBottomCards; confirm harness path before any opt-in implementation",
+      "controls": [
+        "EngineAiMomirMulliganTest",
+        "PestControlMonoRedMadnessMulliganPolicyTest",
+        "ManualAnimarDevelopmentPolicyTest",
+        "ManualR17AnimarProductiveWitnessSearchTest"
+      ],
+      "witnesses": [
+        "R17 archived action 930 Eternal Witness",
+        "R17 archived action 1613 Imperial Recruiter",
+        "R16 archived no-hand controls 1336/1497/1998"
+      ],
+      "status": "inventory_only_no_cases_executed"
+    },
+    {
+      "id": "SPORT",
+      "independent": true,
+      "comparator": "R5",
+      "focus": "Pact-debt legality, threat-aware interaction, protection/tempo",
+      "controls": [
+        "ManualPactDebtArchiveRegressionTest",
+        "ManualPactDebtRegressionTest",
+        "ManualPactDebtProtectionRegressionTest"
+      ],
+      "status": "inventory_only_no_cases_executed"
+    },
+    {
+      "id": "RACE",
+      "independent": true,
+      "comparator": "R5",
+      "focus": "real payoff recognition, Ballista/Statue, finite loop exits",
+      "controls": [
+        "ManualBallistaDelegationRegressionTest",
+        "ManualBallistaWitnessGuardTest",
+        "ManualStatueContinuationRegressionTest",
+        "ManualStatuePayoffRegressionTest"
+      ],
+      "status": "inventory_only_no_cases_executed"
+    }
+  ],
+  "hard_gates": [
+    "source-id and archive-hash preflight",
+    "real matched-harness dispatch proof",
+    "predeclared positives and negatives before candidate scoring",
+    "R5 regression and payment validity",
+    "no hidden-card assumptions / opponent-scripted passes",
+    "separate pilot attribution",
+    "no full-game execution without separate permission"
+  ],
+  "authorizations": {
+    "source_inventory": true,
+    "zero_game_preflight": true,
+    "profile_promotions": false,
+    "deck_promotions": false,
+    "merges": false,
+    "full_games": false
+  },
+  "conclusion": "PREPARATION_PUBLISHED_NOT_QUALIFIED"
+}
