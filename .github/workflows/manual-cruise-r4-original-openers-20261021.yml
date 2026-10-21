@@ -1,0 +1,169 @@
+name: Manual CRUISE R4 all 40 original opening hands (NO GAMES)
+on:
+  push:
+    branches: [research/manual-cruise-r4-original-openers-20261021]
+    paths:
+      - '.github/workflows/manual-cruise-r4-original-openers-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R4_OPENERS_MANIFEST.json'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR4OriginalOpeningHandTest.kt'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-cruise-r4-frozen-opening-universe
+  cancel-in-progress: false
+
+jobs:
+  all-ten-matched-archives:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_R4_OPENERS_ROOT: ${{ github.workspace }}
+      MANUAL_R4_OPENERS_ARCHIVES: ${{ github.workspace }}/cruise-r4-originals
+      MANUAL_R4_OPENERS_OUTPUT: ${{ github.workspace }}/cruise-r4-evidence/opening-decisions
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 45}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Freeze original research identity and bounded read-only experiment
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-r4-originals cruise-r4-evidence/opening-decisions
+          test "$GITHUB_REF" = 'refs/heads/research/manual-cruise-r4-original-openers-20261021'
+          git merge-base --is-ancestor c0a68c229d76baa16d4aaddc5133c2282ffbb708 HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt)" = 8a3c94041ca6cf781d5efe35d7a513b522b3856b
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          git diff --name-only c0a68c229d76baa16d4aaddc5133c2282ffbb708 HEAD > cruise-r4-evidence/changed-paths.txt
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/manual-cruise-r4-original-openers-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R4_OPENERS_MANIFEST.json|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR4OriginalOpeningHandTest.kt) ;;
+              *) echo "UNAUTHORIZED_DELTA:$path"; exit 1 ;;
+            esac
+          done < cruise-r4-evidence/changed-paths.txt
+          git rev-parse HEAD > cruise-r4-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > cruise-r4-evidence/tree-sha.txt
+          echo 'READ_ONLY_40_OPENING_HANDS_NO_REDRAW_NO_FULL_GAMES_TWO_RESERVED' > cruise-r4-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Read all original ten full-game initial states from pinned ZIPs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          base=Path('experiments/manual-transmission/research/cruise-sport-race-20261021')
+          original=json.loads((base/'CRUISE_R2_ZONE_MANIFEST.json').read_text())
+          r4=json.loads((base/'CRUISE_R4_OPENERS_MANIFEST.json').read_text())
+          assert r4['declared_before_controller_observations']
+          assert r4['opening_hand_count']==40
+          assert r4['precision_budget']=={'used':10,'cap':12,'reserved':2,'additional':0}
+          assert len(original['archives'])==10
+          with open('cruise-r4-evidence/original-archives.tsv','w') as f:
+              for x in original['archives']:
+                  f.write('\t'.join([x['cohort'],x['seed'],x['arm'],str(x['id']),x['sha256']])+'\n')
+          PY
+          while IFS=$'\t' read -r cohort seed arm artifact sha; do
+            file="cruise-r4-originals/$cohort-$arm-$seed-original.zip"
+            gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/$artifact/zip" > "$file"
+            printf '%s  %s\n' "$sha" "$file" | sha256sum -c -
+          done < cruise-r4-evidence/original-archives.tsv
+
+      - name: Actual bot mulligan decisions for all original opening hands (NO NEW GAME)
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualCruiseR4OriginalOpeningHandTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r4-evidence/controller-original-hands.log
+
+      - name: Preserve controller JUnit separately
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p cruise-r4-evidence/r4-junit
+          cp -a ai/build/test-results/test/. cruise-r4-evidence/r4-junit/ || true
+
+      - name: Summarize exactly forty real hands versus hypothetical controller choices
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, collections
+          root=Path('cruise-r4-evidence/opening-decisions')
+          files=sorted(root.glob('r4-*.json'))
+          assert len(files)==10, ('Expected exactly 10 original hand files',len(files))
+          rows=[row for p in files for row in json.loads(p.read_text())]
+          assert len(rows)==40 and len({(x['seed'],x['arm'],x['seat']) for x in rows})==40
+          assert all(x['originalHistoricalKept'] is True and
+                     x['originalHistoricalControllerInvoked'] is False and
+                     x['anyReplacementHandDrawn'] is False and
+                     x['simulatedFullGame'] is False for x in rows)
+          per_arm={a:{
+              'hands':sum(x['arm']==a for x in rows),
+              'hypotheticalKeep':sum(x['arm']==a and x['realBotWouldKeepHypothetical'] for x in rows),
+              'hypotheticalMulligan':sum(x['arm']==a and x['realBotWouldMulliganHypothetical'] for x in rows),
+          } for a in ('control','a')}
+          counts=collections.Counter(x['printedLandCount'] for x in rows)
+          payload={
+              'schema':'MANUAL_CRUISE_R4_ORIGINAL_HAND_CONTROLLER_DIAGNOSTIC_V1',
+              'provenance':'Retrospective 10 original finished games; no original mulligan observed',
+              'scope':'Real EngineAiPlayerController hypothetical keep/mulligan at m=0 for all 40 historical kept sevens',
+              'sample_size':len(rows),'by_arm':per_arm,
+              'printed_land_count_distribution':dict(sorted(counts.items())),
+              'one_printed_land_hands':counts[1],
+              'paired_seed_seat_observations_are_dependent':True,
+              'new_full_games':0,'remaining_reserved':2,
+              'causal_or_winrate_verdict':'INCONCLUSIVE',
+              'observations':rows
+          }
+          (root/'R4_OBSERVATIONS.json').write_text(json.dumps(payload,indent=2)+'\n')
+          (root/'REPORT.md').write_text(
+              '# Manual CRUISE R4 original kept-seven hand diagnostic\n\n'+
+              'This is a separate **real bot controller decision**, not an action taken in the original matched R5 games.\n\n'+
+              f"Original hands: **40**; physical one-land observations: **{counts[1]}**.\n\n"+
+              f"CONTROL: **{per_arm['control']['hypotheticalKeep']}** hypothetical keeps, **{per_arm['control']['hypotheticalMulligan']}** mulligans.\n\n"+
+              f"Challenger A: **{per_arm['a']['hypotheticalKeep']}** hypothetical keeps, **{per_arm['a']['hypotheticalMulligan']}** mulligans.\n\n"+
+              'No replacement hands drawn, no games played, no deck or policy promotion. Do not interpret this as actual alternate outcomes.\n')
+          print('CRUISE_R4_HANDS_COMPLETE count=40 oneLand='+str(counts[1])+
+                ' hypotheticalKeeps='+str(sum(x['realBotWouldKeepHypothetical'] for x in rows))+
+                ' NO_NEW_GAMES')
+          PY
+
+      - name: Protected original controller, Animar and R5 anti-regressions
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*EngineAiMomirMulliganTest' \
+            --tests '*PestControlMonoRedMadnessMulliganPolicyTest' \
+            --tests '*ManualAnimarDevelopmentPolicyTest' \
+            --tests '*ManualR5CandidateCompositionTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r4-evidence/protected-regressions.log
+
+      - name: Retain identity, original controller decisions and JUnit on GREEN or RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-cruise-r4-original-hands-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            cruise-r4-evidence/
+            ai/build/test-results/test/
