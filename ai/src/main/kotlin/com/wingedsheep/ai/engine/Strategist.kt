@@ -1061,7 +1061,7 @@ class Strategist(
                 passScore = passScore,
                 defaultScore = leafScore,
                 simulator = simulator,
-            ))
+            )) ?: advisor.evaluateCast(context)
         } else {
             advisor.evaluateCast(context)
         }
