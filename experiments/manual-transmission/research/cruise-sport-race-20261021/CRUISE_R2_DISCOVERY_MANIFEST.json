@@ -1,0 +1,84 @@
+{
+  "schema": "ARGENTUM_CRUISE_R2_NO_GAMES_DISCOVERY_V1",
+  "disposition": "PREDECLARED_BEFORE_NEW_R5_SCORE_OBSERVATION",
+  "research_branch": "research/manual-cruise-r5-decline-discovery-20261021",
+  "base_sha": "9b6e111edf7d9e6db94878061e21740826fb5333",
+  "comparator": "ManualTransmissionR5Candidate.profile",
+  "discovery_only": true,
+  "objective": "Is an actual affordable Llanowar Elves cast passed over in the synthetic early-Animar R5 decision path? Measure real R5 insight scores before designing any policy intervention.",
+  "fixtures": [
+    {
+      "id": "CR-DISC-01",
+      "original": "CR-ACT-02",
+      "battlefield_lands": [
+        "Forest",
+        "Forest",
+        "Island"
+      ],
+      "hand": [
+        "Llanowar Elves"
+      ],
+      "commander_tax_casts": 0,
+      "expected_commander_affordability": false,
+      "diagnostic": "legal affordable elf vs R5 pass or cast",
+      "no_opponent_response_simulation": true
+    },
+    {
+      "id": "CR-DISC-02",
+      "original": "CR-ACT-03",
+      "battlefield_lands": [
+        "Forest",
+        "Forest",
+        "Island",
+        "Mountain"
+      ],
+      "hand": [
+        "Llanowar Elves"
+      ],
+      "commander_tax_casts": 1,
+      "expected_commander_affordability": false,
+      "diagnostic": "commander tax blocks Animar; compare legal elf and R5 actual priority choice",
+      "no_opponent_response_simulation": true
+    },
+    {
+      "id": "CR-DISC-03",
+      "original": "CR-ACT-01",
+      "battlefield_lands": [
+        "Forest",
+        "Forest",
+        "Island",
+        "Mountain"
+      ],
+      "hand": [
+        "Llanowar Elves"
+      ],
+      "commander_tax_casts": 0,
+      "expected_commander_affordability": true,
+      "diagnostic": "positive control: affordable Animar competes with legal elf and pass",
+      "no_opponent_response_simulation": true
+    }
+  ],
+  "constraints": {
+    "independent_frozen_fixtures": true,
+    "original_r1_eight_cases_untouched": true,
+    "exact_R5_profile": true,
+    "zero_new_full_games": true,
+    "no_policy_code_edits": true,
+    "no_current_edits": true,
+    "no_solver_edits": true,
+    "no_deck_edits": true,
+    "no_merge": true,
+    "no_official_promotion": true,
+    "archive_original_decision_insight": true,
+    "check_actual_legal_actions": true,
+    "check_bounded_ActionProcessor_for_elf": true,
+    "no_assumption_that_pass_is_mistake_without_future_value_witness": true
+  },
+  "budget": {
+    "games_used": 10,
+    "total_cap": 12,
+    "reserved": 2,
+    "new": 0
+  },
+  "interpretation": "A voluntary pass with a legal Llanowar is a candidate research opportunity, not a demonstrated strategic defect. Any claimed improvement must be proven later against fixed real-state counterfactuals and R5 protections."
+}
