@@ -114,8 +114,13 @@ object ManualCruiseR9ExecutableFetchAdvisor : CardAdvisor {
         }
 
         val search = fork.pendingDecision as? SelectCardsDecision ?: return null
-        if (search.playerId != player || search.minSelections != 1 ||
-            search.maxSelections != 1) return null
+        // Hidden-library searches legitimately allow the player to fail to
+        // find a card (0..1). R7's original engine transcript proves this is
+        // minSelections=0, maxSelections=1. Require the real authorized search
+        // and still select/execute a concrete matching Forest below.
+        if (search.playerId != player || search.minSelections !in 0..1 ||
+            search.maxSelections != 1 || search.authorizedLibrarySearch == null
+        ) return null
         // Basic Forest avoids unresolved optional shockland entry decisions.
         // Entity IDs (not positions in a library) only disambiguate same-name
         // legal search targets; no peek at cards on top or future draws.
