@@ -788,7 +788,15 @@ class ManaSolver(
                 val payableModes = remainingSources.flatMap { src ->
                     src.availableColorsFor(spellContext)
                         .filter { color ->
-                            color in xManaRestriction
+                            if (color !in xManaRestriction) return@filter false
+                            val chosen = src.manaAbilityByColor[color]
+                            val additional = chosen?.let { activationManaCost(it.cost) }
+                                ?: (src.colorActivationManaCost[color] ?: 0)
+                            // This pass funds only GENERIC activation costs. Refuse
+                            // coloured/strict activation pips rather than treating
+                            // their mana value as generic external funding.
+                            additional == 0 ||
+                                (chosen != null && hasOnlyGenericActivationCost(chosen.cost))
                         }
                         .map { color -> src to color }
                 }
@@ -965,7 +973,10 @@ class ManaSolver(
                 if (cheapestColor == null && !freeColorless) {
                     // No free mode; only consider a paid mode if an external free funder exists.
                     val paidColor = source.availableColorsFor(spellContext).firstOrNull { c ->
-                        (source.colorActivationManaCost[c] ?: 0) > 0
+                        val selected = source.manaAbilityByColor[c]
+                        selected != null &&
+                            activationManaCost(selected.cost) > 0 &&
+                            hasOnlyGenericActivationCost(selected.cost)
                     }
                     if (paidColor == null) null else {
                         val hasExternalFunder = remainingSources.any { src ->
@@ -1007,6 +1018,11 @@ class ManaSolver(
             val (source, colorToUse) = chosenMode
             val actCost = if (colorToUse != null) (source.colorActivationManaCost[colorToUse] ?: 0) else source.colorlessActivationManaCost
             if (actCost > 0) {
+                val printedMode = if (colorToUse != null) source.manaAbilityByColor[colorToUse]
+                    else source.colorlessManaAbility
+                // Defense in depth for paid modes selected by generic fallback:
+                // the non-recursive funder loop cannot pay {U}{U} with Forests.
+                if (printedMode == null || !hasOnlyGenericActivationCost(printedMode.cost)) return null
                 var need = actCost
                 while (need > 0) {
                     val funder = remainingSources
