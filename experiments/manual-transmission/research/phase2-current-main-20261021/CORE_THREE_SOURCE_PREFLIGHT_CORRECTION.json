@@ -1,0 +1,29 @@
+{
+  "schema": "ARGENTUM_MANUAL_CORE_THREE_SOURCE_PREFLIGHT_CORRECTION_20261021",
+  "status": "CORRECTION_PUBLISHED_AFTER_RED_BEFORE_ANY_BEHAVIORAL_TEST_EXECUTION",
+  "prior_failed_run": 39687341321,
+  "prior_run_source": "9d2a6fc32925fccec3df8bed77432c4aab951bce",
+  "prior_failure_scope": "source guard stopped; no Animar/Statue/Ballista tests executed, no behavioral evidence",
+  "preserve_first_protocol": "experiments/manual-transmission/research/phase2-current-main-20261021/CORE_THREE_RECEIVING_PROTOCOL.json",
+  "why": "First protocol copied AI/R5/ManaSolver blob expectations from an October R5 research branch, but compatibility candidate is deliberately based on canonical main 37a603. Require actual main blobs and explicit R5 absence instead of claiming main contains opt-in code.",
+  "canonical_main_parent": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "actual_main_ai_profile_blob": "43bbad79273806f56703fad420e9f6a495d05309",
+  "actual_main_mana_solver_blob": "c9083468bc8576136eedbc504731a1de38e57ecd",
+  "actual_main_r5_opt_in": "ABSENT",
+  "unchanged_original_donor_production_blobs": {
+    "animar": "26224fac894610c71c4e88ca57fcb7e99e00a822",
+    "statue": "0de7fdaee39bc67a9b5d02dd039ab980a8e37941",
+    "ballista": "8e8e8c9cf75f76b54252765c3f3b72bcf2d0d162"
+  },
+  "unchanged_original_donor_test_blobs": {
+    "animar": "3064718b0ae6b0c516d18529c37df2e46b9a9543",
+    "statue": "a528b83b68b47e8d755e0e9a41727fef65697ed9",
+    "ballista": "585d5fb0efecdce33238185f22395cee20f48d37"
+  },
+  "new_behavioral_cases_allowed": "EXACT_EXISTING_10_ON_SOURCE_CORRECTED_FIRST_RUN",
+  "main_merge_allowed": false,
+  "deck_change_allowed": false,
+  "new_game_allowed": false,
+  "new_seed_allowed": false,
+  "precision_remaining_reserved": 2
+}
