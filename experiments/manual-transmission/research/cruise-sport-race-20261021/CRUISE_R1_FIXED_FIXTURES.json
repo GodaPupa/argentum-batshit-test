@@ -1,0 +1,184 @@
+{
+  "schema": "ARGENTUM_MANUAL_CRUISE_R1_PREDECLARED_FIXTURES",
+  "date": "2026-10-21",
+  "status": "FIXTURES_PREDECLARED_BEFORE_CANDIDATE_SCORING",
+  "repo": "GodaPupa/argentum-batshit-test",
+  "branch": "research/manual-cruise-r5-decision-preflight-20261021",
+  "base_sha": "c4c16ead2da3bdfe6ba7ed36bca297a7ff7607d4",
+  "r9_qualified_source": "3ea58cae2cb087379a64608f0eb7373793aff2ed",
+  "profile_comparator": "manual-transmission-r5-survival-opt-in",
+  "seams": {
+    "matched_gameplay": "ManualPrecisionR1GameplayHarnessTest.kt uses skipMulligans=true, AIPlayer.create with R5. NO mulligan controller is invoked in matched Precision games.",
+    "separate_real_bot_mulligan": "EngineAiPlayerController.decideMulligan / chooseBottomCards; instantiated with PRODUCTION_CANDIDATE_EXPIRING for action policy, NOT the historical matched R5 source.",
+    "animar": "AIPlayer.create(R5) with ManualAnimarDevelopmentAdvisor / Ballista / Pact, through real legal actions and quiet-state simulation."
+  },
+  "zero_game_fixtures": [
+    {
+      "id": "CR-OPEN-01",
+      "type": "controller_mulligan",
+      "hand": [
+        "Forest",
+        "Island",
+        "Mountain",
+        "Llanowar Elves",
+        "Ancestral Statue",
+        "Eternal Witness",
+        "Imperial Recruiter"
+      ],
+      "mulligans": 0,
+      "hypothesis": "functional Temur opening with a payable early creature action; log actual keep/mulligan"
+    },
+    {
+      "id": "CR-OPEN-02",
+      "type": "controller_mulligan",
+      "hand": [
+        "Forest",
+        "Forest",
+        "Forest",
+        "Mountain",
+        "Ancestral Statue",
+        "Imperial Recruiter",
+        "Eternal Witness"
+      ],
+      "mulligans": 0,
+      "hypothesis": "no early blue source; observe actual early resource assessment without treating unseen draws as playable"
+    },
+    {
+      "id": "CR-OPEN-03",
+      "type": "controller_mulligan",
+      "hand": [
+        "Forest",
+        "Island",
+        "Mountain",
+        "Llanowar Elves",
+        "Ancestral Statue",
+        "Eternal Witness",
+        "Imperial Recruiter"
+      ],
+      "mulligans": 1,
+      "hypothesis": "fixed London mulligan decision after one redraw; do not infer a previous actual redraw occurred"
+    },
+    {
+      "id": "CR-ACT-01",
+      "type": "R5_AI_decision",
+      "board": [
+        "Forest",
+        "Forest",
+        "Island",
+        "Mountain"
+      ],
+      "command": "Animar, Soul of Elements",
+      "hand": [
+        "Llanowar Elves"
+      ],
+      "hypothesis": "affordable commander candidate and real creature followup; measure R5 chosen action and potential developmental gain"
+    },
+    {
+      "id": "CR-ACT-02",
+      "type": "R5_AI_decision",
+      "board": [
+        "Forest",
+        "Forest",
+        "Island"
+      ],
+      "command": "Animar, Soul of Elements",
+      "hand": [
+        "Llanowar Elves"
+      ],
+      "hypothesis": "missing red makes Animar unaffordable: no fictional commander spell"
+    },
+    {
+      "id": "CR-ACT-03",
+      "type": "R5_AI_decision",
+      "board": [
+        "Forest",
+        "Forest",
+        "Island",
+        "Mountain"
+      ],
+      "command": "Animar, Soul of Elements",
+      "commander_tax_casts": 1,
+      "hand": [
+        "Llanowar Elves"
+      ],
+      "hypothesis": "commander tax prevents payment even with four lands; no commander cast"
+    },
+    {
+      "id": "CR-ACT-04",
+      "type": "R5_AI_decision",
+      "board": [
+        "Forest",
+        "Forest",
+        "Island",
+        "Mountain"
+      ],
+      "command": "Animar, Soul of Elements",
+      "hand": [],
+      "hypothesis": "without hand-creature continuation, do not invent productive Animar followup"
+    },
+    {
+      "id": "CR-ACT-05",
+      "type": "R5_AI_decision",
+      "board": [
+        "Forest",
+        "Forest",
+        "Island",
+        "Mountain",
+        "Mountain"
+      ],
+      "command": "Animar, Soul of Elements",
+      "hand": [
+        "Llanowar Elves",
+        "Lightning Bolt"
+      ],
+      "opponent_life": 3,
+      "hypothesis": "immediate real lethal competes with commander development; preserve lethal"
+    }
+  ],
+  "archived_witnesses_deferred": [
+    {
+      "source": "ManualR17AnimarProductiveWitnessSearchTest.kt",
+      "action_index": 930,
+      "followup": "Eternal Witness",
+      "archive_verification_required": true
+    },
+    {
+      "source": "ManualR17AnimarProductiveWitnessSearchTest.kt",
+      "action_index": 1613,
+      "followup": "Imperial Recruiter",
+      "archive_verification_required": true
+    },
+    {
+      "source": "ManualR16AnimarValuationTest.kt",
+      "action_indices": [
+        1336,
+        1497,
+        1998
+      ],
+      "archive_verification_required": true
+    }
+  ],
+  "case_scope": "All CR-OPEN hand choices are source-bound synthetic controller decisions, not historic matched-game observations. All CR-ACT positions are synthetic ScenarioTestBase states with real card definitions/AI; not games. Test implementation may log decisions but must not precommit a winning candidate or select fixtures after scores.",
+  "acceptance": {
+    "sources_unchanged": [
+      "main",
+      "v0.7",
+      "Challenger A",
+      "AiProfile.CURRENT",
+      "R5",
+      "ManaSolver"
+    ],
+    "original_r5_protections": true,
+    "red_before_edit": true,
+    "independent_opt_in_lane": true,
+    "full_games_allowed": 0,
+    "competitve_win_rate_claims": false,
+    "changing_real_production_controller": false,
+    "changing_default_profile": false
+  },
+  "game_budget": {
+    "preexisting_consumed": 10,
+    "preexisting_cap": 12,
+    "reserved": 2
+  }
+}
