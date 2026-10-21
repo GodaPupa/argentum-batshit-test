@@ -1,0 +1,95 @@
+name: Manual RACE R2 three original Statue chains (57 CASTS, NO GAMES)
+on:
+  push:
+    branches: [research/manual-race-r2-statue-chain-value-20261021]
+    paths:
+      - '.github/workflows/manual-race-r2-statue-chains-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/RACE_R2_STATUE_ORIGINAL_VALUE_PROTOCOL.json'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/audit_race_r2_statue_value.py'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-race-r2-original-57-cast-intervals
+  cancel-in-progress: false
+
+jobs:
+  two-original-archives-three-chains:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      MANUAL_S3_INPUT: ${{ github.workspace }}/race-r2-originals
+      RACE_R2_OUTPUT: ${{ github.workspace }}/race-r2-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 30}
+
+      - name: Protect RACE R1 source, S2 engine, original R5/R9, decks and game budget
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p race-r2-evidence race-r2-originals
+          test "$GITHUB_REF" = 'refs/heads/research/manual-race-r2-statue-chain-value-20261021'
+          git merge-base --is-ancestor 806d4ec3384c260981c216c5b2c923715e63ecf3 HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseR9ExecutableFetchAdvisorModule.kt)" = afb19c325bf38f3d82bd0fefba64e1f4057db858
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt)" = c95f059d375e3df107284e1081d00c449ca3f28d
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          git diff --name-only 806d4ec3384c260981c216c5b2c923715e63ecf3 HEAD > race-r2-evidence/changed-paths.txt
+          test "$(wc -l < race-r2-evidence/changed-paths.txt)" -eq 3
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/manual-race-r2-statue-chains-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/RACE_R2_STATUE_ORIGINAL_VALUE_PROTOCOL.json|experiments/manual-transmission/research/cruise-sport-race-20261021/audit_race_r2_statue_value.py) ;;
+              *) echo "UNAUTHORIZED_SOURCE_DELTA:$path"; exit 1 ;;
+            esac
+          done < race-r2-evidence/changed-paths.txt
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("experiments/manual-transmission/research/cruise-sport-race-20261021")
+          p=json.loads((root/"RACE_R2_STATUE_ORIGINAL_VALUE_PROTOCOL.json").read_text())
+          m=json.loads((root/"CRUISE_R2_ZONE_MANIFEST.json").read_text())
+          assert p["status"]=="PREDECLARED_BEFORE_R2_CI_EVENT_AGGREGATION"
+          assert p["source_parent"]=="806d4ec3384c260981c216c5b2c923715e63ecf3"
+          assert [x["original_casts"] for x in p["three_fixed_chains"]]==[19,17,21]
+          assert p["safety"]["zero_new_game"] and p["safety"]["original_games_reserved"]==2
+          assert m["original_game_count"]==10 and m["original_accepted_actions"]==33440
+          assert p["safety"]["mana_solver_blob"]=="d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+          print("RACE_R2_FROZEN_ALL_THREE_CHAINS_NO_GAME_PREDECLARATION_PASS")
+          PY
+          git rev-parse HEAD > race-r2-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > race-r2-evidence/tree-sha.txt
+          echo 'NO NEW GAMES. EXACT ORIGINAL R1 STREAMS ONLY. PRECISION 10/12, RESERVED 2' > race-r2-evidence/budget.txt
+
+      - name: Retrieve exact two original R1 game ZIPs without running gameplay
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api '/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12291060323/zip' > race-r2-originals/R1-control-202610202112-original.zip
+          gh api '/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12290286293/zip' > race-r2-originals/R1-a-202610202112-original.zip
+          printf '%s  %s\n' 3379a5376d961d54b8c5883207c8499dac66d373765f8c3ff8a7d032cb62c853 race-r2-originals/R1-control-202610202112-original.zip | sha256sum -c -
+          printf '%s  %s\n' a614eb9998b25dd34803434bb9ca80cf113b545483a185eac49cfcd419c7fd09 race-r2-originals/R1-a-202610202112-original.zip | sha256sum -c -
+          echo 'RACE_R2_TWO_IMMUTABLE_R1_ARCHIVES_SHA256_VERIFIED' > race-r2-evidence/original-archive-proof.txt
+
+      - name: Attribute every one of the 57 original accepted Statue casts to exact event intervals
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission/research/cruise-sport-race-20261021/audit_race_r2_statue_value.py \
+            2>&1 | tee race-r2-evidence/race-r2-source-audit.log
+          cat race-r2-evidence/REPORT.md
+
+      - name: Preserve 57-case bounded source observations, never original hidden-state ZIPs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-race-r2-original-statue-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            race-r2-evidence/
