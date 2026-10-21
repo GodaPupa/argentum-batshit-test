@@ -2,6 +2,7 @@ package com.wingedsheep.ai.engine
 
 import com.wingedsheep.ai.engine.advisor.CardAdvisorRegistry
 import com.wingedsheep.ai.engine.advisor.CastContext
+import com.wingedsheep.ai.engine.advisor.LandPlayContext
 import com.wingedsheep.ai.engine.budget.BudgetPolicy
 import com.wingedsheep.ai.engine.budget.DecisionBudget
 import com.wingedsheep.ai.engine.budget.LegacyBudgetPolicy
@@ -1049,7 +1050,21 @@ class Strategist(
             evaluator = evaluator,
             simulator = simulator
         )
-        val override = advisor.evaluateCast(context)
+        // A registered opt-in land advisor can price a *real land action*. No
+        // existing advisor overrides this inert seam, so R5/CURRENT remain
+        // bit-for-bit equivalent in their decision path.
+        val override = if (action.action is PlayLand) {
+            advisor.evaluateLandPlay(LandPlayContext(
+                state = state,
+                playerId = playerId,
+                action = action,
+                passScore = passScore,
+                defaultScore = leafScore,
+                simulator = simulator,
+            ))
+        } else {
+            advisor.evaluateCast(context)
+        }
         val advisorNote = override?.let { "${advisor::class.simpleName} replaced the board score" }
         return adjusted(
             (override ?: leafScore) + timingDelta + sacrificeWindowDelta + sequencing,
