@@ -1,0 +1,37 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_PACT_CARD_MAIN_RECEIVING_R1",
+  "date": "2026-10-21",
+  "status": "DECLARED_BEFORE_PACT_SOURCE_COPY_AND_TEST",
+  "source_parent": "53b506850b1a949664bd3ff901ec8a7ba5dcab90",
+  "current_main_ancestor": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "donor_branch": "candidate/manual-sport-s2-upkeep-trigger-metadata-20261021",
+  "donor_source_sha": "3ade1e75aef9b1fe9fa38ac20a2c154370400c61",
+  "purpose": "Introduce only exact Pact of Negation FUT card definition and two original card mechanics suites on current-main-based three-card control. Independently verify four exact original rules tests; no engine/AI/deck modifications.",
+  "files": {
+    "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt": "c786551484cfb001eea9fc2b05e14ea23fd63bf9",
+    "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationScenarioTest.kt": "04a2ae1c6301f21b3ba5a77151bff3c339ed2cbb",
+    "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationUnpaidScenarioTest.kt": "4f546f0c30fbff1d4548ffcd39b23c5a5530d7cd"
+  },
+  "expected_cases": {
+    "PactOfNegationScenarioTest": 3,
+    "PactOfNegationUnpaidScenarioTest": 1
+  },
+  "main_event_detector_blob": "c0e8a696db522403095d0162fea486cb175b3f99",
+  "known_main_detector_issue": "Delayed ability synthetic description uses Step.END for actual UPKEEP as of exact main; independently qualified S2 metadata repair is not part of this one-variable card receiving. Do not interpret passing card-mechanics as repaired metadata, nor silently merge S2 engine patch.",
+  "historical_observation": "Original 13 Pact casts and 13/13 paid at next own upkeep on R5 archived source. Original S2 card mechanics 4/4 on different qualified source, not accepted as current-main proof.",
+  "protected": {
+    "control_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "main_ai_profile": "43bbad79273806f56703fad420e9f6a495d05309",
+    "main_mana_solver": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "prior_core_three_run": 39687557103,
+    "main_unchanged": true,
+    "deck_unchanged": true,
+    "engine_unchanged": true,
+    "no_new_full_games": true,
+    "official_phase2_capability": 0,
+    "official_phase2_primary": 0,
+    "precision_used": 10,
+    "precision_reserved": 2
+  },
+  "acceptance": "Four original card rules tests with fresh XML, no failures/errors/skips on this exact current-main source, no mechanics/policy source drift. Registry presence separately audited; no competitive/production promotion."
+}
