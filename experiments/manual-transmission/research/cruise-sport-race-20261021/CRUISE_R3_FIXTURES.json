@@ -1,0 +1,64 @@
+{
+  "schema": "MANUAL_CRUISE_R3_FROZEN_PREDECLARED_OPPORTUNITY_FIXTURES_V1",
+  "declared_before_new_replay": true,
+  "date": "2026-10-21",
+  "comparator": "manual-transmission-r5-survival-opt-in",
+  "protected_source": "c0a68c229d76baa16d4aaddc5133c2282ffbb708",
+  "games_used": 10,
+  "new_full_games_authorized": 0,
+  "reserved_games": 2,
+  "method": "Read-only exact prefix replay to before archived AI-scored decision; independent current-source legal action quote and ActionProcessor single-step cast with actual priority preserved. No GameInitializer and no future-game forecast.",
+  "limits": [
+    "Original historical game code predates R9 source; event equality preflight must fail closed if current-source replay differs.",
+    "Do not interpret opponent autopass quiet-state simulations as opponent response. No opponent auto-passes allowed in proof.",
+    "Original first scored offer is not a strategic error; no AI or deck modification is authorized.",
+    "No use of hidden library cards, future draws, new random seed or new multiplayer match."
+  ],
+  "fixtures": [
+    {
+      "id": "CR3-01",
+      "cohort": "R1",
+      "seed": "202610202112",
+      "arm": "control",
+      "seat": "manual-mirror-1",
+      "target_action": 306,
+      "historical_choice": "Transit Mage",
+      "first_cast_action": 2712,
+      "first_scored_personal_turn": 3,
+      "first_cast_personal_turn": 11,
+      "role": "largest-delay candidate",
+      "artifact_id": 12291060323,
+      "archive_sha256": "3379a5376d961d54b8c5883207c8499dac66d373765f8c3ff8a7d032cb62c853"
+    },
+    {
+      "id": "CR3-02",
+      "cohort": "R1",
+      "seed": "202610202111",
+      "arm": "control",
+      "seat": "manual-mirror-2",
+      "target_action": 343,
+      "historical_choice": "Eldrazi Repurposer",
+      "first_cast_action": 1267,
+      "first_scored_personal_turn": 3,
+      "first_cast_personal_turn": 8,
+      "role": "creature development competitor",
+      "artifact_id": 12290531167,
+      "archive_sha256": "9fcacf8bd8b9e629e5944d38f76bee31abd139db447682e62bb65c6b5d142e4c"
+    },
+    {
+      "id": "CR3-03",
+      "cohort": "R6",
+      "seed": "202610202143",
+      "arm": "control",
+      "seat": "manual-mirror-1",
+      "target_action": 307,
+      "historical_choice": "Chaos Warp",
+      "first_cast_action": 1612,
+      "first_scored_personal_turn": 3,
+      "first_cast_personal_turn": 10,
+      "role": "protected emergency interaction control",
+      "artifact_id": 12299262511,
+      "archive_sha256": "ddea4f0a6a9c96b6b484009a410e3c42f6c390e69342e4bb53752b4c347c3c39"
+    }
+  ]
+}
