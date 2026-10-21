@@ -4,6 +4,7 @@ import com.wingedsheep.ai.engine.GameSimulator
 import com.wingedsheep.ai.engine.evaluation.BoardEvaluator
 import com.wingedsheep.engine.core.DecisionResponse
 import com.wingedsheep.engine.core.PendingDecision
+import com.wingedsheep.engine.core.PlayLand
 import com.wingedsheep.engine.legalactions.LegalAction
 import com.wingedsheep.engine.mechanics.layers.ProjectedState
 import com.wingedsheep.engine.state.GameState
@@ -37,6 +38,16 @@ interface CardAdvisor {
      * Return null to keep the default score.
      */
     fun evaluateCast(context: CastContext): Double? = null
+
+    /**
+     * Opt-in landing-zone adjustment for a real [PlayLand] candidate.
+     *
+     * [evaluateCast] does not run for land plays. Retain the same default
+     * no-op for every existing advisor and profile. A specialized opt-in
+     * advisor may return a bounded replacement of the raw land leaf score,
+     * after proving any claimed follow-up through real legal game actions.
+     */
+    fun evaluateLandPlay(context: LandPlayContext): Double? = null
 
     /**
      * Override a decision made during this card's resolution.
@@ -78,6 +89,20 @@ data class CastContext(
     val defaultScore: Double,
     val evaluator: BoardEvaluator,
     val simulator: GameSimulator
+)
+
+/**
+ * One actual legal land-play candidate, passed only to separately registered
+ * opt-in land advisors. A candidate must not treat auto-passed opponent priority
+ * as a witnessed game outcome.
+ */
+data class LandPlayContext(
+    val state: GameState,
+    val playerId: EntityId,
+    val action: LegalAction,
+    val passScore: Double,
+    val defaultScore: Double,
+    val simulator: GameSimulator,
 )
 
 /**
