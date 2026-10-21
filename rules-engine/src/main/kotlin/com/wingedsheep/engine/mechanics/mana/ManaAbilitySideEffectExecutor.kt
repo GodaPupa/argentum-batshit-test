@@ -74,6 +74,7 @@ class ManaAbilitySideEffectExecutor(
             event?.let(events::add)
 
             val production = solution.manaProduced[source.entityId]
+                ?: solution.internalCostManaProduced[source.entityId]
             // Resolved once and shared: both the activation event and the side effects want the
             // same ability, and this loop runs for every auto-tapped source of every payment.
             val ability = matchingManaAbility(currentState, source.entityId, production?.color)
@@ -115,7 +116,8 @@ class ManaAbilitySideEffectExecutor(
     ): Boolean {
         var shadowState = state
         for (source in solution.sources) {
-            val producedColor = solution.manaProduced[source.entityId]?.color
+            val producedColor = (solution.manaProduced[source.entityId]
+                ?: solution.internalCostManaProduced[source.entityId])?.color
             val printed = matchingManaAbility(shadowState, source.entityId, producedColor)
             val amount = printed?.let { payLifeCost(it.cost) } ?: 0
             if (amount <= 0) continue

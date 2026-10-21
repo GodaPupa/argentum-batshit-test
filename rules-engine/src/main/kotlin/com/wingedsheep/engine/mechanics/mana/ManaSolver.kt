@@ -240,7 +240,14 @@ data class ManaSolution(
      * (which only tracks the printed mana of tapped sources), so the cast/ability payment path must
      * add it to the per-color mana-spent tally that backs `Conditions.ManaSpentToCastIncludes`.
      */
-    val bonusManaSpentByColor: Map<Color, Int> = emptyMap()
+    val bonusManaSpentByColor: Map<Color, Int> = emptyMap(),
+    /**
+     * Printed production of sources consumed solely by another mana ability's
+     * internal activation cost (Hidden Grotto's {1}). These sources DID activate,
+     * so life costs/side effects must resolve, but their mana is NOT available
+     * to the outer spell/ability payment and must not enter [manaProduced].
+     */
+    val internalCostManaProduced: Map<EntityId, ManaProduction> = emptyMap()
 )
 
 /**
@@ -393,6 +400,7 @@ class ManaSolver(
         // Track which sources we've used
         val usedSources = mutableListOf<ManaSource>()
         val manaProduced = mutableMapOf<EntityId, ManaProduction>()
+        val internalCostManaProduced = mutableMapOf<EntityId, ManaProduction>()
         var remainingSources = availableSources.toMutableList()
 
         // Track bonus mana from auras and excess mana from multi-mana sources. The list
@@ -685,8 +693,15 @@ class ManaSolver(
             val source = remainingSources.minByOrNull {
                 calculateTapPriority(it, handRequirements, availableSourcesByColor)
             } ?: return null
-            // Tap for activation cost; attribute any excess to bonus pool.
+            // Tap for an internal mana-activation cost. Keep the printed color
+            // (not spendable outer mana) so the activation and its PayLife/effect
+            // costs resolve once, even though manaProduced deliberately omits it.
             val excessColor = source.producesColors.firstOrNull()
+            internalCostManaProduced[source.entityId] = if (excessColor != null) {
+                ManaProduction(color = excessColor, amount = source.manaAmount)
+            } else {
+                ManaProduction(colorless = source.manaAmount)
+            }
             useSource(source, excessColor)
             activationCostRemaining--
         }
@@ -801,7 +816,8 @@ class ManaSolver(
             bonusManaPool.filter { it.amount > 0 },
             consumedRiders,
             xRestrictedManaSpent = xRestrictedSpent,
-            bonusManaSpentByColor = bonusManaSpentByColor
+            bonusManaSpentByColor = bonusManaSpentByColor,
+            internalCostManaProduced = internalCostManaProduced
         )
         // A multi-source auto/explicit solution requires an ordered sequence of printed mana\n        // ability cost payments. The solver previously
         // returned an unaffordable combination of PayLife mana abilities (e.g. two Mana
