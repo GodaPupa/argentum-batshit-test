@@ -1,0 +1,109 @@
+name: Manual CRUISE R5 early-development decline discovery (NO GAMES)
+on:
+  push:
+    branches: [research/manual-cruise-r5-decline-discovery-20261021]
+    paths:
+      - '.github/workflows/manual-cruise-r5-decline-discovery-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_DISCOVERY_MANIFEST.json'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR5EarlyDorkDiscoveryTest.kt'
+permissions:
+  contents: read
+concurrency:
+  group: manual-cruise-r5-decline-discovery
+  cancel-in-progress: false
+jobs:
+  measure-real-r5-options:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Freeze independent early-development witness, R9, R5 and game budget
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-r2-discovery-evidence
+          test "$GITHUB_REF" = "refs/heads/research/manual-cruise-r5-decline-discovery-20261021"
+          git merge-base --is-ancestor 9b6e111edf7d9e6db94878061e21740826fb5333 HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_DISCOVERY_MANIFEST.json)" = "1e6dad8b3111ba0732080378213a4fa4e3fb1cb2"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR5EarlyDorkDiscoveryTest.kt)" = "d73c6234bf819ba9750ad4913913b4c7e1538181"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          git diff --name-only 9b6e111edf7d9e6db94878061e21740826fb5333 HEAD > cruise-r2-discovery-evidence/changed-paths.txt
+          while IFS= read -r file; do
+            case "$file" in
+              .github/workflows/manual-cruise-r5-decline-discovery-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_DISCOVERY_MANIFEST.json|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR5EarlyDorkDiscoveryTest.kt) ;;
+              *) echo "UNAUTHORIZED_DELTA:$file"; exit 1 ;;
+            esac
+          done < cruise-r2-discovery-evidence/changed-paths.txt
+          python3 - <<'PY'
+          import json
+          p="experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_DISCOVERY_MANIFEST.json"
+          d=json.load(open(p))
+          assert d['schema']=='ARGENTUM_CRUISE_R2_NO_GAMES_DISCOVERY_V1'
+          assert d['disposition']=='PREDECLARED_BEFORE_NEW_R5_SCORE_OBSERVATION'
+          assert [x['id'] for x in d['fixtures']]==['CR-DISC-01','CR-DISC-02','CR-DISC-03']
+          assert all(x['hand']==['Llanowar Elves'] for x in d['fixtures'])
+          assert d['constraints']['no_policy_code_edits'] is True
+          assert d['budget']['games_used']==10 and d['budget']['reserved']==2 and d['budget']['new']==0
+          print('CRUISE_R2_PREDECLARED_MANIFEST_PASS')
+          PY
+          git rev-parse HEAD > cruise-r2-discovery-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > cruise-r2-discovery-evidence/tree-sha.txt
+          echo ZERO_FULL_GAMES > cruise-r2-discovery-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Three exact source-bound R5 early-development scoring observations
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualCruiseR5EarlyDorkDiscoveryTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r2-discovery-evidence/decision-insights.log
+
+      - name: Archive original discovery JUnit before cleanTest
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p cruise-r2-discovery-evidence/discovery-junit
+          cp -a ai/build/test-results/test/. cruise-r2-discovery-evidence/discovery-junit/ || true
+
+      - name: Protected existing R5 Pact Ballista Statue Encore payment tests
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualPactDebt*Test' --tests '*ManualBallista*Test' \
+            --tests '*ManualStatue*Test' --tests '*ManualResolutionPaymentRegressionTest' \
+            --tests '*ManualR5CandidateCompositionTest' --tests '*ManualEncoreRegressionTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r2-discovery-evidence/r5-regressions.log
+
+      - name: Archive protected R5 JUnit before any next test
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p cruise-r2-discovery-evidence/r5-junit
+          cp -a ai/build/test-results/test/. cruise-r2-discovery-evidence/r5-junit/ || true
+
+      - name: Preserve source, JUnit and actual decision logs on GREEN or RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-cruise-r5-decline-discovery-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            cruise-r2-discovery-evidence/
+            ai/build/test-results/test/
