@@ -1,13 +1,13 @@
-name: R9 low-life mana source guard candidate (NO GAMES)
+name: R9 sequential life payment and Ashiok candidate v2 (NO GAMES)
 on:
   push:
-    branches: [research/manual-precision-r9-low-life-guard-20261020]
+    branches: [research/manual-precision-r9-low-life-guard2-20261020]
     paths:
       - '.github/workflows/manual-precision-r9-independent-fidelity-20261020.yml'
 permissions:
   contents: read
 concurrency:
-  group: manual-precision-r9-independent-fidelity
+  group: manual-precision-r9-life-guard2
   cancel-in-progress: false
 jobs:
   heldout-mana-and-restrictions:
@@ -29,12 +29,12 @@ jobs:
           git rev-parse HEAD > r9-mana-evidence/source-sha.txt
           git rev-parse HEAD^{tree} > r9-mana-evidence/tree-sha.txt
           git diff --name-only 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD > r9-mana-evidence/delta-paths.txt
-          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r9-low-life-guard-20261020"
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r9-low-life-guard2-20261020"
           git merge-base --is-ancestor 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD
           test "$(wc -l < r9-mana-evidence/delta-paths.txt)" -eq 5
           git diff --quiet 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD -- ai/ experiments/
-          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = "fbdd8b6e6963bd25ab156d4f8702eada084c0f73"
-          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaAbilitySideEffectExecutor.kt)" = "c9ba0f659a1f44b4c05b81f7f44303a16db3de33"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = "541a511a4964972f1dbe663cd44d55a40c400949"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaAbilitySideEffectExecutor.kt)" = "d5e437dcf9c13ae7c862eef91df4ab8ce65b6097"
           test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt)" = "926b8b7b94ecbebf4b75f26fe91bfcd8a4a7a67f"
           test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PreEntryCoordinator.kt)" = "3baae2b3585ab3fcbec36a385450b7e1d391bfc1"
           test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt)" = "3b7f4a6a14ea3f7d41bd06167ec114a8340b6255"
@@ -69,6 +69,15 @@ jobs:
           scripts/gradle-locked :mtg-sets:2025:tests:test \
             --tests '*SteelswarmOperatorTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
             2>&1 | tee r9-mana-evidence/restricted-mana.log
+      - name: Ashiok life replacement original scenarios
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2023:tests:test \
+            --tests '*AshiokWickedManipulatorScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-mana-evidence/ashiok-replacement.log
       - name: Preserve original source-bound mana JUnit and logs including on failure
         if: always()
         uses: actions/upload-artifact@v4
@@ -81,6 +90,7 @@ jobs:
             mtg-sets/2008-2016/tests/build/test-results/test/
             mtg-sets/1993-1999/tests/build/test-results/test/
             mtg-sets/2025/tests/build/test-results/test/
+            mtg-sets/2023/tests/build/test-results/test/
   heldout-fetched-shock-entry:
     runs-on: ubuntu-latest
     timeout-minutes: 70
