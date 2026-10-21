@@ -1,0 +1,43 @@
+{
+  "schema": "ARGENTUM_CRUISE_R5_PREDECLARED_RETROSPECTIVE_JOIN_V1",
+  "date": "2026-10-21",
+  "disposition": "RETROSPECTIVE_SOURCE_PINNED_NONBLINDED_ZERO_NEW_GAMES",
+  "fixture_universe": "All 40 original opening hands already evaluated in CRUISE R4; all 10 complete matched R1/R6 original game summaries, with no excluded seeds, seats, or arms.",
+  "source_parent_sha": "a62a25ab4e1260353e0028eef765ead174b14ec0",
+  "r4": {
+    "run_id": 39645091191,
+    "artifact_id": 12368260036,
+    "zip_sha256": "59d43860c8c884535e98a4849ad2e313fd098fe9fd2c22af9ed3f4c274ea8c16",
+    "original_diagnostic_file": "cruise-r4-evidence/opening-decisions/R4_OBSERVATIONS.json"
+  },
+  "originals_manifest": "experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ZONE_MANIFEST.json",
+  "immutable": {
+    "main_sha": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "v07_control_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "challenger_a_blob": "7984a2e87d8ddbe023d45620414d25a61691a040",
+    "ai_current_blob": "180918b2d7a59309e7b0617f2579fb2a6d06b7d5",
+    "r5_profile_blob": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "controller_blob": "8a3c94041ca6cf781d5efe35d7a513b522b3856b",
+    "solver_blob": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+  },
+  "measurements": [
+    "Complete 40-seat joint table: cohort/seed/arm/seat, original kept-seven, printed lands, independent real-controller hypothetical keep/mulligan, original winner, original first Animar cast personal turn or censored/no cast.",
+    "Original archive ZIP hashes, full-game completion, R5 original profile and no original mulligans; exact original hand cards must equal R4 opening card IDs by name.",
+    "Report conditional descriptive categories for would-keep versus would-mulligan, by arm, and paired-seed consistency; don't treat four seats or paired arms as independent win-rate samples.",
+    "Enumerate all original one-land openers and any non-one-land hypothetical mulligans; examine the Evolving Wilds vs Misty Rainforest two-land paired opener as a single bounded future verification target."
+  ],
+  "guardrails": {
+    "full_games_used": 10,
+    "full_games_cap": 12,
+    "reserved": 2,
+    "new_games": 0,
+    "no_new_random_seed": true,
+    "no_mulligan_redraw": true,
+    "no_policy_changes": true,
+    "no_deck_edits": true,
+    "no_ci_merge": true,
+    "no_game_outcome_counterfactuals": true,
+    "retrospective_not_blinded": true
+  },
+  "decision_rule": "An observational correlation or a plausible fetch/ramp line alone cannot promote Challenger A, modify production policy, or claim causality. HOLD deck and AI changes until a separately sourced one-variable engine-level Mana/Fetch and controller decision legality probe."
+}
