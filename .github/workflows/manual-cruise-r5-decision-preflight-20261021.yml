@@ -1,0 +1,116 @@
+name: Manual CRUISE R5 decision baseline fixtures (NO GAMES)
+on:
+  push:
+    branches: [research/manual-cruise-r5-decision-preflight-20261021]
+    paths:
+      - '.github/workflows/manual-cruise-r5-decision-preflight-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R1_FIXED_FIXTURES.json'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR5DecisionBaselinePreflightTest.kt'
+permissions:
+  contents: read
+concurrency:
+  group: manual-cruise-r5-baseline-preflight
+  cancel-in-progress: false
+
+jobs:
+  controller-and-r5-baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Exact CRUISE source identity, fixture manifest and protected assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-r1-baseline-evidence
+          test "$GITHUB_REF" = "refs/heads/research/manual-cruise-r5-decision-preflight-20261021"
+          git merge-base --is-ancestor c4c16ead2da3bdfe6ba7ed36bca297a7ff7607d4 HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R1_FIXED_FIXTURES.json)" = "b116a302697af306e61e89e716d18e015a12b3e4"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR5DecisionBaselinePreflightTest.kt)" = "127e1da465c18d4e56924cf00014f39c93dac718"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          git diff --name-only c4c16ead2da3bdfe6ba7ed36bca297a7ff7607d4 HEAD > cruise-r1-baseline-evidence/changed-files.txt
+          while IFS= read -r file; do
+            case "$file" in
+              .github/workflows/manual-cruise-r5-decision-preflight-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R1_FIXED_FIXTURES.json|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR5DecisionBaselinePreflightTest.kt) ;;
+              *) echo "UNAUTHORIZED_DELTA:$file"; exit 1 ;;
+            esac
+          done < cruise-r1-baseline-evidence/changed-files.txt
+          python3 - <<'PY'
+          import json
+          p="experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R1_FIXED_FIXTURES.json"
+          m=json.load(open(p))
+          assert m["schema"]=="ARGENTUM_MANUAL_CRUISE_R1_PREDECLARED_FIXTURES"
+          assert m["status"]=="FIXTURES_PREDECLARED_BEFORE_CANDIDATE_SCORING"
+          assert len(m["zero_game_fixtures"])==8
+          assert [x["id"] for x in m["zero_game_fixtures"]]==[
+            "CR-OPEN-01","CR-OPEN-02","CR-OPEN-03",
+            "CR-ACT-01","CR-ACT-02","CR-ACT-03","CR-ACT-04","CR-ACT-05"]
+          assert m["acceptance"]["full_games_allowed"]==0
+          assert m["game_budget"]["preexisting_consumed"]==10
+          assert m["game_budget"]["reserved"]==2
+          print("CRUISE_R1_FIXED_MANIFEST_PASS / ZERO FULL GAMES")
+          PY
+          git rev-parse HEAD > cruise-r1-baseline-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > cruise-r1-baseline-evidence/tree-sha.txt
+          echo ZERO_FULL_GAMES_PAIRED_PRECISION_BUDGET_UNTOUCHED > cruise-r1-baseline-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Eight predeclared controller and R5 real-action baseline fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualCruiseR5DecisionBaselinePreflightTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r1-baseline-evidence/cruise-action-baseline.log
+
+      - name: Archive original CRUISE JUnit before running any other tests
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p cruise-r1-baseline-evidence/cruise-junit
+          cp -a ai/build/test-results/test/. cruise-r1-baseline-evidence/cruise-junit/ || true
+
+      - name: Protected R5, original Animar and mulligan behavioral controls
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualAnimarDevelopmentPolicyTest' \
+            --tests '*EngineAiMomirMulliganTest' \
+            --tests '*PestControlMonoRedMadnessMulliganPolicyTest' \
+            --tests '*ManualPactDebt*Test' --tests '*ManualBallista*Test' \
+            --tests '*ManualStatue*Test' --tests '*ManualResolutionPaymentRegressionTest' \
+            --tests '*ManualR5CandidateCompositionTest' --tests '*ManualEncoreRegressionTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r1-baseline-evidence/protected-r5-openers.log
+
+      - name: Preserve protected R5 and opener JUnit separately
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p cruise-r1-baseline-evidence/protected-junit
+          cp -a ai/build/test-results/test/. cruise-r1-baseline-evidence/protected-junit/ || true
+
+      - name: Preserve all original logs, source hashes and JUnit on GREEN or RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-cruise-r5-decision-baseline-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            cruise-r1-baseline-evidence/
+            ai/build/test-results/test/
