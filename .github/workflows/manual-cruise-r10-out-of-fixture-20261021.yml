@@ -97,7 +97,7 @@ jobs:
           # Frozen original R9 controls also require their matched CONTROL
           # counterpart. This is a prior-game artifact, not an added game.
           gh api '/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12298777958/zip' > cruise-r10-originals/R6-control-202610202141-original.zip
-          printf '%s  %s\\n' '031011134d10e3ae002ad7dc304ff7dafcc5e14f9a117c436e510dfb984349cb' cruise-r10-originals/R6-control-202610202141-original.zip | sha256sum -c -
+          printf '%s  %s\n' '031011134d10e3ae002ad7dc304ff7dafcc5e14f9a117c436e510dfb984349cb' cruise-r10-originals/R6-control-202610202141-original.zip | sha256sum -c -
 
       - name: Read-only replay of six previously unused R9 decisions plus timing and opponent counter window
         shell: bash
