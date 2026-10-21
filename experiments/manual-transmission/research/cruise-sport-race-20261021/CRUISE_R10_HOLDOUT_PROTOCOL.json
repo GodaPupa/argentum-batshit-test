@@ -1,0 +1,160 @@
+{
+  "schema": "ARGENTUM_MANUAL_CRUISE_R10_PREDECLARED_OUT_OF_FIXTURE_DECISION_AND_COST_V1",
+  "date": "2026-10-21",
+  "status": "REGISTERED_BEFORE_R10_TEST_OR_BENCHMARK_EXECUTION",
+  "qualification_basis": {
+    "candidate_sha": "240fc8e56c2de383a625bfe8706ad8290f95028c",
+    "r9_green_run": 39655213014,
+    "r9_green_artifact": 12372301885,
+    "original_r9_controls": 8,
+    "protected_r5_checks": 68
+  },
+  "branch_parent": "080196ef27164391d7b4d4f2cfcd6670a6c044af",
+  "intent": "Try to falsify the newly-qualified R9 source-only early fetch tie-break using all first available non-R9-research-configuration Misty/Evolving offered decisions in original R1/R6 archives, plus independently time decision cost and map opponent stack response. No new game.",
+  "sampling_rule": "Exclude R6 seed 202610202141, used for R9 tuning. In the six other arms where original scored Misty Rainforest or Evolving Wilds as PlayLand in main phase, select the chronologically first such insight/action, with no choice based on favorable R9 outcomes. All listed positions are mid/late turn (not a newly generated heldout dataset).",
+  "original_independence_limit": "The original games were previously examined in CRUISE R2; these are out-of-fixture archival checkpoints, NOT blinded fresh holdout games or competitive independent matches.",
+  "cases": [
+    {
+      "id": "R10-R1-A-2111",
+      "cohort": "R1",
+      "arm": "a",
+      "seed": "202610202111",
+      "seat": "manual-mirror-0",
+      "index": 777,
+      "fetch": "Misty Rainforest",
+      "original_choice": "Animar, Soul of Elements",
+      "expected_min_board_lands": 2,
+      "artifact_id": 12290591119,
+      "zip_sha256": "7744f1916818bea1fcb3149474c7f696249c0fc075fce5380d268458eca1bb2c",
+      "source_sha": "84e6347bbcdfa2990eb304051771007daf849ce9"
+    },
+    {
+      "id": "R10-R1-C-2111",
+      "cohort": "R1",
+      "arm": "control",
+      "seed": "202610202111",
+      "seat": "manual-mirror-0",
+      "index": 588,
+      "fetch": "Evolving Wilds",
+      "original_choice": "Eldrazi Repurposer",
+      "expected_min_board_lands": 2,
+      "artifact_id": 12290531167,
+      "zip_sha256": "9fcacf8bd8b9e629e5944d38f76bee31abd139db447682e62bb65c6b5d142e4c",
+      "source_sha": "84e6347bbcdfa2990eb304051771007daf849ce9"
+    },
+    {
+      "id": "R10-R1-A-2112",
+      "cohort": "R1",
+      "arm": "a",
+      "seed": "202610202112",
+      "seat": "manual-mirror-3",
+      "index": 1668,
+      "fetch": "Misty Rainforest",
+      "original_choice": "Fauna Shaman",
+      "expected_min_board_lands": 2,
+      "artifact_id": 12290286293,
+      "zip_sha256": "a614eb9998b25dd34803434bb9ca80cf113b545483a185eac49cfcd419c7fd09",
+      "source_sha": "84e6347bbcdfa2990eb304051771007daf849ce9"
+    },
+    {
+      "id": "R10-R1-C-2112",
+      "cohort": "R1",
+      "arm": "control",
+      "seed": "202610202112",
+      "seat": "manual-mirror-3",
+      "index": 1881,
+      "fetch": "Evolving Wilds",
+      "original_choice": "Ancestral Statue",
+      "expected_min_board_lands": 2,
+      "artifact_id": 12291060323,
+      "zip_sha256": "3379a5376d961d54b8c5883207c8499dac66d373765f8c3ff8a7d032cb62c853",
+      "source_sha": "84e6347bbcdfa2990eb304051771007daf849ce9"
+    },
+    {
+      "id": "R10-R6-A-2143",
+      "cohort": "R6",
+      "arm": "a",
+      "seed": "202610202143",
+      "seat": "manual-mirror-0",
+      "index": 3017,
+      "fetch": "Misty Rainforest",
+      "original_choice": "Paradise Druid",
+      "expected_min_board_lands": 2,
+      "artifact_id": 12299271355,
+      "zip_sha256": "1bb49d6bd7179ec4561cb2c635dca5a08653163d361c5509e81791521b46714d",
+      "source_sha": "53a5162eb3659310b1878894a90ae58c244a6745"
+    },
+    {
+      "id": "R10-R6-C-2142",
+      "cohort": "R6",
+      "arm": "control",
+      "seed": "202610202142",
+      "seat": "manual-mirror-2",
+      "index": 1837,
+      "fetch": "Evolving Wilds",
+      "original_choice": "Pass priority",
+      "expected_min_board_lands": 2,
+      "artifact_id": 12299307002,
+      "zip_sha256": "b0f08c6237e615b1befeeb47db515d5959e1b3dae7414fff3b46c5868efc9796",
+      "source_sha": "53a5162eb3659310b1878894a90ae58c244a6745"
+    }
+  ],
+  "negative_without_candidate": [
+    {
+      "cohort": "R6",
+      "arm": "a",
+      "seed": "202610202142",
+      "reason": "No Misty or Evolving priority offers in this original archived run"
+    },
+    {
+      "cohort": "R6",
+      "arm": "control",
+      "seed": "202610202143",
+      "reason": "No Misty or Evolving priority offers in this original archived run"
+    }
+  ],
+  "origin_counterexample": {
+    "id": "R10-R9-TUNING-SEED-POSITIVE",
+    "cohort": "R6",
+    "arm": "a",
+    "seed": "202610202141",
+    "seat": "manual-mirror-1",
+    "index": 42,
+    "source_run": 39498572460,
+    "original_archive_artifact": 12298778067,
+    "archive_sha256": "a4396d43fdd831f5f67f2a6b865630af9a90ff1420c2b127be6e6b2f294a6efe"
+  },
+  "adversarial_response": {
+    "id": "R10-SYNTHETIC-PACT-RESPONSE",
+    "scope": "Synthetic one-priority-window demonstration: after original R9 source-derived Misty -> Forest -> Birds cast, give an opponent exactly one actual registered Pact of Negation from their own original archived library into hand, then check whether the engine offers a legal response targeting Birds. This is a hypothetical *possible* response, NOT an actual opponent choice or new game.",
+    "deny_prediction": true,
+    "zero_original_game_changes": true
+  },
+  "benchmark": {
+    "id": "R10-PERF-ONE-STATE",
+    "cases": [
+      "R10-R9-TUNING-SEED-POSITIVE",
+      "R10-R1-A-2111",
+      "R10-R1-C-2111",
+      "R10-R6-A-2143"
+    ],
+    "warmup_per_profile": 1,
+    "timed_trials_per_profile": 5,
+    "method": "On the same exact archived states, construct a fresh original R5 or opt-in R9 AIPlayer outside the timed interval, then time chooseAction with System.nanoTime in alternating profile order. Retain all raw times and medians; don't claim general statistical performance or wall-clock win rate.",
+    "acceptance": "Complete 5 paired trials per profile per state without rejected actions or source mutation. No unbounded timeout or >1500ms isolated R9 median at early source checkpoint; if exceeded, R9 HOLD for latency review.",
+    "global_safety": "Source-level test only; no changes to original engine solver, production profile, decks, R5, main, original games, seeds or opponent AI."
+  },
+  "qualification": {
+    "expected_six_cases": "All six have at least two original battlefield lands at selected decision; no R9 early-score override; fresh R9 action equals fresh R5 action. If original R5 with fresh memory differs from historic choice, record it without falsifying historical trace.",
+    "actual_legality": "All first (index-1) historical accepted actions must replay with exactly matching event stream and life totals. The selected R9 action must be accepted by ActionProcessor, or if passing must be trivially legal.",
+    "negative_regressions": "Preserve original R9 eight-case test, 68 original protected R5 checks, in an independent CI job on the same source.",
+    "integrity": "Sha256 pin each archive and candidate source; record exact Git head and changed-file allowlist, no uncontrolled code behavior changes.",
+    "no_qualification_claims": "Do not promote R9 to competitive power bracket or publish a win-rate improvement. No new full games are authorized.",
+    "precision_game_budget": {
+      "used": 10,
+      "max": 12,
+      "reserved": 2,
+      "new_games": 0
+    }
+  }
+}
