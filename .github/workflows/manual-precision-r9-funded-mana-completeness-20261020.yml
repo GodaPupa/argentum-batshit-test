@@ -33,6 +33,9 @@ jobs:
           git rev-parse HEAD > r9-funded-completeness/source-sha.txt
           git rev-parse HEAD^{tree} > r9-funded-completeness/tree-sha.txt
           git merge-base --is-ancestor 6b03cb02a510f2aa4592b3f0a175a89636905398 HEAD
+          # Exact protected asset blobs
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
           echo ZERO_FULL_GAMES > r9-funded-completeness/budget.txt
           chmod +x gradlew scripts/gradle-locked
       - name: New positive funded heldouts + original five R9 colorless/X + generic + provenance
@@ -41,6 +44,7 @@ jobs:
           set -euo pipefail
           scripts/gradle-locked :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
             --tests '*ManualPrecisionR9FundedManaCompletenessHeldoutTest' \
+            --tests '*ManualPrecisionR9SelfFundingIntegrityWitnessesTest' \
             --tests '*ManualPrecisionR9ColorlessRestrictedXHeldoutTest' \
             --tests '*ManualPrecisionR9GenericActivationCostHeldoutTest' \
             --tests '*ManualPrecisionR9ProvenanceHardeningWitnessesTest' \
@@ -87,6 +91,14 @@ jobs:
             --tests '*ManualR5CandidateCompositionTest' --tests '*ManualEncoreRegressionTest' \
             -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
             2>&1 | tee r9-funded-completeness/r5.log
+
+      - name: Archive R5 JUnit before initializer cleanTest
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r9-funded-completeness/r5-junit
+          cp -r ai/build/test-results/test/. r9-funded-completeness/r5-junit/ || true
 
       - name: CONTROL versus A initializer parity
         if: always()
