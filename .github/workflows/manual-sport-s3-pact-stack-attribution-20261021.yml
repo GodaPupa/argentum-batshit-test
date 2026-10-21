@@ -1,0 +1,106 @@
+name: Manual SPORT S3 Pact original spell-on-stack attribution (NO GAMES)
+on:
+  push:
+    branches: [research/manual-sport-s3-pact-stack-attribution-20261021]
+    paths:
+      - '.github/workflows/manual-sport-s3-pact-stack-attribution-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/SPORT_S3_PACT_STACK_ATTRIBUTION_PROTOCOL.json'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/audit_sport_s3_pact_stack.py'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-sport-s3b-exact-original-stack-attribution
+  cancel-in-progress: false
+
+jobs:
+  pact-original-public-stack:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      MANUAL_S3B_INPUT: ${{ github.workspace }}/sport-s3b-originals
+      MANUAL_S3B_OUTPUT: ${{ github.workspace }}/sport-s3b-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 30}
+
+      - name: Enforce independent S3A source, immutable engine/decks/policy and zero-game protocol
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p sport-s3b-originals sport-s3b-evidence
+          test "$GITHUB_REF" = 'refs/heads/research/manual-sport-s3-pact-stack-attribution-20261021'
+          git merge-base --is-ancestor 918bd1601f73fb0bb1b5bedd7fc5256348861f29 HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseR9ExecutableFetchAdvisorModule.kt)" = afb19c325bf38f3d82bd0fefba64e1f4057db858
+          test "$(git rev-parse HEAD:mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt)" = c786551484cfb001eea9fc2b05e14ea23fd63bf9
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt)" = c95f059d375e3df107284e1081d00c449ca3f28d
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          git diff --name-only 918bd1601f73fb0bb1b5bedd7fc5256348861f29 HEAD > sport-s3b-evidence/changed-paths.txt
+          test "$(wc -l < sport-s3b-evidence/changed-paths.txt)" -eq 3
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/manual-sport-s3-pact-stack-attribution-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/SPORT_S3_PACT_STACK_ATTRIBUTION_PROTOCOL.json|experiments/manual-transmission/research/cruise-sport-race-20261021/audit_sport_s3_pact_stack.py) ;;
+              *) echo "UNAUTHORIZED_SOURCE_DELTA:$path"; exit 1 ;;
+            esac
+          done < sport-s3b-evidence/changed-paths.txt
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path("experiments/manual-transmission/research/cruise-sport-race-20261021")
+          p=json.loads((root/"SPORT_S3_PACT_STACK_ATTRIBUTION_PROTOCOL.json").read_text())
+          m=json.loads((root/"CRUISE_R2_ZONE_MANIFEST.json").read_text())
+          assert p["status"]=="FROZEN_BEFORE_PACT_STACK_ATTRIBUTION_EXECUTION"
+          assert p["parent"]=="918bd1601f73fb0bb1b5bedd7fc5256348861f29"
+          assert p["source_s3a"]["off_turn_pact_offered_windows"]==150
+          assert p["source_s3a"]["off_turn_pact_chosen_windows"]==13
+          assert p["source_s3a"]["off_turn_pact_not_chosen_windows"]==137
+          assert m["original_game_count"]==10 and m["original_accepted_actions"]==33440
+          assert p["safety"]["no_new_full_games"] is True and p["safety"]["remaining_reserved"]==2
+          print("SPORT_S3B_PREDECLARED_ORIGINAL_STACK_PROTOCOL_PASS NO_GAMES")
+          PY
+          git rev-parse HEAD > sport-s3b-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > sport-s3b-evidence/tree-sha.txt
+          echo 'Original full-game budget 10/12 with 2 reserved, S3B consumed 0' > sport-s3b-evidence/budget.txt
+
+      - name: Retrieve ten exact R1/R6 original archives with independently verified SHA256
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' > sport-s3b-evidence/archives.tsv
+          import json
+          from pathlib import Path
+          m=json.loads(Path("experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ZONE_MANIFEST.json").read_text())
+          for x in m["archives"]:
+              print("\t".join(str(x[k]) for k in ("cohort","arm","seed","id","sha256")))
+          PY
+          while IFS=$'\t' read -r cohort arm seed artifact sha; do
+            out="sport-s3b-originals/${cohort}-${arm}-${seed}-original.zip"
+            gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/${artifact}/zip" > "$out"
+            printf '%s  %s\n' "$sha" "$out" | sha256sum --check --status
+            printf '%s_%s_%s_SHA256_OK\n' "$cohort" "$arm" "$seed" | tee -a sport-s3b-evidence/verified-archives.txt
+          done < sport-s3b-evidence/archives.tsv
+          test "$(wc -l < sport-s3b-evidence/verified-archives.txt)" -eq 10
+
+      - name: Attribute all original Pact offers to real unresolved public spell casts
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission/research/cruise-sport-race-20261021/audit_sport_s3_pact_stack.py \
+            2>&1 | tee sport-s3b-evidence/stack-audit.log
+          cat sport-s3b-evidence/REPORT.md
+
+      - name: Preserve bounded Pact attribution without original hidden archives
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-sport-s3-pact-stack-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            sport-s3b-evidence/
