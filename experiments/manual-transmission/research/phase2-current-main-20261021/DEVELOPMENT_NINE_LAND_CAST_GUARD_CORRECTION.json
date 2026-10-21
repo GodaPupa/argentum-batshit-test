@@ -1,0 +1,82 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_LAND_CAST_CURRENT_MAIN_CORRECTION_V1",
+  "date": "2026-10-21",
+  "status": "REGISTERED_AFTER_ORIGINAL_RED_BEFORE_ENGINE_PATCH_OR_RETEST",
+  "original_protocol": "DEVELOPMENT_NINE_PROTOCOL.json",
+  "first_red": {
+    "run": 39689951999,
+    "source_sha": "9e60c5f03e67d6116d07b471d6ead452493ca031",
+    "scope": "Incorrect generated case count and absent old fixture API; no gameplay conclusion"
+  },
+  "second_red": {
+    "run": 39691007944,
+    "source_sha": "dc3a0a27c5eac1c8147fb1712f2818e8ce283b75",
+    "actual_cases_per_era": {
+      "1993-1999": "8/8 pass",
+      "2003-2007": "16/16 pass",
+      "2008-2016": "12/12 pass",
+      "2017-2022": "31/34 pass; three exact land illegal-cast assertions FAIL"
+    },
+    "failures": [
+      "Rejuvenating Springs",
+      "Training Center",
+      "Spire Garden"
+    ],
+    "failing_assertion": "Directly submitting CastSpell(landId) returned error=null despite land needing PlayLand",
+    "evidence_artifact_id": 12388454169,
+    "evidence_zip_sha256": "96e85020424912772bb9e75a8332e54ced4ad3f47a301f7d8af83dafd06745af",
+    "no_hidden_game": "All are excluded synthetic scenario tests, not 100-card Commander sampled outcomes"
+  },
+  "engine_guard": {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+    "canonical_main_blob": "e8e46f6c237f90cd3e215035ad38a14233cf1fa6",
+    "source_anchor": "        // Sneak (CR 702.190a) grants an instant-speed casting permission during the active",
+    "insertion_position": "After val effectiveTypeLine resolves chosen spell face; before Sneak comment",
+    "exact_added_lines": [
+      "        // CR 305.1/305.9: a land is played as a special action, even when it has",
+      "        // another card type. Check the chosen spell face so land-primary",
+      "        // Adventures and modal DFC spell faces remain castable. Morph/disguise",
+      "        // already returned above with face-down creature characteristics.",
+      "        if (effectiveTypeLine.isLand) {",
+      "            return \"Land cards can only be played as lands\"",
+      "        }"
+    ],
+    "rationale": "Prevent casting a land via direct CastSpell action while preserving morph/disguise and alternative spell faces.",
+    "limit": "These seven lines only. No other production engine, AI, solver, deck, or rule change."
+  },
+  "guard_regression": {
+    "path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualTransmissionLandSpellGuardScenarioTest.kt",
+    "original_donor_blob": "ec95a0c864ac5f8edf16433f829bb5ca360939ac",
+    "cases": 2,
+    "description": "Original 2-case excluded-fixture test: Forest and Command Tower are legal PlayLand actions but rejected CastSpell."
+  },
+  "original_scenarios_unchanged": true,
+  "corrected_expected_total": 72,
+  "expected_by_era": {
+    "1993-1999": 8,
+    "2003-2007": 16,
+    "2008-2016": 14,
+    "2017-2022": 34
+  },
+  "old_prospectively_declared_total": 69,
+  "second_corrected_total_before_new_engine_guard": 70,
+  "acceptance": [
+    "Preserve original two RED runs and the exact 9 donor card/test source bytes.",
+    "Require patched CastSpellHandler to equal exact original main source plus exactly 7 predeclared lines.",
+    "Original two-case land guard regression byte-identical to previously qualified donor.",
+    "Rerun all 72 exact cases across four test modules, zero failures/errors/skips; publish fresh XML and artifacts.",
+    "If any defect remains, HOLD this nine-card candidate and do not compose into live registry.",
+    "Even GREEN remains source-only; 800-card runtime and opponent pilot admissions separate."
+  ],
+  "bounds": {
+    "main_unchanged": true,
+    "control_v07_unchanged": true,
+    "ai_current_unchanged": true,
+    "mana_solver_unchanged": true,
+    "new_games": 0,
+    "official_phase2_capability": 0,
+    "official_phase2_primary": 0,
+    "precision_used": 10,
+    "precision_reserved": 2
+  }
+}
