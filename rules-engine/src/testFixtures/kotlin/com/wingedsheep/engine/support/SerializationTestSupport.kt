@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.support
 
 import com.wingedsheep.engine.core.engineSerializersModule
+import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.state.GameState
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
@@ -15,4 +16,8 @@ object SerializationTestSupport {
 
     fun roundTrip(state: GameState): GameState =
         json.decodeFromString(json.encodeToString(state))
+
+    fun encodeState(state: GameState): String = json.encodeToString(state)
+
+    fun encodeEvents(events: List<GameEvent>): String = json.encodeToString(events)
 }
