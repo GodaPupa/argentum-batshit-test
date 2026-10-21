@@ -76,7 +76,14 @@ class ManaAbilitySideEffectExecutor(
             val production = solution.manaProduced[source.entityId]
             // Resolved once and shared: both the activation event and the side effects want the
             // same ability, and this loop runs for every auto-tapped source of every payment.
-            val ability = matchingManaAbility(currentState, source.entityId, production?.color)
+            // A source paying another mana ability's {1} can be tapped without a
+            // manaProduced entry: its mana was consumed internally rather than credited
+            // to the outer spell/ability. For a uniquely printed mana ability, still
+            // execute the actual printed costs and side effects exactly once.
+            val ability = matchingManaAbility(
+                currentState, source.entityId, production?.color,
+                internalCostOnly = production == null
+            )
 
             // Auto-tapping a source *is* the player activating its mana ability — the fast path is
             // a UI shortcut, not a different game action (CR 605.3). Emit the activation event the
@@ -115,8 +122,11 @@ class ManaAbilitySideEffectExecutor(
     ): Boolean {
         var shadowState = state
         for (source in solution.sources) {
-            val producedColor = solution.manaProduced[source.entityId]?.color
-            val printed = matchingManaAbility(shadowState, source.entityId, producedColor)
+            val production = solution.manaProduced[source.entityId]
+            val printed = matchingManaAbility(
+                shadowState, source.entityId, production?.color,
+                internalCostOnly = production == null
+            )
             val amount = printed?.let { payLifeCost(it.cost) } ?: 0
             if (amount <= 0) continue
             // Check before applying any replacement, exactly as the Ashiok card ruling
@@ -164,17 +174,23 @@ class ManaAbilitySideEffectExecutor(
         )
     }
 
-    /** The printed mana ability of [sourceId] that produced [producedColor], if there is one. */
+    /**
+     * Match the printed mana ability. Internal activation-cost funding sources can lack
+     * a [ManaSolution.manaProduced] entry; they nevertheless activate an actual mana
+     * ability. The single-printed-ability fallback is safe for that missing-production
+     * path only. Do not guess among multiple printed abilities with different costs.
+     */
     private fun matchingManaAbility(
         state: GameState,
         sourceId: EntityId,
         producedColor: Color?,
+        internalCostOnly: Boolean = false,
     ): ActivatedAbility? {
         val card = state.getEntity(sourceId)?.get<CardComponent>() ?: return null
         val cardDef = cardRegistry.getCard(card.cardDefinitionId) ?: return null
-        return cardDef.script.activatedAbilities
-            .filter { it.isManaAbility }
-            .firstOrNull { abilityProducesColor(it, producedColor) }
+        val manaAbilities = cardDef.script.activatedAbilities.filter { it.isManaAbility }
+        return manaAbilities.firstOrNull { abilityProducesColor(it, producedColor) }
+            ?: if (internalCostOnly) manaAbilities.singleOrNull() else null
     }
 
     fun runSideEffects(

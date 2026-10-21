@@ -69,6 +69,24 @@ jobs:
             --tests '*HiddenGrottoTest' \
             -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
             2>&1 | tee r9-internal-evidence/hidden-grotto.log
+      - name: City of Brass mana-side-effect regression
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:1993-1999:tests:test \
+            --tests '*CityOfBrassScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-internal-evidence/city-of-brass.log
+      - name: Ashiok life-payment replacement regression
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2023:tests:test \
+            --tests '*AshiokWickedManipulatorScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-internal-evidence/ashiok-replacement.log
       - name: Preserve original JUnit, logs, source and budget even on RED
         if: always()
         uses: actions/upload-artifact@v4
@@ -80,3 +98,61 @@ jobs:
             r9-internal-evidence/
             mtg-sets/2008-2016/tests/build/test-results/test/
             mtg-sets/2024/tests/build/test-results/test/
+            mtg-sets/1993-1999/tests/build/test-results/test/
+            mtg-sets/2023/tests/build/test-results/test/
+  accepted-protection-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Source-bound R5 protections without changing accepted behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r9-internal-mana-lifecost-20261020"
+          mkdir -p r9-safety-evidence
+          git rev-parse HEAD > r9-safety-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > r9-safety-evidence/tree-sha.txt
+          git merge-base --is-ancestor 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          echo ZERO_FULL_GAMES > r9-safety-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Pact Ballista Statue Encore combat resolution and R5 controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualPactDebt*Test' --tests '*ManualBallista*Test' \
+            --tests '*ManualStatue*Test' --tests '*ManualResolutionPaymentRegressionTest' \
+            --tests '*ManualR5CandidateCompositionTest' --tests '*ManualEncoreRegressionTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-safety-evidence/survival-protections.log
+          mkdir -p r9-safety-evidence/survival-junit
+          cp -a ai/build/test-results/test/. r9-safety-evidence/survival-junit/
+      - name: Original CONTROL versus A catalog initializer parity
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualPrecisionR1PreflightTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-safety-evidence/initializers.log
+      - name: Preserve protected regression XML and source provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r9-internal-safety-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            r9-safety-evidence/
+            ai/build/test-results/test/
