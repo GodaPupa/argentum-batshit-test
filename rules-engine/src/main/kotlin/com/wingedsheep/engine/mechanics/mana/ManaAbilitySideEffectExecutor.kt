@@ -78,8 +78,7 @@ class ManaAbilitySideEffectExecutor(
             // same ability, and this loop runs for every auto-tapped source of every payment.
             // A source paying another mana ability's {1} can be tapped without a
             // manaProduced entry: its mana was consumed internally rather than credited
-            // to the outer spell/ability. For a uniquely printed mana ability, still
-            // execute the actual printed costs and side effects exactly once.
+            // to the outer spell/ability. Fail closed when ability identity is ambiguous.
             val ability = matchingManaAbility(
                 currentState, source.entityId, production?.color,
                 internalCostOnly = production == null
@@ -177,8 +176,8 @@ class ManaAbilitySideEffectExecutor(
     /**
      * Match the printed mana ability. Internal activation-cost funding sources can lack
      * a [ManaSolution.manaProduced] entry; they nevertheless activate an actual mana
-     * ability. The single-printed-ability fallback is safe for that missing-production
-     * path only. Do not guess among multiple printed abilities with different costs.
+     * ability. Fail closed when no unique color match exists; do not guess among multiple
+     * printed abilities with different costs or side effects.
      */
     private fun matchingManaAbility(
         state: GameState,
@@ -189,8 +188,11 @@ class ManaAbilitySideEffectExecutor(
         val card = state.getEntity(sourceId)?.get<CardComponent>() ?: return null
         val cardDef = cardRegistry.getCard(card.cardDefinitionId) ?: return null
         val manaAbilities = cardDef.script.activatedAbilities.filter { it.isManaAbility }
-        return manaAbilities.firstOrNull { abilityProducesColor(it, producedColor) }
-            ?: if (internalCostOnly) manaAbilities.singleOrNull() else null
+        val colorMatch = manaAbilities.firstOrNull { abilityProducesColor(it, producedColor) }
+        // Only accept a unique single-ability fallback when production is missing AND
+        // there is exactly one printed mana ability. Multiple abilities require explicit
+        // identity; guessing is unsafe.
+        return colorMatch ?: if (internalCostOnly && manaAbilities.size == 1) manaAbilities.single() else null
     }
 
     fun runSideEffects(
