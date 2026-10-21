@@ -1,0 +1,61 @@
+{
+  "schema": "ARGENTUM_MANUAL_SPORT_S2_SINGLE_LINE_DELAYED_STEP_METADATA_TEST_V1",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_BEFORE_NEW_S2_TEST_OUTCOME_OR_CODE_PATCH",
+  "source_parent": "725de967cfe3fa7cfc34ccccc1ce65c54bb3d383",
+  "r10_parent_qualification": {
+    "run": 39669585704,
+    "source_sha": "7ab6d5bf07e893b5d2edf6dd28182d5a12b868db",
+    "r10_green": true
+  },
+  "sport_s1": {
+    "run": 39672563388,
+    "artifact_id": 12379948485,
+    "original_pact_casts": 13,
+    "all_paid_on_next_upkeep": 13,
+    "end_step_description_count": 13,
+    "gameplay_bug_proven": false
+  },
+  "unchanged_trigger_detector_blob": "4dab5a577dac7b93b49265f3582b60a0517ca187",
+  "proof": "TriggerDetector.detectDelayedTriggers(state,step) filters by delayed.fireAtStep == step and active player, but synthesizes event-description EventPattern.StepEvent(Step.END, Player.Each) unconditionally. This produces an 'End Step' description for genuine UPKEEP events.",
+  "single_variable_patch": {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "before": "trigger = EventPattern.StepEvent(Step.END, Player.Each),",
+    "after": "trigger = EventPattern.StepEvent(step, Player.Each),",
+    "limit": "Update only the synthesized description EventPattern field, not scheduling predicates, turn semantics, mana/payment engine, card definition, Pact advisor, deck, or AI profile."
+  },
+  "fixed_synthetic_tests": [
+    {
+      "id": "SPORT-S2-POS-UPKEEP",
+      "expected": "An actually matching delayed UPKEEP trigger yields synthesized EventPattern.StepEvent(Step.UPKEEP, Player.Each), source/controller and actual triggerContext.step UPKEEP; END probe does not fire."
+    },
+    {
+      "id": "SPORT-S2-NEG-END",
+      "expected": "An actually matching delayed END trigger retains synthesized EventPattern.StepEvent(Step.END, Player.Each); UPKEEP probe does not fire."
+    },
+    {
+      "id": "SPORT-S2-NEG-WRONG-PLAYER",
+      "expected": "A delayed trigger gated to one player cannot fire during another player's turn."
+    },
+    {
+      "id": "SPORT-S2-NEG-NOT-BEFORE",
+      "expected": "NEXT_TURN lower turn bound remains enforced."
+    }
+  ],
+  "red_before_edit": "On the initial unchanged source, the new UPKEEP positive description test must fail while the three protected negative controls pass. Treat this red as evidence of precisely the metadata defect, not original gameplay failure.",
+  "green_after_edit": "After only the single-line code patch, all four focused controls GREEN; protected existing Pact paid/unpaid scenario tests and original R9/R5 tests must remain GREEN on the candidate source.",
+  "limits": {
+    "new_full_games": 0,
+    "precision_used": 10,
+    "precision_cap": 12,
+    "precision_reserved": 2,
+    "main_unchanged": true,
+    "r5_original_source_unchanged": true,
+    "r9_qualified_source_unchanged": true,
+    "deck_v07_unchanged": true,
+    "challenger_a_unchanged": true,
+    "no_merge": true,
+    "not_a_competitive_winrate_claim": true
+  },
+  "classification": "Metadata text remediation, not a claim that old original Pact debt failed: observed 13/13 historical payments occurred correctly at next owner upkeep."
+}
