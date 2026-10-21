@@ -245,12 +245,12 @@ class ManualCruiseR10ArchivedDecisionAndCostTest : FunSpec({
                 "Nondeterministic source-state profile decision in "+caseId
             }
             if(caseId=="R10-R9-TUNING-SEED-POSITIVE"){
-                check((sampledBaseline.single() as? PlayLand)?.cardId?.let{
+                check((sampledBaseline.first() as? PlayLand)?.cardId?.let{
                     cardName(state,it)=="Opal Palace"}==true)
-                check((sampledCandidate.single() as? PlayLand)?.cardId?.let{
+                check((sampledCandidate.first() as? PlayLand)?.cardId?.let{
                     cardName(state,it)=="Misty Rainforest"}==true)
             }else{
-                check(sampledBaseline.single()==sampledCandidate.single()) {
+                check(sampledBaseline.first()==sampledCandidate.first()) {
                     "R10 benchmark changed a non-target action: "+caseId
                 }
             }
