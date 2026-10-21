@@ -1,0 +1,105 @@
+name: Manual SPORT S1 original Pact upkeep payment trace inventory (NO GAMES)
+on:
+  push:
+    branches: [research/manual-sport-s1-pact-event-audit-20261021]
+    paths:
+      - '.github/workflows/manual-sport-s1-pact-originals-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/SPORT_S1_PACT_SOURCE_PROTOCOL.json'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/audit_sport_s1_pact_originals.py'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-sport-s1-exact-original-pact-events
+  cancel-in-progress: true
+
+jobs:
+  all-original-pact-observations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 50}
+
+      - name: Enforce frozen original R5/R9 source and source-only file allowlist
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p sport-s1-original-input sport-s1-evidence
+          test "$GITHUB_REF" = 'refs/heads/research/manual-sport-s1-pact-event-audit-20261021'
+          git merge-base --is-ancestor ceabf901c2d99bb77b53b3c9c078d4c01863645b HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseR9ExecutableFetchAdvisorModule.kt)" = afb19c325bf38f3d82bd0fefba64e1f4057db858
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          test "$(git rev-parse HEAD:mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt)" = c786551484cfb001eea9fc2b05e14ea23fd63bf9
+          git diff --name-only ceabf901c2d99bb77b53b3c9c078d4c01863645b HEAD > sport-s1-evidence/changed-paths.txt
+          while IFS= read -r file; do
+            case "$file" in
+              .github/workflows/manual-sport-s1-pact-originals-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/SPORT_S1_PACT_SOURCE_PROTOCOL.json|experiments/manual-transmission/research/cruise-sport-race-20261021/audit_sport_s1_pact_originals.py) ;;
+              *) echo "UNAUTHORIZED_DELTA:$file"; exit 1 ;;
+            esac
+          done < sport-s1-evidence/changed-paths.txt
+          git rev-parse HEAD > sport-s1-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > sport-s1-evidence/tree-sha.txt
+          echo 'EXACT TEN ORIGINAL COMPLETED GAMES; ZERO REPLAYED OR NEW GAMES; TWO PRECISION RESERVED' > sport-s1-evidence/budget.txt
+
+      - name: Retrieve all ten source-bound previously completed archives
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=Path('experiments/manual-transmission/research/cruise-sport-race-20261021')
+          m=json.loads((d/'CRUISE_R2_ZONE_MANIFEST.json').read_text())
+          p=json.loads((d/'SPORT_S1_PACT_SOURCE_PROTOCOL.json').read_text())
+          assert m['budget']=={'used':10,'max':12,'reserved':2,'new_games':0}
+          assert p['schema']=='ARGENTUM_MANUAL_SPORT_S1_ORIGINAL_PACT_PAYMENT_TRACE_AUDIT_V1'
+          assert p['qualifier']['original_budget']=={'used':10,'cap':12,'reserved':2,'new_games':0}
+          assert len(m['archives'])==10
+          with open('sport-s1-evidence/archive-pins.tsv','w') as f:
+              for a in m['archives']:
+                  f.write('\t'.join((a['cohort'],a['arm'],a['seed'],str(a['id']),a['sha256']))+'\n')
+          PY
+          while IFS=$'\t' read -r cohort arm seed artifact sha; do
+            file="sport-s1-original-input/$cohort-$arm-$seed-original.zip"
+            gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/$artifact/zip" > "$file"
+            printf '%s  %s\n' "$sha" "$file" | sha256sum -c -
+          done < sport-s1-evidence/archive-pins.tsv
+
+      - name: Independently audit real Pact casts, own-upkeep payment and discrepant trigger descriptions
+        shell: bash
+        env:
+          MANUAL_SPORT_S1_INPUT: sport-s1-original-input
+          MANUAL_SPORT_S1_OUTPUT: sport-s1-evidence
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission/research/cruise-sport-race-20261021/audit_sport_s1_pact_originals.py \
+            2>&1 | tee sport-s1-evidence/original-pact-source-audit.log
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=json.loads(Path('sport-s1-evidence/SPORT_S1_ORIGINAL_PACT_AUDIT.json').read_text())
+          assert d['schema']=='ARGENTUM_MANUAL_SPORT_S1_ORIGINAL_PACT_PAYMENT_TRACE_REPORT_V1'
+          assert d['originalGames']==10 and d['originalAcceptedActions']==33440
+          assert d['actualPactSpellsCast']==13 and d['actualPactPaymentsAtFirstNextOwnUpkeep']==13
+          assert d['historicalTriggerDescriptionsSayingEndStep']==13
+          assert d['newFullCommanderGames']==0 and d['remainingReserved']==2
+          assert not d['gameplayBugDemonstrated'] and not d['competitiveImpactQualified']
+          assert len(d['actualHistoricalPactCases'])==13
+          print('SPORT_S1_ORIGINAL_PACT_INTEGRITY_PASS source_only=true archived_spells=13 paid_at_next_upkeep=13')
+          PY
+
+      - name: Publish source-bound JSON/logs only, exclude opponent hidden original ZIPs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-sport-s1-pact-original-events-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: sport-s1-evidence/
