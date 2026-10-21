@@ -817,34 +817,6 @@ class ManaSolver(
         // 2. Pay generic costs (and unrestricted X), using bonus mana first.
         // xValue here is the total extra generic mana needed for X (callers handle XX multiplication).
         // When X is color-restricted it was already paid by pass 1c above, so it's excluded here.
-            val paidCandidate = remainingSources.firstNotNullOfOrNull { src ->
-                val paidColor = src.availableColorsFor(spellContext).firstOrNull { c ->
-                    (src.colorActivationManaCost[c] ?: 0) > 0
-                } ?: return@firstNotNullOfOrNull null
-                val act = src.colorActivationManaCost[paidColor] ?: 0
-                if (src.manaAmount < act || src.manaAmount < genericRemaining) return@firstNotNullOfOrNull null
-                val funder = remainingSources.firstOrNull { f ->
-                    f.entityId != src.entityId && (
-                        f.availableColorsFor(spellContext).any { c ->
-                            (f.manaAbilityByColor[c]?.let { activationManaCost(it.cost) } ?: (f.colorActivationManaCost[c] ?: 0)) == 0
-                        } || (f.producesColorless && (f.colorlessManaAbility?.let { activationManaCost(it.cost) } ?: f.colorlessActivationManaCost) == 0)
-                    )
-                } ?: return@firstNotNullOfOrNull null
-                Triple(src, paidColor, funder)
-            }
-            if (paidCandidate != null) {
-                val (paid, color, funder) = paidCandidate
-                val fundColor = funder.availableColorsFor(spellContext).firstOrNull { c ->
-                    (funder.manaAbilityByColor[c]?.let { activationManaCost(it.cost) } ?: (funder.colorActivationManaCost[c] ?: 0)) == 0
-                }
-                useSource(funder, fundColor)
-                internalAbilities[funder.entityId] = if (fundColor != null) funder.manaAbilityByColor[fundColor] else funder.colorlessManaAbility
-                manaProduced[paid.entityId] = ManaProduction(color = color, amount = paid.manaAmount)
-                useSource(paid, color)
-                genericRemaining -= paid.manaAmount
-            }
-        }
-
         var genericRemaining = cost.genericAmount + monoHybridGeneric +
             (if (xManaRestriction.isEmpty()) xValue else 0)
 
@@ -857,7 +829,11 @@ class ManaSolver(
                     (src.colorActivationManaCost[c] ?: 0) > 0
                 } ?: return@firstNotNullOfOrNull null
                 val act = src.colorActivationManaCost[paidColor] ?: 0
-                if (src.manaAmount < act || src.manaAmount < genericRemaining) return@firstNotNullOfOrNull null
+                // Actual production of the selected ability: primary amount plus any
+                // bonus that originates from the same ability. Do not deduct the
+                // externally funded activation cost from spell-payment production.
+                val totalProduction = src.manaAmount + src.bonusManaPerTap
+                if (totalProduction < genericRemaining) return@firstNotNullOfOrNull null
                 val funder = remainingSources.firstOrNull { f ->
                     f.entityId != src.entityId && (
                         f.availableColorsFor(spellContext).any { c ->
