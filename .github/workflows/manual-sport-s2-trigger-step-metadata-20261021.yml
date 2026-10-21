@@ -1,0 +1,124 @@
+name: Manual SPORT S2 one-line delayed trigger metadata source qualification (NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-sport-s2-upkeep-trigger-metadata-20261021]
+    paths:
+      - '.github/workflows/manual-sport-s2-trigger-step-metadata-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/SPORT_S2_DELAYED_TRIGGER_METADATA_PROTOCOL.json'
+      - 'rules-engine/src/test/kotlin/com/wingedsheep/engine/event/ManualSportS2DelayedTriggerMetadataTest.kt'
+      - 'rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-sport-s2-delayed-event-description-proof
+  cancel-in-progress: true
+jobs:
+  one-line-only-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 50}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Protect source, mechanics budget, original profiles/decks and exact changed paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p sport-s2-evidence
+          test "$GITHUB_REF" = 'refs/heads/candidate/manual-sport-s2-upkeep-trigger-metadata-20261021'
+          git merge-base --is-ancestor 725de967cfe3fa7cfc34ccccc1ce65c54bb3d383 HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseR9ExecutableFetchAdvisorModule.kt)" = afb19c325bf38f3d82bd0fefba64e1f4057db858
+          test "$(git rev-parse HEAD:mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt)" = c786551484cfb001eea9fc2b05e14ea23fd63bf9
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          git diff --name-only 725de967cfe3fa7cfc34ccccc1ce65c54bb3d383 HEAD > sport-s2-evidence/changed-paths.txt
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/manual-sport-s2-trigger-step-metadata-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/SPORT_S2_DELAYED_TRIGGER_METADATA_PROTOCOL.json|rules-engine/src/test/kotlin/com/wingedsheep/engine/event/ManualSportS2DelayedTriggerMetadataTest.kt|rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt) ;;
+              *) echo "UNAUTHORIZED_SOURCE_DELTA:$path"; exit 1 ;;
+            esac
+          done < sport-s2-evidence/changed-paths.txt
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('experiments/manual-transmission/research/cruise-sport-race-20261021/SPORT_S2_DELAYED_TRIGGER_METADATA_PROTOCOL.json').read_text())
+          assert m['schema']=='ARGENTUM_MANUAL_SPORT_S2_SINGLE_LINE_DELAYED_STEP_METADATA_TEST_V1'
+          assert m['status']=='PREDECLARED_BEFORE_NEW_S2_TEST_OUTCOME_OR_CODE_PATCH'
+          assert m['single_variable_patch']['before']=='trigger = EventPattern.StepEvent(Step.END, Player.Each),'
+          assert m['single_variable_patch']['after']=='trigger = EventPattern.StepEvent(step, Player.Each),'
+          assert m['limits']['new_full_games']==0 and m['limits']['precision_reserved']==2
+          print('SPORT_S2_FROZEN_PREDECLARATION_PASS no_games=true')
+          PY
+          echo 'EXACT ONLY EVENT METADATA STEPEVENT; ZERO NEW FULL GAMES; TWO RESERVED' > sport-s2-evidence/budget.txt
+          git rev-parse HEAD > sport-s2-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > sport-s2-evidence/tree-sha.txt
+          git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt > sport-s2-evidence/detector-blob.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Four fixed UPKEEP/END/owner/turn metadata assertions (initial source expected RED)
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :rules-engine:cleanTest :rules-engine:test \
+            --tests '*ManualSportS2DelayedTriggerMetadataTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee sport-s2-evidence/s2-metadata-regressions.log
+
+      - name: Preserve focused S2 XML separate from any protected regression
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p sport-s2-evidence/s2-junit
+          cp -a rules-engine/build/test-results/test/. sport-s2-evidence/s2-junit/ || true
+
+      - name: Protect original R9 and R5 source regressions only after focused S2 passes
+        if: success()
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MANUAL_R9_ROOT: ${{ github.workspace }}
+          MANUAL_R9_ARCHIVES: ${{ github.workspace }}/sport-s2-original-r9-traces
+          MANUAL_R9_OUTPUT: ${{ github.workspace }}/sport-s2-evidence/r9-regression
+        run: |
+          set -euo pipefail
+          mkdir -p "$MANUAL_R9_ARCHIVES" "$MANUAL_R9_OUTPUT"
+          gh api '/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12298777958/zip' > "$MANUAL_R9_ARCHIVES/R6-control-202610202141-original.zip"
+          gh api '/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12298778067/zip' > "$MANUAL_R9_ARCHIVES/R6-a-202610202141-original.zip"
+          printf '%s  %s\n' '031011134d10e3ae002ad7dc304ff7dafcc5e14f9a117c436e510dfb984349cb' "$MANUAL_R9_ARCHIVES/R6-control-202610202141-original.zip" | sha256sum -c -
+          printf '%s  %s\n' 'a4396d43fdd831f5f67f2a6b865630af9a90ff1420c2b127be6e6b2f294a6efe' "$MANUAL_R9_ARCHIVES/R6-a-202610202141-original.zip" | sha256sum -c -
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualCruiseR9ExactFetchPolicyTest' \
+            --tests '*ManualCruiseR9ImmediateLethalGuardTest' \
+            --tests '*ManualPactDebt*Test' \
+            --tests '*ManualBallista*Test' \
+            --tests '*ManualStatue*Test' \
+            --tests '*ManualEncoreRegressionTest' \
+            --tests '*ManualResolutionPaymentRegressionTest' \
+            --tests '*ManualR5CandidateCompositionTest' \
+            --tests '*ManualAnimarDevelopmentPolicyTest' \
+            --tests '*EngineAiMomirMulliganTest' \
+            --tests '*PestControlMonoRedMadnessMulliganPolicyTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee sport-s2-evidence/r9-r5-protected.log
+
+      - name: Upload actual RED/GREEN source-bound XML, hashes and logs, no full game ZIPs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-sport-s2-delayed-metadata-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            sport-s2-evidence/
+            rules-engine/build/test-results/test/
+            ai/build/test-results/test/
