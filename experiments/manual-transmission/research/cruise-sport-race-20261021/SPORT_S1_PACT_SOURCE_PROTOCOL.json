@@ -1,0 +1,53 @@
+{
+  "schema": "ARGENTUM_MANUAL_SPORT_S1_ORIGINAL_PACT_PAYMENT_TRACE_AUDIT_V1",
+  "date": "2026-10-21",
+  "status": "RETROSPECTIVE_ORIGINAL_SOURCE_PROTOCOL_PREDECLARED_NO_NEW_GAMES",
+  "source_parent": "ceabf901c2d99bb77b53b3c9c078d4c01863645b",
+  "mission": "Inventory all historical accepted Pact of Negation casts and determine whether actual payment/decision occurs at the original player's next upkeep, distinguishing stack/trigger description text from actual debt mechanics. No policy changes and no new full games.",
+  "originals_manifest": "experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ZONE_MANIFEST.json",
+  "sample_rule": "All ten completed R1/R6 original frozen Control/A games, all four seats, all Pact of Negation CastSpell actions. No hand selection, seed exclusion, or event omission.",
+  "published_source_code": {
+    "pact_definition_path": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt",
+    "pact_blob": "c786551484cfb001eea9fc2b05e14ea23fd63bf9",
+    "oracle": "Counter target spell. At the beginning of your next upkeep, pay {3}{U}{U}. If you don't, you lose the game.",
+    "engine_effect": "CreateDelayedTriggerEffect(step=Step.UPKEEP, timing=DelayedTriggerTiming.NEXT_TURN, fireOnPlayer=You)"
+  },
+  "method": [
+    "Pin and independently hash original ZIP archives and verify original SHA, accepted action and result streams, no error/rejection, and the original R5 comparator and skipped-mulligan initializer.",
+    "For each Pact CastSpell, identify the exact caster/card entity, cast action and turn, SpellCastEvent, distinct trigger AbilityTriggeredEvent, the first subsequent TurnChangedEvent naming that caster, the actual Pact YesNoResponse / DecisionSubmittedEvent and 3UU mana payment.",
+    "Classify proper next-upkeep payment only when a recorded YES decision and five-mana payment with at least two blue occur on the first subsequent own upkeep. Never infer unobserved capacity before the debt or future opponent behavior.",
+    "Record the printed textual description on the trigger, including any reference to End Step, separately from the actual phase/step at payment. Do not automatically classify a description discrepancy as a wrong gameplay loss or broken rules engine.",
+    "Report potential missing/extra triggers, debt prompts, payments, losses, or archive truncation, without silently excluding cases."
+  ],
+  "predeclared_inventory_from_readonly_original_search": {
+    "completed_games": 10,
+    "original_pact_cast_count": 13,
+    "apparent_next_own_upkeep_paid": 13,
+    "observed_trigger_descriptions_saying_end_step": 13,
+    "status": "OBSERVED_RETROSPECTIVELY_NOT_INDEPENDENTLY_QUALIFIED_UNTIL_CI_AUDIT"
+  },
+  "qualifier": {
+    "not_blinded": true,
+    "linked_seats_and_seeds_dependent": true,
+    "no_new_full_games": true,
+    "no_policy_promotion": true,
+    "no_deck_swap": true,
+    "no_mechanics_repair_without_separate_source_regression": true,
+    "main_unchanged": true,
+    "original_budget": {
+      "used": 10,
+      "cap": 12,
+      "reserved": 2,
+      "new_games": 0
+    },
+    "safe_conclusion": "If 13/13 are source-linked correctly, classify the text mismatch as an event-description or scheduling-inspection lead, not a demonstrated missed debt payment. A separate exact engine scenario is needed to locate any actual timing bug."
+  },
+  "safety_assets": {
+    "main_sha": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "control_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "challenger_a_blob": "7984a2e87d8ddbe023d45620414d25a61691a040",
+    "r5_blob": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "r9_advisor_blob": "afb19c325bf38f3d82bd0fefba64e1f4057db858",
+    "r9_solver_blob": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+  }
+}
