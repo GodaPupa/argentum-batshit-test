@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/manual-phase2-core-three-receiving-20261021.yml'
       - 'experiments/manual-transmission/research/phase2-current-main-20261021/CORE_THREE_RECEIVING_PROTOCOL.json'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/CORE_THREE_SOURCE_PREFLIGHT_CORRECTION.json'
       - 'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmd/cards/AnimarSoulOfElements.kt'
       - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AnimarSoulOfElementsScenarioTest.kt'
       - 'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dtk/cards/AncestralStatue.kt'
@@ -38,14 +39,14 @@ jobs:
           test "$GITHUB_REF" = 'refs/heads/candidate/manual-phase2-core-three-receiving-20261021'
           git merge-base --is-ancestor 37a603617a03dfd2d81b39dae004f7f336a70dfc HEAD
           test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
-          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
-          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
-          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 43bbad79273806f56703fad420e9f6a495d05309
+          if git cat-file -e HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt 2>/dev/null; then echo 'EXPECTED_CANONICAL_MAIN_R5_TO_BE_ABSENT'; exit 1; fi
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = c9083468bc8576136eedbc504731a1de38e57ecd
           git diff --name-only 37a603617a03dfd2d81b39dae004f7f336a70dfc HEAD > phase2-core-three-evidence/changed-paths.txt
-          test "$(wc -l < phase2-core-three-evidence/changed-paths.txt)" -eq 8
+          test "$(wc -l < phase2-core-three-evidence/changed-paths.txt)" -eq 9
           while IFS= read -r file; do
             case "$file" in
-              .github/workflows/manual-phase2-core-three-receiving-20261021.yml|experiments/manual-transmission/research/phase2-current-main-20261021/CORE_THREE_RECEIVING_PROTOCOL.json|mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmd/cards/AnimarSoulOfElements.kt|mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AnimarSoulOfElementsScenarioTest.kt|mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dtk/cards/AncestralStatue.kt|mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AncestralStatueScenarioTest.kt|mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/aer/cards/WalkingBallista.kt|mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WalkingBallistaScenarioTest.kt) ;;
+              .github/workflows/manual-phase2-core-three-receiving-20261021.yml|experiments/manual-transmission/research/phase2-current-main-20261021/CORE_THREE_RECEIVING_PROTOCOL.json|experiments/manual-transmission/research/phase2-current-main-20261021/CORE_THREE_SOURCE_PREFLIGHT_CORRECTION.json|mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmd/cards/AnimarSoulOfElements.kt|mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AnimarSoulOfElementsScenarioTest.kt|mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dtk/cards/AncestralStatue.kt|mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AncestralStatueScenarioTest.kt|mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/aer/cards/WalkingBallista.kt|mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WalkingBallistaScenarioTest.kt) ;;
               *) echo "UNAUTHORIZED_SOURCE_CHANGE:$file"; exit 1 ;;
             esac
           done < phase2-core-three-evidence/changed-paths.txt
@@ -58,8 +59,15 @@ jobs:
           assert p["status"]=="DECLARED_BEFORE_CORE_THREE_CANDIDATE_COPY_AND_TEST"
           assert p["current_main_parent"]=="37a603617a03dfd2d81b39dae004f7f336a70dfc"
           assert [x["expected_cases"] for x in p["cards"]]==[6,2,2]
-          assert not p["source_protection"]["no_new_games"] is False
+          assert p["source_protection"]["no_new_games"] is True
           assert p["source_protection"]["original_precision_reserved"]==2
+          q=json.loads((root/"CORE_THREE_SOURCE_PREFLIGHT_CORRECTION.json").read_text())
+          assert q["status"]=="CORRECTION_PUBLISHED_AFTER_RED_BEFORE_ANY_BEHAVIORAL_TEST_EXECUTION"
+          assert q["prior_failed_run"]==39687341321
+          assert q["actual_main_r5_opt_in"]=="ABSENT"
+          assert q["actual_main_ai_profile_blob"]=="43bbad79273806f56703fad420e9f6a495d05309"
+          assert q["actual_main_mana_solver_blob"]=="c9083468bc8576136eedbc504731a1de38e57ecd"
+          assert not q["new_game_allowed"]
           for card in p["cards"]:
               for path,key in [(card["source"],"source_blob"),(card["test"],"test_blob")]:
                   actual=subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip()
