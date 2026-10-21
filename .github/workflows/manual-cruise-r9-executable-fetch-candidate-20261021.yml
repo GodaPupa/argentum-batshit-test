@@ -1,0 +1,150 @@
+name: Manual CRUISE R9 executable fetch opt-in qualification (NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-cruise-r9-executable-fetch-20261021]
+    paths:
+      - '.github/workflows/manual-cruise-r9-executable-fetch-candidate-20261021.yml'
+      - 'ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt'
+      - 'ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/CardAdvisor.kt'
+      - 'ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseR9ExecutableFetchAdvisorModule.kt'
+      - 'ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionCruiseR9Candidate.kt'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR9ExactFetchPolicyTest.kt'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-cruise-r9-executable-fetch-optin-qualification
+  cancel-in-progress: false
+
+jobs:
+  original-r5-protected-r9-bounded:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_R9_ROOT: ${{ github.workspace }}
+      MANUAL_R9_ARCHIVES: ${{ github.workspace }}/cruise-r9-originals
+      MANUAL_R9_OUTPUT: ${{ github.workspace }}/cruise-r9-evidence/exact
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 55}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Protect frozen decks, profiles, source provenance and ZERO game budget
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-r9-originals cruise-r9-evidence/exact
+          test "$GITHUB_REF" = 'refs/heads/candidate/manual-cruise-r9-executable-fetch-20261021'
+          git merge-base --is-ancestor d6f3e0a66251fd2c99430e3df7eb9db14f750753 HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R9_EXECUTABLE_FETCH_PROTOCOL.json)" = 39ae2a06e20f5595ebdf4a87299c01250d37d573
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt)" = 8a3c94041ca6cf781d5efe35d7a513b522b3856b
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          git diff --name-only d6f3e0a66251fd2c99430e3df7eb9db14f750753 HEAD > cruise-r9-evidence/changed-paths.txt
+          while IFS= read -r file; do
+            case "$file" in
+              .github/workflows/manual-cruise-r9-executable-fetch-candidate-20261021.yml|ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt|ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/CardAdvisor.kt|ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseR9ExecutableFetchAdvisorModule.kt|ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionCruiseR9Candidate.kt|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR9ExactFetchPolicyTest.kt) ;;
+              *) echo "UNAUTHORIZED_DELTA:$file"; exit 1 ;;
+            esac
+          done < cruise-r9-evidence/changed-paths.txt
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R9_EXECUTABLE_FETCH_PROTOCOL.json')
+          d=json.loads(p.read_text())
+          assert d['schema']=='ARGENTUM_CRUISE_R9_EXECUTABLE_FETCH_POLICY_PREDECLARATION_V1'
+          assert d['status']=='SCOPE_AND_ACCEPTANCE_FROZEN_BEFORE_ANY_NEW_POLICY_CODE_OR_TEST_SCORE'
+          assert d['budget']=={'original_full_games_used':10,'cap':12,'remaining_reserved':2,'new_games_authorized':0}
+          assert [x['id'] for x in d['preregistered_cases']]==[
+              'R9-POS-A-42','R9-NEG-CONTROL-42','R9-NEG-NO-DORK',
+              'R9-NEG-MISSING-TARGET','R9-NEG-LIFE-TAX','R9-NEG-PREEMPTIVE-LETHAL',
+              'R9-NEG-OPPONENT-WINDOW','R9-NEG-ENTRY-TAPPED'
+          ]
+          print('MANUAL_CRUISE_R9_FROZEN_PREREGISTRATION_PASS zero_new_games=true')
+          PY
+          git rev-parse HEAD > cruise-r9-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > cruise-r9-evidence/tree-sha.txt
+          echo 'R9 ZERO NEW FULL GAMES; ORIGINAL TEN USED; TWO RESERVED; NO PROMOTION' > cruise-r9-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Retrieve original exactly hashed R6 CONTROL and A finished full-game traces
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12298777958/zip > cruise-r9-originals/R6-control-202610202141-original.zip
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12298778067/zip > cruise-r9-originals/R6-a-202610202141-original.zip
+          printf '%s  %s\n' '031011134d10e3ae002ad7dc304ff7dafcc5e14f9a117c436e510dfb984349cb' cruise-r9-originals/R6-control-202610202141-original.zip | sha256sum -c -
+          printf '%s  %s\n' 'a4396d43fdd831f5f67f2a6b865630af9a90ff1420c2b127be6e6b2f294a6efe' cruise-r9-originals/R6-a-202610202141-original.zip | sha256sum -c -
+
+      - name: Actual R9 R5-comparator positive and all seven negative source-bound fixtures
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualCruiseR9ExactFetchPolicyTest' \
+            --tests '*ManualCruiseR9ImmediateLethalGuardTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r9-evidence/r9-candidate-original-source.log
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('cruise-r9-evidence/exact')
+          expected=[
+            'R9-POS-A-42','R9-NEG-CONTROL-42','R9-NEG-NO-DORK',
+            'R9-NEG-MISSING-TARGET','R9-NEG-LIFE-TAX',
+            'R9-NEG-OPPONENT-WINDOW','R9-NEG-ENTRY-TAPPED'
+          ]
+          for id in expected:
+              f=root/(id+'.json')
+              assert f.is_file(), 'Missing '+id
+              x=json.loads(f.read_text())
+              assert x['newFullGames']==0 and x['profilePromoted'] is False
+          assert json.loads((root/'R9-POS-A-42.json').read_text())['r9Choice']=='Misty Rainforest'
+          assert json.loads((root/'R9-NEG-CONTROL-42.json').read_text())['r9Choice']=='Opal Palace'
+          print('MANUAL_R9_EXACT_SOURCE_ACTION_GATE_PASS cases=8 controller=untouched games=0')
+          PY
+
+      - name: Archive original R9 JUnit before protected cleanTest
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p cruise-r9-evidence/r9-junit
+          cp -a ai/build/test-results/test/. cruise-r9-evidence/r9-junit/ || true
+
+      - name: Original protected R5 Animar Pact Ballista Statue Encore payment and bot regressions
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualPactDebt*Test' \
+            --tests '*ManualBallista*Test' \
+            --tests '*ManualStatue*Test' \
+            --tests '*ManualEncoreRegressionTest' \
+            --tests '*ManualResolutionPaymentRegressionTest' \
+            --tests '*ManualR5CandidateCompositionTest' \
+            --tests '*ManualAnimarDevelopmentPolicyTest' \
+            --tests '*EngineAiMomirMulliganTest' \
+            --tests '*PestControlMonoRedMadnessMulliganPolicyTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r9-evidence/r5-and-opener-regressions.log
+
+      - name: Archive exact source, original test XML and independent logs on GREEN or RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-cruise-r9-source-qualification-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            cruise-r9-evidence/
+            ai/build/test-results/test/
