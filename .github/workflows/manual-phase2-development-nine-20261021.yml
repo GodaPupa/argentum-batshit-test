@@ -1,10 +1,12 @@
-name: Manual Phase 2 nine frozen development cards on main (69 CASES, NO GAMES)
+name: Manual Phase 2 nine frozen development cards on main (70 CORRECTED CASES, NO GAMES)
 on:
   push:
     branches: [candidate/manual-phase2-development-nine-20261021]
     paths:
       - '.github/workflows/manual-phase2-development-nine-20261021.yml'
       - 'experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_PROTOCOL.json'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_SOURCE_COMPATIBILITY_CORRECTION.json'
+      - 'rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/SerializationTestSupport.kt'
       - 'mtg-sets/**/cards/*Growth.kt'
       - 'mtg-sets/**/cards/*Sprawl.kt'
       - 'mtg-sets/**/cards/*Elf.kt'
@@ -47,10 +49,15 @@ jobs:
           assert data["source_parent"]=="53b506850b1a949664bd3ff901ec8a7ba5dcab90"
           assert data["expected_donor_card_count"]==9
           assert data["expected_unique_test_cases"]==69
+          correction=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_SOURCE_COMPATIBILITY_CORRECTION.json").read_text())
+          assert correction["status"]=="RECORDED_AFTER_ORIGINAL_RED_BEFORE_ANY_RETEST"
+          assert correction["failed_run"]==39689951999
+          assert correction["corrected_total"]==70 and correction["original_predeclared_total"]==69
+          assert correction["test_fixture_integration"]["exact_original_phase2_donor_blob"]=="5253189c1a0dc1cff3b7e30791a73fcb866f80bb"
           assert sum(d["test_count"] for d in data["donor_cards"])==69
           assert data["frozen_protection"]["no_seeds_or_full_games"]
           assert data["frozen_protection"]["precision_original_games_reserved"]==2
-          expected={str(p),".github/workflows/manual-phase2-development-nine-20261021.yml"}
+          expected={str(p),".github/workflows/manual-phase2-development-nine-20261021.yml","experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_SOURCE_COMPATIBILITY_CORRECTION.json"}
           for card in data["donor_cards"]:
               for path,key in ((card["source_path"],"source_sha"),(card["test_path"],"test_sha")):
                   got=subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip()
@@ -59,9 +66,13 @@ jobs:
           helper=data["additional_test_helper"]
           assert subprocess.check_output(["git","rev-parse","HEAD:"+helper["path"]],text=True).strip()==helper["blob"]
           expected.add(helper["path"])
+          compat=correction["test_fixture_integration"]
+          fixture_got=subprocess.check_output(["git","rev-parse","HEAD:"+compat["path"]],text=True).strip()
+          assert fixture_got==compat["exact_original_phase2_donor_blob"]
+          expected.add(compat["path"])
           changes=subprocess.check_output(["git","diff","--name-only",data["source_parent"],"HEAD"],text=True).splitlines()
-          assert len(changes)==21 and set(changes)==expected,(len(changes),sorted(set(changes)^expected))
-          print("MANUAL_PHASE2_NINE_DONOR_BLOBS_SOURCE_VERIFIED paths=21 testcases=69")
+          assert len(changes)==23 and set(changes)==expected,(len(changes),sorted(set(changes)^expected))
+          print("MANUAL_PHASE2_NINE_DONOR_BLOBS_SOURCE_VERIFIED paths=23 testcases=70 original_donor_69_plus_1_generated_case")
           PY
           git rev-parse HEAD > development-nine-source/head-sha.txt
           git rev-parse HEAD^{tree} > development-nine-source/tree-sha.txt
@@ -126,6 +137,7 @@ jobs:
           from pathlib import Path
           import xml.etree.ElementTree as ET
           p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_PROTOCOL.json").read_text())
+          correction=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_SOURCE_COMPATIBILITY_CORRECTION.json").read_text())
           era=os.environ["ERA"]
           subset=[c for c in p["donor_cards"] if c["era"]==era]
           assert subset,(era,"no declared cases")
@@ -136,13 +148,14 @@ jobs:
               assert file.is_file(),("Missing exact source JUnit",str(file))
               root=ET.parse(file).getroot()
               cases=root.findall(".//testcase")
-              assert len(cases)==c["test_count"],(c["name"],len(cases),c["test_count"])
+              n=correction["effective_case_counts"][c["name"]]
+              assert len(cases)==n,(c["name"],len(cases),n)
               assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped"),c["name"]
               assert all(int(root.get(t,"0"))==0 for t in ("failures","errors","skipped")),c["name"]
               assert len(set((x.get("classname"),x.get("name")) for x in cases))==len(cases),"Duplicate XML case"
               print(f"{c['name']}: {len(cases)}/{c['test_count']} exact unchanged mechanics PASS")
               count+=len(cases)
-          assert count==p["expected_by_era"][era],(era,count)
+          assert count==correction["corrected_by_era"][era],(era,count)
           print("DEVELOPMENT_NINE_ERA_SOURCE_PASS",era,count)
           PY
       - name: Preserve original scoped result (GREEN or RED, never a game)
@@ -180,6 +193,7 @@ jobs:
           assert os.environ["SOURCE_STATUS"]=="success",("source",os.environ["SOURCE_STATUS"])
           assert os.environ["CASES_STATUS"]=="success",("cases",os.environ["CASES_STATUS"])
           p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_PROTOCOL.json").read_text())
+          correction=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_SOURCE_COMPATIBILITY_CORRECTION.json").read_text())
           counts={}
           for c in p["donor_cards"]:
               stem=Path(c["test_path"]).stem
@@ -187,13 +201,13 @@ jobs:
               assert path.is_file(),("missing JUnit",str(path))
               node=ET.parse(path).getroot()
               tests=node.findall(".//testcase")
-              assert len(tests)==c["test_count"],(stem,len(tests))
+              assert len(tests)==correction["effective_case_counts"][c["name"]],(stem,len(tests))
               assert not node.findall(".//failure") and not node.findall(".//error") and not node.findall(".//skipped"),stem
               counts[c["name"]]=len(tests)
-          assert sum(counts.values())==69 and len(counts)==9,counts
+          assert sum(counts.values())==70 and len(counts)==9,counts
           obj=dict(schema="ARGENTUM_MANUAL_DEV_NINE_EXACT_DONOR_SCENARIOS_R1",status="SOURCE_COMPONENT_QUALIFIED_NINE_ONLY",per_card=counts,total=69,failures=0,skips=0,new_official_games=0,registered_deck_qualification=False,phase2_36_admitted=0,phase2_864_admitted=0,precision_remaining=2)
           Path("devnine-combined/DEV_NINE_VERDICT.json").write_text(json.dumps(obj,indent=2)+"\n")
-          print("MANUAL_DEV_NINE_69_69_SOURCE_MECHANICS_GREEN_NOT_DECK_ADMISSION")
+          print("MANUAL_DEV_NINE_70_70_SOURCE_MECHANICS_GREEN_NOT_DECK_ADMISSION")
           PY
       - uses: actions/upload-artifact@v4
         if: always()
