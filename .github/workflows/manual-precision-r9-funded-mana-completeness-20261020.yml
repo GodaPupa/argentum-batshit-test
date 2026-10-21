@@ -1,0 +1,113 @@
+name: Manual Precision R9 funded-mana completeness gate (NO GAMES)
+on:
+  push:
+    branches: [research/manual-precision-r9-funded-mana-completeness-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r9-funded-mana-completeness-20261020.yml'
+      - 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt'
+      - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9FundedManaCompletenessHeldoutTest.kt'
+permissions:
+  contents: read
+concurrency:
+  group: manual-precision-r9-funded-mana-completeness
+  cancel-in-progress: false
+jobs:
+  funded-completeness-and-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Pin exact source identity and protected assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r9-funded-completeness
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r9-funded-mana-completeness-20261020"
+          git rev-parse HEAD > r9-funded-completeness/source-sha.txt
+          git rev-parse HEAD^{tree} > r9-funded-completeness/tree-sha.txt
+          git merge-base --is-ancestor 6b03cb02a510f2aa4592b3f0a175a89636905398 HEAD
+          echo ZERO_FULL_GAMES > r9-funded-completeness/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: New positive funded heldouts + original five R9 colorless/X + generic + provenance
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
+            --tests '*ManualPrecisionR9FundedManaCompletenessHeldoutTest' \
+            --tests '*ManualPrecisionR9ColorlessRestrictedXHeldoutTest' \
+            --tests '*ManualPrecisionR9GenericActivationCostHeldoutTest' \
+            --tests '*ManualPrecisionR9ProvenanceHardeningWitnessesTest' \
+            --tests '*ManaConfluenceScenarioTest' --tests '*ManualPrecisionR9ManaHeldoutScenarioTest' \
+            --tests '*ManualPrecisionR9InternalManaCostScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-funded-completeness/mana-witnesses.log
+
+      - name: Hidden Grotto
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2024:tests:test --tests '*HiddenGrottoTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-funded-completeness/grotto.log
+
+      - name: City of Brass
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:1993-1999:tests:test --tests '*CityOfBrassScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-funded-completeness/city.log
+
+      - name: Ashiok replacement
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2023:tests:test --tests '*AshiokWickedManipulatorScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-funded-completeness/ashiok.log
+
+      - name: Protected R5 Pact Ballista Statue Encore and payment
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualPactDebt*Test' --tests '*ManualBallista*Test' \
+            --tests '*ManualStatue*Test' --tests '*ManualResolutionPaymentRegressionTest' \
+            --tests '*ManualR5CandidateCompositionTest' --tests '*ManualEncoreRegressionTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-funded-completeness/r5.log
+
+      - name: CONTROL versus A initializer parity
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*ManualPrecisionR1PreflightTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-funded-completeness/initializers.log
+
+      - name: Preserve original JUnit and logs on GREEN or RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r9-funded-completeness-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            r9-funded-completeness/
+            mtg-sets/2008-2016/tests/build/test-results/test/
+            mtg-sets/2024/tests/build/test-results/test/
+            mtg-sets/1993-1999/tests/build/test-results/test/
+            mtg-sets/2023/tests/build/test-results/test/
+            ai/build/test-results/test/
