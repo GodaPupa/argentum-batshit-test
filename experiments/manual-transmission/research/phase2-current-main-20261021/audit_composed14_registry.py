@@ -39,7 +39,7 @@ def main():
     bootstrap=read_json(REPORT_ROOT/"source/bootstrap-report.json")
     require(protocol["schema"]=="ARGENTUM_MANUAL_PHASE2_COMPOSED14_CURRENT_MAIN_GUARDED_PREDECLARATION_V2","Wrong preregistered source protocol")
     require(protocol["status"]=="CONDITIONAL_PLAN_BEFORE_NEW_CARD_COMPOSITION_AND_800_CARD_REAUDIT","Protocol not preregistered")
-    require(protocol["source_safety"]["no_new_official_seeds_or_games"] and not protocol["source_safety"]["no_prod_main_merge"],"Unexpected official game or merge authority")
+    require(protocol["source_safety"]["no_new_official_seeds_or_games"] and protocol["source_safety"]["no_prod_main_merge"],"Unexpected official game or merge authority")
     require(protocol["full_catalog"]["slots_exact"]==800 and protocol["test_plan"]["expected_total"]==93,"Unfrozen sample or mechanics plan")
     require(official["protocol_id"]==admission["protocol_id"],"Mixed official and opponent programs")
     require(official["gameplay_authorized"] is False and official["seed_generation_authorized"] is False,
