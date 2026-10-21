@@ -1,0 +1,71 @@
+{
+  "schema": "ARGENTUM_MANUAL_RACE_R1_FROZEN_V07_ORIGINAL_CONVERSION_INVENTORY_V1",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_BEFORE_RACE_R1_AUDIT_EXECUTION",
+  "mission": "Audit real archived R5 scored choices, accepted casts, supported payoffs and bounded repeat/terminal outcomes for exact frozen Manual v0.7. Look for falsifiable wasted-loop or missed terminal opportunities without proposing unseen alternative game outcomes.",
+  "source_parent": "840eebef1ce77a591bacdc52bbb858b175938645",
+  "prior_gear_dispositions": {
+    "cruise_r9": "SOURCE_ONLY_OPT_IN_NOT_PRODUCTION",
+    "sport_s3": "PASS_ARCHIVED_PRIORITY_ATTRIBUTION_KEEP_R5",
+    "sport_s3b_run": 39680809168,
+    "sport_s3b_artifact_digest": "db13b2eea7e2673fe522809e13cbdb3eb2269cf3fd3c56990a3af92f5f9440ce"
+  },
+  "source_original_manifest": "experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ZONE_MANIFEST.json",
+  "expected_original": {
+    "games": 10,
+    "accepted_actions": 33440,
+    "matched_priorities": 7827
+  },
+  "actual_deck_watchlist": {
+    "conversion_cards": [
+      "Ancestral Statue",
+      "Walking Ballista",
+      "Purphoros, God of the Forge"
+    ],
+    "support_cards": [
+      "Temur Sabertooth",
+      "Peregrine Drake",
+      "Beast Whisperer",
+      "Soul of the Harvest"
+    ],
+    "excluded_not_in_frozen_hardware": [
+      "Palinchron"
+    ]
+  },
+  "measurements": [
+    "Unchanged R5 priority legal-action score/options vs actual accepted selection for casting each conversion card and activated Walking Ballista; count all original arms, seeds and seats.",
+    "Actual accepted SpellCast actions by sourceName, including source-matched SpellCastEvent. Distinguish offers from cards ever drawn/used and distinguish turn 1-3 from late windows.",
+    "Ancestral Statue BATTLEFIELD to HAND change with exact original event and finite per-turn cast counts; do not treat any loop as infinite without observed legal repeated actions.",
+    "Public observed DamageDealtEvent by Purphoros and Walking Ballista to players, plus original game terminal events in the same accepted action; report missing opportunities as zero, not failure.",
+    "Bind all actions and decisions against exact original ZIP, source SHA, no rejected results, no hidden opposition hand lookups. Select deterministic first example by cohort/seed/control-before-A/index, independent of outcome.",
+    "Do not attribute a game result or cEDH win rate to an offered but unselected spell, hypothetical future draw or scripted opponent pass."
+  ],
+  "classification": {
+    "offered_and_not_chosen": "historical scored option available; no proof strategic error",
+    "chosen_and_accepted": "actual original ActionProcessor accepted submission",
+    "same_action_damage_and_terminal": "contemporaneous source event evidence, not general win rate",
+    "finite_cast_chain": "group actual accepted per caster and global turn; do not infer infinite loop from multiple casts",
+    "missing_actual_combo": "if no original observed route, keep v0.7 and use independent deterministic mechanics tests before claiming power"
+  },
+  "hard_guards": {
+    "main_sha": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "control_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "challenger_a_blob": "7984a2e87d8ddbe023d45620414d25a61691a040",
+    "r5_profile_blob": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "current_ai_blob": "180918b2d7a59309e7b0617f2579fb2a6d06b7d5",
+    "r9_advisor_blob": "afb19c325bf38f3d82bd0fefba64e1f4057db858",
+    "s2_event_blob": "c95f059d375e3df107284e1081d00c449ca3f28d",
+    "mana_solver_blob": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93",
+    "original_control_used": 10,
+    "original_game_cap": 12,
+    "reserved_games": 2,
+    "new_games": 0,
+    "no_hidden_opponent_state": true,
+    "no_policy_edits": true,
+    "no_deck_edits": true,
+    "no_merges": true,
+    "no_win_rate_claim": true,
+    "historical_samples_dependent": true
+  },
+  "next_gate": "If original opportunity and a legitimate better choice are demonstrable, predeclare a one-variable RACE challenger and source-bound replay. Otherwise report lack of observed deficiency and hold v0.7/R5 rather than forcing a card/policy change."
+}
