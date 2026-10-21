@@ -1,0 +1,154 @@
+name: Manual Phase 2 three original core card definitions on main (TEN CASES, NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-phase2-core-three-receiving-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-core-three-receiving-20261021.yml'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/CORE_THREE_RECEIVING_PROTOCOL.json'
+      - 'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmd/cards/AnimarSoulOfElements.kt'
+      - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AnimarSoulOfElementsScenarioTest.kt'
+      - 'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dtk/cards/AncestralStatue.kt'
+      - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AncestralStatueScenarioTest.kt'
+      - 'mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/aer/cards/WalkingBallista.kt'
+      - 'mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WalkingBallistaScenarioTest.kt'
+permissions: {contents: read}
+concurrency:
+  group: manual-phase2-current-main-core-three-exact-donor
+  cancel-in-progress: false
+
+jobs:
+  exact-three-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 95
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 35}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Ensure exact three source/test donor blobs with no main/AI/solver/deck changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p phase2-core-three-evidence
+          test "$GITHUB_REF" = 'refs/heads/candidate/manual-phase2-core-three-receiving-20261021'
+          git merge-base --is-ancestor 37a603617a03dfd2d81b39dae004f7f336a70dfc HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          git diff --name-only 37a603617a03dfd2d81b39dae004f7f336a70dfc HEAD > phase2-core-three-evidence/changed-paths.txt
+          test "$(wc -l < phase2-core-three-evidence/changed-paths.txt)" -eq 8
+          while IFS= read -r file; do
+            case "$file" in
+              .github/workflows/manual-phase2-core-three-receiving-20261021.yml|experiments/manual-transmission/research/phase2-current-main-20261021/CORE_THREE_RECEIVING_PROTOCOL.json|mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmd/cards/AnimarSoulOfElements.kt|mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AnimarSoulOfElementsScenarioTest.kt|mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dtk/cards/AncestralStatue.kt|mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AncestralStatueScenarioTest.kt|mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/aer/cards/WalkingBallista.kt|mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WalkingBallistaScenarioTest.kt) ;;
+              *) echo "UNAUTHORIZED_SOURCE_CHANGE:$file"; exit 1 ;;
+            esac
+          done < phase2-core-three-evidence/changed-paths.txt
+          python3 - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          root=Path("experiments/manual-transmission/research/phase2-current-main-20261021")
+          p=json.loads((root/"CORE_THREE_RECEIVING_PROTOCOL.json").read_text())
+          assert p["schema"]=="ARGENTUM_MANUAL_PHASE2_CORE_THREE_RECEIVING_EXACT_SOURCE_V1"
+          assert p["status"]=="DECLARED_BEFORE_CORE_THREE_CANDIDATE_COPY_AND_TEST"
+          assert p["current_main_parent"]=="37a603617a03dfd2d81b39dae004f7f336a70dfc"
+          assert [x["expected_cases"] for x in p["cards"]]==[6,2,2]
+          assert not p["source_protection"]["no_new_games"] is False
+          assert p["source_protection"]["original_precision_reserved"]==2
+          for card in p["cards"]:
+              for path,key in [(card["source"],"source_blob"),(card["test"],"test_blob")]:
+                  actual=subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip()
+                  assert actual==card[key],(path,actual,card[key])
+          print("MANUAL_PHASE2_THREE_CORE_DONOR_BYTES_VERIFIED_NO_GAME")
+          PY
+          git rev-parse HEAD > phase2-core-three-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > phase2-core-three-evidence/tree-sha.txt
+          echo 'No game, no seed, no outcome, no official phase2 admission, Precision 10/12 used 2 reserved' > phase2-core-three-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Run exact original 2008–2016 Animar (six) plus Ancestral Statue (two) scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
+            --tests '*AnimarSoulOfElementsScenarioTest' \
+            --tests '*AncestralStatueScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee phase2-core-three-evidence/2008-2016-original-scenarios.log
+
+      - name: Preserve eight independent original 2008–2016 scenario XML before next Gradle invocation
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p phase2-core-three-evidence/2008-2016-junit
+          cp -a mtg-sets/2008-2016/tests/build/test-results/test/. phase2-core-three-evidence/2008-2016-junit/ || true
+
+      - name: Run two original Walking Ballista mechanics scenarios on unchanged current-main engine
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2017-2022:tests:cleanTest :mtg-sets:2017-2022:tests:test \
+            --tests '*WalkingBallistaScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee phase2-core-three-evidence/2017-2022-original-scenarios.log
+
+      - name: Preserve original 2017–2022 Ballista scenario XML
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p phase2-core-three-evidence/2017-2022-junit
+          cp -a mtg-sets/2017-2022/tests/build/test-results/test/. phase2-core-three-evidence/2017-2022-junit/ || true
+
+      - name: Independently require original ten exact scenarios without error, skip or altered test
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee phase2-core-three-evidence/independent-original-ten-audit.log
+          import json
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/CORE_THREE_RECEIVING_PROTOCOL.json").read_text())
+          expected=[
+            ("2008-2016-junit","AnimarSoulOfElementsScenarioTest",6),
+            ("2008-2016-junit","AncestralStatueScenarioTest",2),
+            ("2017-2022-junit","WalkingBallistaScenarioTest",2),
+          ]
+          count=0
+          for folder,cls,n in expected:
+              xml=Path("phase2-core-three-evidence")/folder/("TEST-com.wingedsheep.engine.scenarios."+cls+".xml")
+              assert xml.is_file(),("Missing actual JUnit",str(xml))
+              j=ET.parse(xml).getroot()
+              cases=j.findall(".//testcase")
+              assert len(cases)==n,(cls,len(cases),n)
+              assert not j.findall(".//failure") and not j.findall(".//error") and not j.findall(".//skipped"),cls
+              assert all(int(j.get(k,"0"))==0 for k in ("failures","errors","skipped")),cls
+              assert len({(case.get("classname"),case.get("name")) for case in cases})==n,cls
+              count+=len(cases)
+              print(f"{cls}: {n}/{n} exact original current-main rules cases PASS")
+          assert len(p["cards"])==3 and count==10
+          report={"schema":"ARGENTUM_MANUAL_PHASE2_CORE_THREE_MAIN_COMPATIBILITY_V1",
+                  "status":"COMPONENT_SOURCE_QUALIFIED_NOT_GAMEPLAY_ADMITTED",
+                  "newly_received_cards":["Animar, Soul of Elements","Ancestral Statue","Walking Ballista"],
+                  "verified_original_scenario_cases":10,"failures":0,"errors":0,"skips":0,
+                  "new_full_games":0,"official_capability_games":0,"official_primary_games":0,
+                  "limits":"No actual deck/match/pilot competence, dynamic registry inventory, or main merge established."}
+          Path("phase2-core-three-evidence/COMPONENT_VERDICT.json").write_text(json.dumps(report,indent=2)+"\n")
+          print("MANUAL_PHASE2_THREE_CORE_CARD_COMPONENT_TESTS_PASS_NO_GAMES")
+          PY
+
+      - name: Preserve PASS or RED source evidence; never classify source tests as cEDH wins
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-phase2-core-three-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            phase2-core-three-evidence/
