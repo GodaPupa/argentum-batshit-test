@@ -33,7 +33,7 @@ jobs:
           test "$GITHUB_REF" = "refs/heads/research/manual-cruise-r5-decision-preflight-20261021"
           git merge-base --is-ancestor c4c16ead2da3bdfe6ba7ed36bca297a7ff7607d4 HEAD
           test "$(git rev-parse HEAD:experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R1_FIXED_FIXTURES.json)" = "b116a302697af306e61e89e716d18e015a12b3e4"
-          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR5DecisionBaselinePreflightTest.kt)" = "127e1da465c18d4e56924cf00014f39c93dac718"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR5DecisionBaselinePreflightTest.kt)" = "dfc2cd8c74658c33f0845f53403eddeedd909213"
           test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
           test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
           test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
