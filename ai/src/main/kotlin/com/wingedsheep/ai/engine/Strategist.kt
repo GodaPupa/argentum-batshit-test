@@ -899,6 +899,26 @@ class Strategist(
         passAlreadyWins: Boolean,
         leafEvents: List<com.wingedsheep.engine.core.GameEvent>,
     ): AdjustedScore {
+        // Historical resolver intentionally excludes PlayLand. Preserve that
+        // original R5/CURRENT score path unless a separately registered R9
+        // land-play advisor supplies a genuinely executable override.
+        val land = action.action as? PlayLand
+        if (land != null) {
+            val name = state.getEntity(land.cardId)?.get<CardComponent>()?.name
+            val advisor = name?.let { advisorRegistry.getAdvisor(it) }
+            val override = advisor?.evaluateLandPlay(LandPlayContext(
+                state = state,
+                playerId = playerId,
+                action = action,
+                passScore = passScore,
+                defaultScore = leafScore,
+                simulator = simulator,
+            ))
+            return if (override == null) AdjustedScore(leafScore) else AdjustedScore(
+                score = override,
+                note = "opt-in executable fetch: paid same-turn ramp witness",
+            )
+        }
         val cardName = resolveCardName(state, action) ?: return AdjustedScore(leafScore)
         val cast = action.action as? CastSpell
         val card = cast?.let { state.getEntity(it.cardId)?.get<CardComponent>() }
@@ -1050,21 +1070,7 @@ class Strategist(
             evaluator = evaluator,
             simulator = simulator
         )
-        // A registered opt-in land advisor can price a *real land action*. No
-        // existing advisor overrides this inert seam, so R5/CURRENT remain
-        // bit-for-bit equivalent in their decision path.
-        val override = if (action.action is PlayLand) {
-            advisor.evaluateLandPlay(LandPlayContext(
-                state = state,
-                playerId = playerId,
-                action = action,
-                passScore = passScore,
-                defaultScore = leafScore,
-                simulator = simulator,
-            )) ?: advisor.evaluateCast(context)
-        } else {
-            advisor.evaluateCast(context)
-        }
+        val override = advisor.evaluateCast(context)
         val advisorNote = override?.let { "${advisor::class.simpleName} replaced the board score" }
         return adjusted(
             (override ?: leafScore) + timingDelta + sacrificeWindowDelta + sequencing,
