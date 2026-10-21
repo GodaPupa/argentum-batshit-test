@@ -6,6 +6,7 @@ on:
       - '.github/workflows/manual-precision-r9-multipip-funded-heldout-20261021.yml'
       - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9MultiPipFundingHeldoutTest.kt'
       - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9MultiPipColoredFundingHeldoutTest.kt'
+      - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9MultiPipRestrictedActivationHeldoutTest.kt'
       - 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt'
 permissions:
   contents: read
@@ -38,6 +39,7 @@ jobs:
           git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt > r9-multipip-evidence/solver-blob-sha.txt
           test "$(git rev-parse HEAD:mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9MultiPipFundingHeldoutTest.kt)" = "42444bec7fbae191dcfbecbb2df85c4133417921"
           test "$(git rev-parse HEAD:mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9MultiPipColoredFundingHeldoutTest.kt)" = "a39043a5dd118fefc6e08578789ad0a5ff957e2a"
+          test "$(git rev-parse HEAD:mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9MultiPipRestrictedActivationHeldoutTest.kt)" = "672ae6f883ce04789154d9b25f3724afccf51a47"
           test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
           test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
           test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
@@ -45,7 +47,7 @@ jobs:
           git diff --name-only 7b493d53a1de21a043adc82b0972d2058426ccb2 HEAD > r9-multipip-evidence/delta-paths.txt
           while IFS= read -r file; do
             case "$file" in
-              .github/workflows/manual-precision-r9-multipip-funded-heldout-20261021.yml|mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9MultiPipFundingHeldoutTest.kt|mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9MultiPipColoredFundingHeldoutTest.kt|rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt) ;;
+              .github/workflows/manual-precision-r9-multipip-funded-heldout-20261021.yml|mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9MultiPipFundingHeldoutTest.kt|mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9MultiPipColoredFundingHeldoutTest.kt|mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9MultiPipRestrictedActivationHeldoutTest.kt|rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt) ;;
               *) echo "UNAUTHORIZED_DELTA:$file"; exit 1 ;;
             esac
           done < r9-multipip-evidence/delta-paths.txt
@@ -59,6 +61,7 @@ jobs:
           scripts/gradle-locked :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
             --tests '*ManualPrecisionR9MultiPipFundingHeldoutTest' \
             --tests '*ManualPrecisionR9MultiPipColoredFundingHeldoutTest' \
+            --tests '*ManualPrecisionR9MultiPipRestrictedActivationHeldoutTest' \
             -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
             2>&1 | tee r9-multipip-evidence/heldout.log
 
