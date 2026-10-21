@@ -161,11 +161,23 @@ class ManualCruiseR5DecisionBaselinePreflightTest : ScenarioTestBase() {
                     is ActivateAbility -> game.state.getEntity(chosen.sourceId)?.get<CardComponent>()?.name
                     else -> null
                 }
-                // The existing R5 chooser must submit a real legal action. We do
-                // not preset its commander/development choice as a success result.
+                // LegalActionEnumerator advertises UNFILLED CastSpell/ability
+                // templates; AIPlayer may legally fill mandatory target slots.
+                // Match the actual offered card/ability and affordability here,
+                // and use ActionProcessor below to validate the COMPLETED action.
+                // Exact structural equality to a targetless template is invalid.
                 if (chosen !is PassPriority) {
-                    check(legal.any { it.action == chosen }) {
-                        "CRUISE ${fixture.id}: chosen action absent from legal list: $chosen"
+                    val offered = legal.any { option ->
+                        option.affordable && when (chosen) {
+                            is CastSpell -> (option.action as? CastSpell)?.cardId == chosen.cardId
+                            is ActivateAbility -> (option.action as? ActivateAbility)?.let {
+                                it.sourceId == chosen.sourceId && it.abilityId == chosen.abilityId
+                            } == true
+                            else -> option.action == chosen
+                        }
+                    }
+                    check(offered) {
+                        "CRUISE ${fixture.id}: chosen action source absent or unaffordable: $chosen"
                     }
                 }
                 if (!affordable) {
@@ -178,7 +190,28 @@ class ManualCruiseR5DecisionBaselinePreflightTest : ScenarioTestBase() {
                     "chosenType=${chosen::class.simpleName} chosenCard=${chosenName} " +
                     "hand=${fixture.hand} lands=${fixture.battlefieldLands.size}")
                 val result = actionProcessor.process(game.state, chosen).result
+                // Real engine, not template equality, decides whether target
+                // selection and the submitted action are legal.
                 result.error shouldBe null // one real action only; NOT gameplay
+
+                if (fixture.id == "CR-ACT-05") {
+                    chosenName shouldBe "Lightning Bolt"
+                    check(chosen is CastSpell && chosen.targets.isNotEmpty()) {
+                        "CRUISE immediate-lethal witness must name a real target"
+                    }
+                    // Only a SINGLE quiet-state candidate simulation, not a
+                    // played game or independently witnessed opponent response.
+                    val resolved = simulator.simulate(game.state, chosen)
+                    val terminal = resolved as? SimulationResult.Terminal
+                    check(terminal != null &&
+                        terminal.state.gameOver && terminal.state.winnerId == player
+                    ) {
+                        "CRUISE R5 failed its actual immediate-lethal candidate: $resolved"
+                    }
+                    println("CRUISE_LETHAL_SIMULATION id=CR-ACT-05 " +
+                        "source=Lightning Bolt targetCount=${chosen.targets.size} " +
+                        "simulatedTerminal=true opponentAutopassCaveat=true")
+                }
             }
         }
     }
