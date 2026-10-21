@@ -1,0 +1,122 @@
+name: Manual CRUISE R3 exact original Animar opportunity replay (NO GAMES)
+on:
+  push:
+    branches: [research/manual-cruise-r3-opportunity-audit-20261021]
+    paths:
+      - '.github/workflows/manual-cruise-r3-opportunity-audit-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R3_FIXTURES.json'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR3ArchivedOpportunityTest.kt'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-cruise-r3-exact-opportunity
+  cancel-in-progress: false
+
+jobs:
+  original-prefix-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 85
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_R3_ROOT: ${{ github.workspace }}
+      MANUAL_R3_ARCHIVES: ${{ github.workspace }}/cruise-r3-originals
+      MANUAL_R3_OUTPUT: ${{ github.workspace }}/cruise-r3-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 40}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Source identity, original R5 and no-game changed-file gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-r3-originals cruise-r3-evidence
+          test "$GITHUB_REF" = 'refs/heads/research/manual-cruise-r3-opportunity-audit-20261021'
+          git merge-base --is-ancestor c0a68c229d76baa16d4aaddc5133c2282ffbb708 HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          git diff --name-only c0a68c229d76baa16d4aaddc5133c2282ffbb708 HEAD > cruise-r3-evidence/changed-paths.txt
+          while IFS= read -r file; do
+            case "$file" in
+              .github/workflows/manual-cruise-r3-opportunity-audit-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R3_FIXTURES.json|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR3ArchivedOpportunityTest.kt) ;;
+              *) echo "UNAUTHORIZED_DELTA:$file"; exit 1 ;;
+            esac
+          done < cruise-r3-evidence/changed-paths.txt
+          git rev-parse HEAD > cruise-r3-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > cruise-r3-evidence/tree-sha.txt
+          echo 'EXACT_ORIGINAL_ACTION_PREFIX_ONLY; ZERO_NEW_GAMES; TWO_RESERVED' > cruise-r3-evidence/game-budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Download three exactly pinned original control archives, not test games
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R3_FIXTURES.json')
+          m=json.loads(p.read_text())
+          assert m['schema']=='MANUAL_CRUISE_R3_FROZEN_PREDECLARED_OPPORTUNITY_FIXTURES_V1'
+          assert m['declared_before_new_replay'] is True
+          assert m['games_used']==10 and m['new_full_games_authorized']==0 and m['reserved_games']==2
+          assert [x['id'] for x in m['fixtures']]==['CR3-01','CR3-02','CR3-03']
+          with open('cruise-r3-evidence/original-archives.tsv','w') as f:
+              for x in m['fixtures']:
+                  f.write('\t'.join([x['id'],str(x['artifact_id']),x['archive_sha256']])+'\n')
+          PY
+          while IFS=$'\t' read -r id artifact sha; do
+            file="cruise-r3-originals/$id-original.zip"
+            gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/$artifact/zip" > "$file"
+            printf '%s  %s\n' "$sha" "$file" | sha256sum -c -
+          done < cruise-r3-evidence/original-archives.tsv
+
+      - name: Three preregistered historical prefix replays and real legal-action checks
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualCruiseR3ArchivedOpportunityTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r3-evidence/exact-prefix-replay.log
+
+      - name: Preserve exact R3 JUnit before protected R5 suites
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p cruise-r3-evidence/r3-junit
+          cp -a ai/build/test-results/test/. cruise-r3-evidence/r3-junit/ || true
+
+      - name: Original R5 safety regressions (Pact Ballista Statue Encore payment)
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualPactDebt*Test' \
+            --tests '*ManualBallista*Test' \
+            --tests '*ManualStatue*Test' \
+            --tests '*ManualEncoreRegressionTest' \
+            --tests '*ManualResolutionPaymentRegressionTest' \
+            --tests '*ManualR5CandidateCompositionTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r3-evidence/protected-r5.log
+
+      - name: Preserve source, original JUnit and actual ZERO-GAME replay logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-cruise-r3-opportunity-audit-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            cruise-r3-evidence/
+            ai/build/test-results/test/
