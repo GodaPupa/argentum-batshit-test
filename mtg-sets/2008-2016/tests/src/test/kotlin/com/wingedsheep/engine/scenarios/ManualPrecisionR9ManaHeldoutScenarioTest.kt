@@ -116,6 +116,51 @@ class ManualPrecisionR9ManaHeldoutScenarioTest : ScenarioTestBase() {
             sources.forEach { game.state.getEntity(it)?.has<TappedComponent>() shouldBe true }
         }
 
+        test("Ashiok replaces two individually affordable Confluence payments at one life on AutoPay") {
+            val game = scenario()
+                .withPlayers("Player1", "Player2")
+                .withLifeTotal(1, 1)
+                .withCardOnBattlefield(1, "Ashiok, Wicked Manipulator")
+                .withLandsOnBattlefield(1, "Mana Confluence", 2)
+                .withCardOnBattlefield(1, "Temur Sabertooth")
+                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = true)
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Forest")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val sabertooth = game.findPermanent("Temur Sabertooth")!!
+            val ability = cardRegistry.getCard("Temur Sabertooth")!!.activatedAbilities.single().id
+            game.execute(ActivateAbility(game.player1Id, sabertooth, ability)).error shouldBe null
+            game.getLifeTotal(1) shouldBe 1
+            game.librarySize(1) shouldBe 0
+            game.state.getExile(game.player1Id).size shouldBe 2
+        }
+
+        test("Ashiok replaces two individually affordable Confluence payments at one life on Explicit") {
+            val game = scenario()
+                .withPlayers("Player1", "Player2")
+                .withLifeTotal(1, 1)
+                .withCardOnBattlefield(1, "Ashiok, Wicked Manipulator")
+                .withLandsOnBattlefield(1, "Mana Confluence", 2)
+                .withCardOnBattlefield(1, "Temur Sabertooth")
+                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = true)
+                .withCardInLibrary(1, "Forest")
+                .withCardInLibrary(1, "Forest")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val sources = game.state.getBattlefield().filter {
+                game.state.getEntity(it)?.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name == "Mana Confluence"
+            }
+            val sabertooth = game.findPermanent("Temur Sabertooth")!!
+            val ability = cardRegistry.getCard("Temur Sabertooth")!!.activatedAbilities.single().id
+            game.execute(ActivateAbility(
+                game.player1Id, sabertooth, ability, paymentStrategy = PaymentStrategy.Explicit(sources)
+            )).error shouldBe null
+            game.getLifeTotal(1) shouldBe 1
+            game.librarySize(1) shouldBe 0
+            game.state.getExile(game.player1Id).size shouldBe 2
+        }
+
         test("explicit selection of two Confluences at one life is rejected atomically") {
             val game = scenario()
                 .withPlayers("Player1", "Player2")
