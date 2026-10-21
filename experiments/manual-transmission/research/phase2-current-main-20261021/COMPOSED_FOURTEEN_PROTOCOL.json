@@ -1,0 +1,105 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_COMPOSED_14_SOURCE_COMPONENT_AND_REGISTRY_V1",
+  "date": "2026-10-21",
+  "status": "REGISTERED_BEFORE_THREE_INDEPENDENT_CANDIDATE_CI_VERDICTS",
+  "mission": "Compositional current-main source validation only: combine independently source-qualified original 3-card core, nine mana/development cards and exactly two shared counterspells (Pact of Negation, Swan Song) on unchanged frozen hardware, then independently rerun full eight-100 live catalog and complete known mechanics cases. Do not run games or promote AI/gear policies.",
+  "source_parent": "9e60c5f03e67d6116d07b471d6ead452493ca031",
+  "expected_total_new_card_definitions_from_main": 14,
+  "existing_parent_three": [
+    "Animar, Soul of Elements",
+    "Ancestral Statue",
+    "Walking Ballista"
+  ],
+  "existing_parent_nine": [
+    "Arbor Elf",
+    "Paradise Druid",
+    "Coiling Oracle",
+    "Nest Invader",
+    "Wild Growth",
+    "Utopia Sprawl",
+    "Rejuvenating Springs",
+    "Training Center",
+    "Spire Garden"
+  ],
+  "addition_requirements": [
+    {
+      "card": "Pact of Negation",
+      "source_branch": "candidate/manual-phase2-pact-receiving-20261021",
+      "run_id": 39690329695,
+      "requires_success": true,
+      "source_blobs": {
+        "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt": "c786551484cfb001eea9fc2b05e14ea23fd63bf9",
+        "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationScenarioTest.kt": "04a2ae1c6301f21b3ba5a77151bff3c339ed2cbb",
+        "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationUnpaidScenarioTest.kt": "4f546f0c30fbff1d4548ffcd39b23c5a5530d7cd"
+      }
+    },
+    {
+      "card": "Swan Song",
+      "source_branch": "candidate/manual-phase2-swan-song-receiving-20261021",
+      "run_id": 39690334288,
+      "requires_success": true,
+      "source_blobs": {
+        "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/SwanSong.kt": "385ab04b2d05e7f8d160f156746cb4b69b4fbee9",
+        "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SwanSongScenarioTest.kt": "34e5f47d835610f30ff45628afe98a6fcdc158bc"
+      }
+    }
+  ],
+  "independent_qualification_requirements": [
+    {
+      "group": "existing_core_three",
+      "run_id": 39687557103,
+      "requires_green": true,
+      "tests": 10
+    },
+    {
+      "group": "mana_development_nine",
+      "run_id": 39689951999,
+      "requires_green": true,
+      "tests": 69
+    },
+    {
+      "group": "isolated_pact",
+      "run_id": 39690329695,
+      "requires_green": true,
+      "tests": 4
+    },
+    {
+      "group": "isolated_swan",
+      "run_id": 39690334288,
+      "requires_green": true,
+      "tests": 4
+    }
+  ],
+  "card_scenario_total_expected": 87,
+  "read_only_eight_deck_registry": {
+    "old_actual_main_run": 39685903220,
+    "old_actual_main_coverage": 443,
+    "old_actual_main_missing": 357,
+    "old_unique_missing": 227,
+    "require_actual_fresh_Kotlin_CardRegistry": true,
+    "source_registry_protocol": "experiments/manual-transmission-phase2/protocol-r1.json",
+    "frozen_100_count": 8,
+    "original_physical_cards": 800,
+    "metric": "Every original requested slot must be recorded, no optimistic filling for source cards not registered or mismatched back faces.",
+    "no_targeted_coverage_number_predeclared": true,
+    "never_equate_presence_to_semantics": true,
+    "required_remaining_for_admission": "Exact 100/100 registry all 8 decks, independent full mechanics, 4-seat opponent pilots, three runnable gear profiles, masking, durable replay, official sources/seeds."
+  },
+  "frozen": {
+    "main_ancestor": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "control_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "ai_current_blob": "43bbad79273806f56703fad420e9f6a495d05309",
+    "mana_solver_blob": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "no_engine_change": true,
+    "no_main_merge": true,
+    "no_hardware_change": true,
+    "no_AI_profile_change": true,
+    "official_phase2_capability_games": 0,
+    "official_phase2_primary_games": 0,
+    "precision_completed": 10,
+    "precision_reserved": 2,
+    "no_new_games_or_seeds": true
+  },
+  "known_gap": "Canonical main has old misleading Step.END descriptive field in delayed-trigger metadata; Pact gameplay payment positive/negative cases do not qualify that separate metadata correction. Do not represent composite as fixed metadata until independent S2-on-main test/repair.",
+  "source_integration_stop": "If any of the four independent exact-head qualification runs is not GREEN, composition must HOLD rather than hiding failing component. In mixed composition, any source drift/test error or registry identity contradiction is a RED technical finding, never a gameplay result."
+}
