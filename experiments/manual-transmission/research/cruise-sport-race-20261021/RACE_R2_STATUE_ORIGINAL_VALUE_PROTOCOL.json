@@ -1,0 +1,78 @@
+{
+  "schema": "ARGENTUM_MANUAL_RACE_R2_THREE_ORIGINAL_STATUE_CHAIN_VALUE_R1",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_BEFORE_R2_CI_EVENT_AGGREGATION",
+  "source_parent": "806d4ec3384c260981c216c5b2c923715e63ecf3",
+  "race_r1": {
+    "run_id": 39682033579,
+    "artifact_id": 12383947635,
+    "artifact_sha256": "7a284a76af232684a59fe8a78d3686bab46235236513b19e1ed72264587825d2",
+    "source_sha": "806d4ec3384c260981c216c5b2c923715e63ecf3",
+    "statue_accepted_casts_across_all_games": 73,
+    "observed_statue_bounces": 54,
+    "identified_repeated_cast_chains": 3,
+    "maximum_casts_one_seat_global_turn": 21
+  },
+  "universe": "Exactly all three historical same-seat same-global-turn Statue chains with 2+ accepted casts from original RACE R1 ten-game census, not manually selected good/bad examples.",
+  "three_fixed_chains": [
+    {
+      "cohort": "R1",
+      "seed": "202610202112",
+      "arm": "control",
+      "seat": "manual-mirror-3",
+      "turn": 36,
+      "original_casts": 19,
+      "artifact_id": 12291060323,
+      "zip_sha256": "3379a5376d961d54b8c5883207c8499dac66d373765f8c3ff8a7d032cb62c853"
+    },
+    {
+      "cohort": "R1",
+      "seed": "202610202112",
+      "arm": "a",
+      "seat": "manual-mirror-1",
+      "turn": 38,
+      "original_casts": 17,
+      "artifact_id": 12290286293,
+      "zip_sha256": "a614eb9998b25dd34803434bb9ca80cf113b545483a185eac49cfcd419c7fd09"
+    },
+    {
+      "cohort": "R1",
+      "seed": "202610202112",
+      "arm": "a",
+      "seat": "manual-mirror-3",
+      "turn": 36,
+      "original_casts": 21,
+      "artifact_id": 12290286293,
+      "zip_sha256": "a614eb9998b25dd34803434bb9ca80cf113b545483a185eac49cfcd419c7fd09"
+    }
+  ],
+  "method": [
+    "Read only original exact SHA-256 ZIPs; verify completed full game, unchanged R5 pilot, complete accepted actions and seat turn identity. No replay and no full game.",
+    "For each original accepted Statue CastSpell in each fixed caster/global-turn, partition the event stream from that accepted CastSpell action through the action immediately before the next Statue CastSpell by same seat; for the final cast, through the end of that source global turn.",
+    "Count actual CardsDrawnEvent for that seat by explicit count, real Animar +1/+1 CountersAddedEvent placed by that seat, Statue BATTLEFIELD→HAND exits, and real Purphoros/Walking Ballista player-damage events.",
+    "Report every interval, including zero-value ones, with original action index, card draw count, counter amount and exact event counts; no cherry-picking or opponent hand data.",
+    "Classify a material observed resource change when an interval contains a seat card draw, its Animar counter or actual payoff player damage; this is not a judgment that taking the line improved win likelihood or beat interaction.",
+    "Explicitly report whether Purphoros payoff damage or a same-turn GameEndedEvent occurred and distinguish later game results.",
+    "Keep all 57 original cast acts (19+17+21), and never count a regression-only Palinchron as part of this deck."
+  ],
+  "safety": {
+    "original_main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "control_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "challenger_a_blob": "7984a2e87d8ddbe023d45620414d25a61691a040",
+    "r5_profile_blob": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "current_ai_blob": "180918b2d7a59309e7b0617f2579fb2a6d06b7d5",
+    "mana_solver_blob": "d02fded3fd9656aa2d032c49ce83112e1d6baaf93",
+    "zero_new_game": true,
+    "original_games_used": 10,
+    "original_games_max": 12,
+    "original_games_reserved": 2,
+    "no_new_seeds": true,
+    "no_policy_or_deck_mutation": true,
+    "no_main_merge": true,
+    "not_blinded": true,
+    "original_self_mirror_only": true,
+    "no_causal_claim_on_card_draws": true,
+    "no_missing_payoff_conclusion_without_events": true
+  },
+  "next": "If all repeat chains generated real draw/counter value, do not call them empty loops. Instead select a fresh isolated payoff/finite-exit negative-control regression and evaluate a genuinely mis-sequenced opportunity, or HOLD RACE and retain v0.7. No promotion from this archive audit."
+}
