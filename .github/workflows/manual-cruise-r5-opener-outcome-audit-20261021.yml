@@ -1,0 +1,94 @@
+name: Manual CRUISE R5 original opener-outcome attribution (NO GAMES)
+on:
+  push:
+    branches: [research/manual-cruise-r5-opener-outcome-attribution-20261021]
+    paths:
+      - '.github/workflows/manual-cruise-r5-opener-outcome-audit-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R5_JOIN_MANIFEST.json'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/audit_cruise_r5_opener_outcomes.py'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-cruise-r5-archive-attribution
+  cancel-in-progress: false
+
+jobs:
+  join-original-frozen-evidence:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      CRUISE_R5_INPUT: cruise-r5-originals
+      CRUISE_R5_OUTPUT: cruise-r5-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 40}
+
+      - name: Enforce exact research source and zero-game allowlist
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-r5-originals cruise-r5-evidence
+          test "$GITHUB_REF" = 'refs/heads/research/manual-cruise-r5-opener-outcome-attribution-20261021'
+          git merge-base --is-ancestor a62a25ab4e1260353e0028eef765ead174b14ec0 HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt)" = 8a3c94041ca6cf781d5efe35d7a513b522b3856b
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          git diff --name-only a62a25ab4e1260353e0028eef765ead174b14ec0 HEAD > cruise-r5-evidence/changed-paths.txt
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/manual-cruise-r5-opener-outcome-audit-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R5_JOIN_MANIFEST.json|experiments/manual-transmission/research/cruise-sport-race-20261021/audit_cruise_r5_opener_outcomes.py) ;;
+              *) echo "UNAUTHORIZED_DELTA:$path"; exit 1 ;;
+            esac
+          done < cruise-r5-evidence/changed-paths.txt
+          git rev-parse HEAD > cruise-r5-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > cruise-r5-evidence/tree-sha.txt
+          echo 'NO_NEW_FULL_GAMES_OR_REDRAWS; TEN_EXISTING; TWO_RESERVED' > cruise-r5-evidence/budget.txt
+
+      - name: Retrieve exact original completed R4 controller diagnostic and ten historical game archives
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api '/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12368260036/zip' > cruise-r5-originals/r4-original.zip
+          printf '%s  %s\n' '59d43860c8c884535e98a4849ad2e313fd098fe9fd2c22af9ed3f4c274ea8c16' cruise-r5-originals/r4-original.zip | sha256sum -c -
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          d=Path('experiments/manual-transmission/research/cruise-sport-race-20261021')
+          m=json.loads((d/'CRUISE_R5_JOIN_MANIFEST.json').read_text())
+          o=json.loads((d/'CRUISE_R2_ZONE_MANIFEST.json').read_text())
+          assert m['schema']=='ARGENTUM_CRUISE_R5_PREDECLARED_RETROSPECTIVE_JOIN_V1'
+          assert m['guardrails']['new_games']==0 and m['guardrails']['reserved']==2
+          assert len(o['archives'])==10
+          with open('cruise-r5-evidence/originals.tsv','w') as f:
+              for a in o['archives']:
+                  f.write('\t'.join([a['cohort'],a['seed'],a['arm'],str(a['id']),a['sha256']])+'\n')
+          PY
+          while IFS=$'\t' read -r cohort seed arm artifact sha; do
+            file="cruise-r5-originals/$cohort-$arm-$seed-original.zip"
+            gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/$artifact/zip" > "$file"
+            printf '%s  %s\n' "$sha" "$file" | sha256sum -c -
+          done < cruise-r5-evidence/originals.tsv
+
+      - name: Verify all 40 original decisions against all ten original source-game outcomes
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission/research/cruise-sport-race-20261021/audit_cruise_r5_opener_outcomes.py \
+            2>&1 | tee cruise-r5-evidence/r5-audit.log
+          test -s cruise-r5-evidence/ORIGINAL_40_SEAT_JOIN.json
+          test "$(cat cruise-r5-evidence/budget.txt)" = 'NO_NEW_FULL_GAMES_OR_REDRAWS; TEN_EXISTING; TWO_RESERVED'
+
+      - name: Preserve exact source, complete join and GREEN/RED audit evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-cruise-r5-original-outcome-attribution-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: cruise-r5-evidence/
