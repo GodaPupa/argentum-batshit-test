@@ -69,8 +69,8 @@ def main():
                     drawn=DRAW.match(event)
                     if drawn and drawn.group(1)==seat:
                         evidence["drawn_cards_to_seat"]+=int(drawn.group(2))
-                    if event.startswith("CountersAddedEvent(") and
-                       "entityName=Animar, Soul of Elements," in event and f"placedBy={seat}" in event:
+                    if (event.startswith("CountersAddedEvent(") and
+                        "entityName=Animar, Soul of Elements," in event and f"placedBy={seat}" in event):
                         amount=COUNT.search(event)
                         check(amount is not None,"Animar counter increment lost amount")
                         evidence["actual_animar_counters_added_by_seat"]+=int(amount.group(1))
