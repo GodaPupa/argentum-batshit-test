@@ -1,0 +1,139 @@
+name: Manual CRUISE R8 existing one-flag land sequencing opt-in (NO GAMES)
+on:
+  push:
+    branches: [research/manual-cruise-r8-existing-landseq-optin-20261021]
+    paths:
+      - '.github/workflows/manual-cruise-r8-landseq-existing-flag-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R8_LANDSEQ_FLAG_MANIFEST.json'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR8ExistingLandSequenceFlagTest.kt'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-cruise-r8-one-flag-optin
+  cancel-in-progress: false
+jobs:
+  original-source-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 85
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_R8_ROOT: ${{ github.workspace }}
+      MANUAL_R8_ARCHIVES: ${{ github.workspace }}/cruise-r8-originals
+      MANUAL_R8_OUTPUT: ${{ github.workspace }}/cruise-r8-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 50}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Original source and only one existing opt-in flag with no-game gate
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-r8-originals cruise-r8-evidence
+          test "$GITHUB_REF" = 'refs/heads/research/manual-cruise-r8-existing-landseq-optin-20261021'
+          git merge-base --is-ancestor dfcad1d380b7175d47b071c41998bdf9c2eed07b HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          git diff --name-only dfcad1d380b7175d47b071c41998bdf9c2eed07b HEAD > cruise-r8-evidence/changed-paths.txt
+          while IFS= read -r file; do
+            case "$file" in
+              .github/workflows/manual-cruise-r8-landseq-existing-flag-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R8_LANDSEQ_FLAG_MANIFEST.json|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR8ExistingLandSequenceFlagTest.kt) ;;
+              *) echo "UNAUTHORIZED_DELTA:$file"; exit 1 ;;
+            esac
+          done < cruise-r8-evidence/changed-paths.txt
+          git rev-parse HEAD > cruise-r8-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > cruise-r8-evidence/tree-sha.txt
+          echo 'ONLY_EXISTING_PROFILE_FLAG; NO_FULL_GAMES; TWO_RESERVED' > cruise-r8-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Retrieve both fixed original CONTROL and A action streams, no new initializer
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          m=json.loads(Path('experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R8_LANDSEQ_FLAG_MANIFEST.json').read_text())
+          assert m['schema']=='ARGENTUM_CRUISE_R8_SINGLE_EXISTING_PROFILE_FLAG_TEST_V1'
+          assert m['candidate_profile_only_change']=={'sequenceLandsByUsableMana':True}
+          assert m['budget']=={'original_used':10,'max':12,'reserved':2,'new_games':0}
+          assert {x['arm'] for x in m['fixtures']}=={'control','a'}
+          with open('cruise-r8-evidence/archives.tsv','w') as f:
+              for x in m['fixtures']:
+                  f.write('\t'.join([x['arm'],str(x['artifact_id']),x['digest']])+'\n')
+          PY
+          while IFS=$'\t' read -r arm artifact digest; do
+            file="cruise-r8-originals/R6-$arm-202610202141-original.zip"
+            gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/$artifact/zip" > "$file"
+            printf '%s  %s\n' "$digest" "$file" | sha256sum -c -
+          done < cruise-r8-evidence/archives.tsv
+
+      - name: Exact historical 41-action replay and independent profile flag source decisions
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualCruiseR8ExistingLandSequenceFlagTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r8-evidence/one-flag-original-source.log
+          test -s cruise-r8-evidence/R8-control.json
+          test -s cruise-r8-evidence/R8-a.json
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          root=Path('cruise-r8-evidence')
+          a=json.loads((root/'R8-a.json').read_text())
+          c=json.loads((root/'R8-control.json').read_text())
+          assert a['originalR5ActualChoice']==c['originalR5ActualChoice']=='Opal Palace'
+          assert a['newFullGames']==c['newFullGames']==0
+          positive=a['meetsPredeclaredSingleStateGoal']
+          negative=c['meetsPredeclaredSingleStateGoal']
+          disposition=('FLAG_CANDIDATE_FOR_LATER_INDEPENDENT_MANA_AND_NEGATIVE_CHECKS'
+                       if positive and negative else 'HOLD_FLAG_INSUFFICIENT_SOURCE_TARGET_EVIDENCE')
+          summary={'schema':'MANUAL_CRUISE_R8_OPTIN_FLAG_TWO_FIXTURE_DECISION',
+                   'target_a_candidate_picks_misty':positive,
+                   'control_negative_avoids_evolving':negative,
+                   'disposition':disposition,'full_games_added':0,
+                   'profile_or_deck_promoted':False,
+                   'competitive_winrate_claim':False}
+          (root/'FLAG_DECISION.json').write_text(json.dumps(summary,indent=2)+'\n')
+          print('CRUISE_R8_SINGLE_FLAG_DISPOSITION='+disposition)
+          PY
+
+      - name: Preserve original R8 source-only JUnit
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p cruise-r8-evidence/r8-junit
+          cp -a ai/build/test-results/test/. cruise-r8-evidence/r8-junit/ || true
+
+      - name: Protected R5 and original land/Animar gameplay composition
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualR5CandidateCompositionTest' \
+            --tests '*ManualAnimarDevelopmentPolicyTest' \
+            --tests '*EngineAiMomirMulliganTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-r8-evidence/protected-regressions.log
+
+      - name: Preserve source, independent actions and JUnit on GREEN or RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-cruise-r8-existing-landseq-flag-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            cruise-r8-evidence/
+            ai/build/test-results/test/
