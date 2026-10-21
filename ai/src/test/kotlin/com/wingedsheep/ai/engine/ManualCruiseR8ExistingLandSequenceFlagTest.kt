@@ -33,8 +33,7 @@ class ManualCruiseR8ExistingLandSequenceFlagTest : FunSpec({
     check(manifest["budget"]!!.jsonObject.num("new_games")==0)
     check(manifest["budget"]!!.jsonObject.num("reserved")==2)
     check(manifest.num("original_priority_action_index")==42)
-    check(manifest["candidate_profile_only_change"]!!.jsonObject
-      ["sequenceLandsByUsableMana"]!!.jsonPrimitive.boolean)
+    check(manifest["candidate_profile_only_change"]!!.jsonObject["sequenceLandsByUsableMana"]!!.jsonPrimitive.boolean)
     val json=Json { serializersModule=engineSerializersModule; allowStructuredMapKeys=true }
     val registry=CardRegistry().apply {
         MtgSetCatalog.all.forEach {set->register(set.cards);register(set.basicLands)}
