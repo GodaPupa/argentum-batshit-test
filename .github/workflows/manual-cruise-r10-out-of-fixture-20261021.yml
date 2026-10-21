@@ -12,7 +12,7 @@ permissions:
   actions: read
 concurrency:
   group: manual-cruise-r10-out-of-fixture-source-only
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 jobs:
   six-archived-and-opponent-microfork:
