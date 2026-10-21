@@ -120,6 +120,66 @@ class CommanderSetupTest : FunSpec({
         }
     }
 
+    test("Commander format initializes two designated commanders as separate command-zone entities") {
+        val initializer = GameInitializer(registry())
+        val deck = Deck.of("Forest" to 98)
+        val result = initializer.initializeGame(
+            GameConfig(
+                format = Format.Commander(),
+                players = listOf(
+                    PlayerConfig(
+                        "P1", deck,
+                        commanderCardNames = listOf("Test Hasty Prospector", "Grizzly Bears")
+                    ),
+                    PlayerConfig(
+                        "P2", deck,
+                        commanderCardNames = listOf("Test Hasty Prospector", "Grizzly Bears")
+                    ),
+                ),
+                skipMulligans = true,
+                startingPlayerIndex = 0,
+            )
+        )
+
+        for (pid in result.playerIds) {
+            val command = result.state.getZone(ZoneKey(pid, Zone.COMMAND))
+            command.size shouldBe 2
+            val names = command.map { result.state.getEntity(it)!!.get<CardComponent>()!!.name }.toSet()
+            names shouldBe setOf("Test Hasty Prospector", "Grizzly Bears")
+            result.state.getEntity(pid)!!.get<CommanderRegistryComponent>()!!.commanderIds.toSet() shouldBe command.toSet()
+            command.forEach { id ->
+                result.state.getEntity(id)!!.get<CommanderComponent>()!!.ownerId shouldBe pid
+                (id in result.state.getZone(ZoneKey(pid, Zone.LIBRARY))) shouldBe false
+            }
+            result.state.getZone(ZoneKey(pid, Zone.HAND)).size shouldBe 7
+            result.state.getZone(ZoneKey(pid, Zone.LIBRARY)).size shouldBe 91
+        }
+    }
+
+    test("Commander format rejects conflicting legacy and list commander configuration") {
+        val initializer = GameInitializer(registry())
+        val deck = Deck.of("Forest" to 98)
+        shouldThrow<IllegalArgumentException> {
+            initializer.initializeGame(
+                GameConfig(
+                    format = Format.Commander(),
+                    players = listOf(
+                        PlayerConfig(
+                            "P1", deck,
+                            commanderCardName = "Test Hasty Prospector",
+                            commanderCardNames = listOf("Test Hasty Prospector", "Grizzly Bears"),
+                        ),
+                        PlayerConfig(
+                            "P2", deck,
+                            commanderCardNames = listOf("Test Hasty Prospector", "Grizzly Bears"),
+                        ),
+                    ),
+                    skipMulligans = true,
+                )
+            )
+        }
+    }
+
     test("Commander format rejects players without a designated commander") {
         val initializer = GameInitializer(registry())
         // Deck.cards does NOT include the commander (CR 903.6a / DeckValidator convention) —

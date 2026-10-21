@@ -1,0 +1,1110 @@
+{
+  "actual_deck_capability_pilot_executed": false,
+  "archives": {
+    "engine": {
+      "bytes": 918605,
+      "id": 10847610460,
+      "sha256": "a1b919048501e2f3c07f133d917dfb12e928449119cb747649db8e061cbbe56c"
+    },
+    "source": {
+      "bytes": 27582357,
+      "id": 10846488888,
+      "sha256": "c24de95c45101369f0d9351331d48a35375ba6d791d91975cfc7b641723740da"
+    }
+  },
+  "canonical_main_integration": {
+    "canonical_source": "1c8bc618e8b3ca0b3b154e2ef3c87ca8ff779698",
+    "manifest": "canonical-main-integration-r1.json",
+    "original_manual_source": "c09bc4b863d7eef26b7f824d5e6e6ace36e12456",
+    "shared_source_files": 31,
+    "spy_b_validation": {
+      "artifact": 10846851727,
+      "bytes": 24090,
+      "junit": {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests": 364
+      },
+      "run": 36094281390,
+      "scope": "Shared deterministic qualification only; no matchup evidence transfer",
+      "sha256": "c8315017e282ae1ca5b0aeec988343d44d8673b25778e90b33ae51566aefa283",
+      "source_commit": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+      "suites": [
+        {
+          "class": "com.wingedsheep.engine.handlers.ChosenCardTypePredicateTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/chosen-type-predicate/TEST-com.wingedsheep.engine.handlers.ChosenCardTypePredicateTest.xml",
+          "skipped": 0,
+          "tests": 3
+        },
+        {
+          "class": "com.wingedsheep.sdk.serialization.CostAtomSerializationTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/cost-serialization/TEST-com.wingedsheep.sdk.serialization.CostAtomSerializationTest.xml",
+          "skipped": 0,
+          "tests": 5
+        },
+        {
+          "class": "com.wingedsheep.gym.PestControlTierOneSpyComboAdmissionTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/frozen-admission/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboAdmissionTest.xml",
+          "skipped": 0,
+          "tests": 1
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.LandGrantScenarioTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/land-grant/TEST-com.wingedsheep.engine.scenarios.LandGrantScenarioTest.xml",
+          "skipped": 0,
+          "tests": 5
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.MesmericFiendScenarioTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/mesmeric-fiend/TEST-com.wingedsheep.engine.scenarios.MesmericFiendScenarioTest.xml",
+          "skipped": 0,
+          "tests": 2
+        },
+        {
+          "class": "com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchATest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/prior-support/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchATest.xml",
+          "skipped": 0,
+          "tests": 1
+        },
+        {
+          "class": "com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchBTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/remaining-queue/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchBTest.xml",
+          "skipped": 0,
+          "tests": 1
+        },
+        {
+          "class": "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/strict-snapshots/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+          "skipped": 0,
+          "tests": 340
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.WallOfRootsScenarioTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/wall-of-roots/TEST-com.wingedsheep.engine.scenarios.WallOfRootsScenarioTest.xml",
+          "skipped": 0,
+          "tests": 2
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.WindingWayScenarioTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/winding-way/TEST-com.wingedsheep.engine.scenarios.WindingWayScenarioTest.xml",
+          "skipped": 0,
+          "tests": 4
+        }
+      ]
+    },
+    "spy_c_validation": {
+      "artifact": 10847361385,
+      "junit": {
+        "errors": 0,
+        "failures": 0,
+        "skipped": 0,
+        "tests": 437
+      },
+      "run": 36094281376,
+      "sha256": "0166ed64724b2601dfc889bc8a7ed28dea009129b0322b374bfca3be81c96b37",
+      "source_commit": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+      "suites": [
+        {
+          "class": "com.wingedsheep.gym.PestControlTierOnePostboardSupportBatchATest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/accepted-postboard-compatibility/TEST-com.wingedsheep.gym.PestControlTierOnePostboardSupportBatchATest.xml",
+          "skipped": 0,
+          "tests": 1
+        },
+        {
+          "class": "com.wingedsheep.sdk.serialization.CardLinterTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/card-lint/TEST-com.wingedsheep.sdk.serialization.CardLinterTest.xml",
+          "skipped": 0,
+          "tests": 43
+        },
+        {
+          "class": "com.wingedsheep.sdk.serialization.CardSerializationRoundTripTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/card-serialization/TEST-com.wingedsheep.sdk.serialization.CardSerializationRoundTripTest.xml",
+          "skipped": 0,
+          "tests": 21
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.CascadeKeywordTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/cascade-regression/TEST-com.wingedsheep.engine.scenarios.CascadeKeywordTest.xml",
+          "skipped": 0,
+          "tests": 3
+        },
+        {
+          "class": "com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/component-registration/TEST-com.wingedsheep.engine.hygiene.SerializationPolymorphicRegistrationTest.xml",
+          "skipped": 0,
+          "tests": 8
+        },
+        {
+          "class": "com.wingedsheep.gym.PestControlTierOneSpyComboAdmissionTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/frozen-admission/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboAdmissionTest.xml",
+          "skipped": 0,
+          "tests": 1
+        },
+        {
+          "class": "com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchCTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/main-closure/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchCTest.xml",
+          "skipped": 0,
+          "tests": 1
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.NyxbornHydraScenarioTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/nyxborn-hydra/TEST-com.wingedsheep.engine.scenarios.NyxbornHydraScenarioTest.xml",
+          "skipped": 0,
+          "tests": 15
+        },
+        {
+          "class": "com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchBTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/prior-support/TEST-com.wingedsheep.gym.PestControlTierOneSpyComboSupportBatchBTest.xml",
+          "skipped": 0,
+          "tests": 1
+        },
+        {
+          "class": "com.wingedsheep.engine.scenarios.PrototypeKeywordTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/prototype-regression/TEST-com.wingedsheep.engine.scenarios.PrototypeKeywordTest.xml",
+          "skipped": 0,
+          "tests": 3
+        },
+        {
+          "class": "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+          "errors": 0,
+          "failures": 0,
+          "path": "test-results/strict-snapshots/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+          "skipped": 0,
+          "tests": 340
+        }
+      ]
+    },
+    "status": "ACCEPTED_FOR_EXERCISED_SEED_FREE_COMPONENTS_ONLY",
+    "transferred_matchup_evidence": false
+  },
+  "card_sources": {
+    "AncestralStatue": {
+      "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dtk/cards/AncestralStatue.kt",
+      "definition_sha256": "2ab416bf8cd83635898d3477508f3fb57865f8753de3d8d49db17b24b18dd284",
+      "scenario_source_sha256": "e53424583493db96e0bf3c2fd7679d0695d145947fdd795b1464319d8b89a513"
+    },
+    "AnimarSoulOfElements": {
+      "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmd/cards/AnimarSoulOfElements.kt",
+      "definition_sha256": "6583c1360af95ecc407ef8f6b96a4ff273aedce117dd38003217091308744793",
+      "scenario_source_sha256": "3a04781921593157557523ad2e1235af661f831b2e36710fc38d40d78f60ab00"
+    },
+    "ArborElf": {
+      "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/ArborElf.kt",
+      "definition_sha256": "c337bcb1a2dc9b61d3839678c041a9143b205e95aefe91c9fcff9661226235a8",
+      "scenario_source_sha256": "0d5268964bdab66d0e7dfe6bfb321d9141b4e58ec54751923c0152ad76056781"
+    },
+    "CloudOfFaeries": {
+      "definition_path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ulg/cards/CloudOfFaeries.kt",
+      "definition_sha256": "fe233a83e06a1043403ad85e3a8374c817508eac3fdbf0337232e387149e252c",
+      "scenario_source_sha256": "d016403673db13f6cfc4afbcccf6597acc85b89746fa63fa798c200a67f3eac6"
+    },
+    "CoilingOracle": {
+      "definition_path": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dis/cards/CoilingOracle.kt",
+      "definition_sha256": "c1863993066d16bc4351a5f2b58a7bc31e7f036dab38dd1f2788b5dddb6341fb",
+      "scenario_source_sha256": "f20c92f158b4278323cc9a28d1323b6ce78c279321bae9c6215b4aa9cfba19c1"
+    },
+    "EldraziRepurposer": {
+      "definition_path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/EldraziRepurposer.kt",
+      "definition_sha256": "8d63cd684ba7625a39de35e292f2c2953118d34f8e66e0bb1394a705397c8f19",
+      "scenario_source_sha256": "b9029a7e16d05ed5b02a289667846d2cd88283cc874caec37a1b32721b32e518"
+    },
+    "EmrakulsHatcher": {
+      "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/EmrakulsHatcher.kt",
+      "definition_sha256": "8f063ea30013b3629a4f1b9b2579b72c203c8f2ddc0838236ca872ea914005b0",
+      "scenario_source_sha256": "bfb7b272eb2d3f87fa8385c8bd0c1a2d1cc15b94ddd9b7538db7f6952764ede3"
+    },
+    "EyelessWatcher": {
+      "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bfz/cards/EyelessWatcher.kt",
+      "definition_sha256": "97ce04121c43a4c3766a92600bb4d1b32997be3c1c6148138a3987f794a7059a",
+      "scenario_source_sha256": "0f09448b85632e38b9efb99f675039004fbbe2e39715f658eeabe6850f435792"
+    },
+    "HopeEnderCoatl": {
+      "definition_path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/HopeEnderCoatl.kt",
+      "definition_sha256": "b782d0c2b52782440f5eadf8cc0ebb64bc143813f3d09d202f1b652f2e10abdd",
+      "scenario_source_sha256": "f993e46b8fff0e8503b140a11ae340f1278c16ef444849b9e515dde863b7663c"
+    },
+    "NestInvader": {
+      "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/NestInvader.kt",
+      "definition_sha256": "6a1cb5a28847df439148f3171d3f17f646753ec230722bb484a65b051a4d219a",
+      "scenario_source_sha256": "107db57ee9013009220c140d8eab319974c1d2eb7c97d3ebd43b38d8c41fdc70"
+    },
+    "ParadiseDruid": {
+      "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/war/cards/ParadiseDruid.kt",
+      "definition_sha256": "dfbc2c16e0de88ba64f83c4f861cf698e4bafcc4cfd86d67beeef74bc6f162ca",
+      "scenario_source_sha256": "ede01b6d358bb2d8b4c4ab426de7d820ad60169d97bb35169d94b6bdb1d6b148"
+    },
+    "PeregrineDrake": {
+      "definition_path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/usg/cards/PeregrineDrake.kt",
+      "definition_sha256": "1d04dddb2aa62f979300f0a7c5aa18e86c526e355d5edc4441b6ae6e4ff0a34a",
+      "scenario_source_sha256": "6fcb918952d79e5f87a2e39c74856b659d88679254e6deeeea3514d4c6ad601d"
+    },
+    "Pongify": {
+      "definition_path": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/plc/cards/Pongify.kt",
+      "definition_sha256": "a3e01bf10be114c05af7a6f14592b9e9045bfa58ee6635163775ec2f1747b4e1",
+      "scenario_source_sha256": "ed5060bc037290bda60daab213ab9c3793db1db3e470c94dc3c4891f8b52e9db"
+    },
+    "RapidHybridization": {
+      "definition_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/gtc/cards/RapidHybridization.kt",
+      "definition_sha256": "84bbc3a158541fe6aad59be505b5cdc20b35feacce15f67177965e94214504f9",
+      "scenario_source_sha256": "494d89f990b5bd512a9cb4f836e6d69ef40e5c10b0075f59a9ee8027a742da0b"
+    },
+    "RejuvenatingSprings": {
+      "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmr/cards/RejuvenatingSprings.kt",
+      "definition_sha256": "3b64b6df4d421bf24612a3c10ab063f463910e7820cf2a3d788419cc36617767",
+      "scenario_source_sha256": "8bb41886be105e2c7f601c5994c695d99b9f0c3ab1c3dc7ff1c5c63e1aed4649"
+    },
+    "SpireGarden": {
+      "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bbd/cards/SpireGarden.kt",
+      "definition_sha256": "bc7cc8fe4921512379a37ae403935edab3e7c911b27cd22c137bbed31a96fa59",
+      "scenario_source_sha256": "b8f90cc2785a4604d10c4906a07e46a835fe247a02f2eeb415f3e57fb78709cc"
+    },
+    "TrainingCenter": {
+      "definition_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmr/cards/TrainingCenter.kt",
+      "definition_sha256": "b8775c365f282a3f4c089aeeb3eea63bf4e14fbc6a838d1741edc27b3cb17ca3",
+      "scenario_source_sha256": "59cdf09bdccb2a7a08cc9945c263bba7cc0b31fec597bf98a67202107bb67c98"
+    },
+    "UtopiaSprawl": {
+      "definition_path": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dis/cards/UtopiaSprawl.kt",
+      "definition_sha256": "95ca742a779934f7686e91c4fa79ddd5c21450bc4fa2fab4ea8a272cbbdc02c3",
+      "scenario_source_sha256": "e12b87ebb3e2c8d855806f68541f33302a14ae5db23d22bcb3ba4e1394d0c8f7"
+    },
+    "WildGrowth": {
+      "definition_path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/WildGrowth.kt",
+      "definition_sha256": "8678af1c2359de8a3459c665aba849ae2f9893b8e91754e6c2a0de0b304d7b3e",
+      "scenario_source_sha256": "512d5c9efcc40b3e711aa3ccefcfc24d43d683d4cb4fc651f31eed917e1e2e69"
+    }
+  },
+  "disposition": "ACCEPT_SEED_FREE_SCENARIO_INVENTORY_AND_SOURCE_EVIDENCE_ONLY",
+  "file_digests": {
+    "engine/registry-report.json": "4b425dc3acca8d7a77e93dc6228db3a848f7ebdeaaf5480a8740faf08f6c5ab4",
+    "source/bootstrap-report.json": "d2f1eb6c3a1ba6db6bb64094287cbdee48ea8a7a969a8088c45f5a01ead44b2f",
+    "source/registry-requests.json": "09b8617057b9bd42fb6501f993588c9bf769e1f0af0c73426ca963da07d20084",
+    "source/rules/MagicCompRules-20260925.txt": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca",
+    "source/rules/rules-audit.json": "ab528389252c98e9d0b1c8b1fad8c34d9f8d183a8ea778b2d94343e0862da6db",
+    "source/rules/rules-source.json": "483aeee1e325396483f287981ec245fdb1c2d6e83f3db8346e2671620cb120e0",
+    "source/source-bundle.zip": "b83cf1a2bc6e4ec1a74fc20442ed19d2733384e206bf7e9c78c192da27f2d20e",
+    "source/source-signals.json": "8265fb16a6d40a2d87af39a20bc2ae448237152411b20a5a28025450d2c4efbc"
+  },
+  "full_workflow_accepted": true,
+  "hardware": {
+    "git_blob_sha1": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "inherited_identifier": "6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111",
+    "phase1_commit": "e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d",
+    "phase1_final_conclusion_blob": "dbf081b0c6e205c65750866adcb6f7d43f532caf",
+    "plaintext_and_git_blob_independently_verified": true,
+    "plaintext_sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1"
+  },
+  "limitations": [
+    "Deterministic scenario passes qualify the exercised cases only; registry presence is not complete rules qualification.",
+    "The prior failing fixture artifact remains preserved; passing corrected scenarios do not overwrite it.",
+    "These are synthetic card/generic-engine fixtures, not official sampled cEDH games or tournament evidence.",
+    "All accepted workflow results are deterministic/source validation. The frozen exact decks and pilots remain unready for the capability sample; no performance result or completed Phase 2 is inferred.",
+    "A separately discovered CR 117.3b post-resolution priority defect remains a prospective exact-pilot readiness blocker. Its canonical shared repair is not part of this accepted component gate; the scoped card/land fixtures do not certify every multiplayer priority path.",
+    "The accepted canonical main integration resolves inherited Spy B/C workflow-source prerequisites without changing exact-head checkout, source pins, selectors or strict snapshots. Its support evidence is deterministic component evidence; no other project matchup result is transferred."
+  ],
+  "official_budgets": {
+    "initial_capability_games": 36,
+    "maximum_capability_games_including_protocol_defect_replacements": 72,
+    "primary_games": 864
+  },
+  "official_counters": {
+    "actions": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "outcomes": 0,
+    "seeds_generated": 0
+  },
+  "official_gameplay_authorized": false,
+  "opponent_admission": {
+    "admitted": [
+      {
+        "complete_100_sha256": "164cef506c6069f1c69f46b1dfa5ff50449d3dae56df77a086ff04b7ab0e31e8",
+        "deck_id": "blue-farm",
+        "disposition": "ADMITTED_EXACT_IDENTITY"
+      },
+      {
+        "complete_100_sha256": "d17b520fcacf951fd31cbe909bf154ab24a6efe884f9baa8c91a7e621ce16a26",
+        "deck_id": "rogsi",
+        "disposition": "ADMITTED_EXACT_IDENTITY"
+      },
+      {
+        "complete_100_sha256": "e36cda0598aad4acf0ee75de48cfc3d767240463d35f17666dcf1d22e22dbceb",
+        "deck_id": "kinnan",
+        "disposition": "ADMITTED_EXACT_IDENTITY"
+      },
+      {
+        "complete_100_sha256": "25d6794046a80dba919ec19a4491bb6ce8ef799b0d2de2afbaac377592b66580",
+        "deck_id": "sisay",
+        "disposition": "ADMITTED_EXACT_IDENTITY"
+      },
+      {
+        "complete_100_sha256": "328879aec8d8095eea6d38f43ddc3746e69209dd45726826eec8eb4c8976ed4a",
+        "deck_id": "magda",
+        "disposition": "ADMITTED_EXACT_IDENTITY"
+      },
+      {
+        "complete_100_sha256": "69eddcf540a05382f4d870a34426831274696db7d3767d8ebb5d75486a051870",
+        "deck_id": "hashaton",
+        "disposition": "ADMITTED_EXACT_IDENTITY"
+      },
+      {
+        "complete_100_sha256": "9fedd6fdf069e09f34fb4619dedf63cb95db003524572e1b9dbe602329c7b380",
+        "deck_id": "shorikai",
+        "disposition": "ADMITTED_EXACT_IDENTITY"
+      }
+    ],
+    "all_seven_exact_identities_admitted": true,
+    "manifest_sha256": "5d1813c6b47496f1dac8218a2067703fc72a4a624b76d6e377b35542f2d1b946",
+    "rules_and_pilot_qualification": "PENDING"
+  },
+  "phase2_complete": false,
+  "prior_accepted_inventory": "accepted-capability-inventory-r5.json",
+  "prior_component_audit": "capability-component-audit-r6.json",
+  "prior_failed_fixture_evidence": "card-support-batch-r1-audit.json",
+  "prior_failed_fixture_evidence_records": [
+    "card-support-batch-r1-audit.json",
+    "card-support-batch-r2-audit.json",
+    "card-support-batch-r3-audit.json",
+    "card-support-batch-r4-audit.json",
+    "card-support-batch-r5-audit.json"
+  ],
+  "prior_snapshot_gate": {
+    "all_338_snapshot_roundtrip_tests_pass": true,
+    "review": {
+      "contract": "EXACT_THREE_ADDITIONS_NO_EXISTING_TREE_CHANGES",
+      "sets": {
+        "DIS": {
+          "added": [
+            "Utopia Sprawl"
+          ],
+          "bytes": 20767,
+          "existing_card_trees_identical": 11,
+          "sha256": "4f793f2752bd40fb0b4d763046b50c6e9c1a7ecdf3b672b654ce45ea0f4d139a"
+        },
+        "LEA": {
+          "added": [
+            "Wild Growth"
+          ],
+          "bytes": 153296,
+          "existing_card_trees_identical": 151,
+          "sha256": "d1badecd78e67199ec5c93c97676bcd1fd396323191aa9f301d435076442ee76"
+        },
+        "WWK": {
+          "added": [
+            "Arbor Elf"
+          ],
+          "bytes": 37884,
+          "existing_card_trees_identical": 15,
+          "sha256": "ca6bd008f23ab074dcdcd66418165a465bf49a5a7074936d60384326da384fd2"
+        }
+      }
+    },
+    "source_binding": "Test-resource snapshots are deliberately excluded by the source bundler; reviewed golden SHA-256 values are verified against exact 94b34d5c Git objects and the 338 passing compiled snapshot/roundtrip cases.",
+    "source_review_record": "card-support-batch-r3-audit.json",
+    "status": "REVIEWED_GOLDENS_VALIDATED_AND_ACCEPTED",
+    "validation_run": 36087805569
+  },
+  "prospective_telemetry_component": {
+    "ci_tests": 17,
+    "ci_workflow_run": 36094281416,
+    "exact_deck_adapter_qualified": false,
+    "execution_authorized": false,
+    "file_sha256": {
+      "experiments/manual-transmission-phase2/metrics_contract.py": "1941de6e8d70be5e344a0d021b66f92ed9b431beb4a71abc86dc3bf4aa8ebee5",
+      "experiments/manual-transmission-phase2/telemetry-component-r1.md": "4273be7c88071471a5990bdf06ed924ebb5743aa5b970cb8e5af707395619a9d",
+      "experiments/manual-transmission-phase2/test_metrics_contract.py": "d1e84b6caac74d6bd17f1b4c0242ac8eb8bbc060d35b73cd7c6a60fe1fb3f549"
+    },
+    "official_games_initialized": 0,
+    "scope": "Hash-linked observation recorder, component replay auditor, complete-collector handling, null-with-reason, internally consistent outcomes and exclusive immutable export. Complex typed metric collectors and the exact engine adapter remain unqualified.",
+    "status": "ACCEPTED_DETERMINISTIC_COMPONENT_ONLY",
+    "tests": 17
+  },
+  "record_status": "ACCEPTED_SEED_FREE_CAPABILITY_COMPONENTS",
+  "registry": {
+    "all_registry_rows_remain_rules_unqualified": true,
+    "manual_control_remaining_gap_queue": [
+      "Gwenna, Eyes of Gaea",
+      "Writhing Chrysalis",
+      "Fblthp, the Lost",
+      "Aether Channeler",
+      "Reckless Bushwhacker",
+      "Amphin Mutineer",
+      "Bane of Progress",
+      "Spellskite",
+      "Malevolent Hermit",
+      "Walking Ballista",
+      "Phyrexian Metamorph",
+      "Glen Elendra Archmage",
+      "Temur Sabertooth",
+      "Purphoros, God of the Forge",
+      "World Breaker",
+      "Disciple of Freyalise",
+      "Reality Shift",
+      "Veil of Summer",
+      "Pact of Negation",
+      "Opal Palace"
+    ],
+    "new_unresolved_since_d0461c3": [],
+    "newly_resolved_since_d0461c3": [
+      "Ancestral Statue",
+      "Animar, Soul of Elements",
+      "Arbor Elf",
+      "Coiling Oracle",
+      "Eldrazi Repurposer",
+      "Emrakul's Hatcher",
+      "Eyeless Watcher",
+      "Hope-Ender Coatl",
+      "Nest Invader",
+      "Paradise Druid",
+      "Pongify",
+      "Rapid Hybridization",
+      "Rejuvenating Springs",
+      "Spire Garden",
+      "Training Center",
+      "Utopia Sprawl",
+      "Wild Growth"
+    ],
+    "per_deck": [
+      {
+        "commander_count": 1,
+        "deck_id": "manual-transmission-v07",
+        "physical_cards": 100,
+        "registry_resolved": 80,
+        "registry_unresolved": 20
+      },
+      {
+        "commander_count": 2,
+        "deck_id": "blue-farm",
+        "physical_cards": 100,
+        "registry_resolved": 59,
+        "registry_unresolved": 41
+      },
+      {
+        "commander_count": 2,
+        "deck_id": "rogsi",
+        "physical_cards": 100,
+        "registry_resolved": 56,
+        "registry_unresolved": 44
+      },
+      {
+        "commander_count": 1,
+        "deck_id": "kinnan",
+        "physical_cards": 100,
+        "registry_resolved": 56,
+        "registry_unresolved": 44
+      },
+      {
+        "commander_count": 1,
+        "deck_id": "sisay",
+        "physical_cards": 100,
+        "registry_resolved": 57,
+        "registry_unresolved": 43
+      },
+      {
+        "commander_count": 1,
+        "deck_id": "magda",
+        "physical_cards": 100,
+        "registry_resolved": 50,
+        "registry_unresolved": 50
+      },
+      {
+        "commander_count": 1,
+        "deck_id": "hashaton",
+        "physical_cards": 100,
+        "registry_resolved": 48,
+        "registry_unresolved": 52
+      },
+      {
+        "commander_count": 1,
+        "deck_id": "shorikai",
+        "physical_cards": 100,
+        "registry_resolved": 53,
+        "registry_unresolved": 47
+      }
+    ],
+    "physical_cards": 800,
+    "remaining_unique_gap_queue": [
+      "Ad Nauseam",
+      "Aether Channeler",
+      "Aminatou, the Fateshifter",
+      "Amphibian Downpour",
+      "Amphin Mutineer",
+      "Archon of Emeria",
+      "Ashiok, Dream Render",
+      "Azorius Signet",
+      "Baleful Force",
+      "Bane of Progress",
+      "Barbarian Ring",
+      "Battered Golem",
+      "Birgi, God of Storytelling // Harnfel, Horn of Bounty",
+      "Blind Obedience",
+      "Bottle-Cap Blast",
+      "Cabal Ritual",
+      "Captain America's Motorcycle",
+      "Cephalid Coliseum",
+      "Chancellor of the Annex",
+      "Chromatic Orrery",
+      "City of Traitors",
+      "Clock of Omens",
+      "Clown Car",
+      "Colossal Skyturtle",
+      "Commandeer",
+      "Consecrated Sphinx",
+      "Contagion",
+      "Copy Artifact",
+      "Counterbalance",
+      "Culling the Weak",
+      "Cultist of the Absolute",
+      "Cursed Mirror",
+      "Cyclonic Rift",
+      "Daze",
+      "Deadly Rollick",
+      "Deadpool, Trading Card",
+      "Deathrite Shaman",
+      "Defense Grid",
+      "Deflecting Swat",
+      "Demonic Consultation",
+      "Derevi, Empyrial Tactician",
+      "Dihada, Binder of Wills",
+      "Disciple of Freyalise",
+      "Disrupting Shoal",
+      "Dragon-Cursed Halls",
+      "Drana and Linvala",
+      "Dwarven Scorcher",
+      "Eidolon of Rhetoric",
+      "Elesh Norn, Grand Cenobite",
+      "Elixir of Immortality",
+      "Elvish Spirit Guide",
+      "Emiel the Blessed",
+      "Endurance",
+      "Ertai Resurrected",
+      "Esper Sentinel",
+      "Ethersworn Canonist",
+      "Faeburrow Elder",
+      "Faerie Mastermind",
+      "Fblthp, the Lost",
+      "Fierce Guardianship",
+      "Finale of Devastation",
+      "Flare of Duplication",
+      "Flash Photography",
+      "Flesh Duplicate",
+      "Flusterstorm",
+      "Flywheel Racer",
+      "Foil",
+      "Force of Will",
+      "F\u00edli and K\u00edli, Joyous",
+      "Gemstone Caverns",
+      "Gilded Drake",
+      "Gitaxian Probe",
+      "Glen Elendra Archmage",
+      "Glory",
+      "Gogo, Mysterious Mime",
+      "Grafdigger's Cage",
+      "Grim Monolith",
+      "Grinding Station",
+      "Gwenna, Eyes of Gaea",
+      "Hammerheim",
+      "Hashaton, Scarab's Fist",
+      "Hidden Strings",
+      "Holdout Settlement",
+      "Humility",
+      "Hydroelectric Specimen // Hydroelectric Laboratory",
+      "Imposter Mech",
+      "Intuition",
+      "Invasion of Ikoria // Zilortha, Apex of Ikoria",
+      "Jeska's Will",
+      "Jin-Gitaxias, Core Augur",
+      "Kinnan, Bonder Prodigy",
+      "Knuckles the Echidna",
+      "Kraum, Ludevic's Opus",
+      "Lavinia, Azorius Renegade",
+      "Legolas's Quick Reflexes",
+      "Lion's Eye Diamond",
+      "Liquimetal Torque",
+      "Magda, Brazen Outlaw",
+      "Malevolent Hermit",
+      "Mana Drain",
+      "Mana Vault",
+      "Manifold Key",
+      "Maskwood Nexus",
+      "Mental Misstep",
+      "Mind Over Matter",
+      "Mindbreak Trap",
+      "Mirage Mirror",
+      "Mirrormade",
+      "Misdirection",
+      "Mnemonic Betrayal",
+      "Mox Diamond",
+      "Mystic Remora",
+      "Necrodominance",
+      "Necropotence",
+      "Nezahal, Primal Tide",
+      "Nicol Bolas, Dragon-God",
+      "Noble Hierarch",
+      "Noxious Revival",
+      "Opal Palace",
+      "Ori, Plate Stacker",
+      "Pact of Negation",
+      "Paradise Mantle",
+      "Permission Denied",
+      "Phyrexian Censor",
+      "Phyrexian Metamorph",
+      "Pinnacle Monk // Mystic Peak",
+      "Plundering Barbarian",
+      "Pollywog Prodigy",
+      "Portal to Phyrexia",
+      "Praetor's Grasp",
+      "Professional Face-Breaker",
+      "Purphoros, God of the Forge",
+      "Putrid Imp",
+      "Pyroblast",
+      "Pyrokinesis",
+      "Rain of Filth",
+      "Ramunap Ruins",
+      "Ranger-Captain of Eos",
+      "Razaketh, the Foulblooded",
+      "Reality Shift",
+      "Reanimate",
+      "Reckless Bushwhacker",
+      "Relic of Legends",
+      "Reverent Mantra",
+      "Rhystic Study",
+      "Rite of Flame",
+      "Rograkh, Son of Rohgahh",
+      "Saheeli Rai",
+      "Scheming Symmetry",
+      "Sea Gate Restoration // Sea Gate, Reborn",
+      "Sea of Clouds",
+      "Selvala, Heart of the Wilds",
+      "Sevinne's Reclamation",
+      "Shatterskull Smashing // Shatterskull, the Hammer Pass",
+      "Shorikai, Genesis Engine",
+      "Siege Smash",
+      "Silas Renn, Seeker Adept",
+      "Silence",
+      "Simian Spirit Guide",
+      "Sink into Stupor // Soporific Springs",
+      "Sisay, Weatherlight Captain",
+      "Smirking Spelljacker",
+      "Smothering Tithe",
+      "Snapback",
+      "Solitude",
+      "Spark Mage",
+      "Spellskite",
+      "Strix Serenade",
+      "Submerge",
+      "Subtlety",
+      "Sudden Shock",
+      "Sundering Eruption // Volcanic Fissure",
+      "Survivors' Encampment",
+      "Swan Song",
+      "Tainted Pact",
+      "Talisman of Curiosity",
+      "Talon Gates of Madara",
+      "Tataru Taru",
+      "Teferi, Mage of Zhalfir",
+      "Teferi, Time Raveler",
+      "Temur Sabertooth",
+      "Tezzeret the Seeker",
+      "The Cabbage Merchant",
+      "Thorin, Company's Leader",
+      "Thrasios, Triton Hero",
+      "Treasonous Ogre",
+      "Treasure Vault",
+      "Trophy Mage",
+      "Twincast",
+      "Twinshot Sniper",
+      "Tymna the Weaver",
+      "Tyvar, Jubilant Brawler",
+      "Underworld Breach",
+      "Unlicensed Hearse",
+      "Unmask",
+      "Unwinding Clock",
+      "Urza's Cave",
+      "Urza's Saga",
+      "Veil of Summer",
+      "Vexing Bauble",
+      "Vilis, Broker of Blood",
+      "Volatile Stormdrake",
+      "Walking Ballista",
+      "Wheel of Fortune",
+      "Whir of Invention",
+      "Windfall",
+      "Witch Enchanter // Witch-Blessed Meadow",
+      "World Breaker",
+      "Writhing Chrysalis",
+      "Xorn",
+      "Yawgmoth's Will"
+    ],
+    "request_identity_order_and_definition_files_verified": true,
+    "resolved_occurrences": 459,
+    "unique_normalized_identities": 460,
+    "unresolved_occurrences": 341,
+    "unresolved_unique_identities": 211
+  },
+  "remaining_readiness": [
+    "211 unique missing registry identities across the eight exact decks; 20 remain in the exact Manual control.",
+    "Exact mechanics and legal-action qualification for existing registry definitions.",
+    "Executable Cruise/Sport/Race and fixed opponent pilots, multiplayer decisions and telemetry.",
+    "Production replay/evidence capture, engine/pilot/rules freeze, sealed seed vectors and durable one-shot authority.",
+    "Prescribed actual-deck capability pilots before any primary-sample execution.",
+    "Separately qualify the canonical CR 117.3b post-resolution priority repair and any resulting direct/continuation cast-priority correction before exact multiplayer pilot admission."
+  ],
+  "required_validation": {
+    "canonical_spy_b_run": 36094281390,
+    "canonical_spy_c_run": 36094281376,
+    "coverage_job": "intentionally_skipped",
+    "exact_head_runs": [
+      {
+        "conclusion": "success",
+        "head_sha": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+        "id": 36094281371,
+        "name": "CI",
+        "status": "completed",
+        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36094281371"
+      },
+      {
+        "conclusion": "success",
+        "head_sha": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+        "id": 36094281390,
+        "name": "Pest Control Tier-1 Spy Support Batch B",
+        "status": "completed",
+        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36094281390"
+      },
+      {
+        "conclusion": "success",
+        "head_sha": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+        "id": 36094281376,
+        "name": "Pest Control Tier-1 Spy Support Batch C",
+        "status": "completed",
+        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36094281376"
+      },
+      {
+        "conclusion": "success",
+        "head_sha": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+        "id": 36094281378,
+        "name": "Pest Control Tier-1 Monster Tron Prototype Validation",
+        "status": "completed",
+        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36094281378"
+      },
+      {
+        "conclusion": "success",
+        "head_sha": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+        "id": 36094281387,
+        "name": "Pest Control Tier-1 Monster Tron Cascade Validation",
+        "status": "completed",
+        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36094281387"
+      },
+      {
+        "conclusion": "success",
+        "head_sha": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+        "id": 36094281422,
+        "name": "Pest Control Tier-1 Monster Tron Support Closure",
+        "status": "completed",
+        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36094281422"
+      },
+      {
+        "conclusion": "success",
+        "head_sha": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+        "id": 36094281416,
+        "name": "Manual Transmission Phase 2 Capability Audit",
+        "status": "completed",
+        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36094281416"
+      }
+    ],
+    "general_ci_conclusion": "success",
+    "general_ci_run": 36094281371,
+    "incidental_cascade_validation_run": 36094281387,
+    "incidental_prototype_validation_run": 36094281378,
+    "incidental_validation_conclusion": "success",
+    "phase2_capability_conclusion": "success",
+    "phase2_capability_run": 36094281416,
+    "rules_integrity_tests": 7,
+    "shared_snapshot_support_conclusion": "success",
+    "shared_snapshot_support_validation_run": 36094281422,
+    "shared_validation_is_gameplay": false,
+    "telemetry_contract_tests": 17
+  },
+  "rules_source": {
+    "admission_date": "2026-09-25",
+    "bytes": 977752,
+    "effective_date": "2026-09-25",
+    "effective_header_verified": true,
+    "engine_semantics_qualified": false,
+    "historical_september24_admission_unchanged": true,
+    "scope": "Prospective official source archive only; re-evaluate applicability before official seed freeze.",
+    "sha256": "8d860e451f20f38865b725b42d82feb714c725373dd8f3b32b8652b3eeb070ca"
+  },
+  "schema": "mt-phase2-seed-free-capability-component-audit-v2",
+  "shared_land_cast_guard": {
+    "actual_deck_adapter_qualified": false,
+    "canonical_commit": "63d262a32d4f92525ccd4f167b43038936bc2f76",
+    "canonical_hunk_sha256": "f013fa0a6fa437a754e59cbb3f3bdd377c02e6cfce3e47a3738a3cd3c6c338be",
+    "cases": 7,
+    "fixture_sha256": "56f1ea5f4b8817d63ee07897bf8f278f2eb1a0be12598fd529e210af93af8f61",
+    "manual_handler_sha256": "69d986886a1bcfb32a85d03c717abae6e712b20cf965bf9b28a003ae7fdadc4c",
+    "source_manifest": "shared-land-cast-guard-r1.json",
+    "status": "SELECTIVE_CANONICAL_COMPONENT_INDEPENDENTLY_QUALIFIED_FOR_EXERCISED_PHASE2_FIXTURES",
+    "validation_run": 36094281416
+  },
+  "snapshot_gate": {
+    "all_340_snapshot_roundtrip_tests_pass": true,
+    "source_binding": "Exact resulting Git snapshot bytes equal the prospectively reviewed canonical merge-tree. The three composed GTC/MH3/ROE trees preserve every old Manual and canonical card block; no card tree is reblessed. Source bundles exclude test-resource snapshots, which are bound by Git objects and passing compiled snapshot cases.",
+    "source_review_records": [
+      "card-support-batch-r4-audit.json",
+      "card-support-batch-r5-audit.json",
+      "canonical-main-integration-r1.json"
+    ],
+    "status": "REVIEWED_GOLDENS_VALIDATED_AND_ACCEPTED",
+    "validation_run": 36094281416
+  },
+  "source_commit": "079505eddebb1d7ea692da47ce92e64f2cdcdeaf",
+  "source_tree": "e4892ce10f8a70560b1276858d0468a0de17899d",
+  "tests": {
+    "counts_by_category": {
+      "card_scenarios": 127,
+      "card_snapshots_and_roundtrips": 340,
+      "generic_multiplayer": 39,
+      "paired_commanders": 5,
+      "registry_inventory": 1,
+      "setup_and_tax": 12,
+      "shared_land_cast_guard_and_positive_alternatives": 7
+    },
+    "errors": 0,
+    "failures": 0,
+    "passing": 531,
+    "skipped": 0,
+    "total": 531,
+    "xml_files": [
+      {
+        "class": "com.wingedsheep.engine.scenarios.CloudOfFaeriesScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/1993-1999/TEST-com.wingedsheep.engine.scenarios.CloudOfFaeriesScenarioTest.xml",
+        "sha256": "82459585d462bc59fde059de28fcb15b2ff0c49b52d1d6e6ece840f36f6da931",
+        "tests": 6
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.PeregrineDrakeScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/1993-1999/TEST-com.wingedsheep.engine.scenarios.PeregrineDrakeScenarioTest.xml",
+        "sha256": "7ae9b63ca60367de604a14932a8ba4dd8691a2e36a290edb1986b20649673a01",
+        "tests": 5
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.WildGrowthScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/1993-1999/TEST-com.wingedsheep.engine.scenarios.WildGrowthScenarioTest.xml",
+        "sha256": "b93ff9926ef0a9801a06c7b73fd368be33f1fcaf57e5833747dfa093c34143e2",
+        "tests": 8
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.CoilingOracleScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2003-2007/TEST-com.wingedsheep.engine.scenarios.CoilingOracleScenarioTest.xml",
+        "sha256": "ef9d059f23449e291e08ab9e690ab050c31158876cee1b4f9c3abc3a5b417c30",
+        "tests": 8
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.KurgadonTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2003-2007/TEST-com.wingedsheep.engine.scenarios.KurgadonTest.xml",
+        "sha256": "28a4984e344a93c4a9d59997724297bc48e9c505d9f9dfdae2d7cde7124ec975",
+        "tests": 2
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.PongifyScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2003-2007/TEST-com.wingedsheep.engine.scenarios.PongifyScenarioTest.xml",
+        "sha256": "33e91606a0fb3765cc5b71f4635f39261f86df264c8d383e4fcbe0d41bc9e497",
+        "tests": 5
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.UtopiaSprawlScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2003-2007/TEST-com.wingedsheep.engine.scenarios.UtopiaSprawlScenarioTest.xml",
+        "sha256": "434b536c7430ab49bee7515809327747823e1c2a5439434a2182e0653b32bf61",
+        "tests": 8
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.AncestralStatueScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.AncestralStatueScenarioTest.xml",
+        "sha256": "d08dad70df9d87f28bb9873424d6f4c1856e77d3f50f1acecbcd044b25710edf",
+        "tests": 2
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.AnimarSoulOfElementsScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.AnimarSoulOfElementsScenarioTest.xml",
+        "sha256": "fecd05b909302c5af7a39bca097073b4970bb3730579563e604643fbb34ad1ef",
+        "tests": 6
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.ArborElfScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.ArborElfScenarioTest.xml",
+        "sha256": "a895a91461669608bf2cca1a640ec1027be8a00f061d5c9349c9004872633030",
+        "tests": 8
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.EmrakulsHatcherScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.EmrakulsHatcherScenarioTest.xml",
+        "sha256": "08d19cafceda327a9bce7244107d5d795c692de81bf5640d2918319d8e78754a",
+        "tests": 4
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.EyelessWatcherScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.EyelessWatcherScenarioTest.xml",
+        "sha256": "0493fabd1d1cd06bf46579ae3baf5f357032c3588c354d7e76cae0869f25f822",
+        "tests": 6
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.ManualTransmissionLandSpellGuardScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.ManualTransmissionLandSpellGuardScenarioTest.xml",
+        "sha256": "fed5f5fe76c7026432e30f45cadd02b9707721d03caee9b82962a577317edb42",
+        "tests": 2
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.NestInvaderScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.NestInvaderScenarioTest.xml",
+        "sha256": "0899aeca743db89623d67acee0e84264be895f37ceed73650c96c1d4d87d8952",
+        "tests": 4
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.RapidHybridizationScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.RapidHybridizationScenarioTest.xml",
+        "sha256": "a7e375061fa6090b2876f134a7f56862b91eb32e036d5a639cc8e8ddcc27a046",
+        "tests": 5
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.ParadiseDruidScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2017-2022/TEST-com.wingedsheep.engine.scenarios.ParadiseDruidScenarioTest.xml",
+        "sha256": "a1c3521419a9ab055101b0c25a9d70cc355574f51651994b440250a4e4c756ec",
+        "tests": 4
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.RejuvenatingSpringsScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2017-2022/TEST-com.wingedsheep.engine.scenarios.RejuvenatingSpringsScenarioTest.xml",
+        "sha256": "350ee6e0851bf71cb7f26ed61140654fde3821996046a093d2e9f0bfa0426e99",
+        "tests": 10
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.SpireGardenScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2017-2022/TEST-com.wingedsheep.engine.scenarios.SpireGardenScenarioTest.xml",
+        "sha256": "4f0448bc467104334e8ef0671f286aa9e5804ccd8f34fceeb9e2f3a0836d0118",
+        "tests": 10
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.TrainingCenterScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2017-2022/TEST-com.wingedsheep.engine.scenarios.TrainingCenterScenarioTest.xml",
+        "sha256": "007db7f0b934866634d41bd5b2e44969e92bf067a7772bf0d20cd7187aabebe5",
+        "tests": 10
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.EldraziRepurposerScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2024/TEST-com.wingedsheep.engine.scenarios.EldraziRepurposerScenarioTest.xml",
+        "sha256": "efa7765aa695f0566227dfec19e762ae020a23b7a343bbd048a163212aacb480",
+        "tests": 9
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.HopeEnderCoatlScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2024/TEST-com.wingedsheep.engine.scenarios.HopeEnderCoatlScenarioTest.xml",
+        "sha256": "024801284c6cf4b5cf61cff8f977b0b8bd6c8f60a68c991e0c6ae0774f56922a",
+        "tests": 9
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.TownLandSpellAdventureScenarioTest",
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2025/TEST-com.wingedsheep.engine.scenarios.TownLandSpellAdventureScenarioTest.xml",
+        "sha256": "c1a2444279400929b4852e9fd334c3895c8d2b771852aeab5e894d33c57fbc07",
+        "tests": 3
+      },
+      {
+        "class": "com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest",
+        "path": "gym/build/test-results/test/TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml",
+        "sha256": "dbc8b480fb97c74e7a7b6fd77afdc80128ee837fe8fa4e90762c9a25e8215b97",
+        "tests": 1
+      },
+      {
+        "class": "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+        "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+        "sha256": "0fde4472a85a7864ad3a0b84a74a0874cd168cf8378b89ff55a8587c675a41bb",
+        "tests": 340
+      },
+      {
+        "class": "com.wingedsheep.engine.core.CommanderSetupTest",
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.core.CommanderSetupTest.xml",
+        "sha256": "6f66ce9fabdd530cfed6aa3b414a907a91b0d78636938892741ece0246269e7f",
+        "tests": 7
+      },
+      {
+        "class": "com.wingedsheep.engine.mana.CommanderTaxTest",
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.mana.CommanderTaxTest.xml",
+        "sha256": "ebca22aeaa29c6e192731fc4e3c40bba8a11daf32b6556bd6cbb9053f063af9f",
+        "tests": 5
+      },
+      {
+        "class": "com.wingedsheep.engine.multiplayer.CommanderPodTest",
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.CommanderPodTest.xml",
+        "sha256": "fc9b7a5940842c597d856e1e9b148368f6417ce1e7b0b8ec3eba9a715a3e728b",
+        "tests": 9
+      },
+      {
+        "class": "com.wingedsheep.engine.multiplayer.LeaveTheGameTest",
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.LeaveTheGameTest.xml",
+        "sha256": "f751f32039ce638bd81bbfbec9aaaa363f7a87500d1d2df4848b825798bbaf47",
+        "tests": 16
+      },
+      {
+        "class": "com.wingedsheep.engine.multiplayer.MultiplayerMulliganTest",
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.MultiplayerMulliganTest.xml",
+        "sha256": "b5fe51a55a95f2bdd59bb5853da9879c5eb50c28214241b2d074f32ff6188070",
+        "tests": 7
+      },
+      {
+        "class": "com.wingedsheep.engine.multiplayer.MultiplayerSmokeTest",
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.multiplayer.MultiplayerSmokeTest.xml",
+        "sha256": "6eed30b94dca3fe4d0a7c7c1bc0f363d3644181b3a6fbcc9168cd60aad56bcc8",
+        "tests": 7
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.CommanderPodCapabilityTest",
+        "path": "rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.CommanderPodCapabilityTest.xml",
+        "sha256": "42e1d1fe51ca0ea99d967099a6748a643d080d605351f9d9d985d0b6a6f804b5",
+        "tests": 5
+      }
+    ]
+  },
+  "workflow_run": 36094281416,
+  "workflow_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/36094281416"
+}

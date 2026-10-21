@@ -1,0 +1,39 @@
+{
+  "schema": "mt-phase2-bane-of-progress-revalidation-pending-v1",
+  "status": "QUALIFIED_DEDICATED_GATE_PENDING_FULL_BRANCH_REVALIDATION",
+  "source_head": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+  "predecessor_inventory": "accepted-capability-inventory-r10.json",
+  "implementation_commit": "ee79003408f58384e40791377d54fe732ae4912c",
+  "generated_snapshot_commit": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+  "dedicated_run": {
+    "id": 36226546742,
+    "job_id": 108361587096,
+    "conclusion": "success",
+    "strict_snapshot_regeneration": "PASS",
+    "unrelated_snapshot_drift_guard": "PASS",
+    "only_generated_snapshot": "mtg-sets/src/test/resources/snapshots/cards/C13.json",
+    "bane_of_progress_scenarios": "PASS",
+    "card_lint": "PASS"
+  },
+  "qualified_behavior": [
+    "ETB destroys artifacts and enchantments controlled by either player",
+    "only permanents actually destroyed this way contribute to the +1/+1 counter count",
+    "an indestructible artifact survives and does not inflate the counter count",
+    "with no destroyable artifact or enchantment, Bane receives zero counters"
+  ],
+  "hardware_disposition": "KEEP_V07",
+  "hardware_changed": false,
+  "formal_acceptance": false,
+  "reason": "The bot-generated C13 snapshot commit produced action_required PR checks because of the GitHub event/token boundary. Require a normal human-authored successor at the exact snapshot head so full CI, capability, telemetry and priority validation execute before inventory r11 acceptance.",
+  "official_counters": {
+    "seeds_generated": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "actions": 0,
+    "outcomes": 0,
+    "capability_games": "0/36",
+    "primary_games": "0/864"
+  },
+  "gameplay_authorized": false,
+  "next_gate": "Run the normal full branch validation stack from this human-authored successor, then accept r11 only if the exact snapshot head remains green."
+}

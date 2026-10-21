@@ -1,0 +1,255 @@
+{
+  "actual_deck_capability_pilot_executed": false,
+  "all_prior_card_trees_unchanged": true,
+  "archives": {
+    "engine": {
+      "bytes": 75385,
+      "id": 10844464183,
+      "sha256": "3bcc796a1f115d1f101943c82381da5cc901af6128c727af63c700619cc3ecfd"
+    },
+    "source": {
+      "bytes": 27479040,
+      "id": 10844789839,
+      "sha256": "ba35dc1df338e9a6a4839bed6d3c370574354171dd9b3cb6ae7aa3ade7e0bb33"
+    }
+  },
+  "batch": "LIBRARY_REVEAL_AND_SELF_CAST_INTERACTION_R4",
+  "disposition": "PARTIAL_CARD_FIXTURE_FAILURE_CORRECTED_REVIEWED_GOLDENS_PENDING_COMPLETE_CI",
+  "executed_card_cases": 83,
+  "executed_card_failures": 1,
+  "failure_classification": "One Coiling Oracle blink fixture counted the separate public exile-return reveal as if it were an additional library reveal. MoveToZoneEffectExecutor.autoRevealForReturn explicitly emits that return overlay; GatherCardsExecutor separately emits the library reveal. Existing board and hand assertions passed. Two additional failures are exactly the predeclared DIS/MH3 golden additions. No official gameplay occurred.",
+  "fixture_repair": {
+    "failure_run": 36089000307,
+    "previous_scenario_sha256": "7aa7e93f9efd540499e5da0f0d8b6beba4957344a721728d7dbc6c25cbb62083",
+    "scope": "Blink return auto-reveal and actual library reveal are separately bound to exact card IDs, sources and zones; require exactly one of each and no draw. No card definition or engine change."
+  },
+  "gameplay_authorized": false,
+  "junit": {
+    "counts": {
+      "errors": 0,
+      "failures": 3,
+      "skipped": 0,
+      "tests": 421
+    },
+    "suites": [
+      {
+        "class": "com.wingedsheep.engine.scenarios.CloudOfFaeriesScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/1993-1999/TEST-com.wingedsheep.engine.scenarios.CloudOfFaeriesScenarioTest.xml",
+        "sha256": "c75a089350c422d8ae48b57d2d61a32ed562f41accdaec41b971ef9746d40b2b",
+        "skipped": 0,
+        "tests": 6
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.PeregrineDrakeScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/1993-1999/TEST-com.wingedsheep.engine.scenarios.PeregrineDrakeScenarioTest.xml",
+        "sha256": "029df1e107f8e4d8d9d09bc568e2922480f2ade83795ea0a7d4206340b2c0f86",
+        "skipped": 0,
+        "tests": 5
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.WildGrowthScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/1993-1999/TEST-com.wingedsheep.engine.scenarios.WildGrowthScenarioTest.xml",
+        "sha256": "cfb934a034196edf7c7ff8e52e8d95737197919292261a4f9602bd253597bfd0",
+        "skipped": 0,
+        "tests": 8
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.CoilingOracleScenarioTest",
+        "errors": 0,
+        "failed_cases": [
+          "returning Oracle with Momentary Blink triggers its entry without casting it"
+        ],
+        "failures": 1,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2003-2007/TEST-com.wingedsheep.engine.scenarios.CoilingOracleScenarioTest.xml",
+        "sha256": "83ea831dd7140fa898fe7178411a0f5519ebe10e30763cab5359a362726b5d06",
+        "skipped": 0,
+        "tests": 8
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.KurgadonTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2003-2007/TEST-com.wingedsheep.engine.scenarios.KurgadonTest.xml",
+        "sha256": "b7d72142157b52229e4f28c7129becb319b85841336361a71b895232ca7f31d8",
+        "skipped": 0,
+        "tests": 2
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.PongifyScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2003-2007/TEST-com.wingedsheep.engine.scenarios.PongifyScenarioTest.xml",
+        "sha256": "5dff810caf2f5370bc16e304ef02309d8690a129dea8ea80b715eddc4de23cf7",
+        "skipped": 0,
+        "tests": 5
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.UtopiaSprawlScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2003-2007/TEST-com.wingedsheep.engine.scenarios.UtopiaSprawlScenarioTest.xml",
+        "sha256": "38c2355adacf5113d963b91ca39cf8b6dc3bde0d4f06a0c69e4d8b1abd888dba",
+        "skipped": 0,
+        "tests": 8
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.AncestralStatueScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.AncestralStatueScenarioTest.xml",
+        "sha256": "77fecf34eaaffb5adb473ab1f09a87d0f4c8d2f107ab96491ba1864a6c8b64c3",
+        "skipped": 0,
+        "tests": 2
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.AnimarSoulOfElementsScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.AnimarSoulOfElementsScenarioTest.xml",
+        "sha256": "65aabd055f5073a26d7e452168e32e3fb746d2400a5756bf5e6cbf070b80a9c3",
+        "skipped": 0,
+        "tests": 6
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.ArborElfScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.ArborElfScenarioTest.xml",
+        "sha256": "17a6fab1f150f7d9fe8d353d8184ad56d1cfccb0826d35bd0861d8fd0ddb0a59",
+        "skipped": 0,
+        "tests": 8
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.EmrakulsHatcherScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.EmrakulsHatcherScenarioTest.xml",
+        "sha256": "c834eb1ec95e805474211d58229a62ca54ace74764e6af8a4dba5006bbd26f85",
+        "skipped": 0,
+        "tests": 4
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.EyelessWatcherScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.EyelessWatcherScenarioTest.xml",
+        "sha256": "e27708abc96b53372870f80bb56128e62125442b65a23d985440a87c15b52f2f",
+        "skipped": 0,
+        "tests": 6
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.ManualTransmissionLandSpellGuardScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.ManualTransmissionLandSpellGuardScenarioTest.xml",
+        "sha256": "437f8f2653818d8f0090d2eb69d951f2c14e4615bae10bf43423fa5d7d6ba762",
+        "skipped": 0,
+        "tests": 2
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.NestInvaderScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.NestInvaderScenarioTest.xml",
+        "sha256": "689c422b1d81078ad24e5cac05739ee7958dec15f65dc0a1d1ff4ccee3766a4e",
+        "skipped": 0,
+        "tests": 4
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.RapidHybridizationScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2008-2016/TEST-com.wingedsheep.engine.scenarios.RapidHybridizationScenarioTest.xml",
+        "sha256": "142c26277b5f9e49460a5e88c69bd7c4d5393a6ead4a8795bab83851d0fd3cef",
+        "skipped": 0,
+        "tests": 5
+      },
+      {
+        "class": "com.wingedsheep.engine.scenarios.ParadiseDruidScenarioTest",
+        "errors": 0,
+        "failed_cases": [],
+        "failures": 0,
+        "path": "build/reports/manual-transmission-phase2/card-scenarios/2017-2022/TEST-com.wingedsheep.engine.scenarios.ParadiseDruidScenarioTest.xml",
+        "sha256": "7a35a9e5219d585a4cf68a204e0c9b52cabf241f6421fa81e82528fdcfd324d9",
+        "skipped": 0,
+        "tests": 4
+      },
+      {
+        "class": "com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest",
+        "errors": 0,
+        "failed_cases": [
+          "DIS (Dissension): card trees match golden",
+          "MH3 (Modern Horizons 3): card trees match golden"
+        ],
+        "failures": 2,
+        "path": "mtg-sets/build/test-results/test/TEST-com.wingedsheep.mtg.sets.CardDefinitionSnapshotTest.xml",
+        "sha256": "f56437ea0ba6296a0825aaabecdd6ff09f33be68f314626b1dcd95758b18d112",
+        "skipped": 0,
+        "tests": 338
+      }
+    ]
+  },
+  "not_executed_due_to_prior_failure": {
+    "card_scenarios": {
+      "EldraziRepurposerScenarioTest": 9,
+      "HopeEnderCoatlScenarioTest": 9,
+      "TownLandSpellAdventureScenarioTest": 3
+    },
+    "generic_commander_and_multiplayer_cases": 56,
+    "registry_audit_cases": 1
+  },
+  "official_counters": {
+    "actions": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "outcomes": 0,
+    "seeds_generated": 0
+  },
+  "registry_result": "NOT_EXECUTED_FOR_THIS_SOURCE_ACCEPTED_R5_COUNTS_REMAIN216_UNIQUE_MANUAL25",
+  "schema": "mt-phase2-card-support-audit-v1",
+  "snapshot_review": {
+    "contract": "EXACT_TWO_ADDITIONS_NO_EXISTING_TREE_CHANGES",
+    "sets": {
+      "DIS": {
+        "added": [
+          "Coiling Oracle"
+        ],
+        "bytes": 23487,
+        "existing_card_trees_identical": 12,
+        "sha256": "d3149e13d32964bdfcf9bde50f5af8363ab8cc4372a2072877c67c9f0103139f"
+      },
+      "MH3": {
+        "added": [
+          "Hope-Ender Coatl"
+        ],
+        "bytes": 62258,
+        "existing_card_trees_identical": 21,
+        "sha256": "8d1ebb00f85c19433951e363fb03b99e8256e459f460bdd0217c43fda0da07ca"
+      }
+    }
+  },
+  "source_and_frozen_request_bindings_verified": true,
+  "source_commit": "5facc2dfcae8ccc175134ac1269d8c84fc549115",
+  "source_tree": "907660b0511b7488914b553b9fd139d6c1ba3634",
+  "workflow_run": 36089000307
+}

@@ -1,0 +1,83 @@
+{
+  "schema": "mt-phase2-integrated-capability-requalification-r11",
+  "status": "ACCEPTED_CURRENT_INTEGRATED_SEED_FREE_COMPONENT_EVIDENCE",
+  "source_commit": "d17c02419cb10b55216924707ca8c8324a3e27df",
+  "predecessor": "accepted-capability-inventory-r10.json",
+  "resolves_pending_receipt": "bane-of-progress-revalidation-pending.json",
+  "validated_runs": {
+    "bane_of_progress_dedicated": 36226546742,
+    "full_ci": 36226932012,
+    "capability_audit": 36226931978,
+    "telemetry_component": 36226932032,
+    "priority_after_resolution": 36226931953
+  },
+  "bane_of_progress_dedicated_gate": {
+    "implementation_commit": "ee79003408f58384e40791377d54fe732ae4912c",
+    "generated_snapshot_commit": "388b889f61bb682d7d1e4d581bc835023a93b9cf",
+    "workflow_run_id": 36226546742,
+    "workflow_job_id": 108361587096,
+    "conclusion": "success",
+    "snapshot_regeneration": "PASS",
+    "unrelated_snapshot_drift_guard": "PASS",
+    "only_generated_snapshot": "mtg-sets/src/test/resources/snapshots/cards/C13.json",
+    "scenario": "BaneOfProgressScenarioTest",
+    "card_lint": "PASS"
+  },
+  "audited_engine_artifact": {
+    "id": 10901193264,
+    "name": "manual-transmission-phase2-engine-audit",
+    "size_in_bytes": 928538,
+    "github_sha256": "590980b8bee5799e895e65caec3c5f4628106d26f17918f1309d014a1587c0f9"
+  },
+  "source_audit_artifact": {
+    "id": 10900918229,
+    "name": "manual-transmission-phase2-source-audit",
+    "size_in_bytes": 27625580,
+    "github_sha256": "0ef456816951612f15b3553cbc10be5c35478ee14382d744d4cd972690ecb9e5"
+  },
+  "live_registry": {
+    "physical_entries": 800,
+    "manual_resolved": 84,
+    "manual_unresolved": 16,
+    "manual_unresolved_identities": [
+      "Gwenna, Eyes of Gaea",
+      "Fblthp, the Lost",
+      "Aether Channeler",
+      "Reckless Bushwhacker",
+      "Amphin Mutineer",
+      "Spellskite",
+      "Malevolent Hermit",
+      "Phyrexian Metamorph",
+      "Glen Elendra Archmage",
+      "Temur Sabertooth",
+      "Purphoros, God of the Forge",
+      "Disciple of Freyalise",
+      "Reality Shift",
+      "Veil of Summer",
+      "Pact of Negation",
+      "Opal Palace"
+    ]
+  },
+  "newly_accepted_component": {
+    "card": "Bane of Progress",
+    "qualified_surfaces": [
+      "ETB destroys artifacts and enchantments controlled by either player",
+      "only permanents actually destroyed this way contribute to the +1/+1 counter count",
+      "indestructible artifacts and enchantments survive and do not inflate the counter count",
+      "with no destroyable artifact or enchantment, Bane receives zero counters"
+    ]
+  },
+  "hardware_disposition": "KEEP_V07",
+  "hardware_changed": false,
+  "official_counters": {
+    "seeds_generated": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "actions": 0,
+    "outcomes": 0,
+    "capability_games": "0/36",
+    "primary_games": "0/864"
+  },
+  "gameplay_authorized": false,
+  "next_gate": "Continue exact-card/mechanic coverage plus executable Cruise/Sport/Race and opponent pilots, typed collectors, replay, durable attempt journal and guarded execution. No v0.8 hardware change."
+}

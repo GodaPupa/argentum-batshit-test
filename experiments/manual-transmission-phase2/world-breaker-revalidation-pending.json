@@ -1,0 +1,31 @@
+{
+  "schema": "mt-phase2-world-breaker-revalidation-pending-v1",
+  "status": "QUALIFIED_DEDICATED_GATE_PENDING_FULL_BRANCH_REVALIDATION",
+  "source_head": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+  "implementation_commit": "b0f20e929631a73bff58f1dcb409739a23158e71",
+  "scenario_commit": "65e6ab2af4c8435d7f96d6c068d1754dc59aaa8e",
+  "capability_workflow_commit": "5cf175a2dfee136eb5c69dc8553160c58a8fcaec",
+  "snapshot_workflow_commit": "2ffa15378d8fb7731b2934568da6651b9bbc2272",
+  "generated_snapshot_commit": "27ed9f60e5a5dcf10e06534b029d4a6148e6f9d3",
+  "dedicated_run": {
+    "id": 36218680598,
+    "job_id": 108339672498,
+    "conclusion": "success",
+    "strict_snapshot_regeneration": "PASS",
+    "unrelated_snapshot_drift_guard": "PASS",
+    "world_breaker_scenarios": "PASS"
+  },
+  "hardware_disposition": "KEEP_V07",
+  "hardware_changed": false,
+  "formal_acceptance": false,
+  "reason": "Bot-generated snapshot commit produced action_required PR checks; require a normal full-branch validation on this human-authored successor before accepting inventory r10.",
+  "official_counters": {
+    "seeds_generated": 0,
+    "attempts": 0,
+    "games_initialized": 0,
+    "actions": 0,
+    "outcomes": 0,
+    "capability_games": "0/36",
+    "primary_games": "0/864"
+  }
+}
