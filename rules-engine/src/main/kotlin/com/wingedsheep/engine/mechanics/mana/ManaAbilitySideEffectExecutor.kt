@@ -79,10 +79,14 @@ class ManaAbilitySideEffectExecutor(
             // A source paying another mana ability's {1} can be tapped without a
             // manaProduced entry: its mana was consumed internally rather than credited
             // to the outer spell/ability. Fail closed when ability identity is ambiguous.
-            val ability = matchingManaAbility(
-                currentState, source.entityId, production?.color,
-                internalCostOnly = production == null
-            )
+            val ability = if (source.entityId in solution.activatedManaAbilities) {
+                solution.activatedManaAbilities[source.entityId]
+            } else {
+                matchingManaAbility(
+                    currentState, source.entityId, production?.color,
+                    internalCostOnly = production == null
+                )
+            }
 
             // Auto-tapping a source *is* the player activating its mana ability — the fast path is
             // a UI shortcut, not a different game action (CR 605.3). Emit the activation event the
@@ -122,10 +126,14 @@ class ManaAbilitySideEffectExecutor(
         var shadowState = state
         for (source in solution.sources) {
             val production = solution.manaProduced[source.entityId]
-            val printed = matchingManaAbility(
-                shadowState, source.entityId, production?.color,
-                internalCostOnly = production == null
-            )
+            val printed = if (source.entityId in solution.activatedManaAbilities) {
+                solution.activatedManaAbilities[source.entityId]
+            } else {
+                matchingManaAbility(
+                    shadowState, source.entityId, production?.color,
+                    internalCostOnly = production == null
+                )
+            }
             val amount = printed?.let { payLifeCost(it.cost) } ?: 0
             if (amount <= 0) continue
             // Check before applying any replacement, exactly as the Ashiok card ruling
@@ -188,11 +196,11 @@ class ManaAbilitySideEffectExecutor(
         val card = state.getEntity(sourceId)?.get<CardComponent>() ?: return null
         val cardDef = cardRegistry.getCard(card.cardDefinitionId) ?: return null
         val manaAbilities = cardDef.script.activatedAbilities.filter { it.isManaAbility }
-        val colorMatch = manaAbilities.firstOrNull { abilityProducesColor(it, producedColor) }
-        // Only accept a unique single-ability fallback when production is missing AND
-        // there is exactly one printed mana ability. Multiple abilities require explicit
-        // identity; guessing is unsafe.
-        return colorMatch ?: if (internalCostOnly && manaAbilities.size == 1) manaAbilities.single() else null
+        // Missing internal production is NOT colorless: it conveys no color at all.
+        // A colorless match here would silently choose the wrong one of several
+        // printed abilities. Solver-produced solutions carry explicit identity.
+        if (internalCostOnly) return manaAbilities.singleOrNull()
+        return manaAbilities.firstOrNull { abilityProducesColor(it, producedColor) }
     }
 
     fun runSideEffects(
