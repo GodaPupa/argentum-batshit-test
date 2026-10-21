@@ -1,7 +1,7 @@
-name: Manual Precision R9 independent engine fidelity qualification (NO GAMES)
+name: R9 low-life mana source guard candidate (NO GAMES)
 on:
   push:
-    branches: [research/manual-precision-r9-independent-fidelity-20261020]
+    branches: [research/manual-precision-r9-low-life-guard-20261020]
     paths:
       - '.github/workflows/manual-precision-r9-independent-fidelity-20261020.yml'
 permissions:
@@ -29,10 +29,12 @@ jobs:
           git rev-parse HEAD > r9-mana-evidence/source-sha.txt
           git rev-parse HEAD^{tree} > r9-mana-evidence/tree-sha.txt
           git diff --name-only 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD > r9-mana-evidence/delta-paths.txt
-          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r9-independent-fidelity-20261020"
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r9-low-life-guard-20261020"
           git merge-base --is-ancestor 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD
-          test "$(wc -l < r9-mana-evidence/delta-paths.txt)" -eq 3
-          git diff --quiet 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD -- rules-engine/ ai/ experiments/
+          test "$(wc -l < r9-mana-evidence/delta-paths.txt)" -eq 5
+          git diff --quiet 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD -- ai/ experiments/
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = "fbdd8b6e6963bd25ab156d4f8702eada084c0f73"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaAbilitySideEffectExecutor.kt)" = "c9ba0f659a1f44b4c05b81f7f44303a16db3de33"
           test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt)" = "926b8b7b94ecbebf4b75f26fe91bfcd8a4a7a67f"
           test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PreEntryCoordinator.kt)" = "3baae2b3585ab3fcbec36a385450b7e1d391bfc1"
           test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt)" = "3b7f4a6a14ea3f7d41bd06167ec114a8340b6255"
@@ -98,9 +100,9 @@ jobs:
           git rev-parse HEAD > r9-fetch-evidence/source-sha.txt
           git rev-parse HEAD^{tree} > r9-fetch-evidence/tree-sha.txt
           git diff --name-only 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD > r9-fetch-evidence/delta-paths.txt
-          test "$(wc -l < r9-fetch-evidence/delta-paths.txt)" -eq 3
+          test "$(wc -l < r9-fetch-evidence/delta-paths.txt)" -eq 5
           git merge-base --is-ancestor 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD
-          git diff --quiet 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD -- rules-engine/ ai/ experiments/
+          git diff --quiet 62e17ae7f5987dca2f8a9dba9ba01056ba74237d HEAD -- ai/ experiments/
           echo ZERO_FULL_GAMES > r9-fetch-evidence/budget.txt
           chmod +x gradlew scripts/gradle-locked
       - name: Independent low life competing effects identity and shuffle plus R8 Misty
