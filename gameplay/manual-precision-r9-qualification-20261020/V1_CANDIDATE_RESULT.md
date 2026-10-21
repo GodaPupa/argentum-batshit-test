@@ -1,0 +1,10 @@
+# R9 correction candidate v1 — GREEN tested cases, **NOT QUALIFIED**
+
+- Exact tested source: `ec3e3fc16e504bef6f2461b33c1981329bce9f48`; tree `cf48df329986d7b40f40818fad8e201cce66d7f6` (base original R9 `0b99c0320c779b2c8001796761641f9c27552990`).
+- [Actions 39521448142](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39521448142) **SUCCESS**. The exact JUnit ZIPs have been downloaded and parsed: **mana 20/20** (9 R9 held-outs, 5 R8 Confluence, 1 City of Brass, 5 Steelswarm); **fetched entry 25/25**; **R5/initializer protections 46/46**. Total **91/91**, no games.
+- Original artifacts: mana [12312305518](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39521448142/artifacts/12312305518) SHA-256 `678045922acdcbd7b963b925c243f1cdc649061f9f70821987711410072d0832`; fetch [12312000832](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39521448142/artifacts/12312000832) SHA-256 `1db7a7c7c0f90842d4ff680dbb0e010b29ea547cacb34d6d93d52cc183b57c79`; safety [12312375106](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39521448142/artifacts/12312375106) SHA-256 `f462f9ad669b2150ed4a1da29e3cc2a7ae179233e180e4170ce41c0ac89d3bc9`.
+- **Source-review limitation:** This first guard compares the **sum** of printed life costs with current life. That is sufficient to reject the demonstrated two-Confluence payment deficit, but it may over-reject legal **sequential** payments while `Ashiok, Wicked Manipulator` replaces EACH `PayLife(1)` with exiling a card. No Ashiok/low-life held-out was run on v1. Do not claim v1 fully qualified or merge it.
+- Replacement-aware separate successor `research/manual-precision-r9-low-life-guard2-20261020` has its own held-outs and source-bound CI [39521996419](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39521996419). Qualify that source independently before any integration review.
+- CONTROL v0.7, Challenger A, `main`, `AiProfile.CURRENT`, R5, ten original games, and both unused game slots stay untouched.
+
+**Disposition: INCONCLUSIVE / SUPERSEDED by v2**, notwithstanding green v1 regressions.
