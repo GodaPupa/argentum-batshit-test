@@ -98,6 +98,19 @@ class ManaAbilitySideEffectExecutor(
     }
 
     /**
+     * Pure pre-payment accounting for the exact printed mana abilities selected by the solver.
+     * Count PayLife cost atoms only. City of Brass / painland self-damage is an EFFECT,
+     * not an activation payment, and must remain legal even at low life.
+     * This function does not activate, tap, charge, or produce mana.
+     */
+    fun printedLifeCostForSolution(state: GameState, solution: ManaSolution): Int =
+        solution.sources.sumOf { source ->
+            val producedColor = solution.manaProduced[source.entityId]?.color
+            matchingManaAbility(state, source.entityId, producedColor)
+                ?.let { payLifeCost(it.cost) } ?: 0
+        }
+
+    /**
      * The [AbilityActivatedEvent] for an auto-tapped mana source, or null if [sourceId] isn't a
      * card (nothing to name in the event).
      *
