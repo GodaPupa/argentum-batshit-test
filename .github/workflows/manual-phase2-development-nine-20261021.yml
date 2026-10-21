@@ -82,7 +82,7 @@ jobs:
           assert subprocess.check_output(["git","rev-parse",data["source_parent"]+":"+handler["path"]],text=True).strip()==handler["canonical_main_blob"]
           anchor=handler["source_anchor"]
           assert baseline.count(anchor)==1
-          expected_source=baseline.replace(anchor,"\\n".join(handler["exact_added_lines"])+"\\n"+anchor)
+          expected_source=baseline.replace(anchor,"\n".join(handler["exact_added_lines"])+"\n"+anchor)
           assert Path(handler["path"]).read_text()==expected_source
           expected.add(handler["path"])
           extra=guard["guard_regression"]
