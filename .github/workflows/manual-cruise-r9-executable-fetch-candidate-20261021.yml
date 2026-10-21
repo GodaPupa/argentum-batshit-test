@@ -1,7 +1,7 @@
 name: Manual CRUISE R9 executable fetch opt-in qualification (NO GAMES)
 on:
   push:
-    branches: [candidate/manual-cruise-r9-executable-fetch-20261021]
+    branches: [candidate/manual-cruise-r9-independent-qualification-20261021]
     paths:
       - '.github/workflows/manual-cruise-r9-executable-fetch-candidate-20261021.yml'
       - 'ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt'
@@ -13,7 +13,7 @@ permissions:
   contents: read
   actions: read
 concurrency:
-  group: manual-cruise-r9-executable-fetch-optin-qualification
+  group: manual-cruise-r9-independent-executable-fetch-qualification
   cancel-in-progress: false
 
 jobs:
@@ -38,7 +38,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p cruise-r9-originals cruise-r9-evidence/exact
-          test "$GITHUB_REF" = 'refs/heads/candidate/manual-cruise-r9-executable-fetch-20261021'
+          test "$GITHUB_REF" = 'refs/heads/candidate/manual-cruise-r9-independent-qualification-20261021'
           git merge-base --is-ancestor d6f3e0a66251fd2c99430e3df7eb9db14f750753 HEAD
           test "$(git rev-parse HEAD:experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R9_EXECUTABLE_FETCH_PROTOCOL.json)" = 39ae2a06e20f5595ebdf4a87299c01250d37d573
           test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
