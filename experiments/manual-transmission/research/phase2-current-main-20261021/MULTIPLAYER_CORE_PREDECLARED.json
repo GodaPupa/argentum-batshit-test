@@ -1,0 +1,40 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_CANONICAL_MAIN_MULTIPLAYER_CORE_R1",
+  "date": "2026-10-21",
+  "status": "FROZEN_BEFORE_TARGETED_DETERMINISTIC_RULES_TESTS",
+  "purpose": "Requalify six existing generic engine Commander/multiplayer rule test classes against exact current main after source drift. No actual frozen eight-deck initializes or sample outcomes. These are necessary but insufficient to admit Phase2 games.",
+  "source_parent": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "frozen_control_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+  "test_sources": {
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/core/CommanderSetupTest.kt": "cda701c917bc9096afe4842642c3389ade8fec73",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/CommanderPodTest.kt": "e2b215c68797747ebf052fa111d963a8f47eb15f",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/MultiplayerSmokeTest.kt": "0b57e0998e6b7a52cd0cfa3791284b7a7ae6e1aa",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/MultiplayerMulliganTest.kt": "adf31e3d3d75054621c6a0204cb67f12be7f457a",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/multiplayer/LeaveTheGameTest.kt": "60107ef9ae15f57a207361d66d6f27e9c557c9d2",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mana/CommanderTaxTest.kt": "d305f9f379f6757c49f71f500faf88ac9638a599"
+  },
+  "expected_suites": 6,
+  "test_mode": "fresh_gradle_focused_no_build_cache",
+  "negative_boundaries": [
+    "No test case can stand in for exact gameplay across three pod templates.",
+    "Source branch main lacks the historical Phase2-specific CommanderPodCapabilityTest path; do not invent passing coverage.",
+    "Single- or synthetic-pod passing tests cannot certify all partner/commander setup, masked opponent action, or card mechanics.",
+    "Fail if any expected JUnit class missing, any failed/errors/skips, any changed test source, or any unauthorized code delta."
+  ],
+  "readiness_promise": false,
+  "gameplay_authorized": false,
+  "hardware_changes_allowed": false,
+  "seed_generation_allowed": false,
+  "precision_budget": {
+    "used": 10,
+    "max": 12,
+    "reserved": 2,
+    "new": 0
+  },
+  "official_phase2": {
+    "capability_admitted": 0,
+    "capability_planned": 36,
+    "primary_admitted": 0,
+    "primary_planned": 864
+  }
+}
