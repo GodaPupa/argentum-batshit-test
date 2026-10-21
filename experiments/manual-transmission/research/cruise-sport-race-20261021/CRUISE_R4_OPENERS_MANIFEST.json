@@ -1,0 +1,48 @@
+{
+  "schema": "MANUAL_CRUISE_R4_FULL_ORIGINAL_OPENING_HAND_UNIVERSE_V1",
+  "dated": "2026-10-21",
+  "declared_before_controller_observations": true,
+  "reference_ten_archive_manifest": "experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ZONE_MANIFEST.json",
+  "sample": "ALL 10 pinned complete original R1/R6 games x ALL 4 original seats; 40 real keep-seven hands; no selection or omission",
+  "original_game_count": 10,
+  "opening_hand_count": 40,
+  "historical_matching_harness": "skipMulligans=true; historical games do not contain any observed controller mulligan",
+  "separate_real_bot_controller": "EngineAiPlayerController.decideMulligan(MulliganInfo); m=0; 7 actual card IDs from original source game",
+  "source_controller_blob": "8a3c94041ca6cf781d5efe35d7a513b522b3856b",
+  "source_r9_solver_blob": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93",
+  "comparison": "Record whether real controller would KEEP vs MULLIGAN the actual original 7 cards, without simulating any replacement hand",
+  "reference_opening_policy": "Four seats keep seed-derived initial seven, no smoother or mulligans",
+  "measurements": [
+    "seed",
+    "hardware arm",
+    "original seat",
+    "actual seven card names",
+    "printed physical lands",
+    "land-capable MDFCs",
+    "one-mana ramp in original seven",
+    "controller keep boolean",
+    "on-play seat from original turn order"
+  ],
+  "hard_guards": [
+    "No GameInitializer, ActionProcessor original game replay, random seed, new deck or new full game.",
+    "No actual London redraw, no future cards, no bottoming, no conclusion that a hypothetical mulligan would win.",
+    "Controller's deterministic library search is permitted solely to establish existence of a searchable land (not topdeck prediction or hidden-order advantage).",
+    "No inference that R5 matched-game policy invoked this controller; it did not.",
+    "Original CONTROL v0.7, Challenger A, production CURRENT, original R5, main, and R9 solver unchanged."
+  ],
+  "precision_budget": {
+    "used": 10,
+    "cap": 12,
+    "reserved": 2,
+    "additional": 0
+  },
+  "authorizations": {
+    "read_original_archives": true,
+    "zero_game_controller_diagnostics": true,
+    "policy_change": false,
+    "deck_promotion": false,
+    "profile_promotion": false,
+    "full_games": false,
+    "merge": false
+  }
+}
