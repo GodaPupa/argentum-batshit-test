@@ -72,7 +72,7 @@ class ManualCruiseR10InterruptibleFetchTest : FunSpec({
                 val result=records[(idx-1)*2+1]
                 check(submitted["record"]!!.jsonPrimitive.content=="submit")
                 check(result["record"]!!.jsonPrimitive.content=="result")
-                val a=json.decodeFromString<GameAction>(submitted["action"].toString())
+                val a=json.decodeFromString<GameAction>(submitted["action"]!!.jsonPrimitive.content)
                 val before=processor.process(original,a).result
                 check(before.error==null)
                 check(before.events.map{it.toString()}==
