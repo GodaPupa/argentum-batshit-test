@@ -101,9 +101,9 @@ class ManualCruiseR10ArchivedDecisionAndCostTest : FunSpec({
             // manifest and snapshot SHA, never silently skipped.
             val viaOriginalR6 = spec.str("id")=="R10-R6-A-2143"
             var state=if(viaOriginalR6){
-                val p=Path.of(requireNotNull(System.getenv("MANUAL_R10_OLD_SOURCE_CHECKPOINT"))){
+                val p=Path.of(requireNotNull(System.getenv("MANUAL_R10_OLD_SOURCE_CHECKPOINT")) {
                     "Original-R6 checkpoint required; newer R9 event stream drifted at #716"
-                }
+                })
                 val meta=Path.of(requireNotNull(System.getenv("MANUAL_R10_OLD_SOURCE_PROVENANCE")))
                 val witness=Json.parseToJsonElement(Files.readString(meta)).jsonObject
                 check(witness.str("schema")=="ARGENTUM_R10_ORIGINAL_R6_SOURCE_PROVEN_CHECKPOINT_V1")
