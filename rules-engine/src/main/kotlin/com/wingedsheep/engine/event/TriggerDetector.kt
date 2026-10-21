@@ -564,7 +564,7 @@ class TriggerDetector(
         val triggers = matching.map { delayed ->
             PendingTrigger(
                 ability = TriggeredAbility.create(
-                    trigger = EventPattern.StepEvent(Step.END, Player.Each),
+                    trigger = EventPattern.StepEvent(step, Player.Each),
                     binding = TriggerBinding.ANY,
                     effect = delayed.effect,
                     targetRequirement = delayed.targetRequirement,
