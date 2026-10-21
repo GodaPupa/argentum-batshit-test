@@ -1,0 +1,91 @@
+name: Manual CRUISE R2 original commander-zone forensic audit (NO GAMES)
+on:
+  push:
+    branches: [research/manual-cruise-r2-archive-forensics-20261021]
+    paths:
+      - '.github/workflows/manual-cruise-r2-zone-forensics-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_FORENSICS.md'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ZONE_MANIFEST.json'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/verify_cruise_r2_zones.py'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-cruise-r2-original-zone-audit
+  cancel-in-progress: false
+
+jobs:
+  frozen-original-trace-only:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 40
+
+      - name: Lock source, original profile and NO-GAMES changed-path allowlist
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-r2-evidence cruise-r2-originals
+          test "$GITHUB_REF" = 'refs/heads/research/manual-cruise-r2-archive-forensics-20261021'
+          git merge-base --is-ancestor addfe0fc95fcbd0753555215f4ae41c08fdce85a HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          git diff --name-only addfe0fc95fcbd0753555215f4ae41c08fdce85a HEAD > cruise-r2-evidence/changed-paths.txt
+          while IFS= read -r changed; do
+            case "$changed" in
+              .github/workflows/manual-cruise-r2-zone-forensics-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ZONE_MANIFEST.json|experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_FORENSICS.md|experiments/manual-transmission/research/cruise-sport-race-20261021/verify_cruise_r2_zones.py) ;;
+              *) echo "UNAUTHORIZED_DELTA:$changed"; exit 1 ;;
+            esac
+          done < cruise-r2-evidence/changed-paths.txt
+          git rev-parse HEAD > cruise-r2-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > cruise-r2-evidence/tree-sha.txt
+          echo 'ZERO_NEW_FULL_GAMES; ORIGINAL_ARCHIVES_ONLY; RESERVED_BUDGET_2' > cruise-r2-evidence/budget.txt
+
+      - name: Retrieve all ten immutable original R1/R6 full-game ZIPs
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path('experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ZONE_MANIFEST.json')
+          data=json.loads(p.read_text())
+          assert data['budget']=={'used':10,'max':12,'reserved':2,'new_games':0}
+          assert len(data['archives'])==10
+          with open('cruise-r2-evidence/archives.tsv','w') as f:
+              for a in data['archives']:
+                  f.write('\t'.join(str(a[k]) for k in ('cohort','seed','arm','id','sha256'))+'\n')
+          PY
+          while IFS=$'\t' read -r cohort seed arm id sha; do
+            file="cruise-r2-originals/${cohort,,}-$arm-$seed.zip"
+            gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/$id/zip" > "$file"
+            printf '%s  %s\n' "$sha" "$file" | sha256sum -c -
+          done < cruise-r2-evidence/archives.tsv
+
+      - name: Independently reconcile original priority score options to real commander zones
+        shell: bash
+        env:
+          MANUAL_R2_ARCHIVES: cruise-r2-originals
+          MANUAL_R2_OUTPUT: cruise-r2-evidence
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission/research/cruise-sport-race-20261021/verify_cruise_r2_zones.py 2>&1 | tee cruise-r2-evidence/zone-audit.log
+          test -s cruise-r2-evidence/zone-reconciliation.json
+          test "$(cat cruise-r2-evidence/budget.txt)" = 'ZERO_NEW_FULL_GAMES; ORIGINAL_ARCHIVES_ONLY; RESERVED_BUDGET_2'
+
+      - name: Preserve original source provenance and successful or failed forensic evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-cruise-r2-original-zone-audit-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: cruise-r2-evidence/
