@@ -647,10 +647,17 @@ class ManaSolver(
                     // tapped for an earlier pip) pays this {C} without tapping another source.
                     if (spendColorlessBonusMana()) continue
 
-                    // Must pay with actual colorless mana (from Wastes, etc.)
-                    // Sort colorless sources by priority
+                    // Internal activation costs are funded in pass 1b, but that pass
+                    // does not account for colorless ability activation costs. Never
+                    // claim {C} from a paid mode without supplying its own mana cost.
+                    // This intentionally refuses some legal but unsupported chains.
                     val source = remainingSources
-                        .filter { it.producesColorless }
+                        .filter { candidate ->
+                            candidate.producesColorless && (
+                                candidate.colorlessManaAbility?.let { activationManaCost(it.cost) }
+                                    ?: candidate.colorlessActivationManaCost
+                            ) == 0
+                        }
                         .minByOrNull {
                             calculateTapPriority(it, handRequirements, availableSourcesByColor) +
                                 painPenalty(it, it.colorlessPainCost)
@@ -760,11 +767,24 @@ class ManaSolver(
                     xRemaining--
                     continue
                 }
-                val source = remainingSources
-                    .filter { src -> src.availableColorsFor(spellContext).any { it in xManaRestriction } }
-                    .minByOrNull { calculateTapPriority(it, handRequirements, availableSourcesByColor) }
-                    ?: return null // Can't pay X with the allowed colors
-                val colorToUse = source.availableColorsFor(spellContext).first { it in xManaRestriction }
+                // X is allocated AFTER the internal activation-cost funding pass.
+                // Use only selected modes with no additional mana activation cost;
+                // otherwise the X payment would take mana whose production was unpaid.
+                // An unsupported paid chain is rejected, never guessed or credited.
+                val payableModes = remainingSources.flatMap { src ->
+                    src.availableColorsFor(spellContext)
+                        .filter { color ->
+                            color in xManaRestriction && (
+                                src.manaAbilityByColor[color]?.let { activationManaCost(it.cost) }
+                                    ?: (src.colorActivationManaCost[color] ?: 0)
+                            ) == 0
+                        }
+                        .map { color -> src to color }
+                }
+                val (source, colorToUse) = payableModes.minByOrNull { (candidate, color) ->
+                    calculateTapPriority(candidate, handRequirements, availableSourcesByColor) +
+                        painPenalty(candidate, candidate.colorPainCost[color] ?: 0)
+                } ?: return null // Can't fund a legal color-restricted X with available mana
                 manaProduced[source.entityId] = ManaProduction(color = colorToUse, amount = source.manaAmount)
                 useSource(source, colorToUse)
                 xRestrictedSpent[colorToUse] = (xRestrictedSpent[colorToUse] ?: 0) + 1
