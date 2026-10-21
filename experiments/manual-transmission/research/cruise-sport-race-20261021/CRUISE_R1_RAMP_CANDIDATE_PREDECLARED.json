@@ -1,0 +1,140 @@
+{
+  "schema": "MANUAL_CRUISE_R1_RAMP_CANDIDATE_FIXED_WITNESSES_V1",
+  "status": "PREDECLARED_BEFORE_CANDIDATE_SOURCE_WRITTEN",
+  "date": "2026-10-21",
+  "branch": "research/manual-cruise-r1-taxed-animar-ramp-optin-20261021",
+  "exact_baseline": "9b6e111edf7d9e6db94878061e21740826fb5333",
+  "baseline_evidence": {
+    "run_id": 39631759323,
+    "artifact_id": 12359059169,
+    "archive_sha256": "2fc9c4a844200e381db80dd2f6298f7d3537f26e8e0c2b06a75bf24696658c27",
+    "decision_fixtures_passed": 8,
+    "protected_regressions_passed": 68
+  },
+  "required_single_policy_delta": "Opt-in advisor for Llanowar Elves that scores ONLY a real affordable cast for which a resource-readiness projection newly makes the actual commander cast affordable. No invented card draw or opponent response, no generic mana dork bonus.",
+  "candidate_profile": "ManualTransmissionCruiseR1Candidate.profile derived solely from ManualTransmissionR5Candidate.profile, append ManualCruiseTaxedAnimarRampAdvisorModule (no other flags changed)",
+  "test_cases": [
+    {
+      "id": "C-RAMP-01",
+      "kind": "observed-R5-pass-positive",
+      "battlefield": [
+        "Forest",
+        "Forest",
+        "Island",
+        "Mountain"
+      ],
+      "hand": [
+        "Llanowar Elves"
+      ],
+      "command": "Animar, Soul of Elements",
+      "commander_cast_tax_count": 1,
+      "expected_comparator": "PassPriority",
+      "expected_candidate": "Cast Llanowar Elves",
+      "hypothesis": "With the same lands, after the Elf is resolved and becomes ready in an unchanged-resource projection, actual legal action machinery admits taxed Animar; before adding Elf it does not."
+    },
+    {
+      "id": "C-RAMP-02",
+      "kind": "missing-red-negative",
+      "battlefield": [
+        "Forest",
+        "Forest",
+        "Island"
+      ],
+      "hand": [
+        "Llanowar Elves"
+      ],
+      "command": "Animar, Soul of Elements",
+      "commander_cast_tax_count": 0,
+      "expected_candidate": "same as comparator",
+      "hypothesis": "The Elf cannot produce missing red, so the no-op case must not be promoted."
+    },
+    {
+      "id": "C-RAMP-03",
+      "kind": "already-affordable-commander-control",
+      "battlefield": [
+        "Forest",
+        "Forest",
+        "Island",
+        "Mountain"
+      ],
+      "hand": [
+        "Llanowar Elves"
+      ],
+      "command": "Animar, Soul of Elements",
+      "commander_cast_tax_count": 0,
+      "expected_candidate": "same as comparator; preserve immediately affordable commander",
+      "hypothesis": "No bonus if Animar was already affordable."
+    },
+    {
+      "id": "C-RAMP-04",
+      "kind": "immediate-lethal-negative",
+      "battlefield": [
+        "Forest",
+        "Forest",
+        "Island",
+        "Mountain",
+        "Mountain"
+      ],
+      "hand": [
+        "Llanowar Elves",
+        "Lightning Bolt"
+      ],
+      "opponent_life": 3,
+      "commander_cast_tax_count": 0,
+      "expected_candidate": "same lethal Bolt as comparator",
+      "hypothesis": "Preserve actual legal immediate win, not tempo ramp."
+    },
+    {
+      "id": "C-RAMP-05",
+      "kind": "no-elf-negative",
+      "battlefield": [
+        "Forest",
+        "Forest",
+        "Island",
+        "Mountain"
+      ],
+      "hand": [],
+      "commander_cast_tax_count": 1,
+      "expected_candidate": "same as comparator",
+      "hypothesis": "No fabricated ramp action."
+    },
+    {
+      "id": "C-RAMP-06",
+      "kind": "taxed-mana-control",
+      "battlefield": [
+        "Forest",
+        "Forest",
+        "Island",
+        "Mountain"
+      ],
+      "hand": [],
+      "commander_cast_tax_count": 1,
+      "expected_before": "Animar not payable",
+      "preexisting_ready_elf_battlefield": [
+        "Llanowar Elves"
+      ],
+      "expected_with_ready_elf": "Animar payable",
+      "hypothesis": "Independent real ActionProcessor/LegalActionEnumerator quote; does not simulate a full game or assume opponent passes."
+    }
+  ],
+  "notes": [
+    "Physical board setup is synthetic and fixed; future-resource projection is a conditional mana-access study, NOT a legal turn transition, opponent-response forecast or gameplay outcome.",
+    "Candidate can strengthen an actual ramp line but must not assert an improved win rate absent future approved games.",
+    "Original eight CRUISE fixtures and R5 source are frozen; candidate tests must be authored separately and regression suites compared."
+  ],
+  "guards": {
+    "full_games_allowed": 0,
+    "merges": false,
+    "profile_promotion": false,
+    "current_change": false,
+    "deck_change": false,
+    "source_main_sha": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "protected_control_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "protected_a_blob": "7984a2e87d8ddbe023d45620414d25a61691a040",
+    "protected_current_blob": "180918b2d7a59309e7b0617f2579fb2a6d06b7d5",
+    "protected_r5_blob": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "protected_solver_blob": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93",
+    "full_games_consumed": 10,
+    "full_games_reserved": 2
+  }
+}
