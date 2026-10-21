@@ -1,0 +1,67 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_CORE_THREE_RECEIVING_EXACT_SOURCE_V1",
+  "date": "2026-10-21",
+  "status": "DECLARED_BEFORE_CORE_THREE_CANDIDATE_COPY_AND_TEST",
+  "intent": "Compatibility-test three historically source-defined missing frozen v0.7 core identities on exact current main. Receive byte-identical original Phase2 card definitions and their original deterministic tests, no engine, deck or pilot edits. This is component receiving only, not full-deck or official game admission.",
+  "current_main_parent": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "donor_branch": "manual-transmission/phase2-cedh",
+  "donor_head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+  "cards": [
+    {
+      "name": "Animar, Soul of Elements",
+      "source": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmd/cards/AnimarSoulOfElements.kt",
+      "source_blob": "26224fac894610c71c4e88ca57fcb7e99e00a822",
+      "test": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AnimarSoulOfElementsScenarioTest.kt",
+      "test_blob": "3064718b0ae6b0c516d18529c37df2e46b9a9543",
+      "expected_cases": 6
+    },
+    {
+      "name": "Ancestral Statue",
+      "source": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dtk/cards/AncestralStatue.kt",
+      "source_blob": "0de7fdaee39bc67a9b5d02dd039ab980a8e37941",
+      "test": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AncestralStatueScenarioTest.kt",
+      "test_blob": "a528b83b68b47e8d755e0e9a41727fef65697ed9",
+      "expected_cases": 2
+    },
+    {
+      "name": "Walking Ballista",
+      "source": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/aer/cards/WalkingBallista.kt",
+      "source_blob": "8e8e8c9cf75f76b54252765c3f3b72bcf2d0d162",
+      "test": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WalkingBallistaScenarioTest.kt",
+      "test_blob": "585d5fb0efecdce33238185f22395cee20f48d37",
+      "expected_cases": 2
+    }
+  ],
+  "test_acceptance": [
+    "exact 6 donor files byte-equal to recorded donor Git blob identities",
+    "each of three actual scenario classes runs fresh with 10 total unique JUnit cases, no failure/error/skip",
+    "actual resolved CardDiscovery permits each card in frozen registry through scenarios; absent/misbound classes fail rather than substituting card",
+    "preserve donor/main source hashes and all original XML/logs separately by era",
+    "if any source or mechanic test fails, HOLD source incompatibility and do not modify accepted test expectations post-hoc"
+  ],
+  "source_protection": {
+    "unchanged_main_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "unchanged_ai_current_blob": "180918b2d7a59309e7b0617f2579fb2a6d06b7d5",
+    "unchanged_r5_blob": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "unchanged_mana_solver_blob": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93",
+    "no_set_catalog_edits": true,
+    "no_ai_edits": true,
+    "no_engine_edits": true,
+    "no_frozen_hardware_edits": true,
+    "no_new_games": true,
+    "no_official_seeds": true,
+    "no_branch_merge": true,
+    "original_precision_used": 10,
+    "original_precision_reserved": 2,
+    "official_capability_admitted": 0,
+    "official_primary_admitted": 0
+  },
+  "limitations": [
+    "Passing these 10 source tests proves only the bounded three exact-card scenarios; it does not make the deck 100/100 executable.",
+    "Historical alternate source has distinct runtime/engine; original branch acceptance is not automatically transferable.",
+    "Other 34/100 current-main Manual identities and 320/700 opponent slots remain separate blockers until reaudited.",
+    "Original v0.7 excludes Palinchron despite isolated AI simulations referencing it.",
+    "No strategic pilot, three-gear, cEDH opposing policy, matchup win rate or durable whole-game replay is qualified."
+  ],
+  "next": "If green, independently verify registry additions and prioritize donor component receiving by exact unknown-card dependencies, NOT automatically merge candidate or start the 36/864."
+}
