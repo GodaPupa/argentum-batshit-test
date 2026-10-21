@@ -1,0 +1,77 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_BATTLEBOND_CATALOG_ONE_FILE_RECEIVING_V1",
+  "date": "2026-10-21",
+  "status": "FROZEN_BEFORE_SET_OBJECT_RECEIVING_AND_TESTS",
+  "hypothesis": "The composed current-main-ancestry source has a legal Spire Garden definition that passes ten excluded-fixture mechanics tests, but MtgSetCatalog omits that card only because no BBD MtgSet object is currently on the compiled classpath. Receiving the byte-identical source-only original BattlebondSet registrar will register only Spire Garden in the eight exact frozen deck universe.",
+  "source_parent": "b8ba463263eae5563e4c70aaa0704b100378180b",
+  "main_ancestor": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "qualified_parent_run": 39695841356,
+  "qualified_parent_exact_mechanics": 90,
+  "qualified_parent_final_artifact": {
+    "id": 12391231623,
+    "sha256": "3ec137f79fd3b68f76467fb21cadf07886ebdf1eb0d25a01e7a8078cc545aa0e"
+  },
+  "negative_control_original_registry": {
+    "artifact_id": 12390796506,
+    "sha256": "648a9e680c280a7b85e96115eee5d13e82f9d347758f38af6e32b8ca96495115",
+    "source_sha": "b8ba463263eae5563e4c70aaa0704b100378180b",
+    "status": "HOLD_REGISTRY_COVERAGE",
+    "registered_total": 467,
+    "manual_registered": 75,
+    "opponent_registered": 392,
+    "manual_missing_exact_card": "Spire Garden",
+    "other_frozen_100s_missing_this_card": 0
+  },
+  "existing_card": {
+    "path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bbd/cards/SpireGarden.kt",
+    "git_blob": "a64b5bd64bd4a389856d0197ae37a8b63fcd6aba",
+    "existing_scenarios": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpireGardenScenarioTest.kt",
+    "existing_scenario_git_blob": "f69d6404f70e6cbd175c60f15e9d62414903f707",
+    "proven_mechanic_scenarios": 10
+  },
+  "donor": {
+    "branch": "manual-transmission/phase2-cedh",
+    "commit": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+    "path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bbd/BattlebondSet.kt",
+    "git_blob": "893f8641b7736098257f3b296822d2bb08fb68ef",
+    "set_code": "BBD",
+    "one_compiled_card_at_current_parent": true,
+    "source_registration": "MtgSetCatalog uses CardDiscovery.findSets and BBD code is absent from current parent tree"
+  },
+  "additional_new_test": "gym/src/test/kotlin/com/wingedsheep/gym/ManualBattlebondSpireCatalogTest.kt",
+  "additional_test_cases": [
+    "BBD set is discoverable exactly once and offers Spire Garden through the real registered CardRegistry",
+    "Previously missing unrelated frozen Manual cards remain missing, proving no synthetic blanket registry fallback"
+  ],
+  "predeclared_verdict": {
+    "new_expected_registered_total": 468,
+    "new_expected_manual_registered": 76,
+    "new_expected_opponent_registered": 392,
+    "new_expected_unique_unregistered_total": 213,
+    "manual_remaining_unregistered": 24,
+    "absent_spire_after_repair": 0,
+    "no_other_new_registrations_allowed": true,
+    "registry_must_still_report_hold": true,
+    "rationale": "Only the BBD set object is added; only pre-existing bbd/cards/SpireGarden.kt is under that package, and the other seven exact 100s contain zero Spire Garden copies."
+  },
+  "protected_sources": {
+    "control_deck": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "main_ai": "43bbad79273806f56703fad420e9f6a495d05309",
+    "main_mana_solver": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "cast_land_guard": "dd4c000b13663a03ec6d7b79e62d05ab7dcb737f",
+    "catalog": "4a9da4cedf013284e6838e2e592a269af9012dfe",
+    "no_game_initialize": true,
+    "phase2_capability_admitted": 0,
+    "phase2_primary_admitted": 0,
+    "precision_used": 10,
+    "precision_reserved": 2
+  },
+  "test_scope": [
+    "Check donor BBD registrar Git blob exact and no modifications to any previously tested card, solver or AI source",
+    "Run original ten SpireGardenScenarioTest engine cases on receiving source",
+    "Run two new explicit current catalog tests with genuine CardRegistry and negative controls",
+    "Run entire read-only 800-slot registry and independently reconcile each source/position to prior negative-control artifact",
+    "Require exactly +1 manual and +1 total; any other change is HOLD source cause and needs separate preregistration",
+    "Retain original reports/CI ZIP source hashes; no default profile/deck/production promotion or competitive win-rate inference"
+  ]
+}
