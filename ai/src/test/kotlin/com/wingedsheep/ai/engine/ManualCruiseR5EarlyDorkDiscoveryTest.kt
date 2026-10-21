@@ -4,9 +4,7 @@ import com.wingedsheep.ai.insight.AiDecisionInsight
 import com.wingedsheep.ai.insight.AiInsightSink
 import com.wingedsheep.engine.core.ActionProcessor
 import com.wingedsheep.engine.core.CastSpell
-import com.wingedsheep.engine.core.GameSimulator
 import com.wingedsheep.engine.core.PassPriority
-import com.wingedsheep.engine.core.SimulationResult
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.identity.CommanderComponent
