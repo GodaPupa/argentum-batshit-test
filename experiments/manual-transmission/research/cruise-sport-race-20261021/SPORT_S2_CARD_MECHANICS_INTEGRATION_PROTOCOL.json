@@ -1,0 +1,67 @@
+{
+  "schema": "ARGENTUM_MANUAL_SPORT_S2_EXISTING_CARD_MECHANICS_INTEGRATION_V1",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_BEFORE_INTEGRATION_RUN",
+  "basis": {
+    "source_parent": "3ade1e75aef9b1fe9fa38ac20a2c154370400c61",
+    "s2_metadata_run": 39674502310,
+    "s2_metadata_passed": 4,
+    "s2_r9_r5_protected_passed": 76,
+    "s2_disposition": "S2_METADATA_SOURCE_QUALIFIED_ONLY_NOT_MERGED",
+    "s1_historical_pact_payments": "13/13 observed resolved next-upkeep payable debts in 10 original full games"
+  },
+  "target_module": ":mtg-sets:2003-2007:tests",
+  "target_classes": {
+    "PactOfNegationScenarioTest": {
+      "source_path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationScenarioTest.kt",
+      "expected_blob": "04a2ae1c6301f21b3ba5a77151bff3c339ed2cbb",
+      "expected_cases": [
+        "Pact counters a real spell and schedules exactly one next-upkeep debt",
+        "Pact next-upkeep debt can be paid with five Islands",
+        "Pact unpaid next-upkeep debt loses the controller"
+      ]
+    },
+    "PactOfNegationUnpaidScenarioTest": {
+      "source_path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationUnpaidScenarioTest.kt",
+      "expected_blob": "4f546f0c30fbff1d4548ffcd39b23c5a5530d7cd",
+      "expected_cases": [
+        "payable Pact debt explicitly declined at next upkeep loses the controller"
+      ]
+    }
+  },
+  "hard_requirements": [
+    "on isolated child branch of exact S2 patched source",
+    "no changes to test cases/card definition/engine/AI/any deck",
+    "only this prospective protocol and CI gate may differ from S2 parent",
+    "exactly two JUnit suites four unique cases with zero failure error skip",
+    "preserve raw Gradle log, JUnit XML, exact git source and blob SHA, and budget receipt",
+    "the new integration test does not alone authorize upstream merge or SPORT policy edits"
+  ],
+  "frozen": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "control_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "challenger_a_blob": "7984a2e87d8ddbe023d45620414d25a61691a040",
+    "current_ai_profile_blob": "180918b2d7a59309e7b0617f2579fb2a6d06b7d5",
+    "r5_profile_blob": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "r9_advisor_blob": "afb19c325bf38f3d82bd0fefba64e1f4057db858",
+    "pact_card_blob": "c786551484cfb001eea9fc2b05e14ea23fd63bf9",
+    "trigger_detector_patched_blob": "c95f059d375e3df107284e1081d00c449ca3f28d",
+    "s2_metadata_test_blob": "cd1ca2fbf3e2c3b751b10918fec034b04a3ee001",
+    "mana_solver_blob": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+  },
+  "budget": {
+    "precision_used": 10,
+    "precision_max": 12,
+    "reserved": 2,
+    "new_full_games": 0,
+    "official_phase2_capability_games": 0,
+    "official_phase2_primary_games": 0
+  },
+  "admission": {
+    "source_only": true,
+    "merge_authorized": false,
+    "deck_promotion": false,
+    "profile_promotion": false,
+    "next_if_green": "SPORT S3 isolated original opponent-priority and survival-window audit after preserving immutable S2/S2-card traces"
+  }
+}
