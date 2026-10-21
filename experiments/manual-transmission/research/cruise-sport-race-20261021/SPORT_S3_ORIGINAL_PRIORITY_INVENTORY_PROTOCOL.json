@@ -1,0 +1,102 @@
+{
+  "schema": "ARGENTUM_MANUAL_SPORT_S3_REACTIVE_PRIORITY_INVENTORY_R1",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_BEFORE_S3_ARCHIVE_INVENTORY_EXECUTION",
+  "question": "Which legal reactive card choices were truly offered to the unchanged R5 pilot during opponent turns in all ten original archived matched self-mirror games, and which did the actual pilot choose? This inventories real accepted decisions, not strategically correct counterfactuals.",
+  "source_parent": "177b24c048baaf4c2f81adb38ff0e93eb9f1f6b2",
+  "parent_s2_evidence": {
+    "metadata_patch_sha": "3ade1e75aef9b1fe9fa38ac20a2c154370400c61",
+    "metadata_run": 39674502310,
+    "metadata_suite_pass": 4,
+    "protected_suites_pass": 76,
+    "card_mechanics_run": 39677142827,
+    "card_mechanics_artifact": 12381258587,
+    "card_mechanics_artifact_sha256": "721cdafd7a452f4f7b49fd0a0b1c26b06b38fa287405c129d6bc75810814a5a3",
+    "card_mechanics_pass": 4
+  },
+  "originals_manifest": "experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ZONE_MANIFEST.json",
+  "originals_expected": {
+    "games": 10,
+    "actions": 33440,
+    "matched_priority": 7827,
+    "pact_casts": 13,
+    "all_pact_debts_paid_next_own_upkeep": 13
+  },
+  "eligibility": {
+    "source": "original archived decisions.jsonl PRIORITY insights joined to accepted actions.jsonl submit/results",
+    "universe": "all 10 R1/R6 source-pinned original archives, four seats/game, no exclusions",
+    "off_turn": "historical decision field onOwnTurn == false; not inherently proof a threatening opposing spell was on stack",
+    "reactive_card_offer": "at least one frozen v0.7 watchlist card appears as the actual option cardName for a CastSpell or ActivateAbility action",
+    "reactive_offer_interpretation": "the engine offered an action, not that casting is necessary, safe, opponent-aware, strategically correct or outcome-improving",
+    "selection": "report every qualifying observation and deterministic earliest-by-seed/arm/index representative for each offered watched card; never select on success, opponent choice or win outcome",
+    "negative_controls": "include original off-turn priority windows without watched actions, windows with offers where pilot passed, and all actual on-turn options in denominators",
+    "legality": "every selected submitted action has a matching accepted original result; offered option legality itself is untested until separate source-bound replay"
+  },
+  "card_watchlist_by_purpose": {
+    "stack_counter": [
+      "Pact of Negation",
+      "An Offer You Can’t Refuse",
+      "Tishana’s Tidebinder",
+      "Glen Elendra Archmage",
+      "Malevolent Hermit"
+    ],
+    "removal": [
+      "Pongify",
+      "Rapid Hybridization",
+      "Reality Shift",
+      "Beast Within",
+      "Chaos Warp",
+      "Hope-Ender Coatl"
+    ],
+    "protection": [
+      "Veil of Summer",
+      "Sylvan Safekeeper",
+      "Spellskite"
+    ]
+  },
+  "allowed_actions": [
+    "CastSpell",
+    "ActivateAbility"
+  ],
+  "analysis_plan": [
+    "verify full ZIP SHA-256, exact source SHA, four-player fixed R5 profile, 33,440 accepted action pairs and no skipped/illegal results",
+    "join all 7,827 original scored priority decisions to exact submitted action, without using stored opponent hand or library state",
+    "count off-turn decisions by seat, arm and watched option; classify chosen vs declined and cast vs activated, preserving full raw action-index references",
+    "enumerate Pact offered/actual, check 13/13 actual historical Pact casts against unchanged S1 finding only as separate source evidence",
+    "report original first candidate for each watched card (sorted by cohort, seed, arm, index), including absence explicitly; no outcome-based case choice",
+    "write source-only JSON and plain-language report with bounded claims, gate counts and all selected rows; no new GameInitializer, game actions, or simulated opponents"
+  ],
+  "source_guards": {
+    "main_sha": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "control_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "challenger_a_blob": "7984a2e87d8ddbe023d45620414d25a61691a040",
+    "current_profile_blob": "180918b2d7a59309e7b0617f2579fb2a6d06b7d5",
+    "r5_profile_blob": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "r9_advisor_blob": "afb19c325bf38f3d82bd0fefba64e1f4057db858",
+    "pact_card_blob": "c786551484cfb001eea9fc2b05e14ea23fd63bf9",
+    "s2_detector_blob": "c95f059d375e3df107284e1081d00c449ca3f28d",
+    "mana_solver_blob": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+  },
+  "boundaries": {
+    "originals_are_dependent_mirrors": true,
+    "blinded": false,
+    "diverse_competitive_opponents": false,
+    "no_hidden_card_inspection": true,
+    "no_counterfactual_play": true,
+    "no_new_full_games": true,
+    "full_game_budget": {
+      "used": 10,
+      "max": 12,
+      "reserved": 2,
+      "new": 0
+    },
+    "no_new_rand_seeds": true,
+    "source_inventory_only": true,
+    "no_policy_deck_main_or_live_profile_modifications": true,
+    "no_branch_merge": true,
+    "no_promotion_claim": true,
+    "no_win_rate_claim": true,
+    "no_phase2_game_admission": true
+  },
+  "next_gate": "Choose source-bound real opponent-priority state(s) based only on exhaustive archived inventory, then predeclare exact replay and a falsifiable one-variable policy hypothesis before any SPORT candidate modification. If no meaningful deficiency exists, retain R5 and proceed to RACE without inventing an improvement."
+}
