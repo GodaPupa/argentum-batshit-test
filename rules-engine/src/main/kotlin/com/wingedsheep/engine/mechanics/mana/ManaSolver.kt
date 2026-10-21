@@ -803,12 +803,12 @@ class ManaSolver(
             xRestrictedManaSpent = xRestrictedSpent,
             bonusManaSpentByColor = bonusManaSpentByColor
         )
-        // A multi-source auto/explicit solution is a single cost payment. The solver previously
+        // A multi-source auto/explicit solution requires an ordered sequence of printed mana\n        // ability cost payments. The solver previously
         // returned an unaffordable combination of PayLife mana abilities (e.g. two Mana
         // Confluences at one life), and the tap fast path silently ignored a failed life payment
         // while crediting the mana. Refuse it BEFORE any source taps or side effects occur.
-        // Do not count life LOST as a mana-ability effect (e.g. City of Brass damage).
-        if (lifeCostInspector.printedLifeCostForSolution(state, solution) > state.lifeTotal(playerId)) {
+        // Dry-run those payments (including life replacements) without counting life LOST\n        // as a mana-ability effect (e.g. City of Brass damage).
+        if (!lifeCostInspector.canAffordPrintedLifePayments(state, solution, playerId)) {
             return null
         }
         return solution
