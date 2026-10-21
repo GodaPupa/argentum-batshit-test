@@ -783,6 +783,27 @@ class ManaSolver(
                     calculateTapPriority(candidate, handRequirements, availableSourcesByColor) +
                         painPenalty(candidate, candidate.colorPainCost[color] ?: 0)
                 } ?: return null // Can't fund a legal color-restricted X with available mana
+                val actCost = source.colorActivationManaCost[colorToUse] ?: 0
+                if (actCost > 0) {
+                    // Immediate exact funding for this paid mode only; free sources only.
+                    var need = actCost
+                    while (need > 0) {
+                        val funder = remainingSources
+                            .filter { src ->
+                                src.availableColorsFor(spellContext).any { c ->
+                                    (src.manaAbilityByColor[c]?.let { activationManaCost(it.cost) } ?: (src.colorActivationManaCost[c] ?: 0)) == 0
+                                } || (src.producesColorless && (src.colorlessManaAbility?.let { activationManaCost(it.cost) } ?: src.colorlessActivationManaCost) == 0)
+                            }
+                            .minByOrNull { calculateTapPriority(it, handRequirements, availableSourcesByColor) }
+                            ?: return null
+                        val fundColor = funder.availableColorsFor(spellContext).firstOrNull { c ->
+                            (funder.manaAbilityByColor[c]?.let { activationManaCost(it.cost) } ?: (funder.colorActivationManaCost[c] ?: 0)) == 0
+                        }
+                        useSource(funder, fundColor)
+                        internalAbilities[funder.entityId] = if (fundColor != null) funder.manaAbilityByColor[fundColor] else funder.colorlessManaAbility
+                        need--
+                    }
+                }
                 manaProduced[source.entityId] = ManaProduction(color = colorToUse, amount = source.manaAmount)
                 useSource(source, colorToUse)
                 xRestrictedSpent[colorToUse] = (xRestrictedSpent[colorToUse] ?: 0) + 1
@@ -812,11 +833,6 @@ class ManaSolver(
             val payableModes: List<Pair<ManaSource, Color?>> = remainingSources.mapNotNull { source ->
                 val freeColors = source.availableColorsFor(spellContext)
                     .ifEmpty { source.producesColors }
-                    .filter { color ->
-                        val selected = source.manaAbilityByColor[color]
-                        (selected?.let { activationManaCost(it.cost) }
-                            ?: (source.colorActivationManaCost[color] ?: 0)) == 0
-                    }
                 val freeColorless = source.producesColorless
                 val cheapestColor = freeColors.minByOrNull { source.colorPainCost[it] ?: 0 }
                 if (cheapestColor == null && !freeColorless) {
@@ -849,6 +865,26 @@ class ManaSolver(
                 }
             } ?: return null
             val (source, colorToUse) = chosenMode
+            val actCost = if (colorToUse != null) (source.colorActivationManaCost[colorToUse] ?: 0) else source.colorlessActivationManaCost
+            if (actCost > 0) {
+                var need = actCost
+                while (need > 0) {
+                    val funder = remainingSources
+                        .filter { src ->
+                            src.availableColorsFor(spellContext).any { c ->
+                                (src.manaAbilityByColor[c]?.let { activationManaCost(it.cost) } ?: (src.colorActivationManaCost[c] ?: 0)) == 0
+                            } || (src.producesColorless && (src.colorlessManaAbility?.let { activationManaCost(it.cost) } ?: src.colorlessActivationManaCost) == 0)
+                        }
+                        .minByOrNull { calculateTapPriority(it, handRequirements, availableSourcesByColor) }
+                        ?: return null
+                    val fundColor = funder.availableColorsFor(spellContext).firstOrNull { c ->
+                        (funder.manaAbilityByColor[c]?.let { activationManaCost(it.cost) } ?: (funder.colorActivationManaCost[c] ?: 0)) == 0
+                    }
+                    useSource(funder, fundColor)
+                    internalAbilities[funder.entityId] = if (fundColor != null) funder.manaAbilityByColor[fundColor] else funder.colorlessManaAbility
+                    need--
+                }
+            }
             manaProduced[source.entityId] = if (colorToUse != null) {
                 ManaProduction(color = colorToUse, amount = source.manaAmount)
             } else {
@@ -859,38 +895,6 @@ class ManaSolver(
         }
 
 
-        // Post-selection funding for paid modes selected in restricted-X or generic passes.
-        // Only free sources are used; recursive paid funding remains unsupported.
-        var lateActivationCostRemaining = 0
-        for (used in usedSources) {
-            val produced = manaProduced[used.entityId] ?: continue
-            if (produced.color != null) {
-                lateActivationCostRemaining += used.colorActivationManaCost[produced.color] ?: 0
-            } else if (produced.colorless > 0) {
-                lateActivationCostRemaining += used.colorlessActivationManaCost
-            }
-        }
-        // Subtract any costs already covered by the earlier funding pass (approximate by re-computing only new).
-        // For simplicity and safety, re-run a funding loop only if remaining > 0 after early pass; early pass already reduced.
-        while (lateActivationCostRemaining > 0) {
-            if (spendAnyBonusMana()) {
-                lateActivationCostRemaining--
-                continue
-            }
-            if (remainingSources.isEmpty()) return null
-            val fundingSource = remainingSources
-                .filter { src ->
-                    val freeColor = src.availableColorsFor(spellContext).any { c ->
-                        (src.manaAbilityByColor[c]?.let { activationManaCost(it.cost) } ?: (src.colorActivationManaCost[c] ?: 0)) == 0
-                    }
-                    val freeColorless = src.producesColorless && (src.colorlessManaAbility?.let { activationManaCost(it.cost) } ?: src.colorlessActivationManaCost) == 0
-                    freeColor || freeColorless
-                }
-                .minByOrNull { calculateTapPriority(it, handRequirements, availableSourcesByColor) }
-                ?: return null
-            useSource(fundingSource, null) // funding source; production consumed internally
-            lateActivationCostRemaining--
-        }
         // A List, not a Set: multiplicity is load-bearing. Two rider-carrying sources spent on
         // one spell fire the rider twice (Pyromancer's Goggles: "That many copies will be
         // created"), so identical riders must not collapse.

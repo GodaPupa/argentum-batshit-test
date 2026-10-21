@@ -1,6 +1,7 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.mechanics.mana.ManaSolver
+import com.wingedsheep.engine.state.components.battlefield.TappedComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.ManaCost
@@ -63,17 +64,14 @@ class ManualPrecisionR9FundedManaCompletenessHeldoutTest : ScenarioTestBase() {
                 .withActivePlayer(1)
                 .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN)
                 .build()
-            val beforeLife = game.state.players[game.player1Id]!!.life
+            val beforeLife = game.state.lifeTotal(game.player1Id)
             val result = game.castSpell(1, colorlessSpell.name)
             result.error shouldBe null
-            // Actual payment: both sources tapped, colorless in pool or spent, no life change
-            val after = game.state
-            after.players[game.player1Id]!!.life shouldBe beforeLife
-            // Verify sources are tapped (engine state)
-            val forest = after.battlefield.filter { it.card?.name == "Forest" }
-            val paid = after.battlefield.filter { it.card?.name == paidColorlessLand.name }
-            forest.all { it.isTapped } shouldBe true
-            paid.all { it.isTapped } shouldBe true
+            game.state.lifeTotal(game.player1Id) shouldBe beforeLife
+            val forest = game.findPermanent("Forest")!!
+            val paid = game.findPermanent(paidColorlessLand.name)!!
+            game.state.getEntity(forest)?.has<TappedComponent>() shouldBe true
+            game.state.getEntity(paid)?.has<TappedComponent>() shouldBe true
         }
 
         test("positive: Forest funds Mossfire Valley {1} to pay red-restricted X=1") {
@@ -109,9 +107,10 @@ class ManualPrecisionR9FundedManaCompletenessHeldoutTest : ScenarioTestBase() {
                 .build()
             val result = game.castSpell(1, genericSpell.name)
             result.error shouldBe null
-            val after = game.state
-            after.battlefield.filter { it.card?.name == "Forest" }.all { it.isTapped } shouldBe true
-            after.battlefield.filter { it.card?.name == "Mossfire Valley" }.all { it.isTapped } shouldBe true
+            val forest = game.findPermanent("Forest")!!
+            val moss = game.findPermanent("Mossfire Valley")!!
+            game.state.getEntity(forest)?.has<TappedComponent>() shouldBe true
+            game.state.getEntity(moss)?.has<TappedComponent>() shouldBe true
         }
 
         test("negative control: unfunded paid colorless land cannot pay {C}") {
