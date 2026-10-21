@@ -61,6 +61,31 @@ class ManaAbilitySideEffectExecutor(
      * [ManaSolver]; the produced mana itself is still consumed separately
      * via [ManaSolution.manaProduced].
      */
+    /**
+     * Preflight cumulative printed PayLife mana-activation costs for one solver payment.
+     * Preview payments use a local immutable state; their changes and events are discarded.
+     * This also respects library-exile replacements. Real costs are executed just once
+     * by tapSourcesWithSideEffects after the full batch is found payable.
+     */
+    fun canPayActivationLifeCosts(
+        state: GameState,
+        solution: ManaSolution,
+        controllerId: EntityId
+    ): Boolean {
+        var previewState = state
+        for (source in solution.sources) {
+            val ability = matchingManaAbility(
+                previewState, source.entityId, solution.manaProduced[source.entityId]?.color
+            ) ?: continue
+            val amount = payLifeCost(ability.cost)
+            if (amount <= 0) continue
+            val previewPayment = LifePaymentService.pay(previewState, controllerId, amount)
+                ?: return false
+            previewState = previewPayment.first
+        }
+        return true
+    }
+
     fun tapSourcesWithSideEffects(
         state: GameState,
         solution: ManaSolution,

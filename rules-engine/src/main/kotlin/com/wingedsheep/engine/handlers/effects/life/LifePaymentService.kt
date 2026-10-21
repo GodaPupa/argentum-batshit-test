@@ -52,6 +52,10 @@ object LifePaymentService {
 
         exileFromLibraryInstead(state, payerId, amount)?.let { return it }
 
+        // CR 119.4: paying exactly the remaining life is legal, paying more isn't.
+        // Replacement payments above may instead exile cards without spending life.
+        if (state.lifeTotal(payerId) < amount) return null
+
         val (newState, event) = DamageUtils.loseLife(state, payerId, amount, LifeChangeReason.PAYMENT)
         return newState to listOfNotNull(event)
     }

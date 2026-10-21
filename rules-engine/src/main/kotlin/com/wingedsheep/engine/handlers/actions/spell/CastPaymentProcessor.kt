@@ -401,6 +401,9 @@ class CastPaymentProcessor(
         if (!remainingCost.isEmpty() || xRemainingToPay > 0) {
             val solution = manaSolver.solve(currentState, playerId, remainingCost, xRemainingToPay, excludeSources = excludeSources, spellContext = spellContext, xManaRestriction = xManaRestriction)
                 ?: return PaymentResult(currentState, events, "Not enough mana to auto-pay")
+            if (!manaAbilitySideEffectExecutor.canPayActivationLifeCosts(currentState, solution, playerId)) {
+                return PaymentResult(state, emptyList(), "Insufficient life for mana-source activation costs")
+            }
             solutionConsumedRiders = solution.consumedRiders
             // Mana tapped directly for this payment carries the provenance of its source (read from
             // the pre-payment [state], where every tapped source still exists with its type line).

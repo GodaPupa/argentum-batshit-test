@@ -1313,6 +1313,11 @@ class ActivateAbilityHandler(
                         val solution = manaSolver.solve(
                             currentState, action.playerId, remainingCost, manaXValue, excludeSources = excluded, xManaRestriction = ability.xManaRestriction
                         ) ?: return ExecutionResult.error(state, "Selected mana sources cannot pay this ability's cost")
+                        if (!manaAbilitySideEffectExecutor.canPayActivationLifeCosts(
+                                currentState, solution, action.playerId
+                            )) {
+                            return ExecutionResult.error(state, "Insufficient life for selected mana-source activation costs")
+                        }
                         // Explicitly selected sources still activate their full mana abilities.
                         // Pay printed non-tap activation costs (Mana Confluence life payment),
                         // emit ability-activation events and apply side effects exactly once,
@@ -2483,6 +2488,11 @@ class ActivateAbilityHandler(
         // for "spend only [colors] on X" abilities)
         val solution = manaSolver.solve(state, playerId, remainingCost, xToTap, excludeSources = excludeSources, spellContext = abilityContext, xManaRestriction = xManaRestriction)
             ?: return null
+
+        // Do not tap any source when cumulative mana-ability life costs are unaffordable.
+        if (!manaAbilitySideEffectExecutor.canPayActivationLifeCosts(state, solution, playerId)) {
+            return null
+        }
 
         var currentState = state
         var currentPool = pool

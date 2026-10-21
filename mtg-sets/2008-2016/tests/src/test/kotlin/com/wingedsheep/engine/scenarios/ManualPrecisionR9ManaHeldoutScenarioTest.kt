@@ -134,5 +134,58 @@ class ManualPrecisionR9ManaHeldoutScenarioTest : ScenarioTestBase() {
             game.getLifeTotal(1) shouldBe 1
             sources.forEach { game.state.getEntity(it)?.has<TappedComponent>() shouldBe false }
         }
+
+        test("unaffordable cumulative Confluence payment rejects a generic spell without tapping") {
+            val game = scenario()
+                .withPlayers("Player1", "Player2")
+                .withLifeTotal(1, 1)
+                .withLandsOnBattlefield(1, "Mana Confluence", 2)
+                .withCardInHand(1, "Arcane Signet")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val sources = game.state.getBattlefield().filter {
+                game.state.getEntity(it)?.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name == "Mana Confluence"
+            }
+            sources.size shouldBe 2
+            game.castSpell(1, "Arcane Signet").error shouldNotBe null
+            game.getLifeTotal(1) shouldBe 1
+            sources.forEach { game.state.getEntity(it)?.has<TappedComponent>() shouldBe false }
+        }
+
+        test("affordable two-source Confluence generic spell charges exactly twice") {
+            val game = scenario()
+                .withPlayers("Player1", "Player2")
+                .withLifeTotal(1, 5)
+                .withLandsOnBattlefield(1, "Mana Confluence", 2)
+                .withCardInHand(1, "Arcane Signet")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            game.castSpell(1, "Arcane Signet").error shouldBe null
+            game.getLifeTotal(1) shouldBe 3
+        }
+
+        test("unaffordable cumulative Confluence payment rejects explicit nonspell sources") {
+            val game = scenario()
+                .withPlayers("Player1", "Player2")
+                .withLifeTotal(1, 1)
+                .withLandsOnBattlefield(1, "Mana Confluence", 2)
+                .withCardOnBattlefield(1, "Temur Sabertooth")
+                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = true)
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val sources = game.state.getBattlefield().filter {
+                game.state.getEntity(it)?.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name == "Mana Confluence"
+            }
+            sources.size shouldBe 2
+            val sabertooth = game.findPermanent("Temur Sabertooth")!!
+            val ability = cardRegistry.getCard("Temur Sabertooth")!!.activatedAbilities.single().id
+            game.execute(ActivateAbility(
+                game.player1Id, sabertooth, ability,
+                paymentStrategy = PaymentStrategy.Explicit(sources)
+            )).error shouldNotBe null
+            game.getLifeTotal(1) shouldBe 1
+            sources.forEach { game.state.getEntity(it)?.has<TappedComponent>() shouldBe false }
+        }
+
     }
 }

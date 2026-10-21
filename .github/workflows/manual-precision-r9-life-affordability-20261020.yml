@@ -1,0 +1,198 @@
+name: Manual Precision R9 life affordability correction and heldouts (NO GAMES)
+on:
+  push:
+    branches: [research/manual-precision-r9-life-affordability-20261020]
+    paths:
+      - '.github/workflows/manual-precision-r9-life-affordability-20261020.yml'
+permissions:
+  contents: read
+concurrency:
+  group: manual-precision-r9-life-affordability
+  cancel-in-progress: false
+jobs:
+  heldout-mana-and-restrictions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Pin R9 ancestor, narrow life-affordability delta, immutable authorities
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r9-mana-evidence
+          git rev-parse HEAD > r9-mana-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > r9-mana-evidence/tree-sha.txt
+          git diff --name-only 0b99c0320c779b2c8001796761641f9c27552990 HEAD > r9-mana-evidence/delta-paths.txt
+          test "$GITHUB_REF" = "refs/heads/research/manual-precision-r9-life-affordability-20261020"
+          git merge-base --is-ancestor 0b99c0320c779b2c8001796761641f9c27552990 HEAD
+          test "$(wc -l < r9-mana-evidence/delta-paths.txt)" -eq 6
+          git diff --quiet 0b99c0320c779b2c8001796761641f9c27552990 HEAD -- ai/ experiments/
+          test "$(git diff --name-only 0b99c0320c779b2c8001796761641f9c27552990 HEAD)" = "$(printf '%s\n' '.github/workflows/manual-precision-r9-life-affordability-20261020.yml' 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualPrecisionR9ManaHeldoutScenarioTest.kt' 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt' 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastPaymentProcessor.kt' 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/life/LifePaymentService.kt' 'rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaAbilitySideEffectExecutor.kt')"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PreEntryCoordinator.kt)" = "3baae2b3585ab3fcbec36a385450b7e1d391bfc1"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt)" = "3b7f4a6a14ea3f7d41bd06167ec114a8340b6255"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt)" = "cebfe9bd04d91d36bba511dcf0877835ef88e177"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          echo ZERO_FULL_GAMES > r9-mana-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Independent mana boundary tests and all original Confluence cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test \
+            --tests '*ManualPrecisionR9ManaHeldoutScenarioTest' --tests '*ManaConfluenceScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-mana-evidence/heldout-and-r8-confluence.log
+      - name: Original City of Brass scenario
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:1993-1999:tests:test \
+            --tests '*CityOfBrassScenarioTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-mana-evidence/city-of-brass.log
+      - name: Restricted mana dual-ability existing regressions
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2025:tests:test \
+            --tests '*SteelswarmOperatorTest' -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-mana-evidence/restricted-mana.log
+      - name: Preserve original source-bound mana JUnit and logs including on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r9-life-mana-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            r9-mana-evidence/
+            mtg-sets/2008-2016/tests/build/test-results/test/
+            mtg-sets/1993-1999/tests/build/test-results/test/
+            mtg-sets/2025/tests/build/test-results/test/
+  heldout-fetched-shock-entry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Pin full fidelity source and no full games
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r9-fetch-evidence
+          git rev-parse HEAD > r9-fetch-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > r9-fetch-evidence/tree-sha.txt
+          git diff --name-only 0b99c0320c779b2c8001796761641f9c27552990 HEAD > r9-fetch-evidence/delta-paths.txt
+          test "$(wc -l < r9-fetch-evidence/delta-paths.txt)" -eq 6
+          git merge-base --is-ancestor 0b99c0320c779b2c8001796761641f9c27552990 HEAD
+          git diff --quiet 0b99c0320c779b2c8001796761641f9c27552990 HEAD -- ai/ experiments/
+          echo ZERO_FULL_GAMES > r9-fetch-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Independent low life competing effects identity and shuffle plus R8 Misty
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:test \
+            --tests '*ManualPrecisionR9FetchHeldoutScenarioTest' --tests '*MistyRainforestScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-fetch-evidence/heldout-and-misty.log
+      - name: Original Wooded Foothills fetch and shock choices
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2000-2002:tests:test \
+            --tests '*WoodedFoothillsScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-fetch-evidence/wooded.log
+      - name: Original hand-played shockland choices
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2003-2007:tests:test \
+            --tests '*BreedingPoolScenarioTest' --tests '*SteamVentsScenarioTest' --tests '*StompingGroundScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-fetch-evidence/hand-play-shocks.log
+      - name: Preserve original source-bound fetch JUnit and logs even on failure
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r9-life-fetch-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            r9-fetch-evidence/
+            mtg-sets/2008-2016/tests/build/test-results/test/
+            mtg-sets/2000-2002/tests/build/test-results/test/
+            mtg-sets/2003-2007/tests/build/test-results/test/
+  accepted-protection-regressions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 70
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Source-bound R5 protections without changing accepted behavior
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r9-safety-evidence
+          git rev-parse HEAD > r9-safety-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > r9-safety-evidence/tree-sha.txt
+          git merge-base --is-ancestor 0b99c0320c779b2c8001796761641f9c27552990 HEAD
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          echo ZERO_FULL_GAMES > r9-safety-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Pact Ballista Statue Encore combat resolution and R5 controls
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualPactDebt*Test' --tests '*ManualBallista*Test' \
+            --tests '*ManualStatue*Test' --tests '*ManualResolutionPaymentRegressionTest' \
+            --tests '*ManualR5CandidateCompositionTest' --tests '*ManualEncoreRegressionTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-safety-evidence/survival-protections.log
+          mkdir -p r9-safety-evidence/survival-junit
+          cp -a ai/build/test-results/test/. r9-safety-evidence/survival-junit/
+      - name: Original CONTROL versus A catalog initializer parity
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualPrecisionR1PreflightTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r9-safety-evidence/initializers.log
+      - name: Preserve protected regression XML and source provenance
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-precision-r9-life-safety-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            r9-safety-evidence/
+            ai/build/test-results/test/
