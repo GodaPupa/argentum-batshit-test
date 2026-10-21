@@ -1,0 +1,51 @@
+{
+  "schema": "ARGENTUM_CRUISE_R7_ORIGINAL_TURN_ONE_FETCH_MICROFORK_V1",
+  "dated": "2026-10-21",
+  "predeclared_before_new_microfork_results": true,
+  "disposition": "SOURCE_BOUND_MECHANISM_NOT_OPPONENT_RESPONSE_NOT_GAME",
+  "parent_source_sha": "dfcad1d380b7175d47b071c41998bdf9c2eed07b",
+  "original_cohort": "R6",
+  "original_seed": "202610202141",
+  "seat": "manual-mirror-1",
+  "historical_original_land_choice_action_index": 42,
+  "historical_original_land_choice": "Opal Palace",
+  "historical_prefix_actions_replayed_per_arm": 41,
+  "max_new_mechanism_actions_per_arm": 12,
+  "original_arms": [
+    {
+      "arm": "control",
+      "artifact_id": 12298777958,
+      "digest": "031011134d10e3ae002ad7dc304ff7dafcc5e14f9a117c436e510dfb984349cb",
+      "source_sha": "53a5162eb3659310b1878894a90ae58c244a6745",
+      "alternative_first_land": "Evolving Wilds",
+      "chosen_library_land": "Forest",
+      "expected_forest_enters_tapped": true,
+      "expected_same_turn_birds_affordable": false
+    },
+    {
+      "arm": "a",
+      "artifact_id": 12298778067,
+      "digest": "a4396d43fdd831f5f67f2a6b865630af9a90ff1420c2b127be6e6b2f294a6efe",
+      "source_sha": "53a5162eb3659310b1878894a90ae58c244a6745",
+      "alternative_first_land": "Misty Rainforest",
+      "chosen_library_land": "Forest",
+      "expected_forest_enters_tapped": false,
+      "expected_same_turn_birds_affordable": true
+    }
+  ],
+  "controls": [
+    "Both original main-phase states must be replayed exactly through 41 archived accepted actions with matching events and life. No replacement initializer.",
+    "The very next original action is exactly Opal Palace played by Seat 1; alternate first land is pulled from that seat's actual hand.",
+    "Execute only actual valid land play, fetch activation, player priority passes necessary to resolve a bounded mechanic, original-library Forest selection, and where payable a single Birds of Paradise cast. No extra turns, draws, or game completion.",
+    "All source actions validated by real engine; no simulator quiet-state opponent autopass. Explicit opponent priority passes are a conditional, synthetic resolution demonstration, not predictive behavior.",
+    "CONTROL tapped Forest must leave Birds unpayable same turn; Challenger A untapped Forest must make Birds payable and processor-accepted; any difference must not be claimed a win.",
+    "Original R5, ManaSolver, production CURRENT, CONTROL, Challenger A and main source immutable; only manifest, test and CI files added."
+  ],
+  "budget": {
+    "full_game_count_before": 10,
+    "cap": 12,
+    "reserved": 2,
+    "new_full_games": 0
+  },
+  "qualifier": "Even if A has a legal Birds-on-turn-one line, the current historical matched R5 AI chose Opal Palace. This study does not show a strategically superior move, a real opponent response, or a counterfactual game winner."
+}
