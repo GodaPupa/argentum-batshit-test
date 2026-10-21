@@ -1,0 +1,117 @@
+name: Manual Phase 2 canonical-main six multiplayer/Commander source suites (NO GAMES)
+on:
+  push:
+    branches: [research/manual-phase2-multiplayer-core-gate-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-multiplayer-core-20261021.yml'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/MULTIPLAYER_CORE_PREDECLARED.json'
+permissions: {contents: read}
+concurrency:
+  group: manual-phase2-current-main-six-multiplayer-suites
+  cancel-in-progress: false
+
+jobs:
+  six-current-main-rule-banks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 85
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 12}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Enforce all six frozen original Kotlin sources and no-game limits
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p phase2-multiplayer-evidence
+          test "$GITHUB_REF" = 'refs/heads/research/manual-phase2-multiplayer-core-gate-20261021'
+          git merge-base --is-ancestor 37a603617a03dfd2d81b39dae004f7f336a70dfc HEAD
+          git diff --name-only 37a603617a03dfd2d81b39dae004f7f336a70dfc HEAD > phase2-multiplayer-evidence/changed-paths.txt
+          test "$(wc -l < phase2-multiplayer-evidence/changed-paths.txt)" -eq 2
+          while IFS= read -r p; do
+            case "$p" in
+              .github/workflows/manual-phase2-multiplayer-core-20261021.yml|experiments/manual-transmission/research/phase2-current-main-20261021/MULTIPLAYER_CORE_PREDECLARED.json) ;;
+              *) echo "UNAUTHORIZED_ENGINE_DELTA:$p"; exit 1 ;;
+            esac
+          done < phase2-multiplayer-evidence/changed-paths.txt
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          python3 - <<'PY'
+          import json,subprocess
+          from pathlib import Path
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/MULTIPLAYER_CORE_PREDECLARED.json").read_text())
+          assert p["schema"]=="ARGENTUM_MANUAL_PHASE2_CANONICAL_MAIN_MULTIPLAYER_CORE_R1"
+          assert p["status"]=="FROZEN_BEFORE_TARGETED_DETERMINISTIC_RULES_TESTS"
+          assert p["expected_suites"]==6 and len(p["test_sources"])==6
+          assert not p["gameplay_authorized"] and not p["seed_generation_allowed"]
+          assert p["precision_budget"]=={"used":10,"max":12,"reserved":2,"new":0}
+          for path, sha in p["test_sources"].items():
+              actual=subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip()
+              assert actual==sha,(path,sha,actual)
+          print("MANUAL_PHASE2_SIX_EXACT_MAIN_MULTIPLAYER_SUITES_PREFLIGHT_PASS_NO_GAME")
+          PY
+          git rev-parse HEAD > phase2-multiplayer-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > phase2-multiplayer-evidence/tree-sha.txt
+          echo '0 new games, 0 seeds, 0 outcomes, phase2 0/36 and 0/864, Precision 10/12 with 2 reserved' > phase2-multiplayer-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Run six actual generic multiplayer rule banks on clean current main-based source
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :rules-engine:cleanTest :rules-engine:test \
+            --tests '*CommanderSetupTest' \
+            --tests '*CommanderPodTest' \
+            --tests '*MultiplayerSmokeTest' \
+            --tests '*MultiplayerMulliganTest' \
+            --tests '*LeaveTheGameTest' \
+            --tests '*CommanderTaxTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee phase2-multiplayer-evidence/six-suites.log
+
+      - name: Audit actual unique JUnit suite names, case totals, and prohibit skip/error/failure
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee phase2-multiplayer-evidence/independent-junit-audit.log
+          import json
+          import xml.etree.ElementTree as ET
+          from pathlib import Path
+          p=Path("rules-engine/build/test-results/test")
+          names=["core.CommanderSetupTest","multiplayer.CommanderPodTest","multiplayer.MultiplayerSmokeTest","multiplayer.MultiplayerMulliganTest","multiplayer.LeaveTheGameTest","mana.CommanderTaxTest"]
+          total=0
+          for name in names:
+              xml=p/("TEST-com.wingedsheep.engine."+name+".xml")
+              assert xml.is_file(),("Missing expected original source suite",str(xml))
+              root=ET.parse(xml).getroot()
+              cases=root.findall(".//testcase")
+              assert cases and not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped"),name
+              assert all(int(root.get(k,"0"))==0 for k in ("failures","errors","skipped")),name
+              assert len(cases)==len({(x.get("classname"),x.get("name")) for x in cases}),"Duplicate actual case"
+              print(f"{name}: {len(cases)} accepted; 0 failure/error/skip")
+              total+=len(cases)
+          assert len(names)==6 and total>=6
+          out=dict(schema="ARGENTUM_PHASE2_CURRENT_MAIN_MULTIPLAYER_SIX_ACTUAL_XML_R1",
+                   status="SIX_GENERIC_RULE_BANKS_SOURCE_ONLY_GREEN",
+                   suite_count=6,case_count=total,failed=0,errored=0,skipped=0,
+                   gameplay_initialized=0,official_capability_games=0,official_primary_games=0,
+                   qualifications_excluded=["exact 8 100-card readiness","partner-specific full roster","opponent cEDH pilots","three gear pilots","full replay/durability","whole-pod competitive win rate"])
+          target=Path("phase2-multiplayer-evidence/SIX_MULTIPLAYER_RULE_BANKS.json")
+          target.write_text(json.dumps(out,indent=2)+"\n")
+          print("MANUAL_PHASE2_SIX_GENERIC_MULTIPLAYER_BANKS_PASS",total,"NO ACTUAL DECK GAME")
+          PY
+
+      - name: Preserve source/test evidence on PASS or FAIL, never hidden state or real game outcomes
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-phase2-six-multiplayer-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            phase2-multiplayer-evidence/
+            rules-engine/build/test-results/test/
