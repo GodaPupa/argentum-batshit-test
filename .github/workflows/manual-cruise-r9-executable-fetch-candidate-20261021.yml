@@ -50,7 +50,7 @@ jobs:
           git diff --name-only d6f3e0a66251fd2c99430e3df7eb9db14f750753 HEAD > cruise-r9-evidence/changed-paths.txt
           while IFS= read -r file; do
             case "$file" in
-              .github/workflows/manual-cruise-r9-executable-fetch-candidate-20261021.yml|ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt|ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/CardAdvisor.kt|ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseR9ExecutableFetchAdvisorModule.kt|ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionCruiseR9Candidate.kt|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR9ExactFetchPolicyTest.kt) ;;
+              .github/workflows/manual-cruise-r9-executable-fetch-candidate-20261021.yml|.github/workflows/manual-cruise-r9-optin-20261021.yml|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR9ExecutableFetchCandidateTest.kt|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR9PreemptiveLethalTest.kt|ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt|ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/CardAdvisor.kt|ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseR9ExecutableFetchAdvisorModule.kt|ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionCruiseR9Candidate.kt|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR9ExactFetchPolicyTest.kt) ;;
               *) echo "UNAUTHORIZED_DELTA:$file"; exit 1 ;;
             esac
           done < cruise-r9-evidence/changed-paths.txt
