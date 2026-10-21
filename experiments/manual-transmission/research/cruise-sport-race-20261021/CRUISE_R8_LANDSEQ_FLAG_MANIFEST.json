@@ -1,0 +1,56 @@
+{
+  "schema": "ARGENTUM_CRUISE_R8_SINGLE_EXISTING_PROFILE_FLAG_TEST_V1",
+  "date": "2026-10-21",
+  "disposition": "ONE_VARIABLE_OPT_IN_DECISION_TEST_NO_GAMES",
+  "source_parent_sha": "dfcad1d380b7175d47b071c41998bdf9c2eed07b",
+  "source_profile": "ManualTransmissionR5Candidate.profile",
+  "candidate_profile_only_change": {
+    "sequenceLandsByUsableMana": true
+  },
+  "profile_id": "manual-transmission-cruise-r8-landseq-flag-opt-in",
+  "target_seed": "202610202141",
+  "target_cohort": "R6",
+  "target_seat": "manual-mirror-1",
+  "original_priority_action_index": 42,
+  "fixtures": [
+    {
+      "id": "R8-TARGET-A",
+      "arm": "a",
+      "artifact_id": 12298778067,
+      "digest": "a4396d43fdd831f5f67f2a6b865630af9a90ff1420c2b127be6e6b2f294a6efe",
+      "source_sha": "53a5162eb3659310b1878894a90ae58c244a6745",
+      "baseline": "Play Opal Palace",
+      "goal": "select Misty Rainforest only when an actual green fetch line is potentially enabled"
+    },
+    {
+      "id": "R8-NEGATIVE-CONTROL",
+      "arm": "control",
+      "artifact_id": 12298777958,
+      "digest": "031011134d10e3ae002ad7dc304ff7dafcc5e14f9a117c436e510dfb984349cb",
+      "source_sha": "53a5162eb3659310b1878894a90ae58c244a6745",
+      "baseline": "Play Opal Palace",
+      "goal": "do not prioritize Evolving Wilds as if it gave an immediate untapped green source"
+    }
+  ],
+  "evidence_guards": [
+    "Replay exactly first 41 original accepted actions with exact original event and life equivalence before invoking baseline or opt-in AI.",
+    "Do not change any production/current/R5 profile; candidate is an ephemeral local copy with one existing boolean flag only.",
+    "Record both baseline and candidate actual legal one-step actions, not prospective wins.",
+    "Positive effect only if A chooses Misty while CONTROL avoids Evolving; a changed tie or candidate action without funded follow-up is not a promoted policy.",
+    "Original games used no mulligans; this study changes only one turn-one decision score. All opponent responses beyond action 41 are unobserved in the counterfactual."
+  ],
+  "budget": {
+    "original_used": 10,
+    "max": 12,
+    "reserved": 2,
+    "new_games": 0
+  },
+  "protected": {
+    "main_sha": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "control_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "challenger_a_blob": "7984a2e87d8ddbe023d45620414d25a61691a040",
+    "current_blob": "180918b2d7a59309e7b0617f2579fb2a6d06b7d5",
+    "r5_blob": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "solver_blob": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+  }
+}
