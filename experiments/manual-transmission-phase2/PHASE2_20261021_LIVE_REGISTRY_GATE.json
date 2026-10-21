@@ -1,0 +1,124 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_CANONICAL_MAIN_LIVE_CAPABILITY_PREFLIGHT_V1",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_BEFORE_ANY_20261021_LIVE_REGISTRY_EXECUTION",
+  "mode": "read_only_seed_free_no_actual_game",
+  "mission": "Requalify current canonical main against original eight exact 100-card frozen deck identities and strict existing Kotlin CardRegistry resolution before any four-seat game admission. Report real gaps, not invented zeroes or a competitive match result.",
+  "canonical_main_parent": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "original_phase1_sha": "e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d",
+  "phase2_historical_branch_head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+  "frozen_source_receive": {
+    "protocol_blob": "f605dc2ce4273a26a6e2387a2c6e4048e4012a79",
+    "admission_blob": "4ec806565081f7570e8cff0c92569b8a7fd788e5",
+    "registry_test_blob": "28a52995671550d87fba5f35d6b100a31fa23848"
+  },
+  "protected_blobs": {
+    "manual_control": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "final_conclusion": "dbf081b0c6e205c65750866adcb6f7d43f532caf",
+    "blue_farm": "b22137a54b1ff5d1ce1d5e3347cefa4992e2d92d",
+    "rogsi": "a70bbde77a40af45d95d2aa8ae2fb94a62fc4009",
+    "kinnan": "26e9e40fa9aac070ae47e20ee1ee9ba5a053c49d",
+    "sisay": "b2f7a511dda72cef6fa3c937e44c9e04d5f84a91",
+    "magda": "4ca3397a0cce21ec98fd764bc3ffe4668781ff88",
+    "hashaton": "00f6e2a08da14e56fdb8b8d56a7982fa6b7aef02",
+    "shorikai": "9cba05825e76bb7743cce4e80005cb47b8088dd4"
+  },
+  "frozen_hardware": "6c28f0629d8ff0a859784f8c7dc0a47054b298d17c6b8e041a4a0a1d8744f111",
+  "schedule": {
+    "pod_templates": [
+      {
+        "id": "P01",
+        "decks": [
+          "manual-transmission-v07",
+          "blue-farm",
+          "rogsi",
+          "kinnan"
+        ]
+      },
+      {
+        "id": "P02",
+        "decks": [
+          "manual-transmission-v07",
+          "sisay",
+          "magda",
+          "hashaton"
+        ]
+      },
+      {
+        "id": "P03",
+        "decks": [
+          "manual-transmission-v07",
+          "shorikai",
+          "blue-farm",
+          "rogsi"
+        ]
+      }
+    ],
+    "capability_games": 36,
+    "primary_games": 864,
+    "fixed_hardware_per_gear": true,
+    "three_gears": [
+      "Cruise",
+      "Sport",
+      "Race"
+    ],
+    "attribution": "source-level registry readiness only, no actual matchup data"
+  },
+  "current_registry_expected_totals": {
+    "decks": 8,
+    "physical_per_deck": 100,
+    "all_physical": 800,
+    "manual_cards": 100,
+    "all_seven_opponents": 700
+  },
+  "compared_historical_inventory": {
+    "source_commit": "8f50c5d4fcee177fa6477d75c43e70794d75ddb6",
+    "manual_registry_resolved": 85,
+    "per_opponent_resolved": {
+      "blue-farm": 59,
+      "rogsi": 56,
+      "kinnan": 56,
+      "sisay": 57,
+      "magda": 50,
+      "hashaton": 48,
+      "shorikai": 53
+    },
+    "note": "Historical September 2026 integrated-source count, not assumed current."
+  },
+  "required_gates": [
+    "exact 100-card identities including correct partner commander counts, unchanged 9 frozen Git blobs and exact opponent digests",
+    "actual current-repository Kotlin CardRegistry resolution for all 800 requested card slots, with full MDFC face verification and exported source-bound real definitions",
+    "exact rules/card semantics for each actual 100 and relevant matchup mechanics (registry presence is necessary but insufficient)",
+    "four independent real opponent policies and official player action choice interfaces without observing hidden opposing state",
+    "correct Commander APNAP, priority, win/loss, elimination, London first free mulligan, commander tax, partner setup, actual action processor acceptance",
+    "three separately executable Cruise/Sport/Race pilot algorithms frozen before official seed generation",
+    "read-only masked legal action/choice boundary, replay-complete per-action accepted action trace and 22-metric typed telemetry",
+    "durable canonical global claim, action/attempt journal, immutable external artifact hashes and independent original receipt audit",
+    "applicable effective rules source frozen before seed allocation, declared caps and timeouts with unresolved censoring",
+    "predeclared seed and pod/seat/gear schedule, one-shot allowed run, no outcome-driven replacement or unplanned extension"
+  ],
+  "gate_decisions": {
+    "full_match_execution_allowed": false,
+    "official_seed_generation_allowed": false,
+    "completed_frozen_capability_admission": false,
+    "admit_full_game_if_registry_complete": false,
+    "no_registry_fabrication": true,
+    "hardware_promotion_allowed": false,
+    "live_default_profile_promotion_allowed": false,
+    "independent_review_required": true
+  },
+  "precision_budget": {
+    "prior_completed": 10,
+    "maximum": 12,
+    "reserved": 2,
+    "consumed_by_this_gate": 0
+  },
+  "official_counters_delta": {
+    "seeds": 0,
+    "attempts": 0,
+    "games": 0,
+    "actions": 0,
+    "outcomes": 0
+  },
+  "conclusion_rule": "If any deck is not 100/100 present, return HOLD_REGISTRY_COVERAGE. Even if every deck is present, return HOLD_SEMANTICS_AND_PILOTS until separately independently verified. Any CI failure is INCOMPLETE, never 100/100 nor gameplay admission."
+}
