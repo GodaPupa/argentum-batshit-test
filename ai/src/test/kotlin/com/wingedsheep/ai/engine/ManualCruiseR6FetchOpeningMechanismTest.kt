@@ -103,7 +103,7 @@ class ManualCruiseR6FetchOpeningMechanismTest : FunSpec({
                     archivedWitness+=buildJsonObject {
                         put("index",idx);put("historicAccepted",true);put("actor",seat.value)
                         put("originalActionType",executed.str("type"))
-                        put("originalSource",a["sourceName"])
+                        put("originalSource",a["sourceName"] ?: JsonNull)
                     }
                 }
             }
@@ -112,7 +112,7 @@ class ManualCruiseR6FetchOpeningMechanismTest : FunSpec({
     check(states.keys==setOf("control","a"))
     fun name(state:GameState,id:EntityId)=
         requireNotNull(state.getEntity(id)?.get<CardComponent>()).name
-    fun opening(state:GameState):List<String>=state.getHand(seat).map { name(state,it) }
+    fun opening(state:GameState): List<String> = state.getHand(seat).map { name(state,it) }
     fun controllerKeep(state:GameState):Boolean {
         val cards=state.getHand(seat).associateWith { id ->
             val card=requireNotNull(state.getEntity(id)?.get<CardComponent>())
