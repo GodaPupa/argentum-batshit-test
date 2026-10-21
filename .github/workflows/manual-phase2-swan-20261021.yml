@@ -1,0 +1,106 @@
+name: Manual Phase 2 original Swan Song stack and Bird on main (NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-phase2-swan-song-receiving-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-swan-20261021.yml'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/SWAN_SONG_RECEIVING_PROTOCOL.json'
+      - 'mtg-sets/**/cards/*SwanSong.kt'
+      - 'mtg-sets/**/scenarios/*SwanSong*ScenarioTest.kt'
+permissions: {contents: read}
+concurrency:
+  group: manual-phase2-swan-main-card-receiving
+  cancel-in-progress: false
+
+jobs:
+  original-card-mechanics:
+    runs-on: ubuntu-latest
+    timeout-minutes: 95
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 25}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Protect frozen source parent and exact original donor files, forbid gameplay
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p interaction-evidence
+          test "$GITHUB_REF" = 'refs/heads/candidate/manual-phase2-swan-song-receiving-20261021'
+          git merge-base --is-ancestor 53b506850b1a949664bd3ff901ec8a7ba5dcab90 HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 43bbad79273806f56703fad420e9f6a495d05309
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = c9083468bc8576136eedbc504731a1de38e57ecd
+          python3 - <<'PY' | tee interaction-evidence/source-audit.log
+          import json,subprocess
+          from pathlib import Path
+          protocol=Path("experiments/manual-transmission/research/phase2-current-main-20261021/SWAN_SONG_RECEIVING_PROTOCOL.json")
+          p=json.loads(protocol.read_text())
+          assert p["source_parent"]=="53b506850b1a949664bd3ff901ec8a7ba5dcab90"
+          assert p["status"].startswith("DECLARED_BEFORE_")
+          assert p["protected"]["no_new_full_games"] is True
+          assert p["protected"]["precision_reserved"]==2
+          assert sum(p["expected_cases"].values())==4
+          expected={str(protocol),".github/workflows/manual-phase2-swan-20261021.yml"}
+          for path,sha in p["files"].items():
+              actual=subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip()
+              assert actual==sha,(path,actual,sha)
+              expected.add(path)
+          diff=set(subprocess.check_output(["git","diff","--name-only","53b506850b1a949664bd3ff901ec8a7ba5dcab90","HEAD"],text=True).splitlines())
+          assert len(diff)==4 and diff==expected,(sorted(diff),sorted(expected))
+          print("MANUAL_PHASE2_SWAN_ORIGINAL_SOURCE_PRECHECK_PASS",len(diff))
+          PY
+          git rev-parse HEAD > interaction-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > interaction-evidence/tree-sha.txt
+          echo 'NO OFFICIAL GAME/SEED; Phase2 0/36 and 0/864; Precision 10/12 used, 2 reserved' > interaction-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+      - name: Execute exact original Swan Song stack and Bird Kotlin card scenario test classes
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
+            --tests '*SwanSongScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee interaction-evidence/original-mechanics.log
+      - name: Preserve raw JUnit from exact scenario module
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p interaction-evidence/junit
+          cp -a mtg-sets/2008-2016/tests/build/test-results/test/. interaction-evidence/junit/ || true
+      - name: Independently require exact original test names/count and zero fail/error/skip
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee interaction-evidence/independent-junit-audit.log
+          import json,xml.etree.ElementTree as ET
+          from pathlib import Path
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/SWAN_SONG_RECEIVING_PROTOCOL.json").read_text())
+          got={}
+          for name,n in p["expected_cases"].items():
+              path=Path("interaction-evidence/junit")/("TEST-com.wingedsheep.engine.scenarios."+name+".xml")
+              assert path.is_file(),("MISSING_ORIGINAL_SCENARIO_XML",name)
+              root=ET.parse(path).getroot()
+              cases=root.findall(".//testcase")
+              assert len(cases)==n,(name,len(cases),n)
+              assert len({(x.get("classname"),x.get("name")) for x in cases})==n
+              assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+              assert all(int(root.get(k,"0"))==0 for k in ("failures","errors","skipped"))
+              got[name]=n
+              print(name,n,"PASS")
+          result=dict(schema="ARGENTUM_MANUAL_PHASE2_SWAN_CURRENT_SOURCE_SCENARIOS_V1",status="COMPONENT_SCENARIOS_QUALIFIED_NOT_POD_ADMISSION",by_class=got,total=sum(got.values()),failures=0,errors=0,skips=0,games=0,official_phase2_capability=0,official_phase2_primary=0,precision_reserved=2)
+          Path("interaction-evidence/COMPONENT_VERDICT.json").write_text(json.dumps(result,indent=2)+"\n")
+          print("MANUAL_PHASE2_SWAN_ORIGINAL_MECHANICS_GREEN",sum(got.values()))
+          PY
+      - name: Retain actual source/CI artifacts on GREEN or RED, never full games
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-phase2-swan-original-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: interaction-evidence/
