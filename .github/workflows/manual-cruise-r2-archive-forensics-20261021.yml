@@ -1,0 +1,121 @@
+name: Manual CRUISE R2 ten-original-archive forensics (NO GAMES)
+on:
+  push:
+    branches: [research/manual-cruise-r2-archived-forensics-20261021]
+    paths:
+      - '.github/workflows/manual-cruise-r2-archive-forensics-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/audit_manual_cruise_r2_archives.py'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ARCHIVE_MANIFEST.json'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_REPORT.md'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-cruise-r2-archive-forensics
+  cancel-in-progress: false
+
+jobs:
+  ten-original-archives:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - name: Verify exact frozen source and zero-game scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-r2-original-zips cruise-r2-ci-evidence
+          test "$GITHUB_REF" = "refs/heads/research/manual-cruise-r2-archived-forensics-20261021"
+          git merge-base --is-ancestor addfe0fc95fcbd0753555215f4ae41c08fdce85a HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/cruise-sport-race-20261021/audit_manual_cruise_r2_archives.py)" = "2aaad7abe17cc03567cc20a5b841af35e36b7be0"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ARCHIVE_MANIFEST.json)" = "df08b0d5e364eab0ad3c351784b79aa73415b3c5"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_REPORT.md)" = "a107a33ac3cb1891ac4dff294be00977ad861ccc"
+          git diff --name-only addfe0fc95fcbd0753555215f4ae41c08fdce85a HEAD > cruise-r2-ci-evidence/changed-files.txt
+          while IFS= read -r file; do
+            case "$file" in
+              .github/workflows/manual-cruise-r2-archive-forensics-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/audit_manual_cruise_r2_archives.py|experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ARCHIVE_MANIFEST.json|experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_REPORT.md) ;;
+              *) echo "UNAUTHORIZED_DELTA:$file"; exit 1 ;;
+            esac
+          done < cruise-r2-ci-evidence/changed-files.txt
+          git rev-parse HEAD > cruise-r2-ci-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > cruise-r2-ci-evidence/source-tree.txt
+          echo NO_NEW_GAMEPLAY_NO_INITIALIZER_NO_AI_POLICY_EDITS > cruise-r2-ci-evidence/budget.txt
+          python3 -m py_compile experiments/manual-transmission/research/cruise-sport-race-20261021/audit_manual_cruise_r2_archives.py
+          echo CRUISE_R2_SOURCE_GATE_PASS
+
+      - name: Verify original GitHub runs and download ten exact immutable ZIPs
+        shell: bash
+        env:
+          GH_TOKEN: \${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' 2>&1 | tee cruise-r2-ci-evidence/download-integrity.log
+          import hashlib,json,pathlib,subprocess
+          root=pathlib.Path("cruise-r2-original-zips")
+          manifest=json.loads(pathlib.Path("experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ARCHIVE_MANIFEST.json").read_text())
+          repo="GodaPupa/argentum-batshit-test"
+          def gh(path):
+              return json.loads(subprocess.check_output(["gh","api",path]))
+          for cohort,run in manifest["runs"].items():
+              game=gh(f"/repos/{repo}/actions/runs/{run}")
+              expected_source={a["source_sha"] for a in manifest["archives"] if a["cohort"]==cohort}
+              assert len(expected_source)==1 and game["head_sha"] in expected_source
+              assert game["status"]=="completed" and game["conclusion"]=="success"
+              artifacts=gh(f"/repos/{repo}/actions/runs/{run}/artifacts")["artifacts"]
+              assert len(artifacts)>=len([a for a in manifest["archives"] if a["cohort"]==cohort])
+              indexed={a["id"]:a for a in artifacts}
+              for source in (a for a in manifest["archives"] if a["cohort"]==cohort):
+                  meta=indexed[source["id"]]
+                  assert not meta["expired"] and meta["digest"]=="sha256:"+source["sha256"]
+                  assert meta["workflow_run"]["id"]==run
+                  assert meta["workflow_run"]["head_sha"]==source["source_sha"]
+                  assert meta["name"].find(source["arm"]+"-"+source["seed"])>=0
+                  out=root/source["file"]
+                  assert not out.exists()
+                  with out.open("wb") as dest:
+                      subprocess.run(["gh","api",f"/repos/{repo}/actions/artifacts/{source['id']}/zip"],check=True,stdout=dest)
+                  digest=hashlib.sha256(out.read_bytes()).hexdigest()
+                  assert digest==source["sha256"],(source["id"],digest)
+                  print(f"ORIGINAL_PIN_VERIFIED cohort={cohort} id={source['id']} arm={source['arm']} seed={source['seed']} sha256={digest}")
+          assert len(list(root.glob("*.zip")))==10
+          print("TEN_ORIGINAL_ARCHIVES_SHA256_VERIFIED ZERO_NEW_GAMES")
+          PY
+
+      - name: Execute exhaustive original action/insight audit (NO GAME REPLAY)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission/research/cruise-sport-race-20261021/audit_manual_cruise_r2_archives.py \
+            --manifest experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ARCHIVE_MANIFEST.json \
+            --archive-dir cruise-r2-original-zips \
+            --out cruise-r2-ci-evidence/forensics \
+            2>&1 | tee cruise-r2-ci-evidence/audit.log
+          cmp experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_REPORT.md cruise-r2-ci-evidence/forensics/REPORT.md
+          test -s cruise-r2-ci-evidence/forensics/seat-observations.csv
+          test -s cruise-r2-ci-evidence/forensics/observations.json
+          python3 - <<'PY'
+          import json
+          s=json.load(open("cruise-r2-ci-evidence/forensics/observations.json"))["totals"]
+          assert s["source_archives_validated"]==10
+          assert s["original_accepted_actions"]==33440
+          assert s["original_scored_priority_decisions_matched"]==7827
+          assert s["original_rejected_actions"]==0 and s["new_full_games"]==0
+          assert s["observed_commander_first_casts"]==35
+          assert len(s["scored_vs_legal_mismatching_game_arms"])==1
+          print("CRUISE_R2_REPRODUCED_REPORT_PASS")
+          PY
+
+      - name: Preserve full audit evidence whether GREEN or RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-cruise-r2-archived-forensics-\${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: cruise-r2-ci-evidence/
