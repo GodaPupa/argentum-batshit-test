@@ -1,0 +1,119 @@
+name: Manual CRUISE R1 one-variable taxed-Animar ramp pilot (NO GAMES)
+on:
+  push:
+    branches: [research/manual-cruise-r1-taxed-animar-ramp-optin-20261021]
+    paths:
+      - '.github/workflows/manual-cruise-r1-taxed-animar-ramp-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R1_RAMP_CANDIDATE_PREDECLARED.json'
+      - 'ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseTaxedAnimarRampAdvisorModule.kt'
+      - 'ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionCruiseR1Candidate.kt'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR1TaxedAnimarRampCandidateTest.kt'
+permissions:
+  contents: read
+concurrency:
+  group: manual-cruise-r1-optin-ramp
+  cancel-in-progress: false
+jobs:
+  gear-candidate-and-protections:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Exact source identity / independent witness pins / protected assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-ramp-candidate-evidence
+          test "$GITHUB_REF" = "refs/heads/research/manual-cruise-r1-taxed-animar-ramp-optin-20261021"
+          git merge-base --is-ancestor 9b6e111edf7d9e6db94878061e21740826fb5333 HEAD
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR5DecisionBaselinePreflightTest.kt)" = "dfc2cd8c74658c33f0845f53403eddeedd909213"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R1_RAMP_CANDIDATE_PREDECLARED.json)" = "041f1ec7c90b457120a47accfec211402060dbe5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseTaxedAnimarRampAdvisorModule.kt)" = "a6ec10d96a7478aceb9f7f042a0ca3b5d2378b7f"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionCruiseR1Candidate.kt)" = "67a53f9731f8d1488748cf1a0e5a7332ab0f8aa5"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR1TaxedAnimarRampCandidateTest.kt)" = "e1c601333f80f5949bc59d0b18e0aa63c386b689"
+          git diff --name-only 9b6e111edf7d9e6db94878061e21740826fb5333 HEAD > cruise-ramp-candidate-evidence/changed-files.txt
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/manual-cruise-r1-taxed-animar-ramp-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R1_RAMP_CANDIDATE_PREDECLARED.json|ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseTaxedAnimarRampAdvisorModule.kt|ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionCruiseR1Candidate.kt|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR1TaxedAnimarRampCandidateTest.kt) ;;
+              *) echo "UNAUTHORIZED_DELTA:$path"; exit 1 ;;
+            esac
+          done < cruise-ramp-candidate-evidence/changed-files.txt
+          python3 - <<'PY'
+          import json
+          m=json.load(open("experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R1_RAMP_CANDIDATE_PREDECLARED.json"))
+          assert m["status"]=="PREDECLARED_BEFORE_CANDIDATE_SOURCE_WRITTEN"
+          assert [c["id"] for c in m["test_cases"]] == [
+              "C-RAMP-01","C-RAMP-02","C-RAMP-03","C-RAMP-04","C-RAMP-05","C-RAMP-06"
+          ]
+          assert m["guards"]["full_games_allowed"] == 0
+          assert m["guards"]["full_games_consumed"] == 10
+          assert m["guards"]["full_games_reserved"] == 2
+          print("CRUISE_OPTIN_CANDIDATE_SOURCE_PASS / NO FULL GAMES")
+          PY
+          git rev-parse HEAD > cruise-ramp-candidate-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > cruise-ramp-candidate-evidence/tree-sha.txt
+          echo ZERO_FULL_GAMES > cruise-ramp-candidate-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Six fixed CRUISE ramp candidate / R5 comparator decision witnesses
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualCruiseR1TaxedAnimarRampCandidateTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-ramp-candidate-evidence/candidate.log
+
+      - name: Preserve candidate JUnit before protected cleanTest
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p cruise-ramp-candidate-evidence/candidate-junit
+          cp -a ai/build/test-results/test/. cruise-ramp-candidate-evidence/candidate-junit/ || true
+
+      - name: Original eight CRUISE baseline decisions plus protected R5 and mulligan cases
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualCruiseR5DecisionBaselinePreflightTest' \
+            --tests '*ManualAnimarDevelopmentPolicyTest' \
+            --tests '*EngineAiMomirMulliganTest' \
+            --tests '*PestControlMonoRedMadnessMulliganPolicyTest' \
+            --tests '*ManualPactDebt*Test' --tests '*ManualBallista*Test' \
+            --tests '*ManualStatue*Test' --tests '*ManualResolutionPaymentRegressionTest' \
+            --tests '*ManualR5CandidateCompositionTest' --tests '*ManualEncoreRegressionTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-ramp-candidate-evidence/protected.log
+
+      - name: Preserve protected JUnit on GREEN or RED
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p cruise-ramp-candidate-evidence/protected-junit
+          cp -a ai/build/test-results/test/. cruise-ramp-candidate-evidence/protected-junit/ || true
+
+      - name: Preserve original source-bound logs and JUnit
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-cruise-r1-optin-ramp-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            cruise-ramp-candidate-evidence/
+            ai/build/test-results/test/
