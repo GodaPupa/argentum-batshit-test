@@ -1,0 +1,103 @@
+name: Manual RACE R1 all original finite conversion audit (NO GAMES)
+on:
+  push:
+    branches: [research/manual-race-r1-original-conversion-audit-20261021]
+    paths:
+      - '.github/workflows/manual-race-r1-original-conversion-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/RACE_R1_ORIGINAL_CONVERSION_PROTOCOL.json'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/audit_race_r1_original_conversion.py'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-race-r1-source-only-conversion
+  cancel-in-progress: false
+
+jobs:
+  original-finite-payoffs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      MANUAL_S3_INPUT: ${{ github.workspace }}/race-r1-originals
+      RACE_R1_OUTPUT: ${{ github.workspace }}/race-r1-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 30}
+
+      - name: Pin SPORT S3 source, all frozen R5/R9/decks and no-game scope
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p race-r1-evidence race-r1-originals
+          test "$GITHUB_REF" = 'refs/heads/research/manual-race-r1-original-conversion-audit-20261021'
+          git merge-base --is-ancestor 840eebef1ce77a591bacdc52bbb858b175938645 HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = 7984a2e87d8ddbe023d45620414d25a61691a040
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = 180918b2d7a59309e7b0617f2579fb2a6d06b7d5
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = ef5ba9dacb02bbf2a00303c9ee4724565769385a
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseR9ExecutableFetchAdvisorModule.kt)" = afb19c325bf38f3d82bd0fefba64e1f4057db858
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt)" = c95f059d375e3df107284e1081d00c449ca3f28d
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = d02fded3fd9656aa2d032c49ce8312e1d6baaf93
+          git diff --name-only 840eebef1ce77a591bacdc52bbb858b175938645 HEAD > race-r1-evidence/changed-paths.txt
+          test "$(wc -l < race-r1-evidence/changed-paths.txt)" -eq 3
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/manual-race-r1-original-conversion-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/RACE_R1_ORIGINAL_CONVERSION_PROTOCOL.json|experiments/manual-transmission/research/cruise-sport-race-20261021/audit_race_r1_original_conversion.py) ;;
+              *) echo "UNAUTHORIZED_SOURCE_DELTA:$path"; exit 1 ;;
+            esac
+          done < race-r1-evidence/changed-paths.txt
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          pth=Path("experiments/manual-transmission/research/cruise-sport-race-20261021")
+          p=json.loads((pth/"RACE_R1_ORIGINAL_CONVERSION_PROTOCOL.json").read_text())
+          m=json.loads((pth/"CRUISE_R2_ZONE_MANIFEST.json").read_text())
+          assert p["status"]=="PREDECLARED_BEFORE_RACE_R1_AUDIT_EXECUTION"
+          assert p["source_parent"]=="840eebef1ce77a591bacdc52bbb858b175938645"
+          assert p["hard_guards"]["new_games"]==0 and p["hard_guards"]["reserved_games"]==2
+          assert m["original_game_count"]==10 and m["original_accepted_actions"]==33440
+          assert m["original_priority_decisions_matched"]==7827
+          print("RACE_R1_PREDECLARED_ORIGINAL_CONVERSION_SOURCE_PASS")
+          PY
+          git rev-parse HEAD > race-r1-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > race-r1-evidence/tree-sha.txt
+          echo 'RACE original source only, no new games; original 10/12 used, 2 remain reserved' > race-r1-evidence/budget.txt
+
+      - name: Download ten SHA-256 pinned original full-game archives (do not run any new game)
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' > race-r1-evidence/archive-list.tsv
+          import json
+          from pathlib import Path
+          m=json.loads(Path("experiments/manual-transmission/research/cruise-sport-race-20261021/CRUISE_R2_ZONE_MANIFEST.json").read_text())
+          for x in m["archives"]:
+              print("\t".join(str(x[k]) for k in ("cohort","arm","seed","id","sha256")))
+          PY
+          while IFS=$'\t' read -r cohort arm seed artifact sha; do
+            out="race-r1-originals/${cohort}-${arm}-${seed}-original.zip"
+            gh api "/repos/GodaPupa/argentum-batshit-test/actions/artifacts/${artifact}/zip" > "$out"
+            printf '%s  %s\n' "$sha" "$out" | sha256sum --check --status
+            printf '%s_%s_%s_SHA256_OK\n' "$cohort" "$arm" "$seed" >> race-r1-evidence/verified-archives.txt
+          done < race-r1-evidence/archive-list.tsv
+          test "$(wc -l < race-r1-evidence/verified-archives.txt)" -eq 10
+
+      - name: Attribute exact scored and accepted v0.7 conversion actions, bounces and payoff events
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission/research/cruise-sport-race-20261021/audit_race_r1_original_conversion.py \
+            2>&1 | tee race-r1-evidence/finite-conversion-source.log
+          cat race-r1-evidence/REPORT.md
+
+      - name: Preserve original RACE source audit only (omit original hidden archival ZIPs)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-race-r1-original-conversion-${{ github.run_id }}
+          if-no-files-found: warn
+          retention-days: 30
+          path: |
+            race-r1-evidence/
