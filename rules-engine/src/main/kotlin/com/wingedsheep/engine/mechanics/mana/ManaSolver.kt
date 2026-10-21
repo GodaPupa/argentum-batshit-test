@@ -304,6 +304,8 @@ class ManaSolver(
 
     private val predicateEvaluator = PredicateEvaluator()
     private val conditionEvaluator = ConditionEvaluator()
+    // Read-only printed-cost inspection: never executes the no-op instance's effects.
+    private val lifeCostInspector = ManaAbilitySideEffectExecutor.noOp(cardRegistry)
 
     /** The five subtypes that grant a land its intrinsic `{T}: Add …` mana ability (CR 305.6). */
     private val basicLandSubtypeNames = setOf("Plains", "Island", "Swamp", "Mountain", "Forest")
@@ -793,7 +795,7 @@ class ManaSolver(
             val color = manaProduced[source.entityId]?.color ?: return@flatMap emptyList()
             source.colorRiders[color]?.toList() ?: emptyList()
         }
-        return ManaSolution(
+        val solution = ManaSolution(
             usedSources,
             manaProduced,
             bonusManaPool.filter { it.amount > 0 },
@@ -801,6 +803,15 @@ class ManaSolver(
             xRestrictedManaSpent = xRestrictedSpent,
             bonusManaSpentByColor = bonusManaSpentByColor
         )
+        // A multi-source auto/explicit solution is a single cost payment. The solver previously
+        // returned an unaffordable combination of PayLife mana abilities (e.g. two Mana
+        // Confluences at one life), and the tap fast path silently ignored a failed life payment
+        // while crediting the mana. Refuse it BEFORE any source taps or side effects occur.
+        // Do not count life LOST as a mana-ability effect (e.g. City of Brass damage).
+        if (lifeCostInspector.printedLifeCostForSolution(state, solution) > state.lifeTotal(playerId)) {
+            return null
+        }
+        return solution
     }
 
     /**
