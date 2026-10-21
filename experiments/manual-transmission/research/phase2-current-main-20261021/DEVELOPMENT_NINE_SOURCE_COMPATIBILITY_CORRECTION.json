@@ -1,0 +1,64 @@
+{
+  "schema": "ARGENTUM_MANUAL_DEV_NINE_MAIN_TEST_FIXTURE_COMPATIBILITY_CORRECTION_V1",
+  "date": "2026-10-21",
+  "status": "RECORDED_AFTER_ORIGINAL_RED_BEFORE_ANY_RETEST",
+  "first_protocol": "DEVELOPMENT_NINE_PROTOCOL.json",
+  "failed_run": 39689951999,
+  "failed_source_sha": "9e60c5f03e67d6116d07b471d6ead452493ca031",
+  "original_immutable_card_sources": 9,
+  "original_immutable_card_scenarios": 9,
+  "first_source_integrity": "GREEN (all original 19 donor card/test/helper blobs verified, no production modifications)",
+  "initial_run_observation": {
+    "2008-2016": "12/12 scenario tests PASS on original card/test source",
+    "2003-2007": "16/16 scenario tests PASS on original card/test source",
+    "1993-1999": "Gradle and WildGrowth XML PASS, but after-run verifier failed expected 7 versus actual 8 generated test cases",
+    "2017-2022": "Kotlin compileTestKotlin stopped: original OpponentCountLandScenarioSpec referenced SerializationTestSupport.encodeState and encodeEvents absent in current main test fixture; no land tests executed",
+    "final_aggregation": "RED; do not count overall nine as qualified"
+  },
+  "source_root_cause": "Current-main SerializationTestSupport.kt only exposes roundTrip; original Phase2 donor adds encodeState/encodeEvents using the same json serializer module, without changing roundTrip. The source mismatch is fixture-only, not a card mechanic or game result.",
+  "test_fixture_integration": {
+    "path": "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/SerializationTestSupport.kt",
+    "unmodified_canonical_main_blob": "06fe704546a5c72aecedc2b8dbc63d50f2aa0c5d",
+    "exact_original_phase2_donor_blob": "5253189c1a0dc1cff3b7e30791a73fcb866f80bb",
+    "expected_public_api_added": [
+      "encodeState(GameState): String",
+      "encodeEvents(List<GameEvent>): String"
+    ],
+    "scope": "Restore source-identical TEST FIXTURE helper only; no production engine, solver, AI, deck, registered card, or original scenario modifications"
+  },
+  "effective_case_counts": {
+    "Arbor Elf": 8,
+    "Paradise Druid": 4,
+    "Coiling Oracle": 8,
+    "Nest Invader": 4,
+    "Wild Growth": 8,
+    "Utopia Sprawl": 8,
+    "Rejuvenating Springs": 10,
+    "Training Center": 10,
+    "Spire Garden": 10
+  },
+  "original_predeclared_total": 69,
+  "corrected_total": 70,
+  "corrected_by_era": {
+    "1993-1999": 8,
+    "2003-2007": 16,
+    "2008-2016": 12,
+    "2017-2022": 34
+  },
+  "original_test_names_and_bytes_unmodified": true,
+  "source_changes_after_original_red_only": [
+    "this correction manifest",
+    "test fixture helper received exact donor blob",
+    "workflow verifier and path allowlist corrected"
+  ],
+  "revalidation_requirement": "Rerun all four modules on one new immutable head, retain original failed run and same exact nine original card and scenario blob pins; require full 70/70 independently validated XML. Do not suppress initial RED or cherry-pick only previously passing modules.",
+  "boundary": {
+    "no_new_games": true,
+    "no_game_seeds": true,
+    "no_main_merge": true,
+    "precision_used": 10,
+    "precision_reserved": 2,
+    "official_phase2_capability": 0,
+    "official_phase2_primary": 0
+  }
+}
