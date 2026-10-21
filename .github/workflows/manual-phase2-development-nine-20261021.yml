@@ -1,4 +1,4 @@
-name: Manual Phase 2 nine frozen development cards on main (70 CORRECTED CASES, NO GAMES)
+name: Manual Phase 2 nine frozen development cards plus CR305 land guard on main (72 CASES, NO GAMES)
 on:
   push:
     branches: [candidate/manual-phase2-development-nine-20261021]
@@ -6,6 +6,9 @@ on:
       - '.github/workflows/manual-phase2-development-nine-20261021.yml'
       - 'experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_PROTOCOL.json'
       - 'experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_SOURCE_COMPATIBILITY_CORRECTION.json'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_LAND_CAST_GUARD_CORRECTION.json'
+      - 'rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt'
+      - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ManualTransmissionLandSpellGuardScenarioTest.kt'
       - 'rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/SerializationTestSupport.kt'
       - 'mtg-sets/**/cards/*Growth.kt'
       - 'mtg-sets/**/cards/*Sprawl.kt'
@@ -53,11 +56,15 @@ jobs:
           assert correction["status"]=="RECORDED_AFTER_ORIGINAL_RED_BEFORE_ANY_RETEST"
           assert correction["failed_run"]==39689951999
           assert correction["corrected_total"]==70 and correction["original_predeclared_total"]==69
+          guard=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_LAND_CAST_GUARD_CORRECTION.json").read_text())
+          assert guard["status"]=="REGISTERED_AFTER_ORIGINAL_RED_BEFORE_ENGINE_PATCH_OR_RETEST"
+          assert guard["second_red"]["run"]==39691007944
+          assert guard["corrected_expected_total"]==72
           assert correction["test_fixture_integration"]["exact_original_phase2_donor_blob"]=="5253189c1a0dc1cff3b7e30791a73fcb866f80bb"
           assert sum(d["test_count"] for d in data["donor_cards"])==69
           assert data["frozen_protection"]["no_seeds_or_full_games"]
           assert data["frozen_protection"]["precision_original_games_reserved"]==2
-          expected={str(p),".github/workflows/manual-phase2-development-nine-20261021.yml","experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_SOURCE_COMPATIBILITY_CORRECTION.json"}
+          expected={str(p),".github/workflows/manual-phase2-development-nine-20261021.yml","experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_SOURCE_COMPATIBILITY_CORRECTION.json","experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_LAND_CAST_GUARD_CORRECTION.json"}
           for card in data["donor_cards"]:
               for path,key in ((card["source_path"],"source_sha"),(card["test_path"],"test_sha")):
                   got=subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip()
@@ -70,9 +77,20 @@ jobs:
           fixture_got=subprocess.check_output(["git","rev-parse","HEAD:"+compat["path"]],text=True).strip()
           assert fixture_got==compat["exact_original_phase2_donor_blob"]
           expected.add(compat["path"])
+          handler=guard["engine_guard"]
+          baseline=subprocess.check_output(["git","show",data["source_parent"]+":"+handler["path"]],text=True)
+          assert subprocess.check_output(["git","rev-parse",data["source_parent"]+":"+handler["path"]],text=True).strip()==handler["canonical_main_blob"]
+          anchor=handler["source_anchor"]
+          assert baseline.count(anchor)==1
+          expected_source=baseline.replace(anchor,"\\n".join(handler["exact_added_lines"])+"\\n"+anchor)
+          assert Path(handler["path"]).read_text()==expected_source
+          expected.add(handler["path"])
+          extra=guard["guard_regression"]
+          assert subprocess.check_output(["git","rev-parse","HEAD:"+extra["path"]],text=True).strip()==extra["original_donor_blob"]
+          expected.add(extra["path"])
           changes=subprocess.check_output(["git","diff","--name-only",data["source_parent"],"HEAD"],text=True).splitlines()
-          assert len(changes)==23 and set(changes)==expected,(len(changes),sorted(set(changes)^expected))
-          print("MANUAL_PHASE2_NINE_DONOR_BLOBS_SOURCE_VERIFIED paths=23 testcases=70 original_donor_69_plus_1_generated_case")
+          assert len(changes)==26 and set(changes)==expected,(len(changes),sorted(set(changes)^expected))
+          print("MANUAL_PHASE2_NINE_DONOR_BLOBS_SOURCE_VERIFIED paths=26 expected_tests=72 exact_seven_line_CR305_guard")
           PY
           git rev-parse HEAD > development-nine-source/head-sha.txt
           git rev-parse HEAD^{tree} > development-nine-source/tree-sha.txt
@@ -111,7 +129,7 @@ jobs:
           case "$era" in
             "1993-1999") filters=(--tests '*WildGrowthScenarioTest') ;;
             "2003-2007") filters=(--tests '*CoilingOracleScenarioTest' --tests '*UtopiaSprawlScenarioTest') ;;
-            "2008-2016") filters=(--tests '*ArborElfScenarioTest' --tests '*NestInvaderScenarioTest') ;;
+            "2008-2016") filters=(--tests '*ArborElfScenarioTest' --tests '*NestInvaderScenarioTest' --tests '*ManualTransmissionLandSpellGuardScenarioTest') ;;
             "2017-2022") filters=(--tests '*ParadiseDruidScenarioTest' --tests '*RejuvenatingSpringsScenarioTest' --tests '*TrainingCenterScenarioTest' --tests '*SpireGardenScenarioTest') ;;
             *) echo UNDECLARED_ERA; exit 1 ;;
           esac
@@ -138,6 +156,7 @@ jobs:
           import xml.etree.ElementTree as ET
           p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_PROTOCOL.json").read_text())
           correction=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_SOURCE_COMPATIBILITY_CORRECTION.json").read_text())
+          guard=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_LAND_CAST_GUARD_CORRECTION.json").read_text())
           era=os.environ["ERA"]
           subset=[c for c in p["donor_cards"] if c["era"]==era]
           assert subset,(era,"no declared cases")
@@ -155,7 +174,17 @@ jobs:
               assert len(set((x.get("classname"),x.get("name")) for x in cases))==len(cases),"Duplicate XML case"
               print(f"{c['name']}: {len(cases)}/{c['test_count']} exact unchanged mechanics PASS")
               count+=len(cases)
-          assert count==correction["corrected_by_era"][era],(era,count)
+          if era=="2008-2016":
+              extra=guard["guard_regression"]
+              name=Path(extra["path"]).stem
+              file=Path("devnine-artifact")/era/"junit"/("TEST-com.wingedsheep.engine.scenarios."+name+".xml")
+              assert file.is_file(),("Missing original land guard XML",str(file))
+              root=ET.parse(file).getroot()
+              cases=root.findall(".//testcase")
+              assert len(cases)==2 and not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+              count+=len(cases)
+              print("ManualTransmissionLandSpellGuardScenarioTest: 2/2 PASS")
+          assert count==guard["expected_by_era"][era],(era,count)
           print("DEVELOPMENT_NINE_ERA_SOURCE_PASS",era,count)
           PY
       - name: Preserve original scoped result (GREEN or RED, never a game)
@@ -180,7 +209,7 @@ jobs:
           pattern: manual-devnine-${{ github.run_id }}-*
           path: devnine-combined
           merge-multiple: true
-      - name: Independently audit all nine source-linked XML suites, 69 exact tests and green jobs
+      - name: Independently audit all nine original cards plus CR305 guard (72 exact tests) and green jobs
         shell: bash
         env:
           SOURCE_STATUS: ${{ needs.exact-source-preflight.result }}
@@ -194,6 +223,7 @@ jobs:
           assert os.environ["CASES_STATUS"]=="success",("cases",os.environ["CASES_STATUS"])
           p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_PROTOCOL.json").read_text())
           correction=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_SOURCE_COMPATIBILITY_CORRECTION.json").read_text())
+          guard=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/DEVELOPMENT_NINE_LAND_CAST_GUARD_CORRECTION.json").read_text())
           counts={}
           for c in p["donor_cards"]:
               stem=Path(c["test_path"]).stem
@@ -204,10 +234,18 @@ jobs:
               assert len(tests)==correction["effective_case_counts"][c["name"]],(stem,len(tests))
               assert not node.findall(".//failure") and not node.findall(".//error") and not node.findall(".//skipped"),stem
               counts[c["name"]]=len(tests)
-          assert sum(counts.values())==70 and len(counts)==9,counts
-          obj=dict(schema="ARGENTUM_MANUAL_DEV_NINE_EXACT_DONOR_SCENARIOS_R1",status="SOURCE_COMPONENT_QUALIFIED_NINE_ONLY",per_card=counts,total=69,failures=0,skips=0,new_official_games=0,registered_deck_qualification=False,phase2_36_admitted=0,phase2_864_admitted=0,precision_remaining=2)
+          extra=guard["guard_regression"]
+          name=Path(extra["path"]).stem
+          path=Path("devnine-combined")/"2008-2016"/"junit"/("TEST-com.wingedsheep.engine.scenarios."+name+".xml")
+          assert path.is_file(),("missing CR305 exact XML",str(path))
+          root=ET.parse(path).getroot()
+          assert len(root.findall(".//testcase"))==2
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          counts["CR305 existing ordinary-land guard"]=2
+          assert sum(counts.values())==72 and len(counts)==10,counts
+          obj=dict(schema="ARGENTUM_MANUAL_DEV_NINE_EXACT_DONOR_SCENARIOS_R1",status="SOURCE_COMPONENT_QUALIFIED_NINE_PLUS_SEVEN_LINE_ENGINE_GUARD_ONLY",per_card=counts,total=72,failures=0,skips=0,new_official_games=0,registered_deck_qualification=False,phase2_36_admitted=0,phase2_864_admitted=0,precision_remaining=2)
           Path("devnine-combined/DEV_NINE_VERDICT.json").write_text(json.dumps(obj,indent=2)+"\n")
-          print("MANUAL_DEV_NINE_70_70_SOURCE_MECHANICS_GREEN_NOT_DECK_ADMISSION")
+          print("MANUAL_DEV_NINE_72_72_SOURCE_MECHANICS_GREEN_NOT_DECK_ADMISSION")
           PY
       - uses: actions/upload-artifact@v4
         if: always()
