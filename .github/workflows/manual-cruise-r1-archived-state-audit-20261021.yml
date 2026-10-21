@@ -1,0 +1,100 @@
+name: Manual CRUISE R1 immutable archival decision audit (NO GAMES)
+on:
+  push:
+    branches: [research/manual-cruise-r1-archived-state-audit-20261021]
+    paths:
+      - '.github/workflows/manual-cruise-r1-archived-state-audit-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/audit_cruise_r1_archives.py'
+      - 'ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR1ArchivedNegativeControlTest.kt'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-cruise-r1-archived-state-audit
+  cancel-in-progress: false
+
+jobs:
+  original-r5-retrospective:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MANUAL_CRUISE_R15_ARCHIVE: ${{ github.workspace }}/cruise-archive-input/r15-original.zip
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Exact source, candidate and original R5 protected assets
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p cruise-archive-input cruise-archive-evidence
+          test "$GITHUB_REF" = "refs/heads/research/manual-cruise-r1-archived-state-audit-20261021"
+          git merge-base --is-ancestor 0651e1c4a12ccca4a5bdcec702427f417029b2a5 HEAD
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/ManualCruiseTaxedAnimarRampAdvisorModule.kt)" = "a6ec10d96a7478aceb9f7f042a0ca3b5d2378b7f"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionCruiseR1Candidate.kt)" = "67a53f9731f8d1488748cf1a0e5a7332ab0f8aa5"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR1TaxedAnimarRampCandidateTest.kt)" = "e1c601333f80f5949bc59d0b18e0aa63c386b689"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/cruise-sport-race-20261021/audit_cruise_r1_archives.py)" = "2d7e0bb9f9f813ed7695e7b40f5bc5a7f3793eb0"
+          test "$(git rev-parse HEAD:ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR1ArchivedNegativeControlTest.kt)" = "9816da607be85384d06a6da9d197e2d3e4fe7527"
+          git diff --name-only 0651e1c4a12ccca4a5bdcec702427f417029b2a5 HEAD > cruise-archive-evidence/changed-files.txt
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/manual-cruise-r1-archived-state-audit-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/audit_cruise_r1_archives.py|ai/src/test/kotlin/com/wingedsheep/ai/engine/ManualCruiseR1ArchivedNegativeControlTest.kt) ;;
+              *) echo "UNAUTHORIZED_DELTA:$path"; exit 1 ;;
+            esac
+          done < cruise-archive-evidence/changed-files.txt
+          echo ZERO_FULL_GAMES_ARCHIVE_READ_ONLY > cruise-archive-evidence/budget.txt
+          git rev-parse HEAD > cruise-archive-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > cruise-archive-evidence/tree-sha.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Retrieve original immutable R8 and R15 evidence
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12228089328/zip > cruise-archive-input/r8-original.zip
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/artifacts/12239496615/zip > cruise-archive-input/r15-original.zip
+          printf '%s  %s\n' '4f823fb61ac29ecc84582b4fd974200d2ba1d89664d906df802013d823f026a9' cruise-archive-input/r8-original.zip | sha256sum -c -
+          printf '%s  %s\n' '251dc4cd30d955bbee3fef6172ca285664df78923859efa258299e5cd3fe7a5f' cruise-archive-input/r15-original.zip | sha256sum -c -
+
+      - name: Retrospective complete-original R5 decision-log inventory (NO REPLAY)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission/research/cruise-sport-race-20261021/audit_cruise_r1_archives.py \
+            cruise-archive-input/r8-original.zip \
+            cruise-archive-input/r15-original.zip \
+            cruise-archive-evidence/retrospective-audit.json \
+            2>&1 | tee cruise-archive-evidence/retrospective-audit.log
+          test -s cruise-archive-evidence/retrospective-audit.json
+
+      - name: Same-source archived original R5 vs CRUISE negative controls and immutable candidate witnesses
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*ManualCruiseR1ArchivedNegativeControlTest' \
+            --tests '*ManualCruiseR1TaxedAnimarRampCandidateTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee cruise-archive-evidence/archived-state-and-candidate.log
+
+      - name: Preserve original bounded JUnit and logs on GREEN or RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-cruise-r1-archived-state-audit-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            cruise-archive-evidence/
+            ai/build/test-results/test/
