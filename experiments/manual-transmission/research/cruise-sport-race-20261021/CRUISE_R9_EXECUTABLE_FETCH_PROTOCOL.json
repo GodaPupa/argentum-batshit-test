@@ -1,0 +1,131 @@
+{
+  "schema": "ARGENTUM_CRUISE_R9_EXECUTABLE_FETCH_POLICY_PREDECLARATION_V1",
+  "date": "2026-10-21",
+  "status": "SCOPE_AND_ACCEPTANCE_FROZEN_BEFORE_ANY_NEW_POLICY_CODE_OR_TEST_SCORE",
+  "reference_frozen_branch_parent_sha": "dfcad1d380b7175d47b071c41998bdf9c2eed07b",
+  "mission": "Improve early CRUISE land-action decisions when an actual legal fetched mana source enables an immediately executable creature development line, without asserting opponent responses or general deck superiority.",
+  "source_bound_results": {
+    "R4_controller_hands": {
+      "run": 39645091191,
+      "original_hands": 40,
+      "hypothetical_keeps": 28,
+      "original_games_skipped_mulligans": true
+    },
+    "R5_original_outcomes": {
+      "run": 39647230866,
+      "original_actions": 33440,
+      "original_games": 10,
+      "added_games": 0
+    },
+    "R6_source_identity_sensitivity": {
+      "run": 39648836558,
+      "archived_control_and_a_bot_mulligan": false,
+      "synthetic_forest_bot_keep": true,
+      "synthetic_breeding_bot_keep": true
+    },
+    "R7_source_bound_game_mechanism": {
+      "run": 39649177694,
+      "artifact_id": 12368569536,
+      "artifact_sha256": "60dccae014d9b905dde83c7123bed8b08ea0f95973b7742c7c309f7cb806c2ff",
+      "positive_seed": "202610202141",
+      "seat": "manual-mirror-1",
+      "historic_prefix_actions": 41,
+      "challenger_a_misty_forest_untapped_and_birds_legal": true,
+      "control_evolving_forest_tapped_and_birds_not_payable": true,
+      "opponent_passes_for_conditional_fork_only": true
+    },
+    "R8_existing_generic_flag_failure": {
+      "run": 39650169818,
+      "artifact_id": 12369541012,
+      "artifact_sha256": "b20a7f601af379f1fc879837a02ecb54157769b12081806fb17969d3ca396b24",
+      "candidate_profile_flag": "sequenceLandsByUsableMana=true",
+      "a_selected": "Opal Palace",
+      "control_selected": "Opal Palace",
+      "disposition": "HOLD"
+    }
+  },
+  "frozen_sources": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "control_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "challenger_a_deck_blob": "7984a2e87d8ddbe023d45620414d25a61691a040",
+    "ai_current_blob": "180918b2d7a59309e7b0617f2579fb2a6d06b7d5",
+    "original_r5_optin_blob": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "original_solver_blob": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+  },
+  "architecture": {
+    "evaluation_path": "AIPlayer.create(original R5 profile) → Strategist.chooseAction → per-PlayLand adjusted score and true ActionProcessor legality. Existing CardAdvisor.evaluateCast cannot change PlayLand score; do not claim registering a land CardAdvisor suffices.",
+    "candidate": "At most ONE isolated opt-in fetch-to-immediate-development decision adjustment; disabled in production CURRENT and original R5. Any code intervention must be explicit profile-only; never silently change default behavior.",
+    "proof_requirement": "Actual land play from original state, legal activated ability, real searchable land option, exact entry-tapped semantics and concrete current-hand creature cost paid by ActionProcessor in a bounded branch. No free mana, no prospective draws, no hidden library ordering, no assumed opponent response for strategic inference.",
+    "score_safety": "Only use bounded additional score sufficient to break a genuine same-source tie; cap against known immediate lethal, forced interaction, Pact debt, and survival priorities. Track extra evaluation cost; fail closed if proof unavailable.",
+    "synthetic_caveat": "Opponent passes are allowed solely to demonstrate conditional resolution of a mechanic (already R7); never interpreted as observed or forced opponent behavior."
+  },
+  "preregistered_cases": [
+    {
+      "id": "R9-POS-A-42",
+      "seed": "202610202141",
+      "arm": "a",
+      "seat": "manual-mirror-1",
+      "source_action_index": 42,
+      "original_action": "Play Opal Palace",
+      "alternative": "Play Misty Rainforest → fetch Forest → Birds of Paradise",
+      "expected": "Only a real valid bounded early-acceleration choice may overtake tied Opal; no fabricated resource or claimed future win."
+    },
+    {
+      "id": "R9-NEG-CONTROL-42",
+      "seed": "202610202141",
+      "arm": "control",
+      "seat": "manual-mirror-1",
+      "source_action_index": 42,
+      "original_action": "Play Opal Palace",
+      "alternative": "Play Evolving Wilds → fetch tapped Forest",
+      "expected": "Do not award the same-turn Birds credit or erroneously prefer Evolving Wilds as an untapped-green source."
+    },
+    {
+      "id": "R9-NEG-NO-DORK",
+      "type": "predeclared source-derived hand modification",
+      "expected": "No bonus when no real payable mana-dork/creature in current hand."
+    },
+    {
+      "id": "R9-NEG-MISSING-TARGET",
+      "type": "predeclared source-derived library modification",
+      "expected": "No bonus if fetch has no genuinely legal matching green-mana land in library."
+    },
+    {
+      "id": "R9-NEG-LIFE-TAX",
+      "type": "predeclared source-derived life modification",
+      "expected": "No bonus if fetch activation life/cost or next spell payment is unaffordable."
+    },
+    {
+      "id": "R9-NEG-PREEMPTIVE-LETHAL",
+      "type": "existing original R5 protected lethal witness",
+      "expected": "Never defer or lose an immediately witnessed win merely to develop Birds."
+    },
+    {
+      "id": "R9-NEG-OPPONENT-WINDOW",
+      "type": "predeclared opponent stack or priority with no legal main-phase land play",
+      "expected": "No bonus outside an actually legal own-main-phase land window."
+    },
+    {
+      "id": "R9-NEG-ENTRY-TAPPED",
+      "type": "predeclared Evolving/tapped-search witness",
+      "expected": "No bonus when chosen land enters tapped and does not pay the actual same-turn creature cost."
+    }
+  ],
+  "acceptance": [
+    "Freeze complete fixture identities, exact original source hashes and expected negative controls before candidate source is written.",
+    "Original archived 41-action prefixes must reproduce events and life exactly, or HOLD.",
+    "Independent real engine accepts each intervention's elected land, fetch activation, search target and immediate cast; both opponents' possible strategic responses remain unmodeled.",
+    "All positive and negative R9 cases GREEN, zero rejected or fabricated actions.",
+    "Original R5/Animar/Ballista/Statue/Encore/Pact/payment plus generic bot opener regressions GREEN.",
+    "Change list restricted to R9 opt-in implementation, tests, and workflow; both original decks and main untouched.",
+    "Do not promote candidate to production or conclude competitive superiority until separately authorized future matched full-game qualification with sufficient power."
+  ],
+  "budget": {
+    "original_full_games_used": 10,
+    "cap": 12,
+    "remaining_reserved": 2,
+    "new_games_authorized": 0
+  },
+  "promotion_status": "NOT_AUTHORIZED_RESEARCH_PROTOCOL_ONLY",
+  "next_step": "One-variable opt-in implementation + exact positive/negative legality microforks; do not substitute simulated wins."
+}
