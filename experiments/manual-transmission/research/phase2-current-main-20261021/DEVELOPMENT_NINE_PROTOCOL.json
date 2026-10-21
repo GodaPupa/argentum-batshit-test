@@ -1,0 +1,145 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_CURRENT_MAIN_DEVELOPMENT_NINE_RECEIVING_V1",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_BEFORE_ANY_NEW_CARD_COPY_OR_BEHAVIOR_TEST",
+  "purpose": "Receive exactly nine existing alternate-source Mana/ramp/land card implementations with untouched original deterministic scenario tests and one required fixture helper. Test on existing 10/10 qualified three-core main-based candidate, no production changes or full games.",
+  "source_parent": "53b506850b1a949664bd3ff901ec8a7ba5dcab90",
+  "main_ancestor": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "donor_head": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+  "donor_source_branch": "manual-transmission/phase2-cedh",
+  "donor_cards": [
+    {
+      "name": "Arbor Elf",
+      "era": "2008-2016",
+      "set": "wwk",
+      "source_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/wwk/cards/ArborElf.kt",
+      "source_sha": "a119d956a16d5bed7e4f014f66d68ff6ac1e6b09",
+      "test_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ArborElfScenarioTest.kt",
+      "test_sha": "2d003cdfc1e071dd54c95e22fede6f84c8273589",
+      "test_count": 8
+    },
+    {
+      "name": "Paradise Druid",
+      "era": "2017-2022",
+      "set": "war",
+      "source_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/war/cards/ParadiseDruid.kt",
+      "source_sha": "cbae0ac54f10105e4eb7d1a515fe905997c8f1b5",
+      "test_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ParadiseDruidScenarioTest.kt",
+      "test_sha": "fc930407661ea96df3c96ba60a2ea0886a21f86c",
+      "test_count": 4
+    },
+    {
+      "name": "Coiling Oracle",
+      "era": "2003-2007",
+      "set": "dis",
+      "source_path": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dis/cards/CoilingOracle.kt",
+      "source_sha": "73f0c9ec9702942b9465c5627aff8269708e5b85",
+      "test_path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/CoilingOracleScenarioTest.kt",
+      "test_sha": "fac65317c7a26b5f9f66167d769ed4eca2ff77f9",
+      "test_count": 8
+    },
+    {
+      "name": "Nest Invader",
+      "era": "2008-2016",
+      "set": "roe",
+      "source_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/roe/cards/NestInvader.kt",
+      "source_sha": "df2599c7827386b878e3c5e466dda158dbe62c14",
+      "test_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/NestInvaderScenarioTest.kt",
+      "test_sha": "aa562a46cb8f1f11c934be02744a5809e62a89a6",
+      "test_count": 4
+    },
+    {
+      "name": "Wild Growth",
+      "era": "1993-1999",
+      "set": "lea",
+      "source_path": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/WildGrowth.kt",
+      "source_sha": "23639625087e9a76b4591f1b9d8ca42edbcbc104",
+      "test_path": "mtg-sets/1993-1999/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WildGrowthScenarioTest.kt",
+      "test_sha": "56f549bac7a002bb63b78ea5235b83602deab07c",
+      "test_count": 7
+    },
+    {
+      "name": "Utopia Sprawl",
+      "era": "2003-2007",
+      "set": "dis",
+      "source_path": "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dis/cards/UtopiaSprawl.kt",
+      "source_sha": "6d369fdf4a5756ffadfb97b8aee07bd17d2e7066",
+      "test_path": "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/UtopiaSprawlScenarioTest.kt",
+      "test_sha": "858b3e34f470dbb0caacdf2d635a73eae37389c2",
+      "test_count": 8
+    },
+    {
+      "name": "Rejuvenating Springs",
+      "era": "2017-2022",
+      "set": "cmr",
+      "source_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmr/cards/RejuvenatingSprings.kt",
+      "source_sha": "e601ad8d427446ed6b4ac5a9058e30d5784dab48",
+      "test_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/RejuvenatingSpringsScenarioTest.kt",
+      "test_sha": "1b03191fbfaaead01e5fcc2cdd93ec621cc5c8f7",
+      "test_count": 10
+    },
+    {
+      "name": "Training Center",
+      "era": "2017-2022",
+      "set": "cmr",
+      "source_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/cmr/cards/TrainingCenter.kt",
+      "source_sha": "fbfb02b8ac752a0784616921c2b984dcdf5efc1a",
+      "test_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TrainingCenterScenarioTest.kt",
+      "test_sha": "3db61233022d82798de4290b1c7f361137c2b877",
+      "test_count": 10
+    },
+    {
+      "name": "Spire Garden",
+      "era": "2017-2022",
+      "set": "bbd",
+      "source_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bbd/cards/SpireGarden.kt",
+      "source_sha": "a64b5bd64bd4a389856d0197ae37a8b63fcd6aba",
+      "test_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SpireGardenScenarioTest.kt",
+      "test_sha": "f69d6404f70e6cbd175c60f15e9d62414903f707",
+      "test_count": 10
+    }
+  ],
+  "additional_test_helper": {
+    "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/OpponentCountLandScenarioSpec.kt",
+    "blob": "7df0a1b75de86219b718f6019953f6d4a7ab1b0f",
+    "test_semantics": "10 excluded-seed deterministic cases for each of three multiplayer lands, no official sample"
+  },
+  "expected_donor_card_count": 9,
+  "expected_new_source_files": 18,
+  "expected_fixture_helper_files": 1,
+  "expected_unique_test_cases": 69,
+  "expected_by_era": {
+    "1993-1999": 7,
+    "2003-2007": 16,
+    "2008-2016": 12,
+    "2017-2022": 34
+  },
+  "frozen_protection": {
+    "control_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "current_main_ai_profile_blob": "43bbad79273806f56703fad420e9f6a495d05309",
+    "current_main_mana_solver_blob": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "qualified_original_three_card_run": 39687557103,
+    "qualified_original_three_card_source": "2af56a150a1367539ae216970b54aeaa76c21816",
+    "qualified_original_three_artifact_digest": "cf8088868ce18d81251fb0bc07dbb0fa41feb5a1981cbfd9fbc889534758f529",
+    "original_three_test_cases": 10,
+    "upstream_main_change": false,
+    "deck_change": false,
+    "AI_change": false,
+    "rules_engine_change": false,
+    "mana_solver_change": false,
+    "no_seeds_or_full_games": true,
+    "official_capability_admitted": 0,
+    "official_primary_admitted": 0,
+    "precision_original_games_used": 10,
+    "precision_original_games_reserved": 2
+  },
+  "acceptance": [
+    "all 18 donor production/test files and shared helper must match frozen donor Git blobs",
+    "current main ancestor must remain fixed; no source edits outside predeclared 21 additive files",
+    "four separate exact Gradle module invocations, protect JUnit XML per era",
+    "actual 69 distinct test cases, no XML test failures/errors/skips",
+    "cards are not considered current-main resolved until separate full 800-slot re-inventory on this exact updated candidate",
+    "any failure is a source-level HOLD; do not change original test expectations to force a pass",
+    "no official matched game, round, allocation, seed, opponent policy or outcome can be run here"
+  ]
+}
