@@ -116,6 +116,41 @@ class ManualPrecisionR9ManaHeldoutScenarioTest : ScenarioTestBase() {
             sources.forEach { game.state.getEntity(it)?.has<TappedComponent>() shouldBe true }
         }
 
+        test("explicit selection of two Confluences at one life is rejected atomically") {
+            val game = scenario()
+                .withPlayers("Player1", "Player2")
+                .withLifeTotal(1, 1)
+                .withLandsOnBattlefield(1, "Mana Confluence", 2)
+                .withCardOnBattlefield(1, "Temur Sabertooth")
+                .withCardOnBattlefield(1, "Llanowar Elves", summoningSickness = true)
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            val sources = game.state.getBattlefield().filter {
+                game.state.getEntity(it)?.get<com.wingedsheep.engine.state.components.identity.CardComponent>()?.name == "Mana Confluence"
+            }
+            sources.size shouldBe 2
+            val sabertooth = game.findPermanent("Temur Sabertooth")!!
+            val ability = cardRegistry.getCard("Temur Sabertooth")!!.activatedAbilities.single().id
+            game.execute(ActivateAbility(
+                game.player1Id, sabertooth, ability,
+                paymentStrategy = PaymentStrategy.Explicit(sources)
+            )).error shouldNotBe null
+            game.getLifeTotal(1) shouldBe 1
+            sources.forEach { game.state.getEntity(it)?.has<TappedComponent>() shouldBe false }
+        }
+
+        test("one available life may be paid exactly once for one Confluence mana") {
+            val game = scenario()
+                .withPlayers("Player1", "Player2")
+                .withLifeTotal(1, 1)
+                .withCardOnBattlefield(1, "Mana Confluence")
+                .withCardInHand(1, "Llanowar Elves")
+                .withActivePlayer(1)
+                .inPhase(Phase.PRECOMBAT_MAIN, Step.PRECOMBAT_MAIN).build()
+            game.castSpell(1, "Llanowar Elves").error shouldBe null
+            game.getLifeTotal(1) shouldBe 0
+        }
+
         test("one life cannot finance two Confluence payments on a single nonspell activation") {
             val game = scenario()
                 .withPlayers("Player1", "Player2")
