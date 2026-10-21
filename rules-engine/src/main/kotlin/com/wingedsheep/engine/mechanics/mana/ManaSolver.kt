@@ -785,43 +785,55 @@ class ManaSolver(
                 continue
             }
 
-            if (remainingSources.isEmpty()) {
-                return null // Not enough mana
+            // A source selected here would be tapped AFTER the internal activation-cost
+            // funding pass (1b). This pass cannot recursively pay a new printed mana
+            // activation cost, so do not consume a paid mode as though it were free.
+            // Choose only actual ZERO-mana-cost production modes; honor available
+            // per-color alternatives (including free colorless and static grants).
+            // This is deliberately fail-closed for legal but unsupported nested chains.
+            val payableModes: List<Pair<ManaSource, Color?>> = remainingSources.mapNotNull { source ->
+                val freeColors = source.availableColorsFor(spellContext)
+                    .ifEmpty { source.producesColors }
+                    .filter { color ->
+                        val selected = source.manaAbilityByColor[color]
+                        (selected?.let { activationManaCost(it.cost) }
+                            ?: (source.colorActivationManaCost[color] ?: 0)) == 0
+                    }
+                val freeColorless = source.producesColorless && (
+                    source.colorlessManaAbility?.let { activationManaCost(it.cost) }
+                        ?: source.colorlessActivationManaCost
+                    ) == 0
+                val cheapestColor = freeColors.minByOrNull { source.colorPainCost[it] ?: 0 }
+                if (cheapestColor == null && !freeColorless) {
+                    null
+                } else {
+                    val chosenColor = when {
+                        cheapestColor == null -> null
+                        freeColorless &&
+                            (source.colorPainCost[cheapestColor] ?: 0) > source.colorlessPainCost -> null
+                        else -> cheapestColor
+                    }
+                    source to chosenColor
+                }
             }
+            if (payableModes.isEmpty()) return null
 
-            // Check if single-mana sources alone can cover the remaining generic cost.
-            // If not, prefer multi-mana sources for efficiency (fewer taps overall).
-            val singleManaCount = remainingSources.count { it.manaAmount == 1 }
+            // Preserve the existing tap/attack/multi-mana priority among payable modes.
+            val singleManaCount = payableModes.count { it.first.manaAmount == 1 }
             val needMultiMana = singleManaCount < genericRemaining
-
-            val source = if (needMultiMana) {
-                // Not enough single-mana sources — prefer multi-mana for efficiency
-                remainingSources.minByOrNull { source ->
-                    val basePriority = calculateTapPriority(source, handRequirements, availableSourcesByColor)
-                    val savedTaps = minOf(source.manaAmount, genericRemaining) - 1
+            val chosenMode = if (needMultiMana) {
+                payableModes.minByOrNull { mode ->
+                    val candidate = mode.first
+                    val basePriority = calculateTapPriority(candidate, handRequirements, availableSourcesByColor)
+                    val savedTaps = minOf(candidate.manaAmount, genericRemaining) - 1
                     basePriority - savedTaps * 25
                 }
             } else {
-                // Enough single-mana sources — use normal priority (preserve multi-mana creatures for attacks)
-                remainingSources.minByOrNull { calculateTapPriority(it, handRequirements, availableSourcesByColor) }
+                payableModes.minByOrNull {
+                    calculateTapPriority(it.first, handRequirements, availableSourcesByColor)
+                }
             } ?: return null
-
-            // For generic costs any mana works, so pick the cheapest production: prefer
-            // unrestricted colors, then colorless — but never pay a color's extra cost
-            // (pain or activation mana) when a cheaper colorless ability exists. Without
-            // this, a Starting Town tapped for generic would route through "{T}, Pay
-            // 1 life: Add one mana of any color" instead of its free "{T}: Add {C}".
-            fun coloredExtraCost(color: Color): Int =
-                (source.colorPainCost[color] ?: 0) + (source.colorActivationManaCost[color] ?: 0)
-            val cheapestColor = source.availableColorsFor(spellContext)
-                .ifEmpty { source.producesColors }
-                .minByOrNull(::coloredExtraCost)
-            val colorToUse = when {
-                cheapestColor == null -> null
-                source.producesColorless &&
-                    coloredExtraCost(cheapestColor) > source.colorlessPainCost -> null
-                else -> cheapestColor
-            }
+            val (source, colorToUse) = chosenMode
             manaProduced[source.entityId] = if (colorToUse != null) {
                 ManaProduction(color = colorToUse, amount = source.manaAmount)
             } else {
