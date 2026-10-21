@@ -326,6 +326,19 @@ class ManaSolver(
         else -> 0
     }
 
+    /**
+     * The bounded paid-mode planner only supports PRINTED GENERIC activation mana
+     * costs. CMC alone is insufficient: two Forests cannot pay {U}{U}.
+     * Unsupported cost shapes deliberately remain outside this planner.
+     */
+    private fun hasOnlyGenericActivationCost(cost: AbilityCost): Boolean = when (cost) {
+        is AbilityCost.Tap -> true
+        is AbilityCost.Atom -> (cost.atom as? CostAtom.Mana)?.cost?.symbols
+            ?.all { it is ManaSymbol.Generic } ?: false
+        is AbilityCost.Composite -> cost.costs.all { hasOnlyGenericActivationCost(it) }
+        else -> false
+    }
+
     /** The five subtypes that grant a land its intrinsic `{T}: Add …` mana ability (CR 305.6). */
     private val basicLandSubtypeNames = setOf("Plains", "Island", "Swamp", "Mountain", "Forest")
 
@@ -820,39 +833,109 @@ class ManaSolver(
         var genericRemaining = cost.genericAmount + monoHybridGeneric +
             (if (xManaRestriction.isEmpty()) xValue else 0)
 
-        // Bounded two-source plan: if a paid mode with an external free funder
-        // can cover the entire remaining generic, validate and commit it before
-        // the greedy loop consumes the funder. Discard entirely on failure.
+        // Bounded externally funded mode: reserve all activation-cost mana before
+        // the ordinary greedy pass can consume it. This is intentionally NOT
+        // recursive: each funder contributes exactly one free, unrestricted,
+        // pain-free mana unit, with no rider/bonus/multi-mana accounting required.
         if (genericRemaining >= 2) {
-            val paidCandidate = remainingSources.firstNotNullOfOrNull { src ->
-                val paidColor = src.availableColorsFor(spellContext).firstOrNull { c ->
-                    (src.colorActivationManaCost[c] ?: 0) > 0
-                } ?: return@firstNotNullOfOrNull null
-                val act = src.colorActivationManaCost[paidColor] ?: 0
-                // Actual production of the selected ability: primary amount plus any
-                // bonus that originates from the same ability. Do not deduct the
-                // externally funded activation cost from spell-payment production.
-                val totalProduction = src.manaAmount + src.bonusManaPerTap
-                if (totalProduction < genericRemaining) return@firstNotNullOfOrNull null
-                val funder = remainingSources.firstOrNull { f ->
-                    f.entityId != src.entityId && (
-                        f.availableColorsFor(spellContext).any { c ->
-                            (f.manaAbilityByColor[c]?.let { activationManaCost(it.cost) } ?: (f.colorActivationManaCost[c] ?: 0)) == 0
-                        } || (f.producesColorless && (f.colorlessManaAbility?.let { activationManaCost(it.cost) } ?: f.colorlessActivationManaCost) == 0)
-                    )
-                } ?: return@firstNotNullOfOrNull null
-                Triple(src, paidColor, funder)
-            }
-            if (paidCandidate != null) {
-                val (paid, color, funder) = paidCandidate
-                val fundColor = funder.availableColorsFor(spellContext).firstOrNull { c ->
-                    (funder.manaAbilityByColor[c]?.let { activationManaCost(it.cost) } ?: (funder.colorActivationManaCost[c] ?: 0)) == 0
+            val freeSingleUnitFunders: List<Pair<ManaSource, Color?>> =
+                remainingSources.mapNotNull { candidate ->
+                    if (candidate.manaAmount != 1 ||
+                        candidate.bonusManaPerTap != 0 ||
+                        candidate.bonusManaColorlessPerTap != 0 ||
+                        candidate.restriction != null ||
+                        candidate.hasPainCost
+                    ) return@mapNotNull null
+
+                    val freeColor = candidate.availableColorsFor(spellContext).firstOrNull { color ->
+                        candidate.colorRestrictions[color] == null &&
+                            (candidate.colorPainCost[color] ?: 0) == 0 &&
+                            (candidate.manaAbilityByColor[color]?.let { activationManaCost(it.cost) }
+                                ?: (candidate.colorActivationManaCost[color] ?: 0)) == 0
+                    }
+                    val freeColorless = candidate.producesColorless &&
+                        candidate.colorlessPainCost == 0 &&
+                        (candidate.colorlessManaAbility?.let { activationManaCost(it.cost) }
+                            ?: candidate.colorlessActivationManaCost) == 0
+
+                    when {
+                        freeColor != null -> candidate to freeColor
+                        freeColorless -> candidate to null
+                        else -> null
+                    }
                 }
-                useSource(funder, fundColor)
-                internalAbilities[funder.entityId] = if (fundColor != null) funder.manaAbilityByColor[fundColor] else funder.colorlessManaAbility
-                manaProduced[paid.entityId] = ManaProduction(color = color, amount = paid.manaAmount)
-                useSource(paid, color)
-                genericRemaining -= paid.manaAmount
+
+            // When simple free sources already cover the entire generic cost,
+            // retain the established greedy preference over unnecessary paid modes.
+            if (freeSingleUnitFunders.size < genericRemaining) {
+                val fundedPlan = remainingSources.firstNotNullOfOrNull { paid ->
+                    if (paid.restriction != null) return@firstNotNullOfOrNull null
+
+                    // The exact printed ability is load-bearing. Do not equate
+                    // the source-level minimum CMC with the chosen mode's cost.
+                    val coloredMode = paid.availableColorsFor(spellContext).firstOrNull { color ->
+                        val ability = paid.manaAbilityByColor[color]
+                        ability != null &&
+                            activationManaCost(ability.cost) > 0 &&
+                            hasOnlyGenericActivationCost(ability.cost) &&
+                            paid.colorRestrictions[color] == null &&
+                            (paid.colorPainCost[color] ?: 0) == 0
+                    }
+                    val colorlessMode = paid.producesColorless &&
+                        paid.colorlessPainCost == 0 &&
+                        paid.colorlessManaAbility?.let {
+                            activationManaCost(it.cost) > 0 &&
+                                hasOnlyGenericActivationCost(it.cost)
+                        } == true
+
+                    if (coloredMode == null && !colorlessMode) return@firstNotNullOfOrNull null
+                    val selectedColor = coloredMode // null denotes the colorless paid mode
+                    val ability = if (selectedColor == null) paid.colorlessManaAbility
+                        else paid.manaAbilityByColor[selectedColor]
+                    val activationCost = activationManaCost(requireNotNull(ability).cost)
+                    val fullProduction = paid.manaAmount +
+                        paid.bonusManaPerTap + paid.bonusManaColorlessPerTap
+                    if (fullProduction < genericRemaining) return@firstNotNullOfOrNull null
+
+                    // Never collect bonus from an unrelated printed mana ability.
+                    val distinctModes = (paid.manaAbilityByColor.values.toList() +
+                        listOfNotNull(paid.colorlessManaAbility)).distinct()
+                    if ((paid.bonusManaPerTap > 0 || paid.bonusManaColorlessPerTap > 0) &&
+                        distinctModes.size != 1
+                    ) return@firstNotNullOfOrNull null
+
+                    val funding = freeSingleUnitFunders
+                        .filter { (candidate, _) -> candidate.entityId != paid.entityId }
+                        .take(activationCost)
+                    if (funding.size != activationCost) return@firstNotNullOfOrNull null
+                    Triple(paid, selectedColor, funding)
+                }
+
+                // Commit only a fully affordable candidate: no partial taps,
+                // no self-funding, no double usage, no unpaid activation pips.
+                if (fundedPlan != null) {
+                    val (paid, color, funders) = fundedPlan
+                    for ((funder, fundingColor) in funders) {
+                        internalAbilities[funder.entityId] = if (fundingColor == null) {
+                            funder.colorlessManaAbility
+                        } else {
+                            funder.manaAbilityByColor[fundingColor]
+                        }
+                        useSource(funder, fundingColor)
+                    }
+                    manaProduced[paid.entityId] = if (color == null) {
+                        ManaProduction(colorless = paid.manaAmount)
+                    } else {
+                        ManaProduction(color = color, amount = paid.manaAmount)
+                    }
+                    useSource(paid, color)
+
+                    // The first produced unit satisfies one generic pip. Any
+                    // additional primary or same-ability bonus mana was placed
+                    // in bonusManaPool by useSource() and is consumed exactly
+                    // once by the unchanged generic loop below.
+                    genericRemaining--
+                }
             }
         }
 
