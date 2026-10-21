@@ -1,0 +1,101 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_COMPOSED_ROSTER_REGISTRY_AND_MECHANICS_V1",
+  "date": "2026-10-21",
+  "status": "PREREGISTERED_BEFORE_PACT_SWAN_OR_REGISTRY_TOOL_RECEIVING",
+  "goal": "On exact 72-test main-ancestry receiving parent, compose the previously independently qualified original Pact of Negation and Swan Song donor files with no gameplay/policy/hardware change, requalify exact original focused scenarios, and re-inventory all eight exact 100s through real Kotlin registry with independent reconciliation. No new random/pilot choices and no Phase 2 sampling.",
+  "parent_sha": "33778a86016c7160a890dd89dbecb6ebef1a6a77",
+  "main_ancestor": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "original_phase1_sha": "e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d",
+  "baseline": {
+    "source_test_run": 39692286081,
+    "source_test_head": "33778a86016c7160a890dd89dbecb6ebef1a6a77",
+    "predeclared_dev9_plus_land_guard_cases": 72,
+    "core_three_test_run": 39687557103,
+    "core_three_cases": 10,
+    "main_registry_run": 39685903220,
+    "main_registry_head": "701b13e8bc90700fa9ea9b442d6933aef895b20f",
+    "unmodified_main_baseline": {
+      "physical_registered": 443,
+      "manual_registered": 63,
+      "opponent_registered": 380,
+      "total": 800
+    },
+    "warning": "443/800 source-only main, not baseline of the modified candidate; no count increase admitted without new registry JUnit and exact report."
+  },
+  "additional_independent_card_qualification": {
+    "pact": {
+      "run": 39690329695,
+      "sha": "4ede61dbd2c45048e7b9973138a280c5db061be7",
+      "cases": 4
+    },
+    "swan": {
+      "run": 39690334288,
+      "sha": "64fb73ec86c9ef6e61919fe60169c6795a932e4a",
+      "cases": 4
+    }
+  },
+  "donor_files": {
+    "mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt": "c786551484cfb001eea9fc2b05e14ea23fd63bf9",
+    "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationScenarioTest.kt": "04a2ae1c6301f21b3ba5a77151bff3c339ed2cbb",
+    "mtg-sets/2003-2007/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PactOfNegationUnpaidScenarioTest.kt": "4f546f0c30fbff1d4548ffcd39b23c5a5530d7cd",
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/SwanSong.kt": "385ab04b2d05e7f8d160f156746cb4b69b4fbee9",
+    "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/SwanSongScenarioTest.kt": "34e5f47d835610f30ff45628afe98a6fcdc158bc"
+  },
+  "source_only_registry_tool_receive": {
+    "experiments/manual-transmission-phase2/protocol-r1.json": "f605dc2ce4273a26a6e2387a2c6e4048e4012a79",
+    "experiments/manual-transmission-phase2/opponent-admission-r1.json": "4ec806565081f7570e8cff0c92569b8a7fd788e5",
+    "experiments/manual-transmission-phase2/bootstrap_audit.py": "9db48b30a280f261dfd2c7d149d097d3935bbad0",
+    "gym/src/test/kotlin/com/wingedsheep/gym/ManualTransmissionPhaseTwoRegistryAuditTest.kt": "28a52995671550d87fba5f35d6b100a31fa23848"
+  },
+  "reconciliation_implementation": "Adapt original already-qualified independent 800-slot Python auditor to new composition scope, preserve raw exact per-card exports and one clean Kotlin JUnit. Original main-only audit is not blindly accepted as composed evidence.",
+  "unchanged_inherited_sources": {
+    "control_deck": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "default_ai_profile": "43bbad79273806f56703fad420e9f6a495d05309",
+    "mana_solver": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "land_cast_guard": "dd4c000b13663a03ec6d7b79e62d05ab7dcb737f",
+    "original_donor_fixture_helper": "5253189c1a0dc1cff3b7e30791a73fcb866f80bb",
+    "main_event_detector_known_unfixed": "c0e8a696db522403095d0162fea486cb175b3f99"
+  },
+  "test_design": {
+    "new_pact_suites": {
+      "PactOfNegationScenarioTest": 3,
+      "PactOfNegationUnpaidScenarioTest": 1
+    },
+    "new_swan_suites": {
+      "SwanSongScenarioTest": 4
+    },
+    "new_exact_card_tests": 8,
+    "original_regression_suites": {
+      "core_three": 10,
+      "development_nine_plus_guard": 72
+    },
+    "priority": "Exact file hashes, no debt metadata upgrade; run fresh 8 exact original mechanics scenarios, current 800-slot registry inventory, and protected core/development tests when executable.",
+    "negative_controls": [
+      "No opponent auto-passing or sample outcomes",
+      "No hand/library inspection by scoring policy",
+      "No zero-filling missing cards",
+      "No source-name-only registry guessing",
+      "No silent merging of S2 delayed metadata fix",
+      "Pact future debt remains actual rules-based, tested on only existing card scenarios"
+    ],
+    "registry_decision": "HOLD_REGISTRY_COVERAGE if any slot missing, otherwise HOLD_SEMANTICS_AND_PILOTS. Do not call partial component success full-match qualification."
+  },
+  "full_game_guardrails": {
+    "no_original_full_games": true,
+    "no_official_seeds": true,
+    "no_hardware_change": true,
+    "no_ai_profile_promotion": true,
+    "no_merged_main": true,
+    "precision_complete_original": 10,
+    "precision_cap": 12,
+    "precision_reserved": 2,
+    "official_phase2_capability_complete": 0,
+    "official_phase2_capability_planned": 36,
+    "official_phase2_primary_complete": 0,
+    "official_phase2_primary_planned": 864,
+    "diverse_opponent_strategic_pilots_qualified": false,
+    "complete_card_semantics_qualified": false,
+    "whole_game_replay_qualified": false
+  },
+  "next_gate": "Use exact composed 800-slot audit to rank remaining missing real Manual and opponent cards, then source-qualify and integrate missing mechanics on one coherent candidate; only after 100/100 deck semantics, masked pilots, replay and one-shot admission consider 36/864."
+}
