@@ -98,17 +98,35 @@ class ManaAbilitySideEffectExecutor(
     }
 
     /**
-     * Pure pre-payment accounting for the exact printed mana abilities selected by the solver.
-     * Count PayLife cost atoms only. City of Brass / painland self-damage is an EFFECT,
-     * not an activation payment, and must remain legal even at low life.
-     * This function does not activate, tap, charge, or produce mana.
+     * Preflight each printed PayLife cost in the solution without mutating the real game.
+     * CR 118.4 forbids any individual payment larger than the payer's CURRENT life.
+     * A single total-life comparison is wrong with Ashiok's mandatory replacement:
+     * two separate 1-life costs can both exile library cards while life remains 1.
+     *
+     * Dry-run the same central payment service on immutable GameState snapshots, in
+     * source order; discard generated events and state. On success the caller performs
+     * the real mana taps/cost payments ONCE. Damage from City of Brass remains an
+     * ability effect, NOT a printed life payment, and is deliberately excluded.
      */
-    fun printedLifeCostForSolution(state: GameState, solution: ManaSolution): Int =
-        solution.sources.sumOf { source ->
+    fun canAffordPrintedLifePayments(
+        state: GameState,
+        solution: ManaSolution,
+        payerId: EntityId,
+    ): Boolean {
+        var shadowState = state
+        for (source in solution.sources) {
             val producedColor = solution.manaProduced[source.entityId]?.color
-            matchingManaAbility(state, source.entityId, producedColor)
-                ?.let { payLifeCost(it.cost) } ?: 0
+            val printed = matchingManaAbility(shadowState, source.entityId, producedColor)
+            val amount = printed?.let { payLifeCost(it.cost) } ?: 0
+            if (amount <= 0) continue
+            // Check before applying any replacement, exactly as the Ashiok card ruling
+            // requires; it cannot allow an attempt to pay more life than the player has.
+            if (amount > shadowState.lifeTotal(payerId)) return false
+            val simulated = LifePaymentService.pay(shadowState, payerId, amount) ?: return false
+            shadowState = simulated.first
         }
+        return true
+    }
 
     /**
      * The [AbilityActivatedEvent] for an auto-tapped mana source, or null if [sourceId] isn't a
