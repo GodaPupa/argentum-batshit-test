@@ -141,7 +141,7 @@ class ManualCruiseR6FetchOpeningMechanismTest : FunSpec({
                 .filter { name(a,it)==replacement }
                 .sortedBy { id ->
                     val c=requireNotNull(a.getEntity(id)?.get<CardComponent>())
-                    c.cardDefinitionId+":"+id.value
+                    c.cardDefinitionId.toString()+":"+id.value
                 }
             check(available.isNotEmpty()) { "No real original source library $replacement" }
             val candidate=available.first()
