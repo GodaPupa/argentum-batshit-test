@@ -1,0 +1,135 @@
+name: Manual Phase 2 canonical-main frozen 800-card registry audit (NO GAMES)
+on:
+  push:
+    branches: [research/manual-phase2-live-registry-gate-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-live-registry-gate-20261021.yml'
+      - 'experiments/manual-transmission-phase2/PHASE2_20261021_LIVE_REGISTRY_GATE.json'
+      - 'experiments/manual-transmission-phase2/protocol-r1.json'
+      - 'experiments/manual-transmission-phase2/opponent-admission-r1.json'
+      - 'experiments/manual-transmission-phase2/bootstrap_audit.py'
+      - 'experiments/manual-transmission-phase2/audit_current_registry_gate.py'
+      - 'gym/src/test/kotlin/com/wingedsheep/gym/ManualTransmissionPhaseTwoRegistryAuditTest.kt'
+permissions:
+  contents: read
+concurrency:
+  group: manual-phase2-20261021-current-main-registry
+  cancel-in-progress: false
+
+jobs:
+  frozen-eight-deck-catalog:
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MT_P2_AUDIT_INPUT: ${{ github.workspace }}/phase2-live-evidence/source/registry-requests.json
+      MT_P2_AUDIT_OUTPUT: ${{ github.workspace }}/phase2-live-evidence/registry
+      MT_P2_GATE_OUTPUT: ${{ github.workspace }}/phase2-live-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 40
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: experiments/manual-transmission
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Enforce exact original identities, unchanged main-based engine, and no official game authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p phase2-live-evidence/source phase2-live-evidence/registry
+          test "$GITHUB_REF" = 'refs/heads/research/manual-phase2-live-registry-gate-20261021'
+          git merge-base --is-ancestor 37a603617a03dfd2d81b39dae004f7f336a70dfc HEAD
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89
+          test "$(git rev-parse HEAD:experiments/manual-transmission/results/FINAL_CONCLUSION_2026_09_24.md)" = dbf081b0c6e205c65750866adcb6f7d43f532caf
+          test "$(git rev-parse HEAD:experiments/manual-transmission/opponents/blue-farm/source-freeze.json)" = b22137a54b1ff5d1ce1d5e3347cefa4992e2d92d
+          test "$(git rev-parse HEAD:experiments/manual-transmission/opponents/rogsi/source-freeze.json)" = a70bbde77a40af45d95d2aa8ae2fb94a62fc4009
+          test "$(git rev-parse HEAD:experiments/manual-transmission/opponents/kinnan/source-freeze.json)" = 26e9e40fa9aac070ae47e20ee1ee9ba5a053c49d
+          test "$(git rev-parse HEAD:experiments/manual-transmission/opponents/sisay/source-freeze.json)" = b2f7a511dda72cef6fa3c937e44c9e04d5f84a91
+          test "$(git rev-parse HEAD:experiments/manual-transmission/opponents/magda/source-freeze.json)" = 4ca3397a0cce21ec98fd764bc3ffe4668781ff88
+          test "$(git rev-parse HEAD:experiments/manual-transmission/opponents/hashaton/source-freeze.json)" = 00f6e2a08da14e56fdb8b8d56a7982fa6b7aef02
+          test "$(git rev-parse HEAD:experiments/manual-transmission/opponents/shorikai/source-freeze.json)" = 9cba05825e76bb7743cce4e80005cb47b8088dd4
+          test "$(git rev-parse HEAD:experiments/manual-transmission-phase2/protocol-r1.json)" = f605dc2ce4273a26a6e2387a2c6e4048e4012a79
+          test "$(git rev-parse HEAD:experiments/manual-transmission-phase2/opponent-admission-r1.json)" = 4ec806565081f7570e8cff0c92569b8a7fd788e5
+          test "$(git rev-parse HEAD:experiments/manual-transmission-phase2/bootstrap_audit.py)" = 9db48b30a280f261dfd2c7d149d097d3935bbad0
+          test "$(git rev-parse HEAD:gym/src/test/kotlin/com/wingedsheep/gym/ManualTransmissionPhaseTwoRegistryAuditTest.kt)" = 28a52995671550d87fba5f35d6b100a31fa23848
+          test "$(git -C .phase1-source rev-parse HEAD)" = e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          git diff --name-only 37a603617a03dfd2d81b39dae004f7f336a70dfc HEAD > phase2-live-evidence/changed-paths.txt
+          test "$(wc -l < phase2-live-evidence/changed-paths.txt)" -eq 7
+          while IFS= read -r path; do
+            case "$path" in
+              .github/workflows/manual-phase2-live-registry-gate-20261021.yml|experiments/manual-transmission-phase2/PHASE2_20261021_LIVE_REGISTRY_GATE.json|experiments/manual-transmission-phase2/protocol-r1.json|experiments/manual-transmission-phase2/opponent-admission-r1.json|experiments/manual-transmission-phase2/bootstrap_audit.py|experiments/manual-transmission-phase2/audit_current_registry_gate.py|gym/src/test/kotlin/com/wingedsheep/gym/ManualTransmissionPhaseTwoRegistryAuditTest.kt) ;;
+              *) echo "UNAUTHORIZED_RUNTIME_OR_CARD_CHANGE:$path"; exit 1 ;;
+            esac
+          done < phase2-live-evidence/changed-paths.txt
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          p=Path("experiments/manual-transmission-phase2")
+          meta=json.loads((p/"PHASE2_20261021_LIVE_REGISTRY_GATE.json").read_text())
+          official=json.loads((p/"protocol-r1.json").read_text())
+          admission=json.loads((p/"opponent-admission-r1.json").read_text())
+          assert meta["status"]=="PREDECLARED_BEFORE_ANY_20261021_LIVE_REGISTRY_EXECUTION"
+          assert meta["canonical_main_parent"]=="37a603617a03dfd2d81b39dae004f7f336a70dfc"
+          assert official["protocol_id"]==admission["protocol_id"]
+          assert official["hardware_changes_authorized"] is False
+          assert official["gameplay_authorized"] is False
+          assert official["seed_generation_authorized"] is False
+          assert official["official_counters"]=={"seeds_generated":0,"attempts":0,"games_initialized":0,"actions":0,"outcomes":0}
+          assert official["primary"]["total_games"]==864
+          assert len(official["pod_templates"])==3 and official["capability_pilot"]["games_per_pod"]==12
+          assert meta["precision_budget"]=={"prior_completed":10,"maximum":12,"reserved":2,"consumed_by_this_gate":0}
+          assert meta["gate_decisions"]["full_match_execution_allowed"] is False
+          print("PHASE2_MAIN_BASED_FROZEN_EIGHT_NO_GAME_PREFLIGHT_OK")
+          PY
+          git rev-parse HEAD > phase2-live-evidence/source-head-sha.txt
+          git rev-parse HEAD^{tree} > phase2-live-evidence/source-tree-sha.txt
+          echo 'ZERO OFFICIAL SEEDS; ZERO ACTUAL-DECK GAMES; ZERO OUTCOMES; PRECISION REMAINS 10/12 USED, 2 RESERVED' > phase2-live-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Rebuild exact eight 100-card requests from SHA-pinned Phase 1 source and opponent manifests
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py \
+            --phase1 .phase1-source --out phase2-live-evidence/source \
+            2>&1 | tee phase2-live-evidence/source-preflight.log
+
+      - name: Execute one actual 800-card Kotlin CardRegistry query against current canonical source (no games)
+        shell: bash
+        env:
+          MANUAL_R4_ROOT: ${{ github.workspace }}
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :gym:cleanTest :gym:test \
+            --tests '*ManualTransmissionPhaseTwoRegistryAuditTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee phase2-live-evidence/registry-runtime.log
+
+      - name: Independently reconcile all eight actual definitions, 800 card slots, Kotlin XML and original authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/audit_current_registry_gate.py \
+            2>&1 | tee phase2-live-evidence/independent-reconciliation.log
+          cat phase2-live-evidence/REPORT.md
+
+      - name: Preserve original source, Kotlin XML, all registry identities and exact no-game verdict (GREEN or RED)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-phase2-live-registry-${{ github.run_id }}
+          retention-days: 30
+          if-no-files-found: warn
+          path: |
+            phase2-live-evidence/
+            gym/build/test-results/test/TEST-com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest.xml
