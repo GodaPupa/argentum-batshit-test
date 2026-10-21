@@ -1,0 +1,88 @@
+{
+  "head": "bc233c48662632737c893d5e2d361ae44331b3f3",
+  "pr": 212,
+  "ci": {
+    "run": 36386986896,
+    "conclusion": "success",
+    "matrix": {
+      "scenarios-2023-24": {
+        "artifact": 10955345402,
+        "sha256": "29ebf303f8ef6c6361848662fd0d32445826ff29fab95a653b766b909d1b7009",
+        "tests": 3335,
+        "skips": 0
+      },
+      "server": {
+        "artifact": 10955146680,
+        "sha256": "8e3fd51ba29ed006bd9c709a84b577e0a081256d72d5feeb2944614de180de21",
+        "tests": 561,
+        "skips": 4
+      },
+      "tools": {
+        "artifact": 10955102941,
+        "sha256": "2758dc996ee056b3393fa30e77cee82a189bb8c668779171e52b700834979a63",
+        "tests": 699,
+        "skips": 37
+      },
+      "content": {
+        "artifact": 10955047121,
+        "sha256": "3f6b602dfea96b347c1c94911c63f699fd9986efbe12ad4f937f915a975817c3",
+        "tests": 1819,
+        "skips": 11
+      },
+      "scenarios-old": {
+        "artifact": 10955027374,
+        "sha256": "ac46a40ee28a426a2db983b3fad0b391493371eb0e873c645a598d1c31127b0d",
+        "tests": 4309,
+        "skips": 0
+      },
+      "scenarios-2025-26": {
+        "artifact": 10954723606,
+        "sha256": "6376ff7fb7f4867a4dbdb11cc258828ec44ef61353b1694edbb28a288a00aff4",
+        "tests": 2934,
+        "skips": 0
+      },
+      "engine": {
+        "artifact": 10954258574,
+        "sha256": "24ccd5a37abe68c4ddb6cd9f66ce3e9515c533be56ee26e4d418cc1f023ca3e0",
+        "tests": 3730,
+        "skips": 0
+      }
+    },
+    "sum": {
+      "tests": 17387,
+      "skips": 52,
+      "failures": 0,
+      "errors": 0
+    },
+    "integrity": "seven original ZIP SHA256 match GitHub digests; CRC clean; all 4574 XML files parse; XML exists but cache-enabled CI does not itself prove all were freshly executed",
+    "frontend": "success",
+    "backend": "success"
+  },
+  "compatibility": [
+    {
+      "run": 36386986946,
+      "artifact": 10954509011,
+      "sha256": "d3b145dfe0fc867d2fe54f12e215555e3055b1488c50ca21d7fa1650accbb2fd",
+      "disposition": "INCOMPLETE source binding, zero cases; current combat 32-bank not executed"
+    },
+    {
+      "run": 36386986969,
+      "artifact": 10954638708,
+      "sha256": "cd1b4bde44d654b948213edda0f266b905ff0957a6c8071ef006119fbc653e9e",
+      "disposition": "INCOMPLETE source binding, zero cases; token defender 16+4 bank not executed"
+    },
+    {
+      "run": 36386986894,
+      "artifact": 10954659766,
+      "sha256": "db5f81c9dc6c85fdaaa11b5018808b9ef043a9ec5d2bf7e644bfc9e837ff6714",
+      "disposition": "success Spy B, unrelated frozen support bank"
+    },
+    {
+      "run": 36386987007,
+      "artifact": 10955281377,
+      "sha256": "a8ccfd5f932ab5db963ec2f91d84e2d89c8113d4dec326000b2c7d69614d7d95",
+      "disposition": "success Spy C, unrelated frozen support bank"
+    }
+  ],
+  "decision": "HOLD: CI success does not establish fresh exact shared receiving; two separate frozen source guards fail before execution. Do not merge/accept PR212; diagnose prospective exact compatibility receiving and obtain independent review. No experimental gameplay authority."
+}
