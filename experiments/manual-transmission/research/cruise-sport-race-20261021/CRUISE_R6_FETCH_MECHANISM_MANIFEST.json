@@ -1,0 +1,81 @@
+{
+  "schema": "ARGENTUM_CRUISE_R6_PAIRWISE_FETCH_MULLIGAN_MECHANISM_V1",
+  "date": "2026-10-21",
+  "status": "RETROSPECTIVE_HYPOTHESIS_AFTER_R4_AND_R5; NO_NEW_GAMES",
+  "base_sha": "dfcad1d380b7175d47b071c41998bdf9c2eed07b",
+  "seed": "202610202141",
+  "cohort": "R6",
+  "seat": "manual-mirror-1",
+  "original_reference_archives": [
+    {
+      "arm": "control",
+      "artifact_id": 12298777958,
+      "zip_sha256": "031011134d10e3ae002ad7dc304ff7dafcc5e14f9a117c436e510dfb984349cb",
+      "source_sha": "53a5162eb3659310b1878894a90ae58c244a6745"
+    },
+    {
+      "arm": "a",
+      "artifact_id": 12298778067,
+      "zip_sha256": "a4396d43fdd831f5f67f2a6b865630af9a90ff1420c2b127be6e6b2f294a6efe",
+      "source_sha": "53a5162eb3659310b1878894a90ae58c244a6745"
+    }
+  ],
+  "fixtures": [
+    {
+      "id": "R6-CONTROL",
+      "source": "unchanged archived CONTROL opener",
+      "land_a": "Opal Palace",
+      "land_b": "Evolving Wilds",
+      "expected_bot_keep": false,
+      "reason": "published historical R4 source-bound diagnostic"
+    },
+    {
+      "id": "R6-CHALLENGER-A",
+      "source": "unchanged archived Challenger A opener",
+      "land_a": "Opal Palace",
+      "land_b": "Misty Rainforest",
+      "expected_bot_keep": false,
+      "reason": "published historical R4 source-bound diagnostic"
+    },
+    {
+      "id": "R6-FOREST-SWAP",
+      "source": "synthetic identity substitution of original A Misty hand slot with one existing Forest in its own archived library",
+      "expected_bot_keep": true,
+      "reason": "predeclared source-only green mana source sensitivity; not a played draw or claim of fetch sequencing"
+    },
+    {
+      "id": "R6-BREEDING-SWAP",
+      "source": "synthetic identity substitution of original A Misty hand slot with one existing Breeding Pool in its own archived library",
+      "expected_bot_keep": true,
+      "reason": "predeclared source-only shock/green mana source sensitivity; no actual shock life payment/turn advance"
+    }
+  ],
+  "archival_action_witness": {
+    "source": "Original R6 A full game trace (already completed), not a new sequence",
+    "activated_misty_original_action": 222,
+    "selected_original_island_land_action": 227,
+    "selected_original_island_land": "Steam Vents",
+    "purpose": "verify ability existed and engine accepted original full-game Misty fetch; does not prove a different fetch would win or be correctly sequenced"
+  },
+  "protected": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "control": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "challenger_a": "7984a2e87d8ddbe023d45620414d25a61691a040",
+    "ai_current": "180918b2d7a59309e7b0617f2579fb2a6d06b7d5",
+    "r5": "ef5ba9dacb02bbf2a00303c9ee4724565769385a",
+    "controller": "8a3c94041ca6cf781d5efe35d7a513b522b3856b",
+    "solver": "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+  },
+  "limits": [
+    "Land substitutions are synthetic hand-identity sensitivity checks, not playable fetch sequences, not matched-hand games, not commander deployment or win-rate results.",
+    "Do not infer Evolving Wilds turn-one castability, and do not count Misty as adding a guaranteed untapped green source until independently quoted with real engine land/fetch/payment actions.",
+    "Never use actual hidden library ordering; select source land by intrinsic card identity.",
+    "Original match used skipMulligans=true. R4 evaluated bot hypothetical controller behavior only.",
+    "No new games, no mulligan redraws, no production/source edits, no merge, no profile/CONTROL/A promotion."
+  ],
+  "budget": {
+    "used": 10,
+    "reserved": 2,
+    "new_games": 0
+  }
+}
