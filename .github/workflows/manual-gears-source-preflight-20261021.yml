@@ -1,0 +1,95 @@
+name: Manual Transmission CRUISE/SPORT/RACE source preflight (NO GAMES)
+on:
+  push:
+    branches: [research/manual-cruise-sport-race-preflight-20261021]
+    paths:
+      - '.github/workflows/manual-gears-source-preflight-20261021.yml'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/PLAN.md'
+      - 'experiments/manual-transmission/research/cruise-sport-race-20261021/protocol-r1.json'
+permissions:
+  contents: read
+concurrency:
+  group: manual-cruise-sport-race-source-preflight
+  cancel-in-progress: false
+jobs:
+  source-only-gears-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 32}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Lock original R9 mechanics, decks, CURRENT, accepted R5, zero-game budget
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p manual-gears-preflight-evidence
+          test "$GITHUB_REF" = "refs/heads/research/manual-cruise-sport-race-preflight-20261021"
+          git merge-base --is-ancestor 3ea58cae2cb087379a64608f0eb7373793aff2ed HEAD
+          test "$(git rev-parse HEAD:rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt)" = "d02fded3fd9656aa2d032c49ce8312e1d6baaf93"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt)" = "180918b2d7a59309e7b0617f2579fb2a6d06b7d5"
+          test "$(git rev-parse HEAD:ai/src/main/kotlin/com/wingedsheep/ai/engine/ManualTransmissionR5Candidate.kt)" = "ef5ba9dacb02bbf2a00303c9ee4724565769385a"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/control/v0.7.decklist.txt)" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git rev-parse HEAD:experiments/manual-transmission/research/precision-upgrade-20261020/CHALLENGER-A.mana.decklist.txt)" = "7984a2e87d8ddbe023d45620414d25a61691a040"
+          git diff --name-only 3ea58cae2cb087379a64608f0eb7373793aff2ed HEAD > manual-gears-preflight-evidence/changed-files.txt
+          while IFS= read -r file; do
+            case "$file" in
+              .github/workflows/manual-gears-source-preflight-20261021.yml|experiments/manual-transmission/research/cruise-sport-race-20261021/PLAN.md|experiments/manual-transmission/research/cruise-sport-race-20261021/protocol-r1.json) ;;
+              *) echo "UNAUTHORIZED_DELTA:$file"; exit 1 ;;
+            esac
+          done < manual-gears-preflight-evidence/changed-files.txt
+          python3 - <<'PY'
+          import json
+          p='experiments/manual-transmission/research/cruise-sport-race-20261021/protocol-r1.json'
+          d=json.load(open(p))
+          assert d['status']=='SOURCE_PREPARATION_ONLY_NO_POLICY_NO_GAMES'
+          assert d['source_green_sha']=='3ea58cae2cb087379a64608f0eb7373793aff2ed'
+          assert d['source_ci_green']['cases_total']==92
+          assert d['budget']['consumed_total']==10
+          assert d['budget']['reserved_remaining']==2
+          assert d['budget']['new_games_allowed']==0
+          assert d['authorizations']['full_games'] is False
+          assert d['authorizations']['merges'] is False
+          assert d['authorizations']['profile_promotions'] is False
+          assert d['authorizations']['deck_promotions'] is False
+          assert [x['id'] for x in d['lanes']]==['CRUISE','SPORT','RACE']
+          assert all(x['status']=='inventory_only_no_cases_executed' for x in d['lanes'])
+          print('GEAR_SOURCE_PLAN_CONTRACT_PASS / NO_GAMES')
+          PY
+          git rev-parse HEAD > manual-gears-preflight-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > manual-gears-preflight-evidence/tree-sha.txt
+          echo SOURCE_ONLY_ZERO_FULL_GAMES > manual-gears-preflight-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Baseline opener and Animar controls (NO new gameplay)
+        shell: bash
+        run: |
+          set -euo pipefail
+          # These are existing unit/scenario fixtures only. The optional
+          # ManualAnimarDevelopmentPolicyTest archive replay is NOT being
+          # supplied with its old external MANUAL_ROUND2_ROOT. A pass here
+          # does not claim that archival replay was executed.
+          scripts/gradle-locked :ai:cleanTest :ai:test \
+            --tests '*EngineAiMomirMulliganTest' \
+            --tests '*PestControlMonoRedMadnessMulliganPolicyTest' \
+            --tests '*ManualAnimarDevelopmentPolicyTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee manual-gears-preflight-evidence/baseline-fixtures.log
+          echo "BASELINE_FIXTURES_ONLY; NO_ARCHIVED_ANIMAR_REPLAY; NO_POLICY_CHANGE" > manual-gears-preflight-evidence/evidence-scope.txt
+
+      - name: Preserve source and baseline JUnit on GREEN or RED
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: manual-gears-source-preflight-${{ github.run_id }}
+          if-no-files-found: error
+          retention-days: 30
+          path: |
+            manual-gears-preflight-evidence/
+            ai/build/test-results/test/
