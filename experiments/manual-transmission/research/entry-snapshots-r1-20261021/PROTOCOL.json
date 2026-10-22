@@ -1,0 +1,44 @@
+{
+  "schema": "MANUAL_ENTRY_CHARACTERISTIC_SOURCE_R1",
+  "base": "2af9bcd2155e0e14e029c0d2275ebbb89caed766",
+  "donor": "a27c09f43483b86045b88679c784c105d9575c07",
+  "purpose": "Freeze effect-instruction entry characteristics before later instructions; preserve distinct departure LKI, object visits and hidden face-down data boundaries.",
+  "scope": "EffectExecutorRegistry instruction boundary only; direct cast/land/initialization and paused producers need separate receiving before full admission.",
+  "rules_verified": {
+    "source": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+    "clauses": [
+      "603.2",
+      "603.6a",
+      "603.10"
+    ]
+  },
+  "unchanged_original_entry_cases": 11,
+  "retained_purphoros_cases": 25,
+  "retained_generic_cases": 24,
+  "expected_focused": 60,
+  "expected_broad_rule_cases": 3765,
+  "tests_must_remain_original": true,
+  "no_foreign_sdk_hunks": [
+    "HasCardType",
+    "TriggeringEntityEnteredOrWasCastFromZone",
+    "castFromZone"
+  ],
+  "required": [
+    "11 original entry snapshot cases plus all previous focused49",
+    "Full rules-engine suite and broad affected-card receiving before source qualification",
+    "Original artifacts and exact source pins; no author-independent approval"
+  ],
+  "combined_predecessor": {
+    "source": "2af9bcd2155e0e14e029c0d2275ebbb89caed766",
+    "run": 39718893665,
+    "status_at_registration": "IN_PROGRESS",
+    "official_adoption": false
+  },
+  "official_capability": 0,
+  "official_primary": 0,
+  "precision_used": 10,
+  "precision_reserved": 2,
+  "gameplay_authorized": false,
+  "seed_generation_authorized": false,
+  "deck_changes": false
+}
