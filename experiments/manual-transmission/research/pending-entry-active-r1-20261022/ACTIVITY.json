@@ -1,0 +1,58 @@
+{
+  "observed_utc": "2026-10-22T18:03:01.831Z",
+  "status": "PENDING_ENTRY_QUALIFICATION_ACTIVE_NOT_QUALIFIED",
+  "source": "443e20025d09d5d2cb26892691271371a9d0ae87",
+  "source_tree": "b48bcbb14cd40bba95c1c248ce74256933a23147",
+  "validation": "8098629ae856dfe64c7255a1a75b83d0ceeb29aa",
+  "validation_tree": "e296cddb5f2dd09412c71e36a071be164316b8ca",
+  "workflow_sha256": "82be3ca44266678dd58764834c3da016a0c2fb8c2ecf2601b35b6e75eefbaddb",
+  "runs": [
+    {
+      "id": 39827789181,
+      "number": 1,
+      "attempt": 1,
+      "status": "in_progress",
+      "job": 119995580788
+    },
+    {
+      "id": 39827799661,
+      "number": 2,
+      "attempt": 1,
+      "status": "pending",
+      "jobs": []
+    }
+  ],
+  "guard": "verify job requires github.run_number == '1' && github.run_attempt == '1'; second run has not executed any job. Confirm skipped disposition when concurrency releases it.",
+  "cause": "Single validation-branch publication again produced two push runs; underlying cause remains unestablished. No rerun or second dispatch requested.",
+  "pre_dispatch": {
+    "in_progress": 0,
+    "waiting": 0,
+    "pending": 0,
+    "requested": 0,
+    "queued": [
+      {
+        "id": 34749202144,
+        "branch": "pest-control/lab",
+        "sha": "c50c7dfb0f93356adbfb6a9bc1d6f189e5f09042",
+        "created_at": "2026-09-13T09:15:24Z",
+        "updated_at": "2026-09-13T09:15:24Z",
+        "jobs": []
+      }
+    ],
+    "local_build_processes": [],
+    "decision": "Proceed with one independent Manual Transmission qualification. The old unrelated queue entry has no jobs, predates the task and is left untouched."
+  },
+  "next": "Monitor the first run without alteration or duplicate work; receive every original artifact and failure. Verify the guarded duplicate never executes tests. No further build dispatch while this qualification is active.",
+  "prior_qualified_copied_choices": {
+    "source": "84994114025d0138305ed9931c00b957f9d80597",
+    "receipts": [
+      "cea98e91953c66d96ad71da133121e930214495f",
+      "abd0e6d539d9cc4133d1cf554b21f8ebab858fbe"
+    ],
+    "two_artifacts_agree": true
+  },
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}
