@@ -1,0 +1,168 @@
+name: Manual Purphoros modern R5 source qualification (NO GAMES)
+on:
+  push:
+    branches: [validation/manual-purphoros-modern-r5-20261021]
+    paths: ['.github/workflows/manual-purphoros-modern-r5-20261021.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-purphoros-modern-r5-20261021
+  cancel-in-progress: false
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+jobs:
+  focused:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 8}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind exact source and protected inputs
+        id: source
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/engine-junit evidence/purphoros-junit
+          git rev-parse HEAD > evidence/validation-sha.txt
+          git rev-parse HEAD^ > evidence/source-sha.txt
+          test "$(cat evidence/source-sha.txt)" = 5f67175b102827ad5cd8dad3090fee1bd46d3f42
+          git rev-parse HEAD^{tree} > evidence/validation-tree.txt
+          git diff --name-only HEAD^ HEAD > evidence/validation-delta.txt
+          test "$(cat evidence/validation-delta.txt)" = .github/workflows/manual-purphoros-modern-r5-20261021.yml
+          python3 - <<'PY' | tee evidence/source-verification.txt
+          from pathlib import Path
+          import hashlib,json,subprocess
+          root=Path('experiments/manual-transmission/research/purphoros-modern-r5-20261021')
+          for name,digest in json.loads((root/'SOURCE_MANIFEST.json').read_text()).items():
+              assert hashlib.sha256(Path(name).read_bytes()).hexdigest()==digest,name
+          protected={
+              'experiments/manual-transmission/control/v0.7.decklist.txt':'c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89',
+              'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PurphorosGodOfTheForgeScenarioTest.kt':'82f15bba7a09dc5bb898fe8d3f661f03757c89ed',
+              'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/PurphorosGodOfTheForge.kt':'023dda6e17ca31ef036f17cc979b4a6efc2c5297',
+              'ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt':'43bbad79273806f56703fad420e9f6a495d05309',
+          }
+          for name,blob in protected.items():
+              assert subprocess.check_output(['git','hash-object',name],text=True).strip()==blob,name
+          assert hashlib.sha256(Path('experiments/manual-transmission/research/purphoros-modern-r4-20261021/original-39713129601.zip').read_bytes()).hexdigest()=='1393a9827e8052e2a7e0f4c8d37bc5ba9de79ddde89c2f1907ff4e1534390ef1'
+          assert hashlib.sha256((root/'original-39716831703.zip').read_bytes()).hexdigest()=='675c61bcac0dadcc6d669877a4697c31acd17311bb0cf174313ab79bc3b07395'
+          print('26 source hashes and protected inputs verified; no game/seed/claim operations; Precision 10 used, 2 reserved')
+          PY
+      - name: Execute 24 focused generic regression cases
+        shell: bash
+        run: |
+          set +e
+          set -o pipefail
+          scripts/gradle-locked :rules-engine:cleanTest :rules-engine:test \
+            --tests '*ModificationJsonDiscriminatorTest' --tests '*ProjectedTypeNamesTest' \
+            --tests '*BattlefieldEntryProjectionTest' --tests '*ProjectionNumericConditionTest' \
+            --tests '*RemoveCardTypeCapabilityTest' --tests '*TokenBatchEntryHistoryTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee evidence/engine.log
+          rc=${PIPESTATUS[0]}
+          set -e
+          echo "$rc" > evidence/engine-exit.txt
+          exit "$rc"
+      - name: Preserve engine XML
+        if: always()
+        run: cp -a rules-engine/build/test-results/test/. evidence/engine-junit/ || true
+      - name: Execute all 25 unchanged original Purphoros cases
+        if: always() && steps.source.outcome == 'success'
+        shell: bash
+        run: |
+          set +e
+          set -o pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
+            --tests '*PurphorosGodOfTheForgeScenarioTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee evidence/purphoros.log
+          rc=${PIPESTATUS[0]}
+          set -e
+          echo "$rc" > evidence/purphoros-exit.txt
+          exit "$rc"
+      - name: Preserve original XML
+        if: always()
+        run: cp -a mtg-sets/2008-2016/tests/build/test-results/test/. evidence/purphoros-junit/ || true
+      - name: Reconcile exact cases and source bytes
+        if: always() && steps.source.outcome == 'success'
+        shell: bash
+        run: |
+          python3 - <<'PY' | tee evidence/reconciliation.txt
+          from pathlib import Path
+          import hashlib,json,xml.etree.ElementTree as E
+          expected={'ModificationJsonDiscriminatorTest':3,'ProjectedTypeNamesTest':1,
+            'BattlefieldEntryProjectionTest':6,'ProjectionNumericConditionTest':3,
+            'RemoveCardTypeCapabilityTest':7,'TokenBatchEntryHistoryTest':4,
+            'PurphorosGodOfTheForgeScenarioTest':25}
+          rows=[]
+          for f in Path('evidence').rglob('TEST-*.xml'):
+              x=E.parse(f).getroot();name=x.get('name').split('.')[-1]
+              cases=x.findall('.//testcase');fail=len(x.findall('.//failure'))+len(x.findall('.//error'));skip=len(x.findall('.//skipped'))
+              rows.append({'class':name,'cases':len(cases),'failures_or_errors':fail,'skips':skip})
+          (Path('evidence')/'case-results.json').write_text(json.dumps(rows,indent=2)+'\n')
+          print(json.dumps(rows,indent=2))
+          assert len(rows)==len(expected) and {r['class'] for r in rows}==set(expected)
+          assert all(r['cases']==expected[r['class']] and r['failures_or_errors']==0 and r['skips']==0 for r in rows)
+          for p,h in json.loads(Path('experiments/manual-transmission/research/purphoros-modern-r5-20261021/SOURCE_MANIFEST.json').read_text()).items():
+              assert hashlib.sha256(Path(p).read_bytes()).hexdigest()==h,p
+          print('49/49 focused source cases PASS; broad receiving still required; no competitive result')
+          PY
+      - name: Hash retained originals
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          p=Path('evidence');p.mkdir(exist_ok=True)
+          files=sorted(f for f in p.rglob('*') if f.is_file() and f.name!='SHA256SUMS')
+          (p/'SHA256SUMS').write_text(''.join(hashlib.sha256(f.read_bytes()).hexdigest()+'  '+str(f.relative_to(p))+'\n' for f in files))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-purphoros-modern-r5-${{ github.run_id }}
+          path: evidence/
+          retention-days: 90
+          if-no-files-found: error
+  broad-engine:
+    needs: focused
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Execute full rules-engine regression suite on exact same source
+        shell: bash
+        run: |
+          mkdir -p broad-evidence
+          git rev-parse HEAD > broad-evidence/head.txt
+          set +e
+          set -o pipefail
+          scripts/gradle-locked :rules-engine:cleanTest :rules-engine:test \
+            --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee broad-evidence/engine.log
+      - name: Preserve broad XML and classify actual cases
+        if: always()
+        run: |
+          mkdir -p broad-evidence/junit
+          cp -a rules-engine/build/test-results/test/. broad-evidence/junit/ || true
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,hashlib,xml.etree.ElementTree as E
+          p=Path('broad-evidence');rows=[]
+          for f in (p/'junit').glob('TEST-*.xml'):
+              x=E.parse(f).getroot()
+              rows.append({'class':x.get('name'),'tests':len(x.findall('.//testcase')),'failures':len(x.findall('.//failure')),'errors':len(x.findall('.//error')),'skips':len(x.findall('.//skipped'))})
+          (p/'results.json').write_text(json.dumps(rows,indent=2)+'\n')
+          print('Actual XML totals:',{k:sum(r[k] for r in rows) for k in ['tests','failures','errors','skips']})
+          (p/'SHA256SUMS').write_text(''.join(hashlib.sha256(f.read_bytes()).hexdigest()+'  '+str(f.relative_to(p))+'\n' for f in sorted(p.rglob('*')) if f.is_file() and f.name!='SHA256SUMS'))
+          assert rows,'No actual JUnit results'
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-purphoros-modern-r5-broad-${{ github.run_id }}
+          path: broad-evidence/
+          retention-days: 90
+          if-no-files-found: error
