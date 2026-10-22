@@ -1,0 +1,324 @@
+name: Manual Phase 2 BBD plus Temur exact composition (97 cases, 800 registry, NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-phase2-bbd-temur-composed-r2-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-bbd-temur-composed-r2-20261021.yml'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/BBD_TEMUR_COMPOSED_R2_PROTOCOL.json'
+      - 'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/frf/cards/TemurSabertooth.kt'
+      - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TemurSabertoothScenarioTest.kt'
+      - 'gym/src/test/kotlin/com/wingedsheep/gym/ManualTemurSabertoothCatalogTest.kt'
+permissions:
+  contents: read
+concurrency:
+  group: manual-phase2-bbd-temur-r2-exact-registry
+  cancel-in-progress: false
+
+jobs:
+  exact-composition-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 25}
+      - name: Require only three exact previously qualified Temur files and declared test/CI
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p temur-composed-source
+          test "$GITHUB_REF" = 'refs/heads/candidate/manual-phase2-bbd-temur-composed-r2-20261021'
+          git merge-base --is-ancestor 2518692a539abddfb73667917eb058e9e45eb8ba HEAD
+          git diff --name-only 2518692a539abddfb73667917eb058e9e45eb8ba HEAD > temur-composed-source/changed-paths.txt
+          python3 - <<'PY' | tee temur-composed-source/source-audit.log
+          import json,subprocess
+          from pathlib import Path
+          file=Path("experiments/manual-transmission/research/phase2-current-main-20261021/BBD_TEMUR_COMPOSED_R2_PROTOCOL.json")
+          p=json.loads(file.read_text())
+          assert p["schema"]=="ARGENTUM_MANUAL_PHASE2_BBD_TEMUR_COMPOSITION_R2_V1"
+          assert p["status"]=="PREDECLARED_BEFORE_TEMUR_COPY_AND_COMPOSED_TESTS"
+          assert p["fixed_source_parent"]=="2518692a539abddfb73667917eb058e9e45eb8ba"
+          assert p["expected_qualified_mechanics_cases"]==93 and p["expected_catalog_cases"]==4 and p["expected_total_focused_cases"]==97
+          assert p["primary_expected_changes"]["registered_total_to"]==469
+          assert p["primary_expected_changes"]["manual_registered_to"]==77
+          assert p["primary_expected_changes"]["opponents_registered_from"]==392
+          assert p["primary_expected_changes"]["opponents_registered_to"]==392
+          assert p["protected_precision"]=={"games_used":10,"games_cap":12,"games_reserved":2,"new_games":0}
+          assert p["official_phase2"]["capability_admitted"]==p["official_phase2"]["primary_admitted"]==0
+          assert all(v is True for v in p["guardrails"].values())
+          def git(path):
+              return subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip()
+          source=p["donor"]
+          expected={str(file),".github/workflows/manual-phase2-bbd-temur-composed-r2-20261021.yml"}
+          for pa,hash in [(source["card_path"],source["card_blob"]),(source["original_test_path"],source["original_test_blob"]),(source["catalog_test_path"],source["catalog_test_blob"])]:
+              assert git(pa)==hash,(pa,git(pa),hash)
+              expected.add(pa)
+          for pa,hash in {
+              "experiments/manual-transmission/control/v0.7.decklist.txt":p["fixed_protected_blobs"]["v07"],
+              "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt":p["fixed_protected_blobs"]["production_ai"],
+              "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt":p["fixed_protected_blobs"]["solver"],
+              "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt":p["fixed_protected_blobs"]["cast_land_guard"],
+              "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bbd/BattlebondSet.kt":p["fixed_protected_blobs"]["bbd_set"],
+              "mtg-sets/src/main/kotlin/com/wingedsheep/mtg/sets/MtgSetCatalog.kt":p["fixed_protected_blobs"]["catalog"],
+              "gym/src/test/kotlin/com/wingedsheep/gym/ManualTransmissionPhaseTwoRegistryAuditTest.kt":p["fixed_protected_blobs"]["original_registry_test"],
+              "experiments/manual-transmission-phase2/bootstrap_audit.py":p["fixed_protected_blobs"]["original_registry_bootstrap"],
+              "experiments/manual-transmission-phase2/audit_composed_registry_gate.py":p["fixed_protected_blobs"]["registry_python"]
+          }.items(): assert git(pa)==hash,(pa,git(pa),hash)
+          changes=set(Path("temur-composed-source/changed-paths.txt").read_text().splitlines())
+          assert len(changes)==5 and changes==expected,(len(changes),changes^expected)
+          total=sum(sum(b.values()) for b in p["source_mechanics_suites"].values())
+          assert total==93,total
+          assert sum(p["catalog_suites"].values())==4
+          print("BBD_TEMUR_EXACT_5_PATH_SOURCE_AND_97_CASE_SCOPE_GREEN_NO_GAMES")
+          PY
+          git rev-parse HEAD > temur-composed-source/head-sha.txt
+          git rev-parse HEAD^{tree} > temur-composed-source/tree-sha.txt
+          echo '0 official seeds, 0 full games, 0 outcomes; Precision 10/12 used and 2 reserved' > temur-composed-source/budget.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-bbd-temur-source-${{ github.run_id }}
+          path: temur-composed-source/
+          if-no-files-found: warn
+          retention-days: 30
+
+  original-mechanics:
+    needs: exact-composition-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      matrix:
+        era: ["1993-1999","2003-2007","2008-2016","2017-2022"]
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Execute every unchanged original case in exactly one era, no whole game
+        shell: bash
+        run: |
+          set -euo pipefail
+          era="${{ matrix.era }}"
+          mkdir -p "r2-mechanics/$era/xml"
+          case "$era" in
+            "1993-1999") filters=(--tests '*WildGrowthScenarioTest') ;;
+            "2003-2007") filters=(--tests '*CoilingOracleScenarioTest' --tests '*UtopiaSprawlScenarioTest' --tests '*PactOfNegationScenarioTest' --tests '*PactOfNegationUnpaidScenarioTest') ;;
+            "2008-2016") filters=(--tests '*ArborElfScenarioTest' --tests '*NestInvaderScenarioTest' --tests '*ManualTransmissionLandSpellGuardScenarioTest' --tests '*AnimarSoulOfElementsScenarioTest' --tests '*AncestralStatueScenarioTest' --tests '*SwanSongScenarioTest' --tests '*TemurSabertoothScenarioTest') ;;
+            "2017-2022") filters=(--tests '*ParadiseDruidScenarioTest' --tests '*RejuvenatingSpringsScenarioTest' --tests '*TrainingCenterScenarioTest' --tests '*SpireGardenScenarioTest' --tests '*WalkingBallistaScenarioTest') ;;
+            *) echo UNDECLARED_ERA; exit 1 ;;
+          esac
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked ":mtg-sets:$era:tests:cleanTest" ":mtg-sets:$era:tests:test" \
+            "${filters[@]}" -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee "r2-mechanics/$era/focused.log"
+      - name: Preserve actual original Kotlin JUnit XML by source era
+        if: always()
+        shell: bash
+        run: |
+          era="${{ matrix.era }}"
+          mkdir -p "r2-mechanics/$era/xml"
+          cp -a "mtg-sets/$era/tests/build/test-results/test/." "r2-mechanics/$era/xml/" || true
+      - name: Validate each declared original test class and exact cases
+        if: success()
+        shell: bash
+        env: {ERA: "${{ matrix.era }}"}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "r2-mechanics/$ERA/independent-xml.log"
+          import json,os
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/BBD_TEMUR_COMPOSED_R2_PROTOCOL.json").read_text())
+          era=os.environ["ERA"];expected=p["source_mechanics_suites"][era];total=0
+          for cls,n in expected.items():
+              f=Path("r2-mechanics")/era/"xml"/("TEST-com.wingedsheep.engine.scenarios."+cls+".xml")
+              assert f.is_file(),("missing actual JUnit",str(f))
+              x=ET.parse(f).getroot();cases=x.findall(".//testcase")
+              assert len(cases)==n,(cls,len(cases),n)
+              assert not x.findall(".//failure") and not x.findall(".//error") and not x.findall(".//skipped"),cls
+              assert all(int(x.get(k,"0"))==0 for k in ("failures","errors","skipped")),cls
+              assert len(set((t.get("classname"),t.get("name")) for t in cases))==n,cls
+              print(f"{cls}: {n}/{n} original accepted JUnit GREEN")
+              total+=n
+          assert total==sum(expected.values())
+          print("MANUAL_BBD_TEMUR_SOURCE_ERA_GREEN",era,total)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-bbd-temur-mechanics-${{ github.run_id }}-${{ matrix.era }}
+          path: r2-mechanics/
+          retention-days: 30
+          if-no-files-found: warn
+
+  catalog-and-frozen-registry:
+    needs: exact-composition-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 105
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MT_P2_AUDIT_INPUT: ${{ github.workspace }}/r2-registry/source/registry-requests.json
+      MT_P2_AUDIT_OUTPUT: ${{ github.workspace }}/r2-registry/registry
+      MT_P2_GATE_OUTPUT: ${{ github.workspace }}/r2-registry
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/checkout@v4
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: experiments/manual-transmission
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Run exact two BBD plus two Temur catalog and negative control scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r2-registry/source r2-registry/registry r2-registry/catalog-xml
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :gym:cleanTest :gym:test \
+            --tests '*ManualBattlebondSpireCatalogTest' \
+            --tests '*ManualTemurSabertoothCatalogTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r2-registry/catalog-gradle.log
+          cp -a gym/build/test-results/test/. r2-registry/catalog-xml/
+      - name: Reconstruct immutable real eight-deck requests from September frozen source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C .phase1-source rev-parse HEAD)" = e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py \
+            --phase1 .phase1-source --out r2-registry/source 2>&1 | tee r2-registry/frozen-bootstrap.log
+      - name: Reinventory all 800 real CardRegistry requests against one composed runtime
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :gym:cleanTest :gym:test \
+            --tests '*ManualTransmissionPhaseTwoRegistryAuditTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r2-registry/live-registry-gradle.log
+      - name: Independently rejoin 800 positions and prove only one new Temur registration
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/audit_composed_registry_gate.py \
+            2>&1 | tee r2-registry/independent-existing-audit.log
+          python3 - <<'PY' | tee r2-registry/one-card-delta-audit.log
+          import json,xml.etree.ElementTree as ET
+          from pathlib import Path
+          root=Path("experiments/manual-transmission/research/phase2-current-main-20261021")
+          protocol=json.loads((root/"BBD_TEMUR_COMPOSED_R2_PROTOCOL.json").read_text())
+          data=json.loads(Path("r2-registry/COMPOSED_R1_LIVE_REGISTRY_GATE.json").read_text())
+          stats=data["totals"];exp=protocol["primary_expected_changes"]
+          assert data["status"]=="HOLD_REGISTRY_COVERAGE"
+          assert stats["registered_slots"]==exp["registered_total_to"],stats
+          assert stats["manual_registered"]==exp["manual_registered_to"],stats
+          assert stats["manual_unregistered"]==exp["manual_unregistered_to"]
+          assert stats["opponent_registered"]==exp["opponents_registered_to"],stats
+          assert stats["unregistered_slots"]==exp["total_unregistered_to"],stats
+          assert data["decks"][0]["deck"]=="manual-transmission-v07"
+          assert "Temur Sabertooth" not in data["decks"][0]["unresolved_cards"]
+          assert "Amphin Mutineer" in data["decks"][0]["unresolved_cards"]
+          assert data["actual_games_initialized"]==data["official_results"]==0
+          for cls,n in protocol["catalog_suites"].items():
+              f=Path("r2-registry/catalog-xml")/("TEST-com.wingedsheep.gym."+cls+".xml")
+              assert f.is_file(),str(f)
+              node=ET.parse(f).getroot();cases=node.findall(".//testcase")
+              assert len(cases)==n
+              assert not node.findall(".//failure") and not node.findall(".//error") and not node.findall(".//skipped")
+              assert all(int(node.get(z,"0"))==0 for z in ("failures","errors","skipped"))
+          result={"schema":"ARGENTUM_MANUAL_BBD_TEMUR_ONE_CARD_COMPOSITION_800_R1",
+                  "disposition":"CATALOG_DELTA_PLUS_ONE_SOURCE_ONLY_NO_GAME_ADMISSION",
+                  "source_sha":data["qualified_candidate_source_sha"],
+                  "prior_bbd_registered":exp["registered_total_from"],
+                  "current_registered":stats["registered_slots"],
+                  "current_manual_registered":stats["manual_registered"],
+                  "opponents_registered":stats["opponent_registered"],
+                  "catalog_cases":4,"gameplay_authorized":False,
+                  "precision_completed":10,"precision_reserved":2,
+                  "capability_games":0,"primary_games":0}
+          Path("r2-registry/TEMUR_COMPOSED_REGISTRY_VERDICT.json").write_text(json.dumps(result,indent=2)+"\n")
+          print("MANUAL_BBD_TEMUR_469_800_REAL_REGISTRY_AND_FOUR_CATALOG_GREEN_NO_GAMES")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-bbd-temur-registry-${{ github.run_id }}
+          path: r2-registry/
+          if-no-files-found: warn
+          retention-days: 30
+
+  independent-composed-admission:
+    needs: [exact-composition-source,original-mechanics,catalog-and-frozen-registry]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: manual-bbd-temur-mechanics-${{ github.run_id }}-*
+          path: received-mechanics
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: manual-bbd-temur-registry-${{ github.run_id }}
+          path: received-registry
+      - name: Require all original 93 source cases, four catalog cases and 469-slot registry HOLD
+        shell: bash
+        env:
+          SOURCE_STATUS: ${{ needs.exact-composition-source.result }}
+          MECHANICS_STATUS: ${{ needs.original-mechanics.result }}
+          REGISTRY_STATUS: ${{ needs.catalog-and-frozen-registry.result }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,json,xml.etree.ElementTree as ET
+          from pathlib import Path
+          assert os.environ["SOURCE_STATUS"]==os.environ["MECHANICS_STATUS"]==os.environ["REGISTRY_STATUS"]=="success",("upstream failed",dict(os.environ))
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/BBD_TEMUR_COMPOSED_R2_PROTOCOL.json").read_text())
+          count=0
+          for era,bank in p["source_mechanics_suites"].items():
+              for cls,n in bank.items():
+                  f=Path("received-mechanics")/era/"xml"/("TEST-com.wingedsheep.engine.scenarios."+cls+".xml")
+                  assert f.is_file(),str(f)
+                  x=ET.parse(f).getroot();t=x.findall(".//testcase")
+                  assert len(t)==n,(cls,len(t),n)
+                  assert not x.findall(".//failure") and not x.findall(".//error") and not x.findall(".//skipped"),cls
+                  count+=n
+          assert count==93
+          for cls,n in p["catalog_suites"].items():
+              f=Path("received-registry/r2-registry/catalog-xml")/("TEST-com.wingedsheep.gym."+cls+".xml")
+              assert f.is_file(),str(f)
+              x=ET.parse(f).getroot()
+              assert len(x.findall(".//testcase"))==n
+              assert not x.findall(".//failure") and not x.findall(".//error") and not x.findall(".//skipped")
+          report=json.loads(Path("received-registry/r2-registry/TEMUR_COMPOSED_REGISTRY_VERDICT.json").read_text())
+          assert report["current_registered"]==469 and report["current_manual_registered"]==77
+          assert report["opponents_registered"]==392 and report["capability_games"]==report["primary_games"]==0
+          assert not report["gameplay_authorized"]
+          report["combined_original_mechanics_cases"]=count
+          report["combined_catalog_cases"]=4
+          report["qualified_source_only_total_cases"]=count+4
+          report["full_deck_card_rules_semantics_accepted"]=False
+          report["full_pod_opponent_pilots_accepted"]=False
+          report["gameplay_admission"]="HOLD_REGISTRY_COVERAGE"
+          Path("MANUAL_BBD_TEMUR_R2_FINAL.json").write_text(json.dumps(report,indent=2)+"\n")
+          print("MANUAL_BBD_TEMUR_R2_FULL_97_EXACT_SOURCE_469_800_GREEN_AND_HOLD_NO_GAMES")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-bbd-temur-final-${{ github.run_id }}
+          path: MANUAL_BBD_TEMUR_R2_FINAL.json
+          retention-days: 30
+          if-no-files-found: warn
