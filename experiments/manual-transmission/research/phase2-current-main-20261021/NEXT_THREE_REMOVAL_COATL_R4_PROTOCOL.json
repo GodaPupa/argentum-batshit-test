@@ -1,0 +1,113 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_R4_THREE_ACTUAL_FROZEN_CARDS_SOURCE_ONLY_V1",
+  "date": "2026-10-21",
+  "status": "FROZEN_BEFORE_THREE_NEW_SOURCE_COPIES_OR_ANY_R4_EXECUTION",
+  "goal": "Receive exactly Bane of Progress, World Breaker and Hope-Ender Coatl previously tested donor rules implementations on the R3 131-case green main-based candidate, then independently rerun all inherited mechanics and all 800 frozen card-slot registry lookups. No cards swapped; zero full games.",
+  "parent_green": {
+    "sha": "ab65657918c0f5e02ae181c579d1c8e6f972c0ec",
+    "workflow_run": 39702175031,
+    "workflow_status": "completed_SUCCESS",
+    "source_only_cases": 131,
+    "mechanics": 127,
+    "catalog": 4,
+    "final_zip_id": 12392789810,
+    "final_zip_sha256": "6211ed84988e8ca7d6ca58f08e2c5c0617272f534240ea68a4b04dd4adf35991",
+    "registry_zip_id": 12394136394,
+    "registry_zip_sha256": "8a67eb2cfeced65c53f18afd99cd31130d7e6455492f5e280a06f9719025ac1d",
+    "manual": 84,
+    "opponents": 392,
+    "total": 476,
+    "unregistered": 324
+  },
+  "donor_ref": "manual-transmission/phase2-cedh",
+  "donor_sha": "6abfb6bb7f3b11bea778b5e0b1040b058bcdcdaf",
+  "new_cards": [
+    {
+      "name": "Bane of Progress",
+      "era": "2008-2016",
+      "source_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/BaneOfProgress.kt",
+      "source_blob": "5433ce7e8159d39ffa211e532ada0c2676eb32bf",
+      "test_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BaneOfProgressScenarioTest.kt",
+      "test_blob": "46f8a4351004ee3d19b669d2fbebaff9524ea081",
+      "tests": 2
+    },
+    {
+      "name": "World Breaker",
+      "era": "2008-2016",
+      "source_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/WorldBreaker.kt",
+      "source_blob": "6a142f2583db72059349b7260b112b9d64596d59",
+      "test_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WorldBreakerScenarioTest.kt",
+      "test_blob": "273972bbda3c969c8d6d1b07b9592a713f236b5d",
+      "tests": 2
+    },
+    {
+      "name": "Hope-Ender Coatl",
+      "era": "2024",
+      "source_path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mh3/cards/HopeEnderCoatl.kt",
+      "source_blob": "f716c74a210e587eb72539fb59308ff3c063e5ae",
+      "test_path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HopeEnderCoatlScenarioTest.kt",
+      "test_blob": "c1613bbc40e0bcf5c2c199cc48a67c0b668f9711",
+      "tests": 9
+    }
+  ],
+  "original_new_cases": 13,
+  "inherited_mechanics": 127,
+  "inherited_catalog_cases": 4,
+  "composed_mechanics": 140,
+  "composed_catalog": 4,
+  "total_focused_exact_cases": 144,
+  "by_era_original": {
+    "2024": 20,
+    "1993-1999": 8,
+    "2003-2007": 25,
+    "2008-2016": 51,
+    "2017-2022": 36
+  },
+  "hypothesis_registry": {
+    "manual_from": 84,
+    "manual_to": 87,
+    "total_from": 476,
+    "total_to": 479,
+    "opponents_from": 392,
+    "opponents_to": 392,
+    "remaining_manual_unregistered": 13,
+    "remaining_opponents_unregistered": 308,
+    "new_registered_exactly": [
+      "Bane of Progress",
+      "World Breaker",
+      "Hope-Ender Coatl"
+    ],
+    "no_new_cards_for_any_opponent": true
+  },
+  "source_guards": {
+    "main_parent": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "control_v07_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "production_ai_blob": "43bbad79273806f56703fad420e9f6a495d05309",
+    "solver_blob": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "land_guard_blob": "dd4c000b13663a03ec6d7b79e62d05ab7dcb737f",
+    "bbd_set_blob": "893f8641b7736098257f3b296822d2bb08fb68ef",
+    "catalog_blob": "4a9da4cedf013284e6838e2e592a269af9012dfe",
+    "unchanged_prior_7_definitions": true,
+    "no_game_or_seed_execution": true,
+    "no_deck_or_pilot_or_engine_changes": true,
+    "no_original_scenario_changes": true,
+    "no_main_merge": true
+  },
+  "admission": {
+    "official_capability_used": 0,
+    "official_capability_target": 36,
+    "official_primary_used": 0,
+    "official_primary_target": 864,
+    "precision_used": 10,
+    "precision_max": 12,
+    "precision_reserved": 2,
+    "new_games": 0
+  },
+  "scientific_limits": [
+    "Each original scoped scenario proves only that bounded mechanic, not per-deck strategy or combined combo win-rate.",
+    "Registry presence is not exact semantic nor opponent AI admission.",
+    "The 3 named cards appear only in original Manual v0.7, not in other 7 unchanged opponent rosters.",
+    "No actual full 100-card matched performance game is authorized; zero official attempts."
+  ],
+  "pass_rule": "All exact donor blobs and three unchanged scenarios (13 cases) and inherited 127 mechanics +4 catalog JUnit original fresh with no errors/skips on same head; run all 800 frozen original slots and require exactly +3 Manual and +0 opponents. If original source fails, preserve RED without rewriting expectations."
+}
