@@ -281,12 +281,14 @@ class CoreAutoResumerModule(
                         continuation.remaining, auraHostId = null,
                         attackingDefenders = continuation.attackingDefenders,
                         previouslyCreatedTokens = continuation.createdTokens,
+                        beforeEntry = continuation.beforeEntry,
                     )
                 is com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfSourceEffect ->
                     com.wingedsheep.engine.handlers.effects.token.CreateTokenCopyOfSourceExecutor(
                         services.cardRegistry, staticAbilityHandler,
                     ).createTokens(
                         state, e, continuation.context, continuation.controllerId, continuation.remaining,
+                        beforeEntry = continuation.beforeEntry,
                     )
                 else -> com.wingedsheep.engine.core.EffectResult.success(state)
             }

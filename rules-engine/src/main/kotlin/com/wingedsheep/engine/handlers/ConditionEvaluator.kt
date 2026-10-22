@@ -741,8 +741,12 @@ class ConditionEvaluator(
             is Resolution -> ctx.effectContext
             is Projection -> syntheticEffectContext(state, ctx) ?: return false
         }
-        val left = dynamicAmountEvaluator.evaluate(state, condition.left, effectCtx)
-        val right = dynamicAmountEvaluator.evaluate(state, condition.right, effectCtx)
+        // Earlier layers (especially control changes) are already present in this snapshot.
+        // Keep resolution lazy: callers evaluating during projection supply a non-reentrant
+        // default, and fixed amounts do not need to initialize a projection at all.
+        val projected = if (ctx is Projection) ctx.projectedStateFor(state) else null
+        val left = dynamicAmountEvaluator.evaluate(state, condition.left, effectCtx, projected)
+        val right = dynamicAmountEvaluator.evaluate(state, condition.right, effectCtx, projected)
         return compareAmounts(left, condition.operator, right)
     }
 
@@ -761,7 +765,8 @@ class ConditionEvaluator(
             is Resolution -> ctx.effectContext
             is Projection -> syntheticEffectContext(state, ctx) ?: return false
         }
-        val value = dynamicAmountEvaluator.evaluate(state, condition.amount, effectCtx)
+        val projected = if (ctx is Projection) ctx.projectedStateFor(state) else null
+        val value = dynamicAmountEvaluator.evaluate(state, condition.amount, effectCtx, projected)
         return when (val property = condition.property) {
             NumberProperty.Prime -> isPrime(value)
             NumberProperty.Even -> value % 2 == 0
