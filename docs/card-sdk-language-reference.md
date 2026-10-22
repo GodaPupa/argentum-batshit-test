@@ -12353,7 +12353,12 @@ The priority groups are (CR 616.1a–f):
   N counters." `EntersWithCounters` takes a fixed `count: Int` (Master Biomancer, Metallic Mimic);
   `EntersWithDynamicCounters` takes a `count: DynamicAmount` (Stag Beetle; the SOS Converge "Archaic"
   cycle via `convergeEntersWithCounters()` → `count = DistinctColorsManaSpent`). `appliesTo` defaults
-  to "creatures you control entering the battlefield." Two scopes:
+  to "creatures you control entering the battlefield."
+  Spell, single-card effect and collection entry preserve external replacements on actual face-down
+  entrants and synthetic copied identities; concealed printed self text is suppressed separately.
+  Collection entry enumerates global providers from one state before the batch, including graveyard
+  providers that are moving in that same batch. This source-existence boundary does not yet qualify
+  all hypothetical-state filters, counter-placement modifiers or token producers. Scopes:
   - **Self** (default) — applies to the permanent that owns the replacement. Reserve a *dynamic* count
     for "this creature enters with a counter for each color of mana spent to cast **it**" / "for each X
     it has".

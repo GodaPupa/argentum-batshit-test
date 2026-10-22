@@ -116,23 +116,30 @@ object EntersWithReplacements {
         enteringEntityId: EntityId,
         enteringControllerId: EntityId,
         cardRegistry: CardRegistry,
-        xValue: Int? = null
+        xValue: Int? = null,
+        sourceState: GameState = state,
     ): Pair<GameState, List<GameEvent>> {
+        if (enteringEntityId !in state.getBattlefield()) return state to emptyList()
         val container = state.getEntity(enteringEntityId) ?: return state to emptyList()
         val cardComponent = container.get<CardComponent>() ?: return state to emptyList()
-        val cardDef = cardRegistry.getCard(cardComponent.cardDefinitionId) ?: return state to emptyList()
+        val cardDef = if (container.has<com.wingedsheep.engine.state.components.identity.FaceDownComponent>()) null
+            else cardRegistry.getCard(cardComponent.cardDefinitionId)
 
         var newState = state
         val events = mutableListOf<GameEvent>()
 
-        val (ownState, ownEvents) = applyFromDefinition(
-            newState, enteringEntityId, cardDef, enteringControllerId, xValue
-        )
-        newState = ownState
-        events.addAll(ownEvents)
+        // Concealed printed text is absent, but external replacement effects still apply to
+        // face-down permanents and synthetic copied characteristics without a registry entry.
+        if (cardDef != null) {
+            val (ownState, ownEvents) = applyFromDefinition(
+                newState, enteringEntityId, cardDef, enteringControllerId, xValue
+            )
+            newState = ownState
+            events.addAll(ownEvents)
+        }
 
         val (globalState, globalEvents) = applyGlobal(
-            newState, enteringEntityId, enteringControllerId, cardRegistry
+            newState, enteringEntityId, enteringControllerId, cardRegistry, sourceState
         )
         newState = globalState
         events.addAll(globalEvents)
@@ -292,21 +299,25 @@ object EntersWithReplacements {
      *   its [CardDefinition], not on a component. Callers that have no registry (the token
      *   executors, which cannot resolve a token's own definition either) skip that sweep; the
      *   battlefield sweep is unaffected.
+     * @param sourceState The state before this entry event (shared by simultaneous coentrants).
+     *   It determines which replacement sources exist; the candidate state supplies the entering
+     *   object's characteristics. This does not implement complete hypothetical-state projection.
      */
     fun applyGlobal(
         state: GameState,
         enteringEntityId: EntityId,
         enteringControllerId: EntityId,
         cardRegistry: CardRegistry? = null,
+        sourceState: GameState = state,
     ): Pair<GameState, List<GameEvent>> {
         var newState = state
         val events = mutableListOf<GameEvent>()
         val entityName = newState.getEntity(enteringEntityId)?.get<CardComponent>()?.name ?: ""
 
         val sources = mutableListOf<GlobalReplacementSource>()
-        for (sourceId in newState.getBattlefield()) {
+        for (sourceId in sourceState.getBattlefield()) {
             if (sourceId == enteringEntityId) continue
-            val container = newState.getEntity(sourceId) ?: continue
+            val container = sourceState.getEntity(sourceId) ?: continue
             val replacementComponent = container.get<ReplacementEffectSourceComponent>() ?: continue
             val sourceControllerId = container.get<ControllerComponent>()?.playerId ?: continue
             val effects = replacementComponent.replacementEffects
@@ -315,10 +326,10 @@ object EntersWithReplacements {
             sources.add(GlobalReplacementSource(sourceId, sourceControllerId, effects))
         }
         if (cardRegistry != null) {
-            for (playerId in newState.turnOrder) {
-                for (sourceId in newState.getGraveyard(playerId)) {
+            for (playerId in sourceState.turnOrder) {
+                for (sourceId in sourceState.getGraveyard(playerId)) {
                     if (sourceId == enteringEntityId) continue
-                    val cardComponent = newState.getEntity(sourceId)?.get<CardComponent>() ?: continue
+                    val cardComponent = sourceState.getEntity(sourceId)?.get<CardComponent>() ?: continue
                     val cardDef = cardRegistry.getCard(cardComponent.cardDefinitionId) ?: continue
                     val effects = cardDef.script.replacementEffects
                         .filter { Zone.GRAVEYARD in it.activeZones }

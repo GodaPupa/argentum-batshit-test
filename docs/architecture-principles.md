@@ -1319,6 +1319,13 @@ data class CopyOfComponent(
    payment remain separate gates.
 8. **Battlefield entry.** The permanent enters the battlefield with the copied stats, types,
    keywords, and abilities as its base state.
+   Spell, single-effect and collection entry apply external enters-with replacements even when
+   the entrant is face down or has synthetic copied characteristics with no registered definition.
+   Only concealed self text is suppressed. Collection entry uses one pre-batch state to enumerate
+   battlefield and graveyard replacement sources: a coentrant does not become a new provider partway
+   through the loop, and a graveyard provider is not lost merely because it was moved first.
+   This boundary covers source existence, not all hypothetical entry projections, filter predicates,
+   counter-placement modifiers, replacement ordering, or token-producer paths.
 
 **Why copy is resolved before entry, not as a continuous effect layer.**
 

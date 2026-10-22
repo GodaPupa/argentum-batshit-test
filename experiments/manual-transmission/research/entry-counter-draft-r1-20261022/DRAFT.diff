@@ -1,0 +1,232 @@
+diff --git a/docs/architecture-principles.md b/docs/architecture-principles.md
+index b151c3784b..8da76c837e 100644
+--- a/docs/architecture-principles.md
++++ b/docs/architecture-principles.md
+@@ -1319,6 +1319,13 @@ data class CopyOfComponent(
+    payment remain separate gates.
+ 8. **Battlefield entry.** The permanent enters the battlefield with the copied stats, types,
+    keywords, and abilities as its base state.
++   Spell, single-effect and collection entry apply external enters-with replacements even when
++   the entrant is face down or has synthetic copied characteristics with no registered definition.
++   Only concealed self text is suppressed. Collection entry uses one pre-batch state to enumerate
++   battlefield and graveyard replacement sources: a coentrant does not become a new provider partway
++   through the loop, and a graveyard provider is not lost merely because it was moved first.
++   This boundary covers source existence, not all hypothetical entry projections, filter predicates,
++   counter-placement modifiers, replacement ordering, or token-producer paths.
+ 
+ **Why copy is resolved before entry, not as a continuous effect layer.**
+ 
+diff --git a/docs/card-sdk-language-reference.md b/docs/card-sdk-language-reference.md
+index a477d9d461..fe7449a9c6 100644
+--- a/docs/card-sdk-language-reference.md
++++ b/docs/card-sdk-language-reference.md
+@@ -12353,7 +12353,12 @@ The priority groups are (CR 616.1a–f):
+   N counters." `EntersWithCounters` takes a fixed `count: Int` (Master Biomancer, Metallic Mimic);
+   `EntersWithDynamicCounters` takes a `count: DynamicAmount` (Stag Beetle; the SOS Converge "Archaic"
+   cycle via `convergeEntersWithCounters()` → `count = DistinctColorsManaSpent`). `appliesTo` defaults
+-  to "creatures you control entering the battlefield." Two scopes:
++  to "creatures you control entering the battlefield."
++  Spell, single-card effect and collection entry preserve external replacements on actual face-down
++  entrants and synthetic copied identities; concealed printed self text is suppressed separately.
++  Collection entry enumerates global providers from one state before the batch, including graveyard
++  providers that are moving in that same batch. This source-existence boundary does not yet qualify
++  all hypothetical-state filters, counter-placement modifiers or token producers. Scopes:
+   - **Self** (default) — applies to the permanent that owns the replacement. Reserve a *dynamic* count
+     for "this creature enters with a counter for each color of mana spent to cast **it**" / "for each X
+     it has".
+diff --git a/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EntersWithReplacements.kt b/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EntersWithReplacements.kt
+index 3ab5fdd245..3e79b99d05 100644
+--- a/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EntersWithReplacements.kt
++++ b/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EntersWithReplacements.kt
+@@ -116,23 +116,30 @@ object EntersWithReplacements {
+         enteringEntityId: EntityId,
+         enteringControllerId: EntityId,
+         cardRegistry: CardRegistry,
+-        xValue: Int? = null
++        xValue: Int? = null,
++        sourceState: GameState = state,
+     ): Pair<GameState, List<GameEvent>> {
++        if (enteringEntityId !in state.getBattlefield()) return state to emptyList()
+         val container = state.getEntity(enteringEntityId) ?: return state to emptyList()
+         val cardComponent = container.get<CardComponent>() ?: return state to emptyList()
+-        val cardDef = cardRegistry.getCard(cardComponent.cardDefinitionId) ?: return state to emptyList()
++        val cardDef = if (container.has<com.wingedsheep.engine.state.components.identity.FaceDownComponent>()) null
++            else cardRegistry.getCard(cardComponent.cardDefinitionId)
+ 
+         var newState = state
+         val events = mutableListOf<GameEvent>()
+ 
+-        val (ownState, ownEvents) = applyFromDefinition(
+-            newState, enteringEntityId, cardDef, enteringControllerId, xValue
+-        )
+-        newState = ownState
+-        events.addAll(ownEvents)
++        // Concealed printed text is absent, but external replacement effects still apply to
++        // face-down permanents and synthetic copied characteristics without a registry entry.
++        if (cardDef != null) {
++            val (ownState, ownEvents) = applyFromDefinition(
++                newState, enteringEntityId, cardDef, enteringControllerId, xValue
++            )
++            newState = ownState
++            events.addAll(ownEvents)
++        }
+ 
+         val (globalState, globalEvents) = applyGlobal(
+-            newState, enteringEntityId, enteringControllerId, cardRegistry
++            newState, enteringEntityId, enteringControllerId, cardRegistry, sourceState
+         )
+         newState = globalState
+         events.addAll(globalEvents)
+@@ -292,21 +299,25 @@ object EntersWithReplacements {
+      *   its [CardDefinition], not on a component. Callers that have no registry (the token
+      *   executors, which cannot resolve a token's own definition either) skip that sweep; the
+      *   battlefield sweep is unaffected.
++     * @param sourceState The state before this entry event (shared by simultaneous coentrants).
++     *   It determines which replacement sources exist; the candidate state supplies the entering
++     *   object's characteristics. This does not implement complete hypothetical-state projection.
+      */
+     fun applyGlobal(
+         state: GameState,
+         enteringEntityId: EntityId,
+         enteringControllerId: EntityId,
+         cardRegistry: CardRegistry? = null,
++        sourceState: GameState = state,
+     ): Pair<GameState, List<GameEvent>> {
+         var newState = state
+         val events = mutableListOf<GameEvent>()
+         val entityName = newState.getEntity(enteringEntityId)?.get<CardComponent>()?.name ?: ""
+ 
+         val sources = mutableListOf<GlobalReplacementSource>()
+-        for (sourceId in newState.getBattlefield()) {
++        for (sourceId in sourceState.getBattlefield()) {
+             if (sourceId == enteringEntityId) continue
+-            val container = newState.getEntity(sourceId) ?: continue
++            val container = sourceState.getEntity(sourceId) ?: continue
+             val replacementComponent = container.get<ReplacementEffectSourceComponent>() ?: continue
+             val sourceControllerId = container.get<ControllerComponent>()?.playerId ?: continue
+             val effects = replacementComponent.replacementEffects
+@@ -315,10 +326,10 @@ object EntersWithReplacements {
+             sources.add(GlobalReplacementSource(sourceId, sourceControllerId, effects))
+         }
+         if (cardRegistry != null) {
+-            for (playerId in newState.turnOrder) {
+-                for (sourceId in newState.getGraveyard(playerId)) {
++            for (playerId in sourceState.turnOrder) {
++                for (sourceId in sourceState.getGraveyard(playerId)) {
+                     if (sourceId == enteringEntityId) continue
+-                    val cardComponent = newState.getEntity(sourceId)?.get<CardComponent>() ?: continue
++                    val cardComponent = sourceState.getEntity(sourceId)?.get<CardComponent>() ?: continue
+                     val cardDef = cardRegistry.getCard(cardComponent.cardDefinitionId) ?: continue
+                     val effects = cardDef.script.replacementEffects
+                         .filter { Zone.GRAVEYARD in it.activeZones }
+diff --git a/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt b/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt
+index f1cbf24ee8..a7e2194536 100644
+--- a/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt
++++ b/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt
+@@ -841,7 +841,7 @@ class MoveCollectionExecutor(
+                 libraryMoverId = context.controllerId,
+                 libraryMovePublic = revealed,
+                 preparedEntry = preparedEntries?.get(cardId),
+-                entryBoundary = entryBoundary,
++                entryBoundary = entryBoundary ?: state,
+             )
+ 
+             // Delegate to ZoneTransitionService for full cleanup + entry
+@@ -854,8 +854,8 @@ class MoveCollectionExecutor(
+ 
+             // Apply "enters with counters" replacement effects when a permanent enters the
+             // battlefield from a non-stack zone (e.g., Celestial Reunion tutoring directly to
+-            // play, Hideaway's free-cast pile). Face-down entries skip this — morphed creatures
+-            // enter as 2/2 nameless with no replacement effects from their face-up identity.
++            // play, Hideaway's free-cast pile). Face-down entries suppress concealed self text,
++            // while external replacements still use the source set before the whole batch.
+             //
+             // KNOWN GAP: the single-card sibling of this path (MoveToZoneEffectExecutor) also runs
+             // PermanentEntryReplacements.runOnEnterRunEffect here; this one does not, so a card
+@@ -864,9 +864,9 @@ class MoveCollectionExecutor(
+             // needs more than the two-line call: this is a loop, the replacement can pause for a
+             // decision, and pausing mid-loop requires a continuation that resumes the remaining
+             // cards. See docs/card-sdk-language-reference.md, OnEnterRunEffect "Scope today".
+-            if (destZone == Zone.BATTLEFIELD && faceDown == null) {
++            if (transitionResult.actualDestination == Zone.BATTLEFIELD) {
+                 val (counterState, counterEvents) = EntersWithReplacements.applyOnEntry(
+-                    newState, cardId, actualDestPlayerId, cardRegistry
++                    newState, cardId, actualDestPlayerId, cardRegistry, sourceState = entryBoundary ?: state
+                 )
+                 newState = counterState
+                 events.addAll(counterEvents)
+diff --git a/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/MoveToZoneEffectExecutor.kt b/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/MoveToZoneEffectExecutor.kt
+index f14be0b4d0..72d34f269e 100644
+--- a/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/MoveToZoneEffectExecutor.kt
++++ b/rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/MoveToZoneEffectExecutor.kt
+@@ -144,12 +144,12 @@ class MoveToZoneEffectExecutor(
+         // Apply "enters with counters" replacement effects when a permanent enters the
+         // battlefield from a non-stack zone (e.g., reanimation from graveyard, return from
+         // exile). Spell resolution applies these in StackResolver, so this path covers
+-        // everything else. Skip face-down entries: morph creatures enter as 2/2 nameless
+-        // creatures with no replacement effects from their face-up identity.
++        // everything else. Face-down entries suppress concealed self text, while external
++        // replacement effects still apply. Source existence is taken before the zone transition.
+         val actualDestZone = transitionResult.actualDestination
+-        if (actualDestZone == Zone.BATTLEFIELD && effect.faceDown == null) {
++        if (actualDestZone == Zone.BATTLEFIELD) {
+             val (counterState, counterEvents) = EntersWithReplacements.applyOnEntry(
+-                resultState, targetId, controllerId, cardRegistry
++                resultState, targetId, controllerId, cardRegistry, sourceState = state
+             )
+             resultState = counterState
+             extraEvents.addAll(counterEvents)
+diff --git a/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt b/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
+index 3f4b427940..18aad4af1c 100644
+--- a/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
++++ b/rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
+@@ -1833,12 +1833,13 @@ class StackResolver(
+             )
+         }
+ 
+-        if (cardDef != null && !spellComponent.castFaceDown) {
++        run {
+             val totalManaSpent = spellComponent.manaSpentWhite + spellComponent.manaSpentBlue +
+                 spellComponent.manaSpentBlack + spellComponent.manaSpentRed +
+                 spellComponent.manaSpentGreen + spellComponent.manaSpentColorless
+             val (counterState, events) = applyEntersWithReplacements(
+-                newState, spellId, cardDef, controllerId, spellComponent.xValue, totalManaSpent
++                newState, spellId, cardDef.takeUnless { spellComponent.castFaceDown }, controllerId,
++                spellComponent.xValue, totalManaSpent, sourceState = state
+             )
+             newState = counterState
+             counterEvents.addAll(events)
+@@ -3004,22 +3005,25 @@ class StackResolver(
+     internal fun applyEntersWithReplacements(
+         state: GameState,
+         entityId: EntityId,
+-        cardDef: com.wingedsheep.sdk.model.CardDefinition,
++        cardDef: com.wingedsheep.sdk.model.CardDefinition?,
+         controllerId: EntityId,
+         xValue: Int? = null,
+-        totalManaSpent: Int = 0
++        totalManaSpent: Int = 0,
++        sourceState: GameState = state,
+     ): Pair<GameState, List<GameEvent>> {
+         var newState = state
+         val events = mutableListOf<GameEvent>()
+ 
+-        val (ownState, ownEvents) = EntersWithReplacements.applyFromDefinition(
+-            newState, entityId, cardDef, controllerId, xValue, totalManaSpent
+-        )
+-        newState = ownState
+-        events.addAll(ownEvents)
++        if (cardDef != null) {
++            val (ownState, ownEvents) = EntersWithReplacements.applyFromDefinition(
++                newState, entityId, cardDef, controllerId, xValue, totalManaSpent
++            )
++            newState = ownState
++            events.addAll(ownEvents)
++        }
+ 
+         val (globalState, globalEvents) = EntersWithReplacements.applyGlobal(
+-            newState, entityId, controllerId, cardRegistry
++            newState, entityId, controllerId, cardRegistry, sourceState
+         )
+         newState = globalState
+         events.addAll(globalEvents)

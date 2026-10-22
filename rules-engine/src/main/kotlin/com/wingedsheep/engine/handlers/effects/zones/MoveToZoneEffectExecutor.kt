@@ -144,12 +144,12 @@ class MoveToZoneEffectExecutor(
         // Apply "enters with counters" replacement effects when a permanent enters the
         // battlefield from a non-stack zone (e.g., reanimation from graveyard, return from
         // exile). Spell resolution applies these in StackResolver, so this path covers
-        // everything else. Skip face-down entries: morph creatures enter as 2/2 nameless
-        // creatures with no replacement effects from their face-up identity.
+        // everything else. Face-down entries suppress concealed self text, while external
+        // replacement effects still apply. Source existence is taken before the zone transition.
         val actualDestZone = transitionResult.actualDestination
-        if (actualDestZone == Zone.BATTLEFIELD && effect.faceDown == null) {
+        if (actualDestZone == Zone.BATTLEFIELD) {
             val (counterState, counterEvents) = EntersWithReplacements.applyOnEntry(
-                resultState, targetId, controllerId, cardRegistry
+                resultState, targetId, controllerId, cardRegistry, sourceState = state
             )
             resultState = counterState
             extraEvents.addAll(counterEvents)
