@@ -103,7 +103,11 @@ data class ZoneEntryOptions(
      * placement public knowledge rather than the mover's alone. Independent of the source zone —
      * a move out of a public zone is already table-wide without this.
      */
-    val libraryMovePublic: Boolean = false
+    val libraryMovePublic: Boolean = false,
+    /** Choices/identity for the future permanent, installed only after old-object cleanup. */
+    val preparedEntry: com.wingedsheep.engine.core.PendingCardEntry? = null,
+    /** Shared pre-entry battlefield when committing a prepared collection. */
+    val entryBoundary: GameState? = null,
 )
 
 /**
@@ -719,16 +723,24 @@ object ZoneTransitionService {
                     grantedActivatedAbilities = newState.grantedActivatedAbilities
                         .filter { it.entityId != entityId }
                 )
-                val beforeBattlefieldEntry = newState
+                val beforeBattlefieldEntry = options.entryBoundary ?: newState
+                val enteringCard = options.preparedEntry?.card ?: cardComponent
+                options.preparedEntry?.let { prepared ->
+                    newState = newState.updateEntity(entityId) { c ->
+                        var entry = c.with(prepared.card).with(prepared.choices)
+                        prepared.copy?.let { entry = entry.with(it) }
+                        entry
+                    }
+                }
                 newState = newState.addToZone(destZoneKey, entityId)
                 newState = applyBattlefieldEntry(
-                    newState, entityId, cardComponent, destControllerId, options, fromZone, beforeBattlefieldEntry
+                    newState, entityId, enteringCard, destControllerId, options, fromZone, beforeBattlefieldEntry
                 )
                 // Prepared is an enters-the-battlefield condition, not a cast-resolution-only
                 // condition. Reanimation, blink, and other direct battlefield entries must create
                 // the incarnation's prepared spell copy just like a resolving permanent spell.
                 if (!options.faceDown && ::cardRegistry.isInitialized) {
-                    val cardDef = cardRegistry.getCard(cardComponent.cardDefinitionId)
+                    val cardDef = cardRegistry.getCard(enteringCard.cardDefinitionId)
                     if (cardDef?.layout == com.wingedsheep.sdk.model.CardLayout.PREPARE &&
                         cardDef.keywords.contains(com.wingedsheep.sdk.core.Keyword.PREPARED)
                     ) {
@@ -736,6 +748,17 @@ object ZoneTransitionService {
                             newState, entityId, cardDef, destControllerId
                         )
                     }
+                }
+                options.preparedEntry?.additionalCounters?.let { amount ->
+                    val count = com.wingedsheep.engine.handlers.DynamicAmountEvaluator().evaluate(
+                        newState, amount, EffectContext(sourceId = entityId, controllerId = destControllerId),
+                    )
+                    val (counterState, counterEvents) = EntersWithReplacements.placeEntryCounters(
+                        newState, entityId, com.wingedsheep.sdk.scripting.events.CounterTypeFilter.PlusOnePlusOne,
+                        count, destControllerId, enteringCard.name,
+                    )
+                    newState = counterState
+                    events.addAll(counterEvents)
                 }
                 // Record entry for per-player ETB-by-type tracking (Mechan Shieldmate and similar).
                 // This pipeline records via PermanentEntryTracker.record directly rather than
@@ -893,7 +916,7 @@ object ZoneTransitionService {
         events.add(
             ZoneChangeEvent(
                 entityId = entityId,
-                entityName = cardComponent.name,
+                entityName = if (actualDestZone == Zone.BATTLEFIELD) options.preparedEntry?.card?.name ?: cardComponent.name else cardComponent.name,
                 fromZone = fromZone,
                 toZone = actualDestZone,
                 ownerId = ownerId,
@@ -909,7 +932,10 @@ object ZoneTransitionService {
                 craftMaterial = leavingBattlefield && options.craftMaterial,
                 oldObject = oldObject,
                 newObject = newObject,
-                requestedDestination = destinationZone
+                requestedDestination = destinationZone,
+                copyOfOriginalName = options.preparedEntry?.takeIf {
+                    actualDestZone == Zone.BATTLEFIELD && it.copy != null && it.originalCard.name != it.card.name
+                }?.originalCard?.name,
             )
         )
 
@@ -1409,7 +1435,7 @@ object ZoneTransitionService {
             updated = updated.with(SummoningSicknessComponent)
 
             // Tapped entry
-            if (options.tapped || options.tappedAndAttacking) {
+            if (options.tapped || options.tappedAndAttacking || options.preparedEntry?.tappedIfCopied == true) {
                 updated = updated.with(TappedComponent)
             }
 

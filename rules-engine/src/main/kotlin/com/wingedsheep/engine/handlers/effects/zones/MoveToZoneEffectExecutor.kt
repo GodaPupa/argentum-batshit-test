@@ -47,7 +47,8 @@ import kotlin.reflect.KClass
 class MoveToZoneEffectExecutor(
     private val cardRegistry: CardRegistry,
     private val targetFinder: TargetFinder = TargetFinder(),
-    private val effectExecutor: (GameState, Effect, EffectContext) -> EffectResult
+    private val effectExecutor: (GameState, Effect, EffectContext) -> EffectResult,
+    private val entryPreparation: com.wingedsheep.engine.core.PendingZoneEntryPlan? = null,
 ) : EffectExecutor<MoveToZoneEffect> {
 
     override val effectType: KClass<MoveToZoneEffect> = MoveToZoneEffect::class
@@ -94,6 +95,19 @@ class MoveToZoneEffectExecutor(
             ownerId
         }
 
+        if (entryPreparation == null && effect.destination == Zone.BATTLEFIELD && effect.faceDown == null && !cardComponent.typeLine.isAura &&
+            currentZone.zoneType != Zone.BATTLEFIELD &&
+            cardRegistry.getCard(cardComponent.cardDefinitionId)?.script?.replacementEffects.orEmpty().any {
+                it is com.wingedsheep.sdk.scripting.EntersAsCopy || it is com.wingedsheep.sdk.scripting.EntersWithChoice
+            }
+        ) {
+            return com.wingedsheep.engine.handlers.effects.PendingEntryChoices(cardRegistry).begin(
+                state, effect, context, listOf(targetId to controllerId),
+            ) { ready, plan -> com.wingedsheep.engine.handlers.effects.PendingEntryCommitter.commit(
+                ready, plan, cardRegistry, targetFinder, effectExecutor,
+            ) }
+        }
+
         // CR 303.4g — an Aura entering the battlefield by any means other than resolving as an
         // Aura spell (here: reanimation / return from graveyard, exile, etc.) has its controller
         // choose what it enchants as it enters. Without that choice the Aura would enter
@@ -116,7 +130,9 @@ class MoveToZoneEffectExecutor(
         }
 
         // Build ZoneEntryOptions based on placement and effect properties
-        val entryOptions = buildEntryOptions(effect, cardComponent, controllerId, context.controllerId)
+        val entryOptions = buildEntryOptions(effect, cardComponent, controllerId, context.controllerId).copy(
+            preparedEntry = entryPreparation?.entries?.firstOrNull { it.source.entityId == targetId },
+        )
 
         val transitionResult = ZoneTransitionService.moveToZone(
             state, targetId, effect.destination, entryOptions, currentZone

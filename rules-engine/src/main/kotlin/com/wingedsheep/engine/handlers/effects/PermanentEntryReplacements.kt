@@ -348,6 +348,7 @@ object PermanentEntryReplacements {
         syntheticRiotRemaining: Int = 0,
         entryOldObject: com.wingedsheep.engine.state.ObjectRef? = null,
         entryNewObject: com.wingedsheep.engine.state.ObjectRef? = state.objectRef(entityId),
+        wrapAnswer: (EntersWithChoiceOnBattlefieldContinuation) -> com.wingedsheep.engine.core.AnswerContinuation = { it },
     ): ExecutionResult? {
         val chooserId = when (choice.chooser) {
             Player.AnOpponent -> state.getOpponents(controllerId).firstOrNull() ?: controllerId
@@ -368,7 +369,7 @@ object PermanentEntryReplacements {
             continuation: EntersWithChoiceOnBattlefieldContinuation,
         ): ExecutionResult = state.suspendForDecision(
             question,
-            continuation.copy(entryOldObject = entryOldObject, entryNewObject = entryNewObject),
+            wrapAnswer(continuation.copy(entryOldObject = entryOldObject, entryNewObject = entryNewObject)),
             carryEvents,
         )
 
@@ -537,7 +538,7 @@ object PermanentEntryReplacements {
                 )
                 baseState.suspendForDecision(
                     question,
-                    continuation.copy(entryOldObject = entryOldObject, entryNewObject = entryNewObject),
+                    wrapAnswer(continuation.copy(entryOldObject = entryOldObject, entryNewObject = entryNewObject)),
                     carryEvents + lookEvents,
                 )
             }

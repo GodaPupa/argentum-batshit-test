@@ -1,0 +1,169 @@
+{
+  "status": "PREPARED_FOR_QUALIFICATION",
+  "baseline_source": "84994114025d0138305ed9931c00b957f9d80597",
+  "parent_checkpoint": "a98d76d1e4ea94413d09dac6b1d2e460e89b0ee3",
+  "qualified_receipts": [
+    "cea98e91953c66d96ad71da133121e930214495f",
+    "abd0e6d539d9cc4133d1cf554b21f8ebab858fbe"
+  ],
+  "preregistered_test_checkpoint": "a187ed6d0ee40fed4e885b42b7e45551da05feb0",
+  "scope": "Non-Aura direct single-card and fixed-destination collection copy/printed EntersWithChoice preparation before publication; exact source-object binding and outer pipeline resumption. Bounded component stage only.",
+  "new_cases": 9,
+  "cases": [
+    {
+      "name": "direct copied chained choices precede publication; graveyard=false, serialized=false",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "direct copied chained choices precede publication; graveyard=false, serialized=true",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "direct copied chained choices precede publication; graveyard=true, serialized=false",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "direct copied chained choices precede publication; graveyard=true, serialized=true",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "simultaneous copies exclude every coentrant and publish only after all choices",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "declined direct copy asks its own printed choice before entry",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "pending entry cannot move a later source-zone incarnation",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "direct graveyard-copy rider cannot exile a later zone visit after serialized choices",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "two coentering copies with no preexisting eligible object enter without copying each other",
+      "predicted_baseline": "pass"
+    }
+  ],
+  "negative_control": {
+    "method": "Retain the exact nine-case test; restore all six modified production files and remove all four added production files to reconstruct the qualified copied-choice baseline.",
+    "expected_passed": 1,
+    "expected_failed": 8,
+    "expected_errors": 0,
+    "expected_skipped": 0,
+    "compile_failure_is_not_evidence": true
+  },
+  "qualification": {
+    "expected_focused_passed": 371,
+    "expected_engine_passed": 3780,
+    "expected_broad_passed": 14555,
+    "expected_ordinary_passed": 18163,
+    "expected_ordinary_skipped": 43,
+    "focused": "new9 plus unchanged copied7, carrier10, SDK2, snapshots/lint343",
+    "broad": "Entire engine plus all nine card-era suites; 345 retained focused SDK/snapshot/lint reports are not extra broad executions.",
+    "ordinary": "Ordinary whole-project build plus routine AI *Test, exact prior43 skips and20 result modules.",
+    "assay": "568 Assay tests in ordinary; 2000-card touchstone; full differential retaining every preexisting divergence."
+  },
+  "source_manifest": {
+    "docs/architecture-principles.md": {
+      "sha256": "cd71f2a5f0e40efbd23671d4d3cce1087b0a762bf129ba692324835269de4a2e",
+      "git_blob": "7219dbeae94536c09b9cd74a519dd139a199e637"
+    },
+    "docs/card-sdk-language-reference.md": {
+      "sha256": "d2355750c7d742ef83604432dd045431d3f8e24a06314616f7ead14cdaee8c91",
+      "git_blob": "43d8584cd5b3eac726121eb842f980f632d228e9"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingEntryContinuations.kt": {
+      "sha256": "14bea85dec08d3fc03a464754cf8f6bb70f3a963845a3166b007873854158c9e",
+      "git_blob": "b64e1c0469b62b947454214b055b8e99b448114c",
+      "baseline_absent": true
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt": {
+      "sha256": "ad220c8e307d49bd3010c6b6198727716e96a60bfd4efdfdfcebc98be41098b9",
+      "git_blob": "5a7a13ed8b50e5f43dbc08a99e0a7943cd004b15",
+      "baseline_sha256": "bcc6321f1ef85416859bff716b1446498a62917208cc7f7a65b4cd39b0333b68"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt": {
+      "sha256": "710e62ecc06e87dc9605b1c47cececb7095e34df128e089e483396f6281255e4",
+      "git_blob": "e276259416d2cd82296fa700265879e793d96273",
+      "baseline_sha256": "a8091ebb5e745e48765d38f01f6f21052b98ec4b0f52da34076882bbd90edccc"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/PendingEntryContinuationResumer.kt": {
+      "sha256": "abd2ac477ceab449eca5422a0b9e7de1570362c752fe59f84a41fd815a3483ba",
+      "git_blob": "5ff89a22c638ff05393f07ffbad92b8ef27a240d",
+      "baseline_absent": true
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PendingEntryChoices.kt": {
+      "sha256": "81f9c197fb77831b56d73d3a4f3266ba56437f981a2c3201614f567b58ef5df6",
+      "git_blob": "03cca17eb92d9ff6930f1b93e4a6deb53ddfa718",
+      "baseline_absent": true
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PendingEntryCommitter.kt": {
+      "sha256": "3f55be348c0b9e0ecab6a554f81ccb8012b2881180adfe1f28b0c47b36d61fd7",
+      "git_blob": "2159274729bbde2c47486f3ce298c67d06894d9c",
+      "baseline_absent": true
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PermanentEntryReplacements.kt": {
+      "sha256": "bd1da2fff5f651927eea7db44e4e969ca97503cd7b2d70cfd86bb1dca50d05bd",
+      "git_blob": "e5f50aac846112ab05be643c53b0180c1124cf94",
+      "baseline_sha256": "bccbec7775fcc0495a2ddb31818094e96050b317de5c323a4abc7152e8cb2460"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": {
+      "sha256": "3cd811a07841476fd4d07349b26ecc96ef66bbc5620168092a409375d2cb41fd",
+      "git_blob": "f9495091732febd436de1a2e4063281ab770870b",
+      "baseline_sha256": "dd9d1ce6dc44731eb3cbf93fd5045c9cdd2a2316f3b5ab0fe1656a6db38597ae"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt": {
+      "sha256": "cb7d4c59f50ae6dd8e79ebb2f28339b83a4014ce4e2f3aa53de5a6d0c37f03a3",
+      "git_blob": "f1cbf24ee8cd9ab0bea906ab899c9f0a9ef17235",
+      "baseline_sha256": "514b61cd67df78246d2da244676b07bc9014be2fd2955cc1f16ec9d829ddd398"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/MoveToZoneEffectExecutor.kt": {
+      "sha256": "294113440fade3cde74ca90eb002c87892da5bee43728411ebc3d39f781ca6fa",
+      "git_blob": "f14be0b4d07f7cfd3a7d977205c2a065533d000f",
+      "baseline_sha256": "801210ef3da6ec2c5dcff33ab8da02426089d961a34b133e7801a2bbe076e0f7"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PendingCopyEntryScenarioTest.kt": {
+      "sha256": "d3d0181078e773422a4bd6ed2aa351f9e9a3554a94e0d375dd3cff5b25cfe2a9",
+      "git_blob": "0130fe10fb6d6976d43e725f5f5a1a7959550581"
+    }
+  },
+  "does_not_qualify": [
+    "played-land prepublication",
+    "Aura as-enters choices and attachment continuation integration",
+    "Aura-copy attachment",
+    "generic OnEnterRunEffect",
+    "granted Riot and other replacement families",
+    "complete simultaneous counter/static-effect interactions",
+    "full token/X/face-down copiable values",
+    "interactive browser UX",
+    "exact Metamorph registration/admission",
+    "full frozen coverage",
+    "multiplayer/pilots",
+    "competitive performance"
+  ],
+  "safeguards": {
+    "no_original_test_edit": true,
+    "no_rebless": true,
+    "protected_bindings": 22,
+    "protected_goldens": 23,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2,
+    "frozen_v07": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+  },
+  "rules": {
+    "official_pdf": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "checked_on": "2026-10-22",
+    "sections": [
+      "614.12a",
+      "707.5",
+      "707.6"
+    ],
+    "official_execution_admission": false
+  },
+  "dispatch_policy": "Unique push-only validation child. Job guarded to run_number==1 and run_attempt==1; duplicate events are recorded as skipped, never a qualification. Reinspect all activity before branch creation; no standalone carrier rerun."
+}

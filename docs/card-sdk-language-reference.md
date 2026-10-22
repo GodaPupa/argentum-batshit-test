@@ -12484,6 +12484,13 @@ The priority groups are (CR 616.1a–f):
   cast as a spell (resolved off the stack) **and** when it enters the battlefield directly — a land
   played (Echoing Deeps) pauses via `PermanentEntryReplacements.pauseForEntersAsCopy`, its resumer
   `CloneEntersOnBattlefieldContinuation` copying onto the already-placed permanent in place.
+  Effect-directed single-card and fixed-destination collection entry now prepare copy and printed
+  `EntersWithChoice` decisions in a serializable engine `PendingZoneEntryPlan`, before publishing
+  any member of the pending batch. The source-zone card keeps its original identity until commit;
+  every coentrant is excluded from copy candidates. This uses the same SDK data and choice UI
+  shapes. It does not change the played-land path's earlier publication or close Aura-copy
+  attachment, other replacement families, generic `OnEnterRunEffect`, granted Riot, or complete
+  simultaneous replacement interactions. Those remain separate engine qualification work.
   `exceptions: CopyExceptions` carries the shared copiable characteristic modifications through
   both entry continuations to `CopyExceptionApplier`. It composes over the existing flat riders:
   additions union; explicitly supplied overrides win. Use

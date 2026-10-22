@@ -43,7 +43,9 @@ import kotlin.reflect.KClass
  */
 class MoveCollectionExecutor(
     private val cardRegistry: CardRegistry,
-    private val targetFinder: TargetFinder? = null
+    private val targetFinder: TargetFinder? = null,
+    private val preparedEntries: Map<EntityId, PendingCardEntry>? = null,
+    private val entryBoundary: GameState? = null,
 ) : EffectExecutor<MoveCollectionEffect> {
 
     override val effectType: KClass<MoveCollectionEffect> = MoveCollectionEffect::class
@@ -53,12 +55,12 @@ class MoveCollectionExecutor(
         effect: MoveCollectionEffect,
         context: EffectContext
     ): EffectResult {
-        val allCards = context.pipeline.storedCollections[effect.from]
+        val allCards = preparedEntries?.keys?.toList() ?: context.pipeline.storedCollections[effect.from]
             ?: return EffectResult.error(state, "No collection named '${effect.from}' in storedCollections")
 
         // Optional per-card filter: only move cards matching it; the rest stay put. Lets a single
         // gathered pile be split by type across multiple MoveCollection steps.
-        val cards = if (effect.filter != null) {
+        val cards = if (preparedEntries == null && effect.filter != null) {
             val predicateEvaluator = com.wingedsheep.engine.handlers.PredicateEvaluator()
             val predicateContext = com.wingedsheep.engine.handlers.PredicateContext(
                 controllerId = context.controllerId,
@@ -72,6 +74,24 @@ class MoveCollectionExecutor(
         }
 
         val destination = effect.destination
+        if (preparedEntries == null && destination is CardDestination.ToZone &&
+            destination.zone == Zone.BATTLEFIELD && effect.faceDown == null && cards.any { id ->
+                val card = state.getEntity(id)?.get<CardComponent>()
+                card?.let { cardRegistry.getCard(it.cardDefinitionId)?.script?.replacementEffects }
+                    .orEmpty().any { it is com.wingedsheep.sdk.scripting.EntersAsCopy || it is com.wingedsheep.sdk.scripting.EntersWithChoice }
+            }
+        ) {
+            val destinationPlayer = resolvePlayer(destination.player, context, state) ?: context.controllerId
+            val entrants = cards.map { id -> id to if (effect.underOwnersControl) {
+                state.getEntity(id)?.get<OwnerComponent>()?.playerId ?: destinationPlayer
+            } else destinationPlayer }
+            return com.wingedsheep.engine.handlers.effects.PendingEntryChoices(cardRegistry).begin(
+                state, effect, context, entrants,
+            ) { ready, plan -> com.wingedsheep.engine.handlers.effects.PendingEntryCommitter.commit(
+                ready, plan, cardRegistry, targetFinder ?: TargetFinder(),
+                { _, _, _ -> error("Collection entry must not route through a single-card effect callback") },
+            ) }
+        }
         if (cards.isEmpty()) {
             // Nothing to move, but for library shuffles we still shuffle (e.g., ShuffleGraveyardIntoLibrary
             // shuffles even when the graveyard is empty, per the card's rules text).
@@ -86,7 +106,8 @@ class MoveCollectionExecutor(
                     return EffectResult.success(newState, listOf(LibraryShuffledEvent(destPlayerId)))
                 }
             }
-            return EffectResult.success(state)
+            return EffectResult.success(state).copy(updatedCollections =
+                effect.storeMovedAs?.let { mapOf(it to emptyList<EntityId>()) }.orEmpty())
         }
 
         var result = when (destination) {
@@ -818,7 +839,9 @@ class MoveCollectionExecutor(
                 // LibraryRevealUtils.placementAudience — this only names the mover and whether the
                 // move was public.
                 libraryMoverId = context.controllerId,
-                libraryMovePublic = revealed
+                libraryMovePublic = revealed,
+                preparedEntry = preparedEntries?.get(cardId),
+                entryBoundary = entryBoundary,
             )
 
             // Delegate to ZoneTransitionService for full cleanup + entry

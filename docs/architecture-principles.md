@@ -1272,9 +1272,22 @@ data class CopyOfComponent(
    choices through the ordinary spell-choice suspensions before battlefield entry. Those choices
    are fresh; the source permanent's prior choices are not copied. Chained choices remain
    serializable, and any graveyard-copy exile rider waits beneath them as an ordinary effect
-   continuation bound to the selected object. This does not cover direct-entry placement or
-   simultaneous-entry batches.
-6. **Battlefield entry.** The permanent enters the battlefield with the copied stats, types,
+   continuation bound to the selected object. This spell path remains separate from direct entry.
+6. **Pending direct entry.** `MoveToZoneEffect` and battlefield `MoveCollectionEffect` prepare
+   copy and printed `EntersWithChoice` decisions in a serializable `PendingZoneEntryPlan`.
+   `PendingCardEntry` stores the original ObjectRef and future identity/choice bag; the actual
+   source-zone object keeps its characteristics during each question. The whole collection is
+   prepared before its first member enters, and every coentrant is excluded from copy pools.
+   `PendingEntryChoices` reuses the existing question shapes with pending-entry answer payloads.
+   `PendingEntryCommitter` resumes the original executor with captured preparation rather than
+   replaying a gather or changing the source object into a fake spell. Prepared identity/choices
+   are installed in `ZoneTransitionService` after cleanup and before battlefield initialization
+   and tracking. A changed source ObjectRef is skipped; a graveyard-copy exile rider also binds
+   the exact chosen object. Collection outputs reach the outer effect continuation once.
+   This bounded stage does not close played-land timing, Aura-copy attachment, other replacement
+   families, granted Riot, generic `OnEnterRunEffect`, or all simultaneous counter/static-effect
+   interactions. Full token/X/face-down copiable values and interactive UX remain separate gates.
+7. **Battlefield entry.** The permanent enters the battlefield with the copied stats, types,
    keywords, and abilities as its base state.
 
 **Why copy is resolved before entry, not as a continuous effect layer.**
