@@ -1,0 +1,24 @@
+{
+  "schema": "ARGENTUM_MANUAL_PURPHOROS_REVIEWED_SEMANTIC_RECEIVE_R3_STACK_RESOLVER_CORRECTION",
+  "date": "2026-10-21",
+  "status": "REGISTERED_AFTER_COMPOSITION_COMPILE_RED_BEFORE_STACK_RESOLVER_RESTORE",
+  "original_protocol": "PURPHOROS_SEMANTIC_SOURCE_R3_PROTOCOL.json",
+  "original_red_run": 39714399875,
+  "original_red_source": "6054eb9ad9981da2d1a3420565cc0668d516eca6",
+  "root_cause": "Historical StackResolver expects targetVisits/inheritingVisits and CommanderManaEntryCountersComponent etc absent from current-main ancestor, and cannot be transplanted as a whole. No actual Purphoros behavioral fixture executed in that red run.",
+  "scope": "Restore only current main-compatible StackResolver exact original blob, retaining the other 16 reviewed donor source files byte-identical; then recheck actual compile and Purphoros behavior. Do NOT modify original card or scenario tests.",
+  "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+  "restore_exact_blob": "a46aed0092806245462dbd881fab327d838de4e7",
+  "original_historical_blob": "addfc4453e73a4745d8290b517eb7bf090474b1d",
+  "maintain_prior_json_wire_blob": "9ce21dea649168e5b6ed86668ced82f9f1e5af48",
+  "retained_historical_engine_files": 16,
+  "allowed_followup": "Source-compatibility test only; later port specifically reviewed PR194 StackResolver pre-entry callsite hunks onto current source if necessary.",
+  "budget": {
+    "new_full_games": 0,
+    "official_capability": 0,
+    "official_primary": 0,
+    "precision_used": 10,
+    "precision_reserved": 2
+  },
+  "no_main_or_AI_or_deck_updates": true
+}
