@@ -1,0 +1,218 @@
+{
+  "status": "DRAFT_UNCOMPILED_UNTESTED_UNADOPTED_NOT_DISPATCHABLE",
+  "test_sha256": "a52bae47dc3cc144cf618bb2cfe145a49a4584608b47ed6cac2c3ffbaf56b4ae",
+  "test_git_blob": "51c4162bb2d65fa2dc3a0c007734983e92b4c1ab",
+  "test_bytes": 8364,
+  "reviewed_source": "a94e01a76df686200812f0cb75611c80c73b9f4b",
+  "source_status": "ObserverR2 qualification still active; not an admitted baseline yet",
+  "cases": [
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 159
+    },
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 159
+    }
+  ],
+  "predicted_controls": {
+    "cases": 24,
+    "assertion_failures": 18,
+    "passes": 6,
+    "errors": 0,
+    "skips": 0
+  },
+  "rules_review": "Official2026-09-25 rules previously verified in this session:603.3b deferred placement,608.2f simultaneous single actions,614.12 as-enters replacement evaluation. No new citation number guessed.",
+  "primary_rules_url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+  "findings": [
+    "Target/source executors publish to battlefield before as-enters choice completes.",
+    "Choice resumer detects and stacks entry triggers per token before the remaining-token automatic continuation.",
+    "One token creation instruction can therefore be observed as several entry groups; a later copied observer misses earlier coentrants.",
+    "Source-copy pauses return before its delayed-exile registration; target-copy has pre-pause delayed-rider registration.",
+    "Existing four TokenBatchEntryHistoryTest assertions/serialized fixtures are preserved; any implementation must explicitly review their intermediate-state setup, not weaken original assertions."
+  ],
+  "inspected_files": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt": "69f0721ceef29500768d87c90a50b41b23f591ca02c889f1ed3028887d26a893",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfSourceExecutor.kt": "3b5fbf5d9d4c2cdea28f6d8641ecc4d468366ded2f92c03b02c1763d45689346",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": "9660b37c201f2af15ef8519cd45871f0bcca93c4ad03b29b0b89b4c1036bd0a6",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt": "6ea97df850028b79e9fcc712a629b9457bdb6d36fc02c49c198a42b23b3c91f6",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt": "54c31b828c592bfb52fd32e484afdec4e0b063abb6326df73dbb56c874acc3e3",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenBatchEntryHistoryTest.kt": "181b34d795f7afae583b177e74f51533078836619ae330a0b489eac91d40f428",
+    "rules-engine/src/testFixtures/kotlin/com/wingedsheep/engine/support/TriggerOrderTestSupport.kt": "c7aba22d7937c395075c00f8710cb072a0ec1e3932a5fe55b441c9b1a7da0f71"
+  },
+  "before_dispatch": [
+    "Review complete transaction design across target/source/definition/chosen/equipped producers, Aura and attacking choices, token count replacements, copied intrinsic abilities and object references.",
+    "Expand necessary control coverage for additional supported producers; freeze final unchanged test hashes and exact source baseline in an executable preregistration.",
+    "Keep separate Composite instructions distinct and retain queued-event identity across saved decisions.",
+    "Preserve all existing assertions/82saved-state fixtures; any source-fixture adjustment needs an explicit original-byte annex and justification.",
+    "Await and independently audit observer and counter/Metamorph runs; no overlapping execution."
+  ],
+  "scope_exclusions": [
+    "No engine implementation accompanies this checkpoint.",
+    "No original tests modified, no Kotlin compilation or execution.",
+    "No complete-entry/card/UI/multiplayer/competitive admission."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
