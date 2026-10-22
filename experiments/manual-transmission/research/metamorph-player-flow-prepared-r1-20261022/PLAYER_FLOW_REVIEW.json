@@ -1,0 +1,66 @@
+{
+  "status": "STATIC_SOURCE_REVIEW_ONLY_SCENARIOS_UNEXECUTED",
+  "reviewed_source": "a94e01a76df686200812f0cb75611c80c73b9f4b",
+  "card_draft_checkpoint": "eb120071ffb95917d505d139d0bf68fe084fec56",
+  "card_draft_sha256": "3b3abb2bf971d01067b23e891393588ae93b64a1a3e45a9cc6103377a5366c05",
+  "scenario_destination": "manual-scenarios/cards/p/",
+  "dependencies": "The current observer candidate does not register Metamorph. These scenarios require the future card-bearing candidate, qualified before readiness claims.",
+  "inspected_files": {
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/scenario/ScenarioDtos.kt": "c9687d0b6fcc74042a0a32cd257ea58d92ee263faab5704a04d4c06cabee3bad",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/DecisionEnricher.kt": "62e699207db027f6d6bc282c68307cbdfc707ccd35737331aa1260c02728777a",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/GameSession.kt": "4b19fa5b43175d4c4a089f6efbceb2c1aa560b92f4d5f605d6d66f09707fb2ce",
+    "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/PendingDecisionRouting.kt": "e9a4531cd69e1904f799fa8d1cf507d0dbe6946cf9b5456b534c7ab2840d7f3e",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/exo/cards/SoulWarden.kt": "110bbfb9fe016dd24479d64226b8a3159a58e570419365c1c5c46d29d90cc913",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/GrizzlyBears.kt": "3d3063662853dab411e0842047cd5d11f09214d3187a5c4b72e3bba50e362cc3",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/SolRing.kt": "c36d7f02a6bc2c84e198ff75907fd4444afbc966f71ebd0371ed9f27ecc50f2d",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/leg/cards/Boomerang.kt": "a52815e9384540b23ed32674c5ea904a6605096f48bcb132940176964a69fa09",
+    "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/MercadianMasquesBasicLands.kt": "9d1dbca36008e66a9cf2fe6fccd53550d32320744aee6e415e66ef7be8167b7d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PendingEntryChoices.kt": "571b3583f2ef1307bc6d527365d9c3c5d8ed8c6738617d12a5d9d708b9258c7b",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": "e2259a964c908e1c31d77fcc40af1db65384faf50e6644da0e7540c8d9fb76b9",
+    "web-client/src/components/decisions/BattlefieldSelectionUI.tsx": "642d856b8f017990a4974d9f37e1ab3df6482bc91b1eda090a49e6c1b3c49606",
+    "web-client/src/components/decisions/DecisionUI.tsx": "6f36736d7edca487daa12ec1e81654b009b65572246d9971ef22cc82dd2a69d2",
+    "web-client/src/components/game/GameBoard.tsx": "cfd6df99adbfd6231e55e2322d0c155f16620a7553ca4bb77c28ddd6bcd5e43b",
+    "web-client/src/store/slices/ui/pipelinePhases.ts": "d214b0a5e6b8a1692b8c0c9d6d42fa0c14ed3d1b60d65e4d24a3a4547b121d48",
+    "web-client/src/store/slices/ui/selectionSlice.ts": "02400a8ce7e585ef600ec48a301ae1719c1111a6a813b51c62f8a4e6695e043b"
+  },
+  "exact_names_verified": {
+    "Grizzly Bears": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/GrizzlyBears.kt",
+    "Sol Ring": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lea/cards/SolRing.kt",
+    "Soul Warden": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/exo/cards/SoulWarden.kt",
+    "Boomerang": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/leg/cards/Boomerang.kt",
+    "Island": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/MercadianMasquesBasicLands.kt",
+    "Forest": "mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/mmq/cards/MercadianMasquesBasicLands.kt"
+  },
+  "flow": [
+    {
+      "step": "Pay mana or life",
+      "path": "GameBoard -> selectionSlice -> pipelinePhases -> Explicit payment strategy",
+      "finding": "Existing /P controls select 2 life per pip; BLUE is serialized for U/P. No new UX mechanism proposed."
+    },
+    {
+      "step": "Choose a permanent",
+      "path": "StackResolver/PendingEntryChoices -> SelectCardsDecision -> server routing/enrichment -> DecisionUI -> BattlefieldSelectionUI",
+      "finding": "Selection is zero or one eligible battlefield permanent; useTargetingUI selects board clicks, with Confirm and Select None. This is a non-targeting copy choice despite the generic UI flag name."
+    },
+    {
+      "step": "Resolve and leave",
+      "path": "Existing copied-entry continuations, state updates and zone changes",
+      "finding": "Source review only. Original 18 preserved engine cases cover actual copy, entry and zone-exit assertions; future qualification must execute them."
+    }
+  ],
+  "manual_expectations": [
+    "Reset copy-and-decline scenario; pay four mana including blue, choose opponent Grizzly Bears. New permanent is an untapped 2/2 artifact creature Bear with no counters; original remains tapped 4/4. Soul Warden trigger raises life from20 to21 after resolution.",
+    "In that creature-copy run, cast Boomerang on the new copy using the two remaining Islands. Returned hand card is Phyrexian Metamorph, with printed name/cost/types restored.",
+    "Reset copy-and-decline; pay four mana including blue, choose Sol Ring. New permanent is a noncreature artifact with the copied mana ability; Soul Warden does not trigger.",
+    "Reset copy-and-decline; pay four mana including blue, choose Select None. Printed0/0 artifact creature enters and dies at state-based actions; existing Soul Warden still triggers and raises life to21 when resolved.",
+    "Reset life-payment scenario; explicitly choose2life for U/P and three Forest mana. Life falls20to18; copy opponent Sol Ring as a noncreature artifact. No blue source or life-gain observer exists in this scenario."
+  ],
+  "limitations": [
+    "No browser execution, screenshot, network trace or server runtime evidence yet.",
+    "Not a four-player, hidden-information or competitive admission test.",
+    "No new visual mechanism was introduced, so the add-card skill does not require a new Playwright test for this source-only composition."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
