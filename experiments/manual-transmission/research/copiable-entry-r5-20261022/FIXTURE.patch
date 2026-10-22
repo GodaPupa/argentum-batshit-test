@@ -1,0 +1,12 @@
+diff --git a/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiableFaceDownWardScenarioTest.kt b/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiableFaceDownWardScenarioTest.kt
+index c927276082..c5816b5b00 100644
+--- a/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiableFaceDownWardScenarioTest.kt
++++ b/rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiableFaceDownWardScenarioTest.kt
+@@ -15,6 +15,7 @@ import com.wingedsheep.sdk.model.Deck
+ import com.wingedsheep.sdk.scripting.*
+ import com.wingedsheep.sdk.scripting.effects.*
+ import com.wingedsheep.sdk.scripting.targets.EffectTarget
++import com.wingedsheep.sdk.scripting.values.DynamicAmount
+ import io.kotest.core.spec.style.FunSpec
+ import io.kotest.matchers.nulls.shouldNotBeNull
+ import io.kotest.matchers.shouldBe

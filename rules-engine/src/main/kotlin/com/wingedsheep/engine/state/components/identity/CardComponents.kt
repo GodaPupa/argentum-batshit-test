@@ -106,8 +106,12 @@ data class CardComponent(
      */
     val manaValueOverride: Int? = null,
     /** Intrinsic token text retained through copies; excludes all later ability grants. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
     val copiableTokenAbilities: CopiableTokenAbilities? = null,
     /** Ward from copied face-down characteristics; independent of the concealed card definition. */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
     val copiableFaceDownWard: com.wingedsheep.sdk.scripting.effects.WardCost? = null,
 ) : Component {
     // Convenience accessors
