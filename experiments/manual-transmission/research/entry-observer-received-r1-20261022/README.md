@@ -1,0 +1,11 @@
+# Observer boundary R1 — FAILED, UNADOPTED
+
+Source `c486fe51a3cecc4ebde845371242c791839f1954`, validation `bd76ea5db54ca631bc9366acc80d96b8ae1ee009`, [run 39865679437](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39865679437), job 120127154200. Completed with failure at 2026-10-22T22:48:39Z. One run, one attempt, no duplicates or current related execution.
+
+The 32 preregistered controls matched exactly (21 original assertion failures, 11 passes); all 533 focused cases passed. Broad reports contain 13,660 rows: 13,657 passed, three failed, zero errors/skips. This includes 345 retained focused SDK/snapshot/lint rows; they are not independent samples. All 3,868 engine cases passed. Original Kambal, Meathook Massacre II and Zodiark failures are preserved, with full original XML and source annexes. The 2026 era, ordinary whole-project build and all Assay stages did not run. This source is NOT qualified or adopted.
+
+The artifact is 3,583,373 bytes, SHA-256 `b976f9af177efbce380762c77248f50606c1f706599cef4b43eee6bc36fd6bd6`, in 15 ordered parts; 3,826 ZIP members include 3,807 original JUnit XML files. `python verify.py` reconstructs and audits it without executing tests. The independent receiver reproduced its audit twice; independence means a separate receipt verifier by the same assistant, not an external reviewer. `FAILURE_REVIEW.json` distinguishes observations from unproven hypotheses. No repair was applied before this receipt.
+
+All 118 protected bindings and 23 protected goldens passed the final source check; frozen v0.7 and main remain unchanged. Zero official games or seeds used; both Precision games remain reserved. The old unrelated queued run 34749202144 was left untouched. The outer flock exclusion guard was present; the inner script logged unavailable shlock and ran unlocked inside that guard. Component results confer no competitive admission. The qualified seven-case copied-choice source and the already qualified shared carrier remain separate, intact checkpoints.
+
+Next: resolve the three regressions without weakening original assertions, publish a new immutable candidate/protocol, reinspect activity, then execute only its authorized qualification. Future counter-modifier and Metamorph drafts remain unexecuted; the retired 12-case modifier draft must never be adopted or dispatched.

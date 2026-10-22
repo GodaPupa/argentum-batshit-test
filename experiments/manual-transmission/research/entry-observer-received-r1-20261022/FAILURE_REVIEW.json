@@ -1,0 +1,43 @@
+{
+  "classification": "PRELIMINARY_SOURCE_REVIEW_NOT_RUNTIME_PROOF",
+  "failures": [
+    {
+      "class": "KambalProfiteeringMayorScenarioTest",
+      "confirmed": "Original assertion at line 89 expected opponent life 19, got 20. Original expected value is retained.",
+      "hypothesis": "Per-child entry observation in ForEach splits a single token-copy instruction into separate trigger groups, potentially introducing an unanswered ordering decision. Review generic batch semantics before any repair."
+    },
+    {
+      "class": "MeathookMassacreIIScenarioTest",
+      "confirmed": "Original test rejected a ChooseOptionDecision for two waiting Meathook triggered abilities at line 93.",
+      "hypothesis": "Correct post-resolution grouping now requires an ordering answer absent from the old fixture. Verify rules and preserve every original assertion if adding explicit decision handling."
+    },
+    {
+      "class": "ZodiarkUmbralGodScenarioTest",
+      "confirmed": "Original helper rejected a ChooseOptionDecision at line 61, called by the rounds-down case at line 131.",
+      "hypothesis": "Correct post-resolution grouping now requires an ordering answer absent from the old fixture. Verify rules and preserve every original assertion if adding explicit decision handling."
+    }
+  ],
+  "no_repair_applied": true,
+  "no_test_assertion_modified": true,
+  "no_new_execution_dispatched": true,
+  "original_test_files": {
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/KambalProfiteeringMayorScenarioTest.kt": {
+      "bytes": 5341,
+      "sha256": "1247b9d9d96d5b0228719a150e634f8fe79072f03b13cf9603078bc6a7220fb1",
+      "git_blob": "28c4f48b6b9d8c1d329035c27149fc49e8f85f04",
+      "cases": 4
+    },
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MeathookMassacreIIScenarioTest.kt": {
+      "bytes": 12174,
+      "sha256": "1c041f6cfbffb8f3f061f1e05d46241f211ed2bacf25535e895e0446ff129d28",
+      "git_blob": "3e1c7035b4ecabf40c1d06fbddee14c292675c17",
+      "cases": 6
+    },
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ZodiarkUmbralGodScenarioTest.kt": {
+      "bytes": 6940,
+      "sha256": "af776f8b877cc3d47e8cd70d92c5a6682e2686bfcd33b6860fcf05e31b28f3da",
+      "git_blob": "2d75f49d43363e4af9c7e843acc72f8afb95be66",
+      "cases": 3
+    }
+  }
+}
