@@ -1,0 +1,156 @@
+{
+  "status": "FAILED_UNADOPTED_FIXTURE_REPAIR_REQUIRED",
+  "original_artifact_id": 12447419925,
+  "negative_counts_match_but_three_controls_invalid": true,
+  "negative_expected_first_lines": [
+    114,
+    114,
+    114,
+    114,
+    158,
+    191,
+    207,
+    224
+  ],
+  "negative_observed_first_lines": [
+    114,
+    114,
+    80,
+    80,
+    158,
+    80,
+    207,
+    224
+  ],
+  "findings": [
+    "Three graveyard cases fail at castSpell helper line80 before entry; GameTestDriver.castSpell wraps nonplayer IDs as ChosenTarget.Permanent. Its castSpellWithTargets API accepts the required ChosenTarget.Card. These are not causal entry-control evidence.",
+    "The simultaneous case reaches the legitimate TriggerOrderingContinuation, but the test asserts pendingDecision null before answering it. Do not remove ordering from the engine to satisfy the fixture.",
+    "Five candidate cases passed; all seven earlier copied-choice cases, all ten carrier cases, two SDK cases, and343 snapshot/lint cases passed. Current stage remains unqualified.",
+    "Preserve this original test/source/protocol and all original outputs. Amend only fixture actions in a new isolated candidate; retain every original assertion verbatim and record the exact diff. Repeat controls against the same qualified baseline using the corrected fixture; never relabel this attempt as qualified."
+  ],
+  "original_failures": {
+    "negative": [
+      {
+        "case": "direct copied chained choices precede publication; graveyard=false, serialized=false",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null.",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:114"
+        ]
+      },
+      {
+        "case": "direct copied chained choices precede publication; graveyard=false, serialized=true",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null.",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:114"
+        ]
+      },
+      {
+        "case": "direct copied chained choices precede publication; graveyard=true, serialized=false",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Target must be a card in a graveyard\"",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:80",
+          "PendingCopyEntryScenarioTest.kt:29",
+          "PendingCopyEntryScenarioTest.kt:113"
+        ]
+      },
+      {
+        "case": "direct copied chained choices precede publication; graveyard=true, serialized=true",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Target must be a card in a graveyard\"",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:80",
+          "PendingCopyEntryScenarioTest.kt:29",
+          "PendingCopyEntryScenarioTest.kt:113"
+        ]
+      },
+      {
+        "case": "simultaneous copies exclude every coentrant and publish only after all choices",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null.",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:158"
+        ]
+      },
+      {
+        "case": "declined direct copy asks its own printed choice before entry",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Target must be a card in a graveyard\"",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:80",
+          "PendingCopyEntryScenarioTest.kt:29",
+          "PendingCopyEntryScenarioTest.kt:190"
+        ]
+      },
+      {
+        "case": "pending entry cannot move a later source-zone incarnation",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null.",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:207"
+        ]
+      },
+      {
+        "case": "direct graveyard-copy rider cannot exile a later zone visit after serialized choices",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null.",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:224"
+        ]
+      }
+    ],
+    "focused": [
+      {
+        "case": "direct copied chained choices precede publication; graveyard=true, serialized=false",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Target must be a card in a graveyard\"",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:80",
+          "PendingCopyEntryScenarioTest.kt:29",
+          "PendingCopyEntryScenarioTest.kt:113"
+        ]
+      },
+      {
+        "case": "direct copied chained choices precede publication; graveyard=true, serialized=true",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Target must be a card in a graveyard\"",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:80",
+          "PendingCopyEntryScenarioTest.kt:29",
+          "PendingCopyEntryScenarioTest.kt:113"
+        ]
+      },
+      {
+        "case": "simultaneous copies exclude every coentrant and publish only after all choices",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected null but actual was ChooseOptionDecision(id=r6, playerId=e0, prompt=Choose the next triggered ability to put on the stack (first chosen resolves last), context=DecisionContext(sourceId=null, sourceName=Triggered abilities, phase=CASTING, triggeringEntityId=null, inlineOnTrigger=false, effectHint=null, subjectEntityId=null, abilityIdentity=null), options=[1. Pending Entry Choice Body (Pending Entry Choice Body): a card or permanent would enter the battlefield, you gain 3 life., 2. Pending Entry Choice Body (Pending Entry Choice Body): a card or permanent would enter the battlefield, you gain 3 life.], defaultSearch=null, optionCardIds={0=[c7e83fa8-85fc-4c95-b5b7-af3518e66082], 1=[9edd3c67-2f99-4133-90ce-eb9d0064b981]}, optionMetadata=[], canCancel=false)",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:170"
+        ]
+      },
+      {
+        "case": "declined direct copy asks its own printed choice before entry",
+        "type": "org.opentest4j.AssertionFailedError",
+        "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Target must be a card in a graveyard\"",
+        "original_test_locations": [
+          "PendingCopyEntryScenarioTest.kt:80",
+          "PendingCopyEntryScenarioTest.kt:29",
+          "PendingCopyEntryScenarioTest.kt:190"
+        ]
+      }
+    ]
+  },
+  "not_run": [
+    "broad",
+    "ordinary",
+    "Assay CLI",
+    "Assay touchstone",
+    "Assay differential"
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}
