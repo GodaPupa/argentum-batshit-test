@@ -14,6 +14,7 @@ def collect(directory, module, broad=False):
     for path in sorted(directory.rglob('TEST-*.xml')):
         root = ET.parse(path).getroot()
         cases = root.findall('.//testcase')
+        assert int(root.get('tests')) == len(cases), 'XML suite/row count mismatch'
         rows.append(dict(name=root.get('name').split('.')[-1], tests=len(cases),
                          failures=len(root.findall('.//failure')),
                          errors=len(root.findall('.//error')),
@@ -26,9 +27,9 @@ def collect(directory, module, broad=False):
     (directory/'RESULTS.json').write_text(json.dumps(report, indent=2)+'\n')
     print(json.dumps({k: v for k, v in report.items() if k != 'rows'}))
     assert rows, 'No JUnit execution evidence'
-    assert all(r['tests'] == r['unique'] for r in rows), 'Duplicate case identities'
     assert not any(r['failures'] or r['errors'] or r['skipped'] for r in rows), 'Nonpassing cases retained'
     if not broad:
+        assert all(r['tests'] == r['unique'] for r in rows), 'Duplicate focused case identities'
         expected = json.loads((HERE/'EXPECTED_CASES.json').read_text())[module]
         assert len(rows) == len(expected), 'Missing/extra class'
         assert {r['name']: r['tests'] for r in rows} == expected, 'Class/count mismatch'

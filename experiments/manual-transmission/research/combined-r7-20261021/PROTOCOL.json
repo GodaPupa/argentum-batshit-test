@@ -1,0 +1,29 @@
+{
+  "schema": "MANUAL_COMBINED_R7_INTEGRATION_REPAIR",
+  "parent": "2af9bcd2155e0e14e029c0d2275ebbb89caed766",
+  "failed_original_run": 39718893665,
+  "purpose": "Supply pre-placement checkpoint to both missed AI land-planning entry API callers; fix broad JUnit collector context-name assumption. Original cards, tests, profiles, and experiment settings are unchanged.",
+  "production_delta": "One immutable checkpoint and two arguments; no gear tuning, selection thresholds, weights or decision-policy redesign.",
+  "collector_delta": "Broad JUnit rows have declared counts and can share leaf names in distinct Kotest contexts. Preserve row and unique-name counts. Focused original bank still rejects duplicate names.",
+  "original_expected_cases": 200,
+  "additional_registry_case": 1,
+  "expected_registry": {
+    "requested_slots": 800,
+    "registered_slots": 482,
+    "manual_registered": 90,
+    "opponent_registered": 392
+  },
+  "validation": [
+    "Fresh 200 original cases and 800-slot registry",
+    "Full rules-engine and all nine era suites",
+    "Full AI *Test classes with no benchmark, arena or experiment opt-in flags",
+    "Reviewable snapshot update restricted to mission source additions and THS Assay differential"
+  ],
+  "gameplay_authorized": false,
+  "seed_generation_authorized": false,
+  "official_capability": 0,
+  "official_primary": 0,
+  "precision_used": 10,
+  "precision_reserved": 2,
+  "entry_snapshot_candidate": "47079c452f681f03a627ba1845203457355f8376 remains separate, untested and not integrated"
+}
