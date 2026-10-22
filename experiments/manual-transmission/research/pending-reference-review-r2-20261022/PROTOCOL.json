@@ -1,0 +1,58 @@
+{
+  "status": "PREREGISTERED_UNCOMPILED_UNTESTED_UNADOPTED",
+  "prospective_baseline": "7b84856bba24923a9e8efc78461433f70ad3145c",
+  "baseline_requirement": "Current baseline must finish and original artifacts be audited. No overlapping work; entry-snapshot qualification also precedes this stage.",
+  "read_only_finding": "PendingEntryCopyContinuation and PendingEntryChoiceContinuation are absent from both ObjectReferencePropagation AnswerContinuation arms. ContinuationResumerRegistry therefore cannot authorize their primary events before the outer continuation runs.",
+  "test_sha256": "844487e43a4654b86c9d77882f6495f22977db65e92f3ac92fcd73c89ef6c8fd",
+  "cases": [
+    {
+      "name": "outer Self follows only the primary pending entry move; copy=false, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "outer Self follows only the primary pending entry move; copy=false, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "outer Self follows only the primary pending entry move; copy=true, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "outer Self follows only the primary pending entry move; copy=true, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "unpaused primary entry already carries Self into the new object",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "serialized pending entry never authorizes a later unrelated graveyard visit",
+      "predicted_baseline": "pass"
+    }
+  ],
+  "negative_controls": {
+    "passed": 2,
+    "assertion_failures": 4,
+    "errors": 0,
+    "skipped": 0
+  },
+  "planned_fix": "Expose plan.context.objectReferences and copy updated refs back into each pending plan; retain existing resolution-key scoping and primary-event authorization. Do not authorize unrelated source visits or bypass object identity.",
+  "limitations": [
+    "Engine Self reference path only; targeted cards/TriggeringEntity/other bindings need applicable regression coverage",
+    "No full entry, card, multiplayer or competitive admission"
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "prior_untested_checkpoint": "60db88c11d6116304208f2fbfb7e7e69ff71dcd1",
+  "fixture_review_amendment": {
+    "reason": "Static review found EffectExecutorRegistry.withCurrentObjectReferences does not capture a missing environment; the synthetic direct-execution fixture must explicitly supply captured source identity and resolutionKey as real stack resolution does. Without this, baseline Self can be late-bound and the proposed negative is invalid. Found before any compilation/test.",
+    "original_test_sha256": "7d38917148971cfd67ec8dea35a17cdee9a30afa6bcaffb89b5deb5ee65e231c",
+    "original_assertions_preserved": true,
+    "tests_executed": false
+  }
+}
