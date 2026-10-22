@@ -1,0 +1,136 @@
+name: Manual copied as-enters spell choices qualification
+on:
+  push:
+    branches: [validation/manual-copied-as-enters-choices-r2-20261022]
+    paths: ['.github/workflows/manual-copied-as-enters-choices-r2-20261022.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-copied-as-enters-choices-r2-20261022
+  cancel-in-progress: false
+env:
+  SOURCE: 84994114025d0138305ed9931c00b957f9d80597
+  BASELINE: 31e1267ef8f0398bd74f1ed1fcaa3c609113e5ce
+  RECORD: experiments/manual-transmission/research/copied-as-enters-choices-r2-20261022
+  WORKFLOW: .github/workflows/manual-copied-as-enters-choices-r2-20261022.yml
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 6}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install recipe runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+      - name: Bind candidate, protected tests, deck, locks and goldens
+        run: python3 "$RECORD/bind.py"
+      - name: Run unchanged new seven cases against the carrier baseline
+        id: negative
+        run: |
+          mkdir -p copied-choice-evidence/negative
+          git restore --source="$BASELINE" -- rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
+          BIND_MODE=negative python3 "$RECORD/bind.py"
+          set +e
+          just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" negative 2>&1 | tee copied-choice-evidence/negative/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > copied-choice-evidence/negative/exit.txt
+          exit 0
+      - name: Require seven actual assertion failures, no compiler failure or skips
+        if: always() && steps.negative.outcome != 'skipped'
+        env: {STAGE: negative}
+        run: python3 "$RECORD/collect.py"
+      - name: Restore and rebind exactly the candidate source
+        if: always()
+        run: |
+          git restore --source=HEAD -- rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt
+          python3 "$RECORD/bind.py"
+      - name: New choices, unchanged carrier, SDK, snapshots and lint
+        id: focused
+        run: |
+          mkdir -p copied-choice-evidence/focused
+          set +e
+          just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" focused 2>&1 | tee copied-choice-evidence/focused/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > copied-choice-evidence/focused/exit.txt
+          exit "$rc"
+      - name: Receive focused original reports
+        if: always() && steps.focused.outcome != 'skipped'
+        env: {STAGE: focused}
+        run: python3 "$RECORD/collect.py"
+      - name: Complete engine and all nine card-era scenario suites
+        id: broad
+        run: |
+          mkdir -p copied-choice-evidence/broad
+          set +e
+          just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" broad 2>&1 | tee copied-choice-evidence/broad/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > copied-choice-evidence/broad/exit.txt
+          exit "$rc"
+      - name: Receive every broad report
+        if: always() && steps.broad.outcome != 'skipped'
+        env: {STAGE: broad}
+        run: python3 "$RECORD/collect.py"
+      - name: Ordinary whole-project build with routine AI tests
+        id: ordinary
+        run: |
+          mkdir -p copied-choice-evidence/ordinary
+          set +e
+          just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" ordinary 2>&1 | tee copied-choice-evidence/ordinary/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > copied-choice-evidence/ordinary/exit.txt
+          exit "$rc"
+      - name: Receive ordinary results and require exact baseline skips
+        if: always() && steps.ordinary.outcome != 'skipped'
+        env: {STAGE: ordinary}
+        run: python3 "$RECORD/collect.py"
+      - name: Build candidate Assay CLI
+        run: |
+          mkdir -p copied-choice-evidence/assay
+          set +e
+          just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" assay-build 2>&1 | tee copied-choice-evidence/assay/build.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > copied-choice-evidence/assay/build-exit.txt
+          exit "$rc"
+      - name: Assay 2000-card touchstone and corpus identity
+        run: |
+          set +e
+          just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" assay 2>&1 | tee copied-choice-evidence/assay/gate.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > copied-choice-evidence/assay/gate-exit.txt
+          if test -f "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz"; then
+            sha256sum "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" > copied-choice-evidence/assay/oracle-bulk-sha256.txt
+            wc -c "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" > copied-choice-evidence/assay/oracle-bulk-bytes.txt
+          fi
+          exit "$rc"
+      - name: Preserve full golden differential for classification
+        run: |
+          set +e
+          just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" assay-differential 2>&1 | tee copied-choice-evidence/assay/differential.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > copied-choice-evidence/assay/differential-exit.txt
+          exit "$rc"
+      - name: Recheck all source and safeguards
+        if: always()
+        run: python3 "$RECORD/bind.py"
+      - name: Hash complete evidence inventory
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          from pathlib import Path
+          import hashlib
+          out=Path('copied-choice-evidence');out.mkdir(exist_ok=True)
+          manifest=out/'SHA256SUMS'
+          manifest.write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p.relative_to(out))+'\n' for p in sorted(out.rglob('*')) if p.is_file() and p != manifest))
+          PYCODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-copied-choices-${{ github.run_id }}
+          path: copied-choice-evidence/
+          retention-days: 90
+          if-no-files-found: error
