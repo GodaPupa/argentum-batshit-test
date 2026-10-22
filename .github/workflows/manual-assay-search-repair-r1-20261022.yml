@@ -1,0 +1,135 @@
+name: Manual authorized Assay repair and ordinary build
+on:
+  push:
+    branches: [validation/manual-assay-search-repair-r1-20261022]
+    paths: ['.github/workflows/manual-assay-search-repair-r1-20261022.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-assay-search-repair-r1-20261022
+  cancel-in-progress: false
+env:
+  SOURCE: 6cf30d14d4be570bc1786e48079549cf850fa16a
+  RECORD: experiments/manual-transmission/research/assay-search-repair-r1-20261022
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+jobs:
+  negative-control:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env: {STAGE: negative-control}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 3}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind unchanged assertions, deck, goldens and source
+        run: python3 "$RECORD/bind.py"
+      - name: Restore only old production matcher in isolated control checkout
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          from pathlib import Path
+          path='oracle-assay/src/main/kotlin/com/wingedsheep/assay/grammar/Library.kt'
+          parent='a9ea02595bcdc681778b1e003e1b79d51737aeb2'
+          Path(path).write_bytes(subprocess.check_output(['git','show',parent+':'+path]))
+          actual=subprocess.check_output(['git','hash-object',path],text=True).strip()
+          assert actual=='483dbaa6fddf20fe276d0ff6c592f2980d2088fe'
+          Path('repair-evidence/control-production-blob.txt').write_text(actual+'\n')
+          PY
+      - name: Execute original failures plus new regression sensitivity
+        run: |
+          set +e
+          scripts/gradle-locked :oracle-assay:test --tests '*ManaValuesTest' --tests '*SubtypesTest' --tests '*LibrarySearchTest' --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1 2>&1 | tee repair-evidence/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > repair-evidence/exit.txt
+          test "$rc" -ne 0
+      - name: Require exactly the seven expected failed cases
+        if: always()
+        run: python3 "$RECORD/collect.py"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-assay-search-negative-control-${{ github.run_id }}
+          path: repair-evidence/
+          retention-days: 90
+          if-no-files-found: error
+  assay:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env: {STAGE: assay}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 3}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind unchanged assertions, deck, goldens and source
+        run: python3 "$RECORD/bind.py"
+      - name: Execute every Assay test and build the CLI
+        run: |
+          set +e
+          scripts/gradle-locked :oracle-assay:test :oracle-assay:installDist --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1 2>&1 | tee repair-evidence/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > repair-evidence/exit.txt
+          exit "$rc"
+      - name: Full current Oracle corpus touchstone
+        run: |
+          set +e
+          oracle-assay/build/install/oracle-assay/bin/oracle-assay gate --top 100 2>&1 | tee repair-evidence/gate.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > repair-evidence/gate-exit.txt
+          exit "$rc"
+      - name: Full golden differential with all divergences retained
+        run: |
+          set +e
+          oracle-assay/build/install/oracle-assay/bin/oracle-assay differential --top 10000 2>&1 | tee repair-evidence/differential.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > repair-evidence/differential-exit.txt
+          exit "$rc"
+      - name: Preserve corpus identity
+        if: always()
+        run: |
+          if test -f "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz"; then
+            sha256sum "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" > repair-evidence/oracle-bulk-sha256.txt
+            wc -c "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" > repair-evidence/oracle-bulk-bytes.txt
+          fi
+      - name: Receive all repaired-source tests and gates
+        if: always()
+        run: python3 "$RECORD/collect.py"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-assay-search-qualified-${{ github.run_id }}
+          path: repair-evidence/
+          retention-days: 90
+          if-no-files-found: error
+  ordinary-build:
+    needs: [negative-control, assay]
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    env: {STAGE: ordinary-build}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 3}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind unchanged assertions, deck, goldens and source
+        run: python3 "$RECORD/bind.py"
+      - name: Ordinary whole-project build graph with routine AI Test scope
+        run: |
+          set +e
+          scripts/gradle-locked build :ai:test --tests '*Test' --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1 2>&1 | tee repair-evidence/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > repair-evidence/exit.txt
+          exit "$rc"
+      - name: Preserve every original build result and separate skips
+        if: always()
+        run: python3 "$RECORD/collect.py"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-assay-search-ordinary-build-${{ github.run_id }}
+          path: repair-evidence/
+          retention-days: 90
+          if-no-files-found: error
