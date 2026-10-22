@@ -1,0 +1,30 @@
+{
+  "schema": "MANUAL_R7_ORIGINAL_EVIDENCE_RECEIVING_V1",
+  "preregistered_before_ai_execution": true,
+  "validation_run": 39720198409,
+  "validation_sha": "7913176c408d0a1a9251b21bfe95ee2ec409100c",
+  "source_sha": "70213241e533734856e05a6df3ca3b4f59ec7b02",
+  "purpose": "Read and reconcile original CI artifacts without re-executing Kotlin or changing any test result.",
+  "required_focused_cases": 200,
+  "required_registry_case": 1,
+  "expected_registry": {
+    "registered_slots": 482,
+    "manual_registered": 90,
+    "opponent_registered": 392
+  },
+  "allowed_intentionally_excluded_tests": [
+    {
+      "class": "com.wingedsheep.ai.arena.ArenaBudgetScalingTest",
+      "name": "budget scaling: strength is monotone in the decision budget",
+      "source_path": "ai/src/test/kotlin/com/wingedsheep/ai/arena/ArenaBudgetScalingTest.kt",
+      "source_blob": "1f29a21fd9c07c90d45d7b63c5fb384f20313196",
+      "reason": "Source explicitly disables this opt-in 300-games-per-rung benchmark unless arenaBudgetScaling=true. The validation never enables this experiment. Count as excluded/skipped, never as passed."
+    }
+  ],
+  "failure_policy": "Any unexpected skipped case, failed/error case, missing XML, failed Kotlin execution, wrong source, artifact mismatch or unrelated snapshot change remains a blocking failure. Original GitHub job status remains unchanged even if its collector rejects the one deliberate benchmark skip.",
+  "full_game_admission": false,
+  "official_capability": 0,
+  "official_primary": 0,
+  "precision_reserved": 2,
+  "independent_review": false
+}
