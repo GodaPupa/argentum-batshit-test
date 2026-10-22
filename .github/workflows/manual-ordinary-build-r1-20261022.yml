@@ -1,0 +1,65 @@
+name: Manual ordinary whole-project build (no official games)
+on:
+  push:
+    branches: [validation/manual-ordinary-build-r1-20261022]
+    paths: ['.github/workflows/manual-ordinary-build-r1-20261022.yml']
+permissions: {contents: read, actions: read}
+concurrency:
+  group: manual-ordinary-build-r1-20261022
+  cancel-in-progress: false
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  RECORD: experiments/manual-transmission/research/ordinary-build-r1-20261022
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 3}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind source, goldens, and successful receiving originals
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p ordinary-evidence
+          test "$(git rev-parse HEAD^)" = a9ea02595bcdc681778b1e003e1b79d51737aeb2
+          test "$(git diff --name-only HEAD^ HEAD)" = .github/workflows/manual-ordinary-build-r1-20261022.yml
+          git rev-parse HEAD > ordinary-evidence/validation-sha.txt
+          git rev-parse HEAD^ > ordinary-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > ordinary-evidence/tree.txt
+          python3 - <<'PY' | tee ordinary-evidence/source-receiving.json
+          import hashlib,json,os,subprocess
+          from pathlib import Path
+          record=Path(os.environ['RECORD'])
+          for item in json.loads((record/'GOLDENS.json').read_text()):
+              assert hashlib.sha256(Path(item['path']).read_bytes()).hexdigest()==item['sha256']
+          frozen='experiments/manual-transmission/control/v0.7.decklist.txt'
+          assert subprocess.check_output(['git','rev-parse','HEAD:'+frozen],text=True).strip()=='c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89'
+          runs=[]
+          for run_id,sha in [(39723738168,'21c77e717980345fd7d007183ddaf8c8c67d2643'),(39722000171,'58591e802eb59e49d790db5f683dfe8fc6b31df7')]:
+              run=json.loads(subprocess.check_output(['gh','api',f'/repos/GodaPupa/argentum-batshit-test/actions/runs/{run_id}'],text=True))
+              assert run['head_sha']==sha and run['conclusion']=='success' and run['run_attempt']==1
+              runs.append({k:run[k] for k in ['id','head_sha','status','conclusion','run_attempt']})
+          print(json.dumps({'goldens':23,'receiving':runs,'official_game_authority':False},indent=2))
+          PY
+      - name: Execute build graph with routine AI Test scope
+        run: |
+          set +e
+          scripts/gradle-locked build :ai:test --tests '*Test' --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1 2>&1 | tee ordinary-evidence/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > ordinary-evidence/exit.txt
+          exit "$rc"
+      - name: Preserve every original JUnit result and separate skips
+        if: always()
+        run: python3 "$RECORD/collect.py"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-ordinary-build-r1-${{ github.run_id }}
+          path: ordinary-evidence/
+          retention-days: 90
+          if-no-files-found: error
