@@ -1,0 +1,82 @@
+{
+  "schema": "ARGENTUM_MANUAL_PURPHOROS_REVIEWED_ENGINE_RECEIVE_R3_20261021",
+  "status": "EXPERIMENTAL_DONOR_COMPOSITION_PREREGISTERED_BEFORE_RECEIVING",
+  "date": "2026-10-21",
+  "purpose": "Check whether 17 source-reviewed Purphoros engine semantics files accepted in earlier 25-case work can be received byte-identically onto fixed current-main-ancestry R2 after resolving the polymorphic JSON wire conflict. Isolate this prospective integration; never merge a broad donor runtime solely on bounded green card tests.",
+  "baseline_head": "70caeccfa5a72f1a13a204ba35503afc8a4d1162",
+  "baseline_first_red": {
+    "run": 39702798101,
+    "tests": 25,
+    "failed": 22,
+    "issue": "kotlinx polymorphic type discriminator"
+  },
+  "baseline_after_serial": {
+    "run": 39713129601,
+    "tests": 25,
+    "failed": 6,
+    "passed": 19,
+    "modifier_tests_passed": 3,
+    "original_artifact": 12398510659,
+    "sha256": "1393a9827e8052e2a7e0f4c8d37bc5ba9de79ddde89c2f1907ff4e1534390ef1"
+  },
+  "remaining_failures": [
+    "God subtype after losing Creature",
+    "devotion after control changes",
+    "attacking God stops creature leaves combat",
+    "blocking God stops creature leaves combat",
+    "pre-entry devotion 3 other red pips replacement timing",
+    "pre-entry devotion 4 other red pips replacement timing"
+  ],
+  "historical_donor_ref": "candidate/manual-exact-composition-v3-20261003",
+  "historical_review": "Historical PR #194 separately reviewed source tests and Purphoros ETB/type/devotion semantics; this new source combination is NOT automatically accepted.",
+  "exact_reviewed_production_source_files": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt": "026b521033daf0856c8d3475eed0b1e062a0c94a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt": "6ee8245bc6a9d6dedc1aa3a54dd9112ef3f9a056",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt": "6e633dcb73320a38248e1913c38d5c4d77ef9cfb",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/land/PlayLandHandler.kt": "1eede4b53b416b5692d5a9c2b241092fe38d1204",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EnterTappedReplacements.kt": "38ce2e655ab920914e12f44b83262c26b1a51ac2",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EnterUntappedReplacements.kt": "8e249b9230e53ce5eeecb79b4834b862d97a82c8",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": "5d3a49519e39402aed6bc4f6991b92e96cd13f18",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreatePredefinedTokenExecutor.kt": "99bdbfcafc8e9707852c1e31f557491a30b8d4e6",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfChosenPermanentExecutor.kt": "1f87a60508b23c6f12710633b9166ae3d106de5d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfEquippedCreatureExecutor.kt": "de0b8f2dc0d649568348c7e6ec47e5cb188ff16b",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfSourceExecutor.kt": "e29d4d02c3256fdcf88e6afae8f7d6bc1210073b",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt": "6164206e7d70f06ea699c01bb6106f30f434baa8",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt": "f95c862603d4bf8b707d69e0736e3190a41c2517",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenCreationReplacementHelper.kt": "6249dc8b54f4c32063886f35785fdbece2516b80",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenFromDefinition.kt": "82597ebe26f84de65a52372d33342cfc29344d39",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/StateProjector.kt": "a0c05e14b8dc34dc01a7d5dfeef059b23ec3abfa",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": "addfc4453e73a4745d8290b517eb7bf090474b1d"
+  },
+  "expected_production_file_changes": 17,
+  "preserve_original_other_blobs": {
+    "v07": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "purphoros_card": "023dda6e17ca31ef036f17cc979b4a6efc2c5297",
+    "original_25_test": "82f15bba7a09dc5bb898fe8d3f661f03757c89ed",
+    "poly_modifier_projection": "9ce21dea649168e5b6ed86668ced82f9f1e5af48",
+    "current_main_ai": "43bbad79273806f56703fad420e9f6a495d05309",
+    "current_mana_solver": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "current_frozen_parent": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "land_spell_guard": "dd4c000b13663a03ec6d7b79e62d05ab7dcb737f"
+  },
+  "required_tests": [
+    "Compile integrated rules engine; all 25 unmodified original Purphoros JUnit scenarios pass (including six documented failures)",
+    "All three existing polymorphic modifier JSON regression cases pass",
+    "Preserve source-bound immutable hashes and raw JUnit even on RED",
+    "After 28/28 component green, independently qualify broad engine and R3 frozen 800 slot registry on this exact combination before any other composition or admission"
+  ],
+  "limits": {
+    "no_game": true,
+    "no_new_seeds": true,
+    "no_main_merge": true,
+    "no_ai_policy_change": true,
+    "no_v07_deck_change": true,
+    "no_official_competitive_win_rate": true,
+    "no_automatic_authoritative_engine_promotion": true,
+    "precision_used": 10,
+    "precision_reserved": 2,
+    "phase2_capability_admitted": 0,
+    "phase2_primary_admitted": 0
+  },
+  "decision_rule": "Source ONLY; if Kotlin compile or any original case fails, HOLD. If all pass, proof limited to these scenarios on this 17-source composed experimental branch, not current canonical main or all original deck/play/pilot/competitive readiness."
+}
