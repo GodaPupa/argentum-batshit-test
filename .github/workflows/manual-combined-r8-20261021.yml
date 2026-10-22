@@ -1,0 +1,322 @@
+name: Manual combined R8 qualification (201 revised-bank cases, NO GAMES)
+on:
+  push:
+    branches: [validation/manual-combined-r8-20261021]
+    paths: ['.github/workflows/manual-combined-r8-20261021.yml']
+permissions: {contents: read, actions: read}
+concurrency:
+  group: manual-combined-r8-20261021
+  cancel-in-progress: false
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  RECORD: experiments/manual-transmission/research/combined-r8-20261021
+jobs:
+  source:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 50}
+      - name: Bind exact source and live successful predecessor runs
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          test "$(git rev-parse HEAD^)" = bc9ba32f857a7d224ca5beef6718e296cf0e58b0
+          test "$(git diff --name-only HEAD^ HEAD)" = .github/workflows/manual-combined-r8-20261021.yml
+          python3 "$RECORD/source_guard.py" | tee evidence/source.log
+          python3 - <<'PY' | tee evidence/predecessors.json
+          from pathlib import Path
+          import json,subprocess,os
+          p=json.loads(Path('experiments/manual-transmission/research/combined-r6-20261021/PROTOCOL.json').read_text())
+          records=[]
+          for run,sha in p['requires_success_runs'].items():
+              r=json.loads(subprocess.check_output(['gh','api','/repos/GodaPupa/argentum-batshit-test/actions/runs/'+run],text=True))
+              record={k:r[k] for k in ['id','head_sha','status','conclusion','run_attempt']}
+              records.append(record)
+              assert (r['head_sha'],r['status'],r['conclusion'],r['run_attempt'])==(sha,'completed','success',1),record
+          print(json.dumps(records,indent=2))
+          PY
+          git rev-parse HEAD > evidence/validation-sha.txt
+          git rev-parse HEAD^ > evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > evidence/tree.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: 'combined-r8-source-${{ github.run_id }}', path: evidence/, retention-days: 90}
+  original-cases:
+    needs: source
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        module: ['rules-engine','1993-1999','2003-2007','2008-2016','2017-2022','2024','gym']
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Execute source-bound revised case bank
+        env: {MODULE: '${{ matrix.module }}'}
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import os,json,subprocess,shutil
+          m=os.environ['MODULE'];p=Path('evidence')/m;p.mkdir(parents=True)
+          root=m if m in ('gym','rules-engine') else 'mtg-sets/'+m+'/tests'
+          task=':'+root.replace('/',':')
+          cases=json.loads((Path(os.environ['RECORD'])/'EXPECTED_CASES.json').read_text())[m]
+          cmd=['scripts/gradle-locked',task+':cleanTest',task+':test']
+          for c in cases:cmd+=['--tests','*'+c]
+          cmd+=['--no-build-cache','--no-daemon','--console=plain','--stacktrace']
+          (p/'command.json').write_text(json.dumps(cmd)+'\n')
+          with (p/'gradle.log').open('w') as log:
+              proc=subprocess.Popen(cmd,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,text=True)
+              for line in proc.stdout: print(line,end='');log.write(line)
+              code=proc.wait()
+          (p/'exit.txt').write_text(str(code)+'\n')
+          xml=Path(root)/'build/test-results/test'
+          if xml.exists():shutil.copytree(xml,p/'junit',dirs_exist_ok=True)
+          raise SystemExit(code)
+          PY
+      - name: Reconcile actual cases and hash retained originals
+        if: always()
+        run: |
+          set +e
+          python3 "$RECORD/collect.py" focused 'evidence/${{ matrix.module }}' '${{ matrix.module }}'
+          rc=$?
+          python3 "$RECORD/collect.py" hash 'evidence/${{ matrix.module }}'
+          exit "$rc"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: combined-r8-cases-${{ github.run_id }}-${{ matrix.module }}
+          path: evidence/
+          retention-days: 90
+          if-no-files-found: error
+  registry:
+    needs: source
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      MT_P2_AUDIT_INPUT: ${{ github.workspace }}/registry-evidence/source/registry-requests.json
+      MT_P2_AUDIT_OUTPUT: ${{ github.workspace }}/registry-evidence/registry
+      MT_P2_GATE_OUTPUT: ${{ github.workspace }}/registry-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/checkout@v4
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          persist-credentials: false
+          sparse-checkout: experiments/manual-transmission
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Execute exact frozen 800-slot registry audit
+        run: |
+          set -euo pipefail
+          mkdir -p registry-evidence/source registry-evidence/registry
+          test "$(git -C .phase1-source rev-parse HEAD)" = e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py --phase1 .phase1-source --out registry-evidence/source | tee registry-evidence/bootstrap.log
+          scripts/gradle-locked :gym:cleanTest :gym:test --tests '*ManualTransmissionPhaseTwoRegistryAuditTest' --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee registry-evidence/gradle.log
+          python3 experiments/manual-transmission-phase2/audit_composed_registry_gate.py | tee registry-evidence/audit.log
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,os
+          p=json.loads((Path(os.environ['RECORD'])/'PROTOCOL.json').read_text())
+          r=json.loads(Path('registry-evidence/COMPOSED_R1_LIVE_REGISTRY_GATE.json').read_text())
+          assert all(r['totals'][k]==v for k,v in p['expected_registry'].items()),r['totals']
+          assert r['status']=='HOLD_REGISTRY_COVERAGE'
+          assert r['actual_games_initialized']==r['official_results']==0
+          print('482/800 actual registry slots, Manual 90/100, opponents 392/700; HOLD; no games')
+          PY
+      - name: Preserve original XML and manifest
+        if: always()
+        run: |
+          mkdir -p registry-evidence/junit
+          cp -a gym/build/test-results/test/. registry-evidence/junit/ || true
+          python3 "$RECORD/collect.py" hash registry-evidence
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: combined-r8-registry-${{ github.run_id }}
+          path: registry-evidence/
+          retention-days: 90
+          if-no-files-found: error
+  combined-verdict:
+    needs: [source,original-cases,registry]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/download-artifact@v4
+        with: {pattern: 'combined-r8-cases-${{ github.run_id }}-*', path: evidence, merge-multiple: true}
+      - uses: actions/download-artifact@v4
+        with: {name: 'combined-r8-registry-${{ github.run_id }}', path: registry-evidence}
+      - name: Reconcile 201 revised-bank cases and fresh registry together
+        env:
+          SOURCE: ${{ needs.source.result }}
+          CASES: ${{ needs.original-cases.result }}
+          REGISTRY: ${{ needs.registry.result }}
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,os,subprocess
+          assert all(os.environ[k]=='success' for k in ['SOURCE','CASES','REGISTRY'])
+          p=Path(os.environ['RECORD']);expected=json.loads((p/'EXPECTED_CASES.json').read_text())
+          for module in expected:subprocess.run(['python3',str(p/'collect.py'),'focused','evidence/'+module,module],check=True)
+          r=json.loads(Path('registry-evidence/COMPOSED_R1_LIVE_REGISTRY_GATE.json').read_text())
+          protocol=json.loads((p/'PROTOCOL.json').read_text())
+          assert all(r['totals'][k]==v for k,v in protocol['expected_registry'].items())
+          assert sum(sum(v.values()) for v in expected.values())==201
+          result={'status':'201_REVISED_BANK_GREEN_482_REGISTRY_SOURCE_ONLY_HOLD','validation_commit':os.environ['GITHUB_SHA'],'mechanics_catalog_cases':201,'case_composition':{'unchanged':199,'revised_catalog_control':1,'new_full_catalog_control':1},'additional_registry_case':1,'registry_totals':r['totals'],'official_capability':0,'official_primary':0,'precision_reserved':2,'full_game_admission':False,'broad_receiving':'SEPARATE_REQUIRED_JOB'}
+          Path('COMBINED_R8_RESULT.json').write_text(json.dumps(result,indent=2)+'\n')
+          print(json.dumps(result,indent=2))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: 'combined-r8-verdict-${{ github.run_id }}', path: COMBINED_R8_RESULT.json, retention-days: 90}
+  broad-receiving:
+    needs: combined-verdict
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        module: ['rules-engine','1993-1999','2000-2002','2003-2007','2008-2016','2017-2022','2023','2024','2025','2026']
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Execute full engine or card-era suite
+        run: |
+          set -euo pipefail
+          module='${{ matrix.module }}'
+          if [ "$module" = rules-engine ];then root=rules-engine;else root="mtg-sets/$module/tests";fi
+          task=":${root//\//:}"
+          mkdir -p "broad/$module/junit"
+          set +e
+          scripts/gradle-locked "$task:cleanTest" "$task:test" --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee "broad/$module/gradle.log"
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > "broad/$module/exit.txt"
+          cp -a "$root/build/test-results/test/." "broad/$module/junit/" || true
+          exit "$rc"
+      - name: Reconcile every broad case and retain all originals
+        if: always()
+        run: |
+          set +e
+          python3 "$RECORD/collect.py" broad 'broad/${{ matrix.module }}' '${{ matrix.module }}'
+          rc=$?
+          python3 "$RECORD/collect.py" hash 'broad/${{ matrix.module }}'
+          exit "$rc"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: combined-r8-broad-${{ github.run_id }}-${{ matrix.module }}
+          path: broad/
+          retention-days: 90
+          if-no-files-found: error
+  assay:
+    needs: combined-verdict
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Regenerate reviewable snapshots and reject unrelated card drift
+        run: |
+          set -euo pipefail
+          mkdir -p assay-evidence/before assay-evidence/generated assay-evidence/snapshot-junit
+          cp -a mtg-sets/src/test/resources/snapshots/cards/. assay-evidence/before/
+          scripts/gradle-locked :mtg-sets:cleanTest :mtg-sets:test --tests '*CardDefinitionSnapshotTest' --tests '*CardLintTest' -DupdateSnapshots=true --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee assay-evidence/snapshots.log
+          python3 - <<'PYGOLD'
+          from pathlib import Path
+          import json,re,subprocess,shutil
+          def bank(root):
+              result={}
+              for f in root.glob('*.json'):
+                  for section in re.split(r'^// ',f.read_text(),flags=re.M)[1:]:
+                      name,data=section.split('\n',1); key=(f.name,name)
+                      assert key not in result
+                      result[key]=json.loads(data)
+              return result
+          before=bank(Path('assay-evidence/before'))
+          after=bank(Path('mtg-sets/src/test/resources/snapshots/cards'))
+          allowed=set()
+          changes=subprocess.check_output(['git','diff','--name-status','37a603617a03dfd2d81b39dae004f7f336a70dfc','HEAD','--','mtg-sets'],text=True)
+          for row in changes.splitlines():
+              status,path=row.split('\t',1)
+              if '/src/main/' not in path or '/cards/' not in path:continue
+              assert status=='A',row
+              names=re.findall(r'card\("([^"\n]+)"\)',Path(path).read_text())
+              assert len(names)==1,(path,names)
+              setcode=path.split('/definitions/',1)[1].split('/',1)[0].upper()
+              allowed.add((setcode+'.json',names[0]))
+          added=set(after)-set(before)
+          removed=set(before)-set(after)
+          modified={k for k in set(before)&set(after) if before[k]!=after[k]}
+          report={'added':sorted(added),'removed':sorted(removed),'modified':sorted(modified),'expected_additions':sorted(allowed)}
+          Path('assay-evidence/snapshot-delta.json').write_text(json.dumps(report,indent=2)+'\n')
+          assert not removed and not modified,report
+          assert added==allowed,report
+          assert ('THS.json','Purphoros, God of the Forge') in added
+          for file in {k[0] for k in added}:shutil.copyfile(Path('mtg-sets/src/test/resources/snapshots/cards')/file,Path('assay-evidence/generated')/file)
+          print('Generated snapshot delta contains only',len(added),'declared mission card additions; originals retained; not committed or independently approved')
+          PYGOLD
+      - name: Build and run affected-set Assay against generated current snapshots
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :oracle-assay:installDist --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee assay-evidence/build.log
+          oracle-assay/build/install/oracle-assay/bin/oracle-assay differential --set THS --top 200 2>&1 | tee assay-evidence/differential-ths.log
+      - name: Preserve snapshot execution and hashes
+        if: always()
+        run: |
+          mkdir -p assay-evidence/snapshot-junit
+          cp -a mtg-sets/build/test-results/test/. assay-evidence/snapshot-junit/ || true
+          git diff --stat > assay-evidence/working-delta.txt
+          python3 "$RECORD/collect.py" hash assay-evidence
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: 'combined-r8-assay-${{ github.run_id }}', path: assay-evidence/, retention-days: 90}
+  ai-receiving:
+    needs: combined-verdict
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Execute AI regression Test classes without experiment opt-ins
+        run: |
+          set -euo pipefail
+          mkdir -p ai-evidence/junit
+          set +e
+          scripts/gradle-locked :ai:cleanTest :ai:test --tests '*Test' --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee ai-evidence/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > ai-evidence/exit.txt
+          cp -a ai/build/test-results/test/. ai-evidence/junit/ || true
+          exit "$rc"
+      - name: Reconcile actual AI regression rows
+        if: always()
+        run: |
+          set +e
+          python3 "$RECORD/collect.py" broad ai-evidence ai
+          rc=$?
+          python3 "$RECORD/collect.py" hash ai-evidence
+          exit "$rc"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: {name: 'combined-r8-ai-${{ github.run_id }}', path: ai-evidence/, retention-days: 90}
