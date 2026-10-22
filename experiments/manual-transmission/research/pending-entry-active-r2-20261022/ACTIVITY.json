@@ -1,0 +1,70 @@
+{
+  "observed_utc": "2026-10-22T18:22:20.172Z",
+  "status": "PENDING_ENTRY_R2_ACTIVE_UNTESTED_UNADOPTED",
+  "source": "7b84856bba24923a9e8efc78461433f70ad3145c",
+  "source_tree": "7f0bb6ceb8fec8d1d3314c246f271ba4a5cfb519",
+  "validation": "a82a0ed35d5925d0c0a34b7b1b27359c3e364990",
+  "validation_tree": "6dccfe179b1f774392d4b5cae876d8a199d3168c",
+  "workflow_sha256": "b55e72062f1af7b84871c6c6b2da595c7c8a1e69c272955c8a9ae5650fd8bdb2",
+  "test_sha256": "b0acaa3edb30d44eb698518fcd76ce579c269103bbabcf3c5629078f1910a514",
+  "runs": [
+    {
+      "id": 39830545066,
+      "number": 1,
+      "attempt": 1,
+      "status": "in_progress",
+      "job": 120005209308
+    },
+    {
+      "id": 39830599140,
+      "number": 2,
+      "attempt": 1,
+      "status": "pending",
+      "jobs": []
+    }
+  ],
+  "guard": "Only run_number=='1' and run_attempt=='1' may execute verify. Confirm observed skipped duplicate disposition after concurrency releases it.",
+  "failed_r1_receipt": "dceeb29a4b15e6b92bf014008649f691621d9dce",
+  "r1_findings": "367/371 focused passed, four fixture failures. Three invalid graveyard negative controls failed before entry; simultaneous fixture omitted legitimate trigger ordering. Original source, test, protocol, artifact and failure analysis remain immutable.",
+  "r2_change": "Only fixture actions corrected; 75 original assertion expressions retained, six checks added. All production bytes unchanged from443e200. Negative controls require exact first failure locations.",
+  "prior_qualified_copied_choices": "84994114025d0138305ed9931c00b957f9d80597",
+  "pre_dispatch": [
+    {
+      "status": "in_progress",
+      "total": 0,
+      "runs": []
+    },
+    {
+      "status": "pending",
+      "total": 0,
+      "runs": []
+    },
+    {
+      "status": "waiting",
+      "total": 0,
+      "runs": []
+    },
+    {
+      "status": "requested",
+      "total": 0,
+      "runs": []
+    },
+    {
+      "status": "queued",
+      "total": 1,
+      "runs": [
+        {
+          "id": 34749202144,
+          "branch": "pest-control/lab",
+          "sha": "c50c7dfb0f93356adbfb6a9bc1d6f189e5f09042",
+          "status": "queued"
+        }
+      ]
+    }
+  ],
+  "next": "Monitor first run and guarded duplicate; receive original artifacts and independent recount. No additional build dispatch while active. Entry-snapshot donor47079 and its11 original regressions recovered read-only, unadopted.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}
