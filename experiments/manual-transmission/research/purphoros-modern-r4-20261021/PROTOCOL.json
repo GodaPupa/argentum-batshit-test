@@ -1,0 +1,46 @@
+{
+  "schema": "manual-purphoros-modern-r4",
+  "status": "PREREGISTERED_BEFORE_IMPLEMENTATION",
+  "date_local": "2026-10-21",
+  "baseline": "70caeccfa5a72f1a13a204ba35503afc8a4d1162",
+  "historical_reference": "a27c09f43483b86045b88679c784c105d9575c07",
+  "preserved_failed_candidates": ["6054eb9ad9981da2d1a3420565cc0668d516eca6", "b2041ffdfff3474ee804fc7b6c32a7a5ff898a0d"],
+  "original_serialization_run": 39713129601,
+  "original_artifact": 12398510659,
+  "original_zip_sha256": "1393a9827e8052e2a7e0f4c8d37bc5ba9de79ddde89c2f1907ff4e1534390ef1",
+  "original_result": {"serialization_pass": 3, "purphoros_pass": 19, "purphoros_fail": 6, "errors": 0, "skips": 0},
+  "implementation_scope": [
+    "Remove creature subtypes when the last supporting creature/kindred type is lost",
+    "Evaluate numeric projection conditions against earlier-layer projected values",
+    "Remove attackers/blockers that cease to be creatures, preserving blocked status",
+    "Evaluate global entry tap/untap filters against a true pre-entry battlefield and the entrant's projected characteristics",
+    "Carry the pre-entry snapshot through affected token-copy continuations",
+    "Use projected creature characteristics for battlefield-entry triggers"
+  ],
+  "construction": "Surgical port onto the compiling current-main-ancestry serialization source; preserve unrelated modern engine paths and original 25 scenario bytes. Historical whole-file receipt is not a sufficient dependency strategy.",
+  "references": [
+    "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+    "https://magic.wizards.com/en/news/feature/final-fantasy-release-notes"
+  ],
+  "validation": [
+    "Exactly 25 original Purphoros cases plus the original three JSON cases and existing projected-type regression",
+    "Source-bound generic subtype, numeric projection, entry preview and affected continuation regressions",
+    "Full rules-engine and affected card scenario receiving gates after focused green",
+    "Reconcile actual frozen eight-deck registry on a separately combined source; never add isolated counts",
+    "Publish original failures, exact source, logs/XML and artifact hashes before any qualification claim"
+  ],
+  "protected": {
+    "v07_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "purphoros_test_blob": "82f15bba7a09dc5bb898fe8d3f661f03757c89ed",
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "hardware_changes": false,
+    "official_capability_games": 0,
+    "official_primary_games": 0,
+    "precision_used": 10,
+    "precision_reserved": 2,
+    "new_full_games": false,
+    "official_seed_or_claim_operations": false,
+    "automatic_production_adoption": false
+  },
+  "remaining_mission": "Complete exact card/mechanic coverage for eight frozen decks; qualify competent independent masked four-player pilots, CRUISE/SPORT/RACE, source/runtime, durable replay and all admission controls before the 36-game capability program and 864-game primary program. Two reserved Precision games remain unspent."
+}
