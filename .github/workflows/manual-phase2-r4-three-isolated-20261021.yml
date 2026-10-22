@@ -1,0 +1,174 @@
+name: Manual Phase 2 three source-compatible v0.7 cards (15 actual cases, 800 registry, NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-phase2-r4-three-without-fblthp-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-r4-three-isolated-20261021.yml'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/R4_THREE_ISOLATED_PROTOCOL.json'
+permissions: {contents: read}
+concurrency:
+  group: manual-phase2-r4-three-isolated-dependency
+  cancel-in-progress: false
+
+jobs:
+  three-donor-isolated:
+    runs-on: ubuntu-latest
+    timeout-minutes: 105
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MT_P2_AUDIT_INPUT: ${{ github.workspace }}/r4-three-evidence/source/registry-requests.json
+      MT_P2_AUDIT_OUTPUT: ${{ github.workspace }}/r4-three-evidence/registry
+      MT_P2_GATE_OUTPUT: ${{ github.workspace }}/r4-three-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 40}
+      - uses: actions/checkout@v4
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: experiments/manual-transmission
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Bind all six original donor source/test files and the exact R3 parent
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r4-three-evidence/original-2008 r4-three-evidence/original-2017 r4-three-evidence/source r4-three-evidence/registry
+          git merge-base --is-ancestor ab65657918c0f5e02ae181c579d1c8e6f972c0ec HEAD
+          git diff --name-only ab65657918c0f5e02ae181c579d1c8e6f972c0ec HEAD > r4-three-evidence/changed-paths.txt
+          python3 - <<'PY' | tee r4-three-evidence/source-audit.log
+          import json,subprocess
+          from pathlib import Path
+          f=Path("experiments/manual-transmission/research/phase2-current-main-20261021/R4_THREE_ISOLATED_PROTOCOL.json")
+          p=json.loads(f.read_text())
+          assert p["schema"]=="ARGENTUM_MANUAL_R4_THREE_CARD_ISOLATED_COMPILE_R1"
+          assert p["status"]=="PREREGISTERED_BEFORE_GWENNA_AETHER_BANE_RECEIVING"
+          assert p["fixed_parent"]=="ab65657918c0f5e02ae181c579d1c8e6f972c0ec"
+          assert p["parent_run"]==39702175031 and p["original_four_failed_run"]==39713677397
+          assert p["expected_fresh_cases"]==15 and sum(p["expected_by_era"].values())==15
+          assert p["live_registry_expect"]["registered_if_green"]==479
+          assert p["live_registry_expect"]["manual_if_green"]==87
+          assert p["live_registry_expect"]["opponent_if_green"]==392
+          assert len(p["cards"])==3
+          assert p["protected"]["no_game_init"] and p["protected"]["no_seeds"]
+          assert p["protected"]["precision_reserved"]==2
+          def git(pa):return subprocess.check_output(["git","rev-parse","HEAD:"+pa],text=True).strip()
+          expected={str(f),".github/workflows/manual-phase2-r4-three-isolated-20261021.yml"}
+          for c in p["cards"]:
+              for pa,hash in ((c["source_path"],c["source_blob"]),(c["test_path"],c["test_blob"])):
+                  assert git(pa)==hash,(pa,git(pa),hash)
+                  expected.add(pa)
+          changes=set(Path("r4-three-evidence/changed-paths.txt").read_text().splitlines())
+          assert changes==expected and len(changes)==8,(len(changes),changes^expected)
+          for pa,hash in {
+            "experiments/manual-transmission/control/v0.7.decklist.txt":p["protected"]["control_blob"],
+            "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt":p["protected"]["production_ai"],
+            "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt":p["protected"]["solver"]
+          }.items():assert git(pa)==hash,(pa,git(pa),hash)
+          print("MANUAL_R4_THREE_EXACT_DONOR_AND_PARENT_RECONCILED_NO_GAME")
+          PY
+          test "$(git -C .phase1-source rev-parse HEAD)" = e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          git rev-parse HEAD > r4-three-evidence/source-sha.txt
+          echo 'No official game, seeds or outcomes. Precision 10 used, 2 reserved.' > r4-three-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Run Bane of Progress two original source scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
+            --tests '*BaneOfProgressScenarioTest' --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r4-three-evidence/original-2008/gradle.log
+      - name: Preserve Bane JUnit even on RED
+        if: always()
+        run: |
+          mkdir -p r4-three-evidence/original-2008/xml
+          cp -a mtg-sets/2008-2016/tests/build/test-results/test/. r4-three-evidence/original-2008/xml/ || true
+
+      - name: Run Gwenna and Aether original 13 source scenarios
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2017-2022:tests:cleanTest :mtg-sets:2017-2022:tests:test \
+            --tests '*GwennaEyesOfGaeaScenarioTest' \
+            --tests '*AetherChannelerScenarioTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r4-three-evidence/original-2017/gradle.log
+      - name: Preserve Gwenna and Aether JUnit even on RED
+        if: always()
+        run: |
+          mkdir -p r4-three-evidence/original-2017/xml
+          cp -a mtg-sets/2017-2022/tests/build/test-results/test/. r4-three-evidence/original-2017/xml/ || true
+
+      - name: Rebuild all eight original fixed 100 decks as source-only CardRegistry requests
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py \
+            --phase1 .phase1-source --out r4-three-evidence/source \
+            2>&1 | tee r4-three-evidence/registry-bootstrap.log
+      - name: Query all 800 actual Kotlin CardRegistry positions
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :gym:cleanTest :gym:test \
+            --tests '*ManualTransmissionPhaseTwoRegistryAuditTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r4-three-evidence/registry-gradle.log
+      - name: Independently audit 15 source cases and exact 479/800 registration delta
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/audit_composed_registry_gate.py \
+            2>&1 | tee r4-three-evidence/registry-independent.log
+          python3 - <<'PY' | tee r4-three-evidence/final-25-lines.log
+          import json,xml.etree.ElementTree as ET
+          from pathlib import Path
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/R4_THREE_ISOLATED_PROTOCOL.json").read_text())
+          original={c["name"]:c for c in p["cards"]}
+          count=0
+          for c in original.values():
+              folder="original-2008" if c["era"]=="2008-2016" else "original-2017"
+              cls=Path(c["test_path"]).stem
+              f=Path("r4-three-evidence")/folder/"xml"/("TEST-com.wingedsheep.engine.scenarios."+cls+".xml")
+              assert f.is_file(),str(f)
+              root=ET.parse(f).getroot();cases=root.findall(".//testcase")
+              assert len(cases)==c["expected_original_cases"],(cls,len(cases))
+              assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped"),cls
+              count+=len(cases)
+          assert count==15
+          r=json.loads(Path("r4-three-evidence/COMPOSED_R1_LIVE_REGISTRY_GATE.json").read_text())
+          x=r["totals"];expect=p["live_registry_expect"]
+          assert r["status"]=="HOLD_REGISTRY_COVERAGE"
+          assert x["registered_slots"]==expect["registered_if_green"],x
+          assert x["manual_registered"]==expect["manual_if_green"],x
+          assert x["opponent_registered"]==expect["opponent_if_green"],x
+          assert x["unregistered_slots"]==expect["unregistered_total_if_green"]
+          assert x["manual_unregistered"]==expect["unregistered_manual_if_green"]
+          assert all(c["name"] not in r["decks"][0]["unresolved_cards"] for c in original.values())
+          assert r["actual_games_initialized"]==r["official_results"]==0
+          obj={"schema":"ARGENTUM_MANUAL_R4_THREE_SOURCE_ONLY_VERDICT_R1",
+            "status":"FIFTEEN_ORIGINAL_CASES_GREEN_479_OF_800_REGISTRY_HOLD",
+            "original_cases":15,"manual_registered":87,"all_registered":479,"opponent_registered":392,
+            "fblthp_separate_dependency":True,"official_competitive_game_authorized":False,
+            "precision_reserved":2,"no_new_full_games":0}
+          Path("r4-three-evidence/R4_THREE_VERDICT.json").write_text(json.dumps(obj,indent=2)+"\n")
+          print("MANUAL_R4_THREE_15_ORIGINAL_CASES_479_REAL_REGISTRY_HOLD_NO_GAMES")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r4-three-${{ github.run_id }}
+          path: r4-three-evidence/
+          if-no-files-found: warn
+          retention-days: 30
