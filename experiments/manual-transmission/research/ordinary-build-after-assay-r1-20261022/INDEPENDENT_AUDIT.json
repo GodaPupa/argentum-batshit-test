@@ -1,0 +1,305 @@
+{
+  "counts": {
+    "total": 3645,
+    "skipped": 43,
+    "passed": 3600,
+    "failed": 2
+  },
+  "modules": {
+    "ai": {
+      "total": 742,
+      "skipped": 1,
+      "passed": 741
+    },
+    "game-server": {
+      "total": 561,
+      "passed": 557,
+      "skipped": 4
+    },
+    "gym": {
+      "total": 524,
+      "passed": 488,
+      "skipped": 35,
+      "failed": 1
+    },
+    "gym-server": {
+      "total": 11,
+      "passed": 11
+    },
+    "gym-trainer": {
+      "total": 23,
+      "passed": 23
+    },
+    "mtg-sdk": {
+      "total": 527,
+      "passed": 527
+    },
+    "mtg-search": {
+      "total": 163,
+      "passed": 163
+    },
+    "mtg-sets": {
+      "total": 379,
+      "passed": 378,
+      "failed": 1
+    },
+    "mtgish-tooling": {
+      "total": 147,
+      "passed": 144,
+      "skipped": 3
+    },
+    "oracle-assay": {
+      "total": 568,
+      "passed": 568
+    }
+  },
+  "failures": [
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonsterTronRunnerSurfacePreflightTest",
+      "name": "repository permits only the two reviewed guarded workflows without executing games",
+      "message": "org.opentest4j.AssertionFailedError: Unexpected elements from index 0\nexpected:<[]> but was:<[\"official Monster Tron runner surface reference in /home/runner/work/argentum-batshit-test/argentum-batshit-test/.github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml\"]>"
+    },
+    {
+      "module": "mtg-sets",
+      "class": "com.wingedsheep.mtg.sets.FacadeBoundaryTest",
+      "name": "card definitions construct effects/costs via the Effects/Costs facades, not raw types",
+      "message": "org.opentest4j.AssertionFailedError: Card definitions must go through the Effects.*/Costs.* facades (SDK review \u00a72.3).\nmtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt:36  \u2192  use Effects.Composite(...) instead of `CompositeEffect(`\nmtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt:34  \u2192  use Effects.Composite(...) instead of `CompositeEffect(`\nmtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt:42  \u2192  use Effects.Composite(...) instead of `CompositeEffect(`\nUnexpected elements from index 2\nexpected:<[]> but was:<[\"mtg-sets/1993-1999/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/all/cards/ArcaneDenial.kt:36  \u2192  use Effects.Composite(...) instead of `CompositeEffect(`\", \"mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt:34  \u2192  use Effects.Composite(...) instead of `CompositeEffect(`\", \"mtg-sets/2003-2007/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fut/cards/PactOfNegation.kt:42  \u2192  use Effects.Composite(...) instead of `CompositeEffect(`\"]>"
+    }
+  ],
+  "skipped_cases": [
+    {
+      "module": "ai",
+      "class": "com.wingedsheep.ai.arena.ArenaBudgetScalingTest",
+      "name": "budget scaling: strength is monotone in the decision budget"
+    },
+    {
+      "module": "game-server",
+      "class": "com.wingedsheep.gameserver.ai.benchmark.AIBenchmark",
+      "name": "AI benchmark (10 game pairs)"
+    },
+    {
+      "module": "game-server",
+      "class": "com.wingedsheep.gameserver.replay.CompactReplaySizeBenchmark",
+      "name": "compact replay size over 10 random games (POR)"
+    },
+    {
+      "module": "game-server",
+      "class": "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest",
+      "name": "recorded games reconstruct to the full frame stream (no truncation)"
+    },
+    {
+      "module": "game-server",
+      "class": "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest",
+      "name": "a persistent yield set mid-game is captured and reproduced on reconstruction"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.BatshitEconomicsPreboardSmokeTest",
+      "name": "five seeded preboard Argentum agent self-play games"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest",
+      "name": "inventory exact Phase 2 candidate decks without treating registry presence as rules qualification"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "reproduce rejected Pest Control Game 25 Scion provenance"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 rejected Sample 1 regression replay"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 fresh Goldfish Sample 1"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 Goldfish Sample 1 fresh performance sample"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 Goldfish Sample 1 untouched performance vector"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 Goldfish Sample 2 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 Goldfish Sample 2 Take 2 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 Goldfish Sample 2 Take 3 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 Goldfish Sample 2 Take 4 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 Goldfish Sample 2 Take 5 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 Goldfish Sample 2 Take 6 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 Goldfish Sample 2 Take 7 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlGoldfishTest",
+      "name": "Pest Control v1.0 Goldfish Sample 2 Take 8 independent replication"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlMatchupBlockARunnerTest",
+      "name": "execute frozen Pest Control versus Mono Red Madness Block A exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisComposedValidationTest",
+      "name": "official artifact validates while synthetic shadow executes through complete stack"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisDisabledOfficialArtifactLoaderTest",
+      "name": "authorized validation reads exact official bytes without exposing or consuming seeds"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisOfficialExecutionRunnerTest",
+      "name": "execute frozen Grixis four-game vector exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialArtifactValidationTest",
+      "name": "exact frozen twelve-game replication artifact validates without gameplay"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialExecutionRunnerTest",
+      "name": "execute frozen Grixis twelve-game replication vector exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialArtifactValidationTest",
+      "name": "exact frozen artifact exposes only untouched Games 2 through 12 to continuation"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialExecutionRunnerTest",
+      "name": "execute untouched Grixis Games 2 through 12 exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorComposedValidationTest",
+      "name": "official frozen input validates while synthetic shadow runs through full stack"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest",
+      "name": "execute frozen Mono-Blue Terror four-game vector exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialArtifactValidationTest",
+      "name": "exact frozen twelve-game Terror replication artifact validates without gameplay"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest",
+      "name": "execute frozen Mono-Blue Terror twelve-game replication exactly once"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonsterTronOfficialExecutionRunnerTest",
+      "name": "execute the four frozen Monster Tron assignments through the sealed one-shot boundary"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlTierOneMonsterTronOneShotBoundaryTest",
+      "name": "pinned official bytes satisfy sealed binding without initialization"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2OfficialExecutionRunnerTest",
+      "name": "validate or execute the frozen V2 official block through the fail-closed coordinator"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2OfficialSeedFreezeGeneratorTest",
+      "name": "generate and quarantine exactly ten V2 official seeds without gameplay"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2QualificationHarnessValidationTest",
+      "name": "validate exact frozen qualification inputs without initializing a game"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2QualificationReconcilerTest",
+      "name": "reconcile both exact qualification shards into one fail-closed block"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2QualificationShardRunnerTest",
+      "name": "validate or run one exact qualification shard through the fail-closed coordinator"
+    },
+    {
+      "module": "gym",
+      "class": "com.wingedsheep.gym.PestControlV2QualifyingSmokeTest",
+      "name": "one production Pest versus SoterX game reaches a legitimate audited terminal"
+    },
+    {
+      "module": "mtgish-tooling",
+      "class": "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+      "name": "Portal renders a high rate of whole, well-formed cards"
+    },
+    {
+      "module": "mtgish-tooling",
+      "class": "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "name": "Analyzer classifies a set's cards into a partition that sums to the whole"
+    },
+    {
+      "module": "mtgish-tooling",
+      "class": "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+      "name": "cross-set index carries the blocked cards behind each ranked capability"
+    }
+  ],
+  "artifact_id": 12430304494,
+  "archive_sha256": "d443bf105e499a58fc9cd94ee03da0faccdb793c58ef7e98ac2e6052e4d06ee7",
+  "source_binding": {
+    "source": "6cf30d14d4be570bc1786e48079549cf850fa16a",
+    "validation": "0317a91b0bdbbebf386d1d035936e1e26c67e627",
+    "stage": "ordinary-build",
+    "goldens_verified": 23,
+    "original_test_blobs": {
+      "oracle-assay/src/test/kotlin/com/wingedsheep/assay/grammar/ManaValuesTest.kt": "c0efe06f759f5259d58bee67d54246cca41e2227",
+      "oracle-assay/src/test/kotlin/com/wingedsheep/assay/grammar/SubtypesTest.kt": "8a936ec9f27e9442942519f3ef250c166d50f05f"
+    },
+    "frozen_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "official_games": 0,
+    "official_seeds_generated": false
+  },
+  "tracked_changes": "",
+  "exit": "1",
+  "classes": 435
+}

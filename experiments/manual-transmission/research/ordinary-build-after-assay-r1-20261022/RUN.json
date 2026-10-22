@@ -1,0 +1,384 @@
+{
+  "run_id": 39787740747,
+  "run_attempt": 1,
+  "validation": "0317a91b0bdbbebf386d1d035936e1e26c67e627",
+  "source": "6cf30d14d4be570bc1786e48079549cf850fa16a",
+  "jobs": [
+    {
+      "id": 119855227240,
+      "name": "assay",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-22T13:32:32Z",
+      "completed_at": "2026-10-22T13:37:30Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-22T13:32:33Z",
+          "completed_at": "2026-10-22T13:32:37Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-22T13:32:37Z",
+          "completed_at": "2026-10-22T13:32:45Z"
+        },
+        {
+          "name": "Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-22T13:32:45Z",
+          "completed_at": "2026-10-22T13:32:45Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-22T13:32:45Z",
+          "completed_at": "2026-10-22T13:32:48Z"
+        },
+        {
+          "name": "Bind unchanged assertions, deck, goldens and source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-22T13:32:48Z",
+          "completed_at": "2026-10-22T13:32:48Z"
+        },
+        {
+          "name": "Execute every Assay test and build the CLI",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-22T13:32:48Z",
+          "completed_at": "2026-10-22T13:36:14Z"
+        },
+        {
+          "name": "Full current Oracle corpus touchstone",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-22T13:36:14Z",
+          "completed_at": "2026-10-22T13:37:00Z"
+        },
+        {
+          "name": "Full golden differential with all divergences retained",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-22T13:37:00Z",
+          "completed_at": "2026-10-22T13:37:24Z"
+        },
+        {
+          "name": "Preserve corpus identity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-22T13:37:24Z",
+          "completed_at": "2026-10-22T13:37:24Z"
+        },
+        {
+          "name": "Receive all repaired-source tests and gates",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 10,
+          "started_at": "2026-10-22T13:37:24Z",
+          "completed_at": "2026-10-22T13:37:25Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 11,
+          "started_at": "2026-10-22T13:37:25Z",
+          "completed_at": "2026-10-22T13:37:26Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 20,
+          "started_at": "2026-10-22T13:37:26Z",
+          "completed_at": "2026-10-22T13:37:26Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 21,
+          "started_at": "2026-10-22T13:37:26Z",
+          "completed_at": "2026-10-22T13:37:26Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 22,
+          "started_at": "2026-10-22T13:37:26Z",
+          "completed_at": "2026-10-22T13:37:27Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 23,
+          "started_at": "2026-10-22T13:37:27Z",
+          "completed_at": "2026-10-22T13:37:27Z"
+        }
+      ]
+    },
+    {
+      "id": 119855227444,
+      "name": "negative-control",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-22T13:32:32Z",
+      "completed_at": "2026-10-22T13:36:37Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-22T13:32:33Z",
+          "completed_at": "2026-10-22T13:32:36Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-22T13:32:36Z",
+          "completed_at": "2026-10-22T13:32:44Z"
+        },
+        {
+          "name": "Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-22T13:32:44Z",
+          "completed_at": "2026-10-22T13:32:44Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-22T13:32:44Z",
+          "completed_at": "2026-10-22T13:32:55Z"
+        },
+        {
+          "name": "Bind unchanged assertions, deck, goldens and source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-22T13:32:55Z",
+          "completed_at": "2026-10-22T13:32:55Z"
+        },
+        {
+          "name": "Restore only old production matcher in isolated control checkout",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 6,
+          "started_at": "2026-10-22T13:32:55Z",
+          "completed_at": "2026-10-22T13:32:55Z"
+        },
+        {
+          "name": "Execute original failures plus new regression sensitivity",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 7,
+          "started_at": "2026-10-22T13:32:55Z",
+          "completed_at": "2026-10-22T13:36:32Z"
+        },
+        {
+          "name": "Require exactly the seven expected failed cases",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-22T13:36:32Z",
+          "completed_at": "2026-10-22T13:36:32Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 9,
+          "started_at": "2026-10-22T13:36:32Z",
+          "completed_at": "2026-10-22T13:36:33Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-22T13:36:33Z",
+          "completed_at": "2026-10-22T13:36:34Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-22T13:36:34Z",
+          "completed_at": "2026-10-22T13:36:34Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 18,
+          "started_at": "2026-10-22T13:36:34Z",
+          "completed_at": "2026-10-22T13:36:34Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 19,
+          "started_at": "2026-10-22T13:36:34Z",
+          "completed_at": "2026-10-22T13:36:34Z"
+        }
+      ]
+    },
+    {
+      "id": 119857846056,
+      "name": "ordinary-build",
+      "status": "completed",
+      "conclusion": "failure",
+      "started_at": "2026-10-22T13:37:32Z",
+      "completed_at": "2026-10-22T14:00:01Z",
+      "steps": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 1,
+          "started_at": "2026-10-22T13:37:33Z",
+          "completed_at": "2026-10-22T13:37:35Z"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 2,
+          "started_at": "2026-10-22T13:37:35Z",
+          "completed_at": "2026-10-22T13:37:44Z"
+        },
+        {
+          "name": "Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 3,
+          "started_at": "2026-10-22T13:37:44Z",
+          "completed_at": "2026-10-22T13:37:44Z"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 4,
+          "started_at": "2026-10-22T13:37:44Z",
+          "completed_at": "2026-10-22T13:37:49Z"
+        },
+        {
+          "name": "Bind unchanged assertions, deck, goldens and source",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 5,
+          "started_at": "2026-10-22T13:37:49Z",
+          "completed_at": "2026-10-22T13:37:49Z"
+        },
+        {
+          "name": "Ordinary whole-project build graph with routine AI Test scope",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 6,
+          "started_at": "2026-10-22T13:37:49Z",
+          "completed_at": "2026-10-22T13:59:55Z"
+        },
+        {
+          "name": "Preserve every original build result and separate skips",
+          "status": "completed",
+          "conclusion": "failure",
+          "number": 7,
+          "started_at": "2026-10-22T13:59:55Z",
+          "completed_at": "2026-10-22T13:59:58Z"
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 8,
+          "started_at": "2026-10-22T13:59:58Z",
+          "completed_at": "2026-10-22T13:59:59Z"
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 14,
+          "started_at": "2026-10-22T13:59:59Z",
+          "completed_at": "2026-10-22T14:00:00Z"
+        },
+        {
+          "name": "Post Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 15,
+          "started_at": "2026-10-22T14:00:00Z",
+          "completed_at": "2026-10-22T14:00:00Z"
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 16,
+          "started_at": "2026-10-22T14:00:00Z",
+          "completed_at": "2026-10-22T14:00:00Z"
+        },
+        {
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success",
+          "number": 17,
+          "started_at": "2026-10-22T14:00:00Z",
+          "completed_at": "2026-10-22T14:00:00Z"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 12431055463,
+      "name": "manual-assay-search-negative-control-39787740747",
+      "size_in_bytes": 15548,
+      "digest": "sha256:b92474648ce84170706ac0b903cda810aea137b84761813845bf43e3e3247734",
+      "created_at": "2026-10-22T13:36:33Z",
+      "expired": false
+    },
+    {
+      "id": 12430330947,
+      "name": "manual-assay-search-qualified-39787740747",
+      "size_in_bytes": 75231,
+      "digest": "sha256:bbd6818da07c8b9d9679624b98a0df7f8ce8f1c77bb27b967bea2c7677ff47d1",
+      "created_at": "2026-10-22T13:37:26Z",
+      "expired": false
+    },
+    {
+      "id": 12430304494,
+      "name": "manual-assay-search-ordinary-build-39787740747",
+      "size_in_bytes": 591887,
+      "digest": "sha256:d443bf105e499a58fc9cd94ee03da0faccdb793c58ef7e98ac2e6052e4d06ee7",
+      "created_at": "2026-10-22T13:59:59Z",
+      "expired": false
+    }
+  ]
+}
