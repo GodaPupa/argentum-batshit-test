@@ -2056,6 +2056,9 @@ class StackResolver(
             enteredBattlefieldTimestamp = newState.getEntity(spellId)
                 ?.get<com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent>()?.timestamp,
             oldObject = state.objectRef(spellId), newObject = newState.objectRef(spellId),
+            copyOfOriginalName = newState.getEntity(spellId)
+                ?.get<com.wingedsheep.engine.state.components.identity.CopyOfComponent>()
+                ?.originalCardComponent?.name?.takeIf { it != cardComponent?.name },
         ))
         return newState to counterEvents
     }

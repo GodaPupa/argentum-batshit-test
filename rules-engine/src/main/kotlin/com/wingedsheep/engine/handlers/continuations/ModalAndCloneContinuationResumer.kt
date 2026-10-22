@@ -387,6 +387,41 @@ class ModalAndCloneContinuationResumer(
         // Get the (possibly updated) card component for event names
         val finalCardComponent = newState.getEntity(spellId)?.get<CardComponent>() ?: originalCardComponent
 
+        // Copied as-enters choices are made anew, before battlefield publication (CR 707.5,
+        // 707.6, 614.12a). Reuse the ordinary spell-choice suspension and its chained-choice
+        // resumer; it already retains the spell object until the final choice completes.
+        val entryChoices = copiedCardDef?.script?.replacementEffects
+            ?.filterIsInstance<com.wingedsheep.sdk.scripting.EntersWithChoice>()
+            ?.sortedBy { it.choiceType.ordinal }.orEmpty()
+        for (choice in entryChoices) {
+            // A graveyard-copy rider still happens after entry, including when the copied
+            // identity introduces several choices. Bind Self to the selected graveyard object
+            // so a zone change while suspended cannot make this exile a later incarnation.
+            val choiceState = if (continuation.exileCopiedCard && copyApplied && selectedCreatureId != null) {
+                newState.pushContinuation(EffectContinuation(
+                    remainingEffects = listOf(com.wingedsheep.sdk.dsl.Effects.Exile(
+                        com.wingedsheep.sdk.scripting.targets.EffectTarget.Self)),
+                    effectContext = EffectContext(
+                        sourceId = spellId,
+                        controllerId = controllerId,
+                        objectReferences = com.wingedsheep.engine.handlers.ObjectReferenceEnvironment(
+                            captured = true,
+                            origin = newState.objectRef(spellId),
+                            source = newState.objectRef(spellId),
+                            selfBinding = com.wingedsheep.engine.handlers.CapturedObjectBinding(
+                                selectedCreatureId, newState.objectRef(selectedCreatureId)),
+                        ),
+                    ),
+                ))
+            } else newState
+            val choiceResult = services.stackResolver.pauseForEntersWithChoice(
+                choiceState, spellId, controllerId, ownerId, finalCardComponent, choice
+            )
+            if (choiceResult != null) {
+                return ExecutionResult.propagatePause(choiceResult.state, events + choiceResult.events)
+            }
+        }
+
         // Track whether a copy was made (original name differs from final name)
         val copyOfOriginalName = if (selectedCreatureId != null && finalCardComponent.name != originalCardComponent.name) {
             originalCardComponent.name

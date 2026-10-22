@@ -1,0 +1,86 @@
+{
+  "status": "PREPARED_FOR_QUALIFICATION",
+  "baseline_source": "31e1267ef8f0398bd74f1ed1fcaa3c609113e5ce",
+  "parent_checkpoint": "8ad878688eab3a3e28bcb76913ca4a0759bd4edc",
+  "scope": "Copied EntersWithChoice on resolving copy spells, including serialized chained choices and post-entry graveyard-copy exile. Reuse existing choices and EffectContinuation.",
+  "new_cases": 7,
+  "negative_control": {
+    "method": "Run the unchanged seven-case new file on the pinned carrier baseline before the two production repairs",
+    "expected_passed": 0,
+    "expected_failed": 7,
+    "expected_errors": 0,
+    "expected_skipped": 0,
+    "compile_failure_is_not_evidence": true
+  },
+  "qualification": {
+    "focused": "new7 plus unchanged carrier10, SDK2, snapshot/lint",
+    "broad": "rules-engine entire suite and all nine card-era scenario suites through just and gradle-locked",
+    "expected_engine_passed": 3771,
+    "expected_broad_passed": 14546,
+    "expected_focused_passed": 362,
+    "expected_ordinary_passed": 18154,
+    "expected_ordinary_skipped": 43,
+    "ordinary": "ordinary build and routine AI *Test classes; exact baseline skip identities required",
+    "assay": "all 568 Assay tests in ordinary build; 2000-card touchstone; full golden differential with all divergences retained and classified",
+    "broad_report_accounting": "14546 required broad cases; 345 prior focused SDK/snapshot/lint reports retained separately in the collection, never counted as newly executed broad cases"
+  },
+  "rules": {
+    "official_pdf": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "checked_on": "2026-10-22",
+    "sections": [
+      "707.5",
+      "707.6",
+      "614.12a"
+    ],
+    "official_execution_admission": false
+  },
+  "source_manifest": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": {
+      "sha256": "eeb95bb3c555362c5635141297a648216d6492a39290d3004a972631457bbeb9",
+      "git_blob": "48a7c887990df1493acb670241b161284bebbc6e",
+      "baseline_sha256": "f5b2553d943ac2313a477f93a36bfa9814d2397f82b7e15e05e07393d97e829f"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+      "sha256": "efa5a9176c6925ddcd28fcfc726cf856809d75a7e057908063e7f598a28dd5de",
+      "git_blob": "e4731820fa5b40bbef9021cebe8c50ff65af4280",
+      "baseline_sha256": "2bed8d5b31e1083d7e5dfdcee85a22fb4ceb210e26853620bb3ad3545f29245f"
+    },
+    "docs/architecture-principles.md": {
+      "sha256": "3cb29e2bc405590453392a0a4c660f34ac347f18ae8fcb5836b690a2ce85cdbc",
+      "git_blob": "f8b96758405c67b6156b99b5da69621e98c37b1a"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiedAsEntersChoiceScenarioTest.kt": {
+      "sha256": "6b43b58b5a3f52405746be330dc5e885666227dadd1f3c46c9844645076b0a59",
+      "git_blob": "a1d7941b8808d784e6053c0d898e13d6f6faff5c"
+    }
+  },
+  "does_not_qualify": [
+    "direct land entry publication",
+    "simultaneous entry eligibility",
+    "other copied replacement families",
+    "Metamorph card registration",
+    "multiplayer or pilot readiness",
+    "competitive performance"
+  ],
+  "safeguards": {
+    "no_original_test_edit": true,
+    "no_rebless": true,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2,
+    "frozen_v07": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+  },
+  "prerequisite": {
+    "run": 39802649445,
+    "artifact": 12437803115,
+    "sha256": "7806821c0e87bfd39b6a3f36898783327a5bd14518ba63ce943c28a362d7dc25",
+    "ordinary_passed": 18147,
+    "ordinary_skipped": 43,
+    "focused_passed": 355,
+    "assay_cards": 2000,
+    "independent_artifact_recount": true
+  },
+  "preserved_original_checkpoint": "9a5529c43596c1dccbd48f7f25b4bc33e4983acc",
+  "amendment": "AMENDMENT.md; original r1 protocol and all source/test hashes unchanged"
+}

@@ -1268,7 +1268,13 @@ data class CopyOfComponent(
 ) : Component
 ```
 
-5. **Battlefield entry.** The permanent enters the battlefield with the copied stats, types,
+5. **Copied choices.** A resolving copy spell makes the copied definition's `EntersWithChoice`
+   choices through the ordinary spell-choice suspensions before battlefield entry. Those choices
+   are fresh; the source permanent's prior choices are not copied. Chained choices remain
+   serializable, and any graveyard-copy exile rider waits beneath them as an ordinary effect
+   continuation bound to the selected object. This does not cover direct-entry placement or
+   simultaneous-entry batches.
+6. **Battlefield entry.** The permanent enters the battlefield with the copied stats, types,
    keywords, and abilities as its base state.
 
 **Why copy is resolved before entry, not as a continuous effect layer.**
