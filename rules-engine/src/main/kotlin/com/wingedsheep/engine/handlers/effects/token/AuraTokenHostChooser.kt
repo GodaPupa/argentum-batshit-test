@@ -45,6 +45,7 @@ internal object AuraTokenHostChooser {
         controllerId: EntityId,
         remaining: Int,
         cardRegistry: CardRegistry?,
+        beforeEntry: GameState = state.copy(continuationStack = emptyList()),
     ): EffectResult {
         if (remaining <= 0) return EffectResult.success(state)
 
@@ -82,6 +83,7 @@ internal object AuraTokenHostChooser {
             auraDefinitionId = auraDefinitionId,
             auraName = auraName,
             remaining = remaining,
+            beforeEntry = beforeEntry,
         )
 
         return EffectResult.from(state.suspendForDecision(decision, continuation, emptyList()))

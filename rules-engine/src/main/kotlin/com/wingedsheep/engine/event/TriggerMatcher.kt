@@ -1081,9 +1081,13 @@ class TriggerMatcher(
             fun matchesLkiPredicate(predicate: com.wingedsheep.sdk.scripting.predicates.CardPredicate): Boolean {
                 return when (predicate) {
                     is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsCreature -> {
-                        // For dying creatures: use base state (they're already in graveyard)
-                        // Face-down permanents are 2/2 creatures (Rule 708.2) and count.
-                        isFaceDown || typeLine?.isCreature == true
+                        // Entry triggers see the permanent after entry, including its own
+                        // contribution to devotion. Leaving triggers retain the event's LKI.
+                        if (event.toZone == Zone.BATTLEFIELD) {
+                            projected.isCreature(event.entityId)
+                        } else {
+                            isFaceDown || typeLine?.isCreature == true
+                        }
                     }
                     is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsPermanent -> {
                         // LKI-safe permanent check. Anything that left the battlefield was, by
