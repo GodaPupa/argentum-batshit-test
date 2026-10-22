@@ -1,0 +1,115 @@
+{
+  "status": "SOURCE_FIELDS_REVIEWED_DRAFT_UNTESTED_UNADOPTED",
+  "source_receipt": "72fb439a96b5e8d5781006938e1e7da82243573b",
+  "source_artifact": 12454685119,
+  "intake_at": "2026-10-22T19:44:44.413375+00:00",
+  "primary_source": {
+    "name": "Phyrexian Metamorph",
+    "requested_set": "nph",
+    "status": "PRIMARY_JSON_RECEIVED_REQUIRES_HUMAN_MODEL_REVIEW",
+    "files": [
+      {
+        "url": "https://api.scryfall.com/cards/named?exact=Phyrexian+Metamorph&set=nph",
+        "file": "nph-phyrexian-metamorph.json",
+        "bytes": 5184,
+        "sha256": "ab2b133aa59ef123ee66f3100c1ed9a2ec49a5da0c81a04259f2a6f94692a058",
+        "http_status": 200
+      },
+      {
+        "url": "https://api.scryfall.com/cards/d2e27911-87cb-49a0-a34f-6afe4bddd592/rulings",
+        "file": "nph-phyrexian-metamorph-rulings.json",
+        "bytes": 2794,
+        "sha256": "9999b760e7e8d88cdd2eb2459464d38a2bf65e708c6872e0ba19622f26953639",
+        "http_status": 200
+      },
+      {
+        "url": "https://api.scryfall.com/cards/search?order=released&q=oracleid%3A340bbe8b-e987-4c3e-ab4e-9dee63e57d4f&unique=prints",
+        "file": "nph-phyrexian-metamorph-printings-0.json",
+        "bytes": 61181,
+        "sha256": "b5389552816edad4b1238181bb50f354dbc6c9e6bfb3923209011cd8f0acc769",
+        "http_status": 200
+      }
+    ],
+    "id": "d2e27911-87cb-49a0-a34f-6afe4bddd592",
+    "oracle_id": "340bbe8b-e987-4c3e-ab4e-9dee63e57d4f",
+    "collector_number": "42",
+    "earliest_nonexcluded_printing": {
+      "name": "Phyrexian Metamorph",
+      "id": "d2e27911-87cb-49a0-a34f-6afe4bddd592",
+      "set": "nph",
+      "set_name": "New Phyrexia",
+      "set_type": "expansion",
+      "released_at": "2011-05-13",
+      "collector_number": "42"
+    },
+    "image_head": {
+      "url": "https://cards.scryfall.io/normal/front/d/2/d2e27911-87cb-49a0-a34f-6afe4bddd592.jpg?1783941318",
+      "status": 200
+    }
+  },
+  "donor_source": "99b5ddcfffeb3f919664ac3ab0ecfd1945b86f44",
+  "donor_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/PhyrexianMetamorph.kt",
+  "all_printings_pages_reviewed": true,
+  "canonical": {
+    "set": "NPH",
+    "collector_number": "42",
+    "release": "2011-05-13",
+    "earlier_promo_excluded": "pnph42\u2605 2011-05-12"
+  },
+  "verified_fields": {
+    "name": "Phyrexian Metamorph",
+    "mana_cost": "{3}{U/P}",
+    "type_line": "Artifact Creature \u2014 Phyrexian Shapeshifter",
+    "oracle_text": "({U/P} can be paid with either {U} or 2 life.)\nYou may have this creature enter as a copy of any artifact or creature on the battlefield, except it's an artifact in addition to its other types.",
+    "color_identity": [
+      "U"
+    ],
+    "power": "0",
+    "toughness": "0",
+    "rarity": "rare",
+    "collector_number": "42",
+    "artist": "Jana Schirmer & Johannes Voss",
+    "image_uri": "https://cards.scryfall.io/normal/front/d/2/d2e27911-87cb-49a0-a34f-6afe4bddd592.jpg?1783941318"
+  },
+  "rulings_exact": 8,
+  "colors_review": "Mana cost includes U/P, so the existing mana-cost parser supplies blue. Explicit color identity U matches source. No color override needed.",
+  "draft_sha256": "3b3abb2bf971d01067b23e891393588ae93b64a1a3e45a9cc6103377a5366c05",
+  "draft_git_blob": "42035a34f14eee6fd28792118c8d027d5412c5df",
+  "original_test_sha256": "17a207d908a91036b3b9c96022fb6cb12bf52dc09906b88ef996527f1072e745",
+  "original_test_git_blob": "1075f22c9c9639c49f7d78dc0b5dcc37e26df365",
+  "original_cases": 10,
+  "ability_review": [
+    {
+      "oracle": "Phyrexian blue payment reminder",
+      "model": "{3}{U/P}; existing mana parser/payment; original tests require4mana or3mana+2life."
+    },
+    {
+      "oracle": "Optional copy of any artifact or creature already on battlefield",
+      "model": "EntersAsCopy default optional battlefield selection; filterArtifact OR Creature, no targeting restriction."
+    },
+    {
+      "oracle": "Artifact in addition to other types",
+      "model": "CopyExceptions addedCardTypes ARTIFACT; retains noncreature status when copying noncreature artifact."
+    }
+  ],
+  "assay_intake": "Previously retained parse/explain DECLINED at copy wording; fidelity SCAFFOLD. Existing SDK copy carrier is available; no stub accepted and no parse decline called a pass. Repeat applicable current-source checks at card admission.",
+  "remaining_gates": [
+    "Complete relevant entry dependencies and receive source-bound receipts; current copiable-entry run39848178435 active.",
+    "Restore into an isolated qualified-source checkout with original10 cases unchanged and the separate8-case exact-card entry bank; all18 must pass.",
+    "Fresh post-draft Scryfall field re-verification and check-card-printing gate.",
+    "NPH-only snapshot update; NPH is outside the23 protected goldens. Verify all23 remain byte-identical.",
+    "Focused card/scenario, broad regressions, ordinary build, applicable Assay differential/decline classification, player-flow trace.",
+    "Card admission does not itself qualify multiplayer or competition."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false,
+  "additional_test": {
+    "path": "PhyrexianMetamorphEntryScenarioTest.kt",
+    "sha256": "10c5efbc582329f4cd5be55195d2d8d3214e89df286dfa2df0df8ed2123ee73d",
+    "cases": 8,
+    "status": "UNCOMPILED_UNTESTED",
+    "original_ten_case_file_unchanged": true
+  }
+}
