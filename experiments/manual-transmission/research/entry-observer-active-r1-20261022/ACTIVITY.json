@@ -1,0 +1,74 @@
+{
+  "status": "ACTIVE_QUALIFICATION_UNADOPTED",
+  "observed_at": "2026-10-22T22:33:10.561Z",
+  "source": "c486fe51a3cecc4ebde845371242c791839f1954",
+  "source_tree": "3b68197d09f11baaa1599ee269368e1a1f02cf6d",
+  "qualified_baseline_source": "6473e7668636859b443020d152b06f400fca4eb5",
+  "qualified_baseline_receipt": "e7d27c76e172c42254556a56a2f396905f428427",
+  "preserved_observer_draft": "f1a80a716b9adf8a9e02ffed7366b18a93ec85f4",
+  "protocol_preregistration": "14f5721af753f7b1e103a61f4c81bb3d46340bf8",
+  "validation": "bd76ea5db54ca631bc9366acc80d96b8ae1ee009",
+  "validation_tree": "a9202f5b2017e8b4eda70f25fd2c24e8e100d8f4",
+  "workflow": {
+    "workflow": ".github/workflows/manual-entry-observer-r1-20261022.yml",
+    "bytes": 7722,
+    "sha256": "8096ea710275cfceb0c04af0d87e892035bc4585c38cd52471bb520412e7a0a2",
+    "git_sha": "da375d6c473edda5d6f7e06aefaa56502bbf6745"
+  },
+  "run": 39865679437,
+  "job": 120127154200,
+  "dispatched_at": "2026-10-22T22:32:14.897Z",
+  "pre_dispatch": {
+    "observed_at": "2026-10-22T22:32:13.758Z",
+    "statuses": {
+      "in_progress": [],
+      "waiting": [],
+      "pending": [],
+      "requested": [],
+      "queued": [
+        {
+          "id": 34749202144,
+          "head_sha": "c50c7dfb0f93356adbfb6a9bc1d6f189e5f09042",
+          "head_branch": "pest-control/lab",
+          "status": "queued"
+        }
+      ]
+    },
+    "workflow_verified": true,
+    "new_branch_absent": true,
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "local_build_processes": [],
+    "local_reconciliation": "18 source files verified byte-for-byte against immutable candidate before index reconciliation; historical receipt hydration still active, not a build or test."
+  },
+  "expected_gates": {
+    "negative": {
+      "rows": 32,
+      "assertion_failures": 21,
+      "passed": 11,
+      "errors": 0,
+      "skipped": 0
+    },
+    "focused_passed": 533,
+    "engine_passed": 3868,
+    "broad_required_passed": 14643,
+    "ordinary_passed": 18251,
+    "ordinary_skipped": 43,
+    "assay_unit_passed": 568,
+    "assay_cards": 2000,
+    "full_raw_assay_corpus": true,
+    "original_differential_blocks": 51
+  },
+  "protected_bindings": 118,
+  "protected_goldens": 23,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false,
+  "next_safe_action": "Observe this one run and receive its original artifact. Do not dispatch another build while active. Independently verify all immutable source bindings, original XML/frames/skips, full corpus and differential before acceptance; preserve any failure before repair.",
+  "separate_future_draft": {
+    "source": "d677bf26f1e0ec8de0f2bc0e873e397788f72b8e",
+    "preregistration": "71623e733836b9f9fdfbbd2df46a099217c07f66",
+    "status": "UNCOMPILED_UNTESTED_UNADOPTED_NOT_INCLUDED",
+    "cases": 12
+  }
+}
