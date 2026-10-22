@@ -1,0 +1,118 @@
+{
+  "status": "PREREGISTERED_UNCOMPILED_UNTESTED_UNADOPTED",
+  "prospective_baseline": "7a2fbbbf8118ae8c6410c9e234f9cc866bdb926a",
+  "baseline_qualification_requirement": "Wait for run39837054951 and original artifact audit; verify all duplicate dispositions before any follow-on test/build.",
+  "current_active_checkpoint": "694c9c2b43f84a567d69d91372db48c57613b021",
+  "test_sha256": "e9b026e24f2c28304a25d6d7ca3778338f8d5b6ff291cf6f2dce5ce8ed4bc43b",
+  "cases": [
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=false, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 116
+    },
+    {
+      "name": "entry copies the face-down values as a face-up nameless creature; direct=false, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 173
+    },
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=false, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 116
+    },
+    {
+      "name": "entry copies the face-down values as a face-up nameless creature; direct=false, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 173
+    },
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=true, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 116
+    },
+    {
+      "name": "entry copies the face-down values as a face-up nameless creature; direct=true, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 173
+    },
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=true, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 116
+    },
+    {
+      "name": "entry copies the face-down values as a face-up nameless creature; direct=true, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 173
+    },
+    {
+      "name": "ordinary printed copy excludes external grants counters and tapped status",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "copy retains the X symbol while X contributes zero to battlefield mana value",
+      "predicted_baseline": "pass"
+    }
+  ],
+  "negative_controls": {
+    "expected_cases": 10,
+    "expected_assertion_failures": 8,
+    "expected_passed": 2,
+    "expected_errors": 0,
+    "expected_skipped": 0,
+    "require_exact_first_failure_locations": true,
+    "compilation_error_is_not_evidence": true
+  },
+  "read_only_findings": [
+    "Both spell and pending direct entry copy CardComponent without reading FaceDownComponent, exposing the face-up underlying characteristics as the new copy.",
+    "CreateTokenExecutor installs creation-time static/triggered/activated abilities through components and GameState grants. CardComponent-only entry copying loses those intrinsic abilities.",
+    "Permanent duration does not establish copiable provenance: later granted abilities must remain excluded.",
+    "Copy-of-copy must retain its own intrinsic payload after original token departure; leaving the battlefield must remove copied ability grants and restore printed identity."
+  ],
+  "planned_design_requirements": [
+    "Pure serializable copiable characteristic/ability provenance; never mutate global CardRegistry to register runtime tokens.",
+    "Share capture between cast and pending direct entry; sanitize face-down copiable values before copying or revealing them.",
+    "Retain all original copy-exception carrier and seven copied-choice assertions. These new entry-copy dependencies require their regression bank; do not repeat a standalone carrier qualification.",
+    "Preserve ordinary granted-ability behavior and serialization defaults; classify compatibility for older saved tokens without guessing provenance."
+  ],
+  "scope": "Eight negative cast/direct and serialization cases plus two existing passing controls. Token tests also check counters/tap/grants exclusion, actual triggered/activated/static behavior, copy-of-copy after real departure, and exit cleanup. X control checks symbol/field semantics only, not chosen-X payment.",
+  "does_not_qualify": [
+    "All token producers and all replacement families without separate applicable coverage",
+    "Token characteristic-defining abilities and double-faced-copy mana-value exceptions",
+    "Aura copy attachment or full entry observer/state-predicate timing",
+    "Metamorph registration or frozen card coverage",
+    "Interactive UI, multiplayer or competitive outcomes"
+  ],
+  "rules": {
+    "official_pdf": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "checked_on": "2026-10-22",
+    "sections": [
+      "707.2",
+      "707.2a",
+      "707.2b",
+      "708.2",
+      "708.2a"
+    ]
+  },
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false,
+  "prior_untested_checkpoint": "91a3d72c7432fd41b57d11cc19956cb2b7366a98",
+  "fixture_review_amendments": [
+    {
+      "reason": "ZoneTransitionService explicitly retains departure grants for leaves-trigger LKI until reentry. Inspecting physical grant deletion immediately after a low-level departure would reject valid event handling. The revised fixture performs a real recast and declines copying before the unchanged three cleanup assertions, also requiring no stale ETB trigger and original0/5 characteristics. Static review before compilation/test.",
+      "original_test_sha256": "08df1069708a200b92fb444ebc65bf6f7ceab00a7e3df20af919231ddc910262",
+      "original_assertions_preserved": true,
+      "tests_executed": false
+    },
+    {
+      "reason": "Static review before any execution: second copy remains a battlefield anthem granting other controlled creatures +1/+1. A recast original0/5 copier therefore projects1/6. Replace the newly added r2 projected-zero check with explicit original0/5 base and projected1; do not change any original r1 assertion or any qualified carrier/copied-choice/pending/snapshot assertion.",
+      "prior_test_sha256": "6fcf1e2576cbebae40662de2c029c78e2f67141d00c1956370ecf9bd490874bd",
+      "changed_new_r2_assertion": "projected first power0 corrected to base0/5 plus projected1",
+      "tests_executed": false,
+      "r1_original_assertions_preserved": true
+    }
+  ]
+}
