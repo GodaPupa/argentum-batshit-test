@@ -1057,6 +1057,7 @@ class TriggerMatcher(
                 }
             }
             val projected = state.projectedState
+            val entrySnapshot = event.entrySnapshot.takeIf { event.toZone == Zone.BATTLEFIELD }
             // Check card predicates (creature type, subtype, etc.)
             // Note: entity may not exist in state if it was a token cleaned up by SBAs.
             // In that case, fall back to lastKnownTypeLine from the event.
@@ -1079,6 +1080,21 @@ class TriggerMatcher(
             // before the matcher runs, so the generic cardComponent-based path returns false for
             // every predicate inside the composite and the trigger silently misses token deaths.
             fun matchesLkiPredicate(predicate: com.wingedsheep.sdk.scripting.predicates.CardPredicate): Boolean {
+                // Preserve the producer-captured entry instant through composite instructions.
+                // Unknown predicates stay unknown under negation rather than reading later state.
+                if (entrySnapshot != null) {
+                    return matchesEntryCardPredicate(predicate, entrySnapshot,
+                        chosenSubtype = state.getEntity(sourceId)?.chosenCreatureType()) == true
+                }
+                // Direct entry producers without a snapshot keep their current projection path.
+                // This fallback is not evidence of event-time capture for those producers.
+                if (event.toZone == Zone.BATTLEFIELD && projected.getProjectedValues(event.entityId) != null) {
+                    return predicateEvaluator.matches(
+                        state, projected, event.entityId,
+                        GameObjectFilter(cardPredicates = listOf(predicate)),
+                        PredicateContext(sourceId = sourceId, controllerId = controllerId),
+                    )
+                }
                 return when (predicate) {
                     is com.wingedsheep.sdk.scripting.predicates.CardPredicate.IsCreature -> {
                         // Entry triggers see the permanent after entry, including its own
@@ -1220,7 +1236,7 @@ class TriggerMatcher(
             //  - anything that never touched the battlefield (a mill, a discard) has no
             //    controller at all, and `ownerId` is the right and only reading.
             trigger.filter.controllerPredicate?.let { pred ->
-                val effectiveController = event.lastKnown?.controllerId
+                val effectiveController = entrySnapshot?.controllerId ?: event.lastKnown?.controllerId
                     ?: projected.getController(event.entityId)
                     ?: event.ownerId
                 val controllerMatches = pred.evaluateWith { leaf ->

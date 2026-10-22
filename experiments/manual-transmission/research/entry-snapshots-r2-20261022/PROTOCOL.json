@@ -1,0 +1,173 @@
+{
+  "status": "PREREGISTERED_ENTRY_SNAPSHOT_DRAFT_UNTESTED_UNADOPTED",
+  "baseline_source": "7b84856bba24923a9e8efc78461433f70ad3145c",
+  "parent_checkpoint": "9c1d49114e1cc791a2e2d453cde063bbac2b4a76",
+  "qualified_receipts": [
+    "9c1d49114e1cc791a2e2d453cde063bbac2b4a76"
+  ],
+  "preregistered_test_checkpoint": "c4b939849ebdd78df8804e7e4f90e7fbd25ed53b",
+  "scope": "Entrant characteristic snapshots at completed effect instruction and pending direct-entry commit before later outer effects; preserve exact donor11 and new7 assertions. No full entry, observer, state-predicate, token-copy or Metamorph admission.",
+  "new_cases": 18,
+  "cases": [
+    {
+      "name": "entry trigger filter keeps token power before a later composite pump",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "entry trigger filter includes the preexisting anthem before a later pump",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 94
+    },
+    {
+      "name": "serialized entry event still matches after its live token is absent",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 107
+    },
+    {
+      "name": "paused copied entry keeps its chosen and countered entry power before the outer pump; serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 130
+    },
+    {
+      "name": "paused copied entry keeps its chosen and countered entry power before the outer pump; serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 130
+    },
+    {
+      "name": "immediate entry without later mutation already matches its current power",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "simultaneous token group already includes both static effects and entry counters",
+      "predicted_baseline": "pass"
+    }
+  ],
+  "negative_control": {
+    "method": "Restore exact qualified baseline production. Temporarily remove only the donor11 test file that references the new snapshot API; it has no valid compilation on the baseline and belongs to the positive bank. Run exact new7 baseline-API cases, require5 assertion failures at specified matcher checks and2 passing controls, zero errors/skips. Restore and hash-verify donor11 before candidate qualification. Never treat absent API compilation as negative evidence.",
+    "expected_passed": 2,
+    "expected_failed": 5,
+    "expected_errors": 0,
+    "expected_skipped": 0,
+    "compile_failure_is_not_evidence": true,
+    "original11_positive_only": true,
+    "failure_location_gate": "Require first test-file frame at each preregistered matcher assertion, exactly5 AssertionFailedError and2 passing controls."
+  },
+  "qualification": {
+    "expected_focused_passed": 389,
+    "expected_engine_passed": 3798,
+    "expected_broad_passed": 14573,
+    "expected_ordinary_passed": 18181,
+    "expected_ordinary_skipped": 43,
+    "focused": "original snapshot11 and new7 plus unchanged pending9,copied7,carrier10,SDK2,snapshots/lint343",
+    "broad": "Entire engine and nine card-era suites; retained reports are not extra executions.",
+    "ordinary": "Ordinary whole-project build with routine AI *Test, unchanged43 skips and20 modules.",
+    "assay": "568 tests,2000-card touchstone,full differential with original divergence blocks retained."
+  },
+  "source_manifest": {
+    "docs/architecture-principles.md": {
+      "sha256": "6de58ce040c144829b60e111b27e19d0db6b0255bd435a4b0365210cdb2bb0bf",
+      "git_blob": "2c83d7a6099b15292ee3c3142dd78bbad351d3a6"
+    },
+    "docs/card-sdk-language-reference.md": {
+      "sha256": "f9624973f2e21238d0b98e042377c2f84a2d037a4fff57ac78ef4e9fcb6825b3",
+      "git_blob": "99cc44a97dc75c4c450e4ad27cbe02df9768d37e"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": {
+      "sha256": "3afa085c67355cfb63e2c1758149ac53196cdfdc1fbb6dfebe62b3dd6f5856c1",
+      "git_blob": "d78234504ce643c8e31da033f2af00385f633ecf",
+      "baseline_sha256": "e7a8dc304b75af8365d14f8585afb4cb6db2d9e4176e0a29e20eec68af259cb1"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshots.kt": {
+      "sha256": "fb3e94b90aedd8a1a92b403267a388ae04bdc1d0076b2893e63188acd0ee99c8",
+      "git_blob": "f7782721a69d74d194127fb1cb1a01cfb674a4f3",
+      "baseline_absent": true
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/EntryCardPredicateMatcher.kt": {
+      "sha256": "5e3fa9b8148c42f4733b5d48a228e58d89769e5fb7bb9da2409202cc32ca0640",
+      "git_blob": "eff49c9ade1b92eeb88a13e703ee8151ba74dbfc",
+      "baseline_absent": true
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt": {
+      "sha256": "5450018d7ce0205548e3cd654f53c773609f06924a40bd39f9820e3c8ab010bd",
+      "git_blob": "4e9f905bdfc8fea5c1eac58d0d40f2c860036aee",
+      "baseline_sha256": "e90df7ccb6629227c31cc39a7aee99cde73c1432ce97cc277510de9a3dc3ae80"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EffectExecutorRegistry.kt": {
+      "sha256": "08fa0a725c024cd787734cfc742ef356548f38752c7cd1c5c1c7c1e3bc9fba75",
+      "git_blob": "d0cd4d30f7c5631407c1e0a779b50dee3e4a9794",
+      "baseline_sha256": "f0189ae03248fd12f872bdf63cd792b1c0efe3c74a2cb01ca7bcdc25f2303673"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PendingEntryCommitter.kt": {
+      "sha256": "65a11690a5e9e1f2cae9044d2743b43778b6c85c0fb39eebc9a3ac4c4b709a60",
+      "git_blob": "24aba8acf02e321eabf7e038710b0e7693ea454e",
+      "baseline_sha256": "3f55be348c0b9e0ecab6a554f81ccb8012b2881180adfe1f28b0c47b36d61fd7"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt": {
+      "sha256": "6bf8d0991d5a1e3f1c0b387e555a23485959ab056fc7533bc296d7ca09000d23",
+      "git_blob": "aa68d3d384edee9bbebb755b2630dc66d93c8df3"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryEventTimeScenarioTest.kt": {
+      "sha256": "837b319a8c3b00aaaf4aa19e767c74237b20c37c1f6033d11856e7939ab702cf",
+      "git_blob": "9f894778c3abd1f1ef17dd5c265542a5c9e9b5eb"
+    }
+  },
+  "does_not_qualify": [
+    "played-land prepublication",
+    "Aura as-enters choices and attachment continuation integration",
+    "Aura-copy attachment",
+    "generic OnEnterRunEffect",
+    "granted Riot and other replacement families",
+    "complete simultaneous counter/static-effect interactions",
+    "full token/X/face-down copiable values",
+    "interactive browser UX",
+    "exact Metamorph registration/admission",
+    "full frozen coverage",
+    "multiplayer/pilots",
+    "competitive performance",
+    "event-time trigger observer set and suppression",
+    "relational state predicates and intervening conditions",
+    "outer source-object reference propagation"
+  ],
+  "safeguards": {
+    "no_original_test_edit": true,
+    "no_rebless": true,
+    "protected_bindings": 23,
+    "protected_goldens": 23,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2,
+    "frozen_v07": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "original_assertions_preserved": true
+  },
+  "rules": {
+    "official_pdf": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "checked_on": "2026-10-22",
+    "sections": [
+      "603.6a",
+      "603.6b",
+      "603.10"
+    ],
+    "official_execution_admission": false
+  },
+  "dispatch_policy": "Unique push-only validation child. Job guarded to run_number==1 and run_attempt==1; duplicate events are recorded as skipped, never a qualification. Reinspect all activity before branch creation; no standalone carrier rerun.",
+  "negative_excluded_tests": [
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/BattlefieldEntrySnapshotTest.kt"
+  ],
+  "baseline_qualification_requirement": "SATISFIED: run39830545066 completed success; original artifact12450034639 independently audited (SHA256 a99782612510a695340203800bff20a2ebd8e9d50bf36d926bd09861ee298b01); duplicate39830599140/job120024829536 completed skipped with zero steps. Fresh global/local activity check is still mandatory before dispatch.",
+  "donor": "47079c452f681f03a627ba1845203457355f8376",
+  "donor_original_test_sha256": "6bf8d0991d5a1e3f1c0b387e555a23485959ab056fc7533bc296d7ca09000d23",
+  "new_baseline_api_test_sha256": "837b319a8c3b00aaaf4aa19e767c74237b20c37c1f6033d11856e7939ab702cf",
+  "follow_on_source_intake": {
+    "scope": "Read-only current Scryfall card, rulings, all printings and image HEAD for the eight remaining Manual cards",
+    "script": "source_intake.py",
+    "qualification_effect": "Separate preparation only. Every retrieval failure is preserved and blocks that card intake; it neither changes entry qualification gates nor grants card admission."
+  },
+  "donor_review_adjustments": [
+    "Capture pending commits before exile rider and outer continuation.",
+    "Entry snapshots discard grantedStaticAbilities payloads added to EntitySnapshot since the donor.",
+    "Remove donor reference to nonexistent CardPredicate.IsSnow, found by static identifier review before any compilation. No original test/assertion changed."
+  ],
+  "preserved_wip_checkpoint": "35b3f7153e885237debecd31f0801cb9d2929b0a"
+}

@@ -773,6 +773,20 @@ left is a declared property, not ad-hoc per-call logic: `lkiPolicyFor(reference)
 a compile error until its last-known behavior is classified — and filtered enumeration
 (Gather/ForEach) is deliberately `LIVE_ONLY`: a permanent that has left simply is not in the set.
 
+**Effect-produced entry characteristics have their own observation time (CR 603.6a / 603.10).**
+`ZoneChangeEvent.entrySnapshot` records the entrant after a complete effect instruction, including
+its simultaneous entry group and continuous effects, before a later instruction can pump it or
+change its types. `EffectExecutorRegistry` captures this once; an enclosing composite preserves an
+existing child snapshot. `PendingEntryCommitter` captures the complete resumed entry batch before
+the copied graveyard exile rider and the outer pipeline continue. The snapshot is bound to the event's current object reference, so a later
+battlefield visit cannot supply missing history. Departure `lastKnown` and resolution-time live
+reads keep their existing meaning. Unknown entry predicates remain unknown under negation.
+These are trusted engine facts; player-facing events still pass through `ClientEventTransformer`.
+Face-down snapshots conceal name, definition identity and layout facts; entry snapshots retain no
+granted ability scripts. Direct cast/land/initializer and other paused producers without this boundary
+retain null and require separate event-time qualification. This captures entrant characteristics, not
+the event-time observer set, trigger suppression, intervening conditions or relational state predicates.
+
 ### 2.6 Strategy-Based Registries
 
 **Principle:** Action handling and effect execution are fully decoupled from the core engine loop.

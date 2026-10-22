@@ -31,6 +31,12 @@ object PendingEntryCommitter {
             ).execute(state, effect, plan.context)
             else -> return EffectResult.error(state, "Unsupported pending entry operation")
         }
+        // These executors are called directly after a saved choice, outside the registry's
+        // instruction boundary. Freeze the complete batch before the copy's exile rider or
+        // the enclosing pipeline can change what entry characteristic filters observe.
+        result = result.copy(events = com.wingedsheep.engine.event.captureBattlefieldEntrySnapshots(
+            result.state, result.events,
+        ))
         // The copied graveyard rider is tied both to a real arrival and to the chosen old object.
         // It cannot exile a later visit of the same physical card after a saved choice resumes.
         for (entry in current) {

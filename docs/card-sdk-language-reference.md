@@ -12491,6 +12491,12 @@ The priority groups are (CR 616.1a–f):
   shapes. It does not change the played-land path's earlier publication or close Aura-copy
   attachment, other replacement families, generic `OnEnterRunEffect`, granted Riot, or complete
   simultaneous replacement interactions. Those remain separate engine qualification work.
+  Characteristic filters on effect-produced entry events use a frozen projected entrant snapshot
+  from the complete effect instruction, including its counters and simultaneous group, before
+  later instructions can pump or change the entrant. Resumed pending direct entry captures the
+  same boundary before the copy's exile rider and the outer pipeline continue. This does not
+  capture the event-time observer set, suppression, intervening conditions or relational state
+  predicates; direct cast, played-land and initializer boundaries still need separate qualification.
   `exceptions: CopyExceptions` carries the shared copiable characteristic modifications through
   both entry continuations to `CopyExceptionApplier`. It composes over the existing flat riders:
   additions union; explicitly supplied overrides win. Use

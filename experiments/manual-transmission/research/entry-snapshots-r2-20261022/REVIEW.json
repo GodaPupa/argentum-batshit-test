@@ -1,0 +1,51 @@
+{
+  "donor": "47079c452f681f03a627ba1845203457355f8376",
+  "donor_test_blob": "aa68d3d384edee9bbebb755b2630dc66d93c8df3",
+  "donor_test_sha256": "6bf8d0991d5a1e3f1c0b387e555a23485959ab056fc7533bc296d7ca09000d23",
+  "original_cases": 11,
+  "status": "READ_ONLY_REVIEW_NOT_ADOPTED",
+  "findings": [
+    "EffectExecutorRegistry capture freezes completed child-instruction entry facts before later composite effects. Existing captured snapshots must not refresh at outer boundaries.",
+    "PendingEntryCommitter delegates executors directly, so resumed direct entries bypass the registry. Capture after the complete collection/single entry, before the graveyard-copy exile rider and before outer continuation resumes.",
+    "Donor original11 tests reference new entrySnapshot API; compiling those against unmodified baseline would only produce a compile failure, not valid negative evidence. Add baseline-compilable event-matcher controls separately, preserve original11 bytes.",
+    "New control candidates: token then pump; preexisting anthem then later pump; serialized event with absent entrant; paused copy+printed choice followed by outer pump (serialized and live); immediate entry and simultaneous token static/counter groups as passing baseline controls.",
+    "Current EntitySnapshot.fromProjection has evolved since donor and includes grantedStaticAbilities. Review face-down/sensitive-data retention explicitly; do not claim absence of scripts solely from donor comment.",
+    "Snapshot lookup for unknown card predicates is tri-state; check every presently supported entry predicate and state/controller predicate. Donor entry snapshot is not full observer-time capture.",
+    "Direct spell/played-land/initializer and other paused producers remain separate. Existing entryTriggersAlreadyProcessed field prevents exact-event duplicate detection, not generic event-time snapshot qualification.",
+    "Exact Metamorph original10 test bytes remain preserved. Token intrinsic abilities and face-down copiable values are not fully carried by current CardComponent-only copy paths; do not claim card semantic readiness from ordinary object-copy tests.",
+    "StatePredicate entry arms still read eventual counters, face-up/down, attachments, combat and comparative power. Donor card-characteristic snapshots alone do not freeze those predicates. Keep scope explicit and add targeted state-predicate capture/controls before full-entry admission.",
+    "TriggerDetector later suppression/duplication and intervening-if filtering use the supplied current state. Entrant characteristic snapshot is not an observer-set snapshot; Torpor Orb/Panharmonicon or observers entering/leaving during later instructions need separate entry-time qualification.",
+    "Current MoveCollectionExecutor applies EntersWithReplacements.applyOnEntry after each individual move; applyGlobal enumerates the then-current battlefield. entryBoundary currently governs tapped/untapped projection but is not passed to counter replacements. Coentrant global-counter sources may incorrectly affect later entrants: a concrete candidate for a preregistered simultaneous-counter regression, not yet tested.",
+    "PendingEntryCopyContinuation and PendingEntryChoiceContinuation are absent from ObjectReferencePropagation's objectReferences/withObjectReferences arms. Their context is serialized, but registry authorization of primary moves may not reach outer Self/triggering references. PipelineTarget reads late-bound collection IDs separately. This requires targeted source-reference continuation tests; do not conflate it with the proposed entrant snapshot controls."
+  ],
+  "rules": {
+    "official_pdf": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "verified_sections": [
+      "603.6a",
+      "603.6b",
+      "603.10"
+    ],
+    "effective": "2026-09-25",
+    "copy_sections_verified": [
+      "613.2a",
+      "613.2b",
+      "613.2c",
+      "707.2",
+      "707.2a",
+      "707.2b",
+      "708.2",
+      "708.2a"
+    ]
+  },
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "metamorph_fresh_lookup": {
+    "date": "2026-10-22",
+    "primary_search_found": [
+      "https://gatherer.wizards.com/MKC/en-us/116/phyrexian-metamorph",
+      "https://scryfall.com/card/nph/42/phyrexian-metamorph"
+    ],
+    "full_card_and_rulings_reverification": "NOT_COMPLETED: API inaccessible via web tool and full Gatherer/Scryfall pages return403. Exact retained Oct21 source intake remains available; do not label it newly retrieved."
+  }
+}
