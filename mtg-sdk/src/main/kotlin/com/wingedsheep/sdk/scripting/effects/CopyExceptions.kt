@@ -20,7 +20,7 @@ import kotlinx.serialization.Serializable
  * [CreateTokenCopyOfSourceEffect]), or enters as a copy (`EntersAsCopy`, Clone/Sakashima).
  *
  * Every one of those effects takes a `CopyExceptions` directly, so a new exception added here is
- * immediately expressible on all of them. The two token effects additionally keep their historical
+ * immediately expressible on all of them. The token and enters-as-copy effects keep their historical
  * flat riders (`addedSupertypes`, `overridePower`, `addCardTypes`, …) because ~20 card definitions
  * and their serialized shape depend on them; those riders are folded into this type via [over], and
  * are frozen — **a new copy exception goes here, never onto another flat rider.**
@@ -91,7 +91,7 @@ data class CopyExceptions(
      * This value layered on top of [base], with `this` winning wherever the two disagree.
      *
      * The one rule for an effect that carries both a `CopyExceptions` field and older flat riders
-     * ([CreateTokenCopyOfTargetEffect], [CreateTokenCopyOfSourceEffect]): the riders are projected
+     * ([CreateTokenCopyOfTargetEffect], [CreateTokenCopyOfSourceEffect], `EntersAsCopy`): the riders are projected
      * into a `CopyExceptions` and passed here as [base], so the modern field can express anything
      * the riders can't without either of them silently dropping the other. Additive axes union;
      * replacing axes and the single-valued ones take `this` when set and fall through to [base]

@@ -18,6 +18,7 @@ import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.scripting.ChoiceSlot
 import com.wingedsheep.sdk.model.EntityId
 import com.wingedsheep.sdk.scripting.effects.CompositeEffect
+import com.wingedsheep.sdk.scripting.effects.CopyExceptions
 import com.wingedsheep.sdk.scripting.effects.Mode
 import com.wingedsheep.sdk.scripting.events.CounterTypeFilter
 import com.wingedsheep.sdk.scripting.values.DynamicAmount
@@ -243,16 +244,17 @@ class ModalAndCloneContinuationResumer(
         nameOverride: String?,
         powerOverride: Int?,
         toughnessOverride: Int?,
+        exceptions: CopyExceptions,
     ): GameState {
         // The riders are the same "except …" clause every other copy path carries (CR 707.9b), so
         // they go through the one engine-side implementation rather than a fourth hand-rolled copy.
-        val exceptions = com.wingedsheep.sdk.scripting.effects.CopyExceptions(
+        val composedExceptions = exceptions.over(CopyExceptions(
             nameOverride = nameOverride,
             addedKeywords = additionalKeywords.toSet(),
             addedSubtypes = additionalSubtypes.map { com.wingedsheep.sdk.core.Subtype(it) }.toSet(),
             powerOverride = powerOverride,
             toughnessOverride = toughnessOverride,
-        )
+        ))
         val copiedCardComponent = CopyExceptionApplier.apply(
             targetCardComponent.copy(
                 ownerId = newOwnerId,
@@ -263,7 +265,7 @@ class ModalAndCloneContinuationResumer(
                 // copying Elite Vanguard that transforms anyway. So keep the copier's own flag.
                 isDoubleFaced = originalCardComponent.isDoubleFaced,
             ),
-            exceptions,
+            composedExceptions,
         )
         return state.updateEntity(entityId) { c ->
             c.with(copiedCardComponent)
@@ -355,6 +357,7 @@ class ModalAndCloneContinuationResumer(
                     nameOverride = continuation.nameOverride,
                     powerOverride = continuation.powerOverride,
                     toughnessOverride = continuation.toughnessOverride,
+                    exceptions = continuation.exceptions,
                 )
 
                 // "except it enters with X additional +1/+1 counters on it" (Altered Ego) — part of
@@ -459,6 +462,7 @@ class ModalAndCloneContinuationResumer(
                     nameOverride = continuation.nameOverride,
                     powerOverride = continuation.powerOverride,
                     toughnessOverride = continuation.toughnessOverride,
+                    exceptions = continuation.exceptions,
                 )
             }
         }

@@ -1,0 +1,76 @@
+{
+  "parent_source": "82e78c7a8796960ac11f082ee0ccf71baf2d95a9",
+  "repair_baseline": "82e78c7a8796960ac11f082ee0ccf71baf2d95a9",
+  "authorization": "Resume the saved copy-entry carrier after authorized ordinary-build repairs pass. User reaffirmed I authorize during the passing build. No official seed/game or deck change authority is inferred.",
+  "ordinary_prerequisite": {
+    "source": "ebb1e2892c258dde060b27113aa113fba65dcd66",
+    "validation": "9a35cf2813f9f4ff24823e00a3b5d0b5fe01f45d",
+    "run": 39796775391,
+    "job": 119885854024,
+    "job_conclusion": "success",
+    "artifact": 12434848067,
+    "sha256": "d435d46f62ad0f8b7aedeb8b589f7667f14e4328e85935541ffbe2a6e7ff5fdf",
+    "passed": 18135,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 43,
+    "independently_recounted": true
+  },
+  "source_changes": [
+    "docs/card-sdk-language-reference.md",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/ReplacementEffect.kt",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/CopyExceptions.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalAndCloneContinuations.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PermanentEntryReplacements.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+    "mtg-sdk/src/test/kotlin/com/wingedsheep/sdk/serialization/EntersAsCopyExceptionsSerializationTest.kt",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntersAsCopyExceptionsScenarioTest.kt",
+    "experiments/manual-transmission/research/copy-entry-exceptions-r1-20261022/PROTOCOL.json"
+  ],
+  "validation_workflow": ".github/workflows/manual-copy-entry-exceptions-r2-20261022.yml",
+  "scope": "Restore exactly the held draft: shared CopyExceptions carrier on EntersAsCopy, both continuations and shared copy applier composition, two SDK serialization tests, unchanged ten-case generic donor and SDK documentation. No card registration.",
+  "receiving": [
+    "Targeted donor10 plus SDK2 and unchanged snapshot/lint",
+    "Ordinary build including full SDK, engine, all nine card eras and routine AI tests",
+    "Assay gate --limit 2000, preserving current corpus identity",
+    "All original reports, process codes, complete hash inventories and independent artifact recount"
+  ],
+  "expected_ordinary": {
+    "passed": 18147,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 43,
+    "sdk_passed": 529,
+    "engine_passed": 3764,
+    "assay_passed": 568
+  },
+  "limitations": [
+    "Does not repair pre-entry placement or simultaneous-batch candidate eligibility",
+    "Does not qualify token-copy entry, face-down/X copying, copied as-enters choices or Phyrexian Metamorph",
+    "No pilot, multiplayer, capability-game or competitive admission"
+  ],
+  "rules_verification": {
+    "checked_on": "2026-10-22",
+    "official_page": "https://magic.wizards.com/en/rules",
+    "official_text": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+    "official_pdf": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "sections_checked": [
+      "205.1b",
+      "707.2",
+      "707.9b"
+    ],
+    "official_game_rules_admission": false
+  },
+  "safeguards": {
+    "precision_reserved": 2,
+    "official_games": 0,
+    "official_seeds": 0,
+    "frozen_v07_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "no_rebless": true,
+    "no_original_test_edit": true,
+    "no_prior_competitive_rerun": true
+  },
+  "independent_human_or_agent_review": false
+}

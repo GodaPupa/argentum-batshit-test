@@ -3,6 +3,7 @@ package com.wingedsheep.sdk.scripting
 import com.wingedsheep.sdk.core.Keyword
 import com.wingedsheep.sdk.core.Zone
 import com.wingedsheep.sdk.scripting.conditions.Condition
+import com.wingedsheep.sdk.scripting.effects.CopyExceptions
 import com.wingedsheep.sdk.scripting.effects.Effect
 import com.wingedsheep.sdk.scripting.events.CounterTypeFilter
 import com.wingedsheep.sdk.scripting.events.RecipientFilter
@@ -1645,6 +1646,7 @@ data class ReplaceLifePaymentWithLibraryExile(
  */
 @SerialName("EntersAsCopy")
 @Serializable
+@OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
 data class EntersAsCopy(
     override val optional: Boolean = true,
     val copyFilter: GameObjectFilter = GameObjectFilter.Creature,
@@ -1661,10 +1663,22 @@ data class EntersAsCopy(
     override val appliesTo: EventPattern = EventPattern.ZoneChangeEvent(
         filter = GameObjectFilter.Any,
         to = Zone.BATTLEFIELD
-    )
+    ),
+    /** Copiable characteristics, using the same composition as the other copy effects. */
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val exceptions: CopyExceptions = CopyExceptions.None
 ) : ReplacementEffect {
     override val priorityGroup: ReplacementPriorityGroup
         get() = ReplacementPriorityGroup.COPY
+
+    val copyExceptions: CopyExceptions
+        get() = exceptions.over(CopyExceptions(
+            nameOverride = nameOverride,
+            addedKeywords = additionalKeywords.toSet(),
+            addedSubtypes = additionalSubtypes.map { com.wingedsheep.sdk.core.Subtype(it) }.toSet(),
+            powerOverride = powerOverride,
+            toughnessOverride = toughnessOverride,
+        ))
 
     override val description: String = run {
         val filterDesc = copyFilter.description
@@ -1678,22 +1692,26 @@ data class EntersAsCopy(
         }
         buildString {
             append(lead)
-            val exceptions = buildList {
-                if (nameOverride != null) add("its name is $nameOverride")
-                if (powerOverride != null && toughnessOverride != null) {
-                    add("it's $powerOverride/$toughnessOverride")
-                }
-                if (additionalSubtypes.isNotEmpty()) {
-                    add("a ${additionalSubtypes.joinToString(" ")} in addition to its other types")
-                }
-                if (additionalKeywords.isNotEmpty()) {
-                    add("it has ${additionalKeywords.joinToString(", ") { it.name.lowercase() }}")
+            val clauses = buildList {
+                if (!exceptions.isEmpty) {
+                    addAll(copyExceptions.clauses())
+                } else {
+                    if (nameOverride != null) add("its name is $nameOverride")
+                    if (powerOverride != null && toughnessOverride != null) {
+                        add("it's $powerOverride/$toughnessOverride")
+                    }
+                    if (additionalSubtypes.isNotEmpty()) {
+                        add("a ${additionalSubtypes.joinToString(" ")} in addition to its other types")
+                    }
+                    if (additionalKeywords.isNotEmpty()) {
+                        add("it has ${additionalKeywords.joinToString(", ") { it.name.lowercase() }}")
+                    }
                 }
                 if (additionalCounters != null) {
                     add("it enters with ${additionalCounters.description} additional +1/+1 counters on it")
                 }
             }
-            if (exceptions.isNotEmpty()) append(", except ${exceptions.joinToString(" and ")}")
+            if (clauses.isNotEmpty()) append(", except ${clauses.joinToString(" and ")}")
             if (exileCopiedCard) append(". When you do, exile that card")
         }
     }
