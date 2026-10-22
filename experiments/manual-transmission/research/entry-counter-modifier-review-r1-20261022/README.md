@@ -1,0 +1,7 @@
+# Entry counter modifier boundary — preregistration only
+
+UNCOMPILED, UNTESTED, UNADOPTED. Twelve cases use existing SDK vocabulary; no production change or execution is included. Additive and doubling sources are checked separately. A coentrant source cannot modify another entrant, regardless of iteration order, but its own applicable replacement must work. Existing sources remain applicable. Cast and direct entry are checked separately; state round-trips precede each operation.
+
+Static review of counter-r2 source6473e766 predicts four original assertion failures and eight passing controls. Current applyCounterPlacementModifiers scans the evolving battlefield. A source inserted first incorrectly modifies the later coentrant; a resolving source applies its counters before battlefield insertion and therefore misses itself. Original case names and first failure frames are frozen in PROTOCOL.json. Compilation/setup errors are never counted as valid negative evidence.
+
+Counter-r2 qualification and observer work remain ahead of this bank. No second build, test dispatch, or official execution has been launched. Actual execution must use a fresh checkout of the latest independently qualified source and retain every prior assertion. This is a bounded source-existence experiment, not a claim of complete replacement ordering or complete entry mechanics. Frozen v0.7, all23 protected goldens, budgets and both reserved Precision games remain unchanged.

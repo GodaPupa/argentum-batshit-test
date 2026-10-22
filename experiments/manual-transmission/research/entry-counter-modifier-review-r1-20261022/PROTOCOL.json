@@ -1,0 +1,96 @@
+{
+  "status": "PREREGISTERED_UNCOMPILED_UNTESTED_UNADOPTED",
+  "statically_reviewed_source": "6473e7668636859b443020d152b06f400fca4eb5",
+  "source_qualification": "Counter r2 remains active. Actual execution requires its successful independently received receipt and any intervening qualified observer source. No run has been requested for this bank.",
+  "test_file": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterModifierBoundaryScenarioTest.kt",
+  "test_sha256": "3dda373fd9e8cf68f65f438ea0b0cd11ee1cb02f7d32ad44d0746b34ce7ae97b",
+  "test_bytes": 5366,
+  "cases": [
+    {
+      "name": "a simultaneous counter modifier affects itself but not another entrant; double=false, sourceFirst=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a simultaneous counter modifier affects itself but not another entrant; double=false, sourceFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 66,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=false, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "an entering counter modifier applies its own replacement; double=false, direct=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 97,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=false, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "an entering counter modifier applies its own replacement; double=false, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a simultaneous counter modifier affects itself but not another entrant; double=true, sourceFirst=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a simultaneous counter modifier affects itself but not another entrant; double=true, sourceFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 66,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=true, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "an entering counter modifier applies its own replacement; double=true, direct=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 97,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=true, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "an entering counter modifier applies its own replacement; double=true, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    }
+  ],
+  "expected_negative": {
+    "rows": 12,
+    "passed": 8,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 1
+  },
+  "negative_policy": "Exact original case identities and first AssertionFailedError frames required; compile/setup errors are not negative evidence. No assertions may be weakened.",
+  "rules": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "section": "614.12"
+  },
+  "scope": "Pre-entry existence of additive/doubling counter replacement sources, own-subject replacement, cast and direct collection entry. State is serialized before each operation.",
+  "limitations": [
+    "Does not qualify multiple competing replacement ordering or generic counter-placement replacement choices.",
+    "Does not qualify every token/Aura/land producer, prospective filter/continuous-effect projection, or temporary modifier lifetime.",
+    "No card, UI, multiplayer or competitive admission."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
