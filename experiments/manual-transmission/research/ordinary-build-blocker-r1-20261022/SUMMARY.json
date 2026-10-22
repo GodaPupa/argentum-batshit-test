@@ -1,0 +1,92 @@
+{
+  "validation_commit": "623db9bb9ce503152947ebee2f037111df419f4a",
+  "modules": {
+    "mtg-sdk": {
+      "rows": 527,
+      "passed": 527,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 50,
+      "skips": [],
+      "failed_cases": []
+    },
+    "mtg-search": {
+      "rows": 163,
+      "passed": 163,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 2,
+      "skips": [],
+      "failed_cases": []
+    },
+    "mtgish-tooling": {
+      "rows": 147,
+      "passed": 144,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 3,
+      "classes": 20,
+      "skips": [
+        {
+          "class": "com.wingedsheep.tooling.coverage.EmitterSmokeTest",
+          "name": "Portal renders a high rate of whole, well-formed cards",
+          "xml": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.EmitterSmokeTest.xml"
+        },
+        {
+          "class": "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+          "name": "Analyzer classifies a set's cards into a partition that sums to the whole",
+          "xml": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.dashboard.DashboardTest.xml"
+        },
+        {
+          "class": "com.wingedsheep.tooling.coverage.dashboard.DashboardTest",
+          "name": "cross-set index carries the blocked cards behind each ranked capability",
+          "xml": "mtgish-tooling/build/test-results/test/TEST-com.wingedsheep.tooling.coverage.dashboard.DashboardTest.xml"
+        }
+      ],
+      "failed_cases": []
+    },
+    "oracle-assay": {
+      "rows": 562,
+      "passed": 558,
+      "failures": 4,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 38,
+      "skips": [],
+      "failed_cases": [
+        {
+          "class": "com.wingedsheep.assay.grammar.ManaValuesTest",
+          "name": "the searches and returns that named this band read as whole lines",
+          "xml": "oracle-assay/build/test-results/test/TEST-com.wingedsheep.assay.grammar.ManaValuesTest.xml"
+        },
+        {
+          "class": "com.wingedsheep.assay.grammar.ManaValuesTest",
+          "name": "the pronoun form of the search is a variant, not a second reading",
+          "xml": "oracle-assay/build/test-results/test/TEST-com.wingedsheep.assay.grammar.ManaValuesTest.xml"
+        },
+        {
+          "class": "com.wingedsheep.assay.grammar.SubtypesTest",
+          "name": "a basic land type in card position is the land type noun, and only that",
+          "xml": "oracle-assay/build/test-results/test/TEST-com.wingedsheep.assay.grammar.SubtypesTest.xml"
+        },
+        {
+          "class": "com.wingedsheep.assay.grammar.SubtypesTest",
+          "name": "a non-land subtype in card position still reads ungated",
+          "xml": "oracle-assay/build/test-results/test/TEST-com.wingedsheep.assay.grammar.SubtypesTest.xml"
+        }
+      ]
+    }
+  },
+  "totals": {
+    "rows": 1399,
+    "passed": 1392,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 3,
+    "classes": 110
+  },
+  "official_results": 0,
+  "competitive_admission": false
+}

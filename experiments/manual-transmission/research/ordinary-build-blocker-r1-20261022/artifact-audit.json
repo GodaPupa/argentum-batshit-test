@@ -1,0 +1,51 @@
+{
+  "run": 39761794103,
+  "attempt": 1,
+  "job": 119767491442,
+  "artifact_id": 12419081339,
+  "archive": "manual-ordinary-build-r1-39761794103.zip",
+  "bytes": 148577,
+  "sha256": "e496371038f9531e239573c4b96b61e643bd6c473fbf057800df4159cbaa7df2",
+  "unique_members": 119,
+  "crc_clean": true,
+  "verified_internal_payloads": 118,
+  "source": "a9ea02595bcdc681778b1e003e1b79d51737aeb2",
+  "validation": "623db9bb9ce503152947ebee2f037111df419f4a",
+  "process_exit": 1,
+  "tracked_changes_empty": true,
+  "xml_totals": {
+    "rows": 1399,
+    "passed": 1392,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 3,
+    "classes": 110
+  },
+  "failure_details": [
+    {
+      "class": "com.wingedsheep.assay.grammar.ManaValuesTest",
+      "name": "the searches and returns that named this band read as whole lines",
+      "message": "org.opentest4j.AssertionFailedError: Expected \"Search your library for a creature card with mana value 3 or less, put that card onto the battlefield, then shuffle.\" but actual was null",
+      "xml": "junit/oracle-assay/build/test-results/test/TEST-com.wingedsheep.assay.grammar.ManaValuesTest.xml"
+    },
+    {
+      "class": "com.wingedsheep.assay.grammar.ManaValuesTest",
+      "name": "the pronoun form of the search is a variant, not a second reading",
+      "message": "org.opentest4j.AssertionFailedError: Expected \"Search your library for a creature card with mana value 3 or less, put that card onto the battlefield, then shuffle.\" but actual was null",
+      "xml": "junit/oracle-assay/build/test-results/test/TEST-com.wingedsheep.assay.grammar.ManaValuesTest.xml"
+    },
+    {
+      "class": "com.wingedsheep.assay.grammar.SubtypesTest",
+      "name": "a basic land type in card position is the land type noun, and only that",
+      "message": "org.opentest4j.AssertionFailedError: Expected \"Search your library for a Forest card, put that card onto the battlefield, then shuffle.\" but actual was null",
+      "xml": "junit/oracle-assay/build/test-results/test/TEST-com.wingedsheep.assay.grammar.SubtypesTest.xml"
+    },
+    {
+      "class": "com.wingedsheep.assay.grammar.SubtypesTest",
+      "name": "a non-land subtype in card position still reads ungated",
+      "message": "org.opentest4j.AssertionFailedError: Expected \"Search your library for a Zombie card, reveal it, put it into your hand, then shuffle.\" but actual was null",
+      "xml": "junit/oracle-assay/build/test-results/test/TEST-com.wingedsheep.assay.grammar.SubtypesTest.xml"
+    }
+  ],
+  "independent_review": false
+}
