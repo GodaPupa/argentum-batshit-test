@@ -1,0 +1,7 @@
+# Counter modifier boundary draft
+
+UNCOMPILED, UNTESTED, UNADOPTED. No execution dispatched. Three production files are derived from source6473e766, which remains under qualification when this checkpoint is prepared. The12 preregistered tests from71623e7 are copied byte-for-byte; their four expected assertion failures and eight controls are unchanged. No existing test, golden, deck, budget or workflow is changed.
+
+The optional entrySourceState parameter affects only explicit entry-counter calls. Source providers come from that boundary plus the prepared subject; ordinary counter placement preserves its existing behavior. applyOnEntry passes its boundary into applyFromDefinition, own/global counter placement propagates it to the shared modifier helper, and stack entry also supplies it for intrinsic counters. Recipient-filter projection and replacement ordering remain unqualified; legacy producers without an explicit boundary remain a separate gap.
+
+Archived DRAFT_SOURCE paths are review material, not an executable candidate checkout. Restore the precise files onto a fresh latest-qualified observer/counter checkout only after all preceding original artifacts have been independently received. Keep every prior source repair and assertion. Source-bound negative controls, focused gates, broad regressions, ordinary build and Assay remain mandatory. No card, multiplayer or competitive admission is claimed. Official games/seeds0; Precision reserved2.

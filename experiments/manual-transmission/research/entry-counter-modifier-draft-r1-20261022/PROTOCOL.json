@@ -1,0 +1,123 @@
+{
+  "status": "PRESERVED_DRAFT_UNCOMPILED_UNTESTED_UNADOPTED",
+  "statically_reviewed_source": "6473e7668636859b443020d152b06f400fca4eb5",
+  "source_qualification": "Counter r2 remains active. Actual execution requires its successful independently received receipt and any intervening qualified observer source. No run has been requested for this bank.",
+  "test_file": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterModifierBoundaryScenarioTest.kt",
+  "test_sha256": "3dda373fd9e8cf68f65f438ea0b0cd11ee1cb02f7d32ad44d0746b34ce7ae97b",
+  "test_bytes": 5366,
+  "cases": [
+    {
+      "name": "a simultaneous counter modifier affects itself but not another entrant; double=false, sourceFirst=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a simultaneous counter modifier affects itself but not another entrant; double=false, sourceFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 66,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=false, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "an entering counter modifier applies its own replacement; double=false, direct=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 97,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=false, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "an entering counter modifier applies its own replacement; double=false, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a simultaneous counter modifier affects itself but not another entrant; double=true, sourceFirst=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a simultaneous counter modifier affects itself but not another entrant; double=true, sourceFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 66,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=true, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "an entering counter modifier applies its own replacement; double=true, direct=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 97,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=true, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    },
+    {
+      "name": "an entering counter modifier applies its own replacement; double=true, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierBoundaryScenarioTest"
+    }
+  ],
+  "expected_negative": {
+    "rows": 12,
+    "passed": 8,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 1
+  },
+  "negative_policy": "Exact original case identities and first AssertionFailedError frames required; compile/setup errors are not negative evidence. No assertions may be weakened.",
+  "rules": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "section": "614.12"
+  },
+  "scope": "Pre-entry existence of additive/doubling counter replacement sources, own-subject replacement, cast and direct collection entry. State is serialized before each operation.",
+  "limitations": [
+    "Does not qualify multiple competing replacement ordering or generic counter-placement replacement choices.",
+    "Does not qualify every token/Aura/land producer, prospective filter/continuous-effect projection, or temporary modifier lifetime.",
+    "No card, UI, multiplayer or competitive admission."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "preregistration": "71623e733836b9f9fdfbbd2df46a099217c07f66",
+  "source_manifest": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EntersWithReplacements.kt": {
+      "bytes": 32959,
+      "sha256": "8973862c9d004192c279692e536ab18cabef29457dd3fcafc690a1e6fffc25ae",
+      "git_blob": "ce80f73f5c79497b574d8a8e424afb8997a59ea3",
+      "baseline_sha256": "0f9903bcdba758da5882392e36823f364126aa03cb247a5fea6f69ad8fbee679"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ReplacementEffectUtils.kt": {
+      "bytes": 9924,
+      "sha256": "16b9f92997bbf05d29b3345c4a742df9a5f895daff155ae98519e3aa9288463b",
+      "git_blob": "2614f16748def0a0e93be87942f6ee748fce1c7d",
+      "baseline_sha256": "2db2b9f1ca7ce637e0a0a3ddf2005807d8163066761b0fc49bd5d45cb2c00e25"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+      "bytes": 233548,
+      "sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94",
+      "git_blob": "64c0466abe72bc495c7e5d364fdbf73d75db777b",
+      "baseline_sha256": "e2259a964c908e1c31d77fcc40af1db65384faf50e6644da0e7540c8d9fb76b9"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterModifierBoundaryScenarioTest.kt": {
+      "bytes": 5366,
+      "sha256": "3dda373fd9e8cf68f65f438ea0b0cd11ee1cb02f7d32ad44d0746b34ce7ae97b",
+      "git_blob": "f5fbb8caefab85d9a3ec69bdd2a1f60a15026c00"
+    }
+  },
+  "restoration": "Restore only these three production files and the exact12-case test onto the latest independently qualified observer/counter source. Retain its StateProjector repair, all observer changes, all existing tests, and every safeguard. Append ARCHITECTURE_APPEND.md to that qualified source architecture document; never replace its full documentation from this draft."
+}
