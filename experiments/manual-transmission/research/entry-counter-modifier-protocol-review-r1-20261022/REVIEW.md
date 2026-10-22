@@ -1,0 +1,5 @@
+# Prepared corrected modifier16 qualification protocol
+
+PREPARED ONLY, NOT EXECUTABLE, UNTESTED, UNADOPTED. The active observer run39865679437 still requires broad, ordinary, Assay and original-artifact acceptance. This protocol cannot dispatch before its actual qualified source and receipt are established. Recompute the architecture append against that qualified source; never overwrite observer repairs. The corrected16-case bank and all original assertions remain byte-identical to60736d4/d2d8294. Retired12-case draftd677bf2 must never be substituted or counted as valid evidence.
+
+Expected baseline16:8 exact assertion failures,8 passes,0 errors/skips. Focused561 includes observer533, the new16, and12 original non-entry/temporary-counter/object-identity regressions. Required engine3884, broad14659, ordinary18267 with43 exact baseline skips, Assay568 tests and2000 cards. Require124 protected bindings,23 protected goldens, full actual Assay corpus and all original differential findings. No compilation, build, test, official seed or game is dispatched by this preparation.
