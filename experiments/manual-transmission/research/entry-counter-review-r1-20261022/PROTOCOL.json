@@ -1,0 +1,102 @@
+{
+  "status": "PREREGISTERED_UNCOMPILED_UNTESTED_UNADOPTED",
+  "prospective_baseline": "beb880d1e3251ad88d628274a46c6fbfbb479be1",
+  "prerequisite": "Wait for run39845505980 and independently audited original artifact and all duplicate dispositions. No overlapping build/test. Prior run39843796015 failed fixture compilation and is not a qualified baseline.",
+  "active_checkpoint": "8a7f648fe36fc61fae80ed45a31d0fa2a100756a",
+  "test_sha256": "a49156237003b9aacb2fde7e589748e8687abad0a735e50593eebe5f161cd08f",
+  "cases": [
+    {
+      "name": "a battlefield counter source entering in the same batch grants no counters; providerFirst=false",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "a graveyard counter source leaving in the same batch still grants counters; providerFirst=false",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "a battlefield counter source entering in the same batch grants no counters; providerFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 73
+    },
+    {
+      "name": "a graveyard counter source leaving in the same batch still grants counters; providerFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "copied public characteristics still receive external entry counters; direct=false, token=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121
+    },
+    {
+      "name": "copied public characteristics still receive external entry counters; direct=false, token=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121
+    },
+    {
+      "name": "ordinary printed entry already receives external counters; direct=false",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "face-down entry receives external counters without its concealed text; collection=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 151
+    },
+    {
+      "name": "copied public characteristics still receive external entry counters; direct=true, token=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121
+    },
+    {
+      "name": "copied public characteristics still receive external entry counters; direct=true, token=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121
+    },
+    {
+      "name": "ordinary printed entry already receives external counters; direct=true",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "face-down entry receives external counters without its concealed text; collection=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 151
+    }
+  ],
+  "negative_controls": {
+    "expected_cases": 12,
+    "expected_assertion_failures": 8,
+    "expected_passed": 4,
+    "expected_errors": 0,
+    "expected_skipped": 0,
+    "require_exact_first_failure_locations": true,
+    "compilation_error_is_not_evidence": true
+  },
+  "read_only_findings": [
+    "EntersWithReplacements.applyGlobal enumerates sources from partially updated battlefield/graveyard while MoveCollection iterates. A new battlefield provider can affect later coentrants, and a graveyard provider removed first is lost too early.",
+    "applyOnEntry returns when no registered CardDefinition exists, suppressing external replacement effects on copied token/face-down values.",
+    "StackResolver skips all entry counters when cardDef is null or castFaceDown, conflating printed self replacement text with global effects.",
+    "Single and collection effect entry skip applyOnEntry entirely for face-down entries; concealed own text must be suppressed without suppressing external effects."
+  ],
+  "scope": "Global enters-with provider existence at a simultaneous event, plus external effects on copied or actual face-down entrants. All12 tests use existing baseline APIs and real entry/selection paths; both copied paths round-trip pending state.",
+  "does_not_qualify": [
+    "Complete hypothetical-entry projection/filter state for all simultaneous continuous effects",
+    "All counter-placement modifiers or replacement ordering choices",
+    "Generic OnEnterRunEffect, Aura attachment, granted Riot and played-land publication",
+    "Event-time observer sets, suppression or relational state predicates",
+    "Metamorph/card admission, UI, multiplayer or competition"
+  ],
+  "rules": {
+    "official_pdf": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "checked_on": "2026-10-22",
+    "sections": [
+      "614.4",
+      "614.12",
+      "614.12a"
+    ]
+  },
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}
