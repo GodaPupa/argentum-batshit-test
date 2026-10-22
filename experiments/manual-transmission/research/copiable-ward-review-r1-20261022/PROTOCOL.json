@@ -1,0 +1,75 @@
+{
+  "status": "PREREGISTERED_UNCOMPILED_UNTESTED_UNADOPTED",
+  "prospective_baseline": "7a2fbbbf8118ae8c6410c9e234f9cc866bdb926a",
+  "prerequisite": "Run39837054951 must finish and original artifact independently pass; no duplicate work",
+  "prior_ten_case_checkpoint": "91a3d72c7432fd41b57d11cc19956cb2b7366a98",
+  "prior_ten_case_test_sha256": "6fcf1e2576cbebae40662de2c029c78e2f67141d00c1956370ecf9bd490874bd",
+  "test_sha256": "b60aaad7df0860c447b8e9a0e3a950d408d31a258ffec0aa4997d41f85ed048d",
+  "cases": [
+    {
+      "name": "copied DISGUISE owns ward two after serialization and original departure; direct=false, pay=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "copied DISGUISE owns ward two after serialization and original departure; direct=false, pay=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "copied DISGUISE owns ward two after serialization and original departure; direct=true, pay=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "copied DISGUISE owns ward two after serialization and original departure; direct=true, pay=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "copied CLOAK owns ward two after serialization and original departure; direct=false, pay=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "copied CLOAK owns ward two after serialization and original departure; direct=false, pay=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "copied CLOAK owns ward two after serialization and original departure; direct=true, pay=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "copied CLOAK owns ward two after serialization and original departure; direct=true, pay=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    }
+  ],
+  "negative_controls": {
+    "expected_cases": 8,
+    "expected_assertion_failures": 8,
+    "expected_passed": 0,
+    "expected_errors": 0,
+    "expected_skipped": 0,
+    "require_exact_first_failure_locations": true,
+    "compilation_error_is_not_evidence": true
+  },
+  "rules": {
+    "official_pdf": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "checked_on": "2026-10-22",
+    "sections": [
+      "702.168a",
+      "702.168b",
+      "701.58a",
+      "708.2a"
+    ]
+  },
+  "scope": "Eight additional tests; cast/direct copies of disguised/cloaked permanent, save/restore before answer and after entry, original departure, required ward cost, decline/payment and spell outcome. Underlying printed ward four deliberately distinguishes the copied public ward two. Original ten assertions are unchanged.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}
