@@ -1,0 +1,72 @@
+{
+  "status": "PREREGISTERED_UNCOMPILED_UNTESTED_UNADOPTED",
+  "reviewed_baseline": "ee2e14976c3c7e83f5842ee5b757a3ecbeb0929d",
+  "qualified_baseline_receipt": "d36709c128c4b91ac2fd11b3ec387aa55b3145fd",
+  "original_observer_draft": "8ece86a433856563817c4185f522ce9f3b6a46c9",
+  "test_file": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PendingEntryObserverScenarioTest.kt",
+  "test_sha256": "23179ac70a32b9feeedf8683de85b2af99f5875ec9ba9a101906448767551552",
+  "cases": [
+    {
+      "name": "copied entry combines pre-pause and later observations before ordering and caps; once=false, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryObserverScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 78
+    },
+    {
+      "name": "copied entry combines pre-pause and later observations before ordering and caps; once=false, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryObserverScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 78
+    },
+    {
+      "name": "copied entry combines pre-pause and later observations before ordering and caps; once=true, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryObserverScenarioTest",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "copied entry combines pre-pause and later observations before ordering and caps; once=true, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryObserverScenarioTest",
+      "predicted_baseline": "pass"
+    }
+  ],
+  "expected_negative": {
+    "rows": 4,
+    "passed": 2,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 1
+  },
+  "scope": "Actual cast resolution creates a token, pauses for copied entry and copied color, then exiles the observer. Pre-pause and post-pause triggers wait until the entire spell finishes, form one controller ordering group, and share source-visit once-per-turn caps. Optional full GameState round trips at copy/color/ordering decisions.",
+  "rules": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "sections": [
+      "117.5",
+      "603.2",
+      "603.3",
+      "603.3b",
+      "603.4"
+    ]
+  },
+  "source_trace": [
+    "PassPriorityHandler queues pre-pause PendingTriggersContinuation below resolution frames.",
+    "CoreAutoResumerModule ordinary pending-trigger path currently places the saved list before detecting accumulated resumed events.",
+    "SubmitDecisionHandler subsequently detects the resumed events after the observer has departed.",
+    "A merged post-resolution boundary must retain captured events, source LKI, caps, SBAs and APNAP/controller ordering without duplicate detection."
+  ],
+  "limitations": [
+    "Two-player constant-life fixtures; not complete multiplayer ordering or dynamic-source LKI coverage.",
+    "No new implementation for this boundary is present at preregistration.",
+    "No card, UI or competitive admission."
+  ],
+  "requirements": [
+    "All original28 observer assertions unchanged.",
+    "Freeze the actually qualified counter source and receipt before execution.",
+    "Same19+2=21 expected negatives and9+2=11 passes if composed into one32-case bank; compilation failures never count.",
+    "Preserve all old compatibility fixtures,23 goldens,v0.7 and official budgets."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
