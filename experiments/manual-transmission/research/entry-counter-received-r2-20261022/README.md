@@ -1,0 +1,15 @@
+# Entry counter r2 — qualified component
+
+Source6473e7668636859b443020d152b06f400fca4eb5, tree dfc2bea9705e4a664f19fdd1736840b70c6de8c6. Validationff8ac53f9315b9fba605693446f525ebc2f6d566. Run39859874669/job120107496516 completed successfully at2026-10-22T22:21:11Z; one observed run, no duplicate. Main remains37a603617a03dfd2d81b39dae004f7f336a70dfc.
+
+The original14 controls produced exactly10 preregistered AssertionFailedError frames and4 passes. All462 focused cases passed, including both previously failing unchanged Spelunking cases and all6 original entry-projection cases. Required broad suites passed14611 cases (engine3836, nine eras10775). Collected broad XML also contains345 retained focused SDK/snapshot/lint cases, total14956. The ordinary whole-project build passed18219 cases with exactly43 baseline skips across20 modules. Its engine and era tasks reused UP-TO-DATE results; these stage totals are not independent samples.
+
+Assay's568 unit tests and2000-card touchstone passed their bounded gates. All51 original full differential blocks are byte-identical; none is waived. Declines remain1959 ability lines, with576/2000 cards fully covered. Full actual corpus25090657 bytes, SHAb567f5160c618730bf3a227a5496979917e4f6979687af32059097ce9e620d1f, is included in the original artifact. This matches the prior r5 corpus identity; the earlier live-corpus change remains disclosed in that receipt.
+
+Original artifact12463072622 is33185202 bytes, SHA448fcaf76a73c42df5f8889b596fc9da9483ef4458aa2f8d021a5505acb867af. All133 ordered ZIP parts,8945 members and8911 original JUnit XML reports are retained. Reconstruct by concatenating ARTIFACT.json parts in order. verify.py checks every part/member, immutable source/workflow,112 protected bindings,23 golden hashes, every negative frame, all positive counts/skips and duplicates. Independent recount and differential comparison were reproduced twice. The separate receiver is by the same assistant, not an independent human reviewer.
+
+Verified outer flock exclusion guarded each recipe. The inner gradle-locked script still reports shlock unavailable and its unlocked fallback; the outer lock supplied exclusion. Final activity inspection found no active, waiting, pending or requested run and no local Java/Gradle/Kotlin build. Old unrelated queued34749202144 remains untouched.
+
+This repairs the actual r1 failure preserved in47af561: hypothetical entry projection now detaches only the subject from its original zone or stack, while preserving pre-entry history/aggregates. Original assertions, deck, budgets and all23 protected goldens remain unchanged. Official games/seeds0; Precision reserved2. This is component qualification, not complete entry mechanics, card admission, multiplayer readiness, or competitive evidence.
+
+Next: reconstruct from this immutable qualified source and restore the preserved observer32 draftf1a80a7 with protocol14f5721, after fresh activity checks. Counter modifier12 draftd677bf2/prereg71623e7 remains separate, uncompiled, untested and unadopted. No overlapping run has been launched.
