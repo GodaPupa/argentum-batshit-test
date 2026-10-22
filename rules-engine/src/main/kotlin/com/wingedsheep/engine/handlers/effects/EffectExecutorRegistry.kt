@@ -46,6 +46,7 @@ class EffectExecutorRegistry(
         com.wingedsheep.engine.replacement.ReplacementEffectProcessor()
 ) {
     private val executors = mutableMapOf<KClass<out Effect>, EffectExecutor<*>>()
+    private val entryTriggerDetector = com.wingedsheep.engine.event.TriggerDetector(cardRegistry)
     private val compositeExecutors = CompositeExecutors(cardRegistry, TargetFinder(), decisionHandler)
     private val drawingExecutors = DrawingExecutors(
         amountEvaluator,
@@ -167,7 +168,10 @@ class EffectExecutorRegistry(
             )
         val instructionContext = context.withCurrentObjectReferences(state)
         val result = executor.execute(state, effect, instructionContext)
-        val events = com.wingedsheep.engine.event.captureBattlefieldEntrySnapshots(result.state, result.events)
+        val snapshots = com.wingedsheep.engine.event.captureBattlefieldEntrySnapshots(result.state, result.events)
+        val events = com.wingedsheep.engine.event.captureBattlefieldEntryObservations(
+            result.state, snapshots, entryTriggerDetector,
+        )
         val references = instructionContext.objectReferences.authorize(events)
         return result.copy(events = events,
             state = com.wingedsheep.engine.handlers.continuations.propagateObjectReferences(result.state, references))

@@ -240,13 +240,66 @@ class TriggerDetector(
     fun detectTriggers(
         state: GameState,
         events: List<EngineGameEvent>
-    ): List<PendingTrigger> = detectUnprocessedTriggers(
-        state,
-        events.filterNot {
-            it is ZoneChangeEvent && it.toZone == Zone.BATTLEFIELD && it.entryTriggersAlreadyProcessed
-        },
-        contextEvents = events,
-    )
+    ): List<PendingTrigger> {
+        if (events.none { it is ZoneChangeEvent && it.observedEntryTriggers != null }) {
+            return detectUnprocessedTriggers(state, events.filterNot {
+                it is ZoneChangeEvent && it.entryTriggersAlreadyProcessed
+            }, contextEvents = events)
+        }
+        val triggers = mutableListOf<PendingTrigger>()
+        val uncaptured = mutableListOf<EngineGameEvent>()
+        fun flushUncaptured() {
+            if (uncaptured.isNotEmpty()) {
+                triggers.addAll(detectUnprocessedTriggers(state, uncaptured, contextEvents = events))
+                uncaptured.clear()
+            }
+        }
+        for ((eventIndex, event) in events.withIndex()) {
+            if (event is ZoneChangeEvent && event.observedEntryTriggers != null) {
+                flushUncaptured()
+                if (event.entryTriggersAlreadyProcessed) continue
+                triggers.addAll(event.observedEntryTriggers.map { trigger ->
+                    // Source LKI belongs to departure, not to the earlier triggering event.
+                    // Match the captured visit so a blink cannot substitute the new permanent.
+                    val departure = events.drop(eventIndex + 1).filterIsInstance<ZoneChangeEvent>()
+                        .firstOrNull { it.oldObject != null && it.oldObject == trigger.objectReferences.origin }
+                    trigger.copy(lastKnownSourceSnapshot = trigger.lastKnownSourceSnapshot ?: departure?.lastKnown)
+                })
+            } else if (event !is ZoneChangeEvent || !event.entryTriggersAlreadyProcessed) {
+                uncaptured.add(event)
+            }
+        }
+        flushUncaptured()
+
+        // Each observation already passed its event-time tracker and condition checks. Only
+        // collapse subsequent observations of the same capped ability on the same source visit;
+        // rereading final-state conditions, suppression or trackers would erase valid triggers.
+        val seenCapped = mutableSetOf<Triple<EntityId, com.wingedsheep.engine.state.ObjectRef?, AbilityId>>()
+        val seenDelayed = mutableSetOf<String>()
+        return matcher.sortByApnapOrder(state, triggers.filter { trigger ->
+            val delayedId = trigger.consumesDelayedTriggerId
+            if (delayedId != null && !seenDelayed.add(delayedId)) return@filter false
+            if (!trigger.ability.oncePerTurn && !trigger.ability.triggersOnce) return@filter true
+            seenCapped.add(Triple(trigger.sourceId, trigger.objectReferences.origin, trigger.ability.id))
+        })
+    }
+
+    /** Capture only this instruction's unobserved entry causes, retaining other events as context. */
+    internal fun detectEntryInstructionTriggers(
+        state: GameState,
+        entries: List<ZoneChangeEvent>,
+        contextEvents: List<EngineGameEvent>,
+    ): List<PendingTrigger> = detectUnprocessedTriggers(state, entries, contextEvents).map { trigger ->
+        // An own enters trigger belongs to the new permanent, while its triggering context
+        // still records the old zone/object (needed by "entered from" conditions).
+        val ownEntry = entries.firstOrNull {
+            it.entityId == trigger.sourceId && it.newObject != null &&
+                it.newObject == trigger.objectReferences.source
+        }
+        if (ownEntry == null) trigger else trigger.copy(objectReferences = trigger.objectReferences.copy(
+            origin = ownEntry.newObject,
+        ))
+    }
 
     /** Suppress processed causes without erasing their historical object-reference context. */
     private fun detectUnprocessedTriggers(
@@ -256,10 +309,12 @@ class TriggerDetector(
     ): List<PendingTrigger> {
         val index = buildTriggerIndex(state)
         val triggers = mutableListOf<PendingTrigger>()
+        val causes = java.util.Collections.newSetFromMap(
+            java.util.IdentityHashMap<EngineGameEvent, Boolean>(),
+        ).apply { addAll(events) }
 
         for ((eventIndex, event) in contextEvents.withIndex()) {
-            if (event is ZoneChangeEvent && event.toZone == Zone.BATTLEFIELD &&
-                event.entryTriggersAlreadyProcessed) continue
+            if (event !in causes) continue
             // DrawEvent firing counts are derived from CardsDrawnThisTurnComponent, which `state`
             // holds at its POST-batch value. When one execution emits several CardsDrawnEvents for
             // the same player, each event needs to know how many of those draws happened after it
@@ -436,13 +491,12 @@ class TriggerDetector(
 
         // Filter out once-per-turn triggers that have already fired this turn, and dedupe
         // simultaneous fires (see [capOncePerTurnTriggers]).
-        val filteredTriggers = capOncePerTurnTriggers(state, triggers)
-
-        // Rule 603.4: Filter out triggers with unmet intervening-if conditions
-        return matcher.sortByApnapOrder(
-            state,
-            matcher.filterByTriggerCondition(state, assignGranterIds(state, filteredTriggers, contextEvents))
+        // An unmet intervening-if means the ability never triggered (CR 603.4), so it must
+        // not consume a once-per-turn slot before a later qualifying occurrence is examined.
+        val conditioned = matcher.filterByTriggerCondition(
+            state, assignGranterIds(state, triggers, contextEvents),
         )
+        return matcher.sortByApnapOrder(state, capOncePerTurnTriggers(state, conditioned))
     }
 
     /**

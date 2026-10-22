@@ -37,6 +37,9 @@ object PendingEntryCommitter {
         result = result.copy(events = com.wingedsheep.engine.event.captureBattlefieldEntrySnapshots(
             result.state, result.events,
         ))
+        result = result.copy(events = com.wingedsheep.engine.event.captureBattlefieldEntryObservations(
+            result.state, result.events, com.wingedsheep.engine.event.TriggerDetector(cardRegistry),
+        ))
         // The copied graveyard rider is tied both to a real arrival and to the chosen old object.
         // It cannot exile a later visit of the same physical card after a saved choice resumes.
         for (entry in current) {

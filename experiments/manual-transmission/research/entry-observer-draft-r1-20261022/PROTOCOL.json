@@ -1,0 +1,267 @@
+{
+  "status": "PRESERVED_DRAFT_UNCOMPILED_UNTESTED_UNADOPTED",
+  "reviewed_source": "ee2e14976c3c7e83f5842ee5b757a3ecbeb0929d",
+  "source_qualification": "Qualified copiable-entry r5. Counter r1 remains active and unqualified; restore onto its qualified source only after original-artifact audit.",
+  "prior_qualified_source": "7a2fbbbf8118ae8c6410c9e234f9cc866bdb926a",
+  "test_file": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryObserverBoundaryScenarioTest.kt",
+  "test_sha256": "e3bbb873e1d97bdba3e00a204bab8ef4a72da51e411e07a6f30adc7872c072d2",
+  "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest",
+  "cases": [
+    {
+      "name": "entry observes only observers present at its instruction; departing=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 93,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry suppression uses suppressors present at its instruction; departing=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 106,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=false, twice=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=false, twice=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry observes only observers present at its instruction; departing=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 93,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry suppression uses suppressors present at its instruction; departing=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 106,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=true, twice=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=true, twice=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=false, suppressed=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=false, suppressed=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=true, suppressed=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=true, suppressed=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=false, once=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=false, once=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=true, once=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 168,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=true, once=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry doubling observes the instruction before the doubler moves; departing=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 68
+    },
+    {
+      "name": "entry doubling observes the instruction before the doubler moves; departing=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 68
+    },
+    {
+      "name": "entry source LKI freezes at departure after the later pump; returning=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 89
+    },
+    {
+      "name": "entry source LKI freezes at departure after the later pump; returning=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 90
+    },
+    {
+      "name": "entry trigger caps belong to each source visit and do not mark the returned visit; lifetime=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 118
+    },
+    {
+      "name": "entry trigger caps belong to each source visit and do not mark the returned visit; lifetime=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 118
+    },
+    {
+      "name": "a false first entry condition does not consume the later valid once-per-turn trigger; twice=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 154
+    },
+    {
+      "name": "a false first entry condition does not consume the later valid once-per-turn trigger; twice=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 154
+    },
+    {
+      "name": "delayed entry trigger multiplicity spans serialized instruction observations; once=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "delayed entry trigger multiplicity spans serialized instruction observations; once=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "delayed entry trigger existence is captured before later creation or removal; createdAfter=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 188
+    },
+    {
+      "name": "delayed entry trigger existence is captured before later creation or removal; createdAfter=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 189
+    }
+  ],
+  "expected_negative": {
+    "rows": 28,
+    "passed": 9,
+    "failures": 19,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 2
+  },
+  "rules": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "sections": [
+      "603.2",
+      "603.2c",
+      "603.2d",
+      "603.3",
+      "603.4",
+      "603.6a"
+    ]
+  },
+  "method": "12 actual cast/resolve pipeline cases, including serialization after spell resolution;4 direct executor/detector cases for atomic batches and once-per-turn. Compilation or setup failure is not negative evidence. Preserve every assertion and disclose all failed runs.",
+  "boundaries": [
+    "Observer/suppressor presence at entry instruction, including coentrants",
+    "Event-time trigger restriction vs intervening-if initial and resolution checks",
+    "Atomic entry batch separation and cross-instruction once-per-turn cap"
+  ],
+  "limitations": [
+    "No pending-copy-choice round trip in the new bank; original pending-copy tests remain required regressions.",
+    "No complete non-entry event-time or all cast/land/Aura producer qualification.",
+    "No arbitrary external legacy AbilityRegistry integration qualification.",
+    "No implementation has been compiled or tested.",
+    "No Metamorph/card/UI/multiplayer/competitive admission."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "baseline_source": "ee2e14976c3c7e83f5842ee5b757a3ecbeb0929d",
+  "qualified_baseline_receipt": "d36709c128c4b91ac2fd11b3ec387aa55b3145fd",
+  "additional_bank": "Twelve statically reviewed instruction-history cases added before any execution; original sixteen-case bank unchanged.",
+  "source_manifest": {
+    "docs/architecture-principles.md": {
+      "bytes": 111612,
+      "sha256": "75827836d36a427431fe23aaa3a0cceee65d9afa28864abc8ffeb3ed132dc25f",
+      "git_blob": "6a8dbae486462e2e1d036c8950c58ae81591590d"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": {
+      "bytes": 91453,
+      "sha256": "f03c248d04150ddb512765d652903a32012fed68418a150e74f0ca81be7ee900",
+      "git_blob": "7bfc5a067d23a3b1cca8b6e0b4717272cbc8b90e",
+      "baseline_sha256": "3afa085c67355cfb63e2c1758149ac53196cdfdc1fbb6dfebe62b3dd6f5856c1",
+      "baseline_git_blob": "d78234504ce643c8e31da033f2af00385f633ecf"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt": {
+      "bytes": 238188,
+      "sha256": "0f796aad0920c0d38f6c86121aa198f6e77d85c8a6a9ea1cc3491be86eec6cd2",
+      "git_blob": "2084e273e9f2e3bde1c278d39297a56e48c0008b",
+      "baseline_sha256": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623",
+      "baseline_git_blob": "c0e8a696db522403095d0162fea486cb175b3f99"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": {
+      "bytes": 86967,
+      "sha256": "b2e08bb8ad114e3445a63bb1f72d7031594a4356acbfa7118204a104b7980d3b",
+      "git_blob": "a4dc4501b0ba519d8440e3bf62545457ca6a30c9",
+      "baseline_sha256": "4203df9bac92685480e694f2ad882d700abe8f78c311e852548138add8fbe5e9",
+      "baseline_git_blob": "089d6f8805768866092edc2d720f10e85c43ce1e"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EffectExecutorRegistry.kt": {
+      "bytes": 10289,
+      "sha256": "bafd67d0ae4508aec1f5c75eb41bd42b96a388a5d6f2c0938827baff480fee07",
+      "git_blob": "f36e74cb227cff22a36c0f70cba51737b4d1bec6",
+      "baseline_sha256": "08fa0a725c024cd787734cfc742ef356548f38752c7cd1c5c1c7c1e3bc9fba75",
+      "baseline_git_blob": "d0cd4d30f7c5631407c1e0a779b50dee3e4a9794"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PendingEntryCommitter.kt": {
+      "bytes": 3233,
+      "sha256": "2c1d68fbbe38ac6cb3f4f08199adf3524f54d7b44b624f4d824e72f6141860d7",
+      "git_blob": "813febe4665269196aafac31cecb92f49b23d766",
+      "baseline_sha256": "65a11690a5e9e1f2cae9044d2743b43778b6c85c0fb39eebc9a3ac4c4b709a60",
+      "baseline_git_blob": "24aba8acf02e321eabf7e038710b0e7693ea454e"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/BattlefieldEntryObservations.kt": {
+      "bytes": 1333,
+      "sha256": "4cf68009ea853e6124f7e3a6408dc55efb15bd503cba66f817a0152695734861",
+      "git_blob": "387db7608c243819e4f52c8fe3652becf444328a",
+      "baseline_absent": true
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryObserverBoundaryScenarioTest.kt": {
+      "bytes": 9170,
+      "sha256": "e3bbb873e1d97bdba3e00a204bab8ef4a72da51e411e07a6f30adc7872c072d2",
+      "git_blob": "29081986a3c32b8d8e39b0d8e00e46d46cfc62ce"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryObservationLifetimeScenarioTest.kt": {
+      "bytes": 13038,
+      "sha256": "80da0c540464efabaeebdcc2f386e8999aa396bc665429f51f97d0dab318dfe1",
+      "git_blob": "40c267dcaf1947d59c557e08b597b613e9a637f3"
+    }
+  }
+}
