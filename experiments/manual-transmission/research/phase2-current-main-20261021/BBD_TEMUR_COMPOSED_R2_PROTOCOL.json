@@ -1,0 +1,128 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_BBD_TEMUR_COMPOSITION_R2_V1",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_BEFORE_TEMUR_COPY_AND_COMPOSED_TESTS",
+  "question": "Do previously qualified Temur Sabertooth donor mechanics compose without conflict with the qualified BBD Spire Garden registrar and entire composed Manual source, yielding exactly one newly registered Manual card and no changes in the seven frozen opponents?",
+  "fixed_source_parent": "2518692a539abddfb73667917eb058e9e45eb8ba",
+  "lineage": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "composed_head": "b8ba463263eae5563e4c70aaa0704b100378180b",
+    "composed_run": 39695841356,
+    "original_composed_90_cases": 90,
+    "bbd_head": "2518692a539abddfb73667917eb058e9e45eb8ba",
+    "bbd_run": 39697091863,
+    "bbd_expected_registry_total": 468,
+    "bbd_expected_manual_registered": 76,
+    "bbd_expected_opponents_registered": 392,
+    "temur_donor_head": "5fcc205bb6bb19e15e4f2818d4c71c479579e6ac",
+    "temur_donor_run": 39697736287,
+    "temur_donor_3_original_plus_2_registry_cases": 5
+  },
+  "donor": {
+    "card_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/frf/cards/TemurSabertooth.kt",
+    "card_blob": "60866f4ef465eef5cec68a9984be0fc4d5d78941",
+    "original_test_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TemurSabertoothScenarioTest.kt",
+    "original_test_blob": "c96c82c536a562cbaf79e9771e23d8dee39849d0",
+    "catalog_test_path": "gym/src/test/kotlin/com/wingedsheep/gym/ManualTemurSabertoothCatalogTest.kt",
+    "catalog_test_blob": "1ff46f6653cdfb6924393db34d09857998b14b9e"
+  },
+  "fixed_protected_blobs": {
+    "v07": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "production_ai": "43bbad79273806f56703fad420e9f6a495d05309",
+    "solver": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "cast_land_guard": "dd4c000b13663a03ec6d7b79e62d05ab7dcb737f",
+    "bbd_set": "893f8641b7736098257f3b296822d2bb08fb68ef",
+    "catalog": "4a9da4cedf013284e6838e2e592a269af9012dfe",
+    "original_registry_test": "28a52995671550d87fba5f35d6b100a31fa23848",
+    "original_registry_bootstrap": "9db48b30a280f261dfd2c7d149d097d3935bbad0",
+    "registry_python": "5b782cca1312744005889d2ed86084ac353e9d6c"
+  },
+  "frozen_universe": {
+    "total_slots": 800,
+    "manual_cards": 100,
+    "opponent_slots": 700,
+    "original_pod_ids": [
+      "P01",
+      "P02",
+      "P03"
+    ],
+    "no_substitutions": true
+  },
+  "primary_expected_changes": {
+    "registered_total_from": 468,
+    "registered_total_to": 469,
+    "manual_registered_from": 76,
+    "manual_registered_to": 77,
+    "opponents_registered_from": 392,
+    "opponents_registered_to": 392,
+    "manual_unregistered_to": 23,
+    "total_unregistered_to": 331,
+    "Temur_Sabertooth_only_new_registration": true,
+    "qualify_registry_only_not_rules_fully": true
+  },
+  "source_scope": [
+    "three exact donor files added",
+    "this manifest and CI workflow added",
+    "all existing BBD/card/engine/pilot sources byte-identical to source parent",
+    "no new game seeds or official gameplay authorized"
+  ],
+  "source_mechanics_suites": {
+    "1993-1999": {
+      "WildGrowthScenarioTest": 8
+    },
+    "2003-2007": {
+      "CoilingOracleScenarioTest": 8,
+      "UtopiaSprawlScenarioTest": 8,
+      "PactOfNegationScenarioTest": 3,
+      "PactOfNegationUnpaidScenarioTest": 1
+    },
+    "2008-2016": {
+      "ArborElfScenarioTest": 8,
+      "NestInvaderScenarioTest": 4,
+      "ManualTransmissionLandSpellGuardScenarioTest": 2,
+      "AnimarSoulOfElementsScenarioTest": 6,
+      "AncestralStatueScenarioTest": 2,
+      "SwanSongScenarioTest": 4,
+      "TemurSabertoothScenarioTest": 3
+    },
+    "2017-2022": {
+      "ParadiseDruidScenarioTest": 4,
+      "RejuvenatingSpringsScenarioTest": 10,
+      "TrainingCenterScenarioTest": 10,
+      "SpireGardenScenarioTest": 10,
+      "WalkingBallistaScenarioTest": 2
+    }
+  },
+  "catalog_suites": {
+    "ManualBattlebondSpireCatalogTest": 2,
+    "ManualTemurSabertoothCatalogTest": 2
+  },
+  "expected_qualified_mechanics_cases": 93,
+  "expected_catalog_cases": 4,
+  "expected_total_focused_cases": 97,
+  "protected_precision": {
+    "games_used": 10,
+    "games_cap": 12,
+    "games_reserved": 2,
+    "new_games": 0
+  },
+  "official_phase2": {
+    "capability_admitted": 0,
+    "capability_planned": 36,
+    "primary_admitted": 0,
+    "primary_planned": 864
+  },
+  "guardrails": {
+    "no_new_seeds": true,
+    "no_full_games": true,
+    "no_prod_main_merge": true,
+    "no_deck_edits": true,
+    "no_default_AI_or_R5_or_R9_edits": true,
+    "no_opponent_pilot_edits": true,
+    "no_engine_runtime_edits": true,
+    "no_card_or_test_expectation_edits": true,
+    "only_real_CardRegistry_count": true,
+    "not_competitive_winrate_evidence": true
+  },
+  "decision": "Pass source-only only after all 97 real JUnit cases and fresh all-800 exact registry auditor pass on same head. If a registration changes outside Temur Sabertooth, or any original case fails, HOLD and preserve source-bound failure. No main or official gameplay promotion."
+}
