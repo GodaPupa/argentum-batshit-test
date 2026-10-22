@@ -1977,3 +1977,11 @@ This experimental seam is under preregistered qualification. It does not assert 
 
 
 A completed paused resolution with a waiting trigger frame merges earlier triggers and resumed event-time observations before controller ordering. Source-visit caps and one-shot delayed IDs span the choice, and matching source departure information is retained. With every effect/finalizer frame drained, the existing priority-boundary processor settles SBAs and trigger placement. A paused boundary retains the active recipient; immediate completion preserves the resolution marker until the ordinary decision handler publishes priority, so answering a decision does not grant priority. This experimental path is covered by the four preregistered pending-copy scenarios plus unchanged original priority, finalization, ordering and SBA tests.
+
+
+### Observer R2: preserve synchronous copy instructions and explicit trigger order
+
++CR 608.2f makes a single copy action applied to multiple objects simultaneous. Recursive leaf calls inside a synchronous ForEach(CreateTokenCopyOfTarget) are implementation detail: their unconsumed entry observations and snapshots are recaptured at the complete instruction boundary, where every coentrant is present. This does not merge Composite bodies or sequential copy instructions. Paused token loops retain their original history and need a separately qualified pending-batch plan; this narrow repair does not claim that wider behavior.
+
++CR 603.3b groups waiting triggers before priority. The existing explicit trigger-order fixture helper now answers the newly exposed Meathook and Zodiark ordering choices; all prior source lines, assertions and case identities remain unchanged. Kambal's original life expectation (19) is unchanged. Six new serialized source/event cases distinguish a copy batch from a composite and verify coentrant observer/restriction behavior in both orders. The failed observer R1 source and full original artifact remain immutable at receipt 403c67dc95f761d6749d576fa2dca02a8fdd4d39. No competitive or complete entry admission follows from these component gates.
++

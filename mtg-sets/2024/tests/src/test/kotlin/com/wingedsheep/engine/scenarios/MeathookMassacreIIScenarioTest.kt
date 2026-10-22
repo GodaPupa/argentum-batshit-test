@@ -1,11 +1,13 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.SelectCardsDecision
+import com.wingedsheep.engine.core.ChooseOptionDecision
 import com.wingedsheep.engine.core.YesNoDecision
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.sdk.core.Color
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Step
@@ -89,6 +91,7 @@ class MeathookMassacreIIScenarioTest : FunSpec({
             when (val dec = d.pendingDecision) {
                 is SelectCardsDecision -> d.submitCardSelection(dec.playerId, dec.options.take(dec.minSelections))
                 is YesNoDecision -> d.submitYesNo(dec.playerId, false)
+                is ChooseOptionDecision -> d.chooseTriggerOrderInListedOrder()
                 null -> d.bothPass()
                 else -> error("Unexpected decision: $dec")
             }

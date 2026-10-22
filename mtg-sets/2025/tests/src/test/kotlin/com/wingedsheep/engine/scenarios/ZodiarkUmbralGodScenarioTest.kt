@@ -1,8 +1,10 @@
 package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.SelectCardsDecision
+import com.wingedsheep.engine.core.ChooseOptionDecision
 import com.wingedsheep.engine.state.components.battlefield.CountersComponent
 import com.wingedsheep.engine.support.ScenarioTestBase
+import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
 import com.wingedsheep.mtg.sets.definitions.fin.cards.ZodiarkUmbralGod
 import com.wingedsheep.sdk.core.CounterType
 import com.wingedsheep.sdk.core.Phase
@@ -55,6 +57,7 @@ class ZodiarkUmbralGodScenarioTest : ScenarioTestBase() {
         while ((state.stack.isNotEmpty() || hasPendingDecision()) && guard++ < 60) {
             when (val d = getPendingDecision()) {
                 is SelectCardsDecision -> selectCards(d.options.take(d.minSelections))
+                is ChooseOptionDecision -> chooseTriggerOrderInListedOrder()
                 null -> resolveStack()
                 else ->
                     if (d::class.simpleName?.contains("Mana") == true) submitManaSourcesAutoPay()

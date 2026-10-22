@@ -168,7 +168,21 @@ class EffectExecutorRegistry(
             )
         val instructionContext = context.withCurrentObjectReferences(state)
         val result = executor.execute(state, effect, instructionContext)
-        val snapshots = com.wingedsheep.engine.event.captureBattlefieldEntrySnapshots(result.state, result.events)
+        // A single synchronous copy action applied to a collection is simultaneous (CR 608.2f).
+        // The loop's recursive leaf calls are implementation detail, not separate instructions.
+        // Their observations have not been placed or consumed: recapture this whole instruction
+        // after every copy exists, so coentrant observers and characteristic filters see the batch.
+        // Composite bodies retain their individual instruction boundaries. A paused token loop
+        // requires a separate pending-batch plan; never rewrite its partially returned history here.
+        val instructionEvents = if (result.isSuccess &&
+            effect is com.wingedsheep.sdk.scripting.effects.ForEachEffect &&
+            effect.body is com.wingedsheep.sdk.scripting.effects.CreateTokenCopyOfTargetEffect
+        ) result.events.map { event ->
+            if (event is com.wingedsheep.engine.core.ZoneChangeEvent &&
+                event.toZone == com.wingedsheep.sdk.core.Zone.BATTLEFIELD && !event.entryTriggersAlreadyProcessed
+            ) event.copy(entrySnapshot = null, observedEntryTriggers = null) else event
+        } else result.events
+        val snapshots = com.wingedsheep.engine.event.captureBattlefieldEntrySnapshots(result.state, instructionEvents)
         val events = com.wingedsheep.engine.event.captureBattlefieldEntryObservations(
             result.state, snapshots, entryTriggerDetector,
         )
