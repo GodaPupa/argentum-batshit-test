@@ -1,0 +1,57 @@
+{
+  "schema": "MANUAL_TWO_COUNTER_CREATURES_R1",
+  "base": "bc9ba32f857a7d224ca5beef6718e296cf0e58b0",
+  "base_validation": "58591e802eb59e49d790db5f683dfe8fc6b31df7",
+  "base_run": 39722000171,
+  "base_status_at_registration": "IN_PROGRESS; not a full receiving pass",
+  "source_intake_checkpoint": "6a530db1c7b967c9604963750c2927c4b64be38f",
+  "source_intake_run": 39722087104,
+  "source_intake_artifact": 12401637647,
+  "source_intake_original_sha256": "6f2a85e9b08d85dd1fe244d3509b96cded0a246d9039b5fcaa79bd6666d5ea32",
+  "donor": "a27c09f43483b86045b88679c784c105d9575c07",
+  "cards": [
+    "Hope-Ender Coatl",
+    "Malevolent Hermit"
+  ],
+  "card_cases": {
+    "Hope-Ender Coatl": {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/HopeEnderCoatlScenarioTest.kt",
+      "cases": 9,
+      "donor_blob": "c1613bbc40e0bcf5c2c199cc48a67c0b668f9711"
+    },
+    "Malevolent Hermit": {
+      "path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MalevolentHermitScenarioTest.kt",
+      "cases": 4,
+      "donor_blob": "3d8b721c8f37b7267d25691af3b2a0d344dca3ce"
+    }
+  },
+  "expected_new_card_cases": 13,
+  "expected_combined_cases": 214,
+  "inherited_bank": {
+    "unchanged_from_R7": 199,
+    "R8_revised_catalog_control": 1,
+    "R8_added_catalog_control": 1
+  },
+  "expected_registry_if_success": {
+    "requested_slots": 800,
+    "registered_slots": 484,
+    "manual_registered": 92,
+    "opponent_registered": 392
+  },
+  "required": [
+    "Current Scryfall field/printing/ruling and image verification before implementation and after authoring",
+    "One card per commit and test file; exact donor test bytes retained",
+    "Focused 13 donor cases plus 201-case inherited bank; fresh exact frozen 800-slot inventory",
+    "Full receiving base and affected era suites; source-bound build and lint gates; generated snapshot delta limited to declared additions; all relevant Assay divergences classified",
+    "Source/CI originals and exact commits retained; author audit cannot be called independent review"
+  ],
+  "assay": "Both cards declined at least one line; neither qualifies from parse/fidelity output",
+  "mechanics": "Existing engine vocabulary only; any actual new capability need leaves this batch rather than being approximated",
+  "gameplay_authorized": false,
+  "seed_generation_authorized": false,
+  "official_capability": 0,
+  "official_primary": 0,
+  "precision_used": 10,
+  "precision_reserved": 2,
+  "hardware_changes": false
+}
