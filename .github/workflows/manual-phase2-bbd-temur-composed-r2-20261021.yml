@@ -273,6 +273,9 @@ jobs:
         with:
           name: manual-bbd-temur-registry-${{ github.run_id }}
           path: received-registry
+      # The original 39700636037 aggregator RED was artifact path packaging only:
+      # upload-artifact strips the common r2-registry/ upload root. Four upstream
+      # jobs each passed source/cases/registry; do not change their JUnit/registry data.
       - name: Require all original 93 source cases, four catalog cases and 469-slot registry HOLD
         shell: bash
         env:
@@ -297,12 +300,12 @@ jobs:
                   count+=n
           assert count==93
           for cls,n in p["catalog_suites"].items():
-              f=Path("received-registry/r2-registry/catalog-xml")/("TEST-com.wingedsheep.gym."+cls+".xml")
+              f=Path("received-registry/catalog-xml")/("TEST-com.wingedsheep.gym."+cls+".xml")
               assert f.is_file(),str(f)
               x=ET.parse(f).getroot()
               assert len(x.findall(".//testcase"))==n
               assert not x.findall(".//failure") and not x.findall(".//error") and not x.findall(".//skipped")
-          report=json.loads(Path("received-registry/r2-registry/TEMUR_COMPOSED_REGISTRY_VERDICT.json").read_text())
+          report=json.loads(Path("received-registry/TEMUR_COMPOSED_REGISTRY_VERDICT.json").read_text())
           assert report["current_registered"]==469 and report["current_manual_registered"]==77
           assert report["opponents_registered"]==392 and report["capability_games"]==report["primary_games"]==0
           assert not report["gameplay_authorized"]
