@@ -1,0 +1,35 @@
+{
+  "status": "PREREGISTERED_UNTESTED_FIXTURE_ACTION_CORRECTION",
+  "original_source": "443e20025d09d5d2cb26892691271371a9d0ae87",
+  "original_test_sha256": "d3d0181078e773422a4bd6ed2aa351f9e9a3554a94e0d375dd3cff5b25cfe2a9",
+  "corrected_test_sha256": "b0acaa3edb30d44eb698518fcd76ce579c269103bbabcf3c5629078f1910a514",
+  "corrected_test_git_blob": "49241800215238036e602f532acb33803b8e1b60",
+  "failed_receipt": "dceeb29a4b15e6b92bf014008649f691621d9dce",
+  "case_names_unchanged": true,
+  "original_assertion_expressions_retained_in_order": 75,
+  "new_assertion_expressions": 6,
+  "single_error_assertion_call_correction": {
+    "before": "d.castSpell(d.player1, spell, targets).error shouldBe null",
+    "after": "d.castSpellWithTargets(d.player1, spell, chosenTargets).error shouldBe null",
+    "expected_error": null
+  },
+  "changes": [
+    "Use existing castSpellWithTargets and ChosenTarget.Card with actual source-zone owner; assert source zone is GRAVEYARD. Do not change shared driver or production target validation.",
+    "Assert and answer existing two-option trigger-ordering question, serialize before answering, then retain original pendingDecision-null and stack/life/event assertions. Do not suppress production ordering."
+  ],
+  "production_files_unchanged_from_failed_source": true,
+  "expected_negative_first_failure_lines": [
+    120,
+    120,
+    120,
+    120,
+    164,
+    202,
+    218,
+    235
+  ],
+  "no_old_failure_reclassified": true,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
