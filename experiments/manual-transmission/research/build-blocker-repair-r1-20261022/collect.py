@@ -61,7 +61,7 @@ if stage == 'targeted':
 else:
     assert stage == 'ordinary'
     required_modules = {'ai', 'game-server', 'gym', 'gym-server', 'gym-trainer', 'mtg-sdk',
-                        'mtg-search', 'mtg-sets', 'mtgish', 'oracle-assay', 'rules-engine'}
+                        'mtg-search', 'mtg-sets', 'mtgish-tooling', 'oracle-assay', 'rules-engine'}
     required_modules.update('mtg-sets/' + era + '/tests' for era in
                             ['1993-1999', '2000-2002', '2003-2007', '2008-2016',
                              '2017-2022', '2023', '2024', '2025', '2026'])

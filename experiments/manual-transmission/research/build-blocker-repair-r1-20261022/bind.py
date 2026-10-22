@@ -16,7 +16,7 @@ source = os.environ['SOURCE']
 assert git('rev-parse', 'HEAD^') == source
 assert git('rev-parse', 'HEAD^^') == protocol['parent_source']
 assert git('diff', '--name-only', 'HEAD^', 'HEAD') == protocol['validation_workflow']
-changed = git('diff', '--name-only', 'HEAD^^', 'HEAD^').splitlines()
+changed = git('diff', '--name-only', protocol['repair_baseline'], 'HEAD^').splitlines()
 assert set(p for p in changed if not p.startswith(str(record) + '/')) == set(protocol['source_changes'])
 assert not git('status', '--porcelain', '--untracked-files=no')
 bindings = json.loads((record / 'BINDINGS.json').read_text())

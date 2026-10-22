@@ -29,3 +29,14 @@ runs only one Gradle command at a time and does not claim cross-process locking 
 No snapshots are reblessed, no tests disabled, and no official execution opt-in is supplied.
 Synthetic unit/scenario tests are not competitive evidence. Copy-entry remains on hold until
 the complete ordinary gate passes; the frozen deck and two reserved Precision games remain intact.
+
+The first validation attempt, run 39795634532 at child
+`fc197a24ba13b2e143caf4a478f660617f562739`, stopped before Gradle because Ubuntu's
+just 1.21.0 rejects the `working-directory` setting. Its original 3,225-byte artifact is
+preserved as `attempt-1-infrastructure.zip` with SHA-256
+`4d71ae546ee122b72d1fe52ef50fca2de5133c3cd0798258994873196ccd4ae1`.
+It contains zero test cases and no ordinary build. Revision 2 removes that setting and uses
+the supported `--working-directory` command-line option, verified against just 1.21.0's
+`src/config.rs`. It also corrects the collector's expected filesystem module name to
+`mtgish-tooling`. Production repairs and every original/new Kotlin test remain byte-identical
+to source `f0675c80f7ce6e00599c377869e2ead5df86a9be`.
