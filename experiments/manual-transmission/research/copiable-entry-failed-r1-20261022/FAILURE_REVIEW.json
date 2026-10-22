@@ -1,0 +1,39 @@
+{
+  "status": "FAILED_COMPILATION_NOT_NEGATIVE_EVIDENCE",
+  "source": "54264db6c99e99baa0ac62a2cd6de2bdb7de7184",
+  "source_tree": "b7fcdc0192af095846f1d3351d6ce9a3979e7264",
+  "validation": "c306e7b18df817081918f5ac694dad4fdda465a5",
+  "workflow_sha256": "e23d42f69302e5b793e00e0c2f60e0328a107cdf28e4eac817315538ffa94ed8",
+  "run_id": 39843796015,
+  "job_id": 120051592397,
+  "artifact_id": 12453543758,
+  "artifact_bytes": 14571,
+  "artifact_sha256": "3ef3d383fee08151eaeb06ea1bb143fdec37a66d2563287c5cd4cf4388154109",
+  "failure": {
+    "task": ":rules-engine:compileTestKotlin",
+    "file": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiableFaceDownWardScenarioTest.kt",
+    "line": 37,
+    "column": 54,
+    "message": "Unresolved reference 'DynamicAmount'.",
+    "cause": "New supplemental ward fixture omitted the existing com.wingedsheep.sdk.scripting.values.DynamicAmount import.",
+    "ownership": "Our newly authored test fixture; source and test correction already authorized.",
+    "planned_fix": "Add exactly the missing import, preserve every assertion and case identity, shift expected ward negative frame from82 to83, publish new source-bound guarded attempt after fresh activity check."
+  },
+  "actual_tests_executed": 0,
+  "candidate_production_qualification": "Not executed; only baseline compilation reached",
+  "skipped_stages": [
+    "focused",
+    "broad",
+    "ordinary",
+    "assay-build",
+    "assay-touchstone",
+    "assay-differential"
+  ],
+  "duplicate_runs": [],
+  "source_rebound_after_failure": true,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false,
+  "next_safe_action": "Create isolated corrected source without altering this failed evidence; require exact baseline assertion controls and all later gates. No rerun has been requested."
+}
