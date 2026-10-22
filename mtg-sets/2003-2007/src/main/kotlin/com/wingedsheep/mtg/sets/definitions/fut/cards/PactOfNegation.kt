@@ -6,7 +6,6 @@ import com.wingedsheep.sdk.dsl.Effects
 import com.wingedsheep.sdk.dsl.Targets
 import com.wingedsheep.sdk.dsl.card
 import com.wingedsheep.sdk.model.Rarity
-import com.wingedsheep.sdk.scripting.effects.CompositeEffect
 import com.wingedsheep.sdk.scripting.effects.CreateDelayedTriggerEffect
 import com.wingedsheep.sdk.scripting.effects.DelayedTriggerTiming
 import com.wingedsheep.sdk.scripting.effects.Gate
@@ -31,7 +30,7 @@ val PactOfNegation = card("Pact of Negation") {
 
     spell {
         target = Targets.Spell
-        effect = CompositeEffect(listOf(
+        effect = Effects.Composite(listOf(
             Effects.CounterSpell(),
             CreateDelayedTriggerEffect(
                 step = Step.UPKEEP,
@@ -39,7 +38,7 @@ val PactOfNegation = card("Pact of Negation") {
                 fireOnPlayer = EffectTarget.PlayerRef(Player.You),
                 effect = GatedEffect(
                     gate = Gate.MayPay(PayManaCostEffect(ManaCost.parse("{3}{U}{U}"))),
-                    then = CompositeEffect(emptyList()),
+                    then = Effects.Composite(emptyList()),
                     otherwise = LoseGameEffect(
                         target = EffectTarget.PlayerRef(Player.You),
                         message = "Pact of Negation upkeep payment was not paid"

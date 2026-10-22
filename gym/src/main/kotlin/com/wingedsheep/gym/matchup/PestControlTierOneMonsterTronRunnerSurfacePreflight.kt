@@ -35,6 +35,11 @@ object PestControlTierOneMonsterTronRunnerSurfacePreflight {
     internal const val OFFICIAL_WORKFLOW_PATH = ".github/workflows/pest-control-tier-one-monster-tron-official-smoke.yml"
     internal const val OFFICIAL_WORKFLOW_SHA256 = "6f37cdb939ab310655f78d82ffd711c9f0f389b51e8bd6f6f1a84eb732b9fa3f"
 
+    // Recognize the historical R1 publication without changing or renewing its execution gate.
+    // Its fixed source, branch, attempt, date admission and one-shot claim remain byte-pinned.
+    internal const val R1_OFFICIAL_WORKFLOW_PATH = ".github/workflows/pest-control-tier-one-monster-tron-r1-official-smoke.yml"
+    internal const val R1_OFFICIAL_WORKFLOW_SHA256 = "814cf66d558fa38eec5cac53458588824a8268419339b3b0f7391e6e97f244fb"
+
     private val forbiddenContent = listOf(
         "tier-one-monster-tron-official-execution",
         "PestControlTierOneMonsterTronOfficialExecutionRunner",
@@ -71,6 +76,8 @@ object PestControlTierOneMonsterTronRunnerSurfacePreflight {
             val expectedHash = when {
                 normalizedPath.endsWith(CONSTRUCTION_WORKFLOW_PATH) -> CONSTRUCTION_WORKFLOW_SHA256
                 normalizedPath.endsWith(OFFICIAL_WORKFLOW_PATH) -> OFFICIAL_WORKFLOW_SHA256
+                normalizedPath == R1_OFFICIAL_WORKFLOW_PATH ||
+                    normalizedPath.endsWith("/$R1_OFFICIAL_WORKFLOW_PATH") -> R1_OFFICIAL_WORKFLOW_SHA256
                 else -> null
             }
             if (expectedHash != null && monsterTronDigest(content.toByteArray(Charsets.UTF_8)) != expectedHash) {
