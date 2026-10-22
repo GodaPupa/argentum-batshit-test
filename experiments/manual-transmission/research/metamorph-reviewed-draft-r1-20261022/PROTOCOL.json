@@ -1,0 +1,29 @@
+{
+  "status": "PREREGISTERED_EXACT_CARD_DRAFT_UNCOMPILED_UNTESTED_UNADOPTED",
+  "original_cases": 10,
+  "original_test_sha256": "17a207d908a91036b3b9c96022fb6cb12bf52dc09906b88ef996527f1072e745",
+  "additional_cases": [
+    "Metamorph chooses copied color afresh before one entry and one trigger; direct=false",
+    "Metamorph chooses copied color afresh before one entry and one trigger; direct=true",
+    "Metamorph cannot select a simultaneous artifact coentrant; copyFirst=false",
+    "Metamorph cannot select a simultaneous artifact coentrant; copyFirst=true",
+    "Metamorph owns intrinsic token abilities after the original leaves",
+    "Metamorph copies public cloaked values with ward two as a face-up artifact creature",
+    "Metamorph retains copied X symbols but neither prior counters nor an X payment",
+    "declining Metamorph's copy can survive under an existing anthem"
+  ],
+  "additional_test_sha256": "10c5efbc582329f4cd5be55195d2d8d3214e89df286dfa2df0df8ed2123ee73d",
+  "expected_total_cases": 18,
+  "qualification": "All18 unchanged card-specific cases plus original component regressions and required whole-project/card/Assay gates; no card admission from source-field review alone.",
+  "negative_control_policy": "This is a card composed from already qualified SDK primitives, not a new primitive experiment. Baseline has no card definition; compile failure from its absence is not negative evidence. Retain actual preregistered primitive negatives and bind all applicable card gates to the immutable candidate.",
+  "prerequisites": [
+    "Source-bound copiable-entry qualification currently run39848178435",
+    "Entry-counter14-case qualification and applicable remaining entry dependency review",
+    "Fresh post-draft source verification, exact canonical printing, snapshot review, original23 golden hashes intact"
+  ],
+  "no_test_modification_or_waiver": true,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}
