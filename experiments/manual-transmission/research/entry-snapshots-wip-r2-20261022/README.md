@@ -1,0 +1,1 @@
+Uncompiled, untested, unadopted entry snapshot draft. This archive preserves exact original11/new7 tests, production edits and validation protocol before execution. Baseline run39830545066 must finish and be independently audited; duplicate39830599140 must be verified skipped before any new build. No results or competitive admission are claimed.
