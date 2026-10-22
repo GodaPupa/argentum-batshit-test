@@ -1,0 +1,115 @@
+{
+  "status": "FAILED_UNADOPTED",
+  "source": "8671acc259daec0a2740e32e97d588bc1572b8fc",
+  "validation": "750e57f99d87b57f6fa333474343cbe71bbb2d7c",
+  "run": 39848178435,
+  "negative_gate": true,
+  "focused_gate": true,
+  "stage_totals": {
+    "negative": {
+      "rows": 24,
+      "passed": 4,
+      "failures": 20,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 3
+    },
+    "focused": {
+      "rows": 413,
+      "passed": 413,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 11
+    },
+    "broad": {
+      "rows": 5492,
+      "passed": 5488,
+      "failures": 4,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 1031
+    }
+  },
+  "broad_required_modules_received": {
+    "mtg-sets/1993-1999/tests": {
+      "rows": 713,
+      "passed": 713,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 251
+    },
+    "mtg-sets/2000-2002/tests": {
+      "rows": 612,
+      "passed": 612,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 162
+    },
+    "rules-engine": {
+      "rows": 3822,
+      "passed": 3818,
+      "failures": 4,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 615
+    }
+  },
+  "failure_summary": [
+    {
+      "class": "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "name": "legacy suspended-mana-window loads without allocation and resumes the captured response trace",
+      "type": "org.opentest4j.AssertionFailedError",
+      "first_test_frame": "\tat com.wingedsheep.engine.state.LegacySuspensionMigrationTest$1.invokeSuspend(LegacySuspensionMigrationTest.kt:47)",
+      "new_default_fields": [
+        "copiableTokenAbilities",
+        "copiableFaceDownWard"
+      ]
+    },
+    {
+      "class": "com.wingedsheep.engine.state.LegacySuspensionMigrationTest",
+      "name": "legacy free-cast-target loads without allocation and resumes the captured response trace",
+      "type": "org.opentest4j.AssertionFailedError",
+      "first_test_frame": "\tat com.wingedsheep.engine.state.LegacySuspensionMigrationTest$1.invokeSuspend(LegacySuspensionMigrationTest.kt:47)",
+      "new_default_fields": [
+        "copiableTokenAbilities",
+        "copiableFaceDownWard"
+      ]
+    },
+    {
+      "class": "com.wingedsheep.engine.state.SuspensionTraceTest",
+      "name": "current suspended-mana-window suspension reproduces the captured parent response trace",
+      "type": "org.opentest4j.AssertionFailedError",
+      "first_test_frame": "\tat com.wingedsheep.engine.state.SuspensionTraceTest$1.invokeSuspend(SuspensionTraceTest.kt:36)",
+      "new_default_fields": [
+        "copiableTokenAbilities",
+        "copiableFaceDownWard"
+      ]
+    },
+    {
+      "class": "com.wingedsheep.engine.state.SuspensionTraceTest",
+      "name": "current free-cast-target suspension reproduces the captured parent response trace",
+      "type": "org.opentest4j.AssertionFailedError",
+      "first_test_frame": "\tat com.wingedsheep.engine.state.SuspensionTraceTest$1.invokeSuspend(SuspensionTraceTest.kt:36)",
+      "new_default_fields": [
+        "copiableTokenAbilities",
+        "copiableFaceDownWard"
+      ]
+    }
+  ],
+  "classification": "Real serialization compatibility regression: the newly added nullable CardComponent properties default to null but are emitted by encodeDefaults=true, changing historical replay-state JSON. Four existing original assertions reject that drift. Apply EncodeDefault.NEVER to the two optional fields so absent data stays omitted while non-null copiable provenance/ward still serializes. Do not modify assertions, historical fixtures or goldens.",
+  "next_safe_action": "Preserve this original artifact and audit first. Correct source annotations only, keep all24 new test files and all old fixtures unchanged, add the24 existing compatibility cases from both classes to focused437, then fresh activity inspection and one new immutable qualification.",
+  "partial_broad_note": "The full engine executed3822 cases:3818 passed4 failed. Two of nine card eras completed (713 and612 passed). Seven era suites did not run to completion; mtg-sets343 and SDK2 reports were retained from focused and are not extra broad executions. Do not call the broad gate passed or complete.",
+  "skipped": [
+    "ordinary whole-project build",
+    "Assay CLI",
+    "Assay touchstone",
+    "Assay differential"
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}

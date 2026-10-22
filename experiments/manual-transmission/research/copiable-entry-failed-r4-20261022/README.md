@@ -1,0 +1,9 @@
+# Copiable-entry r4: broad compatibility failure, unadopted
+
+Source8671acc259daec0a2740e32e97d588bc1572b8fc; validation750e57f99d87b57f6fa333474343cbe71bbb2d7c. [Run39848178435](https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39848178435), job120066963199, completed failure. One run observed, no duplicate.
+
+All24 baseline controls matched20 expected assertion failures/4 passes. Focused413 passed, including all4 previously failing copied-anthem assertions. Broad failed4 unchanged saved-state assertions:2 LegacySuspensionMigrationTest and2 SuspensionTraceTest. Full engine3818 passed/4 failed; only two of nine eras completed713+612. Collected broad5492 rows include345 retained focused reports, so they are not5492 fresh broad tests. No skips/errors in received test rows. Seven era suites remain incomplete. Ordinary and all Assay stages were skipped, not passed.
+
+New nullable CardComponent fields emitted null under encodeDefaults=true and changed historical entity JSON. This is a real source compatibility regression; no fixture or assertion will be reblessed. Correct absent-field serialization and include both original compatibility classes (24 cases) in the next focused bank. Full detailed failures remain in INDEPENDENT_AUDIT.json and original XML.
+
+Artifact12457560976 is preserved in5 ordered original ZIP parts (1106317 bytes total), SHA2564b9e4217078e7fbcab162e1d95c5e770dc8e146502b2a72989eb8fc9c3bead36;1063 members. Reproduce with `python verify.py`. Every part, payload hash, immutable source binding and XML verdict is independently recounted through a separate receiver code path; same assistant, not a separate human auditor. All source safeguards were rechecked successfully. Frozen v0.7 and23 protected goldens remain unchanged. Official games/seeds0; Precision reserved2; no competitive or main-branch admission.

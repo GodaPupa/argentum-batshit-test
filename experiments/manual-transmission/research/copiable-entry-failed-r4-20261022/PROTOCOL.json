@@ -1,0 +1,304 @@
+{
+  "status": "PREREGISTERED_COPIABLE_ENTRY_DRAFT_UNTESTED_UNADOPTED",
+  "baseline_source": "7a2fbbbf8118ae8c6410c9e234f9cc866bdb926a",
+  "parent_checkpoint": "1872e3a72fc3fc4c802b5d88b33d3e492918aa70",
+  "qualified_receipts": [
+    "72fb439a96b5e8d5781006938e1e7da82243573b"
+  ],
+  "preregistered_test_checkpoints": [
+    "50fca7662490fd3a02b4a01e7c7a796e5b26846a",
+    "9607bd41155a9ec3d2f19aada4624e901033df4a",
+    "8dc44f31b1441a3ca09f9a76d4f891efd4480f2e"
+  ],
+  "surviving_draft_checkpoint": "26b22ad72e746943d1f262293b3c02d3778880a9",
+  "scope": "Creation-time CreateTokenEffect ability provenance and face-down copy values (including real ward two behavior) through cast/pending direct entry; pending copy/choice outer object-reference propagation. Preserve all24 preregistered tests and all original component assertions.",
+  "new_cases": 24,
+  "cases": [
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=false, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 116,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableEntryValueScenarioTest"
+    },
+    {
+      "name": "entry copies the face-down values as a face-up nameless creature; direct=false, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 173,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableEntryValueScenarioTest"
+    },
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=false, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 116,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableEntryValueScenarioTest"
+    },
+    {
+      "name": "entry copies the face-down values as a face-up nameless creature; direct=false, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 173,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableEntryValueScenarioTest"
+    },
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=true, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 116,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableEntryValueScenarioTest"
+    },
+    {
+      "name": "entry copies the face-down values as a face-up nameless creature; direct=true, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 173,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableEntryValueScenarioTest"
+    },
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=true, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 116,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableEntryValueScenarioTest"
+    },
+    {
+      "name": "entry copies the face-down values as a face-up nameless creature; direct=true, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 173,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableEntryValueScenarioTest"
+    },
+    {
+      "name": "ordinary printed copy excludes external grants counters and tapped status",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.CopiableEntryValueScenarioTest"
+    },
+    {
+      "name": "copy retains the X symbol while X contributes zero to battlefield mana value",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.CopiableEntryValueScenarioTest"
+    },
+    {
+      "name": "copied DISGUISE owns ward two after serialization and original departure; direct=false, pay=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 83,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableFaceDownWardScenarioTest"
+    },
+    {
+      "name": "copied DISGUISE owns ward two after serialization and original departure; direct=false, pay=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 83,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableFaceDownWardScenarioTest"
+    },
+    {
+      "name": "copied DISGUISE owns ward two after serialization and original departure; direct=true, pay=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 83,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableFaceDownWardScenarioTest"
+    },
+    {
+      "name": "copied DISGUISE owns ward two after serialization and original departure; direct=true, pay=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 83,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableFaceDownWardScenarioTest"
+    },
+    {
+      "name": "copied CLOAK owns ward two after serialization and original departure; direct=false, pay=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 83,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableFaceDownWardScenarioTest"
+    },
+    {
+      "name": "copied CLOAK owns ward two after serialization and original departure; direct=false, pay=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 83,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableFaceDownWardScenarioTest"
+    },
+    {
+      "name": "copied CLOAK owns ward two after serialization and original departure; direct=true, pay=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 83,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableFaceDownWardScenarioTest"
+    },
+    {
+      "name": "copied CLOAK owns ward two after serialization and original departure; direct=true, pay=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 83,
+      "classname": "com.wingedsheep.engine.scenarios.CopiableFaceDownWardScenarioTest"
+    },
+    {
+      "name": "outer Self follows only the primary pending entry move; copy=false, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82,
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryReferenceScenarioTest"
+    },
+    {
+      "name": "outer Self follows only the primary pending entry move; copy=false, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82,
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryReferenceScenarioTest"
+    },
+    {
+      "name": "outer Self follows only the primary pending entry move; copy=true, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82,
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryReferenceScenarioTest"
+    },
+    {
+      "name": "outer Self follows only the primary pending entry move; copy=true, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82,
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryReferenceScenarioTest"
+    },
+    {
+      "name": "unpaused primary entry already carries Self into the new object",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryReferenceScenarioTest"
+    },
+    {
+      "name": "serialized pending entry never authorizes a later unrelated graveyard visit",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryReferenceScenarioTest"
+    }
+  ],
+  "negative_excluded_tests": [],
+  "negative_control": {
+    "method": "Restore exact qualified snapshot production, remove only the two newly added production files, retain all three baseline-API test classes unchanged. Require20 AssertionFailedError at preregistered first frames and4passing controls, zero errors/skips; compilation failure is not evidence.",
+    "expected_passed": 4,
+    "expected_failed": 20,
+    "expected_errors": 0,
+    "expected_skipped": 0,
+    "compile_failure_is_not_evidence": true
+  },
+  "qualification": {
+    "expected_focused_passed": 413,
+    "expected_engine_passed": 3822,
+    "expected_broad_passed": 14597,
+    "expected_ordinary_passed": 18205,
+    "expected_ordinary_skipped": 43,
+    "focused": "new24 plus original snapshot18,pending9,copied7,carrier10,SDK2,snapshots/lint343",
+    "broad": "Entire engine and nine card-era suites; retained reports are not extra executions.",
+    "ordinary": "Ordinary whole-project build with routine AI *Test, unchanged43 skips and20 modules.",
+    "assay": "568 tests,2000-card touchstone,full differential with all51 original divergence blocks retained."
+  },
+  "source_manifest": {
+    "docs/architecture-principles.md": {
+      "sha256": "f55e813c9e25153c8d8f6eab838f09a6c0af7cf76ce5d274989ed21ea19b9fb7",
+      "git_blob": "b151c3784bb0de827c4f5342901dc664a7c973b5"
+    },
+    "docs/card-sdk-language-reference.md": {
+      "sha256": "8450ca5f9228f68c4455310766ff5ad3ca8da7f2466a5f093acde028809485ff",
+      "git_blob": "a477d9d4613c6162e1f90bdfe8662559b4c3a044"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerAbilityResolver.kt": {
+      "sha256": "62ef1522a7c2f47ba3d3d1550c5eb89b3053a30f91e03aeee5defe2866de594c",
+      "git_blob": "4dc85b5f818a223c36f5d52427ad0754c5210a49",
+      "baseline_sha256": "f66661fa23a54f53dfe43ac140b608d0c63972168193f82ac01e8faf0739e20c"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": {
+      "sha256": "9660b37c201f2af15ef8519cd45871f0bcca93c4ad03b29b0b89b4c1036bd0a6",
+      "git_blob": "4ade35fe6c935fbbcd7f605c0b02a238d89dc39d",
+      "baseline_sha256": "eeb95bb3c555362c5635141297a648216d6492a39290d3004a972631457bbeb9"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ObjectReferencePropagation.kt": {
+      "sha256": "804e73b45dd5e196aa75fa1b6b65215a54678f928b29661e6b8af90646dc54e9",
+      "git_blob": "858a5979f10cc72a6e80248ff4fc5d921410c562",
+      "baseline_sha256": "44754cc29fd5abe7b850f819811a1a26af25b845396dd3439135172cb0733393"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PendingEntryChoices.kt": {
+      "sha256": "571b3583f2ef1307bc6d527365d9c3c5d8ed8c6738617d12a5d9d708b9258c7b",
+      "git_blob": "1fdd0d0c096e066b87c578f3a42eddd966d94f8c",
+      "baseline_sha256": "81f9c197fb77831b56d73d3a4f3266ba56437f981a2c3201614f567b58ef5df6"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt": {
+      "sha256": "68238ffa8166158535546a150b3d61c7a6cafff252ca80cc4ec6cecee045e0cf",
+      "git_blob": "57ed4bbdf43540a8bfe47f176bfa6749e8d0c28f",
+      "baseline_sha256": "3cd811a07841476fd4d07349b26ecc96ef66bbc5620168092a409375d2cb41fd"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/copy/CopiableEntryCharacteristics.kt": {
+      "sha256": "9d2fb08da3534d6c18bdbd7cb03d8444a6fccb5406254196cd0770a0b8d79318",
+      "git_blob": "fc8bb7b96ed894ba4ccd4aa6077ebc4d8f7d928b",
+      "baseline_absent": true
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenExecutor.kt": {
+      "sha256": "ea96762bd39c5037ba662954ed54dabfc05faa5305209071add55528d4ea10f7",
+      "git_blob": "479e9bfd51fd26df137d36dc821b20168c2b6fd0",
+      "baseline_sha256": "46cf44d673c2ee104de4eee2b3d93bab8376f60f23d3d2981fd2db0ddae240d6"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+      "sha256": "8c76133240e7d6b0ef9dc4d9602a692ed2b13d81bb3d450d0c85f71515709716",
+      "git_blob": "3f4b427940e83fbaf078cd8f91effee1f40c631a",
+      "baseline_sha256": "efa5a9176c6925ddcd28fcfc726cf856809d75a7e057908063e7f598a28dd5de"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/identity/CardComponents.kt": {
+      "sha256": "e682ed3563766bf246256a575ca21a3cc9816d9160c9abfcd2f964c7c80e6337",
+      "git_blob": "254534eede0923b4d5564c6ab7e8e58b5c3fa5b3",
+      "baseline_sha256": "96ce081a0ede19fc19b7ae0b0e72aa66046b9f29e2386a2ece1f504121c1c7cd"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/identity/CopiableTokenAbilities.kt": {
+      "sha256": "4788cb742f8e32412138dc3e5724284a919739e891802306fd979e487d13adf4",
+      "git_blob": "5713db29061cf14d5f26652e12f36401071fe1ff",
+      "baseline_absent": true
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiableEntryValueScenarioTest.kt": {
+      "sha256": "e9b026e24f2c28304a25d6d7ca3778338f8d5b6ff291cf6f2dce5ce8ed4bc43b",
+      "git_blob": "21de080d539ad33b201521c28f1ad7bdd0b758c6"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/CopiableFaceDownWardScenarioTest.kt": {
+      "sha256": "c6286ae3ec9980464ee975d7f58f6b1b2c390f38b02fffc713837fb1bd85354a",
+      "git_blob": "c5816b5b00cf87e004de51698eba5c712b1af8fe"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PendingEntryReferenceScenarioTest.kt": {
+      "sha256": "844487e43a4654b86c9d77882f6495f22977db65e92f3ac92fcd73c89ef6c8fd",
+      "git_blob": "7d0322f1b06832fe16970c61707d31c5c3336ae6"
+    }
+  },
+  "new_dependencies": {
+    "reason": "Copiable characteristic capture and payload installation necessarily modify ModalAndCloneContinuationResumer and StackResolver. Their prior qualified bytes remain the immutable negative baseline, all original tests remain protected. This is a specific dependency regression, not another standalone carrier qualification.",
+    "prior_qualified_files": {
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": {
+        "sha256": "eeb95bb3c555362c5635141297a648216d6492a39290d3004a972631457bbeb9",
+        "git_blob": "48a7c887990df1493acb670241b161284bebbc6e"
+      },
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+        "sha256": "efa5a9176c6925ddcd28fcfc726cf856809d75a7e057908063e7f598a28dd5de",
+        "git_blob": "e4731820fa5b40bbef9021cebe8c50ff65af4280"
+      }
+    }
+  },
+  "does_not_qualify": [
+    "All token producers or all copy executors",
+    "Token characteristic-defining abilities and double-faced mana-value exceptions",
+    "Chosen-X payment or complete X behavior",
+    "Older saved tokens without creation-time provenance",
+    "Played-land prepublication, Aura attachment, generic OnEnterRunEffect, granted Riot",
+    "Complete simultaneous replacement and event-time observer/suppression/state-predicate behavior",
+    "Interactive browser UX",
+    "Exact Metamorph registration or frozen card admission",
+    "Multiplayer readiness, pilots or competitive performance"
+  ],
+  "safeguards": {
+    "no_original_test_edit": true,
+    "no_rebless": true,
+    "protected_bindings": 23,
+    "protected_goldens": 23,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2,
+    "frozen_v07": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "competitive_admission": false
+  },
+  "prior_failed_source": "beb880d1e3251ad88d628274a46c6fbfbb479be1",
+  "prior_failed_run": 39845505980,
+  "prior_failed_receipt": "1872e3a72fc3fc4c802b5d88b33d3e492918aa70",
+  "fixture_import_amendment": {
+    "prior_test_sha256": "b60aaad7df0860c447b8e9a0e3a950d408d31a258ffec0aa4997d41f85ed048d",
+    "new_test_sha256": "c6286ae3ec9980464ee975d7f58f6b1b2c390f38b02fffc713837fb1bd85354a",
+    "only_change": "Add com.wingedsheep.sdk.scripting.values.DynamicAmount import",
+    "all_non_import_lines_identical": true,
+    "assertions_and_case_names_unchanged": true,
+    "expected_ward_first_frame": "82->83 solely due to one added import",
+    "prior_test_execution": false,
+    "candidate_production_same_as_failed_r1": true,
+    "applies_to": "Historical r2 import correction only; r3 additionally contains the separately disclosed source repair."
+  },
+  "failed_attempt_receipts": [
+    "55ae2a2d7552c735660f7a4a3402803f61fad940",
+    "1872e3a72fc3fc4c802b5d88b33d3e492918aa70"
+  ],
+  "source_repair": "Remove the previous copy compiled ContinuousEffectSourceComponent when restoring its printed CardComponent on battlefield exit; all24 test files are byte-identical to failed r2."
+}
