@@ -1,0 +1,76 @@
+name: Manual remaining-card source probes (NO GAMES)
+on:
+  push:
+    branches: [validation/manual-tail-source-probe-r1-20261021]
+    paths: ['.github/workflows/manual-tail-source-probe-r1-20261021.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-tail-source-probe-r1-20261021
+  cancel-in-progress: false
+env:
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  RECORD: experiments/manual-transmission/research/tail-source-probe-r1-20261021
+jobs:
+  source-probes:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 3}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind source-only scope before any probe
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD^)" = f31071375f44eb132ed976810607695316d4c707
+          test "$(git diff --name-only HEAD^ HEAD)" = .github/workflows/manual-tail-source-probe-r1-20261021.yml
+          python3 - <<'PY'
+          from pathlib import Path
+          import json,subprocess,os
+          root=Path(os.environ['RECORD'])
+          p=json.loads((root/'PROTOCOL.json').read_text())
+          actual=set(subprocess.check_output(['git','diff','--name-only',p['source_parent'],'HEAD'],text=True).splitlines())
+          assert actual=={str(root/'PROTOCOL.json'),str(root/'probe.py'),'.github/workflows/manual-tail-source-probe-r1-20261021.yml'},actual
+          assert not p['gameplay_authorized'] and not p['seed_generation_authorized']
+          assert p['precision_reserved']==2
+          assert subprocess.check_output(['git','hash-object','experiments/manual-transmission/control/v0.7.decklist.txt'],text=True).strip()=='c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89'
+          assert subprocess.check_output(['git','hash-object','ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt'],text=True).strip()=='43bbad79273806f56703fad420e9f6a495d05309'
+          PY
+          mkdir -p tail-source-evidence
+          git rev-parse HEAD > tail-source-evidence/validation-sha.txt
+          git rev-parse HEAD^ > tail-source-evidence/source-sha.txt
+          cp "$RECORD/PROTOCOL.json" tail-source-evidence/
+      - name: Build source-inspection tools only
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :oracle-assay:installDist :mtgish-tooling:installDist --no-build-cache --no-daemon --console=plain --stacktrace 2>&1 | tee tail-source-evidence/build.log
+      - name: Parse and probe before receiving exact printing and rulings
+        run: |
+          set -euo pipefail
+          python3 "$RECORD/probe.py" | tee tail-source-evidence/probe.log
+      - name: Preserve source receipts and exact hashes
+        if: always()
+        run: |
+          mkdir -p tail-source-evidence
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib,json
+          root=Path('tail-source-evidence')
+          cache=Path.home()/'.cache/scryfall'
+          receipts=[]
+          if cache.exists():
+              for p in sorted(cache.rglob('*')):
+                  if p.is_file():receipts.append({'cache_file':str(p.relative_to(cache)),'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()})
+          (root/'CACHE_RECEIPTS.json').write_text(json.dumps(receipts,indent=2)+'\n')
+          files=sorted(p for p in root.rglob('*') if p.is_file() and p.name!='SHA256SUMS')
+          (root/'SHA256SUMS').write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p.relative_to(root))+'\n' for p in files))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-tail-source-probe-r1-${{ github.run_id }}
+          path: tail-source-evidence/
+          retention-days: 90
+          if-no-files-found: error
+
