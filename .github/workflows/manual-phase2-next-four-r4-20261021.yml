@@ -1,0 +1,206 @@
+name: Manual Phase 2 exact next four v0.7 cards (25 original scenarios and 800 registry, NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-phase2-mana-protection-r4-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-next-four-r4-20261021.yml'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_FOUR_R4_PROTOCOL.json'
+permissions: {contents: read}
+concurrency:
+  group: manual-phase2-next-four-r4-20261021
+  cancel-in-progress: false
+
+jobs:
+  exact-source-preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 35}
+      - name: Enforce exact 8 frozen donor blobs and original R3 parent with no runtime changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p next-four-evidence
+          git merge-base --is-ancestor ab65657918c0f5e02ae181c579d1c8e6f972c0ec HEAD
+          git diff --name-only ab65657918c0f5e02ae181c579d1c8e6f972c0ec HEAD > next-four-evidence/changed-paths.txt
+          python3 - <<'PY' | tee next-four-evidence/source-guard.log
+          from pathlib import Path
+          import json,subprocess
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_FOUR_R4_PROTOCOL.json").read_text())
+          assert p["schema"]=="ARGENTUM_MANUAL_PHASE2_R4_FOUR_CARD_PROVENANCE_GATE_V1"
+          assert p["status"]=="PREDECLARED_BEFORE_DONOR_FILE_RECEIVING"
+          assert p["parent_head"]=="ab65657918c0f5e02ae181c579d1c8e6f972c0ec"
+          assert p["parent_run"]==39702175031
+          assert p["initial_original_testcases"]==25 and p["expected_registered_total_if_full_success"]==480
+          assert p["expected_registered_manual_if_full_success"]==88 and p["expected_registered_opponents_if_full_success"]==392
+          assert p["protected"]["no_games"] and p["protected"]["no_new_seeds"] and p["protected"]["precision_reserved"]==2
+          def git(pa):return subprocess.check_output(["git","rev-parse","HEAD:"+pa],text=True).strip()
+          expected={"experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_FOUR_R4_PROTOCOL.json",
+            ".github/workflows/manual-phase2-next-four-r4-20261021.yml"}
+          for card in p["cards"]:
+              for pa,blob in ((card["source_path"],card["source_blob"]),(card["test_path"],card["test_blob"])):
+                  assert git(pa)==blob,(pa,git(pa),blob)
+                  expected.add(pa)
+          assert len(p["cards"])==4
+          actual=set(Path("next-four-evidence/changed-paths.txt").read_text().splitlines())
+          assert actual==expected and len(actual)==10,(len(actual),actual^expected)
+          for pa,blob in {
+              "experiments/manual-transmission/control/v0.7.decklist.txt":p["protected"]["control"],
+              "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt":p["protected"]["ai"],
+              "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt":p["protected"]["mana"],
+              "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt":p["protected"]["land_guard"],
+              "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bbd/BattlebondSet.kt":p["protected"]["bbd_catalog"]
+          }.items():assert git(pa)==blob,(pa,git(pa),blob)
+          print("MANUAL_R4_FOUR_SOURCE_IDENTITIES_AND_R3_PARENT_ACCEPTED_ZERO_GAMES")
+          PY
+          git rev-parse HEAD > next-four-evidence/source-head.txt
+          echo 'No new game/seeds, Phase2 0/36 & 0/864, Precision 10/12 used, two reserved' > next-four-evidence/game-boundary.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r4-source-${{ github.run_id }}
+          path: next-four-evidence/
+          if-no-files-found: warn
+
+  original-cases:
+    needs: exact-source-preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 95
+    strategy:
+      fail-fast: false
+      matrix:
+        era: ["2008-2016","2017-2022"]
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Run actual historical behavior scenarios without modifying donor tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "r4-cases/${{ matrix.era }}/xml"
+          chmod +x gradlew scripts/gradle-locked
+          if [ "${{ matrix.era }}" = '2008-2016' ];then
+            filters=(--tests '*BaneOfProgressScenarioTest')
+          else
+            filters=(--tests '*GwennaEyesOfGaeaScenarioTest' --tests '*FblthpTheLostScenarioTest' --tests '*AetherChannelerScenarioTest')
+          fi
+          scripts/gradle-locked :mtg-sets:${{ matrix.era }}:tests:cleanTest :mtg-sets:${{ matrix.era }}:tests:test \
+            "${filters[@]}" --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee "r4-cases/${{ matrix.era }}/original-gradle.log"
+      - name: Preserve all actual original JUnit even on RED
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p "r4-cases/${{ matrix.era }}/xml"
+          cp -a mtg-sets/${{ matrix.era }}/tests/build/test-results/test/. "r4-cases/${{ matrix.era }}/xml/" || true
+      - name: Audit exact original source suite identities and case counts
+        if: success()
+        shell: bash
+        env: {ERA: "${{ matrix.era }}"}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "r4-cases/$ERA/independent-xml.log"
+          import os,json,xml.etree.ElementTree as ET
+          from pathlib import Path
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_FOUR_R4_PROTOCOL.json").read_text())
+          counts=0
+          for card in p["cards"]:
+              if card["era"]!=os.environ["ERA"]:continue
+              cls=Path(card["test_path"]).stem
+              f=Path("r4-cases")/os.environ["ERA"]/"xml"/("TEST-com.wingedsheep.engine.scenarios."+cls+".xml")
+              assert f.exists(),str(f)
+              x=ET.parse(f).getroot();ts=x.findall(".//testcase")
+              assert len(ts)==card["expected_original_testcases"],(cls,len(ts),card["expected_original_testcases"])
+              assert not x.findall(".//failure") and not x.findall(".//error") and not x.findall(".//skipped"),cls
+              assert len({(t.get("classname"),t.get("name")) for t in ts})==len(ts)
+              counts+=len(ts)
+              print(cls,len(ts),"GREEN")
+          assert counts==(2 if os.environ["ERA"]=="2008-2016" else 23)
+          print("MANUAL_PHASE2_R4_SOURCE_ORIGINAL_ERA_CASES_GREEN",os.environ["ERA"],counts)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r4-cases-${{ github.run_id }}-${{ matrix.era }}
+          path: r4-cases/
+          if-no-files-found: warn
+
+  exact-eight-registry:
+    needs: exact-source-preflight
+    runs-on: ubuntu-latest
+    timeout-minutes: 100
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MT_P2_AUDIT_INPUT: ${{ github.workspace }}/r4-registry/source/registry-requests.json
+      MT_P2_AUDIT_OUTPUT: ${{ github.workspace }}/r4-registry/registry
+      MT_P2_GATE_OUTPUT: ${{ github.workspace }}/r4-registry
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/checkout@v4
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: experiments/manual-transmission
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Rebuild original eight 100-card identities, zero seeds
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r4-registry/source r4-registry/registry
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py \
+            --phase1 .phase1-source --out r4-registry/source | tee r4-registry/bootstrap.log
+      - name: Execute all 800 requested live Kotlin definitions, no actual 100-card game
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :gym:cleanTest :gym:test \
+            --tests '*ManualTransmissionPhaseTwoRegistryAuditTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r4-registry/kotlin-registry.log
+      - name: Independently verify exact frozen positions and predeclared four-card delta
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/audit_composed_registry_gate.py \
+            2>&1 | tee r4-registry/independent-frozen-800.log
+          python3 - <<'PY' | tee r4-registry/exact-expected-delta.log
+          import json
+          from pathlib import Path
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_FOUR_R4_PROTOCOL.json").read_text())
+          data=json.loads(Path("r4-registry/COMPOSED_R1_LIVE_REGISTRY_GATE.json").read_text())
+          t=data["totals"]
+          assert data["status"]=="HOLD_REGISTRY_COVERAGE"
+          assert t["registered_slots"]==p["expected_registered_total_if_full_success"],t
+          assert t["manual_registered"]==p["expected_registered_manual_if_full_success"],t
+          assert t["opponent_registered"]==p["expected_registered_opponents_if_full_success"],t
+          assert t["manual_unregistered"]==p["expected_unregistered_manual_if_full_success"],t
+          assert t["unregistered_slots"]==p["expected_unregistered_total_if_full_success"],t
+          assert all(c["name"] not in data["decks"][0]["unresolved_cards"] for c in p["cards"])
+          assert data["actual_games_initialized"]==data["official_results"]==0
+          obj={"schema":"ARGENTUM_MANUAL_R4_FOUR_TRUE_CARD_REGISTRATIONS_V1",
+               "status":"HOLD_REGISTRY_COVERAGE","manual_registered":88,"opponents_registered":392,
+               "total_registered":480,"real_full_games":0,"official_capability":0,"official_primary":0,
+               "precision_reserved":2}
+          Path("r4-registry/R4_REGISTRY_VERDICT.json").write_text(json.dumps(obj,indent=2)+"\n")
+          print("MANUAL_R4_FOUR_ADDITIONS_480_OF_800_TRUE_REGISTRY_HOLD_NO_GAMES")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r4-registry-${{ github.run_id }}
+          path: r4-registry/
+          if-no-files-found: warn
