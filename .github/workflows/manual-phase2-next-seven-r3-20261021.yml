@@ -1,0 +1,344 @@
+name: Manual Phase 2 next seven interaction and Eldrazi originals (131 CASES, 800 REGISTRY, NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-phase2-next-seven-r3-20261021]
+    paths:
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_SEVEN_READY_TO_RUN.json'
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: manual-phase2-r3-next-seven-exact-source
+  cancel-in-progress: false
+
+jobs:
+  immutable-seven-source:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 50}
+      - name: Verify the prior 97-case parent SUCCESS, all 14 unchanged donor files and ZERO games
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p r3-source
+          test "$GITHUB_REF" = 'refs/heads/candidate/manual-phase2-next-seven-r3-20261021'
+          git merge-base --is-ancestor 6c22d46ad6b9b2ffe3850f214cb921d5ba6a2c28 HEAD
+          gh api /repos/GodaPupa/argentum-batshit-test/actions/runs/39701448227 \
+            --jq '[.status,.conclusion,.head_sha] | @tsv' > r3-source/parent-actual-github-status.tsv
+          python3 - <<'PY' | tee r3-source/immutable-source-audit.log
+          from pathlib import Path
+          import json,subprocess
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_SEVEN_INTERACTION_SPAWN_R3_PROTOCOL.json").read_text())
+          ready=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_SEVEN_READY_TO_RUN.json").read_text())
+          assert p["schema"]=="ARGENTUM_MANUAL_PHASE2_NEXT_SEVEN_SOURCE_RECEIVING_R3_V1"
+          assert p["immutable_parent"]=="6c22d46ad6b9b2ffe3850f214cb921d5ba6a2c28"
+          assert p["parent_qualification"]["effective_success_run"]==39701448227
+          assert p["parent_qualification"]["original_integrity_red_run"]==39700636037
+          assert ready["schema"]=="ARGENTUM_MANUAL_NEXT_SEVEN_PARENT_GREEN_READY_V1"
+          assert ready["qualified_r2_run"]==39701448227 and ready["source_parent"]==p["immutable_parent"]
+          status=Path("r3-source/parent-actual-github-status.tsv").read_text().strip().split("\t")
+          assert status==["completed","success","7b3d01de835dfa7424ef4d080834542fc8631ffa"],status
+          assert p["new_original_test_cases"]==34 and p["expected_original_mechanics_cases"]==127
+          assert p["expected_total_mechanics_catalog_cases"]==131
+          assert p["negative_controls"]["new_expected_registered_total"]==476
+          assert p["negative_controls"]["new_expected_manual_registered"]==84
+          assert p["negative_controls"]["new_expected_opponent_registered"]==392
+          assert p["budget"]=={"official_capability_admitted":0,"official_primary_admitted":0,"original_precision_used":10,"original_precision_reserved":2,"new_full_games":0,"new_game_seeds":0}
+          assert p["unchanged_originals"]["no_engine_edits"] and p["unchanged_originals"]["no_opponent_deck_edits"]
+          def git(path):return subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip()
+          expected={
+           "experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_SEVEN_INTERACTION_SPAWN_R3_PROTOCOL.json",
+           "experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_SEVEN_READY_TO_RUN.json",
+           ".github/workflows/manual-phase2-next-seven-r3-20261021.yml"}
+          assert len(p["cards"])==7
+          for c in p["cards"]:
+              for path,hash in ((c["source_path"],c["source_blob"]),(c["test_path"],c["test_blob"])):
+                  assert git(path)==hash,(path,git(path),hash)
+                  expected.add(path)
+          changes=subprocess.check_output(["git","diff","--name-only",p["immutable_parent"],"HEAD"],text=True).splitlines()
+          assert len(changes)==17 and set(changes)==expected,(len(changes),sorted(set(changes)^expected))
+          for path,hash in {
+            "experiments/manual-transmission/control/v0.7.decklist.txt":p["unchanged_originals"]["frozen_v07_blob"],
+            "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt":p["unchanged_originals"]["frozen_ai_current_blob"],
+            "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt":p["unchanged_originals"]["frozen_solver_blob"],
+            "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt":p["unchanged_originals"]["frozen_land_guard_blob"],
+            "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bbd/BattlebondSet.kt":p["unchanged_originals"]["bbd_set_blob"],
+            "mtg-sets/src/main/kotlin/com/wingedsheep/mtg/sets/MtgSetCatalog.kt":p["unchanged_originals"]["main_catalog_blob"]
+          }.items():assert git(path)==hash,(path,git(path),hash)
+          assert sum(p["source_case_counts_by_era"].values())==127
+          print("MANUAL_PHASE2_R3_IMMUTABLE_14_DONOR_AND_131_CASE_SCOPE_SOURCE_PASS_NO_GAMES")
+          PY
+          git rev-parse HEAD > r3-source/head-sha.txt
+          git rev-parse HEAD^{tree} > r3-source/tree-sha.txt
+          echo 'NO official 36 or 864 games; NO new seeds; Precision 10/12 used with two reserved' > r3-source/zero-game-budget.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r3-source-${{ github.run_id }}
+          path: r3-source/
+          if-no-files-found: warn
+          retention-days: 30
+
+  five-era-original-127:
+    needs: immutable-seven-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 105
+    strategy:
+      fail-fast: false
+      matrix:
+        era: ["1993-1999","2003-2007","2008-2016","2017-2022","2024"]
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Execute all inherited and new unchanged original tests, limited to this era
+        shell: bash
+        run: |
+          set -euo pipefail
+          era="${{ matrix.era }}"
+          mkdir -p "r3-mechanics/$era/xml"
+          case "$era" in
+            "1993-1999") cases=(WildGrowth) ;;
+            "2003-2007") cases=(CoilingOracle UtopiaSprawl PactOfNegation PactOfNegationUnpaid Pongify) ;;
+            "2008-2016") cases=(ArborElf NestInvader ManualTransmissionLandSpellGuard AnimarSoulOfElements AncestralStatue SwanSong TemurSabertooth RapidHybridization RealityShift EyelessWatcher EmrakulsHatcher) ;;
+            "2017-2022") cases=(ParadiseDruid RejuvenatingSprings TrainingCenter SpireGarden WalkingBallista) ;;
+            "2024") cases=(EldraziRepurposer WrithingChrysalis) ;;
+            *) exit 1 ;;
+          esac
+          filters=()
+          for stem in "${cases[@]}";do filters+=(--tests "*${stem}ScenarioTest");done
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked ":mtg-sets:$era:tests:cleanTest" ":mtg-sets:$era:tests:test" \
+            "${filters[@]}" -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee "r3-mechanics/$era/actual-gradle.log"
+      - name: Preserve original per-era fresh Kotlin JUnit results
+        if: always()
+        shell: bash
+        run: |
+          era="${{ matrix.era }}"
+          mkdir -p "r3-mechanics/$era/xml"
+          cp -a "mtg-sets/$era/tests/build/test-results/test/." "r3-mechanics/$era/xml/" || true
+      - name: Require exact source-defined case counts and absence of errors
+        if: success()
+        shell: bash
+        env:
+          ERA: ${{ matrix.era }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee "r3-mechanics/$ERA/independent-original-cases.log"
+          import json,os,xml.etree.ElementTree as ET
+          from pathlib import Path
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_SEVEN_INTERACTION_SPAWN_R3_PROTOCOL.json").read_text())
+          base={
+           "1993-1999":{"WildGrowthScenarioTest":8},
+           "2003-2007":{"CoilingOracleScenarioTest":8,"UtopiaSprawlScenarioTest":8,"PactOfNegationScenarioTest":3,"PactOfNegationUnpaidScenarioTest":1},
+           "2008-2016":{"ArborElfScenarioTest":8,"NestInvaderScenarioTest":4,"ManualTransmissionLandSpellGuardScenarioTest":2,"AnimarSoulOfElementsScenarioTest":6,"AncestralStatueScenarioTest":2,"SwanSongScenarioTest":4,"TemurSabertoothScenarioTest":3},
+           "2017-2022":{"ParadiseDruidScenarioTest":4,"RejuvenatingSpringsScenarioTest":10,"TrainingCenterScenarioTest":10,"SpireGardenScenarioTest":10,"WalkingBallistaScenarioTest":2},
+           "2024":{}
+          }
+          era=os.environ["ERA"];cases=base[era]
+          for item in p["cards"]:
+              if item["era"]==era:
+                  cases[Path(item["test_path"]).stem]=item["expected_original_cases"]
+          total=0
+          for cls,n in cases.items():
+              f=Path("r3-mechanics")/era/"xml"/("TEST-com.wingedsheep.engine.scenarios."+cls+".xml")
+              assert f.is_file(),str(f)
+              root=ET.parse(f).getroot();rows=root.findall(".//testcase")
+              assert len(rows)==n,(cls,len(rows),n)
+              assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped"),cls
+              assert all(int(root.get(q,"0"))==0 for q in ("failures","errors","skipped")),cls
+              assert len({(t.get("classname"),t.get("name")) for t in rows})==n,cls
+              total+=n
+              print(f"{cls} {n}/{n} exact original PASS")
+          assert total==p["source_case_counts_by_era"][era],(era,total)
+          print("MANUAL_PHASE2_R3_ORIGINAL_ERA_PASS",era,total)
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r3-original-${{ github.run_id }}-${{ matrix.era }}
+          path: r3-mechanics/
+          retention-days: 30
+          if-no-files-found: warn
+
+  frozen-eight-registry:
+    needs: immutable-seven-source
+    runs-on: ubuntu-latest
+    timeout-minutes: 105
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MT_P2_AUDIT_INPUT: ${{ github.workspace }}/r3-registry/source/registry-requests.json
+      MT_P2_AUDIT_OUTPUT: ${{ github.workspace }}/r3-registry/registry
+      MT_P2_GATE_OUTPUT: ${{ github.workspace }}/r3-registry
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/checkout@v4
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: experiments/manual-transmission
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Rerun previously qualified four exact BBD and Temur catalog cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p r3-registry/catalog-xml r3-registry/source r3-registry/registry
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :gym:cleanTest :gym:test \
+            --tests '*ManualBattlebondSpireCatalogTest' \
+            --tests '*ManualTemurSabertoothCatalogTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r3-registry/catalog.log
+          cp -a gym/build/test-results/test/. r3-registry/catalog-xml/
+      - name: Reconstruct original exact 8x100 inventory without seeds or alternate cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git -C .phase1-source rev-parse HEAD)" = e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py \
+            --phase1 .phase1-source --out r3-registry/source 2>&1 | tee r3-registry/phase1-bootstrap.log
+      - name: Execute actual production CardRegistry inventory over all 800 frozen slots
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :gym:cleanTest :gym:test \
+            --tests '*ManualTransmissionPhaseTwoRegistryAuditTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee r3-registry/live-800-gradle.log
+      - name: Independently reconcile all 800 and check exactly seven new v0.7 cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/audit_composed_registry_gate.py 2>&1 | tee r3-registry/independent-800-source.log
+          python3 - <<'PY' | tee r3-registry/checked-delta.log
+          import json,xml.etree.ElementTree as ET
+          from pathlib import Path
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_SEVEN_INTERACTION_SPAWN_R3_PROTOCOL.json").read_text())
+          r=json.loads(Path("r3-registry/COMPOSED_R1_LIVE_REGISTRY_GATE.json").read_text())
+          t=r["totals"];control=p["negative_controls"]
+          assert r["status"]=="HOLD_REGISTRY_COVERAGE"
+          assert t["requested_slots"]==800
+          assert t["registered_slots"]==control["new_expected_registered_total"],t
+          assert t["manual_registered"]==control["new_expected_manual_registered"],t
+          assert t["opponent_registered"]==control["new_expected_opponent_registered"],t
+          assert t["manual_unregistered"]==control["remaining_manual_unregistered"]
+          missing=set(r["decks"][0]["unresolved_cards"])
+          assert all(card["name"] not in missing for card in p["cards"]),missing
+          assert all(x in missing for x in control["spare_unrelated_missing_cards_should_remain_missing"]),missing
+          assert r["actual_games_initialized"]==r["official_results"]==0
+          for cls,n in {"ManualBattlebondSpireCatalogTest":2,"ManualTemurSabertoothCatalogTest":2}.items():
+              f=Path("r3-registry/catalog-xml")/("TEST-com.wingedsheep.gym."+cls+".xml")
+              assert f.is_file(),str(f)
+              x=ET.parse(f).getroot()
+              assert len(x.findall(".//testcase"))==n
+              assert not x.findall(".//failure") and not x.findall(".//error") and not x.findall(".//skipped")
+          report={"schema":"ARGENTUM_MANUAL_PHASE2_R3_SEVEN_NEW_REGISTRY_DELTA_V1",
+           "status":"HOLD_REGISTRY_COVERAGE",
+           "registered_total":t["registered_slots"],
+           "registered_manual":t["manual_registered"],
+           "registered_opponents":t["opponent_registered"],
+           "unregistered_total":t["unregistered_slots"],
+           "seven_new_card_names":[c["name"] for c in p["cards"]],
+           "new_full_games":0,"new_seeds":0,"precision_reserved":2,
+           "catalog_cases":4,"full_game_admission":False}
+          Path("r3-registry/R3_SEVEN_REAL_CARD_REGISTRY.json").write_text(json.dumps(report,indent=2)+"\n")
+          print("MANUAL_R3_SEVEN_NEW_SOURCE_CARDS_476_OF_800_REGISTERED_HOLD_NO_GAMES")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r3-registry-${{ github.run_id }}
+          path: r3-registry/
+          retention-days: 30
+          if-no-files-found: warn
+
+  final-independent-verdict:
+    needs: [immutable-seven-source,five-era-original-127,frozen-eight-registry]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: manual-r3-original-${{ github.run_id }}-*
+          path: combined-r3
+          merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: manual-r3-registry-${{ github.run_id }}
+          path: combined-registry
+      - name: Independent 127+4 exact XML + actual 476/800 registry admission HOLD
+        shell: bash
+        env:
+          SRC: ${{ needs.immutable-seven-source.result }}
+          CASES: ${{ needs.five-era-original-127.result }}
+          REG: ${{ needs.frozen-eight-registry.result }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,json,xml.etree.ElementTree as ET
+          from pathlib import Path
+          assert os.environ["SRC"]==os.environ["CASES"]==os.environ["REG"]=="success",(os.environ["SRC"],os.environ["CASES"],os.environ["REG"])
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/NEXT_SEVEN_INTERACTION_SPAWN_R3_PROTOCOL.json").read_text())
+          base={
+           "1993-1999":{"WildGrowthScenarioTest":8},
+           "2003-2007":{"CoilingOracleScenarioTest":8,"UtopiaSprawlScenarioTest":8,"PactOfNegationScenarioTest":3,"PactOfNegationUnpaidScenarioTest":1},
+           "2008-2016":{"ArborElfScenarioTest":8,"NestInvaderScenarioTest":4,"ManualTransmissionLandSpellGuardScenarioTest":2,"AnimarSoulOfElementsScenarioTest":6,"AncestralStatueScenarioTest":2,"SwanSongScenarioTest":4,"TemurSabertoothScenarioTest":3},
+           "2017-2022":{"ParadiseDruidScenarioTest":4,"RejuvenatingSpringsScenarioTest":10,"TrainingCenterScenarioTest":10,"SpireGardenScenarioTest":10,"WalkingBallistaScenarioTest":2},
+           "2024":{}
+          }
+          for c in p["cards"]:base[c["era"]][Path(c["test_path"]).stem]=c["expected_original_cases"]
+          n=0
+          for era,bank in base.items():
+              for cls,size in bank.items():
+                  f=Path("combined-r3")/era/"xml"/("TEST-com.wingedsheep.engine.scenarios."+cls+".xml")
+                  assert f.is_file(),str(f)
+                  x=ET.parse(f).getroot();cases=x.findall(".//testcase")
+                  assert len(cases)==size,(cls,len(cases),size)
+                  assert not x.findall(".//failure") and not x.findall(".//error") and not x.findall(".//skipped"),cls
+                  n+=size
+          assert n==127,n
+          for cls,size in {"ManualBattlebondSpireCatalogTest":2,"ManualTemurSabertoothCatalogTest":2}.items():
+              f=Path("combined-registry/catalog-xml")/("TEST-com.wingedsheep.gym."+cls+".xml")
+              assert f.is_file(),str(f)
+              x=ET.parse(f).getroot()
+              assert len(x.findall(".//testcase"))==size
+              assert not x.findall(".//failure") and not x.findall(".//error") and not x.findall(".//skipped")
+          r=json.loads(Path("combined-registry/R3_SEVEN_REAL_CARD_REGISTRY.json").read_text())
+          assert r["registered_total"]==476 and r["registered_manual"]==84 and r["registered_opponents"]==392
+          assert r["new_full_games"]==r["new_seeds"]==0 and r["precision_reserved"]==2
+          assert r["status"]=="HOLD_REGISTRY_COVERAGE" and not r["full_game_admission"]
+          output={"schema":"ARGENTUM_MANUAL_PHASE2_R3_131_QUALIFIED_SOURCE_ONLY_VERDICT",
+           "disposition":"SOURCE_ONLY_131_CASES_GREEN_REGISTRY_476_OF_800_AND_HOLD",
+           "original_actual_mechanics_cases":n,"catalog_cases":4,"actual_registered":476,
+           "manual_registered":84,"opponent_registered":392,"new_full_games":0,
+           "official_capability_admitted":0,"official_primary_admitted":0,"precision_games_reserved":2,
+           "not_a_competitive_win_rate":True}
+          Path("MANUAL_R3_FINAL_131.json").write_text(json.dumps(output,indent=2)+"\n")
+          print("MANUAL_PHASE2_R3_131_OF_131_REAL_CASES_GREEN_476_OF_800_HOLD_NO_GAME")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r3-final-${{ github.run_id }}
+          path: MANUAL_R3_FINAL_131.json
+          retention-days: 30
+          if-no-files-found: warn
