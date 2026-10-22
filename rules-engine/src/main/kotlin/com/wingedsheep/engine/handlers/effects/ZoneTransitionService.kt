@@ -721,6 +721,8 @@ object ZoneTransitionService {
                     grantedStateTriggeredAbilities = newState.grantedStateTriggeredAbilities
                         .filter { it.entityId != entityId },
                     grantedActivatedAbilities = newState.grantedActivatedAbilities
+                        .filter { it.entityId != entityId },
+                    grantedStaticAbilities = newState.grantedStaticAbilities
                         .filter { it.entityId != entityId }
                 )
                 val beforeBattlefieldEntry = options.entryBoundary ?: newState
@@ -1473,6 +1475,12 @@ object ZoneTransitionService {
             updated
         }
 
+        val withCopiedAbilities = if (!options.faceDown && ::staticAbilityHandler.isInitialized) {
+            com.wingedsheep.engine.handlers.effects.copy.installCopiableTokenAbilities(
+                withEntity, entityId, staticAbilityHandler,
+            )
+        } else withEntity
+
         // Rule 712 face tracking for every *non-cast* battlefield entry (reanimation, a fetch that
         // puts the card onto the battlefield, a return from exile). The cast pipeline stamps its own
         // DoubleFacedComponent as the permanent spell resolves; nothing stamped it here, so a
@@ -1480,9 +1488,9 @@ object ZoneTransitionService {
         // entries are excluded: a face-down permanent has no characteristics to flip between (CR 708.2).
         // (Playing a land bypasses this whole method, so PlayLandHandler makes the same call itself.)
         val withDfcEntry = if (!options.faceDown && ::cardRegistry.isInitialized) {
-            stampDoubleFacedFrontFace(withEntity, cardRegistry, entityId)
+            stampDoubleFacedFrontFace(withCopiedAbilities, cardRegistry, entityId)
         } else {
-            withEntity
+            withCopiedAbilities
         }
 
         val withDayboundEntry = if (!options.faceDown && ::cardRegistry.isInitialized) {

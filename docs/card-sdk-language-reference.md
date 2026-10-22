@@ -12491,6 +12491,16 @@ The priority groups are (CR 616.1a–f):
   shapes. It does not change the played-land path's earlier publication or close Aura-copy
   attachment, other replacement families, generic `OnEnterRunEffect`, granted Riot, or complete
   simultaneous replacement interactions. Those remain separate engine qualification work.
+  Entry copy capture now sanitizes face-down sources to their public characteristics, retaining
+  disguise/cloak ward {2} independently of the concealed printed definition. For tokens made by
+  `CreateTokenEffect`, creation-time static/triggered/activated text (including synthetic prowess)
+  travels with the copied characteristics; later grants, counters, tapped state and token status do
+  not. The engine retains this provenance through save/restore and copy-of-copy, then clears the
+  copied grants at a fresh battlefield incarnation. Other token producers and full copy semantics
+  still require separate qualification. No SDK declaration or frozen card definition changes.
+  Pending copy/choice answers also propagate the plan's captured object references through the
+  existing resolution-key gate, so outer `Self` can follow its authorized primary entry without
+  treating an unrelated later graveyard visit as the same object.
   Characteristic filters on effect-produced entry events use a frozen projected entrant snapshot
   from the complete effect instruction, including its counters and simultaneous group, before
   later instructions can pump or change the entrant. Resumed pending direct entry captures the

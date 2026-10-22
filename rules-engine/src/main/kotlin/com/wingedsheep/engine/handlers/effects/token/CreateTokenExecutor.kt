@@ -210,6 +210,20 @@ class CreateTokenExecutor(
             )?.takeIf { it.isNotEmpty() }
             ?: listOf(TokenArt.forCreatureTypes(effectiveCreatureTypes))
 
+        // Creation-time text is copiable even though this token has no registered definition.
+        // Build the synthetic prowess trigger once, and use the same immutable value for both
+        // provenance and runtime installation; later grants never enter this payload.
+        val intrinsicTriggers = effect.triggeredAbilities + if (Keyword.PROWESS in effect.keywords) {
+            listOf(TriggeredAbility.create(
+                trigger = Triggers.YouCastNoncreature.event,
+                binding = Triggers.YouCastNoncreature.binding,
+                effect = ModifyStatsEffect(1, 1, EffectTarget.Self),
+            ))
+        } else emptyList()
+        val copiableAbilities = com.wingedsheep.engine.state.components.identity.CopiableTokenAbilities(
+            effect.staticAbilities, intrinsicTriggers, effect.activatedAbilities,
+        ).takeUnless { it.isEmpty }
+
         var newState = state
         val createdTokens = mutableListOf<EntityId>()
 
@@ -234,7 +248,8 @@ class CreateTokenExecutor(
                 baseKeywords = effect.keywords,
                 colors = effectiveColors,
                 ownerId = tokenControllerId,
-                imageUri = resolvedImageUri
+                imageUri = resolvedImageUri,
+                copiableTokenAbilities = copiableAbilities,
             )
 
             val components = mutableListOf<Component>(
@@ -376,9 +391,9 @@ class CreateTokenExecutor(
         }
 
         // If triggered abilities are specified, grant them permanently to each created token
-        if (effect.triggeredAbilities.isNotEmpty()) {
+        if (intrinsicTriggers.isNotEmpty()) {
             for (tokenId in createdTokens) {
-                for (ability in effect.triggeredAbilities) {
+                for (ability in intrinsicTriggers) {
                     val grant = GrantedTriggeredAbility(
                         entityId = tokenId,
                         ability = ability,
@@ -430,30 +445,6 @@ class CreateTokenExecutor(
                         grantedStaticAbilities = newState.grantedStaticAbilities + grant
                     )
                 }
-            }
-        }
-
-        // Prowess is a keyword ability with an intrinsic triggered ability.
-        // Grant it automatically when the token has the PROWESS keyword.
-        if (Keyword.PROWESS in effect.keywords) {
-            val prowessAbility = TriggeredAbility.create(
-                trigger = Triggers.YouCastNoncreature.event,
-                binding = Triggers.YouCastNoncreature.binding,
-                effect = ModifyStatsEffect(
-                    powerModifier = 1,
-                    toughnessModifier = 1,
-                    target = EffectTarget.Self
-                )
-            )
-            for (tokenId in createdTokens) {
-                val grant = GrantedTriggeredAbility(
-                    entityId = tokenId,
-                    ability = prowessAbility,
-                    duration = Duration.Permanent
-                )
-                newState = newState.copy(
-                    grantedTriggeredAbilities = newState.grantedTriggeredAbilities + grant
-                )
             }
         }
 

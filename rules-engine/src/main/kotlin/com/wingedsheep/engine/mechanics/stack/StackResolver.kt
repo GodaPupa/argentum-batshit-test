@@ -1476,7 +1476,15 @@ class StackResolver(
         val copyOf = state.getEntity(spellId)
             ?.get<com.wingedsheep.engine.state.components.identity.CopyOfComponent>()
         val resolvingAsSpellCopy = copyOf != null && copyOf.originalCardComponent == null
-        var newState = state.updateEntity(spellId) { c ->
+        // A new battlefield incarnation must not reuse grants retained for an earlier departure's
+        // leaves-trigger information. Entry installs the copied creation-time payload below.
+        val freshEntry = state.copy(
+            grantedTriggeredAbilities = state.grantedTriggeredAbilities.filter { it.entityId != spellId },
+            grantedStateTriggeredAbilities = state.grantedStateTriggeredAbilities.filter { it.entityId != spellId },
+            grantedActivatedAbilities = state.grantedActivatedAbilities.filter { it.entityId != spellId },
+            grantedStaticAbilities = state.grantedStaticAbilities.filter { it.entityId != spellId },
+        )
+        var newState = freshEntry.updateEntity(spellId) { c ->
             var updated = c.without<SpellOnStackComponent>()
                 .without<TargetsComponent>()
                 .without<com.wingedsheep.engine.state.components.stack.GraveyardCastRiderComponent>()
@@ -1723,6 +1731,10 @@ class StackResolver(
 
             updated
         }
+
+        newState = com.wingedsheep.engine.handlers.effects.copy.installCopiableTokenAbilities(
+            newState, spellId, staticAbilityHandler,
+        )
 
         // "A face-down creature entered the battlefield under your control this turn" (Tunnel
         // Tipster, Oblivious Bookworm). The per-player counter is also bumped by the

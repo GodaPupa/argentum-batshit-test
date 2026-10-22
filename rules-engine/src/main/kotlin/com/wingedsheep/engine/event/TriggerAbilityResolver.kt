@@ -611,6 +611,11 @@ class TriggerAbilityResolver(
                 result.add(createWardTriggeredAbility(it, "facedown"))
             }
         } else {
+            // A face-up copy of a disguised/cloaked object owns ward {2}; the concealed card's
+            // definition is intentionally absent. Copy-of-copy retains this characteristic.
+            targetCard.copiableFaceDownWard?.let {
+                result.add(createWardTriggeredAbility(it, "copied_facedown"))
+            }
             val cardDef = cardRegistry.getCard(cardDefinitionId)
             if (cardDef != null) {
                 for (ka in cardDef.keywordAbilities) {

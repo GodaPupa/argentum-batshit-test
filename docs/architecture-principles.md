@@ -1300,8 +1300,24 @@ data class CopyOfComponent(
    the exact chosen object. Collection outputs reach the outer effect continuation once.
    This bounded stage does not close played-land timing, Aura-copy attachment, other replacement
    families, granted Riot, generic `OnEnterRunEffect`, or all simultaneous counter/static-effect
-   interactions. Full token/X/face-down copiable values and interactive UX remain separate gates.
-7. **Battlefield entry.** The permanent enters the battlefield with the copied stats, types,
+   interactions. The answer payload exposes the plan's captured object-reference environment to
+   the ordinary continuation propagation path. Only primary moves from the same resolution key
+   authorize an outer `Self` to follow the entry; a later unrelated visit remains stale.
+   Interactive UX and full entry coverage remain separate gates.
+7. **Copiable entry characteristics.** `copiableEntryCard` is shared by spell and pending
+   direct-entry copy selection. Face-down sources contribute their public nameless 2/2 values,
+   including disguise/cloak ward {2}; no concealed definition, art, or text is retained as the
+   new copy's identity. The resulting copy is face up. `CreateTokenEffect` records its creation-time
+   static, triggered, activated and synthetic prowess text in `CardComponent.copiableTokenAbilities`.
+   Runtime grants keep their existing representation, but later grants never enter this provenance.
+   A copied entrant installs that payload before entry observation; a copy of the copy owns it even
+   after the original token leaves. New battlefield incarnations clear departure grants after the
+   old leaves-trigger opportunity, then install their own payload. Older saved tokens with no
+   provenance remain unknown; permanent-duration grants are never guessed to be intrinsic text.
+   This is bounded to entry copying and this token producer. Other token producers, token copy
+   executors, characteristic-defining abilities, double-faced mana-value exceptions and chosen-X
+   payment remain separate gates.
+8. **Battlefield entry.** The permanent enters the battlefield with the copied stats, types,
    keywords, and abilities as its base state.
 
 **Why copy is resolved before entry, not as a continuous effect layer.**

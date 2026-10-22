@@ -105,6 +105,10 @@ data class CardComponent(
      * which is the one place the modal/nonmodal split is decided.
      */
     val manaValueOverride: Int? = null,
+    /** Intrinsic token text retained through copies; excludes all later ability grants. */
+    val copiableTokenAbilities: CopiableTokenAbilities? = null,
+    /** Ward from copied face-down characteristics; independent of the concealed card definition. */
+    val copiableFaceDownWard: com.wingedsheep.sdk.scripting.effects.WardCost? = null,
 ) : Component {
     // Convenience accessors
     val isCreature: Boolean get() = typeLine.isCreature

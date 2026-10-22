@@ -118,7 +118,7 @@ class PendingEntryChoices(private val cardRegistry: CardRegistry) {
         val selectedRef = continuation.candidates.firstOrNull { it.entityId == selected }
         if (selected != null && selectedRef == null) return EffectResult.error(state, "Card was not offered for this copy")
         val target = selectedRef?.takeIf { state.objectRef(it.entityId) == it }
-            ?.let { state.getEntity(it.entityId)?.get<CardComponent>() }
+            ?.let { com.wingedsheep.engine.handlers.effects.copy.copiableEntryCard(state, it.entityId) }
         if (target != null) {
             val replacement = continuation.replacement
             entry = entry.copy(
