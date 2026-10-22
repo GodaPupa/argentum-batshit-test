@@ -1,0 +1,7 @@
+# Entry-counter qualification preparation: untested and unadopted
+
+The preserved eight-file draft3d5fdd275d4a6a48772adb3cec604c63c341e4e3 remains unchanged. This local protocol now requires prospective baselineee2e14976c3c7e83f5842ee5b757a3ecbeb0929d and its pending successful r5 receipt. Earlier baseline8671 failed four unchanged saved-state assertions, preserved in10a8ff903602b08bac3beb3ee622445996646c73; it is not qualified. No qualification receipt is invented and no build is dispatched.
+
+After r5 receipt, reconstruct a fresh checkout and restore only the eight preserved counter paths. Preserve r5 CardComponents annotations and all historic fixtures. Bind110 unchanged files (including82 saved-state resources and both compatibility classes),23 protected goldens and all14 counter tests. Expected controls:10 exact assertion failures/4 passes. Focused451 includes the24 original compatibility cases; full engine3836, broad required14611, ordinary18219 plus43 exact skips, Assay568/2000 and all51 original differential blocks. Counts are required gates, not observed results.
+
+Source existence is frozen at the pre-entry event; complete hypothetical-state filtering, counter modifiers, ordering, observer timing, Aura/land/OnEnter/granted Riot remain outside this component. All original tests/assertions remain unchanged. Official games/seeds0; Precision reserved2; no competitive/card/main admission.

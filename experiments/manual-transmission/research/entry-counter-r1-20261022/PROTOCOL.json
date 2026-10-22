@@ -1,0 +1,189 @@
+{
+  "status": "PREREGISTERED_ENTRY_COUNTER_UNTESTED_UNADOPTED",
+  "baseline_source": "ee2e14976c3c7e83f5842ee5b757a3ecbeb0929d",
+  "qualified_baseline_receipt": "QUALIFICATION_RECEIPT_PENDING",
+  "parent_checkpoint": "PARENT_CHECKPOINT_PENDING",
+  "original_test_checkpoint": "6d95e92a73dddb9b2de01950afcb67a95111b63e",
+  "preserved_draft_checkpoint": "3d5fdd275d4a6a48772adb3cec604c63c341e4e3",
+  "scope": "Global enters-with provider existence at a simultaneous event, plus external effects on copied or actual face-down entrants. All12 tests use existing baseline APIs and real entry/selection paths; both copied paths round-trip pending state. Two additional actual Morph/Disguise cast cases require external2 counters and exclude concealed printed5. The original twelve-case file is byte-identical to its prior checkpoint.",
+  "cases": [
+    {
+      "name": "a battlefield counter source entering in the same batch grants no counters; providerFirst=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "a graveyard counter source leaving in the same batch still grants counters; providerFirst=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "a battlefield counter source entering in the same batch grants no counters; providerFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 73,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "a graveyard counter source leaving in the same batch still grants counters; providerFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "copied public characteristics still receive external entry counters; direct=false, token=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "copied public characteristics still receive external entry counters; direct=false, token=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "ordinary printed entry already receives external counters; direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "face-down entry receives external counters without its concealed text; collection=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 151,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "copied public characteristics still receive external entry counters; direct=true, token=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "copied public characteristics still receive external entry counters; direct=true, token=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "ordinary printed entry already receives external counters; direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "face-down entry receives external counters without its concealed text; collection=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 151,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterBoundaryScenarioTest"
+    },
+    {
+      "name": "face-down spell receives external two counters and not printed five; disguise=false",
+      "classname": "com.wingedsheep.engine.scenarios.FaceDownEntryCounterScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 45
+    },
+    {
+      "name": "face-down spell receives external two counters and not printed five; disguise=true",
+      "classname": "com.wingedsheep.engine.scenarios.FaceDownEntryCounterScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 45
+    }
+  ],
+  "source_manifest": {
+    "docs/architecture-principles.md": {
+      "bytes": 110690,
+      "sha256": "09c7bacbcad0018f62db506b7791fb440f2554f215974c538cf8c217b3e614e7",
+      "git_blob": "8da76c837e6dd7dbe59d8f134f7baac230ef0155"
+    },
+    "docs/card-sdk-language-reference.md": {
+      "bytes": 1336319,
+      "sha256": "aa901483d34f30a1445dc08711f5ee96d2c633c0959ee0d5cdde8c26e0640600",
+      "git_blob": "fe7449a9c61388d19d73f91490a92e336a2cb45a"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EntersWithReplacements.kt": {
+      "bytes": 32669,
+      "sha256": "0f9903bcdba758da5882392e36823f364126aa03cb247a5fea6f69ad8fbee679",
+      "git_blob": "3e79b99d054b99b870b83f309a6fa02a4cc1fdbe",
+      "baseline_sha256": "2005749be3f84f60efdc9848d53cdf770f3084165ff0fe6e97e6dce38f1a193b",
+      "baseline_git_blob": "3ab5fdd24503371f3fde87767f6c45f7a1906549"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/MoveCollectionExecutor.kt": {
+      "bytes": 50227,
+      "sha256": "fb60fc747dd129783d220eaae86539f735d6f6e9e6364a4e9e5e39c95414d223",
+      "git_blob": "a7e2194536012aa399ff956e03a4bc7779423d51",
+      "baseline_sha256": "cb7d4c59f50ae6dd8e79ebb2f28339b83a4014ce4e2f3aa53de5a6d0c37f03a3",
+      "baseline_git_blob": "f1cbf24ee8cd9ab0bea906ab899c9f0a9ef17235"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/zones/MoveToZoneEffectExecutor.kt": {
+      "bytes": 20608,
+      "sha256": "9ecb1d94aeee88ec372545afe94fd06b4a3e45ded21ab1811bfa943ebeea547b",
+      "git_blob": "72d34f269ed27bbf99eaab8abe67f591759d0e1d",
+      "baseline_sha256": "294113440fade3cde74ca90eb002c87892da5bee43728411ebc3d39f781ca6fa",
+      "baseline_git_blob": "f14be0b4d07f7cfd3a7d977205c2a065533d000f"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+      "bytes": 233514,
+      "sha256": "e2259a964c908e1c31d77fcc40af1db65384faf50e6644da0e7540c8d9fb76b9",
+      "git_blob": "18aad4af1c339e5d9b6199b2b3ff473c6c386429",
+      "baseline_sha256": "8c76133240e7d6b0ef9dc4d9602a692ed2b13d81bb3d450d0c85f71515709716",
+      "baseline_git_blob": "3f4b427940e83fbaf078cd8f91effee1f40c631a"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterBoundaryScenarioTest.kt": {
+      "bytes": 8811,
+      "sha256": "a49156237003b9aacb2fde7e589748e8687abad0a735e50593eebe5f161cd08f",
+      "git_blob": "f4dcae1e7f6a03796647f0d1a69cd6fa04d43c80"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/FaceDownEntryCounterScenarioTest.kt": {
+      "bytes": 2854,
+      "sha256": "2400867078401a51908bc3645e4429b63ae9785fde3b8f6dc0cfff5f71001a99",
+      "git_blob": "1e2212617964b8656fa1034bdd741f2b2f7e1a61"
+    }
+  },
+  "negative_excluded_tests": [],
+  "negative_control": {
+    "expected_cases": 14,
+    "expected_assertion_failures": 10,
+    "expected_passed": 4,
+    "expected_errors": 0,
+    "expected_skipped": 0,
+    "require_exact_first_failure_locations": true,
+    "compilation_error_is_not_evidence": true
+  },
+  "qualification": {
+    "focused_passed": 451,
+    "engine_passed": 3836,
+    "broad_required_passed": 14611,
+    "ordinary_passed": 18219,
+    "ordinary_skips": 43,
+    "assay_tests": 568,
+    "assay_touchstone_cards": 2000,
+    "differential": "All51 original full blocks must remain unchanged or be explicitly classified, never waived."
+  },
+  "does_not_qualify": [
+    "Complete hypothetical-entry projection/filter state for all simultaneous continuous effects",
+    "All counter-placement modifiers or replacement ordering choices",
+    "Generic OnEnterRunEffect, Aura attachment, granted Riot and played-land publication",
+    "Event-time observer sets, suppression or relational state predicates",
+    "Metamorph/card admission, UI, multiplayer or competition"
+  ],
+  "rules": {
+    "official_pdf": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "checked_on": "2026-10-22",
+    "sections": [
+      "614.4",
+      "614.12",
+      "614.12a"
+    ]
+  },
+  "prerequisite": "Do not dispatch until copiable-entry r5 run39851315771 qualifies and its original artifact and every duplicate disposition have been independently audited. Source ee2 is prospective, not yet qualified. Prior r4 failed original saved-state compatibility assertions; receipt10a8ff903602b08bac3beb3ee622445996646c73 preserves them. Restore only8 counter draft paths onto a fresh qualified checkout, preserving r5 serialization repair.",
+  "safeguards": {
+    "protected_bindings": 110,
+    "protected_goldens": 23,
+    "no_original_test_edit": true,
+    "no_rebless": true,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2,
+    "competitive_admission": false
+  }
+}
