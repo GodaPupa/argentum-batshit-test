@@ -655,7 +655,14 @@ object ZoneTransitionService {
                 ?.get<com.wingedsheep.engine.state.components.identity.CopyOfComponent>()
             val originalCardComponent = copyOf?.originalCardComponent
             if (originalCardComponent != null) {
-                newState = newState.updateEntity(entityId) { c -> c.with(originalCardComponent) }
+                newState = newState.updateEntity(entityId) { c ->
+                    c.with(originalCardComponent)
+                        // The copied static text ended with this battlefield object. Keeping its
+                        // compiled layer source would revive that text if the printed card later
+                        // entered without copying (including a printed card with no statics).
+                        // Normal entry installs the new incarnation's own static text afresh.
+                        .without<com.wingedsheep.engine.mechanics.layers.ContinuousEffectSourceComponent>()
+                }
             }
 
             newState = newState.updateEntity(entityId) { c -> stripBattlefieldComponents(c) }
