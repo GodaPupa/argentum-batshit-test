@@ -98,10 +98,22 @@ data class ZoneChangeEvent(
     @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
     @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
     val entryTriggersAlreadyProcessed: Boolean = false,
+    /**
+     * Triggers observed at the end of this entry instruction, before later instructions run.
+     * Null is an uncaptured cause; an empty list is a captured cause with no additional triggers.
+     * The first entry in a simultaneous group owns the group's observations; the others carry
+     * empty lists. These triggers still await the ordinary priority/target/ordering boundary.
+     */
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val observedEntryTriggers: List<com.wingedsheep.engine.event.PendingTrigger>? = null,
 ) : GameEvent {
     init {
         require(!entryTriggersAlreadyProcessed || toZone == Zone.BATTLEFIELD) {
             "Processed entry-trigger provenance requires a battlefield entry event"
+        }
+        require(observedEntryTriggers == null || toZone == Zone.BATTLEFIELD) {
+            "Entry observations require a battlefield entry event"
         }
     }
 }

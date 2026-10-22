@@ -220,12 +220,18 @@ class TriggerProcessor(
         }
 
         // Mark once-per-turn triggers as fired so they don't trigger again this turn
-        if (ability.oncePerTurn) {
+        val currentSourceVisit = trigger.sourceBattlefieldTimestamp?.let { timestamp ->
+            currentState.getEntity(trigger.sourceId)
+                ?.get<com.wingedsheep.engine.state.components.battlefield.BattlefieldEntryTimestampComponent>()
+                ?.timestamp == timestamp
+        } ?: (!trigger.objectReferences.captured ||
+            trigger.objectReferences.source == currentState.objectRef(trigger.sourceId))
+        if (ability.oncePerTurn && currentSourceVisit) {
             currentState = markTriggerFired(currentState, trigger.sourceId, ability.id)
         }
         // Mark "triggers only once" abilities as fired so they never trigger again while the
         // source stays on the battlefield (tracker persists across turns, unlike oncePerTurn).
-        if (ability.triggersOnce) {
+        if (ability.triggersOnce && currentSourceVisit) {
             currentState = markTriggerFiredEver(currentState, trigger.sourceId, ability.id)
         }
 
