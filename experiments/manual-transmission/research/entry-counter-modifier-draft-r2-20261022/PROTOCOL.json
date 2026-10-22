@@ -1,0 +1,154 @@
+{
+  "status": "CORRECTED_DRAFT_UNCOMPILED_UNTESTED_UNADOPTED",
+  "qualified_review_source": "6473e7668636859b443020d152b06f400fca4eb5",
+  "qualified_receipt": "e7d27c76e172c42254556a56a2f396905f428427",
+  "test_file": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterModifierSourceScenarioTest.kt",
+  "test_sha256": "76a4ab181241eb106ba562e2cab4af7b475ff6cf400fdd62bdb096c9b8a29c54",
+  "cases": [
+    {
+      "name": "a simultaneous general counter modifier affects neither entrant; double=false, sourceFirst=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 75,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a simultaneous general counter modifier affects neither entrant; double=false, sourceFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 74,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=false, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering general counter modifier does not apply to itself; double=false, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering exclusively self counter modifier applies to itself; double=false, direct=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 118,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=false, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering general counter modifier does not apply to itself; double=false, direct=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 105,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering exclusively self counter modifier applies to itself; double=false, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a simultaneous general counter modifier affects neither entrant; double=true, sourceFirst=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 75,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a simultaneous general counter modifier affects neither entrant; double=true, sourceFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 74,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=true, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering general counter modifier does not apply to itself; double=true, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering exclusively self counter modifier applies to itself; double=true, direct=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 118,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=true, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering general counter modifier does not apply to itself; double=true, direct=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 105,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering exclusively self counter modifier applies to itself; double=true, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    }
+  ],
+  "expected_negative": {
+    "rows": 16,
+    "passed": 8,
+    "failures": 8,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 1
+  },
+  "supersedes_without_modifying_original": {
+    "preregistration": "71623e733836b9f9fdfbbd2df46a099217c07f66",
+    "draft": "d677bf26f1e0ec8de0f2bc0e873e397788f72b8e",
+    "test_sha256": "3dda373fd9e8cf68f65f438ea0b0cd11ee1cb02f7d32ad44d0746b34ce7ae97b",
+    "disposition": "RETIRED_BEFORE_ANY_COMPILATION_OR_EXECUTION_INCORRECT_RULE_ORACLE_AND_FIXTURE",
+    "reason": "CR614.12 excludes the entrant's own general subset replacement. Earlier draft incorrectly expected it to apply. Earlier EntersWithCounters fixtures also omitted selfOnly=true, inadvertently granting counters to others. Original file/protocol/source remain unchanged and preserved, never accepted as evidence."
+  },
+  "rules": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "section": "614.12",
+    "reviewed_at": "2026-10-22T22:38:58.800205+00:00"
+  },
+  "execution_order": "Await original artifact audit of active observer run39865679437; bind any execution to latest independently qualified source, preserving all32 observer and every prior qualified assertion. No new run dispatched.",
+  "limitations": [
+    "Multiple replacement ordering, event-wide counter aggregation and counter-type composition remain separate unresolved questions governed by CR614.5/616.",
+    "Does not qualify every token/land/Aura producer or prospective recipient filter evaluation.",
+    "Explicit RecipientFilter.Self only demonstrates self-exclusive qualification; no arbitrary filter equivalence claim."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false,
+  "preregistration": "60736d41a1e007dc61e75e44fb4e37a3d04546ba",
+  "source_manifest": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EntersWithReplacements.kt": {
+      "bytes": 32959,
+      "sha256": "8973862c9d004192c279692e536ab18cabef29457dd3fcafc690a1e6fffc25ae",
+      "git_blob": "ce80f73f5c79497b574d8a8e424afb8997a59ea3",
+      "baseline_sha256": "0f9903bcdba758da5882392e36823f364126aa03cb247a5fea6f69ad8fbee679"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ReplacementEffectUtils.kt": {
+      "bytes": 10364,
+      "sha256": "e973ebb94095d2ae0c3fa2046d1941fdff68a8c99fe8faba010db5cd13d0474b",
+      "git_blob": "f0734aa0666675827c7762b379caa690a27f55df",
+      "baseline_sha256": "2db2b9f1ca7ce637e0a0a3ddf2005807d8163066761b0fc49bd5d45cb2c00e25"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+      "bytes": 233548,
+      "sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94",
+      "git_blob": "64c0466abe72bc495c7e5d364fdbf73d75db777b",
+      "baseline_sha256": "e2259a964c908e1c31d77fcc40af1db65384faf50e6644da0e7540c8d9fb76b9"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterModifierSourceScenarioTest.kt": {
+      "bytes": 6719,
+      "sha256": "76a4ab181241eb106ba562e2cab4af7b475ff6cf400fdd62bdb096c9b8a29c54",
+      "git_blob": "4cbc70456f589700342f4a20b053a97454c3d5c6"
+    }
+  }
+}

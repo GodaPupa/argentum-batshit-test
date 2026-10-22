@@ -1,0 +1,7 @@
+# Corrected entry counter modifier source draft
+
+UNCOMPILED, UNTESTED, UNADOPTED. No execution dispatched. This supersedes retired draftd677bf2, whose original files remain preserved and were never compiled or executed. The corrected sixteen-case preregistration60736d4 is copied exactly. It distinguishes a preexisting general provider, a new general provider (which affects neither itself nor coentrants), and an exclusively self-affecting provider. All own enters-with counter fixtures use selfOnly=true. Eight predicted baseline assertions and eight passing controls remain unexecuted.
+
+The three production files retain the reviewed source-boundary plumbing from qualified source6473e766, with an explicit CR614.12 restriction: the entering subject's own counter modifier is considered only for RecipientFilter.Self. Ordinary counter placement retains current-state behavior. Source restoration must preserve all qualified counter/observer changes and all original tests. Archived DRAFT_SOURCE files are review material, not a candidate checkout.
+
+This is not a complete counter replacement system. Ordering, event-wide aggregation, arbitrary self-filter equivalence, hypothetical recipient evaluation and all legacy producers remain open. The active observer32 run39865679437 must finish and its original artifact must be received before another qualification can start. No official games/seeds, deck changes, golden changes or Precision usage are included.
