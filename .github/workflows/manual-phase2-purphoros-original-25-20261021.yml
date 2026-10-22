@@ -1,0 +1,116 @@
+name: Manual Phase 2 Purphoros original 25 deterministic scenarios (NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-phase2-purphoros-original-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-purphoros-original-25-20261021.yml'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/PURPHOROS_ORIGINAL_25_RECEIVING_PROTOCOL.json'
+      - 'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/PurphorosGodOfTheForge.kt'
+      - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PurphorosGodOfTheForgeScenarioTest.kt'
+permissions: {contents: read}
+concurrency:
+  group: manual-phase2-purphoros-original-25-main-compatibility
+  cancel-in-progress: false
+jobs:
+  frozen-purphoros-source-25:
+    runs-on: ubuntu-latest
+    timeout-minutes: 95
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 25}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Verify byte-identical original card and 25-case sources, unchanged qualified runtime and zero games
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p purphoros-original-evidence
+          test "$GITHUB_REF" = 'refs/heads/candidate/manual-phase2-purphoros-original-20261021'
+          git merge-base --is-ancestor 7b3d01de835dfa7424ef4d080834542fc8631ffa HEAD
+          git diff --name-only 7b3d01de835dfa7424ef4d080834542fc8631ffa HEAD > purphoros-original-evidence/changed-paths.txt
+          python3 - <<'PY' | tee purphoros-original-evidence/source-preflight.log
+          import json,subprocess
+          from pathlib import Path
+          path=Path("experiments/manual-transmission/research/phase2-current-main-20261021/PURPHOROS_ORIGINAL_25_RECEIVING_PROTOCOL.json")
+          p=json.loads(path.read_text())
+          assert p["schema"]=="ARGENTUM_MANUAL_PHASE2_PURPHOROS_CURRENT_MAIN_ORIGINAL_25_R1"
+          assert p["status"]=="PREDECLARED_BEFORE_PURPHOROS_DONOR_COPY_OR_SOURCE_TEST"
+          assert p["exact_parent"]=="7b3d01de835dfa7424ef4d080834542fc8631ffa"
+          assert p["source_parent_proof"]["success_run"]==39701448227
+          assert p["source_parent_proof"]["exact_97_cases"]==97
+          assert p["original_test_design"]["total_actual_unique_scenarios"]==25
+          assert p["full_game_boundaries"]["no_new_full_games"] and p["full_game_boundaries"]["no_engine_edits"]
+          assert p["full_game_boundaries"]["precision_reserved"]==2
+          def git(pa):
+              return subprocess.check_output(["git","rev-parse","HEAD:"+pa],text=True).strip()
+          files=p["donor"]
+          expected={str(path),".github/workflows/manual-phase2-purphoros-original-25-20261021.yml"}
+          for pa,hash in [(files["card_path"],files["card_blob"]),(files["test_path"],files["test_blob"])]:
+              assert git(pa)==hash,(pa,git(pa),hash)
+              expected.add(pa)
+          changes=set(Path("purphoros-original-evidence/changed-paths.txt").read_text().splitlines())
+          assert len(changes)==4 and changes==expected,(len(changes),changes^expected)
+          for pa,hash in {
+             "experiments/manual-transmission/control/v0.7.decklist.txt":p["protected_blobs"]["v07"],
+             "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt":p["protected_blobs"]["ai_current"],
+             "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt":p["protected_blobs"]["solver"],
+             "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt":p["protected_blobs"]["land_cast_guard"],
+             "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/TherosSet.kt":p["protected_blobs"]["original_ths_set"],
+          }.items(): assert git(pa)==hash,(pa,git(pa),hash)
+          print("MANUAL_RACE_PURPHOROS_2_EXACT_DONOR_FILES_AND_25_ORIGINAL_CASES_SOURCE_BOUND_NO_GAMES")
+          PY
+          git rev-parse HEAD > purphoros-original-evidence/head-sha.txt
+          git rev-parse HEAD^{tree} > purphoros-original-evidence/tree-sha.txt
+          echo 'NO full games, NO official seeds, Phase2 0/36 capability and 0/864 primary, Precision 10/12 used and 2 reserved' > purphoros-original-evidence/budget.txt
+      - name: Execute exact 25 original Purphoros devotion/ETB/opponent-damage/entry tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
+            --tests '*PurphorosGodOfTheForgeScenarioTest' \
+            -Dbenchmark=true --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee purphoros-original-evidence/original-25-gradle.log
+      - name: Preserve actual unmodified JUnit source evidence on GREEN or RED
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p purphoros-original-evidence/junit
+          cp -a mtg-sets/2008-2016/tests/build/test-results/test/. purphoros-original-evidence/junit/ || true
+      - name: Independent exact original 25-case JUnit audit (no skips or hidden outcomes)
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee purphoros-original-evidence/independent-original-25-audit.log
+          import json,xml.etree.ElementTree as ET
+          from pathlib import Path
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/PURPHOROS_ORIGINAL_25_RECEIVING_PROTOCOL.json").read_text())
+          f=Path("purphoros-original-evidence/junit/TEST-com.wingedsheep.engine.scenarios.PurphorosGodOfTheForgeScenarioTest.xml")
+          assert f.is_file(),("No current-source original Purphoros XML",str(f))
+          root=ET.parse(f).getroot();tests=root.findall(".//testcase")
+          assert len(tests)==25,("Not all original cases executed",len(tests))
+          assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+          assert all(int(root.get(k,"0"))==0 for k in ("failures","errors","skipped"))
+          assert len(set((t.get("classname"),t.get("name")) for t in tests))==25
+          assert p["full_game_boundaries"]["no_new_full_games"]
+          result={"schema":"ARGENTUM_MANUAL_PHASE2_PURPHOROS_CURRENT_MAIN_ORIGINAL_25_PASS_V1",
+           "qualification":"CARD_COMPONENT_ONLY_GREEN_NOT_FROZEN_FULL_DECK_ADMISSION",
+           "original_source_unchanged":True,"test_cases":25,"failures":0,"errors":0,"skipped":0,
+           "new_full_games":0,"official_phase2_capability":0,"official_phase2_primary":0,
+           "precision_used":10,"precision_reserved":2,
+           "not_proof_of_competitive_wins":True}
+          Path("purphoros-original-evidence/PURPHOROS_COMPONENT_VERDICT.json").write_text(json.dumps(result,indent=2)+"\n")
+          print("MANUAL_RACE_PURPHOROS_ALL_25_SOURCE_CASES_GREEN_0_GAMES")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-purphoros-original-25-${{ github.run_id }}
+          path: purphoros-original-evidence/
+          if-no-files-found: warn
+          retention-days: 30
