@@ -1,0 +1,275 @@
+name: Manual Phase 2 Spire Garden BBD real registry repair (12 CASES, NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-phase2-battlebond-catalog-receiving-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-battlebond-catalog-20261021.yml'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/BATTLEBOND_SET_REGISTRATION_PROTOCOL.json'
+      - 'mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bbd/BattlebondSet.kt'
+      - 'gym/src/test/kotlin/com/wingedsheep/gym/ManualBattlebondSpireCatalogTest.kt'
+permissions: {contents: read, actions: read}
+concurrency:
+  group: manual-phase2-battlebond-spire-one-source-file
+  cancel-in-progress: false
+
+jobs:
+  exact-source-integrity:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 30}
+      - name: Freeze original negative control, exact BBD donor, no other production code changes
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p bbd-source
+          git merge-base --is-ancestor b8ba463263eae5563e4c70aaa0704b100378180b HEAD
+          git diff --name-only b8ba463263eae5563e4c70aaa0704b100378180b HEAD > bbd-source/changed-paths.txt
+          python3 - <<'PY' | tee bbd-source/source-integrity.log
+          import json,subprocess
+          from pathlib import Path
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/BATTLEBOND_SET_REGISTRATION_PROTOCOL.json").read_text())
+          assert p["schema"]=="ARGENTUM_MANUAL_PHASE2_BATTLEBOND_CATALOG_ONE_FILE_RECEIVING_V1"
+          assert p["status"]=="FROZEN_BEFORE_SET_OBJECT_RECEIVING_AND_TESTS"
+          assert p["source_parent"]=="b8ba463263eae5563e4c70aaa0704b100378180b"
+          assert p["negative_control_original_registry"]["registered_total"]==467
+          assert p["negative_control_original_registry"]["manual_registered"]==75
+          assert p["predeclared_verdict"]["new_expected_registered_total"]==468
+          assert p["predeclared_verdict"]["new_expected_manual_registered"]==76
+          assert p["predeclared_verdict"]["new_expected_opponent_registered"]==392
+          expected=set([
+              "experiments/manual-transmission/research/phase2-current-main-20261021/BATTLEBOND_SET_REGISTRATION_PROTOCOL.json",
+              "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bbd/BattlebondSet.kt",
+              "gym/src/test/kotlin/com/wingedsheep/gym/ManualBattlebondSpireCatalogTest.kt",
+              ".github/workflows/manual-phase2-battlebond-catalog-20261021.yml"])
+          paths=set(Path("bbd-source/changed-paths.txt").read_text().splitlines())
+          assert paths==expected,(paths^expected)
+          protected={
+           p["donor"]["path"]:p["donor"]["git_blob"],
+           p["existing_card"]["path"]:p["existing_card"]["git_blob"],
+           p["existing_card"]["existing_scenarios"]:p["existing_card"]["existing_scenario_git_blob"],
+           "experiments/manual-transmission/control/v0.7.decklist.txt":p["protected_sources"]["control_deck"],
+           "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt":p["protected_sources"]["main_ai"],
+           "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt":p["protected_sources"]["main_mana_solver"],
+           "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt":p["protected_sources"]["cast_land_guard"],
+           "mtg-sets/src/main/kotlin/com/wingedsheep/mtg/sets/MtgSetCatalog.kt":p["protected_sources"]["catalog"]
+          }
+          for path,sha in protected.items():
+              got=subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip()
+              assert got==sha,(path,got,sha)
+          assert p["protected_sources"]["no_game_initialize"]
+          print("BBD_EXACT_DONOR_SET_REGISTRAR_AND_NEGATIVE_CONTROL_SOURCE_GREEN_NO_GAMES")
+          PY
+          git rev-parse HEAD > bbd-source/head-sha.txt
+          git rev-parse HEAD^{tree} > bbd-source/tree-sha.txt
+          echo 'Zero official games/seeds/outcomes; preserve Precision 10/12 with 2 reserved.' > bbd-source/budget.txt
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-bbd-source-${{ github.run_id }}
+          path: bbd-source/
+          if-no-files-found: warn
+          retention-days: 30
+
+  twelve-actual-source-tests:
+    needs: exact-source-integrity
+    runs-on: ubuntu-latest
+    timeout-minutes: 85
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Execute unchanged ten real Spire Garden mechanics cases (not full deck)
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p bbd-tests/land-xml bbd-tests/catalog-xml
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :mtg-sets:2017-2022:tests:cleanTest :mtg-sets:2017-2022:tests:test \
+            --tests '*SpireGardenScenarioTest' --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee bbd-tests/original-spire-cases.log
+          cp -a mtg-sets/2017-2022/tests/build/test-results/test/. bbd-tests/land-xml/
+      - name: Execute two new real CardRegistry catalog/negative-control cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :gym:cleanTest :gym:test \
+            --tests '*ManualBattlebondSpireCatalogTest' --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee bbd-tests/new-catalog-cases.log
+          cp -a gym/build/test-results/test/. bbd-tests/catalog-xml/
+      - name: Independently verify exactly 10+2 cases, original names and 0 failures/skips
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee bbd-tests/independent-12-case-audit.log
+          from pathlib import Path
+          import xml.etree.ElementTree as ET
+          cases=[
+           ("bbd-tests/land-xml/TEST-com.wingedsheep.engine.scenarios.SpireGardenScenarioTest.xml",10),
+           ("bbd-tests/catalog-xml/TEST-com.wingedsheep.gym.ManualBattlebondSpireCatalogTest.xml",2)]
+          total=0
+          for path,n in cases:
+              p=Path(path)
+              assert p.is_file(),path
+              xml=ET.parse(p).getroot()
+              names=xml.findall(".//testcase")
+              assert len(names)==n,(path,len(names),n)
+              assert len({(x.get("classname"),x.get("name")) for x in names})==n,path
+              assert not xml.findall(".//failure") and not xml.findall(".//error") and not xml.findall(".//skipped"),path
+              assert all(int(xml.get(k,"0"))==0 for k in ("failures","errors","skipped")),path
+              print(path,n,"GREEN")
+              total+=n
+          assert total==12
+          print("MANUAL_BBD_ORIGINAL_10_PLUS_CATALOG_2_SOURCE_TESTS_GREEN_NO_GAMES")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-bbd-twelve-tests-${{ github.run_id }}
+          path: bbd-tests/
+          if-no-files-found: warn
+          retention-days: 30
+
+  eight-original-deck-registry:
+    needs: exact-source-integrity
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MT_P2_AUDIT_INPUT: ${{ github.workspace }}/bbd-registry/source/registry-requests.json
+      MT_P2_AUDIT_OUTPUT: ${{ github.workspace }}/bbd-registry/registry
+      MT_P2_GATE_OUTPUT: ${{ github.workspace }}/bbd-registry
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 30}
+      - uses: actions/checkout@v4
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: experiments/manual-transmission
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Rebuild source-pinned exact eight 100-card requests without seeds
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p bbd-registry/source bbd-registry/registry
+          test "$(git -C .phase1-source rev-parse HEAD)" = e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py \
+            --phase1 .phase1-source --out bbd-registry/source 2>&1 | tee bbd-registry/seedfree-bootstrap.log
+      - name: Re-run original complete 800-slot Kotlin live CardRegistry inventory
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :gym:cleanTest :gym:test \
+            --tests '*ManualTransmissionPhaseTwoRegistryAuditTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee bbd-registry/live-800-registry.log
+      - name: Reconcile full original registry to exact predeclared BBD plus-one hypothesis
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/audit_composed_registry_gate.py \
+            2>&1 | tee bbd-registry/independent-800-reconciliation.log
+          python3 - <<'PY' | tee bbd-registry/predeclared-BBD-one-delta.log
+          from pathlib import Path
+          import json
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/BATTLEBOND_SET_REGISTRATION_PROTOCOL.json").read_text())
+          r=json.loads(Path("bbd-registry/COMPOSED_R1_LIVE_REGISTRY_GATE.json").read_text())
+          total=r["totals"];expect=p["predeclared_verdict"]
+          assert r["status"]=="HOLD_REGISTRY_COVERAGE"
+          assert total["registered_slots"]==expect["new_expected_registered_total"],total
+          assert total["manual_registered"]==expect["new_expected_manual_registered"]
+          assert total["opponent_registered"]==expect["new_expected_opponent_registered"]
+          assert total["unregistered_unique_names"]==expect["new_expected_unique_unregistered_total"]
+          assert total["manual_unregistered"]==expect["manual_remaining_unregistered"]
+          manual=r["decks"][0]["unresolved_cards"]
+          assert "Spire Garden" not in manual
+          assert "Gwenna, Eyes of Gaea" in manual and "Amphin Mutineer" in manual
+          assert r["actual_games_initialized"]==0 and r["official_results"]==0
+          print("MANUAL_PHASE2_BBD_EXACT_ONE_NEW_MANUAL_CARD_REGISTRY_PASS",json.dumps(total,sort_keys=True))
+          PY
+          cat bbd-registry/COMPOSED_R1_REPORT.md
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-bbd-live-registry-${{ github.run_id }}
+          path: bbd-registry/
+          if-no-files-found: warn
+          retention-days: 30
+
+  exact-bdd-disposition:
+    needs: [exact-source-integrity,twelve-actual-source-tests,eight-original-deck-registry]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false}
+      - uses: actions/download-artifact@v4
+        with:
+          name: manual-bbd-twelve-tests-${{ github.run_id }}
+          path: downloaded-tests
+      - uses: actions/download-artifact@v4
+        with:
+          name: manual-bbd-live-registry-${{ github.run_id }}
+          path: downloaded-registry
+      - name: Require both exact modules and one-card 800-position catalog delta
+        shell: bash
+        env:
+          SOURCE: ${{ needs.exact-source-integrity.result }}
+          TESTS: ${{ needs.twelve-actual-source-tests.result }}
+          REGISTRY: ${{ needs.eight-original-deck-registry.result }}
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os,json,xml.etree.ElementTree as ET
+          from pathlib import Path
+          assert os.environ["SOURCE"]==os.environ["TESTS"]==os.environ["REGISTRY"]=="success",dict(os.environ.items())
+          original=[
+            ("TEST-com.wingedsheep.engine.scenarios.SpireGardenScenarioTest.xml",10),
+            ("TEST-com.wingedsheep.gym.ManualBattlebondSpireCatalogTest.xml",2)]
+          for basename,num in original:
+              found=list(Path("downloaded-tests").rglob(basename))
+              assert len(found)==1,(basename,found)
+              node=ET.parse(found[0]).getroot()
+              cases=node.findall(".//testcase")
+              assert len(cases)==num
+              assert not node.findall(".//failure") and not node.findall(".//error") and not node.findall(".//skipped")
+          items=list(Path("downloaded-registry").rglob("COMPOSED_R1_LIVE_REGISTRY_GATE.json"))
+          assert len(items)==1,items
+          result=json.loads(items[0].read_text())
+          assert result["totals"]["registered_slots"]==468
+          assert result["totals"]["manual_registered"]==76
+          assert result["totals"]["opponent_registered"]==392
+          assert result["status"]=="HOLD_REGISTRY_COVERAGE"
+          assert result["actual_games_initialized"]==result["official_results"]==0
+          obj=dict(schema="ARGENTUM_MANUAL_PHASE2_BBD_SET_RECEIVER_FINAL_DISPOSITION_V1",
+                   status="BBD_REGISTRY_AND_12_ORIGINAL_SCENARIO_CASES_GREEN",
+                   source_sha=os.environ.get("GITHUB_SHA","UNSPECIFIED"),
+                   original_composed_parent="b8ba463263eae5563e4c70aaa0704b100378180b",
+                   scenarios=12,old_manual=75,new_manual=76,old_registered_total=467,new_registered_total=468,
+                   original_competitive_games=0,official_capability_admitted=0,official_primary_admitted=0,
+                   precision_complete=10,precision_reserved=2,
+                   qualification="SOURCE_ONLY_NOT_MULTIPLAYER_COMPETITIVE_ADMISSION")
+          Path("BBD_FINAL_DISPOSITION.json").write_text(json.dumps(obj,indent=2)+"\n")
+          print("MANUAL_PHASE2_BBD_SPIRE_CATALOG_PLUS_ONE_SOURCE_GREEN_NO_GAMES")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-bbd-final-${{ github.run_id }}
+          path: BBD_FINAL_DISPOSITION.json
+          if-no-files-found: warn
+          retention-days: 30
