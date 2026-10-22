@@ -1,0 +1,122 @@
+name: Manual Phase 2 source-bound Temur Sabertooth bounce (FIVE CASES, NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-phase2-temur-sabertooth-source-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-temur-sabertooth-20261021.yml'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/TEMUR_BOUNCE_RECEIVING_PROTOCOL.json'
+      - 'mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/frf/cards/TemurSabertooth.kt'
+      - 'mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TemurSabertoothScenarioTest.kt'
+      - 'gym/src/test/kotlin/com/wingedsheep/gym/ManualTemurSabertoothCatalogTest.kt'
+permissions: {contents: read}
+concurrency:
+  group: manual-phase2-temur-original-three-plus-two
+  cancel-in-progress: false
+
+jobs:
+  exact-temur-original-rules:
+    runs-on: ubuntu-latest
+    timeout-minutes: 95
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 40}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Bind exact original donor, 90-test parent and forbid all other edits
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p temur-evidence/original-xml temur-evidence/catalog-xml
+          git merge-base --is-ancestor b8ba463263eae5563e4c70aaa0704b100378180b HEAD
+          git diff --name-only b8ba463263eae5563e4c70aaa0704b100378180b HEAD > temur-evidence/changed-paths.txt
+          python3 - <<'PY' | tee temur-evidence/provenance.log
+          from pathlib import Path
+          import json,subprocess
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/TEMUR_BOUNCE_RECEIVING_PROTOCOL.json").read_text())
+          assert p["schema"]=="ARGENTUM_MANUAL_PHASE2_SINGLE_TEMUR_BOUNCE_RECEIVING_V1"
+          assert p["status"]=="PREDECLARED_BEFORE_TEMUR_COPY_AND_QUALIFICATION"
+          assert len(p["expected_cases"])==3 and len(p["source_regression_test_expected"])==2
+          assert p["baseline"]["parent"]=="b8ba463263eae5563e4c70aaa0704b100378180b"
+          expected=set([p["donor"]["source"],p["donor"]["original_scenario"],p["source_regression_test"],
+              "experiments/manual-transmission/research/phase2-current-main-20261021/TEMUR_BOUNCE_RECEIVING_PROTOCOL.json",
+              ".github/workflows/manual-phase2-temur-sabertooth-20261021.yml"])
+          changed=set(Path("temur-evidence/changed-paths.txt").read_text().splitlines())
+          assert changed==expected,(changed^expected)
+          protected={
+             p["donor"]["source"]:p["donor"]["source_blob"],
+             p["donor"]["original_scenario"]:p["donor"]["original_scenario_blob"],
+             "experiments/manual-transmission/control/v0.7.decklist.txt":p["protected"]["deck_blob"],
+             "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt":p["protected"]["current_ai_blob"],
+             "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt":p["protected"]["main_solver_blob"],
+             "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt":p["protected"]["cast_land_guard_blob"]
+          }
+          for path,sha in protected.items():
+              current=subprocess.check_output(["git","rev-parse","HEAD:"+path],text=True).strip()
+              assert current==sha,(path,current,sha)
+          assert p["protected"]["no_new_games"] and p["protected"]["no_game_seeds"]
+          assert p["protected"]["precision_reserved"]==2
+          print("MANUAL_TEMUR_SOURCE_PINNED_NO_ENGINE_OR_PILOT_DELTA")
+          PY
+          git rev-parse HEAD > temur-evidence/source-sha.txt
+          git rev-parse HEAD^{tree} > temur-evidence/tree-sha.txt
+          echo 'Zero original full games/seeds; official Phase2 capability 0/36, primary 0/864; Precision 10/12 with 2 reserved' > temur-evidence/budget.txt
+      - name: Execute unchanged three original Temur bounce/survival action scenarios
+        shell: bash
+        run: |
+          set -euo pipefail
+          chmod +x gradlew scripts/gradle-locked
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
+            --tests '*TemurSabertoothScenarioTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee temur-evidence/three-original-mechanics.log
+          cp -a mtg-sets/2008-2016/tests/build/test-results/test/. temur-evidence/original-xml/
+      - name: Execute two real FRF catalog and unrelated-card negative cases
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :gym:cleanTest :gym:test \
+            --tests '*ManualTemurSabertoothCatalogTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee temur-evidence/real-catalog-cases.log
+          cp -a gym/build/test-results/test/. temur-evidence/catalog-xml/
+      - name: Audit exact three original and two new JUnit cases, zero missing/error/skip
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee temur-evidence/independent-five-case-audit.log
+          from pathlib import Path
+          import xml.etree.ElementTree as ET,json
+          cases=[
+           ("temur-evidence/original-xml/TEST-com.wingedsheep.engine.scenarios.TemurSabertoothScenarioTest.xml",3),
+           ("temur-evidence/catalog-xml/TEST-com.wingedsheep.gym.ManualTemurSabertoothCatalogTest.xml",2)]
+          total=0
+          for path,expected in cases:
+              file=Path(path)
+              assert file.is_file(),path
+              root=ET.parse(file).getroot()
+              nodes=root.findall(".//testcase")
+              assert len(nodes)==expected,(path,len(nodes),expected)
+              assert len({(x.get("classname"),x.get("name")) for x in nodes})==expected
+              assert not root.findall(".//failure") and not root.findall(".//error") and not root.findall(".//skipped")
+              assert all(int(root.get(k,"0"))==0 for k in ("failures","errors","skipped"))
+              total+=len(nodes)
+          assert total==5
+          out=dict(schema="ARGENTUM_MANUAL_PHASE2_TEMUR_SOURCE_RECEIVING_FINAL_V1",
+                   verdict="FIVE_EXACT_RULES_AND_CATALOG_CASES_GREEN_SOURCE_ONLY",
+                   tests=total,errors=0,skips=0,
+                   source_card="Temur Sabertooth",official_phase2_games=0,precision_remaining=2,
+                   note="Does not certify 100-card deck/pilot/competitive power; live 800-slot qualification separate.")
+          Path("temur-evidence/BOUNCE_COMPONENT_VERDICT.json").write_text(json.dumps(out,indent=2)+"\n")
+          print("MANUAL_TEMUR_THREE_ORIGINAL_PLUS_TWO_CATALOG_GREEN_NO_GAMES")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-temur-r1-source-${{ github.run_id }}
+          path: temur-evidence/
+          if-no-files-found: warn
+          retention-days: 30
