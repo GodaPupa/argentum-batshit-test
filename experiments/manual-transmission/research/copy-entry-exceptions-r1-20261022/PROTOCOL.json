@@ -1,0 +1,15 @@
+{
+  "scope": "Expose the existing CopyExceptions value on EntersAsCopy and carry it through spell and direct-entry continuations",
+  "parent_source": "a9ea02595bcdc681778b1e003e1b79d51737aeb2",
+  "ordinary_build_prerequisite": {"run": 39761794103, "validation": "623db9bb9ce503152947ebee2f037111df419f4a", "status_at_registration": "IN_PROGRESS"},
+  "design": "Reuse CopyExceptions.over and CopyExceptionApplier. Preserve existing flat rider behavior; add no card-specific primitive or type-line arithmetic.",
+  "generic_donor": "468a590736a699afd8d5df03f10a8b6abe27088f",
+  "generic_test": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntersAsCopyExceptionsScenarioTest.kt",
+  "generic_original_cases": 10,
+  "required_receiving": ["unchanged ten-case donor file", "SDK polymorphic exception serialization", "full rules-engine suite", "all card-era suites", "snapshot/lint with zero existing golden drift", "Assay touchstone limit2000", "whole-build prerequisite disposition"],
+  "does_not_qualify": ["Phyrexian Metamorph itself", "pre-entry placement and simultaneous batch choice semantics", "full-game mechanics coverage", "pilots", "competitive execution"],
+  "next_card_requirements": ["exact current NPH source and canonical placement", "unchanged ten Metamorph donor scenarios", "token/X/face-down copy values", "copied as-enters and enters-with choices", "simultaneous entrants excluded from copy candidates", "serialized pending entry and zone-visit identity"],
+  "source_intake": {"run": 39722087104, "checkpoint": "6a530db1c7b967c9604963750c2927c4b64be38f", "card": "Phyrexian Metamorph", "assay": "DECLINED", "mtgish": "SCAFFOLD"},
+  "rules_reference": {"url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt", "effective": "2026-09-25", "rechecked_rules_page": "2026-10-22", "sections": ["205.1b", "707.2", "707.9b"], "official_game_rules_snapshot_adopted": false},
+  "invariants": {"registry": "484/800; Manual92/100", "deck_changes": false, "official_seeds": false, "official_games": false, "precision_reserved": 2}
+}
