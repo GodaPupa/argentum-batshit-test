@@ -1,0 +1,60 @@
+{
+  "status": "PREREGISTERED_TEST_DRAFT_UNCOMPILED_UNTESTED_UNADOPTED",
+  "prospective_baseline": "7b84856bba24923a9e8efc78461433f70ad3145c",
+  "baseline_qualification_requirement": "Do not dispatch until run39830545066 finishes, original artifacts are received and independently audited, and guarded duplicate39830599140 is verified skipped. Baseline is not yet qualified by this record.",
+  "baseline_active_checkpoint": "560d2779e4068a9934c3842703d85d80a1abd011",
+  "donor": "47079c452f681f03a627ba1845203457355f8376",
+  "donor_original_test_sha256": "6bf8d0991d5a1e3f1c0b387e555a23485959ab056fc7533bc296d7ca09000d23",
+  "original_cases": 11,
+  "new_baseline_api_test_sha256": "837b319a8c3b00aaaf4aa19e767c74237b20c37c1f6033d11856e7939ab702cf",
+  "new_cases": 7,
+  "cases": [
+    {
+      "name": "entry trigger filter keeps token power before a later composite pump",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 82
+    },
+    {
+      "name": "entry trigger filter includes the preexisting anthem before a later pump",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 94
+    },
+    {
+      "name": "serialized entry event still matches after its live token is absent",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 107
+    },
+    {
+      "name": "paused copied entry keeps its chosen and countered entry power before the outer pump; serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 130
+    },
+    {
+      "name": "paused copied entry keeps its chosen and countered entry power before the outer pump; serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 130
+    },
+    {
+      "name": "immediate entry without later mutation already matches its current power",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "simultaneous token group already includes both static effects and entry counters",
+      "predicted_baseline": "pass"
+    }
+  ],
+  "negative_method": "Restore exact qualified baseline production. Temporarily remove only the donor11 test file that references the new snapshot API; it has no valid compilation on the baseline and belongs to the positive bank. Run exact new7 baseline-API cases, require5 assertion failures at specified matcher checks and2 passing controls, zero errors/skips. Restore and hash-verify donor11 before candidate qualification. Never treat absent API compilation as negative evidence.",
+  "expected_candidate": {
+    "focused": 389,
+    "engine": 3798,
+    "broad_required": 14573,
+    "ordinary_passed": 18181,
+    "ordinary_skipped": 43
+  },
+  "scope": "Entrant characteristic snapshots at completed effect instruction and pending direct-entry commit before later outer effects; preserve exact donor11 and new7 assertions. No full entry, observer, state-predicate, token-copy or Metamorph admission.",
+  "unresolved_findings": "REVIEW.json contains read-only hypotheses and separate missing boundaries; do not claim they are fixed by this proposed stage.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}
