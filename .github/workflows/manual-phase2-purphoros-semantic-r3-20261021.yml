@@ -1,0 +1,140 @@
+name: Manual Phase 2 Purphoros historic source compatibility (25 original, three JSON, NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-phase2-purphoros-semantic-r3-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-purphoros-semantic-r3-20261021.yml'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/PURPHOROS_SEMANTIC_SOURCE_R3_PROTOCOL.json'
+permissions: {contents: read}
+concurrency:
+  group: manual-phase2-purphoros-historical-etb-r3
+  cancel-in-progress: false
+
+jobs:
+  exact-historic-compatibility:
+    runs-on: ubuntu-latest
+    timeout-minutes: 110
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 55}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Source pin every historical engine file and preserve original failing case evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p purphoros-semantic-evidence/engine-junit purphoros-semantic-evidence/original-junit
+          git merge-base --is-ancestor 70caeccfa5a72f1a13a204ba35503afc8a4d1162 HEAD
+          git diff --name-only 70caeccfa5a72f1a13a204ba35503afc8a4d1162 HEAD > purphoros-semantic-evidence/changed-paths.txt
+          python3 - <<'PY' | tee purphoros-semantic-evidence/immutable-source-verifier.log
+          import json,subprocess
+          from pathlib import Path
+          f=Path("experiments/manual-transmission/research/phase2-current-main-20261021/PURPHOROS_SEMANTIC_SOURCE_R3_PROTOCOL.json")
+          p=json.loads(f.read_text())
+          assert p["schema"]=="ARGENTUM_MANUAL_PURPHOROS_REVIEWED_ENGINE_RECEIVE_R3_20261021"
+          assert p["status"]=="EXPERIMENTAL_DONOR_COMPOSITION_PREREGISTERED_BEFORE_RECEIVING"
+          assert p["baseline_head"]=="70caeccfa5a72f1a13a204ba35503afc8a4d1162"
+          assert p["baseline_after_serial"]["run"]==39713129601
+          assert p["baseline_after_serial"]["failed"]==6 and p["baseline_after_serial"]["modifier_tests_passed"]==3
+          assert p["expected_production_file_changes"]==17
+          assert all(p["limits"][k] for k in ["no_game","no_new_seeds","no_main_merge","no_v07_deck_change","no_automatic_authoritative_engine_promotion"])
+          assert p["limits"]["precision_used"]==10 and p["limits"]["precision_reserved"]==2
+          def git(pa):
+              return subprocess.check_output(["git","rev-parse","HEAD:"+pa],text=True).strip()
+          expected={str(f),".github/workflows/manual-phase2-purphoros-semantic-r3-20261021.yml"}
+          for name,hash in p["exact_reviewed_production_source_files"].items():
+              assert git(name)==hash,(name,git(name),hash)
+              expected.add(name)
+          assert len(expected)==19
+          actual=set(Path("purphoros-semantic-evidence/changed-paths.txt").read_text().splitlines())
+          assert len(actual)==19 and actual==expected,(len(actual),actual^expected)
+          q=p["preserve_original_other_blobs"]
+          for name,hash in {
+            "experiments/manual-transmission/control/v0.7.decklist.txt":q["v07"],
+            "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/PurphorosGodOfTheForge.kt":q["purphoros_card"],
+            "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PurphorosGodOfTheForgeScenarioTest.kt":q["original_25_test"],
+            "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ProjectionModels.kt":q["poly_modifier_projection"],
+            "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt":q["current_main_ai"],
+            "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt":q["current_mana_solver"],
+            "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt":q["land_spell_guard"],
+          }.items():assert git(name)==hash,(name,git(name),hash)
+          print("MANUAL_PURPHOROS_17_REVIEWED_ENGINE_DONOR_BLOBS_VERIFIED_NO_GAMES")
+          PY
+          git rev-parse HEAD > purphoros-semantic-evidence/head-sha.txt
+          git rev-parse HEAD^{tree} > purphoros-semantic-evidence/tree-sha.txt
+          echo 'No official game, no seeds; Phase2 capability 0/36 primary 0/864; Precision 10/12, 2 reserved' > purphoros-semantic-evidence/budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Run original three JSON modifier and existing projected-type regression tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :rules-engine:cleanTest :rules-engine:test \
+            --tests '*ModificationJsonDiscriminatorTest' \
+            --tests '*ProjectedTypeNamesTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee purphoros-semantic-evidence/engine-regressions.log
+      - name: Preserve fresh current engine JUnit
+        if: always()
+        run: |
+          mkdir -p purphoros-semantic-evidence/engine-junit
+          cp -a rules-engine/build/test-results/test/. purphoros-semantic-evidence/engine-junit/ || true
+
+      - name: Run all 25 original Purphoros battlefield/devotion/control/combat/entry fixtures
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
+            --tests '*PurphorosGodOfTheForgeScenarioTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee purphoros-semantic-evidence/unmodified-original-25.log
+      - name: Preserve true original JUnit even on RED
+        if: always()
+        run: |
+          mkdir -p purphoros-semantic-evidence/original-junit
+          cp -a mtg-sets/2008-2016/tests/build/test-results/test/. purphoros-semantic-evidence/original-junit/ || true
+
+      - name: Independently reconcile exact original 25, JSON three, projected type regression
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY' | tee purphoros-semantic-evidence/independent-qualifier.log
+          from pathlib import Path
+          import json,xml.etree.ElementTree as ET
+          tests=[
+           ("purphoros-semantic-evidence/original-junit/TEST-com.wingedsheep.engine.scenarios.PurphorosGodOfTheForgeScenarioTest.xml",25),
+           ("purphoros-semantic-evidence/engine-junit/TEST-com.wingedsheep.engine.mechanics.layers.ModificationJsonDiscriminatorTest.xml",3),
+           ("purphoros-semantic-evidence/engine-junit/TEST-com.wingedsheep.engine.mechanics.layers.ProjectedTypeNamesTest.xml",1)]
+          for path,size in tests:
+              f=Path(path);assert f.is_file(),str(f)
+              x=ET.parse(f).getroot();cases=x.findall(".//testcase")
+              assert len(cases)==size,(path,len(cases),size)
+              assert not x.findall(".//failure") and not x.findall(".//error") and not x.findall(".//skipped")
+              assert all(int(x.get(k,"0"))==0 for k in ("failures","errors","skipped"))
+              print(f.name,size,"real rules cases GREEN")
+          verdict={
+           "schema":"ARGENTUM_MANUAL_PHASE2_PURPHOROS_SEMANTIC_SOURCE_R3_RECEIVING_V1",
+           "status":"EXPERIMENTAL_SOURCE_QUALIFIED_NOT_PRODUCTION",
+           "original_25_source_tests":25,"modification_json_cases":3,"projected_type_generic":1,
+           "reviewed_source_files":17,"source_identity":"historical-reviewed-Purphoros-source",
+           "gameplay_initialized":0,"official_phase2_capability":0,"official_phase2_primary":0,"precision_reserved":2,
+           "engine_wide_regression_needed_before_any_merge":True,
+           "no_competitive_win_rate_claim":True
+          }
+          Path("purphoros-semantic-evidence/PURPHOROS_SEMANTIC_SOURCE_R3_VERDICT.json").write_text(json.dumps(verdict,indent=2)+"\n")
+          print("MANUAL_PURPHOROS_EXPERIMENTAL_25_ORIGINAL_AND_FOUR_GENERIC_GREEN_NO_GAME")
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-purphoros-semantic-r3-${{ github.run_id }}
+          path: purphoros-semantic-evidence/
+          if-no-files-found: warn
+          retention-days: 30
