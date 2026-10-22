@@ -1,0 +1,82 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_R4_FOUR_CARD_PROVENANCE_GATE_V1",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_BEFORE_DONOR_FILE_RECEIVING",
+  "purpose": "Qualify four missing exact v0.7 identities on current source-bound R3 after completed 131/131 evidence. Re-run original behavior source tests and strict full frozen 800 CardRegistry inventory before any claim. No actual gameplay or substitutions.",
+  "parent_head": "ab65657918c0f5e02ae181c579d1c8e6f972c0ec",
+  "parent_run": 39702175031,
+  "parent_run_disposition": "131_SOURCE_CASES_GREEN_AND_HOLD_REGISTRY_COVERAGE",
+  "main_ancestor": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "historic_donor_ref": "candidate/manual-exact-composition-v3-20261003",
+  "original_frozen_phase1": "e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d",
+  "cards": [
+    {
+      "name": "Gwenna, Eyes of Gaea",
+      "era": "2017-2022",
+      "set": "bro",
+      "source_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/bro/cards/GwennaEyesOfGaea.kt",
+      "source_blob": "72f2a62bf2682baecbcc704bb85ea0a31766ff73",
+      "test_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GwennaEyesOfGaeaScenarioTest.kt",
+      "test_blob": "dde9d18c351a4fd9efc42ba4da09e18dc552618d",
+      "expected_original_testcases": 3
+    },
+    {
+      "name": "Fblthp, the Lost",
+      "era": "2017-2022",
+      "set": "war",
+      "source_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/war/cards/FblthpTheLost.kt",
+      "source_blob": "a5564b127cb8b5b2e4d031590c145c4309ef29ed",
+      "test_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FblthpTheLostScenarioTest.kt",
+      "test_blob": "1f2443b130083a015b8365d46ab18c1eb2785bad",
+      "expected_original_testcases": 10
+    },
+    {
+      "name": "Aether Channeler",
+      "era": "2017-2022",
+      "set": "dmu",
+      "source_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dmu/cards/AetherChanneler.kt",
+      "source_blob": "222f72879c3b16be6fdaecc84ce08992794a7c6d",
+      "test_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/AetherChannelerScenarioTest.kt",
+      "test_blob": "96a14ce9751ab5a817d7760635c0d6dabe413510",
+      "expected_original_testcases": 10
+    },
+    {
+      "name": "Bane of Progress",
+      "era": "2008-2016",
+      "set": "c13",
+      "source_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/c13/cards/BaneOfProgress.kt",
+      "source_blob": "5433ce7e8159d39ffa211e532ada0c2676eb32bf",
+      "test_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/BaneOfProgressScenarioTest.kt",
+      "test_blob": "46f8a4351004ee3d19b669d2fbebaff9524ea081",
+      "expected_original_testcases": 2
+    }
+  ],
+  "initial_original_testcases": 25,
+  "inherited_R3_original_cases": 127,
+  "inherited_catalog_cases": 4,
+  "original_combined_required_cases": 152,
+  "registry_required_total": 800,
+  "expected_registered_total_if_full_success": 480,
+  "expected_registered_manual_if_full_success": 88,
+  "expected_registered_opponents_if_full_success": 392,
+  "expected_unregistered_manual_if_full_success": 12,
+  "expected_unregistered_total_if_full_success": 320,
+  "all_seven_opponent_lists_contain_none_of_4": true,
+  "protected": {
+    "control": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "ai": "43bbad79273806f56703fad420e9f6a495d05309",
+    "mana": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "land_guard": "dd4c000b13663a03ec6d7b79e62d05ab7dcb737f",
+    "bbd_catalog": "893f8641b7736098257f3b296822d2bb08fb68ef",
+    "no_other_engine_edits": true,
+    "no_default_ai_edits": true,
+    "no_deck_edits": true,
+    "no_games": true,
+    "no_new_seeds": true,
+    "precision_used": 10,
+    "precision_reserved": 2,
+    "official_phase2_capability": 0,
+    "official_phase2_primary": 0
+  },
+  "admission_rule": "Run current-source original 25 cases across 2 eras, no XML missing/fail/error/skip, rerun all-800 actual Kotlin registry with source-pinned exact frozen decks. A full 152 inherited+new regression suite is needed for whole-source receiving admission; component passing is not full deck/game/pilot evidence. Any failure is SOURCE_BLOCKED; no automatic hotfix/test alteration."
+}
