@@ -1,0 +1,30 @@
+{
+  "parent_source": "a9ea02595bcdc681778b1e003e1b79d51737aeb2",
+  "failed_original_run": 39761794103,
+  "failed_original_checkpoint": "f57d961780ab196f2c6d74269a9c9f9d752de80e",
+  "authorization": "User explicitly authorized investigation and repair of the four existing Oracle Assay grammar/printer failures, preserving original assertions, followed by independent verification and ordinary whole-project build. Copy-entry resumes only after that build passes and source/tests are qualified.",
+  "scope": "Library grammar printer reads the AuthorizedLibrarySearch source emitted by Patterns.Library.searchLibrary; preserve full-recipe reconstruction and all existing assertions.",
+  "original_test_blobs": {
+    "oracle-assay/src/test/kotlin/com/wingedsheep/assay/grammar/ManaValuesTest.kt": "c0efe06f759f5259d58bee67d54246cca41e2227",
+    "oracle-assay/src/test/kotlin/com/wingedsheep/assay/grammar/SubtypesTest.kt": "8a936ec9f27e9442942519f3ef250c166d50f05f"
+  },
+  "new_regression_cases": 6,
+  "receiving": [
+    "Separate negative-control job restores only the parent Library.kt in an ephemeral runner; original four assertions and three positive new cases must fail, while three refusal cases pass",
+    "Repaired source runs all oracle-assay tests, expected 568 cases with zero failures/errors/skips",
+    "Full current Oracle corpus touchstone: zero mismatches/ambiguities/noninvertible normalization",
+    "Full golden differential: zero decode errors; all divergences retained for classification",
+    "Ordinary build graph with ai Test filter, only after both Assay jobs pass",
+    "Original artifacts preserve every JUnit XML, logs, hashes, source and validation pins, source modifications and exit status"
+  ],
+  "independent_review": false,
+  "independence_boundary": "Separate negative-control execution and SDK-model-first regression assertions establish causality; no second human or agent review is claimed.",
+  "safeguards": {
+    "frozen_v07_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "official_seeds": false,
+    "official_games": false,
+    "precision_reserved": 2,
+    "no_test_suppression": true,
+    "copy_entry_held_until_ordinary_build_success": true
+  }
+}

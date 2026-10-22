@@ -42,8 +42,8 @@ import com.wingedsheep.sdk.scripting.values.DynamicAmount
  * these inner steps has a clause rule of its own.
  *
  * **What is *searched* lives here; what comes off the **top** lives in [TopOfLibrary].** The split
- * is by pipeline rather than by topic: a search gathers `FromZone` by filter and shuffles, while a
- * look/reveal/exile gathers `TopOfLibrary` by count and decides where two piles go. They share this
+ * is by pipeline rather than by topic: a search gathers `AuthorizedLibrarySearch` by filter and
+ * shuffles, while a look/reveal/exile gathers `TopOfLibrary` by count and decides where two piles go. They share this
  * file's discipline and nothing else, and keeping the top-of-library family separate is what let it
  * become a layered vocabulary instead of the one-rule-per-printed-card list it used to be — see that
  * file's KDoc for what the frozen destinations were costing.
@@ -225,11 +225,8 @@ object Library {
     }
 
     /** The filter a `searchLibrary` pipeline looks for, read off its gather step. */
-    private fun searchedFilter(script: CardScript): GameObjectFilter? {
-        val gather = (script.spellEffect as? CompositeEffect)?.effects?.firstOrNull() as? GatherCardsEffect
-            ?: return null
-        return (gather.source as? CardSource.FromZone)?.filter
-    }
+    private fun searchedFilter(script: CardScript): GameObjectFilter? =
+        script.spellEffect?.let(::searchedFilterIn)
 
     /**
      * "If an opponent controls more lands than you, search your library for up to three Plains
@@ -355,10 +352,16 @@ object Library {
         }
     }
 
-    /** The filter one `searchLibrary` recipe looks for, given the recipe itself. */
+    /**
+     * The filter one `searchLibrary` recipe looks for, given the recipe itself. The SDK gathers an
+     * authorized search scope, not an ordinary zone: matching the old `FromZone` shape let the
+     * facade build a readable model that this half could never print. This only extracts the slot;
+     * each caller still reconstructs the entire recipe, so a different searcher, portion, choice
+     * order, or pipeline step cannot silently disappear from the printed sentence.
+     */
     private fun searchedFilterIn(effect: Effect): GameObjectFilter? {
         val gather = (effect as? CompositeEffect)?.effects?.firstOrNull() as? GatherCardsEffect ?: return null
-        return (gather.source as? CardSource.FromZone)?.filter
+        return (gather.source as? CardSource.AuthorizedLibrarySearch)?.filter
     }
 
     /**
