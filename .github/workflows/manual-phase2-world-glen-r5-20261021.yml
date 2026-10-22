@@ -1,0 +1,153 @@
+name: Manual Phase 2 World Breaker and Glen Archmage source (5 cases, 800 registry, NO GAMES)
+on:
+  push:
+    branches: [candidate/manual-phase2-world-glen-r5-20261021]
+    paths:
+      - '.github/workflows/manual-phase2-world-glen-r5-20261021.yml'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/WORLD_GLEN_R5_PROTOCOL.json'
+permissions: {contents: read}
+concurrency:
+  group: manual-phase2-world-glen-two-source-r5
+  cancel-in-progress: false
+
+jobs:
+  original-two-source-and-registry:
+    runs-on: ubuntu-latest
+    timeout-minutes: 95
+    env:
+      GRADLE_OPTS: -Dorg.gradle.daemon=false
+      MANUAL_R4_ROOT: ${{ github.workspace }}
+      MT_P2_AUDIT_INPUT: ${{ github.workspace }}/world-glen-evidence/source/registry-requests.json
+      MT_P2_AUDIT_OUTPUT: ${{ github.workspace }}/world-glen-evidence/registry
+      MT_P2_GATE_OUTPUT: ${{ github.workspace }}/world-glen-evidence
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 30}
+      - uses: actions/checkout@v4
+        with:
+          ref: e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          path: .phase1-source
+          fetch-depth: 1
+          persist-credentials: false
+          sparse-checkout: experiments/manual-transmission
+          sparse-checkout-cone-mode: true
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Verify both untouched original definition+scenario source files and no-game authority
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p world-glen-evidence/original-xml world-glen-evidence/source world-glen-evidence/registry
+          git merge-base --is-ancestor ab65657918c0f5e02ae181c579d1c8e6f972c0ec HEAD
+          git diff --name-only ab65657918c0f5e02ae181c579d1c8e6f972c0ec HEAD > world-glen-evidence/changed-paths.txt
+          python3 - <<'PY' | tee world-glen-evidence/identity-preflight.log
+          import json,subprocess
+          from pathlib import Path
+          f=Path("experiments/manual-transmission/research/phase2-current-main-20261021/WORLD_GLEN_R5_PROTOCOL.json")
+          p=json.loads(f.read_text())
+          assert p["schema"]=="ARGENTUM_MANUAL_PHASE2_WORLD_BREAKER_GLEN_FROZEN_R5_V1"
+          assert p["state"]=="PREDECLARED_BEFORE_RECEIVING_ORIGINAL_DONOR_SOURCE"
+          assert p["parent"]=="ab65657918c0f5e02ae181c579d1c8e6f972c0ec" and p["parent_run"]==39702175031
+          assert p["original_cases"]==5 and len(p["cases"])==2
+          assert p["registry_if_exactly_two_sources_admitted"]["total"]==478
+          assert p["registry_if_exactly_two_sources_admitted"]["manual"]==86
+          assert p["preserve"]["no_new_full_game"] and p["preserve"]["no_seeds"] and p["preserve"]["precision_reserved"]==2
+          def git(pa):return subprocess.check_output(["git","rev-parse","HEAD:"+pa],text=True).strip()
+          expected={str(f),".github/workflows/manual-phase2-world-glen-r5-20261021.yml"}
+          for card in p["cases"]:
+              for pa,hash in ((card["source"],card["source_blob"]),(card["test"],card["test_blob"])):
+                  assert git(pa)==hash,(pa,git(pa),hash)
+                  expected.add(pa)
+          actual=set(Path("world-glen-evidence/changed-paths.txt").read_text().splitlines())
+          assert len(actual)==6 and actual==expected,(len(actual),actual^expected)
+          for pa,hash in {
+              "experiments/manual-transmission/control/v0.7.decklist.txt":p["preserve"]["deck"],
+              "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt":p["preserve"]["ai"],
+              "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt":p["preserve"]["solver"]
+          }.items():assert git(pa)==hash,(pa,git(pa),hash)
+          print("MANUAL_WORLD_GLEN_2_EXACT_FROZEN_DONOR_CARDS_VERIFIED_NO_GAMES")
+          PY
+          test "$(git -C .phase1-source rev-parse HEAD)" = e7d37e2ea0f18dfa8d6b0fff68ef816b59555d2d
+          git rev-parse HEAD > world-glen-evidence/source-sha.txt
+          echo 'Official Phase2 0/36 and 0/864, Precision 10/12 used 2 reserved, no seeds or games' > world-glen-evidence/game-budget.txt
+          chmod +x gradlew scripts/gradle-locked
+
+      - name: Run actual original five WorldBreaker and GlenElendraArchmage tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :mtg-sets:2008-2016:tests:cleanTest :mtg-sets:2008-2016:tests:test \
+            --tests '*WorldBreakerScenarioTest' --tests '*GlenElendraArchmageScenarioTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee world-glen-evidence/original-five-actual.log
+      - name: Preserve five true JUnit cases even on RED
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p world-glen-evidence/original-xml
+          cp -a mtg-sets/2008-2016/tests/build/test-results/test/. world-glen-evidence/original-xml/ || true
+
+      - name: Prepare exactly the original eight immutable source-hashed deck manifests
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/bootstrap_audit.py \
+            --phase1 .phase1-source --out world-glen-evidence/source \
+            2>&1 | tee world-glen-evidence/seedfree-bootstrap.log
+      - name: Query all 800 frozen card positions against the new actual registry
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          scripts/gradle-locked :gym:cleanTest :gym:test \
+            --tests '*ManualTransmissionPhaseTwoRegistryAuditTest' \
+            --no-build-cache --no-daemon --console=plain --stacktrace \
+            2>&1 | tee world-glen-evidence/real-registry-gradle.log
+      - name: Independent exact 5 original cases and 478/800 registry disposition
+        if: success()
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 experiments/manual-transmission-phase2/audit_composed_registry_gate.py \
+            2>&1 | tee world-glen-evidence/registry-independent.log
+          python3 - <<'PY' | tee world-glen-evidence/original-plus-registry-verdict.log
+          import json,xml.etree.ElementTree as ET
+          from pathlib import Path
+          p=json.loads(Path("experiments/manual-transmission/research/phase2-current-main-20261021/WORLD_GLEN_R5_PROTOCOL.json").read_text())
+          total=0
+          for c in p["cases"]:
+              f=Path("world-glen-evidence/original-xml")/("TEST-com.wingedsheep.engine.scenarios."+Path(c["test"]).stem+".xml")
+              assert f.is_file(),str(f)
+              x=ET.parse(f).getroot();tests=x.findall(".//testcase")
+              assert len(tests)==c["n"],(c["name"],len(tests),c["n"])
+              assert not x.findall(".//failure") and not x.findall(".//error") and not x.findall(".//skipped")
+              total+=len(tests)
+          assert total==5
+          r=json.loads(Path("world-glen-evidence/COMPOSED_R1_LIVE_REGISTRY_GATE.json").read_text())
+          t=r["totals"];expect=p["registry_if_exactly_two_sources_admitted"]
+          assert r["status"]=="HOLD_REGISTRY_COVERAGE"
+          assert t["registered_slots"]==expect["total"],t
+          assert t["manual_registered"]==expect["manual"]
+          assert t["opponent_registered"]==expect["opponents"]
+          assert t["manual_unregistered"]==expect["manual_missing"]
+          assert t["unregistered_slots"]==expect["total_missing"]
+          assert all(c["name"] not in r["decks"][0]["unresolved_cards"] for c in p["cases"])
+          assert r["actual_games_initialized"]==r["official_results"]==0
+          out={"schema":"ARGENTUM_WORLD_GLEN_ISOLATED_SOURCE_ONLY_R5","state":"FIVE_ORIGINAL_CASES_GREEN_478_OF_800_HOLD",
+           "new_full_games":0,"official_capability":0,"official_primary":0,"precision_remaining":2,
+           "manual_registered":86,"opponents_registered":392,"all_registered":478,
+           "admitted_for_competitive_game":False}
+          Path("world-glen-evidence/WORLD_GLEN_R5_VERDICT.json").write_text(json.dumps(out,indent=2)+"\n")
+          print("MANUAL_WORLD_GLEN_5_5_AND_478_800_SOURCE_ONLY_HOLD_NO_GAMES")
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-world-glen-r5-${{ github.run_id }}
+          path: world-glen-evidence/
+          retention-days: 30
+          if-no-files-found: warn
