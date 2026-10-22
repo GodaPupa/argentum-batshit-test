@@ -1,0 +1,9 @@
+# Entry counter r1 — broad regression failure
+
+FAILED, UNQUALIFIED, UNADOPTED. Run39856445022/job120095772984 completed with failure. The single observed run produced the exact14 preregistered controls (10 expected assertion failures,4 passes), then451 focused passes. Full engine3836 passed. Broad collection contains9950 rows:9948 pass,2 fail,0 error/skip. It includes345 SDK/snapshot/lint results retained from focused; do not add stage totals as independent samples. Three later card-era suites were not executed.
+
+The two unchanged SpelunkingScenarioTest cases fail at original lines57 and85 with IllegalArgumentException: the hypothetical entry projector tries to insert a card still listed in its pre-entry hand. The candidate now supplies the full simultaneous pre-entry boundary, exposing the projector's detached-input assumption. The source trace is StateProjector.projectForEntry:105 → EnterUntappedReplacements:47 → ZoneTransitionService:1514 → MoveCollectionExecutor:849. This is a real regression; no assertion, fixture, or golden is changed or waived.
+
+Ordinary build and all Assay stages were skipped. No corpus was fetched or retained for these skipped stages. Original artifact12461156044 is preserved as10 ordered exact ZIP parts; reconstruct by concatenation. verify.py independently hashes every member, checks immutable source/workflow bindings, recounts original XML, verifies every negative frame and original case identity, and reports the remaining failed/missing gates. It was run twice with matching output. This is a separate receiver by the same assistant, not independent human review.
+
+All110 bindings and23 protected goldens passed final source recheck. Main remains37a6036. No official games/seeds consumed; both Precision games reserved. The active checkpoint452476f is superseded by this failure receipt. The observer draft637be6a remains separately UNTESTED and UNADOPTED; no overlapping qualification was launched.
