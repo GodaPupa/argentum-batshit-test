@@ -1962,3 +1962,6 @@ complexity:
 
 The result is a system where each layer has a clear, minimal responsibility — the SDK describes,
 the engine executes, the server orchestrates, and the client renders.
+
+
+The hypothetical entry projector accepts a full pre-entry boundary even when the entrant is still listed in its original hand, library, exile or stack. Only the immutable subject copy is detached before hypothetical insertion. The separate evaluation state retains original aggregates, history and links; no real zone-transition cleanup runs for a preview. Original Spelunking and BattlefieldEntryProjection assertions qualify this boundary.

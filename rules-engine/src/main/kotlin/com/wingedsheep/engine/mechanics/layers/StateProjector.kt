@@ -102,7 +102,16 @@ class StateProjector(
         }
         val entering = requireNotNull(prepared.getEntity(enteringId))
         val evaluationState = beforeEntry.withEntity(enteringId, entering)
-        val subjectState = evaluationState.addToZone(
+        // A simultaneous boundary can still contain this card in its original hand, library,
+        // exile or stack. Detach only the hypothetical subject, without real zone-transition
+        // cleanup (notably exile links). Replacement aggregates/history keep evaluationState.
+        val detachedSubject = evaluationState.copy(
+            zones = evaluationState.zones.mapValues { (_, cards) ->
+                if (enteringId in cards) cards - enteringId else cards
+            },
+            stack = evaluationState.stack - enteringId,
+        )
+        val subjectState = detachedSubject.addToZone(
             com.wingedsheep.engine.state.ZoneKey(controllerId, com.wingedsheep.sdk.core.Zone.BATTLEFIELD),
             enteringId,
         )
