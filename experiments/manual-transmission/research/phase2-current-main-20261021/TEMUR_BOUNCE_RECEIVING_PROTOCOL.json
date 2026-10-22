@@ -1,0 +1,53 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_SINGLE_TEMUR_BOUNCE_RECEIVING_V1",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_BEFORE_TEMUR_COPY_AND_QUALIFICATION",
+  "purpose": "Requalify already-authored Temur Sabertooth on unchanged 90-case main-ancestry composed Manual hardware source. This is isolated RACE finite-bounce card mechanics receiving, not new strategy/profile/game sampling.",
+  "baseline": {
+    "parent": "b8ba463263eae5563e4c70aaa0704b100378180b",
+    "frozen_main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "prior_90_junit_run": 39695841356,
+    "prior_90_junit_artifact_sha256": "3ec137f79fd3b68f76467fb21cadf07886ebdf1eb0d25a01e7a8078cc545aa0e",
+    "live_catalog_run": 39695841356,
+    "live_manual_registered": 75,
+    "live_all_registered": 467
+  },
+  "donor": {
+    "branch": "candidate/manual-disciple-live-composed-20261003",
+    "sha": "2b3e3959e2d8034ea598c0662bf84225780bd2e4",
+    "source": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/frf/cards/TemurSabertooth.kt",
+    "source_blob": "60866f4ef465eef5cec68a9984be0fc4d5d78941",
+    "original_scenario": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/TemurSabertoothScenarioTest.kt",
+    "original_scenario_blob": "c96c82c536a562cbaf79e9771e23d8dee39849d0"
+  },
+  "expected_cases": [
+    "returns exactly another creature you control without targeting and grants indestructible",
+    "declining the optional return leaves the creature in play and grants no indestructible",
+    "with no other creature you control the ability cannot bounce Temur or an opponent creature"
+  ],
+  "source_regression_test": "gym/src/test/kotlin/com/wingedsheep/gym/ManualTemurSabertoothCatalogTest.kt",
+  "source_regression_test_expected": [
+    "CardDefinition is actually discoverable through the production MtgSetCatalog and contains an activated ability",
+    "Missing Amphin Mutineer is not silently synthesized by Temur receiving"
+  ],
+  "no_cast_pilot_changes": true,
+  "protected": {
+    "deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "current_ai_blob": "43bbad79273806f56703fad420e9f6a495d05309",
+    "main_solver_blob": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "cast_land_guard_blob": "dd4c000b13663a03ec6d7b79e62d05ab7dcb737f",
+    "no_new_games": true,
+    "no_game_seeds": true,
+    "official_capability_admitted": 0,
+    "official_primary_admitted": 0,
+    "precision_used": 10,
+    "precision_reserved": 2
+  },
+  "acceptance": [
+    "one original production card source and original three-scenario test byte-identical",
+    "actual three source-bound rules-engine scenario cases and two new registry negative/positive controls on same exact isolated source",
+    "no changes to AI/deck/runtime engine beyond the one card definition",
+    "success is card-level only and does not certify Temur as RACE pilot win or a full 100-card deck",
+    "no default or main merge; candidate may be composed only after separate exact-source gate"
+  ]
+}
