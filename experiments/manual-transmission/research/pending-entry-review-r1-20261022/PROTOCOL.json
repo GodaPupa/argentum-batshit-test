@@ -1,0 +1,53 @@
+{
+  "status": "UNTESTED_UNADOPTED_DRAFT",
+  "baseline_source": "84994114025d0138305ed9931c00b957f9d80597",
+  "baseline_receipt": "cea98e91953c66d96ad71da133121e930214495f",
+  "class": "com.wingedsheep.engine.scenarios.PendingCopyEntryScenarioTest",
+  "test_sha256": "d3d0181078e773422a4bd6ed2aa351f9e9a3554a94e0d375dd3cff5b25cfe2a9",
+  "test_git_blob": "0130fe10fb6d6976d43e725f5f5a1a7959550581",
+  "cases": [
+    {
+      "name": "direct copied chained choices precede publication; graveyard=false, serialized=false",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "direct copied chained choices precede publication; graveyard=false, serialized=true",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "direct copied chained choices precede publication; graveyard=true, serialized=false",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "direct copied chained choices precede publication; graveyard=true, serialized=true",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "simultaneous copies exclude every coentrant and publish only after all choices",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "declined direct copy asks its own printed choice before entry",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "pending entry cannot move a later source-zone incarnation",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "direct graveyard-copy rider cannot exile a later zone visit after serialized choices",
+      "predicted_baseline": "assertion_failure"
+    },
+    {
+      "name": "two coentering copies with no preexisting eligible object enter without copying each other",
+      "predicted_baseline": "pass"
+    }
+  ],
+  "baseline_expectation": "Nine cases: eight actual assertion failures at missing pre-entry questions, one existing no-eligible coentry control passes. This is a prediction, not a received result. Preserve all observed verdicts and investigate deviations; compilation errors or skips never count as negative controls.",
+  "candidate_requirement": "All nine pass, zero failures/errors/skips; unchanged prior assertions and protections. Additional untested scope is not admitted by this gate.",
+  "dispatch_status": "No tests/builds dispatched. Await completion and independent artifact audit of duplicate copied-choice run 39817109162.",
+  "production_changes": 0,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
