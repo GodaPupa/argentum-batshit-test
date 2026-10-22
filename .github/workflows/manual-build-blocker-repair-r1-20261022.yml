@@ -1,0 +1,77 @@
+name: Manual authorized facade and historical workflow repair
+on:
+  push:
+    branches: [validation/manual-build-blocker-repair-r1-20261022]
+    paths: ['.github/workflows/manual-build-blocker-repair-r1-20261022.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-build-blocker-repair-r1-20261022
+  cancel-in-progress: false
+env:
+  SOURCE: f0675c80f7ce6e00599c377869e2ead5df86a9be
+  RECORD: experiments/manual-transmission/research/build-blocker-repair-r1-20261022
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 3}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install the repository recipe runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          just --version
+      - name: Bind source, original assertions, workflow locks, deck and goldens
+        run: python3 "$RECORD/bind.py"
+      - name: Original failures, card scenarios, snapshots and additive pin regressions
+        id: targeted
+        run: |
+          mkdir -p repair-evidence/targeted
+          set +e
+          just --justfile "$RECORD/validation.just" targeted 2>&1 | tee repair-evidence/targeted/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > repair-evidence/targeted/exit.txt
+          exit "$rc"
+      - name: Receive targeted XML before the ordinary build
+        if: always() && steps.targeted.outcome != 'skipped'
+        env: {STAGE: targeted}
+        run: python3 "$RECORD/collect.py"
+      - name: Ordinary whole-project build with routine AI tests
+        id: ordinary
+        run: |
+          mkdir -p repair-evidence/ordinary
+          set +e
+          just --justfile "$RECORD/validation.just" ordinary 2>&1 | tee repair-evidence/ordinary/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > repair-evidence/ordinary/exit.txt
+          exit "$rc"
+      - name: Receive every ordinary result and list all skips
+        if: always() && steps.ordinary.outcome != 'skipped'
+        env: {STAGE: ordinary}
+        run: python3 "$RECORD/collect.py"
+      - name: Recheck unchanged source and safeguards after execution
+        if: always()
+        run: python3 "$RECORD/bind.py"
+      - name: Hash complete evidence inventory
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          out=Path('repair-evidence')
+          out.mkdir(exist_ok=True)
+          manifest=out/'SHA256SUMS'
+          manifest.write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p.relative_to(out))+'\n' for p in sorted(out.rglob('*')) if p.is_file() and p != manifest))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-build-blocker-repair-${{ github.run_id }}
+          path: repair-evidence/
+          retention-days: 90
+          if-no-files-found: error
