@@ -1,0 +1,74 @@
+{
+  "run": 39787740747,
+  "attempt": 1,
+  "source": "6cf30d14d4be570bc1786e48079549cf850fa16a",
+  "validation": "0317a91b0bdbbebf386d1d035936e1e26c67e627",
+  "originals": [
+    {
+      "id": 12431055463,
+      "name": "manual-assay-search-negative-control-39787740747.zip",
+      "size": 15548,
+      "sha256": "b92474648ce84170706ac0b903cda810aea137b84761813845bf43e3e3247734",
+      "stage": "negative-control",
+      "expected": {
+        "rows": 31,
+        "passed": 24,
+        "failures": 7,
+        "errors": 0,
+        "skipped": 0,
+        "classes": 3
+      },
+      "unique_members": 13,
+      "verified_internal_payloads": 12,
+      "crc_clean": true,
+      "actual_xml": {
+        "rows": 31,
+        "passed": 24,
+        "failures": 7,
+        "errors": 0,
+        "skipped": 0,
+        "classes": 3
+      },
+      "failed_cases": [
+        "LibrarySearchTest:every singular destination and reveal row prints the authorized search recipe",
+        "LibrarySearchTest:a counted search preserves its count and subtype in both directions",
+        "LibrarySearchTest:a two-filter search reads both authorized scopes and only the final shuffle",
+        "ManaValuesTest:the searches and returns that named this band read as whole lines",
+        "ManaValuesTest:the pronoun form of the search is a variant, not a second reading",
+        "SubtypesTest:a basic land type in card position is the land type noun, and only that",
+        "SubtypesTest:a non-land subtype in card position still reads ungated"
+      ]
+    },
+    {
+      "id": 12430330947,
+      "name": "manual-assay-search-qualified-39787740747.zip",
+      "size": 75231,
+      "sha256": "bbd6818da07c8b9d9679624b98a0df7f8ce8f1c77bb27b967bea2c7677ff47d1",
+      "stage": "assay",
+      "expected": {
+        "rows": 568,
+        "passed": 568,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "classes": 39
+      },
+      "unique_members": 54,
+      "verified_internal_payloads": 53,
+      "crc_clean": true,
+      "actual_xml": {
+        "rows": 568,
+        "passed": 568,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0,
+        "classes": 39
+      },
+      "failed_cases": []
+    }
+  ],
+  "whole_project_build": "PENDING_SEPARATE_RECEIPT",
+  "independent_human_or_agent_review": false,
+  "official_games": 0,
+  "precision_reserved": 2
+}
