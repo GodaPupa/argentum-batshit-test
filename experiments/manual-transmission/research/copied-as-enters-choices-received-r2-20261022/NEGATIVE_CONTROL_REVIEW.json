@@ -1,0 +1,86 @@
+[
+  {
+    "case": "copied color is chosen before one entry and one trigger; graveyard=false, restore=false",
+    "exception": "org.opentest4j.AssertionFailedError",
+    "assertion_line": 85,
+    "failure": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null.",
+    "classification": "required fresh copied choice absent",
+    "candidate_case_passed_in": [
+      "focused",
+      "broad",
+      "ordinary"
+    ]
+  },
+  {
+    "case": "copied color is chosen before one entry and one trigger; graveyard=false, restore=true",
+    "exception": "org.opentest4j.AssertionFailedError",
+    "assertion_line": 85,
+    "failure": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null.",
+    "classification": "required fresh copied choice absent",
+    "candidate_case_passed_in": [
+      "focused",
+      "broad",
+      "ordinary"
+    ]
+  },
+  {
+    "case": "copied color is chosen before one entry and one trigger; graveyard=true, restore=false",
+    "exception": "org.opentest4j.AssertionFailedError",
+    "assertion_line": 85,
+    "failure": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null.",
+    "classification": "required fresh copied choice absent",
+    "candidate_case_passed_in": [
+      "focused",
+      "broad",
+      "ordinary"
+    ]
+  },
+  {
+    "case": "copied color is chosen before one entry and one trigger; graveyard=true, restore=true",
+    "exception": "org.opentest4j.AssertionFailedError",
+    "assertion_line": 85,
+    "failure": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null.",
+    "classification": "required fresh copied choice absent",
+    "candidate_case_passed_in": [
+      "focused",
+      "broad",
+      "ordinary"
+    ]
+  },
+  {
+    "case": "copied chained choices retain pending entry through both serialized decisions",
+    "exception": "org.opentest4j.AssertionFailedError",
+    "assertion_line": 63,
+    "failure": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null.",
+    "classification": "required fresh copied choice absent",
+    "candidate_case_passed_in": [
+      "focused",
+      "broad",
+      "ordinary"
+    ]
+  },
+  {
+    "case": "declining a copy still makes the entering card's own choice",
+    "exception": "org.opentest4j.AssertionFailedError",
+    "assertion_line": 149,
+    "failure": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+    "classification": "premature battlefield entry after declining copy",
+    "candidate_case_passed_in": [
+      "focused",
+      "broad",
+      "ordinary"
+    ]
+  },
+  {
+    "case": "serialized graveyard copy rider cannot exile a different zone visit",
+    "exception": "org.opentest4j.AssertionFailedError",
+    "assertion_line": 161,
+    "failure": "org.opentest4j.AssertionFailedError: Expected value to not be null, but was null.",
+    "classification": "required fresh copied choice absent",
+    "candidate_case_passed_in": [
+      "focused",
+      "broad",
+      "ordinary"
+    ]
+  }
+]
