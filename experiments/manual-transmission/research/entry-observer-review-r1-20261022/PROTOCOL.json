@@ -1,0 +1,118 @@
+{
+  "status": "PREREGISTERED_UNCOMPILED_UNTESTED_UNADOPTED",
+  "reviewed_source": "ee2e14976c3c7e83f5842ee5b757a3ecbeb0929d",
+  "source_qualification": "R5 active; no qualified baseline asserted. Freeze actual baseline source and receipt before execution.",
+  "prior_qualified_source": "7a2fbbbf8118ae8c6410c9e234f9cc866bdb926a",
+  "test_file": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryObserverBoundaryScenarioTest.kt",
+  "test_sha256": "e3bbb873e1d97bdba3e00a204bab8ef4a72da51e411e07a6f30adc7872c072d2",
+  "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest",
+  "cases": [
+    {
+      "name": "entry observes only observers present at its instruction; departing=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 93
+    },
+    {
+      "name": "entry suppression uses suppressors present at its instruction; departing=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 106
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=false, twice=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=false, twice=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121
+    },
+    {
+      "name": "entry observes only observers present at its instruction; departing=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 93
+    },
+    {
+      "name": "entry suppression uses suppressors present at its instruction; departing=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 106
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=true, twice=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=true, twice=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=false, suppressed=false",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=false, suppressed=true",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=true, suppressed=false",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=true, suppressed=true",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=false, once=false",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=false, once=true",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=true, once=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 168
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=true, once=true",
+      "predicted_baseline": "pass"
+    }
+  ],
+  "expected_negative": {
+    "rows": 16,
+    "passed": 7,
+    "failures": 9,
+    "errors": 0,
+    "skipped": 0
+  },
+  "rules": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "sections": [
+      "603.2",
+      "603.2c",
+      "603.2d",
+      "603.3",
+      "603.4",
+      "603.6a"
+    ]
+  },
+  "method": "12 actual cast/resolve pipeline cases, including serialization after spell resolution;4 direct executor/detector cases for atomic batches and once-per-turn. Compilation or setup failure is not negative evidence. Preserve every assertion and disclose all failed runs.",
+  "boundaries": [
+    "Observer/suppressor presence at entry instruction, including coentrants",
+    "Event-time trigger restriction vs intervening-if initial and resolution checks",
+    "Atomic entry batch separation and cross-instruction once-per-turn cap"
+  ],
+  "limitations": [
+    "No pending-entry choice serialization in this bank",
+    "No complete delayed-trigger/doubler/controller-change/granted-ability/other-zone coverage",
+    "No implementation committed or executed",
+    "No new SDK vocabulary, card admission, or competitive evidence"
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}

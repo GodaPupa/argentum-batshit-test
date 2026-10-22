@@ -1,0 +1,11 @@
+# Entry observer boundary review: untested and unadopted
+
+The qualified entry-characteristic snapshots do not freeze which observers, suppressors, or relational conditions existed at each entry instruction. TriggerDetector currently reads the final spell state, and its batch path combines events from distinct instructions. These16 preregistered cases predict9 exact assertion failures and7 controls; no test has been compiled or executed.
+
+The12 real cast/resolve cases check observer departure/arrival, suppression departure/arrival, triggerRestriction and interveningIf, plus simultaneous coentrants in both collection orders. The8 negative cast cases serialize the stack after the corrected expected trigger count, then check resolution; the intervening-if departure case must still stack and then do nothing at resolution. The4 direct executor/detector cases distinguish two sequential entry instructions from one simultaneous group while retaining the once-per-turn cap. Test file and exact expected first failure frames are bound in PROTOCOL.json.
+
+Read against source ee2e14976c3c7e83f5842ee5b757a3ecbeb0929d while its copiable-entry r5 qualification is active. That source is not yet qualified. The actual future baseline must be immutable, separately qualified and bound before any dispatch. The counter draft and Metamorph draft remain isolated and unadopted. No build is started here.
+
+Before implementation, design must preserve source object identity/LKI, pending-choice serialization, APNAP placement, delayed-trigger consumption, trigger multipliers, batch boundaries, once-per-turn accounting and the genuine resolution-time intervening-if check. Existing per-instruction characteristic snapshots and outer-composite preservation are the relevant seam. A saved observation must not be recomputed against later state; adding serialized defaults must preserve historical fixture bytes. Full design and additional dependency controls remain open. This review is not a claim of complete entry mechanics.
+
+Rules reviewed from the official 2026-09-25 Comprehensive Rules, sections603.2,603.3,603.4,603.6a. No original assertions, fixtures, card files, v0.7, protected23 goldens, testing budgets, or reserved Precision games are changed. Official games/seeds0. No component result is competitive evidence.
