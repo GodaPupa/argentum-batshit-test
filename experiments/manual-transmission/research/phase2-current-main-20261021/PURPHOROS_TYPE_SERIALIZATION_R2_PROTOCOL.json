@@ -1,0 +1,64 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_PURPHOROS_POLYMORPHIC_TYPE_SERIALIZATION_R2",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_AFTER_25_CASE_ORIGINAL_RED_BEFORE_ANY_SOURCE_REPAIR",
+  "failed_run": {
+    "id": 39702798101,
+    "head": "47661fa7b0411703f70cda56837715295d09b443",
+    "artifact": 12394107357,
+    "zip_sha256": "48c75774051937125e630d040a158be0121c42135806469fa817f741bc122c67",
+    "actual_cases": 25,
+    "failures": 22,
+    "passes": 3,
+    "issue": "JSON discriminator type collides with Modification.RemoveType.type in SerializedGameState snapshot of continuous static effect; original tests fail on replay encoding, not evidence of damaging or devotion mechanics incorrect",
+    "common_stack": "kotlinx.serialization.json.JsonEncodingException at SerializationTestSupport.encodeState after ActionProcessor, component ContinuousEffectData.modification, Modification.RemoveType"
+  },
+  "original_failed_parent": "47661fa7b0411703f70cda56837715295d09b443",
+  "historical_accepted_repair_source": {
+    "ref": "candidate/manual-exact-composition-v3-20261003",
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ProjectionModels.kt",
+    "git_blob": "9ce21dea649168e5b6ed86668ced82f9f1e5af48"
+  },
+  "failing_source": {
+    "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/layers/ProjectionModels.kt",
+    "git_blob": "ece9c711989a4e1ba9f850c0435accfd65ba6a93"
+  },
+  "source_repair": {
+    "exact_limited_edits": [
+      "add import kotlinx.serialization.SerialName beside Serializable",
+      "annotate Modification.AddType constructor val type with @SerialName(\"cardType\")",
+      "annotate Modification.RemoveType constructor val type with @SerialName(\"cardType\")"
+    ],
+    "expected_repaired_git_blob": "9ce21dea649168e5b6ed86668ced82f9f1e5af48",
+    "reason": "The JSON discriminator type may not equal a serializable field name in the concrete sealed Modifier class; @SerialName changes only stored JSON field label, keeps Kotlin constructor val and rules behavior untouched.",
+    "explicitly_out_of_scope": [
+      "no Json global discriminator rename",
+      "no changes to Purphoros card or 25 original test scenario bytes",
+      "no engine projection/rules semantic changes",
+      "no attempt to fabricate a green result by removing replay asserts",
+      "no retroactive rewrite of RED originals"
+    ]
+  },
+  "protected": {
+    "purphoros_card_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/PurphorosGodOfTheForge.kt",
+    "purphoros_card_blob": "023dda6e17ca31ef036f17cc979b4a6efc2c5297",
+    "original_test_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PurphorosGodOfTheForgeScenarioTest.kt",
+    "original_test_blob": "82f15bba7a09dc5bb898fe8d3f661f03757c89ed",
+    "frozen_deck": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "canonical_main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "current_ai": "43bbad79273806f56703fad420e9f6a495d05309",
+    "current_solver": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "no_game_seed": true,
+    "no_full_game": true,
+    "no_official_capability_game": true,
+    "no_primary_game": true,
+    "precision_used": 10,
+    "precision_reserved": 2
+  },
+  "test_acceptance": {
+    "original_25": "Rerun every one of exact original 25 Purphoros scenario cases on corrected source, no failures/errors/skips; retain actual fresh XML and raw logs.",
+    "focused_modification_serialization": "Add two new isolated deterministic roundtrip fixtures asserting polymorphic AddType/RemoveType serialize with class discriminator and separate cardType field, roundtrip exact value and type. Qualified separately and source-verified.",
+    "regression": "Reexecute existing layer/serialization fixtures if available; do not suppress existing regression.",
+    "decision": "All 25 original and new boundary fixtures GREEN permits source-only component acceptance. Any additional engine/semantics failure stays RED and gets separately diagnosed. No R3 card or full-deck promotion without coherent subsequent requalification."
+  }
+}
