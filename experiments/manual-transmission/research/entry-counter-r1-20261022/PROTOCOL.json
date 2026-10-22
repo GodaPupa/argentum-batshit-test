@@ -1,8 +1,8 @@
 {
   "status": "PREREGISTERED_ENTRY_COUNTER_UNTESTED_UNADOPTED",
   "baseline_source": "ee2e14976c3c7e83f5842ee5b757a3ecbeb0929d",
-  "qualified_baseline_receipt": "QUALIFICATION_RECEIPT_PENDING",
-  "parent_checkpoint": "PARENT_CHECKPOINT_PENDING",
+  "qualified_baseline_receipt": "d36709c128c4b91ac2fd11b3ec387aa55b3145fd",
+  "parent_checkpoint": "d36709c128c4b91ac2fd11b3ec387aa55b3145fd",
   "original_test_checkpoint": "6d95e92a73dddb9b2de01950afcb67a95111b63e",
   "preserved_draft_checkpoint": "3d5fdd275d4a6a48772adb3cec604c63c341e4e3",
   "scope": "Global enters-with provider existence at a simultaneous event, plus external effects on copied or actual face-down entrants. All12 tests use existing baseline APIs and real entry/selection paths; both copied paths round-trip pending state. Two additional actual Morph/Disguise cast cases require external2 counters and exclude concealed printed5. The original twelve-case file is byte-identical to its prior checkpoint.",
@@ -156,7 +156,8 @@
     "ordinary_skips": 43,
     "assay_tests": 568,
     "assay_touchstone_cards": 2000,
-    "differential": "All51 original full blocks must remain unchanged or be explicitly classified, never waived."
+    "differential": "All51 original full blocks must remain unchanged or be explicitly classified, never waived.",
+    "assay_input_retention": "Preserve the full actual raw cached bulk corpus in the evidence artifact, in addition to its SHA256/size. No same-input aggregate comparisons across differing corpus hashes."
   },
   "does_not_qualify": [
     "Complete hypothetical-entry projection/filter state for all simultaneous continuous effects",
@@ -175,7 +176,7 @@
       "614.12a"
     ]
   },
-  "prerequisite": "Do not dispatch until copiable-entry r5 run39851315771 qualifies and its original artifact and every duplicate disposition have been independently audited. Source ee2 is prospective, not yet qualified. Prior r4 failed original saved-state compatibility assertions; receipt10a8ff903602b08bac3beb3ee622445996646c73 preserves them. Restore only8 counter draft paths onto a fresh qualified checkout, preserving r5 serialization repair.",
+  "prerequisite": "Qualified baselineee2 and original r5 artifact independently received in d36709c128c4b91ac2fd11b3ec387aa55b3145fd; one observed successful run39851315771, no duplicate. All8 surviving counter draft paths restored exactly into a fresh checkout. Fresh global activity inspection remains mandatory immediately before dispatch.",
   "safeguards": {
     "protected_bindings": 110,
     "protected_goldens": 23,

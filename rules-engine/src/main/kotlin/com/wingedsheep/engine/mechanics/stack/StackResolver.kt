@@ -1833,12 +1833,13 @@ class StackResolver(
             )
         }
 
-        if (cardDef != null && !spellComponent.castFaceDown) {
+        run {
             val totalManaSpent = spellComponent.manaSpentWhite + spellComponent.manaSpentBlue +
                 spellComponent.manaSpentBlack + spellComponent.manaSpentRed +
                 spellComponent.manaSpentGreen + spellComponent.manaSpentColorless
             val (counterState, events) = applyEntersWithReplacements(
-                newState, spellId, cardDef, controllerId, spellComponent.xValue, totalManaSpent
+                newState, spellId, cardDef.takeUnless { spellComponent.castFaceDown }, controllerId,
+                spellComponent.xValue, totalManaSpent, sourceState = state
             )
             newState = counterState
             counterEvents.addAll(events)
@@ -3004,22 +3005,25 @@ class StackResolver(
     internal fun applyEntersWithReplacements(
         state: GameState,
         entityId: EntityId,
-        cardDef: com.wingedsheep.sdk.model.CardDefinition,
+        cardDef: com.wingedsheep.sdk.model.CardDefinition?,
         controllerId: EntityId,
         xValue: Int? = null,
-        totalManaSpent: Int = 0
+        totalManaSpent: Int = 0,
+        sourceState: GameState = state,
     ): Pair<GameState, List<GameEvent>> {
         var newState = state
         val events = mutableListOf<GameEvent>()
 
-        val (ownState, ownEvents) = EntersWithReplacements.applyFromDefinition(
-            newState, entityId, cardDef, controllerId, xValue, totalManaSpent
-        )
-        newState = ownState
-        events.addAll(ownEvents)
+        if (cardDef != null) {
+            val (ownState, ownEvents) = EntersWithReplacements.applyFromDefinition(
+                newState, entityId, cardDef, controllerId, xValue, totalManaSpent
+            )
+            newState = ownState
+            events.addAll(ownEvents)
+        }
 
         val (globalState, globalEvents) = EntersWithReplacements.applyGlobal(
-            newState, entityId, controllerId, cardRegistry
+            newState, entityId, controllerId, cardRegistry, sourceState
         )
         newState = globalState
         events.addAll(globalEvents)
