@@ -1,0 +1,57 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_WORLD_BREAKER_GLEN_FROZEN_R5_V1",
+  "state": "PREDECLARED_BEFORE_RECEIVING_ORIGINAL_DONOR_SOURCE",
+  "date": "2026-10-21",
+  "purpose": "Isolate two more missing actual v0.7 pieces: World Breaker finite RACE recursion/removal and Glen Elendra Archmage SPORT noncreature-stack defense/persist. Qualify original card cases and exact frozen 800 registry without inventing cEDH games.",
+  "parent": "ab65657918c0f5e02ae181c579d1c8e6f972c0ec",
+  "parent_run": 39702175031,
+  "source_ref": "candidate/manual-exact-composition-v3-20261003",
+  "cases": [
+    {
+      "name": "World Breaker",
+      "source": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ogw/cards/WorldBreaker.kt",
+      "source_blob": "6a142f2583db72059349b7260b112b9d64596d59",
+      "test": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/WorldBreakerScenarioTest.kt",
+      "test_blob": "273972bbda3c969c8d6d1b07b9592a713f236b5d",
+      "n": 2
+    },
+    {
+      "name": "Glen Elendra Archmage",
+      "source": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/eve/cards/GlenElendraArchmage.kt",
+      "source_blob": "ad424467549beb38cff88670ed28d0abac3e38a3",
+      "test": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/GlenElendraArchmageScenarioTest.kt",
+      "test_blob": "1ce622dc7c16b69ff94edb9fe80f2c7301592a31",
+      "n": 3
+    }
+  ],
+  "original_cases": 5,
+  "observed_r3_registry": {
+    "total": 476,
+    "manual": 84,
+    "opponents": 392
+  },
+  "registry_if_exactly_two_sources_admitted": {
+    "total": 478,
+    "manual": 86,
+    "opponents": 392,
+    "manual_missing": 14,
+    "total_missing": 322
+  },
+  "no_opponent_deck_contains_the_two_cards": true,
+  "no_new_frozen_card_list": true,
+  "preserve": {
+    "deck": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "ai": "43bbad79273806f56703fad420e9f6a495d05309",
+    "solver": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "engine_rules_unmodified": true,
+    "no_other_src_edits": true,
+    "no_new_full_game": true,
+    "no_seeds": true,
+    "no_main_merge": true,
+    "precision_used": 10,
+    "precision_reserved": 2,
+    "official_capability": 0,
+    "official_primary": 0
+  },
+  "decision": "Only after 5/5 actual original tests and independent full eight 100-card CardRegistry succeeds on same exact 4-source-file candidate, report bounded source component acceptance and exact +2; not game/pilot/performance admission."
+}
