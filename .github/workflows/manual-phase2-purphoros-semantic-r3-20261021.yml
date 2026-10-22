@@ -5,6 +5,7 @@ on:
     paths:
       - '.github/workflows/manual-phase2-purphoros-semantic-r3-20261021.yml'
       - 'experiments/manual-transmission/research/phase2-current-main-20261021/PURPHOROS_SEMANTIC_SOURCE_R3_PROTOCOL.json'
+      - 'experiments/manual-transmission/research/phase2-current-main-20261021/PURPHOROS_SEMANTIC_STACK_COMPAT_CORRECTION_R3.json'
 permissions: {contents: read}
 concurrency:
   group: manual-phase2-purphoros-historical-etb-r3
@@ -46,8 +47,17 @@ jobs:
           assert p["limits"]["precision_used"]==10 and p["limits"]["precision_reserved"]==2
           def git(pa):
               return subprocess.check_output(["git","rev-parse","HEAD:"+pa],text=True).strip()
-          expected={str(f),".github/workflows/manual-phase2-purphoros-semantic-r3-20261021.yml"}
+          correction_file=Path("experiments/manual-transmission/research/phase2-current-main-20261021/PURPHOROS_SEMANTIC_STACK_COMPAT_CORRECTION_R3.json")
+          c=json.loads(correction_file.read_text())
+          assert c["schema"]=="ARGENTUM_MANUAL_PURPHOROS_REVIEWED_SEMANTIC_RECEIVE_R3_STACK_RESOLVER_CORRECTION"
+          assert c["status"]=="REGISTERED_AFTER_COMPOSITION_COMPILE_RED_BEFORE_STACK_RESOLVER_RESTORE"
+          assert c["original_red_run"]==39714399875
+          assert c["retained_historical_engine_files"]==16
+          expected={str(f),str(correction_file),".github/workflows/manual-phase2-purphoros-semantic-r3-20261021.yml"}
           for name,hash in p["exact_reviewed_production_source_files"].items():
+              if name==c["path"]:
+                  assert git(name)==c["restore_exact_blob"],(name,git(name))
+                  continue
               assert git(name)==hash,(name,git(name),hash)
               expected.add(name)
           assert len(expected)==19
@@ -63,7 +73,7 @@ jobs:
             "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaSolver.kt":q["current_mana_solver"],
             "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt":q["land_spell_guard"],
           }.items():assert git(name)==hash,(name,git(name),hash)
-          print("MANUAL_PURPHOROS_17_REVIEWED_ENGINE_DONOR_BLOBS_VERIFIED_NO_GAMES")
+          print("MANUAL_PURPHOROS_16_REVIEWED_ENGINE_PLUS_CURRENT_STACK_VERIFIED_NO_GAMES")
           PY
           git rev-parse HEAD > purphoros-semantic-evidence/head-sha.txt
           git rev-parse HEAD^{tree} > purphoros-semantic-evidence/tree-sha.txt
