@@ -1,0 +1,167 @@
+{
+  "status": "SPECIFICATION_ONLY_NO_IMPLEMENTATION_NO_TEST_EXECUTION_NO_CARD_ADMISSION",
+  "reviewed_source": "a94e01a76df686200812f0cb75611c80c73b9f4b",
+  "source_status": "Observer R2 qualification active; no result assumed",
+  "intake_receipt": "72fb439a96b5e8d5781006938e1e7da82243573b",
+  "intake_artifact": 12454685119,
+  "inputs": {
+    "nph-spellskite.json": {
+      "bytes": 5125,
+      "sha256": "1cc0277c3c9bae41c4ae0c3202b4fead476b0b08282e1b41369c1ee1e90c7292"
+    },
+    "nph-spellskite-rulings.json": {
+      "bytes": 1806,
+      "sha256": "7bae795cdd10d03e80ee57f4f7786d39bc030c2c84af2b287b497d3dbeb1c00a"
+    },
+    "nph-spellskite-printings-0.json": {
+      "bytes": 50373,
+      "sha256": "7c73ef84043714edb5fc74c3434c1b4f93500d0e871a64ad3f9538f8d68857f1"
+    }
+  },
+  "reviewed_source_hashes": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeTargetExecutor.kt": "eecfe2df67756f68278c79c09305dda7acb435f1fd4949f98824e550df45bb7b",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ContestedRetargetExecutors.kt": "0493efd112c8a5d170cbd3e90b3184d3313a8e10800c1154e680604714c3e9a3",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt": "a24ee46915d62b7dc36a42bef5e049867360a4f53b97f877c4c304dc0958b224",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt": "a67307ebe8577ffcc8b544759f63bac17d44eb9ef03e2c912faefdc6247b502a",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/TargetFinder.kt": "539e76e38ee315e97db75504490935066e0643d487ce16e03a3f28fe56f7cf63",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": "e2259a964c908e1c31d77fcc40af1db65384faf50e6644da0e7540c8d9fb76b9",
+    "mtg-sdk/src/main/kotlin/com/wingedsheep/sdk/scripting/effects/StackEffects.kt": "5fa69e908c5a706a0babf595260d3e3b0cde7997729bf98841642f584ddee613"
+  },
+  "primary_rules": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "sections": [
+      "115.3",
+      "115.7b",
+      "115.7d",
+      "115.7e",
+      "115.7f",
+      "115.8",
+      "400.7"
+    ]
+  },
+  "wotc_rulings_reviewed": 6,
+  "printings_reviewed": 10,
+  "scaffolded_printings": [
+    {
+      "set": "NPH",
+      "collector_number": "159",
+      "kind": "canonical definition"
+    },
+    {
+      "set": "CLB",
+      "collector_number": "873",
+      "kind": "Printing row required"
+    }
+  ],
+  "protected_goldens_affected": [],
+  "confirmed_source_gaps": [
+    "ChangeTargetEffect requires exactly one current target and lets the player choose a new recipient; not a fixed-self single-slot operation.",
+    "ContestedRetargetLogic changes arbitrary slots and applies global duplicate exclusion; cannot supply Spellskite semantics unchanged.",
+    "Its static expandRequirements helper does not retain originally selected group counts for optional or variable groups.",
+    "TargetsComponent.targetEntryStamps is keyed by physical entity id. Capturing the whole component would refresh unchanged targets; per-slot old/new visits of the same id cannot be represented distinctly by that map.",
+    "Damage distribution is keyed by entity id; modeTargetsOrdered and splicedTargetsOrdered are additional target views requiring consistency.",
+    "New-target trigger/ward emission and source-type legality must be reviewed explicitly rather than assumed from target list mutation."
+  ],
+  "planned_acceptance_cases": [
+    {
+      "id": "single_spell",
+      "required_behavior": "Redirect one legal creature target to the same battlefield visit of Spellskite; resolve damage on it."
+    },
+    {
+      "id": "activation",
+      "required_behavior": "Redirect a legal activated-ability target, checking the original ability controller and source characteristics."
+    },
+    {
+      "id": "trigger",
+      "required_behavior": "Redirect a legal triggered-ability target with its captured source/controller; no spell-only restriction leakage."
+    },
+    {
+      "id": "zero_targets",
+      "required_behavior": "Ability may target a stack object with zero targets; resolving it changes nothing."
+    },
+    {
+      "id": "illegal_recipient",
+      "required_behavior": "Ability may target a spell whose target cannot legally become Spellskite; leave every target unchanged."
+    },
+    {
+      "id": "source_departure",
+      "required_behavior": "Spellskite leaves before resolution; no target changes."
+    },
+    {
+      "id": "source_blink",
+      "required_behavior": "Spellskite leaves and returns with the same physical entity id; the old ability must not retarget to the new visit."
+    },
+    {
+      "id": "two_independent_instances",
+      "required_behavior": "Two legal slots from separate target requirements: controller chooses exactly one slot; other slot and count are unchanged."
+    },
+    {
+      "id": "same_instance_count_two",
+      "required_behavior": "One requirement selecting two targets: replace only one; forbid a duplicate Spellskite within that same target instance."
+    },
+    {
+      "id": "cross_instance_duplicate",
+      "required_behavior": "Distinct target instances may both name Spellskite when each is legal; do not apply a blanket global duplicate prohibition."
+    },
+    {
+      "id": "another_target_relation",
+      "required_behavior": "Replacing either slot cannot violate a later another-target restriction or otherwise make an unchanged target newly illegal."
+    },
+    {
+      "id": "controller_relations",
+      "required_behavior": "Preserve same-controller/different-controller and other whole-group restrictions."
+    },
+    {
+      "id": "protection_hexproof_shroud",
+      "required_behavior": "Use original stack object controller and source qualities for targeting restrictions; not the redirecting ability controller."
+    },
+    {
+      "id": "variable_count",
+      "required_behavior": "Keep the originally chosen target count, with correct requirement/slot mapping after optional or variable target counts."
+    },
+    {
+      "id": "unchanged_illegal_target",
+      "required_behavior": "An unchanged target already illegal before retargeting remains unchanged; do not silently refresh its captured object identity."
+    },
+    {
+      "id": "same_id_different_visits",
+      "required_behavior": "When one slot is retargeted to a new visit of an entity another slot targeted earlier, retain separate per-slot identities."
+    },
+    {
+      "id": "divided_damage",
+      "required_behavior": "Move the chosen slot and its fixed original damage allocation together; retain all other shares and totals."
+    },
+    {
+      "id": "modal_and_splice",
+      "required_behavior": "Preserve chosen modes, mode-local and splice-local target views; exactly the selected slot changes in every relevant view."
+    },
+    {
+      "id": "payment",
+      "required_behavior": "Actual Spellskite activation pays either one blue mana or two life; no free or double payment."
+    },
+    {
+      "id": "serialized_choice",
+      "required_behavior": "Round-trip state at a multi-slot choice; reject stale/illegal slot answers and reproduce accepted state/events exactly."
+    },
+    {
+      "id": "targeting_event",
+      "required_behavior": "Emit the newly targeted occurrence required for targeting/ward triggers without retriggering unchanged targets."
+    },
+    {
+      "id": "no_reselection",
+      "required_behavior": "No legal replacement leaves the stack object byte-identical, including target stamps and allocations."
+    }
+  ],
+  "negative_control_policy": "No nonexistent-primitive compile failure can qualify as behavioral negative evidence. Freeze actual executable tests, source identity and valid controls before running a new primitive qualification.",
+  "required_followup": [
+    "Implement a generic one-slot fixed-recipient retarget primitive with explicit target-instance and object-visit provenance.",
+    "Preserve existing target semantics and all82 legacy saved-state fixtures; optional fields must omit defaults where necessary.",
+    "Register Spellskite only after primitive qualification and fresh card metadata/printing checks; include CLB Printing row.",
+    "Run actual card snapshots for NPH and CLB, broad regressions, ordinary build and applicable Assay; classify any parser/fidelity gap honestly."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}

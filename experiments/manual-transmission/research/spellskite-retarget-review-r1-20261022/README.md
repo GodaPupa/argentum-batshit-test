@@ -1,0 +1,7 @@
+# Spellskite dependency review — specification only
+
+No engine/card implementation, test execution, registration or admission is claimed. This review advances the frozen-card backlog while the sole observer R2 qualification runs. The preserved primary intake contains ten printings and all six WotC rulings; NPH159 is the canonical definition and scaffolded CLB873 also needs a Printing row. NPH and CLB are outside the 23 protected goldens.
+
+Existing single-target and all-target retarget effects cannot express the required fixed-self, exactly-one-slot behavior. The generic primitive must preserve target-instance grouping (duplicates are restricted within one instance, not globally), slot identities across zone visits, original controller/source targeting restrictions, target count, modes/splice views, damage allocation, and target-change triggers. Capturing the whole target component would silently refresh unchanged targets; the current entity-id stamp map cannot distinguish two slots naming different visits of the same id. These are admission blockers, not accepted limitations of a supposedly implemented card.
+
+REVIEW.json records exact inspected source hashes and 22 required behavioral scenarios. This is a specification, not an executable preregistration or competitive evidence. Freeze real tests and their exact source before a new qualification. Missing DSL/compiler support is not a successful negative control. No overlapping run has been dispatched, no protected snapshot changed, and no official seed or game consumed.
