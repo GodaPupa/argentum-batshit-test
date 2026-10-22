@@ -83,6 +83,13 @@ data class ZoneChangeEvent(
     /** The move's requested destination, before any redirect chose [toZone]. */
     val requestedDestination: Zone = toZone,
     /**
+     * Projected characteristics at the completion of an entry instruction, before a later
+     * instruction can attach, pump, or otherwise change the entrant. Distinct from departure
+     * lastKnown information. Null means no qualified entry snapshot was captured; it must not
+     * be interpreted as a snapshot of the eventual trigger-detection state.
+     */
+    val entrySnapshot: com.wingedsheep.engine.event.BattlefieldEntrySnapshot? = null,
+    /**
      * This exact entry event has already had its observers captured by the producing resumer.
      * Keep it in the ordered event/replay stream while later detectors skip only this record,
      * never an entire mixed result or another structurally identical, unprocessed occurrence.
