@@ -1,6 +1,6 @@
 {
   "status": "ACTIVE_QUALIFICATION_UNADOPTED",
-  "observed_at": "2026-10-22T22:33:10.561Z",
+  "observed_at": "2026-10-22T22:42:20.306Z",
   "source": "c486fe51a3cecc4ebde845371242c791839f1954",
   "source_tree": "3b68197d09f11baaa1599ee269368e1a1f02cf6d",
   "qualified_baseline_source": "6473e7668636859b443020d152b06f400fca4eb5",
@@ -66,9 +66,31 @@
   "competitive_admission": false,
   "next_safe_action": "Observe this one run and receive its original artifact. Do not dispatch another build while active. Independently verify all immutable source bindings, original XML/frames/skips, full corpus and differential before acceptance; preserve any failure before repair.",
   "separate_future_draft": {
-    "source": "d677bf26f1e0ec8de0f2bc0e873e397788f72b8e",
-    "preregistration": "71623e733836b9f9fdfbbd2df46a099217c07f66",
+    "source": "d2d82949b9cae48c62de7288e3d0a846d26a3cbd",
+    "preregistration": "60736d41a1e007dc61e75e44fb4e37a3d04546ba",
     "status": "UNCOMPILED_UNTESTED_UNADOPTED_NOT_INCLUDED",
-    "cases": 12
+    "cases": 16,
+    "expected_failures": 8,
+    "expected_passes": 8,
+    "retired_before_execution": {
+      "source": "d677bf26f1e0ec8de0f2bc0e873e397788f72b8e",
+      "preregistration": "71623e733836b9f9fdfbbd2df46a099217c07f66",
+      "reason": "Incorrect CR614.12 own-general replacement oracle and missing selfOnly fixture flags. Original files preserved unchanged and never executed. See60736d4 retirement records."
+    }
+  },
+  "local_reconciliation": {
+    "source": "c486fe51a3cecc4ebde845371242c791839f1954",
+    "tree": "3b68197d09f11baaa1599ee269368e1a1f02cf6d",
+    "status": "clean",
+    "receipt_files_restored": 151,
+    "observed_at": "2026-10-22T22:40:20.514Z"
+  },
+  "observed_stage": "533 focused qualification in progress",
+  "baseline_gate": {
+    "workflow_status": "success",
+    "expected_cases": 32,
+    "expected_assertion_failures": 21,
+    "expected_passes": 11,
+    "original_artifact_status": "NOT_YET_RECEIVED; final independent audit still required"
   }
 }
