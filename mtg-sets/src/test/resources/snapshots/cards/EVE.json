@@ -75,6 +75,59 @@
     ]
 }
 
+// Glen Elendra Archmage
+{
+    "name": "Glen Elendra Archmage",
+    "manaCost": "{3}{U}",
+    "typeLine": "Creature — Faerie Wizard",
+    "oracleText": "Flying\n{U}, Sacrifice Glen Elendra Archmage: Counter target noncreature spell.\nPersist",
+    "creatureStats": {
+        "power": 2,
+        "toughness": 2
+    },
+    "keywords": [
+        "FLYING",
+        "PERSIST"
+    ],
+    "script": {
+        "activatedAbilities": [
+            {
+                "id": "ability_1",
+                "cost": {
+                    "type": "CostComposite",
+                    "costs": [
+                        {
+                            "type": "CostAtomWrapper",
+                            "atom": {
+                                "type": "AtomMana",
+                                "cost": "{U}"
+                            }
+                        },
+                        "CostSacrificeSelf"
+                    ]
+                },
+                "effect": "Counter",
+                "targetRequirements": [
+                    {
+                        "type": "TargetObject",
+                        "filter": {
+                            "baseFilter": "noncreature",
+                            "zone": "Stack"
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "metadata": {
+        "collectorNumber": "22",
+        "rarity": "RARE"
+    },
+    "colorIdentityOverride": [
+        "BLUE"
+    ]
+}
+
 // Scarecrone
 {
     "name": "Scarecrone",
