@@ -1,0 +1,304 @@
+{
+  "status": "PREPARED_ONLY_NOT_EXECUTABLE_UNTESTED_UNADOPTED",
+  "qualified_review_source": "6473e7668636859b443020d152b06f400fca4eb5",
+  "qualified_receipt": "e7d27c76e172c42254556a56a2f396905f428427",
+  "test_file": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterModifierSourceScenarioTest.kt",
+  "test_sha256": "76a4ab181241eb106ba562e2cab4af7b475ff6cf400fdd62bdb096c9b8a29c54",
+  "cases": [
+    {
+      "name": "a simultaneous general counter modifier affects neither entrant; double=false, sourceFirst=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 75,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a simultaneous general counter modifier affects neither entrant; double=false, sourceFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 74,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=false, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering general counter modifier does not apply to itself; double=false, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering exclusively self counter modifier applies to itself; double=false, direct=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 118,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=false, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering general counter modifier does not apply to itself; double=false, direct=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 105,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering exclusively self counter modifier applies to itself; double=false, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a simultaneous general counter modifier affects neither entrant; double=true, sourceFirst=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 75,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a simultaneous general counter modifier affects neither entrant; double=true, sourceFirst=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 74,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=true, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering general counter modifier does not apply to itself; double=true, direct=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering exclusively self counter modifier applies to itself; double=true, direct=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 118,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "a preexisting counter modifier applies to entry; double=true, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering general counter modifier does not apply to itself; double=true, direct=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 105,
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    },
+    {
+      "name": "an entering exclusively self counter modifier applies to itself; double=true, direct=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryCounterModifierSourceScenarioTest"
+    }
+  ],
+  "expected_negative": {
+    "rows": 16,
+    "passed": 8,
+    "failures": 8,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 1
+  },
+  "supersedes_without_modifying_original": {
+    "preregistration": "71623e733836b9f9fdfbbd2df46a099217c07f66",
+    "draft": "d677bf26f1e0ec8de0f2bc0e873e397788f72b8e",
+    "test_sha256": "3dda373fd9e8cf68f65f438ea0b0cd11ee1cb02f7d32ad44d0746b34ce7ae97b",
+    "disposition": "RETIRED_BEFORE_ANY_COMPILATION_OR_EXECUTION_INCORRECT_RULE_ORACLE_AND_FIXTURE",
+    "reason": "CR614.12 excludes the entrant's own general subset replacement. Earlier draft incorrectly expected it to apply. Earlier EntersWithCounters fixtures also omitted selfOnly=true, inadvertently granting counters to others. Original file/protocol/source remain unchanged and preserved, never accepted as evidence."
+  },
+  "rules": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "section": "614.12",
+    "reviewed_at": "2026-10-22T22:38:58.800205+00:00"
+  },
+  "execution_order": "Await observerR2 or later full successful original-artifact receipt. Preserve modifier engine commit then separate Metamorph card commit; bind all gates to the final source. Inspect activity immediately before a one-shot dispatch. No current run is duplicated.",
+  "limitations": [
+    "Multiple replacement ordering, event-wide counter aggregation and counter-type composition remain separate unresolved questions governed by CR614.5/616.",
+    "Does not qualify every token/land/Aura producer or prospective recipient filter evaluation.",
+    "Explicit RecipientFilter.Self only demonstrates self-exclusive qualification; no arbitrary filter equivalence claim."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false,
+  "preregistration": "60736d41a1e007dc61e75e44fb4e37a3d04546ba",
+  "source_manifest": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EntersWithReplacements.kt": {
+      "bytes": 32959,
+      "sha256": "8973862c9d004192c279692e536ab18cabef29457dd3fcafc690a1e6fffc25ae",
+      "git_blob": "ce80f73f5c79497b574d8a8e424afb8997a59ea3",
+      "baseline_sha256": "0f9903bcdba758da5882392e36823f364126aa03cb247a5fea6f69ad8fbee679"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ReplacementEffectUtils.kt": {
+      "bytes": 10364,
+      "sha256": "e973ebb94095d2ae0c3fa2046d1941fdff68a8c99fe8faba010db5cd13d0474b",
+      "git_blob": "f0734aa0666675827c7762b379caa690a27f55df",
+      "baseline_sha256": "2db2b9f1ca7ce637e0a0a3ddf2005807d8163066761b0fc49bd5d45cb2c00e25"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+      "bytes": 233548,
+      "sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94",
+      "git_blob": "64c0466abe72bc495c7e5d364fdbf73d75db777b",
+      "baseline_sha256": "e2259a964c908e1c31d77fcc40af1db65384faf50e6644da0e7540c8d9fb76b9"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryCounterModifierSourceScenarioTest.kt": {
+      "bytes": 6719,
+      "sha256": "76a4ab181241eb106ba562e2cab4af7b475ff6cf400fdd62bdb096c9b8a29c54",
+      "git_blob": "4cbc70456f589700342f4a20b053a97454c3d5c6"
+    },
+    "docs/architecture-principles.md": {
+      "bytes": 116776,
+      "sha256": "64df4006586d45dcb9217049e339563bd7f8a18ab5ad18ce2ef249fe291d2344",
+      "git_blob": "ac895f80571db365fef068e185fc333ce6fc6815"
+    },
+    "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/nph/cards/PhyrexianMetamorph.kt": {
+      "bytes": 3190,
+      "sha256": "3b3abb2bf971d01067b23e891393588ae93b64a1a3e45a9cc6103377a5366c05",
+      "git_blob": "42035a34f14eee6fd28792118c8d027d5412c5df",
+      "baseline_absent": true
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PhyrexianMetamorphScenarioTest.kt": {
+      "bytes": 10728,
+      "sha256": "17a207d908a91036b3b9c96022fb6cb12bf52dc09906b88ef996527f1072e745",
+      "git_blob": "1075f22c9c9639c49f7d78dc0b5dcc37e26df365",
+      "baseline_absent": true
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PhyrexianMetamorphEntryScenarioTest.kt": {
+      "bytes": 12640,
+      "sha256": "10c5efbc582329f4cd5be55195d2d8d3214e89df286dfa2df0df8ed2123ee73d",
+      "git_blob": "129988f18a59143b6172658d7c4933b85530033f",
+      "baseline_absent": true
+    },
+    "mtg-sets/src/test/resources/snapshots/cards/NPH.json": {
+      "bytes": 15370,
+      "sha256": "88b21c3c6de85f734294bf1e9c56e06895eaebbccfccef8c2b8d78868650a21a",
+      "git_blob": "e93ce6063162ba089377d4eeb9904c01bd6e9093",
+      "baseline_sha256": "8c5ca92e9674c4e03f2277fd04711f4d67a9a553c0a87d8894c0e2dee3b41a43",
+      "baseline_git_blob": "5af4b2194ac006e61dd11c25e8e83c540c2dba48"
+    }
+  },
+  "baseline_source": "a94e01a76df686200812f0cb75611c80c73b9f4b",
+  "qualified_baseline_receipt": "PENDING_OBSERVER_R2_OR_LATER_ORIGINAL_ARTIFACT_AUDIT",
+  "parent_checkpoint": "PENDING_OBSERVER_R2_OR_LATER_QUALIFIED_RECEIPT",
+  "preserved_draft_checkpoint": "d2d82949b9cae48c62de7288e3d0a846d26a3cbd",
+  "negative_excluded_tests": [
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PhyrexianMetamorphScenarioTest.kt",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PhyrexianMetamorphEntryScenarioTest.kt"
+  ],
+  "source_qualification": "ObserverR1 failed (receipt403c67dc); this preparation incorporates candidateobserverR2, which is currently unqualified. Execution is forbidden until successful full receipt and fresh activity inspection.",
+  "qualification": {
+    "focused_passed": 598,
+    "engine_passed": 3908,
+    "broad_required_passed": 14683,
+    "ordinary_passed": 18291,
+    "ordinary_skips": 43,
+    "assay_tests": 568,
+    "assay_touchstone_cards": 2000,
+    "differential": "All51 original full blocks must remain byte-identical or explicitly reviewed; never waived.",
+    "assay_input_retention": "Full actual raw corpus plus exact hash and size required.",
+    "additional_original_regressions": {
+      "DoubleCountersTest": 5,
+      "EnterCounterObjectIdentityTest": 2,
+      "GrantCounterPlacementModifierTest": 5
+    }
+  },
+  "negative_control": {
+    "expected_cases": 16,
+    "expected_assertion_failures": 8,
+    "expected_passed": 8,
+    "expected_errors": 0,
+    "expected_skipped": 0,
+    "require_exact_first_failure_locations": true,
+    "compilation_error_is_not_evidence": true
+  },
+  "safeguards": {
+    "protected_bindings": 134,
+    "protected_goldens": 23,
+    "no_original_test_edit": true,
+    "no_rebless": true,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2,
+    "competitive_admission": false
+  },
+  "preparation_supersedes": "89c14c1e5160e6567a11e50d8a890d3a245b207d",
+  "preserved_observer_repairs": {
+    "source": "a94e01a76df686200812f0cb75611c80c73b9f4b",
+    "copy_batch_cases": 6,
+    "original_card_classes": {
+      "KambalProfiteeringMayorScenarioTest": 4,
+      "MeathookMassacreIIScenarioTest": 6,
+      "ZodiarkUmbralGodScenarioTest": 3
+    },
+    "qualification_pending": true
+  },
+  "baseline_restore_paths": [
+    "mtg-sets/src/test/resources/snapshots/cards/NPH.json"
+  ],
+  "combined_scope": {
+    "modifier_cases": 16,
+    "card_cases": 18,
+    "card_name": "Phyrexian Metamorph",
+    "card_draft_checkpoint": "eb120071ffb95917d505d139d0bf68fe084fec56",
+    "expected_snapshot_checkpoint": "13d4c987b40801020365d7f7a1dcecc0eed3344c",
+    "separate_commits_required": true,
+    "same_final_source_for_all_positive_gates": true,
+    "only_changed_golden": "mtg-sets/src/test/resources/snapshots/cards/NPH.json",
+    "original_nph_blocks_unchanged": 9
+  },
+  "negative_control_policy": "Restore all three modified engine files to the actual qualified observer baseline, remove only the absent-baseline new Metamorph definition and two new Metamorph test banks, and restore the baseline NPH golden. Execute the unchanged corrected16 bank. Compilation errors never count as negative evidence. Restore every exact candidate file before positive gates; all18 card cases must then execute unchanged.",
+  "card_gates": {
+    "fresh_primary_fields_and_all_rulings": true,
+    "fresh_check_card_printing": true,
+    "card_cases": {
+      "PhyrexianMetamorphScenarioTest": 10,
+      "PhyrexianMetamorphEntryScenarioTest": 8
+    },
+    "compiled_snapshot": "The unchanged CardDefinitionSnapshotTest calls CardExporter for every registered card and compares exact bytes to the prereviewed candidate NPH golden. Normal assertion mode is required; no rebless flag or assertion bypass. This verifies the actual exporter against the predeclared expected addition while leaving all protected goldens untouched.",
+    "assay": [
+      "parse Phyrexian Metamorph",
+      "explain Phyrexian Metamorph",
+      "differential --set NPH --top 1000",
+      "full original differential and2000-card touchstone"
+    ],
+    "assay_decline_policy": "A grammar decline is retained as a parser limitation, never a card-engine pass or competitive evidence. Read all NPH and global divergent rows; no card bug may be waived."
+  },
+  "registry_inventory": {
+    "status": "PREREGISTERED_INVENTORY_ONLY_NO_GAMEPLAY",
+    "original_input_artifact": 12400298530,
+    "original_artifact_sha256": "7aff0d17269ecd18541823ff5f91d124e4846bf6d1ada6d836f96a3c5329f171",
+    "frozen_source_files": {
+      "registry-requests.json": {
+        "bytes": 22657,
+        "sha256": "09b8617057b9bd42fb6501f993588c9bf769e1f0af0c73426ca963da07d20084"
+      },
+      "bootstrap-report.json": {
+        "bytes": 8190,
+        "sha256": "549abbb7fae43824b871c1cd39d46f82b77e539e8a0c3ee2b65c724c036d149d"
+      },
+      "source-signals.json": {
+        "bytes": 65322,
+        "sha256": "81415ae9bbaf19af9361d31b0ee085c58f63aa9e8fd7e36f673d90e20d2b2b08"
+      }
+    },
+    "physical_slots": 800,
+    "decks": 8,
+    "mechanics_qualified": false,
+    "actual_games_initialized": 0,
+    "official_games": 0,
+    "official_seeds": 0,
+    "unchanged_test": "gym/src/test/kotlin/com/wingedsheep/gym/ManualTransmissionPhaseTwoRegistryAuditTest.kt",
+    "fresh_required_cases": 1,
+    "runs_after_ordinary_reports_preserved": true,
+    "ordinary_43_skips_unchanged": true,
+    "required_card_locations": [
+      "manual-transmission-v07",
+      "kinnan"
+    ],
+    "interpretation": "Registration/export only. Use actual source-bound inventory counts; no inferred gameplay/semantic admission. Original request retained byte-for-byte from r7 artifact; its historical482 count is not the current484 registry acceptance."
+  }
+}

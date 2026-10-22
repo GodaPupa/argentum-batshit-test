@@ -1,0 +1,1627 @@
+[
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/draftsim/DraftsimDeckBuilder.kt",
+    "line": 280,
+    "text": "// Phase 4 — relax bucket caps."
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt",
+    "line": 50,
+    "text": "* Phase 4a. Skip enumeration entirely on priority windows that"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt",
+    "line": 132,
+    "text": "val opponentId = attackAction?.validAttackTargets?.firstOrNull()"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt",
+    "line": 133,
+    "text": "val attackerMap = if (mandatory.isNotEmpty() && opponentId != null) {"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AIPlayer.kt",
+    "line": 134,
+    "text": "mandatory.associateWith { opponentId }"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt",
+    "line": 36,
+    "text": "* Phase 4a: only propose actions the AI can actually take, and skip windows where it has"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt",
+    "line": 48,
+    "text": "* Phase 4b. How much search one decision may spend. [LegacyBudgetPolicy] is today's"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt",
+    "line": 1144,
+    "text": "* Everything Phase 4 added, on top of [LEGACY_V0]: the meaningful-action filter and the"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/AiProfile.kt",
+    "line": 1155,
+    "text": "* `just arena v0 v0-intent 1000` is the phase's merge gate, and isolating it from Phase 4"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 59,
+    "text": "* always CRITICAL, so combat never gets less search than it did before Phase 4. This"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 114,
+    "text": "val opponentId = seed.defenderId ?: return DeclareAttackers(playerId, emptyMap())"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 130,
+    "text": "state, playerId, opponentId, validAttackers, mandatory.toSet(), seedMap, budget, trace"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 778,
+    "text": "val counterAttackBonus = current.getOpponents(playerId).maxOfOrNull { opponentId ->"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 779,
+    "text": "val opponentBlockers = CombatMath.getOpponentUntappedCreatures(current, postProjected, opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 783,
+    "text": "val opponentLife = current.lifeTotal(opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 963,
+    "text": "opponentId: EntityId,"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 978,
+    "text": "if (needsBlockerCheck && priorityPlayer == opponentId) {"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 979,
+    "text": "val legalActions = simulator.getLegalActions(current, opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 982,
+    "text": "val blockerAction = chooseBlockers(current, blockAction, opponentId, useSimulation = false)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 1010,
+    "text": "opponentId: EntityId,"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 1013,
+    "text": "val postCombat = simulateFullAttack(state, playerId, opponentId, attackerMap)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 1054,
+    "text": "opponentId: EntityId,"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 1063,
+    "text": "val noAttackScore = evaluateAttackPlan(state, playerId, opponentId, emptyMap())"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 1069,
+    "text": "evaluateAttackPlan(state, playerId, opponentId, attackerMap) ?: return"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 1090,
+    "text": "mutation[attacker] = opponentId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 1091,
+    "text": "val score = evaluateAttackPlan(state, playerId, opponentId, mutation) ?: continue"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatAdvisor.kt",
+    "line": 1109,
+    "text": "evaluateAttackPlan(state, playerId, opponentId, mutation) ?: continue"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatMath.kt",
+    "line": 550,
+    "text": "opponentId: EntityId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatMath.kt",
+    "line": 552,
+    "text": "return projected.getBattlefieldControlledBy(opponentId).filter { entityId ->"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatMath.kt",
+    "line": 566,
+    "text": "opponentId: EntityId,"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatMath.kt",
+    "line": 569,
+    "text": "val opponentAttackers = projected.getBattlefieldControlledBy(opponentId).filter { entityId ->"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 61,
+    "text": "val opponentId = defendingPlayers.filter { it in state.turnOrder }"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 64,
+    "text": "val opponentLife = if (opponentId in state.turnOrder) state.lifeTotal(opponentId) else 20"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 65,
+    "text": "val opponentCreatures = CombatMath.getOpponentUntappedCreatures(state, projected, opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 70,
+    "text": "val alphaStrike = validAttackers.associateWith { opponentId }"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 76,
+    "text": "return AttackSeed(affordable, opponentId, lethal = affordable.size == alphaStrike.size)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 88,
+    "text": "seedMap[entityId] = opponentId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 105,
+    "text": "seedMap[entityId] = opponentId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 115,
+    "text": "seedMap[entityId] = opponentId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 128,
+    "text": "seedMap[entityId] = opponentId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 142,
+    "text": "seedMap[entityId] = opponentId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 160,
+    "text": "val allOpponentAttackers = projected.getBattlefieldControlledBy(opponentId).filter {"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 183,
+    "text": "seedMap[entityId] = opponentId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/CombatSeed.kt",
+    "line": 195,
+    "text": "opponentId,"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/DecisionResponder.kt",
+    "line": 123,
+    "text": "?: decision.toOptions.indices.firstOrNull { decision.toOptions[it] != decision.fromOptions.getOrNull(fromIndex) }"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/EngineAiPlayerController.kt",
+    "line": 401,
+    "text": ".firstOrNull { it.searchFilter != null }"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/StateProgress.kt",
+    "line": 44,
+    "text": "* Phase 4's `fillPartial` is gated for no other reason. The rule is about *strength*: a change that"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt",
+    "line": 92,
+    "text": "* Phase 4a: only propose actions the AI can actually take."
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt",
+    "line": 101,
+    "text": "/** Phase 4b. How much search each decision may spend. */"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt",
+    "line": 1093,
+    "text": "return affectedOpponents.all { opponentId ->"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt",
+    "line": 1094,
+    "text": "state.controlledBattlefield(opponentId).toSet() =="
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt",
+    "line": 1095,
+    "text": "leafState.controlledBattlefield(opponentId).toSet()"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt",
+    "line": 1199,
+    "text": "if (opponents.any { opponentId ->"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/Strategist.kt",
+    "line": 1200,
+    "text": "state.controlledBattlefield(opponentId).any { permanentId ->"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/TargetSelection.kt",
+    "line": 251,
+    "text": "* @param fillPartial the Phase 4a fix, gated by `AiProfile.useMeaningfulFilter` — not because"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/BloomburrowAdvisorModule.kt",
+    "line": 87,
+    "text": "val opponentId = state.anyOpponent(playerId) ?: return 1.5"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/BloomburrowAdvisorModule.kt",
+    "line": 88,
+    "text": "val oppHand = handSize(state, opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/BloomburrowAdvisorModule.kt",
+    "line": 385,
+    "text": "val opponentId = state.anyOpponent(playerId) ?: return null"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/BloomburrowAdvisorModule.kt",
+    "line": 389,
+    "text": "val oppBoardValue = creatureBoardValue(state, projected, opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/BloomburrowAdvisorModule.kt",
+    "line": 392,
+    "text": "val oppHand = handSize(state, opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/BloomburrowAdvisorModule.kt",
+    "line": 438,
+    "text": "val opponentId = state.anyOpponent(playerId) ?: return null"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/BloomburrowAdvisorModule.kt",
+    "line": 439,
+    "text": "val oppHand = handSize(state, opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/BloomburrowAdvisorModule.kt",
+    "line": 451,
+    "text": "val opponentId = state.anyOpponent(playerId) ?: return null"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/BloomburrowAdvisorModule.kt",
+    "line": 452,
+    "text": "val oppHand = handSize(state, opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/OnslaughtAdvisorModule.kt",
+    "line": 52,
+    "text": "val opponentId = state.anyOpponent(playerId) ?: return null"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/OnslaughtAdvisorModule.kt",
+    "line": 55,
+    "text": "val oppCreatures = projected.getBattlefieldControlledBy(opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/OnslaughtAdvisorModule.kt",
+    "line": 85,
+    "text": "val opponentId = state.anyOpponent(playerId) ?: return null"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/OnslaughtAdvisorModule.kt",
+    "line": 108,
+    "text": "if (opponentId in targets) {"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/advisor/modules/OnslaughtAdvisorModule.kt",
+    "line": 109,
+    "text": "return TargetsResponse(decision.id, mapOf(req.index to listOf(opponentId)))"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/budget/BudgetPolicy.kt",
+    "line": 63,
+    "text": "* this (\"the budget, not the game count, is what makes an arena expensive\") and Phase 4b dodged it"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/deck/CommanderDeckGenerator.kt",
+    "line": 36,
+    "text": "* - **Partners, Backgrounds, companions.** The deck model carries one commander; so does this."
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/evaluation/BoardFeatures.kt",
+    "line": 207,
+    "text": "* an opponent's would be exactly the hidden-information cheat Phase 8's determinizer exists to"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 85,
+    "text": "for (opponentId in state.turnOrder) {"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 86,
+    "text": "val hidden = hiddenCards(state, opponentId, viewerId, inFlightPins)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 89,
+    "text": "val definitions = when (val model = models[opponentId] ?: fallback) {"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 90,
+    "text": "is OpponentModel.KnownDecklist -> fromKnownDecklist(state, opponentId, hidden, model, currentRng)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 107,
+    "text": "val ownerId = old.get<OwnerComponent>()?.playerId ?: opponentId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 111,
+    "text": "val libraryKey = ZoneKey(opponentId, Zone.LIBRARY)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 130,
+    "text": "opponentId: EntityId,"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 134,
+    "text": "val handKey = ZoneKey(opponentId, Zone.HAND)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 135,
+    "text": "val libraryKey = ZoneKey(opponentId, Zone.LIBRARY)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 136,
+    "text": "val library = state.getLibrary(opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 137,
+    "text": "val candidates = library + state.getHand(opponentId)"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 165,
+    "text": "opponentId: EntityId,"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/Determinizer.kt",
+    "line": 173,
+    "text": "if (id in sampledIds || container.get<OwnerComponent>()?.playerId != opponentId) continue"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/hidden/OpponentModel.kt",
+    "line": 4,
+    "text": "* Prior knowledge available when sampling an opponent's hidden cards."
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/engine/rollout/RolloutSettings.kt",
+    "line": 12,
+    "text": "* point of Phase 4b is that a critical decision searches harder than a routine one. This carries the"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/llm/LlmAiPlayerController.kt",
+    "line": 559,
+    "text": "val opponentId = state.players.find { it.playerId != state.viewingPlayerId }?.playerId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/llm/LlmAiPlayerController.kt",
+    "line": 564,
+    "text": "val planeswalkerTargets = validAttackTargets.filter { it != opponentId }"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/llm/LlmAiPlayerController.kt",
+    "line": 602,
+    "text": "it.controllerId == opponentId &&"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/llm/LlmAiPlayerController.kt",
+    "line": 656,
+    "text": "opponentId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/llm/LlmAiPlayerController.kt",
+    "line": 665,
+    "text": "if ((card.power ?: 0) > 0) attackerMap[attackerId] = opponentId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/llm/LlmAiPlayerController.kt",
+    "line": 673,
+    "text": "if ((card.power ?: 0) > 0) attackerMap[attackerId] = opponentId"
+  },
+  {
+    "file": "ai/src/main/kotlin/com/wingedsheep/ai/llm/LlmAiPlayerController.kt",
+    "line": 679,
+    "text": "val targetName = if (targetId == opponentId) \"\" else state.cards[targetId]?.name?.let { \" -> $it\" } ?: \"\""
+  },
+  {
+    "file": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPublicCards.kt",
+    "line": 14,
+    "text": "val opponentId: EntityId = opponentPlayer.id"
+  },
+  {
+    "file": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPublicCards.kt",
+    "line": 20,
+    "text": "val opponentBoard: List<EntityFeatures> = allBoard.filter { it.controllerId == opponentId }"
+  },
+  {
+    "file": "gym/src/main/kotlin/com/wingedsheep/gym/telemetry/ActionableManaBottleneckTracker.kt",
+    "line": 100,
+    "text": "opponents.any { opponentId ->"
+  },
+  {
+    "file": "gym/src/main/kotlin/com/wingedsheep/gym/telemetry/ActionableManaBottleneckTracker.kt",
+    "line": 104,
+    "text": "PredicateContext(controllerId = opponentId, sourceId = cardId),"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CardEntityFactory.kt",
+    "line": 76,
+    "text": "?: cardDef.cardFaces.firstOrNull { it.imageUri != null }?.imageUri,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CardSpecificContinuations.kt",
+    "line": 36,
+    "text": "* @property remainingPlayers Players who still need to choose (APNAP order)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt",
+    "line": 177,
+    "text": "* Each player (in APNAP order) chooses a creature type. After all players have chosen,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt",
+    "line": 184,
+    "text": "* @property remainingPlayers Players who still need to choose (APNAP order)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CoreContinuations.kt",
+    "line": 400,
+    "text": "* when the batch is raised, so they resume in APNAP order regardless of the answer."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/DiscardAndDrawContinuations.kt",
+    "line": 35,
+    "text": "* @property remainingPlayers Players who still need to make their selection after current (APNAP order)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+    "line": 417,
+    "text": "* @property opponentId The other player in the same clash."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+    "line": 427,
+    "text": "val opponentId: EntityId,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+    "line": 1396,
+    "text": "* that is still around ([entityId]) and the one it was paired with ([formerPartnerId]), which may"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+    "line": 1404,
+    "text": "val formerPartnerId: EntityId"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt",
+    "line": 1764,
+    "text": "/** Commander format: 21+ combat damage from a single commander (CR 903.10a). */"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt",
+    "line": 38,
+    "text": "* [GameConfig.format] is [Format.Commander]. Phase 1 supports a single commander; partner /"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt",
+    "line": 39,
+    "text": "* Background pairings are Phase 4 territory."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt",
+    "line": 305,
+    "text": "// commander per player; CommanderRegistryComponent is a list so Partner / Background"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameInitializer.kt",
+    "line": 306,
+    "text": "// (Phase 4) can append without a schema change."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/SacrificeAndPayContinuations.kt",
+    "line": 218,
+    "text": "* Each player in APNAP order gets the chance to pay. If the current player pays,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TurnManager.kt",
+    "line": 673,
+    "text": "// in APNAP order (CR 509.1 / 101.4). Hand priority to the first defender; as"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TurnManager.kt",
+    "line": 678,
+    "text": ".defendingPlayersInApnapOrder(newState).firstOrNull()"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/TurnManager.kt",
+    "line": 679,
+    "text": "?: newState.turnOrder.firstOrNull { it != activePlayer }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/StateTriggerPoller.kt",
+    "line": 40,
+    "text": "* @property pendingTriggers triggers to enqueue (already in APNAP order: the engine's"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/StateTriggerPoller.kt",
+    "line": 41,
+    "text": "*   battlefield iteration is already APNAP-stable within a single pass for our purposes;"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 66,
+    "text": "* Triggers are returned in APNAP (Active Player, Non-Active Player) order for"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 238,
+    "text": "* @return List of pending triggers in APNAP order"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 442,
+    "text": "return matcher.sortByApnapOrder("
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 585,
+    "text": "return matcher.sortByApnapOrder(state, triggers) to consumedIds"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 706,
+    "text": "return matcher.sortByApnapOrder("
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 972,
+    "text": "// form, this fans out one trigger per combat partner so `TriggeringEntity` names"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 973,
+    "text": "// the *partner* — the creature the rider actually acts on — rather than the watched"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 980,
+    "text": "val partners = mutableListOf<EntityId>()"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 981,
+    "text": "event.blockers[watched]?.let { partners.addAll(it) }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 983,
+    "text": "if (attackerIds.contains(watched)) partners.add(blockerId)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 985,
+    "text": "for (partnerId in partners.distinct()) {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 986,
+    "text": "val partnerFilter = specEvent.partnerFilter"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 987,
+    "text": "if (partnerFilter != null && !predicateEvaluator.matches("
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 988,
+    "text": "state, state.projectedState, partnerId, partnerFilter,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1004,
+    "text": "objectReferences = referencesFor(partnerId),"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1007,
+    "text": "triggerContext = TriggerContext(triggeringEntityId = partnerId),"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1140,
+    "text": "// in combat with somebody; which partners it fired for is decided by the fan-out above."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1363,
+    "text": "// matching partner. Supports SELF binding (the creature itself) and ATTACHED"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1376,
+    "text": "val partners = mutableListOf<EntityId>()"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1379,
+    "text": "// Case 1: combat creature is a blocker — partners are the attackers it blocks"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1382,
+    "text": "partners.addAll(blockedAttackerIds)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1385,
+    "text": "// Case 2: combat creature is an attacker — partners are blockers blocking it"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1388,
+    "text": "partners.add(blockerId)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1393,
+    "text": "val matchingPartners = partners.distinct().filter { partnerId ->"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1394,
+    "text": "val partnerFilter = trigger.partnerFilter"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1395,
+    "text": "partnerFilter == null || predicateEvaluator.matches("
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1396,
+    "text": "state, projected, partnerId, partnerFilter,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1400,
+    "text": "// \"…blocks or becomes blocked *by* [filter]\" is once per matching partner"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1401,
+    "text": "// (Corrosive Ooze). The partner-less wording \"…blocks or becomes blocked\""
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1403,
+    "text": "// Slug), so collapse to the first matching partner — it still binds an \"it\"."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1404,
+    "text": "val firingPartners ="
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1405,
+    "text": "if (trigger.oncePerCombat) matchingPartners.take(1) else matchingPartners"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1406,
+    "text": "for (partnerId in firingPartners) {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+    "line": 1413,
+    "text": "triggerContext = TriggerContext(triggeringEntityId = partnerId)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerIndex.kt",
+    "line": 223,
+    "text": "//   - BlocksOrBecomesBlockedByEvent, to compute the combat partner (Barrow-Blade)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+    "line": 62,
+    "text": "//   - BlocksOrBecomesBlockedByEvent, to find the equipped creature's combat partner"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+    "line": 223,
+    "text": "// in combat. Per-partner trigger creation happens in detectTriggersForEvent."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+    "line": 1469,
+    "text": "* so \"whenever an opponent gains life\" must not fire off your own partner (CR 102.3)."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+    "line": 2103,
+    "text": "* Sort triggers by APNAP order."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+    "line": 2107,
+    "text": "fun sortByApnapOrder("
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt",
+    "line": 2123,
+    "text": "// Build result in APNAP order"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "line": 65,
+    "text": "* Triggers are processed in APNAP order (active player first, then others)."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "line": 69,
+    "text": "* @param triggers List of pending triggers in APNAP order"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "line": 82,
+    "text": "// ordered. Stable cyclic APNAP sorting keeps each controller's selected order intact."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "line": 83,
+    "text": "val apnap = state.apnapOrder.withIndex().associate { it.value to it.index }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "line": 86,
+    "text": "}.sortedBy { apnap[it.controllerId] ?: Int.MAX_VALUE }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "line": 623,
+    "text": ").firstOrNull { it.objectRef != null && it.objectRef == trigger.objectReferences.origin }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "line": 1240,
+    "text": "val opponentNames = opponentIds.map { opponentId ->"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "line": 1241,
+    "text": "state.getEntity(opponentId)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+    "line": 1243,
+    "text": "?: \"Player ${opponentId.value}\""
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+    "line": 583,
+    "text": "state.getOpponents(controllerId).any { opponentId ->"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+    "line": 584,
+    "text": "state.lifeTotal(opponentId) <= condition.threshold"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+    "line": 1078,
+    "text": "* the creatures blocking it ([BlockedComponent]) — and matches any partner whose projected"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+    "line": 1080,
+    "text": "* the partner are respected."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+    "line": 1095,
+    "text": "val partners = buildSet {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+    "line": 1099,
+    "text": "if (partners.isEmpty()) return false"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+    "line": 1102,
+    "text": "return partners.any { partnerId ->"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ConditionEvaluator.kt",
+    "line": 1103,
+    "text": "condition.subtypes.any { projected.hasSubtype(partnerId, it) }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/DynamicAmountEvaluator.kt",
+    "line": 558,
+    "text": ".count { opponentId ->"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/DynamicAmountEvaluator.kt",
+    "line": 559,
+    "text": "state.getEntity(opponentId)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+    "line": 451,
+    "text": "* [alignedTargets] is only consulted when it is genuinely the position-preserving partner"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+    "line": 501,
+    "text": ".firstOrNull { it.objectRef != null && it.objectRef == objectReferences.origin },"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt",
+    "line": 292,
+    "text": "context.targetOpponentId?.let { controllerId == it } ?: false"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt",
+    "line": 1213,
+    "text": "context.targetOpponentId?.let { controllerId == it } ?: false"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt",
+    "line": 1753,
+    "text": "// Reads the marker stamped at block declaration; survives the legendary partner leaving."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt",
+    "line": 2261,
+    "text": "val targetOpponentId: EntityId? = null,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/PredicateEvaluator.kt",
+    "line": 2387,
+    "text": "targetOpponentId = chosenPlayerTarget,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+    "line": 1966,
+    "text": ".firstOrNull { it.oldObject != null && it.oldObject == activationReferences.origin }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+    "line": 2181,
+    "text": "val opponentNames = opponentIds.map { opponentId ->"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+    "line": 2182,
+    "text": "state.getEntity(opponentId)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+    "line": 2184,
+    "text": "?: \"Player ${opponentId.value}\""
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/TypecycleCardHandler.kt",
+    "line": 275,
+    "text": ".firstOrNull { it.searchFilter != null }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/priority/PassPriorityHandler.kt",
+    "line": 54,
+    "text": "// rather than let a client (an AI partner polling its legal actions) spin on it forever."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+    "line": 624,
+    "text": "val declaredAdditionalCost = declared.firstOrNull { it.additionalCost != null }?.additionalCost"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+    "line": 1264,
+    "text": ".firstOrNull { it.manaCost != null }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+    "line": 2696,
+    "text": ".firstOrNull { it.manaCost != null }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+    "line": 2799,
+    "text": ".firstOrNull { it.additionalCost != null }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+    "line": 4492,
+    "text": "// matching APNAP ordering within processTriggers."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt",
+    "line": 2970,
+    "text": "for (opponentId in state.getOpponents(sourceControllerId)) {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/DamageUtils.kt",
+    "line": 2971,
+    "text": "val topCards = newState.getLibrary(opponentId).take(amount)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/KeywordActionReplacements.kt",
+    "line": 42,
+    "text": "* Battlefield order is used for the multi-source case — a faithful APNAP ordering (CR 616)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PermanentEntryReplacements.kt",
+    "line": 109,
+    "text": "val opponentId = state.getOpponents(viewerId).firstOrNull() ?: return state to emptyList()"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PermanentEntryReplacements.kt",
+    "line": 110,
+    "text": "val handCards = state.getHand(opponentId)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PermanentEntryReplacements.kt",
+    "line": 119,
+    "text": "return newState to listOf(HandLookedAtEvent(viewerId, opponentId, handCards))"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/TargetResolutionUtils.kt",
+    "line": 181,
+    "text": "* of this switch are what made `EffectContext.opponentId` so hard to kill."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/TargetResolutionUtils.kt",
+    "line": 402,
+    "text": "// The APNAP-ordered flavour of Player.Each (CR 101.4) — for effects whose"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/TargetResolutionUtils.kt",
+    "line": 405,
+    "text": "Player.ActivePlayerFirst -> state.apnapOrder"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneMovementUtils.kt",
+    "line": 534,
+    "text": "// that comes back is a new one (CR 400.7) that must not inherit a stale partner id."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneMovementUtils.kt",
+    "line": 981,
+    "text": "val newState = state.getOpponents(cid).fold(state) { acc, opponentId ->"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneMovementUtils.kt",
+    "line": 982,
+    "text": "acc.updateEntity(opponentId) { container ->"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+    "line": 997,
+    "text": "for (opponentId in allPlayers) {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+    "line": 998,
+    "text": "if (opponentId != controllerId) {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+    "line": 999,
+    "text": "newState = newState.updateEntity(opponentId) { playerContainer ->"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+    "line": 1418,
+    "text": "val defenderId = state.turnOrder.firstOrNull { it != controllerId }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/BeholdEffectExecutor.kt",
+    "line": 51,
+    "text": "targetOpponentId = context.targets.firstNotNullOfOrNull {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/ForEachExecutor.kt",
+    "line": 243,
+    "text": "Player.ActivePlayerFirst -> state.apnapOrder"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/composite/MayRevealCardFromHandEffectExecutor.kt",
+    "line": 55,
+    "text": "targetOpponentId = context.targets.firstNotNullOfOrNull {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt",
+    "line": 60,
+    "text": ").firstOrNull { it.objectRef != null && it.objectRef == origin }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/drawing/EachPlayerDiscardsOrLoseLifeExecutor.kt",
+    "line": 23,
+    "text": "* Players discard in APNAP order. After all players have discarded,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/drawing/EachPlayerDrawsForDamageDealtToSourceExecutor.kt",
+    "line": 34,
+    "text": "// Resolve in turn order so APNAP-ish ordering is deterministic."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ChooseOnePerCategoryExecutor.kt",
+    "line": 34,
+    "text": "* - **All choices before anything happens (CR 101.4).** Choosers are asked in APNAP order, each"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ChooseOnePerCategoryExecutor.kt",
+    "line": 64,
+    "text": "pendingPlayers = choosersInApnapOrder(state, pool),"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ChooseOnePerCategoryExecutor.kt",
+    "line": 126,
+    "text": "* The distinct controllers of [pool] in APNAP order (CR 101.4). Deriving the choosers from the"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ChooseOnePerCategoryExecutor.kt",
+    "line": 131,
+    "text": "private fun choosersInApnapOrder(state: GameState, pool: List<EntityId>): List<EntityId> {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ChooseOnePerCategoryExecutor.kt",
+    "line": 133,
+    "text": "return state.apnapOrder.filter { it in controllers }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ClashExecutors.kt",
+    "line": 39,
+    "text": "* time. Then those players decide in APNAP order (see rule 101.4) where to put those cards.\"* A"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ClashExecutors.kt",
+    "line": 61,
+    "text": "val opponentId = ClashScoring.chosenOpponentOf(state, context)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ClashExecutors.kt",
+    "line": 79,
+    "text": "// CR 701.30c — decisions in APNAP order. The clasher is not necessarily the active player:"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ClashExecutors.kt",
+    "line": 102,
+    "text": "if (state.activePlayerId == opponentId) listOf(theirSelect, yourSelect)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ClashExecutors.kt",
+    "line": 162,
+    "text": "val opponentId = ClashScoring.chosenOpponentOf(state, context)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ClashExecutors.kt",
+    "line": 186,
+    "text": "opponentId = opponentId,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ClashExecutors.kt",
+    "line": 191,
+    "text": "playerId = opponentId,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/library/ClashExecutors.kt",
+    "line": 192,
+    "text": "opponentId = clasherId,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/PairWithSourceExecutor.kt",
+    "line": 24,
+    "text": "*    source is validated before the partner and a failure returns the state untouched rather than"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/PairWithSourceExecutor.kt",
+    "line": 27,
+    "text": "*    half is skipped instead of having its existing partner stolen. In practice the candidate"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/PairWithSourceExecutor.kt",
+    "line": 32,
+    "text": "* eligible partner both land."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/PairWithSourceExecutor.kt",
+    "line": 48,
+    "text": "// CR 702.95d — the source picking up a second partner is not a thing. Asked through"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/PairWithSourceExecutor.kt",
+    "line": 53,
+    "text": "val partnerId = (context.pipeline.storedCollections[effect.from] ?: emptyList())"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/PairWithSourceExecutor.kt",
+    "line": 62,
+    "text": ".updateEntity(sourceId) { it.with(PairedComponent(partnerId = partnerId)) }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/PairWithSourceExecutor.kt",
+    "line": 63,
+    "text": ".updateEntity(partnerId) { it.with(PairedComponent(partnerId = sourceId)) }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/PairWithSourceExecutor.kt",
+    "line": 71,
+    "text": "secondId = partnerId,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/permanent/PairWithSourceExecutor.kt",
+    "line": 72,
+    "text": "secondName = nameOf(newState, partnerId),"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/AnyPlayerMayPayExecutor.kt",
+    "line": 30,
+    "text": "* Players are asked in APNAP order; players who can't pay are skipped. Supported costs are"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/AnyPlayerMayPayExecutor.kt",
+    "line": 55,
+    "text": "// Get players in APNAP order (CR 101.4), skipping anyone who has left the game"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/AnyPlayerMayPayExecutor.kt",
+    "line": 59,
+    "text": "val apnapOrder = state.apnapOrder"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/AnyPlayerMayPayExecutor.kt",
+    "line": 62,
+    "text": "// \"any player may…\"), preserving APNAP order. Opponents are relative to the controller."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/AnyPlayerMayPayExecutor.kt",
+    "line": 64,
+    "text": "Player.Each, Player.ActivePlayerFirst -> apnapOrder"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/AnyPlayerMayPayExecutor.kt",
+    "line": 66,
+    "text": ".let { opponents -> apnapOrder.filter { it in opponents } }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/AnyPlayerMayPayExecutor.kt",
+    "line": 67,
+    "text": "Player.You -> apnapOrder.filter { it == context.controllerId }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/AnyPlayerMayPayExecutor.kt",
+    "line": 68,
+    "text": "else -> apnapOrder"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/AnyPlayerMayPayExecutor.kt",
+    "line": 75,
+    "text": "* Ask the next player in APNAP order if they want to pay the cost."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/EachPlayerChoosesCreatureTypeExecutor.kt",
+    "line": 15,
+    "text": "* Each player (in APNAP order) chooses a creature type. After all players have chosen,"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/EachPlayerChoosesCreatureTypeExecutor.kt",
+    "line": 31,
+    "text": "// Get players in APNAP order (active player first)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/OpenLifeBidExecutor.kt",
+    "line": 50,
+    "text": ".firstOrNull { it != casterId }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/SecretBidExecutor.kt",
+    "line": 20,
+    "text": "* Implementation: players choose sequentially in APNAP order (the numbers aren't"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/WinGameExecutor.kt",
+    "line": 51,
+    "text": "for (opponentId in opponentIds) {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/WinGameExecutor.kt",
+    "line": 52,
+    "text": "val container = newState.getEntity(opponentId) ?: continue"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/WinGameExecutor.kt",
+    "line": 55,
+    "text": "if (com.wingedsheep.engine.mechanics.sba.player.playerCantLoseGame(newState, opponentId)) continue"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/WinGameExecutor.kt",
+    "line": 57,
+    "text": "newState = newState.updateEntity(opponentId) { c ->"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/player/WinGameExecutor.kt",
+    "line": 60,
+    "text": "events.add(PlayerLostEvent(opponentId, GameEndReason.CARD_EFFECT, effect.message))"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/MeaningfulActionFilter.kt",
+    "line": 247,
+    "text": "// before they ever saw it — a bot partner would pass away every response its human partner"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt",
+    "line": 2695,
+    "text": "val manaKicker = kickers.firstOrNull { it.manaCost != null && it.keyword != Keyword.OFFSPRING }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastFromZoneEnumerator.kt",
+    "line": 2696,
+    "text": "val additionalCostKicker = kickers.firstOrNull { it.additionalCost != null }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+    "line": 1711,
+    "text": "for (opponentId in opponents) {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+    "line": 1715,
+    "text": "val opponentName = state.getEntity(opponentId)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+    "line": 1722,
+    "text": "action = cs.copy(giftRecipient = opponentId)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+    "line": 2212,
+    "text": "val manaKicker = kickers.firstOrNull { it.manaCost != null && it.keyword != Keyword.OFFSPRING }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CastSpellEnumerator.kt",
+    "line": 2213,
+    "text": "val additionalCostKicker = kickers.firstOrNull { it.additionalCost != null }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/CyclingEnumerator.kt",
+    "line": 33,
+    "text": "val typedCycling = cyclingAbilities.firstOrNull { it.searchFilter != null }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/legalactions/enumerators/SneakCastEnumerator.kt",
+    "line": 48,
+    "text": ".firstOrNull { it.ninjutsuStyleCost != null } ?: continue"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt",
+    "line": 88,
+    "text": "// Separate capture batches may each be APNAP-sorted but their concatenation is not."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt",
+    "line": 90,
+    "text": "val apnap = state.apnapOrder.withIndex().associate { it.value to it.index }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/CastPriorityProcessor.kt",
+    "line": 91,
+    "text": "val ordered = triggers.sortedBy { apnap[it.controllerId] ?: Int.MAX_VALUE }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SoulbondPairing.kt",
+    "line": 21,
+    "text": "* own partner), whose enters-the-battlefield trigger would otherwise be evaluated against a stale"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SoulbondPairing.kt",
+    "line": 37,
+    "text": "fun partnerOf(state: GameState, entityId: EntityId): EntityId? {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SoulbondPairing.kt",
+    "line": 38,
+    "text": "val partnerId = state.getEntity(entityId)?.get<PairedComponent>()?.partnerId ?: return null"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SoulbondPairing.kt",
+    "line": 39,
+    "text": "if (partnerId !in state.getBattlefield()) return null"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SoulbondPairing.kt",
+    "line": 40,
+    "text": "if (state.getEntity(partnerId)?.get<PairedComponent>()?.partnerId != entityId) return null"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SoulbondPairing.kt",
+    "line": 41,
+    "text": "return partnerId"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SoulbondPairing.kt",
+    "line": 45,
+    "text": "fun isPaired(state: GameState, entityId: EntityId): Boolean = partnerOf(state, entityId) != null"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SoulbondPairing.kt",
+    "line": 48,
+    "text": "* \"Both creatures\" of [sourceId]'s pair — the source and its partner — or the empty set while"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SoulbondPairing.kt",
+    "line": 53,
+    "text": "val partnerId = partnerOf(state, sourceId) ?: return emptySet()"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SoulbondPairing.kt",
+    "line": 54,
+    "text": "return setOf(sourceId, partnerId)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/BlockPhaseManager.kt",
+    "line": 178,
+    "text": "// reflects the pairing-time status even if a legendary partner later leaves or loses"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/BlockPhaseManager.kt",
+    "line": 197,
+    "text": "// whose partner is legendary."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+    "line": 18,
+    "text": "* order starting from the active player (APNAP, CR 101.4)."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+    "line": 50,
+    "text": "return defendingPlayersInApnapOrder(state).firstOrNull { defender ->"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+    "line": 125,
+    "text": "* from the active player (CR 101.4 APNAP). The active player is never a defender, so in"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/CombatDefenders.kt",
+    "line": 128,
+    "text": "fun defendingPlayersInApnapOrder(state: GameState): List<EntityId> {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/rules/AttackRestrictionRule.kt",
+    "line": 49,
+    "text": "for (opponentId in opponents) {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/combat/rules/AttackRestrictionRule.kt",
+    "line": 52,
+    "text": "projected.isPlaneswalker(entityId) && projected.getController(entityId) == opponentId"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentWindow.kt",
+    "line": 72,
+    "text": "val apnap = state.apnapOrder.withIndex().associate { it.value to it.index }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/mana/ManaPaymentWindow.kt",
+    "line": 74,
+    "text": ".sortedBy { apnap[it.controllerId] ?: Int.MAX_VALUE }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/game/GameEndCheck.kt",
+    "line": 55,
+    "text": "val reason = lostReasons.firstOrNull { it != LossReason.TEAM_DEFEATED }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/CommanderZoneChoiceCheck.kt",
+    "line": 30,
+    "text": "* Only one commander is asked about per SBA pass — APNAP-by-turn-order is preserved by the"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 33,
+    "text": "* creature (a de-animated Deadeye Navigator, or a partner that lost its creature types)."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 41,
+    "text": "// Collect first, mutate after: unpairing walks to the partner, and both halves must be"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 47,
+    "text": "val partnerId = state.getEntity(entityId)?.get<PairedComponent>()?.partnerId ?: continue"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 49,
+    "text": "if (pairStillHolds(state, entityId, partnerId)) continue"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 52,
+    "text": "toUnpair.add(partnerId)"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 57,
+    "text": "formerPartnerId = partnerId"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 73,
+    "text": "* Does the pair between [entityId] and [partnerId] still satisfy CR 702.95e? Both halves must be"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 78,
+    "text": "* The battlefield-presence and symmetry half is [SoulbondPairing.partnerOf], the same read every"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 84,
+    "text": "private fun pairStillHolds(state: GameState, entityId: EntityId, partnerId: EntityId): Boolean {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 85,
+    "text": "if (SoulbondPairing.partnerOf(state, entityId) != partnerId) return false"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 87,
+    "text": "if (!state.projectedState.isCreature(partnerId)) return false"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/permanent/SoulbondPairingCheck.kt",
+    "line": 89,
+    "text": "return state.projectedState.getController(partnerId) == controller"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/sba/player/CommanderDamageLossCheck.kt",
+    "line": 33,
+    "text": "// A player loses to commander damage if any single commander has dealt them >= threshold"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt",
+    "line": 995,
+    "text": "return clauseErrors.firstOrNull { it != null }"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+    "line": 732,
+    "text": "* [activePlayers] rotated into **APNAP order** (CR 101.4): the active player first, then the"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+    "line": 742,
+    "text": "val apnapOrder: List<EntityId>"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+    "line": 770,
+    "text": "* lock your own partner. A player who has left the game is nobody's opponent any more."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+    "line": 889,
+    "text": "// them before they can respond to what their partner just did."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+    "line": 905,
+    "text": "* baton order instead of racing its human partner for every response."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+    "line": 1444,
+    "text": "*   because their partner declined theirs would be exactly backwards;"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+    "line": 1503,
+    "text": "* Cumulative combat damage dealt by a single commander to a single player. Stored as a list of"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/LegacyGameStateSerializer.kt",
+    "line": 125,
+    "text": "migrated.firstOrNull { it.unansweredId != null }?.let {"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/battlefield/PairedComponent.kt",
+    "line": 8,
+    "text": "* This creature is soulbond-**paired** with [partnerId] (CR 702.95b). Stamped on *both* halves by"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/battlefield/PairedComponent.kt",
+    "line": 23,
+    "text": "val partnerId: EntityId"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/combat/CombatComponents.kt",
+    "line": 37,
+    "text": "* the current turn. Stamped at block-declaration time (capturing the partner's legendary status"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/identity/CommanderRegistryComponent.kt",
+    "line": 10,
+    "text": "* Phase 1 always carries a single id. Modelling it as a list now means Partner / Background /"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/identity/CommanderRegistryComponent.kt",
+    "line": 11,
+    "text": "* Friends Forever (Phase 4) just append without a schema change."
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/player/PlayerComponents.kt",
+    "line": 582,
+    "text": "/** Commander format: 21+ combat damage from a single commander (CR 903.10a). */"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/view/ClientDTO.kt",
+    "line": 130,
+    "text": "*   face-down permanent an opponent controls). Lumping \"hidden elsewhere\" in with \"in library\""
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/view/ClientStateTransformer.kt",
+    "line": 962,
+    "text": "// Soulbond partner (CR 702.95b) — surfaced so the UI can draw the bond between the two"
+  },
+  {
+    "file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/view/ClientStateTransformer.kt",
+    "line": 965,
+    "text": "val pairedWithId = com.wingedsheep.engine.mechanics.SoulbondPairing.partnerOf(state, entityId)"
+  }
+]
