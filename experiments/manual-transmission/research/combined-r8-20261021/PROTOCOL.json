@@ -1,0 +1,50 @@
+{
+  "schema": "MANUAL_COMBINED_R8_CATALOG_CONTRACT_REPAIR",
+  "parent": "70213241e533734856e05a6df3ca3b4f59ec7b02",
+  "failed_original_run": 39720198409,
+  "failed_validation_commit": "7913176c408d0a1a9251b21bfe95ee2ec409100c",
+  "purpose": "Keep the BBD negative control isolated to BBD registration after receiving the genuine BRO Gwenna card; add a full-catalog canonical BRO uniqueness check. No production change.",
+  "r7_original_result": {
+    "focused_rows": 200,
+    "passed": 199,
+    "failures": 1,
+    "errors": 0,
+    "skipped": 0,
+    "registry_rows_passed": 1,
+    "registry": {
+      "requested_slots": 800,
+      "registered_slots": 482,
+      "manual_registered": 90,
+      "opponent_registered": 392
+    },
+    "broad_ai_assay": "SKIPPED"
+  },
+  "expected_cases": 201,
+  "case_composition": {
+    "unchanged": 199,
+    "revised_catalog_control": 1,
+    "new_full_catalog_control": 1
+  },
+  "additional_registry_case": 1,
+  "expected_registry": {
+    "requested_slots": 800,
+    "registered_slots": 482,
+    "manual_registered": 90,
+    "opponent_registered": 392
+  },
+  "intentional_ai_exclusion": {
+    "classname": "com.wingedsheep.ai.arena.ArenaBudgetScalingTest",
+    "name": "budget scaling: strength is monotone in the decision budget",
+    "source": "ai/src/test/kotlin/com/wingedsheep/ai/arena/ArenaBudgetScalingTest.kt",
+    "blob": "1f29a21fd9c07c90d45d7b63c5fb384f20313196",
+    "reason": "Disabled opt-in 300-games-per-rung budget experiment. Never enable arenaBudgetScaling; count skipped separately and never as passed. R7 AI did not execute."
+  },
+  "gameplay_authorized": false,
+  "seed_generation_authorized": false,
+  "official_capability": 0,
+  "official_primary": 0,
+  "precision_used": 10,
+  "precision_reserved": 2,
+  "tail_source_probe": "f31071375f44eb132ed976810607695316d4c707 is source-only, separate and not executed",
+  "entry_snapshot_candidate": "47079c452f681f03a627ba1845203457355f8376 remains separate and untested"
+}

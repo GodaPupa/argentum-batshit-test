@@ -32,9 +32,25 @@ class ManualBattlebondSpireCatalogTest : FunSpec({
     }
 
     test("previously unresolved Gwenna and Amphin are not synthesized by BBD registration") {
-        val registry = fullRegistry()
+        // This control isolates BBD registration. The full catalog now contains
+        // the separately implemented BRO Gwenna definition.
+        val bbd = MtgSetCatalog.byCode("BBD")!!
+        val registry = CardRegistry().apply {
+            register(bbd.cards)
+            register(bbd.basicLands)
+        }
         registry.getCard("Spire Garden") shouldNotBe null
         registry.getCard("Gwenna, Eyes of Gaea") shouldBe null
+        registry.getCard("Amphin Mutineer") shouldBe null
+    }
+
+    test("full catalog resolves Gwenna exactly once from BRO while Amphin remains unresolved") {
+        val name = "Gwenna, Eyes of Gaea"
+        val bro = MtgSetCatalog.byCode("BRO")!!
+        val definition = bro.cards.single { it.name == name }
+        MtgSetCatalog.all.flatMap { it.cards }.count { it.name == name } shouldBe 1
+        val registry = fullRegistry()
+        registry.getCard(name) shouldBe definition
         registry.getCard("Amphin Mutineer") shouldBe null
     }
 })

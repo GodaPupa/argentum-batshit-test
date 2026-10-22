@@ -1,0 +1,40 @@
+{
+  "scope": "Local evidence-parser controls, not Kotlin or game results",
+  "controls": [
+    {
+      "control": "declared AI exclusion is not a pass",
+      "accepted": true,
+      "expected_accepted": true
+    },
+    {
+      "control": "unexpected exclusion rejected",
+      "accepted": false,
+      "expected_accepted": false
+    },
+    {
+      "control": "declared experiment cannot be silently enabled",
+      "accepted": false,
+      "expected_accepted": false
+    },
+    {
+      "control": "same exclusion forbidden outside AI",
+      "accepted": false,
+      "expected_accepted": false
+    },
+    {
+      "control": "failure retained and rejected",
+      "accepted": false,
+      "expected_accepted": false
+    },
+    {
+      "control": "row mismatch rejected",
+      "accepted": false,
+      "expected_accepted": false
+    },
+    {
+      "control": "original R5 broad rows with legitimate nested context leaf repeats",
+      "passed_rows": 3754,
+      "accepted": true
+    }
+  ]
+}
