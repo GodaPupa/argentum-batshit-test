@@ -1,0 +1,61 @@
+{
+  "schema": "ARGENTUM_MANUAL_PHASE2_PURPHOROS_CURRENT_MAIN_ORIGINAL_25_R1",
+  "date": "2026-10-21",
+  "status": "PREDECLARED_BEFORE_PURPHOROS_DONOR_COPY_OR_SOURCE_TEST",
+  "mission": "Independently source-qualify the exact historical Purphoros, God of the Forge card ability code against the green BBD+Temur current-main-derived engine. 25 original deterministic rules cases only; no real frozen-pod gameplay or policy updates.",
+  "exact_parent": "7b3d01de835dfa7424ef4d080834542fc8631ffa",
+  "source_parent_proof": {
+    "success_run": 39701448227,
+    "exact_97_cases": 97,
+    "live_registry": 469,
+    "manual_registered": 77,
+    "opponents_registered": 392,
+    "green_final_artifact": 12392668956,
+    "green_final_sha256": "8254584aabe2e935678dacacbaf294d1efdf0fd2f5e8aec98870341385"
+  },
+  "donor": {
+    "ref": "candidate/manual-disciple-live-composed-20261003",
+    "source_sha": "2b3e3959e2d8034ea598c0662bf84225780bd2e4",
+    "card_path": "mtg-sets/2008-2016/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/ths/cards/PurphorosGodOfTheForge.kt",
+    "card_blob": "023dda6e17ca31ef036f17cc979b4a6efc2c5297",
+    "test_path": "mtg-sets/2008-2016/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/PurphorosGodOfTheForgeScenarioTest.kt",
+    "test_blob": "82f15bba7a09dc5bb898fe8d3f661f03757c89ed"
+  },
+  "target_actual_v07_card": "Purphoros, God of the Forge",
+  "original_test_design": {
+    "static_test_statements": 23,
+    "dynamic_tests_via_otherPips_3_4_5": 3,
+    "total_actual_unique_scenarios": 25,
+    "bounded_scopes": [
+      "devotion threshold/color including control changes and hybrid",
+      "four-seat opponent damage and independent tokens",
+      "indestructible and enchantment-versus-creature type transitions",
+      "source leaves battlefield after a triggered damage ability",
+      "combat attacking/blocking legality after devotion changes",
+      "pre-entry replacement as devotion is applied, independent from post-entry triggers",
+      "cleanup and activated pump timing",
+      "exact current ActionProcessor acceptance and serialization"
+    ]
+  },
+  "protected_blobs": {
+    "v07": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "ai_current": "43bbad79273806f56703fad420e9f6a495d05309",
+    "solver": "c9083468bc8576136eedbc504731a1de38e57ecd",
+    "land_cast_guard": "dd4c000b13663a03ec6d7b79e62d05ab7dcb737f",
+    "original_ths_set": "bd9fb2d6fc111c45a738926954cee8ea67cb9da4"
+  },
+  "full_game_boundaries": {
+    "no_game_generation": true,
+    "no_official_seeds": true,
+    "no_new_full_games": true,
+    "no_profile_edits": true,
+    "no_gear_policy_edits": true,
+    "no_engine_edits": true,
+    "no_main_merge": true,
+    "Phase2_capability_admitted": 0,
+    "Phase2_primary_admitted": 0,
+    "precision_completed": 10,
+    "precision_reserved": 2
+  },
+  "gate": "Exactly donor production+test bytes accepted. Strict CI must run 25 actual original JUnit testcases and zero failures/error/skips. A compile/runtime failure yields SOURCE_BLOCKED, not a strategic deck loss. Source-only GREEN is not current-main merge, not 100-card coverage and not competitive proof."
+}
