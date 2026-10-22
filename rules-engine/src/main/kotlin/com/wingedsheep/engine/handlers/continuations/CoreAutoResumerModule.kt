@@ -49,6 +49,27 @@ class CoreAutoResumerModule(
                     requireNotNull(recipient) { "Completed mana payment has no priority recipient" }
                     processor.start(state.copy(stackResolutionPendingPriority = false), recipient, events, triggers)
                 }
+            } else if (state.stackResolutionPendingPriority && state.continuationStack.isEmpty()) {
+                // The finalizer and every effect frame have drained. Earlier and resumed
+                // observations now form one waiting group (CR 603.3b), including once-per-turn
+                // caps across the choice. Settle SBAs before targets/controller ordering.
+                val triggers = services.triggerDetector.mergeWaitingTriggers(
+                    state, continuation.remainingTriggers, events,
+                )
+                val processor = com.wingedsheep.engine.mechanics.CastPriorityProcessor(
+                    services.sbaChecker, services.triggerDetector, services.triggerProcessor,
+                )
+                val result = processor.start(
+                    state.copy(stackResolutionPendingPriority = false),
+                    requireNotNull(state.activePlayerId), events, triggers,
+                )
+                // A paused boundary retains the active recipient in pendingCastPriority.
+                // An immediately completed boundary still returns through the decision
+                // handler's resolution path; do not let that handler grant the answerer
+                // priority under its ordinary cast/activation fallback.
+                if (result.isSuccess && !result.state.gameOver) result.copy(
+                    state = result.state.copy(stackResolutionPendingPriority = true).withPriority(null),
+                ) else result
             } else {
                 val result = services.triggerProcessor.processTriggers(state, continuation.remainingTriggers)
                 mergeAndContinue(result, events)

@@ -274,6 +274,29 @@ class TriggerDetector(
         // Each observation already passed its event-time tracker and condition checks. Only
         // collapse subsequent observations of the same capped ability on the same source visit;
         // rereading final-state conditions, suppression or trackers would erase valid triggers.
+        return mergeObservedTriggers(state, triggers)
+    }
+
+    /**
+     * A saved resolution may already own triggers from before its last decision. Combine those
+     * observations with the resumed event stream before placement, retaining departure LKI and
+     * the original event-time conditions. No live-state condition/suppression pass is repeated.
+     */
+    fun mergeWaitingTriggers(
+        state: GameState,
+        waiting: List<PendingTrigger>,
+        resumedEvents: List<EngineGameEvent>,
+    ): List<PendingTrigger> {
+        val departed = waiting.map { trigger ->
+            val snapshot = resumedEvents.filterIsInstance<ZoneChangeEvent>().firstOrNull {
+                it.oldObject != null && it.oldObject == trigger.objectReferences.origin
+            }?.lastKnown
+            trigger.copy(lastKnownSourceSnapshot = trigger.lastKnownSourceSnapshot ?: snapshot)
+        }
+        return mergeObservedTriggers(state, departed + detectTriggers(state, resumedEvents))
+    }
+
+    private fun mergeObservedTriggers(state: GameState, triggers: List<PendingTrigger>): List<PendingTrigger> {
         val seenCapped = mutableSetOf<Triple<EntityId, com.wingedsheep.engine.state.ObjectRef?, AbilityId>>()
         val seenDelayed = mutableSetOf<String>()
         return matcher.sortByApnapOrder(state, triggers.filter { trigger ->
