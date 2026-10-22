@@ -5,6 +5,7 @@ import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.ZoneKey
 import com.wingedsheep.engine.state.components.battlefield.*
 import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.sdk.core.*
@@ -77,7 +78,12 @@ class PendingCopyEntryScenarioTest : FunSpec({
     }
     fun resolve(d: GameTestDriver, name: String, targets: List<EntityId> = emptyList()): EntityId {
         val spell = d.putCardInHand(d.player1, name)
-        d.castSpell(d.player1, spell, targets).error shouldBe null
+        val chosenTargets = targets.map { id ->
+            val zone = d.state.logicalZone(id).shouldNotBeNull()
+            zone.zoneType shouldBe Zone.GRAVEYARD
+            ChosenTarget.Card(id, zone.ownerId, zone.zoneType)
+        }
+        d.castSpellWithTargets(d.player1, spell, chosenTargets).error shouldBe null
         d.bothPass().error shouldBe null
         return spell
     }
@@ -167,6 +173,11 @@ class PendingCopyEntryScenarioTest : FunSpec({
             restore(d)
             creatureType(d)
         }
+        val ordering = (d.pendingDecision as? ChooseOptionDecision).shouldNotBeNull()
+        ordering.options.size shouldBe 2
+        ordering.prompt shouldBe "Choose the next triggered ability to put on the stack (first chosen resolves last)"
+        restore(d)
+        d.submitDecision(ordering.playerId, OptionChosenResponse(ordering.id, 0)).error shouldBe null
         d.pendingDecision shouldBe null
         d.getLifeTotal(d.player1) shouldBe 27
         for (id in ids) {
