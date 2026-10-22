@@ -1,0 +1,26 @@
+{
+  "kind": "source-qualification-only",
+  "parent": "a6d842df8d175575587cf6833adf205cea3e9ad1",
+  "supersedes_failed_run": 39716831703,
+  "failed_validation_commit": "7ed73f7c92f25d76be7ed059e7146b2f47bcf158",
+  "failure": "Compilation: unrelated TriggeringEntityEnteredOrWasCastFromZone historical branch was inadvertently retained in ConditionEvaluator. No tests executed; broad job skipped. Prior R4 IMPLEMENTATION.md exclusion claim was incorrect.",
+  "fix": "Remove only the seven-line foreign condition branch. Preserve all original test and card bytes. No SDK changes.",
+  "expected_focused_cases": 49,
+  "required_focused_classes": {
+    "ModificationJsonDiscriminatorTest": 3,
+    "ProjectedTypeNamesTest": 1,
+    "BattlefieldEntryProjectionTest": 6,
+    "ProjectionNumericConditionTest": 3,
+    "RemoveCardTypeCapabilityTest": 7,
+    "TokenBatchEntryHistoryTest": 4,
+    "PurphorosGodOfTheForgeScenarioTest": 25
+  },
+  "required_next": "Full rules-engine, broad card receiving and combined R3 roster qualification; Assay differential; event-time entry trigger snapshot gap remains.",
+  "official_capability_games": 0,
+  "official_primary_games": 0,
+  "precision_used": 10,
+  "precision_reserved": 2,
+  "competitive_claims": false,
+  "frozen_main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "failed_artifact_sha256": "675c61bcac0dadcc6d669877a4697c31acd17311bb0cf174313ab79bc3b07395"
+}
