@@ -1,0 +1,96 @@
+{
+  "original_zip_sha256": "a2aaeb2d0229dd703347ad179178128034b95502862e2799fe62f3056a081da2",
+  "bytes": 777336,
+  "artifact_id": 12400062535,
+  "run_id": 39717465254,
+  "job_id": 119624697676,
+  "validation_sha": "c30806c2a7b8dd0a7d8231404499bbda5095c565",
+  "source_sha": "5f67175b102827ad5cd8dad3090fee1bd46d3f42",
+  "classes": 607,
+  "actual_junit": {
+    "cases": 3754,
+    "failures": 0,
+    "errors": 0,
+    "skips": 0
+  },
+  "repeated_leaf_names": [
+    {
+      "class": "com.wingedsheep.engine.handlers.CostHandlerPayLifeTest",
+      "leaf_name": "life == cost is payable (the boundary case)",
+      "occurrences": 2
+    },
+    {
+      "class": "com.wingedsheep.engine.handlers.CostHandlerPayLifeTest",
+      "leaf_name": "life > cost is payable",
+      "occurrences": 2
+    },
+    {
+      "class": "com.wingedsheep.engine.handlers.CostHandlerPayLifeTest",
+      "leaf_name": "life < cost is NOT payable",
+      "occurrences": 2
+    },
+    {
+      "class": "com.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest",
+      "leaf_name": "GrantShroudToController",
+      "occurrences": 2
+    },
+    {
+      "class": "com.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest",
+      "leaf_name": "GrantHexproofToController",
+      "occurrences": 2
+    },
+    {
+      "class": "com.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest",
+      "leaf_name": "OpponentsCantMakeYouSacrifice",
+      "occurrences": 2
+    },
+    {
+      "class": "com.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest",
+      "leaf_name": "GrantCantLoseGame",
+      "occurrences": 2
+    },
+    {
+      "class": "com.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest",
+      "leaf_name": "GrantOpponentsCantWinGame",
+      "occurrences": 2
+    },
+    {
+      "class": "com.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest",
+      "leaf_name": "GrantCantLoseGameFromLife",
+      "occurrences": 2
+    },
+    {
+      "class": "com.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest",
+      "leaf_name": "StationUsingToughness",
+      "occurrences": 2
+    },
+    {
+      "class": "com.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest",
+      "leaf_name": "CantBeTargetedByOpponentAbilities",
+      "occurrences": 2
+    }
+  ],
+  "reconstruction": "Concatenate the listed parts in order as binary bytes; verify original_zip_sha256 before opening. Byte partitions of provider archive, not reconstructed evidence.",
+  "parts": [
+    {
+      "file": "original-39717465254-broad.zip.part000",
+      "bytes": 250000,
+      "sha256": "6ec14556447d917e2a38f05d37a6615aa67f7a7d32143440142095b6a7290beb"
+    },
+    {
+      "file": "original-39717465254-broad.zip.part001",
+      "bytes": 250000,
+      "sha256": "6d74aa1f1e709afa2fd541eb1812bf4e29253243d2ef59932382c7a9d6c988cb"
+    },
+    {
+      "file": "original-39717465254-broad.zip.part002",
+      "bytes": 250000,
+      "sha256": "503a1375217d8b8d3aed862fe78af989d8b08283f8bd477bbadd3c77884024c4"
+    },
+    {
+      "file": "original-39717465254-broad.zip.part003",
+      "bytes": 27336,
+      "sha256": "1b91ef8c0828da18eac4321b9ce347eca84279cc33bc9ecbad5eb361f7459d58"
+    }
+  ]
+}
