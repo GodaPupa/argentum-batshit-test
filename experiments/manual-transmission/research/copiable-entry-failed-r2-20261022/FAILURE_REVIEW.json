@@ -1,0 +1,59 @@
+{
+  "status": "FAILED_UNADOPTED",
+  "source": "beb880d1e3251ad88d628274a46c6fbfbb479be1",
+  "validation": "9ce7bc8df2a322d8dda8d126efab748839617ba1",
+  "run": 39845505980,
+  "negative_gate": true,
+  "focused_totals": {
+    "rows": 413,
+    "passed": 409,
+    "failures": 4,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 11
+  },
+  "failures": [
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=false, serialized=false",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: expected:<3> but was:<4>",
+      "first_failure_line": 165
+    },
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=false, serialized=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: expected:<3> but was:<4>",
+      "first_failure_line": 165
+    },
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=true, serialized=false",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: expected:<3> but was:<4>",
+      "first_failure_line": 165
+    },
+    {
+      "name": "entry copies intrinsic token abilities but not later grants or token status; direct=true, serialized=true",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: expected:<3> but was:<4>",
+      "first_failure_line": 165
+    }
+  ],
+  "classification": "Real implementation defect: old ContinuousEffectSourceComponent survives restoration of the printed card, becomes active again on recast, and grants an extra anthem. All four paths preserve the original expectation of ally power3; observed4. No fixture or assertion change is warranted.",
+  "next_safe_action": "Repair source cleanup when reverting a permanent copy, preserve all24 test bytes, then issue a new source-bound one-shot qualification only after activity reinspection.",
+  "skipped": [
+    "broad regressions",
+    "ordinary build",
+    "Assay CLI build",
+    "Assay touchstone",
+    "Assay differential"
+  ],
+  "additional_static_review": {
+    "stack_grants": "CR400.7a/b do preserve relevant spell grants into permanents. Existing triggered/activated grant executors reject stack targets, and static grant executor permits only battlefield/graveyard/player; no supported stack grant regression established in this review. General stack-grant support remains outside this component claim.",
+    "official_rule_source": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf"
+  },
+  "audit_note": "verify.py independently recounts original XML and hashes. Removed a stale snapshot-specific assertion in its all-gates-pass branch before use; all24 preregistered failure names, lines and types are checked in the general negative-control section. This does not change any engine test or original artifact.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}
