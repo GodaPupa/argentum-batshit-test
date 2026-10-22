@@ -1,0 +1,52 @@
+{
+  "status": "SOURCE_REVIEWED_DRAFT_UNCOMPILED_UNTESTED_UNADOPTED",
+  "card": "Fblthp, the Lost",
+  "card_path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/war/cards/FblthpTheLost.kt",
+  "test_path": "mtg-sets/2017-2022/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FblthpTheLostScenarioTest.kt",
+  "donor": "99b5ddcfffeb3f919664ac3ab0ecfd1945b86f44",
+  "donor_card_sha256": "f5ccd1cfc8a0dd9c5b0e922658c53d5f3639693f6926c263b5b4f75250be0a9e",
+  "draft_card_sha256": "9e9d0c90eff055ec5b44723307f9fa7b523592348459c46d2746415d6da3745f",
+  "original_test_sha256": "d1b57c88ca70e9ad3f88b72c51b15587155249f9fac48d21d82a7fc066c8938d",
+  "test_cases": 10,
+  "all_test_bytes_unchanged": true,
+  "mechanical_script_bytes_unchanged": true,
+  "metadata_changes": "Exact current image URI and all five original WotC rulings; no paraphrase omissions. Opal donor lacked image and had two shortened rulings; Fblthp donor omitted one ruling.",
+  "canonical": {
+    "set": "war",
+    "collector_number": "50",
+    "released_at": "2019-05-03",
+    "printings_reviewed": 8,
+    "earliest_eligible_set": "war"
+  },
+  "fresh_source": {
+    "receipt": "72fb439a96b5e8d5781006938e1e7da82243573b",
+    "artifact": 12454685119,
+    "files": [
+      {
+        "name": "war-fblthp-the-lost.json",
+        "bytes": 5831,
+        "sha256": "f7afff8d0bcd206a32f49997142b6ff84a0adf7f5ed29bb9ba5c694b7e1092d7"
+      },
+      {
+        "name": "war-fblthp-the-lost-rulings.json",
+        "bytes": 1377,
+        "sha256": "8be0dd6958c853d1a08c6de89ebe687d490222e4f97b2de98b9cfc85cdadc295"
+      },
+      {
+        "name": "war-fblthp-the-lost-printings-0.json",
+        "bytes": 45400,
+        "sha256": "f2b3c028f4055b60aa6a3fc4173bd82a98d11452708ab4ea2abbe34125552c48"
+      }
+    ]
+  },
+  "scope": "Metadata/source review only. Existing donor tests and primitive dependencies require full separate qualification on an immutable qualified source.",
+  "golden_constraint": {
+    "protected": true,
+    "set": "WAR",
+    "rule": "Do not edit protected golden. This research archive is not card registration or admission. Prepare exact proposed golden delta and request authority before protected file change."
+  },
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}
