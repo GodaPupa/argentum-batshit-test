@@ -1,0 +1,176 @@
+name: Manual paused-token entry R2 delta qualification
+on:
+  push:
+    branches: [validation/manual-paused-token-entry-r2-20261023]
+    paths: ['.github/workflows/manual-paused-token-entry-r2-20261023.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: __SOURCE_SHA__
+  SOURCE_TREE: __SOURCE_TREE__
+  BASELINE: 418cdfdacd5191549e9fc8e4a071330120b071b7
+  RECORD: experiments/manual-transmission/research/paused-token-entry-r2-20261023
+  WORKFLOW: .github/workflows/manual-paused-token-entry-r2-20261023.yml
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: "1"
+jobs:
+  verify:
+    if: github.run_number == '1' && github.run_attempt == '1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install recipe runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          command -v flock
+          mkdir -p paused-token-r2-evidence/toolchain
+          flock --version > paused-token-r2-evidence/toolchain/flock-version.txt
+          mkdir -p "$HOME/.cache/argentum"
+          flock -x "$HOME/.cache/argentum/manual-transmission.lock" bash -c 'if flock -n "$1" true; then exit 1; fi' _ "$HOME/.cache/argentum/manual-transmission.lock"
+      - name: Bind candidate, protected tests, deck, locks and goldens
+        run: |
+          git cat-file -e "$BASELINE^{tree}"
+          python3 "$RECORD/bind.py"
+          python3 "$RECORD/reuse_baseline.py"
+      - name: Run only strengthened InvalidResponse14 against qualified baseline; reuse original56 separately
+        id: negative
+        run: |
+          mkdir -p paused-token-r2-evidence/negative
+          STAGE=negative python3 "$RECORD/prepare_stage.py"
+          RESTORE_MODE=baseline python3 "$RECORD/restore.py"
+          BIND_MODE=negative python3 "$RECORD/bind.py"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" negative 2>&1 | tee paused-token-r2-evidence/negative/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r2-evidence/negative/exit.txt
+          exit 0
+      - name: Require 14 fresh verdicts and composite 56-reused plus14-fresh baseline
+        if: always() && steps.negative.outcome != 'skipped'
+        env: {STAGE: negative}
+        run: python3 "$RECORD/collect.py"
+      - name: Restore and rebind exactly the candidate source
+        if: always()
+        run: |
+          RESTORE_MODE=candidate python3 "$RECORD/restore.py"
+          python3 "$RECORD/bind.py"
+      - name: All frozen focused cases and unchanged entry-copy-defender regressions
+        id: focused
+        run: |
+          mkdir -p paused-token-r2-evidence/focused
+          STAGE=focused python3 "$RECORD/prepare_stage.py"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" focused 2>&1 | tee paused-token-r2-evidence/focused/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r2-evidence/focused/exit.txt
+          exit "$rc"
+      - name: Receive focused original reports
+        if: always() && steps.focused.outcome != 'skipped'
+        env: {STAGE: focused}
+        run: python3 "$RECORD/collect.py"
+      - name: Complete engine and all nine card-era scenario suites
+        id: broad
+        run: |
+          mkdir -p paused-token-r2-evidence/broad
+          STAGE=broad python3 "$RECORD/prepare_stage.py"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" broad 2>&1 | tee paused-token-r2-evidence/broad/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r2-evidence/broad/exit.txt
+          exit "$rc"
+      - name: Receive every broad report
+        if: always() && steps.broad.outcome != 'skipped'
+        env: {STAGE: broad}
+        run: python3 "$RECORD/collect.py"
+      - name: Ordinary whole-project build with routine AI tests
+        id: ordinary
+        run: |
+          mkdir -p paused-token-r2-evidence/ordinary
+          STAGE=ordinary python3 "$RECORD/prepare_stage.py"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" ordinary 2>&1 | tee paused-token-r2-evidence/ordinary/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r2-evidence/ordinary/exit.txt
+          exit "$rc"
+      - name: Receive ordinary results and require exact baseline skips
+        if: always() && steps.ordinary.outcome != 'skipped'
+        env: {STAGE: ordinary}
+        run: python3 "$RECORD/collect.py"
+      - name: Build candidate Assay CLI
+        run: |
+          mkdir -p paused-token-r2-evidence/assay
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" assay-build 2>&1 | tee paused-token-r2-evidence/assay/build.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r2-evidence/assay/build-exit.txt
+          exit "$rc"
+      - name: Assay 2000-card touchstone and corpus identity
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" assay 2>&1 | tee paused-token-r2-evidence/assay/gate.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r2-evidence/assay/gate-exit.txt
+          capture_rc=0
+          if test -f "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz"; then
+            sha256sum "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" > paused-token-r2-evidence/assay/oracle-bulk-sha256.txt || capture_rc=1
+            wc -c "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" > paused-token-r2-evidence/assay/oracle-bulk-bytes.txt || capture_rc=1
+            cp "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" paused-token-r2-evidence/assay/oracle-bulk-corpus.jsonl.gz || capture_rc=1
+          else
+            capture_rc=1
+          fi
+          echo "$capture_rc" > paused-token-r2-evidence/assay/corpus-capture-exit.txt
+          if test "$capture_rc" != 0; then exit "$capture_rc"; fi
+          exit "$rc"
+      - name: Preserve full golden differential for classification
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" assay-differential 2>&1 | tee paused-token-r2-evidence/assay/differential.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r2-evidence/assay/differential-exit.txt
+          exit "$rc"
+      - name: Require touchstone metrics and original51 unchanged differential blocks
+        if: always()
+        run: python3 "$RECORD/check_assay.py"
+      - name: Recheck all source and safeguards
+        if: always()
+        run: python3 "$RECORD/bind.py"
+      - name: Preserve any actual snapshot mismatch
+        if: always()
+        run: |
+          mkdir -p paused-token-r2-evidence/card
+          if test -d mtg-sets/build/snapshots-actual; then cp -R mtg-sets/build/snapshots-actual paused-token-r2-evidence/card/; fi
+      - name: Preserve exact protocol and source-review inputs
+        if: always()
+        run: |
+          mkdir -p paused-token-r2-evidence/protocol
+          cp "$RECORD/PROTOCOL.json" "$RECORD/BINDINGS.json" "$RECORD/EXPECTED_CASES.json" "$RECORD/BASELINE_SKIPS.json" "$RECORD/ORIGINAL_CASES.json" "$RECORD/SUPPLEMENTAL_REVIEW.json" "$RECORD/SOURCE_REVIEW.json" paused-token-r2-evidence/protocol/
+          cp "$RECORD/BASELINE_REUSE.json" paused-token-r2-evidence/protocol/
+          cp "$WORKFLOW" paused-token-r2-evidence/protocol/WORKFLOW.yml
+          git rev-parse HEAD > paused-token-r2-evidence/validation.txt
+          git rev-parse "$SOURCE^{tree}" > paused-token-r2-evidence/source-tree.txt
+          git diff --name-status "$BASELINE" "$SOURCE" > paused-token-r2-evidence/source-delta.txt
+          git status --porcelain --untracked-files=no > paused-token-r2-evidence/final-tracked-changes.txt
+      - name: Hash complete evidence inventory
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          from pathlib import Path
+          import hashlib
+          out=Path('paused-token-r2-evidence');out.mkdir(exist_ok=True)
+          manifest=out/'SHA256SUMS'
+          manifest.write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p.relative_to(out))+'\n' for p in sorted(out.rglob('*')) if p.is_file() and p != manifest))
+          PYCODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-paused-token-entry-r2-${{ github.run_id }}
+          path: paused-token-r2-evidence/
+          retention-days: 90
+          if-no-files-found: error

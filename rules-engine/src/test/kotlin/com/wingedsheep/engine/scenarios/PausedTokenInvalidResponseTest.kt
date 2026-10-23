@@ -123,6 +123,8 @@ class PausedTokenInvalidResponseTest : FunSpec({
             ), valid.copy(decisionId = question.id + "-stale"))
             val token = tokens(result).single()
             result.getEntity(token)!!.chosenModeId() shouldBe RIOT_MODE_COUNTER
+            val counters = result.getEntity(token)!!.get<CountersComponent>()
+            (counters != null) shouldBe true
             result.getEntity(token)!!.get<CountersComponent>()!!.getCount(CounterType.PLUS_ONE_PLUS_ONE) shouldBe 1
         }
         test("PI03 rejected Aura hosts preserve routing and permit the original answer; $suffix") {
