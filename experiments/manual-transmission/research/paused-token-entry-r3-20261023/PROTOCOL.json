@@ -1,0 +1,100 @@
+{
+  "schema": "manual-paused-token-pt02-prospective-test-oracle-r3-v1",
+  "status": "SOURCE_PREPARED_VALIDATION_PIN_REQUIRED",
+  "authorized_scope": "Prospective PT02 assertion correction only; original R2 assertions/history retained as immutable failure. No production implementation, main, golden, deck, policy, game/seed or Precision changes.",
+  "r2_failed": {
+    "source": "06c27e1c31efd974300028c8ce5c1ceeac703280",
+    "source_tree": "560298ec2a80d623dd0fabd41c9c26351a250a34",
+    "validation": "2a6630795646b3993314f60211e8544137073dcc",
+    "run": 39946289164,
+    "job": 120389655294,
+    "artifact": 12498707228,
+    "artifact_bytes": 365886,
+    "focused": {
+      "rows": 686,
+      "passed": 684,
+      "failed": 2
+    },
+    "failed_cases": [
+      "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=false, serialized=false",
+      "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=false, serialized=true"
+    ],
+    "status": "FAILED_UNADOPTED"
+  },
+  "diagnostic": {
+    "source": "859bb61f3f5fdd9a5a4460b2004349e03b47ebdc",
+    "validation": "8039ab67687c37f4fe1c8056abc4b08fc2082688",
+    "run": 39952157757,
+    "job": 120408978986,
+    "artifact": 12500948640,
+    "receipt": "298b7a907b478a84c1190918e9b5e2615dd34b2b",
+    "cases": 4,
+    "passed": 4,
+    "meaning": "target-copy retains exactly one resolving SpellOnStackComponent, but no early ETB TriggeredAbilityOnStackComponent or token entry; activated source-copy has no stack objects"
+  },
+  "original_test": {
+    "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenInstructionScenarioTest.kt",
+    "git_blob": "51c4162bb2d65fa2dc3a0c007734983e92b4c1ab",
+    "sha256": "a52bae47dc3cc144cf618bb2cfe145a49a4584608b47ed6cac2c3ffbaf56b4ae",
+    "archived_path": "experiments/manual-transmission/research/paused-token-entry-r3-20261023/annex/PausedTokenInstructionScenarioTest.R2.original.kt.txt",
+    "historical_assertion": "d.stackSize shouldBe 0 // PT02 first baseline mismatch"
+  },
+  "corrected_test": {
+    "same_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenInstructionScenarioTest.kt",
+    "approved_git_blob": "2783d8891a70c93b88a1e5be8237cd4ad1afdb83",
+    "exact_replacement": "Require zero TriggeredAbilityOnStackComponent and zero token entry during pending second color choice; target-copy exactly one named resolving SpellOnStackComponent; source-copy no stack objects.",
+    "retain": "All other original test cases/identities/assertions including PT02 second-answer stack count and life totals.",
+    "not_implemented_in_historical_r2": true
+  },
+  "negative_evidence": {
+    "r1_failed_receipt": "e0a5ed3ecc95793e7551b133d3209946871274a2",
+    "r2_negative_run": 39946289164,
+    "r2_fresh14_verified": {
+      "assertion_failures": 6,
+      "passed": 8
+    },
+    "r1_reused56_verified": {
+      "assertion_failures": 42,
+      "passed": 14
+    },
+    "historical_composite70": "Preserve as truthful original R2 history only, not a new R3 70-case baseline.",
+    "retired_for_r3": [
+      "PausedTokenInstructionScenarioTest PT02 sourceCopy=false serialized=false",
+      "PausedTokenInstructionScenarioTest PT02 sourceCopy=false serialized=true",
+      "PausedTokenInstructionScenarioTest PT02 sourceCopy=true serialized=false",
+      "PausedTokenInstructionScenarioTest PT02 sourceCopy=true serialized=true"
+    ],
+    "eligible_historical_controls": 66,
+    "eligibility": "Only unchanged identities with unchanged test bytes and qualified production baseline may be reused. Original PT02 four negative verdicts do not establish corrected-oracle RED behavior. No new four-case negative result claimed.",
+    "require_prospective_red_review_before_component_adoption": true
+  },
+  "qualification": {
+    "focused_passed": 686,
+    "focused_identity_source": "experiments/manual-transmission/research/paused-token-entry-r2-20261023/EXPECTED_CASES.json",
+    "engine_passed": 3978,
+    "broad_required_passed": 14753,
+    "ordinary_passed": 18361,
+    "baseline_skips": 43,
+    "ordinary_modules": 20,
+    "assay_unit_tests": 568,
+    "assay_touchstone_cards": 2000,
+    "original_divergences_preserved": 51,
+    "protected_bindings": 144,
+    "protected_goldens": 23
+  },
+  "frozen": {
+    "baseline": "418cdfdacd5191549e9fc8e4a071330120b071b7",
+    "receipt": "7e09f9e1a6b7f4542a1de08419883ac922e2f465",
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "manual_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "manual_sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1",
+    "precision_reserved": 2,
+    "phase2_official_games": 0,
+    "phase2_official_seeds": 0,
+    "competitive_admission": false
+  },
+  "gate_policy": "One source-bound one-shot validation, focused then broad then ordinary then Assay; preserve raw XML, input corpus, reported skips, original differential and exact immutable source. Positive test success is necessary but not sufficient: independent receipt and distinct RED-oracle eligibility remain separate.",
+  "historical_protocol_reused": "experiments/manual-transmission/research/paused-token-entry-r2-20261023/PROTOCOL.json",
+  "historical_validation_just": "experiments/manual-transmission/research/paused-token-entry-r2-20261023/validation.just",
+  "external_independent_review": false
+}
