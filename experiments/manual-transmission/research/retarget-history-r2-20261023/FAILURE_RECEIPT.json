@@ -1,0 +1,64 @@
+{
+  "disposition": "REJECTED_INJECTION_COMPILATION_ZERO_TESTS_NOT_BEHAVIORAL_EVIDENCE",
+  "source": "3e55adacde36f96636776165744ebc85508c12c5",
+  "tree": "debfcfaad7294a8a774ab1d278efb28212efe134",
+  "validation": "1540fd7f2e1c8bf17a74cd8440bbf2cdb88d5cc7",
+  "run": 40017590859,
+  "job": 120633551904,
+  "attempt": 1,
+  "artifact": 12529366849,
+  "artifact_bytes": 21007,
+  "artifact_sha256": "63a399dc2fa0701ff515a729fc99d2e02f93499ea3c52e887591d7ed17474e23",
+  "manifest_entries": 15,
+  "archive_members": 16,
+  "original_manifest": {
+    "BINDING.json": "ea975ec0815dd345ddf8fec230dfebd452b46f66591e533dbc26c102e42ecc86",
+    "DISPOSITION.json": "c1b89de49f4135be8faee4494329b91c7820f492d92e76182ee5f2dc84d3bb28",
+    "FINAL_TRACKED_CHANGES.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "MUTATION.diff": "c887263ce78c371846cab718916999cd608fd519f0523e9cbfef264483f37cb8",
+    "SOURCE_DELTA.txt": "3945b3898f0683726ed4430e4f63cd35619302dd69993db99ce668480c1c02e5",
+    "SOURCE_PINS.txt": "fe333b6e8155572319b18c8c322a8030913803ee53c1ae43db64fb033d85fdc7",
+    "mutation/DELETED_PRIOR_REPORTS.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+    "mutation/SUMMARY.json": "0cad747664482db1d1b69908da1f8b7e00c44661a32a43f27915c7ad1e386aea",
+    "mutation/exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+    "mutation/gradle.log": "63950f7a7e9a0af1a4086a4d63e31f9b8039f3d8eb3d63e05f9412e5c511a575",
+    "protocol/DESIGN.md": "49480e8075f26840aeec2b14cc6bc87c49aaa86dcc8fb2143cb51869245acd83",
+    "protocol/PROTOCOL.json": "88c4d9c025464182c5eb22b2206257334f26ad98c0df62bf5af3383d32b42307",
+    "protocol/WORKFLOW.yml": "06a28d000061acc332fcd75155d381b658b024622205802d3fe394a72fc54ed3",
+    "protocol/gate.py": "65fdf67dad5dae1d344c8e44fa7036519efc8c7faa905b89a159276e05dd5d0c",
+    "validation.just": "3cdebb8950fff7cc72f2f2580500e2d68c1e2951993d73e1f646c39355d9ed31"
+  },
+  "compiler_errors": [
+    {
+      "line": 28,
+      "column": 86,
+      "message": "Unresolved reference 'entityId'"
+    },
+    {
+      "line": 29,
+      "column": 64,
+      "message": "Unresolved reference 'entityId'"
+    },
+    {
+      "line": 30,
+      "column": 49,
+      "message": "Unresolved reference 'entityId'"
+    },
+    {
+      "line": 30,
+      "column": 86,
+      "message": "Unresolved reference 'entityId'"
+    },
+    {
+      "line": 33,
+      "column": 33,
+      "message": "Unresolved reference 'entityId'"
+    }
+  ],
+  "tests": 0,
+  "positive_gates": "NOT_EXECUTED",
+  "restoration": "SUCCESS_CLEAN_TRACKED_STATE",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}

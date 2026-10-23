@@ -1,0 +1,179 @@
+{
+  "schema": "manual-retarget-history-r2",
+  "status": "SOURCE_FROZEN_AWAITING_EXECUTION",
+  "base": "5bc1b733d3e19fee4da7e33174bf4a480bd92812",
+  "base_tree": "acc3ced89285f9c90860f99ca7515ac5c7bb3ff3",
+  "authority": "Standing user authorization for autonomous engineering under unchanged protected bindings and admission protocols",
+  "scope": "Preserve unchanged battlefield visits in existing contested-retarget finalization; exact keep-all no-op; reject legacy-map-conflicting visits. Not occurrence-aware resolution, complete retarget legality or Spellskite.",
+  "previous_receipt": "2f58739cc332d22965eaf6d99dcc6cde1102c5cc",
+  "implementation_sha256": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/RetargetHistory.kt": "20d896f0f915b2396ecb643fe9fbec7dbb3c756dfc7de9c7248408eb3bcabc0f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ContestedRetargetExecutors.kt": "b15ac70242ef9e03c04e108354bbb2e2bc01f8e63197f2503f8fbd1f4a2b327d",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/targeting/RetargetHistoryTest.kt": "256423cdcf9c6a5553357df0fe3e1f0712bcdb16dfc879bc30f2e2ccb774defd",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/targeting/RetargetHistoryMutationWitnessTest.kt": "648a288f20af6d613a69be7017c56dc6bfba562043f6066cdff99ef599f1100b",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RetargetHistoryIntegrationTest.kt": "eb7e6878c6ff20bd19e071ec6e2088b7556169c566dc4da860c6f9f18168a82b"
+  },
+  "new_test_cases": {
+    "RetargetHistoryTest": [
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH01 changed recipient captures its current visit while unchanged target retains its old visit",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH02 keeping every occurrence returns the exact original component",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH03 untracked unchanged history remains absent",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH04 repeated physical id with different visits is rejected instead of collapsed",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH05 known and unknown occurrences of one physical id cannot be merged",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH06 representable repeated current visit is retained without global deduplication",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH07 player replacements remove only the departed permanent occurrence stamp",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH08 changing target count is rejected",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH09 unchanged input and requirements survive an accepted update",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH10 serialization preserves old visit and newly captured visit exactly",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH11 missing replacement permanent is not assigned a made-up battlefield visit",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH12 later changes preserve earlier unchanged history across multiple updates"
+    ],
+    "RetargetHistoryMutationWitnessTest": [
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryMutationWitnessTest::HM01 changing another recipient never refreshes an unchanged old visit",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryMutationWitnessTest::HM02 changing another recipient never invents an unchanged historical visit"
+    ],
+    "RetargetHistoryIntegrationTest": [
+      "com.wingedsheep.engine.scenarios.RetargetHistoryIntegrationTest::HI01 live retarget finalization leaves an old target illegal during actual ability resolution",
+      "com.wingedsheep.engine.scenarios.RetargetHistoryIntegrationTest::HI02 live keep-all is byte-identical and an already-illegal only target still fizzles",
+      "com.wingedsheep.engine.scenarios.RetargetHistoryIntegrationTest::HI03 an unrepresentable old and new visit leaves the live stack object untouched",
+      "com.wingedsheep.engine.scenarios.RetargetHistoryIntegrationTest::HI04 serialized retarget history reproduces the same actual resolution state and events"
+    ]
+  },
+  "mutation": {
+    "kind": "compiled implementation mutation, not historical baseline",
+    "change": "Keep only the original function prefix through its size guard, then return full capture and close the function. Remove the unreachable tail from the deliberately faulty form, without changing candidate production source.",
+    "expected": {
+      "tests": 2,
+      "assertion_failures": 2,
+      "passes": 0,
+      "errors": 0,
+      "skips": 0
+    }
+  },
+  "mutation_first_frames": {
+    "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryMutationWitnessTest::HM01 changing another recipient never refreshes an unchanged old visit": 23,
+    "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryMutationWitnessTest::HM02 changing another recipient never invents an unchanged historical visit": 28
+  },
+  "positive_counts": {
+    "focused": 730,
+    "focused_new_cases": 18,
+    "engine": 4018,
+    "broad": 14793,
+    "ordinary_passes": 18401,
+    "ordinary_skips": 43,
+    "assay_units": 568,
+    "assay_touchstone": 2000,
+    "unresolved_assay_findings": 51
+  },
+  "protected": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "bindings": 144,
+    "goldens": 23,
+    "legacy_fixture_files": 82,
+    "precision_reserved": 2,
+    "official_games": 0,
+    "official_seeds": 0
+  },
+  "rules_reference": {
+    "source": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "reviewed": "2026-10-23",
+    "sections": [
+      "115.7d",
+      "400.7",
+      "608.2b"
+    ],
+    "interpretation": "Unchanged targets retain original identity even when already illegal; this bounded repair only preserves existing battlefield timestamps. No full rule/card-admission claim."
+  },
+  "remaining_gates": [
+    "Receive the terminal original artifact once, checking exact source/test/control/count/hash/skip/task identities.",
+    "Original per-instance grouping and full per-occurrence live resolution remain unimplemented.",
+    "StackResolver.kt is among 144 protected bindings and is deliberately unchanged; full integration cannot silently relax that pin.",
+    "Modal/splice allocations and target views, targeting/ward events, original source/controller legality, same-id/new-visit explicit selection, actual payment/Spellskite and full multiplayer admission remain separate work."
+  ],
+  "external_independent_review": false,
+  "repair_parent": "3e55adacde36f96636776165744ebc85508c12c5",
+  "repair_parent_tree": "debfcfaad7294a8a774ab1d278efb28212efe134",
+  "recovery_scope": "Injection-only repair; all production and test bytes identical to original R1; no gameplay or card scope expansion",
+  "failed_original": {
+    "disposition": "REJECTED_INJECTION_COMPILATION_ZERO_TESTS_NOT_BEHAVIORAL_EVIDENCE",
+    "source": "3e55adacde36f96636776165744ebc85508c12c5",
+    "tree": "debfcfaad7294a8a774ab1d278efb28212efe134",
+    "validation": "1540fd7f2e1c8bf17a74cd8440bbf2cdb88d5cc7",
+    "run": 40017590859,
+    "job": 120633551904,
+    "attempt": 1,
+    "artifact": 12529366849,
+    "artifact_bytes": 21007,
+    "artifact_sha256": "63a399dc2fa0701ff515a729fc99d2e02f93499ea3c52e887591d7ed17474e23",
+    "manifest_entries": 15,
+    "archive_members": 16,
+    "original_manifest": {
+      "BINDING.json": "ea975ec0815dd345ddf8fec230dfebd452b46f66591e533dbc26c102e42ecc86",
+      "DISPOSITION.json": "c1b89de49f4135be8faee4494329b91c7820f492d92e76182ee5f2dc84d3bb28",
+      "FINAL_TRACKED_CHANGES.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "MUTATION.diff": "c887263ce78c371846cab718916999cd608fd519f0523e9cbfef264483f37cb8",
+      "SOURCE_DELTA.txt": "3945b3898f0683726ed4430e4f63cd35619302dd69993db99ce668480c1c02e5",
+      "SOURCE_PINS.txt": "fe333b6e8155572319b18c8c322a8030913803ee53c1ae43db64fb033d85fdc7",
+      "mutation/DELETED_PRIOR_REPORTS.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "mutation/SUMMARY.json": "0cad747664482db1d1b69908da1f8b7e00c44661a32a43f27915c7ad1e386aea",
+      "mutation/exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "mutation/gradle.log": "63950f7a7e9a0af1a4086a4d63e31f9b8039f3d8eb3d63e05f9412e5c511a575",
+      "protocol/DESIGN.md": "49480e8075f26840aeec2b14cc6bc87c49aaa86dcc8fb2143cb51869245acd83",
+      "protocol/PROTOCOL.json": "88c4d9c025464182c5eb22b2206257334f26ad98c0df62bf5af3383d32b42307",
+      "protocol/WORKFLOW.yml": "06a28d000061acc332fcd75155d381b658b024622205802d3fe394a72fc54ed3",
+      "protocol/gate.py": "65fdf67dad5dae1d344c8e44fa7036519efc8c7faa905b89a159276e05dd5d0c",
+      "validation.just": "3cdebb8950fff7cc72f2f2580500e2d68c1e2951993d73e1f646c39355d9ed31"
+    },
+    "compiler_errors": [
+      {
+        "line": 28,
+        "column": 86,
+        "message": "Unresolved reference 'entityId'"
+      },
+      {
+        "line": 29,
+        "column": 64,
+        "message": "Unresolved reference 'entityId'"
+      },
+      {
+        "line": 30,
+        "column": 49,
+        "message": "Unresolved reference 'entityId'"
+      },
+      {
+        "line": 30,
+        "column": 86,
+        "message": "Unresolved reference 'entityId'"
+      },
+      {
+        "line": 33,
+        "column": 33,
+        "message": "Unresolved reference 'entityId'"
+      }
+    ],
+    "tests": 0,
+    "positive_gates": "NOT_EXECUTED",
+    "restoration": "SUCCESS_CLEAN_TRACKED_STATE",
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2
+  },
+  "compilation_controls": {
+    "normal": "Exact original R1 implementation must compile; no executed tests claimed.",
+    "original-broken": "Replay exact archived R1 injection as a diagnostic: compilation must fail with exactly five entityId errors at 28:86,29:64,30:49,30:86,33:33. Not a behavioral control.",
+    "repaired-mutant": "Full-recapture faulty form must compile successfully before executing unchanged HM01/HM02.",
+    "command": "just via scripts/gradle-locked :rules-engine:compileKotlin --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1",
+    "interpretation": "Only the two exact AssertionFailedError witness outcomes count as the behavioral negative control."
+  },
+  "repair_files": [
+    "PROTOCOL.json",
+    "DESIGN.md",
+    "gate.py",
+    "FAILURE_RECEIPT.json",
+    "ORIGINAL_ARTIFACT.zip.base64",
+    "ORIGINAL_METADATA.json",
+    "RECEIVE_ORIGINAL.py"
+  ]
+}
