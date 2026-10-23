@@ -1,0 +1,132 @@
+{
+  "schema": "manual-paused-token-entry-r4-post-detection-provenance-prospective",
+  "status": "R4_SOURCE_FROZEN_ACCEPTANCE_PENDING",
+  "disposition": "NOT_YET_COMPILED_NOT_YET_EXECUTED_UNADOPTED",
+  "mission": "Restore exact entry-event provenance only after trigger detection consumes a saved observed entry occurrence; preserve immutable R1/R2/R3 outcomes and original tests.",
+  "qualified_baseline": {
+    "source": "418cdfdacd5191549e9fc8e4a071330120b071b7",
+    "receipt": "7e09f9e1a6b7f4542a1de08419883ac922e2f465"
+  },
+  "prior_failed": {
+    "r1": {
+      "source": "e1a8943913cf36cc5e6b76f6c6f4df2279188b53",
+      "run": 39943006929,
+      "receipt": "e0a5ed3ecc95793e7551b133d3209946871274a2",
+      "disposition": "FAILED_UNADOPTED"
+    },
+    "r2": {
+      "source": "06c27e1c31efd974300028c8ce5c1ceeac703280",
+      "run": 39946289164,
+      "artifact": 12498707228,
+      "disposition": "FAILED_UNADOPTED"
+    },
+    "r3": {
+      "source": "86a5dea55f088f1e242a151920aa83a671039b61",
+      "tree": "827d1772e77742437fb74d92a6a2801c5c664528",
+      "validation": "683195fb09870307cadbaec9c6d29916744c9b24",
+      "run": 39967952498,
+      "job": 120462681155,
+      "artifact_id": 12509450010,
+      "artifact_bytes": 1142875,
+      "artifact_sha256": "27406f2d253996eb351d7ebbbe4afc2915412b7c5afbb61dd795d57cf733026b",
+      "receipt": "fc9d3676eded0ebebd360bfa64c41de24ac8c56f",
+      "focused": {
+        "passed": 686,
+        "failures": 0
+      },
+      "broad_engine": {
+        "tests": 3978,
+        "passed": 3974,
+        "failures": 4
+      },
+      "ordinary": "NOT_EXECUTED",
+      "assay": "NOT_EXECUTED",
+      "disposition": "FAILED_UNADOPTED"
+    }
+  },
+  "negative_receipts": {
+    "R3_original_failing_junit": {
+      "path": "broad/junit/rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.event.EntryChoiceEventProvenanceTest.xml",
+      "bytes": 53230,
+      "sha256": "26b9579e7c91829d90f8397079f3a690563fee28fa92ef4e38672c84f90994c8",
+      "failed_cases": [
+        {
+          "case": "EP01",
+          "line": 118,
+          "expected": "entryTriggersAlreadyProcessed true",
+          "observed": "false"
+        },
+        {
+          "case": "EP02",
+          "line": 133,
+          "expected": "[true,false]",
+          "observed": "[false,false]"
+        },
+        {
+          "case": "EP03",
+          "line": 158,
+          "expected": "[true,true]",
+          "observed": "[false,false]"
+        },
+        {
+          "case": "EP04",
+          "line": 177,
+          "expected": "one event trigger detected",
+          "observed": "two"
+        }
+      ],
+      "status": "OBSERVED_RED_ON_ORIGINAL_R3_SOURCE_NOT_R4"
+    },
+    "prior_R3_positive_bank": {
+      "passed": 686,
+      "source_bound_to": "86a5dea55f088f1e242a151920aa83a671039b61",
+      "reuse_as_R4_pass": false
+    }
+  },
+  "original_assertions_protected": {
+    "entry_provenance_file": "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt",
+    "entry_provenance_git_blob": "0250a12ad245eded770bec604dbbfda63f7210e9",
+    "PT02_test_file": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenInstructionScenarioTest.kt",
+    "PT02_approved_R3_blob": "2783d8891a70c93b88a1e5be8237cd4ad1afdb83",
+    "PT02_original_R2_blob": "51c4162bb2d65fa2dc3a0c007734983e92b4c1ab",
+    "R2_original_annex": "experiments/manual-transmission/research/paused-token-entry-r3-20261023/annex/PausedTokenInstructionScenarioTest.R2.original.kt.txt",
+    "change_assertions_authorized_in_R4": false
+  },
+  "code_scope": {
+    "changed_production_path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt",
+    "original_blob": "0103a4574d7dc662c30c7e8497d7b587eda147ff",
+    "candidate_blob": "1fbe7670164d4dcd512a62628573722a88426133",
+    "semantics": "After pre-SBA TriggerDetector.detectTriggers returns on a completed decision, only the exact observed battlefield-entry ZoneChangeEvent occurrences actually submitted for detection are stamped entryTriggersAlreadyProcessed=true in published events. Identity-based selection; no upfront marking and no blanket rewrites of unobserved events.",
+    "unmodified": "All other engine/SDK/card-source files, original 4 provenance tests, PT02 R3 correction, frozen 100-card deck, protected goldens and policies."
+  },
+  "qualification": {
+    "focused_passed": 690,
+    "focused_classes": 42,
+    "bank": "experiments/manual-transmission/research/paused-token-entry-r4-20261023/EXPECTED_CASES.json",
+    "broad_engine_passed": 3978,
+    "broad_required_passed": 14753,
+    "ordinary_passed": 18361,
+    "ordinary_skips": 43,
+    "ordinary_modules": 20,
+    "assay_tests": 568,
+    "assay_cards": 2000,
+    "differential_original_blocks_unchanged": 51,
+    "protected_bindings": 144,
+    "protected_goldens": 23,
+    "no_reuse_of_R3_candidate_positive_results": true
+  },
+  "safeguards": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "frozen_deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "frozen_deck_sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1",
+    "precison_reservations": 2,
+    "official_phase2_games": 0,
+    "official_seeds": 0,
+    "competitive_admission": false,
+    "no_main_merge": true,
+    "no_golden_reblessing": true,
+    "no_weakened_tests": true
+  },
+  "execution": "Source-bound validation-only child, one guarded attempt, run focused 690 before broad and ordinary build/Assay. Archive original XML, timestamps, sources and all failures; never dispatch unchanged R3 rerun. Validation passing is not automatic official/competitive admission.",
+  "independence": "Review by same assistant, not independent external peer review."
+}
