@@ -132,7 +132,7 @@ object EntersWithReplacements {
         // face-down permanents and synthetic copied characteristics without a registry entry.
         if (cardDef != null) {
             val (ownState, ownEvents) = applyFromDefinition(
-                newState, enteringEntityId, cardDef, enteringControllerId, xValue
+                newState, enteringEntityId, cardDef, enteringControllerId, xValue, sourceState = sourceState
             )
             newState = ownState
             events.addAll(ownEvents)
@@ -158,7 +158,8 @@ object EntersWithReplacements {
         cardDef: CardDefinition,
         controllerId: EntityId,
         xValue: Int? = null,
-        totalManaSpent: Int = 0
+        totalManaSpent: Int = 0,
+        sourceState: GameState = state,
     ): Pair<GameState, List<GameEvent>> {
         var newState = state
         val events = mutableListOf<GameEvent>()
@@ -192,7 +193,7 @@ object EntersWithReplacements {
                         if (!conditionEvaluator.evaluate(newState, effect.condition!!, condContext)) continue
                     }
                     val (afterCounters, counterEvents) = placeEntryCounters(
-                        newState, entityId, effect.counterType, effect.count, controllerId, entityName
+                        newState, entityId, effect.counterType, effect.count, controllerId, entityName, sourceState
                     )
                     newState = afterCounters
                     events.addAll(counterEvents)
@@ -208,7 +209,7 @@ object EntersWithReplacements {
                     )
                     val count = dynamicAmountEvaluator.evaluate(newState, effect.count, context)
                     val (afterCounters, counterEvents) = placeEntryCounters(
-                        newState, entityId, effect.counterType, count, controllerId, entityName
+                        newState, entityId, effect.counterType, count, controllerId, entityName, sourceState
                     )
                     newState = afterCounters
                     events.addAll(counterEvents)
@@ -249,11 +250,12 @@ object EntersWithReplacements {
         count: Int,
         controllerId: EntityId,
         entityName: String,
+        sourceState: GameState = state,
     ): Pair<GameState, List<GameEvent>> {
         if (count <= 0) return state to emptyList()
         val resolved = resolveCounterType(counterType)
         val modifiedCount = ReplacementEffectUtils.applyCounterPlacementModifiers(
-            state, entityId, resolved, count, placerId = controllerId
+            state, entityId, resolved, count, placerId = controllerId, entrySourceState = sourceState
         )
         val current = state.getEntity(entityId)?.get<CountersComponent>() ?: CountersComponent()
         var newState = state.updateEntity(entityId) { c ->
@@ -362,7 +364,8 @@ object EntersWithReplacements {
                         }
                         val counterType = resolveCounterType(effect.counterType)
                         val modifiedCount = ReplacementEffectUtils.applyCounterPlacementModifiers(
-                            newState, enteringEntityId, counterType, effect.count, placerId = enteringControllerId
+                            newState, enteringEntityId, counterType, effect.count, placerId = enteringControllerId,
+                            entrySourceState = sourceState
                         )
                         val current = newState.getEntity(enteringEntityId)?.get<CountersComponent>() ?: CountersComponent()
                         newState = newState.updateEntity(enteringEntityId) { c ->
@@ -394,7 +397,8 @@ object EntersWithReplacements {
                         val count = dynamicAmountEvaluator.evaluate(newState, effect.count, context)
                         if (count > 0) {
                             val modifiedCount = ReplacementEffectUtils.applyCounterPlacementModifiers(
-                                newState, enteringEntityId, counterType, count, placerId = enteringControllerId
+                                newState, enteringEntityId, counterType, count, placerId = enteringControllerId,
+                                entrySourceState = sourceState
                             )
                             val current = newState.getEntity(enteringEntityId)?.get<CountersComponent>() ?: CountersComponent()
                             newState = newState.updateEntity(enteringEntityId) { c ->

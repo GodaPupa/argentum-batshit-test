@@ -1876,7 +1876,7 @@ class StackResolver(
         if (intrinsicEntryCounters != null) {
             val (entryCounterState, entryCounterEvents) = EntersWithReplacements.placeEntryCounters(
                 newState, spellId, intrinsicEntryCounters.first, intrinsicEntryCounters.second,
-                controllerId, cardComponent?.name ?: ""
+                controllerId, cardComponent?.name ?: "", sourceState = state
             )
             newState = entryCounterState
             counterEvents.addAll(entryCounterEvents)
@@ -3016,7 +3016,7 @@ class StackResolver(
 
         if (cardDef != null) {
             val (ownState, ownEvents) = EntersWithReplacements.applyFromDefinition(
-                newState, entityId, cardDef, controllerId, xValue, totalManaSpent
+                newState, entityId, cardDef, controllerId, xValue, totalManaSpent, sourceState
             )
             newState = ownState
             events.addAll(ownEvents)

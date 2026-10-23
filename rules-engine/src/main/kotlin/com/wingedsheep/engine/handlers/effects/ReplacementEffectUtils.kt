@@ -51,6 +51,10 @@ object ReplacementEffectUtils {
      * @param placerId The player placing the counters — used to gate effects that only
      *                 apply when "you" are the one placing them (e.g., Innkeeper's Talent
      *                 Level 3). When null, placer-gated effects do not apply.
+     * @param entrySourceState For entry counters only, the state before the entry event. Other
+     *                 replacement sources come from this boundary; the prepared entering object
+     *                 also supplies exclusively self-affecting replacements, even while still on the stack.
+     *                 Ordinary counter placement leaves this null and keeps its current-state scan.
      * @return The modified counter count
      */
     fun applyCounterPlacementModifiers(
@@ -58,15 +62,23 @@ object ReplacementEffectUtils {
         targetId: EntityId,
         counterType: CounterType,
         count: Int,
-        placerId: EntityId? = null
+        placerId: EntityId? = null,
+        entrySourceState: GameState? = null,
     ): Int {
         if (count <= 0) return count
 
         var modifiedCount = count
 
+        // CR 614.12: simultaneous other entrants are not replacement sources. The entering
+        // subject supplies only exclusively self-affecting replacements, not a general subset.
+        val sourceState = entrySourceState ?: state
+        val sourceIds = if (entrySourceState == null) sourceState.getBattlefield()
+            else (sourceState.getBattlefield() + targetId).distinct()
         // 1. Static battlefield replacement effects (Hardened Scales, Doubling Season, …).
-        for (entityId in state.getBattlefield()) {
-            val container = state.getEntity(entityId) ?: continue
+        for (entityId in sourceIds) {
+            val container = if (entrySourceState != null && entityId == targetId)
+                state.getEntity(entityId) else sourceState.getEntity(entityId)
+            if (container == null) continue
             val replacementComponent = container.get<ReplacementEffectSourceComponent>() ?: continue
             val sourceControllerId = container.get<ControllerComponent>()?.playerId ?: continue
 
@@ -77,6 +89,11 @@ object ReplacementEffectUtils {
                     else -> continue
                 }
                 if (counterEvent !is com.wingedsheep.sdk.scripting.EventPattern.CounterPlacementEvent) continue
+                // A new source's general "creatures/permanents you control" effect does not
+                // modify its own entry (CR 614.12). The explicit Self recipient is the SDK's
+                // self-exclusive spelling; other existing sources retain their normal filters.
+                if (entrySourceState != null && entityId == targetId &&
+                    counterEvent.recipient != RecipientFilter.Self) continue
 
                 // Gate on "If YOU would put..." — skip when an opponent is the placer.
                 val placedByYouOnly = when (effect) {
@@ -105,7 +122,7 @@ object ReplacementEffectUtils {
         //    These have no battlefield source permanent: the effect's stored controllerId IS
         //    the "you" for both the recipient filter ("a creature you control") and the placer
         //    gate (only the controller's own counter placements get the bonus).
-        for (modifier in state.activeCounterPlacementModifiers) {
+        for (modifier in sourceState.activeCounterPlacementModifiers) {
             if (placerId != modifier.controllerId) continue
             if (!matchesCounterTypeFilter(modifier.counterType, counterType)) continue
             // No battlefield source entity — pass the controller as the "source entity" so
