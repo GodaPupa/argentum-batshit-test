@@ -1,0 +1,567 @@
+{
+  "status": "ACCEPTED_BOUNDED_RETARGET_HISTORY_ONLY",
+  "source": "0b97c51297bf9357c6b37dc2797abb27f7988e91",
+  "tree": "e4bc8d6471c031e468a537565b57d1e419c0425d",
+  "validation": "e3d7a572d3095323c8155d7e30b850343c910ab6",
+  "run": 40021229824,
+  "job": 120646000839,
+  "attempt": 1,
+  "artifact": {
+    "id": 12532771722,
+    "node_id": "MDg6QXJ0aWZhY3QxMjUzMjc3MTcyMg==",
+    "name": "manual-retarget-history-r2-40021229824",
+    "size_in_bytes": 34359042,
+    "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12532771722",
+    "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12532771722/zip",
+    "expired": false,
+    "digest": "sha256:9e4bb7431e78bddc44221d1d4e3c9e4eb7a4d7b69be3e0dc750aad2957db6183",
+    "created_at": "2026-10-23T21:22:24Z",
+    "updated_at": "2026-10-23T21:22:24Z",
+    "expires_at": "2027-01-21T20:41:59Z",
+    "workflow_run": {
+      "id": 40021229824,
+      "repository_id": 1361473449,
+      "head_repository_id": 1361473449,
+      "head_branch": "validation/manual-retarget-history-r2-20261023",
+      "head_sha": "e3d7a572d3095323c8155d7e30b850343c910ab6"
+    }
+  },
+  "verified_manifest_entries": 9029,
+  "source_delta": [
+    [
+      "A",
+      "experiments/manual-transmission/research/retarget-history-r2-20261023/DESIGN.md"
+    ],
+    [
+      "A",
+      "experiments/manual-transmission/research/retarget-history-r2-20261023/FAILURE_RECEIPT.json"
+    ],
+    [
+      "A",
+      "experiments/manual-transmission/research/retarget-history-r2-20261023/ORIGINAL_ARTIFACT.zip.base64"
+    ],
+    [
+      "A",
+      "experiments/manual-transmission/research/retarget-history-r2-20261023/ORIGINAL_METADATA.json"
+    ],
+    [
+      "A",
+      "experiments/manual-transmission/research/retarget-history-r2-20261023/PROTOCOL.json"
+    ],
+    [
+      "A",
+      "experiments/manual-transmission/research/retarget-history-r2-20261023/RECEIVE_ORIGINAL.py"
+    ],
+    [
+      "A",
+      "experiments/manual-transmission/research/retarget-history-r2-20261023/gate.py"
+    ]
+  ],
+  "compilation_controls": {
+    "normal": {
+      "stage": "normal",
+      "source": "0b97c51297bf9357c6b37dc2797abb27f7988e91",
+      "validation": "e3d7a572d3095323c8155d7e30b850343c910ab6",
+      "run": "40021229824",
+      "exit": 0,
+      "implementation_sha256": "20d896f0f915b2396ecb643fe9fbec7dbb3c756dfc7de9c7248408eb3bcabc0f",
+      "log_sha256": "9c6f711d0b8de49c55ba17f4e327ee7b0cc0185d112fee51a7584d7faf085114",
+      "tests": 0,
+      "expected_disposition_verified": true,
+      "behavioral_evidence": false
+    },
+    "original-broken": {
+      "stage": "original-broken",
+      "source": "0b97c51297bf9357c6b37dc2797abb27f7988e91",
+      "validation": "e3d7a572d3095323c8155d7e30b850343c910ab6",
+      "run": "40021229824",
+      "exit": 1,
+      "implementation_sha256": "fa5f0a8381038940ae9311ca7acf79d451ed7dfe80fdf4e5f03c6c72a55b0dab",
+      "log_sha256": "0e53ec7b3d3a4d2675ba414bf496c4e41da3ff5143c4a9fe8e5d4a2917075259",
+      "tests": 0,
+      "expected_disposition_verified": true,
+      "behavioral_evidence": false
+    },
+    "repaired-mutant": {
+      "stage": "repaired-mutant",
+      "source": "0b97c51297bf9357c6b37dc2797abb27f7988e91",
+      "validation": "e3d7a572d3095323c8155d7e30b850343c910ab6",
+      "run": "40021229824",
+      "exit": 0,
+      "implementation_sha256": "5f4d1050e544c3fa844637c090ff65d0f8fcf5b4805da120f074f5df0cdbe248",
+      "log_sha256": "0da2a6661c439b192fe10a44222a8d5717af74807225fb37db23d2321ad86648",
+      "tests": 0,
+      "expected_disposition_verified": true,
+      "behavioral_evidence": false
+    }
+  },
+  "failed_original": {
+    "disposition": "REJECTED_INJECTION_COMPILATION_ZERO_TESTS_NOT_BEHAVIORAL_EVIDENCE",
+    "source": "3e55adacde36f96636776165744ebc85508c12c5",
+    "tree": "debfcfaad7294a8a774ab1d278efb28212efe134",
+    "validation": "1540fd7f2e1c8bf17a74cd8440bbf2cdb88d5cc7",
+    "run": 40017590859,
+    "job": 120633551904,
+    "attempt": 1,
+    "artifact": 12529366849,
+    "artifact_bytes": 21007,
+    "artifact_sha256": "63a399dc2fa0701ff515a729fc99d2e02f93499ea3c52e887591d7ed17474e23",
+    "manifest_entries": 15,
+    "archive_members": 16,
+    "original_manifest": {
+      "BINDING.json": "ea975ec0815dd345ddf8fec230dfebd452b46f66591e533dbc26c102e42ecc86",
+      "DISPOSITION.json": "c1b89de49f4135be8faee4494329b91c7820f492d92e76182ee5f2dc84d3bb28",
+      "FINAL_TRACKED_CHANGES.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "MUTATION.diff": "c887263ce78c371846cab718916999cd608fd519f0523e9cbfef264483f37cb8",
+      "SOURCE_DELTA.txt": "3945b3898f0683726ed4430e4f63cd35619302dd69993db99ce668480c1c02e5",
+      "SOURCE_PINS.txt": "fe333b6e8155572319b18c8c322a8030913803ee53c1ae43db64fb033d85fdc7",
+      "mutation/DELETED_PRIOR_REPORTS.json": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570",
+      "mutation/SUMMARY.json": "0cad747664482db1d1b69908da1f8b7e00c44661a32a43f27915c7ad1e386aea",
+      "mutation/exit.txt": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865",
+      "mutation/gradle.log": "63950f7a7e9a0af1a4086a4d63e31f9b8039f3d8eb3d63e05f9412e5c511a575",
+      "protocol/DESIGN.md": "49480e8075f26840aeec2b14cc6bc87c49aaa86dcc8fb2143cb51869245acd83",
+      "protocol/PROTOCOL.json": "88c4d9c025464182c5eb22b2206257334f26ad98c0df62bf5af3383d32b42307",
+      "protocol/WORKFLOW.yml": "06a28d000061acc332fcd75155d381b658b024622205802d3fe394a72fc54ed3",
+      "protocol/gate.py": "65fdf67dad5dae1d344c8e44fa7036519efc8c7faa905b89a159276e05dd5d0c",
+      "validation.just": "3cdebb8950fff7cc72f2f2580500e2d68c1e2951993d73e1f646c39355d9ed31"
+    },
+    "compiler_errors": [
+      {
+        "line": 28,
+        "column": 86,
+        "message": "Unresolved reference 'entityId'"
+      },
+      {
+        "line": 29,
+        "column": 64,
+        "message": "Unresolved reference 'entityId'"
+      },
+      {
+        "line": 30,
+        "column": 49,
+        "message": "Unresolved reference 'entityId'"
+      },
+      {
+        "line": 30,
+        "column": 86,
+        "message": "Unresolved reference 'entityId'"
+      },
+      {
+        "line": 33,
+        "column": 33,
+        "message": "Unresolved reference 'entityId'"
+      }
+    ],
+    "tests": 0,
+    "positive_gates": "NOT_EXECUTED",
+    "restoration": "SUCCESS_CLEAN_TRACKED_STATE",
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2
+  },
+  "stages": {
+    "mutation": {
+      "totals": {
+        "suites": 1,
+        "rows": 2,
+        "failures": 2,
+        "passed": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "modules": {
+        "rules-engine": {
+          "suites": 1,
+          "rows": 2,
+          "failures": 2
+        }
+      },
+      "duplicates": {},
+      "required_tasks": {
+        ":rules-engine:test": "FAILED"
+      },
+      "identities_sha256": "c34ca6d93106df4c0ccd8029cc00a85666b846b2bdf1ec767bda4f206a86ba35"
+    },
+    "focused": {
+      "totals": {
+        "suites": 47,
+        "rows": 730,
+        "passed": 730,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "modules": {
+        "mtg-sdk": {
+          "suites": 1,
+          "rows": 2,
+          "passed": 2
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 1,
+          "rows": 5,
+          "passed": 5
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 2,
+          "rows": 10,
+          "passed": 10
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 1,
+          "rows": 3,
+          "passed": 3
+        },
+        "mtg-sets": {
+          "suites": 2,
+          "rows": 343,
+          "passed": 343
+        },
+        "rules-engine": {
+          "suites": 40,
+          "rows": 367,
+          "passed": 367
+        }
+      },
+      "duplicates": {},
+      "required_tasks": {
+        ":mtg-sdk:test": "EXECUTED",
+        ":mtg-sets:2023:tests:test": "EXECUTED",
+        ":mtg-sets:2024:tests:test": "EXECUTED",
+        ":mtg-sets:2025:tests:test": "EXECUTED",
+        ":mtg-sets:test": "EXECUTED",
+        ":rules-engine:test": "EXECUTED"
+      },
+      "identities_sha256": "5af84be973aaf868ecbca8fad6f42f2e744bf8854054dc33a98c85cb63bbadc2"
+    },
+    "broad": {
+      "totals": {
+        "suites": 4243,
+        "rows": 14793,
+        "passed": 14793,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "modules": {
+        "mtg-sets/1993-1999/tests": {
+          "suites": 251,
+          "rows": 713,
+          "passed": 713
+        },
+        "mtg-sets/2000-2002/tests": {
+          "suites": 162,
+          "rows": 612,
+          "passed": 612
+        },
+        "mtg-sets/2003-2007/tests": {
+          "suites": 432,
+          "rows": 1432,
+          "passed": 1432
+        },
+        "mtg-sets/2008-2016/tests": {
+          "suites": 221,
+          "rows": 644,
+          "passed": 644
+        },
+        "mtg-sets/2017-2022/tests": {
+          "suites": 373,
+          "rows": 1085,
+          "passed": 1085
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 404,
+          "rows": 1283,
+          "passed": 1283
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 723,
+          "rows": 2072,
+          "passed": 2072
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 591,
+          "rows": 1606,
+          "passed": 1606
+        },
+        "mtg-sets/2026/tests": {
+          "suites": 452,
+          "rows": 1328,
+          "passed": 1328
+        },
+        "rules-engine": {
+          "suites": 634,
+          "rows": 4018,
+          "passed": 4018
+        }
+      },
+      "duplicates": {
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife == cost is payable (the boundary case)": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife > cost is payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife < cost is NOT payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantShroudToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantHexproofToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tOpponentsCantMakeYouSacrifice": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantOpponentsCantWinGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGameFromLife": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tStationUsingToughness": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tCantBeTargetedByOpponentAbilities": 2
+      },
+      "required_tasks": {
+        ":mtg-sets:1993-1999:tests:test": "EXECUTED",
+        ":mtg-sets:2000-2002:tests:test": "EXECUTED",
+        ":mtg-sets:2003-2007:tests:test": "EXECUTED",
+        ":mtg-sets:2008-2016:tests:test": "EXECUTED",
+        ":mtg-sets:2017-2022:tests:test": "EXECUTED",
+        ":mtg-sets:2023:tests:test": "EXECUTED",
+        ":mtg-sets:2024:tests:test": "EXECUTED",
+        ":mtg-sets:2025:tests:test": "EXECUTED",
+        ":mtg-sets:2026:tests:test": "EXECUTED",
+        ":rules-engine:test": "EXECUTED"
+      },
+      "identities_sha256": "f1b3b82d2d1b8e70320a13d088aa876d978071e487f5b6d7b2efa00c161f97a4"
+    },
+    "ordinary": {
+      "totals": {
+        "suites": 4680,
+        "rows": 18444,
+        "skipped": 43,
+        "passed": 18401,
+        "failures": 0,
+        "errors": 0
+      },
+      "modules": {
+        "ai": {
+          "suites": 79,
+          "rows": 742,
+          "skipped": 1,
+          "passed": 741
+        },
+        "game-server": {
+          "suites": 82,
+          "rows": 561,
+          "passed": 557,
+          "skipped": 4
+        },
+        "gym": {
+          "suites": 141,
+          "rows": 528,
+          "passed": 493,
+          "skipped": 35
+        },
+        "gym-server": {
+          "suites": 2,
+          "rows": 11,
+          "passed": 11
+        },
+        "gym-trainer": {
+          "suites": 5,
+          "rows": 23,
+          "passed": 23
+        },
+        "mtg-sdk": {
+          "suites": 51,
+          "rows": 529,
+          "passed": 529
+        },
+        "mtg-search": {
+          "suites": 2,
+          "rows": 163,
+          "passed": 163
+        },
+        "mtg-sets/1993-1999/tests": {
+          "suites": 251,
+          "rows": 713,
+          "passed": 713
+        },
+        "mtg-sets/2000-2002/tests": {
+          "suites": 162,
+          "rows": 612,
+          "passed": 612
+        },
+        "mtg-sets/2003-2007/tests": {
+          "suites": 432,
+          "rows": 1432,
+          "passed": 1432
+        },
+        "mtg-sets/2008-2016/tests": {
+          "suites": 221,
+          "rows": 644,
+          "passed": 644
+        },
+        "mtg-sets/2017-2022/tests": {
+          "suites": 373,
+          "rows": 1085,
+          "passed": 1085
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 404,
+          "rows": 1283,
+          "passed": 1283
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 723,
+          "rows": 2072,
+          "passed": 2072
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 591,
+          "rows": 1606,
+          "passed": 1606
+        },
+        "mtg-sets/2026/tests": {
+          "suites": 452,
+          "rows": 1328,
+          "passed": 1328
+        },
+        "mtg-sets": {
+          "suites": 16,
+          "rows": 379,
+          "passed": 379
+        },
+        "mtgish-tooling": {
+          "suites": 20,
+          "rows": 147,
+          "passed": 144,
+          "skipped": 3
+        },
+        "oracle-assay": {
+          "suites": 39,
+          "rows": 568,
+          "passed": 568
+        },
+        "rules-engine": {
+          "suites": 634,
+          "rows": 4018,
+          "passed": 4018
+        }
+      },
+      "duplicates": {
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife == cost is payable (the boundary case)": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife > cost is payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife < cost is NOT payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantShroudToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantHexproofToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tOpponentsCantMakeYouSacrifice": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantOpponentsCantWinGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGameFromLife": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tStationUsingToughness": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tCantBeTargetedByOpponentAbilities": 2
+      },
+      "required_tasks": {
+        ":ai:test": "EXECUTED",
+        ":game-server:test": "EXECUTED",
+        ":gym:test": "EXECUTED",
+        ":gym-server:test": "EXECUTED",
+        ":gym-trainer:test": "EXECUTED",
+        ":mtg-sdk:test": "EXECUTED",
+        ":mtg-search:test": "EXECUTED",
+        ":mtg-sets:1993-1999:tests:test": "EXECUTED",
+        ":mtg-sets:2000-2002:tests:test": "EXECUTED",
+        ":mtg-sets:2003-2007:tests:test": "EXECUTED",
+        ":mtg-sets:2008-2016:tests:test": "EXECUTED",
+        ":mtg-sets:2017-2022:tests:test": "EXECUTED",
+        ":mtg-sets:2023:tests:test": "EXECUTED",
+        ":mtg-sets:2024:tests:test": "EXECUTED",
+        ":mtg-sets:2025:tests:test": "EXECUTED",
+        ":mtg-sets:2026:tests:test": "EXECUTED",
+        ":mtg-sets:test": "EXECUTED",
+        ":mtgish-tooling:test": "EXECUTED",
+        ":oracle-assay:test": "EXECUTED",
+        ":rules-engine:test": "EXECUTED"
+      },
+      "identities_sha256": "84c8e7a7606be3dc1d5dee45129d40b0380b1b8c609e17a587f87b12fd497bd0"
+    }
+  },
+  "assay": {
+    "status": "TOUCHSTONE_PASS_ORIGINAL_51_DIVERGENCES_RETAINED",
+    "remaining_gates": [],
+    "metrics": {
+      "Cards assayed": 2000,
+      "Ambiguous \u2014 distinct readings": 0,
+      "Print mismatch": 0,
+      "Normalization not invertible": 0,
+      "Full inverse not reproduced": 0,
+      "Redundant readings (same model)": 0
+    },
+    "corpus": {
+      "bytes": 25101691,
+      "sha256": "4c61ac71dca6645eed0df1f0e57c541504a494b8e20d297e45e3f2f5082c5bc8"
+    },
+    "differential": {
+      "baseline_artifact_id": 12469559629,
+      "baseline_report_sha256": "14b77880d7ef45a8c3cfb5bc31ce340ed17aff6320bb32a577e30bf3f5a327e2",
+      "current_report_sha256": "14b77880d7ef45a8c3cfb5bc31ce340ed17aff6320bb32a577e30bf3f5a327e2",
+      "baseline_count": 51,
+      "current_count": 51,
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "original_blocks_byte_identical": true,
+      "unresolved_original_cards": [
+        "Aragorn, the Uniter [LTR]",
+        "Arcane Epiphany [FDN]",
+        "Balm of Restoration [FEM]",
+        "Bloodhunter Bat [M13]",
+        "Bog Rats [DRK]",
+        "Boggart Sprite-Chaser [LRW]",
+        "Bolt Bend [WAR]",
+        "Bramblesnap [ROE]",
+        "Calamitous Tide [BLB]",
+        "Cryogen Relic [EOE]",
+        "Devout Chaplain [AVR]",
+        "Dragon's Prey [TDM]",
+        "Elvish Warmaster [KHM]",
+        "Epic Proportions [LRW]",
+        "Essence Fracture [ONS]",
+        "Experimental Synthesizer [NEO]",
+        "Gather the White Lotus [TLA]",
+        "Ghalta, Primal Hunger [RIX]",
+        "Ghoulish Procession [MID]",
+        "Goblin Digging Team [DRK]",
+        "Grow Extra Arms [SPM]",
+        "Hand of Justice [FEM]",
+        "Jaspera Sentinel [KHM]",
+        "Keeper of Fables [ELD]",
+        "Kithkin Greatheart [LRW]",
+        "Krosan Warchief [SCG]",
+        "Lathril, Blade of the Elves [KHC]",
+        "Merchant Scroll [HML]",
+        "Mistmeadow Council [ECL]",
+        "Offender at Large [MKM]",
+        "Pearl of Wisdom [BLB]",
+        "Quickbeam, Upstart Ent [LTR]",
+        "Raise the Past [FDN]",
+        "Rakish Scoundrel [MKM]",
+        "Saved by the Shell [TMT]",
+        "Scarecrow [DRK]",
+        "Second Breakfast [LTR]",
+        "Seize Opportunity [TDM]",
+        "Sethron, Hurloon General [JMP]",
+        "Shared Discovery [ROE]",
+        "Stress Dream [SOS]",
+        "Stronghold Machinist [NEM]",
+        "Taj-Nar Swordsmith [MRD]",
+        "Urban Retreat [SPM]",
+        "Vendetta [MMQ]",
+        "Venom's Hunger [SPM]",
+        "Viridian Longbow [MRD]",
+        "Walking Ballista [AER]",
+        "Winged Words [M20]",
+        "Wizard's Lightning [DOM]",
+        "Wizard's Retort [DOM]"
+      ]
+    }
+  },
+  "protected_bindings": 144,
+  "protected_goldens": 23,
+  "legacy_fixture_files": 82,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "spellskite_implemented": false,
+  "external_independent_review": false,
+  "remaining_component_gates": []
+}
