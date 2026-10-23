@@ -184,7 +184,10 @@ data class TriggerDamageDistributionContinuation(
     val capturedEntityIds: List<EntityId> = emptyList(),
     /** The ability's intervening-"if" (CR 603.4), preserved across the distribution decision so the
      *  stack object built on resume can re-check it as it resolves. */
-    val interveningIf: com.wingedsheep.sdk.scripting.conditions.Condition? = null
+    val interveningIf: com.wingedsheep.sdk.scripting.conditions.Condition? = null,
+    /** Original groups and visits captured before this pause; null is untracked legacy input. */
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val originalTargetSlots: com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan? = null
 ) : AnswerContinuation
 
 /**

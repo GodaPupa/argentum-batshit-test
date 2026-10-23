@@ -2,6 +2,9 @@ package com.wingedsheep.engine.handlers.continuations
 
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan
+import com.wingedsheep.engine.mechanics.targeting.captureTargetSlots
+import com.wingedsheep.engine.mechanics.targeting.withUnambiguousDivision
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.stack.ChosenTarget
 import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
@@ -52,6 +55,13 @@ class EffectAndTriggerContinuationResumer(
         if (response !is TargetsResponse) {
             return ExecutionResult.error(state, "Expected target selection response for triggered ability")
         }
+
+        // Preserve original positions before the legacy alignment below drops optional empties.
+        // Legacy frames without the original requirement domain remain explicitly untracked.
+        val originalTargetSlots = if (response.selectedTargets.keys.all { it in continuation.targetRequirements.indices }) {
+            captureTargetSlots(state, continuation.targetRequirements.size,
+                response.selectedTargets.mapValues { (_, ids) -> ids.map { entityIdToChosenTarget(state, it) } })
+        } else null
 
         // Build the chosen-targets list in requirement-slot order, keeping it PARALLEL to the
         // requirements that actually received a target. A declined "up to one" slot (empty list)
@@ -142,7 +152,7 @@ class EffectAndTriggerContinuationResumer(
                 )
             } ?: effect.totalDamage
             return createTriggerDamageDistributionDecision(
-                state, continuation, selectedTargets, total, checkForMore
+                state, continuation, selectedTargets, total, originalTargetSlots, checkForMore
             )
         }
 
@@ -187,7 +197,8 @@ class EffectAndTriggerContinuationResumer(
             // that says "from among them" still finds them (CR 603.2c) — Kaya, Spirits' Justice
             // is a batch trigger that also targets.
             capturedEntityIds = continuation.capturedEntityIds,
-            interveningIf = continuation.interveningIf
+            interveningIf = continuation.interveningIf,
+            originalTargetSlots = originalTargetSlots
         )
 
         val stackResult = services.stackResolver.putTriggeredAbility(
@@ -210,6 +221,7 @@ class EffectAndTriggerContinuationResumer(
         continuation: TriggeredAbilityContinuation,
         selectedTargets: List<com.wingedsheep.engine.state.components.stack.ChosenTarget>,
         totalDamage: Int,
+        originalTargetSlots: TargetSlotPlan?,
         checkForMore: CheckForMore
     ): ExecutionResult {
         val sourceName = continuation.sourceId.let { sourceId ->
@@ -262,7 +274,8 @@ class EffectAndTriggerContinuationResumer(
             targetRequirements = continuation.targetRequirements,
             totalDamage = totalDamage,
             capturedEntityIds = continuation.capturedEntityIds,
-            interveningIf = continuation.interveningIf
+            interveningIf = continuation.interveningIf,
+            originalTargetSlots = originalTargetSlots
         )
 
         return state.suspendForDecision(question, distributionContinuation, emptyList())
@@ -306,7 +319,10 @@ class EffectAndTriggerContinuationResumer(
             lastKnownToughness = continuation.lastKnownToughness,
             damageDistribution = response.distribution,
             capturedEntityIds = continuation.capturedEntityIds,
-            interveningIf = continuation.interveningIf
+            interveningIf = continuation.interveningIf,
+            originalTargetSlots = continuation.originalTargetSlots?.let { captured ->
+                captured.withUnambiguousDivision(response.distribution) ?: captured
+            }
         )
 
         val stackResult = services.stackResolver.putTriggeredAbility(

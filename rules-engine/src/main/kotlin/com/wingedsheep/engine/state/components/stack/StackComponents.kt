@@ -324,7 +324,14 @@ data class TriggeredAbilityOnStackComponent(
      * [com.wingedsheep.sdk.scripting.TriggeredAbility.triggerRestriction], which CR 603.2 checks
      * only when the trigger would fire.
      */
-    val interveningIf: com.wingedsheep.sdk.scripting.conditions.Condition? = null
+    val interveningIf: com.wingedsheep.sdk.scripting.conditions.Condition? = null,
+    /**
+     * Original groups from this trigger's target-selection response, excluding later/modal
+     * selections. This is not the current target set after retargeting or resolution validation.
+     * Null means this path/history did not capture original groups; never infer them later.
+     */
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val originalTargetSlots: com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan? = null
 ) : Component {
     val hasTargets: Boolean = false  // Will be updated based on effect
 }
