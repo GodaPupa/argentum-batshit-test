@@ -1,0 +1,118 @@
+{
+  "status": "RECEIVER_PREPARED_WITHOUT_OBSERVING_R2_RESULTS",
+  "source": "06c27e1c31efd974300028c8ce5c1ceeac703280",
+  "validation": "2a6630795646b3993314f60211e8544137073dcc",
+  "run": 39946289164,
+  "job": 120389655294,
+  "checks": [
+    "Python AST parse",
+    "JSON parse",
+    "18 immutable Git input hashes",
+    "Read-only source audit PASS",
+    "Independent original56 recount42assertions14pass, preservingR1failed44assertions4NPE22pass"
+  ],
+  "r2_runtime_results_observed": false,
+  "external_independent_review": false,
+  "files": {
+    "BASELINE_DIFFERENTIAL.log": {
+      "bytes": 180186,
+      "sha256": "14b77880d7ef45a8c3cfb5bc31ce340ed17aff6320bb32a577e30bf3f5a327e2"
+    },
+    "BASELINE_REUSE.json": {
+      "bytes": 26691,
+      "sha256": "61e77eb27d19fd161eeb5db7d92ad30de2ee2f0671d32f16ddf7c972b96148da"
+    },
+    "BASELINE_SKIPS.json": {
+      "bytes": 5787,
+      "sha256": "a7ed4f250f87ad43f1ae8f859f35f005329434c31e649bf419b0ea56fb4b9d24"
+    },
+    "BINDINGS.json": {
+      "bytes": 34199,
+      "sha256": "11e09f0b176ad081d49c34cea7da38779a614b34f0f21a129f93fc35ba55addf"
+    },
+    "EXPECTED_CASES.json": {
+      "bytes": 94871,
+      "sha256": "bf67b4f0a48dbf03e2fd8a116f5de5f8d89f3c8ff2c979dd7f6e2bb1f4f00d36"
+    },
+    "GOLDENS.json": {
+      "bytes": 4925,
+      "sha256": "0274c939e7aa1a09075ad6f8631a44d924880043e3ae5e0783571d5bab384f6b"
+    },
+    "ORIGINAL_CASES.json": {
+      "bytes": 16047,
+      "sha256": "0c2c6232989c78d84aee45d59559531ef2c302cca2a42002788f2fae81183ecd"
+    },
+    "PROTOCOL.json": {
+      "bytes": 44170,
+      "sha256": "e67cb3d5f05e9cd31da8b4a10593cc0fd58b8e1af7c95f36649f574faafcc46c"
+    },
+    "R1_ARTIFACT.json": {
+      "bytes": 894,
+      "sha256": "175794178b5a456e60e003789c09ff29de13a37072862a336a210e34a74cceab"
+    },
+    "R1_GIT_SOURCE_AUDIT.json": {
+      "bytes": 50039,
+      "sha256": "400efc503815c7125a7d59ac53c39effa1dd111a93b3c44a6bc82d5d7d2dd034"
+    },
+    "R1_InvalidResponse.kt": {
+      "bytes": 10419,
+      "sha256": "7a2361e32bf26f294383bb42ccb9f660446dd12df8cb118a07fe0d1518c80ae5"
+    },
+    "R1_PROTOCOL.json": {
+      "bytes": 41449,
+      "sha256": "80196300f3fdc220d98154f4ee2bc913ba90fbe105ab2879b8ecb859efa52229"
+    },
+    "R1_RECEIVING_AUDIT.json": {
+      "bytes": 890581,
+      "sha256": "91c1d70f4e5dd932d65329abab6e420c790ebe714c8e480b1fa70c89b2ea944c"
+    },
+    "R1_RUN.json": {
+      "bytes": 23610,
+      "sha256": "60fce299e8bf11e6ea1c2023e43cba9f5faa1b061d9c980e7e2b9299bc758e4c"
+    },
+    "R1_original-12497122147.zip": {
+      "bytes": 103571,
+      "sha256": "252e35406d499cc2b7b8d4f91f6b8ace6338f6034aadefbaa546c302e0f39ca6"
+    },
+    "README.md": {
+      "bytes": 5331,
+      "sha256": "4ea324f9be1637ad8cf38f135a5a989da3d92c5af2d5e7cbabe49a5e25ca4771"
+    },
+    "RECEIVER.json": {
+      "bytes": 7454,
+      "sha256": "e40eca6f7ca8441e5cabb88a1e3513c4d4c3a17c239009404ddc74c1896892f3"
+    },
+    "SOURCE_REVIEW.json": {
+      "bytes": 7396,
+      "sha256": "85fcf118e461223ec0088b7f98dd44c02218bff3940a083ba873304450390ca3"
+    },
+    "SUPPLEMENTAL_REVIEW.json": {
+      "bytes": 7009,
+      "sha256": "87b07aa3f9107d8350fd52c3c9c639d7c8b9df56d2c44eba7f39bc4541170f08"
+    },
+    "WORKFLOW.yml": {
+      "bytes": 9459,
+      "sha256": "47bba6e3123c30af4afaba919a7c0c39fd3dac00496b4c66d299dc651426542c"
+    },
+    "audit_git_source.py": {
+      "bytes": 8026,
+      "sha256": "6c5e2aef864678a747036e0af5f1e253653a7519c053fd1358c2ba385aa97dba"
+    },
+    "audit_reused.py": {
+      "bytes": 11743,
+      "sha256": "43a8c127fb1cb4b472f4f65827fb79f5ad29ab366001d060e30cd11335e5a203"
+    },
+    "common.py": {
+      "bytes": 5800,
+      "sha256": "b43a77402e7d1b25f74434948a65391b56acab1d60516f780d38ccb0b3530600"
+    },
+    "compare_differential.py": {
+      "bytes": 582,
+      "sha256": "7b08e0a78b2e0e4917825c641568149315b6b89b93a40c4dfc2f7161dc320e0c"
+    },
+    "verify.py": {
+      "bytes": 20763,
+      "sha256": "4c749825286a98df53cab8d7ab9c82525c4f6d6fd8aa476ca7254c9c3a34e430"
+    }
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "revision": "R2",
+  "fresh_cases": [
+    {
+      "name": "PI01 rejected color replies preserve routing and permit the original answer; sourceCopy=false, serialized=false",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=false, serialized=false",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 127
+    },
+    {
+      "name": "PI03 rejected Aura hosts preserve routing and permit the original answer; sourceCopy=false, serialized=false",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PI01 rejected color replies preserve routing and permit the original answer; sourceCopy=false, serialized=true",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=false, serialized=true",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 127
+    },
+    {
+      "name": "PI03 rejected Aura hosts preserve routing and permit the original answer; sourceCopy=false, serialized=true",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PI01 rejected color replies preserve routing and permit the original answer; sourceCopy=true, serialized=false",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=true, serialized=false",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 127
+    },
+    {
+      "name": "PI03 rejected Aura hosts preserve routing and permit the original answer; sourceCopy=true, serialized=false",
+      "reason": "Qualified source-copy executor has no Aura-host selection path; pendingDecision is null at first ChooseTargetsDecision assertion.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 136
+    },
+    {
+      "name": "PI01 rejected color replies preserve routing and permit the original answer; sourceCopy=true, serialized=true",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=true, serialized=true",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 127
+    },
+    {
+      "name": "PI03 rejected Aura hosts preserve routing and permit the original answer; sourceCopy=true, serialized=true",
+      "reason": "Qualified source-copy executor has no Aura-host selection path; pendingDecision is null at first ChooseTargetsDecision assertion.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 136
+    },
+    {
+      "name": "PI04 rejected defender groups preserve the whole pending batch; serialized=false",
+      "reason": "Existing indexed defender decision and validators reject missing, illegal, duplicate and undeclared groups without consuming pending routing.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "name": "PI04 rejected defender groups preserve the whole pending batch; serialized=true",
+      "reason": "Existing indexed defender decision and validators reject missing, illegal, duplicate and undeclared groups without consuming pending routing.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    }
+  ],
+  "original_R1_invalid_file": "annex/PausedTokenInvalidResponseTest.R1.kt",
+  "change": "Exactly two inserted lines assert CountersComponent presence before unchanged original count==1 assertion; no original literal assertion removed or altered. PI02 baseline now expected assertion rather than NPE. PI03 source frame shifts134to136.",
+  "original_R1_result": {
+    "rows": 70,
+    "assertion_failures": 44,
+    "null_pointer_exceptions": 4,
+    "passed": 22
+  },
+  "independence": "Same assistant team; no external independent review."
+}

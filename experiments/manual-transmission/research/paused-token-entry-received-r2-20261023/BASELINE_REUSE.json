@@ -1,0 +1,554 @@
+{
+  "status": "PREPARED_SOURCE_BOUND_REUSE_REQUIRES_FINAL_BIND",
+  "receipt": "e0a5ed3ecc95793e7551b133d3209946871274a2",
+  "receipt_path": "experiments/manual-transmission/research/paused-token-entry-received-r1-20261023",
+  "source": "e1a8943913cf36cc5e6b76f6c6f4df2279188b53",
+  "source_tree": "de84e5007b1234cefd7d13ae91e0c91b2c387f61",
+  "validation": "7f5559650fd960e42792a3728ec7c6d900390e64",
+  "validation_tree": "02cbc7f428b85e82e949c97580c83dd95398792f",
+  "baseline": "418cdfdacd5191549e9fc8e4a071330120b071b7",
+  "run_id": 39943006929,
+  "job_id": 120378784251,
+  "attempt": 1,
+  "artifact_id": 12497122147,
+  "artifact_bytes": 103571,
+  "artifact_sha256": "252e35406d499cc2b7b8d4f91f6b8ace6338f6034aadefbaa546c302e0f39ca6",
+  "inputs": {
+    "ARTIFACT.json": {
+      "path": "experiments/manual-transmission/research/paused-token-entry-received-r1-20261023/ARTIFACT.json",
+      "bytes": 894,
+      "sha256": "175794178b5a456e60e003789c09ff29de13a37072862a336a210e34a74cceab"
+    },
+    "RUN.json": {
+      "path": "experiments/manual-transmission/research/paused-token-entry-received-r1-20261023/RUN.json",
+      "bytes": 23610,
+      "sha256": "60fce299e8bf11e6ea1c2023e43cba9f5faa1b061d9c980e7e2b9299bc758e4c"
+    },
+    "PROTOCOL.json": {
+      "path": "experiments/manual-transmission/research/paused-token-entry-received-r1-20261023/PROTOCOL.json",
+      "bytes": 41449,
+      "sha256": "80196300f3fdc220d98154f4ee2bc913ba90fbe105ab2879b8ecb859efa52229"
+    },
+    "RECEIVING_AUDIT.json": {
+      "path": "experiments/manual-transmission/research/paused-token-entry-received-r1-20261023/RECEIVING_AUDIT.json",
+      "bytes": 890581,
+      "sha256": "91c1d70f4e5dd932d65329abab6e420c790ebe714c8e480b1fa70c89b2ea944c"
+    },
+    "GIT_SOURCE_AUDIT.json": {
+      "path": "experiments/manual-transmission/research/paused-token-entry-received-r1-20261023/GIT_SOURCE_AUDIT.json",
+      "bytes": 50039,
+      "sha256": "400efc503815c7125a7d59ac53c39effa1dd111a93b3c44a6bc82d5d7d2dd034"
+    },
+    "original-12497122147.zip": {
+      "path": "experiments/manual-transmission/research/paused-token-entry-received-r1-20261023/original-12497122147.zip",
+      "bytes": 103571,
+      "sha256": "252e35406d499cc2b7b8d4f91f6b8ace6338f6034aadefbaa546c302e0f39ca6"
+    }
+  },
+  "reused_cases": [
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 159,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 159,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PX01 Aura hosts and printed choices finish before either copy enters; sourceCopy=false, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 80
+    },
+    {
+      "name": "PX02 face-down source copies public values without concealed entry choices; sourceCopy=false, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 107
+    },
+    {
+      "name": "PX03 copied intrinsic token abilities survive removal of their original; sourceCopy=false, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    },
+    {
+      "name": "PX01 Aura hosts and printed choices finish before either copy enters; sourceCopy=false, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 80
+    },
+    {
+      "name": "PX02 face-down source copies public values without concealed entry choices; sourceCopy=false, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 107
+    },
+    {
+      "name": "PX03 copied intrinsic token abilities survive removal of their original; sourceCopy=false, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    },
+    {
+      "name": "PX01 Aura hosts and printed choices finish before either copy enters; sourceCopy=true, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 76
+    },
+    {
+      "name": "PX02 face-down source copies public values without concealed entry choices; sourceCopy=true, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 107
+    },
+    {
+      "name": "PX03 copied intrinsic token abilities survive removal of their original; sourceCopy=true, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    },
+    {
+      "name": "PX01 Aura hosts and printed choices finish before either copy enters; sourceCopy=true, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 76
+    },
+    {
+      "name": "PX02 face-down source copies public values without concealed entry choices; sourceCopy=true, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 107
+    },
+    {
+      "name": "PX03 copied intrinsic token abilities survive removal of their original; sourceCopy=true, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR01 printed and granted modes remain independent until one atomic entry; sourceCopy=false, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 63
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=false, serialized=false, double=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=false, serialized=false, double=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR01 printed and granted modes remain independent until one atomic entry; sourceCopy=false, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 63
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=false, serialized=true, double=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=false, serialized=true, double=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR01 printed and granted modes remain independent until one atomic entry; sourceCopy=true, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 63
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=true, serialized=false, double=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=true, serialized=false, double=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR01 printed and granted modes remain independent until one atomic entry; sourceCopy=true, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 63
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=true, serialized=true, double=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=true, serialized=true, double=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF01 Rhythm of the Wild never grants riot to a token copy; sourceCopy=false, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the printed nontoken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF02 a token-only riot grant applies to a token copy before entry; sourceCopy=false, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the synthetic IsToken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF01 Rhythm of the Wild never grants riot to a token copy; sourceCopy=false, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the printed nontoken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF02 a token-only riot grant applies to a token copy before entry; sourceCopy=false, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the synthetic IsToken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF01 Rhythm of the Wild never grants riot to a token copy; sourceCopy=true, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the printed nontoken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF02 a token-only riot grant applies to a token copy before entry; sourceCopy=true, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the synthetic IsToken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF01 Rhythm of the Wild never grants riot to a token copy; sourceCopy=true, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the printed nontoken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF02 a token-only riot grant applies to a token copy before entry; sourceCopy=true, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the synthetic IsToken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    }
+  ],
+  "expected_reused": {
+    "rows": 56,
+    "passed": 14,
+    "failures": 42,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 4
+  },
+  "frame_corrections": [
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "name": "PX01 Aura hosts and printed choices finish before either copy enters; sourceCopy=false, serialized=false",
+      "original_preregistered_first_frame": 81,
+      "observed_original_first_frame": 80,
+      "r2_reused_first_frame": 80,
+      "reason": "Same preserved multiline assertion begins on line80; metadata correction only. R1 remains failed."
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "name": "PX01 Aura hosts and printed choices finish before either copy enters; sourceCopy=false, serialized=true",
+      "original_preregistered_first_frame": 81,
+      "observed_original_first_frame": 80,
+      "r2_reused_first_frame": 80,
+      "reason": "Same preserved multiline assertion begins on line80; metadata correction only. R1 remains failed."
+    }
+  ],
+  "excluded_invalid_cases": {
+    "count": 14,
+    "reason": "Fixture changed. R1PI02four NPEs are failed controls and cannot be admitted as assertions. Execute all changed14 fresh in R2."
+  },
+  "r1_status": "FAILED_UNADOPTED",
+  "r1_actual": {
+    "rows": 70,
+    "passed": 22,
+    "assertion_failures": 44,
+    "null_pointer_exceptions": 4
+  },
+  "r2_composite_expected": {
+    "rows": 70,
+    "passed": 22,
+    "failures": 48,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 5
+  },
+  "original_fixture_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenInvalidResponseTest.kt",
+  "original_fixture_sha256": "7a2361e32bf26f294383bb42ccb9f660446dd12df8cb118a07fe0d1518c80ae5",
+  "policy": "Reuse original observations only; never retrospectively mark R1 qualified. No 56-case baseline rerun. Source production and original56 fixtures must remain byte-identical."
+}
