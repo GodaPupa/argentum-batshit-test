@@ -1,0 +1,55 @@
+{
+  "schema": "MANUAL_PT02_CONTROL_CLOSURE_R1_20261023",
+  "status": "PREREGISTERED_UNEXECUTED_NOT_ADOPTED",
+  "scope": "Close only the four retired PT02 negative-control obligations. Do not rerun the passed full R5 suite or modify any original assertion or production code.",
+  "r5": {
+    "source": "0b5018a0df392acc96d8b38e20dd72ccae3ff48a",
+    "source_tree": "69bd3d85ff043c4f262dafe176d45b6d75752bed",
+    "validation": "c6dbb3094e55914c94d64de65137addb60a971aa",
+    "run": 39989017558,
+    "artifact": 12518249153,
+    "artifact_bytes": 38499892,
+    "artifact_sha256": "17d2158c28299be07a299f99963456fac92389652b6cd69f16d4cddb4e39c1a0",
+    "receipt": "a045a9cc51cad902c884ca7e38aa3b5913c08ae6",
+    "verified_positive_counts": {"focused": 690, "broad": 14753, "ordinary": 18361, "unchanged_skips": 43},
+    "disposition": "ORIGINAL_WORKFLOW_EVIDENCE_VERIFIED_PT02_CONTROL_CLOSURE_PENDING"
+  },
+  "qualified_baseline": "418cdfdacd5191549e9fc8e4a071330120b071b7",
+  "qualified_baseline_receipt": "7e09f9e1a6b7f4542a1de08419883ac922e2f465",
+  "test_derivation": {
+    "original_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenInstructionScenarioTest.kt",
+    "original_git_blob": "2783d8891a70c93b88a1e5be8237cd4ad1afdb83",
+    "derived_path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenPT02ControlClosureTest.kt",
+    "derived_git_blob": "5b5d8e1d13907107670da9bfe320a4e4df6fac48",
+    "derived_sha256": "b6db228698777b8ab869bbd645d5aae4426397471749b3e241f2c12f2c3efd77",
+    "derived_bytes": 6952,
+    "method": "Retain exact imports and helper bytes, rename only the standalone class, preserve the sourceCopy/serialized loop and exact original PT02 body. Omit the unrelated PT01/PT03-PT06 registrations from the new companion only. The original complete test file remains unchanged.",
+    "cases": 4
+  },
+  "negative_prediction": {
+    "variants": ["sourceCopy=false, serialized=false", "sourceCopy=false, serialized=true", "sourceCopy=true, serialized=false", "sourceCopy=true, serialized=true"],
+    "rows": 4,
+    "expected_passes": 0,
+    "expected_assertion_failures": 4,
+    "errors": 0,
+    "skips": 0,
+    "failure_type": "org.opentest4j.AssertionFailedError",
+    "first_frame": "PausedTokenPT02ControlClosureTest.kt:119",
+    "assertion": "stackObjects.count { it.has<TriggeredAbilityOnStackComponent>() } shouldBe 0",
+    "expected_message": "expected:<0> but was:<1>",
+    "basis": "The original qualified-baseline PT02 reports exposed stack sizes 2 for target-copy and 1 for source-copy; the former includes the resolving instant. The legacy entry-choice resumer stacks the first token's watcher trigger before the next batch choice. The typed assertion should now isolate one premature trigger in all four variants. This is a prospective prediction, not an observed result."
+  },
+  "positive_prediction": {"rows": 4, "passed": 4, "failures": 0, "errors": 0, "skips": 0, "requirements": "Original PT02 body verifies zero premature triggers/tokens, exact resolving-spell identity, final two triggers and final life 22, including serialized variants."},
+  "baseline_restore": {
+    "paths_source": "experiments/manual-transmission/research/paused-token-entry-r2-20261023/PROTOCOL.json::baseline_restore_paths",
+    "additional_path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt",
+    "path_count": 10,
+    "production_paths": 9,
+    "test_fixture_paths": 1,
+    "proof": "Require all src/main differences from the qualified baseline to equal the nine restored production paths. Require exact baseline bytes/absences before negative tests. Restore exact candidate bytes and clean tracked tree before positives."
+  },
+  "execution": "One guarded source-bound workflow, exact four-case class on qualified baseline, then same class on the unchanged R5 production source. Preserve original XML, logs, exit codes and all failures. A compiler error, different first frame, wrong failure message or missing case does not close the control gate.",
+  "separation": "These four paired controls are separate from R5's four EP provenance regression controls, the historical 70-case ledger and competitive gameplay. Historical unchanged controls require their own eligibility audit; do not invent a new 70-case single run.",
+  "safeguards": {"main": "37a603617a03dfd2d81b39dae004f7f336a70dfc", "frozen_v07_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89", "protected_bindings": 144, "protected_goldens": 23, "precision_reserved": 2, "official_games": 0, "official_seeds": 0, "production_changes_from_r5": 0, "original_assertion_changes": 0, "competitive_admission": false},
+  "external_independent_review": false
+}
