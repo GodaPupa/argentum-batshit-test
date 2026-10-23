@@ -1,0 +1,38 @@
+{
+  "status": "R5_VERIFIED_PT02_CLOSURE_R2_DISPATCHED",
+  "r5_run": 39989017558,
+  "r5_source": "0b5018a0df392acc96d8b38e20dd72ccae3ff48a",
+  "r5_disposition": "SUCCESS_ORIGINAL_EVIDENCE_RECEIVED_CONTROL_CLOSURE_PENDING",
+  "r5_full_suite_rerun": false,
+  "supersedes_activity_file": "ACTIVITY.json",
+  "prior_closure": {
+    "run": 39998698512,
+    "job": 120568857090,
+    "disposition": "FAILED_BEFORE_TEST_EXECUTION",
+    "artifact": 12521665337,
+    "artifact_bytes": 13348,
+    "artifact_sha256": "c2eed103080ec80c1dbb04aef4625089e752d99f58af429f88e16f1f2122c901",
+    "original_payload_hashes_verified": 8,
+    "zip_crc_valid": true,
+    "junit_reports": 0,
+    "negative_cases_executed": 0,
+    "positive_cases_executed": 0,
+    "cause": "Guard matched /src/main/ anywhere in the path and counted seven historical source archives as live production; exact live source delta is still nine files."
+  },
+  "active_successor": {
+    "run": 39999830370,
+    "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39999830370",
+    "source": "4abd907c0fa1c36ebddb1931f05fb6b6918ff001",
+    "source_tree": "f05354ef3426b159e59343419d6e3d9abda3a95e",
+    "source_branch": "diagnostic/manual-pt02-control-closure-r2-20261023",
+    "validation": "edd02bfefb8ce27a3da8ca3e8831dff723fc118a",
+    "validation_branch": "validation/manual-pt02-control-closure-r2-20261023",
+    "last_observed": "queued",
+    "result": "UNVERIFIED",
+    "scope": "Only corrected path-classification wrapper and failure amendment; original gate, derived four-case fixture, test expectations, original tests and production are unchanged.",
+    "local_checks": "Wrapper syntax, exact nine-live/seven-archive classifier, unknown-live-file rejection and missing-archive rejection passed; these are harness checks, not engine test outcomes."
+  },
+  "recovery": "Check run 39999830370, not the addressed pretest failure. Never duplicate/replay either successful R5 or this successor. On terminal result, verify original archive, four expected qualified-baseline assertion failures and four candidate passes before claiming PT02 closure. Reconcile all historical control eligibility before bounded component adoption.",
+  "safeguards": {"original_assertion_changes": 0, "production_changes_from_r5": 0, "protected_goldens": 23, "precision_reserved": 2, "official_games": 0, "official_seeds": 0, "main_merge": false, "deck_changes": false},
+  "intervention": "No additional user authority required for the current scoped control closure."
+}
