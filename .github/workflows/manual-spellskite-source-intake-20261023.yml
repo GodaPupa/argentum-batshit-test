@@ -1,0 +1,43 @@
+name: Manual Spellskite qualified-source intake
+on:
+  push:
+    branches: [validation/manual-spellskite-source-intake-20261023]
+    paths: ['.github/workflows/manual-spellskite-source-intake-20261023.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: 0b5018a0df392acc96d8b38e20dd72ccae3ff48a
+  SOURCE_TREE: 69bd3d85ff043c4f262dafe176d45b6d75752bed
+jobs:
+  archive:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: 0b5018a0df392acc96d8b38e20dd72ccae3ff48a
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Bind qualified source and export relevant tracked code only
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$SOURCE"
+          test "$(git rev-parse HEAD^{tree})" = "$SOURCE_TREE"
+          mkdir -p intake
+          paths=(AGENTS.md CONTRIBUTING.md .agents/skills docs mtg-sdk rules-engine oracle-assay justfile scripts gradle build.gradle.kts settings.gradle.kts gradle.properties)
+          git archive --format=tar.gz "$SOURCE" -- "${paths[@]}" > intake/qualified-r5-source.tar.gz
+          git ls-tree -r "$SOURCE" -- "${paths[@]}" > intake/GIT_BLOBS.txt
+          printf '%s\n' "$SOURCE" "$SOURCE_TREE" "$GITHUB_SHA" "$GITHUB_RUN_ID" "$GITHUB_RUN_ATTEMPT" > intake/IDENTITY.txt
+          printf '%s\n' 'SOURCE_INTAKE_ONLY_NO_IMPLEMENTATION_NO_TEST_EXECUTION_NO_GAMES' > intake/DISPOSITION.txt
+          (cd intake && sha256sum qualified-r5-source.tar.gz GIT_BLOBS.txt IDENTITY.txt DISPOSITION.txt > SHA256SUMS)
+          test -z "$(git status --porcelain --untracked-files=no)"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: manual-spellskite-qualified-source-intake-${{ github.run_id }}
+          path: intake/
+          retention-days: 90
+          if-no-files-found: error
