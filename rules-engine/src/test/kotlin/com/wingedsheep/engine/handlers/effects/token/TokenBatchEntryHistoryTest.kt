@@ -67,7 +67,10 @@ class TokenBatchEntryHistoryTest : FunSpec({
         players = listOf(PlayerConfig("Batch seat1", Deck(List(40) { host.name })),
             PlayerConfig("Batch seat2", Deck(List(40) { host.name }))),
         skipMulligans = true, startingPlayerIndex = 0, seed = 0x4D54454E545259L,
-    )).state.copy(phase = Phase.PRECOMBAT_MAIN, step = Step.PRECOMBAT_MAIN)
+    )).state.copy(phase = Phase.PRECOMBAT_MAIN, step = Step.PRECOMBAT_MAIN).let { state ->
+        // An explicit empty fixture history also exists before the first real arrival.
+        state.updateEntity(state.turnOrder[0]) { it.with(PermanentsEnteredUnderControlThisTurnComponent()) }
+    }
     fun put(state: GameState, definition: CardDefinition): Pair<GameState, EntityId> {
         val owner = state.turnOrder[0]
         val (id, next) = state.newEntity()

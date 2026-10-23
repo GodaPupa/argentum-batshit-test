@@ -1,0 +1,385 @@
+{
+  "status": "DRAFT_UNCOMPILED_UNTESTED_UNADOPTED_NOT_DISPATCHABLE",
+  "dependency_source": "418cdfdacd5191549e9fc8e4a071330120b071b7",
+  "dependency_tree": "fdb37800de1dbabfa076e15f7d43577e5d3a91d2",
+  "dependency_state": "Run39875902205 still active; no final qualification assumed. Source checkout remains clean.",
+  "last_qualified_entry_source": "a94e01a76df686200812f0cb75611c80c73b9f4b",
+  "qualified_receipt": "77d26817964f9325737dd88ccac6bb03d298c137",
+  "source_manifest": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingTokenEntryContinuations.kt": {
+      "bytes": 2146,
+      "sha256": "06b94171894c5effa92b6cf65d4c127ae90117bcce9b33a8a511a5512360e01c",
+      "baseline_sha256": null
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/Serialization.kt": {
+      "bytes": 34248,
+      "sha256": "3fdb2a032213622cfc539e63b493997931faf21b3b52c46193c4897de3f7ecf2",
+      "baseline_sha256": "ad220c8e307d49bd3010c6b6198727716e96a60bfd4efdfdfcebc98be41098b9"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/PendingEntryContinuationResumer.kt": {
+      "bytes": 2528,
+      "sha256": "00f381079fdb450d0930d1fd1c4f66146eac4a37fbcd1386473dc77421849004",
+      "baseline_sha256": "abd2ac477ceab449eca5422a0b9e7de1570362c752fe59f84a41fd815a3483ba"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EntersWithReplacements.kt": {
+      "bytes": 33031,
+      "sha256": "22373e8bbefc3cde923b675cc420f2ece5827d3637ee24434b30fc236edfba8e",
+      "baseline_sha256": "8973862c9d004192c279692e536ab18cabef29457dd3fcafc690a1e6fffc25ae"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfSourceExecutor.kt": {
+      "bytes": 13941,
+      "sha256": "4c45d399f1181c9e9dc268dc3dfdd9b3684f610424a297c748a4e980605631ab",
+      "baseline_sha256": "3b5fbf5d9d4c2cdea28f6d8641ecc4d468366ded2f92c03b02c1763d45689346"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfTargetExecutor.kt": {
+      "bytes": 29032,
+      "sha256": "5f62f31c09b675023e4be7c97713dcc09319690efd0ad7eee0678ddd8b19b547",
+      "baseline_sha256": "69f0721ceef29500768d87c90a50b41b23f591ca02c889f1ed3028887d26a893"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/PendingTokenEntries.kt": {
+      "bytes": 13842,
+      "sha256": "fc17ea986dd7605749f500af2e92dae0261524849ba57126438d21b7d9413459",
+      "baseline_sha256": null
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/handlers/effects/token/TokenBatchEntryHistoryTest.kt": {
+      "bytes": 9791,
+      "sha256": "20ef00e3c00807d49b7a4dc337c30b393ed014ab8ddfea02bec233e2ad9fe68f",
+      "baseline_sha256": "181b34d795f7afae583b177e74f51533078836619ae330a0b489eac91d40f428"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenCopyDetailsTest.kt": {
+      "bytes": 9409,
+      "sha256": "1829a36c3b6154046df6bca7d39085fc83a34ea402b58648c94e4d2a72f28393",
+      "baseline_sha256": null
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenInstructionScenarioTest.kt": {
+      "bytes": 8364,
+      "sha256": "a52bae47dc3cc144cf618bb2cfe145a49a4584608b47ed6cac2c3ffbaf56b4ae",
+      "baseline_sha256": null
+    }
+  },
+  "cases": [
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=false, serialized=false",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=false, serialized=true",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=true, serialized=false",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 159,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT01 no batch member enters before every as-enters choice; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 113,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT02 entry triggers remain unstacked while later batch choices wait; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 124,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT03 copied coentrant observers see both simultaneous arrivals; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT04 one-or-more observer sees one paused token instruction; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 145,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT05 separate copy instructions retain separate entry groups; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PT06 every paused copy retains its delayed exile rider; sourceCopy=true, serialized=true",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 159,
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInstructionScenarioTest"
+    },
+    {
+      "name": "PX01 Aura hosts and printed choices finish before either copy enters; sourceCopy=false, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 81
+    },
+    {
+      "name": "PX02 face-down source copies public values without concealed entry choices; sourceCopy=false, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 107
+    },
+    {
+      "name": "PX03 copied intrinsic token abilities survive removal of their original; sourceCopy=false, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    },
+    {
+      "name": "PX01 Aura hosts and printed choices finish before either copy enters; sourceCopy=false, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 81
+    },
+    {
+      "name": "PX02 face-down source copies public values without concealed entry choices; sourceCopy=false, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 107
+    },
+    {
+      "name": "PX03 copied intrinsic token abilities survive removal of their original; sourceCopy=false, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": false,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    },
+    {
+      "name": "PX01 Aura hosts and printed choices finish before either copy enters; sourceCopy=true, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 76
+    },
+    {
+      "name": "PX02 face-down source copies public values without concealed entry choices; sourceCopy=true, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 107
+    },
+    {
+      "name": "PX03 copied intrinsic token abilities survive removal of their original; sourceCopy=true, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": false,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    },
+    {
+      "name": "PX01 Aura hosts and printed choices finish before either copy enters; sourceCopy=true, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 76
+    },
+    {
+      "name": "PX02 face-down source copies public values without concealed entry choices; sourceCopy=true, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 107
+    },
+    {
+      "name": "PX03 copied intrinsic token abilities survive removal of their original; sourceCopy=true, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenCopyDetailsTest",
+      "source_copy": true,
+      "serialized": true,
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 138
+    }
+  ],
+  "predicted_controls": {
+    "cases": 36,
+    "assertion_failures": 30,
+    "passes": 6,
+    "errors": 0,
+    "skips": 0
+  },
+  "original_test_checkpoint": "5734ec3ae807d40d3bb4414d3b9258c34d8bfe20",
+  "design": [
+    "Future token ids/cards/choice queues are serialized off-state; no battlefield entity is exposed until all entry choices complete.",
+    "Fresh target/source copy instructions use the common plan. Existing legacy continuation types remain registered and unmodified.",
+    "Aura hosts and printed/granted-riot decisions complete before commit; attacking copies preserve a single multi-token defender question.",
+    "Existing token constructors commit saved cards/choices and original entry-source snapshot; full instruction observers are captured before continuation tails.",
+    "Copiable public face-down values and creation-time token abilities use previously qualified shared helpers; later grants are not made copiable.",
+    "Original24testbank byte exact; additional12controls cover Aura+printed choices, face-down values, and copied intrinsic abilities."
+  ],
+  "remaining_before_dispatch": [
+    "Audit and receive current counter/Metamorph qualification; fresh activity exclusion and clean source reconstruction.",
+    "Review all changed paths, exact test case names and baseline first-frame predictions; compile only through a source-bound preregistered workflow.",
+    "Add/review dedicated printed-mode plus multiple granted-riot controls, invalid answers and counter/source-boundary controls.",
+    "Retain original82saved-state fixtures; test legacy input loading without migrating already-published legacy tails.",
+    "Trace server masking and existing decision UI including off-state source ids; actual player-flow validation remains open.",
+    "Bind architecture docs, exact baseline, protected files, all23goldens, required focus/broad/ordinary/Assay counts before dispatch."
+  ],
+  "remaining_entry_gaps": [
+    "Token-from-definition, chosen/equipped producers, generic multi-recipient creation and paused ForEach across several target bodies are not unified by this draft.",
+    "EntersAsCopy and Amplify within token entry are not added here; full replacement ordering remains open.",
+    "Source-copy count/type/additional-token replacement parity is unchanged and remains open.",
+    "Hypothetical entry conditions and intrinsic Saga/loyalty/defense counters need complete original-source boundary review.",
+    "Delayed riders are preserved but broader object-visit provenance and cleanup remain separate review requirements."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}

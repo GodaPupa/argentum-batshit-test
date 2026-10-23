@@ -1917,16 +1917,17 @@ Atomic effect factories. For library/zone manipulation, prefer the pipelines in 
   `null` defaults to the effect's controller. Set it for "**Target player** creates a token that's a copy of
   target creature you control" (Echocasting Symposium): the chosen creature is copied but the token enters
   under the named player's control. Mirrors `CreateTokenEffect.controller`.
-  **Aura copies (CR 303.4h)** need no extra parameter — the executor handles them. A token copy of an Aura
+  **Aura copies (CR 303.4f–g)** need no extra parameter — the executor handles them. A token copy of an Aura
   is created rather than cast, so it never targets; instead its controller *chooses* what it enchants as it
   enters, restricted to what the copied Aura could legally enchant (its `auraTarget`, with targeting
   restrictions such as hexproof/shroud ignored per CR 303.4f). The choice is raised **before** the token
   exists, so it enters already attached and its enters-the-battlefield triggers see the attachment; a
   `PermanentAttachedEvent` fires so "becomes attached" triggers (Eriette, the Beguiler) work. With no legal
   object to enchant the token isn't created at all (CR 303.4g). An effect making several Aura copies asks
-  once per token. Because the choice is a mid-resolution pause, `CREATED_TOKENS` is **not** populated on the
-  Aura path — branch a following step on the copied target instead (Yenna, Redtooth Regent's "if the token
-  is an Aura, untap Yenna, then scry 2").
+  once per token. Fresh source/target copy instructions now retain all host and printed entry choices
+  off the battlefield until the whole instruction is ready. The completed instruction publishes the
+  actual created IDs through `CREATED_TOKENS`, including the fresh paused Aura path. Already serialized
+  legacy Aura continuations retain their prior behavior; they are not rewritten by this preparation.
   Like `CreateToken`, both `CreateTokenCopyOfTarget` and `CreateTokenCopyOfSource` publish their created token
   entity IDs to the `CREATED_TOKENS` pipeline collection, so a sibling effect in a `CompositeEffect` can address
   the new copy — e.g. Applied Geometry's "Create a token that's a copy … Put six +1/+1 counters on it" composes

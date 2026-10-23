@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.handlers.effects.token
 
+import com.wingedsheep.engine.core.PendingTokenEntry
 import com.wingedsheep.engine.core.EffectResult
 import com.wingedsheep.engine.core.ZoneChangeEvent
 import com.wingedsheep.engine.handlers.DynamicAmountEvaluator
@@ -109,6 +110,9 @@ class CreateTokenCopyOfTargetExecutor(
             )
             if (replacement != null) return replacement
         }
+        if (cardRegistry != null) return PendingTokenEntries(
+            cardRegistry, staticAbilityHandler ?: StaticAbilityHandler(cardRegistry),
+        ).begin(state, effect, context, controllerId, count)
         val targetId = context.resolveTarget(effect.target, state) ?: return EffectResult.success(state)
         val targetCard = state.getEntity(targetId)?.get<CardComponent>() ?: return EffectResult.success(state)
         if (auraTypeLineOf(effect, targetCard).isAura) {
@@ -137,6 +141,7 @@ class CreateTokenCopyOfTargetExecutor(
         previouslyCreatedTokens: List<EntityId> = emptyList(),
         // Entry predicates need the complete original battlefield/history, but no executable frames.
         beforeEntry: GameState = state.copy(continuationStack = emptyList()),
+        preparedEntry: PendingTokenEntry? = null,
     ): EffectResult {
         val targetId = context.resolveTarget(effect.target, state)
             ?: return EffectResult.success(state)
@@ -159,7 +164,7 @@ class CreateTokenCopyOfTargetExecutor(
         // (CR 707.2 lists them; layout isn't one). A token copy of a double-faced permanent is a
         // double-faced *token* and can still transform (CR 707.8a / 712.9), which is what the
         // DoubleFacedComponent copied below is for.
-        val tokenCard = CopyExceptionApplier.apply(targetCard, exceptions)
+        val tokenCard = preparedEntry?.card ?: CopyExceptionApplier.apply(targetCard, exceptions)
             .copy(ownerId = controllerId, isDoubleFaced = false)
 
         val cappedCount = com.wingedsheep.engine.core.GameLimits.cappedTokenCount(count, "target-copy tokens")
@@ -174,7 +179,8 @@ class CreateTokenCopyOfTargetExecutor(
         }
         require(defenders.size == cappedCount)
         for (index in 0 until cappedCount) {
-            val (tokenId, stateWithId) = newState.newEntity()
+            val (tokenId, stateWithId) = if (preparedEntry == null) newState.newEntity()
+                else preparedEntry.id to newState
             newState = stateWithId
 
             val components = mutableListOf<Component>(
@@ -201,7 +207,7 @@ class CreateTokenCopyOfTargetExecutor(
             // with the same face up as the source. Counters
             // are intentionally not copied (handled by the absence of CountersComponent copy
             // throughout this executor).
-            targetContainer.get<DoubleFacedComponent>()?.let { sourceDfc ->
+            (if (preparedEntry != null) preparedEntry.doubleFaced else targetContainer.get<DoubleFacedComponent>())?.let { sourceDfc ->
                 components.add(
                     DoubleFacedComponent(
                         frontCardDefinitionId = sourceDfc.frontCardDefinitionId,
@@ -219,6 +225,7 @@ class CreateTokenCopyOfTargetExecutor(
             }
 
             var container = ComponentContainer.of(*components.toTypedArray())
+            preparedEntry?.let { container = container.with(it.choices) }
 
             if (staticAbilityHandler != null) {
                 container = staticAbilityHandler.addContinuousEffectComponent(container)
@@ -231,7 +238,7 @@ class CreateTokenCopyOfTargetExecutor(
                 // control") was therefore silently inert, which for a 0/0 copy meant the token died
                 // to state-based actions the instant it entered. Lower it onto the token's own
                 // ContinuousEffectSourceComponent so the projector sees it like any printed static.
-                if (effect.addedStaticAbilities.isNotEmpty()) {
+                if (preparedEntry == null && effect.addedStaticAbilities.isNotEmpty()) {
                     val granted = staticAbilityHandler
                         .lowerToContinuousEffectData(effect.addedStaticAbilities)
                     val existing = container.get<ContinuousEffectSourceComponent>()?.effects.orEmpty()
@@ -242,6 +249,9 @@ class CreateTokenCopyOfTargetExecutor(
             }
 
             newState = newState.withEntity(tokenId, container)
+            if (preparedEntry != null && cardRegistry != null) newState = com.wingedsheep.engine.handlers.effects.copy.installCopiableTokenAbilities(
+                newState, tokenId, staticAbilityHandler ?: StaticAbilityHandler(cardRegistry),
+            )
             newState = com.wingedsheep.engine.handlers.effects.BattlefieldEntry
                 .place(newState, controllerId, tokenId)
             // A token copy honors global "[filter] enter tapped" replacements (Authority of the
@@ -278,15 +288,21 @@ class CreateTokenCopyOfTargetExecutor(
             // this setup, so apply it here the way the standard entry pipeline does. Non-pausing.
             val (afterCounters, counterEvents) = if (cardRegistry != null) {
                 com.wingedsheep.engine.handlers.effects.EntersWithReplacements
-                    .applyOnEntry(newState, tokenId, controllerId, cardRegistry)
+                    .applyOnEntry(newState, tokenId, controllerId, cardRegistry, sourceState = beforeEntry)
             } else {
                 com.wingedsheep.engine.handlers.effects.EntersWithReplacements
-                    .applyGlobal(newState, tokenId, controllerId, cardRegistry)
+                    .applyGlobal(newState, tokenId, controllerId, cardRegistry, sourceState = beforeEntry)
             }
             newState = afterCounters
             events.addAll(counterEvents)
+            for (mode in preparedEntry?.riotModes.orEmpty()) {
+                val (afterRiot, riotEvents) = com.wingedsheep.engine.handlers.effects.EntersWithReplacements
+                    .applyGrantedRiotBranch(newState, tokenId, controllerId, mode, tokenCard.name, sourceState = beforeEntry)
+                newState = afterRiot
+                events.addAll(riotEvents)
+            }
 
-            for (ability in effect.triggeredAbilities) {
+            for (ability in if (preparedEntry == null) effect.triggeredAbilities else emptyList()) {
                 val grant = GrantedTriggeredAbility(
                     entityId = tokenId,
                     ability = ability,
@@ -300,7 +316,7 @@ class CreateTokenCopyOfTargetExecutor(
             // Activated abilities granted to the copy (e.g. Shelob's Food sacrifice ability). Tokens
             // have no CardDefinition, so granted abilities live in GameState.grantedActivatedAbilities,
             // which the legal-action enumerator and ActivateAbilityHandler consult for any entity.
-            for (ability in effect.activatedAbilities) {
+            for (ability in if (preparedEntry == null) effect.activatedAbilities else emptyList()) {
                 val grant = GrantedActivatedAbility(
                     entityId = tokenId,
                     ability = ability,
@@ -316,7 +332,7 @@ class CreateTokenCopyOfTargetExecutor(
             // cost {2} less to activate\""). Like triggered/activated grants, these live in
             // GameState.grantedStaticAbilities since tokens have no CardDefinition; each static
             // reader (e.g. the equip-cost reducer) unions granted statics with printed ones.
-            for (ability in effect.addedStaticAbilities) {
+            for (ability in if (preparedEntry == null) effect.addedStaticAbilities else emptyList()) {
                 val grant = GrantedStaticAbility(
                     entityId = tokenId,
                     ability = ability,
@@ -335,7 +351,7 @@ class CreateTokenCopyOfTargetExecutor(
             // emit this token's entry ZoneChangeEvent when we pause: the choice resumer synthesizes it
             // after the choice resolves, so ETB triggers fire exactly once (mirroring
             // TokenFromDefinition). Counters already added ride along as carryEvents.
-            val choicePlan = if (cardRegistry != null) {
+            val choicePlan = if (preparedEntry == null && cardRegistry != null) {
                 TokenEntryReplacements.firstEntersWithChoice(newState, tokenId, cardRegistry)
             } else null
             if (choicePlan != null) {

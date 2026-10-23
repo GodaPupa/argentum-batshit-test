@@ -11,6 +11,9 @@ import com.wingedsheep.engine.state.GameState
 internal fun AnswerContinuation.objectReferences(): ObjectReferenceEnvironment? = when (this) {
     is PendingEntryCopyContinuation -> plan.context.objectReferences
     is PendingEntryChoiceContinuation -> plan.context.objectReferences
+    is PendingTokenChoiceContinuation -> plan.context.objectReferences
+    is PendingTokenHostContinuation -> plan.context.objectReferences
+    is PendingTokenDefenderContinuation -> plan.context.objectReferences
     is CounterUnlessPaysContinuation -> objectReferences
     is MayPayManaContinuation -> effectContext.objectReferences
     is MayPayManaSelectionContinuation -> effectContext.objectReferences
@@ -123,6 +126,9 @@ internal fun ContinuationFrame.objectReferences(): ObjectReferenceEnvironment? =
 internal fun AnswerContinuation.withObjectReferences(refs: ObjectReferenceEnvironment): AnswerContinuation = when (this) {
     is PendingEntryCopyContinuation -> copy(plan = plan.copy(context = plan.context.copy(objectReferences = refs)))
     is PendingEntryChoiceContinuation -> copy(plan = plan.copy(context = plan.context.copy(objectReferences = refs)))
+    is PendingTokenChoiceContinuation -> copy(plan = plan.copy(context = plan.context.copy(objectReferences = refs)))
+    is PendingTokenHostContinuation -> copy(plan = plan.copy(context = plan.context.copy(objectReferences = refs)))
+    is PendingTokenDefenderContinuation -> copy(plan = plan.copy(context = plan.context.copy(objectReferences = refs)))
     is CounterUnlessPaysContinuation -> copy(objectReferences = refs)
     is MayPayManaContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))
     is MayPayManaSelectionContinuation -> copy(effectContext = effectContext.copy(objectReferences = refs))

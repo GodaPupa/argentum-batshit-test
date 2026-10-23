@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.handlers.effects.token
 
+import com.wingedsheep.engine.core.PendingTokenEntry
 import com.wingedsheep.engine.core.EffectResult
 import com.wingedsheep.engine.core.GameEvent
 import com.wingedsheep.engine.core.ZoneChangeEvent
@@ -52,7 +53,8 @@ class CreateTokenCopyOfSourceExecutor(
         state: GameState,
         effect: CreateTokenCopyOfSourceEffect,
         context: EffectContext
-    ): EffectResult = createTokens(state, effect, context, context.controllerId, effect.count)
+    ): EffectResult = PendingTokenEntries(cardRegistry, staticAbilityHandler ?: StaticAbilityHandler(cardRegistry))
+        .begin(state, effect, context, context.controllerId, effect.count)
 
     /**
      * Create [count] token copies of the effect's source. Split out of [execute] so the
@@ -67,6 +69,7 @@ class CreateTokenCopyOfSourceExecutor(
         count: Int,
         // Do not let a previously entered sibling change this batch's entry predicates.
         beforeEntry: GameState = state.copy(continuationStack = emptyList()),
+        preparedEntry: PendingTokenEntry? = null,
     ): EffectResult {
         val sourceId = context.sourceId
             ?: return EffectResult.success(state)
@@ -88,12 +91,13 @@ class CreateTokenCopyOfSourceExecutor(
         // Copy the source's CardComponent, re-homing the token to the controller. `isDoubleFaced`
         // is cleared, not inherited: a token is not a card (CR 111.1), so it never answers a
         // "double-faced card" question — see CreateTokenCopyOfTargetExecutor.
-        val tokenCard = CopyExceptionApplier.apply(sourceCard, exceptions)
+        val tokenCard = preparedEntry?.card ?: CopyExceptionApplier.apply(sourceCard, exceptions)
             .copy(ownerId = controllerId, isDoubleFaced = false)
 
         val cappedCount = com.wingedsheep.engine.core.GameLimits.cappedTokenCount(count, "source-copy tokens")
         for (index in 0 until cappedCount) {
-            val (tokenId, stateWithId) = newState.newEntity()
+            val (tokenId, stateWithId) = if (preparedEntry == null) newState.newEntity()
+                else preparedEntry.id to newState
             newState = stateWithId
 
             val components = mutableListOf<Component>(
@@ -103,11 +107,14 @@ class CreateTokenCopyOfSourceExecutor(
                 SummoningSicknessComponent,
                 EnteredThisTurnComponent
             )
+            preparedEntry?.hostId?.let {
+                components.add(com.wingedsheep.engine.state.components.battlefield.AttachedToComponent(it))
+            }
             // CR 707.8a: a token copy of a double-faced permanent has both faces and enters
             // with the same face up as the source. Counters
             // are intentionally not copied (handled by the absence of CountersComponent copy
             // throughout this executor).
-            sourceContainer.get<DoubleFacedComponent>()?.let { sourceDfc ->
+            (if (preparedEntry != null) preparedEntry.doubleFaced else sourceContainer.get<DoubleFacedComponent>())?.let { sourceDfc ->
                 components.add(
                     DoubleFacedComponent(
                         frontCardDefinitionId = sourceDfc.frontCardDefinitionId,
@@ -118,6 +125,7 @@ class CreateTokenCopyOfSourceExecutor(
             }
 
             var container = ComponentContainer.of(*components.toTypedArray())
+            preparedEntry?.let { container = container.with(it.choices) }
 
             // Add static abilities from the card definition (uses cardDefinitionId lookup)
             if (staticAbilityHandler != null) {
@@ -126,10 +134,22 @@ class CreateTokenCopyOfSourceExecutor(
             }
 
             newState = newState.withEntity(tokenId, container)
+            if (preparedEntry != null) newState = com.wingedsheep.engine.handlers.effects.copy.installCopiableTokenAbilities(
+                newState, tokenId, staticAbilityHandler ?: StaticAbilityHandler(cardRegistry),
+            )
 
             // Add to battlefield
             newState = com.wingedsheep.engine.handlers.effects.BattlefieldEntry
                 .place(newState, controllerId, tokenId)
+            preparedEntry?.hostId?.let { hostId ->
+                newState = newState.updateEntity(hostId) { host ->
+                    val attached = host.get<com.wingedsheep.engine.state.components.battlefield.AttachmentsComponent>()?.attachedIds.orEmpty()
+                    host.with(com.wingedsheep.engine.state.components.battlefield.AttachmentsComponent(attached + tokenId))
+                }
+                events.add(com.wingedsheep.engine.core.PermanentAttachedEvent(
+                    tokenId, tokenCard.name, hostId, controllerId,
+                ))
+            }
 
             // A token copy honors global "[filter] enter tapped" replacements (Authority of the
             // Consuls / Dauntless Dismantler on an opponent's token copy).
@@ -140,17 +160,24 @@ class CreateTokenCopyOfSourceExecutor(
             // (a copy of a creature that "enters with a +1/+1 counter") plus global grants from other
             // permanents (Gev, Scaled Scorch). BattlefieldEntry.place skips this, so apply it here.
             val (afterCounters, counterEvents) = EntersWithReplacements.applyOnEntry(
-                newState, tokenId, controllerId, cardRegistry
+                newState, tokenId, controllerId, cardRegistry, sourceState = beforeEntry
             )
             newState = afterCounters
             events.addAll(counterEvents)
+            for (mode in preparedEntry?.riotModes.orEmpty()) {
+                val (afterRiot, riotEvents) = com.wingedsheep.engine.handlers.effects.EntersWithReplacements
+                    .applyGrantedRiotBranch(newState, tokenId, controllerId, mode, tokenCard.name, sourceState = beforeEntry)
+                newState = afterRiot
+                events.addAll(riotEvents)
+            }
 
             // As-enters "choose X as this enters" (CR 614.12) + granted riot (CR 702.136/702.136b):
             // pause for the player's decision. The entry ZoneChangeEvent is deliberately omitted on a
             // pause — the choice resumer synthesizes it after the choice resolves so ETB triggers fire
             // once. Counters already added ride along as carryEvents; the rest of the batch resumes
             // below the choice's continuation.
-            val choicePlan = TokenEntryReplacements.firstEntersWithChoice(newState, tokenId, cardRegistry)
+            val choicePlan = if (preparedEntry == null)
+                TokenEntryReplacements.firstEntersWithChoice(newState, tokenId, cardRegistry) else null
             if (choicePlan != null) {
                 val remaining = cappedCount - (index + 1)
                 var pausedState = newState

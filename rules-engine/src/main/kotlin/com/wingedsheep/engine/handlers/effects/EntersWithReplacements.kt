@@ -66,6 +66,7 @@ object EntersWithReplacements {
         controllerId: EntityId,
         modeId: String,
         entityName: String,
+        sourceState: GameState? = null,
     ): Pair<GameState, List<GameEvent>> {
         val context = EffectContext(sourceId = entityId, controllerId = controllerId)
         val events = mutableListOf<GameEvent>()
@@ -73,7 +74,7 @@ object EntersWithReplacements {
             com.wingedsheep.sdk.dsl.RIOT_MODE_COUNTER -> {
                 val counterType = com.wingedsheep.sdk.core.CounterType.PLUS_ONE_PLUS_ONE
                 val count = ReplacementEffectUtils.applyCounterPlacementModifiers(
-                    state, entityId, counterType, 1, placerId = controllerId
+                    state, entityId, counterType, 1, placerId = controllerId, entrySourceState = sourceState
                 )
                 if (count <= 0) return state to events
                 val current = state.getEntity(entityId)?.get<CountersComponent>() ?: CountersComponent()
