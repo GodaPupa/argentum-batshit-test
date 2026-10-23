@@ -3,13 +3,15 @@
   "updated_date": "2026-10-23",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL_TARGET_SLOT_PREREQUISITE_R1",
-  "owner": null,
+  "status": "WORK_RECEIVING_TARGET_SLOT_PREREQUISITE_R1",
+  "owner": "manual-work-390bd1587480-20261023",
   "lease": {
-    "state": "RELEASED_WAITING_EXTERNAL",
-    "expires_utc": null,
-    "previous_owner": "manual-foreground-20261023-autonomy-init",
-    "recovery": "Inspect the live relevant run and latest ledger before taking ownership. Never rerun the immutable qualification or overlap another owner. A terminal run can be received by the next scheduled execution iteration."
+    "state": "ACTIVE_FOREGROUND",
+    "owner": "manual-work-390bd1587480-20261023",
+    "acquired_utc": "2026-10-23T19:57:00Z",
+    "expires_utc": "2026-10-23T21:57:00Z",
+    "heartbeat_utc": "2026-10-23T19:57:00Z",
+    "recovery": "Work execution owns this ledger. Scheduled executor is paused and its last recorded iteration is completed. Before recovery, inspect live workflows and ledger; do not overlap a legitimate active Work lease. Never rerun the completed qualification merely because ownership changes."
   },
   "last_qualified": {
     "source": "0b5018a0df392acc96d8b38e20dd72ccae3ff48a",
@@ -53,8 +55,10 @@
         "run": 40010257089,
         "job": 120608504200,
         "attempt": 1,
-        "last_observed": "2026-10-23 12:25 Pacific: in_progress; steps 1-9 successful, stage 10 Focused 712 running; no original artifact yet audited.",
-        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/40010257089"
+        "last_observed": "2026-10-23T19:57Z: completed SUCCESS, all steps successful; original artifact12527358718 pending local audit, not yet accepted.",
+        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/40010257089",
+        "artifact": 12527358718,
+        "artifact_sha256": "921e5bc594afe1098de3bf3e2a62cbb07ec119f2a601c115329b52658cc258b5"
       }
     ],
     "planned_not_observed": {
@@ -122,12 +126,12 @@
     "external_independent_review": false,
     "no_successful_workflow_rerun": true
   },
-  "reconcile": "2026-10-23 12:25 Pacific read-only reconciliation: the sole relevant active workflow is run40010257089 at focused stage; requested/waiting/pending all0; old unrelated queued Pest34749202144 untouched. No competing Manual workflow found. Main/protections not edited; no official games or seeds.",
+  "reconcile": "2026-10-23T19:57Z: run40010257089 completed SUCCESS attempt1 at19:50:03Z. in_progress/requested/waiting/pending all0; only queued run34749202144 is unrelated historic Pest and untouched. Main remains37a603617a03dfd2d81b39dae004f7f336a70dfc. No competing lease or scheduled iteration.",
   "automation": {
     "execution_task": "Manual Execution Continuation",
     "execution_task_id": "6adbad91b90881918859ad0cba22b881",
-    "execution_schedule": "HOURLY condition watch, enabled; performs substantive authorized iterations, not continuous real-time execution",
-    "intervention_watch": "Manual Intervention Watch remains separately enabled READ ONLY; follows this ledger and avoids false idle alerts during healthy scheduled handoffs",
-    "handoff": "Foreground source frozen and ownership released. Scheduled executor may receive the terminal original and continue within scope; no user Proceed required."
+    "execution_schedule": "PAUSED for Work execution ownership; is_enabled=false confirmed 2026-10-23T19:56:24Z",
+    "intervention_watch": "Enabled READ ONLY; expectations being updated for Work ownership. Discussion remains read-only.",
+    "handoff": "Safe handoff to Work execution: scheduled task paused, last iteration 741e3792-3a3c-8331-9aef-05b07e50dc2f completed 2026-10-23T19:28:07Z; previous lease released; all active workflow statuses reconciled. Do not re-enable until checkpoint and ownership release."
   }
 }
