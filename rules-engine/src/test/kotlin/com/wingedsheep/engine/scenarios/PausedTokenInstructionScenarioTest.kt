@@ -3,6 +3,9 @@ package com.wingedsheep.engine.scenarios
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.TokenComponent
+import com.wingedsheep.engine.state.components.identity.CardComponent
+import com.wingedsheep.engine.state.components.stack.SpellOnStackComponent
+import com.wingedsheep.engine.state.components.stack.TriggeredAbilityOnStackComponent
 import com.wingedsheep.engine.support.GameTestDriver
 import com.wingedsheep.engine.support.TestCards
 import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder
@@ -121,7 +124,18 @@ class PausedTokenInstructionScenarioTest : FunSpec({
         test("PT02 entry triggers remain unstacked while later batch choices wait; $suffix") {
             val d = begin(sourceCopy, observer = "external")
             color(d, serialized)
-            d.stackSize shouldBe 0 // PT02 first baseline mismatch
+            // Prospective assertion-oracle correction: a paused resolving instant remains
+            // a spell on the stack, but no ETB trigger may be stacked before all choices.
+            val stackObjects = d.state.stack.mapNotNull { d.state.getEntity(it) }
+            stackObjects.count { it.has<TriggeredAbilityOnStackComponent>() } shouldBe 0
+            tokens(d).size shouldBe 0
+            if (sourceCopy) {
+                d.stackSize shouldBe 0
+            } else {
+                d.stackSize shouldBe 1
+                stackObjects.single().has<SpellOnStackComponent>() shouldBe true
+                stackObjects.single().get<CardComponent>()?.name shouldBe "Paused Token Copy Action"
+            }
             (d.pendingDecision is ChooseColorDecision) shouldBe true
             d.getLifeTotal(d.player1) shouldBe 20
             color(d, serialized)
