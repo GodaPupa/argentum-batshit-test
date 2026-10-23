@@ -4,16 +4,17 @@
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "READY_FOR_SCHEDULED_WRITE_ADMISSION",
-  "owner": null,
+  "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-bc4b5c5a-5a54-8331-81ee-08800cdea4eb",
   "lease": {
-    "state": "RELEASED_FOR_SCHEDULED_TAKEOVER",
-    "owner": null,
-    "previous_owner": "manual-work-390bd1587480-20261023",
-    "claimed_utc": "2026-10-23T22:38:42.018Z",
-    "released_utc": "2026-10-23T22:56:19.949Z",
-    "expires_utc": null,
-    "purpose": "Foreground checkpointed and stopped repository execution. Existing single Work task may perform its explicitly authorized one-time CAS write/readback admission, then continue the ledger dependency.",
-    "release_evidence": "Foreground owner explicitly releases; no relevant running/queued/waiting/requested/pending qualification; predecessor scheduled read-only run terminal completed. No inference from lease expiry."
+    "state": "ACTIVE_SCHEDULED",
+    "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-bc4b5c5a-5a54-8331-81ee-08800cdea4eb",
+    "task_id": "6adbe33033e481918659ce578f64f31e",
+    "task_run_id": "bc4b5c5a-5a54-8331-81ee-08800cdea4eb",
+    "claimed_utc": "2026-10-23T22:57:46.526Z",
+    "expires_utc": "2026-10-23T23:42:46.526Z",
+    "purpose": "Perform authorized scheduled CAS write/readback admission and continue next bounded dependency.",
+    "predecessor_blob": "3d7853e5cddc8926c8ecac902570dfe84b3f676d",
+    "predecessor_release_utc": "2026-10-23T22:56:19.949Z"
   },
   "last_qualified": {
     "source": "0b97c51297bf9357c6b37dc2797abb27f7988e91",
@@ -248,7 +249,7 @@
         "qualification_repeated": false
       },
       "write": {
-        "state": "AUTHORIZED_CHECKPOINT_NOT_YET_EXERCISED",
+        "state": "CHECKPOINT_WRITTEN_PENDING_READBACK",
         "authorization": "User explicitly authorized completing the one-time execution handoff and resolving scheduled-write capability through the approved checkpoint process.",
         "authorized_task_id": "6adbe33033e481918659ce578f64f31e",
         "nonce": "manual-work-cas-handoff-20261023-2254",
@@ -258,7 +259,11 @@
         "allowed_operations": "After explicit foreground release and live reconciliation, CAS claim a scheduled lease and record this nonce in CURRENT.json. Read back exact commit/blob/owner/nonce. Only after that successful write/readback, CAS record the first commit and blob as write proof and set execution_admitted=true; read back again. This one-time narrowly authorized checkpoint is permitted before full execution admission. No engine/workflow write before PASS; no preflight repetition. If denied, preserve exact error and stop without another executor.",
         "requires_foreground_release": true,
         "foreground_release_utc": "2026-10-23T22:56:19.949Z",
-        "next_action": "Run existing task once for the authorized CAS lease checkpoint, verify immutable and live readback, record proof commit/blob, admit execution by fresh CAS, then advance target-instance capture under the same ownership protocol."
+        "next_action": "Run existing task once for the authorized CAS lease checkpoint, verify immutable and live readback, record proof commit/blob, admit execution by fresh CAS, then advance target-instance capture under the same ownership protocol.",
+        "checkpoint_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-bc4b5c5a-5a54-8331-81ee-08800cdea4eb",
+        "task_run_id": "bc4b5c5a-5a54-8331-81ee-08800cdea4eb",
+        "observed_predecessor_blob": "3d7853e5cddc8926c8ecac902570dfe84b3f676d",
+        "written_utc": "2026-10-23T22:57:46.526Z"
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
@@ -292,7 +297,7 @@
     "work_owner": "manual-work-390bd1587480-20261023",
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_CHECKPOINT_WRITE_AUTHORIZED_AWAITING_PROOF",
-    "activity": "Foreground stopped after explicit release; next existing scheduled iteration is authorized to complete write admission. No claim of a currently active workflow/worker."
+    "activity": "Scheduled Work iteration owns the lease and is exercising the authorized CURRENT.json CAS checkpoint; full execution not yet admitted."
   },
   "blockers": [],
   "qualified_components": {
