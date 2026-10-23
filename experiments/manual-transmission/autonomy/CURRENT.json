@@ -1,19 +1,26 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-23T23:54:39.203Z",
+  "updated_date": "2026-10-23T23:55:34.845Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "PREPARED_QUALIFICATION",
-  "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-cadfa277-762c-8322-b50d-4b7415f13876",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE_SCHEDULED",
-    "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-cadfa277-762c-8322-b50d-4b7415f13876",
+    "state": "RELEASED",
+    "owner": null,
+    "released_by": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-cadfa277-762c-8322-b50d-4b7415f13876",
     "task_id": "6adbe33033e481918659ce578f64f31e",
     "task_run_id": "cadfa277-762c-8322-b50d-4b7415f13876",
     "claimed_utc": "2026-10-23T23:41:32.374Z",
-    "expires_utc": "2026-10-24T00:31:32.375Z",
-    "predecessor_blob": "74e72e19cf1432deb1a041b67759b0ef2b9b19b6",
-    "purpose": "Implement bounded original target-instance capture and prepare exact source qualification; preserve protected resolver and accepted evidence."
+    "released_utc": "2026-10-23T23:55:34.845Z",
+    "expires_utc": null,
+    "reason": "One justified qualification is actively executing in GitHub; this scheduled iteration ends. No persistent worker is claimed between iterations.",
+    "external_workflow": {
+      "run": 40042262594,
+      "job": 120715824078,
+      "attempt": 1,
+      "status": "in_progress"
+    }
   },
   "last_qualified": {
     "source": "0b97c51297bf9357c6b37dc2797abb27f7988e91",
@@ -58,7 +65,9 @@
     "validation": "4646708a76387558aff840a900a4d7f3c814fff6",
     "validation_branch": "validation/manual-target-slot-capture-r1-20261023",
     "workflow": ".github/workflows/manual-target-slot-capture-r1-20261023.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40042262594
+    ],
     "planned_not_observed": {
       "new_helper_cases": 10,
       "new_integration_cases": 6,
@@ -75,7 +84,7 @@
     },
     "negative_scope": "Compile exact normal and group/visit-loss mutant through locked just commands, then require only CM01/CM02 AssertionFailedError at frames19/23. Reject missing reports, compilation errors, unrelated failed tasks, identity/frame/type changes/skips. Restore/rebind before all positives.",
     "source_delta": "Exactly 10 paths versus accepted R2: 3 modified unprotected production files, 1 new helper, 3 new test files, 3 new protocol/design/gate files. Protected StackResolver and all original assertions untouched.",
-    "next_executable_action": "Launch prepared validation commit4646708a76387558aff840a900a4d7f3c814fff6 once by expected-head update from candidate544174be623e1dab3082fcab8f82cc394ce3d11b after this checkpoint; fresh reconciliation found no relevant active workflow. If dispatch already occurred, receive its original run instead of relaunching.",
+    "next_executable_action": "Reconcile live ledger/leases/recent checkpoints and run40042262594 (job120715824078, attempt1, validation4646708a76387558aff840a900a4d7f3c814fff6). If active, save WAITING_EXTERNAL and end without duplicate dispatch or polling. When terminal, receive its original artifact manual-target-slot-capture-r1-40042262594 exactly once; verify source544174be623e1dab3082fcab8f82cc394ce3d11b/tree7416004ba1e249ee2f993609bc6ca5baa89b5b82, workflow/job/attempt, bytes/digest/manifest, compiled normal and mutant controls, exact CM01/CM02 assertion failures at19/23, source restoration/rebinding, all declared positive gates, raw test identities/multiplicities versus accepted R2, exact43 skips, unchanged51 Assay findings,144 bindings,23 goldens and82 fixtures. Preserve failure evidence and diagnose bounded cause if rejected; green workflow is not acceptance. Publish precise bounded receipt before next modal/splice/other capture dependency. Never rerun accepted R2/structural/R5/PT02.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -194,7 +203,7 @@
     },
     "validation_tree": "7eefe610776dce7f0466a619f5b246ace6d10699",
     "capture_preparation": {
-      "state": "SOURCE_AND_PROTOCOL_FROZEN_NOT_QUALIFIED",
+      "state": "QUALIFICATION_LAUNCHED_NOT_ACCEPTED",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
       "tree": "7416004ba1e249ee2f993609bc6ca5baa89b5b82",
       "protocol_blob": "ec5ddcbaf7c2e29dede20838851c6d12570a7ed0",
@@ -206,6 +215,36 @@
       "external_independent_review": false,
       "original_positive_identity_counters": "Pinned to original accepted R2 artifact across focused/broad/ordinary, including multiplicities.",
       "scope": "Original response provenance only, not current retarget set or resolver authority; modal/splice/other paths remain."
+    },
+    "capture_qualification": {
+      "state": "IN_PROGRESS_NOT_ACCEPTED",
+      "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
+      "source_tree": "7416004ba1e249ee2f993609bc6ca5baa89b5b82",
+      "validation": "4646708a76387558aff840a900a4d7f3c814fff6",
+      "validation_tree": "7eefe610776dce7f0466a619f5b246ace6d10699",
+      "workflow": ".github/workflows/manual-target-slot-capture-r1-20261023.yml",
+      "workflow_blob": "a38a6d6403e4a28bf946f7a124bca2b17d60ea9d",
+      "workflow_id": 394688101,
+      "run": 40042262594,
+      "job": 120715824078,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "dispatched_utc": "2026-10-23T23:54:45.737Z",
+      "observed_utc": "2026-10-23T23:55:34.845Z",
+      "status": "in_progress",
+      "job_status": "in_progress",
+      "conclusion": null,
+      "artifact": null,
+      "artifact_bytes": null,
+      "artifact_sha256": null,
+      "expected_artifact_name": "manual-target-slot-capture-r1-40042262594",
+      "source_and_protocol_review": "Owner static review; remote immutable source/protocol/workflow readback verified; no external independent review claimed.",
+      "runtime_results": "NOT_YET_OBSERVED",
+      "scope": "Bounded original trigger selection provenance retained through damage-division pause; not current retarget state, full modal/splice/resolver integration, Spellskite or multiplayer acceptance.",
+      "official_games": 0,
+      "official_seeds": 0,
+      "precision_reserved": 2
     }
   },
   "completion_contract": {
@@ -434,13 +473,24 @@
     "202": "n",
     "203": "t",
     "204": ".",
-    "last_checked_utc": "2026-10-23T23:54:15.774Z",
-    "relevant_active_workflows": [],
+    "last_checked_utc": "2026-10-23T23:55:34.845Z",
+    "relevant_active_workflows": [
+      {
+        "run": 40042262594,
+        "job": 120715824078,
+        "attempt": 1,
+        "head": "4646708a76387558aff840a900a4d7f3c814fff6",
+        "event": "push",
+        "status": "in_progress"
+      }
+    ],
     "ignored_unrelated_ancient_run": 34749202144,
-    "current_worker": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-cadfa277-762c-8322-b50d-4b7415f13876",
+    "current_worker": null,
     "observed_ledger_predecessor_blob": "d592d2fa051cf4c541b262de86dacd3bbbd5f29f",
     "former_discussion_executor_paused": true,
-    "intervention_watch_read_only": true
+    "intervention_watch_read_only": true,
+    "latest_checkpoint_before_release": "409a43d77bccdea7b619efed3043d9b0db0efd74",
+    "qualification_repeated": false
   },
   "automation": {
     "execution_task": "Manual Work Continuation",
@@ -451,8 +501,8 @@
       "enabled": false,
       "policy": "STRICTLY_READ_ONLY",
       "replaces_inaccessible": "6adb974501708191964fa06f742460af",
-      "expectations_updated_utc": "2026-10-23T22:56:19.949Z",
-      "expectations": "Read-only watch follows live Work task admission/ownership, accepted R2 receipt and next dependency; ordinary released hourly handoff is not abandonment. Existing paused state preserved."
+      "expectations_updated_utc": "2026-10-23T23:55:34.845Z",
+      "expectations": "Strictly read-only. Work execution admitted; source544174be is under one pending qualification40042262594. WAITING_EXTERNAL with released lease is an honest handoff, not abandonment. Do not duplicate/cancel workflows or promote green runs without original-artifact acceptance. Preserve existing paused watch state."
     },
     "handoff": "COMPLETE: foreground explicitly released, scheduled owner exercised CAS write/readback, recorded admission and created/read back isolated checkpoint. Existing task remains enabled for normal execution; bootstrap removed from saved prompt. This iteration now releases ownership. Former Discussion task remains paused; watch remains paused/read-only.",
     "execution_admitted": true,
@@ -530,8 +580,8 @@
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
-    "last_verified_enabled_utc": "2026-10-23T23:02:40.408Z",
-    "next_authorized_action": "Launch prepared validation commit4646708a76387558aff840a900a4d7f3c814fff6 once by expected-head update from candidate544174be623e1dab3082fcab8f82cc394ce3d11b after this checkpoint; fresh reconciliation found no relevant active workflow. If dispatch already occurred, receive its original run instead of relaunching."
+    "last_verified_enabled_utc": "2026-10-23T23:54:15.774Z",
+    "next_authorized_action": "Reconcile live ledger/leases/recent checkpoints and run40042262594 (job120715824078, attempt1, validation4646708a76387558aff840a900a4d7f3c814fff6). If active, save WAITING_EXTERNAL and end without duplicate dispatch or polling. When terminal, receive its original artifact manual-target-slot-capture-r1-40042262594 exactly once; verify source544174be623e1dab3082fcab8f82cc394ce3d11b/tree7416004ba1e249ee2f993609bc6ca5baa89b5b82, workflow/job/attempt, bytes/digest/manifest, compiled normal and mutant controls, exact CM01/CM02 assertion failures at19/23, source restoration/rebinding, all declared positive gates, raw test identities/multiplicities versus accepted R2, exact43 skips, unchanged51 Assay findings,144 bindings,23 goldens and82 fixtures. Preserve failure evidence and diagnose bounded cause if rejected; green workflow is not acceptance. Publish precise bounded receipt before next modal/splice/other capture dependency. Never rerun accepted R2/structural/R5/PT02."
   },
   "previous_qualified": {
     "source": "0b5018a0df392acc96d8b38e20dd72ccae3ff48a",
