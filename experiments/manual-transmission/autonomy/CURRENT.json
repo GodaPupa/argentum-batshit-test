@@ -3,7 +3,7 @@
   "updated_date": "2026-10-23",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "RETARGET_HISTORY_R2_FROZEN_READY_SINGLE_DISPATCH",
+  "status": "WAITING_EXTERNAL_RETARGET_HISTORY_R2",
   "owner": "manual-work-390bd1587480-20261023",
   "lease": {
     "state": "ACTIVE_FOREGROUND",
@@ -55,7 +55,18 @@
     "validation": "e3d7a572d3095323c8155d7e30b850343c910ab6",
     "validation_branch": "validation/manual-retarget-history-r2-20261023",
     "workflow": ".github/workflows/manual-retarget-history-r2-20261023.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      {
+        "run": 40021229824,
+        "job": 120646000839,
+        "attempt": 1,
+        "source": "0b97c51297bf9357c6b37dc2797abb27f7988e91",
+        "validation": "e3d7a572d3095323c8155d7e30b850343c910ab6",
+        "status": "in_progress",
+        "last_observed": "2026-10-23T20:42:30.215Z: initial setup; compilation and all behavior pending",
+        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/40021229824"
+      }
+    ],
     "planned_not_observed": {
       "new_helper_cases": 12,
       "new_integration_cases": 4,
@@ -69,7 +80,7 @@
     },
     "negative_scope": "Three compilation controls first: unchanged normal pass, exact original-broken replay five entityId errors (diagnostic only), repaired full-recapture mutant pass. Then exactly two unchanged behavioral assertion failures; restore/rebind and all unchanged positive gates.",
     "source_delta": "Seven new recovery/protocol/forensic files only versus R1. All production and test source byte-identical; both witnesses and23/28 assertion frames unchanged.",
-    "next_executable_action": "Dispatch exactly once by advancing the prepared validation branch from candidate0b97c512 to validatione3d7a572; persist exact run/job. Receive compilation controls, original two behavioral failures and all declared positive reports. Do not duplicate any run or count compilation failure as behavioral evidence.",
+    "next_executable_action": "Receive original run40021229824/job120646000839 attempt1. First verify normal compilation, expected exact original broken replay (not behavioral evidence), corrected-mutant compilation, two exact witness assertion failures23/28, restore/rebind; then all original focused/broad/ordinary/Assay gates. Preserve any new failure; do not dispatch another run while this one is active.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -83,7 +94,7 @@
       "meaning": "Read-only export of qualified R5 source, not a test or card-implementation result. Reuse if local code is unavailable; do not repeat intake."
     },
     "receipt_preflight": {
-      "state": "R2_SOURCE_PROTOCOL_REVIEWED_AWAITING_SINGLE_RUN",
+      "state": "R2_ORIGINAL_RUNNING_NOT_RECEIVED",
       "failed_original_preserved": true,
       "original_assertions_unchanged": true,
       "source": "0b97c51297bf9357c6b37dc2797abb27f7988e91",
@@ -106,7 +117,8 @@
         "protected_bindings": 144,
         "protected_goldens": 23,
         "legacy_fixture_files": 82
-      }
+      },
+      "prepared_for_run": 40021229824
     },
     "accepted_structural_receipt": "2f58739cc332d22965eaf6d99dcc6cde1102c5cc",
     "remaining_integration_constraint": {
@@ -151,7 +163,7 @@
     "external_independent_review": false,
     "no_successful_workflow_rerun": true
   },
-  "reconcile": "2026-10-23T20:41:54.383Z: source comparison exactly seven additive metadata/archive files; validation comparison exactly one added workflow. All live run statuses show no relevant work; unrelated queued34749202144 untouched. No run for new validation yet. Main unchanged; executor disabled and last iteration completed.",
+  "reconcile": "2026-10-23T20:42:30.215Z: exactly one run40021229824 at validatione3d7a572 attempt1/number1; no duplicate dispatched.",
   "automation": {
     "execution_task": "Manual Execution Continuation",
     "execution_task_id": "6adbad91b90881918859ad0cba22b881",
@@ -187,6 +199,6 @@
     "work_owner": "manual-work-390bd1587480-20261023",
     "discussion": "READ_ONLY",
     "scheduled_executor": "PAUSED",
-    "activity": "Foreground Work preparing one reviewed successor dispatch; compilation and behavior pending."
+    "activity": "GitHub R2 qualification40021229824 active; Work foreground checking diagnostic controls and preparing original-artifact receipt."
   }
 }
