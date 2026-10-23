@@ -1,0 +1,101 @@
+{
+  "schema": "manual-target-slot-structural-prerequisite-r1",
+  "status": "SOURCE_FROZEN_NOT_EXECUTED_NOT_ADOPTED",
+  "base": "0b5018a0df392acc96d8b38e20dd72ccae3ff48a",
+  "base_tree": "69bd3d85ff043c4f262dafe176d45b6d75752bed",
+  "authority": "2026-10-23 user authorized full autonomous continuation under the unchanged scientific protocol",
+  "scope": "Pure serializable target-instance/occurrence representation and single-recipient update; NO live capture/resolver integration, NO legality decision, NO Spellskite implementation or registration.",
+  "source_intake": {
+    "run": 40007352951,
+    "artifact": 12524238468,
+    "bytes": 10087584,
+    "sha256": "130dd7aa6d9f085cbd253f9175c30f0b41edd6f5402f75e3ff425fb07f091e86",
+    "verified_git_blobs": 2523
+  },
+  "rules_reference": {
+    "source": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.txt",
+    "effective": "2026-09-25",
+    "reviewed": "2026-10-23",
+    "sections": [
+      "115.3",
+      "115.7b",
+      "115.7e",
+      "115.7f",
+      "115.8"
+    ],
+    "interpretation": "Target groups, exactly-one-slot replacement, unchanged division and modes are requirements for later integration; this data model alone does not implement all cited rules."
+  },
+  "implementation_sha256": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetSlotPlan.kt": "596b05a98191f056359b59c86e81871990c4ad995064b9bfab98a3cbc755c1c1",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetSlotPlanTest.kt": "aa5169f18be433ab62ead5a428d898280f4d1ae3204cbe71807d2734a2a2eba7",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetSlotMutationWitnessTest.kt": "1c12a3152538ae8682bf3d7ce8c9f7e5fcd5544214a1c9fc4abe88376e38b575"
+  },
+  "new_test_cases": {
+    "TargetSlotPlanTest": [
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS01 empty plan retains zero occurrences",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS02 empty optional instances do not renumber later targets",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS03 each selected occurrence has an explicit stable address",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS04 replacing one recipient preserves every other slot and original plan",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS05 an exact no-op returns the original plan",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS06 duplicate current object within one instance is rejected",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS07 separate targeting instances may select the same current object",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS08 the same physical entity can retain distinct old and new visits",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS09 later redirections never refresh an unchanged old visit",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS10 original division stays attached to the redirected occurrence",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS11 repeated recipients in distinct instances never merge their divisions",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS12 serialization retains empty instances and distinct visits and divisions",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS13 unchanged untracked historical targets are not recaptured",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS14 unknown instance address is rejected",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS15 unknown target address is rejected",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS16 a captured reference must name its selected entity",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS17 a player has no captured zone visit",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS18 negative division and negative addresses are rejected",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS19 replacing by a newer visit is not a physical-id no-op",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotPlanTest::TS20 unknown legacy visit is not assumed different to allow an intra-instance duplicate"
+    ],
+    "TargetSlotMutationWitnessTest": [
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotMutationWitnessTest::MW01 a different recipient actually replaces the selected slot",
+      "com.wingedsheep.engine.mechanics.targeting.TargetSlotMutationWitnessTest::MW02 a newly selected visit does not retain the prior selected visit"
+    ]
+  },
+  "mutation": {
+    "kind": "compiled implementation mutation, not qualified baseline",
+    "change": "Discard the one-slot update by returning this after construction instead of the new plan. Only the newly added production file changes temporarily.",
+    "expected": {
+      "tests": 2,
+      "assertion_failures": 2,
+      "passes": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "restore": "Exact source blob restored and bound before positive phases"
+  },
+  "mutation_first_frames": {
+    "com.wingedsheep.engine.mechanics.targeting.TargetSlotMutationWitnessTest::MW01 a different recipient actually replaces the selected slot": 18,
+    "com.wingedsheep.engine.mechanics.targeting.TargetSlotMutationWitnessTest::MW02 a newly selected visit does not retain the prior selected visit": 25
+  },
+  "positive_counts": {
+    "focused": 712,
+    "focused_new_cases": 22,
+    "engine": 4000,
+    "broad": 14775,
+    "ordinary_passes": 18383,
+    "ordinary_skips": 43,
+    "assay_units": 568,
+    "assay_touchstone": 2000,
+    "unresolved_assay_findings": 51
+  },
+  "negative_evidence_limitation": "No historical qualified baseline can compile this new type; do not label missing-type compilation as behavioral RED. Two executable mutation witnesses are the declared structural controls, not full Spellskite controls.",
+  "protected": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "bindings": 144,
+    "goldens": 23,
+    "precision_reserved": 2,
+    "official_games": 0,
+    "official_seeds": 0,
+    "all_existing_files_unchanged": true
+  },
+  "next_integration": "Bind original target-instance indices/counts at selection; preserve per-slot visits at retarget and resolution; update modal/splice/damage views; enforce original source/controller, relations, no-op and targeting events; then qualify actual Spellskite and metadata/printing/UX. Do not register the card from this gate alone.",
+  "independence": "Same-assistant engineering review, no external independent reviewer."
+}
