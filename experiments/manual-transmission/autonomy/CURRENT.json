@@ -3,15 +3,14 @@
   "updated_date": "2026-10-23",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WORK_PREPARING_RETARGET_HISTORY_QUALIFICATION",
-  "owner": "manual-work-390bd1587480-20261023",
+  "status": "WAITING_EXTERNAL_RETARGET_HISTORY_R1",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE_FOREGROUND",
-    "owner": "manual-work-390bd1587480-20261023",
-    "acquired_utc": "2026-10-23T19:57:00Z",
-    "expires_utc": "2026-10-23T21:57:00Z",
-    "heartbeat_utc": "2026-10-23T20:13:14.670Z",
-    "recovery": "Work execution owns this ledger. Scheduled executor is paused and its last recorded iteration is completed. Before recovery, inspect live workflows and ledger; do not overlap a legitimate active Work lease. Never rerun the completed qualification merely because ownership changes."
+    "state": "RELEASED_WAITING_EXTERNAL",
+    "expires_utc": null,
+    "previous_owner": "manual-work-390bd1587480-20261023",
+    "released_utc": "2026-10-23T20:14:40.064Z",
+    "recovery": "Work remains primary execution channel. Scheduled executor stays paused. On continuation, reconcile this run and all workflow/lease activity, receive the original terminal artifact once, then claim a fresh Work lease before writes. Do not rerun completed qualification or re-enable the schedule without saved checkpoint and explicit ownership release."
   },
   "last_qualified": {
     "source": "5bc1b733d3e19fee4da7e33174bf4a480bd92812",
@@ -56,7 +55,18 @@
     "validation": "1540fd7f2e1c8bf17a74cd8440bbf2cdb88d5cc7",
     "validation_branch": "validation/manual-retarget-history-r1-20261023",
     "workflow": ".github/workflows/manual-retarget-history-r1-20261023.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      {
+        "run": 40017590859,
+        "job": 120633551904,
+        "attempt": 1,
+        "source": "3e55adacde36f96636776165744ebc85508c12c5",
+        "validation": "1540fd7f2e1c8bf17a74cd8440bbf2cdb88d5cc7",
+        "status": "in_progress",
+        "last_observed": "2026-10-23T20:14:40.064Z: active; no original artifact or behavioral outcome yet received.",
+        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/40017590859"
+      }
+    ],
     "planned_not_observed": {
       "new_helper_cases": 12,
       "new_integration_cases": 4,
@@ -70,7 +80,7 @@
     },
     "negative_scope": "Compiled full-recapture mutation in new RetargetHistory.kt; exact two AssertionFailedError first frames23/28. No missing-type or historical-baseline claim.",
     "source_delta": "One modified production file ContestedRetargetExecutors.kt plus seven additions (helper,3 test classes, protocol,design,gate). All preexisting tests,144 protected bindings,23 goldens and82 fixture files unchanged.",
-    "next_executable_action": "After one final live ownership/workflow reconciliation, publish validation branch transition exactly once to1540fd7f2e1c8bf17a74cd8440bbf2cdb88d5cc7. Record actual run and wait for original artifact. Do not repeat completed target-slot R1.",
+    "next_executable_action": "Receive terminal original run40017590859 artifact once: verify GitHub ZIP hash/size, all manifest paths, source3e55adacde36f96636776165744ebc85508c12c5/tree debfcfaad7294a8a774ab1d278efb28212efe134 and validation1540fd7f2e1c8bf17a74cd8440bbf2cdb88d5cc7, exact original mutation2 assertion frames23/28, restoration, frozen730 focused identities, broad14793/engine4018, ordinary18401 +exact43 skips, executed task scopes,11 inherited duplicate pairs, raw Assay corpus and51 byte-identical findings,144 bindings/23goldens/82fixtures. Preserve any failure before a bounded successor; never retry unchanged successes. If accepted, continue target-instance capture/full occurrence integration after resolving the documented protected resolver boundary. No Spellskite/card/competitive admission implied.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -84,10 +94,30 @@
       "meaning": "Read-only export of qualified R5 source, not a test or card-implementation result. Reuse if local code is unavailable; do not repeat intake."
     },
     "receipt_preflight": {
-      "state": "PRIOR_TARGET_SLOT_RECEIPT_COMPLETE_NEW_RUN_NOT_DISPATCHED",
-      "prior_run": 40010257089,
-      "prior_receipt": "2f58739cc332d22965eaf6d99dcc6cde1102c5cc",
-      "next_required": "Audit new original ZIP and original XML against new protocol; structural prior evidence stays accepted only for its exact prior source."
+      "state": "AWAITING_ORIGINAL_NEW_RUN",
+      "prepared_for_run": 40017590859,
+      "received_original_artifact": false,
+      "expected": {
+        "mutation_cases": 2,
+        "mutation_assertion_frames": [
+          23,
+          28
+        ],
+        "focused_passes": 730,
+        "engine_passes": 4018,
+        "broad_passes": 14793,
+        "ordinary_passes": 18401,
+        "unchanged_skip_identities": 43,
+        "assay_units": 568,
+        "assay_touchstone": 2000,
+        "unchanged_assay_findings": 51,
+        "duplicate_label_pairs": 11,
+        "protected_bindings": 144,
+        "protected_goldens": 23,
+        "legacy_fixture_files": 82
+      },
+      "scope": "Bounded contested-retarget history repair; not full occurrence-aware resolution or Spellskite.",
+      "previous_structural_receipt": "2f58739cc332d22965eaf6d99dcc6cde1102c5cc"
     },
     "accepted_structural_receipt": "2f58739cc332d22965eaf6d99dcc6cde1102c5cc",
     "remaining_integration_constraint": {
@@ -117,13 +147,13 @@
     "external_independent_review": false,
     "no_successful_workflow_rerun": true
   },
-  "reconcile": "2026-10-23T20:03:30.658Z: original terminal qualification received locally and checkpoint2f58739cc332d22965eaf6d99dcc6cde1102c5cc published; no workflow launched. Work is active in this turn.",
+  "reconcile": "2026-10-23T20:14:40.064Z: exact one new push run40017590859 attempt1 observed at validation1540fd7; validation adds one workflow only. Before launch all live-status queries found no relevant active run; only unrelated queued34749202144 untouched. Execution schedule confirmed paused with last scheduled iteration completed. Main remains37a603617a03dfd2d81b39dae004f7f336a70dfc.",
   "automation": {
     "execution_task": "Manual Execution Continuation",
     "execution_task_id": "6adbad91b90881918859ad0cba22b881",
     "execution_schedule": "PAUSED for Work execution ownership; is_enabled=false confirmed 2026-10-23T19:56:24Z",
     "intervention_watch": "Enabled READ ONLY; updated for Work ownership and intentionally paused scheduled executor; no continuous execution claim.",
-    "handoff": "Safe handoff to Work execution: scheduled task paused, last iteration 741e3792-3a3c-8331-9aef-05b07e50dc2f completed 2026-10-23T19:28:07Z; previous lease released; all active workflow statuses reconciled. Do not re-enable until checkpoint and ownership release."
+    "handoff": "Work handoff completed. Scheduled executor remains paused; intervention watch enabled/read-only and expects Work ownership. Work released active lease while GitHub qualification runs. A future scheduled handoff must persist checkpoint and release ownership before re-enabling."
   },
   "previous_qualified": {
     "source": "0b5018a0df392acc96d8b38e20dd72ccae3ff48a",
@@ -146,5 +176,13 @@
       "assay_unit_pass": 568,
       "original_assay_findings": 51
     }
+  },
+  "execution_channel": {
+    "primary": "Work execution conversation",
+    "session": "390bd1587480",
+    "work_owner": "manual-work-390bd1587480-20261023",
+    "discussion": "READ_ONLY",
+    "scheduled_executor": "PAUSED",
+    "activity": "GitHub qualification40017590859 active. Foreground lease released for external wait; no claim of continuous chat execution after this turn."
   }
 }
