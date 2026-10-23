@@ -1,0 +1,197 @@
+name: Manual counter modifier and Metamorph qualification
+on:
+  push:
+    branches: [validation/manual-counter-metamorph-r1-20261022]
+    paths: ['.github/workflows/manual-counter-metamorph-r1-20261022.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: 418cdfdacd5191549e9fc8e4a071330120b071b7
+  BASELINE: a94e01a76df686200812f0cb75611c80c73b9f4b
+  RECORD: experiments/manual-transmission/research/counter-metamorph-r1-20261022
+  WORKFLOW: .github/workflows/manual-counter-metamorph-r1-20261022.yml
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: "1"
+jobs:
+  verify:
+    if: github.run_number == '1' && github.run_attempt == '1'
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install recipe runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          command -v flock
+          mkdir -p counter-metamorph-evidence/toolchain
+          flock --version > counter-metamorph-evidence/toolchain/flock-version.txt
+          mkdir -p "$HOME/.cache/argentum"
+          flock -x "$HOME/.cache/argentum/manual-transmission.lock" bash -c 'if flock -n "$1" true; then exit 1; fi' _ "$HOME/.cache/argentum/manual-transmission.lock"
+      - name: Bind candidate, protected tests, deck, locks and goldens
+        run: |
+          git cat-file -e "$BASELINE^{tree}"
+          python3 "$RECORD/bind.py"
+      - name: Fresh primary-source fields and all Metamorph rulings
+        run: python3 "$RECORD/card_source_review.py"
+      - name: Fresh canonical-printing and scaffolded-reprint gate
+        run: |
+          mkdir -p counter-metamorph-evidence/card
+          set +e
+          just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" card-printing 2>&1 | tee counter-metamorph-evidence/card/printing.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > counter-metamorph-evidence/card/printing-exit.txt
+          cp "$HOME/.cache/scryfall/printings/phyrexian-metamorph.json" counter-metamorph-evidence/card/printing-cache.json || exit 1
+          exit "$rc"
+      - name: Run16 original baseline controls against qualified entry-observer source
+        id: negative
+        run: |
+          mkdir -p counter-metamorph-evidence/negative
+          RESTORE_MODE=baseline python3 "$RECORD/restore.py"
+          BIND_MODE=negative python3 "$RECORD/bind.py"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" negative 2>&1 | tee counter-metamorph-evidence/negative/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > counter-metamorph-evidence/negative/exit.txt
+          exit 0
+      - name: Require8 preregistered assertion failures and8 passing controls
+        if: always() && steps.negative.outcome != 'skipped'
+        env: {STAGE: negative}
+        run: python3 "$RECORD/collect.py"
+      - name: Restore and rebind exactly the candidate source
+        if: always()
+        run: |
+          RESTORE_MODE=candidate python3 "$RECORD/restore.py"
+          python3 "$RECORD/bind.py"
+      - name: 598 focused cases including original counter, object-identity and observer regressions
+        id: focused
+        run: |
+          mkdir -p counter-metamorph-evidence/focused
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" focused 2>&1 | tee counter-metamorph-evidence/focused/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > counter-metamorph-evidence/focused/exit.txt
+          exit "$rc"
+      - name: Receive focused original reports
+        if: always() && steps.focused.outcome != 'skipped'
+        env: {STAGE: focused}
+        run: python3 "$RECORD/collect.py"
+      - name: Complete engine and all nine card-era scenario suites
+        id: broad
+        run: |
+          mkdir -p counter-metamorph-evidence/broad
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" broad 2>&1 | tee counter-metamorph-evidence/broad/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > counter-metamorph-evidence/broad/exit.txt
+          exit "$rc"
+      - name: Receive every broad report
+        if: always() && steps.broad.outcome != 'skipped'
+        env: {STAGE: broad}
+        run: python3 "$RECORD/collect.py"
+      - name: Ordinary whole-project build with routine AI tests
+        id: ordinary
+        run: |
+          mkdir -p counter-metamorph-evidence/ordinary
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" ordinary 2>&1 | tee counter-metamorph-evidence/ordinary/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > counter-metamorph-evidence/ordinary/exit.txt
+          exit "$rc"
+      - name: Receive ordinary results and require exact baseline skips
+        if: always() && steps.ordinary.outcome != 'skipped'
+        env: {STAGE: ordinary}
+        run: python3 "$RECORD/collect.py"
+      - name: Build candidate Assay CLI
+        run: |
+          mkdir -p counter-metamorph-evidence/assay
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" assay-build 2>&1 | tee counter-metamorph-evidence/assay/build.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > counter-metamorph-evidence/assay/build-exit.txt
+          exit "$rc"
+      - name: Assay 2000-card touchstone and corpus identity
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" assay 2>&1 | tee counter-metamorph-evidence/assay/gate.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > counter-metamorph-evidence/assay/gate-exit.txt
+          capture_rc=0
+          if test -f "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz"; then
+            sha256sum "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" > counter-metamorph-evidence/assay/oracle-bulk-sha256.txt || capture_rc=1
+            wc -c "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" > counter-metamorph-evidence/assay/oracle-bulk-bytes.txt || capture_rc=1
+            cp "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" counter-metamorph-evidence/assay/oracle-bulk-corpus.jsonl.gz || capture_rc=1
+          else
+            capture_rc=1
+          fi
+          echo "$capture_rc" > counter-metamorph-evidence/assay/corpus-capture-exit.txt
+          if test "$capture_rc" != 0; then exit "$capture_rc"; fi
+          exit "$rc"
+      - name: Preserve full golden differential for classification
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" assay-differential 2>&1 | tee counter-metamorph-evidence/assay/differential.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > counter-metamorph-evidence/assay/differential-exit.txt
+          exit "$rc"
+      - name: Preserve actual card Assay reading and NPH differential
+        run: |
+          mkdir -p counter-metamorph-evidence/card
+          for recipe in card-assay-parse card-assay-explain; do
+            set +e
+            flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" "$recipe" 2>&1 | tee "counter-metamorph-evidence/card/$recipe.log"
+            rc=${PIPESTATUS[0]}
+            echo "$rc" > "counter-metamorph-evidence/card/$recipe-exit.txt"
+            set -e
+          done
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" card-assay-differential 2>&1 | tee counter-metamorph-evidence/card/nph-differential.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > counter-metamorph-evidence/card/nph-differential-exit.txt
+          exit "$rc"
+      - name: Inventory the exact frozen800 slots without initializing games
+        env:
+          MT_P2_AUDIT_INPUT: ${{ github.workspace }}/counter-metamorph-evidence/registry-inventory/source/registry-requests.json
+          MT_P2_AUDIT_OUTPUT: ${{ github.workspace }}/counter-metamorph-evidence/registry-inventory/registry
+          MT_P2_GATE_OUTPUT: ${{ github.workspace }}/counter-metamorph-evidence/registry-inventory
+        run: |
+          python3 "$RECORD/registry_inventory.py" prepare
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" registry-inventory 2>&1 | tee counter-metamorph-evidence/registry-inventory/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > counter-metamorph-evidence/registry-inventory/exit.txt
+          set -e
+          python3 "$RECORD/registry_inventory.py" receive
+          python3 experiments/manual-transmission-phase2/audit_composed_registry_gate.py 2>&1 | tee counter-metamorph-evidence/registry-inventory/audit.log
+      - name: Recheck all source and safeguards
+        if: always()
+        run: python3 "$RECORD/bind.py"
+      - name: Preserve candidate NPH golden and any actual snapshot mismatch
+        if: always()
+        run: |
+          mkdir -p counter-metamorph-evidence/card
+          cp mtg-sets/src/test/resources/snapshots/cards/NPH.json counter-metamorph-evidence/card/NPH.candidate.json
+          if test -d mtg-sets/build/snapshots-actual; then cp -R mtg-sets/build/snapshots-actual counter-metamorph-evidence/card/; fi
+      - name: Hash complete evidence inventory
+        if: always()
+        run: |
+          python3 - <<'PYCODE'
+          from pathlib import Path
+          import hashlib
+          out=Path('counter-metamorph-evidence');out.mkdir(exist_ok=True)
+          manifest=out/'SHA256SUMS'
+          manifest.write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p.relative_to(out))+'\n' for p in sorted(out.rglob('*')) if p.is_file() and p != manifest))
+          PYCODE
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-counter-metamorph-${{ github.run_id }}
+          path: counter-metamorph-evidence/
+          retention-days: 90
+          if-no-files-found: error
