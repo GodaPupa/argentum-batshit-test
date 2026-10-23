@@ -1,0 +1,80 @@
+{
+  "schema": "MANUAL_PAUSED_TOKEN_R5_AUTHORIZED_ORACLE_CORRECTION_20261023",
+  "status": "SOURCE_PREPARED_UNTESTED_UNADOPTED",
+  "authorization": "User explicitly authorized a prospective EP02-EP04 test correction conditional on the complete post-ordering diagnostic passing. Its original 3-case artifact was then verified; no other test-oracle amendment is authorized by this record.",
+  "predecessor_source": "9eb2be694761a4cae60ad4970d07e9d458d8054c",
+  "predecessor_tree": "a48f7d3030d3c6a8ba01cfb165f589f4b3570c4f",
+  "predecessor_disposition": "R4_FAILED_UNADOPTED_687_OF_690",
+  "original_ep_blob": "0250a12ad245eded770bec604dbbfda63f7210e9",
+  "amended_ep_blob": "9392987680c91a7ac75e96ecb67779ac09fe483e",
+  "production_changes_from_R4": [],
+  "diagnostic": {
+    "run": 39985587423,
+    "job": 120523783882,
+    "attempt": 1,
+    "source": "a771e07109d0a2e174b85fd4313a172976a72f27",
+    "tree": "b21c1250d32e654e709f23a76e7f921c38b7312d",
+    "validation": "f15379ddc53034807d792025f7ee76848fbea629",
+    "artifact": 12516126080,
+    "artifact_bytes": 6645,
+    "artifact_sha256": "4e451e414fbda806b8078c6bed4989d206ab28ba849cdabea4713dbd1c9aa415",
+    "xml_bytes": 987,
+    "xml_sha256": "5e1f14843c4ec6504ef6c1f7ddf8e1524f590eeade1165bdf4e6fb2be3b02c61",
+    "passed": 3,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "manifest_entries_verified": 7,
+    "archive_crc_pass": true,
+    "scope": "Observed real controller ordering, both expected trigger groups, +3/+2 life outcomes, serialized replay, and cached-versus-explicitly-uncaptured synthetic observations; not component adoption."
+  },
+  "negative_control": {
+    "kind": "Controlled reproduction of known R3 missing-marker regression, not a qualified gameplay baseline",
+    "production_file": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/SubmitDecisionHandler.kt",
+    "restore_from": "86a5dea55f088f1e242a151920aa83a671039b61",
+    "tests": "Only the corrected EntryChoiceEventProvenanceTest four cases",
+    "expected": {"rows": 4, "passed": 0, "assertion_failures": 4, "errors": 0, "skipped": 0},
+    "first_failure_frames": "Frozen literal assertion anchors in gate.py; line positions derived from the immutable amended source before test execution, never fitted to observed reports.",
+    "next": "Restore exact candidate handler, rebind clean source, then run full positive gates."
+  },
+  "qualification_requirements_not_results": {
+    "focused": 690,
+    "focused_classes": 42,
+    "engine": 3978,
+    "broad": 14753,
+    "ordinary_passed": 18361,
+    "ordinary_unchanged_skips": 43,
+    "assay_unit_tests": 568,
+    "assay_touchstone_cards": 2000,
+    "original_assay_divergences": 51
+  },
+  "reporting_correction": {
+    "qualified_artifact": 12469559629,
+    "qualified_run": 39875902205,
+    "qualified_source": "418cdfdacd5191549e9fc8e4a071330120b071b7",
+    "qualified_zip_bytes": 34176174,
+    "qualified_zip_sha256": "702d22d6bb24a8d75f54de5cdca60fbfaf9162246578697705b3d28411ead7fc",
+    "duplicate_leaf_name_identities": 11,
+    "multiplicity": 2,
+    "policy": "Retain every original JUnit row, failure and skip. Require exact inherited duplicate-name multiset in broad/ordinary and no duplicates in focused. Unknown or changed multiplicities fail; no deduplication or result suppression.",
+    "schema_key": "Map obsolete ordinary engine_passed lookup to existing broad_engine_passed=3978; no count changes.",
+    "effective_collector": "Archive the exact minimally adapted R4 collector for each executed stage."
+  },
+  "safeguards": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "frozen_v07_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "protected_bindings": 144,
+    "protected_goldens": 23,
+    "precision_reserved": 2,
+    "official_games": 0,
+    "official_seeds": 0,
+    "competitive_admission": false
+  },
+  "remaining_admission_review": [
+    "All new original reports and source/validation/artifact bindings must be received after execution.",
+    "R1-R4 remain failed; the 3-case diagnostic is not an adopted component.",
+    "Historical negative-control eligibility, including four retired PT02 controls, remains separately tracked; this four-case provenance regression control must not be mislabeled as the old 70-case baseline.",
+    "No full multiplayer readiness, official gameplay authority, or competitive outcome follows from component tests."
+  ],
+  "external_independent_review": false
+}

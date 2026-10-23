@@ -109,6 +109,21 @@ class EntryChoiceEventProvenanceTest : FunSpec({
     }
     fun life(state: GameState) = state.getEntity(state.turnOrder[0])!!.get<LifeTotalComponent>()!!.life
 
+    // Prospective R5 fixture: answer the real ordering question before inspecting the stack.
+    // Keep pre-order events so the original entry/leave provenance assertions still apply.
+    fun completeRequiredTriggerOrdering(result: ExecutionResult): ExecutionResult {
+        result.isPaused shouldBe true
+        val ordering = result.state.pendingDecision as ChooseOptionDecision
+        ordering.prompt.startsWith("Choose the next triggered ability to put on the stack") shouldBe true
+        result.state.stack shouldBe emptyList()
+        val accepted = processor.process(result.state, SubmitDecision(
+            ordering.playerId, OptionChosenResponse(ordering.id, 0),
+        )).result
+        accepted.error shouldBe null
+        accepted.state.pendingDecision shouldBe null
+        return accepted.copy(events = result.events + accepted.events)
+    }
+
     test("EP01 a real as-enters token publishes its entry and resolves exactly one self ETB trigger") {
         val (state, target) = put(base(), selfChoice)
         val result = answer(pause(state, copyEffect(target)))
@@ -124,9 +139,10 @@ class EntryChoiceEventProvenanceTest : FunSpec({
         val (s1, target) = put(base(), vanilla)
         val (s2, watcher) = put(s1, entryWatcher)
         val (state, leave) = put(s2, leaveWatcher)
-        val result = answer(pause(state, CompositeEffect(listOf(
+        val pendingOrdering = answer(pause(state, CompositeEffect(listOf(
             copyEffect(target), SacrificeTargetEffect(EffectTarget.SpecificEntity(watcher)),
         ))))
+        val result = completeRequiredTriggerOrdering(pendingOrdering)
         val token = tokens(result.state).single()
         val zoneEvents = result.events.filterIsInstance<ZoneChangeEvent>()
         zoneEvents.map { it.entityId } shouldBe listOf(token, watcher)
@@ -146,8 +162,12 @@ class EntryChoiceEventProvenanceTest : FunSpec({
         encode(replayFirst.state) shouldBe encode(first.state)
         replayFirst.events shouldBe first.events
         (first.state.pendingDecision is ChooseColorDecision) shouldBe true
-        val second = answer(first.state, Color.RED)
-        val replaySecond = answer(restore(replayFirst.state), Color.RED)
+        val pendingSecond = answer(first.state, Color.RED)
+        val pendingReplaySecond = answer(restore(replayFirst.state), Color.RED)
+        encode(pendingReplaySecond.state) shouldBe encode(pendingSecond.state)
+        pendingReplaySecond.events shouldBe pendingSecond.events
+        val second = completeRequiredTriggerOrdering(pendingSecond)
+        val replaySecond = completeRequiredTriggerOrdering(pendingReplaySecond)
         encode(replaySecond.state) shouldBe encode(second.state)
         replaySecond.events shouldBe second.events
         val ids = tokens(second.state)
@@ -164,7 +184,10 @@ class EntryChoiceEventProvenanceTest : FunSpec({
         val (state, target) = put(base(), selfChoice)
         val result = answer(pause(state, copyEffect(target)))
         val marked = result.events.filterIsInstance<ZoneChangeEvent>().single()
-        val raw = marked.copy(entryTriggersAlreadyProcessed = false)
+        // Only this deliberately synthetic legacy input lacks captured entry observations.
+        // The real marked game event keeps its immutable event-time observation list.
+        marked.observedEntryTriggers?.size shouldBe 1
+        val raw = marked.copy(entryTriggersAlreadyProcessed = false, observedEntryTriggers = null)
         val historical = json.encodeToJsonElement(GameEvent.serializer(), raw)
         historical.jsonObject.containsKey("entryTriggersAlreadyProcessed") shouldBe false
         val decodedRaw = json.decodeFromString(GameEvent.serializer(), historical.toString()) as ZoneChangeEvent
