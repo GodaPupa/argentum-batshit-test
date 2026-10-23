@@ -1,0 +1,178 @@
+name: Manual original trigger target capture R1
+on:
+  push:
+    branches: [validation/manual-target-slot-capture-r1-20261023]
+    paths: ['.github/workflows/manual-target-slot-capture-r1-20261023.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: 544174be623e1dab3082fcab8f82cc394ce3d11b
+  SOURCE_TREE: 7416004ba1e249ee2f993609bc6ca5baa89b5b82
+  WORKFLOW: .github/workflows/manual-target-slot-capture-r1-20261023.yml
+  RECORD: experiments/manual-transmission/research/target-slot-capture-r1-20261023
+  EVIDENCE: manual-target-slot-capture-evidence
+  PRODUCTION: rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetSlotCapture.kt
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: '1'
+jobs:
+  verify:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install locked recipe runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          command -v flock
+          mkdir -p "$HOME/.cache/argentum" "$EVIDENCE"
+      - name: Bind exact bounded delta and all144 protected paths
+        run: python3 "$RECORD/gate.py" bind
+      - name: Compile exact normal capture implementation
+        run: |
+          git checkout "$SOURCE" -- "$PRODUCTION"
+          python3 "$RECORD/gate.py" compile-prepare normal
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" compile-engine 2>&1 | tee "$EVIDENCE/compilation/normal/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/compilation/normal/exit.txt"
+          python3 "$RECORD/gate.py" compile-receive normal
+      - name: Compile executable group-and-visit loss mutant
+        run: |
+          git checkout "$SOURCE" -- "$PRODUCTION"
+          python3 "$RECORD/gate.py" compile-prepare mutant
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" compile-engine 2>&1 | tee "$EVIDENCE/compilation/mutant/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/compilation/mutant/exit.txt"
+          python3 "$RECORD/gate.py" compile-receive mutant
+      - name: Restore and rebind after compilation controls
+        if: always()
+        run: |
+          git checkout "$SOURCE" -- "$PRODUCTION"
+          python3 "$RECORD/gate.py" bind
+      - name: Apply compiled group-and-visit loss mutation and execute two witnesses
+        id: mutation
+        run: |
+          python3 "$RECORD/gate.py" prepare mutation
+          python3 "$RECORD/gate.py" mutate
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" mutation 2>&1 | tee "$EVIDENCE/mutation/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/mutation/exit.txt"
+          exit 0
+      - name: Require two precise behavioral assertion failures, not compilation errors
+        if: always() && steps.mutation.outcome != 'skipped'
+        run: python3 "$RECORD/gate.py" receive mutation
+      - name: Restore exact candidate and rebind before any positive testing
+        if: always()
+        run: |
+          git checkout "$SOURCE" -- "$PRODUCTION"
+          python3 "$RECORD/gate.py" bind
+      - name: Focused 748 cases with strict original report receiving
+        id: focused
+        run: |
+          python3 "$RECORD/gate.py" prepare focused
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" focused 2>&1 | tee "$EVIDENCE/focused/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/focused/exit.txt"
+          python3 "$RECORD/gate.py" receive focused
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Broad engine and nine card-era regressions
+        id: broad
+        run: |
+          python3 "$RECORD/gate.py" prepare broad
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" broad 2>&1 | tee "$EVIDENCE/broad/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/broad/exit.txt"
+          python3 "$RECORD/gate.py" receive broad
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Ordinary whole-project build and exact 43 historical skips
+        id: ordinary
+        run: |
+          python3 "$RECORD/gate.py" prepare ordinary
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" ordinary 2>&1 | tee "$EVIDENCE/ordinary/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/ordinary/exit.txt"
+          python3 "$RECORD/gate.py" receive ordinary
+          audit_rc=$?
+          if test "$rc" != 0; then exit "$rc"; fi
+          exit "$audit_rc"
+      - name: Build Oracle Assay CLI
+        id: assay_build
+        run: |
+          mkdir -p "$EVIDENCE/assay"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" assay-build 2>&1 | tee "$EVIDENCE/assay/build.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/assay/build-exit.txt"
+          exit "$rc"
+      - name: Assay 2000-card corpus and preserve its exact original bytes
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" assay 2>&1 | tee "$EVIDENCE/assay/gate.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/assay/gate-exit.txt"
+          capture_rc=0
+          corpus="$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz"
+          if test -f "$corpus"; then
+            sha256sum "$corpus" > "$EVIDENCE/assay/oracle-bulk-sha256.txt" || capture_rc=1
+            wc -c "$corpus" > "$EVIDENCE/assay/oracle-bulk-bytes.txt" || capture_rc=1
+            cp "$corpus" "$EVIDENCE/assay/oracle-bulk-corpus.jsonl.gz" || capture_rc=1
+          else
+            capture_rc=1
+          fi
+          printf '%s\n' "$capture_rc" > "$EVIDENCE/assay/corpus-capture-exit.txt"
+          if test "$capture_rc" != 0; then exit "$capture_rc"; fi
+          exit "$rc"
+      - name: Preserve full original differential without reclassification
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" assay-differential 2>&1 | tee "$EVIDENCE/assay/differential.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/assay/differential-exit.txt"
+          exit "$rc"
+      - name: Receive Assay metrics and preserve all 51 original findings
+        if: always() && steps.assay_build.outcome != 'skipped'
+        run: python3 "$RECORD/gate.py" assay
+      - name: Recheck exact candidate and protected source bytes
+        if: always()
+        run: python3 "$RECORD/gate.py" bind
+      - name: Preserve protocols, literal source delta, and unfinished-stage disposition
+        if: always()
+        run: |
+          mkdir -p "$EVIDENCE/protocol"
+          cp "$RECORD/"* "$EVIDENCE/protocol/"
+          cp "$WORKFLOW" "$EVIDENCE/protocol/WORKFLOW.yml"
+          git rev-parse HEAD "$SOURCE^{tree}" > "$EVIDENCE/SOURCE_PINS.txt"
+          git diff --name-status 0b97c51297bf9357c6b37dc2797abb27f7988e91 "$SOURCE" > "$EVIDENCE/SOURCE_DELTA.txt"
+          git status --porcelain --untracked-files=no > "$EVIDENCE/FINAL_TRACKED_CHANGES.txt"
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          root=Path('manual-target-slot-capture-evidence')
+          results={stage:(root/stage/'SUMMARY.json').exists() for stage in ['mutation','focused','broad','ordinary']}
+          (root/'DISPOSITION.json').write_text(json.dumps({'compilation_controls':{stage:(root/'compilation'/stage/'RECEIPT.json').exists() for stage in ['normal','mutant']},'original_reports_present':results,'assay_receipt_present':(root/'assay'/'RECEIVING.json').exists(),'scope':'BOUNDED_ORIGINAL_TRIGGER_SELECTION_PROVENANCE_NOT_RESOLVER_OR_SPELLSKITE','component_adopted':False,'official_games':0,'official_seeds':0,'precision_reserved':2},indent=2)+'\n')
+          PY
+          python3 "$RECORD/gate.py" hash
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-target-slot-capture-r1-${{ github.run_id }}
+          path: manual-target-slot-capture-evidence/
+          retention-days: 90
+          if-no-files-found: error
