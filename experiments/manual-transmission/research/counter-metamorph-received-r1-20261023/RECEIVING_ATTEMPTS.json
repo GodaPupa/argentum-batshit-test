@@ -1,0 +1,20 @@
+{
+  "qualification_reruns": 0,
+  "preserved_receiver": "PASS_WRITE_AND_REPRODUCTION",
+  "supplemental_attempts": [
+    {
+      "attempt": 1,
+      "result": "KeyError: git_blob",
+      "disposition": "No verdict. Five preserved binding records specify SHA256/bytes without Git blob; supplemental script fixed to honor exact schema."
+    },
+    {
+      "attempt": 2,
+      "result": "GIT_SOURCE_AUDIT_PASS"
+    },
+    {
+      "attempt": 3,
+      "result": "Protocol equality assertion against earlier preparation failed",
+      "disposition": "No verdict published. Earlier prepared protocol predates final observer receipt and final source. Exact executed source protocol found and byte-equality verified; no gate/test/source change."
+    }
+  ]
+}
