@@ -1,0 +1,578 @@
+{
+  "id": "MANUAL_SOURCE_COPY_LKI_REVIEW_2026_10_23",
+  "status": "READ_ONLY_IMPLEMENTATION_AND_TEST_PLAN_NOT_ADMITTED",
+  "source_sha": "e1a8943913cf36cc5e6b76f6c6f4df2279188b53",
+  "source_tree": "de84e5007b1234cefd7d13ae91e0c91b2c387f61",
+  "source_status": "Frozen paused-token candidate. Run39943006929 active per parent; not represented as qualified.",
+  "last_qualified_source": "418cdfdacd5191549e9fc8e4a071330120b071b7",
+  "independence": "Same-assistant delegated static review; not independent external review.",
+  "source_bindings": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/PendingTokenEntries.kt",
+      "bytes": 13858,
+      "sha256": "adc0d2466d893bb01d3cd4af5ada6efbe3ccdca69b9e92470846fd57da1663dc",
+      "git_blob": "84ec0600f43b82992827aafd248b3bb5aae42bc7"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfSourceExecutor.kt",
+      "bytes": 13941,
+      "sha256": "4c45d399f1181c9e9dc268dc3dfdd9b3684f610424a297c748a4e980605631ab",
+      "git_blob": "317c4c630a6cedbfff26b6a82572dbe55bae8c84"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/copy/CopiableEntryCharacteristics.kt",
+      "bytes": 3447,
+      "sha256": "9d2fb08da3534d6c18bdbd7cb03d8444a6fccb5406254196cd0770a0b8d79318",
+      "git_blob": "fc8bb7b96ed894ba4ccd4aa6077ebc4d8f7d928b"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt",
+      "bytes": 19018,
+      "sha256": "7bf956fc068bcfef7ddacffca0f08372e7ac4e3576f9f0f8ace416e1abaffe46",
+      "git_blob": "2cb201734ab583a2bc7f390c1a01a4ffe93f70e3"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "bytes": 98251,
+      "sha256": "68238ffa8166158535546a150b3d61c7a6cafff252ca80cc4ec6cecee045e0cf",
+      "git_blob": "57ed4bbdf43540a8bfe47f176bfa6749e8d0c28f"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+      "bytes": 40355,
+      "sha256": "a0302465cf32d461a3e6793cfc47408b7c19a040320b7da8db9f67d95d3103b7",
+      "git_blob": "65f554f5f1d0c3a6ef6fec85236fc464127e0df9"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ObjectReferenceEnvironment.kt",
+      "bytes": 2903,
+      "sha256": "06433f5ab70350b9d7b30c0e29f84c7f434ea595d52cb9ede573c8fce606b693",
+      "git_blob": "93b9dcc0bcb6415aeeca8590f4d5788f04e75f30"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/TargetResolutionUtils.kt",
+      "bytes": 29094,
+      "sha256": "39a5c5dc02f1ad75db2e4dea3cb56ef59f37456339eb9b18c6a3b3bca2c6680d",
+      "git_blob": "c59782ab4aa1db47aa6deebbf34ad7fa281beb54"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/LastKnownInformation.kt",
+      "bytes": 3599,
+      "sha256": "44f6a1c5b12cd4b06fc80931a1110d3631c2b5f342a2d29d7a1d8d219ab120a0",
+      "git_blob": "d5a7cd73a37623142e7a5efa90ed26d39bab9e7d"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt",
+      "bytes": 8630,
+      "sha256": "89f23e25b2ef59497c8d24ba945d77c159778765499fdc904c7b595f20fd451a",
+      "git_blob": "dcc66880fb8de8e2b0b30a4c12520c258ec53e09"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "bytes": 86967,
+      "sha256": "b2e08bb8ad114e3445a63bb1f72d7031594a4356acbfa7118204a104b7980d3b",
+      "git_blob": "a4dc4501b0ba519d8440e3bf62545457ca6a30c9"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+      "bytes": 239295,
+      "sha256": "c07ff267fdf2b3820a5ca7b2a99d124c2c01c8f13a1c5bb42e39f2dd2a631496",
+      "git_blob": "ad94208bf4984c94343daa421c3a31d08d3ef6cf"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+      "bytes": 172254,
+      "sha256": "26fdf78091d4a6dc74f48dcc6710244a3cf27319c37e96b543e7c50526e3c7fc",
+      "git_blob": "524d7917056d09558ddde1426f1e6f3a81d00810"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "bytes": 233548,
+      "sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94",
+      "git_blob": "64c0466abe72bc495c7e5d364fdbf73d75db777b"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingTokenEntryContinuations.kt",
+      "bytes": 2146,
+      "sha256": "06b94171894c5effa92b6cf65d4c127ae90117bcce9b33a8a511a5512360e01c",
+      "git_blob": "2d5bdc7f0af2f6c2ee3f8feb2c1bcd641abc436a"
+    },
+    {
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StormsplitterTest.kt",
+      "bytes": 5560,
+      "sha256": "b6efc7a196da7722bcb4f5583a27853b328a1e7a9f7e8c4152d712e03d03987d",
+      "git_blob": "0e2d17bc7f66a2b295b013cc6114d427785d78d4"
+    }
+  ],
+  "summary": "Source-copy planning ignores exact source-object identity and departure data. Constructor still requires current source even with prepared material. Existing snapshot transport is mostly present, but snapshot lacks a separate complete copiable-values payload.",
+  "findings": [
+    {
+      "id": "F1",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/PendingTokenEntries.kt",
+      "lines": [
+        36,
+        42,
+        56
+      ],
+      "finding": "begin reads context.sourceId/state.getEntity/copiableEntryCard; absent token gives silent zero copies, departed copied card reads reverted original, blink reads a new visit. Does not select LKI by exact origin."
+    },
+    {
+      "id": "F2",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfSourceExecutor.kt",
+      "lines": [
+        74,
+        84,
+        94,
+        117
+      ],
+      "finding": "createTokens requires live sourceId/container/card before using preparedEntry. Repairing plan selection alone cannot copy a cleaned-up source token."
+    },
+    {
+      "id": "F3",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt",
+      "finding": "EntitySnapshot captures projected P/T/types/colors/keywords/counters and definition id, not complete copiable CardComponent or DFC. Registry reconstruction loses copy exceptions/creation text; projected reconstruction wrongly copies noncopy effects."
+    },
+    {
+      "id": "F4",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt",
+      "lines": [
+        417,
+        491,
+        651,
+        704
+      ],
+      "finding": "Reusable transport: actual departure snapshot is frozen before copy reset/strip, stored on exact-origin pending block/cast triggers and stack abilities, and persisted as LastKnownPermanentComponent. First matching departure is retained."
+    },
+    {
+      "id": "F5",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "lines": [
+        621,
+        630
+      ],
+      "finding": "sourceSnapshotForTrigger selects only exact origin-object matches from pending trigger, trigger context or LastKnownPermanentComponent. EffectContext.forTriggeredAbility carries it; activation handler uses actual self-sacrifice departure before earlier cost snapshot."
+    },
+    {
+      "id": "F6",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/damage/DealDamageExecutor.kt",
+      "lines": [
+        56,
+        76
+      ],
+      "finding": "DealDamageExecutor is the nearest source-information identity/LKI precedent: original object, matching departure snapshot, explicit missing-data failure. resolveTarget(Self) is an actionable reference API that rejects departed sources; copying requires information from them."
+    },
+    {
+      "id": "F7",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+      "lines": [
+        471,
+        516
+      ],
+      "finding": "forAbilityResolution/withCurrentObjectReferences capture and recheck identity; authorizeObjectMoves threads first matching departure into same-resolution Composite context. sourceReferenceLost does not mean copy instruction may vanish."
+    },
+    {
+      "id": "F8",
+      "path": "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/StormsplitterTest.kt",
+      "finding": "Existing two Stormsplitter tests only cover live-source multiplication; they do not test departed tokens, copy changes, stale visits or serialized LKI resumption."
+    }
+  ],
+  "minimal_implementation": [
+    "Add one serializable nullable copiable-values payload to EntitySnapshot, containing sanitized copiable CardComponent and supported DoubleFacedComponent data. Preserve projected fields for damage/predicates. Default-null legacy data means unavailable history, not permission to invent it.",
+    "Capture predeparture material through existing copiableEntryCard and face-down/DFC rules, before copy reset/face-down cleanup. Keep ZoneTransitionService, EntitySnapshot.fromProjection and state-aware captureEntitySnapshots consistent at source snapshot sites. Actual departure overrides earlier trigger/cost observation.",
+    "Add one engine-level source-copy information selector. Original expected battlefield ObjectRef still present: use live current copiable values. Otherwise require matching departure snapshot with complete copy payload. Prefer context-carried snapshot; exact-origin LastKnownPermanent fallback is acceptable. Never match only EntityId.",
+    "Preserve distinction between source information and actionable Self. Do not use sourceReferenceLost as no-copy; do not use resolveTarget(Self) as sole selector. Preserve origin independently of permittedMoves. Explicit same-effect object-following exceptions require causal controls; do not broaden generic action tracking in this fix.",
+    "Populate PendingTokenEntries from selected immutable material, applying instruction copy exceptions/owner once and freezing choices/DFC before suspension. Source branch no longer needs present source entity.",
+    "Prepared createTokens must depend on prepared material rather than current sourceContainer. Descriptive source name/provenance for delayed triggers comes from captured material/context. Route legacy direct constructor/resumer paths through same selector or prove they cannot receive departed sources.",
+    "Preserve target-copy legality and target LKI policy unchanged; this lane fixes source self-copy information only. Avoid broader generic target behavior changes.",
+    "Round-trip new snapshot payload inside current EffectContext and pending plans. Preserve reserved IDs, atomic entry visibility, event snapshots, outer continuations, CREATED_TOKENS, original assertions and protected goldens."
+  ],
+  "surfaces": {
+    "likely_required": [
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/PendingTokenEntries.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/token/CreateTokenCopyOfSourceExecutor.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/copy/CopiableEntryCharacteristics.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/EntitySnapshot.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/ZoneTransitionService.kt"
+    ],
+    "transport_review": [
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ObjectReferenceEnvironment.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/LastKnownInformation.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingTokenEntryContinuations.kt"
+    ],
+    "documentation": [
+      "docs/architecture-principles.md",
+      "docs/card-sdk-language-reference.md"
+    ],
+    "new_sdk_type_expected": false,
+    "new_player_decision_expected": false,
+    "serialized_evidence_risk": "Populated extra EntitySnapshot fields may affect serialized evidence. All23 protected goldens must remain unchanged; no reblessing. Review server DTO/masking before claiming no client impact."
+  },
+  "causal_test_plan": {
+    "status": "Families only; not frozen fixtures or observed verdicts",
+    "families": [
+      {
+        "id": "SL01",
+        "scenario": "Real Stormsplitter token source dies and is cleaned up before its cast trigger resolves",
+        "static_expectation": "FAIL: missing current source entity",
+        "assertions": "Fresh copy retains abilities, correct characteristics and exactly one delayed end-step exile. Real trigger/stack/SBA path."
+      },
+      {
+        "id": "SL02",
+        "scenario": "Unmodified printed Stormsplitter card dies to graveyard before trigger resolves",
+        "static_expectation": "PASS expected; useful nondiscriminating positive control",
+        "assertions": "Expected1/4 haste copy. Do not mistake retained-card success for removed-token coverage."
+      },
+      {
+        "id": "SL03",
+        "scenario": "Source changes to a different copy after triggering, then leaves before resolution",
+        "static_expectation": "FAIL: cleanup restores underlying original card",
+        "assertions": "Use final battlefield copiable values, not trigger-time or current graveyard card."
+      },
+      {
+        "id": "SL04",
+        "scenario": "Source leaves and same EntityId returns as a different copy before old ability resolves",
+        "static_expectation": "FAIL: current lookup substitutes new visit",
+        "assertions": "Read original exact-object departure; subsequent visits/departures cannot overwrite it."
+      },
+      {
+        "id": "SL05",
+        "scenario": "Source becomes a different copy but remains the original battlefield object",
+        "static_expectation": "PASS expected",
+        "assertions": "Read current copiable values at resolution, as official Stormsplitter ruling requires."
+      },
+      {
+        "id": "SL06",
+        "scenario": "Noncopy buffs/counters/taps/colors/grants surround departing source",
+        "static_expectation": "PASS possible on simple retained source; pair with transformed/removed case",
+        "assertions": "Exclude projection-only changes; retain genuine copy exceptions and creation-time copiable abilities."
+      },
+      {
+        "id": "SL07",
+        "scenario": "Source turns face down before leaving with self-copy ability pending",
+        "static_expectation": "FAIL: face-down exit resets visible card",
+        "assertions": "Sanitized face-down copiable values; no original name/definition/text leakage; copy is face up."
+      },
+      {
+        "id": "SL08",
+        "scenario": "Created token source carries intrinsic copiableTokenAbilities and copy exceptions, then disappears",
+        "static_expectation": "FAIL: no entity",
+        "assertions": "Retain creation-time text and exceptions, omit later grants, apply new instruction exceptions once."
+      },
+      {
+        "id": "SL09",
+        "scenario": "Double-faced source has back face up at departure",
+        "static_expectation": "FAIL when new-zone card reverts",
+        "assertions": "Preserve captured supported two-face metadata/orientation; do not imply complete DFC admission."
+      },
+      {
+        "id": "SL10",
+        "scenario": "Departed copied source requires new color/mode choices as its token enters",
+        "static_expectation": "FAIL at source selection or later source guard",
+        "assertions": "Off-state plan uses saved material; round-trip suspension; resume without source entity; one entry event and correct CREATED_TOKENS."
+      },
+      {
+        "id": "SL11",
+        "scenario": "Self-sacrifice cost or an earlier same-resolution instruction moves source before copying",
+        "static_expectation": "Fixture-dependent; freeze after fixture design",
+        "assertions": "Use actual departure events and existing activation/Composite context transport; include intervening decision, not only hand-built snapshots."
+      },
+      {
+        "id": "SL12",
+        "scenario": "Missing or wrong-ObjectRef copiable snapshot for captured departed source",
+        "static_expectation": "FAIL: silent no-op or unrelated current lookup",
+        "assertions": "Explicit missing-history diagnostic/unresolved handling; never reconstruct from registry or projected fields."
+      },
+      {
+        "id": "SL13",
+        "scenario": "Source controller changes after trigger; source absent when delayed exile registered",
+        "static_expectation": "Removal-dependent",
+        "assertions": "Token belongs to ability controller; captured source name/provenance and generated token exile remain valid."
+      },
+      {
+        "id": "SL14",
+        "scenario": "Captured=true missing origin versus uncaptured legitimate live fixture",
+        "static_expectation": "New compatibility controls; verdict not frozen",
+        "assertions": "Do not recapture an unrelated later visit from old serialized state; preserve explicitly supported live fixture contract."
+      }
+    ],
+    "modes": [
+      "Actual trigger/stack/zone-transition/SBA execution",
+      "Serialized state after departure and at copied entry decisions"
+    ],
+    "required_observations": [
+      "Exact origin/visit and payload",
+      "Copied card/text/abilities and DFC face",
+      "Excluded noncopy characteristics",
+      "Ability-controller ownership",
+      "One entry publication per token",
+      "IDs, pending routing, outer continuation and CREATED_TOKENS",
+      "Next-end-step exile",
+      "Explicit missing-history handling"
+    ],
+    "freeze_rule": "Author exact fixture code/names/assertions/hashes and preregister percase baseline verdict plus first frame before execution. No counted bank is authorized or claimed by this report."
+  },
+  "hardware_impact": {
+    "registered_direct_producer_count": 30,
+    "registered_producers": [
+      {
+        "name": "Mishra's Self-Replicator",
+        "path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/dom/cards/MishrasSelfReplicator.kt"
+      },
+      {
+        "name": "Dreadfeast Demon",
+        "path": "mtg-sets/2017-2022/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/vow/cards/DreadfeastDemon.kt"
+      },
+      {
+        "name": "Gruff Triplets",
+        "path": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/woe/cards/GruffTriplets.kt"
+      },
+      {
+        "name": "Vaultborn Tyrant",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/big/cards/VaultbornTyrant.kt"
+      },
+      {
+        "name": "Bushy Bodyguard",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/BushyBodyguard.kt"
+      },
+      {
+        "name": "Coruscation Mage",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/CoruscationMage.kt"
+      },
+      {
+        "name": "Darkstar Augur",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/DarkstarAugur.kt"
+      },
+      {
+        "name": "Finch Formation",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/FinchFormation.kt"
+      },
+      {
+        "name": "Flowerfoot Swordmaster",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/FlowerfootSwordmaster.kt"
+      },
+      {
+        "name": "Intrepid Rabbit",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/IntrepidRabbit.kt"
+      },
+      {
+        "name": "Iridescent Vinelasher",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/IridescentVinelasher.kt"
+      },
+      {
+        "name": "Manifold Mouse",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/ManifoldMouse.kt"
+      },
+      {
+        "name": "Pawpatch Recruit",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/PawpatchRecruit.kt"
+      },
+      {
+        "name": "Rust-Shield Rampager",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/RustShieldRampager.kt"
+      },
+      {
+        "name": "Splash Lasher",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/SplashLasher.kt"
+      },
+      {
+        "name": "Starscape Cleric",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/StarscapeCleric.kt"
+      },
+      {
+        "name": "Steampath Charger",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/SteampathCharger.kt"
+      },
+      {
+        "name": "Stormsplitter",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/Stormsplitter.kt"
+      },
+      {
+        "name": "Tender Wildguide",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/TenderWildguide.kt"
+      },
+      {
+        "name": "Thornplate Intimidator",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/ThornplateIntimidator.kt"
+      },
+      {
+        "name": "Thundertrap Trainer",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/ThundertrapTrainer.kt"
+      },
+      {
+        "name": "Warren Warleader",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blb/cards/WarrenWarleader.kt"
+      },
+      {
+        "name": "Prosperous Bandit",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blc/cards/ProsperousBandit.kt"
+      },
+      {
+        "name": "Steelburr Champion",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/blc/cards/SteelburrChampion.kt"
+      },
+      {
+        "name": "Homunculus Horde",
+        "path": "mtg-sets/2024/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/fdn/cards/HomunculusHorde.kt"
+      },
+      {
+        "name": "Phoenix Fleet Airship",
+        "path": "mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tla/cards/PhoenixFleetAirship.kt"
+      },
+      {
+        "name": "Ran and Shaw",
+        "path": "mtg-sets/2025/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tla/cards/RanAndShaw.kt"
+      },
+      {
+        "name": "The Notary Hobbits",
+        "path": "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/hob/cards/TheNotaryHobbits.kt"
+      },
+      {
+        "name": "Colorstorm Stallion",
+        "path": "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/sos/cards/ColorstormStallion.kt"
+      },
+      {
+        "name": "Improvised Arsenal",
+        "path": "mtg-sets/2026/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/tmt/cards/ImprovisedArsenal.kt"
+      }
+    ],
+    "frozen_deck_comparison": [
+      {
+        "id": "manual",
+        "path": "experiments/manual-transmission/control/v0.7.decklist.txt",
+        "direct_registered_producer_intersection": [],
+        "sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1"
+      },
+      {
+        "id": "blue-farm",
+        "path": "experiments/manual-transmission/opponents/blue-farm/source-freeze.json",
+        "slots": 100,
+        "declared_digests": {
+          "mainboard_98_sha256": "1c3475ef24051797385c31d40f8b5c9c42d68b44492f2f7b6fbaf6b2f0c77b95",
+          "commanders_plus_98_sha256": "164cef506c6069f1c69f46b1dfa5ff50449d3dae56df77a086ff04b7ab0e31e8"
+        },
+        "direct_registered_producer_intersection": [],
+        "file_sha256": "d069fd460aac14faa985572e5df4837b9b708a74f24a52ba3483726de088c2ee"
+      },
+      {
+        "id": "rogsi",
+        "path": "experiments/manual-transmission/opponents/rogsi/source-freeze.json",
+        "slots": 100,
+        "declared_digests": {
+          "mainboard_98_sha256": "f741d0a9aa8b5de72ca91eac14e222d6273b1d91bda4c786c50b54ae4d9c44ee",
+          "commanders_plus_98_sha256": "d17b520fcacf951fd31cbe909bf154ab24a6efe884f9baa8c91a7e621ce16a26"
+        },
+        "direct_registered_producer_intersection": [],
+        "file_sha256": "4e199de4e145ed7950d99414e6fdc9fba348f0bb5515740b0cd1f60e9c2ae704"
+      },
+      {
+        "id": "kinnan",
+        "path": "experiments/manual-transmission/opponents/kinnan/source-freeze.json",
+        "slots": 100,
+        "declared_digests": {
+          "mainboard_99_sha256": "07c8d5113f7058a445e665a31b44c59bf8cb5aa4e07dcc290c57149ad7cabbc0",
+          "commander_plus_99_sha256": "e36cda0598aad4acf0ee75de48cfc3d767240463d35f17666dcf1d22e22dbceb"
+        },
+        "direct_registered_producer_intersection": [],
+        "file_sha256": "d86026d9d7cbbb65c7696ab32584c7141eb17ebce6627224ed562a94f36dc63d"
+      },
+      {
+        "id": "sisay",
+        "path": "experiments/manual-transmission/opponents/sisay/source-freeze.json",
+        "slots": 100,
+        "declared_digests": {
+          "mainboard_99_sha256": "61a0a1673338181eb3af5ad4048d79cb5a5759d6ce223acada19487861341faa",
+          "commander_plus_99_sha256": "25d6794046a80dba919ec19a4491bb6ce8ef799b0d2de2afbaac377592b66580"
+        },
+        "direct_registered_producer_intersection": [],
+        "file_sha256": "50f512f84e7975e3f4ec4de843b94b1f2f47b50f27bae34304e92a8c7648bc25"
+      },
+      {
+        "id": "magda",
+        "path": "experiments/manual-transmission/opponents/magda/source-freeze.json",
+        "slots": 100,
+        "declared_digests": {
+          "mainboard_99_sha256": "b9b5979807d7ad4a6dd1679c8c0459c29ad1e5bc28844916c3227ff86e274f82",
+          "commander_plus_99_sha256": "328879aec8d8095eea6d38f43ddc3746e69209dd45726826eec8eb4c8976ed4a"
+        },
+        "direct_registered_producer_intersection": [],
+        "file_sha256": "cadf9e45d64b662772dd91b868b9a8ad83d77c5c6389bd945a7391305187be9f"
+      },
+      {
+        "id": "hashaton",
+        "path": "experiments/manual-transmission/opponents/hashaton/source-freeze.json",
+        "slots": 100,
+        "declared_digests": {
+          "mainboard_99_sha256": "516b111bf60c7dc64915f101c0f147b5843c46c3bc4826208c25a84e26dda638",
+          "commander_plus_99_sha256": "69eddcf540a05382f4d870a34426831274696db7d3767d8ebb5d75486a051870"
+        },
+        "direct_registered_producer_intersection": [],
+        "file_sha256": "5cf9e8470280047287790d56b9b55f2619820138b950891905f5376309a49177"
+      },
+      {
+        "id": "shorikai",
+        "path": "experiments/manual-transmission/opponents/shorikai/source-freeze.json",
+        "slots": 100,
+        "declared_digests": {
+          "mainboard_99_sha256": "8fc3d7904ba0dbf2dcc8283dbc892d28a47bc0c9fa0fc3f672a6c9969ee61589",
+          "commander_plus_99_sha256": "9fedd6fdf069e09f34fb4619dedf63cb95db003524572e1b9dbe602329c7b380"
+        },
+        "direct_registered_producer_intersection": [],
+        "file_sha256": "8f02e9507bdb61d88ced0f50326c0966bc19ba9ef9fe3ff1c8390b9322f648b1"
+      }
+    ],
+    "finding": "Exact-name intersection of30 registered direct source-copy producers with Manual plus seven opponent100s is empty. Stormsplitter is a real registered-card defect, absent from frozen hardware.",
+    "limits": [
+      "Constructor/name scan is not exhaustive Oracle-semantic review of unregistered cards, dynamic parser output, copied abilities or indirect call graphs.",
+      "Manual Metamorph and opponent copy permanents do not themselves prove exposure when no known self-copy producer is in the frozen pod.",
+      "Hashaton discarded-card copying is not automatically the source-copy instruction; its exact mechanics remain a separate admission question.",
+      "No registry slots, complete-card admission or competitive evidence are unlocked by this static review."
+    ],
+    "priority": "Legitimate generic runtime fidelity lane. Direct frozen-pod gameplay necessity is not demonstrated; prefer a proven frozen-card gameplay blocker if only one engineering lane can run."
+  },
+  "primary_sources": [
+    {
+      "url": "https://magic.wizards.com/en/news/feature/bloomburrow-release-notes",
+      "location": "Stormsplitter, retrieved lines1923-1934",
+      "paraphrase": "Copies use source current copiable values if present, last battlefield copiable values after departure; omit counters/noncopy changes; copies retain their self-copy ability."
+    },
+    {
+      "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+      "effective_date": "2026-09-25",
+      "rules": [
+        "113.7a",
+        "400.7",
+        "400.7j",
+        "608.2h",
+        "707.2",
+        "707.8a",
+        "707.9a",
+        "708.2a"
+      ],
+      "paraphrase": "Abilities survive source departure. Zone changes generally create new objects, with explicit same-effect exceptions. Information uses current expected-zone values or LKI; copies take layer1 copiable values instead of later projection. Face-down and DFC copying have distinct retained values."
+    }
+  ],
+  "qualification": [
+    "Freeze causal bank against genuinely qualified carrier after current run is received",
+    "Focused source-copy and applicable old70 regressions",
+    "Broad identity/damage LKI/activation/trigger observation/serialization/token/DFC regressions",
+    "Ordinary whole-project build; unchanged skip identity audit",
+    "Source/card/Assay gates, original51 blocks preserved",
+    "Frozen deck bindings and all23 protected goldens",
+    "Preserve original JUnit/negative artifacts and source/tree/workflow/run/job/attempt identities",
+    "Separate receiving audit; same-assistant scope explicit"
+  ],
+  "consumption": {
+    "builds": 0,
+    "tests": 0,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_games": 0
+  },
+  "mutations": "Only this scratch JSON report; no source/test/branch changes.",
+  "next_step": "Select and preregister bounded follow-up after current candidate receiving; do not modify or duplicate run39943006929."
+}

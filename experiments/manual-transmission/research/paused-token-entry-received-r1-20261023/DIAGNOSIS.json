@@ -1,0 +1,52 @@
+{
+  "status": "FAILED_R1_PRESERVED_NO_COMPONENT_ADOPTION",
+  "run": 39943006929,
+  "job": 120378784251,
+  "source": "e1a8943913cf36cc5e6b76f6c6f4df2279188b53",
+  "validation": "7f5559650fd960e42792a3728ec7c6d900390e64",
+  "artifact": 12497122147,
+  "artifact_bytes": 103571,
+  "artifact_sha256": "252e35406d499cc2b7b8d4f91f6b8ace6338f6034aadefbaa546c302e0f39ca6",
+  "observed": {
+    "tests": 70,
+    "passed": 22,
+    "failed_tests": 48,
+    "assertion_failures": 44,
+    "null_pointer_failures": 4,
+    "xml_errors": 0,
+    "skips": 0
+  },
+  "original48": {
+    "verdicts": "42 assertion failures and6passes, matching predictions",
+    "first_frames": "Two PX01 target-copy cases record frame80, not predicted81. Same multiline assertion starts80; no test bytes changed. Original predictions preserved."
+  },
+  "unexpected": [
+    {
+      "case": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=false, serialized=false",
+      "type": "java.lang.NullPointerException",
+      "message": "java.lang.NullPointerException"
+    },
+    {
+      "case": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=false, serialized=true",
+      "type": "java.lang.NullPointerException",
+      "message": "java.lang.NullPointerException"
+    },
+    {
+      "case": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=true, serialized=false",
+      "type": "java.lang.NullPointerException",
+      "message": "java.lang.NullPointerException"
+    },
+    {
+      "case": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=true, serialized=true",
+      "type": "java.lang.NullPointerException",
+      "message": "java.lang.NullPointerException"
+    }
+  ],
+  "cause": "Baseline token constructors apply entry counter replacements before the printed riot choice is available. Riot counter replacement condition SourceChosenModeIs(counter) is false. Old modal resumer saves chosen mode but applies granted riot only for syntheticRiot=true; printed riot receives no counter. Original PI02 fixture then dereferences absent CountersComponent, yielding NPE with Kotlin-reported frame171. Original PASS prediction was wrong. Candidate stores choices before applying entry replacements, but candidate remains unexecuted.",
+  "candidate_gate_status": "Focused, broad, ordinary and Assay not executed due baseline gate failure. The always-run Assay evidence checker correctly reports missing data.",
+  "next_permitted_delta": "Retain original R1 artifact, tests, predictions and receipt. Strengthen successor invalid-response fixture with explicit counter-presence assertion before the unchanged count==1 assertion. Qualify changed14-case class against same baseline, reusing exact unchanged56 baseline cases with an explicit PX01 frame correction annex. No R1 rerun or weakening. Freeze successor protocol/source/workflow and reconcile ownership before execution.",
+  "independence": "Same-assistant review, not external independent audit",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}

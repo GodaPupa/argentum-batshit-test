@@ -1,6 +1,8 @@
-# Paused-token R1 receiver preparation
+# Paused-token R1 — failed qualification received
 
-**Prepared; no qualification is claimed.** These scripts receive the original artifact of run `39943006929`, attempt 1, for source `e1a8943913cf36cc5e6b76f6c6f4df2279188b53` and validation `7f5559650fd960e42792a3728ec7c6d900390e64`. No artifact has been downloaded or examined by this preparation task.
+**QUALIFICATION_INCOMPLETE — source remains unadopted.** Run39943006929/job120378784251 executed70 baseline cases:22passed,44assertion failures and4null-pointer failures. The four PI02 exceptions and two PX01 frame discrepancies invalidate the original44/26 prediction gate. Candidate focused, broad, ordinary and Assay stages did not execute.
+
+Original artifact12497122147 is retained in full:103,571bytes, SHA-256 `252e35406d499cc2b7b8d4f91f6b8ace6338f6034aadefbaa546c302e0f39ca6`. All27payload entries and immutable source/tree/workflow/bindings were verified. Write-mode receipt generation and read-only reproduction of all three audit scripts agree. Successful reproduction of this failed receipt is not component qualification. `DIAGNOSIS.json` records cause and the justified successor delta; original controls and negative evidence remain immutable.
 
 `RECEIVER.json` pins ten local inputs copied directly from immutable Git objects, their byte lengths and SHA-256 values, both Git trees, the exact source manifest, and expected gate counts. The original source protocol supplies all 70 individual baseline verdicts and first assertion frames. The 48 original controls and 22 supplemental controls remain separately retained. Scripts adapt the previously received Counter/Metamorph original-byte audit and differential parser.
 
