@@ -198,11 +198,31 @@
   },
   "reconcile": "2026-10-23T22:40:16.867Z: R2 original artifact received exactly once;9,029 manifest entries, compilation/behavioral controls, all positive reports/protected files verified. Receipt1ec36f8 published. No active qualification or competing lease.",
   "automation": {
-    "execution_task": "Manual Execution Continuation",
-    "execution_task_id": "6adbad91b90881918859ad0cba22b881",
-    "execution_schedule": "PAUSED; is_enabled=false confirmed 2026-10-23T21:03:27.892Z",
-    "intervention_watch": "Replacement6adbcc28fc5c8191b6aed6e82f50ec7f accessible, paused and strictly read-only. No replacement created by this session.",
-    "handoff": "Work remains primary; Discussion read-only; executor paused. Checkpointed foreground lease released for the single active qualification. Watch availability requires reconciliation, not a duplicate worker. Release ownership before any future scheduled takeover."
+    "execution_task": "Manual Work Continuation",
+    "execution_task_id": "6adbe33033e481918659ce578f64f31e",
+    "execution_schedule": "Hourly, enabled; READ_ONLY_ACCESS_PREFLIGHT until scheduled-runtime evidence is verified and this ledger explicitly admits execution.",
+    "intervention_watch": {
+      "id": "6adbcc28fc5c8191b6aed6e82f50ec7f",
+      "enabled": false,
+      "policy": "STRICTLY_READ_ONLY",
+      "replaces_inaccessible": "6adb974501708191964fa06f742460af"
+    },
+    "handoff": "Foreground Work remains active owner. New hourly task is preflight-only and cannot claim/write until admitted. Old Discussion executor remains paused.",
+    "execution_admitted": false,
+    "former_discussion_executor": {
+      "id": "6adbad91b90881918859ad0cba22b881",
+      "enabled": false,
+      "disposition": "Deliberately replaced by one Work-created task; must remain paused."
+    },
+    "schedule_created_utc": "2026-10-23T22:44:26.934Z",
+    "schedule": "BEGIN:VEVENT\nDTSTART:20261023T224400Z\nRRULE:FREQ=HOURLY\nEND:VEVENT",
+    "schedule_conversation_id": "6adbbbc7-a2b0-83e8-a08e-bd68d922671d",
+    "access_verification": {
+      "state": "READ_ONLY_PROBE_REQUESTED",
+      "requested_utc": "2026-10-23T22:44:26.934Z",
+      "claim": "Creation and immediate-run request confirmed; actual scheduled runtime/GitHub/download/execution not yet verified."
+    },
+    "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption."
   },
   "previous_qualified": {
     "source": "0b5018a0df392acc96d8b38e20dd72ccae3ff48a",
@@ -231,18 +251,10 @@
     "session": "390bd1587480",
     "work_owner": "manual-work-390bd1587480-20261023",
     "discussion": "READ_ONLY",
-    "scheduled_executor": "PAUSED",
+    "scheduled_executor": "ENABLED_READ_ONLY_ACCESS_PREFLIGHT_NOT_YET_ADMITTED",
     "activity": "Foreground Work audit complete, accepted R2; advancing next dependency and verifying single scheduler setup."
   },
-  "blockers": [
-    {
-      "scope": "READ_ONLY_INTERVENTION_WATCH_VISIBILITY",
-      "task_id": "6adb974501708191964fa06f742460af",
-      "observed_utc": "2026-10-23T21:03:27.892Z",
-      "detail": "Task-management tool no longer accesses or discovers the previously enabled Watch. Executor management remains available and paused; execution ownership remains resolved. Cannot guarantee Watch remains enabled. No replacement created.",
-      "effect": "Does not interrupt or duplicate active qualification; report access limitation."
-    }
-  ],
+  "blockers": [],
   "qualified_components": {
     "structural_target_slot": {
       "source": "5bc1b733d3e19fee4da7e33174bf4a480bd92812",
