@@ -1,118 +1,82 @@
 {
   "program": "Manual Transmission Phase2 MT_V07_PHASE2_CEDH_MULTIPLAYER_R1_2026_09_24",
   "updated": "2026-10-23",
-  "owner": "ChatGPT Work successor; same-assistant review",
-  "status": "PAUSED_TOKEN_R2_SOURCE_FROZEN_UNEXECUTED",
+  "owner": "ChatGPT regular-chat execution; same-assistant review, no external peer-review claim",
+  "status": "R5_BOUNDED_PAUSED_COPY_ENTRY_QUALIFIED_NEXT_SPELLSKITE_SOURCE_REVIEW",
   "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
   "qualified_carrier": {
-    "source": "418cdfdacd5191549e9fc8e4a071330120b071b7",
-    "tree": "fdb37800de1dbabfa076e15f7d43577e5d3a91d2",
-    "validation": "30904cb20e03178adb713cc4894dfd3b45b92828",
-    "run": 39875902205,
-    "job": 120161318545,
+    "source": "0b5018a0df392acc96d8b38e20dd72ccae3ff48a",
+    "tree": "69bd3d85ff043c4f262dafe176d45b6d75752bed",
+    "validation": "c6dbb3094e55914c94d64de65137addb60a971aa",
+    "run": 39989017558,
+    "job": 120535634885,
     "attempt": 1,
-    "artifact": 12469559629,
-    "artifact_bytes": 34176174,
-    "artifact_sha256": "702d22d6bb24a8d75f54de5cdca60fbfaf9162246578697705b3d28411ead7fc",
-    "receipt": "7e09f9e1a6b7f4542a1de08419883ac922e2f465",
-    "receipt_branch": "checkpoint/manual-counter-metamorph-received-r1-20261023",
-    "audit": "Recovered prior completed receiver; reproduced source, payload, negative controls, counts, differential and protected bindings before publishing90 original receipt files. No rerun. Same-assistant audit, no external independence."
+    "artifact": 12518249153,
+    "artifact_bytes": 38499892,
+    "artifact_sha256": "17d2158c28299be07a299f99963456fac92389652b6cd69f16d4cddb4e39c1a0",
+    "receipt_branch": "checkpoint/manual-paused-token-entry-received-r5-20261023",
+    "acceptance_commit": "31a1698d6190fc813c103eb2723a10e0fcaed3ad",
+    "acceptance_path": "experiments/manual-transmission/research/paused-token-entry-received-r5-20261023/CLOSURE_ACCEPTANCE.md",
+    "scope": "Bounded source/target-copy paused-entry transactions, trigger provenance, prospectively authorized PT02 and EP02-EP04 fixtures. Not all token producers or whole multiplayer runtime.",
+    "positive_results": {"focused_passes": 690, "broad_passes": 14753, "ordinary_passes": 18361, "ordinary_unchanged_skips": 43, "engine_passes": 3978, "assay_unit_passes": 568, "assay_touchstone_cards": 2000, "assay_existing_findings_preserved": 51},
+    "predecessor_qualified_source": "418cdfdacd5191549e9fc8e4a071330120b071b7"
   },
-  "preserved_foundation": "Prior copy-entry, snapshots, entry-counterR2 and observerR2 receiving chain retained. No new validation of unchanged foundations merely due to handoff.",
-  "paused_token": {
-    "revision": "R2",
-    "branch": "candidate/manual-paused-token-entry-r2-20261023",
-    "record": "experiments/manual-transmission/research/paused-token-entry-r2-20261023",
-    "source_commit": "This source commit; workflow child will pin exactSHA/tree",
-    "production_unchanged_from": "e1a8943913cf36cc5e6b76f6c6f4df2279188b53",
-    "fixture_delta": "Exactly two inserted lines assert counters component presence before identical original count==1 assertion. Original48 and recipient8 unchanged.",
-    "fresh_baseline_cases": 14,
-    "fresh_prediction": {
-      "assertion_failures": 6,
-      "passes": 8
-    },
-    "reused_baseline_cases": 56,
-    "reused_observation": {
-      "assertion_failures": 42,
-      "passes": 14
-    },
-    "composite_expected": {
-      "cases": 70,
-      "assertion_failures": 48,
-      "passes": 22,
-      "one_execution": false
-    },
-    "unexecuted": true,
-    "component_adopted": false
+  "pt02_closure": {
+    "status": "ORIGINAL_CONTROL_AND_CANDIDATE_EVIDENCE_ACCEPTED",
+    "source": "4abd907c0fa1c36ebddb1931f05fb6b6918ff001",
+    "tree": "f05354ef3426b159e59343419d6e3d9abda3a95e",
+    "validation": "edd02bfefb8ce27a3da8ca3e8831dff723fc118a",
+    "run": 39999830370,
+    "job": 120572729211,
+    "artifact": 12522610939,
+    "artifact_bytes": 38740,
+    "artifact_sha256": "2565f93ace5e6bbd1c7baf914af03db99166a29019f9ff6c1ca4b90a98ea8500",
+    "qualified_baseline": "418cdfdacd5191549e9fc8e4a071330120b071b7",
+    "baseline_assertion_failures": 4,
+    "candidate_passes": 4,
+    "original_oracle_and_case_derivation_verified": true,
+    "historical_control_reconciliation": {"r1_unchanged": 52, "r2_unchanged": 14, "revised_pt02": 4, "total_distinct": 70, "baseline_assertion_failures": 48, "baseline_passes": 22, "single_execution": false, "all_70_passing_on_original_r5_focused_bank": true},
+    "separate_ep_regression_control": "R5 four-case expected failures on the failed R3 handler remain separate from qualified-baseline controls."
+  },
+  "execution_now": {
+    "new_test_or_build_dispatched_by_this_receipt": false,
+    "no_active_run_observed_on_reconciliation": true,
+    "work_completed": "Read-only archive audits, historical control eligibility, bounded qualification receipt and successor-plan recovery. No background implementation is implied.",
+    "next_authorized_action": "Recover Spellskite specification 88cd69c88628e0dfd78c2e45c067c91d727aecb8 onto qualified R5. Reconcile active ownership before edits. Review current one-target/all-target primitives and slot/object-visit representation; freeze executable generic fixed-recipient one-slot controls and implementation before any guarded qualification. No unsupported-primitive compiler failure may count as negative behavioral evidence."
+  },
+  "next_dependency": {
+    "name": "Spellskite fixed-self exactly-one-target-slot retargeting",
+    "review_source": "88cd69c88628e0dfd78c2e45c067c91d727aecb8",
+    "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
+    "planned_cases": 22,
+    "status": "SPECIFICATION_RECOVERED_NOT_IMPLEMENTED_NOT_EXECUTED_NOT_ADOPTED",
+    "critical_constraints": ["Target-instance grouping, not global duplicate exclusion", "Per-slot object-visit identity; never refresh unchanged targets", "Original stack-object controller/source legality", "Preserve target count, modal/splice target views and damage allocations", "Targeting and ward event correctness", "Actual mana/life payment and serialized slot decisions", "Preserve all 82 legacy saved-state fixtures"],
+    "card_registration": "Only after generic primitive qualification and fresh card/printing verification. No Spellskite registration increase is claimed.",
+    "alternate_fblthp": "Preserved source review 6e41eabfc4e3db9df8e9e93fe505a03215aabd9b still needs a protected-WAR-golden amendment, not authorized here."
   },
   "safeguards": {
     "deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
     "deck_sha256": "2a9f47d2edcfbdb54a9ea15eadc719f85b36f74da9eb682233b85bd56f034da1",
-    "header_hash_discrepancy": "Preserved unchanged",
-    "phase2_protocol_sha256": "4cd733c6e472322493cef4f90e157f427dcc2d82346e2f6fac5cf20a9beeb607",
+    "protected_bindings": 144,
     "protected_goldens": 23,
     "official_phase2_games": 0,
     "official_phase2_seeds": 0,
     "precision_completed": 10,
     "precision_reserved": 2,
     "precision_this_execution": 0,
-    "precision_conclusion": "INCONCLUSIVE",
-    "policies": "AiProfile.CURRENT and accepted R5 unchanged; challenger dispositions/hardware unchanged"
+    "main_merged": false,
+    "deck_or_policy_promoted": false,
+    "external_independent_review": false
   },
   "registry": {
-    "source": "418cdfdacd5191549e9fc8e4a071330120b071b7",
+    "last_audited_source": "418cdfdacd5191549e9fc8e4a071330120b071b7",
     "manual": 93,
     "manual_total": 100,
     "opponents": 393,
     "opponents_total": 700,
-    "meaning": "Registration only; not functional admission. Candidate changes no card definitions or lists; prior source-bound audit reused."
+    "meaning": "Historical registration inventory only; no fresh registry run or functional admission claimed by this receipt."
   },
-  "next_authorized_action": "Reconcile live execution and ownership, pin a sole validation workflow child to this exactsource/tree, then one guarded R2 qualification. Reuse original56 baseline observations after exact artifact audit; run strengthened14 baseline and fullcandidategates. Preserve failedR1 without reclassification; receive R2 originalartifact before boundedadoption.",
-  "prohibitions": "No official gameplay/seeds, Precision use, main modification, frozen hardware changes, assertion weakening, golden reblessing, cancellation of unrelated work, or competitive claims.",
-  "known_blockers": "See SOURCE_REVIEW.json. Full replacement ordering, source-copy LKI, other producers, intrinsic counter boundaries, live UI, exact opponents/policies and independent four-player runtime composition remain unqualified.",
-  "reconciliation": "Immediately before branch publication: no in_progress/requested/waiting/pending runs; unrelated old queued34749202144 on pest-control/lab untouched. Main37a6036 unchanged; paused candidate/validation refs absent before own creation. Source binding reproduced on fetched validation commit with144protectedpaths and23goldens.",
-  "followup_priority": {
-    "spellskite": "Recover existing 88cd69c88628e0dfd78c2e45c067c91d727aecb8 fixed-recipient/target-slot specification. Frozen-deck interaction blocker.",
-    "fblthp": "Recovered6e41eabfc4e3db9df8e9e93fe505a03215aabd9b source-reviewed draft; protectedWARgolden amendment not authorized.",
-    "source_copy_lki": "See receipt FOLLOWUP_SOURCE_COPY_LKI_REVIEW.json. Genericruntimegap; no exact overlap between30registered directself-copy producers and frozen800slots. Directpodimpactunproven."
-  },
-  "previous_failed_execution": {
-    "branch": "candidate/manual-paused-token-entry-r1-20261023",
-    "record": "experiments/manual-transmission/research/paused-token-entry-r1-20261023",
-    "original_cases": 48,
-    "supplemental_cases": 22,
-    "baseline_prediction": {
-      "failures": 44,
-      "passes": 26
-    },
-    "unexecuted": false,
-    "component_adopted": false,
-    "new_source_changes": "Off-state token plan; preserved transaction draft plus token-recipient marker and reference propagation repairs. Separate supplemental controls.",
-    "source": "e1a8943913cf36cc5e6b76f6c6f4df2279188b53",
-    "source_tree": "de84e5007b1234cefd7d13ae91e0c91b2c387f61",
-    "validation": "7f5559650fd960e42792a3728ec7c6d900390e64",
-    "validation_tree": "02cbc7f428b85e82e949c97580c83dd95398792f",
-    "workflow_blob": "f631b16937fe47ec4b61661abc1d2d62c99bb229",
-    "workflow_sha256": "29d1518959f67fb9a16288c4071dd95c4220d69cb31350259f5112ddabff2315",
-    "run": 39943006929,
-    "job": 120378784251,
-    "attempt": 1,
-    "run_number": 1,
-    "run_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39943006929",
-    "artifact": {
-      "id": 12497122147,
-      "bytes": 103571,
-      "sha256": "252e35406d499cc2b7b8d4f91f6b8ace6338f6034aadefbaa546c302e0f39ca6"
-    },
-    "observed_verdicts": {
-      "rows": 70,
-      "passed": 22,
-      "assertion_failures": 44,
-      "null_pointer_failures": 4
-    },
-    "conclusion": "failure",
-    "receipt": "experiments/manual-transmission/research/paused-token-entry-received-r1-20261023",
-    "receipt_status": "QUALIFICATION_INCOMPLETE",
-    "later_gates": "Focused, broad, ordinary, Assay unexecuted"
-  }
+  "historical_dispositions": "R1-R4 paused-token qualifications remain failed/unadopted. Closure R1 pretest guard failure remains failed before tests. Original archives, assertions, amended-oracle annexes and original snapshots are retained. Their historical execution records remain at immutable original source commits.",
+  "known_blockers": "Full replacement ordering, source-copy last-known-information, remaining token producers, remaining frozen-card/opponent coverage, live player interaction, exact pilots, replay and independent four-player runtime composition remain unqualified.",
+  "prohibitions": "No unauthorized official games/seeds, Precision use, main edits, frozen hardware changes, weakened assertions, golden reblessing, duplicate successful builds/games or competitive claims. Read-only intervention watch is not an implementation worker."
 }
