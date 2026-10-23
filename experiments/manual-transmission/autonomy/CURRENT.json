@@ -3,14 +3,14 @@
   "updated_date": "2026-10-23",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL_RETARGET_HISTORY_R1",
-  "owner": null,
+  "status": "RECOVERING_RETARGET_HISTORY_R1_INJECTION",
+  "owner": "manual-work-390bd1587480-20261023",
   "lease": {
-    "state": "RELEASED_WAITING_EXTERNAL",
-    "expires_utc": null,
-    "previous_owner": "manual-work-390bd1587480-20261023",
-    "released_utc": "2026-10-23T20:14:40.064Z",
-    "recovery": "Work remains primary execution channel. Scheduled executor stays paused. On continuation, reconcile this run and all workflow/lease activity, receive the original terminal artifact once, then claim a fresh Work lease before writes. Do not rerun completed qualification or re-enable the schedule without saved checkpoint and explicit ownership release."
+    "state": "ACTIVE_FOREGROUND",
+    "owner": "manual-work-390bd1587480-20261023",
+    "claimed_utc": "2026-10-23T20:37:36.725Z",
+    "expires_utc": "2026-10-23T22:07:36.726Z",
+    "purpose": "Receive original failed run40017590859; diagnose and repair only injection; freeze one successor after reconciliation."
   },
   "last_qualified": {
     "source": "5bc1b733d3e19fee4da7e33174bf4a480bd92812",
@@ -55,18 +55,7 @@
     "validation": "1540fd7f2e1c8bf17a74cd8440bbf2cdb88d5cc7",
     "validation_branch": "validation/manual-retarget-history-r1-20261023",
     "workflow": ".github/workflows/manual-retarget-history-r1-20261023.yml",
-    "pending_runs": [
-      {
-        "run": 40017590859,
-        "job": 120633551904,
-        "attempt": 1,
-        "source": "3e55adacde36f96636776165744ebc85508c12c5",
-        "validation": "1540fd7f2e1c8bf17a74cd8440bbf2cdb88d5cc7",
-        "status": "in_progress",
-        "last_observed": "2026-10-23T20:14:40.064Z: active; no original artifact or behavioral outcome yet received.",
-        "url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/40017590859"
-      }
-    ],
+    "pending_runs": [],
     "planned_not_observed": {
       "new_helper_cases": 12,
       "new_integration_cases": 4,
@@ -80,7 +69,7 @@
     },
     "negative_scope": "Compiled full-recapture mutation in new RetargetHistory.kt; exact two AssertionFailedError first frames23/28. No missing-type or historical-baseline claim.",
     "source_delta": "One modified production file ContestedRetargetExecutors.kt plus seven additions (helper,3 test classes, protocol,design,gate). All preexisting tests,144 protected bindings,23 goldens and82 fixture files unchanged.",
-    "next_executable_action": "Receive terminal original run40017590859 artifact once: verify GitHub ZIP hash/size, all manifest paths, source3e55adacde36f96636776165744ebc85508c12c5/tree debfcfaad7294a8a774ab1d278efb28212efe134 and validation1540fd7f2e1c8bf17a74cd8440bbf2cdb88d5cc7, exact original mutation2 assertion frames23/28, restoration, frozen730 focused identities, broad14793/engine4018, ordinary18401 +exact43 skips, executed task scopes,11 inherited duplicate pairs, raw Assay corpus and51 byte-identical findings,144 bindings/23goldens/82fixtures. Preserve any failure before a bounded successor; never retry unchanged successes. If accepted, continue target-instance capture/full occurrence integration after resolving the documented protected resolver boundary. No Spellskite/card/competitive admission implied.",
+    "next_executable_action": "Audit original manifest, pins, archived injection and compile log; freeze minimal injection-only successor with explicit normal/original-broken/repaired-mutant compilation controls and unchanged two witnesses, then reconcile once before single dispatch.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -125,6 +114,19 @@
       "binding_sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94",
       "disposition": "Preserved. Full per-occurrence resolution cannot silently alter this protected source binding; next engineering design must resolve that boundary explicitly.",
       "immediate_lane": "Bounded contested-retarget repair avoids the protected file and makes real live-path progress."
+    },
+    "failed_original": {
+      "run": 40017590859,
+      "job": 120633551904,
+      "attempt": 1,
+      "source": "3e55adacde36f96636776165744ebc85508c12c5",
+      "validation": "1540fd7f2e1c8bf17a74cd8440bbf2cdb88d5cc7",
+      "artifact": 12529366849,
+      "artifact_bytes": 21007,
+      "artifact_sha256": "63a399dc2fa0701ff515a729fc99d2e02f93499ea3c52e887591d7ed17474e23",
+      "disposition": "FAILED_MUTATION_COMPILATION_ZERO_TESTS_NOT_BEHAVIORAL_EVIDENCE",
+      "positive_stages": "NOT_EXECUTED",
+      "receipt": "Original ZIP digest and size verified; original inner manifest/log/source audit in progress."
     }
   },
   "completion_contract": {
@@ -147,12 +149,12 @@
     "external_independent_review": false,
     "no_successful_workflow_rerun": true
   },
-  "reconcile": "2026-10-23T20:14:40.064Z: exact one new push run40017590859 attempt1 observed at validation1540fd7; validation adds one workflow only. Before launch all live-status queries found no relevant active run; only unrelated queued34749202144 untouched. Execution schedule confirmed paused with last scheduled iteration completed. Main remains37a603617a03dfd2d81b39dae004f7f336a70dfc.",
+  "reconcile": "2026-10-23T20:37:36.725Z: ledger unchanged since c49316e; no newer successor or active Manual workflow in all live states; unrelated queued34749202144 untouched. Scheduled executor remains disabled and its last iteration completed. Watch restored enabled/read-only.",
   "automation": {
     "execution_task": "Manual Execution Continuation",
     "execution_task_id": "6adbad91b90881918859ad0cba22b881",
     "execution_schedule": "PAUSED for Work execution ownership; is_enabled=false confirmed 2026-10-23T19:56:24Z",
-    "intervention_watch": "Enabled READ ONLY; updated for Work ownership and intentionally paused scheduled executor; no continuous execution claim.",
+    "intervention_watch": "Enabled READ ONLY verified/restored 2026-10-23T20:37:36.725Z; existing Work ownership instructions preserved.",
     "handoff": "Work handoff completed. Scheduled executor remains paused; intervention watch enabled/read-only and expects Work ownership. Work released active lease while GitHub qualification runs. A future scheduled handoff must persist checkpoint and release ownership before re-enabling."
   },
   "previous_qualified": {
@@ -183,6 +185,6 @@
     "work_owner": "manual-work-390bd1587480-20261023",
     "discussion": "READ_ONLY",
     "scheduled_executor": "PAUSED",
-    "activity": "GitHub qualification40017590859 active. Foreground lease released for external wait; no claim of continuous chat execution after this turn."
+    "activity": "Foreground Work recovery active; no GitHub qualification currently active."
   }
 }
