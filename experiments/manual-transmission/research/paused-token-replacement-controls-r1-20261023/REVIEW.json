@@ -1,0 +1,120 @@
+{
+  "status": "UNCOMPILED_UNTESTED_UNADOPTED_PREPARATION_ONLY",
+  "depends_on_draft": "60b1e140cf6294e166f52b733e1c94e7b83466fa",
+  "proposed_baseline": "418cdfdacd5191549e9fc8e4a071330120b071b7",
+  "baseline_qualification": "Still active run39875902205; not yet an admitted baseline",
+  "test_sha256": "ba6b03a7f07a89bb1ac43dea000239865aa2954bc5dec51d65c04ef86f52f6aa",
+  "test_bytes": 7033,
+  "cases": [
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR01 printed and granted modes remain independent until one atomic entry; sourceCopy=false, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 63
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=false, serialized=false, double=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=false, serialized=false, double=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR01 printed and granted modes remain independent until one atomic entry; sourceCopy=false, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 63
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=false, serialized=true, double=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=false, serialized=true, double=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR01 printed and granted modes remain independent until one atomic entry; sourceCopy=true, serialized=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 63
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=true, serialized=false, double=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=true, serialized=false, double=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR01 printed and granted modes remain independent until one atomic entry; sourceCopy=true, serialized=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 63
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=true, serialized=true, double=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRiotCompositionTest",
+      "name": "PR02 copied general modifiers are not coentrant replacement providers; sourceCopy=true, serialized=true, double=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 114
+    }
+  ],
+  "proposed_total_controls": {
+    "cases": 48,
+    "assertion_failures": 42,
+    "passes": 6,
+    "errors": 0,
+    "skips": 0
+  },
+  "static_player_flow": {
+    "status": "STATIC_REVIEW_ONLY_NO_BROWSER_EXECUTION",
+    "sources": {
+      "game-server/src/main/kotlin/com/wingedsheep/gameserver/session/DecisionEnricher.kt": "62e699207db027f6d6bc282c68307cbdfc707ccd35737331aa1260c02728777a",
+      "web-client/src/components/decisions/ChooseTargetsUI.tsx": "e12a37cf9d5ca344d4653ab0f1ffe3475a1fa7561e46bd7efd6fa75a248fccc4",
+      "web-client/src/components/decisions/ChooseOptionDecisionUI.tsx": "5de7b94ffc7487a02712e7daef19bb6ba7ad96e08c827ac5d0e09faaed73d237",
+      "web-client/src/components/decisions/ChooseColorDecisionUI.tsx": "ec3e49eb410eb918a5c6f0220ffd192f50037fdf5c8f67a7dbb1fa9b68103474",
+      "web-client/src/components/decisions/DecisionContextCards.tsx": "c0ee03d6e1e69ef15e2d326fac7c0e66afaba2399099128c04a6067748935f20",
+      "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt": "850125a611fd414d2aaf8dd68aaf628a3ff74a6b961ee9d074e7c10496290202"
+    },
+    "findings": [
+      "Uses existing ChooseTargets/ChooseOption/ChooseColor decision DTOs and ordinary SubmitDecision actions; no new client action/type/event.",
+      "Aura host and attacking defender legal ids remain existing public objects; non-targeting behavior emits no targeting events.",
+      "Defender choice retains one indexed multi-token question; existing ChooseTargetsUI walks requirements and submits all slots together.",
+      "Off-state entrant ids are absent from client cards: DecisionContextCards safely omits preview, ChooseOption uses explicit sourceName, color UI uses prompt; no phantom battlefield card is sent.",
+      "Printed mode icons/options still come from existing PermanentEntryReplacements; controller/opponent chooser routing remains the shared implementation.",
+      "An actual running-client flow remains a gate for complete player-facing admission; static tracing alone is not browser evidence."
+    ]
+  },
+  "planned_positive_counts": {
+    "focused": 664,
+    "engine": 3956,
+    "broad_required": 14731,
+    "ordinary_passed": 18339,
+    "ordinary_exact_skips": 43,
+    "basis": "Prior598 focus +48new controls +4original TokenBatchEntryHistoryTest +14original AttackingTokenDefenderChoiceTest. Freeze final source and actual baseline receipt before executable preregistration."
+  },
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false
+}
