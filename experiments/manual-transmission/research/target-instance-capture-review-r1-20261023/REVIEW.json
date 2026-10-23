@@ -1,0 +1,173 @@
+{
+  "schema": "manual-target-instance-capture-source-review-v1",
+  "status": "SOURCE_BOUNDARY_REVIEW_ONLY_NOT_IMPLEMENTED_OR_QUALIFIED",
+  "reviewed_utc": "2026-10-23T23:01:00.218Z",
+  "source": "0b97c51297bf9357c6b37dc2797abb27f7988e91",
+  "tree": "e4bc8d6471c031e468a537565b57d1e419c0425d",
+  "accepted_receipt": "1ec36f8c5ba3f9e5f79eb8bc74780a90a8d8e1bb",
+  "reviewer": "Primary Work execution owner; not external independent review",
+  "source_files": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt": {
+      "git_blob": "d3c80ae6077571db17292e34a447dc4329a6f62d",
+      "sha256": "850125a611fd414d2aaf8dd68aaf628a3ff74a6b961ee9d074e7c10496290202",
+      "bytes": 35843
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt": {
+      "git_blob": "dc1f52c160432bf9fcdf421e60ce46dabd0e4313",
+      "sha256": "d2f82ea8237dc6a642005e6a6e12a2148555240a2ed93786a24df02af650d3ee",
+      "bytes": 27917
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/EffectAndTriggerContinuationResumer.kt": {
+      "git_blob": "80ed339c20b2361916d49822cc1bae6121ad7370",
+      "sha256": "6980996cc6cc4481d5f53bc12785724b38a7f9eaa6c986be5692999d691a87c5",
+      "bytes": 32512
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CastModalContinuationResumer.kt": {
+      "git_blob": "eaa78943eeeb636e2186dc8000d9bfe5f7b8ae4b",
+      "sha256": "824c08e37ef69193b19c9d39dbaca502d085d738e9da10d54a6d56d5ac02fa9e",
+      "bytes": 8744
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalTriggerContinuationResumer.kt": {
+      "git_blob": "2c3b6212f6a76a051914655120b6b709e9a8f702",
+      "sha256": "36d52941ab8dd83552a590033fbc46ca4413d98e07f9f413756691de9ec36490",
+      "bytes": 7007
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalCastContinuations.kt": {
+      "git_blob": "44402ae4f4f92453b358ff1fa7614bf8d1cf598b",
+      "sha256": "34682ea4a4922d1562e3a4e26330482dbc5d20e2ddddfd8cfde1b675c3f73f41",
+      "bytes": 3557
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalTriggerContinuations.kt": {
+      "git_blob": "1cab3fc0694cdaa9875c7195348ee8b90f8edc13",
+      "sha256": "799db6eb8d559378aa5cbee236675de7b693b5beb39e6475befbb03d4bc68386",
+      "bytes": 4171
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt": {
+      "git_blob": "dd4c000b13663a03ec6d7b79e62d05ab7dcb737f",
+      "sha256": "e9a4d97c63cf6e7940a0a3e7d39f86eba054b89e464c44f3cb708f3f3038e5ef",
+      "bytes": 326087
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt": {
+      "git_blob": "cc74a8d50060d85608e1cbcd83583f71be98891f",
+      "sha256": "56a68883a54a3accef7da0066c3148aa0fc5795174383418922481a4a62c71e2",
+      "bytes": 79879
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt": {
+      "git_blob": "322eaca493022178d83bd3c953c73c9dd6200390",
+      "sha256": "a24ee46915d62b7dc36a42bef5e049867360a4f53b97f877c4c304dc0958b224",
+      "bytes": 35877
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt": {
+      "git_blob": "f7e36eb2416756fd4fbe3c22bb76c3c0c71d7ac0",
+      "sha256": "4a7aba591b71d5d5bf57c6039cafb0925ce85a0976fee15d3b42eb15c928a0b1",
+      "bytes": 36480
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetSlotPlan.kt": {
+      "git_blob": "e804a908af74268631875f94fe7239bd96bf951d",
+      "sha256": "596b05a98191f056359b59c86e81871990c4ad995064b9bfab98a3cbc755c1c1",
+      "bytes": 4791
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+      "git_blob": "64c0466abe72bc495c7e5d364fdbf73d75db777b",
+      "sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94",
+      "bytes": 233548
+    }
+  },
+  "findings": [
+    {
+      "id": "CAPTURE_BOUNDARY",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt",
+      "symbols": [
+        "TargetsResponse.selectedTargets"
+      ],
+      "finding": "Response retains requirement-indexed selected entity lists. Capture belongs before continuations flatten these lists."
+    },
+    {
+      "id": "OMITTED_OPTIONAL_IS_EXPLICITLY_DEFINED",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/decision/DecisionValidators.kt",
+      "finding": "Validation iterates declared decision requirements; omitted response group is empty, mandatory minimum still checked. Unknown requirement keys and intra-requirement duplicates are rejected. Therefore an empty optional group may be recovered from the original declared decision plus validated response; it must not be guessed from a later flat target list."
+    },
+    {
+      "id": "TRIGGER_ALIGNMENT_IS_NOT_ORIGINAL_GROUP_HISTORY",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/EffectAndTriggerContinuationResumer.kt",
+      "finding": "Ordinary trigger response path drops empty groups from both legacy targets and requirements, narrows nonempty requirements withCount(selected size). This protects legacy positional validation but discards original instance indices. Capture must retain original indices separately while preserving this existing alignment."
+    },
+    {
+      "id": "MODAL_FLATTENING",
+      "paths": [
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CastModalContinuationResumer.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalTriggerContinuationResumer.kt"
+      ],
+      "finding": "Both modal resumers sort response keys then flatten each mode's groups. resolvedModeTargets retains mode ordinal but not each requirement's optional/partial boundaries. Preserve mode ordinal and requirement index before flattening; repeated mode selections must remain distinct."
+    },
+    {
+      "id": "PAUSED_CARRIERS",
+      "paths": [
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalCastContinuations.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalTriggerContinuations.kt"
+      ],
+      "finding": "Serializable continuations retain per-mode flat lists. A future capture carrier must survive later mode/target choices without refreshing already selected object visits and must retain legacy decoding semantics."
+    },
+    {
+      "id": "FLAT_ACTION_FALLBACK",
+      "paths": [
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt",
+        "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt"
+      ],
+      "finding": "ActivateAbility carries a flat target list and entity-keyed division map; CastSpell finalization flattens per-mode lists. deriveModeTargetsFromFlat recovers only mode groups for one mode or exactly summed maximum counts, not original per-requirement choices. These legacy values alone are insufficient authority for occurrence-level capture."
+    },
+    {
+      "id": "OBJECT_VISITS",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/GameState.kt",
+      "finding": "GameState.objectRef returns the current entity generation when recorded; missing identity stays null. New-selection capture can use this state at the selection boundary. Existing historical occurrences must keep their recorded reference/null and must never be refreshed wholesale."
+    },
+    {
+      "id": "LEGACY_MAP_LIMIT",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt",
+      "finding": "TargetsComponent has flat targets, requirements and entity-keyed battlefield-entry stamps. It cannot encode distinct visits/allocations for repeated entity occurrences. ObjectRef generation and battlefield-entry timestamp are different representations; do not translate by treating their numbers as interchangeable."
+    },
+    {
+      "id": "PROTECTED_RESOLVER",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "finding": "Resolution consumes legacy target requirements and targetEntryStamps. File remains protected at SHA2567843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94. Capture work may preserve extra provenance outside it; this does not implement full per-occurrence resolution."
+    },
+    {
+      "id": "DIVISION_PAUSE_REVIEW",
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/EffectAndTriggerContinuationResumer.kt",
+      "finding": "createTriggerDamageDistributionDecision stores continuation.targetRequirements with selectedTargets; the ordinary path separately creates alignedRequirements. This is a concrete branch to exercise with an omitted/partial earlier group before any repair claim. No behavioral defect is asserted from this source inspection alone."
+    }
+  ],
+  "next_bounded_contract": "Build capture from the original declared decision and validated response, preserving every original targeting instance (including optional empties), each chosen occurrence and selection-time object reference. Reuse TargetSlotPlan. Carry explicit mode/requirement/view mapping where required; retain legacy flat views unchanged. Reject unsupported ambiguous legacy reconstruction rather than inventing grouping or visit history.",
+  "next_executable_steps": [
+    "Read the full qualified decision/resumer call chain and applicable feature/verification guidance; select the smallest live capture boundary whose original decision/response is still available and whose source is not protected.",
+    "Implement focused capture and pause/resume witnesses before claiming behavior: omitted optional first group, partial earlier group, duplicate recipient in separate instances, repeated modal ordinal, old/null visit surviving later selection and serialization, and division retained per occurrence.",
+    "Investigate the division-pause alignment branch with an executable witness; classify its actual behavior before making a change.",
+    "Make only the bounded capture/carrier/adapter changes supported by those witnesses. Preserve protected StackResolver.kt and all 82 legacy fixture bytes. No full Spellskite/card-coverage claim.",
+    "Freeze exact source/protocol/test identities and compiling fault controls; run the approved locked qualification gates once only after source review and fresh activity reconciliation, then receive original evidence. Do not rerun accepted R2."
+  ],
+  "planned_controls": "Prospective controls should discard an original optional group and refresh an unchanged captured visit, each with exact behavioral assertion failures after successful compilation. Final source-specific identities/counts must be frozen before launch; this review is not that protocol.",
+  "cross_layer_limits": {
+    "sdk": "No SDK change in this review.",
+    "engine": "No executable code changed; no behavioral acceptance.",
+    "continuations": "Future carrier must preserve existing serialized fields/defaults and paused history.",
+    "client_server_ai": "No new action/UI now; full legal-action/choice/masking/pilot integration remains a later card gate.",
+    "resolver": "Protected file unchanged; full per-occurrence resolution remains unresolved.",
+    "assay": "No grammar/card changes; future declared qualification must retain original Assay evidence rules."
+  },
+  "validation": {
+    "type": "Read-only GitHub source inspection plus full local-file Git-blob equality against exact source for13files",
+    "engine_tests_run": 0,
+    "qualification_launched": false,
+    "source_or_test_edits": false,
+    "protected_resolver_hash_verified": true
+  },
+  "safeguards": {
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2,
+    "main_changed": false,
+    "frozen_deck_changed": false,
+    "protected_originals_changed": false,
+    "external_independent_review": false
+  }
+}
