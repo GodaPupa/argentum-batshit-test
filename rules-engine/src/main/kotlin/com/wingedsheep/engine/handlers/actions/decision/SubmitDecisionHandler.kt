@@ -157,6 +157,25 @@ class SubmitDecisionHandler(
                 // (see the post-SBA note below).
                 val preSbaTriggers = triggerDetector.detectTriggers(result.state, eventsNeedingTriggers)
 
+                // A captured ETB observation is not "processed" merely because its original
+                // instruction completed. Stamp the *exact occurrence* only after detection
+                // consumed it here; later scans must not queue that same trigger a second
+                // time. Use identity, not equality: two byte-identical ZoneChangeEvents
+                // may represent two distinct authorized triggering occurrences.
+                val consumedObservedEntries = java.util.Collections.newSetFromMap(
+                    java.util.IdentityHashMap<GameEvent, Boolean>()
+                )
+                for (event in eventsNeedingTriggers) {
+                    if (event is ZoneChangeEvent && event.toZone == com.wingedsheep.sdk.core.Zone.BATTLEFIELD &&
+                        event.observedEntryTriggers != null && !event.entryTriggersAlreadyProcessed
+                    ) consumedObservedEntries.add(event)
+                }
+                val publishedEvents = result.events.map { event ->
+                    if (event is ZoneChangeEvent && event in consumedObservedEntries)
+                        event.copy(entryTriggersAlreadyProcessed = true)
+                    else event
+                }
+
                 val preSbaStackSize = result.state.continuationStack.size
                 val sbaResult = sbaChecker.checkAndApply(result.state, preSbaTriggers.mapNotNull { it.objectReferences.origin }.toSet())
 
@@ -177,11 +196,11 @@ class SubmitDecisionHandler(
                     }
                     return ExecutionResult.propagatePause(
                         pausedState,
-                        listOf(submittedEvent) + result.events + sbaResult.events
+                        listOf(submittedEvent) + publishedEvents + sbaResult.events
                     )
                 }
 
-                var combinedEvents = listOf(submittedEvent) + result.events + sbaResult.events
+                var combinedEvents = listOf(submittedEvent) + publishedEvents + sbaResult.events
 
                 if (sbaResult.newState.gameOver) {
                     return ExecutionResult.success(
