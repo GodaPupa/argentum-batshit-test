@@ -1,0 +1,23 @@
+{
+  "status": "R5_ORIGINAL_EVIDENCE_RECEIVED_PT02_CLOSURE_DISPATCHED",
+  "r5": {"source": "0b5018a0df392acc96d8b38e20dd72ccae3ff48a", "run": 39989017558, "artifact": 12518249153, "conclusion": "success", "original_artifact_recounted": true, "receipt_commit": "a045a9cc51cad902c884ca7e38aa3b5913c08ae6", "full_component_adoption": false, "do_not_rerun": true},
+  "next_execution": {
+    "purpose": "Only four exact-derived amended PT02 controls on qualified baseline, then the same four on unchanged R5 production",
+    "source_branch": "diagnostic/manual-pt02-control-closure-r1-20261023",
+    "source": "8df096e2072947f5c4cf04ea47a1871dd836bd10",
+    "source_tree": "8890e9d5b5f1606b5f44e6dd139acc0e32b78cbc",
+    "validation_branch": "validation/manual-pt02-control-closure-r1-20261023",
+    "validation": "c8fd1a7b3d8c3e895a2f79ee4d429115e6ffc9c2",
+    "run": 39998698512,
+    "run_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/39998698512",
+    "last_observed_status": "queued",
+    "result": "UNVERIFIED",
+    "expected_negative": "4 exact AssertionFailedError outcomes at PausedTokenPT02ControlClosureTest.kt:119, expected 0 observed 1 premature trigger",
+    "expected_positive": "4 passes, no failures/errors/skips",
+    "no_r5_whole_suite_reexecution": true,
+    "one_guarded_attempt": true
+  },
+  "recovery": "Read live activity before continuing. Never redispatch this closure or rerun successful R5. On terminal closure, download and verify its original artifact and pairwise test/source identities; reconcile the historical unchanged-control ledger separately before bounded component adoption. Preserve any failed closure as failed and diagnose it without changing expected outcomes.",
+  "safeguards": {"main_unchanged": "37a603617a03dfd2d81b39dae004f7f336a70dfc", "frozen_deck_unchanged": true, "original_assertions_unchanged_in_closure": true, "protected_goldens": 23, "precision_reserved": 2, "official_games": 0, "official_seeds": 0, "competitive_evidence": false},
+  "intervention": "No additional user authorization presently required. Read-only intervention watch remains separate from engineering execution."
+}
