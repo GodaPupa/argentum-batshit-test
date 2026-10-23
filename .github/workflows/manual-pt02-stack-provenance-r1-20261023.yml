@@ -1,0 +1,78 @@
+name: Manual PT02 stack provenance diagnostic R1
+on:
+  push:
+    branches: [validation/manual-pt02-stack-provenance-r1-20261023]
+    paths: ['.github/workflows/manual-pt02-stack-provenance-r1-20261023.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: 859bb61f3f5fdd9a5a4460b2004349e03b47ebdc
+  SOURCE_TREE: 6781c96e4e142ac64ee52e085386f8ae5b8c9058
+  R2_ANCESTOR: 06c27e1c31efd974300028c8ce5c1ceeac703280
+  RECORD: experiments/manual-transmission/research/pt02-stack-provenance-diagnostic-r1-20261023
+  WORKFLOW: .github/workflows/manual-pt02-stack-provenance-r1-20261023.yml
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: '1'
+jobs:
+  verify:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install locked recipe runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          command -v flock
+          mkdir -p "$HOME/.cache/argentum" pt02-diagnostic-evidence
+      - name: Bind source, original assertion and source-only changes
+        run: |
+          test "$(git rev-parse HEAD^)" = "$SOURCE"
+          test "$(git rev-parse "$SOURCE^{tree}")" = "$SOURCE_TREE"
+          test "$(git diff --name-only "$SOURCE" HEAD)" = "$WORKFLOW"
+          test "$(git ls-tree "$SOURCE" experiments/manual-transmission/control/v0.7.decklist.txt | awk '{print $3}')" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          test "$(git ls-tree "$SOURCE" rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenInstructionScenarioTest.kt | awk '{print $3}')" = "51c4162bb2d65fa2dc3a0c007734983e92b4c1ab"
+          git diff --name-only "$R2_ANCESTOR" "$SOURCE" | sort > pt02-diagnostic-evidence/source-delta.txt
+          printf '%s\n' "$RECORD/PROTOCOL.md" "$RECORD/validation.just" "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenStackProvenanceDiagnosticTest.kt" | sort > pt02-diagnostic-evidence/expected-source-delta.txt
+          diff -u pt02-diagnostic-evidence/expected-source-delta.txt pt02-diagnostic-evidence/source-delta.txt
+          git rev-parse HEAD "$SOURCE^{tree}" > pt02-diagnostic-evidence/source-identity.txt
+          git show "$SOURCE:$RECORD/PROTOCOL.md" > pt02-diagnostic-evidence/PROTOCOL.md
+      - name: Execute four standalone diagnostic cases only
+        id: diagnostic
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" diagnostic 2>&1 | tee pt02-diagnostic-evidence/gradle.log
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > pt02-diagnostic-evidence/exit.txt
+          exit "$rc"
+      - name: Preserve original XML and immutable evidence hashes
+        if: always()
+        run: |
+          mkdir -p pt02-diagnostic-evidence/junit
+          if test -f rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PausedTokenStackProvenanceDiagnosticTest.xml; then
+            cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.scenarios.PausedTokenStackProvenanceDiagnosticTest.xml pt02-diagnostic-evidence/junit/
+          fi
+          python3 - <<'PY'
+          from pathlib import Path
+          from hashlib import sha256
+          base=Path('pt02-diagnostic-evidence')
+          manifest=base/'SHA256SUMS'
+          manifest.write_text(''.join(
+              sha256(p.read_bytes()).hexdigest()+'  '+str(p.relative_to(base))+'\n'
+              for p in sorted(base.rglob('*')) if p.is_file() and p != manifest
+          ))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-pt02-stack-provenance-diagnostic-r1
+          path: pt02-diagnostic-evidence/
+          if-no-files-found: error
+          retention-days: 90
