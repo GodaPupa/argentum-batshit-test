@@ -1,0 +1,342 @@
+{
+  "id": "MANUAL_PAUSED_TOKEN_SUPPLEMENTAL_REVIEW_2026_10_23",
+  "status": "PREREGISTERED_STATIC_PREDICTIONS_UNCOMPILED_UNTESTED",
+  "baseline_source": "418cdfdacd5191549e9fc8e4a071330120b071b7",
+  "qualified_receipt": "7e09f9e1a6b7f4542a1de08419883ac922e2f465",
+  "scope": "Supplemental invalid-action atomicity and riot token-recipient identity controls. Original 48 archived cases and assertions unchanged. No build, test or gameplay executed by review agent.",
+  "author_scope": "Same-assistant delegated review, not independent external audit.",
+  "files": [
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenInvalidResponseTest.kt",
+      "bytes": 10419,
+      "sha256": "7a2361e32bf26f294383bb42ccb9f660446dd12df8cb118a07fe0d1518c80ae5",
+      "git_blob": "d56f793cb98ce943e81dab555f5ba504567240d7"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenRecipientFilterTest.kt",
+      "bytes": 6694,
+      "sha256": "f27ec18253a8daa847ad1cb00a6afff1969f7e2c1d6a988a828d853bd897eb2e",
+      "git_blob": "a064748643546e18efbb90cef45bbeb819a8b91e"
+    }
+  ],
+  "case_totals": {
+    "new": 22,
+    "predicted_baseline_assertion_failures": 2,
+    "predicted_baseline_passes": 20,
+    "original_cases": 48,
+    "original_predicted_failures": 42,
+    "original_predicted_passes": 6,
+    "combined_cases": 70,
+    "combined_predicted_baseline_assertion_failures": 44,
+    "combined_predicted_baseline_passes": 26
+  },
+  "cases": [
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI01 rejected color replies preserve routing and permit the original answer; sourceCopy=false, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=false, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI03 rejected Aura hosts preserve routing and permit the original answer; sourceCopy=false, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI01 rejected color replies preserve routing and permit the original answer; sourceCopy=false, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=false, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI03 rejected Aura hosts preserve routing and permit the original answer; sourceCopy=false, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI01 rejected color replies preserve routing and permit the original answer; sourceCopy=true, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=true, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI03 rejected Aura hosts preserve routing and permit the original answer; sourceCopy=true, serialized=false",
+      "expected_baseline": "ASSERTION_FAILURE",
+      "expected_first_assertion_frame": "PausedTokenInvalidResponseTest.kt:134",
+      "expected_candidate": "PASS",
+      "reason": "Qualified source-copy executor has no Aura-host selection path; pendingDecision is null at first ChooseTargetsDecision assertion.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 134
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI01 rejected color replies preserve routing and permit the original answer; sourceCopy=true, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI02 rejected mode indices preserve routing and permit the original answer; sourceCopy=true, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing decision validation plus atomic ActionProcessor rejection preserves the suspended state and permits the original valid reply.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI03 rejected Aura hosts preserve routing and permit the original answer; sourceCopy=true, serialized=true",
+      "expected_baseline": "ASSERTION_FAILURE",
+      "expected_first_assertion_frame": "PausedTokenInvalidResponseTest.kt:134",
+      "expected_candidate": "PASS",
+      "reason": "Qualified source-copy executor has no Aura-host selection path; pendingDecision is null at first ChooseTargetsDecision assertion.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 134
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI04 rejected defender groups preserve the whole pending batch; serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing indexed defender decision and validators reject missing, illegal, duplicate and undeclared groups without consuming pending routing.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "name": "PI04 rejected defender groups preserve the whole pending batch; serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "reason": "Existing indexed defender decision and validators reject missing, illegal, duplicate and undeclared groups without consuming pending routing.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenInvalidResponseTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF01 Rhythm of the Wild never grants riot to a token copy; sourceCopy=false, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the printed nontoken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF02 a token-only riot grant applies to a token copy before entry; sourceCopy=false, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the synthetic IsToken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF01 Rhythm of the Wild never grants riot to a token copy; sourceCopy=false, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the printed nontoken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF02 a token-only riot grant applies to a token copy before entry; sourceCopy=false, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the synthetic IsToken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF01 Rhythm of the Wild never grants riot to a token copy; sourceCopy=true, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the printed nontoken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF02 a token-only riot grant applies to a token copy before entry; sourceCopy=true, serialized=false",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the synthetic IsToken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF01 Rhythm of the Wild never grants riot to a token copy; sourceCopy=true, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the printed nontoken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    },
+    {
+      "class": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "name": "PF02 a token-only riot grant applies to a token copy before entry; sourceCopy=true, serialized=true",
+      "expected_baseline": "PASS",
+      "expected_first_assertion_frame": null,
+      "expected_candidate": "PASS",
+      "expected_unmodified_archived_draft": "ASSERTION_FAILURE",
+      "reason": "The qualified token constructor already marks the token before RiotSynthesis evaluates the synthetic IsToken recipient restriction.",
+      "classname": "com.wingedsheep.engine.scenarios.PausedTokenRecipientFilterTest",
+      "predicted_baseline": "pass",
+      "expected_first_failure_line": null
+    }
+  ],
+  "fixture_notes": {
+    "invalid_response_actions": "Wrong player and stale decision id for every decision surface, plus malformed response kind, cancellation, mode bounds, missing/illegal/duplicate/extra target groups. Full encoded state, pending decision and continuation frames must remain unchanged; empty rejected events; then valid answer matches untouched state resumption.",
+    "serialized": "Invalid-response controls round-trip paused states. Recipient controls round-trip preinstruction states and token-only paused states.",
+    "rhythm_fixture": "Accurate named printed-card fixture includes both printed statics using existing SDK. No registered RhythmOfTheWild definition exists. Tests qualify its riot recipient restriction only, not countering behavior or full-card admission.",
+    "opposite_token_grant": "Synthetic IsToken grant is explicitly complementary to the printed IsNontoken restriction.",
+    "invalid_response_expected_rejected_actions_on_candidate": 78,
+    "fixture_entropy": "Fixed literal fixture seeds; no official Phase 2 or Precision seeds generated or consumed."
+  },
+  "production_review": {
+    "confirmed_draft_defect": "PendingTokenEntries.begin hypothetical subject lacked TokenComponent; IsToken and IsNontoken predicates thus reverse applicability for token recipients. Root owns production repair.",
+    "object_reference_gap": "Three new answer types missing ObjectReferencePropagation objectReferences/withObjectReferences mapping. Current fixed token instructions create no permitted old-to-new object move and inherited Composite threads prior moves; no demonstrated fixed48 causal failure. Add parity routes for continuation integration.",
+    "inherited_unqualified_gaps": [
+      "Source copy LKI and stale battlefield visit identity",
+      "Saga initial lore placement bypasses general counter modifiers",
+      "Intrinsic planeswalker/Battle entry counters can consult evolving coentrant state",
+      "Complete replacement selection/order and aggregation",
+      "Other token producers and paused ForEach batches",
+      "Full live client/server interaction qualification"
+    ],
+    "player_flow_static_trace": {
+      "engine": "PendingEntryContinuationResumer routes all three new answer types; Serialization registers them. Answers reuse existing ChooseColorDecision, ChooseOptionDecision, and ChooseTargetsDecision contracts.",
+      "server": "PendingDecisionRouting.withClientRoutingId covers all three existing decision contracts. No new externally serialized decision shape.",
+      "frontend": "DecisionUI routes color to ChooseColorDecisionUI, modes to ChooseOptionDecisionUI, single player-only target requirements to PlayerTargetingUI, and all other Aura/defender selections through ChooseTargetsUI/chooseTargetsWalk. Each indexed slot is collected before one response is submitted.",
+      "qualification_limit": "Read-only source tracing only. No live client interaction, visual behavior, reconnect, masking, or network replay proof; those remain required for full player-facing admission."
+    }
+  },
+  "primary_sources": [
+    {
+      "url": "https://magic.wizards.com/en/news/feature/ravnica-allegiance-release-notes-2019-01-16",
+      "claim": "Rhythm grants riot only to nontoken creatures controlled by its controller. Riot is a replacement decision without a response window; multiple instances work separately.",
+      "line_anchor": "Rhythm of the Wild; General Notes Gruul Keyword Ability Riot",
+      "rules_note": "2019 historical rules numbers are not used as current numbering."
+    },
+    {
+      "url": "https://magic.wizards.com/en/rules",
+      "claim": "Official Comprehensive Rules download authority."
+    },
+    {
+      "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+      "claim": "Current examined CR effective September 25, 2026: 303.4f-g,603.6a,614.12/12a/12b/13a,702.136a-b support Aura entry choice/no legal host, simultaneous entry observations, as-entry replacement planning, and riot instances."
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/feature/spider-man-release-notes",
+      "claim": "Spider-Punk printed and granted riot clarifications; no response window, cannot receive counter implies haste, indefinite haste."
+    },
+    {
+      "url": "https://magic.wizards.com/en/news/feature/bloomburrow-release-notes",
+      "claim": "Stormsplitter copies current copiable values if still present or last battlefield copiable values if source leaves."
+    }
+  ],
+  "consumption": {
+    "official_phase2_games": 0,
+    "official_phase2_seeds": 0,
+    "precision_games": 0,
+    "precision_reserved_games_consumed": 0
+  },
+  "next_step": "Root and validation lane bind exact fixture hashes and predictions before guarded baseline/candidate qualification; preserve actual original JUnit failures without reclassification."
+}
