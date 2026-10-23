@@ -1,0 +1,165 @@
+name: Manual paused-token R4 post-detection provenance qualification
+on:
+  push:
+    branches: [validation/manual-paused-token-entry-r4-20261023]
+    paths: ['.github/workflows/manual-paused-token-entry-r4-20261023.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: 9eb2be694761a4cae60ad4970d07e9d458d8054c
+  SOURCE_TREE: a48f7d3030d3c6a8ba01cfb165f589f4b3570c4f
+  BASELINE: 418cdfdacd5191549e9fc8e4a071330120b071b7
+  RECORD: experiments/manual-transmission/research/paused-token-entry-r2-20261023
+  R4_RECORD: experiments/manual-transmission/research/paused-token-entry-r4-20261023
+  WORKFLOW: .github/workflows/manual-paused-token-entry-r4-20261023.yml
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: '1'
+jobs:
+  verify:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install guarded build runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          command -v flock
+          mkdir -p "$HOME/.cache/argentum" paused-token-r4-evidence
+          flock --version > paused-token-r4-evidence/flock-version.txt
+      - name: Bind exact prospective PT02 amendment, unchanged production, original test and goldens
+        run: python3 "$R4_RECORD/bind.py"
+      - name: Bind immutable original R3 EP01–EP04 failure witness without replay
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json
+          p=json.loads(Path('experiments/manual-transmission/research/paused-token-entry-r4-20261023/PROTOCOL.json').read_text())
+          r3=p['prior_failed']['r3']
+          assert p['status']=='R4_SOURCE_FROZEN_ACCEPTANCE_PENDING'
+          assert r3['disposition']=='FAILED_UNADOPTED' and r3['run']==39967952498
+          assert r3['artifact_id']==12509450010 and r3['broad_engine']=={'tests':3978,'passed':3974,'failures':4}
+          assert len(p['negative_receipts']['R3_original_failing_junit']['failed_cases'])==4
+          assert p['qualification']['focused_passed']==690
+          assert p['safeguards']['official_phase2_games']==0 and p['safeguards']['official_seeds']==0
+          out=Path('paused-token-r4-evidence/protocol')
+          out.mkdir(parents=True,exist_ok=True)
+          (out/'R3_ORIGINAL_RED_WITNESS.json').write_text(json.dumps(p['negative_receipts'],indent=2)+'\n')
+          PY
+      - name: Verify all 690 focused cases including four unchanged EP regressions
+        id: focused
+        run: |
+          mkdir -p paused-token-r4-evidence/focused
+          STAGE=focused python3 "$R4_RECORD/prepare_stage.py"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$R4_RECORD/validation.just" focused 2>&1 | tee paused-token-r4-evidence/focused/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r4-evidence/focused/exit.txt
+          exit "$rc"
+      - name: Receive original focused JUnit and require exact identities, counts and no failures
+        if: always() && steps.focused.outcome != 'skipped'
+        env: {STAGE: focused}
+        run: python3 "$R4_RECORD/collect.py"
+      - name: Complete engine and all nine card-era regression suites
+        id: broad
+        run: |
+          mkdir -p paused-token-r4-evidence/broad
+          STAGE=broad python3 "$R4_RECORD/prepare_stage.py"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$R4_RECORD/validation.just" broad 2>&1 | tee paused-token-r4-evidence/broad/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r4-evidence/broad/exit.txt
+          exit "$rc"
+      - name: Receive broad regression XML and require source-bound counts
+        if: always() && steps.broad.outcome != 'skipped'
+        env: {STAGE: broad}
+        run: python3 "$R4_RECORD/collect.py"
+      - name: Ordinary whole-project build and routine AI tests
+        id: ordinary
+        run: |
+          mkdir -p paused-token-r4-evidence/ordinary
+          STAGE=ordinary python3 "$R4_RECORD/prepare_stage.py"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$R4_RECORD/validation.just" ordinary 2>&1 | tee paused-token-r4-evidence/ordinary/gradle.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r4-evidence/ordinary/exit.txt
+          exit "$rc"
+      - name: Require exact ordinary build and 43 preserved skip identities
+        if: always() && steps.ordinary.outcome != 'skipped'
+        env: {STAGE: ordinary}
+        run: python3 "$R4_RECORD/collect.py"
+      - name: Build Oracle Assay CLI without weakening original grammar tests
+        run: |
+          mkdir -p paused-token-r4-evidence/assay
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$R4_RECORD/validation.just" assay-build 2>&1 | tee paused-token-r4-evidence/assay/build.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r4-evidence/assay/build-exit.txt
+          exit "$rc"
+      - name: Assay 2000-card corpus and retain raw input
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$R4_RECORD/validation.just" assay 2>&1 | tee paused-token-r4-evidence/assay/gate.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r4-evidence/assay/gate-exit.txt
+          capture_rc=0
+          if test -f "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz"; then
+            sha256sum "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" > paused-token-r4-evidence/assay/oracle-bulk-sha256.txt || capture_rc=1
+            wc -c "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" > paused-token-r4-evidence/assay/oracle-bulk-bytes.txt || capture_rc=1
+            cp "$HOME/.cache/scryfall/_bulk-oracle-cards.jsonl.gz" paused-token-r4-evidence/assay/oracle-bulk-corpus.jsonl.gz || capture_rc=1
+          else
+            capture_rc=1
+          fi
+          echo "$capture_rc" > paused-token-r4-evidence/assay/corpus-capture-exit.txt
+          if test "$capture_rc" != 0; then exit "$capture_rc"; fi
+          exit "$rc"
+      - name: Retain entire original golden differential
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$R4_RECORD/validation.just" assay-differential 2>&1 | tee paused-token-r4-evidence/assay/differential.log
+          rc=${PIPESTATUS[0]}
+          echo "$rc" > paused-token-r4-evidence/assay/differential-exit.txt
+          exit "$rc"
+      - name: Verify Assay metrics and preserve all 51 original differential blocks
+        if: always()
+        run: python3 "$R4_RECORD/check_assay.py"
+      - name: Recheck R3 scope, original PT02, protected bindings and golden hashes
+        if: always()
+        run: python3 "$R4_RECORD/bind.py"
+      - name: Preserve any snapshot mismatch and exact protocol
+        if: always()
+        run: |
+          mkdir -p paused-token-r4-evidence/card paused-token-r4-evidence/protocol
+          if test -d mtg-sets/build/snapshots-actual; then cp -R mtg-sets/build/snapshots-actual paused-token-r4-evidence/card/; fi
+          cp "$R4_RECORD/PROTOCOL.json" paused-token-r4-evidence/protocol/R4_PROTOCOL.json
+          cp "$RECORD/PROTOCOL.json" paused-token-r4-evidence/protocol/R2_HISTORICAL_PROTOCOL.json
+          cp "$R4_RECORD/EXPECTED_CASES.json" "$RECORD/BASELINE_SKIPS.json" "$RECORD/BASELINE_REUSE.json" paused-token-r4-evidence/protocol/
+          cp "$WORKFLOW" paused-token-r4-evidence/protocol/WORKFLOW.yml
+          git rev-parse HEAD > paused-token-r4-evidence/validation.txt
+          git rev-parse "$SOURCE^{tree}" > paused-token-r4-evidence/source-tree.txt
+          git diff --name-status 86a5dea55f088f1e242a151920aa83a671039b61 "$SOURCE" > paused-token-r4-evidence/source-delta.txt
+          git status --porcelain --untracked-files=no > paused-token-r4-evidence/final-tracked-changes.txt
+      - name: Hash every archived evidence payload
+        if: always()
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          out=Path('paused-token-r4-evidence');out.mkdir(exist_ok=True)
+          manifest=out/'SHA256SUMS'
+          manifest.write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p.relative_to(out))+'\n' for p in sorted(out.rglob('*')) if p.is_file() and p != manifest))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-paused-token-entry-r4-${{ github.run_id }}
+          path: paused-token-r4-evidence/
+          retention-days: 90
+          if-no-files-found: error
