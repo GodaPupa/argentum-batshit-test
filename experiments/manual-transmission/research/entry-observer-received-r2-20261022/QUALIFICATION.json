@@ -1,0 +1,329 @@
+{
+  "status": "ENTRY_OBSERVER_BOUNDARY_QUALIFIED_COMPONENT_ONLY",
+  "source": "a94e01a76df686200812f0cb75611c80c73b9f4b",
+  "source_tree": "8386649fd9719abba729d263d8127145e44f3b86",
+  "validation": "3cded3e3ff9f322249d52a910af3b1042c546c3e",
+  "run": 39869761376,
+  "job": 120140943011,
+  "completed_at": "2026-10-22T23:51:15Z",
+  "qualified_baseline": "6473e7668636859b443020d152b06f400fca4eb5",
+  "prior_failed_source": "c486fe51a3cecc4ebde845371242c791839f1954",
+  "prior_failure_receipt": "403c67dc95f761d6749d576fa2dca02a8fdd4d39",
+  "artifact_id": 12467284168,
+  "artifact_bytes": 33244679,
+  "artifact_sha256": "d5b1ee1ba0dcc073b137e45820b5d935e9b36a9bc3d6fa6af93640fed5264f74",
+  "members": 8972,
+  "original_junit_xml": 8932,
+  "parts": 133,
+  "stages": {
+    "negative": {
+      "rows": 32,
+      "passed": 11,
+      "failures": 21,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 3
+    },
+    "repair-negative": {
+      "rows": 6,
+      "passed": 3,
+      "failures": 3,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 1
+    },
+    "focused": {
+      "rows": 552,
+      "passed": 552,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 28
+    },
+    "broad": {
+      "rows": 14994,
+      "passed": 14994,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0,
+      "classes": 4233
+    },
+    "ordinary": {
+      "rows": 18300,
+      "passed": 18257,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 43,
+      "classes": 4667
+    }
+  },
+  "assay": {
+    "build-exit.txt": 0,
+    "gate-exit.txt": 0,
+    "differential-exit.txt": 0,
+    "corpus-capture-exit.txt": 0,
+    "Cards assayed": "2000",
+    "Faces": "2042  (27 vanilla)",
+    "Ability lines": "3729  (2791 unique)",
+    "Round-trips byte-exact": "1646   441.4\u2030 (44.1%)",
+    "Alternate spelling normalized": "124",
+    "Declined": "1959",
+    "Ambiguous \u2014 distinct readings": "0",
+    "Print mismatch": "0",
+    "Normalization not invertible": "0",
+    "Full inverse not reproduced": "0",
+    "Redundant readings (same model)": "0",
+    "Cards fully covered": "576 / 2000   288.0\u2030 (28.8%)",
+    "oracle-bulk-sha256.txt": "b567f5160c618730bf3a227a5496979917e4f6979687af32059097ce9e620d1f  /home/runner/.cache/scryfall/_bulk-oracle-cards.jsonl.gz",
+    "oracle-bulk-bytes.txt": "25090657 /home/runner/.cache/scryfall/_bulk-oracle-cards.jsonl.gz",
+    "full_raw_corpus_retained": true,
+    "differential_sha256": "65ced28ca147395352010c8d44c69f42131389e37ecc4f5de1d7e4ab5b1f6884",
+    "divergent_cards": [
+      {
+        "card": "Walking Ballista",
+        "set": "AER"
+      },
+      {
+        "card": "Devout Chaplain",
+        "set": "AVR"
+      },
+      {
+        "card": "Calamitous Tide",
+        "set": "BLB"
+      },
+      {
+        "card": "Pearl of Wisdom",
+        "set": "BLB"
+      },
+      {
+        "card": "Wizard's Lightning",
+        "set": "DOM"
+      },
+      {
+        "card": "Wizard's Retort",
+        "set": "DOM"
+      },
+      {
+        "card": "Bog Rats",
+        "set": "DRK"
+      },
+      {
+        "card": "Goblin Digging Team",
+        "set": "DRK"
+      },
+      {
+        "card": "Scarecrow",
+        "set": "DRK"
+      },
+      {
+        "card": "Mistmeadow Council",
+        "set": "ECL"
+      },
+      {
+        "card": "Keeper of Fables",
+        "set": "ELD"
+      },
+      {
+        "card": "Cryogen Relic",
+        "set": "EOE"
+      },
+      {
+        "card": "Arcane Epiphany",
+        "set": "FDN"
+      },
+      {
+        "card": "Raise the Past",
+        "set": "FDN"
+      },
+      {
+        "card": "Balm of Restoration",
+        "set": "FEM"
+      },
+      {
+        "card": "Hand of Justice",
+        "set": "FEM"
+      },
+      {
+        "card": "Merchant Scroll",
+        "set": "HML"
+      },
+      {
+        "card": "Sethron, Hurloon General",
+        "set": "JMP"
+      },
+      {
+        "card": "Lathril, Blade of the Elves",
+        "set": "KHC"
+      },
+      {
+        "card": "Elvish Warmaster",
+        "set": "KHM"
+      },
+      {
+        "card": "Jaspera Sentinel",
+        "set": "KHM"
+      },
+      {
+        "card": "Boggart Sprite-Chaser",
+        "set": "LRW"
+      },
+      {
+        "card": "Epic Proportions",
+        "set": "LRW"
+      },
+      {
+        "card": "Kithkin Greatheart",
+        "set": "LRW"
+      },
+      {
+        "card": "Aragorn, the Uniter",
+        "set": "LTR"
+      },
+      {
+        "card": "Quickbeam, Upstart Ent",
+        "set": "LTR"
+      },
+      {
+        "card": "Second Breakfast",
+        "set": "LTR"
+      },
+      {
+        "card": "Bloodhunter Bat",
+        "set": "M13"
+      },
+      {
+        "card": "Winged Words",
+        "set": "M20"
+      },
+      {
+        "card": "Ghoulish Procession",
+        "set": "MID"
+      },
+      {
+        "card": "Offender at Large",
+        "set": "MKM"
+      },
+      {
+        "card": "Rakish Scoundrel",
+        "set": "MKM"
+      },
+      {
+        "card": "Vendetta",
+        "set": "MMQ"
+      },
+      {
+        "card": "Taj-Nar Swordsmith",
+        "set": "MRD"
+      },
+      {
+        "card": "Viridian Longbow",
+        "set": "MRD"
+      },
+      {
+        "card": "Stronghold Machinist",
+        "set": "NEM"
+      },
+      {
+        "card": "Experimental Synthesizer",
+        "set": "NEO"
+      },
+      {
+        "card": "Essence Fracture",
+        "set": "ONS"
+      },
+      {
+        "card": "Ghalta, Primal Hunger",
+        "set": "RIX"
+      },
+      {
+        "card": "Bramblesnap",
+        "set": "ROE"
+      },
+      {
+        "card": "Shared Discovery",
+        "set": "ROE"
+      },
+      {
+        "card": "Krosan Warchief",
+        "set": "SCG"
+      },
+      {
+        "card": "Stress Dream",
+        "set": "SOS"
+      },
+      {
+        "card": "Grow Extra Arms",
+        "set": "SPM"
+      },
+      {
+        "card": "Urban Retreat",
+        "set": "SPM"
+      },
+      {
+        "card": "Venom's Hunger",
+        "set": "SPM"
+      },
+      {
+        "card": "Dragon's Prey",
+        "set": "TDM"
+      },
+      {
+        "card": "Seize Opportunity",
+        "set": "TDM"
+      },
+      {
+        "card": "Gather the White Lotus",
+        "set": "TLA"
+      },
+      {
+        "card": "Saved by the Shell",
+        "set": "TMT"
+      },
+      {
+        "card": "Bolt Bend",
+        "set": "WAR"
+      }
+    ],
+    "differential_review": "All 51 original divergence blocks are byte-identical; prior classifications retained, no divergence waived or normalized."
+  },
+  "duplicates": [],
+  "protected_bindings": 122,
+  "goldens_unchanged": 23,
+  "all_original_assertions_unchanged": true,
+  "fixture_review": {
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MeathookMassacreIIScenarioTest.kt": {
+      "original_sha256": "1c041f6cfbffb8f3f061f1e05d46241f211ed2bacf25535e895e0446ff129d28",
+      "final_sha256": "534454beeee4f7bda852d1232b405003f360595049139b627c568032176a0740",
+      "only_added_lines": [
+        "import com.wingedsheep.engine.core.ChooseOptionDecision\n",
+        "import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder\n",
+        "                is ChooseOptionDecision -> d.chooseTriggerOrderInListedOrder()\n"
+      ],
+      "all_original_lines_preserved": true
+    },
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ZodiarkUmbralGodScenarioTest.kt": {
+      "original_sha256": "af776f8b877cc3d47e8cd70d92c5a6682e2686bfcd33b6860fcf05e31b28f3da",
+      "final_sha256": "82c5348242a5434c2c514f0fa1764a6679523b621e0a9301aa78ebea54953cb7",
+      "only_added_lines": [
+        "import com.wingedsheep.engine.core.ChooseOptionDecision\n",
+        "import com.wingedsheep.engine.support.chooseTriggerOrderInListedOrder\n",
+        "                is ChooseOptionDecision -> chooseTriggerOrderInListedOrder()\n"
+      ],
+      "all_original_lines_preserved": true
+    }
+  },
+  "main_unchanged": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "competitive_admission": false,
+  "audit_independence": "Separate read-only receiver, original ZIP/manifest verification and XML recount by the same assistant; not an independent external reviewer.",
+  "limitations": [
+    "Only the specified observer and synchronous ForEach copy boundaries are qualified.",
+    "Paused token planning, complete entry replacements/producers, card/UI/multiplayer and competition remain open.",
+    "Original 51 Assay divergences and 43 baseline skips remain; exact comparison does not turn them into passes.",
+    "Broad collection includes retained focused SDK/snapshot/lint reports; ordinary UP-TO-DATE task reuse is disclosed in the original log and audit.",
+    "Outer flock exclusion is verified; inner gradle-locked reports unavailable shlock on Linux and runs inside that outer guard."
+  ],
+  "next_action": "Restore corrected counter16 and exact Metamorph18 on a fresh checkout of this qualified source, preserving separate engine/card commits and all frozen assertions. Bind the final immutable source before one guarded qualification after a fresh activity check."
+}

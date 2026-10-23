@@ -1,0 +1,451 @@
+{
+  "status": "SOURCE_CANDIDATE_UNCOMPILED_UNTESTED_UNADOPTED",
+  "reviewed_source": "6473e7668636859b443020d152b06f400fca4eb5",
+  "source_qualification": "Fresh checkout of qualified counter6473, exact observerR1 source restored, then scoped synchronous-copy repair and explicit fixture ordering additions. R1 is failed and unadopted; no R2 compilation or test has run.",
+  "prior_qualified_source": "ee2e14976c3c7e83f5842ee5b757a3ecbeb0929d",
+  "test_file": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryObserverBoundaryScenarioTest.kt",
+  "test_sha256": "e3bbb873e1d97bdba3e00a204bab8ef4a72da51e411e07a6f30adc7872c072d2",
+  "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest",
+  "cases": [
+    {
+      "name": "entry observes only observers present at its instruction; departing=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 93,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry suppression uses suppressors present at its instruction; departing=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 106,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=false, twice=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=false, twice=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry observes only observers present at its instruction; departing=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 93,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry suppression uses suppressors present at its instruction; departing=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 106,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=true, twice=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry condition is checked at the event and only intervening-if rechecks; departing=true, twice=true",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 121,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=false, suppressed=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=false, suppressed=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=true, suppressed=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "simultaneous entry sees coentrant observers and suppressors; providerFirst=true, suppressed=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=false, once=false",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=false, once=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=true, once=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 168,
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry batches follow instructions while once-per-turn spans them; separate=true, once=true",
+      "predicted_baseline": "pass",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObserverBoundaryScenarioTest"
+    },
+    {
+      "name": "entry doubling observes the instruction before the doubler moves; departing=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 69
+    },
+    {
+      "name": "entry doubling observes the instruction before the doubler moves; departing=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 69
+    },
+    {
+      "name": "entry source LKI freezes at departure after the later pump; returning=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 90
+    },
+    {
+      "name": "entry source LKI freezes at departure after the later pump; returning=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 91
+    },
+    {
+      "name": "entry trigger caps belong to each source visit and do not mark the returned visit; lifetime=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 119
+    },
+    {
+      "name": "entry trigger caps belong to each source visit and do not mark the returned visit; lifetime=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 119
+    },
+    {
+      "name": "a false first entry condition does not consume the later valid once-per-turn trigger; twice=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 155
+    },
+    {
+      "name": "a false first entry condition does not consume the later valid once-per-turn trigger; twice=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 155
+    },
+    {
+      "name": "delayed entry trigger multiplicity spans serialized instruction observations; once=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "delayed entry trigger multiplicity spans serialized instruction observations; once=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "delayed entry trigger existence is captured before later creation or removal; createdAfter=false",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 189
+    },
+    {
+      "name": "delayed entry trigger existence is captured before later creation or removal; createdAfter=true",
+      "classname": "com.wingedsheep.engine.scenarios.EntryObservationLifetimeScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 190
+    },
+    {
+      "name": "copied entry combines pre-pause and later observations before ordering and caps; once=false, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryObserverScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 78
+    },
+    {
+      "name": "copied entry combines pre-pause and later observations before ordering and caps; once=false, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryObserverScenarioTest",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 78
+    },
+    {
+      "name": "copied entry combines pre-pause and later observations before ordering and caps; once=true, serialized=false",
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryObserverScenarioTest",
+      "predicted_baseline": "pass"
+    },
+    {
+      "name": "copied entry combines pre-pause and later observations before ordering and caps; once=true, serialized=true",
+      "classname": "com.wingedsheep.engine.scenarios.PendingEntryObserverScenarioTest",
+      "predicted_baseline": "pass"
+    }
+  ],
+  "expected_negative": {
+    "rows": 32,
+    "passed": 11,
+    "failures": 21,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 3
+  },
+  "rules": {
+    "url": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "sections": [
+      "603.2",
+      "603.2c",
+      "603.2d",
+      "603.3",
+      "603.4",
+      "603.6a",
+      "603.3b",
+      "608.2f"
+    ]
+  },
+  "method": "All32 preserved original cases: sixteen instruction-boundary cases, twelve serialized observation-lifetime cases, and four actual pending copied-entry choice cases. Exact case identities, assertions, verdict predictions and first failure frames are unchanged from preserved draft/protocol. Compile/setup errors are not negative evidence.",
+  "boundaries": [
+    "Observer/suppressor presence at entry instruction, including coentrants",
+    "Event-time trigger restriction vs intervening-if initial and resolution checks",
+    "Atomic entry batch separation and cross-instruction once-per-turn cap"
+  ],
+  "limitations": [
+    "No complete event-time model for non-entry events, all played-land/cast/Aura producers, or arbitrary externally supplied legacy AbilityRegistry instances.",
+    "New pending-choice cases are two-player constant-life fixtures; original priority/ordering/SBA and full engine regressions remain required.",
+    "Does not qualify every SBA-created entry, nested payment ordering, global replacement ordering, entry filter projection or all counter modifiers.",
+    "No compilation/test result yet, and no card/UI/multiplayer/competitive admission.",
+    "Only synchronous ForEach(CreateTokenCopyOfTarget) batches are recaptured. Paused token batches, token replacement planning, and cross-producer entry completeness remain unqualified and on the continuing mission backlog."
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "baseline_source": "6473e7668636859b443020d152b06f400fca4eb5",
+  "qualified_baseline_receipt": "e7d27c76e172c42254556a56a2f396905f428427",
+  "additional_bank": "Twelve statically reviewed instruction-history cases added before any execution; original sixteen-case bank unchanged.",
+  "source_manifest": {
+    "docs/architecture-principles.md": {
+      "bytes": 114752,
+      "sha256": "0197d3eea3aa3e879a54f4cba5845bb0efd1fb61c5c59b0af8b06cae1200819a",
+      "git_blob": "cf38941b1cad4fe092d4c49775e503b4748ee339"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameEvent.kt": {
+      "bytes": 91453,
+      "sha256": "f03c248d04150ddb512765d652903a32012fed68418a150e74f0ca81be7ee900",
+      "git_blob": "7bfc5a067d23a3b1cca8b6e0b4717272cbc8b90e",
+      "baseline_sha256": "3afa085c67355cfb63e2c1758149ac53196cdfdc1fbb6dfebe62b3dd6f5856c1",
+      "baseline_git_blob": "d78234504ce643c8e31da033f2af00385f633ecf",
+      "repair_baseline_sha256": "f03c248d04150ddb512765d652903a32012fed68418a150e74f0ca81be7ee900",
+      "repair_baseline_git_blob": "7bfc5a067d23a3b1cca8b6e0b4717272cbc8b90e"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerDetector.kt": {
+      "bytes": 239295,
+      "sha256": "c07ff267fdf2b3820a5ca7b2a99d124c2c01c8f13a1c5bb42e39f2dd2a631496",
+      "git_blob": "ad94208bf4984c94343daa421c3a31d08d3ef6cf",
+      "baseline_sha256": "fdea959b808ee7c6942bc2391b5d6d9ea04ee26cd984ec7b86382f02414b7623",
+      "baseline_git_blob": "c0e8a696db522403095d0162fea486cb175b3f99",
+      "repair_baseline_sha256": "c07ff267fdf2b3820a5ca7b2a99d124c2c01c8f13a1c5bb42e39f2dd2a631496",
+      "repair_baseline_git_blob": "ad94208bf4984c94343daa421c3a31d08d3ef6cf"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt": {
+      "bytes": 86967,
+      "sha256": "b2e08bb8ad114e3445a63bb1f72d7031594a4356acbfa7118204a104b7980d3b",
+      "git_blob": "a4dc4501b0ba519d8440e3bf62545457ca6a30c9",
+      "baseline_sha256": "4203df9bac92685480e694f2ad882d700abe8f78c311e852548138add8fbe5e9",
+      "baseline_git_blob": "089d6f8805768866092edc2d720f10e85c43ce1e",
+      "repair_baseline_sha256": "b2e08bb8ad114e3445a63bb1f72d7031594a4356acbfa7118204a104b7980d3b",
+      "repair_baseline_git_blob": "a4dc4501b0ba519d8440e3bf62545457ca6a30c9"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CoreAutoResumerModule.kt": {
+      "bytes": 20995,
+      "sha256": "6ea97df850028b79e9fcc712a629b9457bdb6d36fc02c49c198a42b23b3c91f6",
+      "git_blob": "88b471bb81ff0404b874483b7b583b268448db0d",
+      "baseline_sha256": "2b69ea7a88b45747fc760b1a8964249d8fb8f69c7370a3df1c0a61d5b75bc225",
+      "baseline_git_blob": "dddfb459562bdc9c15304bbb80f011b702d8cb93",
+      "repair_baseline_sha256": "6ea97df850028b79e9fcc712a629b9457bdb6d36fc02c49c198a42b23b3c91f6",
+      "repair_baseline_git_blob": "88b471bb81ff0404b874483b7b583b268448db0d"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EffectExecutorRegistry.kt": {
+      "bytes": 11453,
+      "sha256": "452df9d5c7ba2578e59066e0e503b5d18ea4f2202c1724e1d9f73130f0b86000",
+      "git_blob": "b9e4e5e565f970fefed98bf9257d899896098226",
+      "baseline_sha256": "08fa0a725c024cd787734cfc742ef356548f38752c7cd1c5c1c7c1e3bc9fba75",
+      "baseline_git_blob": "d0cd4d30f7c5631407c1e0a779b50dee3e4a9794",
+      "repair_baseline_sha256": "bafd67d0ae4508aec1f5c75eb41bd42b96a388a5d6f2c0938827baff480fee07",
+      "repair_baseline_git_blob": "f36e74cb227cff22a36c0f70cba51737b4d1bec6"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/PendingEntryCommitter.kt": {
+      "bytes": 3233,
+      "sha256": "2c1d68fbbe38ac6cb3f4f08199adf3524f54d7b44b624f4d824e72f6141860d7",
+      "git_blob": "813febe4665269196aafac31cecb92f49b23d766",
+      "baseline_sha256": "65a11690a5e9e1f2cae9044d2743b43778b6c85c0fb39eebc9a3ac4c4b709a60",
+      "baseline_git_blob": "24aba8acf02e321eabf7e038710b0e7693ea454e",
+      "repair_baseline_sha256": "2c1d68fbbe38ac6cb3f4f08199adf3524f54d7b44b624f4d824e72f6141860d7",
+      "repair_baseline_git_blob": "813febe4665269196aafac31cecb92f49b23d766"
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/BattlefieldEntryObservations.kt": {
+      "bytes": 1333,
+      "sha256": "4cf68009ea853e6124f7e3a6408dc55efb15bd503cba66f817a0152695734861",
+      "git_blob": "387db7608c243819e4f52c8fe3652becf444328a",
+      "baseline_absent": true,
+      "repair_baseline_sha256": "4cf68009ea853e6124f7e3a6408dc55efb15bd503cba66f817a0152695734861",
+      "repair_baseline_git_blob": "387db7608c243819e4f52c8fe3652becf444328a"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryObserverBoundaryScenarioTest.kt": {
+      "bytes": 9170,
+      "sha256": "e3bbb873e1d97bdba3e00a204bab8ef4a72da51e411e07a6f30adc7872c072d2",
+      "git_blob": "29081986a3c32b8d8e39b0d8e00e46d46cfc62ce"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/EntryObservationLifetimeScenarioTest.kt": {
+      "bytes": 13096,
+      "sha256": "64288546f967a9407b8b8dee45060d972c8d0f3bc9b4a15c3c26e3fa18234552",
+      "git_blob": "26b3f57cbca96355ba162398b9094d403d1fb2ff"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PendingEntryObserverScenarioTest.kt": {
+      "bytes": 5254,
+      "sha256": "23179ac70a32b9feeedf8683de85b2af99f5875ec9ba9a101906448767551552",
+      "git_blob": "05e52bc99cde4e4838302f0636d594bbaca119fc"
+    },
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ForEachCopyEntryBatchScenarioTest.kt": {
+      "bytes": 5611,
+      "sha256": "ab121b3c43906f8c616c873d6c0a413c34c03ed5513b1e90ff56d091abebca3e",
+      "git_blob": "bd4e8a3e769ca83048343594d9a51ffa76e71836"
+    },
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MeathookMassacreIIScenarioTest.kt": {
+      "bytes": 12379,
+      "sha256": "534454beeee4f7bda852d1232b405003f360595049139b627c568032176a0740",
+      "git_blob": "dc66474b917a183b647305da843ba9b59595b60c",
+      "original_sha256": "1c041f6cfbffb8f3f061f1e05d46241f211ed2bacf25535e895e0446ff129d28",
+      "original_git_blob": "3e1c7035b4ecabf40c1d06fbddee14c292675c17"
+    },
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ZodiarkUmbralGodScenarioTest.kt": {
+      "bytes": 7143,
+      "sha256": "82c5348242a5434c2c514f0fa1764a6679523b621e0a9301aa78ebea54953cb7",
+      "git_blob": "48a4c2bde37c52180d66c4930f8590525f63efda",
+      "original_sha256": "af776f8b877cc3d47e8cd70d92c5a6682e2686bfcd33b6860fcf05e31b28f3da",
+      "original_git_blob": "2d75f49d43363e4af9c7e843acc72f8afb95be66"
+    }
+  },
+  "prior_preserved_draft": "8ece86a433856563817c4185f522ce9f3b6a46c9",
+  "static_import_correction": "Before compilation/testing, add only the existing EffectTarget import to the twelve-case lifetime bank. All non-import lines are byte-identical, including every assertion. Expected first frames in that bank shift by one; verdicts unchanged. Prior missing-import draft remains preserved and never executed.",
+  "pending_boundary_preregistration": "aedddbe22460ca00f573e05a48b90f1d2d0e7371",
+  "parent_checkpoint": "403c67dc95f761d6749d576fa2dca02a8fdd4d39",
+  "preserved_draft_checkpoint": "f1a80a716b9adf8a9e02ffed7366b18a93ec85f4",
+  "negative_excluded_tests": [],
+  "qualification": {
+    "focused_passed": 552,
+    "engine_passed": 3874,
+    "broad_required_passed": 14649,
+    "ordinary_passed": 18257,
+    "ordinary_skips": 43,
+    "assay_tests": 568,
+    "assay_touchstone_cards": 2000,
+    "differential": "All51 original full blocks must remain byte-identical or be explicitly reviewed; never waived.",
+    "assay_input_retention": "Full actual raw corpus plus exact hash/size required."
+  },
+  "negative_control": {
+    "expected_cases": 32,
+    "expected_assertion_failures": 21,
+    "expected_passed": 11,
+    "expected_errors": 0,
+    "expected_skipped": 0,
+    "require_exact_first_failure_locations": true,
+    "compilation_error_is_not_evidence": true
+  },
+  "safeguards": {
+    "protected_bindings": 122,
+    "protected_goldens": 23,
+    "no_original_test_edit": false,
+    "no_rebless": true,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2,
+    "competitive_admission": false,
+    "all_original_assertions_unchanged": true
+  },
+  "protocol_preregistration": "14f5721af753f7b1e103a61f4c81bb3d46340bf8",
+  "prior_failed_source": "c486fe51a3cecc4ebde845371242c791839f1954",
+  "prior_failed_receipt": "403c67dc95f761d6749d576fa2dca02a8fdd4d39",
+  "repair_baseline_source": "c486fe51a3cecc4ebde845371242c791839f1954",
+  "repair_baseline_changed_paths": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/EffectExecutorRegistry.kt"
+  ],
+  "repair_cases": [
+    {
+      "classname": "com.wingedsheep.engine.scenarios.ForEachCopyEntryBatchScenarioTest",
+      "name": "a copied coentrant observer sees the whole copy instruction; providerFirst=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 77
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.ForEachCopyEntryBatchScenarioTest",
+      "name": "a copied coentrant artifact satisfies the entry restriction; providerFirst=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 86
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.ForEachCopyEntryBatchScenarioTest",
+      "name": "a copied coentrant observer sees the whole copy instruction; providerFirst=true",
+      "predicted_baseline": "pass"
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.ForEachCopyEntryBatchScenarioTest",
+      "name": "a copied coentrant artifact satisfies the entry restriction; providerFirst=true",
+      "predicted_baseline": "pass"
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.ForEachCopyEntryBatchScenarioTest",
+      "name": "copy batch grouping preserves separate composite instructions; separate=false",
+      "predicted_baseline": "assertion_failure",
+      "expected_first_failure_line": 96
+    },
+    {
+      "classname": "com.wingedsheep.engine.scenarios.ForEachCopyEntryBatchScenarioTest",
+      "name": "copy batch grouping preserves separate composite instructions; separate=true",
+      "predicted_baseline": "pass"
+    }
+  ],
+  "expected_repair_negative": {
+    "rows": 6,
+    "passed": 3,
+    "failures": 3,
+    "errors": 0,
+    "skipped": 0,
+    "classes": 1
+  },
+  "repair_test": {
+    "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ForEachCopyEntryBatchScenarioTest.kt",
+    "bytes": 5611,
+    "sha256": "ab121b3c43906f8c616c873d6c0a413c34c03ed5513b1e90ff56d091abebca3e",
+    "git_blob": "bd4e8a3e769ca83048343594d9a51ffa76e71836"
+  },
+  "fixture_additions": {
+    "mtg-sets/2024/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/MeathookMassacreIIScenarioTest.kt": {
+      "only_additions": [
+        "ChooseOptionDecision import",
+        "chooseTriggerOrderInListedOrder import",
+        "explicit ChooseOptionDecision branch calling strict trigger-order helper"
+      ],
+      "all_original_lines_byte_identical": true,
+      "cases": 6,
+      "original_failure_receipt": "403c67dc95f761d6749d576fa2dca02a8fdd4d39"
+    },
+    "mtg-sets/2025/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/ZodiarkUmbralGodScenarioTest.kt": {
+      "only_additions": [
+        "ChooseOptionDecision import",
+        "chooseTriggerOrderInListedOrder import",
+        "explicit ChooseOptionDecision branch calling strict trigger-order helper"
+      ],
+      "all_original_lines_byte_identical": true,
+      "cases": 3,
+      "original_failure_receipt": "403c67dc95f761d6749d576fa2dca02a8fdd4d39"
+    }
+  }
+}
