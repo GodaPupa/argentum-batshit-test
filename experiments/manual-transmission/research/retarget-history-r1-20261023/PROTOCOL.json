@@ -1,0 +1,96 @@
+{
+  "schema": "manual-retarget-history-r1",
+  "status": "SOURCE_FROZEN_NOT_EXECUTED_NOT_ADOPTED",
+  "base": "5bc1b733d3e19fee4da7e33174bf4a480bd92812",
+  "base_tree": "acc3ced89285f9c90860f99ca7515ac5c7bb3ff3",
+  "authority": "Standing user authorization for autonomous engineering under unchanged protected bindings and admission protocols",
+  "scope": "Preserve unchanged battlefield visits in existing contested-retarget finalization; exact keep-all no-op; reject legacy-map-conflicting visits. Not occurrence-aware resolution, complete retarget legality or Spellskite.",
+  "previous_receipt": "2f58739cc332d22965eaf6d99dcc6cde1102c5cc",
+  "implementation_sha256": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/RetargetHistory.kt": "20d896f0f915b2396ecb643fe9fbec7dbb3c756dfc7de9c7248408eb3bcabc0f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ContestedRetargetExecutors.kt": "b15ac70242ef9e03c04e108354bbb2e2bc01f8e63197f2503f8fbd1f4a2b327d",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/targeting/RetargetHistoryTest.kt": "256423cdcf9c6a5553357df0fe3e1f0712bcdb16dfc879bc30f2e2ccb774defd",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/mechanics/targeting/RetargetHistoryMutationWitnessTest.kt": "648a288f20af6d613a69be7017c56dc6bfba562043f6066cdff99ef599f1100b",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/RetargetHistoryIntegrationTest.kt": "eb7e6878c6ff20bd19e071ec6e2088b7556169c566dc4da860c6f9f18168a82b"
+  },
+  "new_test_cases": {
+    "RetargetHistoryTest": [
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH01 changed recipient captures its current visit while unchanged target retains its old visit",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH02 keeping every occurrence returns the exact original component",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH03 untracked unchanged history remains absent",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH04 repeated physical id with different visits is rejected instead of collapsed",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH05 known and unknown occurrences of one physical id cannot be merged",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH06 representable repeated current visit is retained without global deduplication",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH07 player replacements remove only the departed permanent occurrence stamp",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH08 changing target count is rejected",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH09 unchanged input and requirements survive an accepted update",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH10 serialization preserves old visit and newly captured visit exactly",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH11 missing replacement permanent is not assigned a made-up battlefield visit",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryTest::RH12 later changes preserve earlier unchanged history across multiple updates"
+    ],
+    "RetargetHistoryMutationWitnessTest": [
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryMutationWitnessTest::HM01 changing another recipient never refreshes an unchanged old visit",
+      "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryMutationWitnessTest::HM02 changing another recipient never invents an unchanged historical visit"
+    ],
+    "RetargetHistoryIntegrationTest": [
+      "com.wingedsheep.engine.scenarios.RetargetHistoryIntegrationTest::HI01 live retarget finalization leaves an old target illegal during actual ability resolution",
+      "com.wingedsheep.engine.scenarios.RetargetHistoryIntegrationTest::HI02 live keep-all is byte-identical and an already-illegal only target still fizzles",
+      "com.wingedsheep.engine.scenarios.RetargetHistoryIntegrationTest::HI03 an unrepresentable old and new visit leaves the live stack object untouched",
+      "com.wingedsheep.engine.scenarios.RetargetHistoryIntegrationTest::HI04 serialized retarget history reproduces the same actual resolution state and events"
+    ]
+  },
+  "mutation": {
+    "kind": "compiled implementation mutation, not historical baseline",
+    "change": "Replace keep-all fast path with immediate full recapture; unchanged original visits are deliberately refreshed.",
+    "expected": {
+      "tests": 2,
+      "assertion_failures": 2,
+      "passes": 0,
+      "errors": 0,
+      "skips": 0
+    }
+  },
+  "mutation_first_frames": {
+    "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryMutationWitnessTest::HM01 changing another recipient never refreshes an unchanged old visit": 23,
+    "com.wingedsheep.engine.mechanics.targeting.RetargetHistoryMutationWitnessTest::HM02 changing another recipient never invents an unchanged historical visit": 28
+  },
+  "positive_counts": {
+    "focused": 730,
+    "focused_new_cases": 18,
+    "engine": 4018,
+    "broad": 14793,
+    "ordinary_passes": 18401,
+    "ordinary_skips": 43,
+    "assay_units": 568,
+    "assay_touchstone": 2000,
+    "unresolved_assay_findings": 51
+  },
+  "protected": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "bindings": 144,
+    "goldens": 23,
+    "legacy_fixture_files": 82,
+    "precision_reserved": 2,
+    "official_games": 0,
+    "official_seeds": 0
+  },
+  "rules_reference": {
+    "source": "https://media.wizards.com/2026/downloads/MagicCompRules%2020260925.pdf",
+    "effective": "2026-09-25",
+    "reviewed": "2026-10-23",
+    "sections": [
+      "115.7d",
+      "400.7",
+      "608.2b"
+    ],
+    "interpretation": "Unchanged targets retain original identity even when already illegal; this bounded repair only preserves existing battlefield timestamps. No full rule/card-admission claim."
+  },
+  "remaining_gates": [
+    "Receive the terminal original artifact once, checking exact source/test/control/count/hash/skip/task identities.",
+    "Original per-instance grouping and full per-occurrence live resolution remain unimplemented.",
+    "StackResolver.kt is among 144 protected bindings and is deliberately unchanged; full integration cannot silently relax that pin.",
+    "Modal/splice allocations and target views, targeting/ward events, original source/controller legality, same-id/new-visit explicit selection, actual payment/Spellskite and full multiplayer admission remain separate work."
+  ],
+  "external_independent_review": false
+}

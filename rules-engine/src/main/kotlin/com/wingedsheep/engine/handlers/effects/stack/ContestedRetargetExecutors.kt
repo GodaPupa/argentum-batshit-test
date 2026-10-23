@@ -5,6 +5,7 @@ import com.wingedsheep.engine.core.ContestedRetargetContinuation
 import com.wingedsheep.engine.handlers.DecisionHandler
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.TargetFinder
+import com.wingedsheep.engine.mechanics.targeting.withRetargetedHistory
 import com.wingedsheep.engine.handlers.effects.EffectExecutor
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.identity.CardComponent
@@ -163,10 +164,13 @@ object ContestedRetargetLogic {
         }
 
         // All slots resolved — write the (possibly unchanged) targets back onto the object.
-        val requirements = state.getEntity(stackObjectId)?.get<TargetsComponent>()?.targetRequirements
-            ?: emptyList()
+        val original = state.getEntity(stackObjectId)?.get<TargetsComponent>()
+            ?: return EffectResult.success(state)
+        val replacement = original.withRetargetedHistory(state, acc)
+            ?: return EffectResult.success(state)
+        if (replacement === original) return EffectResult.success(state)
         val updatedState = state.updateEntity(stackObjectId) { container ->
-            container.with(TargetsComponent.capture(state, acc, requirements))
+            container.with(replacement)
         }
         return EffectResult.success(updatedState)
     }
