@@ -1,0 +1,77 @@
+name: Manual R4 provenance event and trigger boundary diagnostic
+on:
+  push:
+    branches: [validation/manual-provenance-r4-boundary-20261023]
+    paths: ['.github/workflows/manual-r4-provenance-boundary-diagnostic-20261023.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: d5b2152f1cf6a3bb66526263cae392d12fd9fae4
+  SOURCE_TREE: cde54a8a13cdf90bc6fd927c39f4776d7886ee89
+  R4: 9eb2be694761a4cae60ad4970d07e9d458d8054c
+  RECORD: experiments/manual-transmission/research/r4-provenance-boundary-diagnostic-20261023
+  WORKFLOW: .github/workflows/manual-r4-provenance-boundary-diagnostic-20261023.yml
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: '1'
+jobs:
+  trace:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install locked just runner
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          command -v flock
+          mkdir -p "$HOME/.cache/argentum" manual-r4-boundary-evidence
+      - name: Bind exact additive diagnostic and preserve original frozen tests
+        run: |
+          test "$(git rev-parse HEAD^)" = "$SOURCE"
+          test "$(git rev-parse "$SOURCE^{tree}")" = "$SOURCE_TREE"
+          test "$(git diff --name-only "$SOURCE" HEAD)" = "$WORKFLOW"
+          test "$(git rev-parse "$SOURCE:rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceEventProvenanceTest.kt")" = "0250a12ad245eded770bec604dbbfda63f7210e9"
+          test "$(git rev-parse "$SOURCE:rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PausedTokenInstructionScenarioTest.kt")" = "2783d8891a70c93b88a1e5be8237cd4ad1afdb83"
+          test "$(git rev-parse "$SOURCE:experiments/manual-transmission/control/v0.7.decklist.txt")" = "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89"
+          git diff --name-only "$R4" "$SOURCE" | sort > manual-r4-boundary-evidence/observed-delta.txt
+          printf '%s\n' "$RECORD/PROTOCOL.md" "$RECORD/validation.just" "rules-engine/src/test/kotlin/com/wingedsheep/engine/event/EntryChoiceR4BoundaryTraceDiagnosticTest.kt" | sort > manual-r4-boundary-evidence/expected-delta.txt
+          diff -u manual-r4-boundary-evidence/expected-delta.txt manual-r4-boundary-evidence/observed-delta.txt
+          git rev-parse HEAD "$SOURCE^{tree}" "$R4" > manual-r4-boundary-evidence/source-pins.txt
+          git show "$SOURCE:$RECORD/PROTOCOL.md" > manual-r4-boundary-evidence/PROTOCOL.md
+          test -z "$(git status --porcelain --untracked-files=no)"
+      - name: Run three standalone diagnostic trace cases only
+        id: diagnostic
+        run: |
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$RECORD/validation.just" diagnostic 2>&1 | tee manual-r4-boundary-evidence/gradle.log
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > manual-r4-boundary-evidence/exit.txt
+          exit "$rc"
+      - name: Preserve original JUnit XML and full evidence manifest
+        if: always()
+        run: |
+          mkdir -p manual-r4-boundary-evidence/junit
+          if test -f rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.event.EntryChoiceR4BoundaryTraceDiagnosticTest.xml; then
+            cp rules-engine/build/test-results/test/TEST-com.wingedsheep.engine.event.EntryChoiceR4BoundaryTraceDiagnosticTest.xml manual-r4-boundary-evidence/junit/
+          fi
+          python3 - <<'PY'
+          from pathlib import Path
+          import hashlib
+          root=Path('manual-r4-boundary-evidence')
+          mf=root/'SHA256SUMS'
+          mf.write_text(''.join(hashlib.sha256(p.read_bytes()).hexdigest()+'  '+str(p.relative_to(root))+'\n' for p in sorted(root.rglob('*')) if p.is_file() and p!=mf))
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-r4-provenance-boundary-diagnostic-${{ github.run_id }}
+          path: manual-r4-boundary-evidence/
+          retention-days: 90
+          if-no-files-found: error
