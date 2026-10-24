@@ -1,0 +1,105 @@
+{
+  "schema": "manual-public-target-groups-r4-failure-receipt-v1",
+  "received_utc": "2026-10-24T16:47:17.189Z",
+  "run": 40108914146,
+  "job": 120916314773,
+  "attempt": 1,
+  "run_number": 1,
+  "event": "push",
+  "workflow_id": 395225003,
+  "source": "e4efe8573086090bf39aa52a1a0ce6196c121914",
+  "source_tree": "e491b42dc54387cc5bb10be118a44dd059944cfc",
+  "validation": "e0fc8eab9ad1c9ff785f074a98d9bba0e33353f6",
+  "workflow": ".github/workflows/manual-public-target-groups-r4-20261024.yml",
+  "workflow_blob": "41681f8d6f6bc8d29a53b5c07b0afaffda257bdd",
+  "artifact": 12566048648,
+  "artifact_name": "manual-public-target-groups-r4-40108914146",
+  "artifact_bytes": 5112081,
+  "artifact_sha256": "48be8b479789e3a6e846dcb3c57c5ec2ad9f52ecea8fdf9ad23091d70f080ecb",
+  "archive_git_blob": "14bf0a6056b6c2b350c63e5d88e5137c763da9f8",
+  "zip_crc": "PASS",
+  "zip_members": 4589,
+  "manifest_entries": 4588,
+  "manifest_missing": 0,
+  "manifest_mismatches": 0,
+  "manifest_extras": 0,
+  "binding_verified": true,
+  "source_pins_verified": true,
+  "protocol_and_workflow_blobs_verified": true,
+  "gates": {
+    "client": {
+      "passed": 34,
+      "failed": 0
+    },
+    "actor": {
+      "passed": 39,
+      "failed": 0
+    },
+    "targeted": {
+      "passed": 20,
+      "failed": 0
+    },
+    "normal_compilation": "PASSED",
+    "mutant_compilation": "PASSED",
+    "mutation": {
+      "rows": 20,
+      "passed": 15,
+      "failed": 5,
+      "errors": 0,
+      "skipped": 0,
+      "expected_failures": [
+        "PG01@61",
+        "PG04@81",
+        "PG05@88",
+        "PG15@147",
+        "PG17@165"
+      ]
+    },
+    "focused": {
+      "passed": 820,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "broad": {
+      "passed": 14883,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "ordinary": {
+      "rows": 1832,
+      "passed": 1826,
+      "failed": 1,
+      "errors": 0,
+      "skipped": 5
+    },
+    "assay": "SKIPPED_AFTER_ORDINARY_FAILURE"
+  },
+  "failure": {
+    "identity": "com.wingedsheep.ai.arena.FrozenBaselineTest::LEGACY_V0 plays the frozen baseline game exactly as it always has",
+    "type": "org.opentest4j.AssertionFailedError",
+    "frame": "FrozenBaselineTest.kt:56",
+    "expected_hash": "2dfcfc67eb3eaab0",
+    "actual_hash": "560a9864d1699fc4",
+    "outcome": {
+      "turns": 20,
+      "winner_seat": 1,
+      "seat0_life": -8,
+      "seat1_life": 16
+    },
+    "disposition": "ORDINARY_BUILD_REGRESSION_NOT_COMPONENT_ACCEPTANCE"
+  },
+  "diagnosis": {
+    "cause": "R4 adds nullable targetGroups and originalTargetSlots primary-constructor fields to CastSpell. TableGameRunner hashes GameAction.toString(); null defaults therefore change the representation of every vanilla spell cast while the frozen game outcome remains exactly unchanged.",
+    "evidence": "The only ordinary failure is FrozenBaselineTest. Its expected and actual outcomes match exactly; its KDoc explicitly identifies new GameAction fields with an unchanged outcome as representation drift. R4 changed no AI policy, Portal card, combat, deck, seed, or frozen golden.",
+    "repair_boundary": "Preserve the golden and gameplay. Canonicalize only the exact new default suffix ', targetGroups=null, originalTargetSlots=null)' for CastSpell entries in the diagnostic recorder; keep non-null grouped/provenance fields visible and all other action strings unchanged.",
+    "assertions_weakened": false,
+    "failed_evidence_preserved": true,
+    "unchanged_candidate_rerun_forbidden": true
+  },
+  "accepted_scope": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
