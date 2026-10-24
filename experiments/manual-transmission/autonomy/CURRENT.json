@@ -1,9 +1,9 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T09:49:10.514Z",
+  "updated_date": "2026-10-24T09:55:16.843Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
+  "status": "ACTIVE",
   "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
   "lease": {
     "state": "ACTIVE",
@@ -11,7 +11,7 @@
     "claimed_utc": "2026-10-24T09:46:58.845Z",
     "expires_utc": "2026-10-24T10:11:58.846Z",
     "predecessor_blob": "4e44a016fb890bedf2c518d7a93b8cb073fa9f25",
-    "purpose": "Receive and diagnose original activation preflight control failure"
+    "purpose": "Receive failure, repair injector, prepare R2 receiving and isolated live-entry tests while R2 runs"
   },
   "last_qualified": {
     "source": "035e0ec3da8729c43018ffcc839aa821517dcda3",
@@ -35,7 +35,7 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Original controller activation provenance implemented on immutable early-feedback source; eight integration cases and compiled group/visit fault queued for evaluation. Not qualified.",
+    "current_subproblem": "Controller activation provenance early feedback: R1 normal8 passed but combined mutation produced wrong failure types; injector-only R2 active. Separate five-case live-entry test draft in progress; no component acceptance.",
     "source_candidate": "035e0ec3da8729c43018ffcc839aa821517dcda3",
     "source_tree": "bb50c6e9de41619e796ac5550a449484bfcbf7cf",
     "source_branch": "candidate/manual-modal-spell-capture-r3-20261024",
@@ -45,7 +45,7 @@
     "validation_branch": "validation/manual-modal-spell-capture-r3-20261024",
     "workflow": ".github/workflows/manual-modal-spell-capture-r3-20261024.yml",
     "pending_runs": [
-      40079283905
+      40083463089
     ],
     "planned_not_observed": {
       "targeted": 23,
@@ -63,7 +63,7 @@
     },
     "negative_scope": "Original R1 normal failures are not deliberate negative-control evidence. R2 retains exact SM01/SM02 two behavioral witnesses and compiled group/visit fault; results pending.",
     "source_delta": "R3 adds three qualification records only to R2;24cumulative paths versus accepted modal-trigger base. All production/test/negative-control bytes identical to R2. Old frozen records preserved.",
-    "next_executable_action": "Reconcile live owners/newer checkpoints/workflows. Receive original early-feedback40079283905/job120829249523/attempt1/sourceb4cf3e544554f82eb75e384cda61a45482b67663/treef7013ea653c62b07b89980454de75f4c2d31d1c5/validation0129651a39a04af86d4bdcf1b001a1ae832d5d82. Use receiver7c6a06c78a86855361dc0043a4518dcfe1be94dc/PREPARED.md and pin original artifact/id/bytes/hash. Require normal compile+8pass, mutant compile+exact3AC01/02/07 failures54/60/95 with5pass, restoreclean/protected144/23/82. Failures need original evidence/diagnosis; never weaken8original tests or blindlyrerun. Early pass is not component acceptance: complete declared live-flow/boundary guards and freeze full source-bound qualification using acceptedR3 baseline. Preserve acceptedmodalspell035e0ec3/receipt839a2a99/run40071650391; no repeat. No games/seeds.",
+    "next_executable_action": "Receive original R2 run40083463089/job120841547178/attempt1 using immutable receiverab795e467bbfe9fe6c8a122dfda006110fe90e97. Pin original artifact ID/bytes/hash, exact source a219991f8802ed9b95403815b69460bf5d7e931d and validation8bf2f9cc416666a1dd1d5f49008619b3666b76a1. Require normal compile+8pass, mutant compile+8cases with exactly AC01/AC02/AC07 AssertionFailedError at55/60/95 and5pass, restored clean/protected bytes. Then complete live-flow/boundary guards and full qualification; early green alone is not acceptance. Do not repeat accepted modal-spell035e0ec3/receipt839a2a99 or modal-trigger103ac166.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -1087,7 +1087,7 @@
       "files_readback_verified": 4
     },
     "activation_capture_preflight": {
-      "state": "FROZEN_READY_SINGLE_DISPATCH",
+      "state": "WAITING_EXTERNAL_R2_INJECTOR_RECOVERY",
       "source": "a219991f8802ed9b95403815b69460bf5d7e931d",
       "tree": "99a3fe21ded51eecfb37515e8e8e5e071e8b3d56",
       "validation": "8bf2f9cc416666a1dd1d5f49008619b3666b76a1",
@@ -1108,7 +1108,23 @@
         "AC07": 95
       },
       "source_delta": "Two new records only; production/tests unchanged. Visit-loss-only mutant preserves groups so original objectRef assertions execute.",
-      "run": null
+      "run": 40083463089,
+      "job": 120841547178,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "status": "in_progress",
+      "conclusion": null,
+      "artifact": null,
+      "expected_artifact_name": "manual-activation-target-capture-preflight-r2-40083463089",
+      "observed_utc": "2026-10-24T09:55:16.843Z",
+      "receiving_audit": {
+        "commit": "ab795e467bbfe9fe6c8a122dfda006110fe90e97",
+        "path": "experiments/manual-transmission/research/activation-target-capture-preflight-receiver-r2-20261024/RECEIVE.py",
+        "instructions": "experiments/manual-transmission/research/activation-target-capture-preflight-receiver-r2-20261024/PREPARED.md",
+        "state": "PREPARED_NOT_EXECUTED",
+        "immutable_readback_verified": true
+      }
     },
     "activation_capture_failed_r1": {
       "state": "FAILED_CONTROL_WRONG_FAILURE_TYPES",
@@ -1237,6 +1253,12 @@
       "normal_cases_passed": 8,
       "normal_and_mutant_compiled": true,
       "diagnosis": "Combined fault removed emptygroups; handler count guard discardsplan;AC01/AC07 IllegalArgumentException,AC02 assertion. Correctly rejected; no accepted behavioral control."
+    },
+    "activation_live_flow_review": {
+      "commit": "67e5d15b4bfe7a8d86c3588537b99f38edf3fc67",
+      "path": "experiments/manual-transmission/research/activation-target-capture-live-flow-review-r1-20261024/REVIEW.json",
+      "readback_verified": true,
+      "state": "SOURCE_REVIEW_ONLY"
     }
   },
   "completion_contract": {
@@ -1260,27 +1282,27 @@
     "no_successful_workflow_rerun": true
   },
   "reconcile": {
-    "last_checked_utc": "2026-10-24T05:31:56.085Z",
+    "last_checked_utc": "2026-10-24T09:55:16.843Z",
     "relevant_active_workflows": [
       {
-        "run": 40066412475,
-        "job": 120790509534,
+        "run": 40083463089,
+        "job": 120841547178,
         "status": "in_progress",
-        "head_sha": "dbc23376091a99e4043d29cdd2272aa8c583a478",
+        "head_sha": "8bf2f9cc416666a1dd1d5f49008619b3666b76a1",
         "event": "push"
       }
     ],
     "ignored_unrelated_ancient_run": 34749202144,
-    "current_worker": null,
-    "observed_ledger_predecessor_blob": "c07fe88a0782c8df15f0bd9e81b72dc5ffd64200",
+    "current_worker": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
+    "observed_ledger_predecessor_blob": "ac9b70d339f03f8e40feb597f546b4b97450a310",
     "former_discussion_executor_paused": true,
     "intervention_watch_read_only": true,
-    "latest_checkpoint_before_release": "bc661dbd2625aefea3afff560a859e00f3f69314",
+    "latest_checkpoint_before_release": "67e5d15b4bfe7a8d86c3588537b99f38edf3fc67",
     "qualification_repeated": false,
-    "latest_receipt": "52ea1f00f3791f2499b39a736a60ccf26d18abb1",
+    "latest_receipt": "b2a2bfc4418781e9ac039fc89c2cc215c09abddd",
     "latest_draft": "7c901c03b6047148219deda1a020b0f03d106abb",
     "preserved_prior_reconciliation": "2026-10-23T23:41:32.374Z: explicit predecessor release verified; task admission still true, old Discussion executor paused, no relevant workflow active/queued/waiting/requested/pending or newer checkpoint.",
-    "current_conversation_scheduled_wakeup": "d89e7de0-dec4-832d-a26f-9860b619e387; same active Work conversation, no second ownership claim"
+    "current_conversation_scheduled_wakeup": "7d43701b-6d9c-832a-acef-767e74ea300a; current owned iteration, not another worker"
   },
   "automation": {
     "execution_task": "Manual Work Continuation",
@@ -1824,11 +1846,5 @@
       "runtime_results": "Unchanged immutable auditor86ac2ffd passed original9053manifest, exact23targeted/2behavioral69_81/782focused/14845broad/18453ordinary+43same skips, normal/mutant compilation,restore,rebind,Assay568/2000/exact51findings,rawidentities/multiplicities and protected144/23/82."
     }
   },
-  "stop_reason": {
-    "kind": "EXTERNAL_DEPENDENCY_ONLY",
-    "recorded_utc": "2026-10-24T08:47:05.131Z",
-    "external_workflow": 40079283905,
-    "worker_active_after_release": false,
-    "detail": "Bounded activation implementation and8integration cases frozen/readbackverified; single locked normal/mutant early-feedback launched. Original receiver and exact failure-frame requirements prepared/readbackverified. Next full qualification depends on actual compilation/fixture/control outcome; no further safely independent receiving preparation remains. No component acceptance or tight polling."
-  }
+  "stop_reason": null
 }
