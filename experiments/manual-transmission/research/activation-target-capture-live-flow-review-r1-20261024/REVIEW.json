@@ -1,0 +1,28 @@
+{
+  "source": "a219991f8802ed9b95403815b69460bf5d7e931d",
+  "state": "CONDITIONAL_SOURCE_REVIEW_NOT_RUNTIME_EVIDENCE",
+  "files": [
+    {
+      "path": "mtg-sets/2023/src/main/kotlin/com/wingedsheep/mtg/sets/definitions/lci/cards/FabricationFoundry.kt",
+      "blob": "719a2215194275df17c84228237f75dc783f55bd"
+    },
+    {
+      "path": "mtg-sets/2023/tests/src/test/kotlin/com/wingedsheep/engine/scenarios/FabricationFoundryScenarioTest.kt",
+      "blob": "db58bd3ea1cbc9420feb2d235928c397a98b6e01"
+    }
+  ],
+  "finding": "Existing FabricationFoundryScenarioTest exercises six direct ActivateAbility submissions with target/cost data already supplied. It does not prove bare legal-action -> SelectCards cost selection -> X-bound ChooseTargets -> validated capture -> actual payment/stack placement. AC01-08 preflight fixtures also deliberately start at a suspended target decision. Full qualification must add real handler entry coverage; original tests are retained unchanged.",
+  "next_test_contract": [
+    "Bare variable-permanents activation must first suspend for unpaid cost selection with no activation event.",
+    "Selecting cost fodder must preserve unpaid state and raise requirement-indexed target decision.",
+    "Target submission must attach captured plan to exact ability, with original selected visit and cost actually paid once.",
+    "Serialized target decision must replay identical state/events including captured provenance.",
+    "Cancel target choice must leave fodder and source untapped/unpaid with no attached plan.",
+    "Direct legacy ActivateAbility with already flattened targets must stay untracked."
+  ],
+  "remaining": "Mixed opponent chooser, division ambiguity, post-selection payment failure and copy semantics need explicit guards before full qualification. R2 must first pass its exact original control audit; no component or card acceptance from this review.",
+  "runtime_disconnect": "Transient exec-server transport disconnected during this iteration, then environment returned and local execution/read succeeded. No ongoing access blocker.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
