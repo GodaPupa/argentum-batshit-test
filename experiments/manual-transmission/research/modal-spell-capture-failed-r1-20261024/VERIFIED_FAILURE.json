@@ -1,0 +1,71 @@
+{
+  "disposition": "FAILED_NORMAL_TARGETED_16_PASS_2_FAILURES_NO_NEGATIVE_CONTROL_OR_COMPONENT_ACCEPTANCE",
+  "source": "6b63882cc02248e7da46a1d731b319f87b3b97e0",
+  "validation": "87ceda41e1298a282159f7a9d66bede20a6c21bc",
+  "run": 40063808901,
+  "job": 120782717321,
+  "attempt": 1,
+  "artifact_id": 12549085751,
+  "bytes": 36235,
+  "sha256": "ac99ab387b35ed0b7a412acbe46dc34720f00f8e110406e7219a76631a2c5c4b",
+  "manifest_entries": 22,
+  "raw_tests": {
+    "ModalSpellCaptureMutationWitnessTest": [
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureMutationWitnessTest::SM01 omitted optional groups retain original positions on the cast spell",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureMutationWitnessTest::SM02 repeated choices retain separate original object visits"
+    ],
+    "ModalSpellCaptureTest": [
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC01 omitted optional groups retain original positions on the cast spell",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC02 repeated choices retain separate original object visits",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC03 serialized pending target capture replays identically",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC04 cancellation discards pending capture without attaching to the hand card",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC05 targetless modes retain their own original ordinal",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC06 legacy continuation remains explicitly untracked",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC07 public cast action has no trusted provenance field",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC08 failed attachment never marks an uncast card",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC09 public preselected modes initialize trusted capture",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC10 public sequential mode answers initialize capture",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC11 forced sacrifice recursion preserves the pre-cost target visit",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC12 prompted cost roundtrip preserves original visit and mode binding",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC13 cancelling additional cost removes pending provenance without payment",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC14 paid creature type continuation preserves its own original mode binding",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC15 selection provenance does not fabricate undivided amounts",
+      "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC16 legacy flat public action remains untracked"
+    ]
+  },
+  "totals": {
+    "suites": 2,
+    "rows": 18,
+    "passed": 16,
+    "failures": 2,
+    "errors": 0,
+    "skipped": 0
+  },
+  "failures": [
+    {
+      "identity": "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC10 public sequential mode answers initialize capture",
+      "type": "java.lang.IllegalArgumentException",
+      "message": "java.lang.IllegalArgumentException: Required value was null."
+    },
+    {
+      "identity": "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC13 cancelling additional cost removes pending provenance without payment",
+      "type": "org.opentest4j.AssertionFailedError",
+      "message": "org.opentest4j.AssertionFailedError: Expected null but actual was \"Expected card selection response\""
+    }
+  ],
+  "normal_compilation": "VERIFIED",
+  "mutant_compilation": "NOT_EXECUTED",
+  "negative_control": "NOT_EXECUTED",
+  "focused_broad_ordinary_assay": "NOT_EXECUTED",
+  "tracked_restoration": "CLEAN",
+  "prior_modal_trigger_acceptance": "9447aab43b558d9e4bd5ee0484610f02012d29ae_UNCHANGED",
+  "diagnosis": {
+    "SC10": "Initial pause counts distinct legal modes against minChooseCount even with allowRepeat=true; one available mode with two required repetitions is wrongly rejected before any pending decision. Original SC10 then requires a missing pending decision at line141.",
+    "SC13": "SelectCardsDecision validator rejects CancelDecisionResponse before existing unpaid CastSpellAdditionalCostContinuation cancellation handler can run; exact original error Expected card selection response at line175."
+  },
+  "repair_contract": "Only make initial distinct-mode availability repeat-aware and admit cancellation for the exact active unpaid cast-cost suspension. Original18 tests unchanged; add unrelated-selection/nonrepeatable/no-legal-mode/replay guards. All original mutation witnesses remain at69/81. Full positive/negative/source gates required on new source. No protected resolver changes.",
+  "runtime_fix_status": "NOT_YET_VERIFIED",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
