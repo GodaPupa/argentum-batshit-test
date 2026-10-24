@@ -1,6 +1,6 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T08:41:15.015Z",
+  "updated_date": "2026-10-24T08:45:24.175Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "READY_FOR_NEXT_ITERATION",
@@ -1083,6 +1083,23 @@
       "source": "035e0ec3da8729c43018ffcc839aa821517dcda3",
       "state": "SOURCE_BOUND_CONTRACT_ONLY_NOT_IMPLEMENTED",
       "files_readback_verified": 4
+    },
+    "activation_capture_preflight": {
+      "state": "FROZEN_READY_FOR_SINGLE_DISPATCH",
+      "source": "b4cf3e544554f82eb75e384cda61a45482b67663",
+      "tree": "f7013ea653c62b07b89980454de75f4c2d31d1c5",
+      "validation": "0129651a39a04af86d4bdcf1b001a1ae832d5d82",
+      "validation_tree": "37775e68b2b823f33da45bc383c31300758ab328",
+      "workflow": ".github/workflows/manual-activation-target-capture-preflight-r1-20261024.yml",
+      "scope": "EARLY_FEEDBACK_ONLY_NOT_COMPONENT_ACCEPTANCE",
+      "normal_cases": 8,
+      "mutant_expected_failures": [
+        "AC01",
+        "AC02",
+        "AC07"
+      ],
+      "source_delta": "Four production files and one8-case test plus two preflight records; no protected edit. Constructor injection supersedes event-based attachment proposal.",
+      "run": null
     }
   },
   "completion_contract": {
