@@ -1,22 +1,18 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T13:29:44.515Z",
+  "updated_date": "2026-10-24T13:48:38.502Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
+  "status": "EXECUTING",
+  "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-8d375bb1-d0c4-8330-b647-3e30b35e70f6",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
-    "claimed_utc": "2026-10-24T13:05:40.025Z",
-    "expires_utc": "2026-10-24T13:29:44.515Z",
-    "predecessor_blob": "c0b7bf28bb044af6ec7fde0b37ce18562565f8c0",
-    "purpose": "Implement public target group transport and server validation/capture",
-    "observed_predecessor": "Explicit release9605ae0b; prior scheduled run completed; no newer relevant active workflow or worker.",
-    "renewed_utc": "2026-10-24T13:25:10.829Z",
-    "last_owner": "manual-work-foreground-public-groups-2026-10-24T13:05:40.025Z",
-    "released_utc": "2026-10-24T13:29:44.515Z",
-    "release_reason": "Frozen qualification active; source/protocol reviewed and dispatched once; independent original-artifact auditor prepared/read back; next behavioral work depends on original qualification evidence."
+    "state": "ACTIVE",
+    "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-8d375bb1-d0c4-8330-b647-3e30b35e70f6",
+    "claimed_utc": "2026-10-24T13:48:38.502Z",
+    "expires_utc": "2026-10-24T14:43:38.502Z",
+    "predecessor_blob": "44925994161c758203989ff8e84d50379fa7f1e5",
+    "purpose": "Receive and diagnose failed public target-group qualification40098055404",
+    "observed_predecessor": "Explicit release554a54de; same scheduled task current run; no newer successor, owner, or relevant active workflow."
   },
   "last_qualified": {
     "source": "95b0ab3b44605e9f13d67750a2aa0c028ab24616",
@@ -1644,19 +1640,11 @@
     "no_successful_workflow_rerun": true
   },
   "reconcile": {
-    "last_checked_utc": "2026-10-24T13:29:44.515Z",
-    "relevant_active_workflows": [
-      {
-        "run": 40098055404,
-        "job": 120884344045,
-        "status": "in_progress",
-        "head_sha": "6b59a88891c8db12ae3066ea718b61549d8b4876",
-        "event": "push"
-      }
-    ],
+    "last_checked_utc": "2026-10-24T13:48:38.502Z",
+    "relevant_active_workflows": [],
     "ignored_unrelated_ancient_run": 34749202144,
-    "current_worker": null,
-    "observed_ledger_predecessor_blob": "38891e7d51b5c5a4b66186b728c61b5b8d4446bb",
+    "current_worker": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-8d375bb1-d0c4-8330-b647-3e30b35e70f6",
+    "observed_ledger_predecessor_blob": "44925994161c758203989ff8e84d50379fa7f1e5",
     "former_discussion_executor_paused": true,
     "intervention_watch_read_only": true,
     "latest_checkpoint_before_release": "15acb59b89c55a45335665d1e34aed38c4740226",
@@ -1666,15 +1654,9 @@
     "preserved_prior_reconciliation": "2026-10-23T23:41:32.374Z: explicit predecessor release verified; task admission still true, old Discussion executor paused, no relevant workflow active/queued/waiting/requested/pending or newer checkpoint.",
     "current_conversation_scheduled_wakeup": "eb0deeae-8970-8323-b7a3-4b7e5072d36c",
     "scheduled_last_run": {
-      "id": "8b7e98dc-cd60-8325-af0a-6aa8dfaea1a0",
-      "recorded_status": "completed",
-      "scheduled_for": "2026-10-24T12:44:00Z",
-      "started_at": "2026-10-24T12:48:42.780347Z",
-      "completed_at": "2026-10-24T12:52:32.935577Z",
-      "chat_ref": {
-        "type": "chatgpt",
-        "id": "6adbbbc7-a2b0-83e8-a08e-bd68d922671d"
-      }
+      "id": "8d375bb1-d0c4-8330-b647-3e30b35e70f6",
+      "recorded_status": "in_progress",
+      "started_at": "2026-10-24T13:48:01.474797Z"
     }
   },
   "automation": {
@@ -1689,7 +1671,7 @@
       "expectations_updated_utc": "2026-10-24T13:29:44.515Z",
       "expectations": "Strictly read-only; follow current Work WAITING_EXTERNAL ownership and single public target-group run40098055404. Accepted activation40091111694 remains accepted. No action for healthy waiting; receive original evidence before bounded acceptance. Watch enabled state unchanged."
     },
-    "handoff": "Work released WAITING_EXTERNAL for single public target-group qualification40098055404. Existing hourly Work task remains enabled/admitted and resumes original receiving under shared CAS. Former Discussion remains paused.",
+    "handoff": "Current scheduled Work iteration owns shared lease to receive failed public target-group qualification40098055404.",
     "execution_admitted": true,
     "former_discussion_executor": {
       "id": "6adbad91b90881918859ad0cba22b881",
@@ -2263,11 +2245,5 @@
       "remaining_component_gates": []
     }
   },
-  "stop_reason": {
-    "kind": "EXTERNAL_DEPENDENCY_ONLY",
-    "recorded_utc": "2026-10-24T13:29:44.515Z",
-    "worker_active_after_release": false,
-    "external_workflow": 40098055404,
-    "detail": "No continuous foreground execution claimed. Original-artifact receiving and justified recovery/continuation remain pending external qualification. Independent receiving preparation complete; no competing investigation or qualification launched."
-  }
+  "stop_reason": null
 }
