@@ -1,0 +1,11 @@
+# Receive original public target-group qualification R4
+
+Run40108914146, job120916314773, attempt1; source e4efe8573086090bf39aa52a1a0ce6196c121914/tree e491b42dc54387cc5bb10be118a44dd059944cfc; validation e0fc8eab9ad1c9ff785f074a98d9bba0e33353f6/tree308aaf30608353bb3768faac309e1e6cc6e8f77a; workflow blob41681f8d6f6bc8d29a53b5c07b0afaffda257bdd. Expected artifact manual-public-target-groups-r4-40108914146. Artifact identity and outcome are unknown at preparation.
+
+First reconcile CURRENT.json, leases, newer receipts or successors, and every relevant workflow state. Do not duplicate the qualification. On terminal status fetch original run, jobs, artifact, source, validation, source-delta, validation-delta and main metadata. Source delta is accepted base95b0ab3 through R4 source; source commit parent is failed R3 source226773f8. Fill public-groups-metadata.json from GitHub, download the original artifact unchanged, verify bytes, digest, CRC and path safety, and extract to public-groups-original.
+
+Run unchanged RECEIVE_PUBLIC_GROUPS_R4.py only for terminal-success acceptance. It audits source/tree/parent/workflow/job/attempt/artifact/manifest; exact34 client identities;39 actor cases;20 targeted cases; exact five mutation AssertionFailedError witnesses among20 at source-bound first frames61/81/88/147/165; normal and mutant compilation; canonical two-file mutation; restoration;820 focused,14883 broad,18498 ordinary passes plus43 exact skips; original identity counters; protected144/23/82; Assay568/2000/exact51. A green workflow is insufficient.
+
+If the run fails, preserve the complete original artifact first and diagnose the failed stage. Compilation errors and missing reports are not behavioral evidence. Never alter assertions, frozen R1/R2/R3 failure evidence, or source to fit observations, and never rerun unchanged.
+
+Nine synthetic report-parser checks remain the frozen receiver contract: exact5of20 accepted; missing or zero reports, wrong type/frame, skips, compiler contamination, unrelated failure and zero mutation exit rejected. This is verifier testing, not engine evidence. No external independent review, official games or seeds; both Precision games remain reserved.
