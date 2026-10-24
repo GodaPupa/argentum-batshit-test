@@ -1,6 +1,6 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T10:03:42.888Z",
+  "updated_date": "2026-10-24T10:05:35.362Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "ACTIVE",
@@ -1269,6 +1269,46 @@
       "cases": 5,
       "state": "UNQUALIFIED_DRAFT_SUPERSEDED_BY_IN_PROGRESS_18CASE_FULL_PREPARATION",
       "readback_verified": true
+    },
+    "activation_full_qualification": {
+      "state": "FROZEN_READY_SINGLE_DISPATCH",
+      "source": "07a99a5151dc2438a100e1d3ebb26118ebd6d3f9",
+      "tree": "56a235a456d88fc199761a8925d559efb8bc388d",
+      "base": "035e0ec3da8729c43018ffcc839aa821517dcda3",
+      "parent": "a219991f8802ed9b95403815b69460bf5d7e931d",
+      "validation": "77310dfc6ba19133a0c280ec0e37772450428872",
+      "validation_tree": "0b2e96d5516d2efcb81ba9911e524039a9cc2788",
+      "source_branch": "candidate/manual-activation-target-capture-r1-20261024",
+      "validation_branch": "validation/manual-activation-target-capture-r1-20261024",
+      "workflow": ".github/workflows/manual-activation-target-capture-r1-20261024.yml",
+      "workflow_blob": "ef00ec76cead449bcc7e3a3e2ae5c2f4e216989f",
+      "protocol": "experiments/manual-transmission/research/activation-target-capture-r1-20261024/PROTOCOL.json",
+      "protocol_blob": "c4391b097b5de58e35f6a53afae4b3b6bce930cf",
+      "early_control_receipt": "96ddb8fbe1198917946e9f4b406c9fdde882a75a",
+      "scope": "Bounded original controller activation provenance only; no Spellskite/multiplayer/current-retarget/resolver acceptance",
+      "source_review": "14cumulative paths vs acceptedmodalspell;4production andoriginal8tests unchanged from qualifiedearlyfeedback;10new live-entry/boundary cases. Immutable readbacks verified.13negative receiver self-checks and8positive-count checks passed (synthetic, not Kotlin evidence). No external independent review.",
+      "expected_not_observed": {
+        "targeted": 18,
+        "mutation_cases": 8,
+        "mutation_failures": 3,
+        "mutation_passes": 5,
+        "frames": [
+          55,
+          60,
+          95
+        ],
+        "focused": 800,
+        "broad": 14863,
+        "engine": 4088,
+        "ordinary_passes": 18471,
+        "unchanged_skips": 43,
+        "assay_units": 568
+      },
+      "run": null,
+      "artifact": null,
+      "official_games": 0,
+      "official_seeds": 0,
+      "precision_reserved": 2
     }
   },
   "completion_contract": {
@@ -1292,11 +1332,11 @@
     "no_successful_workflow_rerun": true
   },
   "reconcile": {
-    "last_checked_utc": "2026-10-24T10:03:42.888Z",
+    "last_checked_utc": "2026-10-24T10:05:11.155Z",
     "relevant_active_workflows": [],
     "ignored_unrelated_ancient_run": 34749202144,
     "current_worker": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
-    "observed_ledger_predecessor_blob": "5ebeef1797b7d2cefb140e84e6727a52da001110",
+    "observed_ledger_predecessor_blob": "a4353a95de612fdd4f46012207bfc6c4ba04cbce",
     "former_discussion_executor_paused": true,
     "intervention_watch_read_only": true,
     "latest_checkpoint_before_release": "67e5d15b4bfe7a8d86c3588537b99f38edf3fc67",
