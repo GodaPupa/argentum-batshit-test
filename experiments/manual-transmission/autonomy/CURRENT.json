@@ -1,6 +1,6 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T09:46:58.845Z",
+  "updated_date": "2026-10-24T09:49:10.514Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "WAITING_EXTERNAL",
@@ -1087,7 +1087,31 @@
       "files_readback_verified": 4
     },
     "activation_capture_preflight": {
-      "state": "WAITING_EXTERNAL_EARLY_FEEDBACK_ONLY",
+      "state": "FROZEN_READY_SINGLE_DISPATCH",
+      "source": "a219991f8802ed9b95403815b69460bf5d7e931d",
+      "tree": "99a3fe21ded51eecfb37515e8e8e5e071e8b3d56",
+      "validation": "8bf2f9cc416666a1dd1d5f49008619b3666b76a1",
+      "validation_tree": "a564a779cbcff760dae9a1acf1df948d33fb0edc",
+      "workflow": ".github/workflows/manual-activation-target-capture-preflight-r2-20261024.yml",
+      "source_branch": "candidate/manual-activation-target-capture-preflight-r2-20261024",
+      "validation_branch": "validation/manual-activation-target-capture-preflight-r2-20261024",
+      "scope": "EARLY_FEEDBACK_ONLY_NOT_COMPONENT_ACCEPTANCE",
+      "normal_cases": 8,
+      "mutant_expected_failures": [
+        "AC01",
+        "AC02",
+        "AC07"
+      ],
+      "expected_mutation_frames": {
+        "AC01": 55,
+        "AC02": 60,
+        "AC07": 95
+      },
+      "source_delta": "Two new records only; production/tests unchanged. Visit-loss-only mutant preserves groups so original objectRef assertions execute.",
+      "run": null
+    },
+    "activation_capture_failed_r1": {
+      "state": "FAILED_CONTROL_WRONG_FAILURE_TYPES",
       "source": "b4cf3e544554f82eb75e384cda61a45482b67663",
       "tree": "f7013ea653c62b07b89980454de75f4c2d31d1c5",
       "validation": "0129651a39a04af86d4bdcf1b001a1ae832d5d82",
@@ -1106,9 +1130,9 @@
       "attempt": 1,
       "run_number": 1,
       "event": "push",
-      "status": "in_progress",
-      "conclusion": null,
-      "artifact": null,
+      "status": "completed",
+      "conclusion": "failure",
+      "artifact": 12554702669,
       "expected_artifact_name": "manual-activation-target-capture-preflight-r1-40079283905",
       "observed_utc": "2026-10-24T08:47:05.131Z",
       "steps_observed": [
@@ -1206,7 +1230,13 @@
         "AC07": 95
       },
       "implementation": "Validated controller groups captured before flattening, serializable action carrier rejected by public validation, copied through unpaid-cost pauses, attached to exact constructed activated ability before protected stack placement. Complete controller-only matching histories only; no inferred missing groups; defaults omitted from legacy encoding.",
-      "remaining_gates": "Early runtime results pending. Full live VariablePermanents/mixed-opponent/direct-legacy/payment-failure/division/copy guards and coherent full qualification remain; no component admission."
+      "remaining_gates": "Early runtime results pending. Full live VariablePermanents/mixed-opponent/direct-legacy/payment-failure/division/copy guards and coherent full qualification remain; no component admission.",
+      "artifact_bytes": 20910,
+      "artifact_sha256": "db7167bbfcae8312669db6cdf4caef0fc80a92daf7b56421a6b3a4f0b5743614",
+      "receipt": "b2a2bfc4418781e9ac039fc89c2cc215c09abddd",
+      "normal_cases_passed": 8,
+      "normal_and_mutant_compiled": true,
+      "diagnosis": "Combined fault removed emptygroups; handler count guard discardsplan;AC01/AC07 IllegalArgumentException,AC02 assertion. Correctly rejected; no accepted behavioral control."
     }
   },
   "completion_contract": {
