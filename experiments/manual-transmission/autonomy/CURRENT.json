@@ -1,9 +1,9 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T04:48:34.487Z",
+  "updated_date": "2026-10-24T04:49:08.724Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "READY_TO_DISPATCH_SPELL_FULL",
+  "status": "WAITING_EXTERNAL",
   "owner": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d",
   "lease": {
     "state": "ACTIVE_SCHEDULED",
@@ -11,7 +11,7 @@
     "claimed_utc": "2026-10-24T04:40:47.441Z",
     "expires_utc": "2026-10-24T05:30:47.441Z",
     "predecessor_blob": "5c73f3951e8c720a74486627266feaaa3bb53dfb",
-    "purpose": "Receive original spell source preflight and complete source-bound test/control qualification preparation"
+    "purpose": "Prepare original full spell qualification receiver and isolated next-dependency review during build"
   },
   "last_qualified": {
     "source": "103ac16642d60c0d02bd12004d37f2f87cf7f324",
@@ -44,14 +44,16 @@
     "validation": "87ceda41e1298a282159f7a9d66bede20a6c21bc",
     "validation_branch": "validation/manual-modal-spell-capture-r1-20261024",
     "workflow": ".github/workflows/manual-modal-spell-capture-r1-20261024.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40063808901
+    ],
     "planned_not_observed": {
       "early_targeted": 8,
       "full_qualification": "NOT_YET_FROZEN"
     },
     "negative_scope": "No behavioral negative evidence claimed for early preflight. Freeze dedicated grouping/visit witnesses and compiled fault on next reviewed complete source; exact failures, restore/rebind and all full positives remain required.",
     "source_delta": "Twelve paths versus accepted103ac166: seven modified unprotected production files, new trusted provenance helper, new eight-case test file, three preflight records. Public GameAction and all protected originals untouched.",
-    "next_executable_action": "Dispatch exactly one frozen validation87ceda41 after reconciliation; receive original artifact including normal/mutant compilation,18 targeted tests, exact2 SM01/SM02 failures69/81, restoration/rebinding and all declared positives. No component acceptance before original receiving.",
+    "next_executable_action": "Receive original run40063808901/job120782717321/attempt1, source6b63882cc02248e7da46a1d731b319f87b3b97e0/tree464c56d2d4b542cb9d8e24966f3f7e206aa3e443/validation87ceda41e1298a282159f7a9d66bede20a6c21bc. Audit original artifact pins/digest/source/manifest,18 targeted, compiled mutant exact2 SM01/SM02 failures69/81, restored candidate,777focused/14840broad/18448ordinary+43same skips and Assay568/2000/51. Diagnose failed evidence before any new source. Auditor being prepared under current lease.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -466,7 +468,7 @@
       "verified_results": "Normal compile and exact8 raw targeted identities passed;13 manifest entries, original archive hash/CRC/source/workflow/job/attempt/protected144 verified. No component acceptance."
     },
     "spell_full_qualification": {
-      "state": "SOURCE_FROZEN_READY_FOR_SINGLE_DISPATCH",
+      "state": "WAITING_EXTERNAL_FULL_QUALIFICATION",
       "source": "6b63882cc02248e7da46a1d731b319f87b3b97e0",
       "tree": "464c56d2d4b542cb9d8e24966f3f7e206aa3e443",
       "validation": "87ceda41e1298a282159f7a9d66bede20a6c21bc",
@@ -493,11 +495,19 @@
         "unchanged_skips": 43,
         "assay_units": 568
       },
-      "run": null,
+      "run": 40063808901,
       "artifact": null,
       "official_games": 0,
       "official_seeds": 0,
-      "precision_reserved": 2
+      "precision_reserved": 2,
+      "job": 120782717321,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "status": "in_progress",
+      "dispatched_utc": "2026-10-24T04:48:41.542Z",
+      "expected_artifact_name": "manual-modal-spell-capture-r1-40063808901",
+      "runtime_results": "PENDING_ORIGINAL_ARTIFACT_NO_ACCEPTANCE"
     }
   },
   "completion_contract": {
@@ -522,7 +532,15 @@
   },
   "reconcile": {
     "last_checked_utc": "2026-10-24T04:48:34.487Z",
-    "relevant_active_workflows": [],
+    "relevant_active_workflows": [
+      {
+        "run": 40063808901,
+        "job": 120782717321,
+        "status": "in_progress",
+        "head_sha": "87ceda41e1298a282159f7a9d66bede20a6c21bc",
+        "event": "push"
+      }
+    ],
     "ignored_unrelated_ancient_run": 34749202144,
     "current_worker": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d",
     "observed_ledger_predecessor_blob": "685cd1c9ed815b3232c00e5dbfde97e647660e5b",
@@ -624,7 +642,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
     "last_verified_enabled_utc": "2026-10-24T02:57:24.422Z",
-    "next_authorized_action": "Dispatch exactly one frozen validation87ceda41 after reconciliation; receive original artifact including normal/mutant compilation,18 targeted tests, exact2 SM01/SM02 failures69/81, restoration/rebinding and all declared positives. No component acceptance before original receiving.",
+    "next_authorized_action": "Receive original run40063808901/job120782717321/attempt1, source6b63882cc02248e7da46a1d731b319f87b3b97e0/tree464c56d2d4b542cb9d8e24966f3f7e206aa3e443/validation87ceda41e1298a282159f7a9d66bede20a6c21bc. Audit original artifact pins/digest/source/manifest,18 targeted, compiled mutant exact2 SM01/SM02 failures69/81, restored candidate,777focused/14840broad/18448ordinary+43same skips and Assay568/2000/51. Diagnose failed evidence before any new source. Auditor being prepared under current lease.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -660,7 +678,7 @@
     "work_owner": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d",
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "Current Work owner actively preparing full spell qualification; prior preflight terminal and received.",
+    "activity": "One source-bound full qualification40063808901 active; Work owner preparing independent receiving audit while it runs.",
     "last_execution_owner": "manual-work-6adbe330-5e7c9ab2-16b0-8324-b5ff-c14d8c7e489e"
   },
   "blockers": [],
