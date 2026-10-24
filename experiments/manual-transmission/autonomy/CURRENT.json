@@ -1,9 +1,9 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T05:28:51.530Z",
+  "updated_date": "2026-10-24T05:29:22.844Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "READY_TO_DISPATCH_SPELL_RECOVERY",
+  "status": "WAITING_EXTERNAL",
   "owner": "manual-work-foreground-recover-spell-2026-10-24T05-21-23-906Z",
   "lease": {
     "state": "ACTIVE_FOREGROUND",
@@ -11,7 +11,7 @@
     "claimed_utc": "2026-10-24T05:21:23.906Z",
     "expires_utc": "2026-10-24T06:11:23.906Z",
     "predecessor_blob": "8840b3a12326d1054614e9935f7c4c825d9f0d4d",
-    "purpose": "Receive original40063808901 and diagnose SC10/SC13 before bounded successor"
+    "purpose": "Prepare R2 original receiving after diagnosed bounded repair launch"
   },
   "last_qualified": {
     "source": "103ac16642d60c0d02bd12004d37f2f87cf7f324",
@@ -44,7 +44,9 @@
     "validation": "dbc23376091a99e4043d29cdd2272aa8c583a478",
     "validation_branch": "validation/manual-modal-spell-capture-r2-20261024",
     "workflow": ".github/workflows/manual-modal-spell-capture-r2-20261024.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40066412475
+    ],
     "planned_not_observed": {
       "targeted": 23,
       "mutation_failures": 2,
@@ -61,7 +63,7 @@
     },
     "negative_scope": "Full spell fault is frozen: drop empty newly selected groups and clear their captured visits. Compiler errors/zero reports/unrelated failures are rejected. Behavioral result pending original run.",
     "source_delta": "Exact16 paths vs accepted103ac166: seven modified production, one new trusted carrier, two new test classes, preserved three preflight records and three full qualification records. All16 GitHub blobs and workflow-only child verified.",
-    "next_executable_action": "Launch exactly one frozen R2 validationdbc23376 after current reconciliation; require original23 normal targeted incl unchangedSC10/SC13, compiled fault and exact2witness failures, restore/rebind and all declared positive gates. Preserve original R1 failure.",
+    "next_executable_action": "Receive original successor40066412475/job120790509534/attempt1 on source4c3aba1a17f5a116b94b179940ef7ecd75310cda validationdbc23376091a99e4043d29cdd2272aa8c583a478. Audit exact23 normal cases including unchanged SC10/SC13, normal/mutant compilation, exact2behavioral witness failures69/81, restored candidate and all declared full gates. No acceptance from green status; if failure preserve and diagnose actual original evidence before new-source repair.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -476,7 +478,7 @@
       "verified_results": "Normal compile and exact8 raw targeted identities passed;13 manifest entries, original archive hash/CRC/source/workflow/job/attempt/protected144 verified. No component acceptance."
     },
     "spell_full_qualification": {
-      "state": "FROZEN_SINGLE_SUCCESSOR_READY",
+      "state": "WAITING_EXTERNAL_R2_RECOVERY",
       "source": "4c3aba1a17f5a116b94b179940ef7ecd75310cda",
       "tree": "e7a6c14550d65b7c38de2c7849d2b314865f67ec",
       "validation": "dbc23376091a99e4043d29cdd2272aa8c583a478",
@@ -504,11 +506,18 @@
         "unchanged_skips": 43,
         "assay_units": 568
       },
-      "run": null,
+      "run": 40066412475,
       "artifact": null,
       "official_games": 0,
       "official_seeds": 0,
-      "precision_reserved": 2
+      "precision_reserved": 2,
+      "job": 120790509534,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "status": "in_progress",
+      "dispatched_utc": "2026-10-24T05:28:54.235Z",
+      "expected_artifact_name": "manual-modal-spell-capture-r2-40066412475"
     },
     "spell_next_dependency_review": {
       "commit": "c8d51e663eb126014c06013c954a038982eb29fe",
@@ -735,7 +744,15 @@
   },
   "reconcile": {
     "last_checked_utc": "2026-10-24T05:28:51.530Z",
-    "relevant_active_workflows": [],
+    "relevant_active_workflows": [
+      {
+        "run": 40066412475,
+        "job": 120790509534,
+        "status": "in_progress",
+        "head_sha": "dbc23376091a99e4043d29cdd2272aa8c583a478",
+        "event": "push"
+      }
+    ],
     "ignored_unrelated_ancient_run": 34749202144,
     "current_worker": null,
     "observed_ledger_predecessor_blob": "fb950964e0c82d9057515d13a9cf47063294dd15",
@@ -837,7 +854,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
     "last_verified_enabled_utc": "2026-10-24T04:56:10.891Z",
-    "next_authorized_action": "Launch exactly one frozen R2 validationdbc23376 after current reconciliation; require original23 normal targeted incl unchangedSC10/SC13, compiled fault and exact2witness failures, restore/rebind and all declared positive gates. Preserve original R1 failure.",
+    "next_authorized_action": "Receive original successor40066412475/job120790509534/attempt1 on source4c3aba1a17f5a116b94b179940ef7ecd75310cda validationdbc23376091a99e4043d29cdd2272aa8c583a478. Audit exact23 normal cases including unchanged SC10/SC13, normal/mutant compilation, exact2behavioral witness failures69/81, restored candidate and all declared full gates. No acceptance from green status; if failure preserve and diagnose actual original evidence before new-source repair.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -873,7 +890,7 @@
     "work_owner": "manual-work-foreground-recover-spell-2026-10-24T05-21-23-906Z",
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "Foreground owner executing bounded recovery; no relevant active qualification.",
+    "activity": "Foreground owner preparing pinned R2 receiving audit while single successor runs.",
     "last_execution_owner": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d"
   },
   "blockers": [],
