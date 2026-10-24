@@ -1,18 +1,18 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T13:55:36.242Z",
+  "updated_date": "2026-10-24T14:44:00.530Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
+  "status": "EXECUTING",
+  "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-38659609-f03c-8327-a4ec-2eae23224f49",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
-    "last_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-8d375bb1-d0c4-8330-b647-3e30b35e70f6",
-    "claimed_utc": "2026-10-24T13:48:38.502Z",
-    "released_utc": "2026-10-24T13:55:36.242Z",
-    "predecessor_blob": "e487b3361e3a3a02e8378dffba7fefb4c9b068ec",
-    "reason": "R2 qualification40100021939 is active; original-artifact receiver is immutable and no safely independent critical-path mutation remains."
+    "state": "ACTIVE",
+    "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-38659609-f03c-8327-a4ec-2eae23224f49",
+    "claimed_utc": "2026-10-24T14:44:00.530Z",
+    "expires_utc": "2026-10-24T15:42:00.530Z",
+    "predecessor_blob": "d75766952e929f2356dd29a9aa564642ef173734",
+    "purpose": "Receive and diagnose failed public target-group R2 qualification40100021939",
+    "observed_predecessor": "Prior Work iteration explicitly released; R2 terminal failure; no newer ledger commit, successor, relevant active workflow, or competing Work run observed."
   },
   "last_qualified": {
     "source": "95b0ab3b44605e9f13d67750a2aa0c028ab24616",
@@ -1767,20 +1767,13 @@
       "completed_at": null,
       "chat_ref": null
     },
-    "observed_utc": "2026-10-24T13:55:36.242Z",
-    "active_relevant_workflow": {
-      "run": 40100021939,
-      "job": 120890075145,
-      "status": "in_progress",
-      "conclusion": null,
-      "head_sha": "85a6951037adec534948301bc7dea894104045c8",
-      "stage": "Compile exact normal capture implementation"
-    },
+    "observed_utc": "2026-10-24T14:44:00.530Z",
+    "active_relevant_workflow": null,
     "queued_relevant_workflows": [],
     "waiting_relevant_workflows": [],
-    "owner_reconciliation": "This scheduled iteration owned the lease; no newer owner, receipt or successor was observed before release.",
+    "owner_reconciliation": "Current scheduled Work iteration claimed released lease after terminal R2 failure and exact task/run reconciliation.",
     "recent_checkpoint_head": "a9113381cece2a94cd0a74ba01823638f203ffa4",
-    "work_task_run": "8d375bb1-d0c4-8330-b647-3e30b35e70f6",
+    "work_task_run": "38659609-f03c-8327-a4ec-2eae23224f49",
     "discussion_executor": "PAUSED"
   },
   "automation": {
@@ -2369,9 +2362,5 @@
       "remaining_component_gates": []
     }
   },
-  "stop_reason": {
-    "code": "EXTERNAL_DEPENDENCY_ONLY",
-    "detail": "Qualification40100021939 is in progress at normal Kotlin compilation. The original-artifact receiver and bounded next-seam source trace are prepared; mutating or dispatching another qualification would overlap frozen active evidence.",
-    "observed_utc": "2026-10-24T13:55:36.242Z"
-  }
+  "stop_reason": null
 }
