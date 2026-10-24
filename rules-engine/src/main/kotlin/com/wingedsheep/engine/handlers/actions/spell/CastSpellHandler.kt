@@ -2421,7 +2421,12 @@ class CastSpellHandler(
         return null
     }
 
-    override fun execute(state: GameState, action: CastSpell): ExecutionResult {
+    override fun execute(state: GameState, action: CastSpell): ExecutionResult =
+        executeWithOriginalCapture(state, action, null)
+
+    internal fun executeWithOriginalCapture(
+        state: GameState, action: CastSpell, originalModalCapture: com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture?
+    ): ExecutionResult {
         var currentState = state
         val events = mutableListOf<GameEvent>()
 
@@ -2502,7 +2507,8 @@ class CastSpellHandler(
                 modes = modalEffect.modes,
                 chosenModeIndices = action.chosenModes,
                 resolvedModeTargets = emptyList(),
-                currentOrdinal = 0
+                currentOrdinal = 0,
+                originalModalCapture = com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture(action.chosenModes, emptyList())
             )
         }
 
@@ -2895,7 +2901,7 @@ class CastSpellHandler(
         // we surface the selection here. The pause sits before any cost is paid, so the re-entry
         // on resume (with the chosen entities merged into the payment) is side-effect free. Returns
         // null when every selection-requiring cost is already satisfied — the normal path.
-        surfaceUnpaidAdditionalCostSelection(currentState, action, flattenedAllCosts)?.let { return it }
+        surfaceUnpaidAdditionalCostSelection(currentState, action, flattenedAllCosts, originalModalCapture)?.let { return it }
 
         // Reveal-the-entire-hand costs carry no picker. The cast action itself is the decision
         // to pay the alternative/additional cost, so publish the hand automatically before any
@@ -3682,7 +3688,7 @@ class CastSpellHandler(
         val castTimeChoice = cardDef?.script?.castTimeCreatureTypeChoice
         if (castTimeChoice != null) {
             val pauseResult = pauseForCreatureTypeChoice(
-                currentState, action, castTimeChoice, sacrificedSnapshots, spellTargetRequirements, events
+                currentState, action, castTimeChoice, sacrificedSnapshots, spellTargetRequirements, events, originalModalCapture
             )
             if (pauseResult != null) return pauseResult
         }
@@ -4009,7 +4015,8 @@ class CastSpellHandler(
             return castResult
         }
 
-        var currentCastState = castResult.newState
+        var currentCastState = com.wingedsheep.engine.mechanics.targeting.attachOriginalModalSpellCapture(
+            castResult.newState, action.cardId, originalModalCapture)
         var allEvents = events + castResult.events
 
         // Freeze a graveyard-cast entry rider onto the stack spell now; StackResolver reads it back
@@ -4533,7 +4540,8 @@ class CastSpellHandler(
         source: com.wingedsheep.sdk.model.CastTimeCreatureTypeSource,
         sacrificedSnapshots: List<EntitySnapshot>,
         spellTargetRequirements: List<com.wingedsheep.sdk.scripting.targets.TargetRequirement>,
-        priorEvents: List<GameEvent>
+        priorEvents: List<GameEvent>,
+        originalModalCapture: com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture?
     ): ExecutionResult? {
         // Determine which zone to scan based on source
         val zone = when (source) {
@@ -4575,6 +4583,7 @@ class CastSpellHandler(
             targetRequirements = spellTargetRequirements,
             count = 0,
             creatureTypes = sortedTypes,
+            originalModalCapture = originalModalCapture,
             pendingCostTriggers = if (currentState.stackResolutionPendingPriority) emptyList()
                 else triggerDetector.detectTriggers(currentState, priorEvents),
         )
@@ -4820,6 +4829,7 @@ class CastSpellHandler(
         state: GameState,
         action: CastSpell,
         flattenedCosts: List<AdditionalCost>,
+        originalModalCapture: com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture?,
     ): ExecutionResult? {
         val payment = action.additionalCostPayment
         for (cost in flattenedCosts) {
@@ -4879,7 +4889,7 @@ class CastSpellHandler(
             // No real choice (exactly enough legal options) — auto-pay and re-enter, so a forced
             // single sacrifice doesn't prompt. The re-entry sees this cost satisfied and moves on.
             if (options.size == count) {
-                return execute(state, withAdditionalCostSelection(action, kind, options))
+                return executeWithOriginalCapture(state, withAdditionalCostSelection(action, kind, options), originalModalCapture)
             }
 
             val cardName = state.getEntity(action.cardId)?.get<CardComponent>()?.name ?: "spell"
@@ -4900,6 +4910,7 @@ class CastSpellHandler(
                 casterId = action.playerId,
                 baseCastAction = action,
                 costKind = kind,
+                originalModalCapture = originalModalCapture,
             )
             return state.withPriority(action.playerId).suspendForDecision(
                 question = { decisionId ->
@@ -4992,16 +5003,19 @@ class CastSpellHandler(
         modes: List<com.wingedsheep.sdk.scripting.effects.Mode>,
         chosenModeIndices: List<Int>,
         resolvedModeTargets: List<List<ChosenTarget>>,
-        currentOrdinal: Int
+        currentOrdinal: Int,
+        originalModalCapture: com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture? = null
     ): ExecutionResult {
         var ordinal = currentOrdinal
         var targetsAccum = resolvedModeTargets
+        var captures = originalModalCapture?.takeIf { it.chosenModeIndices == chosenModeIndices && it.plans.size == currentOrdinal }
 
         while (ordinal < chosenModeIndices.size) {
             val modeIndex = chosenModeIndices[ordinal]
             val mode = modes[modeIndex]
             if (mode.targetRequirements.isEmpty()) {
                 targetsAccum = targetsAccum + listOf(emptyList())
+                captures = captures?.let { it.copy(plans = it.plans + com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan(emptyList())) }
                 ordinal++
                 continue
             }
@@ -5057,7 +5071,8 @@ class CastSpellHandler(
                 modes = modes,
                 chosenModeIndices = chosenModeIndices,
                 resolvedModeTargets = targetsAccum,
-                currentOrdinal = ordinal
+                currentOrdinal = ordinal,
+                originalModalCapture = captures
             )
             return state.withPriority(casterId).suspendForDecision(
                 question = { decisionId ->
@@ -5083,7 +5098,7 @@ class CastSpellHandler(
         }
 
         // All modes resolved without needing another decision — finalize directly.
-        return finalizeModalCast(state, baseCastAction, chosenModeIndices, targetsAccum)
+        return finalizeModalCast(state, baseCastAction, chosenModeIndices, targetsAccum, captures)
     }
 
     /**
@@ -5095,7 +5110,8 @@ class CastSpellHandler(
         state: GameState,
         baseCastAction: CastSpell,
         chosenModeIndices: List<Int>,
-        resolvedModeTargets: List<List<ChosenTarget>>
+        resolvedModeTargets: List<List<ChosenTarget>>,
+        originalModalCapture: com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture? = null
     ): ExecutionResult {
         val flatTargets = resolvedModeTargets.flatten()
         val finalAction = baseCastAction.copy(
@@ -5104,7 +5120,7 @@ class CastSpellHandler(
             modeTargetsOrdered = resolvedModeTargets,
             targets = flatTargets
         )
-        return execute(state, finalAction)
+        return executeWithOriginalCapture(state, finalAction, originalModalCapture)
     }
 
     /**

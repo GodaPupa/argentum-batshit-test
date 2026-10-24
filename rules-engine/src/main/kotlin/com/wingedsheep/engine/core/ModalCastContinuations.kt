@@ -70,5 +70,8 @@ data class CastModalTargetSelectionContinuation(
     val modes: List<@Serializable Mode>,
     val chosenModeIndices: List<Int>,
     val resolvedModeTargets: List<List<ChosenTarget>>,
-    val currentOrdinal: Int
+    val currentOrdinal: Int,
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val originalModalCapture: com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture? = null
 ) : AnswerContinuation

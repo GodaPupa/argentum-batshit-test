@@ -228,4 +228,7 @@ data class CastWithCreatureTypeContinuation(
     @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
     @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
     val pendingCostTriggers: List<com.wingedsheep.engine.event.PendingTrigger> = emptyList(),
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val originalModalCapture: com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture? = null,
 ) : AnswerContinuation

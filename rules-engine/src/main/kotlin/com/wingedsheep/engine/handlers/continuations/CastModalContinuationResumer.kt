@@ -66,7 +66,7 @@ class CastModalContinuationResumer(
             continuation.costKind,
             response.selectedCards
         )
-        return castSpellHandler.execute(state.withPriority(continuation.casterId), finalAction)
+        return castSpellHandler.executeWithOriginalCapture(state.withPriority(continuation.casterId), finalAction, continuation.originalModalCapture)
     }
 
     fun resumeCastModalModeSelection(
@@ -139,7 +139,8 @@ class CastModalContinuationResumer(
             modes = continuation.modes,
             chosenModeIndices = newSelected,
             resolvedModeTargets = emptyList(),
-            currentOrdinal = 0
+            currentOrdinal = 0,
+            originalModalCapture = com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture(newSelected, emptyList())
         )
     }
 
@@ -154,6 +155,16 @@ class CastModalContinuationResumer(
         }
         if (response !is TargetsResponse) {
             return ExecutionResult.error(state, "Expected targets response for modal cast-time target selection")
+        }
+
+        val captures = continuation.originalModalCapture?.takeIf {
+            it.chosenModeIndices == continuation.chosenModeIndices && it.plans.size == continuation.currentOrdinal
+        }?.let { prior ->
+            val mode = continuation.modes[continuation.chosenModeIndices[continuation.currentOrdinal]]
+            prior.copy(plans = prior.plans + com.wingedsheep.engine.mechanics.targeting.captureTargetSlots(
+                state, mode.targetRequirements.size, response.selectedTargets.mapValues { (_, ids) ->
+                    ids.map { entityIdToChosenTarget(state, it) }
+                }))
         }
 
         // Flatten selected targets, preserving per-requirement order so buildNamedTargets
@@ -176,7 +187,8 @@ class CastModalContinuationResumer(
             modes = continuation.modes,
             chosenModeIndices = continuation.chosenModeIndices,
             resolvedModeTargets = newResolvedTargets,
-            currentOrdinal = nextOrdinal
+            currentOrdinal = nextOrdinal,
+            originalModalCapture = captures
         )
     }
 }

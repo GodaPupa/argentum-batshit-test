@@ -1080,17 +1080,20 @@ class ModalAndCloneContinuationResumer(
             return castResult
         }
 
+        val capturedState = com.wingedsheep.engine.mechanics.targeting.attachOriginalModalSpellCapture(
+            castResult.newState, continuation.cardId, continuation.originalModalCapture)
+
         var allEvents = castResult.events
 
         // Detect and process triggers from casting (same as CastSpellHandler does)
-        val triggers = continuation.pendingCostTriggers + services.triggerDetector.detectTriggers(castResult.newState, allEvents)
-        if (!castResult.state.stackResolutionPendingPriority) {
+        val triggers = continuation.pendingCostTriggers + services.triggerDetector.detectTriggers(capturedState, allEvents)
+        if (!capturedState.stackResolutionPendingPriority) {
             return com.wingedsheep.engine.mechanics.CastPriorityProcessor(
                 services.sbaChecker, services.triggerDetector, services.triggerProcessor
-            ).start(castResult.state, continuation.casterId, allEvents, triggers)
+            ).start(capturedState, continuation.casterId, allEvents, triggers)
         }
         if (triggers.isNotEmpty()) {
-            val triggerResult = services.triggerProcessor.processTriggers(castResult.newState, triggers)
+            val triggerResult = services.triggerProcessor.processTriggers(capturedState, triggers)
 
             if (triggerResult.isPaused) {
                 return ExecutionResult.propagatePause(
@@ -1107,7 +1110,7 @@ class ModalAndCloneContinuationResumer(
         }
 
         return ExecutionResult.success(
-            castResult.newState.withPriority(continuation.casterId),
+            capturedState.withPriority(continuation.casterId),
             allEvents
         )
     }

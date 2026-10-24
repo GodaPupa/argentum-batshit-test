@@ -176,7 +176,10 @@ data class SpellOnStackComponent(
      * the board has changed (e.g. Steer Clear's "if you controlled a Mount as you cast this spell").
      * Declared on the card via the `captureAtCast` DSL.
      */
-    val castTimeFlags: Set<String> = emptySet()
+    val castTimeFlags: Set<String> = emptySet(),
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val originalModalCapture: com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture? = null
 ) : Component
 
 /**

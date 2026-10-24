@@ -1,0 +1,37 @@
+{
+  "schema": "manual-modal-spell-source-preflight-r1",
+  "base": "103ac16642d60c0d02bd12004d37f2f87cf7f324",
+  "accepted_receipt": "9447aab43b558d9e4bd5ee0484610f02012d29ae",
+  "scope": "Early normal compilation and eight targeted fixture/integration tests only; no component acceptance or completed qualification",
+  "sha256": {
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ModalSpellCaptureTest.kt": "53cbc7677d15c1fb891c556d0bc1574143501161e2ce086cc3ed3c9d20786636",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/CastSpellAdditionalCostContinuation.kt": "2968bccd2e520578cd482d61034bf9e7298e442a5006b5abf13ac9e853450f50",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalCastContinuations.kt": "c4e5bbebac52f36eb4989c5f9ccc476df286b0e78874fe692c79ebc442f0cbd2",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt": "b53a3ec8ad97fe07ef807be71e89775f8b573470897a0f6f0f4a5aaf1d5c3691",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/CastModalContinuationResumer.kt": "4cfa1ac17ab96a6d77db4b2219ae8ceaa5a16c0b9f69f3292a6845c107dad2ca",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt": "208b5fd8f9e02e077a87234621730c585cb2935ce53b6e45684c0296fd61929f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt": "bbcade1b6bc8069f3b7c2aeefc60377d3cadcccd96789631b1c3fc5a7c800e84",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt": "d14cfc7c51dc9a5abd912b30e36d6fd7442f49c33124a9fe6dfaa0188d4e914f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/OriginalModalSpellCapture.kt": "8cc4506e47432df1d0edc8c8adae04c18781dd5d7fc89a01150a982dd22fe3a6"
+  },
+  "tests": [
+    "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC01 omitted optional groups retain original positions on the cast spell",
+    "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC02 repeated choices retain separate original object visits",
+    "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC03 serialized pending target capture replays identically",
+    "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC04 cancellation discards pending capture without attaching to the hand card",
+    "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC05 targetless modes retain their own original ordinal",
+    "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC06 legacy continuation remains explicitly untracked",
+    "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC07 public cast action has no trusted provenance field",
+    "com.wingedsheep.engine.scenarios.ModalSpellCaptureTest::SC08 failed attachment never marks an uncast card"
+  ],
+  "remaining": [
+    "Receive original source-bound logs and all8 raw test reports",
+    "Complete actual additional-cost forced and prompted pause tests, paid creature-type branch, public entry initialization and division-boundary tests",
+    "Freeze executable negative controls and full positive qualification on immutable reviewed source",
+    "No Spellskite, multiplayer, official games or seeds admitted"
+  ],
+  "protected_bindings": 144,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}

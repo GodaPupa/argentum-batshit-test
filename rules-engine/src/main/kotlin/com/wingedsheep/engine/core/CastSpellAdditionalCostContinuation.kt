@@ -31,4 +31,7 @@ data class CastSpellAdditionalCostContinuation(
     val casterId: EntityId,
     val baseCastAction: CastSpell,
     val costKind: AdditionalCostSelectionKind,
+    @OptIn(kotlinx.serialization.ExperimentalSerializationApi::class)
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val originalModalCapture: com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture? = null,
 ) : AnswerContinuation
