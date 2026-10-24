@@ -862,13 +862,14 @@ export type PhaseResult =
   | { type: 'blightVariable'; blightAmount: number }
   | { type: 'payXLife'; payXLifeAmount: number }
   | { type: 'manaColorChoice'; color: string }
-  | { type: 'targeting'; selectedTargets: EntityId[] }
+  | { type: 'targeting'; selectedTargets: EntityId[]; selectedTargetGroups?: EntityId[][] }
   | { type: 'damageDistribution'; distribution: Record<EntityId, number> }
 
 /**
  * Pipeline coordinator state: tracks the action being built and remaining phases.
  */
 export interface ActionPipelineState {
+  pendingTargetGroups?: EntityId[][]
   interactionEpoch: string
   actionInfo: import('../../types').LegalActionInfo
   accumulatedAction: import('../../types').GameAction

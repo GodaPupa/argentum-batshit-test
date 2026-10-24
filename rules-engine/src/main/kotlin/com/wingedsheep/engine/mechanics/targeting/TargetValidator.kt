@@ -66,8 +66,12 @@ class TargetValidator {
          * restriction (Lurker), and a strict one would wrongly block abilities, so every call site
          * is made to say which it is.
          */
-        targetingSourceType: TargetingSourceType
+        targetingSourceType: TargetingSourceType,
+        targetGroups: List<List<ChosenTarget>>? = null,
     ): String? {
+        if (targetGroups != null && (targetGroups.size != requirements.size || targetGroups.flatten() != targets)) {
+            return "Target groups do not match requirements or flat targets"
+        }
         // Use the game state for validation
         // StateProjector is used for P/T checks to account for continuous effects
 
@@ -109,12 +113,13 @@ class TargetValidator {
         for ((index, requirement) in requirements.withIndex()) {
             // Get targets for this requirement (handle multi-target requirements)
             val targetCount = effectiveMaxCount(requirement)
-            val startIdx = requirements.take(index).sumOf { effectiveMaxCount(it) }
+            val startIdx = targetGroups?.take(index)?.sumOf { it.size }
+                ?: requirements.take(index).sumOf { effectiveMaxCount(it) }
             // Use Long for the end index so an unlimited requirement (targetCount = Int.MAX_VALUE)
             // doesn't overflow to a negative value and make subList throw.
             val endIdx = (startIdx.toLong() + targetCount.toLong())
                 .coerceAtMost(targets.size.toLong()).toInt()
-            val targetsForReq = targets.subList(
+            val targetsForReq = targetGroups?.get(index) ?: targets.subList(
                 startIdx.coerceAtMost(targets.size),
                 endIdx
             )
@@ -130,6 +135,8 @@ class TargetValidator {
                     return "Too many targets for ${requirement.description}"
                 }
             }
+
+            if (targetsForReq.size > targetCount) return "Too many targets for ${requirement.description}"
 
             // Check minimum targets
             if (targetsForReq.size < requirement.effectiveMinCount) {

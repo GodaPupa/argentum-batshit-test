@@ -1080,8 +1080,10 @@ class ModalAndCloneContinuationResumer(
             return castResult
         }
 
-        val capturedState = com.wingedsheep.engine.mechanics.targeting.attachOriginalModalSpellCapture(
+        val modalState = com.wingedsheep.engine.mechanics.targeting.attachOriginalModalSpellCapture(
             castResult.newState, continuation.cardId, continuation.originalModalCapture)
+        val capturedState = com.wingedsheep.engine.mechanics.targeting.attachPublicSpellTargetPlan(
+            modalState, continuation.cardId, continuation.originalTargetSlots)
 
         var allEvents = castResult.events
 

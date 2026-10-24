@@ -594,7 +594,12 @@ class ActivateAbilityHandler(
         } else {
             action.xValue
         }
-        if (controllerTargetReqs.isNotEmpty() && action.targets.isNotEmpty()) {
+        if (action.targetGroups != null) {
+            if (ability.targetRequirements.any { it.chooser != TargetChooser.Controller } || action.repeatCount != 1)
+                return "Grouped targets require a single controller-selected activation"
+            com.wingedsheep.engine.mechanics.targeting.publicTargetLayoutError(action.targetGroups, controllerTargetReqs)?.let { return it }
+        }
+        if (action.targetGroups != null || (controllerTargetReqs.isNotEmpty() && action.targets.isNotEmpty())) {
             val targetError = targetValidator.validateTargets(
                 state,
                 action.targets,
@@ -607,7 +612,8 @@ class ActivateAbilityHandler(
                 // and X-bounded "mana value X or less" reanimation targets (Fabrication Foundry)
                 // need the chosen X to validate — mirror the spell path.
                 xValue = effectiveXValue,
-                targetingSourceType = TargetingSourceType.ABILITY
+                targetingSourceType = TargetingSourceType.ABILITY,
+                targetGroups = action.targetGroups
             )
             if (targetError != null) {
                 return targetError
@@ -652,6 +658,11 @@ class ActivateAbilityHandler(
     }
 
     override fun execute(state: GameState, action: ActivateAbility): ExecutionResult {
+        if (action.targetGroups != null && action.originalTargetSlots == null) {
+            val groups = action.targetGroups
+            val plan = com.wingedsheep.engine.mechanics.targeting.captureTargetSlots(state, groups.size, groups.withIndex().associate { it.index to it.value })
+            return execute(state, action.copy(originalTargetSlots = plan))
+        }
         val window = ManaPaymentWindow.openFor(state, action.playerId)
         return when {
             window != null -> executeInManaPaymentWindow(state, action, window)

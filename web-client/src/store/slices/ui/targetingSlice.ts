@@ -169,13 +169,13 @@ export const createTargetingSlice: SliceCreator<TargetingSlice> = (set, get) => 
 
         // All requirements filled
         const allTargets = [...allSelected.flat()]
-        set({ targetingState: null })
+        set({ targetingState: null, pipelineState: { ...pipelineState, pendingTargetGroups: allSelected.map((group) => [...group]) } })
         get().advancePipeline({ type: 'targeting', selectedTargets: allTargets })
         return
       }
 
       // Single-target flow
-      set({ targetingState: null })
+      set({ targetingState: null, pipelineState: { ...pipelineState, pendingTargetGroups: [[...targetingState.selectedTargets]] } })
       get().advancePipeline({
         type: 'targeting',
         selectedTargets: [...targetingState.selectedTargets],

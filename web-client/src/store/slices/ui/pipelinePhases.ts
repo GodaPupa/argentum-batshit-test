@@ -561,7 +561,7 @@ export function mergeResult(
     }
 
     case 'targeting': {
-      const targets = result.selectedTargets.map((targetId) => {
+      const chosenTarget = (targetId: EntityId) => {
         const isPlayer = gameState.players.some((p) => p.playerId === targetId)
         if (isPlayer) {
           return { type: 'Player' as const, playerId: targetId }
@@ -582,9 +582,10 @@ export function mergeResult(
           }
         }
         return { type: 'Permanent' as const, entityId: targetId }
-      })
+      }
+      const targets = result.selectedTargets.map(chosenTarget)
       if (action.type === 'CastSpell' || action.type === 'ActivateAbility') {
-        return { ...action, targets }
+        return { ...action, targets, ...(result.selectedTargetGroups ? { targetGroups: result.selectedTargetGroups.map((group) => group.map(chosenTarget)) } : {}) }
       }
       return action
     }

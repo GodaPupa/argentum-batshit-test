@@ -104,7 +104,9 @@ export const createPipelineSlice: SliceCreator<PipelineSlice> = (set, get) => ({
     if (interactionEpoch !== get().interactionEpoch) return
 
     // Merge result into accumulated action
-    const mergedAction = mergeResult(accumulatedAction, actionInfo, result, gameState)
+    const groupedResult = result.type === 'targeting' && pipelineState.pendingTargetGroups
+      ? { ...result, selectedTargetGroups: pipelineState.pendingTargetGroups } : result
+    const mergedAction = mergeResult(accumulatedAction, actionInfo, groupedResult, gameState)
 
     // If delve modified the mana cost, update actionInfo for subsequent phases.
     // Also trim the server's full-cost autoTapPreview down to the subset needed for

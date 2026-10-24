@@ -196,7 +196,13 @@ data class CastSpell(
      * synthesized free casts) leave it null. Mirrors how [useWithoutPayingManaCost] was split
      * out as its own flag for the same reason (CR 118.9a — only one alternative cost per cast).
      */
-    val alternativeCostType: AlternativeCostType? = null
+    val alternativeCostType: AlternativeCostType? = null,
+    /** Public intent grouped by original requirement, never object history. Null is legacy input. */
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val targetGroups: List<List<ChosenTarget>>? = null,
+    /** Server-only provenance carried through unpaid continuations. */
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val originalTargetSlots: com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan? = null
 ) : GameAction
 
 /**
@@ -417,7 +423,10 @@ data class ActivateAbility(
     val opponentTargetsChosen: Boolean = false,
     /** Internal validated selection provenance; public action validation rejects this carrier. */
     @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
-    val originalTargetSlots: com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan? = null
+    val originalTargetSlots: com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan? = null,
+    /** Public requirement groups; no caller-provided zone-visit history. */
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val targetGroups: List<List<ChosenTarget>>? = null
 ) : GameAction
 
 // =============================================================================

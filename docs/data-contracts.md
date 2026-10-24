@@ -787,3 +787,13 @@ replay up to the requested frame (so no full `GameState` is stored per frame). T
 A snapshot is exact but **not editable** in the card-search builder; the builder's own name-based
 `?s=` share remains for authoring/editing. The engine `GameState` is (de)serialized with
 `persistenceJson` (`allowStructuredMapKeys` — `zones` is keyed by `ZoneKey`).
+
+
+### Requirement-indexed public target intent
+
+`CastSpell` and `ActivateAbility` optionally carry `targetGroups`, an array of arrays of the existing `ChosenTarget` values. Each outer position denotes one original target requirement, including empty optional groups. Its flattening must exactly equal `targets`; the server validates group cardinality, target legality, and relationships. Omitting the field retains legacy flat-input behavior. Mode and splice ordering stay attached to their existing fields.
+
+The server currently rejects a changed group width before a later nonempty group because protected resolution still uses declared flat positions. Trailing variable widths remain subject to ordinary min/max validation. This transport does not admit general occurrence-aware resolution.
+
+Object generation and zone-visit history are server-only. Clients must not submit `originalTargetSlots`; actor boundaries and action validation reject nonnull values. The server captures history before costs and retains it through its internal continuations. Legacy null fields remain omitted from serialized payloads.
+

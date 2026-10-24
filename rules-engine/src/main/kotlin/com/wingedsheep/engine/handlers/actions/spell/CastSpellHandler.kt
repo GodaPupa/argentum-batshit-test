@@ -216,6 +216,7 @@ class CastSpellHandler(
     )
 
     override fun validate(state: GameState, action: CastSpell): String? {
+        if (action.originalTargetSlots != null) return "Internal target provenance cannot be set by a player"
         if (!state.hasPriority(action.playerId)) {
             return "You don't have priority"
         }
@@ -785,6 +786,13 @@ class CastSpellHandler(
             return paymentError
         }
 
+        // The legacy paid type-choice continuation does not carry execution bindings for
+        // direct public modal/splice input. Keep grouped capture out of that unsupported path.
+        if (action.targetGroups != null && cardDef?.script?.castTimeCreatureTypeChoice != null &&
+            (action.chosenModes.isNotEmpty() || action.splicedCardIds.isNotEmpty())) {
+            return "Grouped modal or spliced type-choice casting requires bound continuation metadata"
+        }
+
         // Validate targets (include auraTarget as a target requirement for aura spells)
         // Use mode-specific targets for modal spells, kickerTargetRequirements when kicked
         if (cardDef != null) {
@@ -832,7 +840,17 @@ class CastSpellHandler(
                 // target list splits into the main slice followed by one slice per spliced card.
                 addAll(SpliceCasts.targetRequirementsFor(state, action.splicedCardIds, cardRegistry))
             }
-            if (targetRequirements.isNotEmpty()) {
+            com.wingedsheep.engine.mechanics.targeting.publicTargetLayoutError(action.targetGroups, targetRequirements)?.let { return it }
+            if (action.targetGroups != null && modalTargetsDeferred) return "Grouped targets require completed mode selection"
+            if (action.targetGroups != null && action.modeTargetsOrdered.isNotEmpty()) {
+                var offset = 0
+                val groupedModes = action.chosenModes.map { index ->
+                    val count = modalEffect?.modes?.getOrNull(index)?.targetRequirements?.size ?: 0
+                    action.targetGroups.drop(offset).take(count).flatten().also { offset += count }
+                }
+                if (groupedModes != action.modeTargetsOrdered) return "Target groups do not match mode bindings"
+            }
+            if (action.targetGroups != null || targetRequirements.isNotEmpty()) {
                 // Reject casting if spell requires targets but none were provided
                 if (action.targets.isEmpty()) {
                     val requiredCount = targetRequirements.sumOf { it.effectiveMinCount }
@@ -862,7 +880,8 @@ class CastSpellHandler(
                     sourceSubtypes = validationDef.typeLine.subtypes.map { it.value }.toSet(),
                     sourceId = action.cardId,
                     xValue = action.xValue,
-                    targetingSourceType = TargetingSourceType.SPELL
+                    targetingSourceType = TargetingSourceType.SPELL,
+                    targetGroups = action.targetGroups
                 )
                 if (targetError != null) {
                     return targetError
@@ -2427,6 +2446,11 @@ class CastSpellHandler(
     internal fun executeWithOriginalCapture(
         state: GameState, action: CastSpell, originalModalCapture: com.wingedsheep.engine.mechanics.targeting.OriginalModalSpellCapture?
     ): ExecutionResult {
+        if (action.targetGroups != null && action.originalTargetSlots == null) {
+            val groups = action.targetGroups
+            val plan = com.wingedsheep.engine.mechanics.targeting.captureTargetSlots(state, groups.size, groups.withIndex().associate { it.index to it.value })
+            return executeWithOriginalCapture(state, action.copy(originalTargetSlots = plan), originalModalCapture)
+        }
         var currentState = state
         val events = mutableListOf<GameEvent>()
 
@@ -4017,6 +4041,8 @@ class CastSpellHandler(
 
         var currentCastState = com.wingedsheep.engine.mechanics.targeting.attachOriginalModalSpellCapture(
             castResult.newState, action.cardId, originalModalCapture)
+        currentCastState = com.wingedsheep.engine.mechanics.targeting.attachPublicSpellTargetPlan(
+            currentCastState, action.cardId, com.wingedsheep.engine.mechanics.targeting.publicSpellTargetPlan(action))
         var allEvents = events + castResult.events
 
         // Freeze a graveyard-cast entry rider onto the stack spell now; StackResolver reads it back
@@ -4584,6 +4610,7 @@ class CastSpellHandler(
             count = 0,
             creatureTypes = sortedTypes,
             originalModalCapture = originalModalCapture,
+            originalTargetSlots = com.wingedsheep.engine.mechanics.targeting.publicSpellTargetPlan(action),
             pendingCostTriggers = if (currentState.stackResolutionPendingPriority) emptyList()
                 else triggerDetector.detectTriggers(currentState, priorEvents),
         )

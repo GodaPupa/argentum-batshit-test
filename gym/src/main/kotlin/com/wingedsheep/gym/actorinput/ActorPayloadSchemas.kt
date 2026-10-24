@@ -1,18 +1,19 @@
 package com.wingedsheep.gym.actorinput
 
 import com.wingedsheep.engine.core.ActivateAbility
+import com.wingedsheep.engine.core.CastSpell
 import kotlin.reflect.full.memberProperties
 
 /** Exact audited payload shapes. No package-wide or unknown-type fallback is permitted. */
 internal object ActorPayloadSchemas {
     private val fields: Map<String, Set<String>> = mapOf(
-        "com.wingedsheep.engine.core.ActivateAbility" to setOf("playerId", "sourceId", "abilityId", "targets", "costPayment", "manaColorChoice", "xValue", "repeatCount", "paymentStrategy", "alternativePayment", "damageDistribution", "opponentTargetsChosen", "originalTargetSlots"),
+        "com.wingedsheep.engine.core.ActivateAbility" to setOf("playerId", "sourceId", "abilityId", "targets", "costPayment", "manaColorChoice", "xValue", "repeatCount", "paymentStrategy", "alternativePayment", "damageDistribution", "opponentTargetsChosen", "originalTargetSlots", "targetGroups"),
         "com.wingedsheep.engine.core.BatchYesNoResponse" to setOf("decisionId", "choice", "applyToAll"),
         "com.wingedsheep.engine.core.BottomCards" to setOf("playerId", "cardIds"),
         "com.wingedsheep.engine.core.BudgetModalResponse" to setOf("decisionId", "selectedModeIndices"),
         "com.wingedsheep.engine.core.CancelDecisionResponse" to setOf("decisionId"),
         "com.wingedsheep.engine.core.CardsSelectedResponse" to setOf("decisionId", "selectedCards"),
-        "com.wingedsheep.engine.core.CastSpell" to setOf("playerId", "cardId", "targets", "xValue", "paymentStrategy", "alternativePayment", "additionalCostPayment", "castFaceDown", "declaredCostSlot", "wasWaterbendPaid", "giftRecipient", "splicedCardIds", "damageDistribution", "castForPrototype", "useAlternativeCost", "chosenModes", "modalSelectionCompleted", "modeTargetsOrdered", "modeDamageDistribution", "graveyardLifeCost", "graveyardCastRider", "conspiredCreatures", "casualtyCreature", "faceIndex", "useWithoutPayingManaCost", "alternativeCostType"),
+        "com.wingedsheep.engine.core.CastSpell" to setOf("playerId", "cardId", "targets", "xValue", "paymentStrategy", "alternativePayment", "additionalCostPayment", "castFaceDown", "declaredCostSlot", "wasWaterbendPaid", "giftRecipient", "splicedCardIds", "damageDistribution", "castForPrototype", "useAlternativeCost", "chosenModes", "modalSelectionCompleted", "modeTargetsOrdered", "modeDamageDistribution", "graveyardLifeCost", "graveyardCastRider", "conspiredCreatures", "casualtyCreature", "faceIndex", "useWithoutPayingManaCost", "alternativeCostType", "targetGroups", "originalTargetSlots"),
         "com.wingedsheep.engine.core.ChooseManaColor" to setOf("playerId", "color"),
         "com.wingedsheep.engine.core.ColorChosenResponse" to setOf("decisionId", "color"),
         "com.wingedsheep.engine.core.CombatResolutionResponse" to setOf("decisionId", "edges", "orderedBlockers", "orderedAttackers"),
@@ -94,6 +95,9 @@ internal object ActorPayloadSchemas {
         // Recognize the nullable field without admitting its internal payload type.
         if (value is ActivateAbility && value.originalTargetSlots != null) {
             fail(BoundaryFailure.UNSUPPORTED_SCHEMA, "Internal activation target history cannot cross actor boundary")
+        }
+        if (value is CastSpell && value.originalTargetSlots != null) {
+            fail(BoundaryFailure.UNSUPPORTED_SCHEMA, "Internal spell target history cannot cross actor boundary")
         }
         if (ActorQuestionSchemas.verifyIfKnown(value)) return
         val type = value::class
