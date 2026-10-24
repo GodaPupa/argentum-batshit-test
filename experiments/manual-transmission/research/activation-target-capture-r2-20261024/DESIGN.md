@@ -1,0 +1,7 @@
+# Bounded actor-schema recovery
+
+Original full R1 failed closed at ActorPayloadSchemas.kt:97 in all14 ordinary failures. Its new ActivateAbility.originalTargetSlots field was absent from the exact shape list, including when null. Preserve every original engine and actor assertion. Add only the exact nullable field and explicit non-null rejection; do not admit TargetSlotPlan, ObjectRef, or unknown payload types. No public UI or gameplay change. Existing hidden hand/library/RNG invariance and current-question checks remain unchanged. Five new cases cover null success, inaccessible source rejection, empty/populated internal history rejection and serialized rejection.
+
+Early37 actor cases precede18 original activation cases and compiled3-failure mutation. Focused800/broad14863 remain unchanged; ordinary now18476 passes plus the same43 skips, with original case counters unchanged after excluding exactly five added gym cases. Assay568/2000/exact51 findings still required. Same locks, concurrency, source binding and protected144/23/82. No official games/seeds or card/multiplayer acceptance.
+
+Also preserve raw git diff output: the old strip helper removed trailing blank context. R1 original bytes remain archived; its exact strip transform and compiled mutant were independently verified. R2 archives an applicable canonical patch. No assertions or old protocols changed. Owner review only; no independent review claimed. Local environment lacks JDK21/just; source-bound locked GitHub compilation and early tests are required before expensive gates.

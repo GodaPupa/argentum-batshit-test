@@ -1,11 +1,12 @@
 package com.wingedsheep.gym.actorinput
 
+import com.wingedsheep.engine.core.ActivateAbility
 import kotlin.reflect.full.memberProperties
 
 /** Exact audited payload shapes. No package-wide or unknown-type fallback is permitted. */
 internal object ActorPayloadSchemas {
     private val fields: Map<String, Set<String>> = mapOf(
-        "com.wingedsheep.engine.core.ActivateAbility" to setOf("playerId", "sourceId", "abilityId", "targets", "costPayment", "manaColorChoice", "xValue", "repeatCount", "paymentStrategy", "alternativePayment", "damageDistribution", "opponentTargetsChosen"),
+        "com.wingedsheep.engine.core.ActivateAbility" to setOf("playerId", "sourceId", "abilityId", "targets", "costPayment", "manaColorChoice", "xValue", "repeatCount", "paymentStrategy", "alternativePayment", "damageDistribution", "opponentTargetsChosen", "originalTargetSlots"),
         "com.wingedsheep.engine.core.BatchYesNoResponse" to setOf("decisionId", "choice", "applyToAll"),
         "com.wingedsheep.engine.core.BottomCards" to setOf("playerId", "cardIds"),
         "com.wingedsheep.engine.core.BudgetModalResponse" to setOf("decisionId", "selectedModeIndices"),
@@ -89,6 +90,11 @@ internal object ActorPayloadSchemas {
     )
 
     fun verify(value: Any) {
+        // This continuation-only history is never an actor choice or observation.
+        // Recognize the nullable field without admitting its internal payload type.
+        if (value is ActivateAbility && value.originalTargetSlots != null) {
+            fail(BoundaryFailure.UNSUPPORTED_SCHEMA, "Internal activation target history cannot cross actor boundary")
+        }
         if (ActorQuestionSchemas.verifyIfKnown(value)) return
         val type = value::class
         val expected = fields[type.qualifiedName]
