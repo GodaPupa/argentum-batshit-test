@@ -29,7 +29,11 @@ internal fun attachPublicSpellTargetPlan(
     plan: TargetSlotPlan?,
 ): com.wingedsheep.engine.state.GameState {
     if (plan == null || spellId !in state.stack) return state
-    val spell = state.getEntity(spellId)?.get<com.wingedsheep.engine.state.components.stack.SpellOnStackComponent>() ?: return state
-    if (plan.instances.flatMap { group -> group.slots.map { it.target } } != (state.getEntity(spellId)?.get<com.wingedsheep.engine.state.components.stack.TargetsComponent>()?.targets ?: emptyList())) return state
+    val container = state.getEntity(spellId) ?: return state
+    val spell = container.get<com.wingedsheep.engine.state.components.stack.SpellOnStackComponent>() ?: return state
+    val capturedTargets: List<ChosenTarget> = plan.instances.flatMap { group -> group.slots.map { slot -> slot.target } }
+    val stackTargets: List<ChosenTarget> =
+        container.get<com.wingedsheep.engine.state.components.stack.TargetsComponent>()?.targets ?: emptyList()
+    if (capturedTargets != stackTargets) return state
     return state.updateEntity(spellId) { it.with(spell.copy(originalTargetSlots = plan)) }
 }
