@@ -1,0 +1,71 @@
+{
+  "status": "ORIGINAL_EVIDENCE_RECEIVED_NO_COMPONENT_ACCEPTANCE",
+  "run": 40066412475,
+  "job": 120790509534,
+  "source": "4c3aba1a17f5a116b94b179940ef7ecd75310cda",
+  "validation": "dbc23376091a99e4043d29cdd2272aa8c583a478",
+  "artifact": {
+    "id": 12549924145,
+    "node_id": "MDg6QXJ0aWZhY3QxMjU0OTkyNDE0NQ==",
+    "name": "manual-modal-spell-capture-r2-40066412475",
+    "size_in_bytes": 9266274,
+    "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12549924145",
+    "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12549924145/zip",
+    "expired": false,
+    "digest": "sha256:b67850c15320618a420d8b65e08de512624d0b7faaa0397f1470e011ec057af4",
+    "created_at": "2026-10-24T06:02:27Z",
+    "updated_at": "2026-10-24T06:02:27Z",
+    "expires_at": "2027-01-22T05:28:55Z",
+    "workflow_run": {
+      "id": 40066412475,
+      "repository_id": 1361473449,
+      "head_repository_id": 1361473449,
+      "head_branch": "validation/manual-modal-spell-capture-r2-20261024",
+      "head_sha": "dbc23376091a99e4043d29cdd2272aa8c583a478"
+    }
+  },
+  "manifest_entries": 9041,
+  "workflow_conclusion": "failure",
+  "disposition": {
+    "compilation_controls": {
+      "normal": true,
+      "mutant": true
+    },
+    "original_reports_present": {
+      "mutation": true,
+      "targeted": true,
+      "focused": true,
+      "broad": true,
+      "ordinary": true
+    },
+    "assay_receipt_present": false,
+    "scope": "BOUNDED_ORIGINAL_MODAL_SPELL_PROVENANCE_NOT_RESOLVER_OR_SPELLSKITE",
+    "component_adopted": false,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2
+  },
+  "stage_raw_counts": {
+    "targeted": {
+      "passed": 23
+    },
+    "mutation": {
+      "failure": 2
+    },
+    "focused": {
+      "passed": 782
+    },
+    "broad": {
+      "passed": 14845
+    },
+    "ordinary": {
+      "skipped": 43,
+      "passed": 18453
+    }
+  },
+  "cause": "Receiver gate.py:161 requires23448 despite protocol18453; preparation prefix replacement ==18 to ==23 corrupted18448 into23448, making subsequent exact18448 replacement ineffective. Ordinary Gradle exit0 BUILD SUCCESSFUL with18453 passes/43skips,zero failures/errors. Assay not executed. No component acceptance.",
+  "original_archive_sha256": "b67850c15320618a420d8b65e08de512624d0b7faaa0397f1470e011ec057af4",
+  "job_failure_excerpt": "2026-10-24T06:02:18.4174019Z BUILD SUCCESSFUL in 14m 44s\n2026-10-24T06:02:20.1706623Z Traceback (most recent call last):\n2026-10-24T06:02:20.1707644Z   File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/modal-spell-capture-r2-20261024/gate.py\", line 232, in <module>\n2026-10-24T06:02:20.1708789Z     elif mode=='receive':receive(sys.argv[2])\n2026-10-24T06:02:20.1709135Z                          ^^^^^^^^^^^^^^^^^^^^\n2026-10-24T06:02:20.1710053Z   File \"/home/runner/work/argentum-batshit-test/argentum-batshit-test/experiments/manual-transmission/research/modal-spell-capture-r2-20261024/gate.py\", line 161, in receive\n2026-10-24T06:02:20.1711095Z     assert totals['passed']==23448 and totals['skipped']==43\n2026-10-24T06:02:20.1711425Z            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n2026-10-24T06:02:20.1711651Z AssertionError\n2026-10-24T06:02:20.1913021Z ##[error]Process completed with exit code 1.\n2026-10-24T06:02:20.1954225Z ##[group]Run python3 \"$RECORD/gate.py\" bind\n2026-10-24T06:02:20.1954519Z \u001b[36;1mpython3 \"$RECORD/gate.py\" bind\u001b[0m\n",
+  "minimal_repair": "New R3 record-only source; exact literal18453, unchanged production/tests/controls; all gates retained.",
+  "original_zip_preservation": "Original GitHub artifact12549924145 remains unmodified, local byte-exact copy retained; digest/size/CRC and9041 manifest entries verified."
+}
