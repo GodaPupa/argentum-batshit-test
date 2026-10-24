@@ -1,0 +1,44 @@
+{
+  "status": "SOURCE_BOUND_NEXT_DEPENDENCY_REVIEW_NO_IMPLEMENTATION",
+  "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
+  "source_files": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ModalTriggerContinuations.kt",
+      "blob": "1cab3fc0694cdaa9875c7195348ee8b90f8edc13",
+      "sha256": "799db6eb8d559378aa5cbee236675de7b693b5beb39e6475befbb03d4bc68386"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalTriggerContinuationResumer.kt",
+      "blob": "2c3b6212f6a76a051914655120b6b709e9a8f702",
+      "sha256": "36d52941ab8dd83552a590033fbc46ca4413d98e07f9f413756691de9ec36490"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerProcessor.kt",
+      "blob": "a4dc4501b0ba519d8440e3bf62545457ca6a30c9",
+      "sha256": "b2e08bb8ad114e3445a63bb1f72d7031594a4356acbfa7118204a104b7980d3b"
+    }
+  ],
+  "findings": [
+    "ModalTriggerContinuationResumer lines110-123 flattens sorted requirement selections before appending the mode target list. Capture each original requirement group before flattening.",
+    "TriggerModalTargetSelectionContinuation carries chosenModeIndices plus currentOrdinal. Repeated mode indices must retain separate choice ordinals, not an index-keyed map.",
+    "TriggerProcessor lines895-921 has zero-requirement and auto-selected-player branches; both need corresponding provenance entries, not only the prompted response path.",
+    "TriggerProcessor lines1004-1015 copies the original ability then flattens modal target lists; preserve outer originalTargetSlots separately from ordered per-mode capture. Existing modeTargetsOrdered and all emitted events remain unchanged."
+  ],
+  "next_implementation": "Add optional original per-mode target-slot provenance indexed by choice ordinal, carrying it in modal target continuations and final triggered component. Reuse captureTargetSlots at validated response and auto-selection boundaries. Never reconstruct groups from resolvedModeTargets. Keep legacy null metadata omitted. No protected StackResolver modification.",
+  "required_witnesses": [
+    "omitted optional requirement before a later selected group",
+    "repeated mode index selected twice with different visits",
+    "serialization between two target choices preserves first capture",
+    "targetless mode retains ordinal",
+    "auto-selected player gets correct group and no object reference",
+    "outer target provenance remains separate",
+    "legacy paused frames remain untracked",
+    "original flat targets and events unchanged"
+  ],
+  "remaining_scope": [
+    "No actual implementation or qualification for modal capture yet.",
+    "Spell/splice/activated capture and current occurrence legality/resolution remain separate gates.",
+    "No new SDK shape or player-facing decision is proposed; this is internal provenance."
+  ],
+  "external_independent_review": false
+}
