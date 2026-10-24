@@ -2,6 +2,7 @@ package com.wingedsheep.engine.scenarios
 
 import com.wingedsheep.engine.core.*
 import com.wingedsheep.engine.handlers.TargetingSourceType
+import com.wingedsheep.engine.handlers.actions.spell.CastSpellHandler
 import com.wingedsheep.engine.mechanics.targeting.*
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.stack.*
@@ -20,6 +21,7 @@ import kotlinx.serialization.json.Json
 class PublicTargetGroupsTest : ScenarioTestBase() {
     init {
         val json = Json { serializersModule = engineSerializersModule; allowStructuredMapKeys = true; encodeDefaults = true }
+        val spellHandler = CastSpellHandler.create(EngineServices(cardRegistry))
         data class Fixture(val state: GameState, val player: EntityId, val target: EntityId, val activation: ActivateAbility, val spell: CastSpell)
         fun fixture(withCost: Boolean = false, typeChoice: Boolean = false): Fixture {
             val abilityCard = card("Public group ability fixture") {
@@ -129,7 +131,13 @@ class PublicTargetGroupsTest : ScenarioTestBase() {
             r.state.getEntity(r.state.stack.last())?.get<ActivatedAbilityOnStackComponent>()?.originalTargetSlots shouldBe null
         }
         test("PG15 public spell keeps original visits through unpaid cost roundtrip") {
-            val f = fixture(withCost = true); val paused = actionProcessor.process(f.state, f.spell).result
+            val f = fixture(withCost = true)
+            // A public client cast cannot omit a mandatory additional-cost payment. The unpaid
+            // continuation is entered only by an already-authorized internal cast/resumer.
+            val rejected = actionProcessor.process(f.state, f.spell).result
+            rejected.error shouldBe "You must sacrifice 1 creature to cast this spell"
+            rejected.state shouldBe f.state
+            val paused = spellHandler.execute(f.state, f.spell)
             paused.error shouldBe null; (paused.state.pendingDecision is SelectCardsDecision) shouldBe true
             val loaded = json.decodeFromString(GameState.serializer(), json.encodeToString(GameState.serializer(), paused.state))
             val r = actionProcessor.process(loaded, SubmitDecision(f.player,
@@ -139,7 +147,7 @@ class PublicTargetGroupsTest : ScenarioTestBase() {
             plan.slot(TargetSlotAddress(0, 0)).objectRef shouldBe f.state.objectRef(f.target)
         }
         test("PG16 cancelling unpaid spell clears public and internal capture without payment") {
-            val f = fixture(withCost = true); val paused = actionProcessor.process(f.state, f.spell).result
+            val f = fixture(withCost = true); val paused = spellHandler.execute(f.state, f.spell)
             paused.error shouldBe null
             val r = actionProcessor.process(paused.state, SubmitDecision(f.player,
                 CancelDecisionResponse(requireNotNull(paused.state.pendingDecision).id))).result
