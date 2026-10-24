@@ -1,0 +1,84 @@
+{
+  "schema": "manual-public-target-groups-failed-r2-receipt-v1",
+  "disposition": "FAILED_NORMAL_TARGETED_TWO_ASSERTIONS_NOT_ACCEPTED",
+  "run": 40100021939,
+  "job": 120890075145,
+  "attempt": 1,
+  "run_number": 1,
+  "event": "push",
+  "source": "c0c0b1e60c622b3224e336f6b37a55c0c5312e85",
+  "source_tree": "ff5dec78012480d9b21d447e72a71a8285401a3b",
+  "validation": "85a6951037adec534948301bc7dea894104045c8",
+  "validation_tree": "7f8625164d3df1a7b70a8095ce0eef98b0192433",
+  "workflow": ".github/workflows/manual-public-target-groups-r2-20261024.yml",
+  "workflow_blob": "81e1530f2ec42272783dec90595e4814491c1eac",
+  "artifact": 12562761656,
+  "artifact_name": "manual-public-target-groups-r2-40100021939",
+  "artifact_bytes": 164798,
+  "artifact_sha256": "0d7c7963a0bed0f54e89dac6247ec7f957505e89d4ddfd8ea1dd6fa5d03ae366",
+  "zip_members": 38,
+  "manifest_entries": 37,
+  "zip_crc_verified": true,
+  "manifest_hashes_verified": true,
+  "path_safety_verified": true,
+  "source_bindings_verified": true,
+  "final_tracked_changes_empty": true,
+  "observed": {
+    "client": {
+      "passed": 34,
+      "failed": 0,
+      "typecheck": true
+    },
+    "normal_compilation": {
+      "exit": 0,
+      "passed": true,
+      "behavioral_evidence": false
+    },
+    "actor": {
+      "passed": 39,
+      "failed": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "targeted": {
+      "rows": 20,
+      "passed": 18,
+      "failures": 2,
+      "errors": 0,
+      "skipped": 0,
+      "exit": 1
+    },
+    "mutation_compilation": "NOT_EXECUTED",
+    "behavioral_mutation": "NOT_EXECUTED",
+    "focused": "NOT_EXECUTED",
+    "broad": "NOT_EXECUTED",
+    "ordinary": "NOT_EXECUTED",
+    "assay": "NOT_EXECUTED"
+  },
+  "failures": [
+    {
+      "identity": "com.wingedsheep.engine.scenarios.PublicTargetGroupsTest::PG15 public spell keeps original visits through unpaid cost roundtrip",
+      "type": "org.opentest4j.AssertionFailedError",
+      "frame": "PublicTargetGroupsTest.kt:133",
+      "message": "Expected null but actual was \"You must sacrifice 1 creature to cast this spell\""
+    },
+    {
+      "identity": "com.wingedsheep.engine.scenarios.PublicTargetGroupsTest::PG16 cancelling unpaid spell clears public and internal capture without payment",
+      "type": "org.opentest4j.AssertionFailedError",
+      "frame": "PublicTargetGroupsTest.kt:143",
+      "message": "Expected null but actual was \"You must sacrifice 1 creature to cast this spell\""
+    }
+  ],
+  "diagnosis_state": "IN_PROGRESS",
+  "preliminary_cause": "Both tests submit a normal client CastSpell with a mandatory additional cost but no additionalCostPayment through ActionProcessor. CastSpellHandler.validate correctly rejects that public action before execute can surface the server-internal unpaid-cost continuation. The production continuation is intended for execute-direct server casts and modal target resumption, as documented and already qualified; source-bound recovery must verify this by changing only the fixture entry path while preserving assertions.",
+  "evidence_limit": "Normal targeted behavioral failure. It is not mutation-control evidence and does not accept the component.",
+  "protected": {
+    "bindings": 144,
+    "goldens": 23,
+    "legacy_fixture_files": 82,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2
+  },
+  "created_utc": "2026-10-24T14:46:28.256268Z"
+}
