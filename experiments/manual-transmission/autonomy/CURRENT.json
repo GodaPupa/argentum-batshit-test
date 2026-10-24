@@ -1,19 +1,17 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T04:56:10.891Z",
+  "updated_date": "2026-10-24T05:21:23.906Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
+  "status": "RECEIVING_FAILED_SPELL_QUALIFICATION",
+  "owner": "manual-work-foreground-recover-spell-2026-10-24T05-21-23-906Z",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
-    "claimed_utc": "2026-10-24T04:40:47.441Z",
-    "expires_utc": "2026-10-24T04:56:10.891Z",
-    "predecessor_blob": "5c73f3951e8c720a74486627266feaaa3bb53dfb",
-    "purpose": "Prepare original full spell qualification receiver and isolated next-dependency review during build",
-    "released_utc": "2026-10-24T04:56:10.891Z",
-    "last_owner": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d"
+    "state": "ACTIVE_FOREGROUND",
+    "owner": "manual-work-foreground-recover-spell-2026-10-24T05-21-23-906Z",
+    "claimed_utc": "2026-10-24T05:21:23.906Z",
+    "expires_utc": "2026-10-24T06:11:23.906Z",
+    "predecessor_blob": "8840b3a12326d1054614e9935f7c4c825d9f0d4d",
+    "purpose": "Receive original40063808901 and diagnose SC10/SC13 before bounded successor"
   },
   "last_qualified": {
     "source": "103ac16642d60c0d02bd12004d37f2f87cf7f324",
@@ -842,10 +840,10 @@
   "execution_channel": {
     "primary": "Work execution conversation",
     "session": "390bd1587480",
-    "work_owner": null,
+    "work_owner": "manual-work-foreground-recover-spell-2026-10-24T05-21-23-906Z",
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "No Work execution lease held. Single GitHub qualification40063808901 remains active; independent receiver and next-dependency review saved. No continuous worker claimed.",
+    "activity": "Foreground Work recovery active; predecessor explicitly released, scheduled prior run completed; no relevant active qualification.",
     "last_execution_owner": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d"
   },
   "blockers": [],
@@ -1073,11 +1071,5 @@
       "received_utc": "2026-10-24T03:50:36.842Z"
     }
   },
-  "stop_reason": {
-    "kind": "EXTERNAL_DEPENDENCY_ONLY",
-    "recorded_utc": "2026-10-24T04:56:10.891Z",
-    "detail": "Frozen full spell source awaits original18-case/mutant/positive qualification results; normal compile step is green but not yet received. Completed immutable original receiving auditor, incomplete-stage inspector and exact-source next-boundary review during build. Next implementation/adoption depends on those results; no remaining independent receiving preparation needed. No repeated polling, duplicate qualification or presumed acceptance.",
-    "worker_active_after_release": false,
-    "external_workflow": 40063808901
-  }
+  "stop_reason": null
 }
