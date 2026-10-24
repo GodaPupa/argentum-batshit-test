@@ -1,0 +1,48 @@
+{
+  "source": "035e0ec3da8729c43018ffcc839aa821517dcda3",
+  "status": "SOURCE_BOUND_IMPLEMENTATION_CONTRACT_NOT_IMPLEMENTED",
+  "files": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ActivateAbilityXCostContinuationResumer.kt",
+      "blob": "3d14ab2c6fe60f12a30540d1c73a26e86ab424c6"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt",
+      "blob": "f7e36eb2416756fd4fbe3c22bb76c3c0c71d7ac0"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "blob": "64c0466abe72bc495c7e5d364fdbf73d75db777b"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+      "blob": "524d7917056d09558ddde1426f1e6f3a81d00810"
+    }
+  ],
+  "prior_review": "c8d51e663eb126014c06013c954a038982eb29fe",
+  "concrete_blocker": "Validated controller requirement groups are flattened in resumeControllerTargets before handler re-entry. Current stack capture happens after costs and uses flattened lists, losing original omitted groups and visits.",
+  "candidate_seam": "Unprotected ActivateAbilityHandler receives putActivatedAbility result before events/checkForMore. AbilityActivatedEvent supplies exact abilityEntityId, avoiding stack-position inference. A trusted internal original-plan carrier must survive subsequent unpaid-cost pauses and attach provenance to that exact entity before downstream events resume.",
+  "constraints": [
+    "Public ActivateAbility validation must reject client-forged original plans, following existing opponentTargetsChosen trust boundary; internal re-entry alone may supply captured plan.",
+    "Capture against validated response and complete controller requirements before flattening/cost payment; no recapture after costs.",
+    "Do not claim full history when opponent requirements exist: current controller subset indices are not full ability indices. Retain fixed-count opponent guard and explicitly restrict or truthfully map the captured scope.",
+    "Action replay/serialization must carry plan across every subsequent pause; source/controller/ability identity must remain bound.",
+    "Protect StackResolver; post-placement metadata is original provenance only, not per-occurrence resolver adoption.",
+    "Do not attach a plan to repeated/mana activations without explicit validated mapping; targeted repeatCount currently rejected by public validation."
+  ],
+  "required_tests": [
+    "empty optional group before required group",
+    "two occurrences same entity with independently captured visits",
+    "actual target selected then leaves through cost retains old original visit",
+    "paused cost replay and serialized replay preserve plan",
+    "cancellation and payment failure attach no stack plan",
+    "direct flat legacy submission stays untracked",
+    "forged public carrier rejected without state change",
+    "mixed opponent chooser does not invent full controller history",
+    "exact abilityEntityId attachment with pre-existing stack entries"
+  ],
+  "next_action": "Implement bounded trusted controller-target carrier and exact event-addressed attachment, add integration witnesses and guards, then normal/mutant locked compilation and targeted feedback before coherent full qualification. No source change or new result claimed by this contract.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
