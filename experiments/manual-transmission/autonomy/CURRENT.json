@@ -1,18 +1,21 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T11:44:27.168Z",
+  "updated_date": "2026-10-24T11:46:08.787Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "EXECUTING",
-  "owner": "manual-work-foreground-390bd1587480-activation-observation-2026-10-24T11:38:11.519Z",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-foreground-390bd1587480-activation-observation-2026-10-24T11:38:11.519Z",
+    "state": "RELEASED",
+    "owner": null,
     "claimed_utc": "2026-10-24T11:38:11.519Z",
-    "expires_utc": "2026-10-24T12:33:11.519Z",
+    "expires_utc": "2026-10-24T11:46:08.787Z",
     "predecessor_blob": "2798c45b1da4678085dfa6f4f1741f74b72b4949",
     "purpose": "Receive original activation qualification failure and minimally repair actor observation boundary",
-    "observed_predecessor": "Explicit release d8282893; Work run eb0deeae completed; no relevant active workflows or newer successor, former Discussion paused."
+    "observed_predecessor": "Explicit release d8282893; Work run eb0deeae completed; no relevant active workflows or newer successor, former Discussion paused.",
+    "previous_owner": "manual-work-foreground-390bd1587480-activation-observation-2026-10-24T11:38:11.519Z",
+    "released_utc": "2026-10-24T11:46:08.787Z",
+    "release_reason": "One source-bound recovery workflow active. Original failure preserved, minimal recovery frozen, receiving auditor prepared; remaining work awaits runtime evidence."
   },
   "last_qualified": {
     "source": "035e0ec3da8729c43018ffcc839aa821517dcda3",
@@ -36,16 +39,18 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Full activation qualification40084539580 has reached ordinary build after targeted/control/focused/broad workflow gates; component acceptance awaits terminal original evidence.",
-    "source_candidate": "07a99a5151dc2438a100e1d3ebb26118ebd6d3f9",
-    "source_tree": "56a235a456d88fc199761a8925d559efb8bc388d",
-    "source_branch": "candidate/manual-activation-target-capture-r1-20261024",
-    "protocol": "experiments/manual-transmission/research/activation-target-capture-r1-20261024/PROTOCOL.json",
+    "current_subproblem": "Bounded actor-schema compatibility recovery under full qualification; internal history remains excluded from actor payload.",
+    "source_candidate": "95b0ab3b44605e9f13d67750a2aa0c028ab24616",
+    "source_tree": "a5e6e603939510eadd49909fd0e6e3d5bc897249",
+    "source_branch": "candidate/manual-activation-target-capture-r2-20261024",
+    "protocol": "experiments/manual-transmission/research/activation-target-capture-r2-20261024/PROTOCOL.json",
     "design": "experiments/manual-transmission/research/activation-target-capture-r1-20261024/DESIGN.md",
-    "validation": "77310dfc6ba19133a0c280ec0e37772450428872",
-    "validation_branch": "validation/manual-activation-target-capture-r1-20261024",
-    "workflow": ".github/workflows/manual-activation-target-capture-r1-20261024.yml",
-    "pending_runs": [],
+    "validation": "e969c85e25dada30787bf20246d96fd96d8534f2",
+    "validation_branch": "validation/manual-activation-target-capture-r2-20261024",
+    "workflow": ".github/workflows/manual-activation-target-capture-r2-20261024.yml",
+    "pending_runs": [
+      40091111694
+    ],
     "planned_not_observed": {
       "targeted": 18,
       "mutation_cases": 8,
@@ -65,7 +70,7 @@
     },
     "negative_scope": "R1 combined control wrong failure types preserved as failed. R2 original compiled visit-only control verified exact3 assertions. Full new-source qualification must independently repeat exact8-case/3assertion control after normal18 passes.",
     "source_delta": "14 cumulative paths versus accepted modal-spell035e0ec3:4unchanged production edits, original8-case test,2new5-case test files,4preservedpreflight records,3fullqualification records.",
-    "next_executable_action": "Launch exactly one frozen activation recovery R2 qualification after final activity reconciliation; then receive its original evidence with all unchanged gates.",
+    "next_executable_action": "Reconcile ownership/recent checkpoints and all workflow statuses. Receive original run40091111694/job120863798420/attempt1 source95b0ab3b44605e9f13d67750a2aa0c028ab24616/treea5e6e603939510eadd49909fd0e6e3d5bc897249 validatione969c85e25dada30787bf20246d96fd96d8534f2. If active do not duplicate. When terminal pin original artifact ID/bytes/hash; execute prepared receiver8a81cece7fc2d3145cdfebbd6d02df2eb936c92f with original metadata/rawreports and exact sources. Require37actor/18targeted/exact3-of8 compiled mutation55/60/95/800focused/14863broad/18476ordinary+43same skips, source/protected144/23/82,restoration,rawcanonicalmutation,Assay568/2000/exact51. Preserve/diagnose failure; no unchanged rerun. Only after original acceptance follow public target-group reviewf6a81def. No games/seeds.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -182,7 +187,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "0b2e96d5516d2efcb81ba9911e524039a9cc2788",
+    "validation_tree": "e8d25a306b1e931fcaa96e77f8ee1465f64bb7fb",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -1274,7 +1279,7 @@
       "readback_verified": true
     },
     "activation_full_qualification": {
-      "state": "WAITING_EXTERNAL",
+      "state": "FAILED_ORDINARY_14_ACTOR_SCHEMA_ERRORS_PRESERVED",
       "source": "07a99a5151dc2438a100e1d3ebb26118ebd6d3f9",
       "tree": "56a235a456d88fc199761a8925d559efb8bc388d",
       "base": "035e0ec3da8729c43018ffcc839aa821517dcda3",
@@ -1316,8 +1321,8 @@
       "attempt": 1,
       "run_number": 1,
       "event": "push",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "failure",
       "expected_artifact_name": "manual-activation-target-capture-r1-40084539580",
       "dispatched_utc": "2026-10-24T10:05:37.331Z",
       "job_status": "in_progress",
@@ -1462,7 +1467,8 @@
         "state": "PREPARED_NOT_EXECUTED",
         "immutable_readback_verified": true
       },
-      "runtime_results": "Workflow metadata reports successful normal compilation,18-case targeted gate, mutant compilation,exact3-assertion control among8cases,restoration/rebinding,800-case focused gate and broad regressions. Ordinary whole-project build running; Assay and terminal original artifact audit pending. Counts/identities remain unaccepted until original audit."
+      "runtime_results": "Workflow metadata reports successful normal compilation,18-case targeted gate, mutant compilation,exact3-assertion control among8cases,restoration/rebinding,800-case focused gate and broad regressions. Ordinary whole-project build running; Assay and terminal original artifact audit pending. Counts/identities remain unaccepted until original audit.",
+      "receipt": "8968660d84703d3794a54c24d9f4494231c14e5e"
     },
     "public_group_boundary_review": {
       "commit": "f6a81def8005d0b3c403d172dd73427e301dd031",
@@ -1496,7 +1502,7 @@
       "source": "95b0ab3b44605e9f13d67750a2aa0c028ab24616",
       "tree": "a5e6e603939510eadd49909fd0e6e3d5bc897249",
       "source_branch": "candidate/manual-activation-target-capture-r2-20261024",
-      "status": "FROZEN_REVIEWED_PENDING_SINGLE_DISPATCH",
+      "status": "WAITING_EXTERNAL",
       "scope": "One actor schema file plus five new boundary tests and three new records; all original engine/actor tests preserved.",
       "expected": {
         "actor": 37,
@@ -1508,7 +1514,28 @@
         "ordinary_passes": 18476,
         "skips": 43
       },
-      "static_review": "Exact immutable source readback verified; actor receiver exact37 accepted and missing/failure/zero/nonzero exits rejected in synthetic-only checks. Runtime normal/mutant/early actor compilation is required in source-bound locked workflow."
+      "static_review": "Exact immutable source readback verified; actor receiver exact37 accepted and missing/failure/zero/nonzero exits rejected in synthetic-only checks. Runtime normal/mutant/early actor compilation is required in source-bound locked workflow.",
+      "validation": "e969c85e25dada30787bf20246d96fd96d8534f2",
+      "validation_tree": "e8d25a306b1e931fcaa96e77f8ee1465f64bb7fb",
+      "workflow": ".github/workflows/manual-activation-target-capture-r2-20261024.yml",
+      "workflow_blob": "66ba9da02d0ba99cb790801bb471506553accc63",
+      "validation_branch": "validation/manual-activation-target-capture-r2-20261024",
+      "run": 40091111694,
+      "job": 120863798420,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "artifact": null,
+      "observed_utc": "2026-10-24T11:46:08.787Z",
+      "observed_stage": "Install locked recipe runner; compilation and runtime gates pending",
+      "receiver": {
+        "commit": "8a81cece7fc2d3145cdfebbd6d02df2eb936c92f",
+        "blob": "de62a0b6e24015a3b787607aeb3af15567d75978",
+        "path": "experiments/manual-transmission/research/activation-target-capture-receiver-r2-20261024/RECEIVE_ACTIVATION_RECOVERY.py",
+        "prepared": "experiments/manual-transmission/research/activation-target-capture-receiver-r2-20261024/PREPARED.md",
+        "immutable_readback_verified": true
+      },
+      "runtime_acceptance": "PENDING_NO_NEW_KOTLIN_RESULT_CLAIMED"
     }
   },
   "completion_contract": {
@@ -1566,7 +1593,7 @@
       "expectations_updated_utc": "2026-10-24T05:46:27.368Z",
       "expectations": "Follow live ledger: Work released WAITING_EXTERNAL for single R2 recovery40066412475, source4c3aba1a17f5a116b94b179940ef7ecd75310cda. Prior failed40063808901 already preserved/diagnosed; accepted modal-trigger intact. No intervention on healthy gates/waiting. Watch remains paused and strictly read-only."
     },
-    "handoff": "Work released WAITING_EXTERNAL with exact activation preflight receiving action. Single existing Work executor enabled; former Discussion paused; intervention watch strictly read-only.",
+    "handoff": "Work released WAITING_EXTERNAL for single actor-boundary recovery40091111694. Work executor enabled; former Discussion paused; intervention watch read-only.",
     "execution_admitted": true,
     "former_discussion_executor": {
       "id": "6adbad91b90881918859ad0cba22b881",
@@ -1642,8 +1669,8 @@
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_ADMITTED_SHARED_CAS_SINGLE_OWNER",
-    "last_verified_enabled_utc": "2026-10-24T10:44:17.644Z",
-    "next_authorized_action": "Reconcile live CURRENT.json, owners, recent checkpoints and all workflow statuses. If run40084539580 is active, do not duplicate/cancel; keep receiving action and release. When terminal, receive its original artifact for source07a99a5151dc2438a100e1d3ebb26118ebd6d3f9/tree56a235a456d88fc199761a8925d559efb8bc388d/validation77310dfc6ba19133a0c280ec0e37772450428872/job120844646651/attempt1 using receiver2c43d192aedf260b98b8830d7f86b11481a987ba/RECEIVE_ACTIVATION.py and PREPARED.md. Pin artifact ID/bytes/hash. Require18targeted,8mutant exact3 AssertionFailedError frames55/60/95 and5passes, normal/mutant compilation, restoredclean,800focused,14863broad,18471ordinary+43unchangedskips,Assay568/2000/51, original report identities/multiplicities and protected144/23/82. Preserve/diagnose failures, no unchanged rerun. After bounded acceptance continue public requirement-group transport/capture review f6a81def8005d0b3c403d172dd73427e301dd031; no reconstruction from flattened targets, no protected StackResolver edits, no games/seeds.",
+    "last_verified_enabled_utc": "2026-10-24T11:46:08.787Z",
+    "next_authorized_action": "Reconcile ownership/recent checkpoints and all workflow statuses. Receive original run40091111694/job120863798420/attempt1 source95b0ab3b44605e9f13d67750a2aa0c028ab24616/treea5e6e603939510eadd49909fd0e6e3d5bc897249 validatione969c85e25dada30787bf20246d96fd96d8534f2. If active do not duplicate. When terminal pin original artifact ID/bytes/hash; execute prepared receiver8a81cece7fc2d3145cdfebbd6d02df2eb936c92f with original metadata/rawreports and exact sources. Require37actor/18targeted/exact3-of8 compiled mutation55/60/95/800focused/14863broad/18476ordinary+43same skips, source/protected144/23/82,restoration,rawcanonicalmutation,Assay568/2000/exact51. Preserve/diagnose failure; no unchanged rerun. Only after original acceptance follow public target-group reviewf6a81def. No games/seeds.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -1683,7 +1710,7 @@
     "work_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "No iteration lease held after release. Single activation early-feedback workflow40079283905 active. Existing Work schedule enabled; no continuous worker claimed.",
+    "activity": "No worker lease after release; one GitHub qualification40091111694 active.",
     "last_execution_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-495f939f-a3c8-8333-9aec-64b0054babfb"
   },
   "blockers": [],
@@ -2100,5 +2127,11 @@
       "runtime_results": "Unchanged immutable auditor86ac2ffd passed original9053manifest, exact23targeted/2behavioral69_81/782focused/14845broad/18453ordinary+43same skips, normal/mutant compilation,restore,rebind,Assay568/2000/exact51findings,rawidentities/multiplicities and protected144/23/82."
     }
   },
-  "stop_reason": null
+  "stop_reason": {
+    "kind": "EXTERNAL_DEPENDENCY_ONLY",
+    "recorded_utc": "2026-10-24T11:46:08.787Z",
+    "external_workflow": 40091111694,
+    "worker_active_after_release": false,
+    "detail": "Original9050-entry failure audit and durable original ZIP/receipt completed. Minimal actor schema repair and5tests frozen, static receiver checks passed; one full locked successor launched. Receiving auditor and previously saved next dependency review prepared. Normal/mutant compilation and all new-source acceptance await external workflow; no independent source work remains justified before receipt."
+  }
 }
