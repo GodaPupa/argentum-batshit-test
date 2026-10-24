@@ -312,7 +312,11 @@ class ActivateAbilityXCostContinuationResumer(
         if (chosen.size < expectedMin) {
             return ExecutionResult.error(state, "Not enough targets chosen")
         }
-        val replay = continuation.action.copy(targets = chosen)
+        val plan = com.wingedsheep.engine.mechanics.targeting.captureTargetSlots(
+            state, continuation.requirements.size, response.selectedTargets.mapValues { (_, ids) ->
+                ids.map { entityIdToChosenTarget(state, it) }
+            })
+        val replay = continuation.action.copy(targets = chosen, originalTargetSlots = plan)
         return reenter(handler.execute(state, replay), checkForMore)
     }
 

@@ -414,7 +414,10 @@ data class ActivateAbility(
      * directly); ActivateAbilityHandler.validate() rejects any client-submitted action that carries
      * it, so it can't be used to skip the opponent-target pause.
      */
-    val opponentTargetsChosen: Boolean = false
+    val opponentTargetsChosen: Boolean = false,
+    /** Internal validated selection provenance; public action validation rejects this carrier. */
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val originalTargetSlots: com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan? = null
 ) : GameAction
 
 // =============================================================================

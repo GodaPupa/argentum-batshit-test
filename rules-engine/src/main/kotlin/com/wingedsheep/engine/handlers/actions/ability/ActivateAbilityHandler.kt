@@ -70,6 +70,7 @@ import com.wingedsheep.sdk.scripting.AbilityIdentity
 import com.wingedsheep.sdk.scripting.ActivatedAbility
 import com.wingedsheep.sdk.scripting.ActivationRestriction
 import com.wingedsheep.sdk.scripting.ExtraLoyaltyActivation
+import com.wingedsheep.engine.mechanics.targeting.withUnambiguousDivision
 import com.wingedsheep.sdk.scripting.targets.TargetChooser
 import com.wingedsheep.sdk.scripting.TimingRule
 import com.wingedsheep.sdk.scripting.effects.LevelUpClassEffect
@@ -205,6 +206,9 @@ class ActivateAbilityHandler(
     }
 
     override fun validate(state: GameState, action: ActivateAbility): String? {
+        if (action.originalTargetSlots != null) {
+            return "Internal target provenance cannot be set by a player"
+        }
         // `opponentTargetsChosen` is an internal resume marker for "… of an opponent's choice"
         // targets (Cuombajj Witches). Only the engine's resumer sets it, and the resumer re-enters
         // via execute() directly — never through validate() — so any action carrying it here came
@@ -1941,7 +1945,19 @@ class ActivateAbilityHandler(
         }
 
         // Non-mana abilities go on the stack
+        // Only a complete controller-selected history is represented. Opponent-selected and
+        // direct flat inputs remain explicitly untracked; never infer missing requirement groups.
+        val originalTargetSlots = action.originalTargetSlots?.takeIf { plan ->
+            action.repeatCount == 1 && ability.targetRequirements.all { it.chooser == TargetChooser.Controller } &&
+                plan.instances.size == ability.targetRequirements.size &&
+                plan.instances.flatMap { group -> group.slots.map { it.target } } == action.targets
+        }?.let { plan ->
+            action.damageDistribution?.let { division ->
+                plan.withUnambiguousDivision(division)
+            } ?: plan.takeIf { action.damageDistribution == null }
+        }
         val abilityOnStack = ActivatedAbilityOnStackComponent(
+            originalTargetSlots = originalTargetSlots,
             sourceId = action.sourceId,
             sourceName = sourceName,
             controllerId = action.playerId,

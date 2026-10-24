@@ -442,7 +442,10 @@ data class ActivatedAbilityOnStackComponent(
      * Mirrors [SpellOnStackComponent.damageDistribution]. Null for every other ability, and for a
      * divided-damage ability whose controller left the division to resolution time.
      */
-    val damageDistribution: Map<EntityId, Int>? = null
+    val damageDistribution: Map<EntityId, Int>? = null,
+    /** Original validated requirement groups and visits; not current retarget/resolution authority. */
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val originalTargetSlots: com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan? = null,
 ) : Component {
     val activatedAbilityId: AbilityId?
         get() = activatedAbility?.id

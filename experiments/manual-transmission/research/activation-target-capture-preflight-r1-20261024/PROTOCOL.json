@@ -1,0 +1,31 @@
+{
+  "base": "035e0ec3da8729c43018ffcc839aa821517dcda3",
+  "scope": "EARLY_FEEDBACK_ONLY_NOT_COMPONENT_QUALIFICATION",
+  "implementation_sha256": {
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationTargetCaptureTest.kt": "f3d0d1d6bd2c92b078c9e06c2a8648be2aa46123ee4c4e3b770662b297b01692",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt": "368e3540e38bed59ca2f34bd972582e28f18a3713e0641c35e1284a6fc990637",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ActivateAbilityXCostContinuationResumer.kt": "8af4654358963c98255cf51aaf2fa9964e8fbc91dcfccdf451fa0a8ce3ef6e5f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt": "055cc5a11f82dbac909e0f7b74b95335b19268ba20f3cc808b150334657a95e0",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt": "7eacacb64bdfdaeab65fd3a796908d7942d1dc216942686760c01572dc72ae25"
+  },
+  "targeted_cases": [
+    "AC01 original omitted optional group survives activation placement",
+    "AC02 separate original groups retain repeated recipient occurrences",
+    "AC03 target decision serialization replays identical state and events",
+    "AC04 cancellation creates no activation or original plan",
+    "AC05 public forged original plan rejected atomically",
+    "AC06 invalid group response cannot acquire provenance",
+    "AC07 unpaid sacrifice pause serializes original visits without recapture",
+    "AC08 legacy action encoding omits absent carrier"
+  ],
+  "expected_mutation_failures": [
+    "AC01 original omitted optional group survives activation placement",
+    "AC02 separate original groups retain repeated recipient occurrences",
+    "AC07 unpaid sacrifice pause serializes original visits without recapture"
+  ],
+  "protected_main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "design": "Capture validated controller groups before flattening; serializable public-rejected carrier survives handler re-entry/cost pauses. Constructor injection into exact ActivatedAbilityOnStackComponent is simpler than proposed event-addressed post-attachment and avoids changing protected resolver. Only full controller-only requirement matches attach; opponent/mixed/repeated paths remain untracked. Original provenance only. No SDK effect primitive, new UI action, projection/enumerator/Assay grammar change. Default-null field omitted from legacy encoding. All existing assertions/fixtures untouched. Full broad/ordinary/Assay qualification still required after early feedback."
+}
