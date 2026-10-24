@@ -4636,7 +4636,10 @@ class CastSpellHandler(
             .filter { (_, mode) -> modeHasSatisfiableTargets(currentState, action.playerId, action.cardId, mode) }
             .map { it.index }
 
-        if (available.size < effectiveModalEffect.minChooseCount) {
+        // Repeated picks need one legal mode, not one distinct mode per pick.
+        val requiredDistinctModes = if (effectiveModalEffect.allowRepeat && effectiveModalEffect.minChooseCount > 0)
+            1 else effectiveModalEffect.minChooseCount
+        if (available.size < requiredDistinctModes) {
             return ExecutionResult.error(currentState, "No legal mode selection available for ${cardComponent.name}")
         }
 

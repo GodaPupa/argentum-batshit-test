@@ -5,6 +5,8 @@ import com.wingedsheep.engine.core.BatchYesNoDecision
 import com.wingedsheep.engine.core.BatchYesNoResponse
 import com.wingedsheep.engine.core.BudgetModalDecision
 import com.wingedsheep.engine.core.BudgetModalResponse
+import com.wingedsheep.engine.core.CastSpellAdditionalCostContinuation
+import com.wingedsheep.engine.core.Suspension
 import com.wingedsheep.engine.core.CancelDecisionResponse
 import com.wingedsheep.engine.core.CardsSelectedResponse
 import com.wingedsheep.engine.core.ChooseColorDecision
@@ -264,6 +266,14 @@ object DecisionValidators {
         response: DecisionResponse,
         state: GameState?
     ): String? {
+        if (response is CancelDecisionResponse) {
+            // Only the active, unpaid cast-cost frame has an abort contract. Ordinary
+            // mandatory card selections must not gain cancellation from their UI shape.
+            val suspension = state?.peekContinuation() as? Suspension
+            return if (suspension != null && suspension.question == decision &&
+                suspension.answer is CastSpellAdditionalCostContinuation
+            ) null else "This decision cannot be cancelled"
+        }
         if (response !is CardsSelectedResponse) {
             return "Expected card selection response"
         }
