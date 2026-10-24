@@ -113,5 +113,21 @@ class ModalTargetCaptureTest : ScenarioTestBase() {
             tracked.state.getEntity(tracked.state.stack.last())?.get<TargetsComponent>() shouldBe
                 old.state.getEntity(old.state.stack.last())?.get<TargetsComponent>()
         }
+        test("MC09 answering the mode question initializes capture before targets") {
+            val f = fixture(listOf(single), listOf(0), tracked = false)
+            val suspension = f.state.peekContinuation() as Suspension
+            val answer = suspension.answer as TriggerModalTargetSelectionContinuation
+            val (_, popped) = f.state.popContinuation()
+            val modeState = popped.suspendForDecision(question = { id ->
+                ChooseOptionDecision(id, f.player, "Choose mode", DecisionContext(), listOf("First mode"))
+            }, answer = TriggerModalModeSelectionContinuation(answer.ability, emptyList(), emptyList(),
+                listOf(single), 1, 1, false, listOf(0))).state
+            val chosen = actionProcessor.process(modeState, SubmitDecision(f.player,
+                OptionChosenResponse(requireNotNull(modeState.pendingDecision).id, 0))).result
+            chosen.error shouldBe null
+            val result = select(f.copy(state = chosen.state), mapOf(0 to listOf(f.target)))
+            result.error shouldBe null
+            requireNotNull(component(result.state).originalModeTargetSlots).single().size shouldBe 1
+        }
     }
 }
