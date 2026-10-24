@@ -1,0 +1,5 @@
+# Trusted original modal spell capture
+
+Public CastSpell remains unchanged. The internal carrier records original chosen mode indices and requirement-indexed plans; selection captures before flattening, preserves empty groups/visits through re-entry, serialization, additional-cost recursion and paid creature-type continuation. Attachment occurs only after successful stack placement in both unprotected call sites. Original metadata does not replace legacy targets or event semantics. This is an internal feature with no new SDK primitive/UI/decision: existing questions/actions/events stay intact.
+
+Sixteen integration/boundary tests plus two executable mutation witnesses. Original eight preflight assertion bodies are preserved; additional tests cover public entry, forced/prompted costs, cancellation, paid creature-type branch, no fabricated division and legacy flat input. Prior immutable preflight passed, but changed source requires new results. Full declared broad/ordinary/Assay gates and all protected byte/identity checks remain mandatory. No external independent review claimed.
