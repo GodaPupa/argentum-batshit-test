@@ -75,5 +75,8 @@ data class TriggerModalTargetSelectionContinuation(
      * [recordChosenModesOnSource], written to
      * [com.wingedsheep.engine.state.components.battlefield.ChosenModesThisTurnComponent].
      */
-    val recordChosenModesThisTurn: Boolean = false
+    val recordChosenModesThisTurn: Boolean = false,
+    /** Completed original mode captures in choice order; null denotes untracked legacy history. */
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val originalModeTargetSlots: List<com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan>? = null
 ) : AnswerContinuation

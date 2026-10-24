@@ -331,7 +331,10 @@ data class TriggeredAbilityOnStackComponent(
      * Null means this path/history did not capture original groups; never infer them later.
      */
     @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
-    val originalTargetSlots: com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan? = null
+    val originalTargetSlots: com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan? = null,
+    /** Original per-mode groups by choice ordinal, including repeated mode choices. Not current targets. */
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val originalModeTargetSlots: List<com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan>? = null
 ) : Component {
     val hasTargets: Boolean = false  // Will be updated based on effect
 }

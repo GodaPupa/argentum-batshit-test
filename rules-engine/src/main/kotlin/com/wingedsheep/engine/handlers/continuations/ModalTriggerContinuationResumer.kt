@@ -8,6 +8,7 @@ import com.wingedsheep.engine.core.TargetsResponse
 import com.wingedsheep.engine.core.TriggerModalModeSelectionContinuation
 import com.wingedsheep.engine.core.TriggerModalTargetSelectionContinuation
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.mechanics.targeting.captureTargetSlots
 import com.wingedsheep.sdk.scripting.effects.ModalEffect
 
 /**
@@ -90,6 +91,7 @@ class ModalTriggerContinuationResumer(
             modes = continuation.modes,
             chosenModeIndices = newSelected,
             resolvedModeTargets = emptyList(),
+            originalModeTargetSlots = emptyList(),
             currentOrdinal = 0,
             causedByAttack = continuation.causedByAttack,
             recordChosenModesOnSource = continuation.recordChosenModesOnSource,
@@ -107,6 +109,14 @@ class ModalTriggerContinuationResumer(
             return ExecutionResult.error(state, "Expected targets response for modal trigger target selection")
         }
 
+        val captures = continuation.originalModeTargetSlots?.takeIf {
+            it.size == continuation.currentOrdinal
+        }?.let { prior ->
+            val mode = continuation.modes[continuation.chosenModeIndices[continuation.currentOrdinal]]
+            prior + captureTargetSlots(state, mode.targetRequirements.size,
+                response.selectedTargets.mapValues { (_, ids) -> ids.map { entityIdToChosenTarget(state, it) } })
+        }
+
         // Keep per-requirement order so buildNamedTargets maps each target to its own slot.
         val chosenTargets = response.selectedTargets.entries
             .sortedBy { it.key }
@@ -120,6 +130,7 @@ class ModalTriggerContinuationResumer(
             modes = continuation.modes,
             chosenModeIndices = continuation.chosenModeIndices,
             resolvedModeTargets = continuation.resolvedModeTargets + listOf(chosenTargets),
+            originalModeTargetSlots = captures,
             currentOrdinal = continuation.currentOrdinal + 1,
             causedByAttack = continuation.causedByAttack,
             recordChosenModesOnSource = continuation.recordChosenModesOnSource,

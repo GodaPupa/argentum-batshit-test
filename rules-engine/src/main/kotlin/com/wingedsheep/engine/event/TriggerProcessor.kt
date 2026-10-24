@@ -7,6 +7,8 @@ import com.wingedsheep.engine.mechanics.mana.ManaSolver
 import com.wingedsheep.engine.mechanics.modal.ChosenModeMemory
 import com.wingedsheep.engine.mechanics.stack.StackResolver
 import com.wingedsheep.engine.state.GameState
+import com.wingedsheep.engine.mechanics.targeting.TargetSlotPlan
+import com.wingedsheep.engine.mechanics.targeting.captureTargetSlots
 import com.wingedsheep.engine.state.components.identity.CardComponent
 import com.wingedsheep.engine.state.components.battlefield.TriggeredAbilityEffectAppliedThisTurnComponent
 import com.wingedsheep.engine.state.components.battlefield.TriggeredAbilityFiredEverComponent
@@ -814,6 +816,7 @@ class TriggerProcessor(
             return presentTriggerModalTargetDecision(
                 state, ability, outerTargets, outerTargetRequirements,
                 modal.modes, selectedModeIndices, emptyList(), currentOrdinal = 0, causedByAttack,
+                originalModeTargetSlots = emptyList(),
                 recordChosenModesOnSource = modal.excludePreviouslyChosenModes,
                 recordChosenModesThisTurn = modal.excludeModesChosenThisTurn
             )
@@ -887,15 +890,18 @@ class TriggerProcessor(
         currentOrdinal: Int,
         causedByAttack: Boolean,
         recordChosenModesOnSource: Boolean,
-        recordChosenModesThisTurn: Boolean
+        recordChosenModesThisTurn: Boolean,
+        originalModeTargetSlots: List<TargetSlotPlan>? = null
     ): ExecutionResult {
         var ordinal = currentOrdinal
         var targetsAccum = resolvedModeTargets
+        var captures = originalModeTargetSlots?.takeIf { it.size == currentOrdinal }
 
         while (ordinal < chosenModeIndices.size) {
             val mode = modes[chosenModeIndices[ordinal]]
             if (mode.targetRequirements.isEmpty()) {
                 targetsAccum = targetsAccum + listOf(emptyList())
+                captures = captures?.plus(captureTargetSlots(state, 0, emptyMap()))
                 ordinal++
                 continue
             }
@@ -916,7 +922,9 @@ class TriggerProcessor(
             val soleReq = mode.targetRequirements.singleOrNull()
             val soleLegal = legalTargetsMap[0].orEmpty()
             if (soleReq != null && TargetEnumerationUtils.shouldAutoSelectPlayerTarget(soleReq, soleLegal)) {
-                targetsAccum = targetsAccum + listOf(listOf(createChosenTarget(state, soleLegal.first())))
+                val selected = listOf(createChosenTarget(state, soleLegal.first()))
+                targetsAccum = targetsAccum + listOf(selected)
+                captures = captures?.plus(captureTargetSlots(state, 1, mapOf(0 to selected)))
                 ordinal++
                 continue
             }
@@ -949,6 +957,7 @@ class TriggerProcessor(
                 modes = modes,
                 chosenModeIndices = chosenModeIndices,
                 resolvedModeTargets = targetsAccum,
+                originalModeTargetSlots = captures,
                 currentOrdinal = ordinal,
                 causedByAttack = causedByAttack,
                 recordChosenModesOnSource = recordChosenModesOnSource,
@@ -961,7 +970,7 @@ class TriggerProcessor(
         return finalizeModalTrigger(
             state, ability, outerTargets, outerTargetRequirements,
             modes, chosenModeIndices, targetsAccum, causedByAttack,
-            recordChosenModesOnSource, recordChosenModesThisTurn
+            recordChosenModesOnSource, recordChosenModesThisTurn, captures
         )
     }
 
@@ -982,7 +991,8 @@ class TriggerProcessor(
         resolvedModeTargets: List<List<com.wingedsheep.engine.state.components.stack.ChosenTarget>>,
         causedByAttack: Boolean,
         recordChosenModesOnSource: Boolean,
-        recordChosenModesThisTurn: Boolean
+        recordChosenModesThisTurn: Boolean,
+        originalModeTargetSlots: List<TargetSlotPlan>?
     ): ExecutionResult {
         if (chosenModeIndices.isEmpty()) {
             // CR 603.3c — no mode was chosen, so the ability never reaches the stack. Either every
@@ -1003,6 +1013,7 @@ class TriggerProcessor(
 
         val component = ability.copy(
             chosenModes = chosenModeIndices,
+            originalModeTargetSlots = originalModeTargetSlots,
             modeTargetsOrdered = resolvedModeTargets,
             modeTargetRequirements = chosenModeIndices.associateWith { modes[it].targetRequirements }
         )
