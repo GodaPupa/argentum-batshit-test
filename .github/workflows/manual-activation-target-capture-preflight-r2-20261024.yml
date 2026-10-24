@@ -1,0 +1,100 @@
+name: Manual activation target capture early feedback R2
+on:
+  push:
+    branches: [validation/manual-activation-target-capture-preflight-r2-20261024]
+    paths: ['.github/workflows/manual-activation-target-capture-preflight-r2-20261024.yml']
+permissions: {contents: read}
+concurrency:
+  group: manual-transmission-engine-qualification
+  cancel-in-progress: false
+env:
+  SOURCE: a219991f8802ed9b95403815b69460bf5d7e931d
+  SOURCE_TREE: 99a3fe21ded51eecfb37515e8e8e5e071e8b3d56
+  WORKFLOW: .github/workflows/manual-activation-target-capture-preflight-r2-20261024.yml
+  RECORD: experiments/manual-transmission/research/activation-target-capture-preflight-r2-20261024
+  EVIDENCE: activation-preflight-r2-evidence
+  GRADLE_OPTS: -Dorg.gradle.daemon=false
+  GRADLE_LOCK_SLOTS: '1'
+jobs:
+  verify:
+    if: github.run_number == 1 && github.run_attempt == 1
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+        with: {persist-credentials: false, fetch-depth: 0}
+      - uses: actions/setup-java@v4
+        with: {distribution: temurin, java-version: '21'}
+      - uses: gradle/actions/setup-gradle@v4
+      - name: Install locked recipe runner and bind source
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+          mkdir -p "$HOME/.cache/argentum" "$EVIDENCE"
+          python3 "$RECORD/gate.py" bind
+          cat > "$EVIDENCE/validation.just" <<'JUST'
+          compile-engine:
+              scripts/gradle-locked :rules-engine:compileKotlin --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+          targeted:
+              scripts/gradle-locked :rules-engine:test --tests '*ActivationTargetCaptureTest' --no-build-cache --no-daemon --console=plain --stacktrace --max-workers=2 -PkotlinCompileParallelism=1
+          JUST
+      - name: Compile normal implementation
+        run: |
+          mkdir -p "$EVIDENCE/compile-normal"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" compile-engine 2>&1 | tee "$EVIDENCE/compile-normal/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/compile-normal/exit.txt"
+          test "$rc" -eq 0
+      - name: Execute and strictly receive eight normal cases
+        run: |
+          find . -path '*/build/test-results/test' -type d -not -path './activation-preflight-r2-evidence/*' -exec rm -rf {} +
+          mkdir -p "$EVIDENCE/normal/junit"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" targeted 2>&1 | tee "$EVIDENCE/normal/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/normal/exit.txt"
+          cp rules-engine/build/test-results/test/TEST-*.xml "$EVIDENCE/normal/junit/" 2>/dev/null
+          python3 "$RECORD/gate.py" receive normal
+      - name: Install bounded executable visit loss fault
+        run: python3 "$RECORD/gate.py" mutate
+      - name: Compile mutation implementation
+        run: |
+          mkdir -p "$EVIDENCE/compile-mutation"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" compile-engine 2>&1 | tee "$EVIDENCE/compile-mutation/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/compile-mutation/exit.txt"
+          test "$rc" -eq 0
+      - name: Execute and strictly receive eight mutation cases
+        run: |
+          find . -path '*/build/test-results/test' -type d -not -path './activation-preflight-r2-evidence/*' -exec rm -rf {} +
+          mkdir -p "$EVIDENCE/mutation/junit"
+          set +e
+          flock -x -w 1800 "$HOME/.cache/argentum/manual-transmission.lock" just --working-directory "$GITHUB_WORKSPACE" --justfile "$EVIDENCE/validation.just" targeted 2>&1 | tee "$EVIDENCE/mutation/gradle.log"
+          rc=${PIPESTATUS[0]}
+          printf '%s\n' "$rc" > "$EVIDENCE/mutation/exit.txt"
+          cp rules-engine/build/test-results/test/TEST-*.xml "$EVIDENCE/mutation/junit/" 2>/dev/null
+          python3 "$RECORD/gate.py" receive mutation
+      - name: Restore candidate and protected source
+        if: always()
+        run: |
+          git checkout "$SOURCE" -- rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ActivateAbilityXCostContinuationResumer.kt
+          python3 "$RECORD/gate.py" bind
+      - name: Preserve original evidence and bounded disposition
+        if: always()
+        run: |
+          mkdir -p "$EVIDENCE/protocol"
+          cp "$RECORD/"* "$EVIDENCE/protocol/"
+          cp "$WORKFLOW" "$EVIDENCE/protocol/WORKFLOW.yml"
+          git diff --name-status 035e0ec3da8729c43018ffcc839aa821517dcda3 "$SOURCE" > "$EVIDENCE/SOURCE_DELTA.txt"
+          git status --porcelain --untracked-files=no > "$EVIDENCE/FINAL_TRACKED_CHANGES.txt"
+          python3 "$RECORD/gate.py" hash
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: manual-activation-target-capture-preflight-r2-${{ github.run_id }}
+          path: activation-preflight-r2-evidence/
+          retention-days: 90
+          if-no-files-found: error
+          overwrite: false
