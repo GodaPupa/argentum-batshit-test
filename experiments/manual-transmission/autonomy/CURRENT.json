@@ -1,6 +1,6 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T09:55:16.843Z",
+  "updated_date": "2026-10-24T10:03:42.888Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "ACTIVE",
@@ -9,9 +9,10 @@
     "state": "ACTIVE",
     "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
     "claimed_utc": "2026-10-24T09:46:58.845Z",
-    "expires_utc": "2026-10-24T10:11:58.846Z",
+    "expires_utc": "2026-10-24T10:28:42.888Z",
     "predecessor_blob": "4e44a016fb890bedf2c518d7a93b8cb073fa9f25",
-    "purpose": "Receive failure, repair injector, prepare R2 receiving and isolated live-entry tests while R2 runs"
+    "purpose": "R2 original evidence received; complete18-case qualification freeze and guarded launch",
+    "renewed_utc": "2026-10-24T10:03:42.888Z"
   },
   "last_qualified": {
     "source": "035e0ec3da8729c43018ffcc839aa821517dcda3",
@@ -35,7 +36,7 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Controller activation provenance early feedback: R1 normal8 passed but combined mutation produced wrong failure types; injector-only R2 active. Separate five-case live-entry test draft in progress; no component acceptance.",
+    "current_subproblem": "R2 original control receipt passed. Preparing full18-case activation provenance qualification with10 additional live-entry/boundary tests. No active workflow or component acceptance.",
     "source_candidate": "035e0ec3da8729c43018ffcc839aa821517dcda3",
     "source_tree": "bb50c6e9de41619e796ac5550a449484bfcbf7cf",
     "source_branch": "candidate/manual-modal-spell-capture-r3-20261024",
@@ -44,9 +45,7 @@
     "validation": "266f4a28fecd66fabf4f34aa4e14cab20b0a771f",
     "validation_branch": "validation/manual-modal-spell-capture-r3-20261024",
     "workflow": ".github/workflows/manual-modal-spell-capture-r3-20261024.yml",
-    "pending_runs": [
-      40083463089
-    ],
+    "pending_runs": [],
     "planned_not_observed": {
       "targeted": 23,
       "mutation_failures": 2,
@@ -63,7 +62,7 @@
     },
     "negative_scope": "Original R1 normal failures are not deliberate negative-control evidence. R2 retains exact SM01/SM02 two behavioral witnesses and compiled group/visit fault; results pending.",
     "source_delta": "R3 adds three qualification records only to R2;24cumulative paths versus accepted modal-trigger base. All production/test/negative-control bytes identical to R2. Old frozen records preserved.",
-    "next_executable_action": "Receive original R2 run40083463089/job120841547178/attempt1 using immutable receiverab795e467bbfe9fe6c8a122dfda006110fe90e97. Pin original artifact ID/bytes/hash, exact source a219991f8802ed9b95403815b69460bf5d7e931d and validation8bf2f9cc416666a1dd1d5f49008619b3666b76a1. Require normal compile+8pass, mutant compile+8cases with exactly AC01/AC02/AC07 AssertionFailedError at55/60/95 and5pass, restored clean/protected bytes. Then complete live-flow/boundary guards and full qualification; early green alone is not acceptance. Do not repeat accepted modal-spell035e0ec3/receipt839a2a99 or modal-trigger103ac166.",
+    "next_executable_action": "Finish source/protocol review, static receiver checks and immutable18-case freeze; reconcile ownership/all workflow statuses; launch exactly one guarded full qualification. Normal18case and mutant compilation/exact3behavioral checks must pass before800focused/14863broad/18471ordinary+43skips/Assay and original-report receiving.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -1087,7 +1086,7 @@
       "files_readback_verified": 4
     },
     "activation_capture_preflight": {
-      "state": "WAITING_EXTERNAL_R2_INJECTOR_RECOVERY",
+      "state": "EARLY_FEEDBACK_PASSED_FULL_QUALIFICATION_PENDING",
       "source": "a219991f8802ed9b95403815b69460bf5d7e931d",
       "tree": "99a3fe21ded51eecfb37515e8e8e5e071e8b3d56",
       "validation": "8bf2f9cc416666a1dd1d5f49008619b3666b76a1",
@@ -1113,18 +1112,22 @@
       "attempt": 1,
       "run_number": 1,
       "event": "push",
-      "status": "in_progress",
-      "conclusion": null,
-      "artifact": null,
+      "status": "completed",
+      "conclusion": "success",
+      "artifact": 12556586463,
       "expected_artifact_name": "manual-activation-target-capture-preflight-r2-40083463089",
       "observed_utc": "2026-10-24T09:55:16.843Z",
       "receiving_audit": {
         "commit": "ab795e467bbfe9fe6c8a122dfda006110fe90e97",
         "path": "experiments/manual-transmission/research/activation-target-capture-preflight-receiver-r2-20261024/RECEIVE.py",
         "instructions": "experiments/manual-transmission/research/activation-target-capture-preflight-receiver-r2-20261024/PREPARED.md",
-        "state": "PREPARED_NOT_EXECUTED",
+        "state": "EXECUTED_PASSED_UNCHANGED",
         "immutable_readback_verified": true
-      }
+      },
+      "artifact_bytes": 21127,
+      "artifact_sha256": "a08a0950bf9aa80aeee3ca04e9d6aae8e13c754b90054f4cfc4caa865b137e95",
+      "receipt": "96ddb8fbe1198917946e9f4b406c9fdde882a75a",
+      "verified": "Both normal/mutant compilation;8 normalpasses;8 mutantcases exactly3assertions55/60/95 and5passes;20manifestentries andzeroerrors/skips; source/tree/workflow/protocol/delta/protected bytes verified. No component acceptance."
     },
     "activation_capture_failed_r1": {
       "state": "FAILED_CONTROL_WRONG_FAILURE_TYPES",
@@ -1259,6 +1262,13 @@
       "path": "experiments/manual-transmission/research/activation-target-capture-live-flow-review-r1-20261024/REVIEW.json",
       "readback_verified": true,
       "state": "SOURCE_REVIEW_ONLY"
+    },
+    "activation_live_flow_draft": {
+      "commit": "6110a6e5c972b14dfcf455191c519dcc2d01ae8a",
+      "tree": "42dcbec5f505814d130e775e2fdff76a9ca1bfac",
+      "cases": 5,
+      "state": "UNQUALIFIED_DRAFT_SUPERSEDED_BY_IN_PROGRESS_18CASE_FULL_PREPARATION",
+      "readback_verified": true
     }
   },
   "completion_contract": {
@@ -1282,24 +1292,16 @@
     "no_successful_workflow_rerun": true
   },
   "reconcile": {
-    "last_checked_utc": "2026-10-24T09:55:16.843Z",
-    "relevant_active_workflows": [
-      {
-        "run": 40083463089,
-        "job": 120841547178,
-        "status": "in_progress",
-        "head_sha": "8bf2f9cc416666a1dd1d5f49008619b3666b76a1",
-        "event": "push"
-      }
-    ],
+    "last_checked_utc": "2026-10-24T10:03:42.888Z",
+    "relevant_active_workflows": [],
     "ignored_unrelated_ancient_run": 34749202144,
     "current_worker": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
-    "observed_ledger_predecessor_blob": "ac9b70d339f03f8e40feb597f546b4b97450a310",
+    "observed_ledger_predecessor_blob": "5ebeef1797b7d2cefb140e84e6727a52da001110",
     "former_discussion_executor_paused": true,
     "intervention_watch_read_only": true,
     "latest_checkpoint_before_release": "67e5d15b4bfe7a8d86c3588537b99f38edf3fc67",
     "qualification_repeated": false,
-    "latest_receipt": "b2a2bfc4418781e9ac039fc89c2cc215c09abddd",
+    "latest_receipt": "96ddb8fbe1198917946e9f4b406c9fdde882a75a",
     "latest_draft": "7c901c03b6047148219deda1a020b0f03d106abb",
     "preserved_prior_reconciliation": "2026-10-23T23:41:32.374Z: explicit predecessor release verified; task admission still true, old Discussion executor paused, no relevant workflow active/queued/waiting/requested/pending or newer checkpoint.",
     "current_conversation_scheduled_wakeup": "7d43701b-6d9c-832a-acef-767e74ea300a; current owned iteration, not another worker"
