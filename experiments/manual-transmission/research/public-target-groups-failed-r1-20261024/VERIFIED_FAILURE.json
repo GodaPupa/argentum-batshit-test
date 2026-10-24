@@ -1,0 +1,188 @@
+{
+  "status": "VERIFIED_FAILED_NORMAL_COMPILATION_NO_BEHAVIORAL_EVIDENCE",
+  "scope": "BOUNDED_PUBLIC_TARGET_GROUP_TRANSPORT_AND_SERVER_CAPTURE_NOT_RESOLVER_OR_SPELLSKITE",
+  "run": 40098055404,
+  "job": 120884344045,
+  "attempt": 1,
+  "run_number": 1,
+  "event": "push",
+  "source": "d74c02f02b956cee1b86d67e4246c3f863e2e738",
+  "source_tree": "272e966a9ac4ec1e50a7f00e8a36080370dd1ee1",
+  "source_parent": "95b0ab3b44605e9f13d67750a2aa0c028ab24616",
+  "validation": "6b59a88891c8db12ae3066ea718b61549d8b4876",
+  "validation_tree": "0c2b2bd8fa633228ba3f917206f73befaa34c6b9",
+  "workflow": ".github/workflows/manual-public-target-groups-r1-20261024.yml",
+  "workflow_blob": "c71437faf48787d1bd4d6a1ba7f362247c9c5c7b",
+  "protocol_blob": "520ff21fca1cddb2333406e5f82865e957136f8c",
+  "helper_blob": "893033f48c25cf98dd8bed4fd1bb794711b26a12",
+  "artifact": {
+    "id": 12561598393,
+    "name": "manual-public-target-groups-r1-40098055404",
+    "bytes": 144511,
+    "sha256": "ea1b7a4ca727a60f7597cce12fa1385b38c8867959dbae4835083c74edaec821",
+    "git_blob": "b917c544c5cb36c1d6a201310963082d3e9764c3",
+    "zip_members": 24,
+    "manifest_entries": 23,
+    "crc_verified": true,
+    "manifest_verified": true
+  },
+  "successful_evidence": {
+    "binding": true,
+    "client_typecheck": true,
+    "client_cases": 34,
+    "client_failures": 0
+  },
+  "failed_stage": {
+    "name": "Compile exact normal capture implementation",
+    "exit": 1,
+    "task": ":rules-engine:compileKotlin",
+    "diagnostics": [
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/PublicTargetGroups.kt",
+        "line": 33,
+        "column": 9,
+        "message": "Condition type mismatch: inferred type is 'Any?' but 'Boolean' was expected."
+      },
+      {
+        "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/PublicTargetGroups.kt",
+        "line": 33,
+        "column": 187,
+        "message": "Cannot infer type for type parameter 'T'. Specify it explicitly."
+      }
+    ]
+  },
+  "skipped": [
+    "actor",
+    "targeted",
+    "mutant compilation",
+    "mutation behavior",
+    "focused",
+    "broad",
+    "ordinary",
+    "Assay"
+  ],
+  "disposition": {
+    "behavioral_evidence": false,
+    "component_adopted": false,
+    "qualification_accepted": false,
+    "compiler_error_is_not_negative_control": true
+  },
+  "diagnosis": "The source combines captured-target projection, generic ComponentContainer.get<TargetsComponent>(), nullable access, Elvis emptyList(), and inequality in one expression. Kotlin cannot establish a concrete list type for the comparison, so the entire condition is inferred as Any?. The client transport code is unaffected. The repair is to bind both sides as explicit List<ChosenTarget> values before comparison; no production behavior or assertion changes are justified.",
+  "source_delta": [
+    {
+      "path": "docs/data-contracts.md",
+      "status": "modified",
+      "blob": "0bbb135ba4bda55885b6a9b19c78d42123bcbde8"
+    },
+    {
+      "path": "experiments/manual-transmission/research/public-target-groups-r1-20261024/DESIGN.md",
+      "status": "added",
+      "blob": "584ce7ca45965be4653bffa07422098032a8a5c6"
+    },
+    {
+      "path": "experiments/manual-transmission/research/public-target-groups-r1-20261024/PROTOCOL.json",
+      "status": "added",
+      "blob": "520ff21fca1cddb2333406e5f82865e957136f8c"
+    },
+    {
+      "path": "experiments/manual-transmission/research/public-target-groups-r1-20261024/gate.py",
+      "status": "added",
+      "blob": "31777d46b6b89541033b3da434c0c091c098d056"
+    },
+    {
+      "path": "gym/src/main/kotlin/com/wingedsheep/gym/actorinput/ActorPayloadSchemas.kt",
+      "status": "modified",
+      "blob": "c8fccbae12e4fbfcc55791d0583bdda3758327bf"
+    },
+    {
+      "path": "gym/src/test/kotlin/com/wingedsheep/gym/actorinput/ActorPublicTargetGroupsBoundaryTest.kt",
+      "status": "added",
+      "blob": "1c4d0ebb2bbca9c9f898c4a8e62466d457a883eb"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/ColorAndTypeContinuations.kt",
+      "status": "modified",
+      "blob": "7af437854175e125f0a1062ba98ef4c4265d9049"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt",
+      "status": "modified",
+      "blob": "3664ceb0ad9ad3d6178054cfba770d7a9a2809eb"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+      "status": "modified",
+      "blob": "d83723b369cc44e5c880117e08f7bee2a6a6f2e6"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+      "status": "modified",
+      "blob": "c565ec9d2ceae4fcce2f52dc5f982654c482da71"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ModalAndCloneContinuationResumer.kt",
+      "status": "modified",
+      "blob": "139f727a9534f418269d21b5c123d8bd7ef5ac07"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/PublicTargetGroups.kt",
+      "status": "added",
+      "blob": "893033f48c25cf98dd8bed4fd1bb794711b26a12"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt",
+      "status": "modified",
+      "blob": "259309b51a3f0f3092871013743b58ec0637d436"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt",
+      "status": "modified",
+      "blob": "3201a8c70737f3d6e0ccc114c5e9e85d688ae5f1"
+    },
+    {
+      "path": "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/PublicTargetGroupsTest.kt",
+      "status": "added",
+      "blob": "1c518150cc16d4839b25d6f8c50f993f3b6afb72"
+    },
+    {
+      "path": "web-client/src/store/slices/types.ts",
+      "status": "modified",
+      "blob": "8cd3a89ff1e640dfe13ec7777ef4e04a438965b2"
+    },
+    {
+      "path": "web-client/src/store/slices/ui/pipelinePhases.ts",
+      "status": "modified",
+      "blob": "3a37f666afb94e20592853cb40001040c1538ac2"
+    },
+    {
+      "path": "web-client/src/store/slices/ui/pipelineSlice.ts",
+      "status": "modified",
+      "blob": "5015821f6bd0701ea3b28e9e382a9a13c90fc228"
+    },
+    {
+      "path": "web-client/src/store/slices/ui/publicTargetGroups.test.ts",
+      "status": "added",
+      "blob": "93008826626168a558dedd49ac0db1e142aa1b33"
+    },
+    {
+      "path": "web-client/src/store/slices/ui/targetingSlice.ts",
+      "status": "modified",
+      "blob": "854c25d0880f517f6a10329636fef7ff08de4b18"
+    },
+    {
+      "path": "web-client/src/types/actions.ts",
+      "status": "modified",
+      "blob": "59dc9a5ad8f8bb57ef8b156affff4c32aec07c4f"
+    }
+  ],
+  "protected": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "bindings": 144,
+    "goldens": 23,
+    "legacy_fixtures": 82,
+    "official_games": 0,
+    "official_seeds": 0,
+    "precision_reserved": 2
+  },
+  "external_independent_review": false
+}
