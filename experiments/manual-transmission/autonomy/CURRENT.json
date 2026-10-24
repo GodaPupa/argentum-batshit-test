@@ -1,23 +1,32 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T16:42:26.607Z",
+  "updated_date": "2026-10-24T22:32:31.670Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "ACTIVE",
-  "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-20261024164226",
+  "owner": "manual-work-390bd1587480-recovery-20261024223231670",
   "lease": {
     "state": "ACTIVE",
-    "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-20261024164226",
-    "claimed_utc": "2026-10-24T16:42:26.607Z",
-    "expires_utc": "2026-10-24T17:12:26.607Z",
-    "predecessor_blob": "d026d5de9173ef8a6aeab6f24b4514b7fa728656",
-    "purpose": "Receive failed R4 original artifact, diagnose ordinary-build failure, preserve evidence, and continue one bounded justified recovery if available.",
+    "owner": "manual-work-390bd1587480-recovery-20261024223231670",
+    "claimed_utc": "2026-10-24T22:32:31.670Z",
+    "expires_utc": "2026-10-24T23:02:31.670Z",
+    "predecessor_blob": "35e2e7689107c3b2a49ad2b438957f38063e979c",
     "observed_predecessor": {
-      "owner": null,
-      "state": "RELEASED",
-      "last_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-20261024154821"
+      "state": "ACTIVE",
+      "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-20261024164226",
+      "claimed_utc": "2026-10-24T16:42:26.607Z",
+      "expires_utc": "2026-10-24T17:12:26.607Z",
+      "predecessor_blob": "d026d5de9173ef8a6aeab6f24b4514b7fa728656",
+      "purpose": "Receive failed R4 original artifact, diagnose ordinary-build failure, preserve evidence, and continue one bounded justified recovery if available.",
+      "observed_predecessor": {
+        "owner": null,
+        "state": "RELEASED",
+        "last_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-20261024154821"
+      },
+      "reason": "R4 terminal failure has no newer receipt or successor and no other active Manual workflow/owner."
     },
-    "reason": "R4 terminal failure has no newer receipt or successor and no other active Manual workflow/owner."
+    "purpose": "Resume preserved R4 recording-compatibility recovery in original foreground Work workspace.",
+    "reason": "Explicit user request resumes original Work session390bd1587480; original R4 artifact is present here and immutable receiptfc3ba6a0 read. Latest scheduled invocationb3cecbc9 completed21:44:11Z; subsequent scheduled turns in this conversation ended without taking ownership. No relevant workflow in any active state, no newer candidate/validation/receipt or ledger update. This is resumed foreground ownership, not an expiry-only takeover."
   },
   "last_qualified": {
     "source": "95b0ab3b44605e9f13d67750a2aa0c028ab24616",
@@ -50,24 +59,7 @@
     "validation": "e0fc8eab9ad1c9ff785f074a98d9bba0e33353f6",
     "validation_branch": "validation/manual-public-target-groups-r4-20261024",
     "workflow": ".github/workflows/manual-public-target-groups-r4-20261024.yml",
-    "pending_runs": [
-      {
-        "run": 40108914146,
-        "job": 120916314773,
-        "attempt": 1,
-        "run_number": 1,
-        "event": "push",
-        "workflow_id": 395225003,
-        "head_sha": "e0fc8eab9ad1c9ff785f074a98d9bba0e33353f6",
-        "source": "e4efe8573086090bf39aa52a1a0ce6196c121914",
-        "source_tree": "e491b42dc54387cc5bb10be118a44dd059944cfc",
-        "status": "in_progress",
-        "conclusion": null,
-        "dispatched_utc": "2026-10-24T15:51:58Z",
-        "observed_utc": "2026-10-24T15:54:07.568Z",
-        "current_stage": "Run actions/checkout@v4"
-      }
-    ],
+    "pending_runs": [],
     "planned_not_observed": {
       "client": 34,
       "actor": 39,
@@ -93,7 +85,7 @@
     },
     "negative_scope": "R4 must compile unchanged normal and visit-loss mutant forms, then produce exactly PG01/PG04/PG05/PG15/PG17 AssertionFailedError witnesses at source-bound first frames61/81/88/147/165 among20; fifteen pass. Missing reports, compiler errors, wrong identities/types/frames, skips or unrelated failures reject.",
     "source_delta": "R4 parent is failed R3 source226773f8; exact3-path recovery delta adds only R4 DESIGN/PROTOCOL/gate records. Production and test blobs, identities, assertions, counts and executable mutant are unchanged. Immutable source delta and readbacks verified; original R3 failure archive preserved.",
-    "next_executable_action": "When run40108914146 is terminal, first reconcile for a newer receipt or successor. On success download its original artifact exactly once and run immutable receiver16056f09e05ac369049ec6f8cc64be90cf52192c against sourcee4efe857/treee491b42d/validatione0fc8eab/run40108914146/job120916314773/attempt1; accept only after exact identities/counts/skips, five behavioral failures at61/81/88/147/165, restoration/rebinding, all positive gates, Assay and protected bytes pass. On failure preserve the original artifact and diagnose; never rerun unchanged.",
+    "next_executable_action": "Review exact R4 source and protected bindings; implement bounded default-null CastSpell diagnostic recording compatibility, preserve frozen assertions/golden, freeze exact recovery controls/protocol and qualify once after activity reconciliation.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -1898,6 +1890,14 @@
       "official_games": 0,
       "official_seeds": 0,
       "precision_reserved": 2
+    },
+    "public_target_groups_failed_r4": {
+      "receipt": "fc3ba6a0e5ca7394eb075b55c013dfcd117305d5",
+      "run": 40108914146,
+      "artifact": 12566048648,
+      "state": "PRESERVED_FAILURE_REUSED_NO_REAUDIT",
+      "cause": "Default-null CastSpell fields change diagnostic action hash; FrozenBaselineTest fails with identical outcome.",
+      "accepted": false
     }
   },
   "completion_contract": {
@@ -1970,7 +1970,7 @@
       "expectations_updated_utc": "2026-10-24T13:29:44.515Z",
       "expectations": "Strictly read-only; follow current Work WAITING_EXTERNAL ownership and single public target-group run40098055404. Accepted activation40091111694 remains accepted. No action for healthy waiting; receive original evidence before bounded acceptance. Watch enabled state unchanged."
     },
-    "handoff": "Current scheduled Work iteration owns shared lease to receive failed public target-group qualification40098055404.",
+    "handoff": "Foreground Work390bd1587480 resumed R4 recovery; scheduled executor must respect this lease.",
     "execution_admitted": true,
     "former_discussion_executor": {
       "id": "6adbad91b90881918859ad0cba22b881",
@@ -2047,7 +2047,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_SINGLE_WORK_EXECUTOR",
     "last_verified_enabled_utc": "2026-10-24T14:52:29.264Z",
-    "next_authorized_action": "When run40104302392 is terminal, first reconcile for a newer receipt or successor. On success download its original artifact exactly once and run the immutable receiver73468a54f3bf391d4615b5677f5dc1ed3be65774 against source226773f8/treeaace3ce9/validation6a598d02/run40104302392/job120902680013/attempt1; accept only after exact identities/counts/skips, five behavioral failures, restoration/rebinding, all positive gates, Assay and protected bytes pass. On failure preserve the original artifact and diagnose; never rerun unchanged.",
+    "next_authorized_action": "Review exact R4 source and protected bindings; implement bounded default-null CastSpell diagnostic recording compatibility, preserve frozen assertions/golden, freeze exact recovery controls/protocol and qualify once after activity reconciliation.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -2544,9 +2544,5 @@
       "remaining_component_gates": []
     }
   },
-  "stop_reason": {
-    "code": "EXTERNAL_DEPENDENCY_ONLY",
-    "detail": "Qualification40104302392 is running. Original R2 evidence is preserved; R3 source/protocol and immutable receiver are complete. Further source mutation or another qualification would overlap frozen active evidence.",
-    "observed_utc": "2026-10-24T14:52:29.264Z"
-  }
+  "stop_reason": null
 }
