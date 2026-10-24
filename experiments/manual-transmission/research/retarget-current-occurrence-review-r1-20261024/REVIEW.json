@@ -1,0 +1,115 @@
+{
+  "state": "SOURCE_REVIEW_ONLY_NO_IMPLEMENTATION_NO_QUALIFICATION_NO_CARD_ADMISSION",
+  "source": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
+  "source_tree": "23ab174891290a575a752e54f0e8142a8d6f3e40",
+  "source_status": "R5 run40139402248 pending original-artifact receiving; no success presumed",
+  "prior_specification": {
+    "commit": "88cd69c88628e0dfd78c2e45c067c91d727aecb8",
+    "path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
+    "planned_card_scenarios": 22
+  },
+  "reviewed_source_files": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetSlotPlan.kt": {
+      "blob": "e804a908af74268631875f94fe7239bd96bf951d",
+      "sha256": "596b05a98191f056359b59c86e81871990c4ad995064b9bfab98a3cbc755c1c1",
+      "bytes": 4791
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/RetargetHistory.kt": {
+      "blob": "957f0a4972781f220c1992821d114e7062871538",
+      "sha256": "20d896f0f915b2396ecb643fe9fbec7dbb3c756dfc7de9c7248408eb3bcabc0f",
+      "bytes": 1961
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/PublicTargetGroups.kt": {
+      "blob": "2bf56da7e1f8bee8d0608ecd442b265776a9e481",
+      "sha256": "e419b32834fe3619885ac97f0561f7cd540677a8594e8cbd95400d36b47f5e00",
+      "bytes": 2385
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ContestedRetargetExecutors.kt": {
+      "blob": "1caddb561ba7e9e3e00c9e423aca736176777279",
+      "sha256": "b15ac70242ef9e03c04e108354bbb2e2bc01f8e63197f2503f8fbd1f4a2b327d",
+      "bytes": 11463
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt": {
+      "blob": "3201a8c70737f3d6e0ccc114c5e9e85d688ae5f1",
+      "sha256": "66e893f7f8d93851a2921eb3df7dd2ad76d90ecc60392a3815357934e338f8b9",
+      "bytes": 37510
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt": {
+      "blob": "64c0466abe72bc495c7e5d364fdbf73d75db777b",
+      "sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94",
+      "bytes": 233548
+    },
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ChangeTargetExecutor.kt": {
+      "blob": "c3cf7b0e7b722d143f62d43ef8c020dbdd301db9",
+      "sha256": "eecfe2df67756f68278c79c09305dda7acb435f1fd4949f98824e550df45bb7b",
+      "bytes": 9524
+    }
+  },
+  "findings": [
+    {
+      "source": "TargetSlotPlan.kt",
+      "observed": "TargetSlotAddress carries original instance/slot indices; replacingRecipient preserves all nonselected slots, division and instance widths, and rejects intra-instance duplicates. Its contract explicitly excludes legality, state mutation and events.",
+      "implication": "Reuse this qualified structural value operation; do not mistake it for a live fixed-recipient retarget primitive."
+    },
+    {
+      "source": "StackComponents.kt",
+      "lines": [
+        185,
+        340,
+        451,
+        482
+      ],
+      "observed": "Spell, trigger and activation components carry originalTargetSlots; triggers additionally retain original per-mode plans. TargetsComponent still exposes a flat current targets list, targetRequirements, and one targetEntryStamps entry per physical entity.",
+      "implication": "Original provenance must remain immutable. It cannot simply be relabeled current after another effect has changed TargetsComponent."
+    },
+    {
+      "source": "ContestedRetargetExecutors.kt",
+      "observed": "start still expands declared counts against flat current targets. advance updates only TargetsComponent via withRetargetedHistory. legalOptions excludes alreadyChosen globally. No originalTargetSlots read or coordinated modal/splice view update occurs in this file.",
+      "implication": "Existing contested retarget is not a substitute for exactly-one occurrence with fixed recipient. A current-occurrence adapter must reject incoherent/stale history until it can preserve every dependent view; never infer omitted groups from the flat list."
+    },
+    {
+      "source": "RetargetHistory.kt",
+      "observed": "withRetargetedHistory preserves unchanged positional stamps and refuses incompatible stamps for the same physical entity. Equal target values mean keep the old occurrence; deliberate selection of a newer visit with the same entity id cannot be represented.",
+      "implication": "Retain this accepted conservative behavior. A new occurrence-aware path must not silently refresh unchanged references or overwrite the entity-keyed map with one of two different visits."
+    },
+    {
+      "source": "PublicTargetGroups.kt",
+      "observed": "publicTargetLayoutError rejects changed nontrailing group widths before payment; publicSpellTargetPlan checks correspondence and attaches original provenance only.",
+      "implication": "R5 capture does not remove the existing resolution-layout limitation. Accepting R5 must not relax this fail-closed boundary."
+    },
+    {
+      "source": "StackResolver.kt",
+      "lines": [
+        1026,
+        2216,
+        2264,
+        2816,
+        2910,
+        3597,
+        3613,
+        3716
+      ],
+      "observed": "Resolution validates flat current target positions against declared requirements and uses entity-keyed targetEntryStamps. Spell resolution also reads modeTargetsOrdered and splicedTargetsOrdered; originalTargetSlots is not read. Protected hash unchanged.",
+      "implication": "Adding an occurrence plan alone cannot change resolution authority. Full different-visit/optional-layout correctness needs an explicit admitted resolver-compatible design; protected bytes cannot be modified under this recovery."
+    },
+    {
+      "source": "ChangeTargetExecutor.kt",
+      "observed": "Requires exactly one current target, computes choices of recipient, and passes the redirecting context controller into its custom finder.",
+      "implication": "Do not repurpose it unchanged as fixed-self, one-slot selection over spells, activations and triggers."
+    }
+  ],
+  "concrete_blocker_identified": "The missing link after original provenance capture is a coherent CURRENT occurrence representation and atomic application to every current target view, with original source/controller legality and new-target event/ward handling. Original provenance by itself is not current resolution state.",
+  "next_after_r5_acceptance": [
+    "Reuse the existing22-case card specification and all accepted structural/history/capture receipts; do not repeat their qualifications.",
+    "Trace legal and newly-targeted event/ward paths plus current modal/splice view ownership before freezing a bounded generic fixed-recipient operation. Start from exact qualified source; preserve original history and selected divisions; no invented group boundaries.",
+    "Define an explicit compatibility contract for transitions after earlier retarget effects. Never seed current history from stale original fields merely because cardinalities agree.",
+    "Preserve protected StackResolver. If the complete operation requires changing that bound source, record the exact source-specific admission/authority dependency instead of silently bypassing it or claiming full Spellskite support.",
+    "Freeze source/tests/executable negative controls and exact unchanged fixture/source bindings before one justified qualification. No implementation or competing qualification is launched during R5."
+  ],
+  "stopping_boundary": "Receiving preparation and isolated next-dependency source review complete. R5 original runtime evidence is the next required dependency; this review does not authorize acting as if it passed.",
+  "protected_resolver_sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94",
+  "external_independent_review": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
