@@ -1,19 +1,18 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T14:50:23.871Z",
+  "updated_date": "2026-10-24T14:52:29.264Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "EXECUTING",
-  "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-38659609-f03c-8327-a4ec-2eae23224f49",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-38659609-f03c-8327-a4ec-2eae23224f49",
+    "state": "RELEASED",
+    "owner": null,
+    "last_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-38659609-f03c-8327-a4ec-2eae23224f49",
     "claimed_utc": "2026-10-24T14:44:00.530Z",
-    "expires_utc": "2026-10-24T15:48:23.871Z",
-    "predecessor_blob": "d75766952e929f2356dd29a9aa564642ef173734",
-    "purpose": "Receive and diagnose failed public target-group R2 qualification40100021939",
-    "observed_predecessor": "Prior Work iteration explicitly released; R2 terminal failure; no newer ledger commit, successor, relevant active workflow, or competing Work run observed.",
-    "renewed_utc": "2026-10-24T14:50:23.871Z"
+    "released_utc": "2026-10-24T14:52:29.264Z",
+    "predecessor_blob": "40a51a8258f99dcf005a7608d01e23f0d587c588",
+    "reason": "R3 qualification40104302392 is active; original-artifact receiver is immutable and no safely independent critical-path mutation remains."
   },
   "last_qualified": {
     "source": "95b0ab3b44605e9f13d67750a2aa0c028ab24616",
@@ -46,7 +45,24 @@
     "validation": "85a6951037adec534948301bc7dea894104045c8",
     "validation_branch": "validation/manual-public-target-groups-r2-20261024",
     "workflow": ".github/workflows/manual-public-target-groups-r2-20261024.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      {
+        "run": 40104302392,
+        "job": 120902680013,
+        "attempt": 1,
+        "run_number": 1,
+        "event": "push",
+        "workflow_id": 395182723,
+        "head_sha": "6a598d02b0d496624e79f917a303eaa9144d6359",
+        "source": "226773f86f2229226ae46e0276ec8f97664ae215",
+        "source_tree": "aace3ce9933ed8af6e704d977e552464420f427b",
+        "status": "in_progress",
+        "conclusion": null,
+        "dispatched_utc": "2026-10-24T14:50:39Z",
+        "observed_utc": "2026-10-24T14:52:29.264Z",
+        "current_stage": "Client locked dependencies, typecheck and exact34 targeted transport cases"
+      }
+    ],
     "planned_not_observed": {
       "client": 34,
       "actor": 39,
@@ -72,7 +88,7 @@
     },
     "negative_scope": "R1 compiler failure preserved as zero-test failure. R2 must compile normal and unchanged visit-loss mutant, then produce exact five behavioral assertion failures among20. Missing reports, compiler errors, wrong identities/types/frames, skips or unrelated failures reject.",
     "source_delta": "Exact21-path delta and immutable GitHub blob readback verified;14 existing paths modified,4new implementation/test paths,3new protocol records. All preexisting assertions preserved. Normal/mutant executable compilation and behavior are declared early workflow gates, not yet observed. No external independent review claimed.",
-    "next_executable_action": "Reconcile workflows and ownership once more, then create validation/manual-public-target-groups-r3-20261024 from validation6a598d02b0d496624e79f917a303eaa9144d6359 exactly once. Record actual run/job, prepare a source-bound original-artifact receiver, and do not rerun R1 or R2.",
+    "next_executable_action": "When run40104302392 is terminal, first reconcile for a newer receipt or successor. On success download its original artifact exactly once and run the immutable receiver73468a54f3bf391d4615b5677f5dc1ed3be65774 against source226773f8/treeaace3ce9/validation6a598d02/run40104302392/job120902680013/attempt1; accept only after exact identities/counts/skips, five behavioral failures, restoration/rebinding, all positive gates, Assay and protected bytes pass. On failure preserve the original artifact and diagnose; never rerun unchanged.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -1717,7 +1733,7 @@
       "diagnosis": "PG15/PG16 sent an unpaid normal public CastSpell through ActionProcessor. Public validation correctly rejects the missing mandatory sacrifice before execute can surface the internal unpaid-cost continuation. Modal SC12/SC13 reach that continuation only after an authorized continuation resumes directly into execute. Production behavior remains correct."
     },
     "public_target_groups_recovery_r3": {
-      "state": "FROZEN_REVIEWED_READY_FOR_SINGLE_DISPATCH",
+      "state": "RUNNING_NOT_ACCEPTED",
       "source": "226773f86f2229226ae46e0276ec8f97664ae215",
       "source_tree": "aace3ce9933ed8af6e704d977e552464420f427b",
       "source_parent": "c0c0b1e60c622b3224e336f6b37a55c0c5312e85",
@@ -1758,12 +1774,37 @@
         "assay_findings": 51
       },
       "local_preflight": "Exact source reconstructed and all18 implementation hashes plus82 legacy fixtures verified. Gate Python/static mutation contract passed. Local locked build could not fetch uncached Gradle9.6.1 because this runtime blocks services.gradle.org; cloud qualification retains required normal/mutant compile and targeted gates.",
-      "run": null,
-      "job": null,
+      "run": 40104302392,
+      "job": 120902680013,
       "artifact": null,
       "official_games": 0,
       "official_seeds": 0,
-      "precision_reserved": 2
+      "precision_reserved": 2,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "workflow_id": 395182723,
+      "status": "in_progress",
+      "conclusion": null,
+      "dispatched_utc": "2026-10-24T14:50:39Z",
+      "observed_utc": "2026-10-24T14:52:29.264Z",
+      "current_stage": "Client locked dependencies, typecheck and exact34 targeted transport cases",
+      "completed_observed": [
+        "source/workflow binding"
+      ],
+      "receiving_audit": {
+        "state": "PREPARED_NOT_EXECUTED",
+        "commit": "73468a54f3bf391d4615b5677f5dc1ed3be65774",
+        "tree": "df3f65bb668a89db55696d1373e3e437dcea708d",
+        "branch": "checkpoint/manual-public-target-groups-receiver-r3-20261024",
+        "path": "experiments/manual-transmission/research/public-target-groups-receiver-r3-20261024/RECEIVE_PUBLIC_GROUPS_R3.py",
+        "instructions": "experiments/manual-transmission/research/public-target-groups-receiver-r3-20261024/PREPARED.md",
+        "blob": "b9a2b9843a5c028c6b75da8968b1b0217810fb76",
+        "syntax_verified": true,
+        "immutable_readback_verified": true,
+        "synthetic_report_parser_checks": 9
+      },
+      "runtime_evidence_limit": "Only source binding is complete. Client, normal/mutant compilation, actor, targeted, behavioral control, regressions and Assay remain unaccepted until terminal original artifact audit."
     }
   },
   "completion_contract": {
@@ -1808,11 +1849,18 @@
       "completed_at": null,
       "chat_ref": null
     },
-    "observed_utc": "2026-10-24T14:50:23.871Z",
-    "active_relevant_workflow": null,
+    "observed_utc": "2026-10-24T14:52:29.264Z",
+    "active_relevant_workflow": {
+      "run": 40104302392,
+      "job": 120902680013,
+      "status": "in_progress",
+      "conclusion": null,
+      "head_sha": "6a598d02b0d496624e79f917a303eaa9144d6359",
+      "stage": "Client locked dependencies, typecheck and exact34 targeted transport cases"
+    },
     "queued_relevant_workflows": [],
     "waiting_relevant_workflows": [],
-    "owner_reconciliation": "This Work iteration owns the active lease. R2 is terminal and preserved; no newer receipt/successor or other worker observed.",
+    "owner_reconciliation": "This Work iteration launched exactly one R3 successor after terminal R2 preservation and released the lease. No other relevant worker or workflow observed.",
     "recent_checkpoint_head": "a9113381cece2a94cd0a74ba01823638f203ffa4",
     "work_task_run": "38659609-f03c-8327-a4ec-2eae23224f49",
     "discussion_executor": "PAUSED"
@@ -1905,8 +1953,8 @@
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_SINGLE_WORK_EXECUTOR",
-    "last_verified_enabled_utc": "2026-10-24T13:55:36.242Z",
-    "next_authorized_action": "Reconcile workflows and ownership once more, then create validation/manual-public-target-groups-r3-20261024 from validation6a598d02b0d496624e79f917a303eaa9144d6359 exactly once. Record actual run/job, prepare a source-bound original-artifact receiver, and do not rerun R1 or R2.",
+    "last_verified_enabled_utc": "2026-10-24T14:52:29.264Z",
+    "next_authorized_action": "When run40104302392 is terminal, first reconcile for a newer receipt or successor. On success download its original artifact exactly once and run the immutable receiver73468a54f3bf391d4615b5677f5dc1ed3be65774 against source226773f8/treeaace3ce9/validation6a598d02/run40104302392/job120902680013/attempt1; accept only after exact identities/counts/skips, five behavioral failures, restoration/rebinding, all positive gates, Assay and protected bytes pass. On failure preserve the original artifact and diagnose; never rerun unchanged.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -2403,5 +2451,9 @@
       "remaining_component_gates": []
     }
   },
-  "stop_reason": null
+  "stop_reason": {
+    "code": "EXTERNAL_DEPENDENCY_ONLY",
+    "detail": "Qualification40104302392 is running. Original R2 evidence is preserved; R3 source/protocol and immutable receiver are complete. Further source mutation or another qualification would overlap frozen active evidence.",
+    "observed_utc": "2026-10-24T14:52:29.264Z"
+  }
 }
