@@ -148,6 +148,17 @@ interface ArenaTrainingObserver {
  */
 object TableGameRunner {
 
+    /** Preserve legacy recording bytes only when both added provenance fields are absent. */
+    internal fun recordedActionText(action: GameAction): String {
+        val text = action.toString()
+        val absentProvenance = ", targetGroups=null, originalTargetSlots=null)"
+        return if (action is CastSpell && action.targetGroups == null &&
+            action.originalTargetSlots == null && text.endsWith(absentProvenance)
+        ) {
+            text.removeSuffix(absentProvenance) + ")"
+        } else text
+    }
+
     /**
      * Wedge detection: this many actions without the turn passing to another player.
      *
@@ -293,7 +304,7 @@ object TableGameRunner {
                     actionCount++
                     val action = aiFor(priorityPlayer).chooseAction(state)
                     trainingObserver?.action(action)
-                    record("A$actionCount|${seatOf(priorityPlayer)}|${state.step.name}|$action\n")
+                    record("A$actionCount|${seatOf(priorityPlayer)}|${state.step.name}|${recordedActionText(action)}\n")
                     val r = processor.process(state, action).result
                     val next = if (r.error != null) {
                         val subjectId = when (action) {
