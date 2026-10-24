@@ -1,18 +1,21 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T10:07:29.723Z",
+  "updated_date": "2026-10-24T10:11:30.993Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "ACTIVE",
-  "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
+  "status": "WAITING_EXTERNAL",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
+    "state": "RELEASED",
+    "owner": null,
     "claimed_utc": "2026-10-24T09:46:58.845Z",
-    "expires_utc": "2026-10-24T10:28:42.888Z",
+    "expires_utc": "2026-10-24T10:11:30.993Z",
     "predecessor_blob": "4e44a016fb890bedf2c518d7a93b8cb073fa9f25",
     "purpose": "R2 original evidence received; complete18-case qualification freeze and guarded launch",
-    "renewed_utc": "2026-10-24T10:03:42.888Z"
+    "renewed_utc": "2026-10-24T10:03:42.888Z",
+    "released_utc": "2026-10-24T10:11:30.993Z",
+    "previous_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
+    "release_reason": "Full qualification active; original receiving infrastructure and isolated next dependency source review complete. Next source-dependent advancement requires original runtime outcomes."
   },
   "last_qualified": {
     "source": "035e0ec3da8729c43018ffcc839aa821517dcda3",
@@ -36,35 +39,38 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "Full18-case original controller activation capture qualification running; receiver preparation active.",
-    "source_candidate": "035e0ec3da8729c43018ffcc839aa821517dcda3",
-    "source_tree": "bb50c6e9de41619e796ac5550a449484bfcbf7cf",
-    "source_branch": "candidate/manual-modal-spell-capture-r3-20261024",
-    "protocol": "experiments/manual-transmission/research/modal-spell-capture-r3-20261024/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/modal-spell-capture-r3-20261024/DESIGN.md",
-    "validation": "266f4a28fecd66fabf4f34aa4e14cab20b0a771f",
-    "validation_branch": "validation/manual-modal-spell-capture-r3-20261024",
-    "workflow": ".github/workflows/manual-modal-spell-capture-r3-20261024.yml",
+    "current_subproblem": "Full18-case original controller activation provenance qualification pending; original R2 control recovery verified; receiving auditor and next public-group boundary review prepared.",
+    "source_candidate": "07a99a5151dc2438a100e1d3ebb26118ebd6d3f9",
+    "source_tree": "56a235a456d88fc199761a8925d559efb8bc388d",
+    "source_branch": "candidate/manual-activation-target-capture-r1-20261024",
+    "protocol": "experiments/manual-transmission/research/activation-target-capture-r1-20261024/PROTOCOL.json",
+    "design": "experiments/manual-transmission/research/activation-target-capture-r1-20261024/DESIGN.md",
+    "validation": "77310dfc6ba19133a0c280ec0e37772450428872",
+    "validation_branch": "validation/manual-activation-target-capture-r1-20261024",
+    "workflow": ".github/workflows/manual-activation-target-capture-r1-20261024.yml",
     "pending_runs": [
       40084539580
     ],
     "planned_not_observed": {
-      "targeted": 23,
-      "mutation_failures": 2,
-      "mutation_frames": [
-        69,
-        81
+      "targeted": 18,
+      "mutation_cases": 8,
+      "mutation_failures": 3,
+      "mutation_passes": 5,
+      "frames": [
+        55,
+        60,
+        95
       ],
-      "focused": 782,
-      "engine": 4070,
-      "broad": 14845,
-      "ordinary_passes": 18453,
+      "focused": 800,
+      "broad": 14863,
+      "engine": 4088,
+      "ordinary_passes": 18471,
       "unchanged_skips": 43,
       "assay_units": 568
     },
-    "negative_scope": "Original R1 normal failures are not deliberate negative-control evidence. R2 retains exact SM01/SM02 two behavioral witnesses and compiled group/visit fault; results pending.",
-    "source_delta": "R3 adds three qualification records only to R2;24cumulative paths versus accepted modal-trigger base. All production/test/negative-control bytes identical to R2. Old frozen records preserved.",
-    "next_executable_action": "Receive original full qualification40084539580/job120844646651/attempt1 from source07a99a5151dc2438a100e1d3ebb26118ebd6d3f9 validation77310dfc6ba19133a0c280ec0e37772450428872. Require18normal,8mutant exact3failures55/60/95 and5pass, restore/rebind,800focused,14863broad,18471ordinary+43unchangedskips,Assay568/2000/51,original identity counters/protected144/23/82. Do not duplicate. A green run is not acceptance.",
+    "negative_scope": "R1 combined control wrong failure types preserved as failed. R2 original compiled visit-only control verified exact3 assertions. Full new-source qualification must independently repeat exact8-case/3assertion control after normal18 passes.",
+    "source_delta": "14 cumulative paths versus accepted modal-spell035e0ec3:4unchanged production edits, original8-case test,2new5-case test files,4preservedpreflight records,3fullqualification records.",
+    "next_executable_action": "Reconcile live CURRENT.json, owners, recent checkpoints and all workflow statuses. If run40084539580 is active, do not duplicate/cancel; keep receiving action and release. When terminal, receive its original artifact for source07a99a5151dc2438a100e1d3ebb26118ebd6d3f9/tree56a235a456d88fc199761a8925d559efb8bc388d/validation77310dfc6ba19133a0c280ec0e37772450428872/job120844646651/attempt1 using receiver2c43d192aedf260b98b8830d7f86b11481a987ba/RECEIVE_ACTIVATION.py and PREPARED.md. Pin artifact ID/bytes/hash. Require18targeted,8mutant exact3 AssertionFailedError frames55/60/95 and5passes, normal/mutant compilation, restoredclean,800focused,14863broad,18471ordinary+43unchangedskips,Assay568/2000/51, original report identities/multiplicities and protected144/23/82. Preserve/diagnose failures, no unchanged rerun. After bounded acceptance continue public requirement-group transport/capture review f6a81def8005d0b3c403d172dd73427e301dd031; no reconstruction from flattened targets, no protected StackResolver edits, no games/seeds.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -181,7 +187,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "273cf3f8460919f55d0ae603ea457bfb1eb9554c",
+    "validation_tree": "0b2e96d5516d2efcb81ba9911e524039a9cc2788",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -1242,7 +1248,7 @@
         "commit": "7c6a06c78a86855361dc0043a4518dcfe1be94dc",
         "instructions": "experiments/manual-transmission/research/activation-target-capture-preflight-receiver-r1-20261024/PREPARED.md",
         "path": "experiments/manual-transmission/research/activation-target-capture-preflight-receiver-r1-20261024/RECEIVE.py",
-        "state": "PREPARED_NOT_EXECUTED",
+        "state": "EXECUTED_RECEIVED_FAILED_CONTROL",
         "immutable_readback_verified": true
       },
       "expected_mutation_frames": {
@@ -1251,7 +1257,7 @@
         "AC07": 95
       },
       "implementation": "Validated controller groups captured before flattening, serializable action carrier rejected by public validation, copied through unpaid-cost pauses, attached to exact constructed activated ability before protected stack placement. Complete controller-only matching histories only; no inferred missing groups; defaults omitted from legacy encoding.",
-      "remaining_gates": "Early runtime results pending. Full live VariablePermanents/mixed-opponent/direct-legacy/payment-failure/division/copy guards and coherent full qualification remain; no component admission.",
+      "remaining_gates": "R1 failed; original evidence andwrong-type diagnosis preserved. R2earlycontrol recovered, fullqualification40084539580 pending.",
       "artifact_bytes": 20910,
       "artifact_sha256": "db7167bbfcae8312669db6cdf4caef0fc80a92daf7b56421a6b3a4f0b5743614",
       "receipt": "b2a2bfc4418781e9ac039fc89c2cc215c09abddd",
@@ -1318,7 +1324,158 @@
       "status": "in_progress",
       "conclusion": null,
       "expected_artifact_name": "manual-activation-target-capture-r1-40084539580",
-      "dispatched_utc": "2026-10-24T10:05:37.331Z"
+      "dispatched_utc": "2026-10-24T10:05:37.331Z",
+      "job_status": "in_progress",
+      "observed_utc": "2026-10-24T10:11:30.993Z",
+      "steps_observed": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install locked recipe runner",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Bind exact bounded delta and all144 protected paths",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Compile exact normal capture implementation",
+          "status": "in_progress",
+          "conclusion": null
+        },
+        {
+          "name": "Early targeted eighteen-case normal fixture and integration check",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Compile executable visit loss mutant",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Restore and rebind after compilation controls",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Apply compiled visit loss mutation and execute three witnesses among eight original cases",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Require three precise behavioral assertion failures, not compilation errors",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Restore exact candidate and rebind before any positive testing",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Focused 800 cases with strict original report receiving",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Broad engine and nine card-era regressions",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Ordinary whole-project build and exact 43 historical skips",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Build Oracle Assay CLI",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Assay 2000-card corpus and preserve its exact original bytes",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Preserve full original differential without reclassification",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Receive Assay metrics and preserve all 51 original findings",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Recheck exact candidate and protected source bytes",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Preserve protocols, literal source delta, and unfinished-stage disposition",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Post Run actions/setup-java@v4",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "pending",
+          "conclusion": null
+        }
+      ],
+      "receiving_audit": {
+        "commit": "2c43d192aedf260b98b8830d7f86b11481a987ba",
+        "path": "experiments/manual-transmission/research/activation-target-capture-receiver-r1-20261024/RECEIVE_ACTIVATION.py",
+        "instructions": "experiments/manual-transmission/research/activation-target-capture-receiver-r1-20261024/PREPARED.md",
+        "blob": "9cbd52ed9d846d88c83b6c9303a53aacd07100d4",
+        "state": "PREPARED_NOT_EXECUTED",
+        "immutable_readback_verified": true
+      },
+      "runtime_results": "Source binding stage passed; normal compilation running.18new-source test/compiledcontrol/fullpositive outcomes pending. R2 early receipt is not validation of10added tests or component acceptance."
+    },
+    "public_group_boundary_review": {
+      "commit": "f6a81def8005d0b3c403d172dd73427e301dd031",
+      "path": "experiments/manual-transmission/research/public-target-groups-review-r1-20261024/REVIEW.json",
+      "source": "07a99a5151dc2438a100e1d3ebb26118ebd6d3f9",
+      "state": "CONDITIONAL_SOURCE_REVIEW_ONLY_NO_IMPLEMENTATION",
+      "readback_verified": true,
+      "concrete_blocker": "Client still flattens requirement groups before public action and globally excludes cross-instance repeats; original splice grouping cannot be inferred afterward."
     }
   },
   "completion_contract": {
@@ -1342,7 +1499,7 @@
     "no_successful_workflow_rerun": true
   },
   "reconcile": {
-    "last_checked_utc": "2026-10-24T10:05:11.155Z",
+    "last_checked_utc": "2026-10-24T10:11:30.993Z",
     "relevant_active_workflows": [
       {
         "run": 40084539580,
@@ -1353,14 +1510,14 @@
       }
     ],
     "ignored_unrelated_ancient_run": 34749202144,
-    "current_worker": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
-    "observed_ledger_predecessor_blob": "a4353a95de612fdd4f46012207bfc6c4ba04cbce",
+    "current_worker": null,
+    "observed_ledger_predecessor_blob": "367eb774eae019a9b4643206ad814899fa0eb02d",
     "former_discussion_executor_paused": true,
     "intervention_watch_read_only": true,
-    "latest_checkpoint_before_release": "67e5d15b4bfe7a8d86c3588537b99f38edf3fc67",
+    "latest_checkpoint_before_release": "2c43d192aedf260b98b8830d7f86b11481a987ba",
     "qualification_repeated": false,
     "latest_receipt": "96ddb8fbe1198917946e9f4b406c9fdde882a75a",
-    "latest_draft": "7c901c03b6047148219deda1a020b0f03d106abb",
+    "latest_draft": "f6a81def8005d0b3c403d172dd73427e301dd031",
     "preserved_prior_reconciliation": "2026-10-23T23:41:32.374Z: explicit predecessor release verified; task admission still true, old Discussion executor paused, no relevant workflow active/queued/waiting/requested/pending or newer checkpoint.",
     "current_conversation_scheduled_wakeup": "7d43701b-6d9c-832a-acef-767e74ea300a; current owned iteration, not another worker"
   },
@@ -1451,14 +1608,18 @@
       }
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
-    "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
-    "last_verified_enabled_utc": "2026-10-24T07:51:24.062Z",
-    "next_authorized_action": "Reconcile live owners/newer checkpoints/workflows. Receive original early-feedback40079283905/job120829249523/attempt1/sourceb4cf3e544554f82eb75e384cda61a45482b67663/treef7013ea653c62b07b89980454de75f4c2d31d1c5/validation0129651a39a04af86d4bdcf1b001a1ae832d5d82. Use receiver7c6a06c78a86855361dc0043a4518dcfe1be94dc/PREPARED.md and pin original artifact/id/bytes/hash. Require normal compile+8pass, mutant compile+exact3AC01/02/07 failures54/60/95 with5pass, restoreclean/protected144/23/82. Failures need original evidence/diagnosis; never weaken8original tests or blindlyrerun. Early pass is not component acceptance: complete declared live-flow/boundary guards and freeze full source-bound qualification using acceptedR3 baseline. Preserve acceptedmodalspell035e0ec3/receipt839a2a99/run40071650391; no repeat. No games/seeds.",
+    "execution_enabled_state": "ENABLED_ADMITTED_SHARED_CAS_SINGLE_OWNER",
+    "last_verified_enabled_utc": "2026-10-24T10:05:11.155Z",
+    "next_authorized_action": "Reconcile live CURRENT.json, owners, recent checkpoints and all workflow statuses. If run40084539580 is active, do not duplicate/cancel; keep receiving action and release. When terminal, receive its original artifact for source07a99a5151dc2438a100e1d3ebb26118ebd6d3f9/tree56a235a456d88fc199761a8925d559efb8bc388d/validation77310dfc6ba19133a0c280ec0e37772450428872/job120844646651/attempt1 using receiver2c43d192aedf260b98b8830d7f86b11481a987ba/RECEIVE_ACTIVATION.py and PREPARED.md. Pin artifact ID/bytes/hash. Require18targeted,8mutant exact3 AssertionFailedError frames55/60/95 and5passes, normal/mutant compilation, restoredclean,800focused,14863broad,18471ordinary+43unchangedskips,Assay568/2000/51, original report identities/multiplicities and protected144/23/82. Preserve/diagnose failures, no unchanged rerun. After bounded acceptance continue public requirement-group transport/capture review f6a81def8005d0b3c403d172dd73427e301dd031; no reconstruction from flattened targets, no protected StackResolver edits, no games/seeds.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
       "task_prompt_update": "SAVED_EXACT_PROMPT_AND_ENABLED_STATE_READBACK_VERIFIED",
       "verified_utc": "2026-10-24T02:57:24.422Z"
+    },
+    "transient_access_observation": {
+      "state": "RECOVERED",
+      "detail": "exec-server transport disconnected briefly, then actual local execution/read/hash/auditor operations succeeded. No ongoing access blocker; no task disabled."
     }
   },
   "previous_qualified": {
@@ -1906,5 +2067,11 @@
       "runtime_results": "Unchanged immutable auditor86ac2ffd passed original9053manifest, exact23targeted/2behavioral69_81/782focused/14845broad/18453ordinary+43same skips, normal/mutant compilation,restore,rebind,Assay568/2000/exact51findings,rawidentities/multiplicities and protected144/23/82."
     }
   },
-  "stop_reason": null
+  "stop_reason": {
+    "kind": "EXTERNAL_DEPENDENCY_ONLY",
+    "recorded_utc": "2026-10-24T10:11:30.993Z",
+    "external_workflow": 40084539580,
+    "worker_active_after_release": false,
+    "detail": "Received/preserved R1 control failure; verified andreceivedR2 injector recovery; prepared10additional tests, froze18case source/protocol and launchedonefullqualification. Exact receiver and public-group next-dependency review saved/readbackverified. Normalcompilation stillrunning; no further independent bounded receiving/preparation work remains. Do not assume component success or continue polling."
+  }
 }
