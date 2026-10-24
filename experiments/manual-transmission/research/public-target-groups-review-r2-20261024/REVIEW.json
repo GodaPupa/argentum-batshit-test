@@ -1,0 +1,61 @@
+{
+  "state": "SOURCE_TRACE_COMPLETE_IMPLEMENTATION_NOT_STARTED",
+  "source": "95b0ab3b44605e9f13d67750a2aa0c028ab24616",
+  "accepted_receipt": "ff20f1c965feb3f5a51a35b97c4e87ae841b5b1a",
+  "files": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/TargetValidator.kt",
+      "blob": "9d26971aa1b77ab34ff9b1499ad3b63559684be5"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/EffectContext.kt",
+      "blob": "65f554f5f1d0c3a6ef6fec85236fc464127e0df9"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "blob": "64c0466abe72bc495c7e5d364fdbf73d75db777b"
+    },
+    {
+      "path": "web-client/src/store/slices/ui/targetingSlice.ts",
+      "blob": "81a1bf4d90c45797e27e04cbc904d6b47ae6a3ab"
+    },
+    {
+      "path": "web-client/src/store/slices/ui/pipelinePhases.ts",
+      "blob": "5eea4a9f7e64922dcf874bf7f5ca033360f70dd2"
+    }
+  ],
+  "previous_review": "f6a81def8005d0b3c403d172dd73427e301dd031",
+  "additional_findings": [
+    "TargetValidator.validateTargets computes each startIdx from preceding effectiveMaxCount, so it cannot validate explicit omitted optional groups from a flat list. The same validator already permits cross-requirement repeats but rejects intra-requirement duplicates and TargetOther relations; group support must retain those checks.",
+    "EffectContext.buildNamedTargets advances targetIndex by declared req.count, and protected StackResolver supplies flattened/aligned targets to it for spells and activations. Current metadata does not alter that resolution authority.",
+    "Protected StackResolver builds splice-local lists from declared counts and splits main targets by total declared splice slots. Public transport cannot truthfully be called complete gameplay support without resolution-level witnesses.",
+    "UI globally excludes prior-group selections, although same-recipient cross-instance choices can be legal. Do not remove that filter independently of server grouping support and relation validation."
+  ],
+  "source_derived_counterexample": {
+    "input_groups": [
+      [],
+      [
+        "B"
+      ]
+    ],
+    "flat_targets": [
+      "B"
+    ],
+    "declared_counts": [
+      1,
+      1
+    ],
+    "current_validator_slices": [
+      [
+        "B"
+      ],
+      []
+    ],
+    "meaning": "Static arithmetic trace, not executed engine evidence: omitted optional first group loses its boundary; the mandatory second group is empty after flatten-based slicing."
+  },
+  "next_executable_action": "Design coherent public requirement-group carrier and validation/capture integration on this accepted source; trace action DTO/schema, public server validation, cost reentry, serialization, UI forward/back flow and named/splice resolution. Preserve all original assertions. First executable witnesses must distinguish [[],[B]] from [[B],[]], allow cross-instance repeats but reject within-instance/TargetOther violations, reject mismatched flat unions and forged/stale groups, and prove original refs are server-captured. Do not change protected StackResolver or claim resolver support from metadata. If complete resolution needs protected-source change, present a concrete source-specific admission decision instead of bypassing that boundary.",
+  "runtime_tests": "No new test execution for this trace; activation acceptance remains tied solely to original run40091111694.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
