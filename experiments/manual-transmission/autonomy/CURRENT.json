@@ -1,17 +1,19 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T04:49:08.724Z",
+  "updated_date": "2026-10-24T04:56:10.891Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "WAITING_EXTERNAL",
-  "owner": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE_SCHEDULED",
-    "owner": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d",
+    "state": "RELEASED",
+    "owner": null,
     "claimed_utc": "2026-10-24T04:40:47.441Z",
-    "expires_utc": "2026-10-24T05:30:47.441Z",
+    "expires_utc": "2026-10-24T04:56:10.891Z",
     "predecessor_blob": "5c73f3951e8c720a74486627266feaaa3bb53dfb",
-    "purpose": "Prepare original full spell qualification receiver and isolated next-dependency review during build"
+    "purpose": "Prepare original full spell qualification receiver and isolated next-dependency review during build",
+    "released_utc": "2026-10-24T04:56:10.891Z",
+    "last_owner": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d"
   },
   "last_qualified": {
     "source": "103ac16642d60c0d02bd12004d37f2f87cf7f324",
@@ -40,7 +42,7 @@
     "source_tree": "464c56d2d4b542cb9d8e24966f3f7e206aa3e443",
     "source_branch": "candidate/manual-modal-spell-capture-r1-20261024",
     "protocol": "experiments/manual-transmission/research/modal-spell-capture-r1-20261024/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/modal-target-capture-r1-20261024/DESIGN.md",
+    "design": "experiments/manual-transmission/research/modal-spell-capture-r1-20261024/DESIGN.md",
     "validation": "87ceda41e1298a282159f7a9d66bede20a6c21bc",
     "validation_branch": "validation/manual-modal-spell-capture-r1-20261024",
     "workflow": ".github/workflows/manual-modal-spell-capture-r1-20261024.yml",
@@ -48,12 +50,22 @@
       40063808901
     ],
     "planned_not_observed": {
-      "early_targeted": 8,
-      "full_qualification": "NOT_YET_FROZEN"
+      "targeted": 18,
+      "mutation_assertion_failures": 2,
+      "mutation_frames": [
+        69,
+        81
+      ],
+      "focused": 777,
+      "broad": 14840,
+      "engine": 4065,
+      "ordinary_passes": 18448,
+      "unchanged_skips": 43,
+      "assay_units": 568
     },
-    "negative_scope": "No behavioral negative evidence claimed for early preflight. Freeze dedicated grouping/visit witnesses and compiled fault on next reviewed complete source; exact failures, restore/rebind and all full positives remain required.",
-    "source_delta": "Twelve paths versus accepted103ac166: seven modified unprotected production files, new trusted provenance helper, new eight-case test file, three preflight records. Public GameAction and all protected originals untouched.",
-    "next_executable_action": "Receive original run40063808901/job120782717321/attempt1, source6b63882cc02248e7da46a1d731b319f87b3b97e0/tree464c56d2d4b542cb9d8e24966f3f7e206aa3e443/validation87ceda41e1298a282159f7a9d66bede20a6c21bc. Audit original artifact pins/digest/source/manifest,18 targeted, compiled mutant exact2 SM01/SM02 failures69/81, restored candidate,777focused/14840broad/18448ordinary+43same skips and Assay568/2000/51. Diagnose failed evidence before any new source. Auditor being prepared under current lease.",
+    "negative_scope": "Full spell fault is frozen: drop empty newly selected groups and clear their captured visits. Compiler errors/zero reports/unrelated failures are rejected. Behavioral result pending original run.",
+    "source_delta": "Exact16 paths vs accepted103ac166: seven modified production, one new trusted carrier, two new test classes, preserved three preflight records and three full qualification records. All16 GitHub blobs and workflow-only child verified.",
+    "next_executable_action": "Reconcile live ledger/leases/newer receipts and relevant workflows. If40063808901 is active, do not duplicate or poll continuously. When terminal, download its original artifact (expected manual-modal-spell-capture-r1-40063808901), pin actual id/bytes/SHA256 and receive using dd114a9c447b0fa08c317bd28939b276184fc873/PREPARED.md and unchanged RECEIVE_SPELL_FULL.py. Exact source6b63882cc/tree464c56d2/validation87ceda41/job120782717321/attempt1. Require18targeted, normal+mutant compilation, exact2 SM01/SM02 failures69/81, restore/rebind,777focused/14840broad/18448ordinary+43same skips and Assay568/2000/51, full original identities/protected144/23/82. For failure preserve original with INSPECT_SPELL_FAILURE.py, diagnose actual source/fixture/control defect without weakening assertions or unchanged rerun. After bounded acceptance continue activation capture from pinned reviewc8d51e663; current-target, splice/flat-cast and protected resolver authority remain separate gates. No official games/seeds.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -507,7 +519,162 @@
       "status": "in_progress",
       "dispatched_utc": "2026-10-24T04:48:41.542Z",
       "expected_artifact_name": "manual-modal-spell-capture-r1-40063808901",
-      "runtime_results": "PENDING_ORIGINAL_ARTIFACT_NO_ACCEPTANCE"
+      "runtime_results": "PENDING_ORIGINAL_ARTIFACT_NO_ACCEPTANCE",
+      "observed_utc": "2026-10-24T04:56:10.891Z",
+      "job_status": "in_progress",
+      "conclusion": null,
+      "normal_compilation": "WORKFLOW_STEP_SUCCESS_ORIGINAL_ARTIFACT_NOT_YET_RECEIVED",
+      "steps_observed": [
+        {
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/checkout@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run actions/setup-java@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Run gradle/actions/setup-gradle@v4",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Install locked recipe runner",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Bind exact bounded delta and all144 protected paths",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Compile exact normal capture implementation",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "name": "Early targeted eighteen-case normal fixture and integration check",
+          "status": "in_progress",
+          "conclusion": null
+        },
+        {
+          "name": "Compile executable group-and-visit loss mutant",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Restore and rebind after compilation controls",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Apply compiled group-and-visit loss mutation and execute two witnesses",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Require two precise behavioral assertion failures, not compilation errors",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Restore exact candidate and rebind before any positive testing",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Focused 777 cases with strict original report receiving",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Broad engine and nine card-era regressions",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Ordinary whole-project build and exact 43 historical skips",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Build Oracle Assay CLI",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Assay 2000-card corpus and preserve its exact original bytes",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Preserve full original differential without reclassification",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Receive Assay metrics and preserve all 51 original findings",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Recheck exact candidate and protected source bytes",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Preserve protocols, literal source delta, and unfinished-stage disposition",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Run actions/upload-artifact@v4",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Post Run gradle/actions/setup-gradle@v4",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Post Run actions/setup-java@v4",
+          "status": "pending",
+          "conclusion": null
+        },
+        {
+          "name": "Post Run actions/checkout@v4",
+          "status": "pending",
+          "conclusion": null
+        }
+      ],
+      "receiving_audit": {
+        "state": "PREPARED_NOT_EXECUTED",
+        "commit": "dd114a9c447b0fa08c317bd28939b276184fc873",
+        "branch": "checkpoint/manual-modal-spell-capture-receipt-preflight-r1-20261024",
+        "path": "experiments/manual-transmission/research/modal-spell-capture-receipt-preflight-r1-20261024/RECEIVE_SPELL_FULL.py",
+        "blob": "327c91f2f29d00ecd39a7166661907bb7194d719",
+        "instructions": "experiments/manual-transmission/research/modal-spell-capture-receipt-preflight-r1-20261024/PREPARED.md",
+        "failed_original_inspector": "experiments/manual-transmission/research/modal-spell-capture-receipt-preflight-r1-20261024/INSPECT_SPELL_FAILURE.py",
+        "immutable_readback_verified": true
+      }
+    },
+    "spell_next_dependency_review": {
+      "commit": "c8d51e663eb126014c06013c954a038982eb29fe",
+      "path": "experiments/manual-transmission/research/modal-spell-capture-next-dependency-r1-20261024/REVIEW.json",
+      "blob": "834db4fd3302cf8363d5189f972d4bf708dc56a6",
+      "source": "6b63882cc02248e7da46a1d731b319f87b3b97e0",
+      "source_files_readback_verified": 6,
+      "state": "ISOLATED_SOURCE_REVIEW_ONLY_NO_IMPLEMENTATION_OR_RUNTIME_RESULT",
+      "conditional_on_run": 40063808901
     }
   },
   "completion_contract": {
@@ -531,7 +698,7 @@
     "no_successful_workflow_rerun": true
   },
   "reconcile": {
-    "last_checked_utc": "2026-10-24T04:48:34.487Z",
+    "last_checked_utc": "2026-10-24T04:56:10.891Z",
     "relevant_active_workflows": [
       {
         "run": 40063808901,
@@ -542,11 +709,11 @@
       }
     ],
     "ignored_unrelated_ancient_run": 34749202144,
-    "current_worker": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d",
-    "observed_ledger_predecessor_blob": "685cd1c9ed815b3232c00e5dbfde97e647660e5b",
+    "current_worker": null,
+    "observed_ledger_predecessor_blob": "fb950964e0c82d9057515d13a9cf47063294dd15",
     "former_discussion_executor_paused": true,
     "intervention_watch_read_only": true,
-    "latest_checkpoint_before_release": "e233de762fcf848836fa1e34d6ec69619924d0eb",
+    "latest_checkpoint_before_release": "dd114a9c447b0fa08c317bd28939b276184fc873",
     "qualification_repeated": false,
     "latest_receipt": "52ea1f00f3791f2499b39a736a60ccf26d18abb1",
     "latest_draft": "7c901c03b6047148219deda1a020b0f03d106abb",
@@ -641,8 +808,8 @@
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_AUTHORIZED_EXECUTION",
-    "last_verified_enabled_utc": "2026-10-24T02:57:24.422Z",
-    "next_authorized_action": "Receive original run40063808901/job120782717321/attempt1, source6b63882cc02248e7da46a1d731b319f87b3b97e0/tree464c56d2d4b542cb9d8e24966f3f7e206aa3e443/validation87ceda41e1298a282159f7a9d66bede20a6c21bc. Audit original artifact pins/digest/source/manifest,18 targeted, compiled mutant exact2 SM01/SM02 failures69/81, restored candidate,777focused/14840broad/18448ordinary+43same skips and Assay568/2000/51. Diagnose failed evidence before any new source. Auditor being prepared under current lease.",
+    "last_verified_enabled_utc": "2026-10-24T04:56:10.891Z",
+    "next_authorized_action": "Reconcile live ledger/leases/newer receipts and relevant workflows. If40063808901 is active, do not duplicate or poll continuously. When terminal, download its original artifact (expected manual-modal-spell-capture-r1-40063808901), pin actual id/bytes/SHA256 and receive using dd114a9c447b0fa08c317bd28939b276184fc873/PREPARED.md and unchanged RECEIVE_SPELL_FULL.py. Exact source6b63882cc/tree464c56d2/validation87ceda41/job120782717321/attempt1. Require18targeted, normal+mutant compilation, exact2 SM01/SM02 failures69/81, restore/rebind,777focused/14840broad/18448ordinary+43same skips and Assay568/2000/51, full original identities/protected144/23/82. For failure preserve original with INSPECT_SPELL_FAILURE.py, diagnose actual source/fixture/control defect without weakening assertions or unchanged rerun. After bounded acceptance continue activation capture from pinned reviewc8d51e663; current-target, splice/flat-cast and protected resolver authority remain separate gates. No official games/seeds.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
@@ -675,11 +842,11 @@
   "execution_channel": {
     "primary": "Work execution conversation",
     "session": "390bd1587480",
-    "work_owner": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d",
+    "work_owner": null,
     "discussion": "READ_ONLY",
     "scheduled_executor": "ENABLED_AUTHORIZED_EXECUTION",
-    "activity": "One source-bound full qualification40063808901 active; Work owner preparing independent receiving audit while it runs.",
-    "last_execution_owner": "manual-work-6adbe330-5e7c9ab2-16b0-8324-b5ff-c14d8c7e489e"
+    "activity": "No Work execution lease held. Single GitHub qualification40063808901 remains active; independent receiver and next-dependency review saved. No continuous worker claimed.",
+    "last_execution_owner": "manual-work-6adbe330-3223794e-0624-832f-8144-561d4ebacc8d"
   },
   "blockers": [],
   "qualified_components": {
@@ -906,5 +1073,11 @@
       "received_utc": "2026-10-24T03:50:36.842Z"
     }
   },
-  "stop_reason": null
+  "stop_reason": {
+    "kind": "EXTERNAL_DEPENDENCY_ONLY",
+    "recorded_utc": "2026-10-24T04:56:10.891Z",
+    "detail": "Frozen full spell source awaits original18-case/mutant/positive qualification results; normal compile step is green but not yet received. Completed immutable original receiving auditor, incomplete-stage inspector and exact-source next-boundary review during build. Next implementation/adoption depends on those results; no remaining independent receiving preparation needed. No repeated polling, duplicate qualification or presumed acceptance.",
+    "worker_active_after_release": false,
+    "external_workflow": 40063808901
+  }
 }
