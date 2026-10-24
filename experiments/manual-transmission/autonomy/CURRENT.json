@@ -1,6 +1,6 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T22:32:31.670Z",
+  "updated_date": "2026-10-24T22:38:02.546Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "ACTIVE",
@@ -51,14 +51,14 @@
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
     "current_subproblem": "Public target-group transport, server validation and capture qualification recovery",
-    "source_candidate": "e4efe8573086090bf39aa52a1a0ce6196c121914",
-    "source_tree": "e491b42dc54387cc5bb10be118a44dd059944cfc",
-    "source_branch": "candidate/manual-public-target-groups-r4-20261024",
-    "protocol": "experiments/manual-transmission/research/public-target-groups-r4-20261024/PROTOCOL.json",
-    "design": "experiments/manual-transmission/research/public-target-groups-r4-20261024/DESIGN.md",
-    "validation": "e0fc8eab9ad1c9ff785f074a98d9bba0e33353f6",
-    "validation_branch": "validation/manual-public-target-groups-r4-20261024",
-    "workflow": ".github/workflows/manual-public-target-groups-r4-20261024.yml",
+    "source_candidate": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
+    "source_tree": "23ab174891290a575a752e54f0e8142a8d6f3e40",
+    "source_branch": "candidate/manual-public-target-groups-r5-20261024",
+    "protocol": "experiments/manual-transmission/research/public-target-groups-r5-20261024/PROTOCOL.json",
+    "design": "experiments/manual-transmission/research/public-target-groups-r5-20261024/DESIGN.md",
+    "validation": "a5bceaa568b17e9d4b68522612d4c5cbe1b78371",
+    "validation_branch": "validation/manual-public-target-groups-r5-20261024",
+    "workflow": ".github/workflows/manual-public-target-groups-r5-20261024.yml",
     "pending_runs": [],
     "planned_not_observed": {
       "client": 34,
@@ -77,15 +77,17 @@
       "focused": 820,
       "broad": 14883,
       "engine": 4108,
-      "ordinary_passes": 18498,
+      "ordinary_passes": 18502,
       "skips": 43,
       "assay_units": 568,
       "assay_corpus": 2000,
-      "assay_findings": 51
+      "assay_findings": 51,
+      "recording": 5,
+      "recording_new": 4
     },
-    "negative_scope": "R4 must compile unchanged normal and visit-loss mutant forms, then produce exactly PG01/PG04/PG05/PG15/PG17 AssertionFailedError witnesses at source-bound first frames61/81/88/147/165 among20; fifteen pass. Missing reports, compiler errors, wrong identities/types/frames, skips or unrelated failures reject.",
-    "source_delta": "R4 parent is failed R3 source226773f8; exact3-path recovery delta adds only R4 DESIGN/PROTOCOL/gate records. Production and test blobs, identities, assertions, counts and executable mutant are unchanged. Immutable source delta and readbacks verified; original R3 failure archive preserved.",
-    "next_executable_action": "Review exact R4 source and protected bindings; implement bounded default-null CastSpell diagnostic recording compatibility, preserve frozen assertions/golden, freeze exact recovery controls/protocol and qualify once after activity reconciliation.",
+    "negative_scope": "Unchanged visit-loss mutant must compile and fail exactly PG01/PG04/PG05/PG15/PG17 at61/81/88/147/165 among20; all15 others pass. Compile errors, missing reports, wrong identities/types/frames, skips or unrelated failures reject.",
+    "source_delta": "Same-owner source review, not independent review. Exact five-path R4 recovery delta (recorder-only modification, four-case test, three records); cumulative35 paths; immutable source/protocol/workflow readback verified. FrozenBaselineTest unchanged blobf5ebdd18148cddcb3a5d0cc6b4ae2bfc5aba2ef4. Python/YAML syntax and nine synthetic receiver checks passed; synthetic checks are not runtime evidence.",
+    "next_executable_action": "Publish exactly one frozen R5 qualification after reconciled no-competing-run check; prepare R5 original-artifact receiver while external build runs. No prior accepted qualification or R4 rerun.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -202,7 +204,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "308aaf30608353bb3768faac309e1e6cc6e8f77a",
+    "validation_tree": "5e8a85e2e05a0138d758fd38be62f3d72196d838",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -1822,7 +1824,7 @@
       ]
     },
     "public_target_groups_recovery_r4": {
-      "state": "RUNNING_NOT_ACCEPTED",
+      "state": "FAILED_FROZEN_RECORDING_COMPATIBILITY_PRESERVED_NOT_ACCEPTED",
       "source": "e4efe8573086090bf39aa52a1a0ce6196c121914",
       "source_tree": "e491b42dc54387cc5bb10be118a44dd059944cfc",
       "source_parent": "226773f86f2229226ae46e0276ec8f97664ae215",
@@ -1865,14 +1867,14 @@
       },
       "run": 40108914146,
       "job": 120916314773,
-      "artifact": null,
+      "artifact": 12566048648,
       "attempt": 1,
       "run_number": 1,
       "event": "push",
-      "status": "in_progress",
-      "conclusion": null,
+      "status": "completed",
+      "conclusion": "failure",
       "dispatched_utc": "2026-10-24T15:51:58Z",
-      "observed_utc": "2026-10-24T15:54:07.568Z",
+      "observed_utc": "2026-10-24T22:38:02.546Z",
       "current_stage": "Run actions/checkout@v4",
       "receiving_audit": {
         "state": "PREPARED_NOT_EXECUTED",
@@ -1886,10 +1888,16 @@
         "immutable_readback_verified": true,
         "synthetic_report_parser_checks": 9
       },
-      "runtime_evidence_limit": "Workflow dispatch and job identity observed. No R4 runtime gate is accepted until terminal original artifact audit.",
+      "runtime_evidence_limit": "Terminal failure already received and preserved; no R4 rerun authorized.",
       "official_games": 0,
       "official_seeds": 0,
-      "precision_reserved": 2
+      "precision_reserved": 2,
+      "job_status": "completed",
+      "artifact_bytes": 5112081,
+      "artifact_sha256": "48be8b479789e3a6e846dcb3c57c5ec2ad9f52ecea8fdf9ad23091d70f080ecb",
+      "failure_receipt": "fc3ba6a0e5ca7394eb075b55c013dfcd117305d5",
+      "failure_receipt_path": "experiments/manual-transmission/research/public-target-groups-failed-r4-20261024/VERIFIED_FAILURE.json",
+      "runtime_results": "Reused original verified failure receipt; not reaudited. Client34/actor39/targeted20/normal and mutant compilation/exact five visit-loss witnesses/focused820/broad14883 passed. Ordinary aborted on original FrozenBaselineTest hash mismatch with unchanged turns/winner/life. Assay skipped; component not accepted."
     },
     "public_target_groups_failed_r4": {
       "receipt": "fc3ba6a0e5ca7394eb075b55c013dfcd117305d5",
@@ -1898,6 +1906,57 @@
       "state": "PRESERVED_FAILURE_REUSED_NO_REAUDIT",
       "cause": "Default-null CastSpell fields change diagnostic action hash; FrozenBaselineTest fails with identical outcome.",
       "accepted": false
+    },
+    "public_target_groups_recovery_r5": {
+      "state": "FROZEN_REVIEWED_NOT_DISPATCHED",
+      "source": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
+      "source_tree": "23ab174891290a575a752e54f0e8142a8d6f3e40",
+      "source_parent": "e4efe8573086090bf39aa52a1a0ce6196c121914",
+      "source_branch": "candidate/manual-public-target-groups-r5-20261024",
+      "validation": "a5bceaa568b17e9d4b68522612d4c5cbe1b78371",
+      "validation_tree": "5e8a85e2e05a0138d758fd38be62f3d72196d838",
+      "validation_branch": "validation/manual-public-target-groups-r5-20261024",
+      "workflow": ".github/workflows/manual-public-target-groups-r5-20261024.yml",
+      "workflow_blob": "ed993856b56b9e723ea6b635901592aea947b172",
+      "protocol": "experiments/manual-transmission/research/public-target-groups-r5-20261024/PROTOCOL.json",
+      "protocol_blob": "9b5d1378ac5746101f91b5605612d53ded996966",
+      "gate_blob": "b8a573e7d28e211cd998f443f1275e0a470c4130",
+      "design_blob": "2b5630584d805758b184bd11f4e08c4b6ddde86b",
+      "review": "Same-owner source review, not independent review. Exact five-path R4 recovery delta (recorder-only modification, four-case test, three records); cumulative35 paths; immutable source/protocol/workflow readback verified. FrozenBaselineTest unchanged blobf5ebdd18148cddcb3a5d0cc6b4ae2bfc5aba2ef4. Python/YAML syntax and nine synthetic receiver checks passed; synthetic checks are not runtime evidence.",
+      "scope": "Default-null CastSpell recording compatibility only; original public-group component remains unaccepted. No gameplay/engine behavior changes, no resolver/Spellskite/multiplayer/official game admission.",
+      "negative_control": "Unchanged visit-loss mutant must compile and fail exactly PG01/PG04/PG05/PG15/PG17 at61/81/88/147/165 among20; all15 others pass. Compile errors, missing reports, wrong identities/types/frames, skips or unrelated failures reject.",
+      "planned_not_observed": {
+        "client": 34,
+        "actor": 39,
+        "targeted": 20,
+        "mutation_cases": 20,
+        "mutation_failures": 5,
+        "mutation_passes": 15,
+        "frames": [
+          61,
+          81,
+          88,
+          147,
+          165
+        ],
+        "focused": 820,
+        "broad": 14883,
+        "engine": 4108,
+        "ordinary_passes": 18502,
+        "skips": 43,
+        "assay_units": 568,
+        "assay_corpus": 2000,
+        "assay_findings": 51,
+        "recording": 5,
+        "recording_new": 4
+      },
+      "runtime_results": "NOT_EXECUTED",
+      "run": null,
+      "job": null,
+      "artifact": null,
+      "official_games": 0,
+      "official_seeds": 0,
+      "precision_reserved": 2
     }
   },
   "completion_contract": {
@@ -1956,7 +2015,24 @@
     "owner_reconciliation": "This Work iteration launched exactly one R3 successor after terminal R2 preservation and released the lease. No other relevant worker or workflow observed.",
     "recent_checkpoint_head": "a9113381cece2a94cd0a74ba01823638f203ffa4",
     "work_task_run": "38659609-f03c-8327-a4ec-2eae23224f49",
-    "discussion_executor": "PAUSED"
+    "discussion_executor": "PAUSED",
+    "recovery_r5_prelaunch": {
+      "observed_utc": "2026-10-24T22:38:02.546Z",
+      "active_states": [
+        "in_progress",
+        "queued",
+        "waiting",
+        "requested",
+        "pending"
+      ],
+      "relevant_active_runs": [],
+      "ignored_only": 34749202144,
+      "ledger_blob": "def1eab7e52eed62cf04217dba92c695f0f0ea09",
+      "latest_task_run": "b3cecbc9-2838-8326-b0b4-64005da65189",
+      "latest_task_status": "completed",
+      "latest_task_completed_utc": "2026-10-24T21:44:11.326956Z",
+      "newer_successor_found": false
+    }
   },
   "automation": {
     "execution_task": "Manual Work Continuation",
@@ -2047,7 +2123,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_SINGLE_WORK_EXECUTOR",
     "last_verified_enabled_utc": "2026-10-24T14:52:29.264Z",
-    "next_authorized_action": "Review exact R4 source and protected bindings; implement bounded default-null CastSpell diagnostic recording compatibility, preserve frozen assertions/golden, freeze exact recovery controls/protocol and qualify once after activity reconciliation.",
+    "next_authorized_action": "Publish exactly one frozen R5 qualification after reconciled no-competing-run check; prepare R5 original-artifact receiver while external build runs. No prior accepted qualification or R4 rerun.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
