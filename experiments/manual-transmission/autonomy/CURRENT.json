@@ -1,6 +1,6 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T13:25:10.829Z",
+  "updated_date": "2026-10-24T13:25:59.203Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "EXECUTING",
@@ -46,7 +46,9 @@
     "validation": "6b59a88891c8db12ae3066ea718b61549d8b4876",
     "validation_branch": "validation/manual-public-target-groups-r1-20261024",
     "workflow": ".github/workflows/manual-public-target-groups-r1-20261024.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40098055404
+    ],
     "planned_not_observed": {
       "client": 34,
       "actor": 39,
@@ -70,7 +72,7 @@
     },
     "negative_scope": "Compiled public visit-loss control must produce exact five first-frame assertion failures among20; compiler errors/missing reports/unrelated failures reject.",
     "source_delta": "Exact21-path delta and immutable GitHub blob readback verified;14 existing paths modified,4new implementation/test paths,3new protocol records. All preexisting assertions preserved. Normal/mutant executable compilation and behavior are declared early workflow gates, not yet observed. No external independent review claimed.",
-    "next_executable_action": "Dispatch prepared validation branch once after live reconciliation; record actual run identity. Then prepare independent original-artifact auditor while source-bound qualification executes.",
+    "next_executable_action": "Receive original artifact for40098055404 when terminal, first check newer receipt/successor. Source d74c02f02b956cee1b86d67e4246c3f863e2e738;validation6b59a88891c8db12ae3066ea718b61549d8b4876;job120884344045 attempt1. Audit exact source/tree/workflow/job/attempt/artifact bytes/digest/manifest,34client/39actor/20targeted/exact5mutantfailures59_79_86_139_158,normal/mutant compilation,restore,rebind,820focused/14883broad/18498ordinary+43same skips,original identity counters,Assay568/2000/exact51,protected144/23/82. No green-run automatic acceptance; preserve/diagnose any failure without unchanged rerun.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -1552,7 +1554,7 @@
       "implementation": "FROZEN_SOURCE_d74c02f02b956cee1b86d67e4246c3f863e2e738"
     },
     "public_target_groups_qualification": {
-      "state": "FROZEN_REVIEWED_AWAITING_SINGLE_DISPATCH",
+      "state": "RUNNING_NOT_ACCEPTED",
       "source": "d74c02f02b956cee1b86d67e4246c3f863e2e738",
       "tree": "272e966a9ac4ec1e50a7f00e8a36080370dd1ee1",
       "base": "95b0ab3b44605e9f13d67750a2aa0c028ab24616",
@@ -1587,11 +1589,23 @@
         "skips": 43,
         "assay_units": 568
       },
-      "run": null,
+      "run": 40098055404,
       "artifact": null,
       "official_games": 0,
       "official_seeds": 0,
-      "precision_reserved": 2
+      "precision_reserved": 2,
+      "job": 120884344045,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "workflow_id": 395123681,
+      "status": "in_progress",
+      "job_status": "in_progress",
+      "conclusion": null,
+      "dispatched_utc": "2026-10-24T13:25:12.735Z",
+      "observed_utc": "2026-10-24T13:25:59.202Z",
+      "expected_artifact_name": "manual-public-target-groups-r1-40098055404",
+      "owner_activity": "Foreground preparing independent receiving auditor while external workflow runs; frozen source remains immutable."
     }
   },
   "completion_contract": {
@@ -1615,8 +1629,16 @@
     "no_successful_workflow_rerun": true
   },
   "reconcile": {
-    "last_checked_utc": "2026-10-24T13:25:10.829Z",
-    "relevant_active_workflows": [],
+    "last_checked_utc": "2026-10-24T13:25:59.203Z",
+    "relevant_active_workflows": [
+      {
+        "run": 40098055404,
+        "job": 120884344045,
+        "status": "in_progress",
+        "head_sha": "6b59a88891c8db12ae3066ea718b61549d8b4876",
+        "event": "push"
+      }
+    ],
     "ignored_unrelated_ancient_run": 34749202144,
     "current_worker": "manual-work-foreground-public-groups-2026-10-24T13:05:40.025Z",
     "observed_ledger_predecessor_blob": "58462d2431ffc588d4de721689bddba608bcc120",
@@ -1729,7 +1751,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_ADMITTED_SHARED_CAS_SINGLE_OWNER",
     "last_verified_enabled_utc": "2026-10-24T13:25:10.829Z",
-    "next_authorized_action": "Dispatch prepared validation branch once after live reconciliation; record actual run identity. Then prepare independent original-artifact auditor while source-bound qualification executes.",
+    "next_authorized_action": "Receive original artifact for40098055404 when terminal, first check newer receipt/successor. Source d74c02f02b956cee1b86d67e4246c3f863e2e738;validation6b59a88891c8db12ae3066ea718b61549d8b4876;job120884344045 attempt1. Audit exact source/tree/workflow/job/attempt/artifact bytes/digest/manifest,34client/39actor/20targeted/exact5mutantfailures59_79_86_139_158,normal/mutant compilation,restore,rebind,820focused/14883broad/18498ordinary+43same skips,original identity counters,Assay568/2000/exact51,protected144/23/82. No green-run automatic acceptance; preserve/diagnose any failure without unchanged rerun.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
