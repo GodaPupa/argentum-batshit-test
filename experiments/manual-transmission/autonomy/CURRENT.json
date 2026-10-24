@@ -1,9 +1,9 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T22:38:02.546Z",
+  "updated_date": "2026-10-24T22:38:44.650Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "ACTIVE",
+  "status": "WAITING_EXTERNAL",
   "owner": "manual-work-390bd1587480-recovery-20261024223231670",
   "lease": {
     "state": "ACTIVE",
@@ -25,7 +25,7 @@
       },
       "reason": "R4 terminal failure has no newer receipt or successor and no other active Manual workflow/owner."
     },
-    "purpose": "Resume preserved R4 recording-compatibility recovery in original foreground Work workspace.",
+    "purpose": "R5 qualification is external; foreground owner actively prepares original-artifact receiver without changing frozen source.",
     "reason": "Explicit user request resumes original Work session390bd1587480; original R4 artifact is present here and immutable receiptfc3ba6a0 read. Latest scheduled invocationb3cecbc9 completed21:44:11Z; subsequent scheduled turns in this conversation ended without taking ownership. No relevant workflow in any active state, no newer candidate/validation/receipt or ledger update. This is resumed foreground ownership, not an expiry-only takeover."
   },
   "last_qualified": {
@@ -59,7 +59,9 @@
     "validation": "a5bceaa568b17e9d4b68522612d4c5cbe1b78371",
     "validation_branch": "validation/manual-public-target-groups-r5-20261024",
     "workflow": ".github/workflows/manual-public-target-groups-r5-20261024.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40139402248
+    ],
     "planned_not_observed": {
       "client": 34,
       "actor": 39,
@@ -87,7 +89,7 @@
     },
     "negative_scope": "Unchanged visit-loss mutant must compile and fail exactly PG01/PG04/PG05/PG15/PG17 at61/81/88/147/165 among20; all15 others pass. Compile errors, missing reports, wrong identities/types/frames, skips or unrelated failures reject.",
     "source_delta": "Same-owner source review, not independent review. Exact five-path R4 recovery delta (recorder-only modification, four-case test, three records); cumulative35 paths; immutable source/protocol/workflow readback verified. FrozenBaselineTest unchanged blobf5ebdd18148cddcb3a5d0cc6b4ae2bfc5aba2ef4. Python/YAML syntax and nine synthetic receiver checks passed; synthetic checks are not runtime evidence.",
-    "next_executable_action": "Publish exactly one frozen R5 qualification after reconciled no-competing-run check; prepare R5 original-artifact receiver while external build runs. No prior accepted qualification or R4 rerun.",
+    "next_executable_action": "Prepare and checkpoint R5 original-artifact receiving auditor while run40139402248 executes. After terminal status first reconcile newer receipts/successors, then audit original artifact once for exact source/tree/validation/job/attempt, bytes/hash/manifest, recording5, actor39, targeted20, exact5 mutation witnesses, focused820/broad14883/ordinary18502+43 skips, Assay and protected bytes. No duplicate/cancel/rerun.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -1908,7 +1910,7 @@
       "accepted": false
     },
     "public_target_groups_recovery_r5": {
-      "state": "FROZEN_REVIEWED_NOT_DISPATCHED",
+      "state": "RUNNING_NOT_ACCEPTED",
       "source": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
       "source_tree": "23ab174891290a575a752e54f0e8142a8d6f3e40",
       "source_parent": "e4efe8573086090bf39aa52a1a0ce6196c121914",
@@ -1950,13 +1952,27 @@
         "recording": 5,
         "recording_new": 4
       },
-      "runtime_results": "NOT_EXECUTED",
-      "run": null,
-      "job": null,
+      "runtime_results": "Run and job metadata observed only; no runtime gate accepted.",
+      "run": 40139402248,
+      "job": 121007739723,
       "artifact": null,
       "official_games": 0,
       "official_seeds": 0,
-      "precision_reserved": 2
+      "precision_reserved": 2,
+      "workflow_id": 395478478,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "status": "in_progress",
+      "job_status": "in_progress",
+      "conclusion": null,
+      "dispatched_utc": "2026-10-24T22:38:08.402Z",
+      "observed_utc": "2026-10-24T22:38:44.650Z",
+      "expected_artifact_name": "manual-public-target-groups-r5-40139402248",
+      "receiving_audit": {
+        "state": "PREPARING_WHILE_BUILD_RUNS",
+        "base_receiver_commit": "16056f09e05ac369049ec6f8cc64be90cf52192c"
+      }
     }
   },
   "completion_contract": {
@@ -2123,7 +2139,7 @@
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_SINGLE_WORK_EXECUTOR",
     "last_verified_enabled_utc": "2026-10-24T14:52:29.264Z",
-    "next_authorized_action": "Publish exactly one frozen R5 qualification after reconciled no-competing-run check; prepare R5 original-artifact receiver while external build runs. No prior accepted qualification or R4 rerun.",
+    "next_authorized_action": "Prepare and checkpoint R5 original-artifact receiving auditor while run40139402248 executes. After terminal status first reconcile newer receipts/successors, then audit original artifact once for exact source/tree/validation/job/attempt, bytes/hash/manifest, recording5, actor39, targeted20, exact5 mutation witnesses, focused820/broad14883/ordinary18502+43 skips, Assay and protected bytes. No duplicate/cancel/rerun.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
       "policy": "Continue consecutive authorized steps until real external-only waiting, actual platform/budget limit, specific unresolved blocker or experiment stopping rule; checkpoints do not end invocation. Use build time for independent receiving/source review. Shared CAS ownership and all gates unchanged.",
