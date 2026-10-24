@@ -1,18 +1,23 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T14:52:29.264Z",
+  "updated_date": "2026-10-24T15:48:21.513Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
+  "status": "ACTIVE",
+  "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-20261024154821",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
-    "last_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-38659609-f03c-8327-a4ec-2eae23224f49",
-    "claimed_utc": "2026-10-24T14:44:00.530Z",
-    "released_utc": "2026-10-24T14:52:29.264Z",
-    "predecessor_blob": "40a51a8258f99dcf005a7608d01e23f0d587c588",
-    "reason": "R3 qualification40104302392 is active; original-artifact receiver is immutable and no safely independent critical-path mutation remains."
+    "state": "ACTIVE",
+    "owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-20261024154821",
+    "claimed_utc": "2026-10-24T15:48:21.513Z",
+    "expires_utc": "2026-10-24T16:13:21.513Z",
+    "predecessor_blob": "c238926c4e3d70f903a6c35c791fd4a53adfa2b3",
+    "purpose": "Receive terminal R3 qualification40104302392, preserve original failure evidence, diagnose exact negative-control mismatch, and prepare only a bounded justified recovery.",
+    "observed_predecessor": {
+      "owner": null,
+      "state": "RELEASED",
+      "last_owner": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-38659609-f03c-8327-a4ec-2eae23224f49"
+    },
+    "reason": "R3 terminal failure requires original-artifact audit and diagnosis; no newer active owner observed."
   },
   "last_qualified": {
     "source": "95b0ab3b44605e9f13d67750a2aa0c028ab24616",
