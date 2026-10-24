@@ -1,0 +1,48 @@
+{
+  "status": "SOURCE_SPECIFIC_AUTHORITY_REQUIRED_FOR_FULL_OCCURRENCE_RESOLUTION",
+  "source": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
+  "protected_path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+  "protected_sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94",
+  "existing_instruction": "Do not modify protected StackResolver.kt; preserve144 source bindings.",
+  "evidence": [
+    {
+      "lines": [
+        1026,
+        2816,
+        2910,
+        3551,
+        3568,
+        3613
+      ],
+      "finding": "Spell, trigger and activation resolution supply only Map<EntityId,Long> to validateTargets. A physical entity can hold only one stamp in that map, so two current occurrences referring to different visits cannot both be represented."
+    },
+    {
+      "lines": [
+        3597,
+        3716,
+        3781
+      ],
+      "finding": "Requirement lookup uses flat target index and declared requirement.count, not original selected instance widths. An omitted optional group before a later selection is mapped to the wrong requirement if the admission guard is removed."
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/targeting/PublicTargetGroups.kt",
+      "finding": "The accepted source intentionally rejects shifted nontrailing group widths. Removing the guard before resolution supports occurrences would weaken correctness."
+    }
+  ],
+  "concrete_required_change": "Admit an isolated successor of the exact bound resolver for per-occurrence current visit and original-instance lookup, preserving legacy behavior when no authoritative plan exists. Coordinate flat/modal/splice current views and preserve original provenance; do not fabricate groups or refresh unchanged occurrences.",
+  "proposed_acceptance_contract": [
+    "Exact source-specific replacement of only the declared protected binding after explicit authorization; preserve other143 bindings,23 goldens,82 legacy fixtures, frozen v0.7 and all existing assertions.",
+    "Executable positive and negative tests for same physical id with distinct visits, omitted optional/variable groups followed by selected groups, unchanged illegal targets, modal/splice/division views, spell/trigger/activation resolution and serialized stale choices.",
+    "Normal and mutant compilation before targeted executable witnesses and expensive regressions; source/tree/workflow/job/artifact receiving as for accepted R5.",
+    "No new official games/seeds, spending increase, main merge, Spellskite registration or multiplayer admission implied."
+  ],
+  "independent_authorized_work_completed": [
+    "Original R5 artifact received once using prepared auditor unchanged.",
+    "Seven-file current-occurrence source review checkpoint1fe6aee97fe09baba2f5fdcfcab4c08047ec6295 reused and resolver boundary checked against accepted source.",
+    "Concrete end-to-end integration/admission boundary documented; no competing qualification or unsafe guard relaxation."
+  ],
+  "not_claimed": "This is not an implementation, independent review, or permission to modify protected source.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
