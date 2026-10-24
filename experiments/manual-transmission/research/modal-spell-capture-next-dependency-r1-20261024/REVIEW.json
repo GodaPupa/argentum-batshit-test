@@ -1,0 +1,71 @@
+{
+  "status": "ISOLATED_SOURCE_REVIEW_ONLY_NO_IMPLEMENTATION_OR_NEW_RUNTIME_RESULT",
+  "source": "6b63882cc02248e7da46a1d731b319f87b3b97e0",
+  "source_tree": "464c56d2d4b542cb9d8e24966f3f7e206aa3e443",
+  "conditional_on": "Receive pending full spell qualification40063808901 before adopting any of its new source",
+  "files": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt",
+      "blob": "f7e36eb2416756fd4fbe3c22bb76c3c0c71d7ac0",
+      "content_readback_verified": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SpliceCasts.kt",
+      "blob": "91525cd0ead6694a320610b6a2ed58ffb939806c",
+      "content_readback_verified": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
+      "blob": "64c0466abe72bc495c7e5d364fdbf73d75db777b",
+      "content_readback_verified": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/effects/stack/ContestedRetargetExecutors.kt",
+      "blob": "1caddb561ba7e9e3e00c9e423aca736176777279",
+      "content_readback_verified": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ActivateAbilityXCostContinuationResumer.kt",
+      "blob": "3d14ab2c6fe60f12a30540d1c73a26e86ab424c6",
+      "content_readback_verified": true
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ActivateAbilityOpponentTargetResumer.kt",
+      "blob": "2ebf28810e0b6d206f168d5bed4e00266ae9f01f",
+      "content_readback_verified": true
+    }
+  ],
+  "critical_path": "Spellskite acceptance needs truthful target-instance grouping, current per-occurrence visits, allocations and modal/splice projections. Original provenance alone does not make those target views authoritative.",
+  "observations": [
+    {
+      "path": "core/GameAction.kt",
+      "finding": "CastSpell supplies a flat targets list, chosen modes/modeTargetsOrdered, entity-keyed division maps and splice card ids. There is no original requirement-indexed selection envelope for ordinary/spliced flat public casts. Do not infer omitted groups from that list or trust a client-provided historical ObjectRef."
+    },
+    {
+      "path": "handlers/continuations/ActivateAbilityXCostContinuationResumer.kt",
+      "finding": "resumeControllerTargets has complete continuation.requirements plus validated TargetsResponse.selectedTargets immediately before sorted flattening and handler re-entry. This is a concrete next capture point for activated-ability original provenance. Preserve source visit/controller, cancellation, actual cost ordering and underlying checkForMore continuation."
+    },
+    {
+      "path": "handlers/continuations/ActivateAbilityOpponentTargetResumer.kt",
+      "finding": "Opponent answer retains local requirement indices, but controller targets already arrive flat. Current code explicitly rejects optional/variable full requirements and interleaves only fixed counts. Capturing opponent groups must not pretend to reconstruct full controller history or lift that fixed-count guard."
+    },
+    {
+      "path": "mechanics/SpliceCasts.kt",
+      "finding": "splicedTargetSlotCounts sums declared requirement.count; sliceSplicedTargets and mainTargetCount infer slices from those counts. This cannot recover omitted optional/variable original selections. Need capture splice entry/requirement boundaries before flattening, preserving client/AI legacy inputs as explicitly untracked until a validated grouped path exists."
+    },
+    {
+      "path": "mechanics/stack/StackResolver.kt",
+      "finding": "Protected castSpell chooses modeTargetsOrdered.flatten() when present and slices splice tails using SpliceCasts. Resolution invokes isDifferentObject(state, entityId, targetEntryStamps) with an entity-keyed map, not an occurrence address. Two occurrences of one entity with different intended visits supply identical arguments, so this interface cannot distinguish their validity. Merely adding provenance fields or editing the unprotected helper cannot supply the missing occurrence index."
+    },
+    {
+      "path": "handlers/effects/stack/ContestedRetargetExecutors.kt",
+      "finding": "Existing retarget path expands declared counts, globally excludes prior selected recipients, and updates only TargetsComponent via qualified withRetargetedHistory. New fixed-self one-slot behavior must not reuse these semantics unchanged or treat immutable original plans as current after retargeting."
+    }
+  ],
+  "next_bounded_action": "After original full-spell receiving, implement original controller-target activation capture at the identified response boundary with an internal carrier through actual pauses/stack placement; include exact empty-group/visit witnesses and replay/cancellation/payment tests. Batch related controller/opponent boundaries only if full-history semantics can be truthful; do not invent absent controller provenance. Separately resolve ordinary/splice grouped selection contract before claiming complete capture.",
+  "protected_boundary_decision": "Full same-entity/different-visit resolution remains an explicit protected-boundary dependency. No modification, workaround or source-binding relaxation authorized by this review. Before the integration step requires changing protected resolver interface, present exact proposed boundary and required regression/admission scope for a specific authority decision.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "external_independent_review": false
+}
