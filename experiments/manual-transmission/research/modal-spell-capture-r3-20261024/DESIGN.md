@@ -1,0 +1,3 @@
+# R3 receiving-only repair
+
+R2 run40066412475 built successfully with18453 passes and43 unchanged skips, then failed gate.py:161 because a prefix replacement produced23448. The frozen R2 protocol and independent prepared auditor both specify18453 (accepted18430 plus23 new cases). R2 remains failed and Assay unexecuted; no retrospective acceptance. R3 changes only this count literal plus isolated record paths. Production/test hashes, original assertions, negative-control implementation and expected identities/multiplicities remain identical. All normal/mutant/targeted/focused/broad/ordinary/Assay/protected gates remain mandatory. No official games/seeds or protected boundary edits. No external independent review claimed.
