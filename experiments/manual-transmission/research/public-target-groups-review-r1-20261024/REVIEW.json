@@ -1,0 +1,46 @@
+{
+  "state": "CONDITIONAL_SOURCE_REVIEW_ONLY_NO_IMPLEMENTATION",
+  "source": "07a99a5151dc2438a100e1d3ebb26118ebd6d3f9",
+  "pending_qualification": 40084539580,
+  "files": [
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/SpliceCasts.kt",
+      "blob": "91525cd0ead6694a320610b6a2ed58ffb939806c"
+    },
+    {
+      "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/spell/CastSpellHandler.kt",
+      "blob": "7d7a8ffb9bf3927a12a8b01c3cf2451feb3abec5"
+    },
+    {
+      "path": "web-client/src/store/slices/ui/targetingSlice.ts",
+      "blob": "81a1bf4d90c45797e27e04cbc904d6b47ae6a3ab"
+    },
+    {
+      "path": "web-client/src/store/slices/ui/pipelinePhases.ts",
+      "blob": "5eea4a9f7e64922dcf874bf7f5ca033360f70dd2"
+    }
+  ],
+  "protected_resolver_sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94",
+  "original_card_contract": "88cd69c88628e0dfd78c2e45c067c91d727aecb8",
+  "concrete_blocker": "Spellskite contract variable_count/cross_instance_duplicate/modal_and_splice cannot be fulfilled for ordinary public CastSpell/ActivateAbility submissions while requirement groups are flattened before the server sees them.",
+  "observed": [
+    "targetingSlice retains allSelectedTargets by requirement, then flattens them into selectedTargets at advancePipeline.",
+    "The same UI filters every next requirement against all previously chosen entities, globally excluding cross-instance repeats rather than retaining per-instance distinctions.",
+    "pipelinePhases converts that flat selection to ChosenTarget list and stores only action.targets for CastSpell/ActivateAbility.",
+    "CastSpellHandler concatenates main/aura/splice requirements, and SpliceCasts slices flat input by declared requirement counts; these do not prove original omitted or variable counts.",
+    "Protected StackResolver constructs splicedTargetsOrdered via that legacy helper. No change to this boundary was made."
+  ],
+  "next_authorized_engineering": "After current full qualification's original receipt passes, design and freeze one coherent public selection transport/capture change: retain original ordered requirement groups in the existing targeting pipeline; server-validate group identities/counts/relations and agreement with legacy targets; capture object visits on server, never accept caller-provided ObjectRef history; preserve current mode/splice bindings and omitted optional groups; leave missing historical provenance explicit. Trace legal actions, DTO serialization, UI forward/back flows and actual engine public entry before implementation. Do not reconstruct groups from flat targets.",
+  "required_controls": [
+    "Omitted optional group before mandatory group survives public transport, cost pause and serialized replay.",
+    "Same entity may occupy separate legal instances, while a duplicate in one instance is rejected.",
+    "Forged groups, mismatched flat union, wrong requirements and stale responses reject atomically.",
+    "Main and each splice-local selected group remains correctly bound across optional/variable counts.",
+    "Preserve legacy payload omission/fixtures and accepted modal-trigger/modal-spell/activation components.",
+    "Full source-bound normal/mutant/positive gates; no acceptance from this review."
+  ],
+  "remaining_boundary": "Per-occurrence current-target/resolution authority and source-specific protected StackResolver admission remain unresolved; metadata capture alone does not satisfy complete Spellskite or four-player readiness. Any implementation must avoid silently crossing protected bindings.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
