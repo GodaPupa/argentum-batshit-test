@@ -1,6 +1,6 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-24T10:05:35.362Z",
+  "updated_date": "2026-10-24T10:07:29.723Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "ACTIVE",
@@ -36,7 +36,7 @@
     "review_path": "experiments/manual-transmission/research/spellskite-retarget-review-r1-20261022/REVIEW.json",
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
-    "current_subproblem": "R2 original control receipt passed. Preparing full18-case activation provenance qualification with10 additional live-entry/boundary tests. No active workflow or component acceptance.",
+    "current_subproblem": "Full18-case original controller activation capture qualification running; receiver preparation active.",
     "source_candidate": "035e0ec3da8729c43018ffcc839aa821517dcda3",
     "source_tree": "bb50c6e9de41619e796ac5550a449484bfcbf7cf",
     "source_branch": "candidate/manual-modal-spell-capture-r3-20261024",
@@ -45,7 +45,9 @@
     "validation": "266f4a28fecd66fabf4f34aa4e14cab20b0a771f",
     "validation_branch": "validation/manual-modal-spell-capture-r3-20261024",
     "workflow": ".github/workflows/manual-modal-spell-capture-r3-20261024.yml",
-    "pending_runs": [],
+    "pending_runs": [
+      40084539580
+    ],
     "planned_not_observed": {
       "targeted": 23,
       "mutation_failures": 2,
@@ -62,7 +64,7 @@
     },
     "negative_scope": "Original R1 normal failures are not deliberate negative-control evidence. R2 retains exact SM01/SM02 two behavioral witnesses and compiled group/visit fault; results pending.",
     "source_delta": "R3 adds three qualification records only to R2;24cumulative paths versus accepted modal-trigger base. All production/test/negative-control bytes identical to R2. Old frozen records preserved.",
-    "next_executable_action": "Finish source/protocol review, static receiver checks and immutable18-case freeze; reconcile ownership/all workflow statuses; launch exactly one guarded full qualification. Normal18case and mutant compilation/exact3behavioral checks must pass before800focused/14863broad/18471ordinary+43skips/Assay and original-report receiving.",
+    "next_executable_action": "Receive original full qualification40084539580/job120844646651/attempt1 from source07a99a5151dc2438a100e1d3ebb26118ebd6d3f9 validation77310dfc6ba19133a0c280ec0e37772450428872. Require18normal,8mutant exact3failures55/60/95 and5pass, restore/rebind,800focused,14863broad,18471ordinary+43unchangedskips,Assay568/2000/51,original identity counters/protected144/23/82. Do not duplicate. A green run is not acceptance.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -1271,7 +1273,7 @@
       "readback_verified": true
     },
     "activation_full_qualification": {
-      "state": "FROZEN_READY_SINGLE_DISPATCH",
+      "state": "WAITING_EXTERNAL",
       "source": "07a99a5151dc2438a100e1d3ebb26118ebd6d3f9",
       "tree": "56a235a456d88fc199761a8925d559efb8bc388d",
       "base": "035e0ec3da8729c43018ffcc839aa821517dcda3",
@@ -1304,11 +1306,19 @@
         "unchanged_skips": 43,
         "assay_units": 568
       },
-      "run": null,
+      "run": 40084539580,
       "artifact": null,
       "official_games": 0,
       "official_seeds": 0,
-      "precision_reserved": 2
+      "precision_reserved": 2,
+      "job": 120844646651,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "status": "in_progress",
+      "conclusion": null,
+      "expected_artifact_name": "manual-activation-target-capture-r1-40084539580",
+      "dispatched_utc": "2026-10-24T10:05:37.331Z"
     }
   },
   "completion_contract": {
@@ -1333,7 +1343,15 @@
   },
   "reconcile": {
     "last_checked_utc": "2026-10-24T10:05:11.155Z",
-    "relevant_active_workflows": [],
+    "relevant_active_workflows": [
+      {
+        "run": 40084539580,
+        "job": 120844646651,
+        "status": "in_progress",
+        "head_sha": "77310dfc6ba19133a0c280ec0e37772450428872",
+        "event": "push"
+      }
+    ],
     "ignored_unrelated_ancient_run": 34749202144,
     "current_worker": "manual-work-hourly-6adbe33033e481918659ce578f64f31e-7d43701b-6d9c-832a-acef-767e74ea300a",
     "observed_ledger_predecessor_blob": "a4353a95de612fdd4f46012207bfc6c4ba04cbce",
