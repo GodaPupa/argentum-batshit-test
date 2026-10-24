@@ -1,0 +1,90 @@
+{
+  "schema": "manual-public-target-groups-failure-receipt-v1",
+  "received_utc": "2026-10-24T15:50:09.593Z",
+  "run": 40104302392,
+  "job": 120902680013,
+  "attempt": 1,
+  "run_number": 1,
+  "event": "push",
+  "source": "226773f86f2229226ae46e0276ec8f97664ae215",
+  "source_tree": "aace3ce9933ed8af6e704d977e552464420f427b",
+  "validation": "6a598d02b0d496624e79f917a303eaa9144d6359",
+  "validation_tree": "349a23b1cf65469d54610ee045dd6324205cc356",
+  "workflow": ".github/workflows/manual-public-target-groups-r3-20261024.yml",
+  "workflow_blob": "25c2665970fab5852b6aeb40b0fd51ebc2cd64f6",
+  "artifact": {
+    "id": 12564118715,
+    "name": "manual-public-target-groups-r3-40104302392",
+    "bytes": 285860,
+    "sha256": "3db7df43f21140c4365349a11c3d02ad11e440e77a6a6ad974e5e35b9e442b9a",
+    "zip_members": 51,
+    "manifest_entries": 50,
+    "crc_ok": true,
+    "manifest_hashes_ok": true
+  },
+  "outcome": {
+    "conclusion": "failure",
+    "component_accepted": false,
+    "client": {
+      "passed": 34,
+      "failures": 0
+    },
+    "normal_compilation": "PASSED",
+    "actor": {
+      "passed": 39,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "targeted": {
+      "passed": 20,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "mutant_compilation": "PASSED",
+    "mutation": {
+      "rows": 20,
+      "passed": 15,
+      "failures": 5,
+      "errors": 0,
+      "skips": 0,
+      "identities": [
+        "PG01 public activation captures original object visits on server",
+        "PG04 unpaid cost preserves visits through serialized continuation",
+        "PG05 public spell captures server history and trailing omitted group",
+        "PG15 public spell keeps original visits through unpaid cost roundtrip",
+        "PG17 paid type continuation preserves original public plan"
+      ],
+      "observed_first_frames": [
+        61,
+        81,
+        88,
+        147,
+        165
+      ],
+      "frozen_but_incorrect_expected_first_frames": [
+        59,
+        79,
+        86,
+        147,
+        166
+      ],
+      "failure_type": "org.opentest4j.AssertionFailedError",
+      "compiler_errors": false
+    },
+    "focused": "NOT_EXECUTED",
+    "broad": "NOT_EXECUTED",
+    "ordinary": "NOT_EXECUTED",
+    "assay": "NOT_EXECUTED",
+    "final_tracked_changes_empty": true,
+    "restored_and_rebound": true
+  },
+  "diagnosis": "The executable visit-loss mutant produced exactly the intended five behavioral failures and compiled normally. The R3 protocol froze stale first stack frames after the test-only PG15/PG16 fixture repair inserted two lines before PG01/PG04/PG05 and changed later line placement. Gate metadata expected 59/79/86/147/166 but immutable source and original JUnit evidence establish 61/81/88/147/165. This is a protocol frame-pin defect, not production or test behavior failure.",
+  "required_recovery": "Create a new immutable source with production and test bytes unchanged, correct only the five frame pins and source-bound gate metadata, compile normal and mutant forms, require the same exact five AssertionFailedError identities, and execute every declared positive gate.",
+  "evidence_limit": "R3 is rejected. Its passed early positive stages and behavioral mutant are preserved evidence, but focused/broad/ordinary/Assay did not execute and no component acceptance is claimed.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "external_independent_review": false
+}
