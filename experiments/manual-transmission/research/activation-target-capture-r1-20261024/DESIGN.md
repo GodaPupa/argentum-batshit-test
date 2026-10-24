@@ -1,0 +1,7 @@
+# Original controller activation target capture
+
+Validated requirement-indexed controller selections are captured before flattening and carried across unpaid-cost re-entry. Public ActivateAbility rejects the internal carrier. Only complete controller-only, single-activation plans matching the flat target view attach to the exact stack component before protected stack placement. Entity-keyed divisions bind only when unambiguous. Mixed opponent choices, repeated activations, ambiguous division and public legacy flat inputs remain explicitly untracked.
+
+The original eight cases are unchanged. Five live-entry tests exercise variable-permanent cost selection, X-bound target questions, original optional groups, payment, serialized replay, invalid response atomicity and direct legacy input. Five boundary cases cover exact division, ambiguous fallback, mixed opponent choice, failed payment and copies retaining historical visits without recapture. Original history is not current retarget authority. The existing live variable-permanent prompt has canCancel=false; the manually suspended cancellation witness does not establish public cancellation support.
+
+This is internal metadata, with no new SDK primitive, question, UI control, masking field, projection or Assay grammar behavior. Protected StackResolver and saved-state fixtures remain unchanged. The full original report identity counters and every prior protected gate remain required. No card, multiplayer, official game or seed admission is implied. No independent external review is claimed.

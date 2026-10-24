@@ -1,0 +1,268 @@
+{
+  "authority": "Standing user authorization for autonomous engineering under unchanged protected bindings and admission protocols",
+  "protected": {
+    "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc",
+    "deck_blob": "c350bdc86eb2d37e5da4eb712e8ee2fa729b7e89",
+    "bindings": 144,
+    "goldens": 23,
+    "legacy_fixture_files": 82,
+    "precision_reserved": 2,
+    "official_games": 0,
+    "official_seeds": 0
+  },
+  "external_independent_review": false,
+  "schema": "manual-activation-target-capture-r1",
+  "status": "SOURCE_FROZEN_AWAITING_EXECUTION",
+  "base": "035e0ec3da8729c43018ffcc839aa821517dcda3",
+  "base_tree": "bb50c6e9de41619e796ac5550a449484bfcbf7cf",
+  "previous_receipt": "839a2a99b47947b902ae29f3dac35b882e2da5e3",
+  "scope": "Original controller activation target provenance before flattening and across unpaid pauses; complete controller-only histories, unambiguous divisions, explicit untracked fallback for mixed/ambiguous/direct/repeated paths. No current-target or protected-resolver authority, Spellskite or multiplayer admission.",
+  "implementation_sha256": {
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationTargetCaptureTest.kt": "f3d0d1d6bd2c92b078c9e06c2a8648be2aa46123ee4c4e3b770662b297b01692",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationTargetCaptureLiveFlowTest.kt": "2c3b79ee70ac043411ba9b38d29471818c0fa2b2a31185046a336a4f86a98e63",
+    "rules-engine/src/test/kotlin/com/wingedsheep/engine/scenarios/ActivationTargetCaptureBoundaryTest.kt": "9d202bd744521361d35ff8d3375b3bdd3e9cec7418d0bfe67d0ef0f948d50035",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt": "368e3540e38bed59ca2f34bd972582e28f18a3713e0641c35e1284a6fc990637",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ActivateAbilityXCostContinuationResumer.kt": "8af4654358963c98255cf51aaf2fa9964e8fbc91dcfccdf451fa0a8ce3ef6e5f",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt": "055cc5a11f82dbac909e0f7b74b95335b19268ba20f3cc808b150334657a95e0",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt": "7eacacb64bdfdaeab65fd3a796908d7942d1dc216942686760c01572dc72ae25"
+  },
+  "modified_paths": [
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/GameAction.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/continuations/ActivateAbilityXCostContinuationResumer.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/actions/ability/ActivateAbilityHandler.kt",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/state/components/stack/StackComponents.kt"
+  ],
+  "new_test_cases": {
+    "ActivationTargetCaptureTest": [
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureTest::AC01 original omitted optional group survives activation placement",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureTest::AC02 separate original groups retain repeated recipient occurrences",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureTest::AC03 target decision serialization replays identical state and events",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureTest::AC04 cancellation creates no activation or original plan",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureTest::AC05 public forged original plan rejected atomically",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureTest::AC06 invalid group response cannot acquire provenance",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureTest::AC07 unpaid sacrifice pause serializes original visits without recapture",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureTest::AC08 legacy action encoding omits absent carrier"
+    ],
+    "ActivationTargetCaptureLiveFlowTest": [
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureLiveFlowTest::AL01 bare activation reaches two unpaid pauses and filters X bounded targets",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureLiveFlowTest::AL02 live target response preserves omitted group and original visit before paying once",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureLiveFlowTest::AL03 serialized live target pause replays identical provenance state and events",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureLiveFlowTest::AL04 over X target response rejects atomically before costs or capture",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureLiveFlowTest::AL05 direct flattened legacy activation remains explicitly untracked"
+    ],
+    "ActivationTargetCaptureBoundaryTest": [
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureBoundaryTest::AB01 unambiguous activation division binds each original occurrence once",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureBoundaryTest::AB02 ambiguous entity division cannot manufacture occurrence allocations",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureBoundaryTest::AB03 mixed opponent choice cannot present partial controller history as complete",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureBoundaryTest::AB04 failed post selection payment creates no activation or captured component",
+      "com.wingedsheep.engine.scenarios.ActivationTargetCaptureBoundaryTest::AB05 ability copy retains historical capture without refreshing visits"
+    ]
+  },
+  "mutation_first_frames": {
+    "com.wingedsheep.engine.scenarios.ActivationTargetCaptureTest::AC01 original omitted optional group survives activation placement": 55,
+    "com.wingedsheep.engine.scenarios.ActivationTargetCaptureTest::AC02 separate original groups retain repeated recipient occurrences": 60,
+    "com.wingedsheep.engine.scenarios.ActivationTargetCaptureTest::AC07 unpaid sacrifice pause serializes original visits without recapture": 95
+  },
+  "mutation": {
+    "kind": "compiled original-visit-loss control",
+    "change": "Erase original object refs while preserving requirement groups; unchanged AC01/AC02/AC07 must fail precisely. R1 wrong-type failure preserved, not accepted.",
+    "expected": {
+      "tests": 8,
+      "assertion_failures": 3,
+      "passes": 5,
+      "errors": 0,
+      "skips": 0
+    }
+  },
+  "positive_counts": {
+    "targeted": 18,
+    "focused": 800,
+    "focused_new_cases": 18,
+    "engine": 4088,
+    "broad": 14863,
+    "ordinary_passes": 18471,
+    "ordinary_skips": 43,
+    "assay_units": 568,
+    "assay_touchstone": 2000,
+    "unresolved_assay_findings": 51
+  },
+  "compilation_controls": {
+    "normal": "Exact source compile without test execution",
+    "mutant": "Erase original refs only, compile without test execution; exactly AC01/AC02/AC07 fail at55/60/95 among8 original cases"
+  },
+  "original_report_baseline": {
+    "source": "035e0ec3da8729c43018ffcc839aa821517dcda3",
+    "run": 40071650391,
+    "artifact": 12551804401,
+    "artifact_sha256": "50857d27772560a9e9cee1e2dba47e022d21a778aff7827e0e4611b842de4ae1",
+    "identity_counters": {
+      "focused": {
+        "rows": 782,
+        "sha256": "b353fc5ad5440666a4e50242e39639d3441c2c90c4cb41e6fb8dfc4fe08153d0"
+      },
+      "broad": {
+        "rows": 14845,
+        "sha256": "e80a530db22d4ce1208219783eb9ecfcba89808ea575899115d68afea7c346e8"
+      },
+      "ordinary": {
+        "rows": 18496,
+        "sha256": "8616ca7c3e3004bb91460a7018e180e575cddf7963b4e4d1d2af4784404c0b4d"
+      }
+    }
+  },
+  "legacy_fixture_sha256": {
+    "rules-engine/src/test/resources/legacy-suspensions/README.md": "4170739f52315073e916501712c83461a9a8ba135069f86469b073e5780d08d9",
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/actions.json": "d0ce4b42a040dcef4a714abf00f6d8047be8417baaa04f550a8325e0fb222ea9",
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/after-1.json": "346ea03c14f1a63d91756f7a82eed68c2e8ecb83115dd0b81a2dc9e14221c69f",
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/creation-events.json": "dfd938e9b9fa80676c40f45a807a0ec9e6f18e478583f64743ea959de8d1b1d5",
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/events-1.json": "c85bb5a3218279be0ef4e22410747c43193724eec103ecfb95979f0eb94d426e",
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/manifest.json": "f2596a75117d1233f157bdf0d8430f438c9a092a89212fef0baf3512dd9235b9",
+    "rules-engine/src/test/resources/legacy-suspensions/compact-cycling/state.json": "b2451003316d4f15e2e1e24e5bed0229b9029ea6ef3b134f7974688333441c33",
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/actions.json": "e8b3e39fbad309d9d7980599dd95b6529daa9c58df58e1df4b63d9f3acc74670",
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/after-1.json": "0b9cc4e9eaf0b2cbf81f25f9b77115386f1c8a66a2f12e34dd6a60778adb71df",
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/after-2.json": "5b634610782c6f01d0ce8355a86bd62510e758331d2744ef3a3dbda627b6b51a",
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/after-3.json": "bd1f4671c7db217ad4209d93f51f12b0483749cfdea095e745589d5468059d5c",
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/creation-events.json": "a7d071a3c2b0c8af3ca5867ae76c973467a782d05857075a84c465f37fe087d1",
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/events-1.json": "842e5a79b28db029d1dd22dd9053b151cb3c99152bb284b4c86a09768eda188f",
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/events-2.json": "3e6467b41d2d28e02746e1b32b26af7e268d14ff4dce8149fc1214dfba66c5fa",
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/events-3.json": "99373e339c021db47f9c7b34b724c35b021053b69f94d5c7abb2d8116b2519d9",
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/manifest.json": "b9daf3456e033d348a22e93e56ef481582291f9ff129711da5a9701c5544c5aa",
+    "rules-engine/src/test/resources/legacy-suspensions/free-cast-target/state.json": "b7b697d3f16d2f77e8129667a427bfcaa127e9d4b609d80e646836e7849643f0",
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/actions.json": "a42edc8c7ef8049f3ccedc6425c1959ac9f35cd1048cf8aaa334cbbea0fb0f3f",
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/after-1.json": "d03884ac276e497d7c604bf8ea26a05761213f72b217cefd2502bca13cdcb0c4",
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/after-2.json": "20217cf5e56ce3b2acfcd8aac1e6f7b9ac5e0bd7034c1509b1c6e8f886a5799b",
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/creation-events.json": "ad98cd194edf0bc856568960fa786b62c3e182ce994947eaf5374160b95e18bf",
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/events-1.json": "53fb80ed304d3247013c90391562d364103ab2e3d971d3ed06b9e405927d2b17",
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/events-2.json": "18b6133ed9f52fceb5d55ddeac6fb375dce5a62500bef84b66b75ddbb348a9ee",
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/manifest.json": "0b04e7ca9bd01ae9b287e4933711d535c0888e07e8f095b792748036c3adc2fa",
+    "rules-engine/src/test/resources/legacy-suspensions/nested-may/state.json": "29bbdca79a50e55d84133a40cc68ab4556b6d51ce4b7a336e5103a1bc78fcac0",
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/actions.json": "56681c993f36979331d2b6abef5dddb6b52561270c576093651c2a08ff89f713",
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/after-1.json": "0b6769d45b523b78916058e0ce795a2cabfad96d29d81e8cc25a54ab66138262",
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/after-2.json": "9c7837e79e279bdc9f6fa516c604cd3aa03c550c9e0d82319b36597af5366402",
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/creation-events.json": "b6b157d910fdd98eb29cb2a2f178dd537d42002dd431325cd1d3fa0e5135fea0",
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/events-1.json": "08786cb3ea201e008fe06da8681e69b9fafba78fd50f8359f38bdde01cf99fa4",
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/events-2.json": "d0dff41a3914cb8f2dbcdda78284d11d6cabd2aea7b36e5a34815363545ff3c8",
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/manifest.json": "63d680ce4454553805f9ae1c19cec2556cc726c1080ce239c0afe08ef76eb0d5",
+    "rules-engine/src/test/resources/legacy-suspensions/repeat-while/state.json": "c39f22dea5c330089e87f9927d03778a4ef586841759e0499d41a9397a2d8467",
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/actions.json": "d6bbbf30f9b4a0767f2aa07cda358fc97a28c6416b3f5e005bcd4e6f829d802c",
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/after-1.json": "4520ff201102a6eba80a7e328d8abc6a6dd00770b98d868aeec70f8a2b2f2bfc",
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/after-2.json": "115017459f09a675a3369834dc6eeb9d00d42358b42ae6b5fb8f4f98dd08bd83",
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/creation-events.json": "548f346cd656a27685e87a5e9e0e38a534b125f7f237d1392659f48aeb916790",
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/events-1.json": "cffd6b016389d255e1a329b1cb50f1c4c62e76217c038c90de8c07eb2dd18ce4",
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/events-2.json": "7a383c5193f6462f36d0d5d27a66f7833644c6392e3fed40af523ca19d732090",
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/manifest.json": "1d4e6bc0d7935047e65096b3f4b967d890f34039af42c7829210b3bc21b83868",
+    "rules-engine/src/test/resources/legacy-suspensions/suspended-mana-window/state.json": "9e993d4468183f5f9021e1b680be78fe2dcb46f4ce32c5e29cd43e6b3ca52891",
+    "rules-engine/src/test/resources/suspension-traces/README.md": "df29d9ca5c55362a67c4741fd681f187b29a73c3bf96fb2936c3325e56070eba",
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/actions.json": "d0ce4b42a040dcef4a714abf00f6d8047be8417baaa04f550a8325e0fb222ea9",
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/after-1.json": "fdcfe3467f7ea1df913e9d3c81b74ab6ac021f38ebf0ce59c8b6a5c405e75a20",
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/creation-events.json": "dfd938e9b9fa80676c40f45a807a0ec9e6f18e478583f64743ea959de8d1b1d5",
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/events-1.json": "c85bb5a3218279be0ef4e22410747c43193724eec103ecfb95979f0eb94d426e",
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/manifest.json": "55ca60cf5df3ea436fee1b69f80351995222eeae66cfe9a96379a837bf713433",
+    "rules-engine/src/test/resources/suspension-traces/compact-cycling/state.json": "ae28e0981b9834ab4988bb251d1f8401af03bc1789b9abe0812354e3b0d0995d",
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/actions.json": "e8b3e39fbad309d9d7980599dd95b6529daa9c58df58e1df4b63d9f3acc74670",
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/after-1.json": "108de802faf42302c19ed304b4479154cfdf8c52dee3b7554c82d31cf272e384",
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/after-2.json": "5e607495e770a6ff6c86e8053e0cad43b841b037a14901668755de41822f1547",
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/after-3.json": "ab9a44cad0b1a58c65fbf1058b4b8315df277d75115ff92fbdf374b1d40dc16e",
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/creation-events.json": "a7d071a3c2b0c8af3ca5867ae76c973467a782d05857075a84c465f37fe087d1",
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/events-1.json": "842e5a79b28db029d1dd22dd9053b151cb3c99152bb284b4c86a09768eda188f",
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/events-2.json": "3e6467b41d2d28e02746e1b32b26af7e268d14ff4dce8149fc1214dfba66c5fa",
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/events-3.json": "99373e339c021db47f9c7b34b724c35b021053b69f94d5c7abb2d8116b2519d9",
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/manifest.json": "2f21bafb20caca144eb7ba16ce20e850ac7f114aea1e8921a7d175a3ec572c18",
+    "rules-engine/src/test/resources/suspension-traces/free-cast-target/state.json": "6b51f8d7b00d6773864bef00a0bd0520a048d0e476b275b9068e49479aa53834",
+    "rules-engine/src/test/resources/suspension-traces/nested-may/actions.json": "a42edc8c7ef8049f3ccedc6425c1959ac9f35cd1048cf8aaa334cbbea0fb0f3f",
+    "rules-engine/src/test/resources/suspension-traces/nested-may/after-1.json": "7f8bbcdd5e20a57948921b7d698a2f0ce62e46f6f5ae49bf5f12cd71f9612fda",
+    "rules-engine/src/test/resources/suspension-traces/nested-may/after-2.json": "a865de864a987659863c6f84b8cfa14ccf85770f4dec42a51d13ebbcca000ef6",
+    "rules-engine/src/test/resources/suspension-traces/nested-may/creation-events.json": "ad98cd194edf0bc856568960fa786b62c3e182ce994947eaf5374160b95e18bf",
+    "rules-engine/src/test/resources/suspension-traces/nested-may/events-1.json": "53fb80ed304d3247013c90391562d364103ab2e3d971d3ed06b9e405927d2b17",
+    "rules-engine/src/test/resources/suspension-traces/nested-may/events-2.json": "18b6133ed9f52fceb5d55ddeac6fb375dce5a62500bef84b66b75ddbb348a9ee",
+    "rules-engine/src/test/resources/suspension-traces/nested-may/manifest.json": "687136588849b116ccd0491ee15d8296d9681d3acd12c0b9a667c98cefd229fc",
+    "rules-engine/src/test/resources/suspension-traces/nested-may/state.json": "ae638fb26065f17658d3ea14c9d8404cf3b1c0143181be2642597d51a2c884e4",
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/actions.json": "56681c993f36979331d2b6abef5dddb6b52561270c576093651c2a08ff89f713",
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/after-1.json": "324a6fdf7e88697a3f28aef414a3d93e035fb606d862fdc8e59bdb695e2dacf2",
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/after-2.json": "a90dc4c9552c9d1c8f3ad2618bf8ab253d6b8e3a1358f904aed6b87c097a3570",
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/creation-events.json": "b6b157d910fdd98eb29cb2a2f178dd537d42002dd431325cd1d3fa0e5135fea0",
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/events-1.json": "08786cb3ea201e008fe06da8681e69b9fafba78fd50f8359f38bdde01cf99fa4",
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/events-2.json": "d0dff41a3914cb8f2dbcdda78284d11d6cabd2aea7b36e5a34815363545ff3c8",
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/manifest.json": "93930dccd945e3e445520b4de8e6a19fc84e0efac6833d4dc841553bcb2835e4",
+    "rules-engine/src/test/resources/suspension-traces/repeat-while/state.json": "d1be0484e5c8b083ea727a1bc9ba8facc19963b7f91b40255fea19528b09287b",
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/actions.json": "d6bbbf30f9b4a0767f2aa07cda358fc97a28c6416b3f5e005bcd4e6f829d802c",
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/after-1.json": "6b397ba4daeb71a3cf5a75c8ac3b49832c8ce3f35bd289cd56019e8565d94bdd",
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/after-2.json": "98f8b9cbebc3cc09077379f79bb5b92a9ab29cd8b59a44340a68dd8975a775ba",
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/creation-events.json": "548f346cd656a27685e87a5e9e0e38a534b125f7f237d1392659f48aeb916790",
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/events-1.json": "cffd6b016389d255e1a329b1cb50f1c4c62e76217c038c90de8c07eb2dd18ce4",
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/events-2.json": "7a383c5193f6462f36d0d5d27a66f7833644c6392e3fed40af523ca19d732090",
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/manifest.json": "0a914e60ccc5afc0808d38b7bfb4b798a4326c18dbe683259af02eb585a76a39",
+    "rules-engine/src/test/resources/suspension-traces/suspended-mana-window/state.json": "c2671964ac8cd0e904f5d87344ba0ebf95d333ee5c6bff6b97c3e30fa922474f"
+  },
+  "remaining_gates": [
+    "Receive original immutable evidence and every raw source-bound report before bounded acceptance",
+    "Original provenance is not current retarget authority",
+    "Live activation prompt currently disallows cancellation; AC04 uses explicit cancellable suspended fixture, no live cancellation capability claimed",
+    "Splice and other uncaptured targeting paths remain explicit dependencies",
+    "Protected StackResolver, complete Spellskite/four-player and official games/seeds admissions unchanged"
+  ],
+  "record_extra_paths": [
+    "experiments/manual-transmission/research/activation-target-capture-preflight-r1-20261024/PROTOCOL.json",
+    "experiments/manual-transmission/research/activation-target-capture-preflight-r1-20261024/gate.py",
+    "experiments/manual-transmission/research/activation-target-capture-preflight-r2-20261024/PROTOCOL.json",
+    "experiments/manual-transmission/research/activation-target-capture-preflight-r2-20261024/gate.py"
+  ],
+  "early_feedback": "Exact normal compilation and18 targeted cases before compiled8-case mutant with exact3 behavioral failures; clean restoration/rebinding before required positive gates.",
+  "static_receiver_review": {
+    "scope": "Static Python receiver self-check only; not Kotlin compilation or behavioral qualification",
+    "checks": [
+      "exact three behavioral failures and five passing cases accepted",
+      "missing/zero reports rejected",
+      "compiler contamination rejected",
+      "unrelated failed task rejected",
+      "wrong test identity rejected",
+      "unrelated failure type rejected",
+      "wrong assertion location rejected",
+      "passing witness rejected",
+      "skipped witness rejected",
+      "zero exit rejected",
+      "cached test task rejected",
+      "false suite totals rejected",
+      "unmutated source rejected"
+    ],
+    "all_passed": true
+  },
+  "original_eight_assertion_bodies_preserved": true,
+  "early_control_receipt": {
+    "commit": "96ddb8fbe1198917946e9f4b406c9fdde882a75a",
+    "run": 40083463089,
+    "artifact": 12556586463,
+    "artifact_sha256": "a08a0950bf9aa80aeee3ca04e9d6aae8e13c754b90054f4cfc4caa865b137e95",
+    "normal_passes": 8,
+    "mutation_cases": 8,
+    "mutation_assertion_failures": 3,
+    "mutation_passes": 5,
+    "frames": [
+      55,
+      60,
+      95
+    ],
+    "scope": "Early feedback only; not prior-source validation of the10new tests"
+  },
+  "source_review": "Four existing production edits retained; original8 assertion bytes retained. Five public-flow tests and five boundary tests added. No external independent review.",
+  "failed_activation_preflight": {
+    "run": 40079283905,
+    "artifact": 12554702669,
+    "receipt": "b2a2bfc4418781e9ac039fc89c2cc215c09abddd",
+    "disposition": "Wrong failure types from combined group/visit mutation; preserved and not accepted"
+  },
+  "positive_receiver_static_review": {
+    "scope": "Static receiver self-check: original accepted report copies plus18 synthetic passing rows; no Kotlin execution or changed-source validation claimed",
+    "checks": [
+      "targeted exact accepted baseline plus18 synthetic cases accepted",
+      "targeted off by one total rejected",
+      "focused exact accepted baseline plus18 synthetic cases accepted",
+      "focused off by one total rejected",
+      "broad exact accepted baseline plus18 synthetic cases accepted",
+      "broad off by one total rejected",
+      "ordinary exact accepted baseline plus18 synthetic cases accepted",
+      "ordinary off by one total rejected"
+    ],
+    "all_passed": true
+  }
+}
