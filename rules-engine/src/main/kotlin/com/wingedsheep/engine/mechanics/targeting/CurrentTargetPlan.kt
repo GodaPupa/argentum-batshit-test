@@ -31,6 +31,7 @@ data class CurrentTargetPlan(
     }
     /** Reject stale flat or dependent views instead of silently falling back to legacy interpretation. */
     fun isCoherent(container: ComponentContainer): Boolean {
+        if (container.hasConflictingTargetAuthority()) return false
         val component = container.get<TargetsComponent>() ?: return false
         if (targets != component.targets || selections.instances.size != component.targetRequirements.size) return false
         val spell = container.get<SpellOnStackComponent>()
@@ -50,6 +51,24 @@ data class CurrentTargetPlan(
         if (spell != null && spell.splicedTargetsOrdered != splicePlans().map { it.flatTargets() }) return false
         return true
     }
+}
+
+/** Current authority kept separate when the producer promises an unchanged legacy target view. */
+@Serializable
+data class CurrentTargetPlanComponent(val plan: CurrentTargetPlan) : com.wingedsheep.engine.state.Component
+
+internal fun ComponentContainer.currentTargetPlan(): CurrentTargetPlan? =
+    get<CurrentTargetPlanComponent>()?.plan ?: get<TargetsComponent>()?.currentTargetPlan
+
+internal fun ComponentContainer.hasConflictingTargetAuthority(): Boolean =
+    get<CurrentTargetPlanComponent>() != null && get<TargetsComponent>()?.currentTargetPlan != null
+
+/** Install only a fresh validated plan, keeping legacy target-view equality and serialized bytes. */
+internal fun ComponentContainer.withSeparateCurrentTargetPlan(plan: CurrentTargetPlan): ComponentContainer? {
+    if (currentTargetPlan() != null || hasConflictingTargetAuthority()) return null
+    val installed = withCurrentTargetPlan(null, plan) ?: return null
+    val targets = installed.get<TargetsComponent>() ?: return null
+    return installed.with(targets.copy(currentTargetPlan = null)).with(CurrentTargetPlanComponent(plan))
 }
 
 internal fun TargetSlotPlan.flatTargets(): List<ChosenTarget> = instances.flatMap { it.slots.map { s -> s.target } }
@@ -101,7 +120,7 @@ internal fun ComponentContainer.withCurrentTargetPlan(
     expected: CurrentTargetPlan?, replacement: CurrentTargetPlan,
 ): ComponentContainer? {
     val targets = get<TargetsComponent>() ?: return null
-    if (targets.currentTargetPlan != expected) return null
+    if (hasConflictingTargetAuthority() || currentTargetPlan() != expected) return null
     if (expected == null) {
         if (targets.targets != replacement.targets) return null
     } else {
@@ -111,7 +130,9 @@ internal fun ComponentContainer.withCurrentTargetPlan(
         if (expected.selections.instances.map { it.slots.size } != replacement.selections.instances.map { it.slots.size }) return null
         if (expected.slots.map { it.dividedAmount } != replacement.slots.map { it.dividedAmount }) return null
     }
-    var result = with(targets.copy(targets = replacement.targets, currentTargetPlan = replacement))
+    var result = if (has<CurrentTargetPlanComponent>())
+        with(targets.copy(targets = replacement.targets)).with(CurrentTargetPlanComponent(replacement))
+    else with(targets.copy(targets = replacement.targets, currentTargetPlan = replacement))
     fun division(plan: TargetSlotPlan): Map<EntityId, Int>? {
         if (plan.instances.flatMap { it.slots }.none { it.dividedAmount != null }) return null
         return plan.instances.flatMap { it.slots }.filter { it.dividedAmount != null }

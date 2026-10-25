@@ -732,7 +732,7 @@ class StackResolver(
             container = container.with(TargetsComponent.capture(state, targets, targetRequirements))
         }
         if (currentTargetPlan != null) {
-            container = container.withCurrentTargetPlan(null, currentTargetPlan)
+            container = container.withSeparateCurrentTargetPlan(currentTargetPlan)
                 ?: return ExecutionResult.error(state, "Incoherent new current target plan")
         }
 
@@ -987,8 +987,8 @@ class StackResolver(
         val container = state.getEntity(topId)
             ?: return ExecutionResult.error(state, "Stack item not found: $topId")
 
-        val plan = container.get<TargetsComponent>()?.currentTargetPlan
-        if (plan != null && !plan.isCoherent(container)) {
+        val plan = container.currentTargetPlan()
+        if (container.hasConflictingTargetAuthority() || (plan != null && !plan.isCoherent(container))) {
             return ExecutionResult.error(state, "Incoherent current target plan")
         }
 
@@ -1044,7 +1044,7 @@ class StackResolver(
                 sourceId = spellId,
                 targetingSourceType = TargetingSourceType.SPELL,
                 xValue = spellComponent.xValue,
-                currentPlan = targetsComponent.currentTargetPlan,
+                currentPlan = container.currentTargetPlan(),
                 targetEntryStamps = targetsComponent.targetEntryStamps
             )
             if (validTargets.all { it == null }) {
@@ -2223,7 +2223,7 @@ class StackResolver(
         // that consumes "all targets" would swallow the spliced card's as well.
         // A spell with no effect of its own can't be a splice host in practice (a splice card is
         // spliced onto a spell that has text), so the tail lives inside the `spellEffect != null` guard.
-        val currentPlan = state.getEntity(spellId)?.get<TargetsComponent>()?.currentTargetPlan
+        val currentPlan = state.getEntity(spellId)?.currentTargetPlan()
         val currentRequirements = state.getEntity(spellId)?.get<TargetsComponent>()?.targetRequirements ?: emptyList()
         var spliceOffset = currentPlan?.slice(0, currentPlan.mainInstanceCount)?.size ?: 0
         var spliceRequirementOffset = currentPlan?.mainInstanceCount ?: 0
@@ -2855,7 +2855,7 @@ class StackResolver(
                 xValue = abilityComponent.xValue,
                 triggeringEntityId = abilityComponent.triggeringEntityId,
                 triggeringPlayerId = abilityComponent.triggeringPlayerId,
-                currentPlan = targetsComponent.currentTargetPlan,
+                currentPlan = container.currentTargetPlan(),
                 targetEntryStamps = targetsComponent.targetEntryStamps,
                 storedCollections = abilityComponent.carriedPipeline?.storedCollections ?: emptyMap(),
             )
@@ -2873,7 +2873,7 @@ class StackResolver(
                     )
                 )
             }
-            targetsComponent.currentTargetPlan?.let { plan ->
+            container.currentTargetPlan()?.let { plan ->
                 val view = plan.selections.resolvedView(targetReqs, validTargets)
                 context = context.copy(targets = validTargets.filterNotNull(), alignedTargets = validTargets,
                     damageDistribution = view.division ?: context.damageDistribution,
@@ -2955,7 +2955,7 @@ class StackResolver(
                 sourceId = abilityComponent.sourceId,
                 xValue = abilityComponent.xValue,
                 targetingSourceType = TargetingSourceType.ABILITY,
-                currentPlan = targetsComponent.currentTargetPlan,
+                currentPlan = container.currentTargetPlan(),
                 targetEntryStamps = targetsComponent.targetEntryStamps
             )
             if (validTargets.all { it == null }) {
@@ -2998,10 +2998,10 @@ class StackResolver(
             lastKnownSourceCounters = abilityComponent.lastKnownSourceCounters,
             lastKnownSourceSnapshot = abilityComponent.lastKnownSourceSnapshot,
             lastKnownSourceAttachments = abilityComponent.lastKnownSourceAttachments,
-            damageDistribution = targetsComponent?.currentTargetPlan?.selections
+            damageDistribution = container.currentTargetPlan()?.selections
                 ?.resolvedView(activatedReqs, alignedActivatedTargets)?.division ?: abilityComponent.damageDistribution,
             pipeline = PipelineState(
-                namedTargets = targetsComponent?.currentTargetPlan?.selections
+                namedTargets = container.currentTargetPlan()?.selections
                     ?.resolvedView(activatedReqs, alignedActivatedTargets)?.named
                     ?: EffectContext.buildNamedTargets(activatedReqs, alignedActivatedTargets),
                 // A "Reveal the creature type you chose" cost hands its type to the effect under the

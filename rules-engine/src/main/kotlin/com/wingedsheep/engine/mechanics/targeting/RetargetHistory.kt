@@ -22,6 +22,11 @@ fun TargetsComponent.withRetargetedHistory(
     if (replacements.size != targets.size) return null
     if (replacements == targets) return this
     if (currentTargetPlan != null) return null // Requires atomic current-view transition.
+    // The legacy adapter receives a view rather than the stack entity. Guard its live owner too.
+    // Only a changed retarget scans the bounded stack; equal-target no-ops above remain unchanged.
+    if (state.stack.any { id -> state.getEntity(id)?.let { owner ->
+            owner.get<TargetsComponent>() === this && owner.has<CurrentTargetPlanComponent>()
+        } == true }) return null
     val freshlyCaptured = TargetsComponent.capture(state, replacements, targetRequirements)
     val occurrences = linkedMapOf<EntityId, Long?>()
     for ((index, replacement) in replacements.withIndex()) {
