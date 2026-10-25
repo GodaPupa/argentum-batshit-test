@@ -1,0 +1,36 @@
+{
+  "state": "PREPARED_NOT_EXECUTED",
+  "source": "388f6156ac726c17fd591a87ffbee1bb7224c170",
+  "validation": "5427b2258530c17df71e08014a8e4593402a236d",
+  "run": 40209987485,
+  "job": 121218949639,
+  "attempt": 1,
+  "files": {
+    "PINS.json": "1c666244421b546eb1188bcd3f8e094f1916860f093efe7a1f3c558e702cefaa",
+    "RECEIVE.py": "80576908204c6a9081b5673f36c96c66a417c3bab09b8e40ba5accf46f959ff2",
+    "check_receiver.py": "9a75f57a66f137a85109fd2e790201e09152a5032ff5a378c38177d4414e6555",
+    "SYNTHETIC_CHECKS.json": "b61c4d7a596dbeab4ae87902975fd6902a11a98b8c43b0b902a234e4393e5f08"
+  },
+  "synthetic_checks": 10,
+  "synthetic_scope": "Parser-only fixtures, no behavioral evidence",
+  "metadata_contract": {
+    "run": "GET actions/runs/40209987485",
+    "jobs": "GET actions/runs/40209987485/attempts/1/jobs",
+    "artifact": "exact original artifact metadata",
+    "source": "GET git/commits/388f6156ac726c17fd591a87ffbee1bb7224c170",
+    "validation": "GET git/commits/5427b2258530c17df71e08014a8e4593402a236d",
+    "main": "GET git/ref/heads/main then commit object or sha object",
+    "source_delta": "compare c3fb0049... to388f6156...",
+    "validation_delta": "compare388f6156... to5427b225..."
+  },
+  "instructions": "After terminal reconcile newer receipts/successors and ownership. Save exact metadata.json and original ZIP as original.zip beside this receiver. Execute RECEIVE.py once. Preserve original bytes and failure details if any gate fails; never classify missing reports or compilation as behavioral negative evidence.",
+  "scope": "Early normal/mutant compile, targeted42, exact2negative frames35/41, restored42 and protected/source/metadata gates only. Full feature/card/multiplayer acceptance is explicitly false.",
+  "accepted_receipts_reused": [
+    "4546c48dc4a06ba1c9f1bacef131dd80a9a5abcf",
+    "7ee1fe7e3848146b6089a73e5fa5951d81e3a630",
+    "770f9a06614ff5addcd404df0d109bb9203ff825"
+  ],
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2
+}
