@@ -1,0 +1,737 @@
+{
+  "source": "1382dc0a1fc399e96f8419117b7354627ec43308",
+  "tree": "c859dcf0d0f537879a03271e028058f33573d07f",
+  "validation": "01a925f86b1253be8e48d0322256fe568a0bb62c",
+  "run": 40242125247,
+  "job": 121315965480,
+  "attempt": 1,
+  "artifact": 12616484795,
+  "artifact_bytes": 798862,
+  "artifact_sha256": "858fe1e694d4b5f9abb64a6433118c3e3548c7b982f7bab0087a0d69583e59d7",
+  "manifest_entries": 260,
+  "gates": {
+    "compile-normal": {
+      "compile": true,
+      "tests": 0
+    },
+    "compile-mutant": {
+      "compile": true,
+      "tests": 0
+    },
+    "targeted": {
+      "cases": {
+        "FixedRecipientMutationWitnessTest": [
+          "com.wingedsheep.engine.scenarios.FixedRecipientMutationWitnessTest::FM recipient-visit",
+          "com.wingedsheep.engine.scenarios.FixedRecipientMutationWitnessTest::FM source-color"
+        ],
+        "FixedRecipientPlayerRelationTest": [
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP changing player cannot invalidate retained permanent owned=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP changing player cannot invalidate retained permanent owned=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP same selected player permits replacement owned=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP same selected player permits replacement owned=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone BATTLEFIELD spellOrPermanent=true changePlayer=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone BATTLEFIELD spellOrPermanent=true changePlayer=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone EXILE spellOrPermanent=false changePlayer=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone EXILE spellOrPermanent=false changePlayer=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone HAND spellOrPermanent=false changePlayer=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone HAND spellOrPermanent=false changePlayer=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone STACK spellOrPermanent=false changePlayer=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone STACK spellOrPermanent=false changePlayer=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone STACK spellOrPermanent=true changePlayer=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone STACK spellOrPermanent=true changePlayer=true"
+        ],
+        "FixedRecipientRetargetingTest": [
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation live CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation live PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation live PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation live PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation removed CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation removed PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation removed PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation removed PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation returned CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation returned PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation returned PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation returned PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger live CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger live PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger live PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger live PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger removed CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger removed PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger removed PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger removed PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger returned CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger returned PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger returned PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger returned PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR01 change one occurrence and preserve original provenance",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR02 repeated entity occurrences retain distinct addresses and omitted group",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR03 duplicate within an instance cannot be selected",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR04 duplicate across instances changes without a second becomes-target event",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR05 no-op has no menu or events",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR06 no authoritative plan fails closed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR07 stale serialized expected plan cannot overwrite a newer change",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR08 stale recipient visit rejects without mutating state",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR09 stale stack visit rejects without mutating state",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR10 unchanged illegal target remains untouched",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR11 original controller decides opponent hexproof",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR12 final same-controller relation rejects replacement",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR13 dynamic original count is not recalculated",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR14 selected division is preserved",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR15 missing stack membership rejects stale offer",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR16 newly illegal recipient is rechecked on apply"
+        ],
+        "FixedRecipientSourceContextTest": [
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability activation live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability activation removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability activation returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability trigger live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability trigger removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability trigger returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura spell remains restricted",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation live false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation live true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation removed false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation removed true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation returned false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation returned true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger live false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger live true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger removed false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger removed true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger returned false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger returned true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC damage controller compatibility false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC damage controller compatibility true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation inverse",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger inverse",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned supertype"
+        ]
+      },
+      "modules": {
+        "rules-engine": {
+          "suites": 4,
+          "rows": 133,
+          "passed": 133
+        }
+      },
+      "totals": {
+        "suites": 4,
+        "rows": 133,
+        "passed": 133,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "mutation": {
+      "cases": {
+        "FixedRecipientSourceContextTest": [
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability activation live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability activation removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability activation returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability trigger live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability trigger removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability trigger returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura spell remains restricted",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation live false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation live true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation removed false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation removed true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation returned false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation returned true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger live false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger live true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger removed false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger removed true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger returned false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger returned true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC damage controller compatibility false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC damage controller compatibility true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation inverse",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger inverse",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned supertype"
+        ]
+      },
+      "modules": {
+        "rules-engine": {
+          "suites": 1,
+          "rows": 77,
+          "passed": 31,
+          "failures": 46
+        }
+      },
+      "totals": {
+        "suites": 1,
+        "rows": 77,
+        "passed": 31,
+        "failures": 46,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed color",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed subtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed cardtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed supertype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned color",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned subtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned cardtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned supertype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger color",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "e605264c6c28b8e95c8894b32255ab4d43eafe8dd1d82d7893a4797e8f001e57"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger subtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "e605264c6c28b8e95c8894b32255ab4d43eafe8dd1d82d7893a4797e8f001e57"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger cardtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "e605264c6c28b8e95c8894b32255ab4d43eafe8dd1d82d7893a4797e8f001e57"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger supertype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "e605264c6c28b8e95c8894b32255ab4d43eafe8dd1d82d7893a4797e8f001e57"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger live false",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "a5fe6729bbaead72c3604fa777494260ed6e437d082b4a95edf5bf9363637fdc"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger live true",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "93cf99d1cfc6841d935145186145f24f2007691d748eed2635eb3c9b408dd5fe"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger returned false",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "a5fe6729bbaead72c3604fa777494260ed6e437d082b4a95edf5bf9363637fdc"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger returned true",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "93cf99d1cfc6841d935145186145f24f2007691d748eed2635eb3c9b408dd5fe"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger removed",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "b59cfe9e6db7ca04c5c37cefa0b3d184c10fa9646ade74fd1c25a9119cc7a4c2"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger returned",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "b59cfe9e6db7ca04c5c37cefa0b3d184c10fa9646ade74fd1c25a9119cc7a4c2"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger inverse",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "f18042a2a0c4b5830bd39c47a0bb8d3c4ce79550fd38e800d1f4d70484be8030"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability trigger live",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "a0179b9b8b2e4d7058849dfe8fd08a260722c1511d8370a20bf1c2fa61773292"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability trigger returned",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "a0179b9b8b2e4d7058849dfe8fd08a260722c1511d8370a20bf1c2fa61773292"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD returned",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "6574135b439d09c9d449632ea867cab264efb79fbb8c856a3a077479e6bf7e14"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD returned",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "6574135b439d09c9d449632ea867cab264efb79fbb8c856a3a077479e6bf7e14"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed color",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed subtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed cardtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed supertype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned color",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned subtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned cardtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned supertype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "9ad86913c6ef9f2cdd7030188a8b2151414a8b64361916afa6bfc4d5e64748aa"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation color",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "e605264c6c28b8e95c8894b32255ab4d43eafe8dd1d82d7893a4797e8f001e57"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation subtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "e605264c6c28b8e95c8894b32255ab4d43eafe8dd1d82d7893a4797e8f001e57"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation cardtype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "e605264c6c28b8e95c8894b32255ab4d43eafe8dd1d82d7893a4797e8f001e57"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation supertype",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "e605264c6c28b8e95c8894b32255ab4d43eafe8dd1d82d7893a4797e8f001e57"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation live false",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "a5fe6729bbaead72c3604fa777494260ed6e437d082b4a95edf5bf9363637fdc"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation live true",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "93cf99d1cfc6841d935145186145f24f2007691d748eed2635eb3c9b408dd5fe"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation returned false",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "a5fe6729bbaead72c3604fa777494260ed6e437d082b4a95edf5bf9363637fdc"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation returned true",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "93cf99d1cfc6841d935145186145f24f2007691d748eed2635eb3c9b408dd5fe"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation removed",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "b59cfe9e6db7ca04c5c37cefa0b3d184c10fa9646ade74fd1c25a9119cc7a4c2"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation returned",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<false> but was:<true>",
+          "original_stack_sha256": "b59cfe9e6db7ca04c5c37cefa0b3d184c10fa9646ade74fd1c25a9119cc7a4c2"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation inverse",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "f18042a2a0c4b5830bd39c47a0bb8d3c4ce79550fd38e800d1f4d70484be8030"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability activation live",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "a0179b9b8b2e4d7058849dfe8fd08a260722c1511d8370a20bf1c2fa61773292"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability activation returned",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "a0179b9b8b2e4d7058849dfe8fd08a260722c1511d8370a20bf1c2fa61773292"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD returned",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "6574135b439d09c9d449632ea867cab264efb79fbb8c856a3a077479e6bf7e14"
+        },
+        {
+          "identity": "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD returned",
+          "type": "org.opentest4j.AssertionFailedError",
+          "message": "org.opentest4j.AssertionFailedError: expected:<true> but was:<false>",
+          "original_stack_sha256": "6574135b439d09c9d449632ea867cab264efb79fbb8c856a3a077479e6bf7e14"
+        }
+      ],
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "restored": {
+      "cases": {
+        "FixedRecipientMutationWitnessTest": [
+          "com.wingedsheep.engine.scenarios.FixedRecipientMutationWitnessTest::FM recipient-visit",
+          "com.wingedsheep.engine.scenarios.FixedRecipientMutationWitnessTest::FM source-color"
+        ],
+        "FixedRecipientPlayerRelationTest": [
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP changing player cannot invalidate retained permanent owned=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP changing player cannot invalidate retained permanent owned=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP same selected player permits replacement owned=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP same selected player permits replacement owned=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone BATTLEFIELD spellOrPermanent=true changePlayer=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone BATTLEFIELD spellOrPermanent=true changePlayer=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone EXILE spellOrPermanent=false changePlayer=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone EXILE spellOrPermanent=false changePlayer=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone HAND spellOrPermanent=false changePlayer=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone HAND spellOrPermanent=false changePlayer=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone STACK spellOrPermanent=false changePlayer=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone STACK spellOrPermanent=false changePlayer=true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone STACK spellOrPermanent=true changePlayer=false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientPlayerRelationTest::FRP zone STACK spellOrPermanent=true changePlayer=true"
+        ],
+        "FixedRecipientRetargetingTest": [
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation live CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation live PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation live PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation live PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation removed CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation removed PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation removed PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation removed PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation returned CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation returned PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation returned PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source activation returned PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger live CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger live PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger live PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger live PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger removed CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger removed PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger removed PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger removed PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger returned CANT_BE_TARGETED_BY_CARDTYPE_ARTIFACT_SOURCE_ABILITIES",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger returned PROTECTION_FROM_CARDTYPE_ARTIFACT",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger returned PROTECTION_FROM_RED",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR source trigger returned PROTECTION_FROM_SUBTYPE_ZOMBIE",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR01 change one occurrence and preserve original provenance",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR02 repeated entity occurrences retain distinct addresses and omitted group",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR03 duplicate within an instance cannot be selected",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR04 duplicate across instances changes without a second becomes-target event",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR05 no-op has no menu or events",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR06 no authoritative plan fails closed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR07 stale serialized expected plan cannot overwrite a newer change",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR08 stale recipient visit rejects without mutating state",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR09 stale stack visit rejects without mutating state",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR10 unchanged illegal target remains untouched",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR11 original controller decides opponent hexproof",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR12 final same-controller relation rejects replacement",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR13 dynamic original count is not recalculated",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR14 selected division is preserved",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR15 missing stack membership rejects stale offer",
+          "com.wingedsheep.engine.scenarios.FixedRecipientRetargetingTest::FR16 newly illegal recipient is rechecked on apply"
+        ],
+        "FixedRecipientSourceContextTest": [
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability activation live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability activation removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability activation returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability trigger live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability trigger removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura ability trigger returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC aura spell remains restricted",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation live false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation live true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation removed false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation removed true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation returned false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller activation returned true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger live false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger live true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger removed false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger removed true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger returned false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC controller trigger returned true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC damage controller compatibility false",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC damage controller compatibility true",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation inverse",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary activation returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger inverse",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger removed",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC legendary trigger returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation BATTLEFIELD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other activation GRAVEYARD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger BATTLEFIELD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD legacy",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD live",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD returned",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC other trigger GRAVEYARD unknown",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial activation supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC partial trigger supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation live supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation removed supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player activation returned supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger live supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger removed supertype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned cardtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned color",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned subtype",
+          "com.wingedsheep.engine.scenarios.FixedRecipientSourceContextTest::FSC player trigger returned supertype"
+        ]
+      },
+      "modules": {
+        "rules-engine": {
+          "suites": 4,
+          "rows": 133,
+          "passed": 133
+        }
+      },
+      "totals": {
+        "suites": 4,
+        "rows": 133,
+        "passed": 133,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "failures": [],
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "forms": "All normal, mutant and restored bytes bound"
+  },
+  "feature_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "gate_errors": [],
+  "state": "RECEIVED_EARLY_GATES_ONLY_NOT_FEATURE_ACCEPTANCE",
+  "full_receiver_output_sha256": "697c0212178c7cd87c7492ee711531d03a02897a747868c3bc1b8c136df9516d",
+  "receiver_commit": "60f03293235b7497d015fcf210902de1de2f7102",
+  "receiver_executed_unchanged": true
+}
