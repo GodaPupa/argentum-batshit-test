@@ -1,19 +1,16 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T09:20:12.833Z",
+  "updated_date": "2026-10-25T09:46:43.281Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "WAITING_EXTERNAL",
-  "owner": null,
+  "status": "ACTIVE",
+  "owner": "manual-work-facfbd80-receive-diagnostic-r2",
   "lease": {
-    "state": "RELEASED",
-    "owner": null,
-    "claimed_utc": "2026-10-25T08:43:40.226Z",
-    "expires_utc": null,
-    "reason": "Diagnostic R2 is still active; immutable receiving audit and isolated integration review complete. No further safely independent critical-path implementation before original source-history outcome.",
-    "renewed_utc": "2026-10-25T09:16:52.910Z",
-    "previous_owner": "manual-work-fbf21973-receive-r5",
-    "released_utc": "2026-10-25T09:20:12.833Z"
+    "state": "ACTIVE",
+    "owner": "manual-work-facfbd80-receive-diagnostic-r2",
+    "claimed_utc": "2026-10-25T09:46:43.281Z",
+    "expires_utc": "2026-10-25T10:16:43.281Z",
+    "reason": "Receive original terminal diagnostic R2 and continue source-specific next admission."
   },
   "last_qualified": {
     "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
@@ -2508,7 +2505,15 @@
       "conclusion": null,
       "observed_utc": "2026-10-25T09:20:12.833Z"
     },
-    "release": "Same owner finished bounded work and explicitly released; no stale-lease takeover. No new worker, schedule, official games/seeds or spending increase."
+    "release": "Same owner finished bounded work and explicitly released; no stale-lease takeover. No new worker, schedule, official games/seeds or spending increase.",
+    "latest_claim": {
+      "observed_utc": "2026-10-25T09:46:43.281Z",
+      "prior_explicit_release": "53c96acb8af533a408ac2ec1fdf36c966cb2ce92",
+      "automation_run": "facfbd80-78f4-8330-81ac-14d8bf3501e2",
+      "active_relevant_runs": [],
+      "ignored_ancient_run": 34749202144,
+      "no_newer_receipt_or_successor": true
+    }
   },
   "automation": {
     "execution_task": "Manual Work Continuation",
@@ -3196,5 +3201,5 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "External diagnostic40179990974 pending AND receiving preparation plus isolated integration source review complete. Remaining source-legality decision depends on original executable outcome; do not presume success, duplicate qualification or broaden protected resolver authority."
+  "actual_stopping_reason": null
 }
