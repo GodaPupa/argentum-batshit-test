@@ -5,6 +5,7 @@ import com.wingedsheep.sdk.core.AbilityFlag
 import com.wingedsheep.sdk.dsl.Patterns
 
 import com.wingedsheep.engine.core.*
+import com.wingedsheep.engine.handlers.AbilitySourceCharacteristics
 import com.wingedsheep.engine.handlers.EffectContext
 import com.wingedsheep.engine.handlers.PipelineState
 import com.wingedsheep.engine.handlers.EffectHandler
@@ -2843,14 +2844,16 @@ class StackResolver(
         }
 
         // CR 608.2b — validate targets (including protection check, CR 702.16)
-        val sourceCard = state.getEntity(abilityComponent.sourceId)?.get<CardComponent>()
-        val sourceColors = sourceCard?.colors ?: emptySet()
-        val sourceSubtypes = sourceCard?.typeLine?.subtypes?.map { it.value }?.toSet() ?: emptySet()
+        val sourceCharacteristics = AbilitySourceCharacteristics.resolve(
+            state, abilityComponent.sourceId, abilityComponent.objectReferences,
+            abilityComponent.sourceBattlefieldTimestamp, abilityComponent.lastKnownSourceSnapshot,
+        )
         if (targetsComponent != null && targetsComponent.targets.isNotEmpty()) {
             val validTargets = validateTargets(
-                state, targetsComponent.targets, sourceColors, sourceSubtypes,
+                state, targetsComponent.targets, sourceCharacteristics.colors, sourceCharacteristics.subtypes,
                 abilityComponent.controllerId, targetsComponent.targetRequirements,
                 sourceId = abilityComponent.sourceId,
+                sourceCardTypes = sourceCharacteristics.cardTypes,
                 targetingSourceType = TargetingSourceType.ABILITY,
                 xValue = abilityComponent.xValue,
                 triggeringEntityId = abilityComponent.triggeringEntityId,
@@ -2935,9 +2938,10 @@ class StackResolver(
         val targetsComponent = container.get<TargetsComponent>()
 
         // Validate targets (including protection check - Rule 702.16)
-        val sourceCard = state.getEntity(abilityComponent.sourceId)?.get<CardComponent>()
-        val sourceColors = sourceCard?.colors ?: emptySet()
-        val sourceSubtypes = sourceCard?.typeLine?.subtypes?.map { it.value }?.toSet() ?: emptySet()
+        val sourceCharacteristics = AbilitySourceCharacteristics.resolve(
+            state, abilityComponent.sourceId, abilityComponent.objectReferences,
+            abilityComponent.sourceBattlefieldTimestamp, abilityComponent.lastKnownSourceSnapshot,
+        )
         val activatedReqs = targetsComponent?.targetRequirements ?: emptyList()
         // Resolution-time legality (CR 608.2b): drop individually-illegal targets, not just the
         // all-invalid fizzle. `activatedTargets` is the compacted list every executor reads as
@@ -2950,9 +2954,10 @@ class StackResolver(
         val alignedActivatedTargets: List<ChosenTarget?>
         if (targetsComponent != null && targetsComponent.targets.isNotEmpty()) {
             val validTargets = validateTargets(
-                state, targetsComponent.targets, sourceColors, sourceSubtypes,
+                state, targetsComponent.targets, sourceCharacteristics.colors, sourceCharacteristics.subtypes,
                 abilityComponent.controllerId, targetsComponent.targetRequirements,
                 sourceId = abilityComponent.sourceId,
+                sourceCardTypes = sourceCharacteristics.cardTypes,
                 xValue = abilityComponent.xValue,
                 targetingSourceType = TargetingSourceType.ABILITY,
                 currentPlan = container.currentTargetPlan(),
@@ -3623,6 +3628,7 @@ class StackResolver(
          */
         storedCollections: Map<String, List<EntityId>> = emptyMap(),
         currentPlan: CurrentTargetPlan? = null,
+        sourceCardTypes: Set<String>? = null,
     ): List<ChosenTarget?> {
         // Always project state for shroud/hexproof checks (Rule 702.18, 702.11)
         val projected = state.projectedState
@@ -3726,7 +3732,7 @@ class StackResolver(
                     // controller — applies even to the warded creature's own controller's sources.
                     // Spells bypass (abilities-only).
                     if (SourceTypeTargeting.cantBeTargetedBySourceTypeAbility(
-                            state, target.entityId, sourceId, targetingSourceType
+                            state, target.entityId, sourceId, targetingSourceType, sourceCardTypes
                         )
                     ) {
                         return@run false
@@ -3747,14 +3753,8 @@ class StackResolver(
                     // (Rule 702.16). Prefer projected types (permanent sources); fall back to the
                     // card's printed card types for spell/ability sources not in the projection.
                     if (sourceId != null) {
-                        val projectedTypes = projected.getTypes(sourceId)
-                        val sourceCardTypes = if (projectedTypes.isNotEmpty()) {
-                            projectedTypes
-                        } else {
-                            state.getEntity(sourceId)?.get<CardComponent>()
-                                ?.typeLine?.cardTypes?.map { it.name }?.toSet() ?: emptySet()
-                        }
-                        for (cardType in sourceCardTypes) {
+                        val effectiveSourceTypes = sourceCardTypes ?: SourceTypeTargeting.sourceCardTypes(state, sourceId)
+                        for (cardType in effectiveSourceTypes) {
                             if (projected.hasKeyword(target.entityId, "PROTECTION_FROM_CARDTYPE_${cardType.uppercase()}")) {
                                 return@run false
                             }

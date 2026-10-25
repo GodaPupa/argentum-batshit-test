@@ -39,17 +39,19 @@ object SourceTypeTargeting {
     /**
      * True if [targetId] is warded against the ability of an artifact/enchantment/… source
      * [sourceId]. Returns false for spell sources, an unknown source, or when the source's card
-     * type doesn't match any restriction the target carries.
+     * type doesn't match any restriction the target carries. Resolution may supply the original
+     * source's characteristics explicitly; a null override retains live target-enumeration behavior.
      */
     fun cantBeTargetedBySourceTypeAbility(
         state: GameState,
         targetId: EntityId,
         sourceId: EntityId?,
-        targetingSourceType: TargetingSourceType
+        targetingSourceType: TargetingSourceType,
+        sourceCardTypeOverride: Set<String>? = null,
     ): Boolean {
         if (targetingSourceType == TargetingSourceType.SPELL || sourceId == null) return false
         val projected = state.projectedState
-        return sourceCardTypes(state, sourceId).any { type ->
+        return (sourceCardTypeOverride ?: sourceCardTypes(state, sourceId)).any { type ->
             projected.hasKeyword(targetId, keyword(type))
         }
     }
