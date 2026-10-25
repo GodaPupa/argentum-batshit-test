@@ -35,5 +35,11 @@ internal fun attachPublicSpellTargetPlan(
     val stackTargets: List<ChosenTarget> =
         container.get<com.wingedsheep.engine.state.components.stack.TargetsComponent>()?.targets ?: emptyList()
     if (capturedTargets != stackTargets) return state
-    return state.updateEntity(spellId) { it.with(spell.copy(originalTargetSlots = plan)) }
+    return state.updateEntity(spellId) {
+        val captured = it.with(spell.copy(originalTargetSlots = plan))
+        // Only this fresh nonmodal/nonsplice producer supplies complete instance ownership.
+        if (spell.chosenModes.isEmpty() && spell.splicedCardNames.isEmpty())
+            captured.withCurrentTargetPlan(null, CurrentTargetPlan(plan)) ?: captured
+        else captured
+    }
 }

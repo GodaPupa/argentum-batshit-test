@@ -172,6 +172,8 @@ data class EffectContext(
      */
     val chosenModes: List<Int> = emptyList(),
     val modeTargetsOrdered: List<List<ChosenTarget>> = emptyList(),
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val resolvedModeViews: List<com.wingedsheep.engine.mechanics.targeting.ResolvedTargetView> = emptyList(),
     val modeTargetRequirements: Map<Int, List<TargetRequirement>> = emptyMap(),
     /** Number of cards exiled as an additional cost (for ExileVariableCards) */
     val exiledCardCount: Int = 0,

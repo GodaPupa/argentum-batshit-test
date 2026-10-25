@@ -18,5 +18,12 @@ internal fun attachOriginalModalSpellCapture(
 ): GameState {
     if (capture == null || capture.plans.size != capture.chosenModeIndices.size || spellId !in state.stack) return state
     val spell = state.getEntity(spellId)?.get<SpellOnStackComponent>() ?: return state
-    return state.updateEntity(spellId) { it.with(spell.copy(originalModalCapture = capture)) }
+    return state.updateEntity(spellId) {
+        val captured = it.with(spell.copy(originalModalCapture = capture))
+        if (spell.splicedCardNames.isEmpty() && spell.chosenModes == capture.chosenModeIndices) {
+            val plan = CurrentTargetPlan(TargetSlotPlan(capture.plans.flatMap { plan -> plan.instances }),
+                modeInstanceCounts = capture.plans.map { plan -> plan.instances.size })
+            captured.withCurrentTargetPlan(null, plan) ?: captured
+        } else captured
+    }
 }

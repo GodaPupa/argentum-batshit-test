@@ -181,7 +181,9 @@ class ModalEffectExecutor(
             chosenModes = context.chosenModes,
             modeTargetsOrdered = context.modeTargetsOrdered,
             modeTargetRequirements = context.modeTargetRequirements
-        )
+        ).mapIndexed { index, entry ->
+            entry.copy(resolvedView = context.resolvedModeViews.getOrNull(index))
+        }
         val sourceName = context.sourceId?.let { id -> state.getEntity(id)?.get<CardComponent>()?.name }
         val baseCtx = PreTargetedEffectContext(
             controllerId = context.controllerId,
@@ -289,7 +291,7 @@ internal fun processPreTargetedEffectQueue(
     val sourceColors = cardComponent?.colors ?: emptySet()
     val sourceSubtypes = cardComponent?.typeLine?.subtypes?.map { it.value }?.toSet() ?: emptySet()
 
-    val validationError = if (head.targetRequirements.isNotEmpty()) {
+    val validationError = if (head.resolvedView == null && head.targetRequirements.isNotEmpty()) {
         targetValidator.validateTargets(
             state = state,
             targets = head.targets,
@@ -322,13 +324,18 @@ internal fun processPreTargetedEffectQueue(
         objectReferences = ctx.objectReferences,
         controllerId = ctx.controllerId,
         xValue = ctx.xValue,
-        targets = head.targets,
+        targets = head.resolvedView?.aligned?.filterNotNull() ?: head.targets,
+        alignedTargets = head.resolvedView?.aligned ?: emptyList(),
+        damageDistribution = head.resolvedView?.division,
         // The enclosing resolution's pipeline, with this mode's own named targets laid over it.
         // A bare `PipelineState(namedTargets = …)` here dropped every stored collection, number
         // and chosen value the resolution had accumulated before the modal.
         pipeline = ctx.pipeline.copy(
-            namedTargets = ctx.pipeline.namedTargets +
-                EffectContext.buildNamedTargets(head.targetRequirements, head.targets)
+            namedTargets = (if (head.resolvedView == null) ctx.pipeline.namedTargets else
+                ctx.pipeline.namedTargets.filterKeys { key -> head.targetRequirements.none { req ->
+                    req.id != null && (key == req.id || key.startsWith("${req.id}["))
+                } }) +
+                (head.resolvedView?.named ?: EffectContext.buildNamedTargets(head.targetRequirements, head.targets))
         ),
         triggeringEntityId = ctx.triggeringEntityId
     )

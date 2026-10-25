@@ -480,7 +480,9 @@ data class AbilityOnStackComponent(
 data class TargetsComponent(
     val targets: List<ChosenTarget>,
     val targetRequirements: List<TargetRequirement> = emptyList(),
-    val targetEntryStamps: Map<EntityId, Long> = emptyMap()
+    val targetEntryStamps: Map<EntityId, Long> = emptyMap(),
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val currentTargetPlan: com.wingedsheep.engine.mechanics.targeting.CurrentTargetPlan? = null
 ) : Component {
 
     companion object {

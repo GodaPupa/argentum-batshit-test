@@ -21,6 +21,7 @@ fun TargetsComponent.withRetargetedHistory(
 ): TargetsComponent? {
     if (replacements.size != targets.size) return null
     if (replacements == targets) return this
+    if (currentTargetPlan != null) return null // Requires atomic current-view transition.
     val freshlyCaptured = TargetsComponent.capture(state, replacements, targetRequirements)
     val occurrences = linkedMapOf<EntityId, Long?>()
     for ((index, replacement) in replacements.withIndex()) {

@@ -103,7 +103,9 @@ data class ModalContinuation(
 data class PreTargetedEffectEntry(
     val effect: @Serializable Effect,
     val targets: List<ChosenTarget>,
-    val targetRequirements: List<@Serializable TargetRequirement>
+    val targetRequirements: List<@Serializable TargetRequirement>,
+    @kotlinx.serialization.EncodeDefault(kotlinx.serialization.EncodeDefault.Mode.NEVER)
+    val resolvedView: com.wingedsheep.engine.mechanics.targeting.ResolvedTargetView? = null
 )
 
 /**

@@ -2024,7 +2024,8 @@ class ActivateAbilityHandler(
             targetRequirements = effectiveTargetReqs,
             costsTap = hasTapCost(effectiveCost),
             isExhaust = ability.isExhaust,
-            cantBeCopied = ability.cantBeCopied
+            cantBeCopied = ability.cantBeCopied,
+            currentTargetPlan = originalTargetSlots?.let { com.wingedsheep.engine.mechanics.targeting.CurrentTargetPlan(it) },
         )
         currentState = stackResult.newState
         events.addAll(stackResult.events)
