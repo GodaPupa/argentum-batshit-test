@@ -1,0 +1,658 @@
+{
+  "source": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
+  "tree": "af6fcddb251c61a3ca48910678692aa0a51feecd",
+  "validation": "c8e27b9abcee53aee88912b4a2be2fdcd42dab0e",
+  "run": 40199270599,
+  "job": 121186760441,
+  "attempt": 1,
+  "artifact": {
+    "id": 12602158353,
+    "name": "manual-source-characteristics-r2-40199270599",
+    "size_in_bytes": 35205980,
+    "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12602158353",
+    "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12602158353/zip",
+    "expired": false,
+    "created_at": "2026-10-25T14:37:39Z",
+    "expires_at": "2027-01-23T13:48:03Z",
+    "updated_at": "2026-10-25T14:37:39Z",
+    "digest": "sha256:f2e25d335d0aa11087529b0b9136e439f7ce614f35eeb56803425ce4d7265f73",
+    "workflow_run": {
+      "id": 40199270599,
+      "repository_id": 1361473449,
+      "head_repository_id": 1361473449,
+      "head_branch": "validation/manual-source-characteristics-r2-20261025",
+      "head_sha": "c8e27b9abcee53aee88912b4a2be2fdcd42dab0e"
+    }
+  },
+  "verified_manifest_entries": 9316,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "external_independent_review": false,
+  "state": "ACCEPTED_BOUNDED_SOURCE_CHARACTERISTICS_ONLY",
+  "assay": {
+    "status": "TOUCHSTONE_PASS_ORIGINAL_51_DIVERGENCES_RETAINED",
+    "remaining_gates": [],
+    "metrics": {
+      "Cards assayed": 2000,
+      "Ambiguous \u2014 distinct readings": 0,
+      "Print mismatch": 0,
+      "Normalization not invertible": 0,
+      "Full inverse not reproduced": 0,
+      "Redundant readings (same model)": 0
+    },
+    "corpus": {
+      "bytes": 25108904,
+      "sha256": "a1f17b0755da5cba940c9b1df71e758415e225ea9d97b9bf1bc699fedc3cfcc3"
+    },
+    "differential": {
+      "baseline_artifact_id": 12469559629,
+      "baseline_report_sha256": "14b77880d7ef45a8c3cfb5bc31ce340ed17aff6320bb32a577e30bf3f5a327e2",
+      "current_report_sha256": "14b77880d7ef45a8c3cfb5bc31ce340ed17aff6320bb32a577e30bf3f5a327e2",
+      "baseline_count": 51,
+      "current_count": 51,
+      "added": [],
+      "removed": [],
+      "changed": [],
+      "original_blocks_byte_identical": true,
+      "unresolved_original_cards": [
+        "Aragorn, the Uniter [LTR]",
+        "Arcane Epiphany [FDN]",
+        "Balm of Restoration [FEM]",
+        "Bloodhunter Bat [M13]",
+        "Bog Rats [DRK]",
+        "Boggart Sprite-Chaser [LRW]",
+        "Bolt Bend [WAR]",
+        "Bramblesnap [ROE]",
+        "Calamitous Tide [BLB]",
+        "Cryogen Relic [EOE]",
+        "Devout Chaplain [AVR]",
+        "Dragon's Prey [TDM]",
+        "Elvish Warmaster [KHM]",
+        "Epic Proportions [LRW]",
+        "Essence Fracture [ONS]",
+        "Experimental Synthesizer [NEO]",
+        "Gather the White Lotus [TLA]",
+        "Ghalta, Primal Hunger [RIX]",
+        "Ghoulish Procession [MID]",
+        "Goblin Digging Team [DRK]",
+        "Grow Extra Arms [SPM]",
+        "Hand of Justice [FEM]",
+        "Jaspera Sentinel [KHM]",
+        "Keeper of Fables [ELD]",
+        "Kithkin Greatheart [LRW]",
+        "Krosan Warchief [SCG]",
+        "Lathril, Blade of the Elves [KHC]",
+        "Merchant Scroll [HML]",
+        "Mistmeadow Council [ECL]",
+        "Offender at Large [MKM]",
+        "Pearl of Wisdom [BLB]",
+        "Quickbeam, Upstart Ent [LTR]",
+        "Raise the Past [FDN]",
+        "Rakish Scoundrel [MKM]",
+        "Saved by the Shell [TMT]",
+        "Scarecrow [DRK]",
+        "Second Breakfast [LTR]",
+        "Seize Opportunity [TDM]",
+        "Sethron, Hurloon General [JMP]",
+        "Shared Discovery [ROE]",
+        "Stress Dream [SOS]",
+        "Stronghold Machinist [NEM]",
+        "Taj-Nar Swordsmith [MRD]",
+        "Urban Retreat [SPM]",
+        "Vendetta [MMQ]",
+        "Venom's Hunger [SPM]",
+        "Viridian Longbow [MRD]",
+        "Walking Ballista [AER]",
+        "Winged Words [M20]",
+        "Wizard's Lightning [DOM]",
+        "Wizard's Retort [DOM]"
+      ]
+    }
+  },
+  "protected_bindings": 143,
+  "authorized_resolver_extension": true,
+  "goldens": 23,
+  "legacy_fixtures": 82,
+  "original_diagnostic_preserved": true,
+  "accepted_r5_receipt_reused": true,
+  "remaining_component_gates": [],
+  "spellskite_registered": false,
+  "multiplayer_admitted": false,
+  "stages": {
+    "recording": {
+      "modules": {
+        "ai": {
+          "suites": 2,
+          "rows": 5,
+          "passed": 5
+        }
+      },
+      "totals": {
+        "suites": 2,
+        "rows": 5,
+        "passed": 5,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "actor": {
+      "modules": {
+        "gym": {
+          "suites": 4,
+          "rows": 39,
+          "passed": 39
+        }
+      },
+      "totals": {
+        "suites": 4,
+        "rows": 39,
+        "passed": 39,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "mutation-live-only": {
+      "modules": {
+        "rules-engine": {
+          "suites": 2,
+          "rows": 35,
+          "passed": 17,
+          "failures": 18
+        }
+      },
+      "totals": {
+        "suites": 2,
+        "rows": 35,
+        "passed": 17,
+        "failures": 18,
+        "errors": 0,
+        "skipped": 0
+      },
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "mutation-wrong-visit": {
+      "modules": {
+        "rules-engine": {
+          "suites": 2,
+          "rows": 35,
+          "passed": 27,
+          "failures": 8
+        }
+      },
+      "totals": {
+        "suites": 2,
+        "rows": 35,
+        "passed": 27,
+        "failures": 8,
+        "errors": 0,
+        "skipped": 0
+      },
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "targeted": {
+      "modules": {
+        "rules-engine": {
+          "suites": 10,
+          "rows": 126,
+          "passed": 126
+        }
+      },
+      "totals": {
+        "suites": 10,
+        "rows": 126,
+        "passed": 126,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "focused": {
+      "modules": {
+        "mtg-sdk": {
+          "suites": 1,
+          "rows": 2,
+          "passed": 2
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 1,
+          "rows": 5,
+          "passed": 5
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 2,
+          "rows": 10,
+          "passed": 10
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 1,
+          "rows": 3,
+          "passed": 3
+        },
+        "mtg-sets": {
+          "suites": 2,
+          "rows": 343,
+          "passed": 343
+        },
+        "rules-engine": {
+          "suites": 59,
+          "rows": 551,
+          "passed": 551
+        }
+      },
+      "totals": {
+        "suites": 66,
+        "rows": 914,
+        "passed": 914,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "skips": [],
+      "duplicate_labels": {}
+    },
+    "broad": {
+      "modules": {
+        "mtg-sets/1993-1999/tests": {
+          "suites": 251,
+          "rows": 713,
+          "passed": 713
+        },
+        "mtg-sets/2000-2002/tests": {
+          "suites": 162,
+          "rows": 612,
+          "passed": 612
+        },
+        "mtg-sets/2003-2007/tests": {
+          "suites": 432,
+          "rows": 1432,
+          "passed": 1432
+        },
+        "mtg-sets/2008-2016/tests": {
+          "suites": 221,
+          "rows": 644,
+          "passed": 644
+        },
+        "mtg-sets/2017-2022/tests": {
+          "suites": 373,
+          "rows": 1085,
+          "passed": 1085
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 404,
+          "rows": 1283,
+          "passed": 1283
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 723,
+          "rows": 2072,
+          "passed": 2072
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 591,
+          "rows": 1606,
+          "passed": 1606
+        },
+        "mtg-sets/2026/tests": {
+          "suites": 452,
+          "rows": 1328,
+          "passed": 1328
+        },
+        "rules-engine": {
+          "suites": 653,
+          "rows": 4202,
+          "passed": 4202
+        }
+      },
+      "totals": {
+        "suites": 4262,
+        "rows": 14977,
+        "passed": 14977,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 0
+      },
+      "skips": [],
+      "duplicate_labels": {
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife == cost is payable (the boundary case)": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife > cost is payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife < cost is NOT payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantShroudToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantHexproofToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tOpponentsCantMakeYouSacrifice": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantOpponentsCantWinGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGameFromLife": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tStationUsingToughness": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tCantBeTargetedByOpponentAbilities": 2
+      }
+    },
+    "ordinary": {
+      "modules": {
+        "ai": {
+          "suites": 80,
+          "rows": 746,
+          "passed": 745,
+          "skipped": 1
+        },
+        "game-server": {
+          "suites": 82,
+          "rows": 561,
+          "passed": 557,
+          "skipped": 4
+        },
+        "gym-server": {
+          "suites": 2,
+          "rows": 11,
+          "passed": 11
+        },
+        "gym-trainer": {
+          "suites": 5,
+          "rows": 23,
+          "passed": 23
+        },
+        "gym": {
+          "suites": 143,
+          "rows": 535,
+          "passed": 500,
+          "skipped": 35
+        },
+        "mtg-sdk": {
+          "suites": 51,
+          "rows": 529,
+          "passed": 529
+        },
+        "mtg-search": {
+          "suites": 2,
+          "rows": 163,
+          "passed": 163
+        },
+        "mtg-sets/1993-1999/tests": {
+          "suites": 251,
+          "rows": 713,
+          "passed": 713
+        },
+        "mtg-sets/2000-2002/tests": {
+          "suites": 162,
+          "rows": 612,
+          "passed": 612
+        },
+        "mtg-sets/2003-2007/tests": {
+          "suites": 432,
+          "rows": 1432,
+          "passed": 1432
+        },
+        "mtg-sets/2008-2016/tests": {
+          "suites": 221,
+          "rows": 644,
+          "passed": 644
+        },
+        "mtg-sets/2017-2022/tests": {
+          "suites": 373,
+          "rows": 1085,
+          "passed": 1085
+        },
+        "mtg-sets/2023/tests": {
+          "suites": 404,
+          "rows": 1283,
+          "passed": 1283
+        },
+        "mtg-sets/2024/tests": {
+          "suites": 723,
+          "rows": 2072,
+          "passed": 2072
+        },
+        "mtg-sets/2025/tests": {
+          "suites": 591,
+          "rows": 1606,
+          "passed": 1606
+        },
+        "mtg-sets/2026/tests": {
+          "suites": 452,
+          "rows": 1328,
+          "passed": 1328
+        },
+        "mtg-sets": {
+          "suites": 16,
+          "rows": 379,
+          "passed": 379
+        },
+        "mtgish-tooling": {
+          "suites": 20,
+          "rows": 147,
+          "passed": 144,
+          "skipped": 3
+        },
+        "oracle-assay": {
+          "suites": 39,
+          "rows": 568,
+          "passed": 568
+        },
+        "rules-engine": {
+          "suites": 653,
+          "rows": 4202,
+          "passed": 4202
+        }
+      },
+      "totals": {
+        "suites": 4702,
+        "rows": 18639,
+        "passed": 18596,
+        "skipped": 43,
+        "failures": 0,
+        "errors": 0
+      },
+      "skips": [
+        "com.wingedsheep.ai.arena.ArenaBudgetScalingTest::budget scaling: strength is monotone in the decision budget",
+        "com.wingedsheep.gameserver.ai.benchmark.AIBenchmark::AI benchmark (10 game pairs)",
+        "com.wingedsheep.gameserver.replay.CompactReplaySizeBenchmark::compact replay size over 10 random games (POR)",
+        "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest::a persistent yield set mid-game is captured and reproduced on reconstruction",
+        "com.wingedsheep.gameserver.replay.ReplayDivergenceReproTest::recorded games reconstruct to the full frame stream (no truncation)",
+        "com.wingedsheep.gym.BatshitEconomicsPreboardSmokeTest::five seeded preboard Argentum agent self-play games",
+        "com.wingedsheep.gym.ManualTransmissionPhaseTwoRegistryAuditTest::inventory exact Phase 2 candidate decks without treating registry presence as rules qualification",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 1 fresh performance sample",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 1 untouched performance vector",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 2 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 3 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 4 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 5 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 6 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 7 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 Take 8 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 Goldfish Sample 2 independent replication",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 fresh Goldfish Sample 1",
+        "com.wingedsheep.gym.PestControlGoldfishTest::Pest Control v1.0 rejected Sample 1 regression replay",
+        "com.wingedsheep.gym.PestControlGoldfishTest::reproduce rejected Pest Control Game 25 Scion provenance",
+        "com.wingedsheep.gym.PestControlMatchupBlockARunnerTest::execute frozen Pest Control versus Mono Red Madness Block A exactly once",
+        "com.wingedsheep.gym.PestControlTierOneGrixisComposedValidationTest::official artifact validates while synthetic shadow executes through complete stack",
+        "com.wingedsheep.gym.PestControlTierOneGrixisDisabledOfficialArtifactLoaderTest::authorized validation reads exact official bytes without exposing or consuming seeds",
+        "com.wingedsheep.gym.PestControlTierOneGrixisOfficialExecutionRunnerTest::execute frozen Grixis four-game vector exactly once",
+        "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialArtifactValidationTest::exact frozen twelve-game replication artifact validates without gameplay",
+        "com.wingedsheep.gym.PestControlTierOneGrixisReplicationOfficialExecutionRunnerTest::execute frozen Grixis twelve-game replication vector exactly once",
+        "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialArtifactValidationTest::exact frozen artifact exposes only untouched Games 2 through 12 to continuation",
+        "com.wingedsheep.gym.PestControlTierOneGrixisSalvageContinuationOfficialExecutionRunnerTest::execute untouched Grixis Games 2 through 12 exactly once",
+        "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorComposedValidationTest::official frozen input validates while synthetic shadow runs through full stack",
+        "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorOfficialExecutionRunnerTest::execute frozen Mono-Blue Terror four-game vector exactly once",
+        "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialArtifactValidationTest::exact frozen twelve-game Terror replication artifact validates without gameplay",
+        "com.wingedsheep.gym.PestControlTierOneMonoBlueTerrorReplicationOfficialExecutionRunnerTest::execute frozen Mono-Blue Terror twelve-game replication exactly once",
+        "com.wingedsheep.gym.PestControlTierOneMonsterTronOfficialExecutionRunnerTest::execute the four frozen Monster Tron assignments through the sealed one-shot boundary",
+        "com.wingedsheep.gym.PestControlTierOneMonsterTronOneShotBoundaryTest::pinned official bytes satisfy sealed binding without initialization",
+        "com.wingedsheep.gym.PestControlV2OfficialExecutionRunnerTest::validate or execute the frozen V2 official block through the fail-closed coordinator",
+        "com.wingedsheep.gym.PestControlV2OfficialSeedFreezeGeneratorTest::generate and quarantine exactly ten V2 official seeds without gameplay",
+        "com.wingedsheep.gym.PestControlV2QualificationHarnessValidationTest::validate exact frozen qualification inputs without initializing a game",
+        "com.wingedsheep.gym.PestControlV2QualificationReconcilerTest::reconcile both exact qualification shards into one fail-closed block",
+        "com.wingedsheep.gym.PestControlV2QualificationShardRunnerTest::validate or run one exact qualification shard through the fail-closed coordinator",
+        "com.wingedsheep.gym.PestControlV2QualifyingSmokeTest::one production Pest versus SoterX game reaches a legitimate audited terminal",
+        "com.wingedsheep.tooling.coverage.EmitterSmokeTest::Portal renders a high rate of whole, well-formed cards",
+        "com.wingedsheep.tooling.coverage.dashboard.DashboardTest::Analyzer classifies a set's cards into a partition that sums to the whole",
+        "com.wingedsheep.tooling.coverage.dashboard.DashboardTest::cross-set index carries the blocked cards behind each ranked capability"
+      ],
+      "duplicate_labels": {
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife == cost is payable (the boundary case)": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife > cost is payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.handlers.CostHandlerPayLifeTest\tlife < cost is NOT payable": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantShroudToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantHexproofToController": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tOpponentsCantMakeYouSacrifice": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantOpponentsCantWinGame": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tGrantCantLoseGameFromLife": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tStationUsingToughness": 2,
+        "rules-engine\tcom.wingedsheep.engine.mechanics.layers.ConditionalControllerGrantsTest\tCantBeTargetedByOpponentAbilities": 2
+      }
+    }
+  },
+  "negative_assertion_witnesses": {
+    "mutation-live-only": [
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger removed color",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger removed subtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger removed cardtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger removed abilitytype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger returned color",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger returned subtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger returned cardtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger returned abilitytype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation removed color",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation removed subtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation removed cardtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation removed abilitytype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation returned color",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation returned subtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation returned cardtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation returned abilitytype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.CurrentTargetSourceHistoryDiagnosticTest::SH04 departed red trigger respects captured source protection",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "66d70c850ed7113db56bc403c3ec8123c83a6f0515e2803cf99c1383e54ab705"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.CurrentTargetSourceHistoryDiagnosticTest::SH05 departed red activation respects captured source protection",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "d4edffdf11eb72ad145b87ac6ba748b7f23a0b15b871a070700f3632bb167ca0"
+      }
+    ],
+    "mutation-wrong-visit": [
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger returned color",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger returned subtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger returned cardtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC trigger returned abilitytype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation returned color",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation returned subtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation returned cardtype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      },
+      {
+        "identity": "com.wingedsheep.engine.scenarios.AbilitySourceCharacteristicsTest::SC activation returned abilitytype",
+        "type": "org.opentest4j.AssertionFailedError",
+        "stack_sha256": "ee1b926e211021e75712788888c0864e30211c1c168b7277a4d1fa3d763e1922"
+      }
+    ]
+  },
+  "full_receipt": {
+    "encoding": "gzip+base64",
+    "file": "VERIFIED_RECEIPT.json.gz.b64",
+    "uncompressed_bytes": 373606,
+    "sha256": "e4287d75020fff2bbde15af9353cc425640dcb0ae949abc629bac491aa7f03cf"
+  },
+  "receiver_commit": "45d3ce48122e9db1b6177954661ae1ff0d9bf968"
+}
