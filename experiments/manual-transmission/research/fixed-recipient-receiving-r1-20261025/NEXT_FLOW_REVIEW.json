@@ -1,0 +1,23 @@
+{
+  "state": "ISOLATED_SOURCE_REVIEW_ONLY_NOT_IMPLEMENTATION_OR_ACCEPTANCE",
+  "base": "c3fb0049b6dd78f6a6773724aafce0b9f3614a33",
+  "candidate": "388f6156ac726c17fd591a87ffbee1bb7224c170",
+  "active_run": 40209987485,
+  "reviewed_blobs": {
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/core/PendingDecision.kt": "d3c80ae6077571db17292e34a447dc4329a6f62d",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/handlers/ContinuationHandler.kt": "e276259416d2cd82296fa700265879e793d96273",
+    "rules-engine/src/main/kotlin/com/wingedsheep/engine/event/TriggerMatcher.kt": "4e9f905bdfc8fea5c1eac58d0d40f2c860036aee"
+  },
+  "findings": [
+    "ChooseOptionDecision already supplies ordered option strings, per-option entity previews and OptionChosenResponse; distinct occurrence labels can reuse this public shape rather than introduce a new decision type.",
+    "ContinuationHandler validates question ID then pops Suspension and dispatches a registered answer resumer. The next continuation must retain the complete FixedRecipientOffer and propagate effect context; public action/player/menu validation and stale response rejection still require end-to-end tests.",
+    "BecomesTargetEvent.sourceEntityId must remain the targeted stack spell/ability entity so ward can counter it. TriggerMatcher sourceFilter requires CardComponent on that event entity; ability-source characteristic filtering is not automatically supplied by accepted source history. Do not switch the ward source ID to the original permanent.",
+    "Candidate's 42 early fixtures do not yet cover public decisions, ward processing, source-filter triggers, all recipient/source restrictions, mode/splice and relational boundaries. Full feature acceptance requires these and all declared regression gates."
+  ],
+  "next_after_valid_preflight": "Retain original received early evidence, close listed legality/source boundary gaps and implement server-authored occurrence choice via existing option flow; freeze one coherent successor with executable controls and full regressions. No Spellskite registration or multiplayer admission.",
+  "remaining_safely_independent_work": "Receiving code and synthetic checks are now prepared; further candidate mutation waits for original frozen preflight results.",
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "external_independent_review": false
+}
