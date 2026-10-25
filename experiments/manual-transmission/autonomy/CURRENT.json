@@ -1,17 +1,18 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T03:35:34.480Z",
+  "updated_date": "2026-10-25T03:38:14.730Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
-  "status": "IN_PROGRESS",
+  "status": "WAITING_EXTERNAL",
   "owner": "manual-work-390bd1587480-resolver-20261025",
   "lease": {
     "state": "ACTIVE",
     "owner": "manual-work-390bd1587480-resolver-20261025",
     "claimed_utc": "2026-10-25T03:22:10.523Z",
-    "expires_utc": "2026-10-25T04:05:34.480Z",
+    "expires_utc": "2026-10-25T04:08:14.730Z",
     "predecessor_blob": "9fd1c24e36eec981c2b489cdbdf02023a3f6c0f6",
-    "reason": "Explicit bounded resolver successor authorization; prior lease released and last scheduled invocation completed; no relevant active workflow."
+    "reason": "Explicit bounded resolver successor authorization; prior lease released and last scheduled invocation completed; no relevant active workflow.",
+    "renewed_utc": "2026-10-25T03:38:14.730Z"
   },
   "last_qualified": {
     "source": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
@@ -36,15 +37,17 @@
     "card_acceptance_scenarios": 22,
     "registration": "Spellskite is NOT implemented, registered, or admitted by the structural helper. No card-coverage increase claimed.",
     "current_subproblem": "Frozen current-target resolution R1 qualification",
-    "source_candidate": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
-    "source_tree": "23ab174891290a575a752e54f0e8142a8d6f3e40",
-    "source_branch": "candidate/manual-public-target-groups-r5-20261024",
-    "protocol": "experiments/manual-transmission/research/public-target-groups-r5-20261024/PROTOCOL.json",
+    "source_candidate": "41dfad5616b0143df07dae6aa098539085a94a99",
+    "source_tree": "6b05894d4e3fc1857ef2c93e907ea08905514624",
+    "source_branch": "candidate/manual-current-target-resolution-r1-20261025",
+    "protocol": "experiments/manual-transmission/research/current-target-resolution-r1-20261025/PROTOCOL.json",
     "design": "experiments/manual-transmission/research/public-target-groups-r5-20261024/DESIGN.md",
-    "validation": "a5bceaa568b17e9d4b68522612d4c5cbe1b78371",
-    "validation_branch": "validation/manual-public-target-groups-r5-20261024",
-    "workflow": ".github/workflows/manual-public-target-groups-r5-20261024.yml",
-    "pending_runs": [],
+    "validation": "818ff6ef7d597b9323b028497814ca3fe378b1f0",
+    "validation_branch": "validation/manual-current-target-resolution-r1-20261025",
+    "workflow": ".github/workflows/manual-current-target-resolution-r1-20261025.yml",
+    "pending_runs": [
+      40158813599
+    ],
     "planned_not_observed": {
       "client": 34,
       "actor": 39,
@@ -72,7 +75,7 @@
     },
     "negative_scope": "Unchanged visit-loss mutant must compile and fail exactly PG01/PG04/PG05/PG15/PG17 at61/81/88/147/165 among20; all15 others pass. Compile errors, missing reports, wrong identities/types/frames, skips or unrelated failures reject.",
     "source_delta": "Same-owner source review, not independent review. Exact five-path R4 recovery delta (recorder-only modification, four-case test, three records); cumulative35 paths; immutable source/protocol/workflow readback verified. FrozenBaselineTest unchanged blobf5ebdd18148cddcb3a5d0cc6b4ae2bfc5aba2ef4. Python/YAML syntax and nine synthetic receiver checks passed; synthetic checks are not runtime evidence.",
-    "next_executable_action": "Finish immutable workflow readback; reconcile all active statuses immediately before one R1 dispatch. Normal and mutant source/test compilation precede targeted witnesses and regressions; then original-artifact receiving. No production/gameplay/card admission before all gates.",
+    "next_executable_action": "Prepare source-bound original-artifact receiving audit while R1 runs; do not modify frozen source or duplicate qualification. On terminal follow resolver_qualification.next_receiving_action.",
     "source_intake": {
       "run": 40007352951,
       "job": 120598532874,
@@ -127,7 +130,7 @@
     "remaining_integration_constraint": {
       "path": "rules-engine/src/main/kotlin/com/wingedsheep/engine/mechanics/stack/StackResolver.kt",
       "binding_sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94",
-      "disposition": "Preserved. Full per-occurrence resolution cannot silently alter this protected source binding; next engineering design must resolve that boundary explicitly.",
+      "disposition": "Explicit source-specific user authorization granted; bounded successor source41dfad56 is now qualifying. Original143 remaining bindings preserved; no resolver acceptance yet.",
       "immediate_lane": "Bounded contested-retarget repair avoids the protected file and makes real live-path progress."
     },
     "failed_original": {
@@ -189,7 +192,7 @@
       "protected_resolver_hash_verified": true,
       "external_independent_review": false
     },
-    "validation_tree": "5e8a85e2e05a0138d758fd38be62f3d72196d838",
+    "validation_tree": "cfffd8db43c49daafd3f55489f972d59858d01e3",
     "capture_preparation": {
       "state": "ACCEPTED_BOUNDED_COMPONENT",
       "source": "544174be623e1dab3082fcab8f82cc394ce3d11b",
@@ -2009,7 +2012,7 @@
       "protected_sha256": "7843ce3f425f86b15cfb19f309ff449d25a0530f5d0efbdd176385fc4c28ca94"
     },
     "resolver_qualification": {
-      "state": "FROZEN_REVIEWED_NOT_DISPATCHED",
+      "state": "RUNNING_NOT_ACCEPTED",
       "source": "41dfad5616b0143df07dae6aa098539085a94a99",
       "tree": "6b05894d4e3fc1857ef2c93e907ea08905514624",
       "base": "cac0616eb5abb359eb572d6d378dbf9fabae62de",
@@ -2031,7 +2034,23 @@
         "ordinary": 18524,
         "skips": 43
       },
-      "original_r5_receipt_reused_without_reaudit": true
+      "original_r5_receipt_reused_without_reaudit": true,
+      "validation": "818ff6ef7d597b9323b028497814ca3fe378b1f0",
+      "validation_tree": "cfffd8db43c49daafd3f55489f972d59858d01e3",
+      "validation_branch": "validation/manual-current-target-resolution-r1-20261025",
+      "workflow": ".github/workflows/manual-current-target-resolution-r1-20261025.yml",
+      "workflow_blob": "b0f201414b29a0c708997e4a8f420b4c008b95a4",
+      "workflow_id": 395617274,
+      "run": 40158813599,
+      "job": 121065805389,
+      "attempt": 1,
+      "run_number": 1,
+      "event": "push",
+      "dispatched_utc": "2026-10-25T03:36:03.808Z",
+      "observed_utc": "2026-10-25T03:38:14.730Z",
+      "status": "in_progress",
+      "expected_artifact_name": "manual-current-target-resolution-r1-40158813599",
+      "next_receiving_action": "After terminal, reconcile newer receipts/successors first; receive original artifact once, pin bytes/hash/manifest/source/tree/validation/workflow/run/job/attempt, audit normal and mutant compilation, eight exact executable controls, restoration/rebinding, raw identities/counts/skips, 143 protected originals plus admitted resolver, 23 goldens, 82 fixtures, all required regressions and Assay. Green workflow is not acceptance."
     }
   },
   "completion_contract": {
@@ -2734,5 +2753,11 @@
     "preserve": "Other143bindings,23goldens,82legacyfixtures,frozenv0.7,originalassertions,budgets,2reservedPrecision",
     "excluded": "No official games/seeds, spending increase, main merge, automatic Spellskite registration or multiplayer admission.",
     "acceptance": "All NEXT_ADMISSION conditions, executable negative controls, full regressions, original-artifact receiving."
+  },
+  "continuation_prompt_authorization_update": {
+    "updated_utc": "2026-10-25T03:38:14.730Z",
+    "task": "6adbe33033e481918659ce578f64f31e",
+    "prompt_readback_verified": true,
+    "schedule_and_enabled_unchanged": true
   }
 }
