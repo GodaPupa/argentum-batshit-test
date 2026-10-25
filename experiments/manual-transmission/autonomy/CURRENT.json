@@ -1,16 +1,18 @@
 {
   "schema": "manual-autonomous-execution-v1",
-  "updated_date": "2026-10-25T12:40:52.005Z",
+  "updated_date": "2026-10-25T12:41:18.416Z",
   "authority": "User: I give you full authority and autonomy to proceed the manual transmission experiment to completion.",
   "authority_scope": "Advance Manual through the existing scientific protocol and authorized engineering gates without routine proceed requests. Do not change frozen hardware, statistical design, budgets, the two reserved Precision games, protected originals, or source-specific production admission requirements merely to make progress.",
   "status": "WAITING_EXTERNAL",
-  "owner": "manual-work-6adbe33033e481918659ce578f64f31e-a57e9bc2-b678-832b-a085-f78a9259cfd0",
+  "owner": null,
   "lease": {
-    "state": "ACTIVE",
-    "owner": "manual-work-6adbe33033e481918659ce578f64f31e-a57e9bc2-b678-832b-a085-f78a9259cfd0",
+    "state": "RELEASED",
+    "owner": null,
+    "previous_owner": "manual-work-6adbe33033e481918659ce578f64f31e-a57e9bc2-b678-832b-a085-f78a9259cfd0",
     "claimed_utc": "2026-10-25T12:40:52.005Z",
-    "expires_utc": "2026-10-25T12:50:52.006Z",
-    "reason": "Reconcile sole active qualification progress and checkpoint external-only waiting; no implementation or dispatch."
+    "released_utc": "2026-10-25T12:41:18.416Z",
+    "expires_utc": null,
+    "reason": "External-only waiting: sole qualification is in ordinary build; receiving infrastructure and independent next-dependency review were already completed. No active worker retained."
   },
   "last_qualified": {
     "source": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
@@ -2430,7 +2432,7 @@
           "live-only": 18,
           "wrong-visit": 8
         },
-        "compile_status": "NOT_RUN",
+        "compile_status": "NORMAL_AND_BOTH_MUTANT_STEPS_SUCCESS_RAW_RECEIVING_PENDING",
         "behavioral_acceptance": false,
         "other143bindings_unchanged_by_exact_delta": true,
         "protected_resources_unchanged": true
@@ -2444,7 +2446,7 @@
       "workflow_blob": "756b2a8c31033e1f7100cb0e06dd90ea8344c49f",
       "run_url": "https://github.com/GodaPupa/argentum-batshit-test/actions/runs/40191527984",
       "observed_status": "in_progress",
-      "observed_utc": "2026-10-25T12:13:48.546Z",
+      "observed_utc": "2026-10-25T12:41:18.416Z",
       "receiving_preparation": {
         "commit": "619ba5a6d6ddc6c5e2e9e53a04a8c28a96ceac8f",
         "path": "experiments/manual-transmission/research/source-characteristics-receiving-r1-20261025",
@@ -2479,12 +2481,23 @@
         "acceptance_claimed": false
       },
       "gates_observed": {
-        "source_binding": "success",
-        "normal_compilation": "in_progress_at_last_job_read",
-        "mutant_compilation": "not_yet_observed",
-        "targeted": "not_yet_observed",
-        "full_regressions": "not_yet_observed",
-        "original_artifact_receiving": "not_yet_available"
+        "source_binding": "workflow_step_success",
+        "normal_compilation": "workflow_step_success",
+        "live_only_mutant_compilation": "workflow_step_success",
+        "wrong_visit_mutant_compilation": "workflow_step_success",
+        "targeted126": "workflow_step_success",
+        "live_only18_witnesses": "workflow_step_success",
+        "wrong_visit8_witnesses": "workflow_step_success",
+        "restoration_and_rebinding": "workflow_step_success",
+        "client34": "workflow_step_success",
+        "frozen_baseline_recording5": "workflow_step_success",
+        "actor39": "workflow_step_success",
+        "focused914": "workflow_step_success",
+        "broad14977": "workflow_step_success",
+        "ordinary18596_plus43": "in_progress",
+        "assay": "pending",
+        "original_artifact_receiving": "not_yet_available",
+        "evidence_limit": "Job step metadata only; no raw artifact acceptance or completed audit claimed."
       }
     }
   },
@@ -2649,14 +2662,31 @@
       "main": "37a603617a03dfd2d81b39dae004f7f336a70dfc"
     },
     "source_characteristics_handoff": {
-      "at_utc": "2026-10-25T12:13:48.546Z",
+      "at_utc": "2026-10-25T12:41:18.416Z",
       "run": 40191527984,
+      "job": 121163353737,
+      "attempt": 1,
       "status": "in_progress",
-      "owner_released": "foreground-source-characteristics-2026-10-25T11:47:14.572Z",
-      "automation_last_run": "edb17637-5a1c-8320-9d77-c354194954d0",
-      "automation_last_run_status": "completed",
+      "phase": "Ordinary whole-project build and exact 43 historical skips",
+      "canonical_predecessor": "06014c82adb23bff93ad5a62075f4d36f6c0e5e8",
+      "newer_successor_or_receipt": false,
+      "active_workflows": [
+        40191527984
+      ],
+      "unrelated_ancient_ignored": [
+        34749202144
+      ],
+      "all_statuses_checked": [
+        "in_progress",
+        "queued",
+        "waiting",
+        "requested",
+        "pending"
+      ],
+      "owner_released": "manual-work-6adbe33033e481918659ce578f64f31e-a57e9bc2-b678-832b-a085-f78a9259cfd0",
+      "automation_run": "a57e9bc2-b678-832b-a085-f78a9259cfd0",
+      "automation_enabled": true,
       "receiver_commit": "619ba5a6d6ddc6c5e2e9e53a04a8c28a96ceac8f",
-      "canonical_prior_head": "619ba5a6d6ddc6c5e2e9e53a04a8c28a96ceac8f",
       "qualification_repeated": false,
       "diagnostic_reaudited": false
     }
@@ -2673,7 +2703,7 @@
       "expectations_updated_utc": "2026-10-24T13:29:44.515Z",
       "expectations": "Strictly read-only; follow current Work WAITING_EXTERNAL ownership and single public target-group run40098055404. Accepted activation40091111694 remains accepted. No action for healthy waiting; receive original evidence before bounded acceptance. Watch enabled state unchanged."
     },
-    "handoff": "Foreground owner released after frozen source-characteristics run40191527984 dispatch and isolated original-artifact receiver preparation. Sole external workflow is active; no worker lease remains. Do not duplicate; original receiving is next. Accepted R5 and completed diagnostic remain reusable.",
+    "handoff": "Ownership released; single source-characteristics run40191527984 remains active in ordinary build. Use saved original-artifact receiver after terminal state and first reconcile newer receipts/successors. No duplicate qualification; no R5/diagnostic re-audit.",
     "execution_admitted": true,
     "former_discussion_executor": {
       "id": "6adbad91b90881918859ad0cba22b881",
@@ -2749,7 +2779,7 @@
     },
     "ownership_policy": "Same fresh CURRENT.json blob-SHA CAS protocol for foreground/scheduled iterations. Respect active leases; expiry alone never proves worker stopped. Reconcile workflows, recent commits and task run state before claim/dispatch. No duplicate qualification; release as WAITING_EXTERNAL after launch, or accurately IDLE/BLOCKED before ending. No persistent local filesystem assumption.",
     "execution_enabled_state": "ENABLED_SINGLE_WORK_EXECUTOR",
-    "last_verified_enabled_utc": "2026-10-25T12:13:48.546Z",
+    "last_verified_enabled_utc": "2026-10-25T12:41:18.416Z",
     "next_authorized_action": "First reconcile live owner, newer receipts/successors and relevant workflow statuses. If40191527984 remains active, do not duplicate/cancel/poll continuously. Once terminal, fetch its original attempt1 artifact metadata and bytes exactly once; run pinned receiver at619ba5a6d6ddc6c5e2e9e53a04a8c28a96ceac8f against sourcec3fb0049b6dd78f6a6773724aafce0b9f3614a33/treeaf6fcddb251c61a3ca48910678692aa0a51feecd/validation2a80329c2dd38ffcc69ede89275aabf8687b4d86/job121163353737/workflow395942861. Verify raw identities,65 new cases,126targeted,914focused,14977broad,4202engine,18596passes+43skips,18live-only and8wrong-visit exact negative frames, all compilation/restoration/binding/manifest/protected/Assay gates. Preserve and diagnose any original failure; do not blind rerun. Reuse accepted R5 and received diagnostic. If accepted, continue generic retarget integration from existing source review28067e60c9887fce37a5bf91d9bed8427362c908 within its source-specific gates; no automatic card registration or multiplayer admission.",
     "execution_efficiency_policy": {
       "updated_utc": "2026-10-24T02:41:07.768Z",
@@ -3354,7 +3384,7 @@
     "prompt_readback_verified": true,
     "schedule_and_enabled_unchanged": true
   },
-  "actual_stopping_reason": "EXTERNAL_DEPENDENCY_ONLY: qualification40191527984 remains in_progress. Its exact frozen source and receiving action are saved, original-artifact receiver and corruption checks completed and published, and existing isolated next-dependency source review is reused. No useful safely independent authorized work remains in this invocation. No behavioral acceptance or continuous worker activity is claimed.",
+  "actual_stopping_reason": "EXTERNAL_DEPENDENCY_ONLY: run40191527984 is legitimately in_progress at ordinary build. Normal/both mutant compilation, targeted and both executable controls, restoration, client/recording/actor/focused/broad steps show success in job metadata only. Final regressions, Assay and original-artifact receiving remain pending. Prepared receiver619ba5a6 and prior next-dependency review are reused; no useful safely independent authorized work remains. No duplicate dispatch, artifact audit or acceptance.",
   "source_characteristics_authorization": {
     "state": "EXPLICITLY_GRANTED",
     "commit": "770f9a06614ff5addcd404df0d109bb9203ff825",
