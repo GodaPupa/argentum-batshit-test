@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.mechanics.targeting
 
+import com.wingedsheep.engine.handlers.AbilitySourceCharacteristics
 import com.wingedsheep.engine.handlers.SourceTypeTargeting
 import com.wingedsheep.engine.handlers.DynamicAmountEvaluator
 import com.wingedsheep.engine.handlers.EffectContext
@@ -329,6 +330,7 @@ class TargetValidator {
         sourceCardTypes: Set<String>,
         targetingSourceType: TargetingSourceType,
         xValue: Int?,
+        sourceContext: AbilitySourceCharacteristics? = null,
     ): Boolean {
         if (before.instances.size != requirements.size || after.instances.size != requirements.size) return false
         if (before.addresses() != after.addresses() || changed !in before.addresses()) return false
@@ -344,7 +346,7 @@ class TargetValidator {
             val slot = plan.slot(address)
             return current(slot) && validateSingleTarget(state, slot.target, requirements[address.instanceIndex],
                 casterId, sourceColors, sourceSubtypes, sourceId, xValue, groups.flatten(),
-                targetingSourceType, sourceCardTypes) == null
+                targetingSourceType, sourceCardTypes, sourceContext) == null
         }
         if (!legal(after, afterGroups, changed)) return false
         for (address in before.addresses()) {
@@ -373,6 +375,7 @@ class TargetValidator {
         allTargets: List<ChosenTarget> = emptyList(),
         targetingSourceType: TargetingSourceType = TargetingSourceType.ANY,
         sourceCardTypes: Set<String>? = null,
+        sourceContext: AbilitySourceCharacteristics? = null,
     ): String? {
         // A separately-chosen player target (target index 0 for "target player's graveyard"
         // spells) — lets a later requirement's filter resolve `OwnedByTargetPlayer` /
@@ -390,15 +393,17 @@ class TargetValidator {
             is TargetPlayerOrPlaneswalker -> validatePlayerOrPlaneswalkerTarget(state, target, casterId)
             is TargetCreatureOrPlaneswalker -> validateCreatureOrPlaneswalkerTarget(state, target)
             is TargetSpellOrPermanent -> validateSpellOrPermanentTarget(state, target, requirement, casterId, sourceId, xValue, chosenPlayerTarget)
-            is TargetObject -> validateObjectTarget(state, target, requirement.filter, casterId, sourceId, xValue, chosenPlayerTarget)
-            is TargetOther -> validateSingleTarget(state, target, requirement.baseRequirement, casterId, sourceColors, sourceSubtypes, sourceId, xValue, allTargets, targetingSourceType, sourceCardTypes)
+            is TargetObject -> validateObjectTarget(state, target, requirement.filter,
+                casterId, sourceId, xValue, chosenPlayerTarget, sourceContext?.originalSourceDeparted == true)
+            is TargetOther -> validateSingleTarget(state, target, requirement.baseRequirement, casterId, sourceColors, sourceSubtypes, sourceId, xValue, allTargets, targetingSourceType, sourceCardTypes, sourceContext)
         }
         if (error != null) return error
 
         // Check player-level protection, e.g. The One Ring's "protection from everything" (Rule 702.16).
         // A protected player can't be the target of a source matching one of its protection scopes.
         if (target is ChosenTarget.Player &&
-            PlayerProtectionRules.isProtectedFromSource(state, target.playerId, sourceId, casterId)
+            (if (sourceContext != null) PlayerProtectionRules.isProtectedFromTargeting(state, target.playerId, sourceId, casterId, sourceContext)
+            else PlayerProtectionRules.isProtectedFromSource(state, target.playerId, sourceId, casterId))
         ) {
             return "Target player has protection from this source"
         }
@@ -426,7 +431,7 @@ class TargetValidator {
         if (protectionFromOpponentError != null) return protectionFromOpponentError
 
         // Check protection from supertype, e.g. "protection from legendary creatures" (Rule 702.16)
-        val protectionFromSupertypeError = checkProtectionFromSupertype(state, target, sourceId)
+        val protectionFromSupertypeError = checkProtectionFromSupertype(state, target, sourceId, sourceContext?.supertypes)
         if (protectionFromSupertypeError != null) return protectionFromSupertypeError
 
         // Check protection from card type, e.g. "protection from instants and from sorceries"
@@ -436,7 +441,9 @@ class TargetValidator {
 
         // "Can't be enchanted" (CR 303.4): an Aura can't legally target a permanent with the
         // CANT_BE_ENCHANTED restriction (Guardian Beast). Only applies when the source is an Aura.
-        val cantBeEnchantedError = checkCantBeEnchanted(state, target, sourceId)
+        val cantBeEnchantedError = checkCantBeEnchanted(state, target, sourceId, sourceContext?.let {
+            targetingSourceType == TargetingSourceType.SPELL && it.subtypes.any { subtype -> subtype.equals("Aura", ignoreCase = true) }
+        })
         if (cantBeEnchantedError != null) return cantBeEnchantedError
 
         if (sourceCardTypes != null && target is ChosenTarget.Permanent &&
@@ -468,9 +475,10 @@ class TargetValidator {
     private fun checkCantBeEnchanted(
         state: GameState,
         target: ChosenTarget,
-        sourceId: EntityId?
+        sourceId: EntityId?,
+        sourceIsAuraOverride: Boolean? = null,
     ): String? {
-        val sourceIsAura = sourceId
+        val sourceIsAura = sourceIsAuraOverride ?: sourceId
             ?.let { state.getEntity(it)?.get<CardComponent>()?.typeLine?.isAura }
             ?: false
         if (!sourceIsAura) return null
@@ -487,7 +495,8 @@ class TargetValidator {
     private fun checkProtectionFromSupertype(
         state: GameState,
         target: ChosenTarget,
-        sourceId: EntityId?
+        sourceId: EntityId?,
+        sourceSupertypes: Set<String>? = null
     ): String? {
         if (sourceId == null) return null
         val entityId = when (target) {
@@ -497,7 +506,7 @@ class TargetValidator {
         if (entityId !in state.getBattlefield()) return null
 
         val projected = state.projectedState
-        for (supertype in projected.getSupertypes(sourceId)) {
+        for (supertype in sourceSupertypes ?: projected.getSupertypes(sourceId)) {
             if (projected.hasKeyword(entityId, "PROTECTION_FROM_SUPERTYPE_${supertype.uppercase()}")) {
                 val cardName = state.getEntity(entityId)?.get<CardComponent>()?.name ?: "target"
                 return "$cardName has protection from ${supertype.lowercase()} permanents"
@@ -755,7 +764,8 @@ class TargetValidator {
         casterId: EntityId,
         sourceId: EntityId? = null,
         xValue: Int? = null,
-        targetPlayerId: EntityId? = null
+        targetPlayerId: EntityId? = null,
+        sourceIsDifferentObject: Boolean = false
     ): String? {
         if (target !is ChosenTarget.Permanent) {
             return "Target must be a permanent"
@@ -772,7 +782,7 @@ class TargetValidator {
         // "Another target …" — the source itself is not a legal target. Mirrors the same guard
         // in validateGraveyardTarget; enumeration also honors excludeSelf, but direct submission
         // must be rejected here too (Braided Net's "another target nonland permanent").
-        if (filter.excludeSelf && sourceId != null && target.entityId == sourceId) {
+        if (filter.excludeSelf && !sourceIsDifferentObject && sourceId != null && target.entityId == sourceId) {
             return "Target must be another permanent"
         }
 
@@ -1002,7 +1012,8 @@ class TargetValidator {
         casterId: EntityId,
         sourceId: EntityId? = null,
         xValue: Int? = null,
-        targetPlayerId: EntityId? = null
+        targetPlayerId: EntityId? = null,
+        sourceIsDifferentObject: Boolean = false
     ): String? {
         if (target !is ChosenTarget.Card) {
             return "Target must be a card in a graveyard"
@@ -1016,7 +1027,7 @@ class TargetValidator {
             return "Target not found in graveyard"
         }
 
-        if (filter.excludeSelf && sourceId != null && target.cardId == sourceId) {
+        if (filter.excludeSelf && !sourceIsDifferentObject && sourceId != null && target.cardId == sourceId) {
             return "Target must be another card"
         }
 
@@ -1068,7 +1079,8 @@ class TargetValidator {
         casterId: EntityId,
         sourceId: EntityId? = null,
         xValue: Int? = null,
-        targetPlayerId: EntityId? = null
+        targetPlayerId: EntityId? = null,
+        sourceIsDifferentObject: Boolean = false
     ): String? {
         // Cross-zone union: the target is legal if it satisfies *any* clause. Validate against each
         // single-zone clause; succeed on the first that accepts, otherwise report that clause's
@@ -1076,15 +1088,15 @@ class TargetValidator {
         // filter). Each clause has no alternatives, so this recursion terminates.
         if (filter.isUnion) {
             val clauseErrors = filter.clauses().map { clause ->
-                validateObjectTarget(state, target, clause, casterId, sourceId, xValue, targetPlayerId)
+                validateObjectTarget(state, target, clause, casterId, sourceId, xValue, targetPlayerId, sourceIsDifferentObject)
             }
             if (clauseErrors.any { it == null }) return null
             return clauseErrors.firstOrNull { it != null }
                 ?: "Target does not match filter: ${filter.description}"
         }
         return when (filter.zone) {
-            Zone.GRAVEYARD -> validateGraveyardTarget(state, target, filter, casterId, sourceId, xValue, targetPlayerId)
-            Zone.BATTLEFIELD -> validatePermanentTarget(state, target, filter, casterId, sourceId, xValue, targetPlayerId)
+            Zone.GRAVEYARD -> validateGraveyardTarget(state, target, filter, casterId, sourceId, xValue, targetPlayerId, sourceIsDifferentObject)
+            Zone.BATTLEFIELD -> validatePermanentTarget(state, target, filter, casterId, sourceId, xValue, targetPlayerId, sourceIsDifferentObject)
             Zone.STACK -> validateSpellTarget(state, target, filter, casterId, xValue, sourceId, targetPlayerId)
             else -> validateCardInZoneTarget(state, target, filter, casterId, xValue, sourceId, targetPlayerId)
         }

@@ -1,5 +1,6 @@
 package com.wingedsheep.engine.mechanics.targeting
 
+import com.wingedsheep.engine.handlers.AbilitySourceCharacteristics
 import com.wingedsheep.engine.mechanics.ControllerGrants
 import com.wingedsheep.engine.state.GameState
 import com.wingedsheep.engine.state.components.battlefield.GrantsControllerProtectionComponent
@@ -33,13 +34,31 @@ object PlayerProtectionRules {
         sourceId: EntityId?,
         casterId: EntityId?,
         sourceSnapshot: EntitySnapshot? = null,
+    ): Boolean = isProtected(state, playerId, sourceId, casterId, sourceSnapshot, null)
+
+    /** Targeting uses the spell/ability controller, independently of source characteristics. */
+    internal fun isProtectedFromTargeting(
+        state: GameState,
+        playerId: EntityId,
+        sourceId: EntityId?,
+        controllerId: EntityId,
+        characteristics: AbilitySourceCharacteristics,
+    ): Boolean = isProtected(state, playerId, sourceId, controllerId, null, characteristics)
+
+    private fun isProtected(
+        state: GameState,
+        playerId: EntityId,
+        sourceId: EntityId?,
+        casterId: EntityId?,
+        sourceSnapshot: EntitySnapshot?,
+        targetingCharacteristics: AbilitySourceCharacteristics?,
     ): Boolean {
         // Player-level protection comes from two sources, unioned:
         //  1. A one-shot [PlayerProtectionComponent] on the player (e.g. The One Ring).
         //  2. Continuous statics ([GrantProtectionToController]) on permanents the player
         //     controls, stamped as [GrantsControllerProtectionComponent] (Absolute Virtue).
         val ownScopes = state.getEntity(playerId)?.get<PlayerProtectionComponent>()?.scopes.orEmpty()
-        if (ownScopes.any { scopeMatchesSource(state, playerId, it, sourceId, casterId, sourceSnapshot) }) return true
+        if (ownScopes.any { scopeMatchesSource(state, playerId, it, sourceId, casterId, sourceSnapshot, targetingCharacteristics) }) return true
 
         return state.getBattlefield().any { entityId ->
             val container = state.getEntity(entityId) ?: return@any false
@@ -51,7 +70,7 @@ object PlayerProtectionRules {
                 // because the marker was stamped once, on entry — see [ControllerGrantMarker].
                 ?.any {
                     ControllerGrants.isActive(state, entityId, it.condition) &&
-                        scopeMatchesSource(state, playerId, it.scope, sourceId, casterId, sourceSnapshot)
+                        scopeMatchesSource(state, playerId, it.scope, sourceId, casterId, sourceSnapshot, targetingCharacteristics)
                 } == true
         }
     }
@@ -63,15 +82,16 @@ object PlayerProtectionRules {
         sourceId: EntityId?,
         casterId: EntityId?,
         sourceSnapshot: EntitySnapshot?,
+        targetingCharacteristics: AbilitySourceCharacteristics?,
     ): Boolean {
         if (scope is ProtectionScope.Everything) return true
         if (sourceId == null) return false
 
         val projected = state.projectedState
-        val colors = if (sourceSnapshot != null) sourceSnapshot.colors.orEmpty() else projected.getColors(sourceId)
-        val subtypes = if (sourceSnapshot != null) sourceSnapshot.subtypes else projected.getSubtypes(sourceId)
-        val supertypes = if (sourceSnapshot != null) sourceSnapshot.supertypes else projected.getSupertypes(sourceId)
-        val types = if (sourceSnapshot != null) sourceSnapshot.typeLine?.cardTypes?.map { it.name }?.toSet().orEmpty()
+        val colors = targetingCharacteristics?.colors?.map { it.name }?.toSet() ?: if (sourceSnapshot != null) sourceSnapshot.colors.orEmpty() else projected.getColors(sourceId)
+        val subtypes = targetingCharacteristics?.subtypes ?: if (sourceSnapshot != null) sourceSnapshot.subtypes else projected.getSubtypes(sourceId)
+        val supertypes = targetingCharacteristics?.supertypes ?: if (sourceSnapshot != null) sourceSnapshot.supertypes else projected.getSupertypes(sourceId)
+        val types = targetingCharacteristics?.cardTypes ?: if (sourceSnapshot != null) sourceSnapshot.typeLine?.cardTypes?.map { it.name }?.toSet().orEmpty()
             else projected.getTypes(sourceId)
         return when (scope) {
             is ProtectionScope.Color -> scope.color.name in colors
@@ -82,7 +102,7 @@ object PlayerProtectionRules {
                 supertypes.any { it.equals(scope.supertype, ignoreCase = true) }
             is ProtectionScope.CardType -> scope.cardType.uppercase() in types
             is ProtectionScope.EachOpponent -> {
-                val sourceController = if (sourceSnapshot != null) sourceSnapshot.controllerId else casterId
+                val sourceController = if (targetingCharacteristics != null) casterId else if (sourceSnapshot != null) sourceSnapshot.controllerId else casterId
                     ?: projected.getController(sourceId)
                     ?: state.getEntity(sourceId)?.get<ControllerComponent>()?.playerId
                 sourceController != null && sourceController != protectedPlayerId
