@@ -1,0 +1,57 @@
+{
+  "state": "REPRODUCED_TWO_SOURCE_HISTORY_PROTECTION_FAILURES_THREE_CONTROLS_PASS",
+  "source": "c0b893b452ae166a75b43dea01383c425f215f4f",
+  "tree": "6b616b5ea6bae673fdec90b096d51bd16d932725",
+  "base": "e067e4b803d3cb2358d0b363929b940ebcfa2cbf",
+  "validation": "4bc98b04ae47f676e3016574dc8c8a2253dd48b2",
+  "run": 40179990974,
+  "job": 121128810761,
+  "attempt": 1,
+  "artifact": {
+    "id": 12594341478,
+    "node_id": "MDg6QXJ0aWZhY3QxMjU5NDM0MTQ3OA==",
+    "name": "manual-source-history-diagnostic-r2-40179990974",
+    "size_in_bytes": 30044,
+    "url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12594341478",
+    "archive_download_url": "https://api.github.com/repos/GodaPupa/argentum-batshit-test/actions/artifacts/12594341478/zip",
+    "expired": false,
+    "digest": "sha256:30f358aa06ddf9f854c210d78fac32971180d65ca273e7475c752fe8f4bc970a",
+    "created_at": "2026-10-25T09:24:56Z",
+    "updated_at": "2026-10-25T09:24:56Z",
+    "expires_at": "2026-11-24T09:24:55Z",
+    "workflow_run": {
+      "id": 40179990974,
+      "repository_id": 1361473449,
+      "head_repository_id": 1361473449,
+      "head_branch": "validation/manual-source-history-diagnostic-r2-20261025",
+      "head_sha": "4bc98b04ae47f676e3016574dc8c8a2253dd48b2"
+    }
+  },
+  "verified_manifest_entries": 16,
+  "cases": 5,
+  "passes": 3,
+  "assertion_failures": 2,
+  "frames": [
+    81,
+    85
+  ],
+  "errors": 0,
+  "skips": 0,
+  "production_unchanged": true,
+  "protected_bindings": 143,
+  "accepted_resolver_unchanged": true,
+  "goldens": 23,
+  "fixtures": 82,
+  "accepted_resolver_receipt_reused": "7ee1fe7e3848146b6089a73e5fa5951d81e3a630",
+  "implementation_acceptance": false,
+  "official_games": 0,
+  "official_seeds": 0,
+  "precision_reserved": 2,
+  "receiving_execution": {
+    "pinned_receiver_commit": "d017ad613385aa04f3daed655e93642ed2f25195",
+    "pinned_blob": "e8ddec5b8ae09d85408c9bf780fb31bfc2ef054f",
+    "executed_copy_blob": "80600401102911f5e08258f404efc8cff0281acf",
+    "transport_difference": "One additional terminal blank line from local apply_patch; exact assertion bytes and parsed AST equal to frozen receiver. No audit repeated.",
+    "audit_executions": 1
+  }
+}
